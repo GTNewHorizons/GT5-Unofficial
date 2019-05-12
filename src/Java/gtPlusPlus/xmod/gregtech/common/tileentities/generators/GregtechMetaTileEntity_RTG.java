@@ -338,22 +338,22 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 				this.mNewTier = mTier2;
 				//ReflectionUtils.setFinalStatic(mTier2, GT_Values.V[0]);
 			} catch (Exception e) {
-				Logger.INFO("Failed setting mTier.");
+				Logger.WARNING("Failed setting mTier.");
 				e.printStackTrace();
 			}
 
 			this.mTicksToBurnFor = getTotalEUGenerated(convertDaysToTicks(tFuel.mSpecialValue), voltage);
 			if (mTicksToBurnFor >= Integer.MAX_VALUE){
 				mTicksToBurnFor = Integer.MAX_VALUE;
-				Logger.INFO("Fuel went over Int limit, setting to MAX_VALUE.");
+				Logger.WARNING("Fuel went over Int limit, setting to MAX_VALUE.");
 			}
 			this.mDaysRemaining = MathUtils.roundToClosestInt(mTicksToBurnFor/20/60/3);
-			Logger.INFO("step | "+(int) (mTicksToBurnFor * getEfficiency() / 100L));
+			Logger.WARNING("step | "+(int) (mTicksToBurnFor * getEfficiency() / 100L));
 			return (int) (mTicksToBurnFor * getEfficiency() / 100L);
 			//return (int) (tFuel.mSpecialValue * 365L * getEfficiency() / 100L);
 			//return tFuel.mEUt;
 		}
-		Logger.INFO("Not sure");
+		Logger.WARNING("Not sure");
 		return 0;
 	}
 

@@ -51,7 +51,7 @@ public final class ELEMENT {
 	public final Material BROMINE = new Material("Bromine", MaterialState.PURE_LIQUID, new short[]{200, 25, 25}, -7, 58, 35, 45, false, "Br", 0);//Not a GT Inherited Material
 	public final Material KRYPTON = new Material("Krypton", MaterialState.PURE_LIQUID, new short[]{255, 255, 255}, -157, -153, 36, 48, false, "Kr", 0);//Not a GT Inherited Material
 	public final Material RUBIDIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Rubidium);
-	public final Material STRONTIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Strontium);
+	public final Material STRONTIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Strontium, new short[] {230, 210, 110}, TextureSet.SET_FLINT);
 	public final Material YTTRIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Yttrium);
 	public final Material ZIRCONIUM = new Material("Zirconium", MaterialState.SOLID, new short[]{255, 250, 205}, 1855, 4377, 40, 51, false, "Zr", 0);//Not a GT Inherited Material
 	public final Material NIOBIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Niobium);

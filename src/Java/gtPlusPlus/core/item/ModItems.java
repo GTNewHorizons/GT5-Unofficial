@@ -82,6 +82,7 @@ import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.NONMATERIAL;
@@ -539,6 +540,9 @@ public final class ModItems {
 			MaterialGenerator.generate(ELEMENT.STANDALONE.GRANITE, false, false);
 			MaterialGenerator.generate(ELEMENT.STANDALONE.RUNITE, false);
 			MaterialGenerator.generate(ELEMENT.STANDALONE.DRAGON_METAL, false);
+			
+			MISC_MATERIALS.run();
+			
 
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
 			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){

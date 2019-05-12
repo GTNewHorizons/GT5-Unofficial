@@ -379,7 +379,7 @@ public class GregtechMetaPollutionCreator extends GregtechMetaTileEntity {
 		else {
 			returnValue = getCurrentChunkPollution();
 		}
-		Logger.INFO("| DEBUG: "+returnValue +" | ArrayPos:"+this.mArrayPos+" | Counter:"+counter+" | Total:"+total+" |");
+		//Logger.INFO("| DEBUG: "+returnValue +" | ArrayPos:"+this.mArrayPos+" | Counter:"+counter+" | Total:"+total+" |");
 		return returnValue;
 	}
 

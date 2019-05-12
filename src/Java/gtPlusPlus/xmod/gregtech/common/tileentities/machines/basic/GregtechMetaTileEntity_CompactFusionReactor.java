@@ -131,15 +131,15 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
 
 	@Override
 	public int checkRecipe() {
-		Logger.INFO("Recipe Tick 1.");
+		Logger.MACHINE_INFO("Recipe Tick 1.");
 		if (!this.mCanProcessRecipe) {
-			Logger.INFO("Recipe Tick 1.1 - Cannot Process Recipe.");
+			Logger.MACHINE_INFO("Recipe Tick 1.1 - Cannot Process Recipe.");
 			if (this.mChargeConsumed < mFusionPoint) {
-				Logger.INFO("Recipe Tick 1.2 - Cannot Ignite Fusion, Charge too low.");
+				Logger.MACHINE_INFO("Recipe Tick 1.2 - Cannot Ignite Fusion, Charge too low.");
 				this.mCharging = true;
 				this.mCanProcessRecipe = false;
 				if (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits((mFusionPoint / 100), false)) {
-					Logger.INFO("Recipe Tick 1.3 - Charging Internal storage. " + (mFusionPoint / 100) + "/"
+					Logger.MACHINE_INFO("Recipe Tick 1.3 - Charging Internal storage. " + (mFusionPoint / 100) + "/"
 							+ mFusionPoint);
 					mChargeConsumed += (mFusionPoint / 100);
 				}
@@ -152,13 +152,13 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
 			}
 		}
 		else {
-			Logger.INFO("Recipe Tick 1.1 - Try to Process Recipe.");
+			Logger.MACHINE_INFO("Recipe Tick 1.1 - Try to Process Recipe.");
 			if (checkRecipeMulti()) {
-				Logger.INFO("Recipe Tick 1.2 - Process Recipe was Successful.");
+				Logger.MACHINE_INFO("Recipe Tick 1.2 - Process Recipe was Successful.");
 				return 2;
 			}
 		}
-		Logger.INFO("Recipe Tick 2. - Process Recipe failed.");
+		Logger.MACHINE_INFO("Recipe Tick 2. - Process Recipe failed.");
 		return 0;
 	}
 
@@ -196,7 +196,7 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
 			}
 			if ((tRecipe == null && !mRunningOnLoad) || (tRecipe != null && maxEUStore() < tRecipe.mSpecialValue)) {
 				this.mLastRecipe = null;
-				Logger.INFO("Just plain bad.");
+				Logger.MACHINE_INFO("Just plain bad.");
 				return false;
 			}
 			if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[] {})) {
@@ -397,38 +397,38 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		// super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (aBaseMetaTileEntity.isServerSide()) {
-			// Logger.INFO("1");
+			// Logger.MACHINE_INFO("1");
 			if (mEfficiency < 0)
 				mEfficiency = 0;
 			if (mRunningOnLoad) {
-				Logger.INFO("2");
+				Logger.MACHINE_INFO("2");
 				this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
 				checkRecipeMulti();
 			}
 			if (--mUpdate == 0 || --mStartUpCheck == 0) {
-				Logger.INFO("3");
+				Logger.MACHINE_INFO("3");
 				mMachine = true;
 			}
 			if (mStartUpCheck < 0) {
-				//Logger.INFO("4");
+				//Logger.MACHINE_INFO("4");
 				if (mMachine) {
-					//Logger.INFO("5");
+					//Logger.MACHINE_INFO("5");
 
 					if (aBaseMetaTileEntity.getStoredEU() + (2048 * tierOverclock()) < maxEUStore()) {
 						if (aBaseMetaTileEntity.increaseStoredEnergyUnits(2048 * tierOverclock(), true)) {
-							//Logger.INFO("5.5 A");							
+							//Logger.MACHINE_INFO("5.5 A");							
 						}
 						else {
-							//Logger.INFO("5.5 B");							
+							//Logger.MACHINE_INFO("5.5 B");							
 						}
 					}
 					if (this.mEUStore <= 0 && mMaxProgresstime > 0) {
-						Logger.INFO("6");
+						Logger.MACHINE_INFO("6");
 						stopMachine();
 						this.mLastRecipe = null;
 					}
 					if (mMaxProgresstime > 0) {
-						Logger.INFO("7");
+						Logger.MACHINE_INFO("7");
 						this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(mEUt, true);
 						if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
 							if (mOutputFluids != null)
@@ -448,18 +448,18 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
 						}
 					}
 					else {
-						//Logger.INFO("8");
+						//Logger.MACHINE_INFO("8");
 						this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
 						if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
 								|| aBaseMetaTileEntity.hasInventoryBeenModified()) {
-							Logger.INFO("9");
+							Logger.MACHINE_INFO("9");
 							// turnCasingActive(mMaxProgresstime > 0);
 							if (aBaseMetaTileEntity.isAllowedToWork()) {
-								Logger.INFO("10");
+								Logger.MACHINE_INFO("10");
 								if (checkRecipeMulti()) {
-									Logger.INFO("11");
+									Logger.MACHINE_INFO("11");
 									if (this.mEUStore < this.mLastRecipe.mSpecialValue) {
-										Logger.INFO("12");
+										Logger.MACHINE_INFO("12");
 										mMaxProgresstime = 0;
 										// turnCasingActive(false);
 									}
@@ -473,12 +473,12 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
 				}
 				else {
 					// turnCasingActive(false);
-					Logger.INFO("Bad");
+					Logger.MACHINE_INFO("Bad");
 					this.mLastRecipe = null;
 					stopMachine();
 				}
 			}
-			Logger.INFO("Good | "+mMaxProgresstime);
+			Logger.MACHINE_INFO("Good | "+mMaxProgresstime);
 			aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
 		}
 	}
@@ -489,14 +489,14 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
 				if (!drainEnergyInput(((long) -mEUt * 10000) / Math.max(1000, mEfficiency))) {
 					this.mLastRecipe = null;
 					stopMachine();
-					Logger.INFO("a1");
+					Logger.MACHINE_INFO("a1");
 					return false;
 				}
 			}
 			if (this.mEUStore <= 0) {
 				this.mLastRecipe = null;
 				stopMachine();
-				Logger.INFO("a2");
+				Logger.MACHINE_INFO("a2");
 				return false;
 			}
 		}

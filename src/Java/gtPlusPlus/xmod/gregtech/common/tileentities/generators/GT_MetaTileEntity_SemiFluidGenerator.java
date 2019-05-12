@@ -1,9 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
@@ -11,7 +8,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
@@ -19,8 +15,8 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.GTPP_MTE_BasicLosslessGenerator;
+import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_SemiFluidGenerator extends GTPP_MTE_BasicLosslessGenerator{
 
@@ -65,7 +61,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GTPP_MTE_BasicLossless
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipes() {
-		//Logger.INFO("Fuel Count: "+Gregtech_Recipe_Map.sSemiFluidLiquidFuels.mRecipeList.size());
+		//Logger.WARNING("Fuel Count: "+Gregtech_Recipe_Map.sSemiFluidLiquidFuels.mRecipeList.size());
 		return Gregtech_Recipe_Map.sSemiFluidLiquidFuels;
 	}
 	
@@ -95,14 +91,14 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GTPP_MTE_BasicLossless
 	@Override
 	public int getFuelValue(ItemStack aStack) {
 		if ((GT_Utility.isStackInvalid(aStack)) || (getRecipes() == null)) {
-			Logger.INFO("Bad Fuel?");
+			Logger.WARNING("Bad Fuel?");
 			return 0;
 		}
 		int rValue = Math.max(GT_ModHandler.getFuelCanValue(aStack) * 6 / 5, super.getFuelValue(aStack));
 		if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
 			rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3);
 		}
-		Logger.INFO("Good Fuel: "+rValue);
+		Logger.WARNING("Good Fuel: "+rValue);
 		return rValue;
 	}
 

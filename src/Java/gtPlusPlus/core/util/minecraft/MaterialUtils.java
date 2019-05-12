@@ -23,6 +23,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.EnumUtils;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -438,6 +439,16 @@ public class MaterialUtils {
 			processed++;
 		}
 		return resultList;
+	}
+
+	public static void generateSpecialDustAndAssignToAMaterial(Material aMaterial) {
+		Item[] aDusts = ItemUtils.generateSpecialUseDusts(aMaterial, false);
+		if (aDusts != null && aDusts.length > 0) {
+			aMaterial.registerComponentForMaterial(OrePrefixes.dust, ItemUtils.getSimpleStack(aDusts[0]));
+			aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, ItemUtils.getSimpleStack(aDusts[1]));
+			aMaterial.registerComponentForMaterial(OrePrefixes.dustTiny, ItemUtils.getSimpleStack(aDusts[2]));
+		}
+		
 	}
 
 

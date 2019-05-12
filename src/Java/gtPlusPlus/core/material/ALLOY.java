@@ -695,7 +695,8 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().TRINIUM_REFINED, 30),
 					new MaterialStack(ALLOY.MARAGING350, 40),
 					new MaterialStack(ALLOY.TUNGSTENSTEEL, 20),
-					new MaterialStack(ALLOY.OSMIRIDIUM, 10)
+					new MaterialStack(ALLOY.OSMIRIDIUM, 10),
+					new MaterialStack(ELEMENT.getInstance().STRONTIUM, 10)
 			});
 
 
