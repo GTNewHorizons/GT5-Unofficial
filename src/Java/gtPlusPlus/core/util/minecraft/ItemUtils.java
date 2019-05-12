@@ -15,6 +15,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.item.ModItems;
@@ -479,20 +480,27 @@ public class ItemUtils {
 		return new BaseItemPlate_OLD(internalName, displayName, mFormula, rgb, radioactivity);
 	}
 
+
 	public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust) {
+		return generateSpecialUseDusts(material, onlyLargeDust, false);
+	}
+	
+	public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust, final boolean disableExtraRecipes) {
 		final String materialName = material.getLocalizedName();
 		final String unlocalizedName = Utils.sanitizeString(materialName);
 		final int Colour = material.getRgbAsHex();
+		final String aChemForm = material.vChemicalFormula;
+		final boolean isChemFormvalid = (aChemForm != null && aChemForm.length() > 0);
 		Item[] output = null;
 		if (onlyLargeDust == false) {
-			output = new Item[] { new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, Colour, "Dust"),
-					new BaseItemDustUnique("itemDustSmall" + unlocalizedName, materialName, Colour, "Small"),
-					new BaseItemDustUnique("itemDustTiny" + unlocalizedName, materialName, Colour, "Tiny") };
+			output = new Item[] { new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, isChemFormvalid ? aChemForm : "", Colour, "Dust"),
+					new BaseItemDustUnique("itemDustSmall" + unlocalizedName, materialName, isChemFormvalid ? aChemForm : "", Colour, "Small"),
+					new BaseItemDustUnique("itemDustTiny" + unlocalizedName, materialName, isChemFormvalid ? aChemForm : "", Colour, "Tiny") };
 		} else {
 			output = new Item[] { new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, Colour, "Dust") };
 		}
 
-		new RecipeGen_DustGeneration(material);
+		new RecipeGen_DustGeneration(material, disableExtraRecipes);
 
 		return output;
 	}
@@ -1177,6 +1185,24 @@ public class ItemUtils {
 			return true;
 		}
 		return false;
+	}
+
+	public static ItemStack[] cleanItemStackArray(ItemStack[] input) {
+		int aArraySize = input.length;
+		ItemStack[] aOutput = new ItemStack[aArraySize];
+		AutoMap<ItemStack> aCleanedItems = new AutoMap<ItemStack>();		
+		for (ItemStack checkStack : input) {
+			if (ItemUtils.checkForInvalidItems(checkStack)) {
+				aCleanedItems.put(checkStack);
+			}
+		}		
+		for (int i=0;i<aArraySize;i++) {
+			ItemStack aMappedStack = aCleanedItems.get(i);
+			if (aMappedStack != null){
+				aOutput[i] = aMappedStack;
+			}
+		}		
+		return aOutput;
 	}
 
 }

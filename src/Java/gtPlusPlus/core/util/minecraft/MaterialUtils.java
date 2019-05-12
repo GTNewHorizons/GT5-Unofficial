@@ -440,9 +440,12 @@ public class MaterialUtils {
 		}
 		return resultList;
 	}
-
 	public static void generateSpecialDustAndAssignToAMaterial(Material aMaterial) {
-		Item[] aDusts = ItemUtils.generateSpecialUseDusts(aMaterial, false);
+		generateSpecialDustAndAssignToAMaterial(aMaterial, true);
+	}
+
+	public static void generateSpecialDustAndAssignToAMaterial(Material aMaterial, boolean generateMixerRecipes) {
+		Item[] aDusts = ItemUtils.generateSpecialUseDusts(aMaterial, false, Utils.invertBoolean(generateMixerRecipes));
 		if (aDusts != null && aDusts.length > 0) {
 			aMaterial.registerComponentForMaterial(OrePrefixes.dust, ItemUtils.getSimpleStack(aDusts[0]));
 			aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, ItemUtils.getSimpleStack(aDusts[1]));

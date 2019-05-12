@@ -40,7 +40,7 @@ public class BaseItemDustUnique extends Item{
 		this.setCreativeTab(tabMisc);
 		this.colour = colour;
 		this.materialName = materialName;
-		if (mChemicalFormula.equals("") || mChemicalFormula.equals("NullFormula")){
+		if (mChemicalFormula == null || mChemicalFormula.equals("") || mChemicalFormula.equals("NullFormula")){
 			this.chemicalNotation = StringUtils.subscript(materialName);			
 		}
 		else {

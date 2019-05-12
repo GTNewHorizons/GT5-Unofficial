@@ -3,7 +3,6 @@ package gtPlusPlus.core.material;
 import gregtech.api.enums.TextureSet;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public final class MISC_MATERIALS {	
@@ -14,8 +13,8 @@ public final class MISC_MATERIALS {
 	 */
 	
 	public static void run() {
-		MaterialUtils.generateSpecialDustAndAssignToAMaterial(STRONTIUM_OXIDE);
-		MaterialUtils.generateSpecialDustAndAssignToAMaterial(STRONTIUM_HYDROXIDE);
+		MaterialUtils.generateSpecialDustAndAssignToAMaterial(STRONTIUM_OXIDE, false);
+		MaterialUtils.generateSpecialDustAndAssignToAMaterial(STRONTIUM_HYDROXIDE, false);
 	}
 	
 	public static final Material STRONTIUM_OXIDE = new Material(
@@ -30,6 +29,7 @@ public final class MISC_MATERIALS {
 			false, 
 			"SrO",
 			0, 
+			false,
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().STRONTIUM, 1),
 					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1)
@@ -47,6 +47,7 @@ public final class MISC_MATERIALS {
 			false, 
 			"Sr(OH)2",
 			0, 
+			false,
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().STRONTIUM, 1),
 					new MaterialStack(FLUORIDES.HYDROXIDE, 2)
