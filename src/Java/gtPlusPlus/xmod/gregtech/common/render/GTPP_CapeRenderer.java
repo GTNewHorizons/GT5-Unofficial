@@ -49,6 +49,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.common.UsernameCache;
 
 public class GTPP_CapeRenderer extends RenderPlayer {
 
@@ -91,7 +92,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 				aEvent.setCanceled(true);
 				Logger.WARNING("A2");
 				return;
-			}		
+			}
 		}
 
 		// Make sure we don't keep checking on clients who dont have capes.
@@ -100,14 +101,35 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 			// Time to Spliterate some data
 			Map<String, ResourceLocation> aPlayerData = new HashMap<String, ResourceLocation>();
 			Map<String, String> aNameMap = new HashMap<String, String>();
-			int i = 0;
-			for (String s : mData) {
-				String[] aSplit = s.split("@");
-				int a[] = new int[] { 0, mCapes.length - 1 };
-				int aID = Integer.parseInt(aSplit[1]);
-				String aPlayerName = this.getPlayerName("iteration-" + (i++), aSplit[0]);
-				aNameMap.put(aSplit[0], aPlayerName);
-				aPlayerData.put(aPlayerName, this.mCapes[Math.max(a[0], Math.min(aID, a[1]))]);
+			int i = 0;		
+			if (!CORE.DEVENV) {
+				for (String s : mData) {
+					String[] aSplit = s.split("@");
+					int a[] = new int[] { 0, mCapes.length - 1 };
+					int aID = Integer.parseInt(aSplit[1]);
+					// Quick Check to prevent lag
+					Logger.WARNING("Trying to create UUID from - " + aSplit[0]);
+					UUID aPlayerID = UUID.fromString(aSplit[0]);
+					Logger.WARNING("Result: " + aPlayerID.toString());
+					if (aPlayerID != null) {
+						if (UsernameCache.containsUUID(aPlayerID)) {
+							Logger.WARNING("UsernameCache contains a last known username for current players UUID.");
+							if (!UsernameCache.getLastKnownUsername(aPlayerID).toLowerCase()
+									.equals(ClientProxy.playerName)) {
+								Logger.WARNING("Last known name does not match current name. Checking next UUID.");
+								continue;
+							} else {
+								Logger.WARNING("Last known name does match current name.");
+							}
+						} else {
+							Logger.WARNING("UsernameCache did not hold results for current player, oops.");
+							continue;
+						}
+					}
+					String aPlayerName = this.getPlayerName("iteration-" + (i++), aSplit[0]);
+					aNameMap.put(aSplit[0], aPlayerName);
+					aPlayerData.put(aPlayerName, this.mCapes[Math.max(a[0], Math.min(aID, a[1]))]);
+				}
 			}
 
 			// Set flag to only render this event if player has a cape.
