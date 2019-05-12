@@ -318,9 +318,14 @@ public class ReflectionUtils {
 	/**
 	 * Allows to change the state of an immutable instance. Huh?!?
 	 */
-	public static void setFinalFieldValue(Class<?> clazz,  String fieldName, Object newValue) throws Exception {
+	public static void setFinalFieldValue(Class<?> clazz,  String fieldName, Object newValue) {
 		Field nameField = getField(clazz, fieldName);
-		setFieldValue_Internal(clazz, nameField, newValue);
+		try {
+			setFieldValue_Internal(clazz, nameField, newValue);
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 
 	@Deprecated
