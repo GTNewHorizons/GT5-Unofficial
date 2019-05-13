@@ -120,7 +120,7 @@ extends GregtechMeta_MultiBlockBase {
 	
 	@Override
 	protected boolean doesMachineBoostOutput() {
-		return true;
+		return false;
 	}
 	
 	@Override

@@ -2,7 +2,6 @@ package gtPlusPlus.core.handler.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -24,6 +23,7 @@ public class EnderDragonDeathHandler {
 	public void onEntityDrop(LivingDropsEvent event) {
 		
 		boolean aDidDrop = false;
+		int aCountTotal = 0;
 		
 		//HEE Dragon
 		if (mHEE) {
@@ -33,6 +33,7 @@ public class EnderDragonDeathHandler {
 							int aAmount = MathUtils.randInt(5, 25);
 							event.entityLiving.entityDropItem(ELEMENT.STANDALONE.DRAGON_METAL.getNugget(aAmount), MathUtils.randFloat(0, 1));
 							aDidDrop = true;
+							aCountTotal =+ aAmount;
 						}					
 				}
 			}
@@ -44,12 +45,13 @@ public class EnderDragonDeathHandler {
 					int aAmount = MathUtils.randInt(1, 10);
 					event.entityLiving.entityDropItem(ELEMENT.STANDALONE.DRAGON_METAL.getNugget(aAmount), MathUtils.randFloat(0, 1));
 					aDidDrop = true;
+					aCountTotal =+ aAmount;
 				}
 			}
 		}
 		
 		if (aDidDrop) {
-			PlayerUtils.messageAllPlayers("Small quantities of Dragonsblood has crystalized after the death of the Ender Dragon!");
+			PlayerUtils.messageAllPlayers(aCountTotal+" Shards of Dragons Blood have crystalized into a metallic form.");
 		}
 		
 	}

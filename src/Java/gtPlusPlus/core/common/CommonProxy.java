@@ -28,6 +28,7 @@ import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.handler.StopAnnoyingFuckingAchievements;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.EnderDragonDeathHandler;
+import gtPlusPlus.core.handler.events.EntityDeathHandler;
 import gtPlusPlus.core.handler.events.GeneralTooltipEventHandler;
 import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
 import gtPlusPlus.core.handler.events.ZombieBackupSpawnEventHandler;
@@ -36,17 +37,26 @@ import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.player.PlayerCache;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.galacticraft.handler.HandlerTooltip_GC;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.thermalfoundation.item.TF_Items;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeChunkManager;
 
 public class CommonProxy {
@@ -147,6 +157,7 @@ public class CommonProxy {
 		ForgeChunkManager.setForcedChunkLoadingCallback(GTplusplus.instance, ChunkManager.getInstance());
 		Utils.registerEvent(ChunkManager.getInstance());
 		Utils.registerEvent(new EnderDragonDeathHandler());
+		Utils.registerEvent(new EntityDeathHandler());
 
 		if (ConfigSwitches.disableZombieReinforcement) {
 			// Make Zombie reinforcements fuck off.
@@ -181,6 +192,7 @@ public class CommonProxy {
 		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
 		COMPAT_IntermodStaging.postInit(e);
 		COMPAT_HANDLER.runQueuedRecipes();
+		registerCustomMobDrops();
 	}
 
 	public void serverStarting(final FMLServerStartingEvent e) {
@@ -225,6 +237,36 @@ public class CommonProxy {
 	
 	public void registerCustomItemsForMaterials() {
 		Material.registerComponentForMaterial(GenericChem.CARBYNE, OrePrefixes.plate, GregtechItemList.Carbyne_Sheet_Finished.get(1));
+	}
+	
+	public void registerCustomMobDrops() {
+		
+		//Zombie
+		EntityUtils.registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemRope), 3, 100);
+		EntityUtils.registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemFiber), 5, 250);
+		EntityUtils.registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemSandstoneHammer), 1, 10);
+		EntityUtils.registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemBomb), 2, 10);
+		EntityUtils.registerDropsForMob(EntityZombie.class, ALLOY.TUMBAGA.getTinyDust(1), 1, 10);
+		EntityUtils.registerDropsForMob(EntityZombie.class, ALLOY.POTIN.getTinyDust(1), 1, 10);
+		
+		//Blazes
+		EntityUtils.registerDropsForMob(EntityBlaze.class, ItemUtils.getSimpleStack(TF_Items.dustPyrotheum, 1), 1, 10);	
+		EntityUtils.registerDropsForMob(EntityBlaze.class, ItemUtils.getSimpleStack(TF_Items.dustPyrotheum, 1), 1, 10);		
+		
+		//Special mobs Support
+		if (ReflectionUtils.doesClassExist("toast.specialMobs.entity.zombie.EntityBrutishZombie")) {
+			Class aBrutishZombie = ReflectionUtils.getClass("toast.specialMobs.entity.zombie.EntityBrutishZombie");
+			ItemStack aFortune1 = ItemUtils.getEnchantedBook(Enchantment.fortune, 1);
+			ItemStack aFortune2 = ItemUtils.getEnchantedBook(Enchantment.fortune, 1);
+			ItemStack aFortune3 = ItemUtils.getEnchantedBook(Enchantment.fortune, 1);
+			EntityUtils.registerDropsForMob(aBrutishZombie, aFortune1, 1, 100);
+			EntityUtils.registerDropsForMob(aBrutishZombie, aFortune2, 1, 50);
+			EntityUtils.registerDropsForMob(aBrutishZombie, aFortune3, 1, 1);	
+			EntityUtils.registerDropsForMob(aBrutishZombie, ItemUtils.getItemStackOfAmountFromOreDict("ingotRedAlloy", 1), 3, 200);		
+		}
+		
+		
+		
 	}
 
 }

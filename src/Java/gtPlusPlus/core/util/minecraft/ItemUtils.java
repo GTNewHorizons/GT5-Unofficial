@@ -35,6 +35,8 @@ import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -1203,6 +1205,15 @@ public class ItemUtils {
 			}
 		}		
 		return aOutput;
+	}
+
+	public static ItemStack getEnchantedBook(Enchantment aEnch, int aLevel) {
+		return enchantItem(new ItemStack(Items.enchanted_book), aEnch, aLevel);		
+	}
+	
+	public static ItemStack enchantItem(ItemStack aStack, Enchantment aEnch, int aLevel) {
+		Items.enchanted_book.addEnchantment(aStack, new EnchantmentData(aEnch, aLevel));
+		return aStack;	
 	}
 
 }
