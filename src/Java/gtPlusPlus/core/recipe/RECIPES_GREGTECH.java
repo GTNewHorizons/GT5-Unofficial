@@ -91,8 +91,14 @@ public class RECIPES_GREGTECH {
 		assemblyLineRecipes();
 		latheRecipes();
 		vacuumFreezerRecipes();
+		fluidheaterRecipes();
 
 		addFuels();
+	}
+
+	private static void fluidheaterRecipes() {
+		GT_Values.RA.addFluidHeaterRecipe(CI.getNumberedCircuit(20), FluidUtils.getWater(1000), FluidUtils.getHotWater(1000), 30, 30);
+		
 	}
 
 	private static void vacuumFreezerRecipes() {

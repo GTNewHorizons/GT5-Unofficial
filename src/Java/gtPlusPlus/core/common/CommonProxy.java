@@ -27,6 +27,7 @@ import gtPlusPlus.core.handler.COMPAT_IntermodStaging;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.handler.StopAnnoyingFuckingAchievements;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
+import gtPlusPlus.core.handler.events.EnderDragonDeathHandler;
 import gtPlusPlus.core.handler.events.GeneralTooltipEventHandler;
 import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
 import gtPlusPlus.core.handler.events.ZombieBackupSpawnEventHandler;
@@ -145,6 +146,7 @@ public class CommonProxy {
 		// Register Chunkloader
 		ForgeChunkManager.setForcedChunkLoadingCallback(GTplusplus.instance, ChunkManager.getInstance());
 		Utils.registerEvent(ChunkManager.getInstance());
+		Utils.registerEvent(new EnderDragonDeathHandler());
 
 		if (ConfigSwitches.disableZombieReinforcement) {
 			// Make Zombie reinforcements fuck off.

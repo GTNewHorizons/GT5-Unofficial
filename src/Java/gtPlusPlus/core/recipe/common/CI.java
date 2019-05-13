@@ -574,7 +574,7 @@ public class CI {
 	private static final Material[] aMaterial_Tertiary = new Material[] {
 			ALLOY.STEEL,
 			ELEMENT.getInstance().ALUMINIUM,
-			ALLOY.STAINLESSSTEEL,
+			ALLOY.STAINLESS_STEEL,
 			ELEMENT.getInstance().TUNGSTEN,
 			ALLOY.HASTELLOY_N,
 			ALLOY.ENERGYCRYSTAL,				

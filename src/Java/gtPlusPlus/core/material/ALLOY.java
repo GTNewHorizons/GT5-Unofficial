@@ -15,7 +15,7 @@ public final class ALLOY {
 	public static final Material KANTHAL = MaterialUtils.generateMaterialFromGtENUM(Materials.Kanthal);
 	public static final Material NICHROME = MaterialUtils.generateMaterialFromGtENUM(Materials.Nichrome);
 	public static final Material TUNGSTENSTEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.TungstenSteel);
-	public static final Material STAINLESSSTEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.StainlessSteel);
+	public static final Material STAINLESS_STEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.StainlessSteel);
 	public static final Material OSMIRIDIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Osmiridium);
 
 	public static final Material ENERGYCRYSTAL = new Material(
@@ -804,7 +804,7 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ALLOY.STAINLESSSTEEL, 10),
+					new MaterialStack(ALLOY.STAINLESS_STEEL, 10),
 					new MaterialStack(ALLOY.TUNGSTEN_CARBIDE, 10),
 					new MaterialStack(ALLOY.NICHROME, 10),
 					new MaterialStack(ALLOY.BRONZE, 10),

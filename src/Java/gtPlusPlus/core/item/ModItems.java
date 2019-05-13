@@ -94,6 +94,7 @@ import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.GTplusplus_Everglades;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
@@ -360,6 +361,8 @@ public final class ModItems {
 	
 	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Nether;
 	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Infernal;
+
+	public static CoreItem itemExquisiteIndustrialDiamond;
 
 	static {
 		Logger.INFO("Items!");
@@ -850,6 +853,63 @@ public final class ModItems {
 		else {
 			itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
 		}
+		
+		//Industrial Diamonds
+		itemExquisiteIndustrialDiamond = new CoreItem("IndustrialDiamondExquisite", "High Quality Industrial Diamond", tabMisc);
+		ItemStack tempStack = itemExquisiteIndustrialDiamond.getStack();
+		ItemUtils.addItemToOreDictionary(tempStack, "gemDiamond");
+		ItemUtils.addItemToOreDictionary(tempStack, "craftingIndustrialDiamond");
+		ItemUtils.addItemToOreDictionary(tempStack, "gemExquisiteDiamond");
+		ItemUtils.addItemToOreDictionary(tempStack, "craftingExquisiteIndustrialDiamond");
+		
+		//Custom GT++ Crafting Components
+
+		//Springs
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ELEMENT.STANDALONE.WHITE_METAL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ALLOY.NITINOL_60);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ALLOY.AQUATIC_STEEL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ALLOY.EGLIN_STEEL);
+
+		//Small Springs
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.MARAGING250);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.NICHROME);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.STABALLOY);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.STEEL_BLACK);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.BLACK_TITANIUM);
+
+		//Fine Wire
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.STANDALONE.WHITE_METAL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.getInstance().PALLADIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.getInstance().ZIRCONIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.LEAGRISIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.BABBIT_ALLOY);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.KOBOLDITE);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.HG1223);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.QUANTUM);
+		
+		//Dense Plates
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.POTIN);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.AQUATIC_STEEL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.BRONZE);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.OSMIRIDIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.QUANTUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.STEEL_BLACK);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.STAINLESS_STEEL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.EGLIN_STEEL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.MARAGING300);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.TALONITE);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.HYPOGEN);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.RHUGNOR);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.ADVANCED_NITINOL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.ASTRAL_TITANIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.WHITE_METAL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.BLACK_METAL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.GRANITE);		
+		
+		
+		
 		
 		//Special Sillyness
 		if (true) {

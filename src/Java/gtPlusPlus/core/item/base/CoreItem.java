@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class CoreItem extends Item
 {
@@ -220,6 +221,10 @@ public class CoreItem extends Item
 	@Override
 	public boolean isRepairable() {
 		return false;
+	}
+	
+	public ItemStack getStack() {
+		return ItemUtils.getSimpleStack(this);
 	}
 
 /*	@Override

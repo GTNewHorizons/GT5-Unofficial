@@ -1252,10 +1252,10 @@ GT_MetaTileEntity_MultiBlockBase {
 		}		
 		
 		//Check type
-		Class <?> aHatchType = ReflectionUtils.getTypeOfGenericObject(aList);		
-		if (!aHatchType.isInstance(aTileEntity)) {
-			return false;			
-		}
+		/*
+		 * Class <?> aHatchType = ReflectionUtils.getTypeOfGenericObject(aList); if
+		 * (!aHatchType.isInstance(aTileEntity)) { return false; }
+		 */
 		
 		
 		if (aList.isEmpty()) {

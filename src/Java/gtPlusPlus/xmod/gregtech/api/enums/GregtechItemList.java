@@ -427,6 +427,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//Debug machine
 	Pollution_Creator, 
+	Garbage_Collector_Debug_Machine,
 
 
 	//Basically is an automatic Cauldron

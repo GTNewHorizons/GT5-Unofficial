@@ -169,7 +169,7 @@ public class MonsterKillerBaseBauble extends ElectricBaseBauble {
 
 	@Override
 	public String getTextureNameForBauble() {
-		return CORE.MODID + ":" + "baubles/itemAmulet";
+		return "baubles/itemAmulet";
 	}
 
 }

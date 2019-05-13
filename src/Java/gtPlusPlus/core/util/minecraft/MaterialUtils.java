@@ -15,6 +15,9 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.TypeCounter;
 import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
+import gtPlusPlus.core.item.base.BaseItemComponent;
+import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
+import gtPlusPlus.core.item.base.plates.BaseItemPlateHeavy;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
@@ -440,6 +443,48 @@ public class MaterialUtils {
 		}
 		return resultList;
 	}
+	
+	public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial) {
+		generateComponentAndAssignToAMaterial(aType, aMaterial, true);
+	}
+	
+	public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial, boolean generateRecipes) {		
+		Item aGC;
+		if (aType == ComponentTypes.PLATEHEAVY) {
+			aGC = new BaseItemPlateHeavy(aMaterial);
+		}
+		else {
+			aGC = new BaseItemComponent(aMaterial, aType);			
+		}
+		if (aGC != null) {
+			String aFormattedLangName = aType.getName();
+			
+			if (!aFormattedLangName.startsWith(" ")) {
+				if (aFormattedLangName.contains("@")) {
+					String[] aSplit = aFormattedLangName.split("@");
+					aFormattedLangName = aSplit[0] + " " + aMaterial.getLocalizedName() + " " + aSplit[1];
+				}
+			}
+			
+			if (aFormattedLangName.equals(aType.getName())) {
+				aFormattedLangName = aMaterial.getLocalizedName() + aFormattedLangName;
+				
+			}
+			
+			
+			
+			Logger.MATERIALS("[Lang] "+aGC.getUnlocalizedName()+".name="+aFormattedLangName);
+			aMaterial.registerComponentForMaterial(aType, ItemUtils.getSimpleStack(aGC));			
+		}				
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	public static void generateSpecialDustAndAssignToAMaterial(Material aMaterial) {
 		generateSpecialDustAndAssignToAMaterial(aMaterial, true);
 	}

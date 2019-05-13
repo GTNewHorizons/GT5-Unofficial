@@ -174,4 +174,8 @@ public class PlayerUtils {
 		return false;
 	}
 
+	public static void messageAllPlayers(String string) {
+		Utils.sendServerMessage(string);		
+	}
+
 }
