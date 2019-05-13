@@ -23,6 +23,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -75,8 +76,8 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 			boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID],
-					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE
-							: Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE) };
+					new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active
+							: TexturesGtBlock.Overlay_Machine_Controller_Advanced) };
 		}
 		return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID] };
 	}

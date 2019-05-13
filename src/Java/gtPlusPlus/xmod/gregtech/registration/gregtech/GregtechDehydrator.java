@@ -77,7 +77,7 @@ public class GregtechDehydrator {
 				false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
 		
 		//Advanced
-		GregtechItemList.Controller_Vacuum_Furnace.set(new GregtechMetaTileEntity_IndustrialDehydrator(992, "multimachine.adv.vacuumfurnace", "Utupu-Tanuri").getStackForm(1L));
+		GregtechItemList.Controller_Vacuum_Furnace.set(new GregtechMetaTileEntity_IndustrialDehydrator(995, "multimachine.adv.vacuumfurnace", "Utupu-Tanuri").getStackForm(1L));
 		
 
 		ItemStack coilWire1 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire", "coilWire1", 0,

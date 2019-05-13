@@ -112,7 +112,14 @@ extends GregtechMetaCasingBlocksAbstract {
 					
 					//Cyclotron External Casing
 				case 10:
-					return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
+					
+					if (aSide <2) {
+						return TexturesGtBlock.TEXTURE_STONE_RED_B.getIcon();					
+					}
+					else {
+						return TexturesGtBlock.TEXTURE_STONE_RED_A.getIcon();					
+					}
+					
 					//Multitank Exterior Casing
 				case 11:
 					return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
