@@ -14,6 +14,8 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialDehydrator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.GregtechMetaTileEntity_Adv_EBF;
 
 public class GregtechDehydrator {
 	public static void run() {
@@ -73,6 +75,10 @@ public class GregtechDehydrator {
 				"You can definitely make space icecream with this.. ",
 				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 10000, 2, 5, "Dehydrator.png", "",
 				false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
+		
+		//Advanced
+		GregtechItemList.Controller_Vacuum_Furnace.set(new GregtechMetaTileEntity_IndustrialDehydrator(992, "multimachine.adv.vacuumfurnace", "Utupu-Tanuri").getStackForm(1L));
+		
 
 		ItemStack coilWire1 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire", "coilWire1", 0,
 				4);

@@ -125,7 +125,7 @@ public class COMPAT_HANDLER {
 			GregtechBedrockPlatforms.run();
 			GregtechBufferDynamos.run();
 			GregtechAmazonWarehouse.run();
-			GregtechIndustrialCryogenicFreezer.run();
+			GregtechFactoryGradeReplacementMultis.run();
 			GregtechThaumcraftDevices.run();
 			GregtechThreadedBuffers.run();
 			GregtechIndustrialMixer.run();

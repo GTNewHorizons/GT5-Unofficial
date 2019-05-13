@@ -219,6 +219,57 @@ public class StaticFields59 {
 		}
 		return null;
 	}
+	
+	public static int getHeatingCapacityForCoil(Block aBlock, int aMeta) {		
+		if (aBlock == GregTech_API.sBlockCasings1 && (aMeta >= 12 && aMeta <= 14)) {
+			return getHeatingCapacityForCoilTier(aMeta == 12 ? 1 : aMeta == 13 ? 2 : 3);
+		}
+		else if (aBlock == getBlockCasings5() && (aMeta >= 0 && aMeta <= 8)) {
+			return getHeatingCapacityForCoilTier(aMeta);
+		}
+		return 0;
+	}
+	
+	public static int getHeatingCapacityForCoilTier(int aCoilTier) {
+		int mHeatingCapacity = 0;
+		switch (aCoilTier) {
+		case 0:
+			mHeatingCapacity = 1800;
+			break;
+		case 1:
+			mHeatingCapacity = 2700;
+			break;
+		case 2:
+			mHeatingCapacity = 3600;
+			break;
+		case 3:
+			mHeatingCapacity = 4500;
+			break;
+		case 4:
+			mHeatingCapacity = 5400;
+			break;
+		case 5:
+			mHeatingCapacity = 7200;
+			break;
+		case 6:
+			mHeatingCapacity = 9000;
+			break;
+		case 7:
+			mHeatingCapacity = 9900;
+			break;
+		case 8:
+			mHeatingCapacity = 10800;
+			break;
+		default:
+			Logger.INFO("Heating Coils are bad.");
+			mHeatingCapacity = 0;
+		}
+		if (CORE.GTNH && aCoilTier <= 6) {
+			mHeatingCapacity += 1;
+		}
+		
+		return mHeatingCapacity;
+	}
 
 
 }

@@ -23,7 +23,7 @@ public class GregtechMetaGarbageCollector extends GregtechMetaTileEntity {
 	int mFrequency = 5;
 
 	public GregtechMetaGarbageCollector(final String aName, final String aNameRegional, final String aDescription) {
-		super(28750, aName, aNameRegional, 5, 0, aDescription);
+		super(991, aName, aNameRegional, 5, 0, aDescription);
 	}
 
 	public GregtechMetaGarbageCollector(final String aName, final String aDescription, final ITexture[][][] aTextures) {

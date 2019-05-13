@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
+package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
@@ -7,111 +7,67 @@ import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase {
-
-	public static int CASING_TEXTURE_ID;
-	public static String mHotFuelName = "Blazing Pyrotheum";
-	public static String mCasingName = "Advanced Blast Furnace Casing";
-	public static String mHatchName = "Pyrotheum Hatch";
-
+public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_MultiBlockBase {
+	
+	private static int CASING_TEXTURE_ID;
+	private static String mCasingName = "Vacuum Casing";	
 	private int mHeatingCapacity = 0;
-	private int controllerY;
+	private boolean mDehydratorMode = false;
 
-	private static boolean mUsingPollutionOutputs = false;
-	private static AutoMap<FluidStack> mPollutionFluidStacks = new AutoMap<FluidStack>();
-
-	private static boolean setPollutionFluids() {
-		FluidStack CD, CM, SD;
-		CD = FluidUtils.getFluidStack("carbondioxide", 1000);
-		CM = FluidUtils.getFluidStack("carbonmonoxide", 1000);
-		SD = FluidUtils.getFluidStack("sulfuredioxide", 1000);
-		if (mPollutionFluidStacks.size() == 0) {
-			if (CD != null)
-				mPollutionFluidStacks.put(CD);
-			if (CM != null)
-				mPollutionFluidStacks.put(CM);
-			if (SD != null)
-				mPollutionFluidStacks.put(SD);
-		}
-		if (mPollutionFluidStacks.size() > 0) {
-			return true;
-		}
-		return false;
-	}
-
-	public GregtechMetaTileEntity_Adv_EBF(int aID, String aName, String aNameRegional) {
+	public GregtechMetaTileEntity_IndustrialDehydrator(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 11);
-		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
-		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
-		mUsingPollutionOutputs = setPollutionFluids();
+		CASING_TEXTURE_ID = TAE.getIndexFromPage(3, 10);
+		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 10);
 	}
 
-	public GregtechMetaTileEntity_Adv_EBF(String aName) {
+	public GregtechMetaTileEntity_IndustrialDehydrator(String aName) {
 		super(aName);
-		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 11);
-		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
-		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
-		mUsingPollutionOutputs = setPollutionFluids();
-	}
-
-	@Override
-	public String getMachineType() {
-		return "Blast Furnace";
+		CASING_TEXTURE_ID = TAE.getIndexFromPage(3, 10);
+		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 10);
 	}
 
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntity_Adv_EBF(this.mName);
+		return new GregtechMetaTileEntity_IndustrialDehydrator(mName);
 	}
 
-	public String[] getTooltip() {
-
+	public String[] getTooltip() {		
 		if (mCasingName.toLowerCase().contains(".name")) {
-			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
-		}
-		if (mHotFuelName.toLowerCase().contains(".")) {
-			mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
-		}
-		if (mHatchName.toLowerCase().contains(".name")) {
-			mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
-		}
-
-		return new String[] { 
-				"Factory Grade Advanced Blast Furnace",
-				"Speed: 120% | Eu Usage: 90% | Parallel: 8",
-				"Consumes 10L of " + mHotFuelName + " per second during operation",
+			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 10);
+		}		
+		return new String[] { 				
+				"Factory Grade Vacuum Furnace",
+				"Can toggle the operation temperature with a Screwdriver",
+				"All Dehydrator recipes are Low Temp recipes",
+				"Speed: 120% | Eu Usage: 50% | Parallel: 4",
 				"Constructed exactly the same as a normal EBF",
+				"Has three layers of coils instead (24)",
 				"Use "+mCasingName+"s (10 at least!)",
-				"1x " + mHatchName + " (Required)",
-				"TAG_HIDE_HATCHES"
+				"Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)",
+				"Each 1800K over the min. Heat Capacity allows for one upgraded overclock",
+				"Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%",				
 		};
 	}
 
@@ -119,28 +75,14 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 			boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID],
-					new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced) };
+					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE
+							: Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE) };
 		}
 		return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID] };
 	}
 
-	@Override
-	public boolean hasSlotInGUI() {
-		return true;
-	}
-
-	@Override
-	public boolean requiresVanillaGtGUI() {
-		return true;
-	}
-
-	@Override
-	public String getCustomGUIResourceName() {
-		return "ElectricBlastFurnace";
-	}
-
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_Recipe.GT_Recipe_Map.sBlastRecipes;
+		return mDehydratorMode ? Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes : Recipe_GT.Gregtech_Recipe_Map.sVacuumFurnaceRecipes;
 	}
 
 	public boolean isCorrectMachinePart(ItemStack aStack) {
@@ -151,13 +93,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		return aFacing > 1;
 	}
 
-	public boolean checkRecipe(ItemStack aStack) {
-		return checkRecipeGeneric(8, 90, 120); // Will have to clone the logic from parent class to handle heating coil
-		// tiers.
-	}
 
 	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		controllerY = aBaseMetaTileEntity.getYCoord();
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
 
@@ -168,10 +105,9 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 2, zDir)) {
 			return false;
 		}
-		/*if (!addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir),
-				CASING_TEXTURE_ID)) {
+		if (!aBaseMetaTileEntity.getAirOffset(xDir, 3, zDir)) {
 			return false;
-		}*/
+		}
 		Block tUsedBlock = aBaseMetaTileEntity.getBlockOffset(xDir + 1, 2, zDir);
 		byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 2, zDir);
 		this.mHeatingCapacity = StaticFields59.getHeatingCapacityForCoil(tUsedBlock, tUsedMeta);
@@ -184,17 +120,23 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 						Logger.INFO("Heating Coils missing.");
 						return false;
 					}
-					
+
 					//Coils 2
 					if (!isValidBlockForStructure(null, CASING_TEXTURE_ID, false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j), StaticFields59.getBlockCasings5(), tUsedMeta)) {
+						Logger.INFO("Heating Coils missing.");
+						return false;
+					}	
+					
+					//Coils 3
+					if (!isValidBlockForStructure(null, CASING_TEXTURE_ID, false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j), StaticFields59.getBlockCasings5(), tUsedMeta)) {
 						Logger.INFO("Heating Coils missing.");
 						return false;
 					}					
 				}
 				
 				//Top Layer
-				final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j);					
-				if (!isValidBlockForStructure(tTileEntity2, CASING_TEXTURE_ID, true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j), ModBlocks.blockCasings3Misc, 11)) {
+				final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 4, zDir + j);					
+				if (!isValidBlockForStructure(tTileEntity2, CASING_TEXTURE_ID, true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 4, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 4, zDir + j), ModBlocks.blockCasings4Misc, 10)) {
 					Logger.INFO("Top Layer missing.");
 					return false;
 				}
@@ -204,7 +146,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 			for (int j = -1; j < 2; j++) {
 				if ((xDir + i != 0) || (zDir + j != 0)) {
 					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0,zDir + j);					
-					if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j), ModBlocks.blockCasings3Misc, 11)) {
+					if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j), ModBlocks.blockCasings4Misc, 10)) {
 						Logger.INFO("Bottom Layer missing.");
 						return false;
 					}					
@@ -222,56 +164,38 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		return 25;
 	}
 
-	public int getDamageToComponent(ItemStack aStack) {
-		return 0;
-	}
-
-	public boolean explodesOnComponentBreak(ItemStack aStack) {
-		return false;
+	@Override
+	public boolean hasSlotInGUI() {
+		return true;
 	}
 
 	@Override
-	public boolean addOutput(FluidStack aLiquid) {
-		if (aLiquid == null)
-			return false;
-		int targetHeight;
-		FluidStack tLiquid = aLiquid.copy();
-		boolean isOutputPollution = false;
-		if (mUsingPollutionOutputs) {
-			for (FluidStack pollutionFluidStack : mPollutionFluidStacks) {
-				if (tLiquid.isFluidEqual(pollutionFluidStack)) {
-					isOutputPollution = true;
-					break;
-				}
-			}
-		}
-		if (isOutputPollution) {
-			targetHeight = this.controllerY + 3;
-			int pollutionReduction = 0;
-			for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-				if (isValidMetaTileEntity(tHatch)) {
-					pollutionReduction = 100 - StaticFields59.calculatePollutionReducation(tHatch, 100);
-					break;
-				}
-			}
-			tLiquid.amount = tLiquid.amount * (pollutionReduction + 5) / 100;
-		} else {
-			targetHeight = this.controllerY;
-		}
-		for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
-			if (isValidMetaTileEntity(tHatch) && GT_ModHandler.isSteam(aLiquid) ? tHatch.outputsSteam()
-					: tHatch.outputsLiquids()) {
-				if (tHatch.getBaseMetaTileEntity().getYCoord() == targetHeight) {
-					int tAmount = tHatch.fill(tLiquid, false);
-					if (tAmount >= tLiquid.amount) {
-						return tHatch.fill(tLiquid, true) >= tLiquid.amount;
-					} else if (tAmount > 0) {
-						tLiquid.amount = tLiquid.amount - tHatch.fill(tLiquid, true);
-					}
-				}
-			}
-		}
-		return false;
+	public String getMachineType() {
+		return "Vacuum Furnace / Dehydrator";
+	}
+
+	@Override
+	public int getMaxParallelRecipes() {
+		return 4;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 50;
+	}
+
+	@Override
+	public boolean requiresVanillaGtGUI() {
+		return true;
+	}
+
+	@Override
+	public String getCustomGUIResourceName() {
+		return "ElectricBlastFurnace";
+	}
+
+	public boolean checkRecipe(ItemStack aStack) {
+		return checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), 120);
 	}
 
 	@Override
@@ -353,8 +277,9 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 			}
 		}
 
-		if (tHeatCapacityDivTiers > 0)
+		if (tHeatCapacityDivTiers > 0) {
 			this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
+		}
 		if (this.mEUt > 0) {
 			this.mEUt = (-this.mEUt);
 		}
@@ -429,33 +354,25 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
 	}
 
-	private volatile int mGraceTimer = 100;
-
-	@SuppressWarnings("unused")
 	@Override
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {			
-			if (aTick % 10 == 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
-				if (!this.depleteInput(FluidUtils.getFluidStack("pyrotheum", 5))) {
-					this.causeMaintenanceIssue();
-					this.stopMachine();
-				}
-				if (false) { // To be replaced with a config option or something
-					this.explodeMultiblock();
-				}
-			}			
-		}
-		super.onPostTick(aBaseMetaTileEntity, aTick);
+	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		mDehydratorMode = Utils.invertBoolean(mDehydratorMode);		
+		String aMode = mDehydratorMode ? "Dehydrator" : "Vacuum Furnace";		
+		PlayerUtils.messagePlayer(aPlayer, "Mode: "+aMode);
 	}
 
 	@Override
-	public int getMaxParallelRecipes() {
-		return 8;
+	public void saveNBTData(NBTTagCompound aNBT) {
+		super.saveNBTData(aNBT);
+		aNBT.setBoolean("mDehydratorMode", mDehydratorMode);
 	}
 
 	@Override
-	public int getEuDiscountForParallelism() {
-		return 90;
+	public void loadNBTData(NBTTagCompound aNBT) {
+		super.loadNBTData(aNBT);
+		mDehydratorMode = aNBT.getBoolean("mDehydratorMode");
 	}
 
 }
+
+

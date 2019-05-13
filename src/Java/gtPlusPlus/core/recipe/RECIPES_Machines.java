@@ -221,6 +221,7 @@ public class RECIPES_Machines {
 		energyCores();
 		wirelessChargers();
 		largeArcFurnace();
+		industrialVacuumFurnace();
 	}
 
 	private static void initModItems(){
@@ -1031,25 +1032,25 @@ public class RECIPES_Machines {
 
 			if (CORE.ConfigSwitches.enableMultiblock_ThermalBoiler){
 				RECIPE_ThermalBoilerController = GregtechItemList.GT4_Thermal_Boiler.get(1);
-				RECIPE_ThermalBoilerCasing = GregtechItemList.Casing_ThermalContainment.get(4);
-				ItemStack centrifugeHV = ItemList.Machine_HV_Centrifuge.get(1);
+				RECIPE_ThermalBoilerCasing = GregtechItemList.Casing_ThermalContainment.get(GTNH ? 1 : 2);
+				ItemStack centrifugeHV = GTNH ? ItemList.Machine_IV_Centrifuge.get(1) : ItemList.Machine_EV_Centrifuge.get(1);
 
 				RecipeUtils.addShapedGregtechRecipe(
 						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
-						"gearGtTitanium", "circuitElite", "gearGtTitanium",
+						"gearGtTitanium", CI.getTieredCircuitOreDictName(6), "gearGtTitanium",
 						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
 						RECIPE_ThermalBoilerController);
 
 				RecipeUtils.addShapedGregtechRecipe(
 						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
-						"gearGtTungstenSteel", "circuitElite", "gearGtTungstenSteel",
+						"gearGtTungstenSteel", CI.getTieredCircuitOreDictName(5), "gearGtTungstenSteel",
 						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
 						RECIPE_ThermalBoilerController);
 
 				RecipeUtils.addShapedGregtechRecipe(
-						"plateStainlessSteel", "plateStainlessSteel", "plateStainlessSteel",
+						ALLOY.MARAGING350.getPlate(1), "plateStainlessSteel", ALLOY.MARAGING350.getPlate(1),
 						"circuitAdvanced", CI.machineCasing_HV, "circuitAdvanced",
-						"plateStainlessSteel", "plateStainlessSteel", "plateStainlessSteel",
+						ALLOY.MARAGING350.getPlate(1), ALLOY.MARAGING350.getPlate(1), ALLOY.MARAGING350.getPlate(1),
 						RECIPE_ThermalBoilerCasing);
 
 				//Lava Filter Recipe
@@ -2022,4 +2023,38 @@ public class RECIPES_Machines {
 				60 * 20 * 8, 
 				MaterialUtils.getVoltageForTier(6));
 	}
+	
+	private static void industrialVacuumFurnace() {
+		int aCostMultiplier = GTNH ? 2 : 1;	
+		
+		CORE.RA.addSixSlotAssemblingRecipe(				
+				new ItemStack[] {
+						CI.getTieredMachineHull(-1, 1 * aCostMultiplier),
+						CI.getHeatCoil(2),
+						CI.getElectricPiston(3, 2 * aCostMultiplier),
+						CI.getTieredComponent(OrePrefixes.plate, 6, 4 * aCostMultiplier),
+						CI.getTieredComponent(OrePrefixes.gearGt, 6, 2 * aCostMultiplier),
+				},					
+				CI.getTertiaryTieredFluid(5, (144 * 2 * 4 * aCostMultiplier)), //Input Fluid					
+				GregtechItemList.Casing_Vacuum_Furnace.get(Casing_Amount),					
+				20 * 10  * 6, 
+				MaterialUtils.getVoltageForTier(6));	
+		
+		;
+		
+		CORE.RA.addSixSlotAssemblingRecipe(				
+				new ItemStack[] {
+						GregtechItemList.Casing_Vacuum_Furnace.get(Casing_Amount),
+						CI.getTieredComponent(OrePrefixes.wireGt16, 7, 4 * aCostMultiplier),
+						CI.getEnergyCore(6, 1 * aCostMultiplier),
+						CI.getRobotArm(4, 4 * aCostMultiplier),
+						CI.getTieredComponent(OrePrefixes.plate, 7, 8 * aCostMultiplier),
+						CI.getTieredComponent(OrePrefixes.circuit, 6, 8 * aCostMultiplier),
+				},					
+				CI.getTieredFluid(7, (144 * 4 * 5 * aCostMultiplier)), //Input Fluid					
+				GregtechItemList.Controller_Vacuum_Furnace.get(1),					
+				60 * 20 * 12, 
+				MaterialUtils.getVoltageForTier(7));
+	}
+	
 }

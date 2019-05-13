@@ -17,6 +17,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -1199,6 +1200,30 @@ public class CI {
 			aType = GregtechItemList.Casing_Multi_Use.get(1, CI.machineHull_MV);			
 		}		
 		return ItemUtils.getSimpleStack(aType, aSize);
+	}
+
+	public static ItemStack getHeatCoil(int i) {
+		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			if (i == 1) {
+				return ItemList.Casing_Coil_Kanthal.get(1);
+			} else if (i == 2) {
+				return ItemList.Casing_Coil_Nichrome.get(1);
+			} else {
+				return ItemList.Casing_Coil_Cupronickel.get(1);
+			}
+		} else {
+			if (!CORE.GTNH) {
+				if (i > 6) {
+					i = 6;
+				}
+			} else {
+				if (i > 8) {
+					i = 8;
+				}
+			}
+			return ItemUtils.simpleMetaStack(StaticFields59.getBlockCasings5(), i, 1);
+		}
+
 	}
 
 }

@@ -313,6 +313,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Larger Turbines
 	Large_Steam_Turbine, Large_HPSteam_Turbine, 
 	Casing_Turbine_Shaft, Casing_Turbine_LP, Casing_Turbine_HP,
+	
+	//Large Vacuum Furnace
+	Casing_Vacuum_Furnace,
+	Controller_Vacuum_Furnace,
 
 
 
