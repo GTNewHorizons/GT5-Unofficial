@@ -333,10 +333,15 @@ public final class ModItems {
 	public static IonParticles itemIonParticleBase;
 	public static StandardBaseParticles itemStandarParticleBase;
 
-	public static BatteryPackBaseBauble itemChargePack1;
-	public static BatteryPackBaseBauble itemChargePack2;
-	public static BatteryPackBaseBauble itemChargePack3;
-	public static BatteryPackBaseBauble itemChargePack4;
+	public static BatteryPackBaseBauble itemChargePack_Low_1;
+	public static BatteryPackBaseBauble itemChargePack_Low_2;
+	public static BatteryPackBaseBauble itemChargePack_Low_3;
+	public static BatteryPackBaseBauble itemChargePack_Low_4;
+	public static BatteryPackBaseBauble itemChargePack_Low_5;
+	public static BatteryPackBaseBauble itemChargePack_High_1;
+	public static BatteryPackBaseBauble itemChargePack_High_2;
+	public static BatteryPackBaseBauble itemChargePack_High_3;
+	public static BatteryPackBaseBauble itemChargePack_High_4;
 
 	public static DebugScanner itemDebugScanner;
 

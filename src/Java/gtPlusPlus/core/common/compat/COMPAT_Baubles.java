@@ -36,10 +36,15 @@ public class COMPAT_Baubles {
 		ModItems.itemPersonalHealingDevice = new ItemHealingDevice();
 
 		try {
-			ModItems.itemChargePack1 = new BatteryPackBaseBauble(6);
-			ModItems.itemChargePack2 = new BatteryPackBaseBauble(7);
-			ModItems.itemChargePack3 = new BatteryPackBaseBauble(8);
-			ModItems.itemChargePack4 = new BatteryPackBaseBauble(9);		
+			ModItems.itemChargePack_Low_1 = new BatteryPackBaseBauble(1);
+			ModItems.itemChargePack_Low_2 = new BatteryPackBaseBauble(2);
+			ModItems.itemChargePack_Low_3 = new BatteryPackBaseBauble(3);
+			ModItems.itemChargePack_Low_4 = new BatteryPackBaseBauble(4);
+			ModItems.itemChargePack_Low_5 = new BatteryPackBaseBauble(5);			
+			ModItems.itemChargePack_High_1 = new BatteryPackBaseBauble(6);
+			ModItems.itemChargePack_High_2 = new BatteryPackBaseBauble(7);
+			ModItems.itemChargePack_High_3 = new BatteryPackBaseBauble(8);
+			ModItems.itemChargePack_High_4 = new BatteryPackBaseBauble(9);		
 		}
 		catch (Throwable t) {
 			t.printStackTrace();

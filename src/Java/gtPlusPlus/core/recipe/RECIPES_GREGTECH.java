@@ -373,16 +373,16 @@ public class RECIPES_GREGTECH {
 
 		ItemStack[] aChargeResearch = new ItemStack[] {
 				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore7", 1),
-				ItemUtils.getSimpleStack(ModItems.itemChargePack1, 1),
-				ItemUtils.getSimpleStack(ModItems.itemChargePack2, 1),
-				ItemUtils.getSimpleStack(ModItems.itemChargePack3, 1),
+				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_1, 1),
+				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_2, 1),
+				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_3, 1),
 		};
 
 		ItemStack[] aChargeOutputs = new ItemStack[] {
-				ItemUtils.getSimpleStack(ModItems.itemChargePack1, 1),
-				ItemUtils.getSimpleStack(ModItems.itemChargePack2, 1),
-				ItemUtils.getSimpleStack(ModItems.itemChargePack3, 1),
-				ItemUtils.getSimpleStack(ModItems.itemChargePack4, 1),			
+				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_1, 1),
+				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_2, 1),
+				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_3, 1),
+				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_4, 1),			
 		};
 
 		ItemStack[] aBufferCoreInputs = new ItemStack[] {
@@ -719,7 +719,7 @@ public class RECIPES_GREGTECH {
 				0,
 				20 * 300,
 				8000);
-		
+
 
 
 		//Strontium processing
@@ -1386,6 +1386,80 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("stickTitanium", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("plateTungstenSteel", 2)				
 		}, null, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1), 10*20*4, 1960);
+
+
+
+
+
+		//Low tier Charge Packs
+
+		final ItemStack[] aPackBatteries = new ItemStack[] {
+				ItemList.Battery_RE_LV_Lithium.get(GTNH ? 8 : 4),
+				ItemList.Battery_RE_MV_Lithium.get(GTNH ? 8 : 4),
+				ItemList.Battery_RE_HV_Lithium.get(GTNH ? 8 : 4),
+				GregtechItemList.Battery_RE_EV_Lithium.get(GTNH ? 8 : 4),
+				ItemList.Energy_LapotronicOrb.get(GTNH ? 8 : 4),
+		};
+		final ItemStack[] aPackPlates = new ItemStack[] {
+				CI.getPlate(1, GTNH ? 6 : 3),
+				CI.getPlate(2, GTNH ? 12 : 6),
+				CI.getPlate(3, GTNH ? 18 : 9),
+				CI.getPlate(4, GTNH ? 24 : 12),
+				CI.getPlate(5, GTNH ? 30 : 15),
+		};
+		final ItemStack[] aPackWire = new ItemStack[] {
+				CI.getTieredComponent(OrePrefixes.wireGt02, 1, GTNH ? 16 : 8),
+				CI.getTieredComponent(OrePrefixes.wireGt04, 2, GTNH ? 16 : 8),
+				CI.getTieredComponent(OrePrefixes.wireGt08, 3, GTNH ? 14 : 7),
+				CI.getTieredComponent(OrePrefixes.wireGt12, 4, GTNH ? 12 : 6),
+				CI.getTieredComponent(OrePrefixes.wireGt16, 5, GTNH ? 12 : 6),
+		};
+		final ItemStack[] aPackCircuit = new ItemStack[] {
+				CI.getTieredComponent(OrePrefixes.circuit, 1, GTNH ? 4 : 2),
+				CI.getTieredComponent(OrePrefixes.circuit, 2, GTNH ? 4 : 2),
+				CI.getTieredComponent(OrePrefixes.circuit, 3, GTNH ? 8 : 4),
+				CI.getTieredComponent(OrePrefixes.circuit, 4, GTNH ? 8 : 4),
+				CI.getTieredComponent(OrePrefixes.circuit, 5, GTNH ? 12 : 6),
+		};
+		final ItemStack[] aPackRing = new ItemStack[] {
+				CI.getTieredComponent(OrePrefixes.ring, 1, GTNH ? 20 : 10),
+				CI.getTieredComponent(OrePrefixes.ring, 2, GTNH ? 20 : 10),
+				CI.getTieredComponent(OrePrefixes.ring, 3, GTNH ? 20 : 10),
+				CI.getTieredComponent(OrePrefixes.ring, 4, GTNH ? 20 : 10),
+				CI.getTieredComponent(OrePrefixes.ring, 5, GTNH ? 20 : 10),
+		};
+		final ItemStack[] aPackOutput = new ItemStack[] {
+				ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_1),
+				ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_2),
+				ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_3),
+				ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_4),
+				ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_5)				
+		};
+		
+		for (int i = 1; i < 6; i++) {
+			
+			int aAS = i-1;
+			
+			CORE.RA.addSixSlotAssemblingRecipe(
+					new ItemStack[] { 
+							aPackPlates[aAS],
+							aPackRing[aAS], 
+							aPackWire[aAS],
+							aPackCircuit[aAS],
+							aPackBatteries[aAS],
+							CI.getSensor(i, GTNH ? 4 : 2),
+							},
+					CI.getTieredFluid(i, (144 * (GTNH ? 4 : 2))), 
+					aPackOutput[aAS],
+					30 * 20 * i, 
+					(int) GT_Values.V[i]);
+		}
+		
+
+		
+
+
+
 
 
 	}

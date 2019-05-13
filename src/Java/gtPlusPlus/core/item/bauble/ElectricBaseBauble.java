@@ -42,7 +42,7 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
 		mTier = aTier;
 		maxValueEU = aMaxEU;
 		this.setUnlocalizedName(aUnlocalName);
-		this.setTextureName(getTextureNameForBauble());
+		this.setTextureName(CORE.MODID + ":" + getTextureNameForBauble());
 		this.setMaxDamage(27);
 		this.setMaxStackSize(1);
 		this.setNoRepair();
