@@ -18,13 +18,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class FireProtectionBauble extends BaseBauble {
 
-	public static HashMap<UUID, Boolean> mDataMap = new HashMap<UUID, Boolean>();
-	
+	public static HashMap<UUID, Boolean> mDataMap = new HashMap<UUID, Boolean>();	
 	public static HashSet<UUID> mPlayerMap = new HashSet<UUID>();
 
 	private static Field isImmuneToFire;
@@ -39,8 +37,7 @@ public class FireProtectionBauble extends BaseBauble {
 	
 	public static boolean setEntityImmuneToFire(Entity aEntity, boolean aImmune) {
 		return ReflectionUtils.setField(aEntity, isImmuneToFire, aImmune);
-	}
-	
+	}	
 	
 	public FireProtectionBauble() {		
 		super(BaubleType.RING, "GTPP.bauble.fireprotection.0" + ".name", 0);
@@ -76,17 +73,6 @@ public class FireProtectionBauble extends BaseBauble {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-		list.add("");
-		String aString1 = StatCollector.translateToLocal("GTPP.battpack.tooltip.1");
-		String aString2 = StatCollector.translateToLocal("GTPP.battpack.tooltip.2");
-		String aString3 = StatCollector.translateToLocal("GTPP.battpack.tooltip.3");
-		String aString4 = StatCollector.translateToLocal("GTPP.battpack.tooltip.4");
-		
-		String aEU = StatCollector.translateToLocal("GTPP.info.eu");	
-		String aEUT = aEU+"/t";
-
-		list.add(EnumChatFormatting.GREEN + aString1 + EnumChatFormatting.GRAY);
-		list.add(EnumChatFormatting.GREEN + aString4 + EnumChatFormatting.GRAY);
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 
@@ -133,14 +119,14 @@ public class FireProtectionBauble extends BaseBauble {
 					setEntityImmuneToFire(bPlayer, true);
 				}				
 				if (!bPlayer.isPotionActive(Potion.fireResistance)) {
-					bPlayer.addPotionEffect(new PotionEffect(Potion.fireResistance.id, 2, 4));
+					bPlayer.addPotionEffect(new PotionEffect(Potion.fireResistance.id, 100, 4));
 				}
 			}
 		}		
 	}
 	
 	public String getTextureNameForBauble() {
-		return "chargepack/"+1;
+		return "baubles/itemFireProtectGlovesBetter";
 	}
 
 }
