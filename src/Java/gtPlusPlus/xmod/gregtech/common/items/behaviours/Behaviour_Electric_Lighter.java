@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.items.behaviours;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import codechicken.lib.math.MathHelper;
@@ -191,7 +192,12 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 		aList.add(this.mTooltip);
 		int aUses = 0;
 
+		if (aStack == null) {
+			return new ArrayList<String>();
+		}		
+		
 		if (aStack != null) {
+			
 			if (aStack.getItem() instanceof MetaGeneratedGregtechTools) {
 				if (ChargingHelper.isItemValid(aStack)) {
 					if (aStack.getItem() instanceof IElectricItemManager) {
@@ -202,14 +208,14 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 					}
 				}
 			}
+			
 		}
 
-		NBTTagCompound tNBT = aStack.getTagCompound();
 		aList.add(this.mTooltipUses + " " + aUses);
 		aList.add(this.mTooltipUnstackable);
 		
 		
-		boolean aCurrentMode; 
+		boolean aCurrentMode; 		
 		if (NBTUtils.hasKey(aStack, "aFireballMode")) {
 			aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
 		}
@@ -217,6 +223,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 			aStack.getTagCompound().setBoolean("aFireballMod", false);
 			aCurrentMode = false;
 		}
+		
 		aList.add("Current Mode: "+EnumChatFormatting.RED+(aCurrentMode ? "Projectile" : "Fire Starter"));		
 		return aList;
 	}

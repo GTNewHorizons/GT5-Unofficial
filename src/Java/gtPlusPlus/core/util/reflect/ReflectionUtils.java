@@ -293,6 +293,7 @@ public class ReflectionUtils {
 		return loaded > 0;
 	}
 
+	
 
 	public static boolean setField(final Object object, final String fieldName, final Object fieldValue) {
 		Class<?> clazz = object.getClass();
@@ -308,6 +309,28 @@ public class ReflectionUtils {
 				clazz = clazz.getSuperclass();
 			} catch (final Exception e) {
 				Logger.REFLECTION("setField("+object.toString()+", "+fieldName+") failed.");
+				throw new IllegalStateException(e);
+			}
+		}
+		return false;
+	
+		
+	}
+
+	public static boolean setField(final Object object, final Field field, final Object fieldValue) {
+		Class<?> clazz = object.getClass();
+		while (clazz != null) {
+			try {
+				final Field field2 = getField(clazz, field.getName());
+				if (field2 != null) {
+					setFieldValue_Internal(object, field, fieldValue);					
+					return true;
+				}
+			} catch (final NoSuchFieldException e) {
+				Logger.REFLECTION("setField("+object.toString()+", "+field.getName()+") failed.");
+				clazz = clazz.getSuperclass();
+			} catch (final Exception e) {
+				Logger.REFLECTION("setField("+object.toString()+", "+field.getName()+") failed.");
 				throw new IllegalStateException(e);
 			}
 		}

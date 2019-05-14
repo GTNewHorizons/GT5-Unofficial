@@ -3,6 +3,7 @@ package gtPlusPlus.core.common.compat;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
+import gtPlusPlus.core.item.bauble.FireProtectionBauble;
 import gtPlusPlus.core.item.bauble.MonsterKillerBaseBauble;
 import gtPlusPlus.core.item.general.ItemCloakingDevice;
 import gtPlusPlus.core.item.general.ItemHealingDevice;
@@ -34,6 +35,7 @@ public class COMPAT_Baubles {
 		ModItems.itemPersonalCloakingDevice = new ItemCloakingDevice(0);
 		//itemPersonalCloakingDeviceCharged = new ItemCloakingDevice(0).set;
 		ModItems.itemPersonalHealingDevice = new ItemHealingDevice();
+		ModItems.itemPersonalFireProofDevice = new FireProtectionBauble();
 
 		try {
 			ModItems.itemChargePack_Low_1 = new BatteryPackBaseBauble(1);
