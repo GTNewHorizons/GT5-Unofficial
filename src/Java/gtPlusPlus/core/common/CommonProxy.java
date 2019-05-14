@@ -249,9 +249,12 @@ public class CommonProxy {
 		EntityUtils.registerDropsForMob(EntityZombie.class, ALLOY.TUMBAGA.getTinyDust(1), 1, 10);
 		EntityUtils.registerDropsForMob(EntityZombie.class, ALLOY.POTIN.getTinyDust(1), 1, 10);
 		
-		//Blazes
-		EntityUtils.registerDropsForMob(EntityBlaze.class, ItemUtils.getSimpleStack(TF_Items.dustPyrotheum, 1), 1, 10);	
-		EntityUtils.registerDropsForMob(EntityBlaze.class, ItemUtils.getSimpleStack(TF_Items.dustPyrotheum, 1), 1, 10);		
+		//Blazes		
+		if (ItemUtils.doesOreDictHaveEntryFor("dustPyrotheum")) {
+			EntityUtils.registerDropsForMob(EntityBlaze.class, ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1), 1, 10);	
+			EntityUtils.registerDropsForMob(EntityBlaze.class, ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1), 1, 10);			
+		}
+			
 		
 		//Special mobs Support
 		if (ReflectionUtils.doesClassExist("toast.specialMobs.entity.zombie.EntityBrutishZombie")) {

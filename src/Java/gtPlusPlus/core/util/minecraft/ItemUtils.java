@@ -1216,4 +1216,8 @@ public class ItemUtils {
 		return aStack;	
 	}
 
+	public static boolean doesOreDictHaveEntryFor(String string) {		
+		return OreDictionary.doesOreNameExist(string);
+	}
+
 }
