@@ -125,7 +125,7 @@ public class GT_MetaTileEntity_WaterGenerator extends GT_MetaTileEntity_BasicTan
     }
 
     public long maxEUInput() {
-    	return GT_Values.V[(this.mTier)/2];
+    	return GT_Values.V[this.mTier];
     }
 
     public long maxSteamStore() {

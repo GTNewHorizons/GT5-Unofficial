@@ -121,7 +121,7 @@ public class GT_MetaTileEntity_AirGenerator extends GT_MetaTileEntity_BasicTank 
     }
 
     public long maxEUInput() {
-    	return GT_Values.V[(this.mTier)/2];
+    	return GT_Values.V[this.mTier];
     }
 
     public long maxSteamStore() {
