@@ -327,7 +327,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Infinite = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "Infinite", "Infinite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10)));
     public static Materials Bio= new Materials(  -1, TextureSet.SET_NONE,           1.0F, 0, 0, 0, 255, 255, 255, 0, "Bio","Bio", 0, 0,-1,0, false, false, 1, 1, 1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 11)));
     public static Materials Energy= new Materials(  -1, TextureSet.SET_NONE,        1.0F, 0, 0, 0, 255, 255, 255, 0, "Energy","Energy", 0, 0,-1,0, false, false, 1, 1, 1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 9)));
-    
+    public static Materials Nano                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Nano"                     ,   "Nano"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 12)));
+    public static Materials Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                     ,   "Piko"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
+    public static Materials Quantum                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Quantum"                     ,   "Quantum"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
+
     /**
      * Not possible to determine exact Components
      */
@@ -362,7 +365,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Oil = new Materials(707, TextureSet.SET_FLUID, 			1.0F, 0, 0, 16, 10, 10, 10, 0, "Oil", "Oil", 3, 16, -1, 0, false, false, 1, 1, 1, Dyes.dyeBlack);
     public static Materials Paper = new Materials(879, TextureSet.SET_PAPER, 		1.0F, 0, 0, 1, 250, 250, 250, 0, "Paper", "Paper", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeWhite, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1)));
     public static Materials Peat = new Materials(-1, TextureSet.SET_NONE, 			1.0F, 0, 0, 0, 255, 255, 255, 0, "Peat", "Peat", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBrown, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2), new TC_AspectStack(TC_Aspects.IGNIS, 2)));
-    public static Materials Quantum = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "Quantum", "Quantum", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeWhite);
+    //public static Materials Quantum = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "Quantum", "Quantum", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeWhite);
     public static Materials RareEarth = new Materials(891, TextureSet.SET_FINE, 	1.0F, 0, 0, 1, 128, 128, 100, 0, "RareEarth", "Rare Earth", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGray, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1), new TC_AspectStack(TC_Aspects.LUCRUM, 1)));
     public static Materials Red = new Materials(-1, TextureSet.SET_NONE, 			1.0F, 0, 0, 0, 255, 0, 0, 0, "Red", "Red", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeRed);
     public static Materials Reinforced = new Materials(-1, TextureSet.SET_NONE, 	1.0F, 0, 0, 0, 255, 255, 255, 0, "Reinforced", "Reinforced", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGray);
