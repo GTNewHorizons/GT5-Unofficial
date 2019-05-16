@@ -31,6 +31,7 @@ import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.OldCircuitHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
@@ -129,8 +130,10 @@ public class HANDLER_GT {
 
 	public static void onLoadComplete(FMLLoadCompleteEvent event) {
 		removeCrudeTurbineRotors();
-		cleanAssemblyLineRecipeMap();
-		removeOldHighTierCasingRecipes();
+		cleanAssemblyLineRecipeMap();		
+		if (ConfigSwitches.enableHarderRecipesForHighTierCasings) {
+	        removeOldHighTierCasingRecipes();		    
+		}		
 		RecipesToRemove.go();
 	}
 
@@ -234,7 +237,7 @@ public class HANDLER_GT {
 		                Logger.INFO("Attempting to Modify Assembly Recipe for "+aOutputName);		                
 		                //Replace Chrome
 		                if (GT_Utility.areStacksEqual(aOldRecipeCopy.mOutputs[0], aCasing_LUV)) {
-		                    aNewRecipe = replaceItemInRecipeWithAnother(aOldRecipeCopy, ItemUtils.getItemStackOfAmountFromOreDict("plateChrome", 1), CI.getPlate(aTier_LUV, 1));
+		                    aNewRecipe = replaceItemInRecipeWithAnother(aOldRecipeCopy, ItemUtils.getItemStackOfAmountFromOreDict("plateChrome", 1), ELEMENT.getInstance().SELENIUM.getPlate(1));
 		                    aDataToModify.put(new Pair<GT_Recipe, GT_Recipe>(r, aNewRecipe));
 		                    aUpdateCount++;
 		                    continue Outer;
@@ -270,7 +273,7 @@ public class HANDLER_GT {
                         Logger.INFO("Attempting to Modify Assembly Recipe for "+aOutputName);   						
 		                //Replace Chrome
 		                if (GT_Utility.areStacksEqual(aOldRecipeCopy.mOutputs[0], aHull_LUV)) {
-		                    aNewRecipe = replaceItemInRecipeWithAnother(aOldRecipeCopy, ItemUtils.getItemStackOfAmountFromOreDict("plateChrome", 1), CI.getPlate(aTier_LUV, 1));
+		                    aNewRecipe = replaceItemInRecipeWithAnother(aOldRecipeCopy, ItemUtils.getItemStackOfAmountFromOreDict("plateChrome", 1), ELEMENT.getInstance().SELENIUM.getPlate(1));
 		                    aDataToModify.put(new Pair<GT_Recipe, GT_Recipe>(r, aNewRecipe));
                             aUpdateCount++;
 		                    continue Outer;
@@ -313,7 +316,7 @@ public class HANDLER_GT {
 
 
         Logger.INFO("Adding new Shaped recipes for Casings.");
-        GT_ModHandler.addCraftingRecipe(ItemList.Casing_LuV.get(1), bits, new Object[]{"PPP", "PwP", "PPP", 'P', CI.getPlate(aTier_LUV, 1)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Casing_LuV.get(1), bits, new Object[]{"PPP", "PwP", "PPP", 'P', ELEMENT.getInstance().SELENIUM.getPlate(1)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_ZPM.get(1), bits, new Object[]{"PPP", "PwP", "PPP", 'P', CI.getPlate(aTier_ZPM, 1)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_UV.get(1), bits, new Object[]{"PPP", "PwP", "PPP", 'P', CI.getPlate(aTier_UV, 1)});
         //GT_ModHandler.addCraftingRecipe(ItemList.Casing_MAX.get(1), bits, new Object[]{"PPP", "PwP", "PPP", 'P', OrePrefixes.plate.get(Materials.Neutronium)});
@@ -339,7 +342,7 @@ public class HANDLER_GT {
 	                RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED,
 	                new Object[]{"PHP", "CMC", 'M', ItemList.Casing_LuV, 'C',
 	                        OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H',
-	                        CI.getPlate(aTier_LUV, 1), 'P', OrePrefixes.plate.get(Materials.Plastic)});
+	                        ELEMENT.getInstance().SELENIUM.getPlate(1), 'P', OrePrefixes.plate.get(Materials.Plastic)});
 	        GT_ModHandler.addCraftingRecipe(ItemList.Hull_ZPM.get(1),
 	                RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED,
 	                new Object[]{"PHP", "CMC", 'M', ItemList.Casing_ZPM, 'C',

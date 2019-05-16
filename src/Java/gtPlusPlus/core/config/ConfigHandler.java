@@ -72,7 +72,10 @@ public class ConfigHandler {
 		enableAnimatedTurbines = config.getBoolean("enableAnimatedTurbines", "gregtech", true,
 				"Gives GT Gas/Steam turbines animated textures while running.");
 		turbineCutoffBase = config.getInt("turbineCutoffBase", "gregtech", 75000, 0, Integer.MAX_VALUE, "Rotors below this durability will be removed, prevents NEI clutter. Minimum Durability is N * x, where N is the new value set and x is the turbine size, where 1 is Tiny and 4 is Huge. Set to 0 to disable.");
-	
+		   
+		enableHarderRecipesForHighTierCasings = config.getBoolean("enableHarderRecipesForHighTierCasings", "gregtech", true,
+                "Makes LuV+ Casings and Hulls more difficult to craft.");		
+		
 		// Pipes & Cables
 		enableCustom_Pipes = config.getBoolean("enableCustom_Pipes", "gregtech", true,
 				"Adds Custom GT Fluid Pipes.");

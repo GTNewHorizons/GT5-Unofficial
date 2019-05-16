@@ -52,6 +52,37 @@ public final class MISC_MATERIALS {
 					new MaterialStack(ELEMENT.getInstance().STRONTIUM, 1),
 					new MaterialStack(FLUORIDES.HYDROXIDE, 2)
 					});
+	
+	   public static final Material SELENIUM_DIOXIDE = new Material(
+	            "Selenium Dioxide",
+	            MaterialState.PURE_LIQUID, //State
+	            null, //Material Colour
+	            -1, //Melting Point in C
+	            -1, //Boiling Point in C
+	            -1, //Protons
+	            -1,
+	            false, //Uses Blast furnace?
+	            //Material Stacks with Percentage of required elements.
+	            new MaterialStack[]{
+	                    new MaterialStack(ELEMENT.getInstance().SELENIUM, 1),
+	                    new MaterialStack(ELEMENT.getInstance().OXYGEN, 2)
+	            });
+	   
+       public static final Material SELENIOUS_ACID = new Material(
+               "Selecious Acid",
+               MaterialState.PURE_LIQUID, //State
+               null, //Material Colour
+               -1, //Melting Point in C
+               -1, //Boiling Point in C
+               -1, //Protons
+               -1,
+               false, //Uses Blast furnace?
+               //Material Stacks with Percentage of required elements.
+               new MaterialStack[]{
+                       new MaterialStack(SELENIUM_DIOXIDE, 1),
+                       new MaterialStack(ELEMENT.getInstance().HYDROGEN, 8),
+                       new MaterialStack(ELEMENT.getInstance().OXYGEN, 4)
+               });
 
 	
 	

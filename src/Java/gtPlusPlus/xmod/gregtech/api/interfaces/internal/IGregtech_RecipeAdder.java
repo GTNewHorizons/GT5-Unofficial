@@ -117,7 +117,7 @@ public interface IGregtech_RecipeAdder {
 	 * @param aEUt			= EU per tick needed for heating up (must be >= 0)
 	 * @return true if the Recipe got added, otherwise false.
 	 */
-	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, ItemStack[] aOutputStack, int aChance, int aDuration, int aEUt);
+	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt);
 
 	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, int aChance, int aDuration, int aEUt, int aSpecialValue);
 	
@@ -134,7 +134,7 @@ public interface IGregtech_RecipeAdder {
 	 * @param aSpecialValue			= Stores the Required Temp for the Recipe
 	 * @return true if the Recipe got added, otherwise false.
 	 */
-	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, ItemStack[] aOutputStack, int aChance, int aDuration, int aEUt, int aSpecialValue);
+	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue);
 
 
 	public boolean addLFTRRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt);

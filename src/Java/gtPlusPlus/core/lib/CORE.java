@@ -214,6 +214,7 @@ public class CORE {
 		public static boolean enableNitroFix = false;
 		public static boolean enableSulfuricAcidFix = false;
 		public static boolean enableAnimatedTurbines = true;
+		public static boolean enableHarderRecipesForHighTierCasings = true;
 
 		//Single Block Machines
 		public static boolean enableMachine_SolarGenerators = false;

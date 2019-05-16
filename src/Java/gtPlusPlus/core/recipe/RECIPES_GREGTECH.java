@@ -92,6 +92,17 @@ public class RECIPES_GREGTECH {
 		latheRecipes();
 		vacuumFreezerRecipes();
 		fluidheaterRecipes();
+		
+		
+		/**
+		 * Special Recipe handlers
+		 */
+		RECIPES_SeleniumProcessing.init();
+		
+		
+		
+		
+		
 
 		addFuels();
 	}
@@ -575,7 +586,7 @@ public class RECIPES_GREGTECH {
 				new ItemStack[] { 
 						CI.emptyCells(1)
 				},
-				100, //Output Chance 
+				new int[] {10000}, //Output Chance 
 				20 * 120,
 				122880);
 
@@ -594,41 +605,6 @@ public class RECIPES_GREGTECH {
 				0,
 				20 * 300,
 				4000);
-
-		// Selenium Roasting
-		CORE.RA.addBlastSmelterRecipe(
-				new ItemStack[] { 
-						ItemUtils.getGregtechCircuit(16),
-						ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedPyrite", 8),
-						ELEMENT.getInstance().CARBON.getDust(32),
-				},
-				Materials.SulfuricAcid.getFluid(4000),
-				ELEMENT.getInstance().SELENIUM.getFluid(144),
-				0,
-				20 * 300,
-				2000);
-		CORE.RA.addBlastSmelterRecipe(
-				new ItemStack[] { 
-						ItemUtils.getGregtechCircuit(17),
-						ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedChalcopyrite", 8),
-						ELEMENT.getInstance().CARBON.getDust(32),
-				},
-				Materials.SulfuricAcid.getFluid(4000),
-				ELEMENT.getInstance().SELENIUM.getFluid(144),
-				0,
-				20 * 300,
-				2000);
-		CORE.RA.addBlastSmelterRecipe(
-				new ItemStack[] { 
-						ItemUtils.getGregtechCircuit(18),
-						ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedGalena", 8),
-						ELEMENT.getInstance().CARBON.getDust(32),
-				},
-				Materials.SulfuricAcid.getFluid(4000),
-				ELEMENT.getInstance().SELENIUM.getFluid(144),
-				0,
-				20 * 300,
-				2000);
 
 
 		// Ruthenium Roasting
@@ -741,7 +717,7 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().ALUMINIUM.getIngot(8),
 						ELEMENT.getInstance().STRONTIUM.getIngot(8)
 				},
-				100, //Output Chance 
+				new int[] {10000, 10000}, //Output Chance 
 				20 * 120,
 				480*4);
 
