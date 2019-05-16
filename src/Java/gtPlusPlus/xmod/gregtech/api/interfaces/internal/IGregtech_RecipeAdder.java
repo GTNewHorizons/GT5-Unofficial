@@ -252,4 +252,9 @@ public interface IGregtech_RecipeAdder {
      * @param aSpecial = EU needed for heating the Reactor up (must be >= 0)
      */		
 	public boolean addFusionReactorRecipe(ItemStack aInputStackA, ItemStack aInputStackB, FluidStack plasma, int aOutputChance, int aFusionDurationInTicks, int aEu, int aSpecial);
+
+	
+    boolean addVacuumFurnaceRecipe(ItemStack aInput1, ItemStack aInput2,
+            FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1,
+            ItemStack aOutput2, int aDuration, int aEUt, int aLevel);
 }

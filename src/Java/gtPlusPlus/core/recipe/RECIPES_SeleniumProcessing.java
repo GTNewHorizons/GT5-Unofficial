@@ -9,6 +9,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import net.minecraft.item.ItemStack;
 
 public class RECIPES_SeleniumProcessing {
@@ -22,11 +23,10 @@ public class RECIPES_SeleniumProcessing {
         processCopperRecipes();
         
         //Liquify the Dried Dioxide
-        CORE.RA.addChemicalRecipe(CI.getNumberedCircuit(14), MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1), FluidUtils.getSteam(500), FluidUtils.getDistilledWater(2000), null, MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(1000), 20 * 30 * 2, 1024);
+        AddGregtechRecipe.addCokeAndPyrolyseRecipes(MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1), 14, FluidUtils.getSteam(500), null, MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(1000), 120, 1024);
         
-        
-        // Produce Selenious Acid
-        CORE.RA.addChemicalRecipe(CI.getNumberedCircuit(14), null, MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(1000), FluidUtils.getHotWater(4000), null, MISC_MATERIALS.SELENIOUS_ACID.getFluid(1000), 20 * 30 * 2, 2048);
+        // Produce Selenious Acid        
+        AddGregtechRecipe.addCokeAndPyrolyseRecipes(MISC_MATERIALS.SELENIUM_DIOXIDE.getCell(1), 14, FluidUtils.getHotWater(4000), CI.emptyCells(1), MISC_MATERIALS.SELENIOUS_ACID.getFluid(1000), 120, 2048);
         
         // Make Selenium        
         CORE.RA.addBlastSmelterRecipe(
@@ -35,13 +35,14 @@ public class RECIPES_SeleniumProcessing {
                         ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricAcid", 8),
                         ELEMENT.getInstance().CARBON.getDust(16),
                 },
-                MISC_MATERIALS.SELENIOUS_ACID.getFluid(500),
+                MISC_MATERIALS.SELENIOUS_ACID.getFluid(750),
                 ELEMENT.getInstance().SELENIUM.getFluid(144 * 1),
                 new ItemStack[] {
+                        CI.emptyCells(8),
                         ELEMENT.getInstance().SELENIUM.getIngot(1),
                         ELEMENT.getInstance().SELENIUM.getIngot(1),    
                 },
-                new int[] {2000, 2000, 2000},
+                new int[] {10000, 2000, 2000},
                 20 * 300,
                 7200);  
         
@@ -180,7 +181,7 @@ public class RECIPES_SeleniumProcessing {
                 },
                 40 * 20, // Time in ticks
                 1024); // EU
-        //Chalco
+        //Malachite
         CORE.RA.addDehydratorRecipe(
                 new ItemStack[]{
                     ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Malachite, 1), // Item Input

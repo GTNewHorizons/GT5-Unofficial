@@ -69,7 +69,7 @@ public final class MISC_MATERIALS {
 	            });
 	   
        public static final Material SELENIOUS_ACID = new Material(
-               "Selecious Acid",
+               "Selenious Acid",
                MaterialState.PURE_LIQUID, //State
                null, //Material Colour
                -1, //Melting Point in C
