@@ -6,8 +6,11 @@ import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
@@ -23,6 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -579,7 +583,53 @@ public static int mInvalidID = 1;
 			return aRecipeMap.mRecipeList.remove(aRecipeToRemove);
 		}
 		return false;		
-	}
+	}    
+	
+	public static boolean addGtRecipe(GT_Recipe aRecipeToAdd, GT_Recipe_Map aRecipeMap) {        
+        if (!aRecipeMap.mRecipeList.contains(aRecipeToAdd)) {
+            return aRecipeMap.mRecipeList.add(aRecipeToAdd);
+        }
+        return false;       
+    } 
+    
+    public static boolean removeRecipeByOutput(ItemStack aOutput) {
+        return removeRecipeByOutput(aOutput, true, false, false);
+    }
+
+    public static boolean removeRecipeByOutput(ItemStack aOutput, boolean aIgnoreNBT,
+            boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
+        if (aOutput == null) {
+            return false;
+        } else {
+            boolean rReturn = false;
+            ArrayList<IRecipe> tList = (ArrayList) CraftingManager.getInstance().getRecipeList();
+            aOutput = GT_OreDictUnificator.get(aOutput);
+            int tList_sS = tList.size();
+
+            for (int i = 0; i < tList_sS; ++i) {
+                IRecipe tRecipe = (IRecipe) tList.get(i);
+                if (!aNotRemoveShapelessRecipes
+                        || !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe)) {
+                    if (aOnlyRemoveNativeHandlers) {
+                        if (!gregtech.api.util.GT_ModHandler.sNativeRecipeClasses.contains(tRecipe.getClass().getName())) {
+                            continue;
+                        }
+                    } else if (gregtech.api.util.GT_ModHandler.sSpecialRecipeClasses.contains(tRecipe.getClass().getName())) {
+                        continue;
+                    }
+
+                    ItemStack tStack = tRecipe.getRecipeOutput();
+                    if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
+                        tList.remove(i--);
+                        tList_sS = tList.size();
+                        rReturn = true;
+                    }
+                }
+            }
+
+            return rReturn;
+        }
+    }
 
 
 
