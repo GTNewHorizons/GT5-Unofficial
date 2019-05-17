@@ -44,6 +44,7 @@ import gregtech.api.enums.*;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -606,6 +607,10 @@ public class WerkstoffLoader implements Runnable {
         GameRegistry.registerTileEntity(BW_MetaGeneratedOreTE.class, "bw.blockoresTE");
         WerkstoffLoader.BWOres = new BW_MetaGenerated_Ores(Material.rock, BW_MetaGeneratedOreTE.class, "bw.blockores");
         GameRegistry.registerBlock(WerkstoffLoader.BWOres, BW_MetaGeneratedOre_Item.class, "bw.blockores.01");
+        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
+            if (werkstoff.getGenerationFeatures().hasOres())
+                GT_OreDictUnificator.setItemData(new ItemStack(WerkstoffLoader.BWOres,1,werkstoff.getmID()), new ItemData(ore,Materials._NULL));
+        }
     }
 
     private void runAdditionalOreDict(){

@@ -294,10 +294,10 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                         internalH = 9001;
                         break;
                     case 7:
-                        internalH = 12001;
+                        internalH = 9901;
                         break;
                     case 8:
-                        internalH = 15001;
+                        internalH = 10801;
                         break;
                     default:
                         break;
