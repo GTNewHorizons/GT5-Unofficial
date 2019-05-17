@@ -20,7 +20,6 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -193,16 +192,18 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 								if (x != null){
 									if (x.getStackMaterial() != null){
 										if (x.getStackMaterial().getDust(1) == null){
-											if (x.getStackMaterial().getState() == MaterialState.GAS || x.getStackMaterial().getState() == MaterialState.LIQUID || x.getStackMaterial().getState() == MaterialState.PURE_LIQUID){
+											if (x.getStackMaterial().getState() != MaterialState.SOLID && x.getStackMaterial().getState() != MaterialState.ORE && x.getStackMaterial().getState() != MaterialState.PLASMA){
 												oxygen = x.getStackMaterial().getFluid(1000);
+												break;
 											}
 										}
 									}
 								}
 							}
 						}
-
 					}
+					
+					input = ItemUtils.cleanItemStackArray(input);
 
 					//Add mixer Recipe
 					if (GT_Values.RA.addMixerRecipe(

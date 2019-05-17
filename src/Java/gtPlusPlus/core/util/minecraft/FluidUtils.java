@@ -25,12 +25,62 @@ public class FluidUtils {
 		return FluidUtils.getFluidStack("water", amount);
 	}
 	
-	public static FluidStack getlava(final int amount){
+	public static FluidStack getDistilledWater(final int amount){
+		return FluidUtils.getFluidStack("ic2distilledwater", amount);
+	}
+
+	public static FluidStack getHotWater(final int amount) {
+		return FluidUtils.getFluidStack("ic2hotwater", amount);
+	}
+	
+	public static FluidStack getLava(final int amount){
 		return FluidUtils.getFluidStack("lava", amount);
+	}
+	
+	public static FluidStack getPahoehoeLava(final int amount){
+		return FluidUtils.getFluidStack("ic2pahoehoelava", amount);
 	}
 	
 	public static FluidStack getMilk(final int amount){
 		return FluidUtils.getFluidStack("milk", amount);
+	}
+	
+	public static FluidStack getColdCoolant(final int amount){
+		return FluidUtils.getFluidStack("ic2coolant", amount);
+	}
+	
+	public static FluidStack getHotCoolant(final int amount){
+		return FluidUtils.getFluidStack("ic2hotcoolant", amount);
+	}
+	
+	public static FluidStack getSteam(final int amount){
+		return FluidUtils.getFluidStack("steam", amount);
+	}
+	
+	public static FluidStack getIC2Steam(final int amount){
+		return FluidUtils.getFluidStack("ic2steam", amount);
+	}
+	
+	public static FluidStack getSuperHeatedSteam(final int amount){
+		return FluidUtils.getFluidStack("ic2superheatedsteam", amount);
+	}
+	
+	@Deprecated
+	/**
+	 * Do not use - Gives third tier steam - Not implemented
+	 * @param amount
+	 * @return
+	 */
+	public static FluidStack getHyperSteam(final int amount){
+		return FluidUtils.getFluidStack("water", amount);
+	}
+	
+	public static FluidStack getUUA(final int amount){
+		return FluidUtils.getFluidStack("uuamplifier", amount);
+	}
+	
+	public static FluidStack getUUM(final int amount){
+		return FluidUtils.getFluidStack("ic2uumatter", amount);
 	}
 	
 	public static FluidStack getFluidStack(final String fluidName, final int amount){

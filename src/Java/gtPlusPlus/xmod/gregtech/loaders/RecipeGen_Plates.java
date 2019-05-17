@@ -41,7 +41,9 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 		final ItemStack shape_Mold = ItemList.Shape_Mold_Plate.get(0);
 		final ItemStack plate_Single = material.getPlate(1);
 		final ItemStack plate_SingleTwo = material.getPlate(2);
+		final ItemStack plate_SingleNine = material.getPlate(9);
 		final ItemStack plate_Double = material.getPlateDouble(1);
+		final ItemStack block = material.getBlock(1);
 
 		Logger.WARNING("Generating Plate recipes for "+material.getLocalizedName());
 
@@ -81,6 +83,19 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 		}
 		else {
 			Logger.WARNING("Alloy Smelter Recipe: "+material.getLocalizedName()+" - Failed");
+		}
+		//Cutting Machine
+		if (ItemUtils.checkForInvalidItems(block) && ItemUtils.checkForInvalidItems(plate_Single))
+		if (GT_Values.RA.addCutterRecipe(
+				block,
+				null,
+				plate_SingleNine,
+				(int) Math.max(material.getMass() * 10L, 1L),
+				material.vVoltageMultiplier)){
+			Logger.WARNING("Cutting Machine Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Logger.WARNING("ACutting Machine Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 

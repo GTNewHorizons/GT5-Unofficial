@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.items.behaviours;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import codechicken.lib.math.MathHelper;
@@ -10,12 +11,10 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_None;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
-import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import ic2.api.item.IElectricItemManager;
@@ -24,7 +23,6 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -42,8 +40,8 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 		
 	}
 
-	public boolean onLeftClickEntity(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
-		if (!aPlayer.worldObj.isRemote && aStack.stackSize == 1) {
+	public boolean onLeftClickEntity(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {		
+		if (!aPlayer.worldObj.isRemote && aStack != null && aStack.stackSize == 1) {
 			boolean rOutput = false;
 			if (aEntity instanceof EntityCreeper) {
 				if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
@@ -62,7 +60,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 
 	public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
 			int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-		if (!aWorld.isRemote && aStack.stackSize == 1) {			
+		if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {			
 			if (aPlayer.isSneaking()) {
 				Logger.INFO("Changing Mode");
 				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
@@ -111,7 +109,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 
 	public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
 			int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-		if (!aWorld.isRemote && aStack.stackSize == 1) {			
+		if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {			
 			if (aPlayer.isSneaking()) {
 				Logger.INFO("Changing Mode");
 				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
@@ -189,9 +187,8 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 
 	public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
 		aList.add(this.mTooltip);
-		int aUses = 0;
-
-		if (aStack != null) {
+		int aUses = 0;		
+		if (aStack != null) {			
 			if (aStack.getItem() instanceof MetaGeneratedGregtechTools) {
 				if (ChargingHelper.isItemValid(aStack)) {
 					if (aStack.getItem() instanceof IElectricItemManager) {
@@ -200,24 +197,22 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 						long aEuCost = 4096 * 2;
 						aUses = (int) (aCharge / aEuCost);
 					}
+				}				
+				boolean aCurrentMode; 		
+				if (NBTUtils.hasKey(aStack, "aFireballMode")) {
+					aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
 				}
+				else {
+					aStack.getTagCompound().setBoolean("aFireballMod", false);
+					aCurrentMode = false;
+				}				
+				aList.add("Current Mode: "+EnumChatFormatting.RED+(aCurrentMode ? "Projectile" : "Fire Starter"));	
 			}
+			
 		}
 
-		NBTTagCompound tNBT = aStack.getTagCompound();
 		aList.add(this.mTooltipUses + " " + aUses);
-		aList.add(this.mTooltipUnstackable);
-		
-		
-		boolean aCurrentMode; 
-		if (NBTUtils.hasKey(aStack, "aFireballMode")) {
-			aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
-		}
-		else {
-			aStack.getTagCompound().setBoolean("aFireballMod", false);
-			aCurrentMode = false;
-		}
-		aList.add("Current Mode: "+EnumChatFormatting.RED+(aCurrentMode ? "Projectile" : "Fire Starter"));		
+		aList.add(this.mTooltipUnstackable);	
 		return aList;
 	}
 }

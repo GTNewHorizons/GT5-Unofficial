@@ -313,6 +313,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Larger Turbines
 	Large_Steam_Turbine, Large_HPSteam_Turbine, 
 	Casing_Turbine_Shaft, Casing_Turbine_LP, Casing_Turbine_HP,
+	
+	//Large Vacuum Furnace
+	Casing_Vacuum_Furnace,
+	Controller_Vacuum_Furnace,
 
 
 
@@ -427,6 +431,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//Debug machine
 	Pollution_Creator, 
+	Garbage_Collector_Debug_Machine,
 
 
 	//Basically is an automatic Cauldron
@@ -582,9 +587,14 @@ public enum GregtechItemList implements GregtechItemContainer {
 	 */
 
 	//Fluid Void Covers
-	Cover_Overflow_ULV, Cover_Overflow_LV, Cover_Overflow_MV, Cover_Overflow_HV, Cover_Overflow_EV, Cover_Overflow_IV,    
+	Cover_Overflow_ULV, Cover_Overflow_LV, Cover_Overflow_MV, Cover_Overflow_HV, Cover_Overflow_EV, Cover_Overflow_IV, 
 	
-	
+	//Fake Hull Covers
+	FakeMachineCasingPlate_ULV, FakeMachineCasingPlate_LV,
+	FakeMachineCasingPlate_MV, FakeMachineCasingPlate_HV,
+	FakeMachineCasingPlate_EV, FakeMachineCasingPlate_IV,
+	FakeMachineCasingPlate_LuV, FakeMachineCasingPlate_ZPM,
+	FakeMachineCasingPlate_UV, FakeMachineCasingPlate_MAX,
 	
 
 	//----------------------------------------------------------------------------

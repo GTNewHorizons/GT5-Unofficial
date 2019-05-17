@@ -545,7 +545,7 @@ public final class ORES {
 			-1, //Radiation
 			new MaterialStack[]{// (Ca,Sr,Ce,Na)5(PO4)3F
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 5),
-					new MaterialStack(ELEMENT.getInstance().STRONTIUM, 5),
+					new MaterialStack(MISC_MATERIALS.STRONTIUM_OXIDE, 5),
 					new MaterialStack(ELEMENT.getInstance().CERIUM, 5),
 					new MaterialStack(ELEMENT.getInstance().SODIUM, 5),
 					new MaterialStack(ELEMENT.getInstance().PHOSPHORUS, 3),

@@ -30,6 +30,7 @@ import gregtech.api.util.Recipe_GT;
 import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.commands.CommandDebugChunks;
+import gtPlusPlus.core.commands.CommandEnableDebugWhileRunning;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.ConfigHandler;
@@ -231,7 +232,8 @@ public class GTplusplus implements ActionListener {
 	public synchronized void serverStarting(final FMLServerStartingEvent event) {
 		INIT_PHASE.SERVER_START.setPhaseActive(true);
 		mChunkLoading.serverStarting(event);
-		event.registerServerCommand(new CommandMath());
+        event.registerServerCommand(new CommandMath());
+        event.registerServerCommand(new CommandEnableDebugWhileRunning());
 		event.registerServerCommand(new CommandDebugChunks());
 		if (LoadedMods.Thaumcraft) {
 			event.registerServerCommand(new CommandDumpAspects());

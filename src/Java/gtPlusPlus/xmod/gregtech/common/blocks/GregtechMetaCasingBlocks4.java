@@ -34,7 +34,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Turbine Shaft");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Low Pressure Turbine Casing"); 
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "High Pressure Turbine Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Vacuum Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "");
@@ -50,8 +50,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 7));
 		GregtechItemList.Casing_Turbine_LP.set(new ItemStack(this, 1, 8));
 		GregtechItemList.Casing_Turbine_HP.set(new ItemStack(this, 1, 9));
-		/*GregtechItemList.Casing_Cyclotron_External.set(new ItemStack(this, 1, 10));
-		GregtechItemList.Casing_ThermalContainment.set(new ItemStack(this, 1, 11));
+		GregtechItemList.Casing_Vacuum_Furnace.set(new ItemStack(this, 1, 10));
+		/*GregtechItemList.Casing_ThermalContainment.set(new ItemStack(this, 1, 11));
 		GregtechItemList.Casing_Autocrafter.set(new ItemStack(this, 1, 12));
 		GregtechItemList.Casing_CuttingFactoryFrame.set(new ItemStack(this, 1, 13));
 		GregtechItemList.Casing_TeslaTower.set(new ItemStack(this, 1, 14));
@@ -112,7 +112,14 @@ extends GregtechMetaCasingBlocksAbstract {
 					
 					//Cyclotron External Casing
 				case 10:
-					return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
+					
+					if (aSide <2) {
+						return TexturesGtBlock.TEXTURE_STONE_RED_B.getIcon();					
+					}
+					else {
+						return TexturesGtBlock.TEXTURE_STONE_RED_A.getIcon();					
+					}
+					
 					//Multitank Exterior Casing
 				case 11:
 					return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();

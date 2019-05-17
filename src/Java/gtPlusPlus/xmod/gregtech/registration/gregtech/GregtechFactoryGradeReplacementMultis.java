@@ -7,12 +7,10 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.ad
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.GregtechMetaTileEntity_Adv_Fusion_MK4;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.GregtechMetaTileEntity_Adv_Implosion;
 
-public class GregtechIndustrialCryogenicFreezer {
+public class GregtechFactoryGradeReplacementMultis {
 
 	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			run1();
-		}	
+		run1();
 	}
 
 	private static void run1() {

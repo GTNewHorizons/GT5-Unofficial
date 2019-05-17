@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.concurrent.ScheduledExecutorService;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -19,9 +18,7 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ThreadFakeWorldGenerator;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EnergyUtils;
 import gtPlusPlus.core.util.minecraft.EnergyUtils.EU;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -31,7 +28,6 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase {
 
@@ -105,6 +101,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		}
 
 		return new String[]{
+                "[WIP] Disabled",
 				"Converts EU to Oak Logs",
 				"Speed: Very Fast | Eu Usage: 100% | Parallel: 1",				
 				"Requires a Saw, Buzz Saw or Chainsaw in GUI slot",
@@ -152,6 +149,12 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	public boolean checkRecipe(final ItemStack aStack) {
+	    
+	    if (true) {
+	        return false;
+	    }
+	    
+	    
 		//Logger.WARNING("Trying to process virtual tree farming");
 		if (mTreeData != null) {
 			//Logger.WARNING("Tree Data is valid");

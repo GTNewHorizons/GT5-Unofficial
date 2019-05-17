@@ -2794,15 +2794,15 @@ item.itemPlateDoubleRunite.name=Double Runite Plate
 item.itemCellRunite.name=Runite Cell
 tile.Block of Runite.name=Block of Runite
 
-item.itemIngotDragonblood.name=Dragonblood Ingot
-item.itemDustDragonblood.name=Dragonblood Dust
-item.itemDustTinyDragonblood.name=Tiny Pile of Dragonblood Dust
-item.itemDustSmallDragonblood.name=Small Pile of Dragonblood Dust
-item.itemNuggetDragonblood.name=Dragonblood Nugget
-item.itemPlateDragonblood.name=Dragonblood Plate
-item.itemPlateDoubleDragonblood.name=Double Dragonblood Plate
+item.itemIngotDragonblood.name=Dragon Metal Ingot
+item.itemDustDragonblood.name=Dragon Metal Dust
+item.itemDustTinyDragonblood.name=Tiny Pile of Dragon Metal Dust
+item.itemDustSmallDragonblood.name=Small Pile of Dragon Metal Dust
+item.itemNuggetDragonblood.name=Shard of Dragonblood
+item.itemPlateDragonblood.name=Dragon Metal Plate
+item.itemPlateDoubleDragonblood.name=Double Dragon Metal Plate
 item.itemCellDragonblood.name=Dragonblood Cell
-tile.Block of Dragonblood.name=Block of Dragonblood
+tile.Block of Dragonblood.name=Block of Dragon Metal
 
 item.itemIngotBlackTitanium.name=Black Titanium Ingot
 item.itemDustBlackTitanium.name=Black Titanium Dust
@@ -2897,3 +2897,62 @@ item.itemPlateRhugnor.name=Rhugnor Plate
 item.itemPlateDoubleRhugnor.name=Double Rhugnor Plate
 item.itemCellRhugnor.name=Rhugnor Cell
 tile.Block of Rhugnor.name=Block of Rhugnor
+
+
+
+
+//Added 13/5/19
+
+item.GTPP.BattPack.01.name=Charge Pack [LV]
+item.GTPP.BattPack.02.name=Charge Pack [MV]
+item.GTPP.BattPack.03.name=Charge Pack [HV]
+item.GTPP.BattPack.04.name=Charge Pack [EV]
+item.GTPP.BattPack.05.name=Charge Pack [IV]
+item.IndustrialDiamondExquisite.name=Exquisite Industrial Diamond
+
+item.itemSpringCelestialTungsten.name=Celestial Tungsten Spring
+item.itemSpringWhiteMetal.name=White Metal Spring
+item.itemSpringNitinol60.name=Nitinol 60 Spring
+item.itemSpringWatertightSteel.name=Watertight Steel Spring
+item.itemSpringEglinSteel.name=Eglin Steel Spring
+
+item.itemSmallSpringMaragingSteel250.name=Small Maraging Steel 250 Spring
+item.itemSmallSpringNichrome.name=Small Nichrome Spring
+item.itemSmallSpringStaballoy.name=Small Staballoy Spring
+item.itemSmallSpringBlackSteel.name=Small Black Steel Spring
+item.itemSmallSpringBlackTitanium.name=Small Black Titanium Spring
+
+item.itemFineWireWhiteMetal.name=Fine White Metal Wire
+item.itemFineWirePalladium.name=Fine Palladium Wire
+item.itemFineWireZirconium.name=Fine Zirconium Wire
+item.itemFineWireGrisium.name=Fine Grisium Wire
+item.itemFineWireBabbitAlloy.name=Fine Babbit Alloy Wire
+item.itemFineWireKoboldite.name=Fine Koboldite Wire
+item.itemFineWireHG1223.name=Fine HG-1223 Wire
+item.itemFineWireQuantum.name=Fine Quantum Wire
+
+item.itemHeavyPlatePotin.name=Heavy Potin Plate
+item.itemHeavyPlateWatertightSteel.name=Heavy Watertight Steel Plate
+item.itemHeavyPlateBronze.name=Heavy Bronze Plate
+item.itemHeavyPlateOsmiridium.name=Heavy Osmiridium Plate
+item.itemHeavyPlateQuantum.name=Heavy Quantum Plate
+item.itemHeavyPlateBlackSteel.name=Heavy Black Steel Plate
+item.itemHeavyPlateStainlessSteel.name=Heavy Stainless Steel Plate
+item.itemHeavyPlateEglinSteel.name=Heavy Eglin Steel Plate
+item.itemHeavyPlateMaragingSteel300.name=Heavy Maraging Steel 300 Plate
+item.itemHeavyPlateTalonite.name=Heavy Talonite Plate
+item.itemHeavyPlateHypogen.name=Heavy Hypogen Plate
+item.itemHeavyPlateRhugnor.name=Heavy Rhugnor Plate
+item.itemHeavyPlateAdvancedNitinol.name=Heavy Advanced Nitinol Plate
+item.itemHeavyPlateAstralTitanium.name=Heavy Astral Titanium Plate
+item.itemHeavyPlateCelestialTungsten.name=Heavy Celestial Tungsten Plate
+item.itemHeavyPlateWhiteMetal.name=Heavy White Metal Plate
+item.itemHeavyPlateBlackMetal.name=Heavy Black Metal Plate
+item.itemHeavyPlateAncientGranite.name=Heavy Ancient Granite Plate
+
+item.GTPP.bauble.fireprotection.0.name=Supreme Pizza Gloves
+
+
+//Added 16/5/19
+item.itemCellSeleniumDioxide.name=Selenium Dioxide Cell
+item.itemCellSeleniousAcid.name=Selenious Acid Cell

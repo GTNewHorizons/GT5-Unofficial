@@ -1,9 +1,7 @@
 package gtPlusPlus.core.util.minecraft;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
-import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 import ic2.api.item.ISpecialElectricItem;
@@ -40,7 +38,7 @@ public class EnergyUtils {
 			if (isElectricItem(aStack)) {
 				int tTier = ((IElectricItem) aStack.getItem()).getTier(aStack);
 				int aDischargeValue = GT_ModHandler.dischargeElectricItem(aStack, aEnergyToDrain, tTier, true, false, false);	
-				Logger.INFO("Trying to drain "+aDischargeValue);
+				//Logger.INFO("Trying to drain "+aDischargeValue);
 				return aDischargeValue > 0;
 			}
 			else {

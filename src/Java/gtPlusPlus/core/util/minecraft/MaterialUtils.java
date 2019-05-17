@@ -15,6 +15,9 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.TypeCounter;
 import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
+import gtPlusPlus.core.item.base.BaseItemComponent;
+import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
+import gtPlusPlus.core.item.base.plates.BaseItemPlateHeavy;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
@@ -23,6 +26,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.EnumUtils;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -438,6 +442,61 @@ public class MaterialUtils {
 			processed++;
 		}
 		return resultList;
+	}
+	
+	public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial) {
+		generateComponentAndAssignToAMaterial(aType, aMaterial, true);
+	}
+	
+	public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial, boolean generateRecipes) {		
+		Item aGC;
+		if (aType == ComponentTypes.PLATEHEAVY) {
+			aGC = new BaseItemPlateHeavy(aMaterial);
+		}
+		else {
+			aGC = new BaseItemComponent(aMaterial, aType);			
+		}
+		if (aGC != null) {
+			String aFormattedLangName = aType.getName();
+			
+			if (!aFormattedLangName.startsWith(" ")) {
+				if (aFormattedLangName.contains("@")) {
+					String[] aSplit = aFormattedLangName.split("@");
+					aFormattedLangName = aSplit[0] + " " + aMaterial.getLocalizedName() + " " + aSplit[1];
+				}
+			}
+			
+			if (aFormattedLangName.equals(aType.getName())) {
+				aFormattedLangName = aMaterial.getLocalizedName() + aFormattedLangName;
+				
+			}
+			
+			
+			
+			Logger.MATERIALS("[Lang] "+aGC.getUnlocalizedName()+".name="+aFormattedLangName);
+			aMaterial.registerComponentForMaterial(aType, ItemUtils.getSimpleStack(aGC));			
+		}				
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	public static void generateSpecialDustAndAssignToAMaterial(Material aMaterial) {
+		generateSpecialDustAndAssignToAMaterial(aMaterial, true);
+	}
+
+	public static void generateSpecialDustAndAssignToAMaterial(Material aMaterial, boolean generateMixerRecipes) {
+		Item[] aDusts = ItemUtils.generateSpecialUseDusts(aMaterial, false, Utils.invertBoolean(generateMixerRecipes));
+		if (aDusts != null && aDusts.length > 0) {
+			aMaterial.registerComponentForMaterial(OrePrefixes.dust, ItemUtils.getSimpleStack(aDusts[0]));
+			aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, ItemUtils.getSimpleStack(aDusts[1]));
+			aMaterial.registerComponentForMaterial(OrePrefixes.dustTiny, ItemUtils.getSimpleStack(aDusts[2]));
+		}
+		
 	}
 
 

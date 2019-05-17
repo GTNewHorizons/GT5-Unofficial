@@ -242,8 +242,7 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
 
 	@Override
 	public String getTextureNameForBauble() {
-		// TODO Auto-generated method stub
-		return null;
+		return "chargepack/"+mTier;
 	}
 
 }

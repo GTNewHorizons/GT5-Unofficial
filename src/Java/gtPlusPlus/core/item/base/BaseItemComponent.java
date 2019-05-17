@@ -248,11 +248,16 @@ public class BaseItemComponent extends Item{
 	public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
 
 
+		if (this.componentType == ComponentTypes.CELL || this.componentType == ComponentTypes.PLASMACELL) {
 		if (renderPass == 0 && !CORE.ConfigSwitches.useGregtechTextures){
 			return Utils.rgbtoHexValue(255, 255, 255);
 		}
 		if (renderPass == 1 && CORE.ConfigSwitches.useGregtechTextures){
 			return Utils.rgbtoHexValue(255, 255, 255);
+		}
+		}
+		if (this.componentType == ComponentTypes.PLATEHEAVY) {
+			
 		}
 
 
@@ -495,7 +500,10 @@ public class BaseItemComponent extends Item{
 		PLASMACELL("CellPlasma", " Plasma Cell", "cellPlasma", OrePrefixes.cellPlasma),
 		CELL("Cell", " Cell", "cell", OrePrefixes.cell),
 		NUGGET("Nugget", " Nugget", "nugget", OrePrefixes.nugget),
-		PLATEHEAVY("HeavyPlate", " Heavy Plate", "plateHeavy", OrePrefixes.plateDense);
+		PLATEHEAVY("HeavyPlate", "Heavy@Plate", "plateHeavy", OrePrefixes.plateDense),
+		SPRING("Spring", " Spring", "spring", OrePrefixes.spring),
+		SMALLSPRING("SmallSpring", "Small@Spring", "springSmall", OrePrefixes.springSmall),
+		FINEWIRE("FineWire", "Fine@Wire", "wireFine", OrePrefixes.wireFine),;
 
 		private String COMPONENT_NAME;
 		private String DISPLAY_NAME;

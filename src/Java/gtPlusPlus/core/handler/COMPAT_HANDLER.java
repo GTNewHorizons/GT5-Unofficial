@@ -22,6 +22,9 @@ import gtPlusPlus.core.recipe.*;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaGarbageCollector;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionCreator;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.*;
 import net.minecraft.item.ItemStack;
@@ -49,6 +52,14 @@ public class COMPAT_HANDLER {
 	public static void registerGregtechMachines() {
 		if (Gregtech) {			
 
+			//Debug
+			GregtechItemList.Garbage_Collector_Debug_Machine.set(
+					new GregtechMetaGarbageCollector(							 
+							"garbagecollector.01.tier.single",
+							"JVM Garbage Collector",
+							"Useful for debugging or smoother performance on local servers").getStackForm(1L));
+			
+			
 			//Free IDs
 			/*
 			---
@@ -114,7 +125,7 @@ public class COMPAT_HANDLER {
 			GregtechBedrockPlatforms.run();
 			GregtechBufferDynamos.run();
 			GregtechAmazonWarehouse.run();
-			GregtechIndustrialCryogenicFreezer.run();
+			GregtechFactoryGradeReplacementMultis.run();
 			GregtechThaumcraftDevices.run();
 			GregtechThreadedBuffers.run();
 			GregtechIndustrialMixer.run();

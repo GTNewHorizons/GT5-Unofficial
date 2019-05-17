@@ -7,6 +7,7 @@ import gregtech.api.enums.GT_Values;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 
@@ -227,7 +228,7 @@ public class MathUtils {
 	 * @param x Value A.
 	 * @return boolean Whether or not it divides evenly.
 	 */
-	public static boolean isNumberEven(final int x){
+	public static boolean isNumberEven(final long x){
 		if ((x % 2) == 0)
 		{
 			return true;
@@ -695,6 +696,12 @@ public class MathUtils {
 	public static int getValueWithinRange(int i, int aMin, int aMax) {
 		int aAmount = Math.max(Math.min(i, aMax), aMin);
 		return aAmount;
+	}
+	
+	public static Pair<Integer, Integer> splitLongIntoIntegers(long aLong){
+		int aIntMaxInLong = (int) Math.min(Integer.MAX_VALUE, Math.floor(aLong/Integer.MAX_VALUE));
+		int aRemainder = (int) (aLong - (aIntMaxInLong * Integer.MAX_VALUE));
+		return new Pair<Integer, Integer>(aIntMaxInLong, aRemainder);		
 	}
 
 }

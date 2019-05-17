@@ -28,6 +28,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -171,68 +172,9 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				CASING_TEXTURE_ID)) {
 			return false;
 		}*/
+		Block tUsedBlock = aBaseMetaTileEntity.getBlockOffset(xDir + 1, 2, zDir);
 		byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 2, zDir);
-
-		if (!CORE.GTNH) {
-			switch (tUsedMeta) {
-			case 0:
-				this.mHeatingCapacity = 1800;
-				break;
-			case 1:
-				this.mHeatingCapacity = 2700;
-				break;
-			case 2:
-				this.mHeatingCapacity = 3600;
-				break;
-			case 3:
-				this.mHeatingCapacity = 4500;
-				break;
-			case 4:
-				this.mHeatingCapacity = 5400;
-				break;
-			case 5:
-				this.mHeatingCapacity = 7200;
-				break;
-			case 6:
-				this.mHeatingCapacity = 9001;
-				break;
-			default:Logger.INFO("Heating Coils are bad.");
-				return false;
-			}
-		} else {
-			switch (tUsedMeta) {
-			case 0:
-				this.mHeatingCapacity = 1801;
-				break;
-			case 1:
-				this.mHeatingCapacity = 2701;
-				break;
-			case 2:
-				this.mHeatingCapacity = 3601;
-				break;
-			case 3:
-				this.mHeatingCapacity = 4501;
-				break;
-			case 4:
-				this.mHeatingCapacity = 5401;
-				break;
-			case 5:
-				this.mHeatingCapacity = 7201;
-				break;
-			case 6:
-				this.mHeatingCapacity = 9001;
-				break;
-			case 7:
-				this.mHeatingCapacity = 9901;
-				break;
-			case 8:
-				this.mHeatingCapacity = 10801;
-				break;
-			default:
-				Logger.INFO("Heating Coils are bad.");
-				return false;
-			}
-		}
+		this.mHeatingCapacity = StaticFields59.getHeatingCapacityForCoil(tUsedBlock, tUsedMeta);
 
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {

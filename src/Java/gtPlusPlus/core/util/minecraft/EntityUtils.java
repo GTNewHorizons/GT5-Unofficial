@@ -11,6 +11,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.AABB;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.handler.events.EntityDeathHandler;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.IC2Potion;
 import ic2.core.item.armor.ItemArmorHazmat;
@@ -20,6 +21,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -87,7 +89,7 @@ public class EntityUtils {
 		}
 		return false;
 	}
-	
+
 	public static boolean applyHeatDamageToEntity(final int heatLevel, final World world, final Entity entityHolding){
 		if (!world.isRemote){
 			if ((heatLevel > 0) && (entityHolding instanceof EntityLivingBase)) {
@@ -113,11 +115,7 @@ public class EntityUtils {
 	 */
 	public synchronized static boolean doFireDamage(Entity entity, int amount){
 		if (dealFireDamage == null){
-			try {
-				dealFireDamage = Entity.class.getDeclaredMethod("dealFireDamage", int.class);
-				dealFireDamage.setAccessible(true);				
-			}
-			catch (NoSuchMethodException | SecurityException e) {}
+			dealFireDamage = ReflectionUtils.getMethod(Entity.class, "dealFireDamage", int.class);			
 		}
 		else {
 			try {
@@ -131,42 +129,41 @@ public class EntityUtils {
 	public static void doDamage(Entity entity, DamageSource dmg, int i) {		
 		entity.attackEntityFrom(dmg, i);		
 	}
-	
+
 	public static boolean isTileEntityRegistered(Class aTileClass, String aTileName) {
 		Field aRegistry = ReflectionUtils.getField(ReflectionUtils.getClass("net.minecraft.tileentity.TileEntity"), "nameToClassMap");	
 		Field aRegistry2 = ReflectionUtils.getField(ReflectionUtils.getClass("net.minecraft.tileentity.TileEntity"), "classToNameMap");
 		try {
 			Object o = aRegistry.get(null);
 			if (o != null) {
-			    Map nameToClassMap = (Map) o;			    
-			    if (!nameToClassMap.containsKey(aTileName)) {			    	
-			    	 o = aRegistry2.get(null);
-						if (o != null) {
-						    Map classToNameMap = (Map) o;			    
-						    if (!classToNameMap.containsKey(aTileClass)) {
-								return false;		    	
-						    }	
-						    else {
-						    	return true;
-						    } 
-						}			    		    	
-			    }	
-			    else {
-			    	return true;
-			    }
+				Map nameToClassMap = (Map) o;			    
+				if (!nameToClassMap.containsKey(aTileName)) {			    	
+					o = aRegistry2.get(null);
+					if (o != null) {
+						Map classToNameMap = (Map) o;			    
+						if (!classToNameMap.containsKey(aTileClass)) {
+							return false;		    	
+						}	
+						else {
+							return true;
+						} 
+					}			    		    	
+				}	
+				else {
+					return true;
+				}
 			}
 		} catch (IllegalArgumentException | IllegalAccessException e) {			
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	public static double getDistance(Entity p1, Entity p2) {
-	    return Math.sqrt( Math.pow(p1.posX - p2.posX, 2) + Math.pow(p1.posY - p2.posY, 2) + Math.pow(p1.posZ - p2.posZ, 2));
+		return Math.sqrt( Math.pow(p1.posX - p2.posX, 2) + Math.pow(p1.posY - p2.posY, 2) + Math.pow(p1.posZ - p2.posZ, 2));
 	}
-	
+
 	public static AutoMap<Entity> getEntitiesWithinBoundingBoxExcluding(Entity aExclusion, AABB aBoundingBox){
-		
 		if (aExclusion == null) {
 			return new AutoMap<Entity>();
 		}
@@ -175,9 +172,8 @@ public class EntityUtils {
 			return new AutoMap<Entity>(aEntities);			
 		}
 	}
-	
+
 	public static AutoMap<Entity> getEntitiesWithinBoundingBox(Class aEntityType, AABB aBoundingBox){
-		
 		if (aEntityType == null) {
 			return new AutoMap<Entity>();
 		}
@@ -185,6 +181,27 @@ public class EntityUtils {
 			List<Entity> aEntities = aBoundingBox.world().getEntitiesWithinAABB(aEntityType, aBoundingBox.get());			
 			return new AutoMap<Entity>(aEntities);			
 		}
+	}
+	
+	/**
+	 * Provides the ability to provide custom drops upon the death of EntityLivingBase objects. Simplified function with static Max drop size of 1.
+	 * @param aMobClass - The Base Class you want to drop this item.
+	 * @param aStack - The ItemStack, stack size is not respected.
+	 * @param aChance - Chance out of 10000, where 100 is 1%. (1 = 0.01% - this is ok)
+	 */
+	public static void registerDropsForMob(Class aMobClass, ItemStack aStack, int aChance) {	
+		registerDropsForMob(aMobClass, aStack, 1, aChance);
+	}
+	
+	/**
+	 * Provides the ability to provide custom drops upon the death of EntityLivingBase objects.
+	 * @param aMobClass - The Base Class you want to drop this item.
+	 * @param aStack - The ItemStack, stack size is not respected.
+	 * @param aMaxAmount - The maximum size of the ItemStack which drops.
+	 * @param aChance - Chance out of 10000, where 100 is 1%. (1 = 0.01% - this is ok)
+	 */
+	public static void registerDropsForMob(Class aMobClass, ItemStack aStack, int aMaxAmount, int aChance) {	
+		EntityDeathHandler.registerDropsForMob(aMobClass, aStack, aMaxAmount, aChance);		
 	}
 
 }

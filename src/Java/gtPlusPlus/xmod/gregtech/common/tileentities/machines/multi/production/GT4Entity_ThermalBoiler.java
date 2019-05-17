@@ -7,6 +7,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
@@ -19,6 +20,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -68,13 +70,29 @@ extends GregtechMeta_MultiBlockBase
 
 	@Override
 	public int getDamageToComponent(ItemStack aStack){
-		Logger.INFO("Trying to damage component.");
+		//log("Trying to damage component.");
 		return ItemList.Component_LavaFilter.get(1L).getClass().isInstance(aStack) ? 1 : 0;
 	}
+	
+	private static Item mLavaFilter;
 
 	@Override
-	public boolean checkRecipe(final ItemStack aStack) {
+	public boolean checkRecipe(ItemStack aStack) {
 		this.mSuperEfficencyIncrease=0;
+		
+		if (mLavaFilter == null) {
+			mLavaFilter = ItemList.Component_LavaFilter.getItem();
+		}
+		
+		//Try reload new Lava Filter
+		if (aStack == null) {
+			ItemStack uStack = this.findItemInInventory(mLavaFilter);
+			if (uStack != null) {				
+				this.setGUIItemStack(uStack);
+				aStack = this.getGUIItemStack();
+			}
+		}
+		
 
 		for (GT_Recipe tRecipe : Recipe_GT.Gregtech_Recipe_Map.sThermalFuels.mRecipeList) {
 			FluidStack tFluid = tRecipe.mFluidInputs[0];
@@ -85,7 +103,7 @@ extends GregtechMeta_MultiBlockBase
 					this.mEfficiencyIncrease = (this.mMaxProgresstime * getEfficiencyIncrease());
 
 					int loot_MAXCHANCE = 100000;
-					if (ItemList.Component_LavaFilter.get(1L).getClass().isInstance(aStack)) {
+					if (mLavaFilter.getClass().isInstance(aStack.getItem())) {
 
 						if ((tRecipe.getOutput(0) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(0))) {
 							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(0) }) };
@@ -199,8 +217,9 @@ extends GregtechMeta_MultiBlockBase
 				"Size: 3x3x3 (Hollow)",
 				"Thermal Containment Casings (10 at least!)",
 				"Controller (front middle)",
-				"2x Input Hatch",
+				"2x Input Hatch (Water/Thermal Fluid)",
 				"1x Output Hatch (Steam)",
+				"1x Input Bus (Supplies controller with Lava Filters, optional)",
 				"1x Output Bus (Filter results, optional)",
 				};
 	}
@@ -234,7 +253,7 @@ extends GregtechMeta_MultiBlockBase
 
 							if (!isValidBlockForStructure(tTileEntity, 1, true, aBlock, aMeta,
 									ModBlocks.blockCasings2Misc, 11)) {
-								Logger.INFO("Bad Thermal Boiler casing");
+								log("Bad Thermal Boiler casing");
 								return false;
 							}
 							++tAmount;
