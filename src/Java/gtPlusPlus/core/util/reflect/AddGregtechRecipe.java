@@ -22,7 +22,14 @@ public final class AddGregtechRecipe {
         
         int aModifiedTime = (int) (aRecipe.mDuration * 0.8);
         
+        if (aRecipe.mInputs == null || aRecipe.mFluidInputs == null || aRecipe.mFluidOutputs == null || aRecipe.mOutputs == null) {
+            return false;
+        }
+        
         if (aRecipe.mInputs.length > 2 || aRecipe.mFluidInputs.length > 1 || aRecipe.mFluidOutputs.length > 1 || aRecipe.mOutputs.length > 1) {
+            return false;
+        }
+        else if (aRecipe.mInputs.length <= 0 || aRecipe.mFluidInputs.length <= 0 || aRecipe.mFluidOutputs.length <= 0 || aRecipe.mOutputs.length <= 0) {
             return false;
         }
         
