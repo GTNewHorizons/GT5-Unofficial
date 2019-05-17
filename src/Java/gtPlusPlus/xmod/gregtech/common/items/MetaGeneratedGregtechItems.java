@@ -29,6 +29,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow;
+import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_VisualPlate;
 
 public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
@@ -249,21 +250,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 			this.setFluidContainerStats(32000 + tLastID, 16L, 64L);
 
 			GregtechItemList.Fluid_Cell_1L.set(this.addItem(tLastID = 64, "1L Wrought Iron Fluid Cell", "Holds exactly one litre worth of liquid.", new Object[]{new ItemData(Materials.WroughtIron, (OrePrefixes.plate.mMaterialAmount * 8L) + (4L * OrePrefixes.ring.mMaterialAmount), new MaterialStack[0]), getTcAspectStack(TC_Aspects.VACUOS, 2L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
-			this.setFluidContainerStats(32000 + tLastID, 1L, 64L);
-
-			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-
-				GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.WroughtIron, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.WroughtIron, 2L), GregtechItemList.Fluid_Cell_1L.get(1L, new Object[0]), 50, 32);
-				GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Bronze, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Bronze, 2L), GregtechItemList.Fluid_Cell_16L.get(1L, new Object[0]), 50, 32);
-				GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Brass, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 2L), GregtechItemList.Fluid_Cell_36L.get(1L, new Object[0]), 75, 32);
-				GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Invar, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 2L), GregtechItemList.Fluid_Cell_144L.get(1L, new Object[0]), 75, 32);
-
-			} else {
-				GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.WroughtIron, 4L), GregtechItemList.Fluid_Cell_1L.get(1L, new Object[0]), 50, 32);
-				GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Bronze, 4L), GregtechItemList.Fluid_Cell_16L.get(1L, new Object[0]), 50, 32);
-				GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Brass, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 4L), GregtechItemList.Fluid_Cell_36L.get(1L, new Object[0]), 75, 32);
-				GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Invar, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 4L), GregtechItemList.Fluid_Cell_144L.get(1L, new Object[0]), 75, 32);
-			}
+			this.setFluidContainerStats(32000 + tLastID, 1L, 64L);			
 		}
 
 
@@ -280,8 +267,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_MV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow(512));
 		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_HV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow(4096));
 		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_EV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[8][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow(32768));
-		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_IV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[8][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow(262144));
-
+		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_IV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[8][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow(262144));	
 
 		//Fusion Reactor MK4 Singularity
 		GregtechItemList.Compressed_Fusion_Reactor.set(this.addItem(100, "Hypervisor Matrix (Fusion)", "A memory unit containing an RI (Restricted Intelligence)", new Object[0]));
@@ -327,7 +313,30 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Farm_Processor_UV.set(this.addItem(tLastID = 128, "Farm Processor [UV]", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 8L), getTcAspectStack(TC_Aspects.POTENTIA, 8L)}));
 		this.setElectricStats(32000 + tLastID, GT_Values.V[9]* 10 * 60 * 20, GT_Values.V[8], 8L, -3L, false);
 		
-		
+		String aTierName;
+        int aFirstMachineCasingID = 130;
+        GregtechItemList[] mMachineCasingCovers = new GregtechItemList[] {
+                GregtechItemList.FakeMachineCasingPlate_ULV,
+                GregtechItemList.FakeMachineCasingPlate_LV,
+                GregtechItemList.FakeMachineCasingPlate_MV,
+                GregtechItemList.FakeMachineCasingPlate_HV,
+                GregtechItemList.FakeMachineCasingPlate_EV,
+                GregtechItemList.FakeMachineCasingPlate_IV,
+                GregtechItemList.FakeMachineCasingPlate_LuV,
+                GregtechItemList.FakeMachineCasingPlate_ZPM,
+                GregtechItemList.FakeMachineCasingPlate_UV,
+                GregtechItemList.FakeMachineCasingPlate_MAX,
+        };
+        for (int i=0;i<10;i++) {
+            if (i==10) {
+                break;
+            }
+            else {              
+                aTierName = GT_Values.VN[i];
+                mMachineCasingCovers[i].set(this.addItem(aFirstMachineCasingID++, aTierName+" Machine Plate Cover", "Looks visually like an "+aTierName+" machine casing, apply to pipe/cable as cover", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L)}));
+                GregTech_API.registerCover(mMachineCasingCovers[i].get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[i][0]}), new GTPP_Cover_VisualPlate());
+             }
+        }
 		
 		
 	}

@@ -1438,7 +1438,20 @@ public class RECIPES_GREGTECH {
 		}
 		
 
-		
+		if (!GTNH) {
+		    if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.WroughtIron, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.WroughtIron, 2L), GregtechItemList.Fluid_Cell_1L.get(1L, new Object[0]), 50, 32);
+                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Bronze, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Bronze, 2L), GregtechItemList.Fluid_Cell_16L.get(1L, new Object[0]), 50, 32);
+                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Brass, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 2L), GregtechItemList.Fluid_Cell_36L.get(1L, new Object[0]), 75, 32);
+                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Invar, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 2L), GregtechItemList.Fluid_Cell_144L.get(1L, new Object[0]), 75, 32);
+
+            } else {
+                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.WroughtIron, 4L), GregtechItemList.Fluid_Cell_1L.get(1L, new Object[0]), 50, 32);
+                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Bronze, 4L), GregtechItemList.Fluid_Cell_16L.get(1L, new Object[0]), 50, 32);
+                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Brass, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 4L), GregtechItemList.Fluid_Cell_36L.get(1L, new Object[0]), 75, 32);
+                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Invar, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 4L), GregtechItemList.Fluid_Cell_144L.get(1L, new Object[0]), 75, 32);
+            }
+		}
 
 
 
