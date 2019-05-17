@@ -35,6 +35,7 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
@@ -135,9 +136,21 @@ public class HANDLER_GT {
 	        removeOldHighTierCasingRecipes();		    
 		}		
 		RecipesToRemove.go();
+		convertPyroToCokeOven();
 	}
 
-	private static GT_Recipe replaceItemInRecipeWithAnother(GT_Recipe aRecipe, ItemStack aExisting, ItemStack aNewItem) {
+	private static void convertPyroToCokeOven() {
+        int aCount = 0;
+	    for (GT_Recipe g : GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes.mRecipeList) {
+	        if (AddGregtechRecipe.importPyroRecipe(g)) {
+	            aCount++;
+	        }
+	    }
+	    Logger.INFO("Converted "+aCount+" Pyrolyse recipes into Industrial Coke Oven recipes.");
+	    
+    }
+
+    private static GT_Recipe replaceItemInRecipeWithAnother(GT_Recipe aRecipe, ItemStack aExisting, ItemStack aNewItem) {
 	    ItemStack[] aInputItemsCopy = aRecipe.mInputs;
 	    String aOutputName = ItemUtils.getItemName(aRecipe.mOutputs[0]);
 	    boolean aDidChange = false;

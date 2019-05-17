@@ -23,10 +23,10 @@ public class RECIPES_SeleniumProcessing {
         processCopperRecipes();
         
         //Liquify the Dried Dioxide
-        AddGregtechRecipe.addCokeAndPyrolyseRecipes(MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1), 13, FluidUtils.getSteam(500), null, MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(1000), 120, 1024);
+        AddGregtechRecipe.addCokeAndPyrolyseRecipes(MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1), 13, FluidUtils.getSteam(500), null, MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(1000), 20, 1024);
         
         // Produce Selenious Acid        
-        AddGregtechRecipe.addCokeAndPyrolyseRecipes(MISC_MATERIALS.SELENIUM_DIOXIDE.getCell(1), 14, FluidUtils.getHotWater(4000), CI.emptyCells(1), MISC_MATERIALS.SELENIOUS_ACID.getFluid(1000), 120, 2048);
+        AddGregtechRecipe.addCokeAndPyrolyseRecipes(MISC_MATERIALS.SELENIUM_DIOXIDE.getCell(1), 14, FluidUtils.getHotWater(4000), CI.emptyCells(1), MISC_MATERIALS.SELENIOUS_ACID.getFluid(1000), 20, 2048);
         
         // Make Selenium        
         CORE.RA.addBlastSmelterRecipe(

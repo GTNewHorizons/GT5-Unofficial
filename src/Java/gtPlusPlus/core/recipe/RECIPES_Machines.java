@@ -2074,9 +2074,9 @@ public class RECIPES_Machines {
         };	    
 	    for (int i = 0;i<10;i++) {
 	        GT_Values.RA.addCutterRecipe(
-	                CI.getNumberedCircuit(18),
-	                CI.getTieredMachineCasing(i),
-	                mMachineCasingCovers[i].get(9),
+	                CI.getTieredMachineCasing(i),	                
+	                mMachineCasingCovers[i].get(5),
+	                null,
 	                20 * 5 * i,
 	                (int) GT_Values.V[i]);
 	    }	    
@@ -2111,11 +2111,11 @@ public class RECIPES_Machines {
 
 	    ItemStack[] mInputHatch = new ItemStack[] {
                 ItemList.Hatch_Input_Bus_EV.get(1),
-                ItemList.Hatch_Input_Bus_EV.get(1),
-                ItemList.Hatch_Input_Bus_EV.get(1),
-                ItemList.Hatch_Input_Bus_EV.get(1),
-                ItemList.Hatch_Input_Bus_EV.get(1),
-                ItemList.Hatch_Input_Bus_EV.get(1),
+                ItemList.Hatch_Input_Bus_IV.get(1),
+                ItemList.Hatch_Input_Bus_LuV.get(1),
+                ItemList.Hatch_Input_Bus_ZPM.get(1),
+                ItemList.Hatch_Input_Bus_UV.get(1),
+                ItemList.Hatch_Input_Bus_MAX.get(1),
                 GregtechItemList.Hatch_SuperBus_Input_ULV.get(1),
                 GregtechItemList.Hatch_SuperBus_Input_LV.get(1),
                 GregtechItemList.Hatch_SuperBus_Input_MV.get(1),
@@ -2124,11 +2124,11 @@ public class RECIPES_Machines {
 
         ItemStack[] mOutputHatch = new ItemStack[] {
                 ItemList.Hatch_Output_Bus_EV.get(1),
-                ItemList.Hatch_Output_Bus_EV.get(1),
-                ItemList.Hatch_Output_Bus_EV.get(1),
-                ItemList.Hatch_Output_Bus_EV.get(1),
-                ItemList.Hatch_Output_Bus_EV.get(1),
-                ItemList.Hatch_Output_Bus_EV.get(1),
+                ItemList.Hatch_Output_Bus_IV.get(1),
+                ItemList.Hatch_Output_Bus_LuV.get(1),
+                ItemList.Hatch_Output_Bus_ZPM.get(1),
+                ItemList.Hatch_Output_Bus_UV.get(1),
+                ItemList.Hatch_Output_Bus_MAX.get(1),
                 GregtechItemList.Hatch_SuperBus_Output_ULV.get(1),
                 GregtechItemList.Hatch_SuperBus_Output_LV.get(1),
                 GregtechItemList.Hatch_SuperBus_Output_MV.get(1),
