@@ -222,6 +222,8 @@ public class RECIPES_Machines {
 		wirelessChargers();
 		largeArcFurnace();
 		industrialVacuumFurnace();
+		fakeMachineCasingCovers();
+		superBuses();
 	}
 
 	private static void initModItems(){
@@ -2055,6 +2057,114 @@ public class RECIPES_Machines {
 				GregtechItemList.Controller_Vacuum_Furnace.get(1),					
 				60 * 20 * 12, 
 				MaterialUtils.getVoltageForTier(7));
+	}
+	
+	private static void fakeMachineCasingCovers() {	    
+	    GregtechItemList[] mMachineCasingCovers = new GregtechItemList[] {
+                GregtechItemList.FakeMachineCasingPlate_ULV,
+                GregtechItemList.FakeMachineCasingPlate_LV,
+                GregtechItemList.FakeMachineCasingPlate_MV,
+                GregtechItemList.FakeMachineCasingPlate_HV,
+                GregtechItemList.FakeMachineCasingPlate_EV,
+                GregtechItemList.FakeMachineCasingPlate_IV,
+                GregtechItemList.FakeMachineCasingPlate_LuV,
+                GregtechItemList.FakeMachineCasingPlate_ZPM,
+                GregtechItemList.FakeMachineCasingPlate_UV,
+                GregtechItemList.FakeMachineCasingPlate_MAX,
+        };	    
+	    for (int i = 0;i<10;i++) {
+	        GT_Values.RA.addCutterRecipe(
+	                CI.getNumberedCircuit(18),
+	                CI.getTieredMachineCasing(i),
+	                mMachineCasingCovers[i].get(9),
+	                20 * 5 * i,
+	                (int) GT_Values.V[i]);
+	    }	    
+	}
+	
+	private static void superBuses() {
+	    GregtechItemList[] mSuperBusesInput = new GregtechItemList[] {
+	            GregtechItemList.Hatch_SuperBus_Input_ULV,
+	            GregtechItemList.Hatch_SuperBus_Input_LV,
+	            GregtechItemList.Hatch_SuperBus_Input_MV,
+	            GregtechItemList.Hatch_SuperBus_Input_HV,
+	            GregtechItemList.Hatch_SuperBus_Input_EV,
+	            GregtechItemList.Hatch_SuperBus_Input_IV,
+	            GregtechItemList.Hatch_SuperBus_Input_LuV,
+	            GregtechItemList.Hatch_SuperBus_Input_ZPM,
+	            GregtechItemList.Hatch_SuperBus_Input_UV,
+	            GregtechItemList.Hatch_SuperBus_Input_MAX,
+	    };  
+
+	    GregtechItemList[] mSuperBusesOutput = new GregtechItemList[] {
+	            GregtechItemList.Hatch_SuperBus_Output_ULV,
+	            GregtechItemList.Hatch_SuperBus_Output_LV,
+	            GregtechItemList.Hatch_SuperBus_Output_MV,
+	            GregtechItemList.Hatch_SuperBus_Output_HV,
+	            GregtechItemList.Hatch_SuperBus_Output_EV,
+	            GregtechItemList.Hatch_SuperBus_Output_IV,
+	            GregtechItemList.Hatch_SuperBus_Output_LuV,
+	            GregtechItemList.Hatch_SuperBus_Output_ZPM,
+	            GregtechItemList.Hatch_SuperBus_Output_UV,
+	            GregtechItemList.Hatch_SuperBus_Output_MAX,
+	    };
+
+	    ItemStack[] mInputHatch = new ItemStack[] {
+                ItemList.Hatch_Input_Bus_EV.get(1),
+                ItemList.Hatch_Input_Bus_EV.get(1),
+                ItemList.Hatch_Input_Bus_EV.get(1),
+                ItemList.Hatch_Input_Bus_EV.get(1),
+                ItemList.Hatch_Input_Bus_EV.get(1),
+                ItemList.Hatch_Input_Bus_EV.get(1),
+                GregtechItemList.Hatch_SuperBus_Input_ULV.get(1),
+                GregtechItemList.Hatch_SuperBus_Input_LV.get(1),
+                GregtechItemList.Hatch_SuperBus_Input_MV.get(1),
+                GregtechItemList.Hatch_SuperBus_Input_HV.get(1),
+	    };
+
+        ItemStack[] mOutputHatch = new ItemStack[] {
+                ItemList.Hatch_Output_Bus_EV.get(1),
+                ItemList.Hatch_Output_Bus_EV.get(1),
+                ItemList.Hatch_Output_Bus_EV.get(1),
+                ItemList.Hatch_Output_Bus_EV.get(1),
+                ItemList.Hatch_Output_Bus_EV.get(1),
+                ItemList.Hatch_Output_Bus_EV.get(1),
+                GregtechItemList.Hatch_SuperBus_Output_ULV.get(1),
+                GregtechItemList.Hatch_SuperBus_Output_LV.get(1),
+                GregtechItemList.Hatch_SuperBus_Output_MV.get(1),
+                GregtechItemList.Hatch_SuperBus_Output_HV.get(1),
+        };
+        
+        //Input Buses
+        for (int i = 0; i < 10; i++) {
+            CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+                    CI.getNumberedCircuit(16),
+                    mInputHatch[i],
+                    CI.getElectricMotor(i, GTNH ? 8 : 2),
+                    CI.getConveyor(i, GTNH ? 10 : 5),
+                    CI.getGear(i, GTNH ? 6 : 3),
+                    CI.getTieredComponent(OrePrefixes.circuit, i, GTNH ? 4 : 2)                   
+            },
+                    CI.getAlternativeTieredFluid(i, 144 * 8),
+                    mSuperBusesInput[i].get(1), 20 * 30 * 2 * i,
+                    (int) GT_Values.V[i]);
+        }
+        //Output Buses
+        for (int i = 0; i < 10; i++) {
+            CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+                    CI.getNumberedCircuit(18),
+                    mOutputHatch[i],
+                    CI.getElectricPiston(i, GTNH ? 8 : 2),
+                    CI.getConveyor(i, GTNH ? 10 : 5),
+                    CI.getGear(i, GTNH ? 6 : 3),
+                    CI.getTieredComponent(OrePrefixes.circuit, i, GTNH ? 4 : 2)                   
+            },
+                    CI.getTertiaryTieredFluid(i, 144 * 8),
+                    mSuperBusesOutput[i].get(1), 20 * 30 * 2 * i,
+                    (int) GT_Values.V[i]);
+        }
+        
+
 	}
 	
 }
