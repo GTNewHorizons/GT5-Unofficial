@@ -106,6 +106,11 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 	public boolean checkRecipe(final ItemStack aStack) {
 		//this.setElectricityStats();
 
+	    
+	    if (true) {
+	        return false;
+	    }
+	    
 		boolean[] didWork = new boolean[5];
 		
 		if (!this.tryConsumeDrillingFluid()) {
