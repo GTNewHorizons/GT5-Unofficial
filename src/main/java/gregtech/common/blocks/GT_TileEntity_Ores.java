@@ -219,6 +219,8 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             return rList;
         }
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
+     // Everyone gets a free small fortune boost
+        aFortune += 1;
         if (!this.mNatural) {
             aFortune = 0;
         }
