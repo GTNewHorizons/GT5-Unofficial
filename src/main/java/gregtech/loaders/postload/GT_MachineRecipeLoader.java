@@ -1569,6 +1569,10 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_HV.get(1L, new Object[0]), 50, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_MAX.get(1L, new Object[0]), 50, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Phoenixite, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_UEV.get(1L, new Object[0]), 50, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_UIV.get(1L, new Object[0]), 50, 16);
+        if (Loader.isModLoaded("DraconicEvolution")){
+        	GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_UMV.get(1L, new Object[0]), 50, 16);	
+        }
         if (GT_Mod.gregtechproxy.mGTPlusPlusHard) {
         	GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("plateStaballoy", 8), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_EV.get(1L, new Object[0]), 50, 16);
             GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("plateHastelloyC276", 8), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_IV.get(1L, new Object[0]), 50, 16);
@@ -1634,7 +1638,7 @@ if(Loader.isModLoaded("Railcraft")){
             }else {
             GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 2L), ItemList.Casing_UEV.get(1L, new Object[0]), Materials.PerroxPolymer.getMolten(288), ItemList.Hull_UEV.get(1L, new Object[0]), 50, 8000000);
             }
-            GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Neutronium, 2L), ItemList.Casing_UIV.get(1L, new Object[0]), Materials.PerroxPolymer.getMolten(288), ItemList.Hull_UIV.get(1L, new Object[0]), 50, 32000000);
+            GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Neutronium, 2L), ItemList.Casing_UIV.get(1L, new Object[0]), Materials.PerroxPolymer.getMolten(288), ItemList.Hull_UIV.get(1L, new Object[0]), 50, 32000000);
             GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 2L), ItemList.Casing_UMV.get(1L, new Object[0]), Materials.PerroxPolymer.getMolten(576), ItemList.Hull_UMV.get(1L, new Object[0]), 50, 128000000);
         } else {
             GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Lead, 2L), ItemList.Casing_ULV.get(1L, new Object[0]),ItemList.Hull_ULV.get(1L, new Object[0]), 25, 8);
