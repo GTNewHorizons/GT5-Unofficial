@@ -23,7 +23,7 @@ public enum CustomItemList implements IItemContainer {
     Transformer_HA_UEV_UHV,Transformer_HA_UIV_UEV,Transformer_HA_UMV_UIV,Transformer_HA_UXV_UMV,
     Transformer_HA_OPV_UXV,Transformer_HA_MAXV_OPV,
 
-    hatch_CreativeMaitenance,
+    hatch_CreativeMaitenance,hatch_CreativeData,
     Machine_OwnerDetector,Machine_DataReader,
     Machine_BuckConverter_IV,Machine_BuckConverter_LuV,Machine_BuckConverter_ZPM,
     Machine_BuckConverter_UV,Machine_BuckConverter_UHV,Machine_BuckConverter_UEV,

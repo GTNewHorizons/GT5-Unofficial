@@ -1,7 +1,6 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.templates;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.technus.tectech.Util.areBitsSet;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.null__;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
@@ -212,23 +212,23 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
 
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
+        if(areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
             lines.add("CLASS = " + nbtType + ' ' + getClassType());
         }
-        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
+        if(areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add("NAME = "+getName());
             lines.add("SYMBOL = "+getSymbol());
         }
-        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities)) {
+        if(areBitsSet(SCAN_GET_CHARGE,capabilities)) {
             lines.add("CHARGE = " + getCharge() / 3f + " e");
         }
-        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities)) {
+        if(areBitsSet(SCAN_GET_COLOR,capabilities)) {
             lines.add(getColor() < 0 ? "COLORLESS" : "CARRIES COLOR");
         }
-        if(Util.areBitsSet(SCAN_GET_MASS,capabilities)) {
+        if(areBitsSet(SCAN_GET_MASS,capabilities)) {
             lines.add("MASS = " + getMass() + " eV/c\u00b2");
         }
-        if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
+        if(areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
             lines.add((isTimeSpanHalfLife()?"HALF LIFE = ":"LIFE TIME = ")+getRawTimeSpan(energyLevel)+ " s");
             lines.add("    "+"At current energy level");
         }

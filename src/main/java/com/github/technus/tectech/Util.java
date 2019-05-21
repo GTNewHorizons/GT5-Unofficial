@@ -1443,4 +1443,11 @@ public final class Util {
         crafter.sendProgressBarUpdate(container, startIndex++, (int)(value & 0xFFFFL));
         crafter.sendProgressBarUpdate(container, startIndex, (value & 0xFFFF0000)>>>16);
     }
+
+    public static String doubleToString(double value){
+        if(value==(long)value){
+            return Long.toString((long)value);
+        }
+        return Double.toString(value);
+    }
 }

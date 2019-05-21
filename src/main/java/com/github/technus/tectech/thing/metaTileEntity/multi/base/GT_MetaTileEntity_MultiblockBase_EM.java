@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.Vec3pos;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
@@ -440,9 +441,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.YELLOW+ ":" +
                 EnumChatFormatting.AQUA+paramID +
                 EnumChatFormatting.YELLOW+ ":"+
-                EnumChatFormatting.AQUA+"I");
+                EnumChatFormatting.AQUA+"I  "+parametrization.getStatusIn(hatchNo, paramID).name);
         list.add(EnumChatFormatting.WHITE+"Value: "+
-                EnumChatFormatting.AQUA+parametrization.getIn(hatchNo,paramID));
+                EnumChatFormatting.AQUA+ Util.doubleToString(parametrization.getIn(hatchNo,paramID)));
         try{
             list.add(parametrization.groups[hatchNo].parameterIn[paramID].getBrief());
         }catch (NullPointerException|IndexOutOfBoundsException e){
@@ -464,9 +465,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.YELLOW+ ":" +
                 EnumChatFormatting.AQUA+paramID +
                 EnumChatFormatting.YELLOW+ ":"+
-                EnumChatFormatting.AQUA+"O");
+                EnumChatFormatting.AQUA+"O "+parametrization.getStatusOut(hatchNo, paramID).name);
         list.add(EnumChatFormatting.WHITE+"Value: "+
-                EnumChatFormatting.AQUA+parametrization.getOut(hatchNo,paramID));
+                EnumChatFormatting.AQUA+Util.doubleToString(parametrization.getOut(hatchNo,paramID)));
         try{
             list.add(parametrization.groups[hatchNo].parameterOut[paramID].getBrief());
         }catch (NullPointerException|IndexOutOfBoundsException e){

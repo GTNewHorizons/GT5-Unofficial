@@ -126,7 +126,7 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             }
             var1.sendProgressBarUpdate(this, 120, eCertainMode | (eCertainStatus << 8));
             var1.sendProgressBarUpdate(this, 121, (ePowerPass ? 1 : 0) + (eSafeVoid ? 2 : 0) + (allowedToWork ? 4 : 0));
-            for(int i=124,k=204,j=0;j<20;j++,i+=4,k+=4) {
+            for(int i=128,k=208,j=0;j<20;j++,i+=4,k+=4) {
                 Util.sendDouble(eParamsOut[j], this, var1, i);
                 Util.sendDouble(eParamsIn[j], this, var1, k);
             }
@@ -149,11 +149,11 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             ePowerPass = (par2 & 1) == 1;
             eSafeVoid = (par2 & 2) == 2;
             allowedToWork = (par2 & 4) == 4;
-        } else if(par1>=130 && par1<210){
-            int pos=(par1-130)>>2;
+        } else if(par1>=128 && par1<208){
+            int pos=(par1-128)>>2;
             eParamsIn[pos]=Util.receiveDouble(eParamsIn[pos],par1&0xFFFFFFFC,par1,par2);
-        }else if(par1>=210 && par1<290){
-            int pos=(par1-210)>>2;
+        }else if(par1>=208 && par1<288){
+            int pos=(par1-208)>>2;
             eParamsIn[pos]=Util.receiveDouble(eParamsIn[pos],par1&0xFFFFFFFC,par1,par2);
         }
     }

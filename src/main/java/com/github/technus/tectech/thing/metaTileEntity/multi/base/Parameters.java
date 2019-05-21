@@ -28,6 +28,14 @@ public class Parameters {
         return iParamsOut[hatchNo+10*parameterId];
     }
 
+    LedStatus getStatusIn(int hatchNo,int parameterId){
+        return eParamsInStatus[hatchNo+10*parameterId];
+    }
+
+    LedStatus getStatusOut(int hatchNo,int parameterId){
+        return eParamsOutStatus[hatchNo+10*parameterId];
+    }
+
     private final GT_MetaTileEntity_MultiblockBase_EM parent;
 
     Parameters(GT_MetaTileEntity_MultiblockBase_EM parent){
