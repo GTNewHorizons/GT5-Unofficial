@@ -1796,6 +1796,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         generateFluidPipes(Materials.Duranium, Materials.Duranium.mName, 5360, 12400, 1000000, true);
         generateFluidPipes(Materials.Polybenzimidazole, Materials.Polybenzimidazole.mName, "PBI", 5370, 600, 1000, true);
         generateFluidPipes(Materials.Infuscolium, Materials.Infuscolium.mName, 5380, 14600, 1000000, true);
+        generateFluidPipes(Materials.DraconiumAwakened, Materials.DraconiumAwakened.mName, 5390, 45000, 10000000, true);
         
         GT_OreDictUnificator.registerOre(OrePrefixes.pipeSmall.get(Materials.Ultimate), new GT_MetaPipeEntity_Fluid(5165, "GT_Pipe_HighPressure_Small", "Small High Pressure Fluid Pipe", 0.375F, Materials.Redstone, 4800, 1500, true).getStackForm(1L));
         GT_OreDictUnificator.registerOre(OrePrefixes.pipeMedium.get(Materials.Ultimate), new GT_MetaPipeEntity_Fluid(5166, "GT_Pipe_HighPressure", "High Pressure Fluid Pipe", 0.5F, Materials.Redstone, 7200, 1500, true).getStackForm(1L));
@@ -1822,6 +1823,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         generateFluidMultiPipes(Materials.NetherStar, Materials.NetherStar.mName, "Nether Star", 5425, 19200, 1000000, true);
         generateFluidMultiPipes(Materials.Duranium, Materials.Duranium.mName, "Duranium", 5430, 12400, 1000000, true);
         generateFluidMultiPipes(Materials.Polybenzimidazole, Materials.Polybenzimidazole.mName, "PBI", 5435, 600, 1000, true);
+        generateFluidMultiPipes(Materials.DraconiumAwakened, Materials.DraconiumAwakened.mName, "Awakened Draconium", 5440, 45000, 10000000, true);
         
         generateFluidMultiPipes(Materials.Plastic, Materials.Plastic.mName, "Plastic", 5230, 360, 350, true);
         generateFluidMultiPipes(Materials.Polytetrafluoroethylene, Materials.Polytetrafluoroethylene.mName, "PTFE", 5235, 480, 600, true);
