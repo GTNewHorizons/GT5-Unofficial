@@ -292,8 +292,9 @@ public class WerkstoffLoader implements Runnable {
     public static final Werkstoff Thorianit = new Werkstoff(
             new short[]{0x30, 0x30, 0x30, 0},
             "Thorianite",
+            new Werkstoff.Stats().setElektrolysis(true),
             Werkstoff.Types.COMPOUND,
-            new Werkstoff.GenerationFeatures().addChemicalRecipes(),
+            new Werkstoff.GenerationFeatures(),
             18,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Thorium),
