@@ -930,11 +930,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Iron					.setSmeltingInto(Iron				).setMaceratingInto(Iron			).setArcSmeltingInto(WroughtIron		);
         AnyIron					.setSmeltingInto(Iron				).setMaceratingInto(Iron			).setArcSmeltingInto(WroughtIron		);
         PigIron					.setSmeltingInto(Iron				).setMaceratingInto(Iron			).setArcSmeltingInto(WroughtIron		);
-        WroughtIron				.setSmeltingInto(Iron				).setMaceratingInto(Iron			).setArcSmeltingInto(WroughtIron		);
+        WroughtIron				.setSmeltingInto(WroughtIron		).setMaceratingInto(WroughtIron		).setArcSmeltingInto(WroughtIron		);
         IronMagnetic			.setSmeltingInto(Iron				).setMaceratingInto(Iron			).setArcSmeltingInto(WroughtIron		);
         Copper					.setSmeltingInto(Copper				).setMaceratingInto(Copper			).setArcSmeltingInto(AnnealedCopper		);
         AnyCopper				.setSmeltingInto(Copper				).setMaceratingInto(Copper			).setArcSmeltingInto(AnnealedCopper		);
-        AnnealedCopper			.setSmeltingInto(Copper				).setMaceratingInto(Copper			).setArcSmeltingInto(AnnealedCopper		);
+        AnnealedCopper			.setSmeltingInto(AnnealedCopper		).setMaceratingInto(AnnealedCopper	).setArcSmeltingInto(AnnealedCopper		);
         EuropiumoxideMagnetic	.setSmeltingInto(Europiumoxide		).setMaceratingInto(Europiumoxide	).setArcSmeltingInto(Europiumoxide		);
         Netherrack				.setSmeltingInto(NetherBrick		);
         MeatRaw					.setSmeltingInto(MeatCooked			);
