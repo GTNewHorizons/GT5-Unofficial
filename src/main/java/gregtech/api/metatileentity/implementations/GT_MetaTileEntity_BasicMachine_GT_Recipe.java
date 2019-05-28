@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import gregtech.GT_Mod;
 import gregtech.api.enums.*;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
@@ -24,6 +25,11 @@ import java.util.Random;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
 
+import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.Material;
+
+
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
@@ -37,6 +43,30 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     private final boolean mSharedTank, mRequiresFluidForFiltering;
     private final byte mGUIParameterA, mGUIParameterB;
 
+    public static String rotorTumbaga= "rotorTumbaga";
+    public static String rotorPotin= "rotorPotin";
+    public static String rotorEglinSteel= "rotorEglinSteel";
+    public static String rotorHastelloyW= "rotorHastelloyW";
+	public static String rotorStellite= "rotorStellite";
+	public static String rotorNitinol60= "rotorNitinol60";
+	public static String rotorTriniumNaquadahCarbonite= "rotorTriniumNaquadahCarbonite";
+	public static String rotorArceusAlloy2B= "rotorArceusAlloy2B";
+	public static String rotorCinobiteA243= "rotorCinobiteA243";
+	public static String rotorAbyssalAlloy= "rotorAbyssalAlloy";
+	public static String rotorQuantum= "rotorQuantum";
+	
+	public static String plateTumbaga= "plateTumbaga";
+    public static String platePotin= "platePotin";
+    public static String plateEglinSteel= "plateEglinSteel";
+    public static String plateHastelloyW= "plateHastelloyW";
+	public static String plateStellite= "plateStellite";
+	public static String plateNitinol60= "plateNitinol60";
+	public static String plateTriniumNaquadahCarbonite= "plateTriniumNaquadahCarbonite";
+	public static String plateArceusAlloy2B= "plateArceusAlloy2B";
+	public static String plateCinobiteA243= "plateCinobiteA243";
+	public static String plateAbyssalAlloy= "plateAbyssalAlloy";
+	public static String plateQuantum= "plateQuantum";
+	
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier, String aDescription, GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, int aGUIParameterA, int aGUIParameterB, String aGUIName, String aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, int aSpecialEffect, String aOverlays, Object[] aRecipe) {
         super(aID, aName, aNameRegional, aTier, aRecipes.mAmperage, aDescription, aInputSlots, aOutputSlots, aGUIName, aRecipes.mNEIName, new ITexture[]{new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM"))});
         mSharedTank = aSharedTank;
@@ -85,41 +115,83 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     continue;
                 }
 
+                if (GT_Mod.gregtechproxy.mGTPlusPlusHard) {
                 if (aRecipe[i] == X.PLATE) {
                     switch (mTier) {
                         case 0:
                         case 1:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.Steel);
+                            aRecipe[i] = "plateTumbaga";
                             break;
                         case 2:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.Aluminium);
+                            aRecipe[i] = "platePotin";
                             break;
                         case 3:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.StainlessSteel);
+                            aRecipe[i] = "plateEglinSteel";
                             break;
                         case 4:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.Titanium);
+                            aRecipe[i] = "plateHastelloyW";
                             break;
                         case 5:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.TungstenSteel);
+                            aRecipe[i] = "plateStellite";
                             break;
                         case 6:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.HSSG);
+                            aRecipe[i] = "plateNitinol60";
                             break;
                         case 7:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.HSSE);
+                            aRecipe[i] = "plateTriniumNaquadahCarbonite";
                             break;
                         case 8:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.Europium);
+                            aRecipe[i] = "plateArceusAlloy2B";
                             break;
                         case 9:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.Tritanium);
+                            aRecipe[i] = "plateCinobiteA243";
+                            break;
+                        case 10:
+                            aRecipe[i] = "plateAbyssalAlloy";
                             break;
                         default:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.Neutronium);
+                            aRecipe[i] = "plateQuantum";
                             break;
                     }
                     continue;
+                }
+                }else {
+                	if (aRecipe[i] == X.PLATE) {
+                        switch (mTier) {
+                            case 0:
+                            case 1:
+                                aRecipe[i] = OrePrefixes.plate.get(Materials.Steel);
+                                break;
+                            case 2:
+                                aRecipe[i] = OrePrefixes.plate.get(Materials.Aluminium);
+                                break;
+                            case 3:
+                                aRecipe[i] = OrePrefixes.plate.get(Materials.StainlessSteel);
+                                break;
+                            case 4:
+                                aRecipe[i] = OrePrefixes.plate.get(Materials.Titanium);
+                                break;
+                            case 5:
+                                aRecipe[i] = OrePrefixes.plate.get(Materials.TungstenSteel);
+                                break;
+                            case 6:
+                                aRecipe[i] = OrePrefixes.plate.get(Materials.HSSG);
+                                break;
+                            case 7:
+                                aRecipe[i] = OrePrefixes.plate.get(Materials.HSSE);
+                                break;
+                            case 8:
+                                aRecipe[i] = OrePrefixes.plate.get(Materials.Europium);
+                                break;
+                            case 9:
+                                aRecipe[i] = OrePrefixes.plate.get(Materials.Neutronium);
+                                break;
+                            default:
+                                aRecipe[i] = OrePrefixes.plate.get(Materials.Phoenixite);
+                                break;
+                        }
+                        continue;
+                    }
                 }
 
                 if (aRecipe[i] == X.PIPE) {
@@ -150,7 +222,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Naquadah);
                             break;
                         case 9:
-                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.NetherStar);
+                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Infuscolium);
                             break;
                         default:
                             aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Neutronium);
@@ -199,7 +271,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Quantium);
                             break;
                         default:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Quantium);
+                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.BlackPlutonium);
                             break;
                     }
                     continue;
@@ -245,7 +317,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Quantium);
                             break;
                         default:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Quantium);
+                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.BlackPlutonium);
                             break;
                     }
                     continue;
@@ -385,7 +457,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Quantium);
                             break;
                         default:
-                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Quantium);
+                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.BlackPlutonium);
                             break;
                     }
                     continue;
@@ -465,44 +537,86 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     continue;
                 }
 
+                if (GT_Mod.gregtechproxy.mGTPlusPlusHard) {
                 if (aRecipe[i] == X.ROTOR) {
                     switch (mTier) {
                         case 0:
                         case 1:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Tin);
+                            aRecipe[i] = "rotorTumbaga";
                             break;
                         case 2:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Bronze);
+                            aRecipe[i] = "rotorPotin";
                             break;
                         case 3:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Steel);
+                            aRecipe[i] = "rotorEglinSteel";
                             break;
                         case 4:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.StainlessSteel);
+                            aRecipe[i] = "rotorHastelloyW";
                             break;
                         case 5:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.TungstenSteel);
+                            aRecipe[i] = "rotorStellite";
                             break;
                         case 6:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Chrome);
+                            aRecipe[i] = "rotorNitinol60";
                             break;
                         case 7:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Iridium);
+                            aRecipe[i] = "rotorTriniumNaquadahCarbonite";
                             break;
                         case 8:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Osmium);
+                            aRecipe[i] = "rotorArceusAlloy2B";
                             break;
                         case 9:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Europium);
+                            aRecipe[i] = "rotorCinobiteA243";
                             break;
                         case 10:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Tritanium);
+                            aRecipe[i] = "rotorAbyssalAlloy";
                             break;
                         default:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Neutronium);
+                            aRecipe[i] = "rotorQuantum";
                             break;
                     }
                     continue;
+                }
+                }else {
+                	if (aRecipe[i] == X.ROTOR) {
+                        switch (mTier) {
+                            case 0:
+                            case 1:
+                                aRecipe[i] = OrePrefixes.rotor.get(Materials.Tin);
+                                break;
+                            case 2:
+                                aRecipe[i] = OrePrefixes.rotor.get(Materials.Bronze);
+                                break;
+                            case 3:
+                                aRecipe[i] = OrePrefixes.rotor.get(Materials.Steel);
+                                break;
+                            case 4:
+                                aRecipe[i] = OrePrefixes.rotor.get(Materials.StainlessSteel);
+                                break;
+                            case 5:
+                                aRecipe[i] = OrePrefixes.rotor.get(Materials.TungstenSteel);
+                                break;
+                            case 6:
+                                aRecipe[i] = OrePrefixes.rotor.get(Materials.Chrome);
+                                break;
+                            case 7:
+                                aRecipe[i] = OrePrefixes.rotor.get(Materials.Iridium);
+                                break;
+                            case 8:
+                                aRecipe[i] = OrePrefixes.rotor.get(Materials.Osmium);
+                                break;
+                            case 9:
+                                aRecipe[i] = OrePrefixes.rotor.get(Materials.NaquadahAlloy);
+                                break;
+                            case 10:
+                                aRecipe[i] = OrePrefixes.rotor.get(Materials.Neutronium);
+                                break;
+                            default:
+                                aRecipe[i] = OrePrefixes.rotor.get(Materials.Phoenixite);
+                                break;
+                        }
+                        continue;
+                    }
                 }
 
                 if (aRecipe[i] == X.MOTOR) {
