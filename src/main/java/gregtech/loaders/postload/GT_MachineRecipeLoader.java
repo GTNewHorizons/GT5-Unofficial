@@ -4478,6 +4478,13 @@ if(Loader.isModLoaded("Railcraft")){
            GT_Values.RA.addMixerRecipe(new ItemStack(Blocks.dirt, 1, 32767), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 4L), GT_Utility.getIntegratedCircuit(1),  GT_Values.NI, GT_Values.NF, Materials.Water.getFluid(100), GT_ModHandler.getModItem(aTextForestry, "fertilizerBio", 1L, 0), 200, 16);
            GT_Values.RA.addMixerRecipe(new ItemStack(Blocks.dirt, 1, 3), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 4L), GT_Utility.getIntegratedCircuit(1),  GT_Values.NI, GT_Values.NF, Materials.Water.getFluid(100), GT_ModHandler.getModItem(aTextForestry, "fertilizerBio", 1L, 0), 200, 16);
            
+		// --- Mobloot
+           GT_Values.RA.addChemicalRecipe(Materials.Beryllium.getDust(1),Materials.Potassium.getDust(4),Materials.Nitrogen.getGas(5000), null, Materials.EnderPearl.getDust(10), null, 400, 120);
+           GT_Values.RA.addChemicalRecipe(Materials.DarkAsh.getDust(1),Materials.Sulfur.getDust(1),null, null, Materials.Blaze.getDust(2), null, 200, 30);
+           GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ball.get(0L), new FluidStack(FluidRegistry.getFluid("ender"), 250), new ItemStack(Items.ender_pearl,1,0), 100, 30);
+           GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 1L), Materials.Water.getFluid(100), new ItemStack(Items.ender_pearl, 1, 0), 8000, 1500, 30);
+           GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 1L), GT_ModHandler.getDistilledWater(100L), new ItemStack(Items.ender_pearl, 1, 0), 9000, 1200, 30);
+
     	//Galacticraft stones
 		if(Loader.isModLoaded("GalacticraftCore")){
     	   GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("GalacticraftCore", "tile.moonBlock", 1L, 3), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Moon, 1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.SiliconDioxide, 1)}, new int[]{10000, 5000}, 400, 30);
