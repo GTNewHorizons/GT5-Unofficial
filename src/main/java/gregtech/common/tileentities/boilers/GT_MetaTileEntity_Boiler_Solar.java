@@ -6,6 +6,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.gui.GT_Container_Boiler;
 import gregtech.common.gui.GT_GUIContainer_Boiler;
@@ -18,11 +19,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class GT_MetaTileEntity_Boiler_Solar
         extends GT_MetaTileEntity_Boiler {
     public GT_MetaTileEntity_Boiler_Solar(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, new String[]{
-                "Steam Power by the Sun",
-                "Produces 120L of Steam per second",
-                "Calcifies over time, reducing Steam output to 40L/s",
-                "Break and replace to decalcify"});
+        super(aID, aName, aNameRegional, new String[0]);
     }
 
     public GT_MetaTileEntity_Boiler_Solar(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -32,6 +29,16 @@ public class GT_MetaTileEntity_Boiler_Solar
     public GT_MetaTileEntity_Boiler_Solar(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
+
+    @Override
+    public String[] getDescription() {
+        return new String[]{
+                "Steam Power by the Sun",
+                "Produces 120L of Steam per second",
+                "Calcifies over time, reducing Steam output to 40L/s",
+                "Break and replace to decalcify"};
+    }
+
 
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[4][17][];
@@ -67,9 +74,9 @@ public class GT_MetaTileEntity_Boiler_Solar
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Boiler_Solar(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
-
+    
     private int mRunTime = 0;
-
+    
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
@@ -82,6 +89,10 @@ public class GT_MetaTileEntity_Boiler_Solar
         this.mRunTime = aNBT.getInteger("mRunTime");
     }
 
+    protected int basicOutput = 150;
+    protected int basicMaxOuput = 50;
+    protected int basicTemperatureMod = 1;
+
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if ((aBaseMetaTileEntity.isServerSide()) && (aTick > 20L)) {
             if (this.mTemperature <= 20) {
@@ -89,7 +100,7 @@ public class GT_MetaTileEntity_Boiler_Solar
                 this.mLossTimer = 0;
             }
             if (++this.mLossTimer > 45) {
-                this.mTemperature -= 1;
+                this.mTemperature -= basicTemperatureMod;
                 this.mLossTimer = 0;
             }
             if (this.mSteam != null) {
@@ -111,14 +122,15 @@ public class GT_MetaTileEntity_Boiler_Solar
                         this.mHadNoWater = true;
                     } else {
                         if (this.mHadNoWater) {
+                            GT_Log.exp.println("Boiler "+this.mName+" had no Water!");
                             aBaseMetaTileEntity.doExplosion(2048L);
                             return;
                         }
-                        this.mFluid.amount -= 1;
+                        this.mFluid.amount -= basicTemperatureMod;
                         mRunTime += 1;
-                        int tOutput = 150;
+                        int tOutput = basicOutput;
                         if (mRunTime > 10000) {
-                            tOutput = Math.max(50, 150 - ((mRunTime - 10000) / 100));
+                            tOutput = Math.max(basicMaxOuput, basicOutput - ((mRunTime - 10000) / 100));
                         }
                         if (this.mSteam == null) {
                             this.mSteam = GT_ModHandler.getSteam(tOutput);
@@ -133,17 +145,17 @@ public class GT_MetaTileEntity_Boiler_Solar
                 }
             }
             if ((this.mSteam != null) &&
-                    (this.mSteam.amount > 16000)) {
+                    (this.mSteam.amount > this.getCapacity())) {
                 sendSound((byte) 1);
-                this.mSteam.amount = 12000;
+                this.mSteam.amount = 3*(this.getCapacity()/4);
             }
             if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) && (aTick % 256L == 0L) && (!aBaseMetaTileEntity.getWorld().isThundering())) {
                 boolean bRain = aBaseMetaTileEntity.getWorld().isRaining() && aBaseMetaTileEntity.getBiome().rainfall > 0.0F;
-                mProcessingEnergy += bRain && aBaseMetaTileEntity.getWorld().skylightSubtracted >= 4 || !aBaseMetaTileEntity.getSkyAtSide((byte) 1) ? 0 : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8 : 1;
+                mProcessingEnergy += bRain && aBaseMetaTileEntity.getWorld().skylightSubtracted >= 4 || !aBaseMetaTileEntity.getSkyAtSide((byte) 1) ? 0 : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8*basicTemperatureMod : basicTemperatureMod;
             }
             if ((this.mTemperature < 500) && (this.mProcessingEnergy > 0) && (aTick % 12L == 0L)) {
-                this.mProcessingEnergy -= 1;
-                this.mTemperature += 1;
+                this.mProcessingEnergy -= basicTemperatureMod;
+                this.mTemperature += basicTemperatureMod;
             }
             aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
         }
