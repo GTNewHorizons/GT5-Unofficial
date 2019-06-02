@@ -29,27 +29,42 @@ import net.minecraftforge.common.config.Configuration;
 import java.util.Arrays;
 
 public class ConfigHandler {
+
     private static final int IDU = 10 * 8 + 5;
-    public static int IDOffset = 12600;
-    public static boolean teslastaff;
-    public static long energyPerCell = 1000000L;
-    public static boolean newStuff = true;
-    public static boolean BioLab = true;
     public static Configuration c;
-    public static boolean DEHPDirectSteam;
+
+    public static int IDOffset = 12600;
     public static int megaMachinesMax = 256;
     public static int mbWaterperSec = 150;
     public static int ross128BID = -64;
     public static int ross128BAID = -63;
+    public static int ross128btier = 3;
+    public static int ross128batier = 3;
+    public static int landerType = 3;
+    public static int ross128bRuinChance = 512;
+
+    public static long energyPerCell = 1000000L;
+
+    public static boolean newStuff = true;
+    public static boolean BioLab = true;
     public static boolean Ross128Enabled = true;
-    public static boolean debugLog;
+
+    public static boolean DEHPDirectSteam;
+    public static boolean teslastaff;
     public static boolean experimentalThreadedLoader;
     public static boolean GTNH;
     public static boolean ezmode;
-    public static boolean[] enabledPatches ;
+
+    //One-Side-Only
+    public static boolean debugLog;
+    public static boolean tooltips = true;
+    public static boolean[] enabledPatches;
+
+
     public ConfigHandler(Configuration C) {
         ConfigHandler.c = C;
 
+        ConfigHandler.tooltips = ConfigHandler.c.get("System", "BartWorksToolTips", true, "If you wish to enable extra tooltips").getBoolean(true);
         ConfigHandler.IDOffset = ConfigHandler.c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + ConfigHandler.IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").getInt(12600);
         ConfigHandler.energyPerCell = ConfigHandler.c.get("Multiblocks", "energyPerLESUCell", 1000000, "This will set Up the Energy per LESU Cell", 1000000, Integer.MAX_VALUE).getInt(1000000);
         ConfigHandler.ezmode = ConfigHandler.c.get("System", "Mode switch", false, "If GTNH is Loaded, this will enable easy recipes, if not, it will enable harder recipes.").getBoolean(false);
@@ -74,9 +89,11 @@ public class ConfigHandler {
 
         ConfigHandler.ross128BID = ConfigHandler.c.get("CrossMod Interactions", "DimID - Ross128b", -64, "The Dim ID for Ross128b").getInt(-64);
         ConfigHandler.ross128BAID = ConfigHandler.c.get("CrossMod Interactions", "DimID - Ross128ba", -63, "The Dim ID for Ross128ba (Ross128b's Moon)").getInt(-63);
-
+        ConfigHandler.ross128btier = ConfigHandler.c.get("CrossMod Interactions", "Rocket Tier - Ross128b", 3, "The Rocket Tier for Ross128b").getInt(3);
+        ConfigHandler.ross128batier = ConfigHandler.c.get("CrossMod Interactions", "Rocket Tier - Ross128ba", 3, "The Rocket Tier for Ross128a").getInt(3);
+        ConfigHandler.ross128bRuinChance = ConfigHandler.c.get("CrossMod Interactions", "Ruin Chance - Ross128b", 512, "Higher Values mean lesser Ruins.").getInt(512);
         ConfigHandler.Ross128Enabled = ConfigHandler.c.get("CrossMod Interactions", "Galacticraft - Activate Ross128 System", true, "If the Ross128 System should be activated").getBoolean(true);
-
+        ConfigHandler.landerType = ConfigHandler.c.get("CrossMod Interactions", "LanderType", 3, "1 = Moon Lander, 2 = Landing Balloons, 3 = Asteroid Lander").getInt(3);
         ConfigHandler.setUpComments();
 
         if (ConfigHandler.c.hasChanged())

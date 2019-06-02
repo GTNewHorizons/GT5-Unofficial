@@ -45,20 +45,19 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.*;
+import ic2.api.recipe.IRecipeInput;
+import ic2.api.recipe.RecipeInputOreDict;
+import ic2.api.recipe.RecipeOutput;
+import ic2.api.recipe.Recipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static gregtech.api.enums.OrePrefixes.*;
 
@@ -608,9 +607,29 @@ public class WerkstoffLoader implements Runnable {
         GameRegistry.registerTileEntity(BW_MetaGeneratedOreTE.class, "bw.blockoresTE");
         WerkstoffLoader.BWOres = new BW_MetaGenerated_Ores(Material.rock, BW_MetaGeneratedOreTE.class, "bw.blockores");
         GameRegistry.registerBlock(WerkstoffLoader.BWOres, BW_MetaGeneratedOre_Item.class, "bw.blockores.01");
+        runGTItemDataRegistrator();
+    }
+
+    public static void runGTItemDataRegistrator(){
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             if (werkstoff.getGenerationFeatures().hasOres())
                 GT_OreDictUnificator.setItemData(new ItemStack(WerkstoffLoader.BWOres,1,werkstoff.getmID()), new ItemData(ore,Materials._NULL));
+        }
+    }
+
+    public static void removeIC2Recipes() {
+        try {
+            Set<Map.Entry<IRecipeInput, RecipeOutput>> remset = new HashSet<>();
+            for (Map.Entry<IRecipeInput, RecipeOutput> curr : Recipes.macerator.getRecipes().entrySet()) {
+                if (curr.getKey() instanceof RecipeInputOreDict) {
+                    if (((RecipeInputOreDict) curr.getKey()).input.equalsIgnoreCase("oreNULL")) {
+                        remset.add(curr);
+                    }
+                }
+            }
+            Recipes.macerator.getRecipes().entrySet().removeAll(remset);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

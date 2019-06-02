@@ -65,7 +65,7 @@ public class Ross128SolarSystem {
         Ross128SolarSystem.Ross128b.setRelativeOrbitTime(0.65F);
         Ross128SolarSystem.Ross128b.atmosphere.addAll(Arrays.asList(IAtmosphericGas.OXYGEN, IAtmosphericGas.NITROGEN, IAtmosphericGas.ARGON));
         Ross128SolarSystem.Ross128b.setDimensionInfo(ConfigHandler.ross128BID, WorldProviderRoss128b.class);
-        Ross128SolarSystem.Ross128b.setTierRequired(3);
+        Ross128SolarSystem.Ross128b.setTierRequired(ConfigHandler.ross128btier);
 
         Ross128SolarSystem.Ross128ba = new Moon("Ross128ba").setParentPlanet(Ross128SolarSystem.Ross128b);
         Ross128SolarSystem.Ross128ba.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(10f, 15f)).setRelativeOrbitTime(1 / 0.01F);

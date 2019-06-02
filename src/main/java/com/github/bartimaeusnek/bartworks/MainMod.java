@@ -25,7 +25,7 @@ package com.github.bartimaeusnek.bartworks;
 
 import com.github.bartimaeusnek.bartworks.API.API_REFERENCE;
 import com.github.bartimaeusnek.bartworks.API.BioObjectAdder;
-import com.github.bartimaeusnek.bartworks.client.ClientEventHandler.ClientEventHandler;
+import com.github.bartimaeusnek.bartworks.client.ClientEventHandler.TooltipEventHandler;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.BioTab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.GT2Tab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.bartworksTab;
@@ -128,8 +128,8 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent init) {
-        if (FMLCommonHandler.instance().getSide().isClient() && ConfigHandler.BioLab)
-            MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
+        if (FMLCommonHandler.instance().getSide().isClient() && ConfigHandler.tooltips)
+            MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
         if (FMLCommonHandler.instance().getSide().isServer())
             MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
         new LoaderRegistry().run();
@@ -141,7 +141,6 @@ public final class MainMod {
             else
                 WerkstoffLoader.INSTANCE.runInit();
         }
-
     }
 
     @Mod.EventHandler
@@ -160,6 +159,7 @@ public final class MainMod {
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
         OreDictHandler.adaptCacheForWorld();
+        WerkstoffLoader.removeIC2Recipes();
         if (eicMap == null) {
             eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
             recipeLoop:
