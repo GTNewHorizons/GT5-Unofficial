@@ -460,6 +460,15 @@ public class WerkstoffLoader implements Runnable {
             30,
             TextureSet.SET_METALLIC
     );
+//    public static final Werkstoff BismuthTellurite = new Werkstoff(
+//            new short[]{0,64,0,0},
+//            "Bismuth Tellurite",
+//            new Werkstoff.Stats().setElektrolysis(true).setToxic(true),
+//            Werkstoff.Types.COMPOUND,
+//            new Werkstoff.GenerationFeatures().disable().onlyDust().addChemicalRecipes(),
+//            31,
+//            TextureSet.SET_METALLIC
+//    );
 
     public static HashMap<OrePrefixes, BW_MetaGenerated_Items> items = new HashMap<>();
     public static Block BWOres;

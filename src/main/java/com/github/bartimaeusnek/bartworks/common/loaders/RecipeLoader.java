@@ -234,7 +234,18 @@ public class RecipeLoader implements Runnable {
                         }
                 );
             else
-                GT_Values.RA.addAssemblylineRecipe(ItemList.Pump_IV.get(1L), 72000, new ItemStack[]{ItemList.Pump_IV.get(16), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 32L), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 32L), ItemList.Field_Generator_LuV.get(8)}, new FluidStack[]{Materials.SolderingAlloy.getMolten(32 * 144), Materials.Polytetrafluoroethylene.getMolten(32 * 144)}, ItemRegistry.dehp, 5000, BW_Util.getMachineVoltageFromTier(6));
+                GT_Values.RA.addAssemblylineRecipe(ItemList.Pump_IV.get(1L), 72000,
+                        new ItemStack[]{
+                                ItemList.Pump_IV.get(16),
+                                GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 32L),
+                                GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16L),
+                                GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16L),
+                                ItemList.Field_Generator_LuV.get(8)
+                        },
+                        new FluidStack[]{
+                                Materials.SolderingAlloy.getMolten(32 * 144),
+                                Materials.Polytetrafluoroethylene.getMolten(32 * 144)
+                        }, ItemRegistry.dehp, 5000, BW_Util.getMachineVoltageFromTier(6));
 
             GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 64, 1000), GT_Utility.getIntegratedCircuit(17), Materials.SolderingAlloy.getMolten(9216), ItemRegistry.megaMachines[0], 72000, BW_Util.getMachineVoltageFromTier(3));
             GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 64, 1002), GT_Utility.getIntegratedCircuit(17), Materials.SolderingAlloy.getMolten(9216), ItemRegistry.megaMachines[1], 72000, BW_Util.getMachineVoltageFromTier(3));
