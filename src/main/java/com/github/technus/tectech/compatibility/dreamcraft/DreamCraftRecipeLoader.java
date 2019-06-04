@@ -783,10 +783,10 @@ public class DreamCraftRecipeLoader implements Runnable {
                 48000, 128, 500000, 8,  new ItemStack[]{
                         ItemList.Circuit_Board_Bio_Ultra.get(2L),
                         ItemList.Circuit_Biowarecomputer.get(2L),
-                        ItemList.Circuit_Parts_DiodeSMD.get(48L),
-                        ItemList.Circuit_Parts_ResistorSMD.get(16L),
                         ItemList.Circuit_Parts_TransistorSMD.get(16L),
-                        ItemList.Circuit_Parts_DiodeSMD.get(16L),
+                        ItemList.Circuit_Parts_ResistorSMD.get(16L),
+                        ItemList.Circuit_Parts_CapacitorSMD.get(16L),
+                        ItemList.Circuit_Parts_DiodeSMD.get(48L),
                         ItemList.Circuit_Chip_NOR.get(32L),
                         ItemList.Circuit_Chip_Ram.get(64L),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 32L),
