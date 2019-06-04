@@ -401,7 +401,7 @@ public class BloodyRecipeLoader implements Runnable {
                 CustomItemList.DATApipe.get(2),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(500),
-                Materials.Iridium.getMolten(1000),
+                Materials.Iridium.getMolten(1152),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000)
         }, CustomItemList.holder_Hatch.get(1), 1200, 100000);
 
