@@ -143,7 +143,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                         getOrDefault("Trinium",Materials.Osmium).getMolten(1296),
                         Materials.Osmium.getMolten(1296),
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
-                        Materials.Argon.getGas(576),
+                        Materials.Argon.getGas(1000),
                 }, CustomItemList.eM_Hollow.get(2), 200, 2000000);
 
         //EM Coil
