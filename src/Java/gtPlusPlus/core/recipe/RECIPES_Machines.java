@@ -1499,7 +1499,7 @@ public class RECIPES_Machines {
 								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(9), 4 * (GTNH ? 2 : 1)),
 								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(7), 32 * (GTNH ? 2 : 1)),
 								ItemUtils.getItemStackOfAmountFromOreDict("wireGt16Superconductor", 8 * (GTNH ? 4 : 2)),
-								ItemUtils.getItemStackOfAmountFromOreDict("plateDenseNeutronium", 2 * (GTNH ? 5 : 1)),
+								ItemUtils.getItemStackOfAmountFromOreDict("plateDenseNeutronium", 2 * (GTNH ? 4 : 1)),
 								ItemUtils.getSimpleStack((GTNH ? CI.fieldGenerator_MAX : CI.fieldGenerator_ZPM), 5),
 								ItemList.Energy_LapotronicOrb2.get(1 * (GTNH ? 64 : 8)),
 								GTNH ? GregtechItemList.Compressed_Fusion_Reactor.get(1) : ItemList.FusionComputer_UV.get(1),
