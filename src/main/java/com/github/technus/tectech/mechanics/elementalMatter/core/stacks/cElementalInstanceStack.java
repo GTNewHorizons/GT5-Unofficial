@@ -275,17 +275,21 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             }
             cElementalInstanceStackMap products=decays[0].getResults(lifeTimeMult, newProductsAge, newEnergyLevel, amount);
             if(newProductsAge<0){
-                for(cElementalInstanceStack stack:products.values()){
-                    if(stack.definition.equals(definition)){
-                        stack.age= age;
-                        stack.setEnergy(energy);
+                if(products.size()==1) {
+                    if(products.size()==1 && products.get(0).definition.equals(definition)) {
+                        products.get(0).setEnergy(energy);
+                        products.get(0).age=age;
+                    }
+                }else {
+                    for (cElementalInstanceStack stack : products.values()) {
+                        if (stack.definition.equals(definition)) {
+                            stack.age = age;
+                        }
                     }
                 }
             }else{
-                for(cElementalInstanceStack stack:products.values()){
-                    if(stack.definition.equals(definition)){
-                        stack.setEnergy(energy);
-                    }
+                if(products.size()==1 && products.get(0).definition.equals(definition)) {
+                    products.get(0).setEnergy(energy);
                 }
             }
             if(this.energy <= 0 && products.getMass() > getMass()){
@@ -361,18 +365,21 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
                 }
             }
 
-            if(newProductsAge<0){
-                for(cElementalInstanceStack stack:output.values()){
-                    if(stack.definition.equals(definition)){
-                        stack.age= age;
-                        stack.setEnergy(energy);
+            if(newProductsAge<0) {
+                if (output.size() == 1 && output.get(0).definition.equals(definition)) {
+                    output.get(0).setEnergy(energy);
+                    output.get(0).age = age;
+                } else {
+                    for (cElementalInstanceStack stack : output.values()) {
+                        if (stack.definition.equals(definition)) {
+                            stack.age = age;
+                        }
                     }
                 }
             }else{
-                for(cElementalInstanceStack stack:output.values()){
-                    if(stack.definition.equals(definition)){
-                        stack.setEnergy(energy);
-                    }
+                if(output.size()==1 && output.get(0).definition.equals(definition)) {
+                    output.get(0).setEnergy(energy);
+                    output.get(0).age=age;
                 }
             }
             if(this.energy <= 0 && output.getMass() > getMass()){

@@ -13,7 +13,7 @@ import gregtech.api.util.GT_Utility;
  */
 public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_Hatch_ElementalContainer {
     public GT_MetaTileEntity_Hatch_OutputElemental(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Elemental Output for Multiblocks (" + 1000 * aTier * (aTier - 7) + "U, " + aTier * 2 + " stacks)");
+        super(aID, aName, aNameRegional, aTier, "Elemental Output for Multiblocks");
         Util.setTier(aTier,this);
     }
 

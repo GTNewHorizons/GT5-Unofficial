@@ -162,20 +162,16 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
 
         for(cElementalInstanceStack stack:outputEM[0].values()){
-            if(stack.getEnergy()==0 && stack.definition.decayMakesEnergy(1)){
-                if(getBaseMetaTileEntity().decreaseStoredEnergyUnits((long)(stack.getEnergySettingCost(1)*MASS_TO_EU_INSTANT),false)){
-                    stack.setEnergy(1);
-                }else{
-                    outputEM[0].remove(stack.definition);
-                    outputEM[1].putReplace(stack);
-                }
+            if (stack.getEnergy() == 0 && stack.definition.decayMakesEnergy(1)
+                    && getBaseMetaTileEntity().decreaseStoredEnergyUnits(
+                            (long) (stack.getEnergySettingCost(1) * MASS_TO_EU_INSTANT), false)) {
+                stack.setEnergy(1);
             }else if(!stack.definition.decayMakesEnergy(stack.getEnergy())){
                 outputEM[0].remove(stack.definition);
                 outputEM[1].putReplace(stack);
             }
             //System.out.println(stack.definition.getSymbol()+" "+stack.amount);
         }
-
 
         float preMass=outputEM[0].getMass();
         outputEM[0].tickContent(1,0,1);
@@ -232,10 +228,5 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
                         " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
                 "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET,
         };
-    }
-
-    @Override
-    public long maxEUStore() {
-        return super.maxEUStore();
     }
 }
