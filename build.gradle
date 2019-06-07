@@ -59,12 +59,12 @@ repositories {
         name = "ic2"
         url = "http://maven.ic2.player.to/"
     }
-	
-	ivy {
+
+    ivy {
         name 'gtnh_download_source'
         artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]"
     }
-	
+
     maven {
         name = "chickenbones"
         url = "http://chickenbones.net/maven/"
@@ -91,43 +91,43 @@ task getGregTech(type: Download) {
     mustRunAfter "repackMinecraft"
 }
 
-//tasks.setupCIWorkspace.dependsOn getGregTech
-//tasks.setupDevWorkspace.dependsOn getGregTech
-//tasks.setupDecompWorkspace.dependsOn getGregTech
-//tasks.compileJava.dependsOn getGregTech
+tasks.setupCIWorkspace.dependsOn getGregTech
+tasks.setupDevWorkspace.dependsOn getGregTech
+tasks.setupDecompWorkspace.dependsOn getGregTech
+tasks.compileJava.dependsOn getGregTech
 
 processResources
-{
-    def cleanVersion = project.version.split('-')[1]
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", cleanVersion
-    inputs.property "mcversion", project.minecraft.version
+        {
+            def cleanVersion = project.version.split('-')[1]
+            // this will ensure that this task is redone when the versions change.
+            inputs.property "version", cleanVersion
+            inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':cleanVersion, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-}
+            // replace stuff in mcmod.info, nothing else
+            from(sourceSets.main.resources.srcDirs) {
+                include 'mcmod.info'
+
+                // replace version and mcversion
+                expand 'version':cleanVersion, 'mcversion':project.minecraft.version
+            }
+
+            // copy everything else, thats not the mcmod.info
+            from(sourceSets.main.resources.srcDirs) {
+                exclude 'mcmod.info'
+            }
+        }
 
 task signJar(dependsOn: 'reobf'){
     doLast {
         ant.signjar(
-            destDir: jar.destinationDir,
-            jar: jar.getArchivePath(),
-            alias: findProperty('keyStoreAlias') ?: '',
-            keystore: findProperty('keyStore') ?: '',
-            storepass: findProperty('keyStorePass') ?: '',
-            digestalg: findProperty('signDigestAlg') ?: '',
-            tsaurl: findProperty('signTSAurl') ?: '',
-            verbose: true
-            )
+                destDir: jar.destinationDir,
+                jar: jar.getArchivePath(),
+                alias: findProperty('keyStoreAlias') ?: '',
+                keystore: findProperty('keyStore') ?: '',
+                storepass: findProperty('keyStorePass') ?: '',
+                digestalg: findProperty('signDigestAlg') ?: '',
+                tsaurl: findProperty('signTSAurl') ?: '',
+                verbose: true
+        )
     }
 }
