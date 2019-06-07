@@ -1,0 +1,592 @@
+// class version 50.0 (50)
+// access flags 0x21
+public class net/minecraft/inventory/ContainerWorkbench extends net/minecraft/inventory/Container  {
+
+  // compiled from: ContainerWorkbench.java
+
+  // access flags 0x1
+  public Lnet/minecraft/inventory/InventoryCrafting; craftMatrix
+
+  // access flags 0x1
+  public Lnet/minecraft/inventory/IInventory; craftResult
+
+  // access flags 0x2
+  private Lnet/minecraft/world/World; worldObj
+
+  // access flags 0x2
+  private I posX
+
+  // access flags 0x2
+  private I posY
+
+  // access flags 0x2
+  private I posZ
+
+  // access flags 0x1A
+  private final static Ljava/lang/String; __OBFID = "CL_00001744"
+
+  // access flags 0x1
+  public <init>(Lnet/minecraft/entity/player/InventoryPlayer;Lnet/minecraft/world/World;III)V
+   L0
+    LINENUMBER 22 L0
+    ALOAD 0
+    INVOKESPECIAL net/minecraft/inventory/Container.<init> ()V
+   L1
+    LINENUMBER 13 L1
+    ALOAD 0
+    NEW net/minecraft/inventory/InventoryCrafting
+    DUP
+    ALOAD 0
+    ICONST_3
+    ICONST_3
+    INVOKESPECIAL net/minecraft/inventory/InventoryCrafting.<init> (Lnet/minecraft/inventory/Container;II)V
+    PUTFIELD net/minecraft/inventory/ContainerWorkbench.craftMatrix : Lnet/minecraft/inventory/InventoryCrafting;
+   L2
+    LINENUMBER 14 L2
+    ALOAD 0
+    NEW net/minecraft/inventory/InventoryCraftResult
+    DUP
+    INVOKESPECIAL net/minecraft/inventory/InventoryCraftResult.<init> ()V
+    PUTFIELD net/minecraft/inventory/ContainerWorkbench.craftResult : Lnet/minecraft/inventory/IInventory;
+   L3
+    LINENUMBER 23 L3
+    ALOAD 0
+    ALOAD 2
+    PUTFIELD net/minecraft/inventory/ContainerWorkbench.worldObj : Lnet/minecraft/world/World;
+   L4
+    LINENUMBER 24 L4
+    ALOAD 0
+    ILOAD 3
+    PUTFIELD net/minecraft/inventory/ContainerWorkbench.posX : I
+   L5
+    LINENUMBER 25 L5
+    ALOAD 0
+    ILOAD 4
+    PUTFIELD net/minecraft/inventory/ContainerWorkbench.posY : I
+   L6
+    LINENUMBER 26 L6
+    ALOAD 0
+    ILOAD 5
+    PUTFIELD net/minecraft/inventory/ContainerWorkbench.posZ : I
+   L7
+    LINENUMBER 27 L7
+    ALOAD 0
+    NEW net/minecraft/inventory/SlotCrafting
+    DUP
+    ALOAD 1
+    GETFIELD net/minecraft/entity/player/InventoryPlayer.player : Lnet/minecraft/entity/player/EntityPlayer;
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.craftMatrix : Lnet/minecraft/inventory/InventoryCrafting;
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.craftResult : Lnet/minecraft/inventory/IInventory;
+    ICONST_0
+    BIPUSH 124
+    BIPUSH 35
+    INVOKESPECIAL net/minecraft/inventory/SlotCrafting.<init> (Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/inventory/IInventory;Lnet/minecraft/inventory/IInventory;III)V
+    INVOKEVIRTUAL net/minecraft/inventory/ContainerWorkbench.addSlotToContainer (Lnet/minecraft/inventory/Slot;)Lnet/minecraft/inventory/Slot;
+    POP
+   L8
+    LINENUMBER 31 L8
+    ICONST_0
+    ISTORE 6
+   L9
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/InventoryPlayer net/minecraft/world/World I I I I] []
+    ILOAD 6
+    ICONST_3
+    IF_ICMPGE L10
+   L11
+    LINENUMBER 33 L11
+    ICONST_0
+    ISTORE 7
+   L12
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/InventoryPlayer net/minecraft/world/World I I I I I] []
+    ILOAD 7
+    ICONST_3
+    IF_ICMPGE L13
+   L14
+    LINENUMBER 35 L14
+    ALOAD 0
+    NEW net/minecraft/inventory/Slot
+    DUP
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.craftMatrix : Lnet/minecraft/inventory/InventoryCrafting;
+    ILOAD 7
+    ILOAD 6
+    ICONST_3
+    IMUL
+    IADD
+    BIPUSH 30
+    ILOAD 7
+    BIPUSH 18
+    IMUL
+    IADD
+    BIPUSH 17
+    ILOAD 6
+    BIPUSH 18
+    IMUL
+    IADD
+    INVOKESPECIAL net/minecraft/inventory/Slot.<init> (Lnet/minecraft/inventory/IInventory;III)V
+    INVOKEVIRTUAL net/minecraft/inventory/ContainerWorkbench.addSlotToContainer (Lnet/minecraft/inventory/Slot;)Lnet/minecraft/inventory/Slot;
+    POP
+   L15
+    LINENUMBER 33 L15
+    IINC 7 1
+    GOTO L12
+   L13
+    LINENUMBER 31 L13
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/InventoryPlayer net/minecraft/world/World I I I I I] []
+    IINC 6 1
+    GOTO L9
+   L10
+    LINENUMBER 39 L10
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/InventoryPlayer net/minecraft/world/World I I I I] []
+    ICONST_0
+    ISTORE 6
+   L16
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/InventoryPlayer net/minecraft/world/World I I I I] []
+    ILOAD 6
+    ICONST_3
+    IF_ICMPGE L17
+   L18
+    LINENUMBER 41 L18
+    ICONST_0
+    ISTORE 7
+   L19
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/InventoryPlayer net/minecraft/world/World I I I I I] []
+    ILOAD 7
+    BIPUSH 9
+    IF_ICMPGE L20
+   L21
+    LINENUMBER 43 L21
+    ALOAD 0
+    NEW net/minecraft/inventory/Slot
+    DUP
+    ALOAD 1
+    ILOAD 7
+    ILOAD 6
+    BIPUSH 9
+    IMUL
+    IADD
+    BIPUSH 9
+    IADD
+    BIPUSH 8
+    ILOAD 7
+    BIPUSH 18
+    IMUL
+    IADD
+    BIPUSH 84
+    ILOAD 6
+    BIPUSH 18
+    IMUL
+    IADD
+    INVOKESPECIAL net/minecraft/inventory/Slot.<init> (Lnet/minecraft/inventory/IInventory;III)V
+    INVOKEVIRTUAL net/minecraft/inventory/ContainerWorkbench.addSlotToContainer (Lnet/minecraft/inventory/Slot;)Lnet/minecraft/inventory/Slot;
+    POP
+   L22
+    LINENUMBER 41 L22
+    IINC 7 1
+    GOTO L19
+   L20
+    LINENUMBER 39 L20
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/InventoryPlayer net/minecraft/world/World I I I I I] []
+    IINC 6 1
+    GOTO L16
+   L17
+    LINENUMBER 47 L17
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/InventoryPlayer net/minecraft/world/World I I I I] []
+    ICONST_0
+    ISTORE 6
+   L23
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/InventoryPlayer net/minecraft/world/World I I I I] []
+    ILOAD 6
+    BIPUSH 9
+    IF_ICMPGE L24
+   L25
+    LINENUMBER 49 L25
+    ALOAD 0
+    NEW net/minecraft/inventory/Slot
+    DUP
+    ALOAD 1
+    ILOAD 6
+    BIPUSH 8
+    ILOAD 6
+    BIPUSH 18
+    IMUL
+    IADD
+    SIPUSH 142
+    INVOKESPECIAL net/minecraft/inventory/Slot.<init> (Lnet/minecraft/inventory/IInventory;III)V
+    INVOKEVIRTUAL net/minecraft/inventory/ContainerWorkbench.addSlotToContainer (Lnet/minecraft/inventory/Slot;)Lnet/minecraft/inventory/Slot;
+    POP
+   L26
+    LINENUMBER 47 L26
+    IINC 6 1
+    GOTO L23
+   L24
+    LINENUMBER 52 L24
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/InventoryPlayer net/minecraft/world/World I I I I] []
+    ALOAD 0
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.craftMatrix : Lnet/minecraft/inventory/InventoryCrafting;
+    INVOKEVIRTUAL net/minecraft/inventory/ContainerWorkbench.onCraftMatrixChanged (Lnet/minecraft/inventory/IInventory;)V
+   L27
+    LINENUMBER 53 L27
+    RETURN
+   L28
+    LOCALVARIABLE i1 I L12 L10 7
+    LOCALVARIABLE i1 I L19 L17 7
+    LOCALVARIABLE this Lnet/minecraft/inventory/ContainerWorkbench; L0 L28 0
+    LOCALVARIABLE p_i1808_1_ Lnet/minecraft/entity/player/InventoryPlayer; L0 L28 1
+    LOCALVARIABLE p_i1808_2_ Lnet/minecraft/world/World; L0 L28 2
+    LOCALVARIABLE p_i1808_3_ I L0 L28 3
+    LOCALVARIABLE p_i1808_4_ I L0 L28 4
+    LOCALVARIABLE p_i1808_5_ I L0 L28 5
+    LOCALVARIABLE l I L9 L28 6
+    MAXSTACK = 9
+    MAXLOCALS = 8
+
+  // access flags 0x1
+  public onCraftMatrixChanged(Lnet/minecraft/inventory/IInventory;)V
+   L0
+    LINENUMBER 60 L0
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.craftResult : Lnet/minecraft/inventory/IInventory;
+    ICONST_0
+    INVOKESTATIC net/minecraft/item/crafting/CraftingManager.getInstance ()Lnet/minecraft/item/crafting/CraftingManager;
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.craftMatrix : Lnet/minecraft/inventory/InventoryCrafting;
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.worldObj : Lnet/minecraft/world/World;
+    INVOKEVIRTUAL net/minecraft/item/crafting/CraftingManager.findMatchingRecipe (Lnet/minecraft/inventory/InventoryCrafting;Lnet/minecraft/world/World;)Lnet/minecraft/item/ItemStack;
+    INVOKEINTERFACE net/minecraft/inventory/IInventory.setInventorySlotContents (ILnet/minecraft/item/ItemStack;)V
+   L1
+    LINENUMBER 61 L1
+    RETURN
+   L2
+    LOCALVARIABLE this Lnet/minecraft/inventory/ContainerWorkbench; L0 L2 0
+    LOCALVARIABLE p_75130_1_ Lnet/minecraft/inventory/IInventory; L0 L2 1
+    MAXSTACK = 5
+    MAXLOCALS = 2
+
+  // access flags 0x1
+  public onContainerClosed(Lnet/minecraft/entity/player/EntityPlayer;)V
+   L0
+    LINENUMBER 68 L0
+    ALOAD 0
+    ALOAD 1
+    INVOKESPECIAL net/minecraft/inventory/Container.onContainerClosed (Lnet/minecraft/entity/player/EntityPlayer;)V
+   L1
+    LINENUMBER 70 L1
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.worldObj : Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.isRemote : Z
+    IFNE L2
+   L3
+    LINENUMBER 72 L3
+    ICONST_0
+    ISTORE 2
+   L4
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer I] []
+    ILOAD 2
+    BIPUSH 9
+    IF_ICMPGE L2
+   L5
+    LINENUMBER 74 L5
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.craftMatrix : Lnet/minecraft/inventory/InventoryCrafting;
+    ILOAD 2
+    INVOKEVIRTUAL net/minecraft/inventory/InventoryCrafting.getStackInSlotOnClosing (I)Lnet/minecraft/item/ItemStack;
+    ASTORE 3
+   L6
+    LINENUMBER 76 L6
+    ALOAD 3
+    IFNULL L7
+   L8
+    LINENUMBER 78 L8
+    ALOAD 1
+    ALOAD 3
+    ICONST_0
+    INVOKEVIRTUAL net/minecraft/entity/player/EntityPlayer.dropPlayerItemWithRandomChoice (Lnet/minecraft/item/ItemStack;Z)Lnet/minecraft/entity/item/EntityItem;
+    POP
+   L7
+    LINENUMBER 72 L7
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer I net/minecraft/item/ItemStack] []
+    IINC 2 1
+    GOTO L4
+   L2
+    LINENUMBER 82 L2
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer] []
+    RETURN
+   L9
+    LOCALVARIABLE itemstack Lnet/minecraft/item/ItemStack; L6 L7 3
+    LOCALVARIABLE i I L4 L2 2
+    LOCALVARIABLE this Lnet/minecraft/inventory/ContainerWorkbench; L0 L9 0
+    LOCALVARIABLE p_75134_1_ Lnet/minecraft/entity/player/EntityPlayer; L0 L9 1
+    MAXSTACK = 3
+    MAXLOCALS = 4
+
+  // access flags 0x1
+  public canInteractWith(Lnet/minecraft/entity/player/EntityPlayer;)Z
+   L0
+    LINENUMBER 86 L0
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.worldObj : Lnet/minecraft/world/World;
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.posX : I
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.posY : I
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.posZ : I
+    INVOKEVIRTUAL net/minecraft/world/World.getBlock (III)Lnet/minecraft/block/Block;
+    GETSTATIC net/minecraft/init/Blocks.crafting_table : Lnet/minecraft/block/Block;
+    IF_ACMPEQ L1
+    ICONST_0
+    GOTO L2
+   L1
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer] []
+    ALOAD 1
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.posX : I
+    I2D
+    LDC 0.5
+    DADD
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.posY : I
+    I2D
+    LDC 0.5
+    DADD
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.posZ : I
+    I2D
+    LDC 0.5
+    DADD
+    INVOKEVIRTUAL net/minecraft/entity/player/EntityPlayer.getDistanceSq (DDD)D
+    LDC 64.0
+    DCMPG
+    IFGT L3
+    ICONST_1
+    GOTO L2
+   L3
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer] []
+    ICONST_0
+   L2
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer] [I]
+    IRETURN
+   L4
+    LOCALVARIABLE this Lnet/minecraft/inventory/ContainerWorkbench; L0 L4 0
+    LOCALVARIABLE p_75145_1_ Lnet/minecraft/entity/player/EntityPlayer; L0 L4 1
+    MAXSTACK = 9
+    MAXLOCALS = 2
+
+  // access flags 0x1
+  public transferStackInSlot(Lnet/minecraft/entity/player/EntityPlayer;I)Lnet/minecraft/item/ItemStack;
+   L0
+    LINENUMBER 94 L0
+    ACONST_NULL
+    ASTORE 3
+   L1
+    LINENUMBER 95 L1
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.inventorySlots : Ljava/util/List;
+    ILOAD 2
+    INVOKEINTERFACE java/util/List.get (I)Ljava/lang/Object;
+    CHECKCAST net/minecraft/inventory/Slot
+    ASTORE 4
+   L2
+    LINENUMBER 97 L2
+    ALOAD 4
+    IFNULL L3
+    ALOAD 4
+    INVOKEVIRTUAL net/minecraft/inventory/Slot.getHasStack ()Z
+    IFEQ L3
+   L4
+    LINENUMBER 99 L4
+    ALOAD 4
+    INVOKEVIRTUAL net/minecraft/inventory/Slot.getStack ()Lnet/minecraft/item/ItemStack;
+    ASTORE 5
+   L5
+    LINENUMBER 100 L5
+    ALOAD 5
+    INVOKEVIRTUAL net/minecraft/item/ItemStack.copy ()Lnet/minecraft/item/ItemStack;
+    ASTORE 3
+   L6
+    LINENUMBER 102 L6
+    ILOAD 2
+    IFNE L7
+    NEW codechicken/lib/inventory/InventoryRange
+    DUP
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.inventorySlots : Ljava/util/List;
+    BIPUSH 10
+    INVOKEINTERFACE java/util/List.get (I)Ljava/lang/Object;
+    CHECKCAST net/minecraft/inventory/Slot
+    GETFIELD net/minecraft/inventory/Slot.inventory : Lnet/minecraft/inventory/IInventory;
+    ICONST_0
+    BIPUSH 36
+    INVOKESPECIAL codechicken/lib/inventory/InventoryRange.<init> (Lnet/minecraft/inventory/IInventory;II)V
+    ALOAD 5
+    ICONST_1
+    INVOKESTATIC codechicken/lib/inventory/InventoryUtils.insertItem (Lcodechicken/lib/inventory/InventoryRange;Lnet/minecraft/item/ItemStack;Z)I
+    IFEQ L8
+    ACONST_NULL
+    ARETURN
+   L8
+    LINENUMBER 104 L8
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer I net/minecraft/item/ItemStack net/minecraft/inventory/Slot net/minecraft/item/ItemStack] []
+    ALOAD 0
+    ALOAD 5
+    BIPUSH 10
+    BIPUSH 46
+    ICONST_1
+    INVOKEVIRTUAL net/minecraft/inventory/ContainerWorkbench.mergeItemStack (Lnet/minecraft/item/ItemStack;IIZ)Z
+    IFNE L9
+   L10
+    LINENUMBER 106 L10
+    ACONST_NULL
+    ARETURN
+   L9
+    LINENUMBER 109 L9
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer I net/minecraft/item/ItemStack net/minecraft/inventory/Slot net/minecraft/item/ItemStack] []
+    ALOAD 4
+    ALOAD 5
+    ALOAD 3
+    INVOKEVIRTUAL net/minecraft/inventory/Slot.onSlotChange (Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)V
+    GOTO L11
+   L7
+    LINENUMBER 111 L7
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer I net/minecraft/item/ItemStack net/minecraft/inventory/Slot net/minecraft/item/ItemStack] []
+    ILOAD 2
+    BIPUSH 10
+    IF_ICMPLT L12
+    ILOAD 2
+    BIPUSH 37
+    IF_ICMPGE L12
+   L13
+    LINENUMBER 113 L13
+    ALOAD 0
+    ALOAD 5
+    BIPUSH 37
+    BIPUSH 46
+    ICONST_0
+    INVOKEVIRTUAL net/minecraft/inventory/ContainerWorkbench.mergeItemStack (Lnet/minecraft/item/ItemStack;IIZ)Z
+    IFNE L11
+   L14
+    LINENUMBER 115 L14
+    ACONST_NULL
+    ARETURN
+   L12
+    LINENUMBER 118 L12
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer I net/minecraft/item/ItemStack net/minecraft/inventory/Slot net/minecraft/item/ItemStack] []
+    ILOAD 2
+    BIPUSH 37
+    IF_ICMPLT L15
+    ILOAD 2
+    BIPUSH 46
+    IF_ICMPGE L15
+   L16
+    LINENUMBER 120 L16
+    ALOAD 0
+    ALOAD 5
+    BIPUSH 10
+    BIPUSH 37
+    ICONST_0
+    INVOKEVIRTUAL net/minecraft/inventory/ContainerWorkbench.mergeItemStack (Lnet/minecraft/item/ItemStack;IIZ)Z
+    IFNE L11
+   L17
+    LINENUMBER 122 L17
+    ACONST_NULL
+    ARETURN
+   L15
+    LINENUMBER 125 L15
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer I net/minecraft/item/ItemStack net/minecraft/inventory/Slot net/minecraft/item/ItemStack] []
+    ALOAD 0
+    ALOAD 5
+    BIPUSH 10
+    BIPUSH 46
+    ICONST_0
+    INVOKEVIRTUAL net/minecraft/inventory/ContainerWorkbench.mergeItemStack (Lnet/minecraft/item/ItemStack;IIZ)Z
+    IFNE L11
+   L18
+    LINENUMBER 127 L18
+    ACONST_NULL
+    ARETURN
+   L11
+    LINENUMBER 130 L11
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer I net/minecraft/item/ItemStack net/minecraft/inventory/Slot net/minecraft/item/ItemStack] []
+    ALOAD 5
+    GETFIELD net/minecraft/item/ItemStack.stackSize : I
+    IFNE L19
+   L20
+    LINENUMBER 132 L20
+    ALOAD 4
+    ACONST_NULL
+    CHECKCAST net/minecraft/item/ItemStack
+    INVOKEVIRTUAL net/minecraft/inventory/Slot.putStack (Lnet/minecraft/item/ItemStack;)V
+    GOTO L21
+   L19
+    LINENUMBER 136 L19
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer I net/minecraft/item/ItemStack net/minecraft/inventory/Slot net/minecraft/item/ItemStack] []
+    ALOAD 4
+    INVOKEVIRTUAL net/minecraft/inventory/Slot.onSlotChanged ()V
+   L21
+    LINENUMBER 139 L21
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer I net/minecraft/item/ItemStack net/minecraft/inventory/Slot net/minecraft/item/ItemStack] []
+    ALOAD 5
+    GETFIELD net/minecraft/item/ItemStack.stackSize : I
+    ALOAD 3
+    GETFIELD net/minecraft/item/ItemStack.stackSize : I
+    IF_ICMPNE L22
+   L23
+    LINENUMBER 141 L23
+    ACONST_NULL
+    ARETURN
+   L22
+    LINENUMBER 144 L22
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer I net/minecraft/item/ItemStack net/minecraft/inventory/Slot net/minecraft/item/ItemStack] []
+    ALOAD 4
+    ALOAD 1
+    ALOAD 5
+    INVOKEVIRTUAL net/minecraft/inventory/Slot.onPickupFromSlot (Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/item/ItemStack;)V
+   L3
+    LINENUMBER 147 L3
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/entity/player/EntityPlayer I net/minecraft/item/ItemStack net/minecraft/inventory/Slot] []
+    ALOAD 3
+    ARETURN
+   L24
+    LOCALVARIABLE itemstack1 Lnet/minecraft/item/ItemStack; L5 L3 5
+    LOCALVARIABLE this Lnet/minecraft/inventory/ContainerWorkbench; L0 L24 0
+    LOCALVARIABLE p_82846_1_ Lnet/minecraft/entity/player/EntityPlayer; L0 L24 1
+    LOCALVARIABLE p_82846_2_ I L0 L24 2
+    LOCALVARIABLE itemstack Lnet/minecraft/item/ItemStack; L1 L24 3
+    LOCALVARIABLE slot Lnet/minecraft/inventory/Slot; L2 L24 4
+    MAXSTACK = 5
+    MAXLOCALS = 6
+
+  // access flags 0x1
+  public func_94530_a(Lnet/minecraft/item/ItemStack;Lnet/minecraft/inventory/Slot;)Z
+   L0
+    LINENUMBER 152 L0
+    ALOAD 2
+    GETFIELD net/minecraft/inventory/Slot.inventory : Lnet/minecraft/inventory/IInventory;
+    ALOAD 0
+    GETFIELD net/minecraft/inventory/ContainerWorkbench.craftResult : Lnet/minecraft/inventory/IInventory;
+    IF_ACMPEQ L1
+    ALOAD 0
+    ALOAD 1
+    ALOAD 2
+    INVOKESPECIAL net/minecraft/inventory/Container.func_94530_a (Lnet/minecraft/item/ItemStack;Lnet/minecraft/inventory/Slot;)Z
+    IFEQ L1
+    ICONST_1
+    GOTO L2
+   L1
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/item/ItemStack net/minecraft/inventory/Slot] []
+    ICONST_0
+   L2
+   FRAME FULL [net/minecraft/inventory/ContainerWorkbench net/minecraft/item/ItemStack net/minecraft/inventory/Slot] [I]
+    IRETURN
+   L3
+    LOCALVARIABLE this Lnet/minecraft/inventory/ContainerWorkbench; L0 L3 0
+    LOCALVARIABLE p_94530_1_ Lnet/minecraft/item/ItemStack; L0 L3 1
+    LOCALVARIABLE p_94530_2_ Lnet/minecraft/inventory/Slot; L0 L3 2
+    MAXSTACK = 3
+    MAXLOCALS = 3
+}

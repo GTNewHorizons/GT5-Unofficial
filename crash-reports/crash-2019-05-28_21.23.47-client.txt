@@ -1,0 +1,106 @@
+---- Minecraft Crash Report ----
+// Hi. I'm Minecraft, and I'm a crashaholic.
+
+Time: 5/28/19 9:23 PM
+Description: Unexpected error
+
+java.lang.ArithmeticException: / by zero
+	at reactor.items.MetaItem.getDurabilityForDisplay(MetaItem.java:97)
+	at net.minecraft.client.renderer.entity.RenderItem.renderItemOverlayIntoGUI(RenderItem.java:717)
+	at net.minecraft.client.renderer.entity.RenderItem.renderItemOverlayIntoGUI(RenderItem.java:697)
+	at net.minecraft.client.gui.GuiIngame.renderInventorySlot(GuiIngame.java:980)
+	at net.minecraftforge.client.GuiIngameForge.renderHotbar(GuiIngameForge.java:209)
+	at net.minecraftforge.client.GuiIngameForge.renderGameOverlay(GuiIngameForge.java:144)
+	at net.minecraft.client.renderer.EntityRenderer.updateCameraAndRender(EntityRenderer.java:1114)
+	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:1067)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:962)
+	at net.minecraft.client.main.Main.main(Main.java:164)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+	at net.minecraftforge.gradle.GradleStartCommon.launch(Unknown Source)
+	at GradleStart.main(Unknown Source)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Stacktrace:
+	at reactor.items.MetaItem.getDurabilityForDisplay(MetaItem.java:97)
+	at net.minecraft.client.renderer.entity.RenderItem.renderItemOverlayIntoGUI(RenderItem.java:717)
+	at net.minecraft.client.renderer.entity.RenderItem.renderItemOverlayIntoGUI(RenderItem.java:697)
+	at net.minecraft.client.gui.GuiIngame.renderInventorySlot(GuiIngame.java:980)
+	at net.minecraftforge.client.GuiIngameForge.renderHotbar(GuiIngameForge.java:209)
+	at net.minecraftforge.client.GuiIngameForge.renderGameOverlay(GuiIngameForge.java:144)
+
+-- Affected level --
+Details:
+	Level name: MpServer
+	All players: 1 total; [EntityClientPlayerMP['kekzdealer'/181, l='MpServer', x=231.93, y=68.62, z=36.08]]
+	Chunk stats: MultiplayerChunkCache: 35, 35
+	Level seed: 0
+	Level generator: ID 00 - default, ver 1. Features enabled: false
+	Level generator options: 
+	Level spawn location: World: (226,64,32), Chunk: (at 2,4,0 in 14,2; contains blocks 224,0,32 to 239,255,47), Region: (0,0; contains chunks 0,0 to 31,31, blocks 0,0,0 to 511,255,511)
+	Level time: 10139 game time, 10139 day time
+	Level dimension: 0
+	Level storage version: 0x00000 - Unknown?
+	Level weather: Rain time: 0 (now: false), thunder time: 0 (now: false)
+	Level game mode: Game mode: creative (ID 1). Hardcore: false. Cheats: false
+	Forced entities: 33 total; [EntitySheep['Sheep'/64, l='MpServer', x=217.09, y=63.00, z=41.41], EntityBat['Bat'/128, l='MpServer', x=278.84, y=17.00, z=91.50], EntitySquid['Squid'/65, l='MpServer', x=212.50, y=52.91, z=57.47], EntityCreeper['Creeper'/75, l='MpServer', x=237.69, y=18.16, z=12.31], EntitySheep['Sheep'/76, l='MpServer', x=229.19, y=63.00, z=43.59], EntitySheep['Sheep'/77, l='MpServer', x=230.78, y=66.00, z=40.25], EntitySlime['Slime'/78, l='MpServer', x=239.53, y=61.41, z=91.31], EntityBat['Bat'/79, l='MpServer', x=234.59, y=49.09, z=93.50], EntityZombie['Zombie'/90, l='MpServer', x=252.88, y=25.00, z=7.50], EntityCreeper['Creeper'/91, l='MpServer', x=240.50, y=30.00, z=13.50], EntityZombie['Zombie'/92, l='MpServer', x=243.50, y=27.00, z=28.50], EntitySkeleton['Skeleton'/93, l='MpServer', x=245.72, y=17.00, z=27.94], EntityZombie['Zombie'/102, l='MpServer', x=259.50, y=27.00, z=31.50], EntitySquid['Squid'/103, l='MpServer', x=265.31, y=58.34, z=53.94], EntitySkeleton['Skeleton'/104, l='MpServer', x=258.56, y=12.00, z=95.09], EntityZombie['Zombie'/105, l='MpServer', x=267.16, y=15.00, z=90.41], EntitySkeleton['Skeleton'/106, l='MpServer', x=270.50, y=15.00, z=90.13], EntityBat['Bat'/107, l='MpServer', x=265.69, y=14.19, z=89.66], EntitySkeleton['Skeleton'/108, l='MpServer', x=262.44, y=19.00, z=85.06], EntityBat['Bat'/109, l='MpServer', x=263.34, y=17.09, z=88.25], EntityZombie['Zombie'/110, l='MpServer', x=270.97, y=16.00, z=83.50], EntityBat['Bat'/111, l='MpServer', x=261.44, y=17.38, z=80.09], EntityClientPlayerMP['kekzdealer'/181, l='MpServer', x=231.93, y=68.62, z=36.08], EntitySheep['Sheep'/54, l='MpServer', x=194.06, y=67.00, z=7.09], EntitySheep['Sheep'/55, l='MpServer', x=199.91, y=64.00, z=15.84], EntitySheep['Sheep'/56, l='MpServer', x=205.78, y=65.00, z=2.22], EntityCreeper['Creeper'/121, l='MpServer', x=277.06, y=19.00, z=41.38], EntitySlime['Slime'/122, l='MpServer', x=280.38, y=15.41, z=79.38], EntityZombie['Zombie'/123, l='MpServer', x=280.22, y=14.00, z=76.84], EntityZombie['Zombie'/124, l='MpServer', x=272.31, y=14.00, z=84.34], EntitySkeleton['Skeleton'/125, l='MpServer', x=281.50, y=18.00, z=87.50], EntitySkeleton['Skeleton'/126, l='MpServer', x=282.56, y=20.00, z=81.91], EntityBat['Bat'/127, l='MpServer', x=276.44, y=17.09, z=83.75]]
+	Retry entities: 0 total; []
+	Server brand: fml,forge
+	Server type: Integrated singleplayer server
+Stacktrace:
+	at net.minecraft.client.multiplayer.WorldClient.addWorldInfoToCrashReport(WorldClient.java:415)
+	at net.minecraft.client.Minecraft.addGraphicsAndWorldToCrashReport(Minecraft.java:2566)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:991)
+	at net.minecraft.client.main.Main.main(Main.java:164)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+	at net.minecraftforge.gradle.GradleStartCommon.launch(Unknown Source)
+	at GradleStart.main(Unknown Source)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.7.10
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_211, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 1261174744 bytes (1202 MB) / 1747451904 bytes (1666 MB) up to 3799515136 bytes (3623 MB)
+	JVM Flags: 0 total; 
+	AABB Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	IntCache: cache: 0, tcache: 0, allocated: 12, tallocated: 94
+	FML: MCP v9.05 FML v7.10.99.99 Minecraft Forge 10.13.4.1614 7 mods loaded, 7 mods active
+	States: 'U' = Unloaded 'L' = Loaded 'C' = Constructed 'H' = Pre-initialized 'I' = Initialized 'J' = Post-initialized 'A' = Available 'D' = Disabled 'E' = Errored
+	UCHIJAAAA	mcp{9.05} [Minecraft Coder Pack] (minecraft.jar) 
+	UCHIJAAAA	FML{7.10.99.99} [Forge Mod Loader] (forgeSrc-1.7.10-10.13.4.1614-1.7.10.jar) 
+	UCHIJAAAA	Forge{10.13.4.1614} [Minecraft Forge] (forgeSrc-1.7.10-10.13.4.1614-1.7.10.jar) 
+	UCHIJAAAA	kekztech{0.1a} [KekzTech] (bin) 
+	UCHIJAAAA	examplemod{1.0} [Example Mod] (bin) 
+	UCHIJAAAA	IC2{2.2.828-experimental} [IndustrialCraft 2] (industrialcraft-2-2.2.828a-experimental-deobf.jar) 
+	UCHIJAAAA	gregtech{MC1710} [GregTech] (gregtech-5.09.32-dev.jar) 
+	GL info: ' Vendor: 'NVIDIA Corporation' Version: '4.6.0 NVIDIA 398.36' Renderer: 'GeForce GTX 970/PCIe/SSE2'
+	Launched Version: 1.7.10
+	LWJGL: 2.9.1
+	OpenGL: GeForce GTX 970/PCIe/SSE2 GL version 4.6.0 NVIDIA 398.36, NVIDIA Corporation
+	GL Caps: Using GL 1.3 multitexturing.
+Using framebuffer objects because OpenGL 3.0 is supported and separate blending is supported.
+Anisotropic filtering is supported and maximum anisotropy is 16.
+Shaders are available because OpenGL 2.1 is supported.
+
+	Is Modded: Definitely; Client brand changed to 'fml,forge'
+	Type: Client (map_client.txt)
+	Resource Packs: []
+	Current Language: English (US)
+	Profiler Position: N/A (disabled)
+	Vec3 Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	Anisotropic Filtering: Off (1)

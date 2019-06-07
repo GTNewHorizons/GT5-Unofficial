@@ -1,0 +1,805 @@
+// class version 50.0 (50)
+// access flags 0x21
+public class net/minecraft/nbt/NBTTagList extends net/minecraft/nbt/NBTBase  {
+
+  // compiled from: NBTTagList.java
+
+  // access flags 0x2
+  private Ljava/util/List; tagList
+
+  // access flags 0x2
+  private B tagType
+
+  // access flags 0x1A
+  private final static Ljava/lang/String; __OBFID = "CL_00001224"
+
+  // access flags 0x1
+  public <init>()V
+   L0
+    LINENUMBER 10 L0
+    ALOAD 0
+    INVOKESPECIAL net/minecraft/nbt/NBTBase.<init> ()V
+   L1
+    LINENUMBER 13 L1
+    ALOAD 0
+    NEW java/util/ArrayList
+    DUP
+    INVOKESPECIAL java/util/ArrayList.<init> ()V
+    PUTFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+   L2
+    LINENUMBER 15 L2
+    ALOAD 0
+    ICONST_0
+    PUTFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    RETURN
+   L3
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L3 0
+    MAXSTACK = 3
+    MAXLOCALS = 1
+
+  // access flags 0x0
+  write(Ljava/io/DataOutput;)V throws java/io/IOException 
+   L0
+    LINENUMBER 23 L0
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.isEmpty ()Z
+    IFNE L1
+   L2
+    LINENUMBER 25 L2
+    ALOAD 0
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    ICONST_0
+    INVOKEINTERFACE java/util/List.get (I)Ljava/lang/Object;
+    CHECKCAST net/minecraft/nbt/NBTBase
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.getId ()B
+    PUTFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    GOTO L3
+   L1
+    LINENUMBER 29 L1
+   FRAME FULL [net/minecraft/nbt/NBTTagList java/io/DataOutput] []
+    ALOAD 0
+    ICONST_0
+    PUTFIELD net/minecraft/nbt/NBTTagList.tagType : B
+   L3
+    LINENUMBER 32 L3
+   FRAME FULL [net/minecraft/nbt/NBTTagList java/io/DataOutput] []
+    ALOAD 1
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    INVOKEINTERFACE java/io/DataOutput.writeByte (I)V
+   L4
+    LINENUMBER 33 L4
+    ALOAD 1
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.size ()I
+    INVOKEINTERFACE java/io/DataOutput.writeInt (I)V
+   L5
+    LINENUMBER 35 L5
+    ICONST_0
+    ISTORE 2
+   L6
+   FRAME FULL [net/minecraft/nbt/NBTTagList java/io/DataOutput I] []
+    ILOAD 2
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.size ()I
+    IF_ICMPGE L7
+   L8
+    LINENUMBER 37 L8
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    ILOAD 2
+    INVOKEINTERFACE java/util/List.get (I)Ljava/lang/Object;
+    CHECKCAST net/minecraft/nbt/NBTBase
+    ALOAD 1
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.write (Ljava/io/DataOutput;)V
+   L9
+    LINENUMBER 35 L9
+    IINC 2 1
+    GOTO L6
+   L7
+    LINENUMBER 39 L7
+   FRAME FULL [net/minecraft/nbt/NBTTagList java/io/DataOutput I] []
+    RETURN
+   L10
+    LOCALVARIABLE i I L6 L7 2
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L10 0
+    LOCALVARIABLE p_74734_1_ Ljava/io/DataOutput; L0 L10 1
+    MAXSTACK = 3
+    MAXLOCALS = 3
+
+  // access flags 0x0
+  func_152446_a(Ljava/io/DataInput;ILnet/minecraft/nbt/NBTSizeTracker;)V throws java/io/IOException 
+   L0
+    LINENUMBER 43 L0
+    ILOAD 2
+    SIPUSH 512
+    IF_ICMPLE L1
+   L2
+    LINENUMBER 45 L2
+    NEW java/lang/RuntimeException
+    DUP
+    LDC "Tried to read NBT tag with too high complexity, depth > 512"
+    INVOKESPECIAL java/lang/RuntimeException.<init> (Ljava/lang/String;)V
+    ATHROW
+   L1
+    LINENUMBER 49 L1
+   FRAME FULL [net/minecraft/nbt/NBTTagList java/io/DataInput I net/minecraft/nbt/NBTSizeTracker] []
+    ALOAD 3
+    LDC 8
+    INVOKEVIRTUAL net/minecraft/nbt/NBTSizeTracker.func_152450_a (J)V
+   L3
+    LINENUMBER 50 L3
+    ALOAD 0
+    ALOAD 1
+    INVOKEINTERFACE java/io/DataInput.readByte ()B
+    PUTFIELD net/minecraft/nbt/NBTTagList.tagType : B
+   L4
+    LINENUMBER 51 L4
+    ALOAD 3
+    LDC 32
+    INVOKEVIRTUAL net/minecraft/nbt/NBTSizeTracker.func_152450_a (J)V
+   L5
+    LINENUMBER 52 L5
+    ALOAD 1
+    INVOKEINTERFACE java/io/DataInput.readInt ()I
+    ISTORE 4
+   L6
+    LINENUMBER 53 L6
+    ALOAD 0
+    NEW java/util/ArrayList
+    DUP
+    INVOKESPECIAL java/util/ArrayList.<init> ()V
+    PUTFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+   L7
+    LINENUMBER 55 L7
+    ICONST_0
+    ISTORE 5
+   L8
+   FRAME FULL [net/minecraft/nbt/NBTTagList java/io/DataInput I net/minecraft/nbt/NBTSizeTracker I I] []
+    ILOAD 5
+    ILOAD 4
+    IF_ICMPGE L9
+   L10
+    LINENUMBER 57 L10
+    ALOAD 3
+    LDC 32
+    INVOKEVIRTUAL net/minecraft/nbt/NBTSizeTracker.func_152450_a (J)V
+   L11
+    LINENUMBER 58 L11
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    INVOKESTATIC net/minecraft/nbt/NBTBase.func_150284_a (B)Lnet/minecraft/nbt/NBTBase;
+    ASTORE 6
+   L12
+    LINENUMBER 59 L12
+    ALOAD 6
+    ALOAD 1
+    ILOAD 2
+    ICONST_1
+    IADD
+    ALOAD 3
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.func_152446_a (Ljava/io/DataInput;ILnet/minecraft/nbt/NBTSizeTracker;)V
+   L13
+    LINENUMBER 60 L13
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    ALOAD 6
+    INVOKEINTERFACE java/util/List.add (Ljava/lang/Object;)Z
+    POP
+   L14
+    LINENUMBER 55 L14
+    IINC 5 1
+    GOTO L8
+   L9
+    LINENUMBER 63 L9
+   FRAME FULL [net/minecraft/nbt/NBTTagList java/io/DataInput I net/minecraft/nbt/NBTSizeTracker I I] []
+    RETURN
+   L15
+    LOCALVARIABLE nbtbase Lnet/minecraft/nbt/NBTBase; L12 L14 6
+    LOCALVARIABLE k I L8 L9 5
+    LOCALVARIABLE j I L6 L9 4
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L15 0
+    LOCALVARIABLE p_152446_1_ Ljava/io/DataInput; L0 L15 1
+    LOCALVARIABLE p_152446_2_ I L0 L15 2
+    LOCALVARIABLE p_152446_3_ Lnet/minecraft/nbt/NBTSizeTracker; L0 L15 3
+    MAXSTACK = 4
+    MAXLOCALS = 7
+
+  // access flags 0x1
+  public getId()B
+   L0
+    LINENUMBER 70 L0
+    BIPUSH 9
+    IRETURN
+   L1
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L1 0
+    MAXSTACK = 1
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public toString()Ljava/lang/String;
+   L0
+    LINENUMBER 75 L0
+    LDC "["
+    ASTORE 1
+   L1
+    LINENUMBER 76 L1
+    ICONST_0
+    ISTORE 2
+   L2
+    LINENUMBER 78 L2
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.iterator ()Ljava/util/Iterator;
+    ASTORE 3
+   L3
+   FRAME FULL [net/minecraft/nbt/NBTTagList java/lang/String I java/util/Iterator] []
+    ALOAD 3
+    INVOKEINTERFACE java/util/Iterator.hasNext ()Z
+    IFEQ L4
+   L5
+    LINENUMBER 80 L5
+    ALOAD 3
+    INVOKEINTERFACE java/util/Iterator.next ()Ljava/lang/Object;
+    CHECKCAST net/minecraft/nbt/NBTBase
+    ASTORE 4
+   L6
+    LINENUMBER 81 L6
+    NEW java/lang/StringBuilder
+    DUP
+    INVOKESPECIAL java/lang/StringBuilder.<init> ()V
+    ALOAD 1
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
+    LDC ""
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
+    ILOAD 2
+    INVOKEVIRTUAL java/lang/StringBuilder.append (I)Ljava/lang/StringBuilder;
+    BIPUSH 58
+    INVOKEVIRTUAL java/lang/StringBuilder.append (C)Ljava/lang/StringBuilder;
+    ALOAD 4
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    BIPUSH 44
+    INVOKEVIRTUAL java/lang/StringBuilder.append (C)Ljava/lang/StringBuilder;
+    INVOKEVIRTUAL java/lang/StringBuilder.toString ()Ljava/lang/String;
+    ASTORE 1
+   L7
+    LINENUMBER 78 L7
+    IINC 2 1
+    GOTO L3
+   L4
+    LINENUMBER 84 L4
+   FRAME FULL [net/minecraft/nbt/NBTTagList java/lang/String I java/util/Iterator] []
+    NEW java/lang/StringBuilder
+    DUP
+    INVOKESPECIAL java/lang/StringBuilder.<init> ()V
+    ALOAD 1
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
+    INVOKESTATIC codechicken/nei/NEIServerUtils.fixTrailingCommaList (Ljava/lang/StringBuilder;)Ljava/lang/StringBuilder;
+    LDC "]"
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
+    INVOKEVIRTUAL java/lang/StringBuilder.toString ()Ljava/lang/String;
+    ARETURN
+   L8
+    LOCALVARIABLE nbtbase Lnet/minecraft/nbt/NBTBase; L6 L7 4
+    LOCALVARIABLE iterator Ljava/util/Iterator; L3 L4 3
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L8 0
+    LOCALVARIABLE s Ljava/lang/String; L1 L8 1
+    LOCALVARIABLE i I L2 L8 2
+    MAXSTACK = 2
+    MAXLOCALS = 5
+
+  // access flags 0x1
+  public appendTag(Lnet/minecraft/nbt/NBTBase;)V
+   L0
+    LINENUMBER 93 L0
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    IFNE L1
+   L2
+    LINENUMBER 95 L2
+    ALOAD 0
+    ALOAD 1
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.getId ()B
+    PUTFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    GOTO L3
+   L1
+    LINENUMBER 97 L1
+   FRAME FULL [net/minecraft/nbt/NBTTagList net/minecraft/nbt/NBTBase] []
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    ALOAD 1
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.getId ()B
+    IF_ICMPEQ L3
+   L4
+    LINENUMBER 99 L4
+    GETSTATIC java/lang/System.err : Ljava/io/PrintStream;
+    LDC "WARNING: Adding mismatching tag types to tag list"
+    INVOKEVIRTUAL java/io/PrintStream.println (Ljava/lang/String;)V
+   L5
+    LINENUMBER 100 L5
+    RETURN
+   L3
+    LINENUMBER 103 L3
+   FRAME FULL [net/minecraft/nbt/NBTTagList net/minecraft/nbt/NBTBase] []
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    ALOAD 1
+    INVOKEINTERFACE java/util/List.add (Ljava/lang/Object;)Z
+    POP
+   L6
+    LINENUMBER 104 L6
+    RETURN
+   L7
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L7 0
+    LOCALVARIABLE p_74742_1_ Lnet/minecraft/nbt/NBTBase; L0 L7 1
+    MAXSTACK = 2
+    MAXLOCALS = 2
+
+  // access flags 0x1
+  public func_150304_a(ILnet/minecraft/nbt/NBTBase;)V
+   L0
+    LINENUMBER 108 L0
+    ILOAD 1
+    IFLT L1
+    ILOAD 1
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.size ()I
+    IF_ICMPGE L1
+   L2
+    LINENUMBER 110 L2
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    IFNE L3
+   L4
+    LINENUMBER 112 L4
+    ALOAD 0
+    ALOAD 2
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.getId ()B
+    PUTFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    GOTO L5
+   L3
+    LINENUMBER 114 L3
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] []
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    ALOAD 2
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.getId ()B
+    IF_ICMPEQ L5
+   L6
+    LINENUMBER 116 L6
+    GETSTATIC java/lang/System.err : Ljava/io/PrintStream;
+    LDC "WARNING: Adding mismatching tag types to tag list"
+    INVOKEVIRTUAL java/io/PrintStream.println (Ljava/lang/String;)V
+   L7
+    LINENUMBER 117 L7
+    RETURN
+   L5
+    LINENUMBER 120 L5
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] []
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    ILOAD 1
+    ALOAD 2
+    INVOKEINTERFACE java/util/List.set (ILjava/lang/Object;)Ljava/lang/Object;
+    POP
+    GOTO L8
+   L1
+    LINENUMBER 124 L1
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] []
+    GETSTATIC java/lang/System.err : Ljava/io/PrintStream;
+    LDC "WARNING: index out of bounds to set tag in tag list"
+    INVOKEVIRTUAL java/io/PrintStream.println (Ljava/lang/String;)V
+   L8
+    LINENUMBER 126 L8
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] []
+    RETURN
+   L9
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L9 0
+    LOCALVARIABLE p_150304_1_ I L0 L9 1
+    LOCALVARIABLE p_150304_2_ Lnet/minecraft/nbt/NBTBase; L0 L9 2
+    MAXSTACK = 3
+    MAXLOCALS = 3
+
+  // access flags 0x1
+  public removeTag(I)Lnet/minecraft/nbt/NBTBase;
+   L0
+    LINENUMBER 133 L0
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    ILOAD 1
+    INVOKEINTERFACE java/util/List.remove (I)Ljava/lang/Object;
+    CHECKCAST net/minecraft/nbt/NBTBase
+    ARETURN
+   L1
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L1 0
+    LOCALVARIABLE p_74744_1_ I L0 L1 1
+    MAXSTACK = 2
+    MAXLOCALS = 2
+
+  // access flags 0x1
+  public getCompoundTagAt(I)Lnet/minecraft/nbt/NBTTagCompound;
+   L0
+    LINENUMBER 141 L0
+    ILOAD 1
+    IFLT L1
+    ILOAD 1
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.size ()I
+    IF_ICMPGE L1
+   L2
+    LINENUMBER 143 L2
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    ILOAD 1
+    INVOKEINTERFACE java/util/List.get (I)Ljava/lang/Object;
+    CHECKCAST net/minecraft/nbt/NBTBase
+    ASTORE 2
+   L3
+    LINENUMBER 144 L3
+    ALOAD 2
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.getId ()B
+    BIPUSH 10
+    IF_ICMPNE L4
+    ALOAD 2
+    CHECKCAST net/minecraft/nbt/NBTTagCompound
+    GOTO L5
+   L4
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] []
+    NEW net/minecraft/nbt/NBTTagCompound
+    DUP
+    INVOKESPECIAL net/minecraft/nbt/NBTTagCompound.<init> ()V
+   L5
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] [net/minecraft/nbt/NBTTagCompound]
+    ARETURN
+   L1
+    LINENUMBER 148 L1
+   FRAME FULL [net/minecraft/nbt/NBTTagList I] []
+    NEW net/minecraft/nbt/NBTTagCompound
+    DUP
+    INVOKESPECIAL net/minecraft/nbt/NBTTagCompound.<init> ()V
+    ARETURN
+   L6
+    LOCALVARIABLE nbtbase Lnet/minecraft/nbt/NBTBase; L3 L1 2
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L6 0
+    LOCALVARIABLE p_150305_1_ I L0 L6 1
+    MAXSTACK = 2
+    MAXLOCALS = 3
+
+  // access flags 0x1
+  public func_150306_c(I)[I
+   L0
+    LINENUMBER 154 L0
+    ILOAD 1
+    IFLT L1
+    ILOAD 1
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.size ()I
+    IF_ICMPGE L1
+   L2
+    LINENUMBER 156 L2
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    ILOAD 1
+    INVOKEINTERFACE java/util/List.get (I)Ljava/lang/Object;
+    CHECKCAST net/minecraft/nbt/NBTBase
+    ASTORE 2
+   L3
+    LINENUMBER 157 L3
+    ALOAD 2
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.getId ()B
+    BIPUSH 11
+    IF_ICMPNE L4
+    ALOAD 2
+    CHECKCAST net/minecraft/nbt/NBTTagIntArray
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagIntArray.func_150302_c ()[I
+    GOTO L5
+   L4
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] []
+    ICONST_0
+    NEWARRAY T_INT
+   L5
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] [[I]
+    ARETURN
+   L1
+    LINENUMBER 161 L1
+   FRAME FULL [net/minecraft/nbt/NBTTagList I] []
+    ICONST_0
+    NEWARRAY T_INT
+    ARETURN
+   L6
+    LOCALVARIABLE nbtbase Lnet/minecraft/nbt/NBTBase; L3 L1 2
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L6 0
+    LOCALVARIABLE p_150306_1_ I L0 L6 1
+    MAXSTACK = 2
+    MAXLOCALS = 3
+
+  // access flags 0x1
+  public func_150309_d(I)D
+   L0
+    LINENUMBER 167 L0
+    ILOAD 1
+    IFLT L1
+    ILOAD 1
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.size ()I
+    IF_ICMPGE L1
+   L2
+    LINENUMBER 169 L2
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    ILOAD 1
+    INVOKEINTERFACE java/util/List.get (I)Ljava/lang/Object;
+    CHECKCAST net/minecraft/nbt/NBTBase
+    ASTORE 2
+   L3
+    LINENUMBER 170 L3
+    ALOAD 2
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.getId ()B
+    BIPUSH 6
+    IF_ICMPNE L4
+    ALOAD 2
+    CHECKCAST net/minecraft/nbt/NBTTagDouble
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagDouble.func_150286_g ()D
+    GOTO L5
+   L4
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] []
+    DCONST_0
+   L5
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] [D]
+    DRETURN
+   L1
+    LINENUMBER 174 L1
+   FRAME FULL [net/minecraft/nbt/NBTTagList I] []
+    DCONST_0
+    DRETURN
+   L6
+    LOCALVARIABLE nbtbase Lnet/minecraft/nbt/NBTBase; L3 L1 2
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L6 0
+    LOCALVARIABLE p_150309_1_ I L0 L6 1
+    MAXSTACK = 2
+    MAXLOCALS = 3
+
+  // access flags 0x1
+  public func_150308_e(I)F
+   L0
+    LINENUMBER 180 L0
+    ILOAD 1
+    IFLT L1
+    ILOAD 1
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.size ()I
+    IF_ICMPGE L1
+   L2
+    LINENUMBER 182 L2
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    ILOAD 1
+    INVOKEINTERFACE java/util/List.get (I)Ljava/lang/Object;
+    CHECKCAST net/minecraft/nbt/NBTBase
+    ASTORE 2
+   L3
+    LINENUMBER 183 L3
+    ALOAD 2
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.getId ()B
+    ICONST_5
+    IF_ICMPNE L4
+    ALOAD 2
+    CHECKCAST net/minecraft/nbt/NBTTagFloat
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagFloat.func_150288_h ()F
+    GOTO L5
+   L4
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] []
+    FCONST_0
+   L5
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] [F]
+    FRETURN
+   L1
+    LINENUMBER 187 L1
+   FRAME FULL [net/minecraft/nbt/NBTTagList I] []
+    FCONST_0
+    FRETURN
+   L6
+    LOCALVARIABLE nbtbase Lnet/minecraft/nbt/NBTBase; L3 L1 2
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L6 0
+    LOCALVARIABLE p_150308_1_ I L0 L6 1
+    MAXSTACK = 2
+    MAXLOCALS = 3
+
+  // access flags 0x1
+  public getStringTagAt(I)Ljava/lang/String;
+   L0
+    LINENUMBER 196 L0
+    ILOAD 1
+    IFLT L1
+    ILOAD 1
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.size ()I
+    IF_ICMPGE L1
+   L2
+    LINENUMBER 198 L2
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    ILOAD 1
+    INVOKEINTERFACE java/util/List.get (I)Ljava/lang/Object;
+    CHECKCAST net/minecraft/nbt/NBTBase
+    ASTORE 2
+   L3
+    LINENUMBER 199 L3
+    ALOAD 2
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.getId ()B
+    BIPUSH 8
+    IF_ICMPNE L4
+    ALOAD 2
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.func_150285_a_ ()Ljava/lang/String;
+    GOTO L5
+   L4
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] []
+    ALOAD 2
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.toString ()Ljava/lang/String;
+   L5
+   FRAME FULL [net/minecraft/nbt/NBTTagList I net/minecraft/nbt/NBTBase] [java/lang/String]
+    ARETURN
+   L1
+    LINENUMBER 203 L1
+   FRAME FULL [net/minecraft/nbt/NBTTagList I] []
+    LDC ""
+    ARETURN
+   L6
+    LOCALVARIABLE nbtbase Lnet/minecraft/nbt/NBTBase; L3 L1 2
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L6 0
+    LOCALVARIABLE p_150307_1_ I L0 L6 1
+    MAXSTACK = 2
+    MAXLOCALS = 3
+
+  // access flags 0x1
+  public tagCount()I
+   L0
+    LINENUMBER 212 L0
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.size ()I
+    IRETURN
+   L1
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L1 0
+    MAXSTACK = 1
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public copy()Lnet/minecraft/nbt/NBTBase;
+   L0
+    LINENUMBER 220 L0
+    NEW net/minecraft/nbt/NBTTagList
+    DUP
+    INVOKESPECIAL net/minecraft/nbt/NBTTagList.<init> ()V
+    ASTORE 1
+   L1
+    LINENUMBER 221 L1
+    ALOAD 1
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    PUTFIELD net/minecraft/nbt/NBTTagList.tagType : B
+   L2
+    LINENUMBER 222 L2
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.iterator ()Ljava/util/Iterator;
+    ASTORE 2
+   L3
+    LINENUMBER 224 L3
+   FRAME FULL [net/minecraft/nbt/NBTTagList net/minecraft/nbt/NBTTagList java/util/Iterator] []
+    ALOAD 2
+    INVOKEINTERFACE java/util/Iterator.hasNext ()Z
+    IFEQ L4
+   L5
+    LINENUMBER 226 L5
+    ALOAD 2
+    INVOKEINTERFACE java/util/Iterator.next ()Ljava/lang/Object;
+    CHECKCAST net/minecraft/nbt/NBTBase
+    ASTORE 3
+   L6
+    LINENUMBER 227 L6
+    ALOAD 3
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.copy ()Lnet/minecraft/nbt/NBTBase;
+    ASTORE 4
+   L7
+    LINENUMBER 228 L7
+    ALOAD 1
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    ALOAD 4
+    INVOKEINTERFACE java/util/List.add (Ljava/lang/Object;)Z
+    POP
+   L8
+    LINENUMBER 229 L8
+    GOTO L3
+   L4
+    LINENUMBER 231 L4
+   FRAME FULL [net/minecraft/nbt/NBTTagList net/minecraft/nbt/NBTTagList java/util/Iterator] []
+    ALOAD 1
+    ARETURN
+   L9
+    LOCALVARIABLE nbtbase Lnet/minecraft/nbt/NBTBase; L6 L8 3
+    LOCALVARIABLE nbtbase1 Lnet/minecraft/nbt/NBTBase; L7 L8 4
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L9 0
+    LOCALVARIABLE nbttaglist Lnet/minecraft/nbt/NBTTagList; L1 L9 1
+    LOCALVARIABLE iterator Ljava/util/Iterator; L3 L9 2
+    MAXSTACK = 2
+    MAXLOCALS = 5
+
+  // access flags 0x1
+  public equals(Ljava/lang/Object;)Z
+   L0
+    LINENUMBER 236 L0
+    ALOAD 0
+    ALOAD 1
+    INVOKESPECIAL net/minecraft/nbt/NBTBase.equals (Ljava/lang/Object;)Z
+    IFEQ L1
+   L2
+    LINENUMBER 238 L2
+    ALOAD 1
+    CHECKCAST net/minecraft/nbt/NBTTagList
+    ASTORE 2
+   L3
+    LINENUMBER 240 L3
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    ALOAD 2
+    GETFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    IF_ICMPNE L1
+   L4
+    LINENUMBER 242 L4
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    ALOAD 2
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.equals (Ljava/lang/Object;)Z
+    IRETURN
+   L1
+    LINENUMBER 246 L1
+   FRAME FULL [net/minecraft/nbt/NBTTagList java/lang/Object] []
+    ICONST_0
+    IRETURN
+   L5
+    LOCALVARIABLE nbttaglist Lnet/minecraft/nbt/NBTTagList; L3 L1 2
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L5 0
+    LOCALVARIABLE p_equals_1_ Ljava/lang/Object; L0 L5 1
+    MAXSTACK = 2
+    MAXLOCALS = 3
+
+  // access flags 0x1
+  public hashCode()I
+   L0
+    LINENUMBER 251 L0
+    ALOAD 0
+    INVOKESPECIAL net/minecraft/nbt/NBTBase.hashCode ()I
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagList : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.hashCode ()I
+    IXOR
+    IRETURN
+   L1
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L1 0
+    MAXSTACK = 2
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public func_150303_d()I
+   L0
+    LINENUMBER 256 L0
+    ALOAD 0
+    GETFIELD net/minecraft/nbt/NBTTagList.tagType : B
+    IRETURN
+   L1
+    LOCALVARIABLE this Lnet/minecraft/nbt/NBTTagList; L0 L1 0
+    MAXSTACK = 1
+    MAXLOCALS = 1
+}

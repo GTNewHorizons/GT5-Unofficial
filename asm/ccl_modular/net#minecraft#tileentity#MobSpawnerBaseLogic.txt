@@ -1,0 +1,1385 @@
+// class version 50.0 (50)
+// access flags 0x421
+public abstract class net/minecraft/tileentity/MobSpawnerBaseLogic {
+
+  // compiled from: MobSpawnerBaseLogic.java
+  // access flags 0x1
+  public INNERCLASS net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart net/minecraft/tileentity/MobSpawnerBaseLogic WeightedRandomMinecart
+  // access flags 0x9
+  public static INNERCLASS net/minecraft/util/WeightedRandom$Item net/minecraft/util/WeightedRandom Item
+
+  // access flags 0x1
+  public I spawnDelay
+
+  // access flags 0x2
+  private Ljava/lang/String; entityTypeName
+
+  // access flags 0x2
+  private Ljava/util/List; potentialEntitySpawns
+
+  // access flags 0x2
+  private Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart; randomEntity
+
+  // access flags 0x1
+  public D field_98287_c
+
+  // access flags 0x1
+  public D field_98284_d
+
+  // access flags 0x2
+  private I minSpawnDelay
+
+  // access flags 0x2
+  private I maxSpawnDelay
+
+  // access flags 0x2
+  private I spawnCount
+
+  // access flags 0x2
+  private Lnet/minecraft/entity/Entity; field_98291_j
+
+  // access flags 0x2
+  private I maxNearbyEntities
+
+  // access flags 0x2
+  private I activatingRangeFromPlayer
+
+  // access flags 0x2
+  private I spawnRange
+
+  // access flags 0x1A
+  private final static Ljava/lang/String; __OBFID = "CL_00000129"
+
+  // access flags 0x1
+  public <init>()V
+   L0
+    LINENUMBER 20 L0
+    ALOAD 0
+    INVOKESPECIAL java/lang/Object.<init> ()V
+   L1
+    LINENUMBER 23 L1
+    ALOAD 0
+    BIPUSH 20
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+   L2
+    LINENUMBER 24 L2
+    ALOAD 0
+    LDC "Pig"
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.entityTypeName : Ljava/lang/String;
+   L3
+    LINENUMBER 30 L3
+    ALOAD 0
+    SIPUSH 200
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.minSpawnDelay : I
+   L4
+    LINENUMBER 31 L4
+    ALOAD 0
+    SIPUSH 800
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.maxSpawnDelay : I
+   L5
+    LINENUMBER 33 L5
+    ALOAD 0
+    ICONST_4
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnCount : I
+   L6
+    LINENUMBER 35 L6
+    ALOAD 0
+    BIPUSH 6
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.maxNearbyEntities : I
+   L7
+    LINENUMBER 37 L7
+    ALOAD 0
+    BIPUSH 16
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.activatingRangeFromPlayer : I
+   L8
+    LINENUMBER 39 L8
+    ALOAD 0
+    ICONST_4
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnRange : I
+    RETURN
+   L9
+    LOCALVARIABLE this Lnet/minecraft/tileentity/MobSpawnerBaseLogic; L0 L9 0
+    MAXSTACK = 2
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public getEntityNameToSpawn()Ljava/lang/String;
+   L0
+    LINENUMBER 47 L0
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getRandomEntity ()Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;
+    IFNONNULL L1
+   L2
+    LINENUMBER 49 L2
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.entityTypeName : Ljava/lang/String;
+    LDC "Minecart"
+    INVOKEVIRTUAL java/lang/String.equals (Ljava/lang/Object;)Z
+    IFEQ L3
+   L4
+    LINENUMBER 51 L4
+    ALOAD 0
+    LDC "MinecartRideable"
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.entityTypeName : Ljava/lang/String;
+   L3
+    LINENUMBER 54 L3
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic] []
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.entityTypeName : Ljava/lang/String;
+    ARETURN
+   L1
+    LINENUMBER 58 L1
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic] []
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getRandomEntity ()Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart.entityTypeName : Ljava/lang/String;
+    ARETURN
+   L5
+    LOCALVARIABLE this Lnet/minecraft/tileentity/MobSpawnerBaseLogic; L0 L5 0
+    MAXSTACK = 2
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public setEntityName(Ljava/lang/String;)V
+   L0
+    LINENUMBER 64 L0
+    ALOAD 0
+    ALOAD 1
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.entityTypeName : Ljava/lang/String;
+   L1
+    LINENUMBER 65 L1
+    RETURN
+   L2
+    LOCALVARIABLE this Lnet/minecraft/tileentity/MobSpawnerBaseLogic; L0 L2 0
+    LOCALVARIABLE p_98272_1_ Ljava/lang/String; L0 L2 1
+    MAXSTACK = 2
+    MAXLOCALS = 2
+
+  // access flags 0x1
+  public isActivated()Z
+   L0
+    LINENUMBER 72 L0
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerX ()I
+    I2D
+    LDC 0.5
+    DADD
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerY ()I
+    I2D
+    LDC 0.5
+    DADD
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerZ ()I
+    I2D
+    LDC 0.5
+    DADD
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.activatingRangeFromPlayer : I
+    I2D
+    INVOKEVIRTUAL net/minecraft/world/World.getClosestPlayer (DDDD)Lnet/minecraft/entity/player/EntityPlayer;
+    IFNULL L1
+    ICONST_1
+    GOTO L2
+   L1
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic] []
+    ICONST_0
+   L2
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic] [I]
+    IRETURN
+   L3
+    LOCALVARIABLE this Lnet/minecraft/tileentity/MobSpawnerBaseLogic; L0 L3 0
+    MAXSTACK = 9
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public updateSpawner()V
+   L0
+    LINENUMBER 77 L0
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.isActivated ()Z
+    IFEQ L1
+   L2
+    LINENUMBER 81 L2
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.isRemote : Z
+    IFEQ L3
+   L4
+    LINENUMBER 83 L4
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerX ()I
+    I2F
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.rand : Ljava/util/Random;
+    INVOKEVIRTUAL java/util/Random.nextFloat ()F
+    FADD
+    F2D
+    DSTORE 1
+   L5
+    LINENUMBER 84 L5
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerY ()I
+    I2F
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.rand : Ljava/util/Random;
+    INVOKEVIRTUAL java/util/Random.nextFloat ()F
+    FADD
+    F2D
+    DSTORE 3
+   L6
+    LINENUMBER 85 L6
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerZ ()I
+    I2F
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.rand : Ljava/util/Random;
+    INVOKEVIRTUAL java/util/Random.nextFloat ()F
+    FADD
+    F2D
+    DSTORE 5
+   L7
+    LINENUMBER 86 L7
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    LDC "smoke"
+    DLOAD 1
+    DLOAD 3
+    DLOAD 5
+    DCONST_0
+    DCONST_0
+    DCONST_0
+    INVOKEVIRTUAL net/minecraft/world/World.spawnParticle (Ljava/lang/String;DDDDDD)V
+   L8
+    LINENUMBER 87 L8
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    LDC "flame"
+    DLOAD 1
+    DLOAD 3
+    DLOAD 5
+    DCONST_0
+    DCONST_0
+    DCONST_0
+    INVOKEVIRTUAL net/minecraft/world/World.spawnParticle (Ljava/lang/String;DDDDDD)V
+   L9
+    LINENUMBER 89 L9
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+    IFLE L10
+   L11
+    LINENUMBER 91 L11
+    ALOAD 0
+    DUP
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+    ICONST_1
+    ISUB
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+   L10
+    LINENUMBER 94 L10
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic D D D] []
+    ALOAD 0
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.field_98287_c : D
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.field_98284_d : D
+   L12
+    LINENUMBER 95 L12
+    ALOAD 0
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.field_98287_c : D
+    LDC 1000.0
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+    I2F
+    LDC 200.0
+    FADD
+    FDIV
+    F2D
+    DADD
+    LDC 360.0
+    DREM
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.field_98287_c : D
+   L13
+    LINENUMBER 96 L13
+    GOTO L1
+   L3
+    LINENUMBER 99 L3
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic] []
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+    ICONST_M1
+    IF_ICMPNE L14
+   L15
+    LINENUMBER 101 L15
+    ALOAD 0
+    INVOKESPECIAL net/minecraft/tileentity/MobSpawnerBaseLogic.resetTimer ()V
+   L14
+    LINENUMBER 104 L14
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic] []
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+    IFLE L16
+   L17
+    LINENUMBER 106 L17
+    ALOAD 0
+    DUP
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+    ICONST_1
+    ISUB
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+   L18
+    LINENUMBER 107 L18
+    RETURN
+   L16
+    LINENUMBER 110 L16
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic] []
+    ICONST_0
+    ISTORE 7
+   L19
+    LINENUMBER 112 L19
+    ICONST_0
+    ISTORE 8
+   L20
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic T T T T T T I I] []
+    ILOAD 8
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnCount : I
+    IF_ICMPGE L21
+   L22
+    LINENUMBER 114 L22
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getEntityNameToSpawn ()Ljava/lang/String;
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    INVOKESTATIC net/minecraft/entity/EntityList.createEntityByName (Ljava/lang/String;Lnet/minecraft/world/World;)Lnet/minecraft/entity/Entity;
+    ASTORE 9
+   L23
+    LINENUMBER 116 L23
+    ALOAD 9
+    IFNONNULL L24
+   L25
+    LINENUMBER 118 L25
+    RETURN
+   L24
+    LINENUMBER 121 L24
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic T T T T T T I I net/minecraft/entity/Entity] []
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    ALOAD 9
+    INVOKEVIRTUAL java/lang/Object.getClass ()Ljava/lang/Class;
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerX ()I
+    I2D
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerY ()I
+    I2D
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerZ ()I
+    I2D
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerX ()I
+    ICONST_1
+    IADD
+    I2D
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerY ()I
+    ICONST_1
+    IADD
+    I2D
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerZ ()I
+    ICONST_1
+    IADD
+    I2D
+    INVOKESTATIC net/minecraft/util/AxisAlignedBB.getBoundingBox (DDDDDD)Lnet/minecraft/util/AxisAlignedBB;
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnRange : I
+    ICONST_2
+    IMUL
+    I2D
+    LDC 4.0
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnRange : I
+    ICONST_2
+    IMUL
+    I2D
+    INVOKEVIRTUAL net/minecraft/util/AxisAlignedBB.expand (DDD)Lnet/minecraft/util/AxisAlignedBB;
+    INVOKEVIRTUAL net/minecraft/world/World.getEntitiesWithinAABB (Ljava/lang/Class;Lnet/minecraft/util/AxisAlignedBB;)Ljava/util/List;
+    INVOKEINTERFACE java/util/List.size ()I
+    ISTORE 10
+   L26
+    LINENUMBER 123 L26
+    ILOAD 10
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.maxNearbyEntities : I
+    IF_ICMPLT L27
+   L28
+    LINENUMBER 125 L28
+    ALOAD 0
+    INVOKESPECIAL net/minecraft/tileentity/MobSpawnerBaseLogic.resetTimer ()V
+   L29
+    LINENUMBER 126 L29
+    RETURN
+   L27
+    LINENUMBER 129 L27
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic T T T T T T I I net/minecraft/entity/Entity I] []
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerX ()I
+    I2D
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.rand : Ljava/util/Random;
+    INVOKEVIRTUAL java/util/Random.nextDouble ()D
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.rand : Ljava/util/Random;
+    INVOKEVIRTUAL java/util/Random.nextDouble ()D
+    DSUB
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnRange : I
+    I2D
+    DMUL
+    DADD
+    DSTORE 5
+   L30
+    LINENUMBER 130 L30
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerY ()I
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.rand : Ljava/util/Random;
+    ICONST_3
+    INVOKEVIRTUAL java/util/Random.nextInt (I)I
+    IADD
+    ICONST_1
+    ISUB
+    I2D
+    DSTORE 11
+   L31
+    LINENUMBER 131 L31
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerZ ()I
+    I2D
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.rand : Ljava/util/Random;
+    INVOKEVIRTUAL java/util/Random.nextDouble ()D
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.rand : Ljava/util/Random;
+    INVOKEVIRTUAL java/util/Random.nextDouble ()D
+    DSUB
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnRange : I
+    I2D
+    DMUL
+    DADD
+    DSTORE 13
+   L32
+    LINENUMBER 132 L32
+    ALOAD 9
+    INSTANCEOF net/minecraft/entity/EntityLiving
+    IFEQ L33
+    ALOAD 9
+    CHECKCAST net/minecraft/entity/EntityLiving
+    GOTO L34
+   L33
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic T T T T D I I net/minecraft/entity/Entity I D D] []
+    ACONST_NULL
+   L34
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic T T T T D I I net/minecraft/entity/Entity I D D] [net/minecraft/entity/EntityLiving]
+    ASTORE 15
+   L35
+    LINENUMBER 133 L35
+    ALOAD 9
+    DLOAD 5
+    DLOAD 11
+    DLOAD 13
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.rand : Ljava/util/Random;
+    INVOKEVIRTUAL java/util/Random.nextFloat ()F
+    LDC 360.0
+    FMUL
+    FCONST_0
+    INVOKEVIRTUAL net/minecraft/entity/Entity.setLocationAndAngles (DDDFF)V
+   L36
+    LINENUMBER 135 L36
+    ALOAD 15
+    IFNULL L37
+    ALOAD 15
+    INVOKEVIRTUAL net/minecraft/entity/EntityLiving.getCanSpawnHere ()Z
+    IFEQ L38
+   L37
+    LINENUMBER 137 L37
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic T T T T D I I net/minecraft/entity/Entity I D D net/minecraft/entity/EntityLiving] []
+    ALOAD 0
+    ALOAD 9
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.func_98265_a (Lnet/minecraft/entity/Entity;)Lnet/minecraft/entity/Entity;
+    POP
+   L39
+    LINENUMBER 138 L39
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    SIPUSH 2004
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerX ()I
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerY ()I
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerZ ()I
+    ICONST_0
+    INVOKEVIRTUAL net/minecraft/world/World.playAuxSFX (IIIII)V
+   L40
+    LINENUMBER 140 L40
+    ALOAD 15
+    IFNULL L41
+   L42
+    LINENUMBER 142 L42
+    ALOAD 15
+    INVOKEVIRTUAL net/minecraft/entity/EntityLiving.spawnExplosionParticle ()V
+   L41
+    LINENUMBER 145 L41
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic T T T T D I I net/minecraft/entity/Entity I D D net/minecraft/entity/EntityLiving] []
+    ICONST_1
+    ISTORE 7
+   L38
+    LINENUMBER 112 L38
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic T T T T D I I net/minecraft/entity/Entity I D D net/minecraft/entity/EntityLiving] []
+    IINC 8 1
+    GOTO L20
+   L21
+    LINENUMBER 149 L21
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic T T T T T T I I] []
+    ILOAD 7
+    IFEQ L1
+   L43
+    LINENUMBER 151 L43
+    ALOAD 0
+    INVOKESPECIAL net/minecraft/tileentity/MobSpawnerBaseLogic.resetTimer ()V
+   L1
+    LINENUMBER 155 L1
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic] []
+    RETURN
+   L44
+    LOCALVARIABLE d0 D L5 L13 1
+    LOCALVARIABLE d1 D L6 L13 3
+    LOCALVARIABLE d2 D L7 L3 5
+    LOCALVARIABLE entity Lnet/minecraft/entity/Entity; L23 L38 9
+    LOCALVARIABLE j I L26 L38 10
+    LOCALVARIABLE d3 D L31 L38 11
+    LOCALVARIABLE d4 D L32 L38 13
+    LOCALVARIABLE entityliving Lnet/minecraft/entity/EntityLiving; L35 L38 15
+    LOCALVARIABLE d2 D L30 L21 5
+    LOCALVARIABLE i I L20 L21 8
+    LOCALVARIABLE flag Z L19 L1 7
+    LOCALVARIABLE this Lnet/minecraft/tileentity/MobSpawnerBaseLogic; L0 L44 0
+    MAXSTACK = 14
+    MAXLOCALS = 16
+
+  // access flags 0x1
+  public func_98265_a(Lnet/minecraft/entity/Entity;)Lnet/minecraft/entity/Entity;
+   L0
+    LINENUMBER 159 L0
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getRandomEntity ()Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;
+    IFNULL L1
+   L2
+    LINENUMBER 161 L2
+    NEW net/minecraft/nbt/NBTTagCompound
+    DUP
+    INVOKESPECIAL net/minecraft/nbt/NBTTagCompound.<init> ()V
+    ASTORE 2
+   L3
+    LINENUMBER 162 L3
+    ALOAD 1
+    ALOAD 2
+    INVOKEVIRTUAL net/minecraft/entity/Entity.writeToNBTOptional (Lnet/minecraft/nbt/NBTTagCompound;)Z
+    POP
+   L4
+    LINENUMBER 163 L4
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getRandomEntity ()Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart.field_98222_b : Lnet/minecraft/nbt/NBTTagCompound;
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.func_150296_c ()Ljava/util/Set;
+    INVOKEINTERFACE java/util/Set.iterator ()Ljava/util/Iterator;
+    ASTORE 3
+   L5
+    LINENUMBER 165 L5
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/entity/Entity net/minecraft/nbt/NBTTagCompound java/util/Iterator] []
+    ALOAD 3
+    INVOKEINTERFACE java/util/Iterator.hasNext ()Z
+    IFEQ L6
+   L7
+    LINENUMBER 167 L7
+    ALOAD 3
+    INVOKEINTERFACE java/util/Iterator.next ()Ljava/lang/Object;
+    CHECKCAST java/lang/String
+    ASTORE 4
+   L8
+    LINENUMBER 168 L8
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getRandomEntity ()Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart.field_98222_b : Lnet/minecraft/nbt/NBTTagCompound;
+    ALOAD 4
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getTag (Ljava/lang/String;)Lnet/minecraft/nbt/NBTBase;
+    ASTORE 5
+   L9
+    LINENUMBER 169 L9
+    ALOAD 2
+    ALOAD 4
+    ALOAD 5
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.copy ()Lnet/minecraft/nbt/NBTBase;
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.setTag (Ljava/lang/String;Lnet/minecraft/nbt/NBTBase;)V
+   L10
+    LINENUMBER 170 L10
+    GOTO L5
+   L6
+    LINENUMBER 172 L6
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/entity/Entity net/minecraft/nbt/NBTTagCompound java/util/Iterator] []
+    ALOAD 1
+    ALOAD 2
+    INVOKEVIRTUAL net/minecraft/entity/Entity.readFromNBT (Lnet/minecraft/nbt/NBTTagCompound;)V
+   L11
+    LINENUMBER 174 L11
+    ALOAD 1
+    GETFIELD net/minecraft/entity/Entity.worldObj : Lnet/minecraft/world/World;
+    IFNULL L12
+   L13
+    LINENUMBER 176 L13
+    ALOAD 1
+    GETFIELD net/minecraft/entity/Entity.worldObj : Lnet/minecraft/world/World;
+    ALOAD 1
+    INVOKEVIRTUAL net/minecraft/world/World.spawnEntityInWorld (Lnet/minecraft/entity/Entity;)Z
+    POP
+   L12
+    LINENUMBER 181 L12
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/entity/Entity net/minecraft/nbt/NBTTagCompound java/util/Iterator] []
+    ALOAD 1
+    ASTORE 5
+   L14
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/entity/Entity net/minecraft/nbt/NBTTagCompound java/util/Iterator T net/minecraft/entity/Entity] []
+    ALOAD 2
+    LDC "Riding"
+    BIPUSH 10
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.hasKey (Ljava/lang/String;I)Z
+    IFEQ L15
+   L16
+    LINENUMBER 183 L16
+    ALOAD 2
+    LDC "Riding"
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getCompoundTag (Ljava/lang/String;)Lnet/minecraft/nbt/NBTTagCompound;
+    ASTORE 4
+   L17
+    LINENUMBER 184 L17
+    ALOAD 4
+    LDC "id"
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getString (Ljava/lang/String;)Ljava/lang/String;
+    ALOAD 1
+    GETFIELD net/minecraft/entity/Entity.worldObj : Lnet/minecraft/world/World;
+    INVOKESTATIC net/minecraft/entity/EntityList.createEntityByName (Ljava/lang/String;Lnet/minecraft/world/World;)Lnet/minecraft/entity/Entity;
+    ASTORE 6
+   L18
+    LINENUMBER 186 L18
+    ALOAD 6
+    IFNULL L19
+   L20
+    LINENUMBER 188 L20
+    NEW net/minecraft/nbt/NBTTagCompound
+    DUP
+    INVOKESPECIAL net/minecraft/nbt/NBTTagCompound.<init> ()V
+    ASTORE 7
+   L21
+    LINENUMBER 189 L21
+    ALOAD 6
+    ALOAD 7
+    INVOKEVIRTUAL net/minecraft/entity/Entity.writeToNBTOptional (Lnet/minecraft/nbt/NBTTagCompound;)Z
+    POP
+   L22
+    LINENUMBER 190 L22
+    ALOAD 4
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.func_150296_c ()Ljava/util/Set;
+    INVOKEINTERFACE java/util/Set.iterator ()Ljava/util/Iterator;
+    ASTORE 8
+   L23
+    LINENUMBER 192 L23
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/entity/Entity net/minecraft/nbt/NBTTagCompound java/util/Iterator net/minecraft/nbt/NBTTagCompound net/minecraft/entity/Entity net/minecraft/entity/Entity net/minecraft/nbt/NBTTagCompound java/util/Iterator] []
+    ALOAD 8
+    INVOKEINTERFACE java/util/Iterator.hasNext ()Z
+    IFEQ L24
+   L25
+    LINENUMBER 194 L25
+    ALOAD 8
+    INVOKEINTERFACE java/util/Iterator.next ()Ljava/lang/Object;
+    CHECKCAST java/lang/String
+    ASTORE 9
+   L26
+    LINENUMBER 195 L26
+    ALOAD 4
+    ALOAD 9
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getTag (Ljava/lang/String;)Lnet/minecraft/nbt/NBTBase;
+    ASTORE 10
+   L27
+    LINENUMBER 196 L27
+    ALOAD 7
+    ALOAD 9
+    ALOAD 10
+    INVOKEVIRTUAL net/minecraft/nbt/NBTBase.copy ()Lnet/minecraft/nbt/NBTBase;
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.setTag (Ljava/lang/String;Lnet/minecraft/nbt/NBTBase;)V
+   L28
+    LINENUMBER 197 L28
+    GOTO L23
+   L24
+    LINENUMBER 199 L24
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/entity/Entity net/minecraft/nbt/NBTTagCompound java/util/Iterator net/minecraft/nbt/NBTTagCompound net/minecraft/entity/Entity net/minecraft/entity/Entity net/minecraft/nbt/NBTTagCompound java/util/Iterator] []
+    ALOAD 6
+    ALOAD 7
+    INVOKEVIRTUAL net/minecraft/entity/Entity.readFromNBT (Lnet/minecraft/nbt/NBTTagCompound;)V
+   L29
+    LINENUMBER 200 L29
+    ALOAD 6
+    ALOAD 5
+    GETFIELD net/minecraft/entity/Entity.posX : D
+    ALOAD 5
+    GETFIELD net/minecraft/entity/Entity.posY : D
+    ALOAD 5
+    GETFIELD net/minecraft/entity/Entity.posZ : D
+    ALOAD 5
+    GETFIELD net/minecraft/entity/Entity.rotationYaw : F
+    ALOAD 5
+    GETFIELD net/minecraft/entity/Entity.rotationPitch : F
+    INVOKEVIRTUAL net/minecraft/entity/Entity.setLocationAndAngles (DDDFF)V
+   L30
+    LINENUMBER 202 L30
+    ALOAD 1
+    GETFIELD net/minecraft/entity/Entity.worldObj : Lnet/minecraft/world/World;
+    IFNULL L31
+   L32
+    LINENUMBER 204 L32
+    ALOAD 1
+    GETFIELD net/minecraft/entity/Entity.worldObj : Lnet/minecraft/world/World;
+    ALOAD 6
+    INVOKEVIRTUAL net/minecraft/world/World.spawnEntityInWorld (Lnet/minecraft/entity/Entity;)Z
+    POP
+   L31
+    LINENUMBER 207 L31
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/entity/Entity net/minecraft/nbt/NBTTagCompound java/util/Iterator net/minecraft/nbt/NBTTagCompound net/minecraft/entity/Entity net/minecraft/entity/Entity net/minecraft/nbt/NBTTagCompound java/util/Iterator] []
+    ALOAD 5
+    ALOAD 6
+    INVOKEVIRTUAL net/minecraft/entity/Entity.mountEntity (Lnet/minecraft/entity/Entity;)V
+   L19
+    LINENUMBER 210 L19
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/entity/Entity net/minecraft/nbt/NBTTagCompound java/util/Iterator net/minecraft/nbt/NBTTagCompound net/minecraft/entity/Entity net/minecraft/entity/Entity] []
+    ALOAD 6
+    ASTORE 5
+   L33
+    LINENUMBER 181 L33
+    ALOAD 4
+    ASTORE 2
+    GOTO L14
+   L15
+    LINENUMBER 212 L15
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/entity/Entity net/minecraft/nbt/NBTTagCompound java/util/Iterator T net/minecraft/entity/Entity] []
+    GOTO L34
+   L1
+    LINENUMBER 213 L1
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/entity/Entity] []
+    ALOAD 1
+    INSTANCEOF net/minecraft/entity/EntityLivingBase
+    IFEQ L34
+    ALOAD 1
+    GETFIELD net/minecraft/entity/Entity.worldObj : Lnet/minecraft/world/World;
+    IFNULL L34
+   L35
+    LINENUMBER 215 L35
+    ALOAD 1
+    CHECKCAST net/minecraft/entity/EntityLiving
+    ACONST_NULL
+    CHECKCAST net/minecraft/entity/IEntityLivingData
+    INVOKEVIRTUAL net/minecraft/entity/EntityLiving.onSpawnWithEgg (Lnet/minecraft/entity/IEntityLivingData;)Lnet/minecraft/entity/IEntityLivingData;
+    POP
+   L36
+    LINENUMBER 216 L36
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    ALOAD 1
+    INVOKEVIRTUAL net/minecraft/world/World.spawnEntityInWorld (Lnet/minecraft/entity/Entity;)Z
+    POP
+   L34
+    LINENUMBER 219 L34
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/entity/Entity] []
+    ALOAD 1
+    ARETURN
+   L37
+    LOCALVARIABLE s Ljava/lang/String; L8 L10 4
+    LOCALVARIABLE nbtbase Lnet/minecraft/nbt/NBTBase; L9 L10 5
+    LOCALVARIABLE s1 Ljava/lang/String; L26 L28 9
+    LOCALVARIABLE nbtbase1 Lnet/minecraft/nbt/NBTBase; L27 L28 10
+    LOCALVARIABLE nbttagcompound1 Lnet/minecraft/nbt/NBTTagCompound; L21 L19 7
+    LOCALVARIABLE iterator1 Ljava/util/Iterator; L23 L19 8
+    LOCALVARIABLE entity2 Lnet/minecraft/entity/Entity; L18 L33 6
+    LOCALVARIABLE nbttagcompound2 Lnet/minecraft/nbt/NBTTagCompound; L17 L15 4
+    LOCALVARIABLE entity1 Lnet/minecraft/entity/Entity; L14 L15 5
+    LOCALVARIABLE nbttagcompound Lnet/minecraft/nbt/NBTTagCompound; L3 L15 2
+    LOCALVARIABLE iterator Ljava/util/Iterator; L5 L15 3
+    LOCALVARIABLE this Lnet/minecraft/tileentity/MobSpawnerBaseLogic; L0 L37 0
+    LOCALVARIABLE p_98265_1_ Lnet/minecraft/entity/Entity; L0 L37 1
+    MAXSTACK = 9
+    MAXLOCALS = 11
+
+  // access flags 0x2
+  private resetTimer()V
+   L0
+    LINENUMBER 224 L0
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.maxSpawnDelay : I
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.minSpawnDelay : I
+    IF_ICMPGT L1
+   L2
+    LINENUMBER 226 L2
+    ALOAD 0
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.minSpawnDelay : I
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+    GOTO L3
+   L1
+    LINENUMBER 230 L1
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic] []
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.maxSpawnDelay : I
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.minSpawnDelay : I
+    ISUB
+    ISTORE 1
+   L4
+    LINENUMBER 231 L4
+    ALOAD 0
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.minSpawnDelay : I
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.rand : Ljava/util/Random;
+    ILOAD 1
+    INVOKEVIRTUAL java/util/Random.nextInt (I)I
+    IADD
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+   L3
+    LINENUMBER 234 L3
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic] []
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.potentialEntitySpawns : Ljava/util/List;
+    IFNULL L5
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.potentialEntitySpawns : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.size ()I
+    IFLE L5
+   L6
+    LINENUMBER 236 L6
+    ALOAD 0
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.rand : Ljava/util/Random;
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.potentialEntitySpawns : Ljava/util/List;
+    INVOKESTATIC net/minecraft/util/WeightedRandom.getRandomItem (Ljava/util/Random;Ljava/util/Collection;)Lnet/minecraft/util/WeightedRandom$Item;
+    CHECKCAST net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.setRandomEntity (Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;)V
+   L5
+    LINENUMBER 239 L5
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic] []
+    ALOAD 0
+    ICONST_1
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.func_98267_a (I)V
+   L7
+    LINENUMBER 240 L7
+    RETURN
+   L8
+    LOCALVARIABLE i I L4 L3 1
+    LOCALVARIABLE this Lnet/minecraft/tileentity/MobSpawnerBaseLogic; L0 L8 0
+    MAXSTACK = 4
+    MAXLOCALS = 2
+
+  // access flags 0x1
+  public readFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V
+   L0
+    LINENUMBER 244 L0
+    ALOAD 0
+    ALOAD 1
+    LDC "EntityId"
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getString (Ljava/lang/String;)Ljava/lang/String;
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.entityTypeName : Ljava/lang/String;
+   L1
+    LINENUMBER 245 L1
+    ALOAD 0
+    ALOAD 1
+    LDC "Delay"
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getShort (Ljava/lang/String;)S
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+   L2
+    LINENUMBER 247 L2
+    ALOAD 1
+    LDC "SpawnPotentials"
+    BIPUSH 9
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.hasKey (Ljava/lang/String;I)Z
+    IFEQ L3
+   L4
+    LINENUMBER 249 L4
+    ALOAD 0
+    NEW java/util/ArrayList
+    DUP
+    INVOKESPECIAL java/util/ArrayList.<init> ()V
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.potentialEntitySpawns : Ljava/util/List;
+   L5
+    LINENUMBER 250 L5
+    ALOAD 1
+    LDC "SpawnPotentials"
+    BIPUSH 10
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getTagList (Ljava/lang/String;I)Lnet/minecraft/nbt/NBTTagList;
+    ASTORE 2
+   L6
+    LINENUMBER 252 L6
+    ICONST_0
+    ISTORE 3
+   L7
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound net/minecraft/nbt/NBTTagList I] []
+    ILOAD 3
+    ALOAD 2
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagList.tagCount ()I
+    IF_ICMPGE L8
+   L9
+    LINENUMBER 254 L9
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.potentialEntitySpawns : Ljava/util/List;
+    NEW net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart
+    DUP
+    ALOAD 0
+    ALOAD 2
+    ILOAD 3
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagList.getCompoundTagAt (I)Lnet/minecraft/nbt/NBTTagCompound;
+    INVOKESPECIAL net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart.<init> (Lnet/minecraft/tileentity/MobSpawnerBaseLogic;Lnet/minecraft/nbt/NBTTagCompound;)V
+    INVOKEINTERFACE java/util/List.add (Ljava/lang/Object;)Z
+    POP
+   L10
+    LINENUMBER 252 L10
+    IINC 3 1
+    GOTO L7
+   L8
+    LINENUMBER 256 L8
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound net/minecraft/nbt/NBTTagList I] []
+    GOTO L11
+   L3
+    LINENUMBER 259 L3
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound] []
+    ALOAD 0
+    ACONST_NULL
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.potentialEntitySpawns : Ljava/util/List;
+   L11
+    LINENUMBER 262 L11
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound] []
+    ALOAD 1
+    LDC "SpawnData"
+    BIPUSH 10
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.hasKey (Ljava/lang/String;I)Z
+    IFEQ L12
+   L13
+    LINENUMBER 264 L13
+    ALOAD 0
+    NEW net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart
+    DUP
+    ALOAD 0
+    ALOAD 1
+    LDC "SpawnData"
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getCompoundTag (Ljava/lang/String;)Lnet/minecraft/nbt/NBTTagCompound;
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.entityTypeName : Ljava/lang/String;
+    INVOKESPECIAL net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart.<init> (Lnet/minecraft/tileentity/MobSpawnerBaseLogic;Lnet/minecraft/nbt/NBTTagCompound;Ljava/lang/String;)V
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.setRandomEntity (Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;)V
+    GOTO L14
+   L12
+    LINENUMBER 268 L12
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound] []
+    ALOAD 0
+    ACONST_NULL
+    CHECKCAST net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.setRandomEntity (Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;)V
+   L14
+    LINENUMBER 271 L14
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound] []
+    ALOAD 1
+    LDC "MinSpawnDelay"
+    BIPUSH 99
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.hasKey (Ljava/lang/String;I)Z
+    IFEQ L15
+   L16
+    LINENUMBER 273 L16
+    ALOAD 0
+    ALOAD 1
+    LDC "MinSpawnDelay"
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getShort (Ljava/lang/String;)S
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.minSpawnDelay : I
+   L17
+    LINENUMBER 274 L17
+    ALOAD 0
+    ALOAD 1
+    LDC "MaxSpawnDelay"
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getShort (Ljava/lang/String;)S
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.maxSpawnDelay : I
+   L18
+    LINENUMBER 275 L18
+    ALOAD 0
+    ALOAD 1
+    LDC "SpawnCount"
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getShort (Ljava/lang/String;)S
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnCount : I
+   L15
+    LINENUMBER 278 L15
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound] []
+    ALOAD 1
+    LDC "MaxNearbyEntities"
+    BIPUSH 99
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.hasKey (Ljava/lang/String;I)Z
+    IFEQ L19
+   L20
+    LINENUMBER 280 L20
+    ALOAD 0
+    ALOAD 1
+    LDC "MaxNearbyEntities"
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getShort (Ljava/lang/String;)S
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.maxNearbyEntities : I
+   L21
+    LINENUMBER 281 L21
+    ALOAD 0
+    ALOAD 1
+    LDC "RequiredPlayerRange"
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getShort (Ljava/lang/String;)S
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.activatingRangeFromPlayer : I
+   L19
+    LINENUMBER 284 L19
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound] []
+    ALOAD 1
+    LDC "SpawnRange"
+    BIPUSH 99
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.hasKey (Ljava/lang/String;I)Z
+    IFEQ L22
+   L23
+    LINENUMBER 286 L23
+    ALOAD 0
+    ALOAD 1
+    LDC "SpawnRange"
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.getShort (Ljava/lang/String;)S
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnRange : I
+   L22
+    LINENUMBER 289 L22
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound] []
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    IFNULL L24
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.isRemote : Z
+    IFEQ L24
+   L25
+    LINENUMBER 291 L25
+    ALOAD 0
+    ACONST_NULL
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.field_98291_j : Lnet/minecraft/entity/Entity;
+   L24
+    LINENUMBER 293 L24
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound] []
+    RETURN
+   L26
+    LOCALVARIABLE i I L7 L8 3
+    LOCALVARIABLE nbttaglist Lnet/minecraft/nbt/NBTTagList; L6 L8 2
+    LOCALVARIABLE this Lnet/minecraft/tileentity/MobSpawnerBaseLogic; L0 L26 0
+    LOCALVARIABLE p_98270_1_ Lnet/minecraft/nbt/NBTTagCompound; L0 L26 1
+    MAXSTACK = 6
+    MAXLOCALS = 4
+
+  // access flags 0x1
+  public writeToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V
+   L0
+    LINENUMBER 297 L0
+    ALOAD 1
+    LDC "EntityId"
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getEntityNameToSpawn ()Ljava/lang/String;
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.setString (Ljava/lang/String;Ljava/lang/String;)V
+   L1
+    LINENUMBER 298 L1
+    ALOAD 1
+    LDC "Delay"
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+    I2S
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.setShort (Ljava/lang/String;S)V
+   L2
+    LINENUMBER 299 L2
+    ALOAD 1
+    LDC "MinSpawnDelay"
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.minSpawnDelay : I
+    I2S
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.setShort (Ljava/lang/String;S)V
+   L3
+    LINENUMBER 300 L3
+    ALOAD 1
+    LDC "MaxSpawnDelay"
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.maxSpawnDelay : I
+    I2S
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.setShort (Ljava/lang/String;S)V
+   L4
+    LINENUMBER 301 L4
+    ALOAD 1
+    LDC "SpawnCount"
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnCount : I
+    I2S
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.setShort (Ljava/lang/String;S)V
+   L5
+    LINENUMBER 302 L5
+    ALOAD 1
+    LDC "MaxNearbyEntities"
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.maxNearbyEntities : I
+    I2S
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.setShort (Ljava/lang/String;S)V
+   L6
+    LINENUMBER 303 L6
+    ALOAD 1
+    LDC "RequiredPlayerRange"
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.activatingRangeFromPlayer : I
+    I2S
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.setShort (Ljava/lang/String;S)V
+   L7
+    LINENUMBER 304 L7
+    ALOAD 1
+    LDC "SpawnRange"
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnRange : I
+    I2S
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.setShort (Ljava/lang/String;S)V
+   L8
+    LINENUMBER 306 L8
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getRandomEntity ()Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;
+    IFNULL L9
+   L10
+    LINENUMBER 308 L10
+    ALOAD 1
+    LDC "SpawnData"
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getRandomEntity ()Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart.field_98222_b : Lnet/minecraft/nbt/NBTTagCompound;
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.copy ()Lnet/minecraft/nbt/NBTBase;
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.setTag (Ljava/lang/String;Lnet/minecraft/nbt/NBTBase;)V
+   L9
+    LINENUMBER 311 L9
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound] []
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getRandomEntity ()Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;
+    IFNONNULL L11
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.potentialEntitySpawns : Ljava/util/List;
+    IFNULL L12
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.potentialEntitySpawns : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.size ()I
+    IFLE L12
+   L11
+    LINENUMBER 313 L11
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound] []
+    NEW net/minecraft/nbt/NBTTagList
+    DUP
+    INVOKESPECIAL net/minecraft/nbt/NBTTagList.<init> ()V
+    ASTORE 2
+   L13
+    LINENUMBER 315 L13
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.potentialEntitySpawns : Ljava/util/List;
+    IFNULL L14
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.potentialEntitySpawns : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.size ()I
+    IFLE L14
+   L15
+    LINENUMBER 317 L15
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.potentialEntitySpawns : Ljava/util/List;
+    INVOKEINTERFACE java/util/List.iterator ()Ljava/util/Iterator;
+    ASTORE 3
+   L16
+    LINENUMBER 319 L16
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound net/minecraft/nbt/NBTTagList java/util/Iterator] []
+    ALOAD 3
+    INVOKEINTERFACE java/util/Iterator.hasNext ()Z
+    IFEQ L17
+   L18
+    LINENUMBER 321 L18
+    ALOAD 3
+    INVOKEINTERFACE java/util/Iterator.next ()Ljava/lang/Object;
+    CHECKCAST net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart
+    ASTORE 4
+   L19
+    LINENUMBER 322 L19
+    ALOAD 2
+    ALOAD 4
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart.func_98220_a ()Lnet/minecraft/nbt/NBTTagCompound;
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagList.appendTag (Lnet/minecraft/nbt/NBTBase;)V
+   L20
+    LINENUMBER 323 L20
+    GOTO L16
+   L17
+    LINENUMBER 324 L17
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound net/minecraft/nbt/NBTTagList java/util/Iterator] []
+    GOTO L21
+   L14
+    LINENUMBER 327 L14
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound net/minecraft/nbt/NBTTagList] []
+    ALOAD 2
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getRandomEntity ()Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart.func_98220_a ()Lnet/minecraft/nbt/NBTTagCompound;
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagList.appendTag (Lnet/minecraft/nbt/NBTBase;)V
+   L21
+    LINENUMBER 330 L21
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound net/minecraft/nbt/NBTTagList] []
+    ALOAD 1
+    LDC "SpawnPotentials"
+    ALOAD 2
+    INVOKEVIRTUAL net/minecraft/nbt/NBTTagCompound.setTag (Ljava/lang/String;Lnet/minecraft/nbt/NBTBase;)V
+   L12
+    LINENUMBER 332 L12
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic net/minecraft/nbt/NBTTagCompound] []
+    RETURN
+   L22
+    LOCALVARIABLE weightedrandomminecart Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart; L19 L20 4
+    LOCALVARIABLE iterator Ljava/util/Iterator; L16 L17 3
+    LOCALVARIABLE nbttaglist Lnet/minecraft/nbt/NBTTagList; L13 L12 2
+    LOCALVARIABLE this Lnet/minecraft/tileentity/MobSpawnerBaseLogic; L0 L22 0
+    LOCALVARIABLE p_98280_1_ Lnet/minecraft/nbt/NBTTagCompound; L0 L22 1
+    MAXSTACK = 3
+    MAXLOCALS = 5
+
+  // access flags 0x1
+  public setDelayToMin(I)Z
+   L0
+    LINENUMBER 339 L0
+    ILOAD 1
+    ICONST_1
+    IF_ICMPNE L1
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    GETFIELD net/minecraft/world/World.isRemote : Z
+    IFEQ L1
+   L2
+    LINENUMBER 341 L2
+    ALOAD 0
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.minSpawnDelay : I
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.spawnDelay : I
+   L3
+    LINENUMBER 342 L3
+    ICONST_1
+    IRETURN
+   L1
+    LINENUMBER 346 L1
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic I] []
+    ICONST_0
+    IRETURN
+   L4
+    LOCALVARIABLE this Lnet/minecraft/tileentity/MobSpawnerBaseLogic; L0 L4 0
+    LOCALVARIABLE p_98268_1_ I L0 L4 1
+    MAXSTACK = 2
+    MAXLOCALS = 2
+
+  // access flags 0x1
+  public func_98281_h()Lnet/minecraft/entity/Entity;
+  @Lcpw/mods/fml/relauncher/SideOnly;(value=Lcpw/mods/fml/relauncher/Side;.CLIENT)
+   L0
+    LINENUMBER 353 L0
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.field_98291_j : Lnet/minecraft/entity/Entity;
+    IFNONNULL L1
+   L2
+    LINENUMBER 355 L2
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getEntityNameToSpawn ()Ljava/lang/String;
+    ALOAD 0
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.getSpawnerWorld ()Lnet/minecraft/world/World;
+    CHECKCAST net/minecraft/world/World
+    INVOKESTATIC net/minecraft/entity/EntityList.createEntityByName (Ljava/lang/String;Lnet/minecraft/world/World;)Lnet/minecraft/entity/Entity;
+    ASTORE 1
+   L3
+    LINENUMBER 356 L3
+    ALOAD 0
+    ALOAD 1
+    INVOKEVIRTUAL net/minecraft/tileentity/MobSpawnerBaseLogic.func_98265_a (Lnet/minecraft/entity/Entity;)Lnet/minecraft/entity/Entity;
+    ASTORE 1
+   L4
+    LINENUMBER 357 L4
+    ALOAD 0
+    ALOAD 1
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.field_98291_j : Lnet/minecraft/entity/Entity;
+   L1
+    LINENUMBER 360 L1
+   FRAME FULL [net/minecraft/tileentity/MobSpawnerBaseLogic] []
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.field_98291_j : Lnet/minecraft/entity/Entity;
+    ARETURN
+   L5
+    LOCALVARIABLE entity Lnet/minecraft/entity/Entity; L3 L1 1
+    LOCALVARIABLE this Lnet/minecraft/tileentity/MobSpawnerBaseLogic; L0 L5 0
+    MAXSTACK = 2
+    MAXLOCALS = 2
+
+  // access flags 0x1
+  public getRandomEntity()Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;
+   L0
+    LINENUMBER 365 L0
+    ALOAD 0
+    GETFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.randomEntity : Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;
+    ARETURN
+   L1
+    LOCALVARIABLE this Lnet/minecraft/tileentity/MobSpawnerBaseLogic; L0 L1 0
+    MAXSTACK = 1
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public setRandomEntity(Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;)V
+   L0
+    LINENUMBER 370 L0
+    ALOAD 0
+    ALOAD 1
+    PUTFIELD net/minecraft/tileentity/MobSpawnerBaseLogic.randomEntity : Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart;
+   L1
+    LINENUMBER 371 L1
+    RETURN
+   L2
+    LOCALVARIABLE this Lnet/minecraft/tileentity/MobSpawnerBaseLogic; L0 L2 0
+    LOCALVARIABLE p_98277_1_ Lnet/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart; L0 L2 1
+    MAXSTACK = 2
+    MAXLOCALS = 2
+
+  // access flags 0x401
+  public abstract func_98267_a(I)V
+
+  // access flags 0x401
+  public abstract getSpawnerWorld()Lnet/minecraft/world/World;
+
+  // access flags 0x401
+  public abstract getSpawnerX()I
+
+  // access flags 0x401
+  public abstract getSpawnerY()I
+
+  // access flags 0x401
+  public abstract getSpawnerZ()I
+}

@@ -1,0 +1,74 @@
+item.kekztech_error_item.name=KekzTech Error Coin
+
+item.kekztech_reactor_item.0.name=Weak Heat Vent
+item.kekztech_reactor_item.1.name=Basic Heat Vent
+item.kekztech_reactor_item.2.name=Advanced Heat Vent
+item.kekztech_reactor_item.3.name=High-Tech Heat Vent
+item.kekztech_reactor_item.4.name=Weak Component Heat Vent
+item.kekztech_reactor_item.5.name=Basic Component Heat Vent
+item.kekztech_reactor_item.6.name=Advanced Component Heat Vent
+item.kekztech_reactor_item.7.name=High-Tech Component Heat Vent
+item.kekztech_reactor_item.8.name=Weak Overclocked Heat Vent
+item.kekztech_reactor_item.9.name=Basic Overclocked Heat Vent
+item.kekztech_reactor_item.10.name=Advanced Overclocked Heat Vent
+item.kekztech_reactor_item.11.name=High-Tech Overclocked Heat Vent
+
+item.kekztech_reactor_item.12.name=Weak Heat Exchanger
+item.kekztech_reactor_item.13.name=Basic Heat Exchanger
+item.kekztech_reactor_item.14.name=Advanced Heat Exchanger
+item.kekztech_reactor_item.15.name=High-Tech Heat Exchanger
+
+item.kekztech_reactor_item.16.name=Fuel Rod (Enriched Uranium)
+item.kekztech_reactor_item.17.name=Dual Fuel Rod (Enriched Uranium)
+item.kekztech_reactor_item.18.name=Quad Fuel Rod (Enriched Uranium)
+item.kekztech_reactor_item.19.name=Fuel Rod (Thorium)
+item.kekztech_reactor_item.20.name=Dual Fuel Rod (Thorium)
+item.kekztech_reactor_item.21.name=Quad Fuel Rod (Thorium)
+item.kekztech_reactor_item.22.name=Fuel Rod (Plutonium MOX)
+item.kekztech_reactor_item.23.name=Dual Fuel Rod (Plutonium MOX)
+item.kekztech_reactor_item.24.name=Quad Fuel Rod (Plutonium MOX)
+item.kekztech_reactor_item.25.name=Fuel Rod (Enriched Naquadah)
+item.kekztech_reactor_item.26.name=Dual Fuel Rod (Enriched Naquadah)
+item.kekztech_reactor_item.27.name=Quad Fuel Rod (Enriched Naquadah)
+item.kekztech_reactor_item.28.name=Fuel Rod (Thorium MOX)
+item.kekztech_reactor_item.29.name=Dual Fuel Rod (Thorium MOX)
+item.kekztech_reactor_item.30.name=Quad Fuel Rod (Thorium MOX)
+
+item.kekztech_reactor_item.31.name=Depleted Fuel Rod (Enriched Uranium)
+item.kekztech_reactor_item.32.name=Depleted Dual Fuel Rod (Enriched Uranium)
+item.kekztech_reactor_item.33.name=Depleted Quad Fuel Rod (Enriched Uranium)
+item.kekztech_reactor_item.34.name=Depleted Fuel Rod (Thorium)
+item.kekztech_reactor_item.35.name=Depleted Dual Fuel Rod (Thorium)
+item.kekztech_reactor_item.36.name=Depleted Quad Fuel Rod (Thorium)
+item.kekztech_reactor_item.37.name=Depleted Fuel Rod (Plutonium MOX)
+item.kekztech_reactor_item.38.name=Depleted Dual Fuel Rod (Plutonium MOX)
+item.kekztech_reactor_item.39.name=Depleted Quad Fuel Rod (Plutonium MOX)
+item.kekztech_reactor_item.40.name=Depleted Fuel Rod (Enriched Naquadah)
+item.kekztech_reactor_item.41.name=Depleted Dual Fuel Rod (Enriched Naquadah)
+item.kekztech_reactor_item.42.name=Depleted Quad Fuel Rod (Enriched Naquadah)
+item.kekztech_reactor_item.43.name=Depleted Fuel Rod (Thorium MOX)
+item.kekztech_reactor_item.44.name=Depleted Fuel Rod (Thorium MOX)
+item.kekztech_reactor_item.45.name=Depleted Fuel Rod (Thorium MOX)
+
+item.kekztech_reactor_item.46.name=Neutron Reflector
+item.kekztech_reactor_item.47.name=Neutron Supermirror (Unbreakable)
+
+item.kekztech_reactor_item.48.name=Helium Coolant Cell
+item.kekztech_reactor_item.49.name=NaK Coolant Cell
+
+item.kekztech_crafting_item.0.name=Copper Heat Pipe
+item.kekztech_crafting_item.1.name=Silver Heat Pipe
+item.kekztech_crafting_item.2.name=Boron Arsenide Heat Pipe
+item.kekztech_crafting_item.3.name=Diamond Heat Pipe
+item.kekztech_crafting_item.4.name=Boron Arsenide Dust
+item.kekztech_crafting_item.5.name=Isotopically Pure Diamond Dust
+item.kekztech_crafting_item.6.name=Amine Carbamate Dust
+item.kekztech_crafting_item.7.name=Boron Arsenide Crystal
+item.kekztech_crafting_item.8.name=Isotopically Pure Diamond Crystal
+item.kekztech_crafting_item.9.name=YSZ Ceramic Dust
+item.kekztech_crafting_item.10.name=GDC Ceramic Dust
+item.kekztech_crafting_item.11.name=Yttria Dust
+item.kekztech_crafting_item.12.name=Zirconia Dust
+item.kekztech_crafting_item.13.name=Ceria Dust
+item.kekztech_crafting_item.14.name=YSZ Ceramic Plate
+item.kekztech_crafting_item.15.name=GDC Ceramic Plate
