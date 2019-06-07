@@ -974,22 +974,22 @@ public class DreamCraftRecipeLoader implements Runnable {
     }
 
     private void register_machine_EM_behaviours(){
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(5),ItemList.Machine_IV_Centrifuge.get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(6),getItemContainer("CentrifugeLuV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(7),getItemContainer("CentrifugeZPM").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(8),getItemContainer("CentrifugeUV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(9),getItemContainer("CentrifugeUHV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(10),getItemContainer("CentrifugeUEV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(11),getItemContainer("CentrifugeUIV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(12),getItemContainer("CentrifugeUMV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(5),ItemList.Machine_IV_Centrifuge.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(6),getItemContainer("CentrifugeLuV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(7),getItemContainer("CentrifugeZPM").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(8),getItemContainer("CentrifugeUV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(9),getItemContainer("CentrifugeUHV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(10),getItemContainer("CentrifugeUEV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(11),getItemContainer("CentrifugeUIV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(12),getItemContainer("CentrifugeUMV").get(1));
 
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(5),ItemList.Machine_IV_ElectromagneticSeparator.get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(6),getItemContainer("ElectromagneticSeparatorLuV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(7),getItemContainer("ElectromagneticSeparatorZPM").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(8),getItemContainer("ElectromagneticSeparatorUV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(9),getItemContainer("ElectromagneticSeparatorUHV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(10),getItemContainer("ElectromagneticSeparatorUEV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(11),getItemContainer("ElectromagneticSeparatorUIV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(12),getItemContainer("ElectromagneticSeparatorUMV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(5),ItemList.Machine_IV_ElectromagneticSeparator.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(6),getItemContainer("ElectromagneticSeparatorLuV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(7),getItemContainer("ElectromagneticSeparatorZPM").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(8),getItemContainer("ElectromagneticSeparatorUV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(9),getItemContainer("ElectromagneticSeparatorUHV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(10),getItemContainer("ElectromagneticSeparatorUEV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(11),getItemContainer("ElectromagneticSeparatorUIV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(12),getItemContainer("ElectromagneticSeparatorUMV").get(1));
     }
 }
