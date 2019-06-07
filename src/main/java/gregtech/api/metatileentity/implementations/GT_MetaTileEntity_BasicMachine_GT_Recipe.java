@@ -46,10 +46,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     public static String rotorTumbaga= "rotorTumbaga";
     public static String rotorPotin= "rotorPotin";
     public static String rotorEglinSteel= "rotorEglinSteel";
-    public static String rotorHastelloyW= "rotorHastelloyW";
+    public static String rotorZirconiumCarbide= "rotorZirconiumCarbide";
+	public static String rotorIncoloy020= "rotorIncoloy020";
 	public static String rotorStellite= "rotorStellite";
 	public static String rotorNitinol60= "rotorNitinol60";
-	public static String rotorTriniumNaquadahCarbonite= "rotorTriniumNaquadahCarbonite";
 	public static String rotorArceusAlloy2B= "rotorArceusAlloy2B";
 	public static String rotorCinobiteA243= "rotorCinobiteA243";
 	public static String rotorAbyssalAlloy= "rotorAbyssalAlloy";
@@ -58,10 +58,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 	public static String plateTumbaga= "plateTumbaga";
     public static String platePotin= "platePotin";
     public static String plateEglinSteel= "plateEglinSteel";
-    public static String plateHastelloyW= "plateHastelloyW";
+    public static String plateZirconiumCarbide= "plateZirconiumCarbide";
+	public static String plateIncoloy020= "plateIncoloy020";
 	public static String plateStellite= "plateStellite";
 	public static String plateNitinol60= "plateNitinol60";
-	public static String plateTriniumNaquadahCarbonite= "plateTriniumNaquadahCarbonite";
 	public static String plateArceusAlloy2B= "plateArceusAlloy2B";
 	public static String plateCinobiteA243= "plateCinobiteA243";
 	public static String plateAbyssalAlloy= "plateAbyssalAlloy";
@@ -129,16 +129,16 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = "plateEglinSteel";
                             break;
                         case 4:
-                            aRecipe[i] = "plateHastelloyW";
+                            aRecipe[i] = "plateZirconiumCarbide";
                             break;
                         case 5:
-                            aRecipe[i] = "plateStellite";
+                            aRecipe[i] = "plateIncoloy020";
                             break;
                         case 6:
-                            aRecipe[i] = "plateNitinol60";
+                            aRecipe[i] = "plateStellite";
                             break;
                         case 7:
-                            aRecipe[i] = "plateTriniumNaquadahCarbonite";
+                            aRecipe[i] = "plateNitinol60";
                             break;
                         case 8:
                             aRecipe[i] = "plateArceusAlloy2B";
@@ -551,16 +551,16 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = "rotorEglinSteel";
                             break;
                         case 4:
-                            aRecipe[i] = "rotorHastelloyW";
+                            aRecipe[i] = "rotorZirconiumCarbide";
                             break;
                         case 5:
-                            aRecipe[i] = "rotorStellite";
+                            aRecipe[i] = "rotorIncoloy020";
                             break;
                         case 6:
-                            aRecipe[i] = "rotorNitinol60";
+                            aRecipe[i] = "rotorStellite";
                             break;
                         case 7:
-                            aRecipe[i] = "rotorTriniumNaquadahCarbonite";
+                            aRecipe[i] = "rotorNitinol60";
                             break;
                         case 8:
                             aRecipe[i] = "rotorArceusAlloy2B";
