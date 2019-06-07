@@ -5,6 +5,7 @@ import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IGenome;
 import forestry.api.genetics.IMutationCondition;
 import forestry.apiculture.genetics.BeeMutation;
+import forestry.core.genetics.mutations.Mutation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
@@ -35,7 +36,7 @@ public class GT_Bee_Mutation extends BeeMutation {
         int y = housingCoordinates.posY;
         int z = housingCoordinates.posZ;
 
-        float processedChance = getbasicChance(world, x, y, z, allele0, allele1, genome0, genome1);
+        float processedChance = getBasicChance(world, x, y, z, allele0, allele1, genome0, genome1);
 
 
         if (processedChance <= 0f) {
@@ -51,11 +52,11 @@ public class GT_Bee_Mutation extends BeeMutation {
         return processedChance;
     }
 
-    protected float getbasicChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0, IGenome genome1) {
-        float mutationChance = getBaseChance();
+    protected float getBasicChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0, IGenome genome1) {
+        float mutationChance = this.getBaseChance();
         List<IMutationCondition> mutationConditions = null;
         try {
-            Field f = this.getClass().getDeclaredField("mutationConditions");
+            Field f = Mutation.class.getDeclaredField("mutationConditions");
             f.setAccessible(true);
             Object o = f.get(this);
             mutationConditions = o instanceof List ? (List) o : null ;
