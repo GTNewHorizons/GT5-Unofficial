@@ -250,25 +250,82 @@ public class BloodyRecipeLoader implements Runnable {
                 Materials.Tungsten.getMolten(4608),
                 CustomItemList.eM_dynamomulti64_UEV.get(1), 2000, 500000);
 
-        //Energy Hatches  UV-UIV
+        //Energy Hatches 4A-64A  IV-UIV
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Hatch_Energy_IV.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Tungsten, 2),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2)},
+                Materials.Silver.getMolten(144),
+                CustomItemList.eM_energymulti4_IV.get(1), 100, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        CustomItemList.eM_energymulti4_IV.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Tungsten, 2),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4)},
+                Materials.Electrum.getMolten(144),
+                CustomItemList.eM_energymulti16_IV.get(1), 200, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        CustomItemList.eM_energymulti16_IV.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.Tungsten, 2),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 6)},
+                Materials.Tungsten.getMolten(144),
+                CustomItemList.eM_energymulti64_IV.get(1), 400, 7680);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                ItemList.Hatch_Energy_LuV.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.VanadiumGallium, 2),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 2)},
+                Materials.Silver.getMolten(288),
+                CustomItemList.eM_energymulti4_LuV.get(1), 100, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                CustomItemList.eM_energymulti4_LuV.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.VanadiumGallium, 2),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 4)},
+                Materials.Electrum.getMolten(288),
+                CustomItemList.eM_energymulti16_LuV.get(1), 200, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                CustomItemList.eM_energymulti16_LuV.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.VanadiumGallium, 2),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 6)},
+                Materials.Tungsten.getMolten(288),
+                CustomItemList.eM_energymulti64_LuV.get(1), 400, 30720);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                ItemList.Hatch_Energy_ZPM.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 2),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2)},
+                Materials.Silver.getMolten(576),
+                CustomItemList.eM_energymulti4_ZPM.get(1), 100, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                 CustomItemList.eM_energymulti4_ZPM.get(1),
+                 GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 2),
+                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 4)},
+                Materials.Electrum.getMolten(576),
+                CustomItemList.eM_energymulti16_ZPM.get(1), 200, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                 CustomItemList.eM_energymulti16_ZPM.get(1),
+                 GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.Naquadah, 2),
+                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 6)},
+                Materials.Tungsten.getMolten(576),
+                CustomItemList.eM_energymulti64_ZPM.get(1), 400, 122880);
+
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 ItemList.Hatch_Energy_UV.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2)},
                 Materials.Silver.getMolten(1152),
-                CustomItemList.eM_energymulti4_UV.get(1), 100, 122880);
+                CustomItemList.eM_energymulti4_UV.get(1), 100, 500000);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_energymulti4_UV.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4)},
                 Materials.Electrum.getMolten(1152),
-                CustomItemList.eM_energymulti16_UV.get(1), 200, 122880);
+                CustomItemList.eM_energymulti16_UV.get(1), 200, 500000);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_energymulti16_UV.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.NaquadahAlloy, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 6)},
                 Materials.Tungsten.getMolten(1152),
-                CustomItemList.eM_energymulti64_UV.get(1), 400, 122880);
+                CustomItemList.eM_energymulti64_UV.get(1), 400, 500000);
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 ItemList.Hatch_Energy_MAX.get(1),
@@ -344,7 +401,7 @@ public class BloodyRecipeLoader implements Runnable {
                 CustomItemList.DATApipe.get(2),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(500),
-                Materials.Iridium.getMolten(1000),
+                Materials.Iridium.getMolten(1152),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000)
         }, CustomItemList.holder_Hatch.get(1), 1200, 100000);
 

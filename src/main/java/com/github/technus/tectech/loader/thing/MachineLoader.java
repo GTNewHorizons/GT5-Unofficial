@@ -11,6 +11,8 @@ import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pi
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM;
 import com.github.technus.tectech.thing.metaTileEntity.single.*;
 import cpw.mods.fml.common.Loader;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 
 import static com.github.technus.tectech.thing.CustomItemList.*;
 
@@ -312,6 +314,7 @@ public class MachineLoader implements Runnable {
         hatch_CreativeMaitenance.set(new GT_MetaTileEntity_Hatch_CreativeMaintenance(15497, "debug.tt.maintenance", "Debug Maintenance Hatch", 15).getStackForm(1L));
         Machine_DebugGenny.set(new GT_MetaTileEntity_DebugPowerGenerator(15498, "debug.tt.genny", "Debug Power Generator", 15).getStackForm(1L));
         Machine_DebugWriter.set(new GT_MetaTileEntity_DebugStructureWriter(15499, "debug.tt.writer", "Debug Structure Writer", 15).getStackForm(1L));
+        UnusedStuff.set(new ItemStack(Blocks.air));
 
         // ===================================================================================================
         // MetaTE init

@@ -4,6 +4,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
+import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.item.ElementalDefinitionContainer_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
@@ -50,7 +51,7 @@ public class  TT_recipeAdder extends GT_RecipeAdder {
         }
         TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result")}, null, null, totalComputationRequired, researchEUt, researchAmperage| computationRequiredPerSec<<16);
         GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false, aInputs, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result")}, aFluidInputs, null, assDuration, assEUt, 0,true);
-        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe.GT_Recipe_AssemblyLine( aResearchItem, totalComputationRequired/computationRequiredPerSec, aInputs, aFluidInputs, aOutput, assDuration, assEUt));//todo unfuck
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe.GT_Recipe_AssemblyLine(CustomItemList.UnusedStuff.get(1), totalComputationRequired/computationRequiredPerSec, aInputs, aFluidInputs, aOutput, assDuration, assEUt));
         return true;
     }
 
@@ -114,8 +115,8 @@ public class  TT_recipeAdder extends GT_RecipeAdder {
             computationRequiredPerSec = Short.MAX_VALUE;
         }
         TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result")}, null, null, totalComputationRequired, researchEUt, researchAmperage| computationRequiredPerSec<<16);
-        GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false,tInputs,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result")},aFluidInputs,null,assDuration,assEUt,0,tAlts,true);
-        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe.GT_Recipe_AssemblyLine( aResearchItem, totalComputationRequired/computationRequiredPerSec, tInputs, aFluidInputs, aOutput, assDuration, assEUt, tAlts));
+        GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false,tInputs,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result", new Object[0])},aFluidInputs,null,assDuration,assEUt,0,tAlts,true);
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe.GT_Recipe_AssemblyLine( CustomItemList.UnusedStuff.get(1), totalComputationRequired/computationRequiredPerSec, tInputs, aFluidInputs, aOutput, assDuration, assEUt, tAlts));
         return true;
     }
 

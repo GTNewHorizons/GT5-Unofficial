@@ -143,7 +143,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                         getOrDefault("Trinium",Materials.Osmium).getMolten(1296),
                         Materials.Osmium.getMolten(1296),
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
-                        Materials.Argon.getGas(576),
+                        Materials.Argon.getGas(1000),
                 }, CustomItemList.eM_Hollow.get(2), 200, 2000000);
 
         //EM Coil
@@ -236,15 +236,15 @@ public class DreamCraftRecipeLoader implements Runnable {
         }, Materials.Iridium.getMolten(1296), CustomItemList.rack_Hatch.get(1), 800, 122880);
 
         //Object Holder
-        GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Input_Bus_ZPM.get(1), 10000, new ItemStack[]{
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Input_Bus_ZPM.get(1), 10000, new Object[]{
                 ItemList.Hatch_Input_Bus_ZPM.get(1),
                 CustomItemList.eM_Computer_Bus.get(1),
                 ItemList.Emitter_ZPM.get(8),
                 ItemList.Robot_Arm_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
-                ItemList.Circuit_Crystalmainframe.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 2),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 16),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 1)},
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 2)},
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 16)},
                 CustomItemList.DATApipe.get(2),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(500),
@@ -323,12 +323,12 @@ public class DreamCraftRecipeLoader implements Runnable {
         }, Materials.Iridium.getMolten(1296), CustomItemList.Machine_Multi_Switch.get(1), 800, 122880);
 
         //Quantum Computer
-        GT_Values.RA.addAssemblylineRecipe(ItemList.Tool_DataOrb.get(1), 20000, new ItemStack[]{
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Tool_DataOrb.get(1), 20000, new Object[]{
                 CustomItemList.Machine_Multi_Switch.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 2),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 2)},
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8)},
                 CustomItemList.DATApipe.get(8),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(1000),
@@ -338,14 +338,14 @@ public class DreamCraftRecipeLoader implements Runnable {
         }, CustomItemList.Machine_Multi_Computer.get(1), 12000, 100000);
 
         //Research Station
-        GT_Values.RA.addAssemblylineRecipe(getItemContainer("ScannerZPM").get(1), 80000, new ItemStack[]{
+        GT_Values.RA.addAssemblylineRecipe(getItemContainer("ScannerZPM").get(1), 80000, new Object[]{
                 CustomItemList.Machine_Multi_Switch.get(1),
                 ItemList.Sensor_ZPM.get(8),
-                ItemList.Circuit_Crystalmainframe.get(4),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 4)},
                 ItemList.Field_Generator_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 32),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4)},
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 32)},
                 CustomItemList.DATApipe.get(16),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(1000),
@@ -783,10 +783,10 @@ public class DreamCraftRecipeLoader implements Runnable {
                 48000, 128, 500000, 8,  new ItemStack[]{
                         ItemList.Circuit_Board_Bio_Ultra.get(2L),
                         ItemList.Circuit_Biowarecomputer.get(2L),
-                        ItemList.Circuit_Parts_DiodeSMD.get(48L),
-                        ItemList.Circuit_Parts_ResistorSMD.get(16L),
                         ItemList.Circuit_Parts_TransistorSMD.get(16L),
-                        ItemList.Circuit_Parts_DiodeSMD.get(16L),
+                        ItemList.Circuit_Parts_ResistorSMD.get(16L),
+                        ItemList.Circuit_Parts_CapacitorSMD.get(16L),
+                        ItemList.Circuit_Parts_DiodeSMD.get(48L),
                         ItemList.Circuit_Chip_NOR.get(32L),
                         ItemList.Circuit_Chip_Ram.get(64L),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 32L),
@@ -802,8 +802,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 96000, 256, 1000000, 16,  new ItemStack[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 4L),
                         ItemList.Circuit_Biowaresupercomputer.get(2L),
-                        ItemList.Circuit_Parts_Coil.get(64L),
-                        ItemList.Circuit_Parts_Coil.get(64L),
+                        ItemList.UV_Coil.get(16L),
                         ItemList.Circuit_Parts_CapacitorSMD.get(64L),
                         ItemList.Circuit_Parts_ResistorSMD.get(64L),
                         ItemList.Circuit_Parts_TransistorSMD.get(64L),
@@ -906,12 +905,12 @@ public class DreamCraftRecipeLoader implements Runnable {
                             ItemList.Electric_Motor_UV.get(64L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 16L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.NetherStar, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Ardite, 8L),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Ardite, 8L),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Ardite, 8L),
-                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Ardite, 8L),
-                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 64L),
-                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Jasper, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Jasper, 16L),
                             getItemContainer("NanoCircuit").get(1L).splitStack(32)
                     },
                     new FluidStack[]{
@@ -940,10 +939,7 @@ public class DreamCraftRecipeLoader implements Runnable {
             //Batteries
             TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Energy_Cluster.get(1L),12000,16,100000,3,new Object[]{
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 64L),
-                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
-                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
-                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
-                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 4L},
                     ItemList.Energy_Cluster.get(8L),
                     ItemList.Field_Generator_UV.get(2),
                     ItemList.Circuit_Wafer_HPIC.get(64),
@@ -956,11 +952,9 @@ public class DreamCraftRecipeLoader implements Runnable {
             }, ItemList.ZPM2.get(1), 3000, 400000);
 
             TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.ZPM2.get(1L),24000,64,200000,6,new Object[]{
-                    GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 64L),
-                    new Object[]{OrePrefixes.circuit, Materials.Bio, 1L},
-                    new Object[]{OrePrefixes.circuit, Materials.Bio, 1L},
-                    new Object[]{OrePrefixes.circuit, Materials.Bio, 1L},
-                    new Object[]{OrePrefixes.circuit, Materials.Bio, 1L},
+                    GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 32L),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 32L),
+                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 4L},
                     ItemList.ZPM2.get(8),
                     ItemList.Field_Generator_UHV.get(4),
                     ItemList.Circuit_Wafer_UHPIC.get(64),
@@ -980,22 +974,22 @@ public class DreamCraftRecipeLoader implements Runnable {
     }
 
     private void register_machine_EM_behaviours(){
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(5),ItemList.Machine_IV_Centrifuge.get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(6),getItemContainer("CentrifugeLuV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(7),getItemContainer("CentrifugeZPM").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(8),getItemContainer("CentrifugeUV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(9),getItemContainer("CentrifugeUHV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(10),getItemContainer("CentrifugeUEV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(11),getItemContainer("CentrifugeUIV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Centrifuge(12),getItemContainer("CentrifugeUMV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(5),ItemList.Machine_IV_Centrifuge.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(6),getItemContainer("CentrifugeLuV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(7),getItemContainer("CentrifugeZPM").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(8),getItemContainer("CentrifugeUV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(9),getItemContainer("CentrifugeUHV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(10),getItemContainer("CentrifugeUEV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(11),getItemContainer("CentrifugeUIV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(12),getItemContainer("CentrifugeUMV").get(1));
 
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(5),ItemList.Machine_IV_ElectromagneticSeparator.get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(6),getItemContainer("ElectromagneticSeparatorLuV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(7),getItemContainer("ElectromagneticSeparatorZPM").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(8),getItemContainer("ElectromagneticSeparatorUV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(9),getItemContainer("ElectromagneticSeparatorUHV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(10),getItemContainer("ElectromagneticSeparatorUEV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(11),getItemContainer("ElectromagneticSeparatorUIV").get(1));
-        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(12),getItemContainer("ElectromagneticSeparatorUMV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(5),ItemList.Machine_IV_ElectromagneticSeparator.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(6),getItemContainer("ElectromagneticSeparatorLuV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(7),getItemContainer("ElectromagneticSeparatorZPM").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(8),getItemContainer("ElectromagneticSeparatorUV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(9),getItemContainer("ElectromagneticSeparatorUHV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(10),getItemContainer("ElectromagneticSeparatorUEV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(11),getItemContainer("ElectromagneticSeparatorUIV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(12),getItemContainer("ElectromagneticSeparatorUMV").get(1));
     }
 }
