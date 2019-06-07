@@ -22,6 +22,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.items.CombType;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -52,6 +53,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(getSpecies("Industrious"), getSpecies("Diligent"), 20);
+            tMutation.requireResource(Blocks.clay,0); //blockStainedHardenedClay
         }
     },
     SLIMEBALL(GT_BranchDefinition.ORGANIC, "SlimeBall", true, 0x4E9E55, 0x00FF15) {
