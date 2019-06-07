@@ -3,10 +3,7 @@ package gregtech.loaders.oreprocessing;
 import gregtech.GT_Mod;
 import gregtech.api.enums.*;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeRegistrator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -147,6 +144,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
 //                    case "YellowLimonite": case "BrownLimonite": case "BandedIron":
 //                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L));
 //                        break;
+                    case "Oilsands":
+                        GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(true,new ItemStack[]{GT_Utility.copyAmount(1L, new Object[]{aStack})},null,null,null,new FluidStack[]{Materials.OilHeavy.getFluid(1000)},660,8,0);
+                        break;
                     case "Coal":
                         if (GT_Mod.gregtechproxy.mTEMachineRecipes)
                             GT_ModHandler.addLiquidTransposerFillRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), Materials.Water.getFluid(125L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1L), 125);
