@@ -2,7 +2,7 @@
 GT additions EXTREME
 
 # WIKI
-https://github.com/JALGATeam/TecTechWiki/wiki
+https://github.com/Technus/TecTech/wiki
 
 # Jenkins Builds
 http://jenkins.usrv.eu:8080/job/Tec%20Tech/
