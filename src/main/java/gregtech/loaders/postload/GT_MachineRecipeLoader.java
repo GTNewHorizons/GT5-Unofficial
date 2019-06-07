@@ -4480,7 +4480,7 @@ if(Loader.isModLoaded("Railcraft")){
 		// --- Mobloot
            GT_Values.RA.addChemicalRecipe(Materials.Beryllium.getDust(1),Materials.Potassium.getDust(4),Materials.Nitrogen.getGas(5000), null, Materials.EnderPearl.getDust(10), null, 400, 120);
            GT_Values.RA.addChemicalRecipe(Materials.DarkAsh.getDust(1),Materials.Sulfur.getDust(1),null, null, Materials.Blaze.getDust(2), null, 200, 30);
-           GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ball.get(0L), new FluidStack(FluidRegistry.getFluid("ender"), 250), new ItemStack(Items.ender_pearl,1,0), 100, 30);
+           //GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ball.get(0L), new FluidStack(FluidRegistry.getFluid("ender"), 250), new ItemStack(Items.ender_pearl,1,0), 100, 30);
            GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 1L), Materials.Water.getFluid(100), new ItemStack(Items.ender_pearl, 1, 0), 8000, 1500, 30);
            GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 1L), GT_ModHandler.getDistilledWater(100L), new ItemStack(Items.ender_pearl, 1, 0), 9000, 1200, 30);
 
