@@ -35,7 +35,7 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     private static Textures.BlockIcons.CustomIcon EMpipe;
     public byte connectionCount = 0;
 
-    private boolean activity,active;
+    private boolean active;
 
     public GT_MetaTileEntity_Pipe_Energy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
@@ -110,7 +110,7 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
-                if(activity){
+                if(active){
                     if(TecTech.RANDOM.nextInt(15)==0) {
                         PipeActivityPacketDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
                                 aBaseMetaTileEntity.getWorld().provider.dimensionId,
@@ -119,7 +119,7 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
                                 aBaseMetaTileEntity.getZCoord(),
                                 256);
                     }
-                    activity=false;
+                    active=false;
                 }else if(getActive()){
                     if(TecTech.RANDOM.nextInt(15)==0) {
                         PipeActivityPacketDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
@@ -176,15 +176,17 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     @Override
     public void setActive(boolean state){
         this.active=state;
-        IGregTechTileEntity base=getBaseMetaTileEntity();
-        if(getBaseMetaTileEntity().isClientSide()) {
-            base.issueTextureUpdate();
-        }
+        getBaseMetaTileEntity().issueTextureUpdate();
     }
 
     @Override
     public boolean getActive() {
         return active;
+    }
+
+    @Override
+    public void markUsed() {
+        this.active = true;
     }
 
     @Override
@@ -238,9 +240,5 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
             return 0.0625F;
         }
         return 0.5f;
-    }
-
-    public void markUsed() {
-        this.activity = true;
     }
 }
