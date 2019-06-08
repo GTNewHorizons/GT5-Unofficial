@@ -2,6 +2,7 @@ package fuelcell;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -37,20 +38,18 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public String[] getDescription() {
 		return new String[] { 
-				"Solid-oxide Fuel Cell MkI", 
-				"------------------------------------------",
 				"Oxidizes gas fuels to generate electricity without polluting the environment",
 				"29,480EU worth of fuel are consumed each second",
-				"Outputs 1024EU/t and 18,000L/t Steam",
+				"Outputs 1024EU/t and 18,000L/s Steam",
 				"Additionally requires 360L/s Oxygen gas",
 				"------------------------------------------",
 				"Dimensions: 3x3x5 (WxHxL)",
 				"Structure:",
-				"	3x Solid YSZ Ceramic Electrolyte Unit (center 1x1x3)",
-				"	12x Clean Stainless Steel Machine Casing (at least)",
-				"	Controller front center",
-				"	Dynamo Hatch back center",
-				"	Maintenance Hatch, Input Hatches, Output Hatches"
+				"   3x YSZ Ceramic Electrolyte Unit (center 1x1x3)",
+				"   12x Clean Stainless Steel Machine Casing (at least)",
+				"   Controller front center",
+				"   Dynamo Hatch back center",
+				"   Maintenance Hatch, Input Hatches, Output Hatches"
 				};	
 	}
 	
@@ -68,8 +67,8 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 	
 	//TODO
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUIContainer_ModularNuclearReactor(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
-				"MultiblockDisplay.png");
+		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
+				"LargeTurbine.png");
 	}
 	
 	@Override
@@ -86,52 +85,114 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {		
 		
-		final byte SIDE_LENGTH_W = 3;
-		final byte SIDE_LENGTH_L = 5;
-		final byte MAX_OFFSET = (byte) Math.floor(SIDE_LENGTH_W / 2);
-		final int XDIR_BACKFACE = ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX * MAX_OFFSET;
-		final int ZDIR_BACKFACE = ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ * MAX_OFFSET;
+		final int XDIR_BACKFACE = ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX;
+		final int ZDIR_BACKFACE = ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ;
 
 		int minCasingAmount = 12; 
 		boolean checklist = true; // if this is still true at the end, machine is good to go :)
 		
-		for (int leftToRight = -MAX_OFFSET; leftToRight <= MAX_OFFSET; leftToRight++) {
-			
-			for (int frontToBack = -MAX_OFFSET; frontToBack <= MAX_OFFSET; frontToBack++) {
+		// Front slice
+		for(int X = -1; X <= 1; X++) {
+			for(int Y = -1; Y <= 1; Y++) {
+				if(X == 0 && Y == 0) {
+					continue; // is controller
+				}
+				// Get next TE
+				final int THIS_X = XDIR_BACKFACE + X;
+				final int THIS_Z = ZDIR_BACKFACE + -1;
+				IGregTechTileEntity currentTE = 
+						thisController.getIGregTechTileEntityOffset(THIS_X, Y, THIS_Z);// x, y ,z
 				
-				for (int thisY = -MAX_OFFSET; thisY <= MAX_OFFSET; thisY++) {
+				// Tries to add TE as either of those kinds of hatches.
+				// The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
+				if (   !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID) 
+					&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+					&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 					
-					// Center 3x3x3 air cube
-					if((leftToRight > -2 && leftToRight < 2) && (frontToBack > -2 && frontToBack < 2) && (thisY > -2 && thisY < 2)) {
-						if(!thisController.getAirOffset(XDIR_BACKFACE + leftToRight, thisY, ZDIR_BACKFACE + frontToBack)) {
+					// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
+					if ((thisController.getBlockOffset(THIS_X, Y, THIS_Z) == CASING) && (thisController.getMetaIDOffset(THIS_X, Y, THIS_Z) == CASING_META)) {
+						// Seems to be valid casing. Decrement counter.
+						minCasingAmount--;
+					} else {
+						checklist = false;
+					}
+				}
+			}
+		}
+		System.out.println("Front slice status: " +checklist +" / casings left of 12: " +minCasingAmount);
+		
+		// Middle three slices
+		for(int X = -1; X <= 1; X++) {
+			for(int Y = -1; Y <= 1; Y++) {
+				for(int Z = 0; Z < 3; Z++) {
+					final int THIS_X = XDIR_BACKFACE + X;
+					final int THIS_Z = ZDIR_BACKFACE + Z;
+					if(X == 0 && Y == 0) {
+						if(!thisController.getBlockOffset(THIS_X, 0, THIS_Z).getUnlocalizedName()
+								.equals("kekztech_yszceramicelectrolyteunit_block")) {
 							checklist = false;
+							System.out.println("Expected YSZ Ceramic");
 						}
-					} else if (!(XDIR_BACKFACE + leftToRight == 0 && ZDIR_BACKFACE + frontToBack == 0 && thisY == 0)) { // Make sure this isn't the controller
-						// Get next TE
-						final int THIS_X = XDIR_BACKFACE + leftToRight;
-						final int THIS_Z = ZDIR_BACKFACE + frontToBack;
-						IGregTechTileEntity currentTE = 
-								thisController.getIGregTechTileEntityOffset(THIS_X, thisY, THIS_Z);// x, y ,z
+						continue;
+					}
+					if(Y == 0 && (X == -1 || X == 1)) {
+						if(!thisController.getBlockOffset(XDIR_BACKFACE, 0, ZDIR_BACKFACE * Z).getUnlocalizedName()
+								.equals("blockAlloyGlass")) {
+							checklist = false;
+							System.out.println("Expected Reinforced Glass");
+						}
+						continue;
+					}
+					// Get next TE
+					IGregTechTileEntity currentTE = 
+							thisController.getIGregTechTileEntityOffset(THIS_X, Y, THIS_Z);// x, y ,z
+					
+					// Tries to add TE as either of those kinds of hatches.
+					// The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
+					if (   !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID) 
+						&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+						&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 						
-						// Tries to add TE as either of those kinds of hatches.
-						// The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
-						if (   !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID) 
-							&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addDynamoToMachineList(currentTE, CASING_TEXTURE_ID)) {
-							
-							// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-							if ((thisController.getBlockOffset(THIS_X, thisY, THIS_Z) == CASING) && (thisController.getMetaIDOffset(THIS_X, thisY, THIS_Z) == CASING_META)) {
-								// Seems to be valid casing. Decrement counter.
-								minCasingAmount--;
-							} else {
-								checklist = false;
-							}
+						// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
+						if ((thisController.getBlockOffset(THIS_X, Y, THIS_Z) == CASING) && (thisController.getMetaIDOffset(THIS_X, Y, THIS_Z) == CASING_META)) {
+							// Seems to be valid casing. Decrement counter.
+							minCasingAmount--;
+						} else {
+							checklist = false;
 						}
 					}
 				}
 			}
 		}
+		System.out.println("Middle slices status: " +checklist);
+		
+		// Back slice
+		for(int X = -1; X <= 1; X++) {
+			for(int Y = -1; Y <= 1; Y++) {
+				// Get next TE
+				final int THIS_X = XDIR_BACKFACE + X;
+				final int THIS_Z = ZDIR_BACKFACE + 3;
+				IGregTechTileEntity currentTE = 
+						thisController.getIGregTechTileEntityOffset(THIS_X, Y, THIS_Z);// x, y ,z
+				
+				// Tries to add TE as either of those kinds of hatches.
+				// The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
+				if (   !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID) 
+					&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+					&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
+					&& !super.addDynamoToMachineList(currentTE, CASING_TEXTURE_ID)) {
+					
+					// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
+					if ((thisController.getBlockOffset(THIS_X, Y, THIS_Z) == CASING) && (thisController.getMetaIDOffset(THIS_X, Y, THIS_Z) == CASING_META)) {
+						// Seems to be valid casing. Decrement counter.
+						minCasingAmount--;
+					} else {
+						checklist = false;
+					}
+				}
+			}
+		}
+		System.out.println("Back slice status: " +checklist);
 		
 		if(minCasingAmount > 0) {
 			checklist = false;

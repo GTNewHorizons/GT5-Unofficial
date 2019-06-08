@@ -4,16 +4,17 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import fuelcell.Block_GDCUnit;
+import fuelcell.Block_YSZUnit;
+import fuelcell.GTMTE_SOFuelCellMK1;
+import fuelcell.GTMTE_SOFuelCellMK2;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
-import reactor.items.CoolantCell;
-import reactor.items.FuelRod;
+import reactor.GTMTE_ModularNuclearReactor;
 import reactor.items.HeatExchanger;
 import reactor.items.HeatPipe;
-import reactor.items.HeatVent;
-import reactor.items.NeutronReflector;
 
 @Mod(modid = KekzCore.MODID, name = KekzCore.NAME, version = KekzCore.VERSION, 
 		dependencies = "required-after:IC2; "
@@ -30,13 +31,20 @@ public class KekzCore {
 	
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		// Items
 		ErrorItem.getInstance().registerItem();
 		MetaItem_ReactorComponent.getInstance().registerItem();
 		MetaItem_CraftingComponent.getInstance().registerItem();
+		// Blocks
+		Block_YSZUnit.getInstance().registerBlock();
+		Block_GDCUnit.getInstance().registerBlock();
 	}
 	
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event	) {
+		final GTMTE_SOFuelCellMK1 sofc1 = new GTMTE_SOFuelCellMK1(5000, "multimachine.fuelcellmk1", "Solid-Oxide Fuel Cell Mk I");
+		final GTMTE_SOFuelCellMK2 sofc2 = new GTMTE_SOFuelCellMK2(5001, "multimachine.fuelcellmk2", "Solid-Oxide Fuel Cell Mk II");
+		final GTMTE_ModularNuclearReactor mdr = new GTMTE_ModularNuclearReactor(5002, "multimachine.nuclearreactor", "Nuclear Reactor");
 		
 	}
 	

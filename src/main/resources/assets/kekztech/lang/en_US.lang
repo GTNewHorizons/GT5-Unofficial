@@ -72,3 +72,6 @@ item.kekztech_crafting_item.12.name=Zirconia Dust
 item.kekztech_crafting_item.13.name=Ceria Dust
 item.kekztech_crafting_item.14.name=YSZ Ceramic Plate
 item.kekztech_crafting_item.15.name=GDC Ceramic Plate
+
+tile.kekztech_gdcceramicelectrolyteunit_block.name=GDC Ceramic Electrolyte Unit
+tile.kekztech_yszceramicelectrolyteunit_block.name=YSZ Ceramic Electrolyte Unit

@@ -38,20 +38,15 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 	@Override
 	public String[] getDescription() {
 		return new String[] { 
-				"Modular Nuclear Reactor", 
-				"------------------------------------------",
-				"EU-MODE - Turn nuclear fuel into directly into electricity.",
-				"",
-				"COOLANT-MODE - Heat up coolant for other applications",
-				"HU to Hot Coolant ratio is 1HU = 1L Hot Coolant",
+				"does things",
 				"------------------------------------------",
 				"Dimensions: 5x5x5 (WxHxL)",
 				"Structure:",
-				"	80x Radiation Proof Machine Casing (at least)",
-				"	Controller front center",
-				"	Dynamo Hatch (ONLY in EU-mode, at least one)",
-				"	Input Bus, Output Bus (optional)",
-				"	Input Hatch, Output Hatch (ONLY in Coolant-Mode, at least one each)"
+				"   80x Radiation Proof Machine Casing (at least)",
+				"   Controller front center",
+				"   Dynamo Hatch (ONLY in EU-mode, at least one)",
+				"   Input Bus, Output Bus (optional)",
+				"   Input Hatch, Output Hatch (ONLY in Coolant-Mode, at least one each)"
 				};	
 	}
 
