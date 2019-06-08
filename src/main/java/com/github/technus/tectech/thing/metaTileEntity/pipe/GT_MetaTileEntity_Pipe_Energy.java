@@ -99,7 +99,7 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
                 "Laser tunneling device.",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Bright Vacuum!!!",
                 EnumChatFormatting.AQUA + "Must be painted to work",
-                EnumChatFormatting.AQUA + "Do not cross,split or turn"
+                EnumChatFormatting.AQUA + "Do not split or turn"
         };
     }
 

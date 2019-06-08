@@ -162,7 +162,7 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
                         }
                         return;
                     } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Energy) {
-                        if (((GT_MetaTileEntity_Pipe_Energy) aMetaTileEntity).connectionCount != 2) {
+                        if (((GT_MetaTileEntity_Pipe_Energy) aMetaTileEntity).connectionCount < 2) {
                             return;
                         }else {
                             ((GT_MetaTileEntity_Pipe_Energy) aMetaTileEntity).markUsed();
