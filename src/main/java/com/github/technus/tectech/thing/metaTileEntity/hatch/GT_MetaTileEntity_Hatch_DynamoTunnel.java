@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import static com.github.technus.tectech.CommonValues.TRANSFER_AT;
 import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT;
 
 /**
  * Created by danie_000 on 16.12.2016.
@@ -35,12 +35,12 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_LASER_TT[mTier]};
+        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_OUT_LASER_TT[mTier]};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_LASER_TT[mTier]};
+        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_OUT_LASER_TT[mTier]};
     }
 
     @Override
