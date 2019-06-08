@@ -49,6 +49,7 @@ public enum CustomItemList implements IItemContainer {
     eM_dynamotunnel1_UIV,eM_dynamotunnel2_UIV,eM_dynamotunnel3_UIV,eM_dynamotunnel4_UIV,eM_dynamotunnel5_UIV,eM_dynamotunnel6_UIV,eM_dynamotunnel7_UIV,
     eM_dynamotunnel1_UMV,eM_dynamotunnel2_UMV,eM_dynamotunnel3_UMV,eM_dynamotunnel4_UMV,eM_dynamotunnel5_UMV,eM_dynamotunnel6_UMV,eM_dynamotunnel7_UMV,
     eM_dynamotunnel1_UXV,eM_dynamotunnel2_UXV,eM_dynamotunnel3_UXV,eM_dynamotunnel4_UXV,eM_dynamotunnel5_UXV,eM_dynamotunnel6_UXV,eM_dynamotunnel7_UXV,
+    eM_dynamotunnel9001,
 
     eM_energymulti4_IV, eM_energymulti16_IV, eM_energymulti64_IV,
     eM_energymulti4_LuV, eM_energymulti16_LuV, eM_energymulti64_LuV,
@@ -68,7 +69,8 @@ public enum CustomItemList implements IItemContainer {
     eM_energytunnel1_UIV,eM_energytunnel2_UIV,eM_energytunnel3_UIV,eM_energytunnel4_UIV,eM_energytunnel5_UIV,eM_energytunnel6_UIV,eM_energytunnel7_UIV,
     eM_energytunnel1_UMV,eM_energytunnel2_UMV,eM_energytunnel3_UMV,eM_energytunnel4_UMV,eM_energytunnel5_UMV,eM_energytunnel6_UMV,eM_energytunnel7_UMV,
     eM_energytunnel1_UXV,eM_energytunnel2_UXV,eM_energytunnel3_UXV,eM_energytunnel4_UXV,eM_energytunnel5_UXV,eM_energytunnel6_UXV,eM_energytunnel7_UXV,
-
+    eM_energytunnel9001,
+    
     eM_in_UV, eM_in_UHV, eM_in_UEV, eM_in_UIV, eM_in_UMV, eM_in_UXV,
     eM_out_UV, eM_out_UHV, eM_out_UEV, eM_out_UIV, eM_out_UMV, eM_out_UXV,
     eM_muffler_UV, eM_muffler_UHV, eM_muffler_UEV, eM_muffler_UIV, eM_muffler_UMV, eM_muffler_UXV,

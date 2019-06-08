@@ -15,7 +15,9 @@ import cpw.mods.fml.common.Loader;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.thing.CustomItemList.*;
+import static com.github.technus.tectech.thing.CustomItemList.eM_dynamotunnel9001;
 
 /**
  * Created by danie_000 on 16.11.2016.
@@ -295,6 +297,8 @@ public class MachineLoader implements Runnable {
                 15188, "hatch.energytunnel6.tier.13", "UXV 262144/t Laser Target Hatch", 13, 262144).getStackForm(1L));
         eM_energytunnel7_UXV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
                 15198, "hatch.energytunnel7.tier.13", "UXV 1048576/t Laser Target Hatch", 13, 1048576).getStackForm(1L));
+        eM_energytunnel9001.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
+                15198, "hatch.energytunnel.tier.14", "Legendary Laser Target Hatch", 14, (int)V[14]).getStackForm(1L));
 
         // ===================================================================================================
         // Multi AMP Power OUTPUTS
@@ -502,6 +506,8 @@ public class MachineLoader implements Runnable {
                 15288, "hatch.dynamotunnel6.tier.13", "UXV 262144/t Laser Source Hatch", 13, 262144).getStackForm(1L));
         eM_dynamotunnel7_UXV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
                 15298, "hatch.dynamotunnel7.tier.13", "UXV 1048576/t Laser Source Hatch", 13, 1048576).getStackForm(1L));
+        eM_dynamotunnel9001.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
+                15299, "hatch.dynamotunnel.tier.14", "Legendary Laser Source Hatch", 14, (int)V[14]).getStackForm(1L));
         
         // ===================================================================================================
         // MULTIBLOCKS
