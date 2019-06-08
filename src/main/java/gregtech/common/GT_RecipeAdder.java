@@ -1297,7 +1297,7 @@ public class GT_RecipeAdder
 
     @Override
     public boolean addWireAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt) {
-        return addCircuitAssemblerRecipe(aInputs, aFluidInput, aOutput,aDuration,aEUt, false);
+        return addWireAssemblerRecipe(aInputs, aFluidInput, aOutput,aDuration,aEUt, false);
     }
     
     public boolean addWireAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt, boolean aCleanroom) {
