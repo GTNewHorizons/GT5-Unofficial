@@ -30,9 +30,8 @@ public class GT_MetaTileEntity_Hatch_DynamoMulti extends GT_MetaTileEntity_Hatch
     }
 
     public GT_MetaTileEntity_Hatch_DynamoMulti(int aID, String aName, String aNameRegional, int aTier, int i, String description, int aAmp) {
-        super(aID, aName, aNameRegional, aTier, i, description);
+        super(aID, aName, aNameRegional, aTier, 0, description);
         Amperes = aAmp;
-        Util.setTier(aTier,this);
     }
 
     @Override

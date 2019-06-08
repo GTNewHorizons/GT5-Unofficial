@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToEnergyTunnel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -23,6 +24,7 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
     public GT_MetaTileEntity_Hatch_EnergyTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(aID, aName, aNameRegional, aTier, 0, "Energy injecting terminal for Multiblocks",aAmp);
         upkeep=Math.max(V[mTier]/Amperes,V[4]);
+        Util.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_Hatch_EnergyTunnel(String aName, int aTier, int aAmp, long aUpkeep, String aDescription, ITexture[][][] aTextures) {

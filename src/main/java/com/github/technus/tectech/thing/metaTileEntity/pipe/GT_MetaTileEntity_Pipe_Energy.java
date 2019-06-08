@@ -92,8 +92,8 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Energy tunneling device.",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Not a portal!!!",
+                "Laser tunneling device.",
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Bright Vacuum!!!",
                 EnumChatFormatting.AQUA + "Must be painted to work",
                 EnumChatFormatting.AQUA + "Do not cross,split or turn"
         };
