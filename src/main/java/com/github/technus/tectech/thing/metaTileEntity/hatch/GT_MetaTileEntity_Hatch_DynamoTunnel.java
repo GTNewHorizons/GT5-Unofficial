@@ -21,17 +21,13 @@ import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_
  * Created by danie_000 on 16.12.2016.
  */
 public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatch_DynamoMulti implements IConnectsToEnergyTunnel {
-    private final long upkeep;
-
     public GT_MetaTileEntity_Hatch_DynamoTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(aID, aName, aNameRegional, aTier, 0, "Energy extracting terminal for Multiblocks",aAmp);
-        upkeep=Math.max(V[mTier]/Amperes,V[4]);
         Util.setTier(aTier,this);
     }
 
-    public GT_MetaTileEntity_Hatch_DynamoTunnel(String aName, int aTier, int aAmp, long aUpkeep, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_DynamoTunnel(String aName, int aTier, int aAmp, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
-        upkeep=aUpkeep;
     }
 
     @Override
@@ -91,7 +87,7 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_DynamoTunnel(mName, mTier, Amperes, upkeep, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_DynamoTunnel(mName, mTier, Amperes, mDescription, mTextures);
     }
 
     @Override
@@ -119,7 +115,7 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
             byte Tick = (byte) (aTick % 20);
             if (TRANSFER_AT == Tick) {
                 if(aBaseMetaTileEntity.getStoredEU()>0){
-                    setEUVar(aBaseMetaTileEntity.getStoredEU()-upkeep);
+                    setEUVar(aBaseMetaTileEntity.getStoredEU()-Amperes);
                     if(aBaseMetaTileEntity.getStoredEU()<0){
                         setEUVar(0);
                     }
