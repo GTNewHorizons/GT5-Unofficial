@@ -74,10 +74,12 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
 
     @Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {
+        active=nbtTagCompound.getBoolean("eActive");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound nbtTagCompound) {
+        nbtTagCompound.setBoolean("eActive",active);
     }
 
     @Override
@@ -103,6 +105,9 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if(getBaseMetaTileEntity().isClientSide()){
+            PipeActivityPacketDispatcher.INSTANCE.sendToServer(new PipeActivityMessage.PipeActivityQuery(this));
+        }
         onPostTick(aBaseMetaTileEntity, 31);
     }
 
