@@ -115,7 +115,7 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
                 if(active){
-                    if(TecTech.RANDOM.nextInt(15)==0) {
+                    if(TecTech.RANDOM.nextInt(7)==0) {
                         PipeActivityPacketDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
                                 aBaseMetaTileEntity.getWorld().provider.dimensionId,
                                 aBaseMetaTileEntity.getXCoord(),
@@ -125,7 +125,7 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
                     }
                     active=false;
                 }else if(getActive()){
-                    if(TecTech.RANDOM.nextInt(15)==0) {
+                    if(TecTech.RANDOM.nextInt(7)==0) {
                         PipeActivityPacketDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
                                 aBaseMetaTileEntity.getWorld().provider.dimensionId,
                                 aBaseMetaTileEntity.getXCoord(),

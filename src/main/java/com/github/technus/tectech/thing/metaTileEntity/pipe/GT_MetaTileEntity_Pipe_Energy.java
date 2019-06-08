@@ -111,7 +111,7 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
                 if(active){
-                    if(TecTech.RANDOM.nextInt(15)==0) {
+                    if(TecTech.RANDOM.nextInt(31)==0) {
                         PipeActivityPacketDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
                                 aBaseMetaTileEntity.getWorld().provider.dimensionId,
                                 aBaseMetaTileEntity.getXCoord(),
@@ -121,7 +121,7 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
                     }
                     active=false;
                 }else if(getActive()){
-                    if(TecTech.RANDOM.nextInt(15)==0) {
+                    if(TecTech.RANDOM.nextInt(31)==0) {
                         PipeActivityPacketDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
                                 aBaseMetaTileEntity.getWorld().provider.dimensionId,
                                 aBaseMetaTileEntity.getXCoord(),
