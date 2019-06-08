@@ -49,6 +49,13 @@ public class BloodyRecipeLoader implements Runnable {
                 ItemList.Circuit_Quantummainframe.get(1)
         }, Materials.Osmium.getMolten(288), CustomItemList.EMpipe.get(1), 400, 491520);
         
+        //Laser
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                CustomItemList.DATApipe.get(1),
+                GT_ModHandler.getIC2Item("reinforcedGlass", 1L),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmium, 2)
+        }, null, CustomItemList.LASERpipe.get(1), 100, 500000);
+        
         //endregoin
 
 
