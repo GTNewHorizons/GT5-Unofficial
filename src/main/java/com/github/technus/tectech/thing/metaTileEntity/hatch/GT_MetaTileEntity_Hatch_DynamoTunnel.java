@@ -1,14 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Energy;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToEnergyTunnel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,37 +14,33 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import static com.github.technus.tectech.CommonValues.TRANSFER_AT;
 import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT;
 
 /**
  * Created by danie_000 on 16.12.2016.
  */
-public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatch implements IConnectsToEnergyTunnel {
-    public final int Amperes;
+public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatch_DynamoMulti implements IConnectsToEnergyTunnel {
     private final long upkeep;
     private long packetsCount=0;
 
     public GT_MetaTileEntity_Hatch_DynamoTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(aID, aName, aNameRegional, aTier, 0, "Energy extracting terminal for Multiblocks");
-        Amperes = aAmp;
-        Util.setTier(aTier,this);
+        super(aID, aName, aNameRegional, aTier, 0, "Energy extracting terminal for Multiblocks",aAmp);
         upkeep=Math.max(V[mTier]/Amperes,V[4]);
     }
 
     public GT_MetaTileEntity_Hatch_DynamoTunnel(String aName, int aTier, int aAmp, long aUpkeep, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
-        Amperes = aAmp;
+        super(aName, aTier, aAmp, aDescription, aTextures);
         upkeep=aUpkeep;
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_POWER_TT[mTier]};
+        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_LASER_TT[mTier]};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_POWER_TT[mTier]};
+        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_LASER_TT[mTier]};
     }
 
     @Override
@@ -175,14 +169,16 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
                             opposite == tGTTileEntity.getFrontFacing()) {
                         if(maxEUOutput()>((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).maxEUInput()){
                             aMetaTileEntity.doExplosion(maxEUOutput());
-                        }else if(maxEUOutput()==((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).maxEUInput()){
-                            long ampRx=((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).Amperes;
-                            if(packetsCount > ampRx && Amperes>ampRx){
-                                tGTTileEntity.setToFire();
-                            }else if(Amperes>ampRx){
-                                tGTTileEntity.setOnFire();
-                                ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).addPackets(takePackets(Amperes));
-                            }else {
+                        }else if(maxEUOutput()==((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).maxEUInput()) {
+                            long ampRx = ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).Amperes;
+                            if (Amperes > ampRx) {
+                                if (packetsCount > ampRx) {
+                                    tGTTileEntity.setToFire();
+                                } else {
+                                    tGTTileEntity.setOnFire();
+                                    ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).addPackets(takePackets(Amperes));
+                                }
+                            } else {
                                 ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).addPackets(takePackets(Amperes));
                             }
                         }
@@ -190,6 +186,8 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
                     } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Energy) {
                         if (((GT_MetaTileEntity_Pipe_Energy) aMetaTileEntity).connectionCount > 2) {
                             return;
+                        }else {
+                            ((GT_MetaTileEntity_Pipe_Energy) aMetaTileEntity).markUsed();
                         }
                     } else {
                         return;
@@ -210,6 +208,9 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
 
     public void addPackets(long count){
         packetsCount+=count;
+        if(packetsCount>Amperes<<2){
+            packetsCount=Amperes<<2;
+        }
     }
 
     public long takePackets(long count){

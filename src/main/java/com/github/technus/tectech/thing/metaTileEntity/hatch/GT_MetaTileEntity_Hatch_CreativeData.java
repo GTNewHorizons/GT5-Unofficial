@@ -88,7 +88,8 @@ public class GT_MetaTileEntity_Hatch_CreativeData extends GT_MetaTileEntity_Hatc
             return null;
         }
         IMetaTileEntity meta = next.getMetaTileEntity();
-        if (meta instanceof GT_MetaTileEntity_Pipe_Data){
+        if (meta instanceof GT_MetaTileEntity_Pipe_Data) {
+            ((GT_MetaTileEntity_Pipe_Data) meta).markUsed();
             return (IConnectsToDataPipe) meta;
         }else if (meta instanceof GT_MetaTileEntity_Hatch_InputData &&
                 ((GT_MetaTileEntity_Hatch_InputData) meta).getColorization()==color &&

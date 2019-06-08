@@ -30,6 +30,12 @@ public class GT_MetaTileEntity_Hatch_EnergyMulti extends GT_MetaTileEntity_Hatch
         Amperes = aAmp;
     }
 
+    public GT_MetaTileEntity_Hatch_EnergyMulti(int aID, String aName, String aNameRegional, int aTier, int i, String description,int aAmp) {
+        super(aID, aName, aNameRegional, aTier, i, description);
+        Amperes = aAmp;
+        Util.setTier(aTier,this);
+    }
+
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_POWER_TT[mTier]};

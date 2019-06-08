@@ -1,49 +1,43 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToEnergyTunnel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import static com.github.technus.tectech.CommonValues.TRANSFER_AT;
 import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT;
 
 /**
  * Created by danie_000 on 16.12.2016.
  */
-public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatch implements IConnectsToEnergyTunnel {
-    public final int Amperes;
+public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatch_EnergyMulti implements IConnectsToEnergyTunnel {
     private final long upkeep;
     private long packetsCount=0;
 
     public GT_MetaTileEntity_Hatch_EnergyTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(aID, aName, aNameRegional, aTier, 0, "Energy injecting terminal for Multiblocks");
-        Amperes = aAmp;
-        Util.setTier(aTier,this);
+        super(aID, aName, aNameRegional, aTier, 0, "Energy injecting terminal for Multiblocks",aAmp);
         upkeep=Math.max(V[mTier]/Amperes,V[4]);
     }
 
     public GT_MetaTileEntity_Hatch_EnergyTunnel(String aName, int aTier, int aAmp, long aUpkeep, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
-        Amperes = aAmp;
-        this.upkeep=aUpkeep;
+        super(aName, aTier, aAmp, aDescription, aTextures);
+        upkeep=aUpkeep;
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_POWER_TT[mTier]};
+        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_OUT_LASER_TT[mTier]};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_POWER_TT[mTier]};
+        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_OUT_LASER_TT[mTier]};
     }
 
     @Override
@@ -155,6 +149,9 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
 
     public void addPackets(long count){
         packetsCount+=count;
+        if(packetsCount>Amperes<<2){
+            packetsCount=Amperes<<2;
+        }
     }
 
     public long takePackets(long count){

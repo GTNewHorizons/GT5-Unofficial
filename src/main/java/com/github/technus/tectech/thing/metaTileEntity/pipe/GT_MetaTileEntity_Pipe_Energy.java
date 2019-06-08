@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -24,12 +25,15 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import static com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM.EMCandyActive;
+import static com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM.EMcandy;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements IConnectsToEnergyTunnel {
     private static Textures.BlockIcons.CustomIcon EMpipe;
-    private static Textures.BlockIcons.CustomIcon EMcandy;
     public byte connectionCount = 0;
+
+    private boolean activity;
 
     public GT_MetaTileEntity_Pipe_Energy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
@@ -48,13 +52,12 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_LASER");
-        EMcandy = new Textures.BlockIcons.CustomIcon("iconsets/EM_CANDY");
         super.registerIcons(aBlockIconRegister);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[]{new GT_RenderedTexture(EMpipe), new GT_RenderedTexture(EMcandy, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))};
+        return new ITexture[]{new GT_RenderedTexture(EMpipe), new GT_RenderedTexture(aBaseMetaTileEntity.isActive()?EMCandyActive:EMcandy, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))};
     }
 
     @Override
@@ -105,6 +108,16 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
+                if(activity){
+                    if(TecTech.RANDOM.next(31)==0) {
+                        aBaseMetaTileEntity.setActive(true);
+                    }
+                    activity=false;
+                }else if(aBaseMetaTileEntity.isActive()){
+                    if(TecTech.RANDOM.next(31)==0) {
+                        aBaseMetaTileEntity.setActive(false);
+                    }
+                }
                 mConnections = 0;
                 connectionCount = 0;
                 if (aBaseMetaTileEntity.getColorization() < 0) {
@@ -199,5 +212,9 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
             return 0.0625F;
         }
         return 0.5f;
+    }
+
+    public void markUsed() {
+        this.activity = true;
     }
 }
