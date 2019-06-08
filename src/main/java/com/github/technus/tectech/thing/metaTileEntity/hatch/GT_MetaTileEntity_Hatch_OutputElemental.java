@@ -65,7 +65,7 @@ public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_H
                         content.clear();
                         return;
                     } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_EM) {
-                        if (((GT_MetaTileEntity_Pipe_EM) aMetaTileEntity).connectionCount > 2) {
+                        if (((GT_MetaTileEntity_Pipe_EM) aMetaTileEntity).connectionCount != 2) {
                             return;
                         }else {
                             ((GT_MetaTileEntity_Pipe_EM) aMetaTileEntity).markUsed();

@@ -113,12 +113,12 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
                 if(activity){
-                    if(TecTech.RANDOM.next(7)==0) {
+                    if(TecTech.RANDOM.nextInt(7)==0) {
                         aBaseMetaTileEntity.setActive(true);
                     }
                     activity=false;
                 }else if(aBaseMetaTileEntity.isActive()){
-                    if(TecTech.RANDOM.next(7)==0) {
+                    if(TecTech.RANDOM.nextInt(7)==0) {
                         aBaseMetaTileEntity.setActive(false);
                     }
                 }

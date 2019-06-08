@@ -109,12 +109,12 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
                 if(activity){
-                    if(TecTech.RANDOM.next(31)==0) {
+                    if(TecTech.RANDOM.nextInt(31)==0) {
                         aBaseMetaTileEntity.setActive(true);
                     }
                     activity=false;
                 }else if(aBaseMetaTileEntity.isActive()){
-                    if(TecTech.RANDOM.next(31)==0) {
+                    if(TecTech.RANDOM.nextInt(31)==0) {
                         aBaseMetaTileEntity.setActive(false);
                     }
                 }

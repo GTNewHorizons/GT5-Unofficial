@@ -9,6 +9,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.CommonValues.TRANSFER_AT;
 import static com.github.technus.tectech.CommonValues.V;
@@ -19,7 +20,6 @@ import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_
  */
 public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatch_EnergyMulti implements IConnectsToEnergyTunnel {
     private final long upkeep;
-    private long packetsCount=0;
 
     public GT_MetaTileEntity_Hatch_EnergyTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(aID, aName, aNameRegional, aTier, 0, "Energy injecting terminal for Multiblocks",aAmp);
@@ -45,13 +45,11 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        packetsCount=aNBT.getLong("ePackets");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setLong("ePackets",packetsCount);
     }
 
     @Override
@@ -119,6 +117,7 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
                 mDescription,
+                "Throughput: "+ EnumChatFormatting.YELLOW +(Amperes*maxEUInput())+EnumChatFormatting.RESET+" EU/t"
         };
     }
 
@@ -132,38 +131,13 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
         if (aBaseMetaTileEntity.isServerSide()) {
             byte Tick = (byte) (aTick % 20);
             if (TRANSFER_AT == Tick) {
-                if(packetsCount>0){
-                    long diff=(maxEUStore()-aBaseMetaTileEntity.getStoredEU())/maxEUInput();
-                    if(diff>0) {
-                        setEUVar(aBaseMetaTileEntity.getStoredEU() + takePackets(diff) * maxEUInput());
-                    }
-                }
                 if(aBaseMetaTileEntity.getStoredEU()>0){
                     setEUVar(aBaseMetaTileEntity.getStoredEU()-upkeep);
                     if(aBaseMetaTileEntity.getStoredEU()<0){
                         setEUVar(0);
                     }
                 }
-                getBaseMetaTileEntity().setActive(packetsCount>0);
             }
-        }
-    }
-
-    public void addPackets(long count){
-        packetsCount+=count;
-        if(packetsCount>Amperes<<2){
-            packetsCount=Amperes<<2;
-        }
-    }
-
-    public long takePackets(long count){
-        if(packetsCount>count){
-            packetsCount-=count;
-            return count;
-        }else {
-            count=packetsCount;
-            packetsCount=0;
-            return count;
         }
     }
 }
