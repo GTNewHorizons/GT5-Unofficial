@@ -298,7 +298,7 @@ public class MachineLoader implements Runnable {
         eM_energytunnel7_UXV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
                 15198, "hatch.energytunnel7.tier.13", "UXV 1048576/t Laser Target Hatch", 13, 1048576).getStackForm(1L));
         eM_energytunnel9001.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15198, "hatch.energytunnel.tier.14", "Legendary Laser Target Hatch", 14, (int)V[14]).getStackForm(1L));
+                15199, "hatch.energytunnel.tier.14", "Legendary Laser Target Hatch", 14, (int)V[14]).getStackForm(1L));
 
         // ===================================================================================================
         // Multi AMP Power OUTPUTS
