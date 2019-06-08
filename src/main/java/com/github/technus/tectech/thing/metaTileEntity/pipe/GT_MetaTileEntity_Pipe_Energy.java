@@ -111,13 +111,23 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
                 if(activity){
-                    if(TecTech.RANDOM.nextInt(31)==0) {
-                        setActive(true);
+                    if(TecTech.RANDOM.nextInt(15)==0) {
+                        PipeActivityPacketDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                                aBaseMetaTileEntity.getXCoord(),
+                                aBaseMetaTileEntity.getYCoord(),
+                                aBaseMetaTileEntity.getZCoord(),
+                                256);
                     }
                     activity=false;
                 }else if(getActive()){
-                    if(TecTech.RANDOM.nextInt(31)==0) {
-                        setActive(false);
+                    if(TecTech.RANDOM.nextInt(15)==0) {
+                        PipeActivityPacketDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                                aBaseMetaTileEntity.getXCoord(),
+                                aBaseMetaTileEntity.getYCoord(),
+                                aBaseMetaTileEntity.getZCoord(),
+                                256);
                     }
                 }
                 mConnections = 0;
@@ -167,13 +177,8 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     public void setActive(boolean state){
         this.active=state;
         IGregTechTileEntity base=getBaseMetaTileEntity();
-        if(base.isServerSide()) {
-            PipeActivityPacketDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
-                    base.getWorld().provider.dimensionId,
-                    base.getXCoord(),
-                    base.getYCoord(),
-                    base.getZCoord(),
-                    256);
+        if(getBaseMetaTileEntity().isClientSide()) {
+            base.issueTextureUpdate();
         }
     }
 
