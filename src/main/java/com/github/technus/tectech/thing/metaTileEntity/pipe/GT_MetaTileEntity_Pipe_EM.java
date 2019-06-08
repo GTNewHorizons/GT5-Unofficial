@@ -2,6 +2,8 @@ package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.PipeActivityMessage;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.PipeActivityPacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -30,12 +32,12 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 /**
  * Created by Tec on 26.02.2017.
  */
-public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnectsToElementalPipe {
+public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnectsToElementalPipe,IActivePipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
     static Textures.BlockIcons.CustomIcon EMcandy,EMCandyActive;
     public byte connectionCount = 0;
 
-    private boolean activity;
+    private boolean activity,active;
 
     public GT_MetaTileEntity_Pipe_EM(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
@@ -61,7 +63,7 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[]{new GT_RenderedTexture(EMpipe), new GT_RenderedTexture(aBaseMetaTileEntity.isActive()?EMCandyActive:EMcandy, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))};
+        return new ITexture[]{new GT_RenderedTexture(EMpipe), new GT_RenderedTexture(getActive()?EMCandyActive:EMcandy, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))};
     }
 
     @Override
@@ -114,12 +116,12 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
             if ((aTick & 31) == 31) {
                 if(activity){
                     if(TecTech.RANDOM.nextInt(7)==0) {
-                        aBaseMetaTileEntity.setActive(true);
+                        setActive(true);
                     }
                     activity=false;
-                }else if(aBaseMetaTileEntity.isActive()){
+                }else if(getActive()){
                     if(TecTech.RANDOM.nextInt(7)==0) {
-                        aBaseMetaTileEntity.setActive(false);
+                        setActive(false);
                     }
                 }
                 mConnections = 0;
@@ -219,5 +221,24 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
 
     public void markUsed() {
         this.activity = true;
+    }
+
+    @Override
+    public void setActive(boolean active) {
+        this.active=active;
+        IGregTechTileEntity base=getBaseMetaTileEntity();
+        if(base.isServerSide()) {
+            PipeActivityPacketDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                    base.getWorld().provider.dimensionId,
+                    base.getXCoord(),
+                    base.getYCoord(),
+                    base.getZCoord(),
+                    256);
+        }
+    }
+
+    @Override
+    public boolean getActive() {
+        return active;
     }
 }
