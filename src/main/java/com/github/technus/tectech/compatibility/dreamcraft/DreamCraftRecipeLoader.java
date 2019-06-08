@@ -81,6 +81,13 @@ public class DreamCraftRecipeLoader implements Runnable {
                 ItemList.Circuit_Quantummainframe.get(1)
         }, Materials.Osmium.getMolten(288), CustomItemList.EMpipe.get(1), 400, 500000);
         
+        //Laser
+        addAssemblerRecipeWithCleanroom(new ItemStack[]{
+                CustomItemList.DATApipe.get(1),
+                GT_ModHandler.getIC2Item("reinforcedGlass", 1L),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 2)
+        }, null, CustomItemList.LASERpipe.get(1), 100, 500000);
+        
         //endregoin
 
         //region casing
