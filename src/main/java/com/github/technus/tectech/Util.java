@@ -25,8 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,7 +68,7 @@ public final class Util {
     }
 
     public static String intBitsToShortString(int number) {
-        StringBuilder result = new StringBuilder(16);
+        StringBuilder result = new StringBuilder(35);
 
         for (int i = 31; i >= 0; i--) {
             int mask = 1 << i;
@@ -86,10 +84,10 @@ public final class Util {
     }
 
     public static String longBitsToShortString(long number) {
-        StringBuilder result = new StringBuilder(16);
+        StringBuilder result = new StringBuilder(71);
 
         for (int i = 63; i >= 0; i--) {
-            int mask = 1 << i;
+            long mask = 1L << i;
             result.append((number & mask) != 0 ? ":" : ".");
 
             if (i % 8 == 0) {
@@ -1376,7 +1374,7 @@ public final class Util {
             field.setAccessible(true);
             field.set(me,(byte)tier);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -1444,5 +1442,12 @@ public final class Util {
     public static void sendInteger(int value,Container container, ICrafting crafter,int startIndex){
         crafter.sendProgressBarUpdate(container, startIndex++, (int)(value & 0xFFFFL));
         crafter.sendProgressBarUpdate(container, startIndex, (value & 0xFFFF0000)>>>16);
+    }
+
+    public static String doubleToString(double value){
+        if(value==(long)value){
+            return Long.toString((long)value);
+        }
+        return Double.toString(value);
     }
 }

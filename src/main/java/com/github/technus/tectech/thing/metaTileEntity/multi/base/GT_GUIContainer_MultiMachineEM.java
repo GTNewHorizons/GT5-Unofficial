@@ -207,52 +207,50 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         switch (status) {
             case STATUS_WRONG: //fallthrough
                 if (counter < 2) {
-                    drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * j, su, sv);
+                    drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * j, su, sv);//blue
                     break;
                 } else if (counter < 4) {
-                    drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (8 + j), su, sv);
+                    drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (8 + j), su, sv);//red
                     break;
                 }
             case STATUS_OK://ok
-                drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (4 + j), su, sv);
+                drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (4 + j), su, sv);//green
                 break;
             case STATUS_TOO_LOW://too low blink
                 if (counter < 3) {
-                    drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * j, su, sv);
+                    drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * j, su, sv);//BLUE
                     break;
                 }
             case STATUS_LOW:// too low
-                drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (2 + j), su, sv);
+                drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (2 + j), su, sv);//cyan
                 break;
             case STATUS_TOO_HIGH://too high blink
                 if (counter < 3) {
-                    drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (8 + j), su, sv);
+                    drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (8 + j), su, sv);//redd
                     break;
                 }
             case STATUS_HIGH:// too high
-                drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (6 + j), su, sv);
+                drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (6 + j), su, sv);//orangeyello
                 break;
             case STATUS_NEUTRAL:
                 if(counter<3){
-                    GL11.glColor4f(.85f, .9f, .95f, 1.0F);
+                    GL11.glColor4f(.85f, .9f, .95f, .5F);
                     drawTexturedModalRect(x + su * i, y + sv * j, 212, 96, su+2, sv+2);
-                    GL11.glColor4f(1f, 1f, 1f, 1f);
                 }else {
-                    GL11.glColor4f(.8f, .9f, 1f, 1.0F);
+                    GL11.glColor4f(.8f, .9f, 1f, .5F);
                     drawTexturedModalRect(x + su * i, y + sv * j, 212, 96, su+2, sv+2);
-                    GL11.glColor4f(1f, 1f, 1f, 1f);
                 }
+                GL11.glColor4f(1f, 1f, 1f, 1f);
                 break;
             case STATUS_UNDEFINED:
                 if(counter<3) {
-                    GL11.glColor4f(.5f, .1f, .15f, 1.0F);
+                    GL11.glColor4f(.5f, .1f, .15f, .5F);
                     drawTexturedModalRect(x + su * i, y + sv * j, 212, 96, su + 2, sv + 2);
-                    GL11.glColor4f(1f, 1f, 1f, 1f);
                 }else {
-                    GL11.glColor4f(0f, .1f, .2f, 1.0F);
+                    GL11.glColor4f(0f, .1f, .2f, .5F);
                     drawTexturedModalRect(x + su * i, y + sv * j, 212, 96, su + 2, sv + 2);
-                    GL11.glColor4f(1f, 1f, 1f, 1f);
                 }
+                GL11.glColor4f(1f, 1f, 1f, 1f);
                 break;
             case STATUS_UNUSED:
             default:
@@ -260,7 +258,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                     int tColor = this.mContainer.mTileEntity.getColorization() & 15;
                     if (tColor < ItemDye.field_150922_c.length) {
                         tColor = ItemDye.field_150922_c[tColor];
-                        GL11.glColor4f((float)(tColor >> 16 & 255) / 255.0F, (float)(tColor >> 8 & 255) / 255.0F, (float)(tColor & 255) / 255.0F, 1.0F);
+                        GL11.glColor4f((float)(tColor >> 16 & 255) / 255.0F, (float)(tColor >> 8 & 255) / 255.0F, (float)(tColor & 255) / 255.0F, 1F);
                     }
                 }
                 drawTexturedModalRect(x + su * i, y + sv * j, 212, 96, su+2, sv+2);

@@ -1,6 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.loader.network.PipeActivityMessage;
+import com.github.technus.tectech.loader.network.NetworkDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -29,10 +32,12 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 /**
  * Created by Tec on 26.02.2017.
  */
-public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnectsToElementalPipe {
+public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnectsToElementalPipe,IActivePipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
-    private static Textures.BlockIcons.CustomIcon EMcandy;
+    static Textures.BlockIcons.CustomIcon EMcandy,EMCandyActive;
     public byte connectionCount = 0;
+
+    private boolean active;
 
     public GT_MetaTileEntity_Pipe_EM(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
@@ -52,12 +57,13 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
     public void registerIcons(IIconRegister aBlockIconRegister) {
         EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_PIPE");
         EMcandy = new Textures.BlockIcons.CustomIcon("iconsets/EM_CANDY");
+        EMCandyActive = new Textures.BlockIcons.CustomIcon("iconsets/EM_CANDY_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[]{new GT_RenderedTexture(EMpipe), new GT_RenderedTexture(EMcandy, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))};
+        return new ITexture[]{new GT_RenderedTexture(EMpipe), new GT_RenderedTexture(getActive()?EMCandyActive:EMcandy, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))};
     }
 
     @Override
@@ -72,10 +78,12 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
 
     @Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {
+        active=nbtTagCompound.getBoolean("eActive");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound nbtTagCompound) {
+        nbtTagCompound.setBoolean("eActive",active);
     }
 
     @Override
@@ -101,6 +109,9 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if(getBaseMetaTileEntity().isClientSide()){
+            NetworkDispatcher.INSTANCE.sendToServer(new PipeActivityMessage.PipeActivityQuery(this));
+        }
         onPostTick(aBaseMetaTileEntity, 31);
     }
 
@@ -108,6 +119,26 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
+                if(active){
+                    if(TecTech.RANDOM.nextInt(7)==0) {
+                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                                aBaseMetaTileEntity.getXCoord(),
+                                aBaseMetaTileEntity.getYCoord(),
+                                aBaseMetaTileEntity.getZCoord(),
+                                256);
+                    }
+                    active=false;
+                }else if(getActive()){
+                    if(TecTech.RANDOM.nextInt(7)==0) {
+                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                                aBaseMetaTileEntity.getXCoord(),
+                                aBaseMetaTileEntity.getYCoord(),
+                                aBaseMetaTileEntity.getZCoord(),
+                                256);
+                    }
+                }
                 mConnections = 0;
                 connectionCount = 0;
                 if (aBaseMetaTileEntity.getColorization() < 0) {
@@ -145,7 +176,6 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
                     //}
                 }
             }
-
         } else if (aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {
             aBaseMetaTileEntity.issueTextureUpdate();
         }
@@ -202,5 +232,21 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
             return 0.0625F;
         }
         return 0.5f;
+    }
+
+    @Override
+    public void markUsed() {
+        this.active = true;
+    }
+
+    @Override
+    public void setActive(boolean active) {
+        this.active=active;
+        getBaseMetaTileEntity().issueTextureUpdate();
+    }
+
+    @Override
+    public boolean getActive() {
+        return active;
     }
 }

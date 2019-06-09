@@ -10,6 +10,7 @@ import com.github.technus.tectech.loader.entity.EntityLoader;
 import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
 import com.github.technus.tectech.loader.gui.ModGuiHandler;
 import com.github.technus.tectech.loader.mechanics.ElementalLoader;
+import com.github.technus.tectech.loader.network.NetworkDispatcher;
 import com.github.technus.tectech.loader.recipe.RecipeLoader;
 import com.github.technus.tectech.loader.thing.ComponentLoader;
 import com.github.technus.tectech.loader.thing.CoverLoader;
@@ -18,7 +19,6 @@ import com.github.technus.tectech.loader.thing.ThingsLoader;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.Textures;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_collider;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationPacketDispatcher;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -47,7 +47,6 @@ import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatte
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
-import static gregtech.api.enums.Dyes.*;
 import static gregtech.api.enums.GT_Values.W;
 
 public final class MainLoader {
@@ -111,7 +110,7 @@ public final class MainLoader {
         LOGGER.info("Damage types addition Done");
 
         progressBarLoad.step("Register Packet Dispatcher");
-        new RotationPacketDispatcher();
+        new NetworkDispatcher();
         LOGGER.info("Packet Dispatcher registered");
 
         progressBarLoad.step("Register GUI Handler");

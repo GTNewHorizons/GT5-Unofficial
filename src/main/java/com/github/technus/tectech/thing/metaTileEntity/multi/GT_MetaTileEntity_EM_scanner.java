@@ -126,7 +126,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         for (int i = 0; i < 10; i++) {
             Parameters.Group hatch = parametrization.getGroup(i);
             scanConfiguration[i*2] = hatch.makeInParameter(0, 0, CONFIG_NAME, CONFIG_STATUS);
-            scanConfiguration[i*2+1] = hatch.makeInParameter(0, 0, CONFIG_NAME, CONFIG_STATUS);
+            scanConfiguration[i*2+1] = hatch.makeInParameter(1, 0, CONFIG_NAME, CONFIG_STATUS);
         }
     }
 

@@ -14,6 +14,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -81,6 +82,13 @@ public class DreamCraftRecipeLoader implements Runnable {
                 ItemList.Circuit_Quantummainframe.get(1)
         }, Materials.Osmium.getMolten(288), CustomItemList.EMpipe.get(1), 400, 500000);
         
+        //Laser
+        addAssemblerRecipeWithCleanroom(new ItemStack[]{
+                CustomItemList.DATApipe.get(1),
+                GT_ModHandler.getIC2Item("reinforcedGlass", 1L),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 2)
+        }, null, CustomItemList.LASERpipe.get(1), 100, 500000);
+        
         //endregoin
 
         //region casing
@@ -143,7 +151,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                         getOrDefault("Trinium",Materials.Osmium).getMolten(1296),
                         Materials.Osmium.getMolten(1296),
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
-                        Materials.Argon.getGas(576),
+                        Materials.Argon.getGas(1000),
                 }, CustomItemList.eM_Hollow.get(2), 200, 2000000);
 
         //EM Coil
@@ -212,6 +220,118 @@ public class DreamCraftRecipeLoader implements Runnable {
         //GT_Values.RA.ADD_ASSEMBLER_RECIPE(new ItemStack[]{com.dreammaster.gthandler.CustomItemList.Transformer_UMV_UIV.get(1), CustomItemList.eM_energymulti4_UIV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 4)}, Materials.Electrum.getMolten(8000), CustomItemList.eM_energymulti16_UIV.get(1), 200, 8000000);
         //GT_Values.RA.ADD_ASSEMBLER_RECIPE(new ItemStack[]{com.dreammaster.gthandler.CustomItemList.WetTransformer_UMV_UIV.get(1), CustomItemList.eM_energymulti16_UIV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.NetherStar, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 6)}, Materials.Tungsten.getMolten(8000), CustomItemList.eM_energymulti64_UIV.get(1), 400, 8000000);
 
+        //Laser Dynamo IV-UEV 256/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1), ItemList.Emitter_IV.get(1), ItemList.Electric_Pump_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.TungstenSteel, 2), GT_Utility.getIntegratedCircuit(1)}, null, CustomItemList.eM_dynamotunnel1_IV.get(1), 1000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1), ItemList.Emitter_LuV.get(1), ItemList.Electric_Pump_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.VanadiumGallium, 2), GT_Utility.getIntegratedCircuit(1)}, null, CustomItemList.eM_dynamotunnel1_LuV.get(1), 1000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1), ItemList.Emitter_ZPM.get(1), ItemList.Electric_Pump_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Naquadah, 2), GT_Utility.getIntegratedCircuit(1)}, null, CustomItemList.eM_dynamotunnel1_ZPM.get(1), 1000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1), ItemList.Emitter_UV.get(1), ItemList.Electric_Pump_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.NaquadahAlloy, 2), GT_Utility.getIntegratedCircuit(1)}, null, CustomItemList.eM_dynamotunnel1_UV.get(1), 1000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1), ItemList.Emitter_UHV.get(1), ItemList.Electric_Pump_UHV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Bedrockium, 2), GT_Utility.getIntegratedCircuit(1)}, null, CustomItemList.eM_dynamotunnel1_UHV.get(1), 1000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1), ItemList.Emitter_UEV.get(1), ItemList.Electric_Pump_UEV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Draconium, 2), GT_Utility.getIntegratedCircuit(1)}, null, CustomItemList.eM_dynamotunnel1_UEV.get(1), 1000, 8000000);
+        
+        //Laser Dynamo IV-UEV 1024/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2), ItemList.Emitter_IV.get(2), ItemList.Electric_Pump_IV.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.TungstenSteel, 4), GT_Utility.getIntegratedCircuit(2)}, null, CustomItemList.eM_dynamotunnel2_IV.get(1), 2000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2), ItemList.Emitter_LuV.get(2), ItemList.Electric_Pump_LuV.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.VanadiumGallium, 4), GT_Utility.getIntegratedCircuit(2)}, null, CustomItemList.eM_dynamotunnel2_LuV.get(1), 2000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2), ItemList.Emitter_ZPM.get(2), ItemList.Electric_Pump_ZPM.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Naquadah, 4), GT_Utility.getIntegratedCircuit(2)}, null, CustomItemList.eM_dynamotunnel2_ZPM.get(1), 2000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2), ItemList.Emitter_UV.get(2), ItemList.Electric_Pump_UV.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NaquadahAlloy, 4), GT_Utility.getIntegratedCircuit(2)}, null, CustomItemList.eM_dynamotunnel2_UV.get(1), 2000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2), ItemList.Emitter_UHV.get(2), ItemList.Electric_Pump_UHV.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Bedrockium, 4), GT_Utility.getIntegratedCircuit(2)}, null, CustomItemList.eM_dynamotunnel2_UHV.get(1), 2000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2), ItemList.Emitter_UEV.get(2), ItemList.Electric_Pump_UEV.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Draconium, 4), GT_Utility.getIntegratedCircuit(2)}, null, CustomItemList.eM_dynamotunnel2_UEV.get(1), 2000, 8000000);
+        
+        //Laser Dynamo IV-UEV 4096/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4), ItemList.Emitter_IV.get(4), ItemList.Electric_Pump_IV.get(4), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 4), GT_Utility.getIntegratedCircuit(3)}, null, CustomItemList.eM_dynamotunnel3_IV.get(1), 4000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4), ItemList.Emitter_LuV.get(4), ItemList.Electric_Pump_LuV.get(4), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.VanadiumGallium, 4), GT_Utility.getIntegratedCircuit(3)}, null, CustomItemList.eM_dynamotunnel3_LuV.get(1), 4000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4), ItemList.Emitter_ZPM.get(4), ItemList.Electric_Pump_ZPM.get(4), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 4), GT_Utility.getIntegratedCircuit(3)}, null, CustomItemList.eM_dynamotunnel3_ZPM.get(1), 4000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4), ItemList.Emitter_UV.get(4), ItemList.Electric_Pump_UV.get(4), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 4), GT_Utility.getIntegratedCircuit(3)}, null, CustomItemList.eM_dynamotunnel3_UV.get(1), 4000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4), ItemList.Emitter_UHV.get(4), ItemList.Electric_Pump_UHV.get(4), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Bedrockium, 4), GT_Utility.getIntegratedCircuit(3)}, null, CustomItemList.eM_dynamotunnel3_UHV.get(1), 4000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4), ItemList.Emitter_UEV.get(4), ItemList.Electric_Pump_UEV.get(4), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 4), GT_Utility.getIntegratedCircuit(3)}, null, CustomItemList.eM_dynamotunnel3_UEV.get(1), 4000, 8000000);
+        
+        //Laser Dynamo IV-UEV 16384/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8), ItemList.Emitter_IV.get(8), ItemList.Electric_Pump_IV.get(8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 8), GT_Utility.getIntegratedCircuit(4)}, null, CustomItemList.eM_dynamotunnel4_IV.get(1), 8000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8), ItemList.Emitter_LuV.get(8), ItemList.Electric_Pump_LuV.get(8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.VanadiumGallium, 8), GT_Utility.getIntegratedCircuit(4)}, null, CustomItemList.eM_dynamotunnel4_LuV.get(1), 8000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8), ItemList.Emitter_ZPM.get(8), ItemList.Electric_Pump_ZPM.get(8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 8), GT_Utility.getIntegratedCircuit(4)}, null, CustomItemList.eM_dynamotunnel4_ZPM.get(1), 8000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8), ItemList.Emitter_UV.get(8), ItemList.Electric_Pump_UV.get(8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 8), GT_Utility.getIntegratedCircuit(4)}, null, CustomItemList.eM_dynamotunnel4_UV.get(1), 8000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8), ItemList.Emitter_UHV.get(8), ItemList.Electric_Pump_UHV.get(8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Bedrockium, 8), GT_Utility.getIntegratedCircuit(4)}, null, CustomItemList.eM_dynamotunnel4_UHV.get(1), 8000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8), ItemList.Emitter_UEV.get(8), ItemList.Electric_Pump_UEV.get(8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 8), GT_Utility.getIntegratedCircuit(4)}, null, CustomItemList.eM_dynamotunnel4_UEV.get(1), 8000, 8000000);
+        
+        //Laser Dynamo IV-UEV 65536/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16), ItemList.Emitter_IV.get(16), ItemList.Electric_Pump_IV.get(16), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.TungstenSteel, 8), GT_Utility.getIntegratedCircuit(5)}, null, CustomItemList.eM_dynamotunnel5_IV.get(1), 16000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16), ItemList.Emitter_LuV.get(16), ItemList.Electric_Pump_LuV.get(16), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.VanadiumGallium, 8), GT_Utility.getIntegratedCircuit(5)}, null, CustomItemList.eM_dynamotunnel5_LuV.get(1), 16000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16), ItemList.Emitter_ZPM.get(16), ItemList.Electric_Pump_ZPM.get(16), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 8), GT_Utility.getIntegratedCircuit(5)}, null, CustomItemList.eM_dynamotunnel5_ZPM.get(1), 16000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16), ItemList.Emitter_UV.get(16), ItemList.Electric_Pump_UV.get(16), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 8), GT_Utility.getIntegratedCircuit(5)}, null, CustomItemList.eM_dynamotunnel5_UV.get(1), 16000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16), ItemList.Emitter_UHV.get(16), ItemList.Electric_Pump_UHV.get(16), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Bedrockium, 8), GT_Utility.getIntegratedCircuit(5)}, null, CustomItemList.eM_dynamotunnel5_UHV.get(1), 16000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16), ItemList.Emitter_UEV.get(16), ItemList.Electric_Pump_UEV.get(16), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 8), GT_Utility.getIntegratedCircuit(5)}, null, CustomItemList.eM_dynamotunnel5_UEV.get(1), 16000, 8000000);
+        
+        //Laser Dynamo IV-UEV 262144/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32), ItemList.Emitter_IV.get(32), ItemList.Electric_Pump_IV.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.TungstenSteel, 16), GT_Utility.getIntegratedCircuit(6)}, null, CustomItemList.eM_dynamotunnel6_IV.get(1), 32000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32), ItemList.Emitter_LuV.get(32), ItemList.Electric_Pump_LuV.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.VanadiumGallium, 16), GT_Utility.getIntegratedCircuit(6)}, null, CustomItemList.eM_dynamotunnel6_LuV.get(1), 32000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32), ItemList.Emitter_ZPM.get(32), ItemList.Electric_Pump_ZPM.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 16), GT_Utility.getIntegratedCircuit(6)}, null, CustomItemList.eM_dynamotunnel6_ZPM.get(1), 32000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32), ItemList.Emitter_UV.get(32), ItemList.Electric_Pump_UV.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 16), GT_Utility.getIntegratedCircuit(6)}, null, CustomItemList.eM_dynamotunnel6_UV.get(1), 32000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32), ItemList.Emitter_UHV.get(32), ItemList.Electric_Pump_UHV.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Bedrockium, 16), GT_Utility.getIntegratedCircuit(6)}, null, CustomItemList.eM_dynamotunnel6_UHV.get(1), 32000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32), ItemList.Emitter_UEV.get(32), ItemList.Electric_Pump_UEV.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 16), GT_Utility.getIntegratedCircuit(6)}, null, CustomItemList.eM_dynamotunnel6_UEV.get(1), 32000, 8000000);
+        
+        //Laser Dynamo IV-UEV 1048576/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Emitter_IV.get(64), ItemList.Electric_Pump_IV.get(64), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 16), GT_Utility.getIntegratedCircuit(7)}, null, CustomItemList.eM_dynamotunnel7_IV.get(1), 64000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Emitter_LuV.get(64), ItemList.Electric_Pump_LuV.get(64), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.VanadiumGallium, 16), GT_Utility.getIntegratedCircuit(7)}, null, CustomItemList.eM_dynamotunnel7_LuV.get(1), 64000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Emitter_ZPM.get(64), ItemList.Electric_Pump_ZPM.get(64), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 16), GT_Utility.getIntegratedCircuit(7)}, null, CustomItemList.eM_dynamotunnel7_ZPM.get(1), 64000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Emitter_UV.get(64), ItemList.Electric_Pump_UV.get(64), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.NaquadahAlloy, 16), GT_Utility.getIntegratedCircuit(7)}, null, CustomItemList.eM_dynamotunnel7_UV.get(1), 64000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Emitter_UHV.get(64), ItemList.Electric_Pump_UHV.get(64), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 16), GT_Utility.getIntegratedCircuit(7)}, null, CustomItemList.eM_dynamotunnel7_UHV.get(1), 64000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Emitter_UEV.get(64), ItemList.Electric_Pump_UEV.get(64), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 16), GT_Utility.getIntegratedCircuit(7)}, null, CustomItemList.eM_dynamotunnel7_UEV.get(1), 64000, 8000000);
+        
+        //Laser Target IV-UEV 256/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1), ItemList.Sensor_IV.get(1), ItemList.Electric_Pump_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.TungstenSteel, 2), GT_Utility.getIntegratedCircuit(1)}, null, CustomItemList.eM_energytunnel1_IV.get(1), 1000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1), ItemList.Sensor_LuV.get(1), ItemList.Electric_Pump_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.VanadiumGallium, 2), GT_Utility.getIntegratedCircuit(1)}, null, CustomItemList.eM_energytunnel1_LuV.get(1), 1000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1), ItemList.Sensor_ZPM.get(1), ItemList.Electric_Pump_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Naquadah, 2), GT_Utility.getIntegratedCircuit(1)}, null, CustomItemList.eM_energytunnel1_ZPM.get(1), 1000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1), ItemList.Sensor_UV.get(1), ItemList.Electric_Pump_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.NaquadahAlloy, 2), GT_Utility.getIntegratedCircuit(1)}, null, CustomItemList.eM_energytunnel1_UV.get(1), 1000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1), ItemList.Sensor_UHV.get(1), ItemList.Electric_Pump_UHV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Bedrockium, 2), GT_Utility.getIntegratedCircuit(1)}, null, CustomItemList.eM_energytunnel1_UHV.get(1), 1000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1), ItemList.Sensor_UEV.get(1), ItemList.Electric_Pump_UEV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Draconium, 2), GT_Utility.getIntegratedCircuit(1)}, null, CustomItemList.eM_energytunnel1_UEV.get(1), 1000, 8000000);
+        
+        //Laser Target IV-UEV 1024/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2), ItemList.Sensor_IV.get(2), ItemList.Electric_Pump_IV.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.TungstenSteel, 4), GT_Utility.getIntegratedCircuit(2)}, null, CustomItemList.eM_energytunnel2_IV.get(1), 2000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2), ItemList.Sensor_LuV.get(2), ItemList.Electric_Pump_LuV.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.VanadiumGallium, 4), GT_Utility.getIntegratedCircuit(2)}, null, CustomItemList.eM_energytunnel2_LuV.get(1), 2000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2), ItemList.Sensor_ZPM.get(2), ItemList.Electric_Pump_ZPM.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Naquadah, 4), GT_Utility.getIntegratedCircuit(2)}, null, CustomItemList.eM_energytunnel2_ZPM.get(1), 2000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2), ItemList.Sensor_UV.get(2), ItemList.Electric_Pump_UV.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NaquadahAlloy, 4), GT_Utility.getIntegratedCircuit(2)}, null, CustomItemList.eM_energytunnel2_UV.get(1), 2000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2), ItemList.Sensor_UHV.get(2), ItemList.Electric_Pump_UHV.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Bedrockium, 4), GT_Utility.getIntegratedCircuit(2)}, null, CustomItemList.eM_energytunnel2_UHV.get(1), 2000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2), ItemList.Sensor_UEV.get(2), ItemList.Electric_Pump_UEV.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Draconium, 4), GT_Utility.getIntegratedCircuit(2)}, null, CustomItemList.eM_energytunnel2_UEV.get(1), 2000, 8000000);
+        
+        //Laser Target IV-UEV 4096/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4), ItemList.Sensor_IV.get(4), ItemList.Electric_Pump_IV.get(4), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 4), GT_Utility.getIntegratedCircuit(3)}, null, CustomItemList.eM_energytunnel3_IV.get(1), 4000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4), ItemList.Sensor_LuV.get(4), ItemList.Electric_Pump_LuV.get(4), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.VanadiumGallium, 4), GT_Utility.getIntegratedCircuit(3)}, null, CustomItemList.eM_energytunnel3_LuV.get(1), 4000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4), ItemList.Sensor_ZPM.get(4), ItemList.Electric_Pump_ZPM.get(4), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 4), GT_Utility.getIntegratedCircuit(3)}, null, CustomItemList.eM_energytunnel3_ZPM.get(1), 4000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4), ItemList.Sensor_UV.get(4), ItemList.Electric_Pump_UV.get(4), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 4), GT_Utility.getIntegratedCircuit(3)}, null, CustomItemList.eM_energytunnel3_UV.get(1), 4000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4), ItemList.Sensor_UHV.get(4), ItemList.Electric_Pump_UHV.get(4), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Bedrockium, 4), GT_Utility.getIntegratedCircuit(3)}, null, CustomItemList.eM_energytunnel3_UHV.get(1), 4000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4), ItemList.Sensor_UEV.get(4), ItemList.Electric_Pump_UEV.get(4), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 4), GT_Utility.getIntegratedCircuit(3)}, null, CustomItemList.eM_energytunnel3_UEV.get(1), 4000, 8000000);
+        
+        //Laser Target IV-UEV 16384/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8), ItemList.Sensor_IV.get(8), ItemList.Electric_Pump_IV.get(8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 8), GT_Utility.getIntegratedCircuit(4)}, null, CustomItemList.eM_energytunnel4_IV.get(1), 8000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8), ItemList.Sensor_LuV.get(8), ItemList.Electric_Pump_LuV.get(8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.VanadiumGallium, 8), GT_Utility.getIntegratedCircuit(4)}, null, CustomItemList.eM_energytunnel4_LuV.get(1), 8000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8), ItemList.Sensor_ZPM.get(8), ItemList.Electric_Pump_ZPM.get(8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 8), GT_Utility.getIntegratedCircuit(4)}, null, CustomItemList.eM_energytunnel4_ZPM.get(1), 8000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8), ItemList.Sensor_UV.get(8), ItemList.Electric_Pump_UV.get(8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 8), GT_Utility.getIntegratedCircuit(4)}, null, CustomItemList.eM_energytunnel4_UV.get(1), 8000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8), ItemList.Sensor_UHV.get(8), ItemList.Electric_Pump_UHV.get(8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Bedrockium, 8), GT_Utility.getIntegratedCircuit(4)}, null, CustomItemList.eM_energytunnel4_UHV.get(1), 8000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8), ItemList.Sensor_UEV.get(8), ItemList.Electric_Pump_UEV.get(8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 8), GT_Utility.getIntegratedCircuit(4)}, null, CustomItemList.eM_energytunnel4_UEV.get(1), 8000, 8000000);
+        
+        //Laser Target IV-UEV 65536/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16), ItemList.Sensor_IV.get(16), ItemList.Electric_Pump_IV.get(16), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.TungstenSteel, 8), GT_Utility.getIntegratedCircuit(5)}, null, CustomItemList.eM_energytunnel5_IV.get(1), 16000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16), ItemList.Sensor_LuV.get(16), ItemList.Electric_Pump_LuV.get(16), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.VanadiumGallium, 8), GT_Utility.getIntegratedCircuit(5)}, null, CustomItemList.eM_energytunnel5_LuV.get(1), 16000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16), ItemList.Sensor_ZPM.get(16), ItemList.Electric_Pump_ZPM.get(16), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 8), GT_Utility.getIntegratedCircuit(5)}, null, CustomItemList.eM_energytunnel5_ZPM.get(1), 16000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16), ItemList.Sensor_UV.get(16), ItemList.Electric_Pump_UV.get(16), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 8), GT_Utility.getIntegratedCircuit(5)}, null, CustomItemList.eM_energytunnel5_UV.get(1), 16000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16), ItemList.Sensor_UHV.get(16), ItemList.Electric_Pump_UHV.get(16), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Bedrockium, 8), GT_Utility.getIntegratedCircuit(5)}, null, CustomItemList.eM_energytunnel5_UHV.get(1), 16000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16), ItemList.Sensor_UEV.get(16), ItemList.Electric_Pump_UEV.get(16), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 8), GT_Utility.getIntegratedCircuit(5)}, null, CustomItemList.eM_energytunnel5_UEV.get(1), 16000, 8000000);
+        
+        //Laser Target IV-UEV 262144/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32), ItemList.Sensor_IV.get(32), ItemList.Electric_Pump_IV.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.TungstenSteel, 16), GT_Utility.getIntegratedCircuit(6)}, null, CustomItemList.eM_energytunnel6_IV.get(1), 32000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32), ItemList.Sensor_LuV.get(32), ItemList.Electric_Pump_LuV.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.VanadiumGallium, 16), GT_Utility.getIntegratedCircuit(6)}, null, CustomItemList.eM_energytunnel6_LuV.get(1), 32000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32), ItemList.Sensor_ZPM.get(32), ItemList.Electric_Pump_ZPM.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 16), GT_Utility.getIntegratedCircuit(6)}, null, CustomItemList.eM_energytunnel6_ZPM.get(1), 32000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32), ItemList.Sensor_UV.get(32), ItemList.Electric_Pump_UV.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 16), GT_Utility.getIntegratedCircuit(6)}, null, CustomItemList.eM_energytunnel6_UV.get(1), 32000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32), ItemList.Sensor_UHV.get(32), ItemList.Electric_Pump_UHV.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Bedrockium, 16), GT_Utility.getIntegratedCircuit(6)}, null, CustomItemList.eM_energytunnel6_UHV.get(1), 32000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32), ItemList.Sensor_UEV.get(32), ItemList.Electric_Pump_UEV.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 16), GT_Utility.getIntegratedCircuit(6)}, null, CustomItemList.eM_energytunnel6_UEV.get(1), 32000, 8000000);
+        
+        //Laser Target IV-UEV 1048576/t
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Sensor_IV.get(64), ItemList.Electric_Pump_IV.get(64), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 16), GT_Utility.getIntegratedCircuit(7)}, null, CustomItemList.eM_energytunnel7_IV.get(1), 64000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Sensor_LuV.get(64), ItemList.Electric_Pump_LuV.get(64), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.VanadiumGallium, 16), GT_Utility.getIntegratedCircuit(7)}, null, CustomItemList.eM_energytunnel7_LuV.get(1), 64000, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Sensor_ZPM.get(64), ItemList.Electric_Pump_ZPM.get(64), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 16), GT_Utility.getIntegratedCircuit(7)}, null, CustomItemList.eM_energytunnel7_ZPM.get(1), 64000, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Sensor_UV.get(64), ItemList.Electric_Pump_UV.get(64), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.NaquadahAlloy, 16), GT_Utility.getIntegratedCircuit(7)}, null, CustomItemList.eM_energytunnel7_UV.get(1), 64000, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Sensor_UHV.get(64), ItemList.Electric_Pump_UHV.get(64), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 16), GT_Utility.getIntegratedCircuit(7)}, null, CustomItemList.eM_energytunnel7_UHV.get(1), 64000, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Hull_UEV").get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Sensor_UEV.get(64), ItemList.Electric_Pump_UEV.get(64), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 16), GT_Utility.getIntegratedCircuit(7)}, null, CustomItemList.eM_energytunnel7_UEV.get(1), 64000, 8000000);
+        
         //Data Input
         addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1),
@@ -236,15 +356,15 @@ public class DreamCraftRecipeLoader implements Runnable {
         }, Materials.Iridium.getMolten(1296), CustomItemList.rack_Hatch.get(1), 800, 122880);
 
         //Object Holder
-        GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Input_Bus_ZPM.get(1), 10000, new ItemStack[]{
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Input_Bus_ZPM.get(1), 10000, new Object[]{
                 ItemList.Hatch_Input_Bus_ZPM.get(1),
                 CustomItemList.eM_Computer_Bus.get(1),
                 ItemList.Emitter_ZPM.get(8),
                 ItemList.Robot_Arm_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
-                ItemList.Circuit_Crystalmainframe.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 2),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 16),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 1)},
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 2)},
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 16)},
                 CustomItemList.DATApipe.get(2),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(500),
@@ -323,12 +443,12 @@ public class DreamCraftRecipeLoader implements Runnable {
         }, Materials.Iridium.getMolten(1296), CustomItemList.Machine_Multi_Switch.get(1), 800, 122880);
 
         //Quantum Computer
-        GT_Values.RA.addAssemblylineRecipe(ItemList.Tool_DataOrb.get(1), 20000, new ItemStack[]{
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Tool_DataOrb.get(1), 20000, new Object[]{
                 CustomItemList.Machine_Multi_Switch.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 2),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 2)},
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8)},
                 CustomItemList.DATApipe.get(8),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(1000),
@@ -338,14 +458,14 @@ public class DreamCraftRecipeLoader implements Runnable {
         }, CustomItemList.Machine_Multi_Computer.get(1), 12000, 100000);
 
         //Research Station
-        GT_Values.RA.addAssemblylineRecipe(getItemContainer("ScannerZPM").get(1), 80000, new ItemStack[]{
+        GT_Values.RA.addAssemblylineRecipe(getItemContainer("ScannerZPM").get(1), 80000, new Object[]{
                 CustomItemList.Machine_Multi_Switch.get(1),
                 ItemList.Sensor_ZPM.get(8),
-                ItemList.Circuit_Crystalmainframe.get(4),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 4)},
                 ItemList.Field_Generator_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 32),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4)},
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 32)},
                 CustomItemList.DATApipe.get(16),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(1000),
@@ -783,10 +903,10 @@ public class DreamCraftRecipeLoader implements Runnable {
                 48000, 128, 500000, 8,  new ItemStack[]{
                         ItemList.Circuit_Board_Bio_Ultra.get(2L),
                         ItemList.Circuit_Biowarecomputer.get(2L),
-                        ItemList.Circuit_Parts_DiodeSMD.get(48L),
-                        ItemList.Circuit_Parts_ResistorSMD.get(16L),
                         ItemList.Circuit_Parts_TransistorSMD.get(16L),
-                        ItemList.Circuit_Parts_DiodeSMD.get(16L),
+                        ItemList.Circuit_Parts_ResistorSMD.get(16L),
+                        ItemList.Circuit_Parts_CapacitorSMD.get(16L),
+                        ItemList.Circuit_Parts_DiodeSMD.get(48L),
                         ItemList.Circuit_Chip_NOR.get(32L),
                         ItemList.Circuit_Chip_Ram.get(64L),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 32L),
@@ -802,8 +922,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 96000, 256, 1000000, 16,  new ItemStack[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 4L),
                         ItemList.Circuit_Biowaresupercomputer.get(2L),
-                        ItemList.Circuit_Parts_Coil.get(64L),
-                        ItemList.Circuit_Parts_Coil.get(64L),
+                        ItemList.UV_Coil.get(16L),
                         ItemList.Circuit_Parts_CapacitorSMD.get(64L),
                         ItemList.Circuit_Parts_ResistorSMD.get(64L),
                         ItemList.Circuit_Parts_TransistorSMD.get(64L),
@@ -940,10 +1059,7 @@ public class DreamCraftRecipeLoader implements Runnable {
             //Batteries
             TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Energy_Cluster.get(1L),12000,16,100000,3,new Object[]{
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 64L),
-                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
-                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
-                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
-                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 4L},
                     ItemList.Energy_Cluster.get(8L),
                     ItemList.Field_Generator_UV.get(2),
                     ItemList.Circuit_Wafer_HPIC.get(64),
@@ -956,11 +1072,9 @@ public class DreamCraftRecipeLoader implements Runnable {
             }, ItemList.ZPM2.get(1), 3000, 400000);
 
             TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.ZPM2.get(1L),24000,64,200000,6,new Object[]{
-                    GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 64L),
-                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
-                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
-                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
-                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
+                    GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 32L),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 32L),
+                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 4L},
                     ItemList.ZPM2.get(8),
                     ItemList.Field_Generator_UHV.get(4),
                     ItemList.Circuit_Wafer_UHPIC.get(64),

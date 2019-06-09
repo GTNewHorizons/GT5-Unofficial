@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.Vec3pos;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
@@ -9,8 +10,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElement
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationMessage;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationPacketDispatcher;
+import com.github.technus.tectech.loader.network.RotationMessage;
+import com.github.technus.tectech.loader.network.NetworkDispatcher;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -123,10 +124,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected boolean ePowerPass = false, eSafeVoid = false;
 
     //max amperes machine can take in after computing it to the lowest tier (exchange packets to min tier count)
-    protected long eMaxAmpereFlow = 0;
+    protected long eMaxAmpereFlow = 0,eMaxAmpereGen=0;
 
     //What is the max and minimal tier of eu hatches installed
-    private long maxEUinputMin = 0, maxEUinputMax = 0;
+    private long maxEUinputMin = 0, maxEUinputMax = 0,maxEUoutputMin = 0, maxEUoutputMax = 0;
 
     //read only unless you are making computation generator - read computer class
     protected long eAvailableData = 0; // data being available
@@ -440,9 +441,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.YELLOW+ ":" +
                 EnumChatFormatting.AQUA+paramID +
                 EnumChatFormatting.YELLOW+ ":"+
-                EnumChatFormatting.AQUA+"I");
+                EnumChatFormatting.AQUA+"I  "+parametrization.getStatusIn(hatchNo, paramID).name);
         list.add(EnumChatFormatting.WHITE+"Value: "+
-                EnumChatFormatting.AQUA+parametrization.getIn(hatchNo,paramID));
+                EnumChatFormatting.AQUA+ Util.doubleToString(parametrization.getIn(hatchNo,paramID)));
         try{
             list.add(parametrization.groups[hatchNo].parameterIn[paramID].getBrief());
         }catch (NullPointerException|IndexOutOfBoundsException e){
@@ -464,9 +465,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.YELLOW+ ":" +
                 EnumChatFormatting.AQUA+paramID +
                 EnumChatFormatting.YELLOW+ ":"+
-                EnumChatFormatting.AQUA+"O");
+                EnumChatFormatting.AQUA+"O "+parametrization.getStatusOut(hatchNo, paramID).name);
         list.add(EnumChatFormatting.WHITE+"Value: "+
-                EnumChatFormatting.AQUA+parametrization.getOut(hatchNo,paramID));
+                EnumChatFormatting.AQUA+Util.doubleToString(parametrization.getOut(hatchNo,paramID)));
         try{
             list.add(parametrization.groups[hatchNo].parameterOut[paramID].getBrief());
         }catch (NullPointerException|IndexOutOfBoundsException e){
@@ -819,7 +820,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-
+        aNBT.setLong("eMaxGenEUmin", maxEUoutputMin);
+        aNBT.setLong("eMaxGenEUmax", maxEUoutputMax);
+        aNBT.setLong("eGenRating", eMaxAmpereGen);
         aNBT.setLong("eMaxEUmin", maxEUinputMin);
         aNBT.setLong("eMaxEUmax", maxEUinputMax);
         aNBT.setLong("eRating", eAmpereFlow);
@@ -906,7 +909,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-
+        maxEUoutputMin = aNBT.getLong("eMaxGenEUmin");
+        maxEUoutputMax = aNBT.getLong("eMaxGenEUmax");
+        eMaxAmpereGen = aNBT.getLong("eGenRating");
         maxEUinputMin = aNBT.getLong("eMaxEUmin");
         maxEUinputMax = aNBT.getLong("eMaxEUmax");
         eAmpereFlow = aNBT.getLong("eRating");
@@ -1122,14 +1127,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         frontRotation = rotation;
         IGregTechTileEntity base=getBaseMetaTileEntity();
         if(base.isClientSide()) {
-            base.getWorld().markBlockRangeForRenderUpdate(base.getXCoord(), base.getYCoord(), base.getZCoord(), base.getXCoord(), base.getYCoord(), base.getZCoord());
+            base.issueTextureUpdate();
         }
     }
 
     protected final void updateRotationOnClients(){
         if(getBaseMetaTileEntity().isServerSide()){
             IGregTechTileEntity base=getBaseMetaTileEntity();
-            RotationPacketDispatcher.INSTANCE.sendToAllAround(new RotationMessage.RotationData(this),
+            NetworkDispatcher.INSTANCE.sendToAllAround(new RotationMessage.RotationData(this),
                     base.getWorld().provider.dimensionId,
                     base.getXCoord(),
                     base.getYCoord(),
@@ -1224,7 +1229,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
         if(getBaseMetaTileEntity().isClientSide()){
-            RotationPacketDispatcher.INSTANCE.sendToServer(new RotationMessage.RotationQuery(this));
+            NetworkDispatcher.INSTANCE.sendToServer(new RotationMessage.RotationQuery(this));
         }
         onFirstTick_EM(aBaseMetaTileEntity);
     }
@@ -1358,9 +1363,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         }
                     }
 
-                    if (!mEnergyHatches.isEmpty() || !eEnergyMulti.isEmpty()) {
+                    if (!mEnergyHatches.isEmpty() || !eEnergyMulti.isEmpty() || !mDynamoHatches.isEmpty() || !eDynamoMulti.isEmpty()) {
                         maxEUinputMin = V[15];
                         maxEUinputMax = V[0];
+                        maxEUoutputMin = V[15];
+                        maxEUoutputMax = V[0];
                         for (GT_MetaTileEntity_Hatch_Energy hatch : mEnergyHatches) {
                             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch)) {
                                 if (hatch.maxEUInput() < maxEUinputMin) {
@@ -1381,7 +1388,28 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                 }
                             }
                         }
+                        for (GT_MetaTileEntity_Hatch_Dynamo hatch : mDynamoHatches) {
+                            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch)) {
+                                if (hatch.maxEUOutput() < maxEUoutputMin) {
+                                    maxEUoutputMin = hatch.maxEUOutput();
+                                }
+                                if (hatch.maxEUOutput() > maxEUoutputMax) {
+                                    maxEUoutputMax = hatch.maxEUOutput();
+                                }
+                            }
+                        }
+                        for (GT_MetaTileEntity_Hatch_DynamoMulti hatch : eDynamoMulti) {
+                            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch)) {
+                                if (hatch.maxEUOutput() < maxEUoutputMin) {
+                                    maxEUoutputMin = hatch.maxEUOutput();
+                                }
+                                if (hatch.maxEUOutput() > maxEUoutputMax) {
+                                    maxEUoutputMax = hatch.maxEUOutput();
+                                }
+                            }
+                        }
                         eMaxAmpereFlow = 0;
+                        eMaxAmpereGen = 0;
                         //counts only full amps
                         for (GT_MetaTileEntity_Hatch_Energy hatch : mEnergyHatches) {
                             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch)) {
@@ -1393,6 +1421,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                 eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin * hatch.Amperes;
                             }
                         }
+                        for (GT_MetaTileEntity_Hatch_Dynamo hatch : mDynamoHatches) {
+                            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch)) {
+                                eMaxAmpereGen += hatch.maxEUOutput() / maxEUoutputMin;
+                            }
+                        }
+                        for (GT_MetaTileEntity_Hatch_DynamoMulti hatch : eDynamoMulti) {
+                            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch)) {
+                                eMaxAmpereGen += hatch.maxEUOutput() / maxEUoutputMin * hatch.Amperes;
+                            }
+                        }
                         if (getEUVar() > maxEUStore()) {
                             setEUVar(maxEUStore());
                         }
@@ -1400,6 +1438,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         maxEUinputMin = 0;
                         maxEUinputMax = 0;
                         eMaxAmpereFlow = 0;
+                        maxEUoutputMin = 0;
+                        maxEUoutputMax = 0;
+                        eMaxAmpereGen = 0;
                         setEUVar(0);
                     }
 
@@ -1689,7 +1730,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public long maxEUStore() {
-        return maxEUinputMin * eMaxAmpereFlow << 3;
+        return Math.max(maxEUinputMin * (eMaxAmpereFlow << 3),maxEUoutputMin*(eMaxAmpereGen << 3));
     }
 
     @Override

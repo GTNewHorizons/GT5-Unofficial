@@ -10,7 +10,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
  */
 public class GT_MetaTileEntity_Hatch_InputElemental extends GT_MetaTileEntity_Hatch_ElementalContainer {
     public GT_MetaTileEntity_Hatch_InputElemental(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Elemental Input for Multiblocks (" + 1000 * aTier * (aTier - 7) + "U, " + aTier * 2 + " stacks)");
+        super(aID, aName, aNameRegional, aTier, "Elemental Input for Multiblocks");
         Util.setTier(aTier,this);
     }
 

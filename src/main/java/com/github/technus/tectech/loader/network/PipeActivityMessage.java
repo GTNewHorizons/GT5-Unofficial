@@ -1,7 +1,6 @@
-package com.github.technus.tectech.thing.metaTileEntity.multi.base.network;
+package com.github.technus.tectech.loader.network;
 
-import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.pipe.IActivePipe;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -16,31 +15,31 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
-public class RotationMessage implements IMessage {
+public class PipeActivityMessage implements IMessage {
     int mPosX;
     int mPosY;
     int mPosZ;
     int mPosD;
-    int mRotF;
+    int mActive;
 
-    public RotationMessage() {
+    public PipeActivityMessage() {
     }
 
-    private RotationMessage(GT_MetaTileEntity_MultiblockBase_EM metaTile) {
+    private PipeActivityMessage(IActivePipe metaTile) {
         IGregTechTileEntity base=metaTile.getBaseMetaTileEntity();
         mPosX=base.getXCoord();
         mPosY=base.getYCoord();
         mPosZ=base.getZCoord();
         mPosD=base.getWorld().provider.dimensionId;
-        mRotF=metaTile.getFrontRotation();
+        mActive=metaTile.getActive()?1:0;
     }
 
-    private RotationMessage(World world, int x,int y,int z, IFrontRotation front) {
+    private PipeActivityMessage(World world, int x, int y, int z, boolean active) {
         mPosX=x;
         mPosY=y;
         mPosZ=z;
         mPosD=world.provider.dimensionId;
-        mRotF=front.getFrontRotation();
+        mActive=active?1:0;
     }
 
     @Override
@@ -50,7 +49,7 @@ public class RotationMessage implements IMessage {
         mPosY = tTag.getInteger("posy");
         mPosZ = tTag.getInteger("posz");
         mPosD = tTag.getInteger("posd");
-        mRotF = tTag.getInteger("rotf");
+        mActive = tTag.getInteger("active");
     }
 
     @Override
@@ -60,78 +59,73 @@ public class RotationMessage implements IMessage {
         tFXTag.setInteger("posy", mPosY);
         tFXTag.setInteger("posz", mPosZ);
         tFXTag.setInteger("posd", mPosD);
-        tFXTag.setInteger("rotf", mRotF);
+        tFXTag.setInteger("active", mActive);
 
         ByteBufUtils.writeTag(pBuffer, tFXTag);
     }
 
-    public static class RotationQuery extends RotationMessage{
-        public RotationQuery() {
+    public static class PipeActivityQuery extends PipeActivityMessage {
+        public PipeActivityQuery() {
         }
 
-        public RotationQuery(GT_MetaTileEntity_MultiblockBase_EM metaTile) {
+        public PipeActivityQuery(IActivePipe metaTile) {
             super(metaTile);
         }
 
-        public RotationQuery(World world, int x,int y,int z, IFrontRotation front) {
-            super(world,x,y,z,front);
+        public PipeActivityQuery(World world, int x,int y,int z, boolean active) {
+            super(world,x,y,z,active);
         }
     }
 
-    public static class RotationData extends RotationMessage{
-        public RotationData() {
+    public static class PipeActivityData extends PipeActivityMessage {
+        public PipeActivityData() {
         }
 
-        private RotationData(RotationQuery query){
+        private PipeActivityData(PipeActivityQuery query){
             mPosX=query.mPosX;
             mPosY=query.mPosY;
             mPosZ=query.mPosZ;
             mPosD=query.mPosD;
-            mRotF=query.mRotF;
+            mActive=query.mActive;
         }
 
-        public RotationData(GT_MetaTileEntity_MultiblockBase_EM metaTile) {
+        public PipeActivityData(IActivePipe metaTile) {
             super(metaTile);
         }
 
-        public RotationData(World world, int x,int y,int z, IFrontRotation front) {
-            super(world,x,y,z,front);
+        public PipeActivityData(World world, int x,int y,int z, boolean active) {
+            super(world,x,y,z,active);
         }
     }
 
-    public static class ClientHandler extends AbstractClientMessageHandler<RotationData> {
+    public static class ClientHandler extends AbstractClientMessageHandler<PipeActivityData> {
         @Override
-        public IMessage handleClientMessage(EntityPlayer pPlayer, RotationData pMessage, MessageContext pCtx) {
+        public IMessage handleClientMessage(EntityPlayer pPlayer, PipeActivityData pMessage, MessageContext pCtx) {
             if(pPlayer.worldObj.provider.dimensionId==pMessage.mPosD){
                 TileEntity te=pPlayer.worldObj.getTileEntity(pMessage.mPosX,pMessage.mPosY,pMessage.mPosZ);
                 if(te instanceof IGregTechTileEntity){
                     IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if(meta instanceof IFrontRotation){
-                        ((IFrontRotation) meta).forceSetRotationDoRender((byte)pMessage.mRotF);
+                    if(meta instanceof IActivePipe){
+                        ((IActivePipe) meta).setActive((byte)pMessage.mActive==1);
                     }
-                }else if (te instanceof IFrontRotation){
-                    ((IFrontRotation) te).forceSetRotationDoRender((byte)pMessage.mRotF);
                 }
             }
             return null;
         }
     }
 
-    public static class ServerHandler extends AbstractServerMessageHandler<RotationQuery> {
+    public static class ServerHandler extends AbstractServerMessageHandler<PipeActivityQuery> {
         @Override
-        public IMessage handleServerMessage(EntityPlayer pPlayer, RotationQuery pMessage, MessageContext pCtx) {
+        public IMessage handleServerMessage(EntityPlayer pPlayer, PipeActivityQuery pMessage, MessageContext pCtx) {
             World world= DimensionManager.getWorld(pMessage.mPosD);
             if(world!=null) {
                 TileEntity te = world.getTileEntity(pMessage.mPosX, pMessage.mPosY, pMessage.mPosZ);
                 if (te instanceof IGregTechTileEntity) {
                     IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if (meta instanceof IFrontRotation) {
-                        pMessage.mRotF=((IFrontRotation) meta).getFrontRotation();
-                        return new RotationData(pMessage);
+                    if (meta instanceof IActivePipe) {
+                        pMessage.mActive=((IActivePipe) meta).getActive()?1:0;
+                        return new PipeActivityData(pMessage);
                     }
-                } else if (te instanceof IFrontRotation) {
-                    pMessage.mRotF=((IFrontRotation) te).getFrontRotation();
-                    return new RotationData(pMessage);
                 }
             }
             return null;

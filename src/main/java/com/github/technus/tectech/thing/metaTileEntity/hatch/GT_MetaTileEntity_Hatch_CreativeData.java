@@ -11,22 +11,24 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.nbt.NBTTagCompound;
 
+import static com.github.technus.tectech.CommonValues.MOVE_AT;
+
 /**
  * Created by danie_000 on 27.10.2016.
  */
-public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_DataConnector<QuantumDataPacket> {
-    public GT_MetaTileEntity_Hatch_OutputData(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Quantum Data Output for Multiblocks");
+public class GT_MetaTileEntity_Hatch_CreativeData extends GT_MetaTileEntity_Hatch_DataConnector<QuantumDataPacket> {
+    public GT_MetaTileEntity_Hatch_CreativeData(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, "Quantum Data Output");
         Util.setTier(aTier,this);
     }
 
-    public GT_MetaTileEntity_Hatch_OutputData(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_CreativeData(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_OutputData(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_CreativeData(mName, mTier, mDescription, mTextures);
     }
 
     @Override
@@ -86,7 +88,7 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
             return null;
         }
         IMetaTileEntity meta = next.getMetaTileEntity();
-        if (meta instanceof GT_MetaTileEntity_Pipe_Data){
+        if (meta instanceof GT_MetaTileEntity_Pipe_Data) {
             ((GT_MetaTileEntity_Pipe_Data) meta).markUsed();
             return (IConnectsToDataPipe) meta;
         }else if (meta instanceof GT_MetaTileEntity_Hatch_InputData &&
@@ -95,5 +97,21 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
             return (IConnectsToDataPipe) meta;
         }
         return null;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (MOVE_AT == aTick % 20) {
+                if (aBaseMetaTileEntity.isAllowedToWork()) {
+                    getBaseMetaTileEntity().setActive(true);
+                    if(q==null) q=new QuantumDataPacket(0xFFFFFFFFL);
+                    moveAround(aBaseMetaTileEntity);
+                } else {
+                    q=null;
+                    getBaseMetaTileEntity().setActive(false);
+                }
+            }
+        }
     }
 }

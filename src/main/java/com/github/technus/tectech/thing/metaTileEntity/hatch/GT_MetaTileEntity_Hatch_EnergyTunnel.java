@@ -6,56 +6,46 @@ import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToEnergyTun
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.CommonValues.TRANSFER_AT;
 import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT;
 
 /**
  * Created by danie_000 on 16.12.2016.
  */
-public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatch implements IConnectsToEnergyTunnel {
-    public final int Amperes;
-    private final long upkeep;
-    private long packetsCount=0;
-
+public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatch_EnergyMulti implements IConnectsToEnergyTunnel {
     public GT_MetaTileEntity_Hatch_EnergyTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(aID, aName, aNameRegional, aTier, 0, "Energy injecting terminal for Multiblocks");
-        Amperes = aAmp;
+        super(aID, aName, aNameRegional, aTier, 0, "Energy injecting terminal for Multiblocks",aAmp);
         Util.setTier(aTier,this);
-        upkeep=Math.max(V[mTier]/Amperes,V[4]);
     }
 
-    public GT_MetaTileEntity_Hatch_EnergyTunnel(String aName, int aTier, int aAmp, long aUpkeep, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
-        Amperes = aAmp;
-        this.upkeep=aUpkeep;
+    public GT_MetaTileEntity_Hatch_EnergyTunnel(String aName, int aTier, int aAmp, String aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, aAmp, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_POWER_TT[mTier]};
+        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_LASER_TT[mTier]};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_POWER_TT[mTier]};
+        return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_LASER_TT[mTier]};
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        packetsCount=aNBT.getLong("ePackets");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setLong("ePackets",packetsCount);
     }
 
     @Override
@@ -105,7 +95,7 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_EnergyTunnel(mName, mTier, Amperes, upkeep, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_EnergyTunnel(mName, mTier, Amperes, mDescription, mTextures);
     }
 
     @Override
@@ -123,6 +113,7 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
                 mDescription,
+                "Throughput: "+ EnumChatFormatting.YELLOW +(Amperes*maxEUInput())+EnumChatFormatting.RESET+" EU/t"
         };
     }
 
@@ -136,35 +127,13 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
         if (aBaseMetaTileEntity.isServerSide()) {
             byte Tick = (byte) (aTick % 20);
             if (TRANSFER_AT == Tick) {
-                if(packetsCount>0){
-                    long diff=(maxEUStore()-aBaseMetaTileEntity.getStoredEU())/maxEUInput();
-                    if(diff>0) {
-                        setEUVar(aBaseMetaTileEntity.getStoredEU() + takePackets(diff) * maxEUInput());
-                    }
-                }
                 if(aBaseMetaTileEntity.getStoredEU()>0){
-                    setEUVar(aBaseMetaTileEntity.getStoredEU()-upkeep);
+                    setEUVar(aBaseMetaTileEntity.getStoredEU()-Amperes);
                     if(aBaseMetaTileEntity.getStoredEU()<0){
                         setEUVar(0);
                     }
                 }
-                getBaseMetaTileEntity().setActive(packetsCount>0);
             }
-        }
-    }
-
-    public void addPackets(long count){
-        packetsCount+=count;
-    }
-
-    public long takePackets(long count){
-        if(packetsCount>count){
-            packetsCount-=count;
-            return count;
-        }else {
-            count=packetsCount;
-            packetsCount=0;
-            return count;
         }
     }
 }

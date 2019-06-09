@@ -1,15 +1,17 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
+import net.minecraft.util.EnumChatFormatting;
+
 public enum LedStatus {
-    STATUS_UNUSED("Unused",true),
-    STATUS_TOO_LOW("Too Low",false),
-    STATUS_LOW("Low",true),
-    STATUS_WRONG("Wrong",false),
-    STATUS_OK("Valid",true),
-    STATUS_TOO_HIGH("Too High",false),
-    STATUS_HIGH("High",true),
-    STATUS_UNDEFINED("Unknown",false),
-    STATUS_NEUTRAL("Neutral",true);
+    STATUS_UNUSED(EnumChatFormatting.DARK_GRAY +"Unused",true),//
+    STATUS_TOO_LOW(EnumChatFormatting.BLUE+"Too Low",false),//
+    STATUS_LOW(EnumChatFormatting.AQUA+"Low",true),//
+    STATUS_WRONG(EnumChatFormatting.DARK_PURPLE+"Wrong",false),//
+    STATUS_OK(EnumChatFormatting.GREEN+"Valid",true),//
+    STATUS_TOO_HIGH(EnumChatFormatting.RED+"Too High",false),//
+    STATUS_HIGH(EnumChatFormatting.GOLD+"High",true),//
+    STATUS_UNDEFINED(EnumChatFormatting.GRAY+"Unknown",false),
+    STATUS_NEUTRAL(EnumChatFormatting.WHITE+"Neutral",true);//
 
     public final String name;
     public final boolean isOk;

@@ -28,6 +28,14 @@ public class Parameters {
         return iParamsOut[hatchNo+10*parameterId];
     }
 
+    LedStatus getStatusIn(int hatchNo,int parameterId){
+        return eParamsInStatus[hatchNo+10*parameterId];
+    }
+
+    LedStatus getStatusOut(int hatchNo,int parameterId){
+        return eParamsOutStatus[hatchNo+10*parameterId];
+    }
+
     private final GT_MetaTileEntity_MultiblockBase_EM parent;
 
     Parameters(GT_MetaTileEntity_MultiblockBase_EM parent){
@@ -157,12 +165,12 @@ public class Parameters {
                 if (this.parameterOut[0] != null) {
                     this.parameterOut[0].setDefault();
                 } else {
-                    iParamsIn[hatchNo] = 0;
+                    iParamsOut[hatchNo] = 0;
                 }
                 if (this.parameterOut[1] != null) {
                     this.parameterOut[1].setDefault();
                 } else {
-                    iParamsIn[hatchNo + 10] = 0;
+                    iParamsOut[hatchNo + 10] = 0;
                 }
             }
         }
@@ -259,7 +267,7 @@ public class Parameters {
                 if(paramID<0 || paramID>2){
                     throw new IllegalArgumentException("Parameter id must be in 0 to 1 range");
                 }
-                if(parameterOut[paramID]!=null){
+                if(parameterIn[paramID]!=null){
                     throw new IllegalArgumentException("Parameter id already occupied");
                 }
                 this.defaultValue=defaultValue;

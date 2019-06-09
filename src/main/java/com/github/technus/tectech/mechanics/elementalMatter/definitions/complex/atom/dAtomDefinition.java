@@ -1652,7 +1652,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         }
         if(iaeaDefinitionExistsAndHasEnergyLevels && Util.areBitsSet(SCAN_GET_ENERGY_STATES,capabilities)){
             for(int i=1;i<iaea.energeticStatesArray.length;i++){
-                lines.add("ENERGY LEVEL "+i+" = "+iaea.energeticStatesArray[i].energy+" eV");
+                lines.add("E LEVEL "+i+" = "+iaea.energeticStatesArray[i].energy+" eV");
             }
         }
         if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){

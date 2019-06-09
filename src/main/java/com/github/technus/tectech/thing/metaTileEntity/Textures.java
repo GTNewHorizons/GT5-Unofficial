@@ -10,26 +10,28 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class Textures {
-    private static IIconContainer OVERLAY_ENERGY_IN_POWER = new CustomIcon("iconsets/OVERLAY_ENERGY_IN_POWER");
-    private static IIconContainer OVERLAY_ENERGY_OUT_POWER = new CustomIcon("iconsets/OVERLAY_ENERGY_OUT_POWER");
-    private static IIconContainer MACHINE_UEV_SIDE = new CustomIcon("iconsets/MACHINE_UEV_SIDE");
-    private static IIconContainer MACHINE_UIV_SIDE = new CustomIcon("iconsets/MACHINE_UIV_SIDE");
-    private static IIconContainer MACHINE_UMV_SIDE = new CustomIcon("iconsets/MACHINE_UMV_SIDE");
-    private static IIconContainer MACHINE_UXV_SIDE = new CustomIcon("iconsets/MACHINE_UXV_SIDE");
-    private static IIconContainer MACHINE_OPV_SIDE = new CustomIcon("iconsets/MACHINE_OPV_SIDE");
-    private static IIconContainer MACHINE_MAXV_SIDE = new CustomIcon("iconsets/MACHINE_MAXV_SIDE");
-    private static IIconContainer MACHINE_UEV_TOP = new CustomIcon("iconsets/MACHINE_UEV_TOP");
-    private static IIconContainer MACHINE_UIV_TOP = new CustomIcon("iconsets/MACHINE_UIV_TOP");
-    private static IIconContainer MACHINE_UMV_TOP = new CustomIcon("iconsets/MACHINE_UMV_TOP");
-    private static IIconContainer MACHINE_UXV_TOP = new CustomIcon("iconsets/MACHINE_UXV_TOP");
-    private static IIconContainer MACHINE_OPV_TOP = new CustomIcon("iconsets/MACHINE_OPV_TOP");
-    private static IIconContainer MACHINE_MAXV_TOP = new CustomIcon("iconsets/MACHINE_MAXV_TOP");
-    private static IIconContainer MACHINE_UEV_BOTTOM = new CustomIcon("iconsets/MACHINE_UEV_BOTTOM");
-    private static IIconContainer MACHINE_UIV_BOTTOM = new CustomIcon("iconsets/MACHINE_UIV_BOTTOM");
-    private static IIconContainer MACHINE_UMV_BOTTOM = new CustomIcon("iconsets/MACHINE_UMV_BOTTOM");
-    private static IIconContainer MACHINE_UXV_BOTTOM = new CustomIcon("iconsets/MACHINE_UXV_BOTTOM");
-    private static IIconContainer MACHINE_OPV_BOTTOM = new CustomIcon("iconsets/MACHINE_OPV_BOTTOM");
-    private static IIconContainer MACHINE_MAXV_BOTTOM = new CustomIcon("iconsets/MACHINE_MAXV_BOTTOM");
+    private static final IIconContainer OVERLAY_ENERGY_IN_POWER = new CustomIcon("iconsets/OVERLAY_ENERGY_IN_POWER");
+    private static final IIconContainer OVERLAY_ENERGY_OUT_POWER = new CustomIcon("iconsets/OVERLAY_ENERGY_OUT_POWER");
+    private static final IIconContainer OVERLAY_ENERGY_IN_LASER = new CustomIcon("iconsets/OVERLAY_ENERGY_IN_LASER");
+    private static final IIconContainer OVERLAY_ENERGY_OUT_LASER = new CustomIcon("iconsets/OVERLAY_ENERGY_OUT_LASER");
+    private static final IIconContainer MACHINE_UEV_SIDE = new CustomIcon("iconsets/MACHINE_UEV_SIDE");
+    private static final IIconContainer MACHINE_UIV_SIDE = new CustomIcon("iconsets/MACHINE_UIV_SIDE");
+    private static final IIconContainer MACHINE_UMV_SIDE = new CustomIcon("iconsets/MACHINE_UMV_SIDE");
+    private static final IIconContainer MACHINE_UXV_SIDE = new CustomIcon("iconsets/MACHINE_UXV_SIDE");
+    private static final IIconContainer MACHINE_OPV_SIDE = new CustomIcon("iconsets/MACHINE_OPV_SIDE");
+    private static final IIconContainer MACHINE_MAXV_SIDE = new CustomIcon("iconsets/MACHINE_MAXV_SIDE");
+    private static final IIconContainer MACHINE_UEV_TOP = new CustomIcon("iconsets/MACHINE_UEV_TOP");
+    private static final IIconContainer MACHINE_UIV_TOP = new CustomIcon("iconsets/MACHINE_UIV_TOP");
+    private static final IIconContainer MACHINE_UMV_TOP = new CustomIcon("iconsets/MACHINE_UMV_TOP");
+    private static final IIconContainer MACHINE_UXV_TOP = new CustomIcon("iconsets/MACHINE_UXV_TOP");
+    private static final IIconContainer MACHINE_OPV_TOP = new CustomIcon("iconsets/MACHINE_OPV_TOP");
+    private static final IIconContainer MACHINE_MAXV_TOP = new CustomIcon("iconsets/MACHINE_MAXV_TOP");
+    private static final IIconContainer MACHINE_UEV_BOTTOM = new CustomIcon("iconsets/MACHINE_UEV_BOTTOM");
+    private static final IIconContainer MACHINE_UIV_BOTTOM = new CustomIcon("iconsets/MACHINE_UIV_BOTTOM");
+    private static final IIconContainer MACHINE_UMV_BOTTOM = new CustomIcon("iconsets/MACHINE_UMV_BOTTOM");
+    private static final IIconContainer MACHINE_UXV_BOTTOM = new CustomIcon("iconsets/MACHINE_UXV_BOTTOM");
+    private static final IIconContainer MACHINE_OPV_BOTTOM = new CustomIcon("iconsets/MACHINE_OPV_BOTTOM");
+    private static final IIconContainer MACHINE_MAXV_BOTTOM = new CustomIcon("iconsets/MACHINE_MAXV_BOTTOM");
 
     public static IIconContainer[] MACHINECASINGS_SIDE_TT = new IIconContainer[]{
             MACHINE_8V_SIDE, MACHINE_LV_SIDE, MACHINE_MV_SIDE, MACHINE_HV_SIDE,
@@ -149,6 +151,40 @@ public class Textures {
             new GT_RenderedTexture(OVERLAY_ENERGY_OUT_POWER, new short[]{80, 80, 245, 0}),
             new GT_RenderedTexture(OVERLAY_ENERGY_OUT_POWER, new short[]{60, 60, 245, 0}),
             new GT_RenderedTexture(OVERLAY_ENERGY_OUT_POWER, new short[]{40, 40, 245, 0}),
+    }, OVERLAYS_ENERGY_IN_LASER_TT = new ITexture[]{
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{180, 180, 180, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{220, 220, 220, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{255, 100, 0, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{255, 255, 30, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{128, 128, 128, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{240, 240, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{220, 220, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{200, 200, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{180, 180, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{160, 160, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{140, 140, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{120, 120, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{100, 100, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{80, 80, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{60, 60, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[]{40, 40, 245, 0}),
+    }, OVERLAYS_ENERGY_OUT_LASER_TT = new ITexture[]{
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{180, 180, 180, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{220, 220, 220, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{255, 100, 0, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{255, 255, 30, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{128, 128, 128, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{240, 240, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{220, 220, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{200, 200, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{180, 180, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{160, 160, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{140, 140, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{120, 120, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{100, 100, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{80, 80, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{60, 60, 245, 0}),
+            new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[]{40, 40, 245, 0}),
     };
 
     public static ITexture[][] MACHINE_CASINGS_TT = new ITexture[16][17];
