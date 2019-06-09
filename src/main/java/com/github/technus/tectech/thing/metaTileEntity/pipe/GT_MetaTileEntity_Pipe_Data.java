@@ -2,8 +2,8 @@ package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.PipeActivityMessage;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.PipeActivityPacketDispatcher;
+import com.github.technus.tectech.loader.network.PipeActivityMessage;
+import com.github.technus.tectech.loader.network.NetworkDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -109,7 +109,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if(getBaseMetaTileEntity().isClientSide()){
-            PipeActivityPacketDispatcher.INSTANCE.sendToServer(new PipeActivityMessage.PipeActivityQuery(this));
+            NetworkDispatcher.INSTANCE.sendToServer(new PipeActivityMessage.PipeActivityQuery(this));
         }
         onPostTick(aBaseMetaTileEntity, 31);
     }
@@ -120,7 +120,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
             if ((aTick & 31) == 31) {
                 if(active){
                     if(TecTech.RANDOM.nextInt(15)==0) {
-                        PipeActivityPacketDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
                                 aBaseMetaTileEntity.getWorld().provider.dimensionId,
                                 aBaseMetaTileEntity.getXCoord(),
                                 aBaseMetaTileEntity.getYCoord(),
@@ -130,7 +130,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
                     active=false;
                 }else if(getActive()){
                     if(TecTech.RANDOM.nextInt(15)==0) {
-                        PipeActivityPacketDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
                                 aBaseMetaTileEntity.getWorld().provider.dimensionId,
                                 aBaseMetaTileEntity.getXCoord(),
                                 aBaseMetaTileEntity.getYCoord(),

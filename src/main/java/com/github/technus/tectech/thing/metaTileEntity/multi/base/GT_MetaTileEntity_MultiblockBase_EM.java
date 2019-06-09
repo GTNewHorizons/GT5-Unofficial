@@ -10,8 +10,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElement
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationMessage;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationPacketDispatcher;
+import com.github.technus.tectech.loader.network.RotationMessage;
+import com.github.technus.tectech.loader.network.NetworkDispatcher;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -1127,14 +1127,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         frontRotation = rotation;
         IGregTechTileEntity base=getBaseMetaTileEntity();
         if(base.isClientSide()) {
-            base.getWorld().markBlockRangeForRenderUpdate(base.getXCoord(), base.getYCoord(), base.getZCoord(), base.getXCoord(), base.getYCoord(), base.getZCoord());
+            base.issueTextureUpdate();
         }
     }
 
     protected final void updateRotationOnClients(){
         if(getBaseMetaTileEntity().isServerSide()){
             IGregTechTileEntity base=getBaseMetaTileEntity();
-            RotationPacketDispatcher.INSTANCE.sendToAllAround(new RotationMessage.RotationData(this),
+            NetworkDispatcher.INSTANCE.sendToAllAround(new RotationMessage.RotationData(this),
                     base.getWorld().provider.dimensionId,
                     base.getXCoord(),
                     base.getYCoord(),
@@ -1229,7 +1229,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
         if(getBaseMetaTileEntity().isClientSide()){
-            RotationPacketDispatcher.INSTANCE.sendToServer(new RotationMessage.RotationQuery(this));
+            NetworkDispatcher.INSTANCE.sendToServer(new RotationMessage.RotationQuery(this));
         }
         onFirstTick_EM(aBaseMetaTileEntity);
     }

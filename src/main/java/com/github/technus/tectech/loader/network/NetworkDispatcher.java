@@ -1,13 +1,11 @@
-package com.github.technus.tectech.thing.metaTileEntity.multi.base.network;
-
-import eu.usrv.yamcore.network.PacketDispatcher;
+package com.github.technus.tectech.loader.network;
 
 import static com.github.technus.tectech.Reference.MODID;
 
-public class PipeActivityPacketDispatcher extends PacketDispatcher {
-    public static PipeActivityPacketDispatcher INSTANCE;
+public class NetworkDispatcher extends eu.usrv.yamcore.network.PacketDispatcher {
+    public static NetworkDispatcher INSTANCE;
 
-    public PipeActivityPacketDispatcher() {
+    public NetworkDispatcher() {
         super(MODID);
         INSTANCE = this;
         registerPackets();
@@ -17,5 +15,7 @@ public class PipeActivityPacketDispatcher extends PacketDispatcher {
     public void registerPackets() {
         registerMessage(PipeActivityMessage.ServerHandler.class, PipeActivityMessage.PipeActivityQuery.class);
         registerMessage(PipeActivityMessage.ClientHandler.class, PipeActivityMessage.PipeActivityData.class);
+        registerMessage(RotationMessage.ServerHandler.class, RotationMessage.RotationQuery.class);
+        registerMessage(RotationMessage.ClientHandler.class, RotationMessage.RotationData.class);
     }
 }

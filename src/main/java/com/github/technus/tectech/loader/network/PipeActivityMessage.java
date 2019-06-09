@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.metaTileEntity.multi.base.network;
+package com.github.technus.tectech.loader.network;
 
 import com.github.technus.tectech.thing.metaTileEntity.pipe.IActivePipe;
 import cpw.mods.fml.common.network.ByteBufUtils;

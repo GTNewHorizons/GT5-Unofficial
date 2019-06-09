@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.metaTileEntity.multi.base.network;
+package com.github.technus.tectech.loader.network;
 
 import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
