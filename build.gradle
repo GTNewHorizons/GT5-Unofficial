@@ -33,7 +33,7 @@ file "build.properties" withReader {
 }
 
 version = "${config.minecraft.version}-${config.tectech.version}"
-group= "com.github.technus"
+group = "com.github.technus"
 archivesBaseName = "TecTech"
 
 minecraft {
@@ -108,7 +108,7 @@ processResources
                 include 'mcmod.info'
 
                 // replace version and mcversion
-                expand 'version':cleanVersion, 'mcversion':project.minecraft.version
+                expand 'version': cleanVersion, 'mcversion': project.minecraft.version
             }
 
             // copy everything else, thats not the mcmod.info
@@ -117,7 +117,7 @@ processResources
             }
         }
 
-task signJar(dependsOn: 'reobf'){
+task signJar(dependsOn: 'reobf') {
     doLast {
         ant.signjar(
                 destDir: jar.destinationDir,
