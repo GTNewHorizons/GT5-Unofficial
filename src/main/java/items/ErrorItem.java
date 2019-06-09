@@ -1,8 +1,9 @@
-package kekztech;
+package items;
 
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import kekztech.KekzCore;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

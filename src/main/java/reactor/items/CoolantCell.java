@@ -1,8 +1,8 @@
 package reactor.items;
 
+import items.MetaItem_ReactorComponent;
 import kekztech.GTRecipe;
 import kekztech.Items;
-import kekztech.MetaItem_ReactorComponent;
 
 public class CoolantCell {
 	

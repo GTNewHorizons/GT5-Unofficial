@@ -1,4 +1,4 @@
-package reactor;
+package container;
 
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -6,6 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import reactor.ButtonSlot;
+import tileentities.GTMTE_ModularNuclearReactor;
 
 public class Container_ModularNuclearReactor extends GT_Container_MultiMachine {
 

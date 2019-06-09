@@ -17,6 +17,11 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+/**
+ * Only purpose of this class is to make me learn about GT multis :)
+ * @author Kekzdealer
+ *
+ */
 public abstract class GTMultiController {
 	
 	private final GTRecipe GT_RECIPE = new GTRecipe();

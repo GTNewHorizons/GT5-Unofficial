@@ -23,12 +23,17 @@ public enum Items {
 	T1NeutronReflector(46), T2NeutronReflector(47),
 	// Coolant Cells
 	HeliumCoolantCell360k(48), NaKCoolantCell360k(49),
+	
 	// Heat Pipes
 	CopperHeatPipe(0), SilverHeatPipe(1), BoronArsenideHeatPipe(2), DiamondHeatPipe(3),
 	BoronArsenideDust(4), IsotopicallyPureDiamondDust(5), AmineCarbamiteDust(6), 
 	BoronArsenideCrystal(7), IsotopicallyPureDiamondCrystal(8),
+	// Ceramics
+	YSZCeramicDust(9), GDCCeramicDust(10),
+	YttriaDust(11), ZirconiaDust(12), CeriaDust(13),
+	YSZCeramicPlate(14), GDCCeramicPlate(15),
 	// Error Item
-	Error(9);
+	Error(0);
 	
 	private final int metaID;
 	

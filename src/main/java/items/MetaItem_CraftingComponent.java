@@ -1,15 +1,15 @@
-package kekztech;
+package items;
 
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import kekztech.KekzCore;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import reactor.items.HeatPipe;
 
 public class MetaItem_CraftingComponent extends Item {
 	
@@ -37,10 +37,10 @@ public class MetaItem_CraftingComponent extends Item {
 	public void registerIcons(IIconRegister reg) {
 		int counter = 0;
 		// Raw heat pipes
-		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + HeatPipe.RESOURCE_NAMES[0]);
-		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + HeatPipe.RESOURCE_NAMES[1]);
-		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + HeatPipe.RESOURCE_NAMES[2]);
-		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + HeatPipe.RESOURCE_NAMES[3]);
+		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "CopperHeatPipe");
+		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "SilverHeatPipe");
+		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "BoronArsenideHeatPipe");
+		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "DiamondHeatPipe");
 		// Dust
 		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "BoronArsenideDust");
 		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "IsotopicallyPureDiamondDust");

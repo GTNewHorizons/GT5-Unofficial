@@ -1,6 +1,12 @@
-package fuelcell;
+package tileentities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+import blocks.Block_GDCUnit;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -8,17 +14,25 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import reactor.GUIContainer_ModularNuclearReactor;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 	
 	final Block CASING = GregTech_API.sBlockCasings4;
 	final int CASING_META = 0;
 	final int CASING_TEXTURE_ID = 48;
+	
+	private final int OXYGEN_PER_TICK = 100;
+	private final int EU_PER_TICK = 24576; // 100% Efficiency, 3A IV
+	private final int STEAM_PER_TICK = 4800; // SH Steam (10,800EU/t @ 150% Efficiency) 
 	
 	public GTMTE_SOFuelCellMK2(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -39,9 +53,10 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[] { 
 				"Oxidizes gas fuels to generate electricity without polluting the environment",
-				"375,680EU worth of fuel are consumed each second",
-				"Outputs 16,384EU/t and 96,000L/s Steam",
-				"Additionally requires 1920L/s Oxygen gas",
+				"Consumes 442,200EU worth of fuel with up to 160% efficiency each second",
+				"Steam production requires the SOFC to heat up completely first",
+				"Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_TICK + "L/t Superheated Steam",
+				"Additionally requires " + OXYGEN_PER_TICK + "L/t Oxygen gas",
 				"------------------------------------------",
 				"Dimensions: 3x3x5 (WxHxL)",
 				"Structure:",
@@ -53,7 +68,6 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 				};	
 	}
 	
-	//TODO
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
@@ -65,10 +79,9 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 				: new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID]};
 	}
 	
-	//TODO
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
-				"LargeTurbine.png");
+				"MultiblockDisplay.png");
 	}
 	
 	@Override
@@ -78,13 +91,55 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(ItemStack stack) {
+		final ArrayList<FluidStack> storedFluids = super.getStoredFluids();
+		Collection<GT_Recipe> recipeList = GT_Recipe_Map.sTurbineFuels.mRecipeList;
+		
+		if((storedFluids.size() > 0 && recipeList != null)) {
+						
+			final Iterator<FluidStack> fluidsIterator = storedFluids.iterator();
+			while(fluidsIterator.hasNext()) {
+				
+				final FluidStack hatchFluid = fluidsIterator.next();
+				final Iterator<GT_Recipe> recipeIterator = recipeList.iterator();
+				while(recipeIterator.hasNext()) {
+					
+					final GT_Recipe aFuel = recipeIterator.next();
+					FluidStack liquid;
+					if((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
+							&& hatchFluid.isFluidEqual(liquid)) {
+						
+						liquid.amount = EU_PER_TICK / aFuel.mSpecialValue;
+						
+						if(super.depleteInput(liquid)) {
+							
+							if(!super.depleteInput(Materials.Oxygen.getGas(OXYGEN_PER_TICK))) {
+								super.mEUt = 0;
+								super.mEfficiency = 0;
+								return false;
+							}
+							
+							super.mEUt = EU_PER_TICK;
+							super.mProgresstime = 1;
+							super.mMaxProgresstime = 1;
+							super.mEfficiencyIncrease = 20;
+							if(super.mEfficiency == getMaxEfficiency(null)) {
+								super.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", STEAM_PER_TICK));
+							}
+							return true;
+						}
+					}
+				}
+			}			
+		}
+		
+		super.mEUt = 0;
+		super.mEfficiency = 0;
 		return false;
 	}
 	
-	//TODO
 	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {		
-		
+
 		final int XDIR_BACKFACE = ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX;
 		final int ZDIR_BACKFACE = ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ;
 
@@ -99,7 +154,7 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 				}
 				// Get next TE
 				final int THIS_X = XDIR_BACKFACE + X;
-				final int THIS_Z = ZDIR_BACKFACE + 0;
+				final int THIS_Z = ZDIR_BACKFACE + -1;
 				IGregTechTileEntity currentTE = 
 						thisController.getIGregTechTileEntityOffset(THIS_X, Y, THIS_Z);// x, y ,z
 				
@@ -123,22 +178,24 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 		// Middle three slices
 		for(int X = -1; X <= 1; X++) {
 			for(int Y = -1; Y <= 1; Y++) {
-				for(int Z = 1; Z <= 3; Z++) {
+				for(int Z = 0; Z < 3; Z++) {
+					final int THIS_X = XDIR_BACKFACE + X;
+					final int THIS_Z = ZDIR_BACKFACE + Z;
 					if(X == 0 && Y == 0) {
-						if(!thisController.getBlockOffset(XDIR_BACKFACE, 0, ZDIR_BACKFACE * Z).getUnlocalizedName()
-								.equals("kekztech_yszceramicelectrolyteunit_block")) {
+						if(!thisController.getBlockOffset(THIS_X, 0, THIS_Z).getUnlocalizedName()
+								.equals(Block_GDCUnit.getInstance().getUnlocalizedName())) {
 							checklist = false;
 						}
+						continue;
 					}
 					if(Y == 0 && (X == -1 || X == 1)) {
-						if(!thisController.getBlockOffset(XDIR_BACKFACE, 0, ZDIR_BACKFACE * Z).getUnlocalizedName()
+						if(!thisController.getBlockOffset(THIS_X, 0, THIS_Z).getUnlocalizedName()
 								.equals("blockAlloyGlass")) {
 							checklist = false;
 						}
+						continue;
 					}
 					// Get next TE
-					final int THIS_X = XDIR_BACKFACE + X;
-					final int THIS_Z = ZDIR_BACKFACE + Z;
 					IGregTechTileEntity currentTE = 
 							thisController.getIGregTechTileEntityOffset(THIS_X, Y, THIS_Z);// x, y ,z
 					
@@ -165,7 +222,7 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 			for(int Y = -1; Y <= 1; Y++) {
 				// Get next TE
 				final int THIS_X = XDIR_BACKFACE + X;
-				final int THIS_Z = ZDIR_BACKFACE + 0;
+				final int THIS_Z = ZDIR_BACKFACE + 3;
 				IGregTechTileEntity currentTE = 
 						thisController.getIGregTechTileEntityOffset(THIS_X, Y, THIS_Z);// x, y ,z
 				

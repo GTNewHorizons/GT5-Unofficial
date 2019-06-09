@@ -1,4 +1,4 @@
-package reactor;
+package container;
 
 import org.lwjgl.opengl.GL11;
 

@@ -1,9 +1,9 @@
 package reactor.items;
 
+import items.MetaItem_CraftingComponent;
+import items.MetaItem_ReactorComponent;
 import kekztech.GTRecipe;
 import kekztech.Items;
-import kekztech.MetaItem_CraftingComponent;
-import kekztech.MetaItem_ReactorComponent;
 import kekztech.Util;
 import net.minecraftforge.fluids.FluidRegistry;
 

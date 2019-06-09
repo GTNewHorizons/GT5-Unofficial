@@ -1,6 +1,12 @@
-package fuelcell;
+package tileentities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+import blocks.Block_YSZUnit;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -8,17 +14,25 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import reactor.GUIContainer_ModularNuclearReactor;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 	
-	final Block CASING = GregTech_API.sBlockCasings4;
-	final int CASING_META = 1;
-	final int CASING_TEXTURE_ID = 49;
+	private final Block CASING = GregTech_API.sBlockCasings4;
+	private final int CASING_META = 1;
+	private final int CASING_TEXTURE_ID = 49;
+	
+	private final int OXYGEN_PER_TICK = 20;
+	private final int EU_PER_TICK = 1024;
+	private final int STEAM_PER_TICK = 900;
 	
 	public GTMTE_SOFuelCellMK1(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -39,21 +53,22 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[] { 
 				"Oxidizes gas fuels to generate electricity without polluting the environment",
-				"29,480EU worth of fuel are consumed each second",
-				"Outputs 1024EU/t and 18,000L/s Steam",
-				"Additionally requires 360L/s Oxygen gas",
+				"Consumes 29,480EU worth of fuel with up to 97% efficiency each second",
+				"Steam production requires the SOFC to heat up completely first",
+				"Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_TICK + "L/t Steam",
+				"Additionally requires " + OXYGEN_PER_TICK + "L/t Oxygen gas",
 				"------------------------------------------",
 				"Dimensions: 3x3x5 (WxHxL)",
 				"Structure:",
-				"   3x YSZ Ceramic Electrolyte Unit (center 1x1x3)",
+				"   Controller: Front center",
+				"   Dynamo Hatch: Back center",
+				"   3x YSZ Ceramic Electrolyte Unit: Center 1x1x3",
 				"   12x Clean Stainless Steel Machine Casing (at least)",
-				"   Controller front center",
-				"   Dynamo Hatch back center",
-				"   Maintenance Hatch, Input Hatches, Output Hatches"
+				"   6x Reinforced Glass: Touching the Electrolyte Units on the horizontal sides",
+				"   Maintenance Hatch, Input Hatches, Output Hatches: Instead of any casing"
 				};	
 	}
 	
-	//TODO
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
@@ -65,10 +80,9 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 				: new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID]};
 	}
 	
-	//TODO
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
-				"LargeTurbine.png");
+				"MultiblockDisplay.png");
 	}
 	
 	@Override
@@ -78,10 +92,52 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(ItemStack stack) {
+		final ArrayList<FluidStack> storedFluids = super.getStoredFluids();
+		Collection<GT_Recipe> recipeList = GT_Recipe_Map.sTurbineFuels.mRecipeList;
+		
+		if((storedFluids.size() > 0 && recipeList != null)) {
+						
+			final Iterator<FluidStack> fluidsIterator = storedFluids.iterator();
+			while(fluidsIterator.hasNext()) {
+				
+				final FluidStack hatchFluid = fluidsIterator.next();
+				final Iterator<GT_Recipe> recipeIterator = recipeList.iterator();
+				while(recipeIterator.hasNext()) {
+					
+					final GT_Recipe aFuel = recipeIterator.next();
+					FluidStack liquid;
+					if((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
+							&& hatchFluid.isFluidEqual(liquid)) {
+						
+						liquid.amount = EU_PER_TICK / aFuel.mSpecialValue;
+						
+						if(super.depleteInput(liquid)) {
+							
+							if(!super.depleteInput(Materials.Oxygen.getGas(OXYGEN_PER_TICK))) {
+								super.mEUt = 0;
+								super.mEfficiency = 0;
+								return false;
+							}
+							
+							super.mEUt = EU_PER_TICK;
+							super.mProgresstime = 1;
+							super.mMaxProgresstime = 1;
+							super.mEfficiencyIncrease = 5;
+							if(super.mEfficiency == getMaxEfficiency(null)) {
+								super.addOutput(GT_ModHandler.getSteam(STEAM_PER_TICK));
+							}
+							return true;
+						}
+					}
+				}
+			}			
+		}
+		
+		super.mEUt = 0;
+		super.mEfficiency = 0;
 		return false;
 	}
 	
-	//TODO
 	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {		
 		
@@ -119,7 +175,6 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 				}
 			}
 		}
-		System.out.println("Front slice status: " +checklist +" / casings left of 12: " +minCasingAmount);
 		
 		// Middle three slices
 		for(int X = -1; X <= 1; X++) {
@@ -129,17 +184,15 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 					final int THIS_Z = ZDIR_BACKFACE + Z;
 					if(X == 0 && Y == 0) {
 						if(!thisController.getBlockOffset(THIS_X, 0, THIS_Z).getUnlocalizedName()
-								.equals("kekztech_yszceramicelectrolyteunit_block")) {
+								.equals(Block_YSZUnit.getInstance().getUnlocalizedName())) {
 							checklist = false;
-							System.out.println("Expected YSZ Ceramic");
 						}
 						continue;
 					}
 					if(Y == 0 && (X == -1 || X == 1)) {
-						if(!thisController.getBlockOffset(XDIR_BACKFACE, 0, ZDIR_BACKFACE * Z).getUnlocalizedName()
+						if(!thisController.getBlockOffset(THIS_X, 0, THIS_Z).getUnlocalizedName()
 								.equals("blockAlloyGlass")) {
 							checklist = false;
-							System.out.println("Expected Reinforced Glass");
 						}
 						continue;
 					}
@@ -164,7 +217,6 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 				}
 			}
 		}
-		System.out.println("Middle slices status: " +checklist);
 		
 		// Back slice
 		for(int X = -1; X <= 1; X++) {
@@ -192,14 +244,13 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 				}
 			}
 		}
-		System.out.println("Back slice status: " +checklist);
 		
 		if(minCasingAmount > 0) {
 			checklist = false;
 		}
 		
-		if(this.mDynamoHatches.size() < 1) {
-			System.out.println("At least one dynamo hatch is required!");
+		if(this.mDynamoHatches.size() != 1) {
+			System.out.println("Exactly one dynamo hatch is required!");
 			checklist = false;
 		}
 		if(this.mInputHatches.size() < 2) {
