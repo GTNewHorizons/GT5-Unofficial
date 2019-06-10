@@ -51,13 +51,13 @@ import java.util.HashMap;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class ClientEventHandler {
+public class TooltipEventHandler {
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void getTooltip(ItemTooltipEvent event) {
 
-        if (event.itemStack == null || event.itemStack.getItem() == null)
+        if (event == null || event.itemStack == null || event.itemStack.getItem() == null)
             return;
 
         if (TooltipCache.getTooltip(event.itemStack).isEmpty()) {

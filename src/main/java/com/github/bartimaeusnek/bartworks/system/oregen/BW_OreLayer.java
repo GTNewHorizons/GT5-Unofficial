@@ -106,6 +106,8 @@ public abstract class BW_OreLayer extends GT_Worldgen {
             int cX = aChunkX - aRandom.nextInt(this.mSize);
             int eX = aChunkX + 16 + aRandom.nextInt(this.mSize);
 
+            boolean wasPlaced = false;
+
             for (int tX = cX; tX <= eX; ++tX) {
                 int cZ = aChunkZ - aRandom.nextInt(this.mSize);
                 int eZ = aChunkZ + 16 + aRandom.nextInt(this.mSize);
@@ -115,25 +117,25 @@ public abstract class BW_OreLayer extends GT_Worldgen {
                     if (this.mSecondaryMeta > 0) {
                         for (i = tMinY - 1; i < tMinY + 2; ++i) {
                             if (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0 || aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0) {
-                                this.setOreBlock(aWorld, tX, i, tZ, this.mSecondaryMeta, false);
+                                wasPlaced = this.setOreBlock(aWorld, tX, i, tZ, this.mSecondaryMeta, false);
                             }
                         }
                     }
 
                     if (this.mBetweenMeta > 0 && (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0 || aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0)) {
-                        this.setOreBlock(aWorld, tX, tMinY + 2 + aRandom.nextInt(2), tZ, this.mBetweenMeta, false);
+                        wasPlaced = this.setOreBlock(aWorld, tX, tMinY + 2 + aRandom.nextInt(2), tZ, this.mBetweenMeta, false);
                     }
 
                     if (this.mPrimaryMeta > 0) {
                         for (i = tMinY + 3; i < tMinY + 6; ++i) {
                             if (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0 || aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0) {
-                                this.setOreBlock(aWorld, tX, i, tZ, this.mPrimaryMeta, false);
+                                wasPlaced = this.setOreBlock(aWorld, tX, i, tZ, this.mPrimaryMeta, false);
                             }
                         }
                     }
 
                     if (this.mSporadicMeta > 0 && (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0 || aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0)) {
-                        this.setOreBlock(aWorld, tX, tMinY - 1 + aRandom.nextInt(7), tZ, this.mSporadicMeta, false);
+                        wasPlaced = this.setOreBlock(aWorld, tX, tMinY - 1 + aRandom.nextInt(7), tZ, this.mSporadicMeta, false);
                     }
                 }
             }
@@ -142,7 +144,7 @@ public abstract class BW_OreLayer extends GT_Worldgen {
                 MainMod.LOGGER.info("Generated Orevein: " + this.mWorldGenName + " " + aChunkX + " " + aChunkZ);
             }
 
-            return true;
+            return wasPlaced;
         }
     }
 

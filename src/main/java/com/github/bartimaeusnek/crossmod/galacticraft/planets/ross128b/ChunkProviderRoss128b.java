@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b;
 
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_WordGenerator;
 import com.github.bartimaeusnek.bartworks.system.worldgen.MapGenRuins;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
@@ -121,7 +122,7 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
         int z1;
 
         if (biomegenbase != BiomeGenBase.ocean && biomegenbase != BiomeGenBase.deepOcean && biomegenbase != BiomeGenBase.river && biomegenbase != BiomeGenBase.frozenOcean && biomegenbase != BiomeGenBase.frozenRiver
-                    && this.rand.nextInt(512) == 0) {
+                    && this.rand.nextInt(ConfigHandler.ross128bRuinChance) == 0) {
                 x1 = k + this.rand.nextInt(16) + 3;
                 y1 = this.rand.nextInt(256);
                 z1 = l + this.rand.nextInt(16) + 3;

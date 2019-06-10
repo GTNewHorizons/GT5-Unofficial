@@ -104,9 +104,14 @@ public class BW_WordGenerator implements IWorldGenerator {
                             tRandomWeight -= tWorldGen.mWeight;
                             if (tRandomWeight <= 0) {
                                 try {
-                                    if (tWorldGen.executeWorldgen(this.mWorld, random, "", this.mDimensionType, xCenter, zCenter, this.mChunkGenerator, this.mChunkProvider)) {
-                                        temp = false;
+                                    boolean placed;
+                                    int attempts = 0;
+                                    do{
+                                        placed = tWorldGen.executeWorldgen(this.mWorld, random, "", this.mDimensionType, xCenter, zCenter, this.mChunkGenerator, this.mChunkProvider);
+                                        ++attempts;
                                     }
+                                    while ((!placed) && attempts < 25);
+                                        temp = false;
                                     break;
                                 } catch (Throwable e) {
                                     e.printStackTrace(GT_Log.err);

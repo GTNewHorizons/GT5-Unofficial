@@ -33,7 +33,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import static com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy.uo_dimensionList;
-
+import static gregtech.api.enums.Materials.*;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
 
 public class BW_WorldGenRoss128b extends BW_OreLayer {
 
@@ -46,16 +47,16 @@ public class BW_WorldGenRoss128b extends BW_OreLayer {
     }
 
     public static void init_OresRoss128() {
-        new BW_WorldGenRoss128b("ore.mix.ross128.Thorianit", true, 30, 60, 17, 1, 16, WerkstoffLoader.Thorianit, Materials.Uraninite, Materials.Lepidolite, Materials.Spodumene);
-        new BW_WorldGenRoss128b("ore.mix.ross128.carbon", true, 5, 25, 5, 4, 12, Materials.Graphite, Materials.Diamond, Materials.Coal, Materials.Graphite);
-        new BW_WorldGenRoss128b("ore.mix.ross128.bismuth", true, 5, 80, 30, 1, 16, WerkstoffLoader.Bismuthinit, Materials.Stibnite, Materials.Bismuth, WerkstoffLoader.Bismutite);
-        new BW_WorldGenRoss128b("ore.mix.ross128.TurmalinAlkali", true, 5, 200, 15, 4, 48, WerkstoffLoader.Olenit, WerkstoffLoader.FluorBuergerit, WerkstoffLoader.ChromoAluminoPovondrait, WerkstoffLoader.VanadioOxyDravit);
-        new BW_WorldGenRoss128b("ore.mix.ross128.Roquesit", true, 5, 250, 3, 1, 12, WerkstoffLoader.Arsenopyrite, WerkstoffLoader.Ferberite, WerkstoffLoader.Loellingit, WerkstoffLoader.Roquesit);
-        new BW_WorldGenRoss128b("ore.mix.ross128.Tungstate", true, 5, 250, 10, 4, 14, WerkstoffLoader.Ferberite, WerkstoffLoader.Huebnerit, WerkstoffLoader.Loellingit, Materials.Scheelite);
-        new BW_WorldGenRoss128b("ore.mix.ross128.CopperSulfits", true, 40, 70, 80, 3, 24, WerkstoffLoader.Djurleit, WerkstoffLoader.Bornite, WerkstoffLoader.Wittichenit, Materials.Tetrahedrite);
-        new BW_WorldGenRoss128b("ore.mix.ross128.Forsterit", true, 20, 180, 50, 2, 32, WerkstoffLoader.Forsterit, WerkstoffLoader.Fayalit, WerkstoffLoader.DescloiziteCUVO4, WerkstoffLoader.DescloiziteZNVO4);
-        new BW_WorldGenRoss128b("ore.mix.ross128.Hedenbergit", true, 20, 180, 50, 2, 32, WerkstoffLoader.Hedenbergit, WerkstoffLoader.Fayalit, WerkstoffLoader.DescloiziteCUVO4, WerkstoffLoader.DescloiziteZNVO4);
-        new BW_WorldGenRoss128b("ore.mix.ross128.RedZircon", true, 10, 40, 40, 3, 24, WerkstoffLoader.Fayalit,WerkstoffLoader.FuchsitAL , WerkstoffLoader.RedZircon,WerkstoffLoader.FuchsitCR);
+        new BW_WorldGenRoss128b("ore.mix.ross128.Thorianit", true, 30, 60, 17, 1, 16, Thorianit, Uraninite, Lepidolite, Spodumene);
+        new BW_WorldGenRoss128b("ore.mix.ross128.carbon", true, 5, 25, 5, 4, 12, Graphite, Diamond, Coal, Graphite);
+        new BW_WorldGenRoss128b("ore.mix.ross128.bismuth", true, 5, 80, 30, 1, 16, Bismuthinit, Stibnite, Bismuth, Bismutite);
+        new BW_WorldGenRoss128b("ore.mix.ross128.TurmalinAlkali", true, 5, 80, 15, 4, 48, Olenit, FluorBuergerit, ChromoAluminoPovondrait, VanadioOxyDravit);
+        new BW_WorldGenRoss128b("ore.mix.ross128.Roquesit", true, 30, 50, 3, 1, 12, Arsenopyrite, Ferberite, Loellingit, Roquesit);
+        new BW_WorldGenRoss128b("ore.mix.ross128.Tungstate", true, 5, 40, 10, 4, 14, Ferberite, Huebnerit, Loellingit, Scheelite);
+        new BW_WorldGenRoss128b("ore.mix.ross128.CopperSulfits", true, 40, 70, 80, 3, 24, Djurleit, Bornite, Wittichenit, Tetrahedrite);
+        new BW_WorldGenRoss128b("ore.mix.ross128.Forsterit", true, 20, 90, 50, 2, 32, Forsterit, Fayalit, DescloiziteCUVO4, DescloiziteZNVO4);
+        new BW_WorldGenRoss128b("ore.mix.ross128.Hedenbergit", true, 20, 90, 50, 2, 32, Hedenbergit, Fayalit, DescloiziteCUVO4, DescloiziteZNVO4);
+        new BW_WorldGenRoss128b("ore.mix.ross128.RedZircon", true, 10, 80, 40, 3, 24, Fayalit,FuchsitAL , RedZircon,FuchsitCR);
     }
 
     public static void init_undergroundFluidsRoss128() {
