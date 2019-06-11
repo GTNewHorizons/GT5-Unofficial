@@ -39,6 +39,7 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 	@Override
 	public String[] getDescription() {
 		return new String[] { 
+				"DO NOT CHEAT IN THIS MACHINE",
 				"I'm not quite finished yet",
 				"------------------------------------------",
 				"Dimensions: 5x5x5 (WxHxL)",
