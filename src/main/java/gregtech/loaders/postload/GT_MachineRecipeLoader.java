@@ -4810,7 +4810,7 @@ if(Loader.isModLoaded("Railcraft")){
         
         GT_Values.RA.addAssemblylineRecipe(ItemList.Cover_SolarPanel_IV.get(1, new Object(){}),72000,new Object[]{
         		ItemList.Cover_SolarPanel_IV.get(3L),
-        		new Object[]{OrePrefixes.circuit.get(Materials.Master), 6},
+        		new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 6},
         		GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Sunnarium, 8),
         		ItemList.Circuit_Silicon_Wafer3.get(4L),
         		ItemList.Circuit_Silicon_Wafer7.get(4L),
@@ -4883,6 +4883,7 @@ if(Loader.isModLoaded("Railcraft")){
             new FluidStack[]{
                     Materials.SolderingAlloy.getMolten(1890)},
             ItemList.Cover_SolarPanel_UHV.get(1, new Object[]{}), 840, 8000000);
+			
         	TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Cover_SolarPanel_UHV.get(1L),
                     192000, 512, 2000000, 32,  new ItemStack[]{
             		ItemList.Cover_SolarPanel_UHV.get(1L),
