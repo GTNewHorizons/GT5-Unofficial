@@ -2572,12 +2572,12 @@ if(Loader.isModLoaded("Railcraft")){
                     Materials.SolderingAlloy.getMolten(720)
             }, ItemList.Energy_LapotronicOrb2.get(1, o), 1000, 80000);
 
-            GT_Values.RA.addAssemblylineRecipe(ItemList.Energy_LapotronicOrb2.get(1, o), 288000, new ItemStack[]{
+            GT_Values.RA.addAssemblylineRecipe(ItemList.Energy_LapotronicOrb2.get(1, o), 288000, new Object[]{
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 16L),
-                    ItemList.Circuit_Wetwarecomputer.get(1, o),
-                    ItemList.Circuit_Wetwarecomputer.get(1, o),
-                    ItemList.Circuit_Wetwarecomputer.get(1, o),
-                    ItemList.Circuit_Wetwarecomputer.get(1, o),
+                    new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
                     ItemList.Energy_LapotronicOrb2.get(8L, new Object[0]),
                     ItemList.Field_Generator_LuV.get(2, o),
                     ItemList.Circuit_Wafer_SoC2.get(64, o),
@@ -2588,12 +2588,12 @@ if(Loader.isModLoaded("Railcraft")){
                     Materials.SolderingAlloy.getMolten(2880), GregTech_API.mIC2Classic ? Materials.Water.getFluid(8000) : new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)},
                     ItemList.Energy_Module.get(1, o), 2000, 100000);
 
-            GT_Values.RA.addAssemblylineRecipe(ItemList.Energy_Module.get(1, o), 288000, new ItemStack[]{
+            GT_Values.RA.addAssemblylineRecipe(ItemList.Energy_Module.get(1, o), 288000, new Object[]{
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 32L),
-                    ItemList.Circuit_Wetwaresupercomputer.get(1, o),
-                    ItemList.Circuit_Wetwaresupercomputer.get(1, o),
-                    ItemList.Circuit_Wetwaresupercomputer.get(1, o),
-                    ItemList.Circuit_Wetwaresupercomputer.get(1, o),
+                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 1},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 1},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 1},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 1},
                     ItemList.Energy_Module.get(8L, new Object[0]),
                     ItemList.Field_Generator_ZPM.get(2, o),
                     ItemList.Circuit_Wafer_HPIC.get(64, o),
