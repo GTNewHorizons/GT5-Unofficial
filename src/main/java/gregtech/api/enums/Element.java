@@ -134,7 +134,7 @@ public enum Element {
     Uuo(118, 176, 0, -1, null, "Ununoctium", false),
 
     Ma(0, 0, 100, -1, null, "Magic", false),
-    Nt(0, 100000, 0, -1, null, "Neutronium", false),
+    Nt(0, 1000, 0, -1, null, "Neutronium", false),
     Oh(76, 125, 0, -1, null, "Oriharukon", false),
 
     $H(-1, -0, 0, -1, null, "Anti-Hydrogen", false),
