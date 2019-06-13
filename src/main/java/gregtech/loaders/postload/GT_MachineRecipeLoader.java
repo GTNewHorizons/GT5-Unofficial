@@ -3066,8 +3066,10 @@ if(Loader.isModLoaded("Railcraft")){
 			GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 1), Materials.Naquadria.getMolten(144), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnrichedMysteriousCrystal, 1), null, null, null, 600, 500000);
 			if(Loader.isModLoaded("GalacticraftCore")){
             GT_Values.RA.addAutoclaveSpaceRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnrichedMysteriousCrystal, 1), Materials.UUMatter.getFluid(250), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.EnrichedMysteriousCrystal, 1), 8500, 2000, 500000, true);
-            }else {
+            GT_Values.RA.addAutoclaveSpaceRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 1), Materials.UUMatter.getFluid(250), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.MysteriousCrystal, 1), 8500, 2000, 500000, true);
+			}else {
             GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnrichedMysteriousCrystal, 1), Materials.UUMatter.getFluid(250), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.EnrichedMysteriousCrystal, 1), 8500, 2000, 500000, true);
+            GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 1), Materials.UUMatter.getFluid(250), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.MysteriousCrystal, 1), 8500, 2000, 500000, true);
             }
 			
 			
