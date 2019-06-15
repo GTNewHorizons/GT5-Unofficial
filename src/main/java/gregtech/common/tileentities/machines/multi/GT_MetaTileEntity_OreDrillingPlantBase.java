@@ -130,7 +130,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     }
 
     private void multiplyStackSize(ItemStack itemStack) {
-        itemStack.stackSize *= getBaseMetaTileEntity().getRandomNumber(4) + 1;
+        itemStack.stackSize *= getBaseMetaTileEntity().getRandomNumber(4) + mTier;
     }
 
     private ArrayList<ItemStack> getBlockDrops(final Block oreBlock, int posX, int posY, int posZ) {
@@ -196,6 +196,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 "1x Maintenance Hatch (Any bottom layer casing)",
                 "1x " + VN[getMinTier()] + "+ Energy Hatch (Any bottom layer casing)",
                 "Radius is " + (getRadiusInChunks() << 4) + " blocks",
+                "Bonus from drilling: Ore * 4 + " + mTier,
                 "Fortune bonus of " + mTier * 5};
     }
 }
