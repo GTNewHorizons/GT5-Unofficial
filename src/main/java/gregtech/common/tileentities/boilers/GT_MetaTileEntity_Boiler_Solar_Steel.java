@@ -13,22 +13,22 @@ import net.minecraft.entity.player.InventoryPlayer;
 public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boiler_Solar {
     public GT_MetaTileEntity_Boiler_Solar_Steel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        basicOutput = 300;
-        basicMaxOuput = 100;
+        basicOutput = 450;
+        basicMaxOuput = 120;
         basicTemperatureMod = 3;
     }
 
     public GT_MetaTileEntity_Boiler_Solar_Steel(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        basicOutput = 300;
-        basicMaxOuput = 100;
+        basicOutput = 450;
+        basicMaxOuput = 120;
         basicTemperatureMod = 3;
     }
 
     public GT_MetaTileEntity_Boiler_Solar_Steel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        basicOutput = 300;
-        basicMaxOuput = 100;
+        basicOutput = 450;
+        basicMaxOuput = 120;
         basicTemperatureMod = 3;
     }
 
