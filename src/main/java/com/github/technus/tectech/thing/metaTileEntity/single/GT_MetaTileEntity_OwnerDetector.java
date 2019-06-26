@@ -36,6 +36,7 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
 
     public GT_MetaTileEntity_OwnerDetector(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
+        Util.setTier(aTier,this);
     }
 
     @Override

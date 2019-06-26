@@ -38,6 +38,7 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
 
     public GT_MetaTileEntity_DebugPowerGenerator(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
+        Util.setTier(aTier,this);
     }
 
     @Override

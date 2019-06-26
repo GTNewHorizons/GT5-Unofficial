@@ -38,6 +38,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     public GT_MetaTileEntity_DebugStructureWriter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
+        Util.setTier(aTier,this);
     }
 
     @Override
