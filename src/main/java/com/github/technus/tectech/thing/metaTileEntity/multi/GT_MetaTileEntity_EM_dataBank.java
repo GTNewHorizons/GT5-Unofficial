@@ -115,7 +115,7 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         if (eDataAccessHatches.size() > 0 && eStacksDataOutputs.size() > 0) {
-            mEUt = -(int) V[7];
+            mEUt = -(int) V[5];
             eAmpereFlow = 1 + (eStacksDataOutputs.size() >> 2) + eDataAccessHatches.size();
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
