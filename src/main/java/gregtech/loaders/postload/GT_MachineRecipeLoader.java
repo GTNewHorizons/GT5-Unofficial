@@ -1865,6 +1865,7 @@ if(Loader.isModLoaded("Railcraft")){
 		tCrop = ItemList.Crop_Drop_Tine.get(1, new Object[0]);
 		addProcess(tCrop, Materials.Tin, 100, true);
 		addProcess(tCrop, Materials.Cassiterite, 100, false);
+		addProcess(tCrop, Materials.CassiteriteSand, 100, true);
 		tCrop = ItemList.Crop_Drop_Plumbilia.get(1, new Object[0]);
 		addProcess(tCrop, Materials.Lead, 100, true);
 		addProcess(tCrop, Materials.Galena, 100, false);
