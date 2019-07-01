@@ -6,6 +6,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.*;
+import static gregtech.api.enums.GT_Values.E;
 
 
 public class GT_Cover_Fluidfilter extends GT_CoverBehavior {
@@ -23,8 +24,10 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehavior {
     public String getDescription(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         int aFilterMode = aCoverVariable & 7;
         int aFilterFluid = aCoverVariable >>> 3;
+        final Fluid fluid = FluidRegistry.getFluid(aFilterFluid);
+        if(fluid == null) return E;
 
-         final FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFilterFluid), 1000);
+        final FluidStack sFluid = new FluidStack(fluid, 1000);
         return(String.format("Filtering Fluid: %s  Mode: %s", sFluid.getLocalizedName(), getFilterMode(aFilterMode)));
     }
             
