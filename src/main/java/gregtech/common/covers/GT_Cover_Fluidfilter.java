@@ -20,10 +20,32 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehavior {
     private final int ANY_INPUT_FILTER_OUTPUT = 6;
     private final int ANY_INPUT_INVERT_OUTPUT = 7;
 
+    public String getDescription(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+        int aFilterMode = aCoverVariable & 7;
+        int aFilterFluid = aCoverVariable >>> 3;
+
+         final FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFilterFluid), 1000);
+        return(String.format("Filtering Fluid: %s  Mode: %s", sFluid.getLocalizedName(), getFilterMode(aFilterMode)));
+    }
             
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return aCoverVariable;
     }
+    
+    public String getFilterMode(int aFilterMode) {
+        switch(aFilterMode) {
+            case FILTER_INPUT_DENY_OUTPUT: return(trans("043", "Filter input, Deny output"));
+            case INVERT_INPUT_DENY_OUTPUT: return(trans("044", "Invert input, Deny output"));
+            case FILTER_INPUT_ANY_OUTPUT: return(trans("045", "Filter input, Permit any output"));
+            case INVERT_INPUT_ANY_OUTPUT: return(trans("046", "Invert input, Permit any output"));
+            case DENY_INPUT_FILTER_OUTPUT: return(trans("219", "Deny input, Filter output"));
+            case DENY_INPUT_INVERT_OUTPUT: return(trans("220", "Deny input, Invert output"));
+            case ANY_INPUT_FILTER_OUTPUT: return(trans("221", "Permit any input, Filter output"));
+            case ANY_INPUT_INVERT_OUTPUT: return(trans("222", "Permit any input, Invert output"));
+            default: return("UNKNOWN");
+        }
+
+     }
 
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int aFilterMode = aCoverVariable & 7;
@@ -32,16 +54,9 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehavior {
         if (aFilterMode < 0) {
             aFilterMode = 7;
         }
-        switch(aFilterMode) {
-            case FILTER_INPUT_DENY_OUTPUT: GT_Utility.sendChatToPlayer(aPlayer, trans("043", "Filter input, Deny output")); break;
-            case INVERT_INPUT_DENY_OUTPUT: GT_Utility.sendChatToPlayer(aPlayer, trans("044", "Invert input, Deny output")); break;
-            case FILTER_INPUT_ANY_OUTPUT: GT_Utility.sendChatToPlayer(aPlayer, trans("045", "Filter input, Permit any output")); break;
-            case INVERT_INPUT_ANY_OUTPUT: GT_Utility.sendChatToPlayer(aPlayer, trans("046", "Invert input, Permit any output")); break;
-            case DENY_INPUT_FILTER_OUTPUT: GT_Utility.sendChatToPlayer(aPlayer, trans("219", "Deny input, Filter output")); break;
-            case DENY_INPUT_INVERT_OUTPUT: GT_Utility.sendChatToPlayer(aPlayer, trans("220", "Deny input, Invert output")); break;
-            case ANY_INPUT_FILTER_OUTPUT: GT_Utility.sendChatToPlayer(aPlayer, trans("221", "Permit any input, Filter output")); break;
-            case ANY_INPUT_INVERT_OUTPUT: GT_Utility.sendChatToPlayer(aPlayer, trans("222", "Permit any input, Invert output")); break;
-        }
+        
+        GT_Utility.sendChatToPlayer(aPlayer, getFilterMode(aFilterMode));
+        
         aCoverVariable|=aFilterMode;
         return aCoverVariable;
     }
