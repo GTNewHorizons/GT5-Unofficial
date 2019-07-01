@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.joml.Vector3i;
-import org.joml.Vector3ic;
-
 import blocks.Block_GDCUnit;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -20,13 +17,14 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import kekztech.Util;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import util.Vector3i;
+import util.Vector3ic;
 
 public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 	
@@ -141,6 +139,41 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 		return false;
 	}
 	
+	public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
+		final Vector3i offset = new Vector3i();
+		
+		// either direction on z-axis
+		if(forgeDirection.x() == 0 && forgeDirection.z() == -1) {
+			offset.x = x;
+			offset.y = y;
+			offset.z = z;
+		}
+		if(forgeDirection.x() == 0 && forgeDirection.z() == 1) {
+			offset.x = -x;
+			offset.y = y;
+			offset.z = -z;
+		}
+		// either direction on x-axis
+		if(forgeDirection.x() == -1 && forgeDirection.z() == 0) {
+			offset.x = z;
+			offset.y = y;
+			offset.z = -x;
+		}
+		if(forgeDirection.x() == 1 && forgeDirection.z() == 0) {
+			offset.x = -z;
+			offset.y = y;
+			offset.z = x;
+		}
+		// either direction on y-axis
+		if(forgeDirection.y() == -1) {
+			offset.x = x;
+			offset.y = z;
+			offset.z = y;
+		}
+		
+		return offset;
+	}
+	
 	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {		
 		// Figure out the vector for the direction the back face of the controller is facing
@@ -160,7 +193,7 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 				}
 				
 				// Get next TE
-				final Vector3ic offset = Util.rotateOffsetVector(forgeDirection, X, Y, 0);
+				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
 				IGregTechTileEntity currentTE = 
 						thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 				
@@ -186,7 +219,7 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 		for(int X = -1; X <= 1; X++) {
 			for(int Y = -1; Y <= 1; Y++) {
 				for(int Z = -1; Z >= -3; Z--) {
-					final Vector3ic offset = Util.rotateOffsetVector(forgeDirection, X, Y, Z);
+					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 					if(X == 0 && Y == 0) {
 						if(!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
 								.equals(Block_GDCUnit.getInstance().getUnlocalizedName())) {
@@ -228,7 +261,7 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 		for(int X = -1; X <= 1; X++) {
 			for(int Y = -1; Y <= 1; Y++) {
 				// Get next TE
-				final Vector3ic offset = Util.rotateOffsetVector(forgeDirection, X, Y, -4);
+				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -4);
 				IGregTechTileEntity currentTE = 
 						thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());// x, y ,z
 				

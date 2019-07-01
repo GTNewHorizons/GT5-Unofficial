@@ -4,8 +4,8 @@ import items.MetaItem_CraftingComponent;
 import items.MetaItem_ReactorComponent;
 import kekztech.GTRecipe;
 import kekztech.Items;
-import kekztech.Util;
 import net.minecraftforge.fluids.FluidRegistry;
+import util.Util;
 
 public class HeatExchanger {
 	

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import util.Util;
 
 public class GTRecipe {
 	

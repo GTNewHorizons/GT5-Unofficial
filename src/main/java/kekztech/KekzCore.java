@@ -6,7 +6,6 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -22,6 +21,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import tileentities.GTMTE_ModularNuclearReactor;
 import tileentities.GTMTE_SOFuelCellMK1;
 import tileentities.GTMTE_SOFuelCellMK2;
+import util.Util;
 
 @Mod(modid = KekzCore.MODID, name = KekzCore.NAME, version = KekzCore.VERSION, 
 		dependencies = "required-after:IC2; "
