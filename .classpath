@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="libs/gregtech-5.09.32-dev.jar" sourcepath="libs/gregtech-5.09.32-dev-src.zip"/>
 	<classpathentry kind="lib" path="libs/industrialcraft-2-2.2.828a-experimental-deobf.jar"/>
 	<classpathentry kind="lib" path="libs/NotEnoughItems-1.7.10-1.0.5.120-dev.jar"/>
+	<classpathentry kind="lib" path="libs/joml-jdk8-1.9.16.jar" sourcepath="libs/JOML-1.9.16.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
