@@ -67,7 +67,7 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 				"   3x YSZ Ceramic Electrolyte Unit: Center 1x1x3",
 				"   12x Clean Stainless Steel Machine Casing (at least)",
 				"   6x Reinforced Glass: Touching the Electrolyte Units on the horizontal sides",
-				"   Maintenance Hatch, Input Hatches, Output Hatches: Instead of any casing"
+				"   Maintenance Hatch, I/O Hatches: Instead of any casing"
 				};	
 	}
 	
@@ -296,6 +296,10 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 		if(this.mInputHatches.size() < 2) {
 			System.out.println("At least two input hatches are required!");
 			formationChecklist = false;
+		}
+		
+		if(this.mMaintenanceHatches.size() < 1) {
+			System.out.println("You need a maintenance hatch to do maintenance.");
 		}
 		
 		return formationChecklist;

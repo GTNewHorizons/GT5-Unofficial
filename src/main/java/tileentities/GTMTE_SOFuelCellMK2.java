@@ -62,11 +62,12 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 				"------------------------------------------",
 				"Dimensions: 3x3x5 (WxHxL)",
 				"Structure:",
-				"   3x GDC Ceramic Electrolyte Unit (center 1x1x3)",
-				"   12x Robust Tungstensteel Machine Casing (at least)",
 				"   Controller front center",
 				"   Dynamo Hatch back center",
-				"   Maintenance Hatch, Input Hatches, Output Hatches"
+				"   3x GDC Ceramic Electrolyte Unit (center 1x1x3)",
+				"   12x Robust Tungstensteel Machine Casing (at least)",
+				"   6x Reinforced Glass: Touching the Electrolyte Units on the horizontal sides",
+				"   Maintenance Hatch, I/O Hatches: Instead of any casing"
 				};	
 	}
 	
@@ -295,6 +296,10 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 		if(this.mInputHatches.size() < 2) {
 			System.out.println("At least two input hatches are required!");
 			formationChecklist = false;
+		}
+		
+		if(this.mMaintenanceHatches.size() < 1) {
+			System.out.println("You need a maintenance hatch to do maintenance.");
 		}
 		
 		return formationChecklist;

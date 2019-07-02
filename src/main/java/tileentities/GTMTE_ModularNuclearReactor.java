@@ -160,6 +160,10 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 			}
 		}
 		
+		if(this.mMaintenanceHatches.size() < 1) {
+			System.out.println("You need a maintenance hatch to do maintenance.");
+		}
+		
 		return checklist;
 	}
 

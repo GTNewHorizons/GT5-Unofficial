@@ -1,6 +1,11 @@
 package kekztech;
 
 import blocks.Block_GDCUnit;
+import blocks.Block_TFFTCasing;
+import blocks.Block_TFFTStorageFieldBlockT1;
+import blocks.Block_TFFTStorageFieldBlockT2;
+import blocks.Block_TFFTStorageFieldBlockT3;
+import blocks.Block_TFFTStorageFieldBlockT4;
 import blocks.Block_YSZUnit;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -18,6 +23,7 @@ import items.MetaItem_CraftingComponent;
 import items.MetaItem_ReactorComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
+import tileentities.GTMTE_FluidMultiStorage;
 import tileentities.GTMTE_ModularNuclearReactor;
 import tileentities.GTMTE_SOFuelCellMK1;
 import tileentities.GTMTE_SOFuelCellMK2;
@@ -36,6 +42,7 @@ public class KekzCore {
 	private GTMTE_SOFuelCellMK1 sofc1;
 	private GTMTE_SOFuelCellMK2 sofc2;
 	private GTMTE_ModularNuclearReactor mdr;
+	private GTMTE_FluidMultiStorage fms;
 		
 	@Mod.Instance("kekztech")
 	public static KekzCore instance;
@@ -49,6 +56,11 @@ public class KekzCore {
 		// Blocks
 		Block_YSZUnit.getInstance().registerBlock();
 		Block_GDCUnit.getInstance().registerBlock();
+		Block_TFFTCasing.getInstance().registerBlock();
+		Block_TFFTStorageFieldBlockT1.getInstance().registerBlock();
+		Block_TFFTStorageFieldBlockT2.getInstance().registerBlock();
+		Block_TFFTStorageFieldBlockT3.getInstance().registerBlock();
+		Block_TFFTStorageFieldBlockT4.getInstance().registerBlock();
 	}
 	
 	@Mod.EventHandler
@@ -56,6 +68,7 @@ public class KekzCore {
 		sofc1 = new GTMTE_SOFuelCellMK1(5000, "multimachine.fuelcellmk1", "Solid-Oxide Fuel Cell Mk I");
 		sofc2 = new GTMTE_SOFuelCellMK2(5001, "multimachine.fuelcellmk2", "Solid-Oxide Fuel Cell Mk II");
 		mdr = new GTMTE_ModularNuclearReactor(5002, "multimachine.nuclearreactor", "Nuclear Reactor");
+		fms = new GTMTE_FluidMultiStorage(5003, "multimachine.tf_fluidtank", "T.F.F.T");
 		
 	}
 	
