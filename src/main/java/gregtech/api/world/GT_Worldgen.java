@@ -59,14 +59,14 @@ public abstract class GT_Worldgen {
      * @return if generation for this world is allowed for MoronTech (tm) OreGen (ATM (2.0.3.1Dev) only End, Nether, Overworld, Twilight Forest and Deep Dark)
      */
     public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
-    	String aDimName = aWorld.provider.getDimensionName();
+       
     	/*if (!((aWorld.provider.getDimensionName().equalsIgnoreCase("Overworld")) || (aWorld.provider.getDimensionName().equalsIgnoreCase("Nether"))||(aWorld.provider.getDimensionName().equalsIgnoreCase("The End"))||(aWorld.provider.getDimensionName().equalsIgnoreCase("Twilight Forest"))||(aWorld.provider.getDimensionName().equalsIgnoreCase("Underdark"))))
-        	return false;
+        	return false;*/
         
-    	String aDimName = aWorld.provider.getDimensionName();*/
+    	String aDimName = aWorld.provider.getDimensionName();
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
-        	boolean tValue = GregTech_API.sWorldgenFile.get("worldgen.dimensions." + mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);
+            boolean tValue = GregTech_API.sWorldgenFile.get("worldgen." + mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);
             mDimensionMap.put(aDimName, tValue);
             return tValue;
         }

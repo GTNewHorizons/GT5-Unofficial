@@ -10,6 +10,7 @@ import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -31,14 +32,14 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     public static byte getHarvestData(short aMetaData, int aBaseBlockHarvestLevel) {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(aMetaData % 1000)];
         byte tByte = aMaterial == null ? 0 : (byte) Math.max(aBaseBlockHarvestLevel, Math.min(7, aMaterial.mToolQuality - (aMetaData < 16000 ? 0 : 1)));
-        if(GT_Mod.gregtechproxy.mChangeHarvestLevels ){
+        if(GT_Mod.gregtechproxy.mChangeHarvestLevels ) {
             tByte = aMaterial == null ? 0 : (byte) Math.max(aBaseBlockHarvestLevel, Math.min(GT_Mod.gregtechproxy.mMaxHarvestLevel, GT_Mod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] - (aMetaData < 16000 ? 0 : 1)));
         }
         return tByte;
     }
 
     public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean isSmallOre) {
-        return setOreBlock(aWorld, aX, aY, aZ, aMetaData, isSmallOre, false);
+        return setOreBlock(aWorld, aX, aY, aZ, aMetaData, isSmallOre, true);
     }
 
     public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean isSmallOre, boolean air) {
@@ -51,48 +52,9 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
         String BlockName = tBlock.getUnlocalizedName();
         aMetaData += isSmallOre ? 16000 : 0;
         if ((aMetaData > 0) && ((tBlock != Blocks.air) || air)) {
-            if (BlockName.equals("tile.igneousStone")) {
-                if (GregTech_API.sBlockOresUb1 != null) {
-                    tOreBlock = GregTech_API.sBlockOresUb1;
-                    aMetaData += (BlockMeta * 1000);
-                }
-            } else if (BlockName.equals("tile.metamorphicStone")) {
-                if (GregTech_API.sBlockOresUb2 != null) {
-                    tOreBlock = GregTech_API.sBlockOresUb2;
-                    aMetaData += (BlockMeta * 1000);
-                }
-            } else if (BlockName.equals("tile.sedimentaryStone")) {
-                if (GregTech_API.sBlockOresUb3 != null) {
-                    tOreBlock = GregTech_API.sBlockOresUb3;
-                    aMetaData += (BlockMeta * 1000);
-                }
-            } else if (BlockName.equals("tile.moonBlock") && (BlockMeta == 3 || BlockMeta == 4)) {
-                if (GregTech_API.sBlockOresGC != null) {
-                    switch (BlockMeta) {
-                        case 3: tOreBlock = GregTech_API.sBlockOresGC; break;
-                        case 4: aMetaData += 1000; tOreBlock = GregTech_API.sBlockOresGC; break;
-                    }
-                }
-            } else if (BlockName.equals("tile.mars") && (BlockMeta == 6 || BlockMeta == 9)) {
-                if (GregTech_API.sBlockOresGC != null) {
-                    switch (BlockMeta) {
-                        case 6: aMetaData += 2000; tOreBlock = GregTech_API.sBlockOresGC; break;
-                        case 9: aMetaData += 3000; tOreBlock = GregTech_API.sBlockOresGC; break;
-                    }
-                }
-            } else if (BlockName.equals("tile.asteroidsBlock") && (BlockMeta == 0 || BlockMeta == 1)) {
-                if (GregTech_API.sBlockOresGC != null) {
-                    switch (BlockMeta) {
-                        case 0: aMetaData += 4000; tOreBlock = GregTech_API.sBlockOresGC; break;
-                        case 1: aMetaData += 5000; tOreBlock = GregTech_API.sBlockOresGC; break;
-                    }
-                }
-            } else if (BlockName.equals("tile.asteroidsBlock") && (BlockMeta == 2)) {
-                if (GregTech_API.sBlockOresGC != null) {
-                    switch (BlockMeta) {
-                        case 2: aMetaData += 6000; tOreBlock = GregTech_API.sBlockOresGC; break;
-                    }
-                }
+            if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone)) {
+                //Do nothing, stone background is default background.
+                //Do this comparison first since stone is most common
             } else if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.netherrack)) {
                 aMetaData += 1000;
             } else if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.end_stone)) {
@@ -117,9 +79,28 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                 } else {
                     aMetaData += 5000;
                 }
-            } else if (!tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone)) {
+            } else if (BlockName.equals("tile.igneousStone")) {
+                if (GregTech_API.sBlockOresUb1 != null) {
+                    tOreBlock = GregTech_API.sBlockOresUb1;
+                    aMetaData += (BlockMeta * 1000);
+                    //GT_FML_LOGGER.info("Block changed to UB1");
+                }
+            } else if (BlockName.equals("tile.metamorphicStone")) {
+                if (GregTech_API.sBlockOresUb2 != null) {
+                    tOreBlock = GregTech_API.sBlockOresUb2;
+                    aMetaData += (BlockMeta * 1000);
+                    //GT_FML_LOGGER.info("Block changed to UB2");
+                }
+            } else if (BlockName.equals("tile.sedimentaryStone")) {
+                if (GregTech_API.sBlockOresUb3 != null) {
+                    tOreBlock = GregTech_API.sBlockOresUb3;
+                    aMetaData += (BlockMeta * 1000);
+                    //GT_FML_LOGGER.info("Block changed to UB3");
+                }
+            } else {
                 return false;
             }
+            //GT_FML_LOGGER.info(tOreBlock);
             aWorld.setBlock(aX, aY, aZ, tOreBlock, getHarvestData((short) aMetaData, ((GT_Block_Ores_Abstract) tOreBlock).getBaseBlockHarvestLevel(aMetaData % 16000 / 1000)), 0);
             TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if ((tTileEntity instanceof GT_TileEntity_Ores)) {
@@ -219,7 +200,8 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             return rList;
         }
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
-     // Everyone gets a free small fortune boost
+
+        // Everyone gets a free small fortune boost
         aFortune += 1;
         if (!this.mNatural) {
             aFortune = 0;
