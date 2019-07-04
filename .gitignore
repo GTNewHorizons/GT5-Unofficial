@@ -23,7 +23,7 @@
 hs_err_pid*
 /bin/
 /build/
-# /crash-reports/
-# /saves/
-# /screenshots/
+/crash-reports/
+/saves/
+/screenshots/
 
