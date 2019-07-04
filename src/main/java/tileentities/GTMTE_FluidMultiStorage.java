@@ -1,7 +1,6 @@
 package tileentities;
 
 import java.util.ArrayList;
-
 import blocks.Block_TFFTCasing;
 import blocks.Block_TFFTStorageFieldBlockT1;
 import blocks.Block_TFFTStorageFieldBlockT2;
@@ -12,11 +11,18 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import util.Vector3i;
@@ -34,16 +40,16 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 	private final int CASING_TEXTURE_ID = 176;
 	
 	private final ArrayList<FluidStack> fluidList = new ArrayList<>();
-	private long totalFluidCapacity = 0;
+	private int capacityPerFluid = 0;
+	private int runningCost = 0;
+	private boolean doVoidExcess = false;
 	
 	public GTMTE_FluidMultiStorage(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		
 	}
 
 	public GTMTE_FluidMultiStorage(String aName) {
 		super(aName);
-		
 	}
 	
 	@Override
@@ -55,17 +61,16 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[] {
 				"High-Tech fluid tank that can hold up to 25 different fluids",
+				"Has 1/25th of the total capacity as capacity for each fluid",
+				"Rightclicking the controller with a screwdriver will turn on excess voiding",
 				"Fluid storage amount and running cost depends on the storage field blocks used",
-				"Different tiers can be combined freely",
-				"Tier I:   500,000L per block, 0.33EU/t cost",
-				"Tier II:  4,000,000L per block, 1EU/t cost",
-				"Tier III: 16,000,000L per block, 3EU/t",
-				"Tier IV:  64,000,000L per block, 9EU/t",
+				"Tier I:   500,000L per block, 0.5EU/t",
+				"Tier II:  4,000,000L per block, 1EU/t",
+				"Tier III: 16,000,000L per block, 2EU/t",
+				"Tier IV:  64,000,000L per block, 4EU/t",
 				"------------------------------------------",
 				"Note on hatch locking:",
-				"Inserting an Integrated Circuit into to GUI slot",
-				"forces the T.F.F.T to only output the fluid with that number on all hatches.",
-				"It is thereby recommended to add Output Hatches one by one while cycling through the IC configurations.",
+				"Use an integrated circuit in the GUI slot to limit which fluid is outputted",
 				"The number of a stored fluid can be obtained through the Tricorder.",
 				"------------------------------------------",
 				"Dimensions: 5x9x5 (WxHxL)",
@@ -102,15 +107,110 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(ItemStack guiSlotItem) {
-		// TODO Auto-generated method stub
-		if(guiSlotItem.getUnlocalizedName().equals("gt.integrated_circuit")) {
+		
+		this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
+		this.mEfficiencyIncrease = 10000;
+		this.mEUt = runningCost;
+		super.mMaxProgresstime = 10;
+		
+		// Suck in fluids
+		final ArrayList<FluidStack> storedFluids = super.getStoredFluids();
+		if(storedFluids.size() > 0) {
+			for(FluidStack fluidStack : storedFluids) {
+				
+				// check if fluid is already in the tank
+				boolean foundFluid = false;
+				for(FluidStack fs : fluidList) {
+					if(GT_Utility.areFluidsEqual(fluidStack, fs)) {
+						// figure out how much can be input
+						final int possibleInput = Math.min(capacityPerFluid - fs.amount, fluidStack.amount);
+						fs.amount += possibleInput;
+						final FluidStack tempStack = fluidStack.copy();
+						tempStack.amount = possibleInput;
+						super.depleteInput(tempStack);
+						foundFluid = true;
+						break;
+					}
+				}
+				if(foundFluid) {
+					continue;
+				}
+				// fluid wasn't already in the tank - allocate new
+				if(fluidList.size() < 25) {
+					System.out.println("added " + fluidStack.getUnlocalizedName() + " to new stack");
+					final FluidStack drainStack = fluidStack.copy();
+					drainStack.amount = fluidStack.amount;
+					super.depleteInput(drainStack);					
+					fluidList.add(drainStack);
+				}
+			}
 			
+			// void excess if that is turned on
+			if(doVoidExcess) {
+				for(GT_MetaTileEntity_Hatch_Input inputHatch : super.mInputHatches) {
+					inputHatch.setDrainableStack(null);
+				}
+			}
 		}
 		
+		// Push out fluids
+		if(guiSlotItem != null && guiSlotItem.getUnlocalizedName().equals("gt.integrated_circuit")) {
+			final int config = guiSlotItem.getItemDamage();
+			final FluidStack storedFluid = fluidList.get(config);			
+			if(storedFluid == null) {
+				return true;
+			}
+			// figure out how much can be output
+			int possibleOutput = 0;
+			for(GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
+				if(outputHatch.isFluidLocked() && outputHatch.getLockedFluidName().equals(storedFluid.getUnlocalizedName())) {
+					possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+				}else if (outputHatch.getFluid() != null && outputHatch.getFluid().getUnlocalizedName().equals(storedFluid.getUnlocalizedName())) {
+					possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+				} else if (outputHatch.getFluid() == null) {
+					possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+				}
+			}
+			
+			// output as much as possible
+			possibleOutput = Math.min(possibleOutput, storedFluid.amount);
+			final FluidStack tempStack = storedFluid.copy();
+			tempStack.amount = possibleOutput;
+			
+			super.addOutput(tempStack);
+			storedFluid.amount -= possibleOutput;
+			// remove fluid from the tank if it has amount of zero
+			if(storedFluid.amount < 1) {
+				fluidList.remove(config);
+			}
+		} else {
+			for(FluidStack storedFluid : fluidList) {
+				// figure out how much can be output
+				int possibleOutput = 0;
+				for(GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
+					if(outputHatch.isFluidLocked() && outputHatch.getLockedFluidName().equals(storedFluid.getUnlocalizedName())) {
+						possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+					}else if (outputHatch.getFluid() != null && outputHatch.getFluid().getUnlocalizedName().equals(storedFluid.getUnlocalizedName())) {
+						possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+					} else if (outputHatch.getFluid() == null) {
+						possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+					}
+				}
+				// output as much as possible
+				possibleOutput = Math.min(possibleOutput, storedFluid.amount);
+				final FluidStack tempStack = storedFluid.copy();
+				tempStack.amount = possibleOutput;
+				
+				super.addOutput(tempStack);
+				storedFluid.amount -= possibleOutput;
+				// remove fluid from the tank if it has amount of zero
+				if(storedFluid.amount < 1) {
+					fluidList.remove(storedFluid);
+				}
+			}
+		}
 		
-		super.mEUt = 0;
-		super.mEfficiency = 0;
-		return false;
+		return true;
 	}
 	
 	public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
@@ -158,7 +258,8 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 					);
 			int minCasingAmount = 20; 
 			boolean formationChecklist = true; // if this is still true at the end, machine is good to go :)
-			float runningCost = 0;
+			float runningCostAcc = 0;
+			double fluidCapacityAcc = 0;
 			
 		// Front slice
 		for(int X = -2; X <= 2; X++) {
@@ -212,20 +313,20 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 					if(X > -2 && X < 2 && Y > -2 && Y < 2) {
 						if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
 								.equals(STORAGE_FIELD1.getUnlocalizedName())) {
-							runningCost += 0.33f;
-							totalFluidCapacity += 500000;
+							runningCostAcc += 0.5f;
+							fluidCapacityAcc += 500000.0f;
 						} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
 								.equals(STORAGE_FIELD2.getUnlocalizedName())) {
-							runningCost += 1.0f;
-							totalFluidCapacity += 4000000;
+							runningCostAcc += 1.0f;
+							fluidCapacityAcc += 4000000.0f;
 						} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
 								.equals(STORAGE_FIELD3.getUnlocalizedName())) {
-							runningCost += 3.0f;
-							totalFluidCapacity += 16000000;
+							runningCostAcc += 2.0f;
+							fluidCapacityAcc += 16000000.0f;
 						} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
 								.equals(STORAGE_FIELD4.getUnlocalizedName())) {
-							runningCost += 9.0f;
-							totalFluidCapacity += 64000000;
+							runningCostAcc += 4.0f;
+							fluidCapacityAcc += 64000000.0f;
 						} else {
 							formationChecklist = false;
 						}
@@ -319,30 +420,78 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		}
 		
 		if(formationChecklist) {
-			super.mEUt = (int) Math.round(-runningCost);
-			super.mEfficiency = 10000;
-		} else {
-			super.mEUt = 0;
-			super.mEfficiency = 0;
+			runningCost = (int) Math.round(-runningCostAcc);
+			capacityPerFluid = (int) Math.round(fluidCapacityAcc / 25.0f);
 		}
 		
 		return formationChecklist;
 	}
 	
+	@Override
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		if(doVoidExcess) {
+			doVoidExcess = false;
+			aPlayer.addChatComponentMessage(new ChatComponentText("Auto-voiding turned off"));
+		} else {
+			doVoidExcess = true;
+			aPlayer.addChatComponentMessage(new ChatComponentText("Auto-voiding turned on"));
+		}		
+	}
+	
+	@Override
 	public String[] getInfoData() {
-		final String[] lines = new String[fluidList.size() + 5];
-		lines[0] = "Stored Fluids:";
-		for(int i = 1; i < lines.length - 5; i++) {
-			lines[i] = (i - 1) + " - " + fluidList.get(i - 1).getLocalizedName() + ": " + fluidList.get(i - 1).amount;
+		final String[] lines = new String[fluidList.size() + 7];
+		lines[0] = EnumChatFormatting.YELLOW + "Stored Fluids:" + EnumChatFormatting.RESET;
+		for(int i = 0; i < fluidList.size(); i++) {
+			lines[i + 1] = i + " - " + fluidList.get(i).getLocalizedName() + ": " 
+					+ fluidList.get(i).amount + "L (" 
+					+ (Math.round(100.0f * fluidList.get(i).amount / capacityPerFluid)) + "%)";
 		}
-		lines[fluidList.size() + 1] = "Operation Data:";
-		lines[fluidList.size() + 2] = "Used Capacity: " + 0;
-		lines[fluidList.size() + 3] = "Total Capacity: " + totalFluidCapacity;
-		lines[fluidList.size() + 4] = "Running Cost: " + super.mEUt;
-		lines[fluidList.size() + 5] = "Maintenance Status: " + ((super.getRepairStatus() == 0) ? "Working perfectly" : "Has Problems");
+		lines[fluidList.size() + 1] = EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET;
+		lines[fluidList.size() + 2] = "Auto-voiding: " + doVoidExcess;
+		lines[fluidList.size() + 3] = "Per-Fluid Capacity: " + capacityPerFluid + "L";
+		lines[fluidList.size() + 4] = "Running Cost: " + (-super.mEUt) + "EU/t";
+		lines[fluidList.size() + 5] = "Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus()) 
+				? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET 
+						: EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET);
+		lines[fluidList.size() + 6] = "---------------------------------------------";
 		return lines;
 	}
 	
+	@Override
+	public void saveNBTData(NBTTagCompound nbt) {
+		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
+		
+		nbt.setInteger("capacityPerFluid", capacityPerFluid);
+		nbt.setInteger("runningCost", runningCost);
+		nbt.setBoolean("doVoidExcess", doVoidExcess);
+		for(int i = 0; i < fluidList.size(); i++) {
+			nbt.setTag("" + i, fluidList.get(i).writeToNBT(new NBTTagCompound()));
+		}
+		
+		super.saveNBTData(nbt);
+	}
+	
+	@Override
+	public void loadNBTData(NBTTagCompound nbt) {
+		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
+		
+		capacityPerFluid = nbt.getInteger("capacityPerFluid");
+		runningCost = nbt.getInteger("runningCost");
+		doVoidExcess = nbt.getBoolean("doVoidExcess");
+		fluidList.clear();
+		for(int i = 0; i < 25; i++) {
+			final NBTTagCompound fnbt = (NBTTagCompound) nbt.getTag("" + i);
+			if(fnbt == null) {
+				break;
+			}
+			fluidList.add(FluidStack.loadFluidStackFromNBT(fnbt));
+		}
+		
+		super.loadNBTData(nbt);
+	}
+	
+	@Override
 	public boolean isGivingInformation() {
 		return true;
 	}

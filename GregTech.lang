@@ -2394,6 +2394,7 @@ languagefile {
     S:TileEntity_DESCRIPTION_5003_Index_2=------------------------------------------
     S:TileEntity_DESCRIPTION_5003_Index_20=   Maintenance Hatch: Any top or bottom casing
     S:TileEntity_DESCRIPTION_5003_Index_21=   I/O Hatches: Instead of any casing or glass, have to touch storage field
+    S:TileEntity_DESCRIPTION_5003_Index_22=   I/O Hatches: Instead of any casing or glass, have to touch storage field
     S:TileEntity_DESCRIPTION_5003_Index_3=Dimensions: 5x9x5 (WxHxL)
     S:TileEntity_DESCRIPTION_5003_Index_4=Structure:
     S:TileEntity_DESCRIPTION_5003_Index_5=   Controller: Top center

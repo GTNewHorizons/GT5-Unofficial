@@ -25,5 +25,7 @@ public class Block_TFFTStorageFieldBlockT1 extends Block {
 		super.setCreativeTab(CreativeTabs.tabMisc);
 		super.setBlockTextureName(KekzCore.MODID + ":" + "TFFTStorageFieldBlock1");
 		GameRegistry.registerBlock(getInstance(), blockName);
-	} 
+	}
+	
+	
 }

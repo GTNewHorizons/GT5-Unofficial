@@ -100,6 +100,15 @@ public class KekzCore {
 				'L', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1)
 		};
 		GT_ModHandler.addCraftingRecipe(sofc2.getStackForm(1), mk2_recipe);
+		final Object[] tfft_recipe = {
+				"HFH", "PVP", "CFC",
+				'H', OrePrefixes.pipeMedium.get(Materials.StainlessSteel),
+				'F', ItemList.Field_Generator_LV.get(1L, (Object[]) null),
+				'P', ItemList.Electric_Pump_HV.get(1L, (Object[]) null),
+				'V', OrePrefixes.rotor.get(Materials.VibrantAlloy),
+				'C', OrePrefixes.circuit.get(Materials.Advanced)
+		};
+		GT_ModHandler.addCraftingRecipe(fms.getStackForm(1), tfft_recipe);
 		
 		// Ceramic Electrolyte Units
 		final ItemStack[] yszUnit = {
@@ -126,6 +135,69 @@ public class KekzCore {
 				Materials.Hydrogen.getGas(16000), 
 				new ItemStack(Block_GDCUnit.getInstance(), 1), 
 				2400, 1920);
+		
+		// T.F.F.T Structure blocks
+		final ItemStack[] tfftcasing = {
+			GT_Utility.getIntegratedCircuit(6),
+			GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DarkSteel, 3),
+			GT_OreDictUnificator.get(OrePrefixes.plate, Materials.EnderPearl, 3),
+			GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
+		};
+		GT_Values.RA.addAssemblerRecipe(
+				tfftcasing, 
+				FluidRegistry.getFluidStack("molten.polytetrafluoroethylene", 144),
+				new ItemStack(Block_TFFTCasing.getInstance(), 1), 
+				200, 256);
+		final ItemStack[] tfftstoragefield1 = {
+			GT_Utility.getIntegratedCircuit(6),
+			GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 4),
+			GT_OreDictUnificator.get(OrePrefixes.plate, Materials.PulsatingIron, 1),
+			GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 1),
+			ItemList.Electric_Pump_LV.get(1L, (Object[]) null)
+		};
+		GT_Values.RA.addAssemblerRecipe(
+				tfftstoragefield1, 
+				FluidRegistry.getFluidStack("molten.glass", 144),
+				new ItemStack(Block_TFFTStorageFieldBlockT1.getInstance(), 1), 
+				200, 256);
+		final ItemStack[] tfftstoragefield2 = {
+				GT_Utility.getIntegratedCircuit(6),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 4),
+				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.PulsatingIron, 4),
+				GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.StainlessSteel, 1),
+				ItemList.Electric_Pump_MV.get(1L, (Object[]) null)
+			};
+		GT_Values.RA.addAssemblerRecipe(
+				tfftstoragefield2, 
+				FluidRegistry.getFluidStack("molten.plastic", 144),
+				new ItemStack(Block_TFFTStorageFieldBlockT2.getInstance(), 1), 
+				200, 480);
+		final ItemStack[] tfftstoragefield3 = {
+				GT_Utility.getIntegratedCircuit(6),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
+				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 2),
+				GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1),
+				ItemList.Field_Generator_LV.get(1L, (Object[]) null),
+				ItemList.Electric_Pump_HV.get(1L, (Object[]) null)
+			};
+		GT_Values.RA.addAssemblerRecipe(
+				tfftstoragefield3, 
+				FluidRegistry.getFluidStack("molten.epoxid", 576),
+				new ItemStack(Block_TFFTStorageFieldBlockT3.getInstance(), 1), 
+				300, 1920);
+		final ItemStack[] tfftstoragefield4 = {
+				GT_Utility.getIntegratedCircuit(6),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4),
+				GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.NiobiumTitanium, 1),
+				GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.TungstenSteel, 1),
+				ItemList.Field_Generator_HV.get(1L, (Object[]) null),
+				ItemList.Electric_Pump_EV.get(1L, (Object[]) null)
+			};
+		GT_Values.RA.addAssemblerRecipe(
+				tfftstoragefield4, 
+				FluidRegistry.getFluidStack("molten.epoxid", 1152),
+				new ItemStack(Block_TFFTStorageFieldBlockT4.getInstance(), 1), 
+				400, 4098);
 		
 		// Ceramic plates
 		GT_Values.RA.addAlloySmelterRecipe(

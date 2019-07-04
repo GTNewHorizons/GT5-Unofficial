@@ -76,6 +76,7 @@ item.kekztech_crafting_item.15.name=GDC Ceramic Plate
 tile.kekztech_gdcceramicelectrolyteunit_block.name=GDC Ceramic Electrolyte Unit
 tile.kekztech_yszceramicelectrolyteunit_block.name=YSZ Ceramic Electrolyte Unit
 
+tile.kekztech_tfftcasingblock_block.name=T.F.F.T Casing
 tile.kekztech_tfftstoragefieldblock1_block.name=T.F.F.T Storage Field Block (Tier I)
 tile.kekztech_tfftstoragefieldblock2_block.name=T.F.F.T Storage Field Block (Tier II)
 tile.kekztech_tfftstoragefieldblock3_block.name=T.F.F.T Storage Field Block (Tier III)
