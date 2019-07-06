@@ -40,7 +40,7 @@ public class GT_MetaTileEntity_WaterGenerator extends GT_MetaTileEntity_BasicTan
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (this.getBaseMetaTileEntity().isServerSide()) {
             if (this.getBaseMetaTileEntity().isAllowedToWork()) {
-                if (this.getFluidAmount() + this.generateWaterAmount() <= this.getCapacity() && this.getBaseMetaTileEntity().decreaseStoredEnergyUnits((32 * (1 << this.mTier - 1) * (1 << this.mTier - 1)), false)) {
+                if (this.getFluidAmount() + this.generateWaterAmount() <= this.getCapacity() && this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(GT_Values.V[this.mTier], false)) {
                     if (this.mFluid != null && this.mFluid.getFluidID() != Materials.Water.getFluid(1L).getFluidID()) {
                         this.mFluid = null;
                     }
@@ -122,6 +122,10 @@ public class GT_MetaTileEntity_WaterGenerator extends GT_MetaTileEntity_BasicTan
 
     public long maxEUStore() {
         return GT_Values.V[this.mTier] * 64L;
+    }
+	
+	public long maxEUInput() {
+    	return GT_Values.V[this.mTier];
     }
 
     public long maxSteamStore() {
