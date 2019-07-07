@@ -194,7 +194,10 @@ public class GT_Worldgen_GT_Ore_Layer
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, Blocks.netherrack) ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, Blocks.end_stone) ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockGranites) ||
-                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockStones) ) {
+                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockStones) ||
+                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb1) ||
+                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb2) ||
+                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb3) ) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -213,7 +216,10 @@ public class GT_Worldgen_GT_Ore_Layer
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, Blocks.netherrack) ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, Blocks.end_stone) ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockGranites) ||
-                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockStones) ) {
+                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockStones) ||
+                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb1) ||
+                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb2) ||
+                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb3) ) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
