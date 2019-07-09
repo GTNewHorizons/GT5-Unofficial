@@ -31,6 +31,8 @@ import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.Util.entriesSortedByValues;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsBA0;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.GregTech_API.*;
 import static gregtech.api.enums.GT_Values.E;
 
@@ -121,11 +123,14 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     };
 
     private static final String[][][] shapes = new String[][][]{shape0,shape1,shape2,shape3};
-    private static final Block[] blockType = new Block[]{sBlockCasings1, sBlockCasings5, sBlockCasings2, sBlockCasings5};//TODO Give it it's own casing type, add a primary coil type, add a secondary coil type and add toroid casing type
-    private static final byte[] blockMetaT0 = new byte[]{15, 0, 13, 0};
-    private static final byte[] blockMetaT1 = new byte[]{15, 1, 13, 0};
-    private static final byte[] blockMetaT2 = new byte[]{15, 2, 13, 0};
-    private static final byte[][] blockMetas = new byte[][]{blockMetaT0,blockMetaT1,blockMetaT2};
+    private static final Block[] blockType = new Block[]{sBlockCasingsBA0,sBlockCasingsBA0,sBlockCasingsBA0,sBlockCasingsBA0};
+    private static final byte[] blockMetaT0 = new byte[]{7, 0, 6, 8};
+    private static final byte[] blockMetaT1 = new byte[]{7, 1, 6, 8};
+    private static final byte[] blockMetaT2 = new byte[]{7, 2, 6, 8};
+    private static final byte[] blockMetaT3 = new byte[]{7, 3, 6, 8};
+    private static final byte[] blockMetaT4 = new byte[]{7, 4, 6, 8};
+    private static final byte[] blockMetaT5 = new byte[]{7, 5, 6, 8};
+    private static final byte[][] blockMetas = new byte[][]{blockMetaT0,blockMetaT1,blockMetaT2,blockMetaT3,blockMetaT4,blockMetaT5};
     private final HatchAdder[] addingMethods = new HatchAdder[]{this::addCapacitorToMachineList, this::addFrameToMachineList};
     private static final short[] casingTextures = new short[]{29, 0};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasings2, null};
@@ -250,25 +255,25 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         int yOffset;
         int zOffset;
 
-        if (coil0 == sBlockCasings5) {
+        if (coil0 == sBlockCasingsTT) {
             xOffset = 3;
             yOffset = 16;
             zOffset = 0;
             orientation = 0;
             tier = iGregTechTileEntity.getMetaIDOffset(coilX0, coilY0, coilZ0);
-        } else if (coil1 == sBlockCasings5) {
+        } else if (coil1 == sBlockCasingsTT) {
             xOffset = 3;
             yOffset = 0;
             zOffset = 0;
             orientation = 1;
             tier = iGregTechTileEntity.getMetaIDOffset(coilX0, -coilY0, coilZ0);
-        } else if (coil2 == sBlockCasings5) {
+        } else if (coil2 == sBlockCasingsTT) {
             xOffset = 16;
             yOffset = 3;
             zOffset = 0;
             orientation = 2;
             tier = iGregTechTileEntity.getMetaIDOffset(coilX1, coilY1, coilZ1);
-        } else if (coil3 == sBlockCasings5) {
+        } else if (coil3 == sBlockCasingsTT) {
             xOffset = 0;
             yOffset = 3;
             zOffset = 0;
@@ -291,7 +296,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilder(shapes[0], blockType, blockMetas[(stackSize-1)%3], 3, 16, 0, getBaseMetaTileEntity(), hintsOnly);
+        StructureBuilder(shapes[0], blockType, blockMetas[(stackSize-1)%6], 3, 16, 0, getBaseMetaTileEntity(), hintsOnly);
     }
 
     @Override
