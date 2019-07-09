@@ -24,14 +24,13 @@ import static com.github.technus.tectech.TecTech.tectechTexturePage1;
  */
 public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
     public static final byte texturePage=tectechTexturePage1;
-    public static final short textureOffset = texturePage << 7;//Start of PAGE 8 (which is the 9th page)  (8*128)
+    public static final short textureOffset = (texturePage << 7)+16;//Start of PAGE 8 (which is the 9th page)  (8*128)+16
     private static IIcon tM0, tM1, tM2, tM3, tM4, tM5, tM6, tM7, tM8;
-    private static IIcon[] debug = new IIcon[6];
 
     public GT_Block_CasingsBA0() {
         super(GT_Item_CasingsBA0.class, "gt.blockcasingsBA0", GT_Material_Casings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[texturePage][b] = new GT_CopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[texturePage][b+16] = new GT_CopiedBlockTexture(this, 6, b);
             /*IMPORTANT for block recoloring**/
         }
 
