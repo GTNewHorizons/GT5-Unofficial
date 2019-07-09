@@ -19,6 +19,7 @@ public class GT_MetaTileEntity_WetTransformer extends GT_MetaTileEntity_Transfor
 
     public GT_MetaTileEntity_WetTransformer(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName,aTier,aDescription,aTextures);
+        Util.setTier(aTier,this);
     }
 
     @Override

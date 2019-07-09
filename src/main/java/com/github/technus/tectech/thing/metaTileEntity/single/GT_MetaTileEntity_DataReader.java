@@ -47,6 +47,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
 
     public GT_MetaTileEntity_DataReader(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName,aTier,1,aDescription,aTextures,1,1,"dataReader.png","");
+        Util.setTier(aTier,this);
     }
 
     @Override
@@ -174,10 +175,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     }
 
     public static void addDataRender(Util.ItemStack_NoNBT stack, DataRender render){
-        ArrayList<DataRender> renders=RENDER_REGISTRY.get(stack);
-        if(renders==null){
-            RENDER_REGISTRY.put(stack,renders=new ArrayList<>());
-        }
+        ArrayList<DataRender> renders = RENDER_REGISTRY.computeIfAbsent(stack, k -> new ArrayList<>());
         if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
             render.loadResources();
         }
@@ -298,10 +296,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
             @Override
             public boolean canRender(ItemStack itemStack,byte tier) {
                 NBTTagCompound nbtTagCompound=itemStack.stackTagCompound;
-                if(nbtTagCompound!=null && nbtTagCompound.hasKey("output")){
-                    return true;
-                }
-                return false;
+                return nbtTagCompound != null && nbtTagCompound.hasKey("output");
             }
 
             @Override
