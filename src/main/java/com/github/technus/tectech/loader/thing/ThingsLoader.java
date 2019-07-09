@@ -7,10 +7,7 @@ import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turret
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.block.ReactorSimBlock;
-import com.github.technus.tectech.thing.casing.GT_Block_CasingsNH;
-import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
-import com.github.technus.tectech.thing.casing.GT_Block_HintTT;
-import com.github.technus.tectech.thing.casing.TT_Container_Casings;
+import com.github.technus.tectech.thing.casing.*;
 import com.github.technus.tectech.thing.item.*;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Textures;
@@ -34,6 +31,8 @@ public class ThingsLoader implements Runnable {
         TecTech.LOGGER.info("Added texture page if was null");
         TT_Container_Casings.sBlockCasingsTT = new GT_Block_CasingsTT();
         TecTech.LOGGER.info("Elemental Casing registered");
+        TT_Container_Casings.sBlockCasingsBA0 = new GT_Block_CasingsBA0();
+        TecTech.LOGGER.info("Nikolai's Casing registered");
         TT_Container_Casings.sHintCasingsTT = new GT_Block_HintTT();
         TecTech.LOGGER.info("Hint Blocks registered");
 

@@ -26,7 +26,6 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
     public static final byte texturePage=tectechTexturePage1;
     public static final short textureOffset = texturePage << 7;//Start of PAGE 8 (which is the 9th page)  (8*128)
     private static IIcon eM0, eM1, eM1s, eM2, eM2s, eM3, eM3s, eM4, eM5, eM6, eM7, eM7s, eM8, eM9, eM10, eM11, eM12, eM13, eM14;
-    private static IIcon tM0, tM1, tM2, tM3, tM4, tM5, tM6, tM7, tM8;
     private static IIcon[] debug = new IIcon[6];
 
     public GT_Block_CasingsTT() {
@@ -58,19 +57,6 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Debug Sides");//NOT REGISTER AS TEXTURE FOR HATCHES!
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".200.name", "Tesla Base Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".201.name", "Tesla Toroid Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".202.name", "Tesla Structural Frame");
-
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".203.name", "T0 Primary Tesla Windings");//TODO Decide tesla coil winding materials to rename
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".204.name", "T1 Primary Tesla Windings");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".205.name", "T2 Primary Tesla Windings");
-
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".206.name", "T3 Primary Tesla Windings");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".207.name", "T4 Primary Tesla Windings");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".208.name", "T5 Primary Tesla Windings");
-
-
         CustomItemList.eM_Power.set(new ItemStack(this, 1, 0));
 
         CustomItemList.eM_Computer_Casing.set(new ItemStack(this, 1, 1));
@@ -93,18 +79,6 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
         CustomItemList.eM_Ultimate_Containment_Field.set(new ItemStack(this, 1, 14));
 
         CustomItemList.debugBlock.set(new ItemStack(this, 1, 15));
-
-        CustomItemList.tM_TeslaBase.set(new ItemStack(this, 1, 200));
-        CustomItemList.tM_TeslaToroid.set(new ItemStack(this, 1, 201));
-        CustomItemList.tM_TeslaFrame.set(new ItemStack(this, 1, 202));
-
-        CustomItemList.tM_TeslaPrimary_0.set(new ItemStack(this, 1, 203));
-        CustomItemList.tM_TeslaPrimary_1.set(new ItemStack(this, 1, 204));
-        CustomItemList.tM_TeslaPrimary_2.set(new ItemStack(this, 1, 205));
-
-        CustomItemList.tM_TeslaSecondary_0.set(new ItemStack(this, 1, 206));
-        CustomItemList.tM_TeslaSecondary_1.set(new ItemStack(this, 1, 207));
-        CustomItemList.tM_TeslaSecondary_2.set(new ItemStack(this, 1, 208));
     }
 
     @Override
@@ -141,18 +115,6 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
         debug[3] = aIconRegister.registerIcon("gregtech:iconsets/DEBUG_3");
         debug[4] = aIconRegister.registerIcon("gregtech:iconsets/DEBUG_4");
         debug[5] = aIconRegister.registerIcon("gregtech:iconsets/DEBUG_5");
-
-        tM0 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");//TODO Configure custom tesla texture sets
-        tM1 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-        tM2 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-
-        tM3 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-        tM4 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-        tM5 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-
-        tM6 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-        tM7 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-        tM8 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
     }
 
     @Override
@@ -202,24 +164,6 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
                 return eM14;
             case 15:
                 return debug[aSide];
-            case 200:
-                return tM0;
-            case 201:
-                return tM1;
-            case 202:
-                return tM2;
-            case 203:
-                return tM3;
-            case 204:
-                return tM4;
-            case 205:
-                return tM5;
-            case 206:
-                return tM6;
-            case 207:
-                return tM7;
-            case 208:
-                return tM8;
             default:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
@@ -234,12 +178,7 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        //Add Tec's Casings
         for (int i = 0; i <= 15; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
-        }
-        //Add Bass' Casings
-        for (int i = 200; i <= 208; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
     }
