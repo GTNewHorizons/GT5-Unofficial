@@ -31,6 +31,7 @@ import com.github.bartimaeusnek.bartworks.common.items.*;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_ExperimentalFloodGate;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
+import com.github.bartimaeusnek.bartworks.common.tileentities.debug.CreativeScanner;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_DEHP;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_THTR;
@@ -138,6 +139,8 @@ public class ItemRegistry {
     public static void run() {
 
         if (newStuff) {
+            if (ConfigHandler.creativeScannerID != 0)
+                new CreativeScanner(ConfigHandler.creativeScannerID,"ZPM Creative Debug Scanner","ZPM Creative Debug Scanner",7);
             ItemRegistry.eic = new GT_TileEntity_ElectricImplosionCompressor(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 6, "ElectricImplosionCompressor", "Electric Implosion Compressor").getStackForm(1L);
             ItemRegistry.thtr = new GT_TileEntity_THTR(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 5, "THTR", "Thorium High Temperature Reactor").getStackForm(1L);
             GT_TileEntity_THTR.THTRMaterials.registeraTHR_Materials();

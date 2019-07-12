@@ -43,11 +43,11 @@ public final class BioObjectGetter {
     }
 
     public static NBTTagCompound getNBTTagFromBioPlasmid(BioPlasmid bioPlasmid) {
-        return getNBTTagFromBioData(convertBioPlasmidToData(bioPlasmid));
+        return BioObjectGetter.getNBTTagFromBioData(BioObjectGetter.convertBioPlasmidToData(bioPlasmid));
     }
 
     public static NBTTagCompound getNBTTagFromBioDNA(BioDNA bioDNA) {
-        return getNBTTagFromBioData(convertBioDNAtoData(bioDNA));
+        return BioObjectGetter.getNBTTagFromBioData(BioObjectGetter.convertBioDNAtoData(bioDNA));
     }
 
     public static NBTTagCompound getNBTTagFromBioData(BioData bioData) {
@@ -75,11 +75,11 @@ public final class BioObjectGetter {
     }
 
     public static BioPlasmid convertBioDNAtoBioPlasmid(BioDNA bioDNA) {
-        return convertDataToPlasmid(convertBioDNAtoData(bioDNA));
+        return BioObjectGetter.convertDataToPlasmid(BioObjectGetter.convertBioDNAtoData(bioDNA));
     }
 
     public static BioDNA convertBioPlasmidtoBioDNA(BioPlasmid bioPlasmid) {
-        return convertDataToDNA(convertBioPlasmidToData(bioPlasmid));
+        return BioObjectGetter.convertDataToDNA(BioObjectGetter.convertBioPlasmidToData(bioPlasmid));
     }
 
     public static Collection<ItemStack> getAllPetriDishes() {

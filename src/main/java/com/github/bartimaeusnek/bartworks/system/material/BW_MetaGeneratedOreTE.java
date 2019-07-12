@@ -29,6 +29,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -70,7 +71,7 @@ public class BW_MetaGeneratedOreTE extends TileEntity implements ITexturedTileEn
     }
 
     public ArrayList<ItemStack> getDrops(Block aDroppedOre) {
-        ArrayList<ItemStack> rList = new ArrayList();
+        ArrayList<ItemStack> rList = new ArrayList<ItemStack>();
         if (this.mMetaData < 0) {
             rList.add(new ItemStack(Blocks.cobblestone, 1, 0));
             return rList;

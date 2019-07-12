@@ -28,6 +28,8 @@ import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
@@ -60,6 +62,7 @@ public class AdditionalRecipes implements Runnable {
         GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(dust),Materials.Aluminium.getDust(1),Materials.Thorium.getDust(1),1000);
         GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(dust),Materials.Magnesium.getDust(1),Materials.Thorium.getDust(1),1000);
         GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(crushed), ItemList.Crop_Drop_Thorium.get(9),Materials.Water.getFluid(1000),Materials.Thorium.getMolten(144),WerkstoffLoader.Thorianit.get(crushedPurified,4),96,24);
+        //Tellurium
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(crushed,Materials.Lead,10L),GT_Utility.getIntegratedCircuit(17),GT_Values.NF,GT_Values.NF,Materials.Lead.getIngots(10),Materials.Tellurium.getNuggets(20),800,BW_Util.getMachineVoltageFromTier(2),722);
     }
-
 }

@@ -60,8 +60,10 @@ public final class BioVatLogicAdder {
             IsSv.put(stack, sv);
         }
 
+        public static int MaxSV = 150;
+
         public static int getMaxSv() {
-            int ret = 150;
+            int ret = MaxSV;
             Iterator it = BioVatLogicAdder.RadioHatch.getMaSv().iterator();
             while (it.hasNext()) {
                 BioVatLogicAdder.MaterialSvPair pair = (BioVatLogicAdder.MaterialSvPair) it.next();

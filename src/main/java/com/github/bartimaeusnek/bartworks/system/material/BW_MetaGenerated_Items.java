@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import com.github.bartimaeusnek.bartworks.API.IRadMaterial;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
@@ -34,22 +35,31 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import ic2.core.IC2Potion;
+import ic2.core.item.armor.ItemArmorHazmat;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import java.util.List;
 
 import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.werkstoffHashMap;
 
-public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item {
+public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRadMaterial {
 
     public static final CreativeTabs metaTab = new CreativeTabs("bartworksMetaMaterials") {
 
@@ -158,6 +168,27 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item {
     }
 
     @Override
+    public void onUpdate(ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand) {
+        super.onUpdate(aStack, aWorld, aPlayer, aTimer, aIsInHand);
+        if (aStack == null || aStack.getItem() == null || !(aPlayer instanceof EntityLivingBase))
+            return;
+
+        EntityLivingBase bPlayer = (EntityPlayer) aPlayer;
+        Werkstoff w = werkstoffHashMap.get((short)aStack.getItemDamage());
+        if (w == null || w.getStats() == null)
+            return;
+
+        if (w.getStats().isToxic() && !GT_Utility.isWearingFullBioHazmat(bPlayer)){
+            bPlayer.addPotionEffect(new PotionEffect(Potion.poison.getId(),80,4));
+        }
+
+        if (w.getStats().isRadioactive() && !GT_Utility.isWearingFullRadioHazmat(bPlayer)){
+            bPlayer.addPotionEffect(new PotionEffect(IC2Potion.radiation.id,80,4));
+        }
+
+    }
+
+    @Override
     public final IIcon getIconFromDamage(int aMetaData) {
         if (aMetaData < 0)
             return null;
@@ -173,5 +204,28 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item {
     @Override
     public int getItemStackLimit(ItemStack aStack) {
         return 64;
+    }
+
+    @Override
+    public int getRadiationLevel(ItemStack aStack) {
+        Werkstoff w = Werkstoff.werkstoffHashMap.get((short)aStack.getItemDamage());
+        return w.getStats().isRadioactive() ? (int) w.getStats().protons : 0;
+    }
+
+    @Override
+    public byte getAmountOfMaterial(ItemStack aStack) {
+        return (byte) (this.orePrefixes == OrePrefixes.stick ? 1 : this.orePrefixes == OrePrefixes.stickLong ? 2 : 0);
+    }
+
+    @Override
+    public short[] getColorForGUI(ItemStack aStack) {
+        Werkstoff w = Werkstoff.werkstoffHashMap.get((short)aStack.getItemDamage());
+        return w.getRGBA();
+    }
+
+    @Override
+    public String getNameForGUI(ItemStack aStack) {
+        Werkstoff w = Werkstoff.werkstoffHashMap.get((short)aStack.getItemDamage());
+        return w.getDefaultName();
     }
 }

@@ -37,6 +37,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+compileJava.options.encoding = 'UTF-8'
 
 ext.configFile = file "build.properties"
 configFile.withReader {

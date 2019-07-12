@@ -27,6 +27,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -34,12 +36,10 @@ import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnegative;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.UnaryOperator;
 
 import static gregtech.api.enums.GT_Values.V;
@@ -49,6 +49,89 @@ public class BW_Util {
     public static final int STANDART = 0;
     public static final int CLEANROOM = -100;
     public static final int LOWGRAVITY = -200;
+
+
+    public static String subscriptNumbers(String b){
+        char[] chars = b.toCharArray();
+        char[] nu = new char[chars.length];
+        for (int i = 0; i < chars.length; i++) {
+            switch (chars[i]){
+                case '0': nu[i] = '₀'; continue;
+                case '1': nu[i] = '₁'; continue;
+                case '2': nu[i] = '₂'; continue;
+                case '3': nu[i] = '₃'; continue;
+                case '4': nu[i] = '₄'; continue;
+                case '5': nu[i] = '₅'; continue;
+                case '6': nu[i] = '₆'; continue;
+                case '7': nu[i] = '₇'; continue;
+                case '8': nu[i] = '₈'; continue;
+                case '9': nu[i] = '₉'; continue;
+                default: nu[i] = chars[i];
+            }
+        }
+        return new String(nu);
+    }
+
+    public static String subscriptNumber(Number b){
+        char[] chars =  Long.toString(b.longValue()).toCharArray();
+        char[] nu = new char[chars.length];
+        for (int i = 0; i < chars.length; i++) {
+            switch (chars[i]){
+                case '0': nu[i] = '₀'; continue;
+                case '1': nu[i] = '₁'; continue;
+                case '2': nu[i] = '₂'; continue;
+                case '3': nu[i] = '₃'; continue;
+                case '4': nu[i] = '₄'; continue;
+                case '5': nu[i] = '₅'; continue;
+                case '6': nu[i] = '₆'; continue;
+                case '7': nu[i] = '₇'; continue;
+                case '8': nu[i] = '₈'; continue;
+                case '9': nu[i] = '₉';
+            }
+        }
+        return new String(nu);
+    }
+
+    public static String superscriptNumbers(String b){
+        char[] chars = b.toCharArray();
+        char[] nu = new char[chars.length];
+        for (int i = 0; i < chars.length; i++) {
+            switch (chars[i]){
+                case '0': nu[i] = '⁰'; continue;
+                case '1': nu[i] = '¹'; continue;
+                case '2': nu[i] = '²'; continue;
+                case '3': nu[i] = '³'; continue;
+                case '4': nu[i] = '⁴'; continue;
+                case '5': nu[i] = '⁵'; continue;
+                case '6': nu[i] = '⁶'; continue;
+                case '7': nu[i] = '⁷'; continue;
+                case '8': nu[i] = '⁸'; continue;
+                case '9': nu[i] = '⁹'; continue;
+                default: nu[i] = chars[i];
+            }
+        }
+        return new String(nu);
+    }
+
+    public static String superscriptNumber(Number b){
+        char[] chars =  Long.toString(b.longValue()).toCharArray();
+        char[] nu = new char[chars.length];
+        for (int i = 0; i < chars.length; i++) {
+            switch (chars[i]){
+                case '0': nu[i] = '⁰'; continue;
+                case '1': nu[i] = '¹'; continue;
+                case '2': nu[i] = '²'; continue;
+                case '3': nu[i] = '³'; continue;
+                case '4': nu[i] = '⁴'; continue;
+                case '5': nu[i] = '⁵'; continue;
+                case '6': nu[i] = '⁶'; continue;
+                case '7': nu[i] = '⁷'; continue;
+                case '8': nu[i] = '⁸'; continue;
+                case '9': nu[i] = '⁹';
+            }
+        }
+        return new String(nu);
+    }
 
     public static byte specialToByte(int aSpecialValue) {
         byte special = 0;
@@ -93,6 +176,10 @@ public class BW_Util {
 
     public static int getMachineVoltageFromTier(int tier) {
         return (int) (30 * Math.pow(4, (tier - 1)));
+    }
+
+    public static int getTierVoltage(int tier) {
+        return 8 << (2*tier);
     }
 
     public static boolean areStacksEqual(ItemStack aStack1, ItemStack aStack2) {
@@ -191,7 +278,7 @@ public class BW_Util {
 
         while (var3.hasNext()) {
             GT_MetaTileEntity_Hatch_Energy tHatch = (GT_MetaTileEntity_Hatch_Energy) var3.next();
-            if (base.isValidMetaTileEntity(tHatch)) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 if (rVoltage == 0 || rVoltage > tHatch.getBaseMetaTileEntity().getInputVoltage())
                     rVoltage = tHatch.getBaseMetaTileEntity().getInputVoltage();
                 rAmperage += tHatch.getBaseMetaTileEntity().getInputAmperage();
@@ -200,6 +287,22 @@ public class BW_Util {
 
         return rVoltage * rAmperage;
     }
+
+    public static FluidStack[] getFluidsFromInputHatches(GT_MetaTileEntity_MultiBlockBase aBaseMetaTileEntity){
+        ArrayList<FluidStack> tmp = new ArrayList<>();
+        for (GT_MetaTileEntity_Hatch_Input fip : aBaseMetaTileEntity.mInputHatches){
+            tmp.add(fip.getFluid());
+        }
+        return (FluidStack[]) tmp.toArray();
+    }
+    public static ItemStack[] getItemsFromInputBusses(GT_MetaTileEntity_MultiBlockBase aBaseMetaTileEntity){
+        ArrayList<ItemStack> tmp = new ArrayList<>();
+        for (GT_MetaTileEntity_Hatch_InputBus fip : aBaseMetaTileEntity.mInputBusses){
+            tmp.addAll(Arrays.asList(fip.mInventory));
+        }
+        return (ItemStack[]) tmp.toArray();
+    }
+
 
     public static EnumRarity getRarityFromByte(byte b) {
         switch (b) {
@@ -216,23 +319,23 @@ public class BW_Util {
 
 
     public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, Block block, int dmg, int offset, boolean insideCheck, Block inside, int dmginside, int aBaseCasingIndex) {
-        return check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, false, insideCheck, inside, dmginside, aBaseCasingIndex);
+        return BW_Util.check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, false, insideCheck, inside, dmginside, aBaseCasingIndex);
     }
 
     public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, Block block, int dmg, int offset, int aBaseCasingIndex) {
-        return check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, false, aBaseCasingIndex);
+        return BW_Util.check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, false, aBaseCasingIndex);
     }
 
     public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, Block block, int dmg, int offset, boolean controllerLayer, int aBaseCasingIndex) {
-        return check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, controllerLayer, false, aBaseCasingIndex);
+        return BW_Util.check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, controllerLayer, false, aBaseCasingIndex);
     }
 
     public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, Block block, int dmg, int offset, boolean controllerLayer, boolean freeCorners, int aBaseCasingIndex) {
-        return check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, controllerLayer, freeCorners, false, block, dmg, true, aBaseCasingIndex);
+        return BW_Util.check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, controllerLayer, freeCorners, false, block, dmg, true, aBaseCasingIndex);
     }
 
     public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, Block block, int dmg, int offset, boolean controllerLayer, boolean insideCheck, Block inside, int dmginside, int aBaseCasingIndex) {
-        return check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, controllerLayer, false, insideCheck, inside, dmginside, true, aBaseCasingIndex);
+        return BW_Util.check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, controllerLayer, false, insideCheck, inside, dmginside, true, aBaseCasingIndex);
     }
 
     /**
@@ -260,10 +363,20 @@ public class BW_Util {
                         continue;
                     if (controllerLayer && (xDir + x == 0 && zDir + z == 0))
                         continue;
-                    if (insideCheck && (Math.abs(x) < radius && Math.abs(z) != radius))
+                    if (insideCheck && (Math.abs(x) < radius && Math.abs(z) != radius)) {
                         if (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(inside) || (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmginside && dmginside > (-1))) {
-                            return false;
+                            if (!(allowHatches && (
+                                    ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addDynamoToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
+                                            ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
+                                            ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addMaintenanceToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
+                                            ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
+                                            ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
+                                            ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex)
+                            ))) {
+                                return false;
+                            }
                         }
+                    }
                     if (((!(Math.abs(x) < radius && Math.abs(z) != radius))) && (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block) || (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmg && dmg > (-1)))) {
                         if (!(allowHatches && (
                                 ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addDynamoToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||

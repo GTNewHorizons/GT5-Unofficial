@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
+import com.github.bartimaeusnek.bartworks.API.IRadMaterial;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.gui.GT_GUIContainer_RadioHatch;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_RadioHatch;
@@ -168,6 +169,24 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
 
             if (lStack == null)
                 return;
+
+            if (lStack.getItem() instanceof IRadMaterial) {
+                IRadMaterial material = ((IRadMaterial) lStack.getItem());
+                int sv = material.getRadiationLevel(lStack);
+                if (sv > BioVatLogicAdder.RadioHatch.getMaxSv())
+                    BioVatLogicAdder.RadioHatch.MaxSV = sv;
+                if (this.mass == 0 || this.sievert == sv) {
+                    if (this.mass < this.cap) {
+                        this.mass = material.getAmountOfMaterial(lStack);
+                        this.sievert = sv;
+                        this.mInventory[0].stackSize--;
+                        this.updateSlots();
+                        this.colorForGUI = material.getColorForGUI(lStack);
+                        this.material = material.getNameForGUI(lStack);
+                        return;
+                    }
+                }
+            }
 
             if (GT_Utility.areStacksEqual(lStack, ItemList.NaquadahCell_1.get(1)) || GT_Utility.areStacksEqual(lStack, ItemList.NaquadahCell_2.get(1)) || GT_Utility.areStacksEqual(lStack, ItemList.NaquadahCell_4.get(1)) || GT_Utility.areStacksEqual(lStack, ItemList.ThoriumCell_1.get(1)) || GT_Utility.areStacksEqual(lStack, ItemList.ThoriumCell_2.get(1)) || GT_Utility.areStacksEqual(lStack, ItemList.ThoriumCell_4.get(1)) || GT_Utility.areStacksEqual(lStack, ItemList.Uraniumcell_1.get(1)) || GT_Utility.areStacksEqual(lStack, ItemList.Uraniumcell_2.get(1)) || GT_Utility.areStacksEqual(lStack, ItemList.Uraniumcell_4.get(1)) || GT_Utility.areStacksEqual(lStack, ItemList.Moxcell_1.get(1)) || GT_Utility.areStacksEqual(lStack, ItemList.Moxcell_2.get(1)) || GT_Utility.areStacksEqual(lStack, ItemList.Moxcell_4.get(1))) {
                 Materials materials = Materials.Uranium;

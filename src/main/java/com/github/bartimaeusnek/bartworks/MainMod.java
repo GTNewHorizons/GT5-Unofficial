@@ -30,10 +30,7 @@ import com.github.bartimaeusnek.bartworks.client.creativetabs.BioTab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.GT2Tab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.bartworksTab;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
-import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
-import com.github.bartimaeusnek.bartworks.common.loaders.GTNHBlocks;
-import com.github.bartimaeusnek.bartworks.common.loaders.LoaderRegistry;
+import com.github.bartimaeusnek.bartworks.common.loaders.*;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
 import com.github.bartimaeusnek.bartworks.server.EventHandler.ServerEventHandler;
 import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
@@ -160,8 +157,13 @@ public final class MainMod {
     public void onServerStarted(FMLServerStartedEvent event) {
         OreDictHandler.adaptCacheForWorld();
         WerkstoffLoader.removeIC2Recipes();
+        this.addElectricImplosionCompressorRecipes();
+        new CircuitImprintLoader().run();
+    }
+
+    private void addElectricImplosionCompressorRecipes(){
         if (eicMap == null) {
-            eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
+            eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet<GT_Recipe>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
             recipeLoop:
             for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList) {
                 if (recipe == null || recipe.mInputs == null)
@@ -169,23 +171,20 @@ public final class MainMod {
                 try {
                     ItemStack input = recipe.mInputs[0];
                     int i = 0;
-                    float durMod = 0;
                     if (this.checkForExplosives(recipe.mInputs[1])) {
-                        if (GT_Utility.areStacksEqual(recipe.mInputs[1], GT_ModHandler.getIC2Item("industrialTnt", 1L)))
-                            durMod += ((float) input.stackSize * 2f);
-                        else
-                            continue;
+                        continue;
                     }
                     while (this.checkForExplosives(input)) {
-                        if (GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L)))
-                            durMod += ((float) input.stackSize * 2f);
+                        if (GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L))) {
+                            i++;
+                            input = recipe.mInputs[i];
+                        }
                         else
                             continue recipeLoop;
-                        i++;
-                        input = recipe.mInputs[i];
+
                     }
 
-                    eicMap.addRecipe(true, new ItemStack[]{input}, recipe.mOutputs, null, null, null, (int) Math.floor(Math.max((float) recipe.mDuration * durMod, 20f)), BW_Util.getMachineVoltageFromTier(10), 0);
+                    eicMap.addRecipe(true, new ItemStack[]{input}, recipe.mOutputs, null, null, null, recipe.mDuration, BW_Util.getMachineVoltageFromTier(10), 0);
                 } catch (ArrayIndexOutOfBoundsException e) {
                     MainMod.LOGGER.error("CAUGHT DEFECTIVE IMPLOSION COMPRESSOR RECIPE!");
                     e.printStackTrace();
@@ -197,4 +196,5 @@ public final class MainMod {
     private boolean checkForExplosives(ItemStack input) {
         return (GT_Utility.areStacksEqual(input, new ItemStack(Blocks.tnt)) || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L)) || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("dynamite", 1L)) || GT_Utility.areStacksEqual(input, ItemList.Block_Powderbarrel.get(1L)));
     }
+
 }

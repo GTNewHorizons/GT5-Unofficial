@@ -42,6 +42,7 @@ public class ConfigHandler {
     public static int ross128batier = 3;
     public static int landerType = 3;
     public static int ross128bRuinChance = 512;
+    public static int creativeScannerID = 0;
 
     public static long energyPerCell = 1000000L;
 
@@ -63,7 +64,7 @@ public class ConfigHandler {
 
     public ConfigHandler(Configuration C) {
         ConfigHandler.c = C;
-
+        ConfigHandler.creativeScannerID = ConfigHandler.c.get("System", "Creative Debug Scanner", 0, "ID for the Creative Debug Scanner Block").getInt(0);
         ConfigHandler.tooltips = ConfigHandler.c.get("System", "BartWorksToolTips", true, "If you wish to enable extra tooltips").getBoolean(true);
         ConfigHandler.IDOffset = ConfigHandler.c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + ConfigHandler.IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").getInt(12600);
         ConfigHandler.energyPerCell = ConfigHandler.c.get("Multiblocks", "energyPerLESUCell", 1000000, "This will set Up the Energy per LESU Cell", 1000000, Integer.MAX_VALUE).getInt(1000000);
