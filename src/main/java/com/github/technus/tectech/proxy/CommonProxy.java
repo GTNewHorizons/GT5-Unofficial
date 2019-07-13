@@ -98,8 +98,6 @@ public class CommonProxy implements IGuiHandler {
 
     @SubscribeEvent
     public void onServerTickEvent(TickEvent.ServerTickEvent aEvent) {
-        if(aEvent.phase== TickEvent.Phase.START){
-            TecTech.chunkDataHandler.tick(aEvent);
-        }
+        TecTech.chunkDataHandler.tickData(aEvent);
     }
 }

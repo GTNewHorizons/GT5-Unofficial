@@ -7,56 +7,45 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.world.ChunkDataEvent;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class ChunkDataHandler {
-    private final String TEC_TAG="TecTechTag";
-    private final HashMap<Integer,HashMap<ChunkCoordIntPair, NBTChunk>> dimensionWiseChunkData=new HashMap<>();
-    private final HashMap<String,HashMap<Integer,HashMap<ChunkCoordIntPair, NBTTagCompound>>> dimensionWiseMetaChunkData=new HashMap<>();
+    private final String BASE_TAG_NAME ="TecTechData";
+    private final                HashMap<Integer,HashMap<ChunkCoordIntPair, NBTChunk>> dimensionWiseChunkData=new HashMap<>();
+    private final HashMap<String,HashMap<Integer,ChunkHashMap                       >> dimensionWiseMetaChunkData=new HashMap<>();
     private final HashMap<String,ChunkMetaDataHandler> metaDataHandlerHashMap =new HashMap<>();
 
     public void handleChunkSaveEvent(ChunkDataEvent.Save event) {
         HashMap<ChunkCoordIntPair, NBTChunk> dimensionData=dimensionWiseChunkData.get(event.world.provider.dimensionId);
         NBTChunk chunkData =dimensionData!=null?dimensionData.get(event.getChunk().getChunkCoordIntPair()):null;
         if(chunkData==null) {
-            event.getData().removeTag(TEC_TAG);
+            event.getData().removeTag(BASE_TAG_NAME);
         } else {
             chunkData.isLoaded=true;
-            event.getData().setTag(TEC_TAG,chunkData.data);
+            event.getData().setTag(BASE_TAG_NAME,chunkData.data);
         }
     }
 
     public void handleChunkLoadEvent(ChunkDataEvent.Load event) {
-        NBTTagCompound loadedTag=event.getData().getCompoundTag(TEC_TAG);
+        NBTTagCompound loadedTag=event.getData().getCompoundTag(BASE_TAG_NAME);
         if(loadedTag.hasNoTags()){
             return;
         }
 
         int dimId=event.world.provider.dimensionId;
         HashMap<ChunkCoordIntPair, NBTChunk> dimensionMemory=
-                dimensionWiseChunkData.computeIfAbsent(dimId,dim->{
-                    for (String meta : metaDataHandlerHashMap.keySet()) {
-                        dimensionWiseMetaChunkData.get(meta).put(dim, new HashMap<>(1024));
-                    }
-                    return new HashMap<>(1024);
-                });
+                dimensionWiseChunkData.computeIfAbsent(dimId, this::createDimensionData);
 
         ChunkCoordIntPair chunkCoordIntPair=event.getChunk().getChunkCoordIntPair();
         NBTChunk chunkMemory =dimensionMemory.get(chunkCoordIntPair);
         Set<String> loadedKeys=loadedTag.func_150296_c();
 
         if(chunkMemory==null) {
-            chunkMemory=new NBTChunk(/*(NBTTagCompound)*/loadedTag/*.copy()*/,true);
-            for (String s :loadedKeys) {
-                if (metaDataHandlerHashMap.containsKey(s)) {
-                    dimensionWiseMetaChunkData.get(s).get(dimId).put(chunkCoordIntPair,chunkMemory.data.getCompoundTag(s));
-                } else {
-                    throw new RuntimeException("Missing meta handler!" + s);
-                }
-            }
+            chunkMemory=new NBTChunk(loadedTag,true);
             dimensionMemory.put(chunkCoordIntPair,chunkMemory);
+            for (String s :loadedKeys) {
+                dimensionWiseMetaChunkData.get(s).get(dimId).putLoaded(chunkCoordIntPair, loadedTag.getCompoundTag(s));
+            }
         }else if(!chunkMemory.isLoaded) {
             chunkMemory.isLoaded=true;
 
@@ -65,39 +54,26 @@ public class ChunkDataHandler {
 
             if (tagsDuplicated.isEmpty()) {
                 for (String s:loadedKeys) {
-                    if (metaDataHandlerHashMap.containsKey(s)) {
-                        chunkMemory.data.setTag(s,loadedTag.getTag(s)/*.copy()*/);
-                        dimensionWiseMetaChunkData.get(s).get(dimId).put(chunkCoordIntPair,chunkMemory.data.getCompoundTag(s));
-                    } else {
-                        throw new RuntimeException("Missing meta handler!" + s);
-                    }
+                    NBTTagCompound tag=loadedTag.getCompoundTag(s);
+                    chunkMemory.data.setTag(s,tag);
+                    dimensionWiseMetaChunkData.get(s).get(dimId).putLoaded(chunkCoordIntPair,tag);
                 }
             } else {
                 for (String s : loadedKeys) {
+                    NBTTagCompound memory=chunkMemory.data.getCompoundTag(s);
                     if(tagsDuplicated.contains(s)){
-                        ChunkMetaDataHandler metaDataHandler = metaDataHandlerHashMap.get(s);
-                        if (metaDataHandler == null) {
-                            throw new RuntimeException("Missing meta handler!" + s);
-                        } else {
-                            metaDataHandler.mergeData(
-                                    chunkMemory.data.getCompoundTag(s),
-                                    loadedTag.getCompoundTag(s));
-                        }
+                        metaDataHandlerHashMap.get(s).mergeData(memory,loadedTag.getCompoundTag(s));
                     }else {
-                        if (metaDataHandlerHashMap.containsKey(s)) {
-                            chunkMemory.data.setTag(s,loadedTag.getTag(s));
-                            dimensionWiseMetaChunkData.get(s).get(dimId).put(chunkCoordIntPair,chunkMemory.data.getCompoundTag(s));
-                        } else {
-                            throw new RuntimeException("Missing meta handler!" + s);
-                        }
+                        chunkMemory.data.setTag(s,loadedTag.getCompoundTag(s));
+                        dimensionWiseMetaChunkData.get(s).get(dimId).putLoaded(chunkCoordIntPair,memory);
                     }
                 }
             }
         }
     }
 
-    public void tick(TickEvent.ServerTickEvent event){
-        dimensionWiseMetaChunkData.forEach((k,v)-> metaDataHandlerHashMap.get(k).TickData(v,event));
+    public void tickData(TickEvent.ServerTickEvent event){
+        dimensionWiseMetaChunkData.forEach((k, v) -> metaDataHandlerHashMap.get(k).TickData(v, event));
     }
 
     public void onServerStarting() {
@@ -127,16 +103,115 @@ public class ChunkDataHandler {
                 .computeIfAbsent(chunk,chunkCoordIntPair -> handler.createData());
     }
 
-    public HashMap<Integer,HashMap<ChunkCoordIntPair, NBTTagCompound>> getChunkData(ChunkMetaDataHandler chunkMetaDataHandler){
+    public HashMap<Integer,ChunkHashMap> getChunkData(ChunkMetaDataHandler chunkMetaDataHandler){
         return dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName());
     }
 
-    public HashMap<ChunkCoordIntPair, NBTTagCompound> getChunkData(ChunkMetaDataHandler chunkMetaDataHandler,World world){
+    public ChunkHashMap getChunkData(ChunkMetaDataHandler chunkMetaDataHandler,World world){
         return dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()).get(world.provider.dimensionId);
     }
 
-    public HashMap<ChunkCoordIntPair, NBTTagCompound> getChunkData(ChunkMetaDataHandler chunkMetaDataHandler,int world){
+    public ChunkHashMap getChunkData(ChunkMetaDataHandler chunkMetaDataHandler,int world){
         return dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()).get(world);
+    }
+
+    private HashMap<ChunkCoordIntPair, NBTChunk> createDimensionData(Integer dim) {
+        HashMap<ChunkCoordIntPair, NBTChunk> map = new HashMap<>();
+        for (String meta : metaDataHandlerHashMap.keySet()) {
+            dimensionWiseMetaChunkData.get(meta).put(dim, new ChunkHashMap(meta, map));
+        }
+        return map;
+    }
+
+    public static class ChunkHashMap implements Map<ChunkCoordIntPair,NBTTagCompound>{
+        private final HashMap<ChunkCoordIntPair,NBTChunk> storage;
+        private final HashMap<ChunkCoordIntPair,NBTTagCompound> storageMeta=new HashMap<>(1024);
+        private final String meta;
+
+        private ChunkHashMap(String meta, HashMap<ChunkCoordIntPair, NBTChunk> storage) {
+            this.storage =storage;
+            this.meta=meta;
+        }
+
+        private void putLoaded(ChunkCoordIntPair key, NBTTagCompound value) {
+            storageMeta.put(key, value);
+        }
+
+        @Override
+        public NBTTagCompound remove(Object key) {
+            NBTTagCompound compound=storageMeta.remove(key);
+            if(compound!=null) {
+                NBTChunk chunk = storage.get(key);
+                chunk.data.removeTag(meta);
+                if(chunk.data.hasNoTags()){
+                    storage.remove(key);
+                }
+            }
+            return compound;
+        }
+
+        @Override
+        public NBTTagCompound put(ChunkCoordIntPair key, NBTTagCompound value) {
+            NBTChunk chunk = storage.get(key);
+            if(chunk==null){
+                NBTTagCompound base=new NBTTagCompound();
+                base.setTag(meta,value);
+                storage.put(key,new NBTChunk(base,false));
+            }else {
+                chunk.data.setTag(meta,value);
+            }
+            return storageMeta.put(key, value);
+        }
+
+        @Override
+        public int size() {
+            return storageMeta.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return storageMeta.isEmpty();
+        }
+
+        @Override
+        public NBTTagCompound get(Object key) {
+            return storageMeta.get(key);
+        }
+
+        @Override
+        public void clear() {
+            entrySet().forEach(this::remove);
+        }
+
+        @Override
+        public void putAll(Map<? extends ChunkCoordIntPair, ? extends NBTTagCompound> m) {
+            m.forEach(this::put);
+        }
+
+        @Override
+        public boolean containsKey(Object key) {
+            return storageMeta.containsKey(key);
+        }
+
+        @Override
+        public boolean containsValue(Object value) {
+            return storageMeta.containsValue(value);
+        }
+
+        @Override
+        public Set<ChunkCoordIntPair> keySet() {
+            return storageMeta.keySet();
+        }
+
+        @Override
+        public Collection<NBTTagCompound> values() {
+            return storageMeta.values();
+        }
+
+        @Override
+        public Set<Entry<ChunkCoordIntPair, NBTTagCompound>> entrySet() {
+            return storageMeta.entrySet();
+        }
     }
 
     private static class NBTChunk {
