@@ -166,7 +166,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_SETTING_NAME = (base, p)-> "Scan time Min setting";
     private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_SETTING_NAME = (base, p)-> "Overdrive setting";
 
-    private final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_STATUS=(base, p)->{
+    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)){
             System.out.println("HIS LO");
@@ -174,15 +174,15 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         System.out.println("HIS LO");
         System.out.println(value);
         if(value<0.05) return STATUS_TOO_LOW;
-        if(value>histHighSetting.get()) return STATUS_TOO_HIGH;
+        if(value>base.histHighSetting.get()) return STATUS_TOO_HIGH;
         return STATUS_OK;
     };
-    private final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_STATUS=(base, p)->{
+    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
         System.out.println("HIS HI");
         System.out.println(value);
-        if(value<histLowSetting.get()) return STATUS_TOO_LOW;
+        if(value<base.histLowSetting.get()) return STATUS_TOO_LOW;
         if(value>0.95) return STATUS_TOO_HIGH;
         return STATUS_OK;
     };
@@ -242,6 +242,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         super(aName);
     }
 
+    @Override
     protected void parametersInstantiation_EM() {
         Parameters.Group hatch_0=parametrization.getGroup(0, true);
         Parameters.Group hatch_1=parametrization.getGroup(1, true);
