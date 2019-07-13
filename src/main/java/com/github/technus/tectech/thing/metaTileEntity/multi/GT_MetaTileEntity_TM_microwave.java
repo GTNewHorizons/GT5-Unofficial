@@ -62,7 +62,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     //region parameters
     protected Parameters.Group.ParameterIn powerSetting,timerSetting;
     protected Parameters.Group.ParameterOut timerValue,remainingTime;
-    private static final NameFunction<GT_MetaTileEntity_TM_microwave> POWER_NAME = (base, p)-> "Power setting";
+    private static final NameFunction<GT_MetaTileEntity_TM_microwave> POWER_SETTING_NAME = (base, p)-> "Power setting";
     private static final NameFunction<GT_MetaTileEntity_TM_microwave> TIMER_SETTING_NAME = (base, p)-> "Timer setting";
     private static final NameFunction<GT_MetaTileEntity_TM_microwave> TIMER_REMAINING_NAME = (base, p)-> "Timer remaining";
     private static final NameFunction<GT_MetaTileEntity_TM_microwave> TIMER_VALUE_NAME = (base,p)-> "Timer value";
@@ -89,7 +89,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     @Override
     protected void parametersInstantiation_EM() {
         Parameters.Group hatch_0=parametrization.getGroup(0, true);
-        powerSetting=hatch_0.makeInParameter(0,1000, POWER_NAME,POWER_STATUS);
+        powerSetting=hatch_0.makeInParameter(0,1000, POWER_SETTING_NAME,POWER_STATUS);
         timerSetting=hatch_0.makeInParameter(1,360, TIMER_SETTING_NAME,TIMER_STATUS);
         timerValue=hatch_0.makeOutParameter(0,0,TIMER_VALUE_NAME,TIMER_STATUS);
         remainingTime=hatch_0.makeOutParameter(1,360,TIMER_REMAINING_NAME,TIMER_STATUS);

@@ -15,7 +15,6 @@ import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-import static com.github.technus.tectech.CommonValues.VN;
 import static com.github.technus.tectech.Reference.MODID;
 
 
@@ -41,6 +40,9 @@ public final class TeslaCoilCapacitor extends Item {
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.BASS_MARK);
         switch (aStack.getItemDamage()) {
+            case 0://"LV"
+                aList.add("Stores energy for tesla towers! (LV)");
+                break;
             case 1://"MV"
                 aList.add("Stores energy for tesla towers! (MV)");
                 break;
@@ -62,8 +64,8 @@ public final class TeslaCoilCapacitor extends Item {
             case 7://"UV"
                 aList.add("Stores energy for tesla towers! (UV)");
                 break;
-            default://"LV"
-                aList.add("Stores energy for tesla towers! (LV)");
+            default://
+                aList.add("Yeet this broken item into some spicy water!");
                 break;
         }
         aList.add(EnumChatFormatting.BLUE + "Insert into a Capacitor hatch of a Tesla Tower");

@@ -25,7 +25,16 @@ import static com.github.technus.tectech.TecTech.tectechTexturePage1;
 public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
     public static final byte texturePage=tectechTexturePage1;
     public static final short textureOffset = (texturePage << 7)+16;//Start of PAGE 8 (which is the 9th page)  (8*128)+16
-    private static IIcon tM0, tM1, tM2, tM3, tM4, tM5, tM6, tM7, tM8;
+
+    private static IIcon[] tM0 = new IIcon[2];
+    private static IIcon[] tM1 = new IIcon[2];
+    private static IIcon[] tM2 = new IIcon[2];
+    private static IIcon[] tM3 = new IIcon[2];
+    private static IIcon[] tM4 = new IIcon[2];
+    private static IIcon[] tM5 = new IIcon[2];
+    private static IIcon[] tM6 = new IIcon[2];
+    private static IIcon tM7;
+    private static IIcon[] tM8 = new IIcon[2];
 
     public GT_Block_CasingsBA0() {
         super(GT_Item_CasingsBA0.class, "gt.blockcasingsBA0", GT_Material_Casings.INSTANCE);
@@ -43,7 +52,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Tesla Base Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Tesla Toroid Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Tesla Structural Frame");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Tesla Secondary Windings");
 
         CustomItemList.tM_TeslaPrimary_0.set(new ItemStack(this, 1, 0));
         CustomItemList.tM_TeslaPrimary_1.set(new ItemStack(this, 1, 1));
@@ -59,39 +68,95 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
 
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
-        tM0 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-        tM1 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-        tM2 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-        tM3 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-        tM4 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-        tM5 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
+        tM0[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_0");
+        tM0[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_0");
+        tM1[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_1");
+        tM1[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_1");
+        tM2[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_2");
+        tM2[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_2");
+        tM3[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_3");
+        tM3[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_3");
+        tM4[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_4");
+        tM4[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_4");
+        tM5[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_5");
+        tM5[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_5");
 
-        tM6 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-        tM7 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
-        tM8 = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
+        tM6[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_BASE_TOP_BOTTOM");
+        tM6[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_BASE_SIDES");
+        tM7 = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_TOROID");
+        tM8[0] = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER");
+        tM8[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_SECONDARY");
     }
 
     @Override
     public IIcon getIcon(int aSide, int aMeta) {
         switch (aMeta) {
             case 0:
-                return tM0;
+                switch (aSide){
+                    case 0:
+                    case 1:
+                        return tM0[0];
+                    default:
+                        return tM0[1];
+                }
             case 1:
-                return tM1;
+                switch (aSide){
+                    case 0:
+                    case 1:
+                        return tM1[0];
+                    default:
+                        return tM1[1];
+                }
             case 2:
-                return tM2;
+                switch (aSide){
+                    case 0:
+                    case 1:
+                        return tM2[0];
+                    default:
+                        return tM2[1];
+                }
             case 3:
-                return tM3;
+                switch (aSide){
+                    case 0:
+                    case 1:
+                        return tM3[0];
+                    default:
+                        return tM3[1];
+                }
             case 4:
-                return tM4;
+                switch (aSide){
+                    case 0:
+                    case 1:
+                        return tM4[0];
+                    default:
+                        return tM4[1];
+                }
             case 5:
-                return tM5;
+                switch (aSide){
+                    case 0:
+                    case 1:
+                        return tM5[0];
+                    default:
+                        return tM5[1];
+                }
             case 6:
-                return tM6;
+                switch (aSide){
+                    case 0:
+                    case 1:
+                        return tM6[0];
+                    default:
+                        return tM6[1];
+                }
             case 7:
                 return tM7;
             case 8:
-                return tM8;
+                switch (aSide){
+                    case 0:
+                    case 1:
+                        return tM8[0];
+                    default:
+                        return tM8[1];
+                }
             default:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }

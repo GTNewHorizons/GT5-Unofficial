@@ -642,6 +642,8 @@ public class MachineLoader implements Runnable {
 
         GT_MetaTileEntity_DataReader.run();
 
+        GT_MetaTileEntity_Hatch_Capacitor.run();
+
         if (!Loader.isModLoaded(Reference.DREAMCRAFT)) {
             new NoDreamCraftMachineLoader().run();
         }

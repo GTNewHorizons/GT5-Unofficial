@@ -6,10 +6,8 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Capacitor;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Capacitor;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -34,8 +32,8 @@ import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
  * Created by Tec on 03.04.2017.
  */
 public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
-    private static Textures.BlockIcons.CustomIcon EM_H;
-    private static Textures.BlockIcons.CustomIcon EM_H_ACTIVE;
+    private static Textures.BlockIcons.CustomIcon TM_H;
+    private static Textures.BlockIcons.CustomIcon TM_H_ACTIVE;
     private static Map<String, GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> componentBinds = new HashMap<>();
     public float energyStoredFrac = 0;
 
@@ -69,18 +67,18 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_H_ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/EM_HOLDER_ACTIVE");
-        EM_H = new Textures.BlockIcons.CustomIcon("iconsets/EM_HOLDER");
+        TM_H_ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_CAPS_ACTIVE");
+        TM_H = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_CAPS");
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_H_ACTIVE)};
+        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TM_H_ACTIVE)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_H)};
+        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TM_H)};
     }
 
     @Override
@@ -157,9 +155,11 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
         long tEnergyMax = 0;
         for (int i = 0; i < mInventory.length; i++) {
             if (mInventory[i] == null || mInventory[i].stackSize != 1) {
+                System.out.println("FUK");
                 continue;
             }
             CapacitorComponent cap = componentBinds.get(getUniqueIdentifier(mInventory[i]));
+            System.out.println(getUniqueIdentifier(mInventory[i]));
             if (cap != null && cap.tier > tier) {
                 tier = cap.tier;
             }

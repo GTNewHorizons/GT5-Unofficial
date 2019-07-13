@@ -58,7 +58,7 @@ public class GT_Item_CasingsBA0 extends GT_Item_Casings_Abstract {
                 aList.add("Well it does things too...");
                 aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "[Use this coil!]");
                 break;
-            case 8://"Tesla Structural Frame"
+            case 8://"Tesla Secondary Windings"
                 aList.add("Reinforced accelerator tunnel.");
                 aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Most advanced pipe ever.");
                 break;
