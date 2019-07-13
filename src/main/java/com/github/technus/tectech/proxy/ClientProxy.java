@@ -11,8 +11,6 @@ import com.github.technus.tectech.thing.block.QuantumStuffRender;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -25,7 +23,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.world.ChunkDataEvent;
 import org.lwjgl.opengl.GL11;
 
 public class ClientProxy extends CommonProxy {
@@ -140,20 +137,5 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void renderAABB(AxisAlignedBB box) {
         renderAABB(Minecraft.getMinecraft().theWorld,box);
-    }
-
-    @SubscribeEvent
-    public void handleChunkSaveEvent(ChunkDataEvent.Save event) {
-        super.handleChunkSaveEvent(event);
-    }
-
-    @SubscribeEvent
-    public void handleChunkLoadEvent(ChunkDataEvent.Load event) {
-        super.handleChunkLoadEvent(event);
-    }
-
-    @SubscribeEvent
-    public void onServerTickEvent(TickEvent.ServerTickEvent aEvent) {
-        super.onServerTickEvent(aEvent);
     }
 }

@@ -9,17 +9,16 @@ import com.github.technus.tectech.mechanics.chunkData.ChunkDataHandler;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.GiveEM;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.ListEM;
 import com.github.technus.tectech.proxy.CommonProxy;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
 import gregtech.GT_Mod;
 import gregtech.common.GT_Proxy;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -79,6 +78,11 @@ public class TecTech {
             LOGGER.debug("moduleAdminErrorLogs is enabled");
             moduleAdminErrorLogs = new IngameErrorLog();
         }
+
+        chunkDataHandler=new ChunkDataHandler();
+        chunkDataHandler.registerChunkMetaDataHandler(anomalyHandler=new AnomalyHandler());
+        FMLCommonHandler.instance().bus().register(chunkDataHandler);
+        MinecraftForge.EVENT_BUS.register(chunkDataHandler);
 
         MainLoader.preLoad();
     }
@@ -184,8 +188,6 @@ public class TecTech {
     @Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         MainLoader.postLoad();
-        chunkDataHandler=new ChunkDataHandler();
-        chunkDataHandler.registerChunkMetaDataHandler(anomalyHandler=new AnomalyHandler());
     }
 
     @Mod.EventHandler
@@ -199,7 +201,7 @@ public class TecTech {
     }
 
     @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent aEvent) {
-        chunkDataHandler.onServerStarting();
+    public void onServerAboutToStart(FMLServerAboutToStartEvent aEvent) {
+        chunkDataHandler.clearData();
     }
 }

@@ -27,7 +27,7 @@ public class AnomalyHandler implements ChunkMetaDataHandler {
     }
 
     @Override
-    public void TickData(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.ServerTickEvent event) {
+    public void tickServer(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.ServerTickEvent event) {
         
     }
 }

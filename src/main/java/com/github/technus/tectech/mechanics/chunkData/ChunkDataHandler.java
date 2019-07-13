@@ -1,5 +1,6 @@
 package com.github.technus.tectech.mechanics.chunkData;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -14,7 +15,13 @@ public class ChunkDataHandler {
     private final                HashMap<Integer,HashMap<ChunkCoordIntPair, NBTChunk>> dimensionWiseChunkData=new HashMap<>();
     private final HashMap<String,HashMap<Integer,ChunkHashMap                       >> dimensionWiseMetaChunkData=new HashMap<>();
     private final HashMap<String,ChunkMetaDataHandler> metaDataHandlerHashMap =new HashMap<>();
+    private final ArrayList<ChunkMetaDataHandler> serverHandlers=new ArrayList<>();
+    private final ArrayList<ChunkMetaDataHandler> clientHandlers=new ArrayList<>();
+    private final ArrayList<ChunkMetaDataHandler> worldHandlers=new ArrayList<>();
+    private final ArrayList<ChunkMetaDataHandler> playerHandlers=new ArrayList<>();
+    private final ArrayList<ChunkMetaDataHandler> renderHandlers=new ArrayList<>();
 
+    @SubscribeEvent
     public void handleChunkSaveEvent(ChunkDataEvent.Save event) {
         HashMap<ChunkCoordIntPair, NBTChunk> dimensionData=dimensionWiseChunkData.get(event.world.provider.dimensionId);
         NBTChunk chunkData =dimensionData!=null?dimensionData.get(event.getChunk().getChunkCoordIntPair()):null;
@@ -26,6 +33,7 @@ public class ChunkDataHandler {
         }
     }
 
+    @SubscribeEvent
     public void handleChunkLoadEvent(ChunkDataEvent.Load event) {
         NBTTagCompound loadedTag=event.getData().getCompoundTag(BASE_TAG_NAME);
         if(loadedTag.hasNoTags()){
@@ -69,11 +77,48 @@ public class ChunkDataHandler {
         }
     }
 
-    public void tickData(TickEvent.ServerTickEvent event){
-        dimensionWiseMetaChunkData.forEach((k, v) -> metaDataHandlerHashMap.get(k).TickData(v, event));
+    @SubscribeEvent
+    public void onClientTickEvent(TickEvent.ClientTickEvent aEvent) {
+        clientHandlers.forEach(chunkMetaDataHandler ->
+                chunkMetaDataHandler.tickClient(
+                        dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()),
+                        aEvent));
     }
 
-    public void onServerStarting() {
+    @SubscribeEvent
+    public void onServerTickEvent(TickEvent.ServerTickEvent aEvent) {
+        serverHandlers.forEach(chunkMetaDataHandler ->
+                chunkMetaDataHandler.tickServer(
+                        dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()),
+                        aEvent));
+    }
+
+    @SubscribeEvent
+    public void onWorldTickEvent(TickEvent.WorldTickEvent aEvent) {
+        worldHandlers.forEach(chunkMetaDataHandler ->
+                chunkMetaDataHandler.tickWorld(
+                        dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()),
+                        aEvent));
+    }
+
+    @SubscribeEvent
+    public void onPlayerTickEvent(TickEvent.PlayerTickEvent aEvent) {
+        playerHandlers.forEach(chunkMetaDataHandler ->
+                chunkMetaDataHandler.tickPlayer(
+                        dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()),
+                        aEvent));
+    }
+
+    @SubscribeEvent
+    public void onRenderTickEvent(TickEvent.RenderTickEvent aEvent) {
+        renderHandlers.forEach(chunkMetaDataHandler ->
+                chunkMetaDataHandler.tickRender(
+                        dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()),
+                        aEvent));
+    }
+
+
+    public void clearData() {
         dimensionWiseChunkData.clear();
         dimensionWiseMetaChunkData.forEach((k,v)->v.clear());
     }
@@ -81,6 +126,26 @@ public class ChunkDataHandler {
     public void registerChunkMetaDataHandler(ChunkMetaDataHandler handler){
         metaDataHandlerHashMap.put(handler.getTagName(),handler);
         dimensionWiseMetaChunkData.put(handler.getTagName(),new HashMap<>());
+        try {
+            Class clazz=handler.getClass();
+            if(clazz.getMethod("tickClient", HashMap.class, TickEvent.ClientTickEvent.class).getDeclaringClass()!=ChunkMetaDataHandler.class){
+                clientHandlers.add(handler);
+            }
+            if(clazz.getMethod("tickServer", HashMap.class, TickEvent.ServerTickEvent.class).getDeclaringClass()!=ChunkMetaDataHandler.class){
+                serverHandlers.add(handler);
+            }
+            if(clazz.getMethod("tickWorld", HashMap.class, TickEvent.WorldTickEvent.class).getDeclaringClass()!=ChunkMetaDataHandler.class){
+                worldHandlers.add(handler);
+            }
+            if(clazz.getMethod("tickPlayer", HashMap.class, TickEvent.PlayerTickEvent.class).getDeclaringClass()!=ChunkMetaDataHandler.class){
+                playerHandlers.add(handler);
+            }
+            if(clazz.getMethod("tickRender", HashMap.class, TickEvent.RenderTickEvent.class).getDeclaringClass()!=ChunkMetaDataHandler.class){
+                renderHandlers.add(handler);
+            }
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Cannot register event handlers!");
+        }
     }
 
     public NBTTagCompound getChunkData(ChunkMetaDataHandler handler, World world, Chunk chunk){
