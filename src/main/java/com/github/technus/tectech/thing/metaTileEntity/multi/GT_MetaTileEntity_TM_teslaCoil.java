@@ -45,23 +45,23 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private int minTier = 1;
 
     private int scanTime = 0; //Sets scan time to Z E R O :epic:
-    private int scanTimeMin = 100; //Min scan time in ticks
-    private int scanTimeTill = scanTimeMin; //Set default scan time
+    //private int scanTimeMin = 100; //Min scan time in ticks
+    //private int scanTimeTill = scanTimeMin; //Set default scan time
 
     private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>(); //Tesla Map to map them tesla bois!
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCaps = new ArrayList<>(); //Capacitor List
 
-    private float histLow = 0.25F; //Power pass is disabled if power is under this fraction
-    private float histHigh = 0.75F; //Power pass is enabled if power is over this fraction
+    //private float histLow = 0.25F; //Power pass is disabled if power is under this fraction
+    //private float histHigh = 0.75F; //Power pass is enabled if power is over this fraction
 
-    private float histLowLimit = 0.05F; //How low can you configure it?
-    private float histHighLimit = 0.95F; //How high can you configure it?
+    //private float histLowLimit = 0.05F; //How low can you configure it?
+    //private float histHighLimit = 0.95F; //How high can you configure it?
 
     private int scanRadius = 32; //Tesla scan radius
 
-    private int transferRadiusTower = 32; //Radius for tower to tower transfers
-    private int transferRadiusTransceiver = 16; //Radius for tower to transceiver transfers
-    private int transferRadiusCoverUltimate = 16; //Radius for tower to ultimate cover transfers
+    private int transferRadiusTower; //Radius for tower to tower transfers
+    private int transferRadiusTransceiver; //Radius for tower to transceiver transfers
+    private int transferRadiusCoverUltimate; //Radius for tower to ultimate cover transfers
 
     private long outputVoltage = 0; //Tesla Voltage Output
     private long outputCurrent = 0; //Tesla Current Output
@@ -78,8 +78,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private long lossPerBlock = 1; //EU lost per block traveled
     private float energyEfficiencyMax = 0.95F; //Max efficiency
     private float energyEfficiencyMin = 0.75F; //Min efficiency
-    private int overDrive = 0;
-    private boolean overDriveToggle(){return (overDrive > 0);}
+    private boolean overDriveToggle(){return (overDriveSetting.get() > 0);}
     private float overdriveEfficiency = 0.95F; //Overdrive efficiency
     private long outputVoltageInjectable = 0; //How much EU will be received post distance losses
     private long outputVoltageConsumption = 0; //How much EU will be drained
@@ -260,11 +259,11 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         Parameters.Group hatch_6=parametrization.getGroup(6, true);
         Parameters.Group hatch_7=parametrization.getGroup(7, true);
 
-        histLowSetting=hatch_0.makeInParameter(0,0.25, HYSTERESIS_LOW_SETTING_NAME,HYSTERESIS_LOW_STATUS);
+        histLowSetting=hatch_0.makeInParameter(0,0.25, HYSTERESIS_LOW_SETTING_NAME,HYSTERESIS_LOW_STATUS);//TODO Fix Grouping
         histHighSetting=hatch_1.makeInParameter(0,0.75, HYSTERESIS_HIGH_SETTING_NAME,HYSTERESIS_HIGH_STATUS);
         transferRadiusTowerSetting=hatch_2.makeInParameter(0,32, TRANSFER_RADIUS_TOWER_SETTING_NAME,TRANSFER_RADIUS_TOWER_STATUS);
         transferRadiusTransceiverSetting=hatch_3.makeInParameter(0,16, TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME,TRANSFER_RADIUS_TRANSCEIVER_STATUS);
-        transferRadiusCoverUltimateSetting=hatch_3.makeInParameter(0,16, TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME,TRANSFER_RADIUS_COVER_ULTIMATE_STATUS);
+        transferRadiusCoverUltimateSetting=hatch_3.makeInParameter(1,16, TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME,TRANSFER_RADIUS_COVER_ULTIMATE_STATUS);
         outputVoltageSetting=hatch_4.makeInParameter(0,-1, OUTPUT_VOLTAGE_SETTING_NAME,OUTPUT_VOLTAGE_STATUS);
         outputCurrentSetting=hatch_5.makeInParameter(0,-1, OUTPUT_CURRENT_SETTING_NAME,OUTPUT_CURRENT_STATUS);
         scanTimeMinSetting=hatch_6.makeInParameter(0,100, SCAN_TIME_MIN_SETTING_NAME,SCAN_TIME_MIN_STATUS);
@@ -505,15 +504,15 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         }
 
         //ePowerPass hist toggle
-        if (!ePowerPass && energyFrac > histHigh) {
+        if (!ePowerPass && energyFrac > histHighSetting.get()) {
             ePowerPass = true;
-        } else if (ePowerPass && energyFrac < histLow) {
+        } else if (ePowerPass && energyFrac < histLowSetting.get()) {
             ePowerPass = false;
         }
         ////Scanning for active teslas
 
         scanTime++;
-        if (scanTime >= scanTimeTill) {
+        if (scanTime >= 100) {
             scanTime = 0;
             eTeslaMap.clear();
 
@@ -539,9 +538,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         //Stuff to do if ePowerPass
         if (ePowerPass) {
 
-            transferRadiusTower = 32; //TODO generate based on power stored
-            transferRadiusTransceiver = 16; //TODO generate based on power stored
-            transferRadiusCoverUltimate = 16; //TODO generate based on power stored
+            transferRadiusTower = (int) transferRadiusTowerSetting.get(); //TODO generate based on power stored
+            transferRadiusTransceiver = (int) transferRadiusTransceiverSetting.get(); //TODO generate based on power stored
+            transferRadiusCoverUltimate = (int) transferRadiusCoverUltimateSetting.get(); //TODO generate based on power stored
 
             //Clean the eTeslaMap
             for (Map.Entry<IGregTechTileEntity, Integer> Rx : eTeslaMap.entrySet()) {
