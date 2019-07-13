@@ -17,6 +17,7 @@ public class TecTechConfig extends ConfigManager {
     public boolean EASY_SCAN;
     public boolean NERF_FUSION;
     public boolean ENABLE_TURRET_EXPLOSIONS;
+    public boolean DISABLE_MATERIAL_LOADING_FFS;
     public float TURRET_DAMAGE_FACTOR;
     public float TURRET_EXPLOSION_FACTOR;
 
@@ -30,6 +31,7 @@ public class TecTechConfig extends ConfigManager {
         BOOM_ENABLE = true;
         NERF_FUSION = false;
         ENABLE_TURRET_EXPLOSIONS = true;
+        DISABLE_MATERIAL_LOADING_FFS=false;
         TURRET_DAMAGE_FACTOR = 10;
         TURRET_EXPLOSION_FACTOR = 1;
     }
@@ -56,6 +58,8 @@ public class TecTechConfig extends ConfigManager {
                 "Damage is multiplied by this number");
         TURRET_EXPLOSION_FACTOR = _mainConfig.getFloat("TurretExplosionFactor", "Features", TURRET_EXPLOSION_FACTOR, 0, Short.MAX_VALUE,
                 "Explosion strength is multiplied by this number");
+        DISABLE_MATERIAL_LOADING_FFS =  _mainConfig.getBoolean("DisableMaterialLoading", "Debug", DISABLE_MATERIAL_LOADING_FFS,
+                "Set to true to disable gregtech material processing");
     }
 
     /**

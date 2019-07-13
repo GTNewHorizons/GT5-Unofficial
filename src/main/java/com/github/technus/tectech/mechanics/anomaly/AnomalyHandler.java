@@ -12,7 +12,7 @@ public class AnomalyHandler implements ChunkMetaDataHandler {
 
     @Override
     public String getTagName() {
-        return "Anomaly";
+        return "anomaly";
     }
 
     @Override
