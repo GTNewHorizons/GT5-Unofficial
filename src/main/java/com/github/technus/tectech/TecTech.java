@@ -4,6 +4,7 @@ import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.TecTechConfig;
 import com.github.technus.tectech.mechanics.ConvertFloat;
 import com.github.technus.tectech.mechanics.ConvertInteger;
+import com.github.technus.tectech.mechanics.anomaly.AnomalyHandler;
 import com.github.technus.tectech.mechanics.chunkData.ChunkDataHandler;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.GiveEM;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.ListEM;
@@ -36,6 +37,7 @@ public class TecTech {
     public static TecTechConfig configTecTech;
 
     public static ChunkDataHandler chunkDataHandler=new ChunkDataHandler();
+    public static AnomalyHandler anomalyHandler=new AnomalyHandler();
 
     /**
      * For Loader.isModLoaded checks during the runtime
@@ -85,6 +87,8 @@ public class TecTech {
     @Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         MainLoader.postLoad();
+
+        chunkDataHandler.registerChunkMetaDataHandler(anomalyHandler);
     }
 
     @Mod.EventHandler
