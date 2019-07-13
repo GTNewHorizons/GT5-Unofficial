@@ -8,7 +8,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElem
  * Created by danie_000 on 22.10.2016.
  */
 public final class cElementalDecay {
-    public static final cElementalDecay[] noDecay = (cElementalDecay[]) null;
+    public static final cElementalDecay[] noDecay = null;
     //DECAY IMPOSSIBLE!!!
     //Do not use regular NULL java will not make it work with varargs!!!
     //Or cast null into ARRAY type but this static is more convenient!!!

@@ -365,7 +365,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
                     }
                 }
             }
-            items = tDisplayStacks.toArray(new ItemStack[tDisplayStacks.size()]);
+            items = tDisplayStacks.toArray(new ItemStack[0]);
             if (items.length == 0) {
                 items = new ItemStack[]{new ItemStack(Blocks.fire)};
             }

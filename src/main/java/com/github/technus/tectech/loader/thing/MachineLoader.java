@@ -17,7 +17,6 @@ import net.minecraft.item.ItemStack;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.thing.CustomItemList.*;
-import static com.github.technus.tectech.thing.CustomItemList.eM_dynamotunnel9001;
 
 /**
  * Created by danie_000 on 16.11.2016.

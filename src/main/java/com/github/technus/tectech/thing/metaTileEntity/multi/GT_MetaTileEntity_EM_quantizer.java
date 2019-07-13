@@ -117,7 +117,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     public boolean checkRecipe_EM(ItemStack itemStack) {//TODO implement instance quantization
         if (GregTech_API.sPostloadFinished) {
             ArrayList<ItemStack> storedInputs = getStoredInputs();
-            ItemStack[] inI = storedInputs.toArray(new ItemStack[storedInputs.size()]);
+            ItemStack[] inI = storedInputs.toArray(new ItemStack[0]);
             if (inI.length > 0) {
                 for (ItemStack is : inI) {
                     //ITEM STACK quantization
@@ -156,7 +156,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                 }
             }
             ArrayList<FluidStack> storedFluids = getStoredFluids();
-            FluidStack[] inF = storedFluids.toArray(new FluidStack[storedFluids.size()]);
+            FluidStack[] inF = storedFluids.toArray(new FluidStack[0]);
             if (inF.length > 0) {
                 for (FluidStack fs : inF) {
                     aFluidQuantizationInfo aFQI = bTransformationInfo.fluidQuantization.get(fs.getFluid().getID());

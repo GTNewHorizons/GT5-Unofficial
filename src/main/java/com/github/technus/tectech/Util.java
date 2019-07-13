@@ -41,7 +41,7 @@ public final class Util {
 
     @SuppressWarnings("ComparatorMethodParameterNotUsed")
     public static <K, V extends Comparable<? super V>> SortedSet<Map.Entry<K, V>> entriesSortedByValues(Map<K, V> map) {
-        SortedSet<Map.Entry<K, V>> sortedEntries = new TreeSet<Map.Entry<K, V>>(
+        SortedSet<Map.Entry<K, V>> sortedEntries = new TreeSet<>(
                 (e1, e2) -> {
                     int res = e1.getValue().compareTo(e2.getValue());
                     return res != 0 ? res : 1; // Special fix to preserve items with equal values
@@ -1159,7 +1159,7 @@ public final class Util {
             c++;//depth
         }
         output.add("}");
-        return output.toArray(new String[output.size()]);
+        return output.toArray(new String[0]);
     }
 
     private static final Pattern matchE_ = Pattern.compile("(E,(E,)+)");

@@ -1,5 +1,8 @@
 package com.github.technus.tectech.proxy;
 
+import com.github.technus.tectech.TecTech;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
@@ -9,6 +12,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.event.world.ChunkDataEvent;
 
 public class CommonProxy implements IGuiHandler {
     public void registerRenderInfo() {}
@@ -80,5 +84,20 @@ public class CommonProxy implements IGuiHandler {
             }
         }
         return false;
+    }
+
+    @SubscribeEvent
+    public void handleChunkSaveEvent(ChunkDataEvent.Save event) {
+        TecTech.chunkDataHandler.handleChunkSaveEvent(event);
+    }
+
+    @SubscribeEvent
+    public void handleChunkLoadEvent(ChunkDataEvent.Load event) {
+        TecTech.chunkDataHandler.handleChunkLoadEvent(event);
+    }
+
+    @SubscribeEvent
+    public void onServerTickEvent(TickEvent.ServerTickEvent aEvent) {
+        TecTech.chunkDataHandler.tickData(aEvent);
     }
 }

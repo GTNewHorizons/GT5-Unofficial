@@ -1,12 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
-import gregtech.api.GregTech_API;
+import com.github.technus.tectech.TecTech;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemDye;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -205,6 +204,30 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
     private void LEDdrawP(int x, int y, int i, int j, LedStatus status) {
         int v = 192, su = 8, sv = 6, u = 11;
         switch (status) {
+            case STATUS_WTF: {
+                int c=counter;
+                if(c>4){
+                    c= TecTech.RANDOM.nextInt(5);
+                }
+                switch (c) {
+                    case 0:
+                        drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * j, su, sv);//BLUE
+                        break;
+                    case 1:
+                        drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (2 + j), su, sv);//cyan
+                        break;
+                    case 2:
+                        drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (4 + j), su, sv);//green
+                        break;
+                    case 3:
+                        drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (6 + j), su, sv);//orangeyello
+                        break;
+                    case 4:
+                        drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (8 + j), su, sv);//redd
+                        break;
+                }
+                break;
+            }
             case STATUS_WRONG: //fallthrough
                 if (counter < 2) {
                     drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * j, su, sv);//blue
@@ -254,16 +277,16 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                 break;
             case STATUS_UNUSED:
             default:
-                if (GregTech_API.sColoredGUI && this.mContainer.mTileEntity != null) {
-                    int tColor = this.mContainer.mTileEntity.getColorization() & 15;
-                    if (tColor < ItemDye.field_150922_c.length) {
-                        tColor = ItemDye.field_150922_c[tColor];
-                        GL11.glColor4f((float)(tColor >> 16 & 255) / 255.0F, (float)(tColor >> 8 & 255) / 255.0F, (float)(tColor & 255) / 255.0F, 1F);
-                    }
-                }
-                drawTexturedModalRect(x + su * i, y + sv * j, 212, 96, su+2, sv+2);
-                GL11.glColor4f(1f, 1f, 1f, 1f);
-                break;
+                //if (GregTech_API.sColoredGUI && this.mContainer.mTileEntity != null) {
+                //    int tColor = this.mContainer.mTileEntity.getColorization() & 15;
+                //    if (tColor < ItemDye.field_150922_c.length) {
+                //        tColor = ItemDye.field_150922_c[tColor];
+                //        GL11.glColor4f((float)(tColor >> 16 & 255) / 255.0F, (float)(tColor >> 8 & 255) / 255.0F, (float)(tColor & 255) / 255.0F, 1F);
+                //    }
+                //}
+                //drawTexturedModalRect(x + su * i, y + sv * j, 212, 96, su+2, sv+2);
+                //GL11.glColor4f(1f, 1f, 1f, 1f);
+                //break;
         }
     }
 

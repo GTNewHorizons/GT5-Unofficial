@@ -15,11 +15,7 @@ public class rElementalRecipeMap {//TODO FIX
     }
 
     public rElementalRecipe put(rElementalRecipe in) {
-        HashMap<Short, rElementalRecipe> r = recipes.get(in.inEM);
-        if (r == null) {
-            r = new HashMap<>();
-            recipes.put(in.inEM, r);
-        }
+        HashMap<Short, rElementalRecipe> r = recipes.computeIfAbsent(in.inEM, k -> new HashMap<>());
         return r.put(in.ID, in);//IF THIS RETURN SHIT, it means that inputs are using the exact same types of matter as input - (non amount wise collision)
         //It is either bad, or unimportant if you use different id's
     }

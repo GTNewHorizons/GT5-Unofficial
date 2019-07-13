@@ -40,7 +40,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     private static Textures.BlockIcons.CustomIcon MufflerEM;
     private static Textures.BlockIcons.CustomIcon MufflerEMidle;
-    private float overflowMatter = 0f;
+    private float overflowMatter;
     public final float overflowMax;
     private final float overflowDisperse;
 
@@ -195,7 +195,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
                 "Contained mass:",
                 EnumChatFormatting.RED + Double.toString(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
                 EnumChatFormatting.GREEN + Double.toString(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
-                "Mass Disposal speed: " + EnumChatFormatting.BLUE + Double.toString(overflowDisperse) + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
+                "Mass Disposal speed: " + EnumChatFormatting.BLUE + overflowDisperse + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
         };
     }
 

@@ -1,22 +1,28 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
+import com.github.technus.tectech.TecTech;
 import net.minecraft.util.EnumChatFormatting;
 
-public enum LedStatus {
-    STATUS_UNUSED(EnumChatFormatting.DARK_GRAY +"Unused",true),//
-    STATUS_TOO_LOW(EnumChatFormatting.BLUE+"Too Low",false),//
-    STATUS_LOW(EnumChatFormatting.AQUA+"Low",true),//
-    STATUS_WRONG(EnumChatFormatting.DARK_PURPLE+"Wrong",false),//
-    STATUS_OK(EnumChatFormatting.GREEN+"Valid",true),//
-    STATUS_TOO_HIGH(EnumChatFormatting.RED+"Too High",false),//
-    STATUS_HIGH(EnumChatFormatting.GOLD+"High",true),//
-    STATUS_UNDEFINED(EnumChatFormatting.GRAY+"Unknown",false),
-    STATUS_NEUTRAL(EnumChatFormatting.WHITE+"Neutral",true);//
+import java.util.function.Supplier;
 
-    public final String name;
+public enum LedStatus {
+    STATUS_UNUSED(()->EnumChatFormatting.DARK_GRAY +"Unused",true),//
+    STATUS_TOO_LOW(()->EnumChatFormatting.BLUE+"Too Low",false),//
+    STATUS_LOW(()->EnumChatFormatting.AQUA+"Low",true),//
+    STATUS_WRONG(()->EnumChatFormatting.DARK_PURPLE+"Wrong",false),//
+    STATUS_OK(()->EnumChatFormatting.GREEN+"Valid",true),//
+    STATUS_TOO_HIGH(()->EnumChatFormatting.RED+"Too High",false),//
+    STATUS_HIGH(()->EnumChatFormatting.GOLD+"High",true),//
+    STATUS_UNDEFINED(()->EnumChatFormatting.GRAY+"Unknown",false),
+    STATUS_NEUTRAL(()->EnumChatFormatting.WHITE+"Neutral",true),//
+    STATUS_WTF(()->{
+        return LedStatus.values()[TecTech.RANDOM.nextInt(9)].name.get();
+    },false);//
+
+    public final Supplier<String> name;
     public final boolean isOk;
 
-    LedStatus(String name,boolean ok){
+    LedStatus(Supplier<String> name, boolean ok){
         this.name=name;
         this.isOk=ok;
     }
