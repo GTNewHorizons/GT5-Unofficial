@@ -441,7 +441,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.YELLOW+ ":" +
                 EnumChatFormatting.AQUA+paramID +
                 EnumChatFormatting.YELLOW+ ":"+
-                EnumChatFormatting.AQUA+"I  "+parametrization.getStatusIn(hatchNo, paramID).name);
+                EnumChatFormatting.AQUA+"I  "+parametrization.getStatusIn(hatchNo, paramID).name.get());
         list.add(EnumChatFormatting.WHITE+"Value: "+
                 EnumChatFormatting.AQUA+ Util.doubleToString(parametrization.getIn(hatchNo,paramID)));
         try{
@@ -465,7 +465,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.YELLOW+ ":" +
                 EnumChatFormatting.AQUA+paramID +
                 EnumChatFormatting.YELLOW+ ":"+
-                EnumChatFormatting.AQUA+"O "+parametrization.getStatusOut(hatchNo, paramID).name);
+                EnumChatFormatting.AQUA+"O "+parametrization.getStatusOut(hatchNo, paramID).name.get());
         list.add(EnumChatFormatting.WHITE+"Value: "+
                 EnumChatFormatting.AQUA+Util.doubleToString(parametrization.getOut(hatchNo,paramID)));
         try{
