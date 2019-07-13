@@ -1,5 +1,6 @@
 package com.github.technus.tectech.mechanics.chunkData;
 
+import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
@@ -95,6 +96,10 @@ public class ChunkDataHandler {
         }
     }
 
+    public void tick(TickEvent.ServerTickEvent event){
+        dimensionWiseMetaChunkData.forEach((k,v)-> metaDataHandlerHashMap.get(k).TickData(v,event));
+    }
+
     public void onServerStarting() {
         dimensionWiseChunkData.clear();
         dimensionWiseMetaChunkData.clear();
@@ -106,11 +111,32 @@ public class ChunkDataHandler {
     }
 
     public NBTTagCompound getChunkData(ChunkMetaDataHandler handler, World world, Chunk chunk){
-        return dimensionWiseMetaChunkData.get(handler.getTagName()).get(world.provider.dimensionId).get(chunk.getChunkCoordIntPair());
+        return getChunkData(handler,world.provider.dimensionId,chunk.getChunkCoordIntPair());
     }
 
-    public NBTTagCompound getChunkData(ChunkMetaDataHandler handler, Integer world, ChunkCoordIntPair chunk){
+    public NBTTagCompound getChunkData(ChunkMetaDataHandler handler, int world, ChunkCoordIntPair chunk){
         return dimensionWiseMetaChunkData.get(handler.getTagName()).get(world).get(chunk);
+    }
+
+    public NBTTagCompound computeIfAbsentChunkData(ChunkMetaDataHandler handler, World world, Chunk chunk){
+        return computeIfAbsentChunkData(handler,world.provider.dimensionId,chunk.getChunkCoordIntPair());
+    }
+
+    public NBTTagCompound computeIfAbsentChunkData(ChunkMetaDataHandler handler, int world, ChunkCoordIntPair chunk){
+        return dimensionWiseMetaChunkData.get(handler.getTagName()).get(world)
+                .computeIfAbsent(chunk,chunkCoordIntPair -> handler.createData());
+    }
+
+    public HashMap<Integer,HashMap<ChunkCoordIntPair, NBTTagCompound>> getChunkData(ChunkMetaDataHandler chunkMetaDataHandler){
+        return dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName());
+    }
+
+    public HashMap<ChunkCoordIntPair, NBTTagCompound> getChunkData(ChunkMetaDataHandler chunkMetaDataHandler,World world){
+        return dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()).get(world.provider.dimensionId);
+    }
+
+    public HashMap<ChunkCoordIntPair, NBTTagCompound> getChunkData(ChunkMetaDataHandler chunkMetaDataHandler,int world){
+        return dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()).get(world);
     }
 
     private static class NBTChunk {

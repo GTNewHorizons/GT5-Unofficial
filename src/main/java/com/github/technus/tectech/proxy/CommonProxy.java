@@ -2,6 +2,7 @@ package com.github.technus.tectech.proxy;
 
 import com.github.technus.tectech.TecTech;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
@@ -93,5 +94,12 @@ public class CommonProxy implements IGuiHandler {
     @SubscribeEvent
     public void handleChunkLoadEvent(ChunkDataEvent.Load event) {
         TecTech.chunkDataHandler.handleChunkLoadEvent(event);
+    }
+
+    @SubscribeEvent
+    public void onServerTickEvent(TickEvent.ServerTickEvent aEvent) {
+        if(aEvent.phase== TickEvent.Phase.START){
+            TecTech.chunkDataHandler.tick(aEvent);
+        }
     }
 }
