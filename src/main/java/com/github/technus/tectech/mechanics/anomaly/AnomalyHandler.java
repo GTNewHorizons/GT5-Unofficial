@@ -8,16 +8,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.HashMap;
 
 public class AnomalyHandler implements ChunkMetaDataHandler {
+    private static final String INTENSITY="intensity";
 
     @Override
     public String getTagName() {
-        return "Anomaly";
+        return "anomaly";
     }
 
     @Override
     public void mergeData(NBTTagCompound target, NBTTagCompound loadedData) {
-        target.setInteger("intensity",
-                target.getInteger("intensity")+loadedData.getInteger("intensity"));
+        int intensity=target.getInteger(INTENSITY)+loadedData.getInteger(INTENSITY);
+        target.setInteger(INTENSITY,intensity);
     }
 
     @Override

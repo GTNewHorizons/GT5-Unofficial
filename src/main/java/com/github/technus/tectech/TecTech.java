@@ -4,6 +4,7 @@ import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.TecTechConfig;
 import com.github.technus.tectech.mechanics.ConvertFloat;
 import com.github.technus.tectech.mechanics.ConvertInteger;
+import com.github.technus.tectech.mechanics.anomaly.AnomalyHandler;
 import com.github.technus.tectech.mechanics.chunkData.ChunkDataHandler;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.GiveEM;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.ListEM;
@@ -17,6 +18,13 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
+import gregtech.GT_Mod;
+import gregtech.common.GT_Proxy;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.Iterator;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
@@ -35,7 +43,8 @@ public class TecTech {
     private static IngameErrorLog moduleAdminErrorLogs;
     public static TecTechConfig configTecTech;
 
-    public static ChunkDataHandler chunkDataHandler=new ChunkDataHandler();
+    public static ChunkDataHandler chunkDataHandler;
+    public static AnomalyHandler anomalyHandler;
 
     /**
      * For Loader.isModLoaded checks during the runtime
@@ -78,6 +87,96 @@ public class TecTech {
     public void Load(FMLInitializationEvent event) {
         hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
 
+
+        if(configTecTech.DISABLE_MATERIAL_LOADING_FFS){
+            try {
+                Field field= GT_Proxy.class.getDeclaredField("mEvents");
+                field.setAccessible(true);
+                Field modifiersField = Field.class.getDeclaredField( "modifiers" );
+                modifiersField.setAccessible( true );
+                modifiersField.setInt( field, field.getModifiers() & ~Modifier.FINAL );
+                field.set(GT_Mod.gregtechproxy, new Collection() {
+                    @Override
+                    public int size() {
+                        return 0;
+                    }
+
+                    @Override
+                    public boolean isEmpty() {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean contains(Object o) {
+                        return false;
+                    }
+
+                    @Override
+                    public Iterator iterator() {
+                        return new Iterator() {
+                            @Override
+                            public boolean hasNext() {
+                                return false;
+                            }
+
+                            @Override
+                            public Object next() {
+                                return null;
+                            }
+                        };
+                    }
+
+                    @Override
+                    public Object[] toArray() {
+                        return new Object[0];
+                    }
+
+                    @Override
+                    public boolean add(Object o) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean remove(Object o) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean addAll(Collection c) {
+                        return false;
+                    }
+
+                    @Override
+                    public void clear() {
+
+                    }
+
+                    @Override
+                    public boolean retainAll(Collection c) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean removeAll(Collection c) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean containsAll(Collection c) {
+                        return false;
+                    }
+
+                    @Override
+                    public Object[] toArray(Object[] a) {
+                        return new Object[0];
+                    }
+                });
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                LOGGER.error(Reference.MODID + " could not disable material loading!");
+            }
+
+        }
+
         MainLoader.load();
         MainLoader.addAfterGregTechPostLoadRunner();
     }
@@ -85,6 +184,8 @@ public class TecTech {
     @Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         MainLoader.postLoad();
+        chunkDataHandler=new ChunkDataHandler();
+        chunkDataHandler.registerChunkMetaDataHandler(anomalyHandler=new AnomalyHandler());
     }
 
     @Mod.EventHandler

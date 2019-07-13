@@ -31,15 +31,12 @@ public class ChunkDataHandler {
         if(loadedTag.hasNoTags()){
             return;
         }
-
         int dimId=event.world.provider.dimensionId;
         HashMap<ChunkCoordIntPair, NBTChunk> dimensionMemory=
                 dimensionWiseChunkData.computeIfAbsent(dimId, this::createDimensionData);
-
         ChunkCoordIntPair chunkCoordIntPair=event.getChunk().getChunkCoordIntPair();
-        NBTChunk chunkMemory =dimensionMemory.get(chunkCoordIntPair);
         Set<String> loadedKeys=loadedTag.func_150296_c();
-
+        NBTChunk chunkMemory =dimensionMemory.get(chunkCoordIntPair);
         if(chunkMemory==null) {
             chunkMemory=new NBTChunk(loadedTag,true);
             dimensionMemory.put(chunkCoordIntPair,chunkMemory);
@@ -78,7 +75,7 @@ public class ChunkDataHandler {
 
     public void onServerStarting() {
         dimensionWiseChunkData.clear();
-        dimensionWiseMetaChunkData.clear();
+        dimensionWiseMetaChunkData.forEach((k,v)->v.clear());
     }
 
     public void registerChunkMetaDataHandler(ChunkMetaDataHandler handler){
@@ -123,7 +120,7 @@ public class ChunkDataHandler {
         return map;
     }
 
-    public static class ChunkHashMap implements Map<ChunkCoordIntPair,NBTTagCompound>{
+    public static final class ChunkHashMap implements Map<ChunkCoordIntPair,NBTTagCompound>{
         private final HashMap<ChunkCoordIntPair,NBTChunk> storage;
         private final HashMap<ChunkCoordIntPair,NBTTagCompound> storageMeta=new HashMap<>(1024);
         private final String meta;
@@ -180,7 +177,7 @@ public class ChunkDataHandler {
 
         @Override
         public void clear() {
-            entrySet().forEach(this::remove);
+            storageMeta.entrySet().forEach(this::remove);
         }
 
         @Override
@@ -214,7 +211,7 @@ public class ChunkDataHandler {
         }
     }
 
-    private static class NBTChunk {
+    private static final class NBTChunk {
         private final NBTTagCompound data;
         private boolean isLoaded;
 
