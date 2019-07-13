@@ -4,6 +4,7 @@ import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.TecTechConfig;
 import com.github.technus.tectech.mechanics.ConvertFloat;
 import com.github.technus.tectech.mechanics.ConvertInteger;
+import com.github.technus.tectech.mechanics.chunkData.ChunkDataHandler;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.GiveEM;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.ListEM;
 import com.github.technus.tectech.proxy.CommonProxy;
@@ -33,6 +34,8 @@ public class TecTech {
 
     private static IngameErrorLog moduleAdminErrorLogs;
     public static TecTechConfig configTecTech;
+
+    public static ChunkDataHandler chunkDataHandler=new ChunkDataHandler();;
 
     /**
      * For Loader.isModLoaded checks during the runtime
@@ -92,5 +95,10 @@ public class TecTech {
         if(DEBUG_MODE) {
             pEvent.registerServerCommand(new GiveEM());
         }
+    }
+
+    @Mod.EventHandler
+    public void onServerStarting(FMLServerStartingEvent aEvent) {
+        chunkDataHandler.onServerStarting();
     }
 }

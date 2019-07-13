@@ -173,35 +173,29 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             }
         });
 
-        PRIMITIVE_FUSE_HANDLERS.put(eQuarkDefinition.class.getName() + '\0' + eQuarkDefinition.class.getName(), new PrimitiveColliderHandler() {
-            @Override
-            public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
-                try {
-                    cElementalMutableDefinitionStackMap defs=new cElementalMutableDefinitionStackMap();
-                    defs.putUnify(in1.definition.getStackForm(1));
-                    defs.putUnify(in2.definition.getStackForm(1));
-                    dHadronDefinition hadron = new dHadronDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
-                    out.putUnify(new cElementalInstanceStack(hadron,Math.min(in1.amount,in2.amount)));
-                }catch (Exception e){
-                    out.putUnifyAll(in1,in2);
-                    return;
-                }
-                if(in1.amount>in2.amount){
-                    out.putUnify(new cElementalInstanceStack(in1.definition,in1.amount-in2.amount));
-                }else if (in2.amount>in1.amount){
-                    out.putUnify(new cElementalInstanceStack(in2.definition,in2.amount-in1.amount));
-                }
+        PRIMITIVE_FUSE_HANDLERS.put(eQuarkDefinition.class.getName() + '\0' + eQuarkDefinition.class.getName(), (in1, in2, out) -> {
+            try {
+                cElementalMutableDefinitionStackMap defs=new cElementalMutableDefinitionStackMap();
+                defs.putUnify(in1.definition.getStackForm(1));
+                defs.putUnify(in2.definition.getStackForm(1));
+                dHadronDefinition hadron = new dHadronDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+                out.putUnify(new cElementalInstanceStack(hadron,Math.min(in1.amount,in2.amount)));
+            }catch (Exception e){
+                out.putUnifyAll(in1,in2);
+                return;
+            }
+            if(in1.amount>in2.amount){
+                out.putUnify(new cElementalInstanceStack(in1.definition,in1.amount-in2.amount));
+            }else if (in2.amount>in1.amount){
+                out.putUnify(new cElementalInstanceStack(in2.definition,in2.amount-in1.amount));
             }
         });
-        PRIMITIVE_FUSE_HANDLERS.put(ePrimalAspectDefinition.class.getName() + '\0' + ePrimalAspectDefinition.class.getName(), new PrimitiveColliderHandler() {
-            @Override
-            public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
-                if (fuseAspects(in1, in2, out)) return;
-                if(in1.amount>in2.amount){
-                    out.putUnify(new cElementalInstanceStack(in1.definition,in1.amount-in2.amount));
-                }else if (in2.amount>in1.amount){
-                    out.putUnify(new cElementalInstanceStack(in2.definition,in2.amount-in1.amount));
-                }
+        PRIMITIVE_FUSE_HANDLERS.put(ePrimalAspectDefinition.class.getName() + '\0' + ePrimalAspectDefinition.class.getName(), (in1, in2, out) -> {
+            if (fuseAspects(in1, in2, out)) return;
+            if(in1.amount>in2.amount){
+                out.putUnify(new cElementalInstanceStack(in1.definition,in1.amount-in2.amount));
+            }else if (in2.amount>in1.amount){
+                out.putUnify(new cElementalInstanceStack(in2.definition,in2.amount-in1.amount));
             }
         });
     }
