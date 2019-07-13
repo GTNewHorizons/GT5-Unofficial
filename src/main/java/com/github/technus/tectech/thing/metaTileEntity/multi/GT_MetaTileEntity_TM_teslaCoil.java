@@ -34,7 +34,7 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static gregtech.api.enums.GT_Values.E;
 
-public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {//TODO Add capacitors
+public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
@@ -168,21 +168,15 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_STATUS=(base, p)->{
         double value=p.get();
-        if(Double.isNaN(value)){
-            System.out.println("HIS LO");
-            return STATUS_WRONG;}
-        System.out.println("HIS LO");
-        System.out.println(value);
-        if(value<0.05) return STATUS_TOO_LOW;
+        if(Double.isNaN(value)){return STATUS_WRONG;}
+        if(value<=0.05) return STATUS_TOO_LOW;
         if(value>base.histHighSetting.get()) return STATUS_TOO_HIGH;
         return STATUS_OK;
     };
     private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
-        System.out.println("HIS HI");
-        System.out.println(value);
-        if(value<base.histLowSetting.get()) return STATUS_TOO_LOW;
+        if(value<=base.histLowSetting.get()) return STATUS_TOO_LOW;
         if(value>0.95) return STATUS_TOO_HIGH;
         return STATUS_OK;
     };
@@ -192,6 +186,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         value=(int)value;
         if(value<0) return STATUS_TOO_LOW;
         if(value>32) return STATUS_TOO_HIGH;
+        if(value<32) return STATUS_LOW;
         return STATUS_OK;
     };
     private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_STATUS=(base, p)->{
@@ -200,6 +195,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         value=(int)value;
         if(value<0) return STATUS_TOO_LOW;
         if(value>16) return STATUS_TOO_HIGH;
+        if(value<16) return STATUS_LOW;
         return STATUS_OK;
     };
     private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_STATUS=(base, p)->{
@@ -208,12 +204,14 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         value=(int)value;
         if(value<0) return STATUS_TOO_LOW;
         if(value>16) return STATUS_TOO_HIGH;
+        if(value<16) return STATUS_LOW;
         return STATUS_OK;
     };
     private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
         value=(long)value;
+        if(value==-1) return STATUS_OK;
         if(value<=0) return STATUS_TOO_LOW;
         return STATUS_OK;
     };
@@ -221,17 +219,26 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
         value=(long)value;
+        if(value==-1) return STATUS_OK;
         if(value<=0) return STATUS_TOO_LOW;
-        return STATUS_OK;
+        return STATUS_LOW;
     };
     private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
         value=(int)value;
         if(value<100) return STATUS_TOO_LOW;
-        return STATUS_OK;
+        if(value==100) return STATUS_OK;
+        return STATUS_HIGH;
     };
-    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_STATUS=(base, p)-> STATUS_OK;
+    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_STATUS=(base, p)->{
+        double value=p.get();
+        if(Double.isNaN(value)) return STATUS_WRONG;
+        value=(int)value;
+        if(value<0) return STATUS_TOO_LOW;
+        if(value==0) return STATUS_LOW;
+        return STATUS_HIGH;
+    };
     //endregion
 
     public GT_MetaTileEntity_TM_teslaCoil(int aID, String aName, String aNameRegional) {
@@ -249,16 +256,19 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         Parameters.Group hatch_2=parametrization.getGroup(2, true);
         Parameters.Group hatch_3=parametrization.getGroup(3, true);
         Parameters.Group hatch_4=parametrization.getGroup(4, true);
+        Parameters.Group hatch_5=parametrization.getGroup(5, true);
+        Parameters.Group hatch_6=parametrization.getGroup(6, true);
+        Parameters.Group hatch_7=parametrization.getGroup(7, true);
 
         histLowSetting=hatch_0.makeInParameter(0,0.25, HYSTERESIS_LOW_SETTING_NAME,HYSTERESIS_LOW_STATUS);
-        histHighSetting=hatch_0.makeInParameter(1,0.75, HYSTERESIS_HIGH_SETTING_NAME,HYSTERESIS_HIGH_STATUS);
-        transferRadiusTowerSetting=hatch_1.makeInParameter(0,32, TRANSFER_RADIUS_TOWER_SETTING_NAME,TRANSFER_RADIUS_TOWER_STATUS);
-        transferRadiusTransceiverSetting=hatch_1.makeInParameter(1,16, TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME,TRANSFER_RADIUS_TRANSCEIVER_STATUS);
-        transferRadiusCoverUltimateSetting=hatch_2.makeInParameter(0,16, TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME,TRANSFER_RADIUS_COVER_ULTIMATE_STATUS);
-        outputVoltageSetting=hatch_2.makeInParameter(1,-1, OUTPUT_VOLTAGE_SETTING_NAME,OUTPUT_VOLTAGE_STATUS);
-        outputCurrentSetting=hatch_3.makeInParameter(0,-1, OUTPUT_CURRENT_SETTING_NAME,OUTPUT_CURRENT_STATUS);
-        scanTimeMinSetting=hatch_3.makeInParameter(1,100, SCAN_TIME_MIN_SETTING_NAME,SCAN_TIME_MIN_STATUS);
-        overDriveSetting=hatch_4.makeInParameter(0,0, OVERDRIVE_SETTING_NAME,OVERDRIVE_STATUS);
+        histHighSetting=hatch_1.makeInParameter(0,0.75, HYSTERESIS_HIGH_SETTING_NAME,HYSTERESIS_HIGH_STATUS);
+        transferRadiusTowerSetting=hatch_2.makeInParameter(0,32, TRANSFER_RADIUS_TOWER_SETTING_NAME,TRANSFER_RADIUS_TOWER_STATUS);
+        transferRadiusTransceiverSetting=hatch_3.makeInParameter(0,16, TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME,TRANSFER_RADIUS_TRANSCEIVER_STATUS);
+        transferRadiusCoverUltimateSetting=hatch_3.makeInParameter(0,16, TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME,TRANSFER_RADIUS_COVER_ULTIMATE_STATUS);
+        outputVoltageSetting=hatch_4.makeInParameter(0,-1, OUTPUT_VOLTAGE_SETTING_NAME,OUTPUT_VOLTAGE_STATUS);
+        outputCurrentSetting=hatch_5.makeInParameter(0,-1, OUTPUT_CURRENT_SETTING_NAME,OUTPUT_CURRENT_STATUS);
+        scanTimeMinSetting=hatch_6.makeInParameter(0,100, SCAN_TIME_MIN_SETTING_NAME,SCAN_TIME_MIN_STATUS);
+        overDriveSetting=hatch_7.makeInParameter(0,0, OVERDRIVE_SETTING_NAME,OVERDRIVE_STATUS);
     }
 
     @Override
@@ -429,6 +439,17 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
+        if (!histHighSetting.getStatus(false).isOk||
+                !histLowSetting.getStatus(false).isOk||
+                !transferRadiusTowerSetting.getStatus(false).isOk||
+                !transferRadiusTransceiverSetting.getStatus(false).isOk||
+                !transferRadiusCoverUltimateSetting.getStatus(false).isOk||
+                !outputVoltageSetting.getStatus(false).isOk||
+                !outputCurrentSetting.getStatus(false).isOk||
+                !scanTimeMinSetting.getStatus(false).isOk||
+                !overDriveSetting.getStatus(false).isOk
+        ) return false;
+
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = 20;
         vTier = -1;

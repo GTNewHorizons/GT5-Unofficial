@@ -155,7 +155,6 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
         long tEnergyMax = 0;
         for (int i = 0; i < mInventory.length; i++) {
             if (mInventory[i] == null || mInventory[i].stackSize != 1) {
-                System.out.println("FUK");
                 continue;
             }
             CapacitorComponent cap = componentBinds.get(getUniqueIdentifier(mInventory[i]));
