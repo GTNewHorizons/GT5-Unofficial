@@ -164,6 +164,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_SETTING_NAME = (base, p)-> "Output current setting";
     private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_SETTING_NAME = (base, p)-> "Scan time Min setting";
     private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_SETTING_NAME = (base, p)-> "Overdrive setting";
+    private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_NAME = (base, p)-> "POPOGA";
 
     private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_STATUS=(base, p)->{
         double value=p.get();
@@ -238,6 +239,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if(value==0) return STATUS_LOW;
         return STATUS_HIGH;
     };
+    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_STATUS=(base, p)-> STATUS_WTF;
     //endregion
 
     public GT_MetaTileEntity_TM_teslaCoil(int aID, String aName, String aNameRegional) {
@@ -258,16 +260,29 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         Parameters.Group hatch_5=parametrization.getGroup(5, true);
         Parameters.Group hatch_6=parametrization.getGroup(6, true);
         Parameters.Group hatch_7=parametrization.getGroup(7, true);
+        Parameters.Group hatch_8=parametrization.getGroup(8, true);
+        Parameters.Group hatch_9=parametrization.getGroup(9, true);
 
         histLowSetting=hatch_0.makeInParameter(0,0.25, HYSTERESIS_LOW_SETTING_NAME,HYSTERESIS_LOW_STATUS);//TODO Fix Grouping
+        histLowSetting=hatch_0.makeInParameter(1,1337, POPOGA_NAME,POPOGA_STATUS);
         histHighSetting=hatch_1.makeInParameter(0,0.75, HYSTERESIS_HIGH_SETTING_NAME,HYSTERESIS_HIGH_STATUS);
+        histLowSetting=hatch_1.makeInParameter(1,1337, POPOGA_NAME,POPOGA_STATUS);
         transferRadiusTowerSetting=hatch_2.makeInParameter(0,32, TRANSFER_RADIUS_TOWER_SETTING_NAME,TRANSFER_RADIUS_TOWER_STATUS);
+        histLowSetting=hatch_2.makeInParameter(1,1337, POPOGA_NAME,POPOGA_STATUS);
         transferRadiusTransceiverSetting=hatch_3.makeInParameter(0,16, TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME,TRANSFER_RADIUS_TRANSCEIVER_STATUS);
         transferRadiusCoverUltimateSetting=hatch_3.makeInParameter(1,16, TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME,TRANSFER_RADIUS_COVER_ULTIMATE_STATUS);
         outputVoltageSetting=hatch_4.makeInParameter(0,-1, OUTPUT_VOLTAGE_SETTING_NAME,OUTPUT_VOLTAGE_STATUS);
+        histLowSetting=hatch_4.makeInParameter(1,1337, POPOGA_NAME,POPOGA_STATUS);
         outputCurrentSetting=hatch_5.makeInParameter(0,-1, OUTPUT_CURRENT_SETTING_NAME,OUTPUT_CURRENT_STATUS);
+        histLowSetting=hatch_5.makeInParameter(1,1337, POPOGA_NAME,POPOGA_STATUS);
         scanTimeMinSetting=hatch_6.makeInParameter(0,100, SCAN_TIME_MIN_SETTING_NAME,SCAN_TIME_MIN_STATUS);
+        histLowSetting=hatch_6.makeInParameter(1,1337, POPOGA_NAME,POPOGA_STATUS);
         overDriveSetting=hatch_7.makeInParameter(0,0, OVERDRIVE_SETTING_NAME,OVERDRIVE_STATUS);
+        histLowSetting=hatch_7.makeInParameter(1,1337, POPOGA_NAME,POPOGA_STATUS);
+        histLowSetting=hatch_8.makeInParameter(0,1337, POPOGA_NAME,POPOGA_STATUS);
+        histLowSetting=hatch_8.makeInParameter(1,1337, POPOGA_NAME,POPOGA_STATUS);
+        histLowSetting=hatch_9.makeInParameter(0,1337, POPOGA_NAME,POPOGA_STATUS);
+        histLowSetting=hatch_9.makeInParameter(1,1337, POPOGA_NAME,POPOGA_STATUS);
     }
 
     @Override
