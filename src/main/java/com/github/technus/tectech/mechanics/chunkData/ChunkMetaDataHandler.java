@@ -4,7 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public interface ChunkMetaDataHandler {
     String getTagName();
-    void mergeData(NBTTagCompound inMemory,NBTTagCompound loaded,NBTTagCompound result);
+    void mergeData(NBTTagCompound target, NBTTagCompound loadedData);
     NBTTagCompound createData();
 }
 
