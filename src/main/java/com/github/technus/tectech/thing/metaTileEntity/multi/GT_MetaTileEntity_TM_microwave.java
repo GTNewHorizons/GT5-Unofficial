@@ -4,8 +4,6 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;

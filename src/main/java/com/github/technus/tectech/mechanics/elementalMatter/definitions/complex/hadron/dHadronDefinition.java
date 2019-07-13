@@ -198,7 +198,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
             }
         }
         return new cElementalDecay[]{
-                new cElementalDecay(0.75F, decaysInto.toArray(new cElementalDefinitionStack[decaysInto.size()])),
+                new cElementalDecay(0.75F, decaysInto.toArray(new cElementalDefinitionStack[0])),
                 eBosonDefinition.deadEnd
         };
     }

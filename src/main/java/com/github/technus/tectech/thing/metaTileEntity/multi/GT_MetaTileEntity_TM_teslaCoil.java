@@ -288,7 +288,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             float yPos = mte.getYCoord() + 0.5f;
             float zPos = mte.getZCoord() + 0.5f;
             long reqSum = 0;
-            for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaList.toArray(new GT_MetaTileEntity_TM_teslaCoil[eTeslaList.size()])) {
+            for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaList.toArray(new GT_MetaTileEntity_TM_teslaCoil[0])) {
                 try {
                     reqSum += Rx.maxEUStore() - Rx.getEUVar();
                 } catch (Exception e) {

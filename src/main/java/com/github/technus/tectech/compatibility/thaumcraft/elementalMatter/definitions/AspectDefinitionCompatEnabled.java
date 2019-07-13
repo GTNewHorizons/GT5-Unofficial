@@ -30,7 +30,7 @@ public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat 
         aspectToDef.put("perditio",magic_entropy);
 
         ArrayList<Aspect> list=Aspect.getCompoundAspects();
-        Aspect[] array= list.toArray(new Aspect[list.size()]);
+        Aspect[] array= list.toArray(new Aspect[0]);
         while (!list.isEmpty()) {
             for (Aspect aspect : array) {
                 if (list.contains(aspect)) {

@@ -251,13 +251,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     public final int compareTo(iElementalDefinition o) {
         if (getClassType() == o.getClassType()) {
             int oID = ((cElementalPrimitive) o).ID;
-            if (ID > oID) {
-                return 1;
-            }
-            if (ID < oID) {
-                return -1;
-            }
-            return 0;
+            return Integer.compare(ID, oID);
         }
         return compareClassID(o);
     }

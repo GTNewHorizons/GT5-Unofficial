@@ -35,7 +35,7 @@ public class TecTech {
     private static IngameErrorLog moduleAdminErrorLogs;
     public static TecTechConfig configTecTech;
 
-    public static ChunkDataHandler chunkDataHandler=new ChunkDataHandler();;
+    public static ChunkDataHandler chunkDataHandler=new ChunkDataHandler();
 
     /**
      * For Loader.isModLoaded checks during the runtime

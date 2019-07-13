@@ -134,7 +134,7 @@ public final class iaeaNuclide {
         if(energeticStates==null || energeticStates.isEmpty()) {
             energeticStatesArray = empty;
         } else {
-            energeticStatesArray = energeticStates.values().toArray(new energeticState[energeticStates.size()]);
+            energeticStatesArray = energeticStates.values().toArray(new energeticState[0]);
         }
     }
 
@@ -273,7 +273,7 @@ public final class iaeaNuclide {
         //if(DEBUG_MODE){
         //    System.out.println("INVALID SUM?\t"+normalization+"\t"+decay1+"\t"+chance1+"\t"+decay2+"\t"+chance2+"\t"+decay3+"\t"+chance3);
         //}
-        return decays.values().toArray(new iaeaDecay[decays.size()]);
+        return decays.values().toArray(new iaeaDecay[0]);
     }
 
     public static final class iaeaDecay{

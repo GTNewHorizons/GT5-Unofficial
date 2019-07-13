@@ -48,12 +48,12 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
 
     public final cElementalDefinitionStack[] values() {
         Collection<cElementalDefinitionStack> var = map.values();
-        return var.toArray(new cElementalDefinitionStack[var.size()]);
+        return var.toArray(new cElementalDefinitionStack[0]);
     }
 
     public final iElementalDefinition[] keys() {
         Set<iElementalDefinition> var = map.keySet();
-        return var.toArray(new iElementalDefinition[var.size()]);
+        return var.toArray(new iElementalDefinition[0]);
     }
 
     public long getCountOfAllAmounts(){

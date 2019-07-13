@@ -234,14 +234,11 @@ public final class MainLoader {
     }
 
     public static void addAfterGregTechPostLoadRunner() {
-        GregTech_API.sAfterGTPostload.add(new Runnable() {
-            @Override
-            public void run() {
-                if(TecTech.configTecTech.NERF_FUSION) {
-                    FixBrokenFusionRecipes();
-                }
-                GT_MetaTileEntity_EM_collider.setValues(getFuelValue(Materials.Helium.getPlasma(125)));
+        GregTech_API.sAfterGTPostload.add(() -> {
+            if(TecTech.configTecTech.NERF_FUSION) {
+                FixBrokenFusionRecipes();
             }
+            GT_MetaTileEntity_EM_collider.setValues(getFuelValue(Materials.Helium.getPlasma(125)));
         });
     }
 

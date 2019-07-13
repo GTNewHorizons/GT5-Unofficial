@@ -45,8 +45,7 @@ public class GiveEM implements ICommand {
             }else{
                 TecTech.LOGGER.info("Spawninig EM for "+((EntityPlayerMP) sender).getDisplayName()+" - "+Arrays.toString(args));
 
-                ArrayList<String> list=new ArrayList<>();
-                list.addAll(Arrays.asList(args));
+                ArrayList<String> list = new ArrayList<>(Arrays.asList(args));
                 String energy=list.remove(0);
 
                 cElementalDefinitionStack def= getDefinitionStack(list);

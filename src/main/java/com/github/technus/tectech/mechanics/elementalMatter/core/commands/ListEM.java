@@ -29,7 +29,7 @@ public class ListEM implements ICommand {
                 sender.addChatMessage(new ChatComponentText("    Available Classes: tag - name"));
                 Map<Byte,Method> binds= cElementalDefinition.getBindsComplex();
                 for (Map.Entry<Byte,Method> e:binds.entrySet()) {
-                    sender.addChatMessage(new ChatComponentText(String.valueOf((char)e.getKey().byteValue())+" - "+e.getValue().getReturnType().getSimpleName()));
+                    sender.addChatMessage(new ChatComponentText((char) e.getKey().byteValue() +" - "+e.getValue().getReturnType().getSimpleName()));
                 }
             }else if(args.length==1){
                 sender.addChatMessage(new ChatComponentText("    Available Primitives: symbol - name"));
