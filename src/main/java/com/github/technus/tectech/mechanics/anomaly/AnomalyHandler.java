@@ -1,10 +1,11 @@
 package com.github.technus.tectech.mechanics.anomaly;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.loader.network.ChunkDataMessage;
-import com.github.technus.tectech.loader.network.NetworkDispatcher;
 import com.github.technus.tectech.chunkData.ChunkDataHandler;
 import com.github.technus.tectech.chunkData.ChunkMetaDataHandler;
+import com.github.technus.tectech.loader.network.ChunkDataMessage;
+import com.github.technus.tectech.loader.network.NetworkDispatcher;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +16,8 @@ import net.minecraftforge.event.world.ChunkEvent;
 import java.util.HashMap;
 
 public class AnomalyHandler implements ChunkMetaDataHandler {
+    private static final double MIN_POLLUTION= dAtomDefinition.getSomethingHeavy().getMass()*10000D;
+
     private static final String INTENSITY="intensity";
 
     @Override
@@ -53,6 +56,11 @@ public class AnomalyHandler implements ChunkMetaDataHandler {
         NetworkDispatcher.INSTANCE.sendToDimension(new ChunkDataMessage.ChunkDataData(world,chunk,this),world);
     }
 
+    @Override
+    public int pushPayloadSpreadPeriod() {
+        return 100;
+    }
+
     public void addAnomaly(IGregTechTileEntity iGregTechTileEntity, double amount) {
         if(iGregTechTileEntity.isServerSide()) {
             World w = iGregTechTileEntity.getWorld();
@@ -71,10 +79,15 @@ public class AnomalyHandler implements ChunkMetaDataHandler {
             NBTTagCompound data=new NBTTagCompound();
             data.setDouble(INTENSITY,amount);
             TecTech.chunkDataHandler.putChunkData(this,world,chunk,data);
-            //todo update client on threshold reach
+            if(amount>MIN_POLLUTION){
+
+            }
         }else {
-            old.setDouble(INTENSITY,old.getDouble(INTENSITY)+amount);
-            //todo update client on threshold change
+            double newAmount=old.getDouble(INTENSITY)+amount;
+            old.setDouble(INTENSITY,newAmount);
+            if(newAmount>MIN_POLLUTION){
+
+            }
         }
     }
 }

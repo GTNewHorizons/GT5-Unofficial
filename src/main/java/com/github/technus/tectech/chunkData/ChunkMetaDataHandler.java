@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.event.world.ChunkEvent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface ChunkMetaDataHandler {
@@ -16,6 +17,12 @@ public interface ChunkMetaDataHandler {
     @SideOnly(Side.CLIENT)
     default void requestData(ChunkEvent.Load aEvent){}
     default void pushData(int world, ChunkCoordIntPair chunk){}
+    default void pushPayload(int world, ArrayList<ChunkCoordIntPair> chunk){
+        chunk.forEach(chunkCoordIntPair -> pushData(world,chunkCoordIntPair));
+    }
+    default int pushPayloadSpreadPeriod(){
+        return 20;
+    }
     @SideOnly(Side.CLIENT)
     default void tickRender(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.RenderTickEvent aEvent){}
     @SideOnly(Side.CLIENT)

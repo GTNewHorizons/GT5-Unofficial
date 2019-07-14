@@ -18,6 +18,7 @@ public class ChunkDataHandler {
     private final                HashMap<Integer,HashMap<ChunkCoordIntPair, NBTChunk>> dimensionWiseChunkData=new HashMap<>();
     private final HashMap<String,HashMap<Integer,ChunkHashMap                       >> dimensionWiseMetaChunkData=new HashMap<>();
     private final HashMap<String,ChunkMetaDataHandler> metaDataHandlerHashMap =new HashMap<>();
+    private final ArrayList<ChunkMetaDataHandler> clientSyncHandlers =new ArrayList<>();
     private final ArrayList<ChunkMetaDataHandler> serverHandlers=new ArrayList<>();
     private final ArrayList<ChunkMetaDataHandler> worldHandlers=new ArrayList<>();
     private final ArrayList<ChunkMetaDataHandler> playerHandlers=new ArrayList<>();
@@ -25,8 +26,6 @@ public class ChunkDataHandler {
     private final ArrayList<ChunkMetaDataHandler> clientHandlers=new ArrayList<>();
     @SideOnly(Side.CLIENT)
     private final ArrayList<ChunkMetaDataHandler> renderHandlers=new ArrayList<>();
-    @SideOnly(Side.CLIENT)
-    private final ArrayList<ChunkMetaDataHandler> clientSyncHandlers =new ArrayList<>();
 
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event){
@@ -143,6 +142,34 @@ public class ChunkDataHandler {
 
     @SubscribeEvent
     public void onWorldTickEvent(TickEvent.WorldTickEvent aEvent) {
+        if(aEvent.side.isServer()){
+            int dim=aEvent.world.provider.dimensionId;
+            clientSyncHandlers.forEach(chunkMetaDataHandler -> {
+                ChunkHashMap data=dimensionWiseMetaChunkData
+                        .get(chunkMetaDataHandler.getTagName()).get(dim);
+                int cycle=chunkMetaDataHandler.pushPayloadSpreadPeriod();
+                int epoch=(int)(aEvent.world.getTotalWorldTime()%cycle);
+                ArrayList<ChunkCoordIntPair> work;
+                if(epoch==0){
+                    int per=data.dirtyBoys.size()/cycle;
+                    int mod=data.dirtyBoys.size()%cycle;
+                    Iterator<ChunkCoordIntPair> iter=data.dirtyBoys.iterator();
+                    for (int periodWork = 0; periodWork < cycle; periodWork++) {
+                        work=data.workLoad.get(periodWork);
+                        for (int i = 0; i < per; i++) {
+                            work.add(iter.next());
+                        }
+                        if(periodWork<mod){
+                            work.add(iter.next());
+                        }
+                    }
+                    data.dirtyBoys.clear();
+                }
+                work=data.workLoad.get(epoch);
+                chunkMetaDataHandler.pushPayload(dim,work);
+                work.clear();
+            });
+        }
         worldHandlers.forEach(chunkMetaDataHandler ->
                 chunkMetaDataHandler.tickWorld(
                         dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
@@ -179,6 +206,9 @@ public class ChunkDataHandler {
             if(clazz.getMethod("tickPlayer", HashMap.class, TickEvent.PlayerTickEvent.class).getDeclaringClass()!=ChunkMetaDataHandler.class){
                 playerHandlers.add(handler);
             }
+            if (clazz.getMethod("requestData", ChunkEvent.Load.class).getDeclaringClass() != ChunkMetaDataHandler.class) {
+                clientSyncHandlers.add(handler);
+            }
         } catch (NoSuchMethodException e) {
             throw new RuntimeException("Cannot register common event handlers!");
         }
@@ -189,9 +219,6 @@ public class ChunkDataHandler {
                 }
                 if (clazz.getMethod("tickRender", HashMap.class, TickEvent.RenderTickEvent.class).getDeclaringClass() != ChunkMetaDataHandler.class) {
                     renderHandlers.add(handler);
-                }
-                if (clazz.getMethod("requestData", ChunkEvent.Load.class).getDeclaringClass() != ChunkMetaDataHandler.class) {
-                    clientSyncHandlers.add(handler);
                 }
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Cannot register client event handlers!");
@@ -222,11 +249,17 @@ public class ChunkDataHandler {
     public static final class ChunkHashMap implements Map<ChunkCoordIntPair,NBTTagCompound>{
         private final HashMap<ChunkCoordIntPair,NBTChunk> storage;
         private final HashMap<ChunkCoordIntPair,NBTTagCompound> storageMeta=new HashMap<>(1024);
+        private final HashSet<ChunkCoordIntPair> dirtyBoys=new HashSet<>(1024);
+        private final ArrayList<ArrayList<ChunkCoordIntPair>> workLoad=new ArrayList<>();
         private final String meta;
 
         private ChunkHashMap(String meta, HashMap<ChunkCoordIntPair, NBTChunk> storage) {
             this.storage =storage;
             this.meta=meta;
+        }
+
+        public void markForTransmissionToClient(ChunkCoordIntPair chunk){
+            dirtyBoys.add(chunk);
         }
 
         private void putLoaded(ChunkCoordIntPair key, NBTTagCompound value) {

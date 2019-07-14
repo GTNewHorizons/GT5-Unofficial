@@ -80,7 +80,6 @@ public class TecTech {
         }
 
         chunkDataHandler=new ChunkDataHandler();
-        chunkDataHandler.registerChunkMetaDataHandler(anomalyHandler=new AnomalyHandler());
         FMLCommonHandler.instance().bus().register(chunkDataHandler);
         MinecraftForge.EVENT_BUS.register(chunkDataHandler);
 
@@ -188,6 +187,8 @@ public class TecTech {
     @Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         MainLoader.postLoad();
+
+        chunkDataHandler.registerChunkMetaDataHandler(anomalyHandler=new AnomalyHandler());
     }
 
     @Mod.EventHandler
