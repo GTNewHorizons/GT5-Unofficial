@@ -5,7 +5,7 @@ import com.github.technus.tectech.loader.TecTechConfig;
 import com.github.technus.tectech.mechanics.ConvertFloat;
 import com.github.technus.tectech.mechanics.ConvertInteger;
 import com.github.technus.tectech.mechanics.anomaly.AnomalyHandler;
-import com.github.technus.tectech.mechanics.chunkData.ChunkDataHandler;
+import com.github.technus.tectech.chunkData.ChunkDataHandler;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.GiveEM;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.ListEM;
 import com.github.technus.tectech.proxy.CommonProxy;
@@ -94,10 +94,10 @@ public class TecTech {
 
         if(configTecTech.DISABLE_MATERIAL_LOADING_FFS){
             try {
-                Field field= GT_Proxy.class.getDeclaredField("mEvents");
-                field.setAccessible(true);
                 Field modifiersField = Field.class.getDeclaredField( "modifiers" );
                 modifiersField.setAccessible( true );
+                Field field= GT_Proxy.class.getDeclaredField("mEvents");
+                field.setAccessible(true);
                 modifiersField.setInt( field, field.getModifiers() & ~Modifier.FINAL );
                 field.set(GT_Mod.gregtechproxy, new Collection() {
                     @Override

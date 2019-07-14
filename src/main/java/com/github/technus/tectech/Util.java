@@ -20,6 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.StringUtils;
@@ -1449,5 +1450,11 @@ public final class Util {
             return Long.toString((long)value);
         }
         return Double.toString(value);
+    }
+
+    public static boolean checkChunkExist(World world, ChunkCoordIntPair chunk){
+        int x=chunk.getCenterXPos();
+        int z=chunk.getCenterZPosition();
+        return world.checkChunksExist(x, 0, z, x, 0, z);
     }
 }
