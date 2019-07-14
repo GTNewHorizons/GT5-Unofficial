@@ -25,7 +25,6 @@ import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.items.armor.components.LoadArmorComponents;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Massfabricator;
-import gregtech.loaders.bartworksHandler.BacteriaRegistry;
 import gregtech.loaders.load.GT_CoverBehaviorLoader;
 import gregtech.loaders.load.GT_FuelLoader;
 import gregtech.loaders.load.GT_ItemIterator;
@@ -621,11 +620,6 @@ public class GT_Mod implements IGT_Mod {
                 tRunnable.run();
             }
         } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
-        
-		if (Loader.isModLoaded("bartworks"))
- 		{
-        new BacteriaRegistry().runAllPostinit();
- 		}
     }
 
     @Mod.EventHandler
