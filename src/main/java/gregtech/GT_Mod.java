@@ -923,6 +923,11 @@ public class GT_Mod implements IGT_Mod {
         GregTech_API.sBeforeGTPostload = null;
         GregTech_API.sAfterGTPostload = null;
     }
+    
+    @Mod.EventHandler
+    public void onServerAboutToStart(FMLServerAboutToStartEvent aEvent){
+        gregtechproxy.onServerAboutToStart();
+    }
 
     @Mod.EventHandler
     public void onServerStarting(FMLServerStartingEvent aEvent) {

@@ -28,6 +28,7 @@ import gregtech.common.gui.GT_GUIContainerVolumetricFlask;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.armor.ModularArmor_Item;
 import gregtech.common.items.armor.gui.*;
+import ic2.api.reactor.IReactor;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -220,7 +221,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean ic2EnergySourceCompat = true;
     public boolean costlyCableConnection = false;
     public boolean mMoreComplicatedChemicalRecipes = false;
-	public boolean mHardRadonRecipe = true;
+    public boolean mHardRadonRecipe = true;
+    public final HashSet<IReactor> reactorsDone=new HashSet<>();
     
     public GT_Proxy() {
         GameRegistry.registerFuelHandler(this);
@@ -585,6 +587,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         }
     }
 
+    public void onServerAboutToStart(){
+        dimensionWiseChunkData.clear();//!!! IMPORTANT for map switching...
+        dimensionWisePollution.clear();//!!! IMPORTANT for map switching...
+    }
+
     public void onServerStarting() {
         GT_Log.out.println("GT_Mod: ServerStarting-Phase started!");
         GT_Log.ore.println("GT_Mod: ServerStarting-Phase started!");
@@ -606,9 +613,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 }
             }
         } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
-
-        dimensionWiseChunkData.clear();//!!! IMPORTANT for map switching...
-        dimensionWisePollution.clear();//!!! IMPORTANT for map switching...
     }
 
     public void onServerStarted() {
@@ -1234,8 +1238,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @SubscribeEvent
     public void onServerTickEvent(TickEvent.ServerTickEvent aEvent) {
+        reactorsDone.clear();
     }
-
+    
     @SubscribeEvent
     public void onWorldTickEvent(TickEvent.WorldTickEvent aEvent) {
     	if(aEvent.world.provider.dimensionId == 0)
