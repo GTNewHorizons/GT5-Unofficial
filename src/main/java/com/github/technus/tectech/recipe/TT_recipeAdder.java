@@ -124,7 +124,7 @@ public class  TT_recipeAdder extends GT_RecipeAdder {
     (boolean aOptimize,
      ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
      FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,
-     cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, AdditionalCheck check)
+     cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, IAdditionalCheck check)
      */
 
     public static boolean addResearchableEMmachineRecipe(
@@ -163,7 +163,7 @@ public class  TT_recipeAdder extends GT_RecipeAdder {
 
     public static boolean addResearchableEMcrafterRecipe(
             ItemStack aResearchItem, int totalComputationRequired, int computationRequiredPerSec, int researchEUt, int researchAmperage,
-            cElementalDefinitionStackMap[] eInputs, cElementalDefinitionStackMap[] catalyst, TT_recipe.AdditionalCheck check,
+            cElementalDefinitionStackMap[] eInputs, cElementalDefinitionStackMap[] catalyst, TT_recipe.IAdditionalCheck check,
             ItemStack aOutput, int crafterDuration, int crafterEUt, int crafterAmperage) {
         if (aResearchItem==null || totalComputationRequired<=0 || aOutput == null) {
             return false;
@@ -222,7 +222,7 @@ public class  TT_recipeAdder extends GT_RecipeAdder {
 
     public static boolean addScannableEMcrafterRecipe(
             iElementalDefinition aResearchEM, int totalComputationRequired, int computationRequiredPerSec, int researchEUt, int researchAmperage,
-            cElementalDefinitionStackMap[] eInputs, cElementalDefinitionStackMap[] catalyst, TT_recipe.AdditionalCheck check,
+            cElementalDefinitionStackMap[] eInputs, cElementalDefinitionStackMap[] catalyst, TT_recipe.IAdditionalCheck check,
             ItemStack aOutput, int crafterDuration, int crafterEUt, int crafterAmperage) {
         if (aResearchEM==null || totalComputationRequired<=0 || aOutput == null) {
             return false;

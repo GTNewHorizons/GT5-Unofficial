@@ -46,7 +46,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     private static final Block[] blockType = new Block[]{sBlockCasings4};
     private static final byte[] blockMeta = new byte[]{1};
 
-    private final HatchAdder[] addingMethods = new HatchAdder[]{this::addClassicToMachineList};
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList};
     private static final short[] casingTextures = new short[]{49};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasings4};
     private static final byte[] blockMetaFallback = new byte[]{1};
@@ -60,13 +60,13 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     //region parameters
     protected Parameters.Group.ParameterIn powerSetting,timerSetting;
     protected Parameters.Group.ParameterOut timerValue,remainingTime;
-    private static final NameFunction<GT_MetaTileEntity_TM_microwave> POWER_NAME = (base, p)-> "Power setting";
-    private static final NameFunction<GT_MetaTileEntity_TM_microwave> TIMER_SETTING_NAME = (base, p)-> "Timer setting";
-    private static final NameFunction<GT_MetaTileEntity_TM_microwave> TIMER_REMAINING_NAME = (base, p)-> "Timer remaining";
-    private static final NameFunction<GT_MetaTileEntity_TM_microwave> TIMER_VALUE_NAME = (base,p)-> "Timer value";
-    private static final StatusFunction<GT_MetaTileEntity_TM_microwave> POWER_STATUS=
+    private static final INameFunction<GT_MetaTileEntity_TM_microwave> POWER_NAME = (base, p)-> "Power setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_SETTING_NAME = (base, p)-> "Timer setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_REMAINING_NAME = (base, p)-> "Timer remaining";
+    private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_VALUE_NAME = (base, p)-> "Timer value";
+    private static final IStatusFunction<GT_MetaTileEntity_TM_microwave> POWER_STATUS=
             (base,p)-> LedStatus.fromLimitsInclusiveOuterBoundary(p.get(),300,1000,1000,Double.POSITIVE_INFINITY);
-    private static final StatusFunction<GT_MetaTileEntity_TM_microwave> TIMER_STATUS=(base,p)->{
+    private static final IStatusFunction<GT_MetaTileEntity_TM_microwave> TIMER_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
         value=(int)value;

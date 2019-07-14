@@ -8,7 +8,7 @@ import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -40,7 +40,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{7, 4};
-    private final HatchAdder[] addingMethods = new HatchAdder[]{this::addClassicToMachineList};
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0};

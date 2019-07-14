@@ -5,10 +5,10 @@ import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
@@ -44,7 +44,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT,sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4,5};
-    private final HatchAdder[] addingMethods = new HatchAdder[]{this::addClassicToMachineList, this::addElementalToMachineList};
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList, this::addElementalToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4};
@@ -56,9 +56,9 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     //endregion
 
     //region parameters
-    private static final NameFunction<GT_MetaTileEntity_EM_junction> ROUTE_NAME=
+    private static final INameFunction<GT_MetaTileEntity_EM_junction> ROUTE_NAME=
             (base,p)->(p.parameterId()==0?"Source ":"Destination ")+p.hatchId();
-    private static final StatusFunction<GT_MetaTileEntity_EM_junction> SRC_STATUS =
+    private static final IStatusFunction<GT_MetaTileEntity_EM_junction> SRC_STATUS =
             (base,p)-> {
                 double v = p.get();
                 if (Double.isNaN(v)) return STATUS_WRONG;
@@ -68,7 +68,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
                 if (v >= base.eInputHatches.size()) return STATUS_TOO_HIGH;
                 return STATUS_OK;
             };
-    private static final StatusFunction<GT_MetaTileEntity_EM_junction> DST_STATUS =
+    private static final IStatusFunction<GT_MetaTileEntity_EM_junction> DST_STATUS =
             (base,p)->{
                 if(base.src[p.hatchId()].getStatus(false)== STATUS_OK){
                     double v = p.get();

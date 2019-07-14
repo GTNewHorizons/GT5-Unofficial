@@ -9,7 +9,7 @@ import static com.github.technus.tectech.CommonValues.V;
 /**
  * Created by danie_000 on 24.12.2017.
  */
-public class Behaviour_Recycler implements GT_MetaTileEntity_EM_machine.Behaviour {
+public class Behaviour_Recycler implements GT_MetaTileEntity_EM_machine.IBehaviour {
     private final int tier;
     private final float coeff;
     public Behaviour_Recycler(int tier){

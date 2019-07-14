@@ -33,7 +33,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     public static final String machine = "EM Machinery";
 
     private ItemStack loadedMachine;
-    private Behaviour currentBehaviour;
+    private IBehaviour currentBehaviour;
 
     //region structure
     private static final String[][] shape = new String[][]{
@@ -46,7 +46,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             {"B0", "A!!!", "0!!!0", "A!!!", "B0",},};
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4, 0, 5, 6};
-    private final HatchAdder[] addingMethods = new HatchAdder[]{this::addClassicToMachineList,this::addElementalToMachineList};
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList,this::addElementalToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4};
@@ -59,7 +59,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     //region parameters
     protected Parameters.Group.ParameterIn[] inputMux;
     protected Parameters.Group.ParameterIn[] outputMux;
-    private static final StatusFunction<GT_MetaTileEntity_EM_machine> SRC_STATUS =
+    private static final IStatusFunction<GT_MetaTileEntity_EM_machine> SRC_STATUS =
             (base,p)-> {
                 double v = p.get();
                 if (Double.isNaN(v)) return STATUS_WRONG;
@@ -69,7 +69,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
                 if (v >= base.eInputHatches.size()) return STATUS_TOO_HIGH;
                 return STATUS_OK;
             };
-    private static final StatusFunction<GT_MetaTileEntity_EM_machine> DST_STATUS =
+    private static final IStatusFunction<GT_MetaTileEntity_EM_machine> DST_STATUS =
             (base,p)->{
                 if(base.inputMux[p.hatchId()].getStatus(false)== STATUS_OK){
                     double v = p.get();
@@ -82,7 +82,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
                 }
                 return STATUS_NEUTRAL;
             };
-    private static final NameFunction<GT_MetaTileEntity_EM_machine> ROUTE_NAME=
+    private static final INameFunction<GT_MetaTileEntity_EM_machine> ROUTE_NAME=
             (base,p)->(p.parameterId()==0?"Source ":"Destination ")+p.hatchId();
     //endregion
 
@@ -275,7 +275,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             return false;
         }
         loadedMachine=newMachine;
-        Supplier<Behaviour> behaviourSupplier=GT_MetaTileEntity_EM_machine.BEHAVIOUR_MAP.get(new Util.ItemStack_NoNBT(newMachine));
+        Supplier<IBehaviour> behaviourSupplier=GT_MetaTileEntity_EM_machine.BEHAVIOUR_MAP.get(new Util.ItemStack_NoNBT(newMachine));
         if(currentBehaviour==null && behaviourSupplier==null) {
             return false;
         }
@@ -297,14 +297,14 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
         return true;
     }
 
-    private static final HashMap<Util.ItemStack_NoNBT, Supplier<Behaviour>> BEHAVIOUR_MAP = new HashMap<>();
+    private static final HashMap<Util.ItemStack_NoNBT, Supplier<IBehaviour>> BEHAVIOUR_MAP = new HashMap<>();
 
-    public static void registerBehaviour(Supplier<Behaviour> behaviour, ItemStack is) {
+    public static void registerBehaviour(Supplier<IBehaviour> behaviour, ItemStack is) {
         BEHAVIOUR_MAP.put(new Util.ItemStack_NoNBT(is), behaviour);
         TecTech.LOGGER.info("Registered EM machine behaviour "+behaviour.get().getClass().getSimpleName()+' '+new Util.ItemStack_NoNBT(is).toString());
     }
 
-    public interface Behaviour {
+    public interface IBehaviour {
         /**
          * instantiate parameters, u can also check machine tier here
          * @param te

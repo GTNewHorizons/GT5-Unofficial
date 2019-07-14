@@ -2,7 +2,7 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -396,7 +396,7 @@ public final class Util {
             String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR-1 blocks
             Block[] blockType,//use numbers 0-9 for casing types
             byte[] blockMeta,//use numbers 0-9 for casing types
-            HatchAdder[] addingMethods,
+            IHatchAdder[] addingMethods,
             short[] casingTextures,
             Block[] blockTypeFallback,//use numbers 0-9 for casing types
             byte[] blockMetaFallback,//use numbers 0-9 for casing types

@@ -363,7 +363,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             String[][] structure,//0-9 casing, +- air no air, a-z ignore
             Block[] blockType,//use numbers 0-9 for casing types
             byte[] blockMeta,//use numbers 0-9 for casing types
-            HatchAdder[] addingMethods,
+            IHatchAdder[] addingMethods,
             short[] casingTextures,
             Block[] blockTypeFallback,//use numbers 0-9 for casing types
             byte[] blockMetaFallback,//use numbers 0-9 for casing types

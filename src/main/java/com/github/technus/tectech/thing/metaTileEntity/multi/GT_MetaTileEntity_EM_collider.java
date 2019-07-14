@@ -16,10 +16,10 @@ import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -64,16 +64,16 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     //region collision handlers
-    public static final HashMap<Integer, ColliderHandler> FUSE_HANDLERS =new HashMap<>();
-    public static final HashMap<String, PrimitiveColliderHandler> PRIMITIVE_FUSE_HANDLERS =new HashMap<>();
-    public interface PrimitiveColliderHandler {
+    public static final HashMap<Integer, IColliderHandler> FUSE_HANDLERS =new HashMap<>();
+    public static final HashMap<String, IPrimitiveColliderHandler> PRIMITIVE_FUSE_HANDLERS =new HashMap<>();
+    public interface IPrimitiveColliderHandler {
         void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out);
     }
-    public interface ColliderHandler extends PrimitiveColliderHandler {
+    public interface IColliderHandler extends IPrimitiveColliderHandler {
         byte getRequiredTier();
     }
     static {
-        FUSE_HANDLERS.put((dAtomDefinition.getClassTypeStatic() << 16) | dAtomDefinition.getClassTypeStatic(), new ColliderHandler() {
+        FUSE_HANDLERS.put((dAtomDefinition.getClassTypeStatic() << 16) | dAtomDefinition.getClassTypeStatic(), new IColliderHandler() {
             @Override
             public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
                 try {
@@ -102,7 +102,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         registerSimpleAtomFuse(dComplexAspectDefinition.getClassTypeStatic());
         registerSimpleAtomFuse(cElementalPrimitive.getClassTypeStatic());
 
-        FUSE_HANDLERS.put((dHadronDefinition.getClassTypeStatic() << 16) | dHadronDefinition.getClassTypeStatic(), new ColliderHandler() {
+        FUSE_HANDLERS.put((dHadronDefinition.getClassTypeStatic() << 16) | dHadronDefinition.getClassTypeStatic(), new IColliderHandler() {
             @Override
             public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
                 try {
@@ -127,7 +127,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                 return 2;
             }
         });
-        FUSE_HANDLERS.put((dHadronDefinition.getClassTypeStatic() << 16) | cElementalPrimitive.getClassTypeStatic(), new ColliderHandler() {
+        FUSE_HANDLERS.put((dHadronDefinition.getClassTypeStatic() << 16) | cElementalPrimitive.getClassTypeStatic(), new IColliderHandler() {
             @Override
             public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
                 try {
@@ -156,10 +156,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         registerSimpleAspectFuse(dComplexAspectDefinition.getClassTypeStatic());
         registerSimpleAspectFuse(cElementalPrimitive.getClassTypeStatic());
 
-        FUSE_HANDLERS.put((cElementalPrimitive.getClassTypeStatic() << 16) | cElementalPrimitive.getClassTypeStatic(), new ColliderHandler() {
+        FUSE_HANDLERS.put((cElementalPrimitive.getClassTypeStatic() << 16) | cElementalPrimitive.getClassTypeStatic(), new IColliderHandler() {
             @Override
             public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
-                PrimitiveColliderHandler collisionHandler= PRIMITIVE_FUSE_HANDLERS.get(in1.definition.getClass().getName()+'\0'+in2.definition.getClass().getName());
+                IPrimitiveColliderHandler collisionHandler= PRIMITIVE_FUSE_HANDLERS.get(in1.definition.getClass().getName()+'\0'+in2.definition.getClass().getName());
                 if (collisionHandler != null) {
                     collisionHandler.collide(in2, in1, out);
                 } else {
@@ -215,7 +215,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     private static void registerSimpleAspectFuse(byte classTypeStatic) {
-        FUSE_HANDLERS.put((dComplexAspectDefinition.getClassTypeStatic() << 16) | classTypeStatic, new ColliderHandler() {
+        FUSE_HANDLERS.put((dComplexAspectDefinition.getClassTypeStatic() << 16) | classTypeStatic, new IColliderHandler() {
             @Override
             public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
                 if (fuseAspects(in1, in2, out)) return;
@@ -234,7 +234,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     private static void registerSimpleAtomFuse(byte classTypeStatic) {
-        FUSE_HANDLERS.put((dAtomDefinition.getClassTypeStatic() << 16) | classTypeStatic, new ColliderHandler() {
+        FUSE_HANDLERS.put((dAtomDefinition.getClassTypeStatic() << 16) | classTypeStatic, new IColliderHandler() {
             @Override
             public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
                 try {
@@ -268,7 +268,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     //region parameters
     protected Parameters.Group.ParameterIn mode;
-    private static final StatusFunction<GT_MetaTileEntity_EM_collider> MODE_STATUS = (base_EM, p)->{
+    private static final IStatusFunction<GT_MetaTileEntity_EM_collider> MODE_STATUS = (base_EM, p)->{
         if(base_EM.isMaster()){
             double mode=p.get();
             if (mode == FUSE_MODE || mode == COLLIDE_MODE) {
@@ -282,7 +282,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         }
         return STATUS_UNUSED;
     };
-    private static final NameFunction<GT_MetaTileEntity_EM_collider> MODE_NAME = (base_EM, p)->{
+    private static final INameFunction<GT_MetaTileEntity_EM_collider> MODE_NAME = (base_EM, p)->{
         if(base_EM.isMaster()){
             double mode=p.get();
             if(mode==FUSE_MODE){
@@ -333,7 +333,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     };
     private static final byte[] blockMeta1 = new byte[]{4, 7, 4, 0, 4, 8};
     private static final byte[] blockMeta2 = new byte[]{4, 7, 5, 0, 6, 9};
-    private final HatchAdder[] addingMethods = new HatchAdder[]{
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{
             this::addClassicToMachineList,
             this::addElementalInputToMachineList,
             this::addElementalOutputToMachineList,
@@ -534,7 +534,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             //System.out.println("preMass = " + preMass);
 
             cElementalInstanceStackMap map = new cElementalInstanceStackMap();
-            ColliderHandler colliderHandler;
+            IColliderHandler colliderHandler;
             if (stack2.definition.getClassType() > stack.definition.getClassType()) {//always bigger first
                 colliderHandler = FUSE_HANDLERS.get((stack2.definition.getClassType() << 16) | stack.definition.getClassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
@@ -557,7 +557,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         return 0;
     }
 
-    private boolean handleRecipe(cElementalInstanceStack stack2, cElementalInstanceStackMap map, ColliderHandler colliderHandler) {
+    private boolean handleRecipe(cElementalInstanceStack stack2, cElementalInstanceStackMap map, IColliderHandler colliderHandler) {
         if (colliderHandler != null && eTier>= colliderHandler.getRequiredTier()) {
             colliderHandler.collide(stack2, stack, map);
         } else {

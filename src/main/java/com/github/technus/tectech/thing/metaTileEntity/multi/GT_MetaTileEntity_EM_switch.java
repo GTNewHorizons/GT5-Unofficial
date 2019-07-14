@@ -8,10 +8,10 @@ import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -43,7 +43,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{3};
-    private final HatchAdder[] addingMethods = new HatchAdder[]{this::addClassicToMachineList};
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset+1};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{1};
@@ -54,9 +54,9 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     //endregion
 
     //region parameters
-    private static final NameFunction<GT_MetaTileEntity_EM_switch> ROUTE_NAME=
+    private static final INameFunction<GT_MetaTileEntity_EM_switch> ROUTE_NAME=
             (base,p)->(p.parameterId()==0?"Destination ":"Weight ")+p.hatchId();
-    private static final StatusFunction<GT_MetaTileEntity_EM_switch> WEI_STATUS =
+    private static final IStatusFunction<GT_MetaTileEntity_EM_switch> WEI_STATUS =
             (base,p)-> {
                 double v=p.get();
                 if (Double.isNaN(v)) return STATUS_WRONG;
@@ -65,7 +65,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                 if(Double.isInfinite(v)) return STATUS_HIGH;
                 return STATUS_OK;
             };
-    private static final StatusFunction<GT_MetaTileEntity_EM_switch> DST_STATUS =
+    private static final IStatusFunction<GT_MetaTileEntity_EM_switch> DST_STATUS =
             (base,p)->{
                 if(base.weight[p.hatchId()].getStatus(false).isOk) {
                     double v = p.get();

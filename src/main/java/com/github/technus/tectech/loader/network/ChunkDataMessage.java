@@ -2,7 +2,7 @@ package com.github.technus.tectech.loader.network;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.chunkData.ChunkMetaDataHandler;
+import com.github.technus.tectech.chunkData.IChunkMetaDataHandler;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -19,7 +19,7 @@ public class ChunkDataMessage implements IMessage {
     int worldId;
     ChunkCoordIntPair chunk;
     NBTTagCompound data;
-    ChunkMetaDataHandler handler;
+    IChunkMetaDataHandler handler;
 
     public ChunkDataMessage(){}
 
@@ -53,7 +53,7 @@ public class ChunkDataMessage implements IMessage {
     public static class ChunkDataQuery extends ChunkDataMessage {
         public ChunkDataQuery() {
         }
-        public ChunkDataQuery(ChunkEvent.Load aEvent,ChunkMetaDataHandler handler) {
+        public ChunkDataQuery(ChunkEvent.Load aEvent, IChunkMetaDataHandler handler) {
             worldId=aEvent.world.provider.dimensionId;
             chunk=aEvent.getChunk().getChunkCoordIntPair();
             this.handler=handler;
@@ -64,7 +64,7 @@ public class ChunkDataMessage implements IMessage {
         public ChunkDataData() {
         }
 
-        public ChunkDataData(int worldId,ChunkCoordIntPair chunk,ChunkMetaDataHandler handler){
+        public ChunkDataData(int worldId, ChunkCoordIntPair chunk, IChunkMetaDataHandler handler){
             this.worldId=worldId;
             this.chunk=chunk;
             this.handler=handler;

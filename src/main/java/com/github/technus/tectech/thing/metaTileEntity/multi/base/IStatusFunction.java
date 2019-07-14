@@ -1,5 +1,5 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
-public interface StatusFunction<T extends GT_MetaTileEntity_MultiblockBase_EM>{
+public interface IStatusFunction<T extends GT_MetaTileEntity_MultiblockBase_EM>{
     LedStatus apply(T t, Parameters.IParameter iParameter);
 }

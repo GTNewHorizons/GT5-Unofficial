@@ -14,11 +14,11 @@ import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -63,9 +63,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     private int[] scanComplexity;
 
     //region parameters
-    private static final NameFunction<GT_MetaTileEntity_EM_scanner> CONFIG_NAME=
+    private static final INameFunction<GT_MetaTileEntity_EM_scanner> CONFIG_NAME=
             (base,p)->"Config at Depth: "+(p.hatchId()*2+p.parameterId());
-    private static final StatusFunction<GT_MetaTileEntity_EM_scanner> CONFIG_STATUS=
+    private static final IStatusFunction<GT_MetaTileEntity_EM_scanner> CONFIG_STATUS=
             (base,p)->{
                 double v=p.get();
                 if(Double.isNaN(v)){
@@ -93,7 +93,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4, 0, 0};
-    private final HatchAdder[] addingMethods = new HatchAdder[]{
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{
             this::addClassicToMachineList,
             this::addElementalInputToMachineList,
             this::addElementalOutputToMachineList,

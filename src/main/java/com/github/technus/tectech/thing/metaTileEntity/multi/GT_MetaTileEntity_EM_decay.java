@@ -7,10 +7,10 @@ import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -48,8 +48,8 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     //region parameters
     protected Parameters.Group.ParameterIn ampereFlow;
-    private static final NameFunction<GT_MetaTileEntity_EM_decay> FLOW_NAME= (base, p)->"Ampere divider";
-    private static final StatusFunction<GT_MetaTileEntity_EM_decay> FLOW_STATUS= (base, p)->{
+    private static final INameFunction<GT_MetaTileEntity_EM_decay> FLOW_NAME= (base, p)->"Ampere divider";
+    private static final IStatusFunction<GT_MetaTileEntity_EM_decay> FLOW_STATUS= (base, p)->{
         if(base.eAmpereFlow<=0){
             return STATUS_TOO_LOW;
         }
@@ -71,7 +71,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT ,sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4, 5, 8, 6};
-    private final HatchAdder[] addingMethods = new HatchAdder[]{this::addClassicToMachineList, this::addElementalToMachineList};
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList, this::addElementalToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4};
