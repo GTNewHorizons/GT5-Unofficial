@@ -5,6 +5,7 @@ import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_Centrifuge;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_ElectromagneticSeparator;
+import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_Recycler;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
@@ -1111,5 +1112,14 @@ public class DreamCraftRecipeLoader implements Runnable {
         GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(10),getItemContainer("ElectromagneticSeparatorUEV").get(1));
         GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(11),getItemContainer("ElectromagneticSeparatorUIV").get(1));
         GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_ElectromagneticSeparator(12),getItemContainer("ElectromagneticSeparatorUMV").get(1));
+
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Recycler(5),ItemList.Machine_IV_Recycler.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Recycler(6),getItemContainer("RecyclerLuV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Recycler(7),getItemContainer("RecyclerZPM").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Recycler(8),getItemContainer("RecyclerUV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Recycler(9),getItemContainer("RecyclerUHV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Recycler(10),getItemContainer("RecyclerUEV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Recycler(11),getItemContainer("RecyclerUIV").get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(()->new Behaviour_Recycler(12),getItemContainer("RecyclerUMV").get(1));
     }
 }

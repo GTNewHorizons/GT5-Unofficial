@@ -249,4 +249,11 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
     public boolean getActive() {
         return active;
     }
+
+    @Override
+    public void onRemoval() {
+        if(getActive()){
+            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(),1e10f);
+        }
+    }
 }

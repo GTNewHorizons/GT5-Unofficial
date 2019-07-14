@@ -293,6 +293,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
         } else {
             currentBehaviour=null;
         }
+
         return true;
     }
 

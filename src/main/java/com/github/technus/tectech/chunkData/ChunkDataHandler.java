@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 import java.util.*;
 
@@ -26,6 +27,24 @@ public class ChunkDataHandler {
     private final ArrayList<ChunkMetaDataHandler> renderHandlers=new ArrayList<>();
     @SideOnly(Side.CLIENT)
     private final ArrayList<ChunkMetaDataHandler> clientSyncHandlers =new ArrayList<>();
+
+    @SubscribeEvent
+    public void onWorldLoad(WorldEvent.Load event){
+        int dim=event.world.provider.dimensionId;
+        dimensionWiseChunkData.computeIfAbsent(dim, m->{
+            HashMap<ChunkCoordIntPair, NBTChunk> map = new HashMap<>();
+            for (String meta : metaDataHandlerHashMap.keySet()) {
+                dimensionWiseMetaChunkData.get(meta).put(dim, new ChunkHashMap(meta, map));
+            }
+            return map;
+        });
+    }
+
+    @SubscribeEvent
+    public void onWorldUnload(WorldEvent.Unload event){
+        dimensionWiseChunkData.remove(event.world.provider.dimensionId);
+        dimensionWiseMetaChunkData.forEach((k,v)->v.remove(event.world.provider.dimensionId));
+    }
 
     @SideOnly(Side.SERVER)
     @SubscribeEvent
@@ -48,8 +67,7 @@ public class ChunkDataHandler {
             return;
         }
         int dimId = event.world.provider.dimensionId;
-        HashMap<ChunkCoordIntPair, NBTChunk> dimensionMemory =
-                dimensionWiseChunkData.computeIfAbsent(dimId, this::createDimensionData);
+        HashMap<ChunkCoordIntPair, NBTChunk> dimensionMemory = dimensionWiseChunkData.get(dimId);
         ChunkCoordIntPair chunkCoordIntPair = event.getChunk().getChunkCoordIntPair();
         Set<String> loadedKeys = loadedTag.func_150296_c();
         NBTChunk chunkMemory = dimensionMemory.get(chunkCoordIntPair);
@@ -172,7 +190,7 @@ public class ChunkDataHandler {
                 if (clazz.getMethod("tickRender", HashMap.class, TickEvent.RenderTickEvent.class).getDeclaringClass() != ChunkMetaDataHandler.class) {
                     renderHandlers.add(handler);
                 }
-                if (clazz.getMethod("requestData", int.class, ChunkCoordIntPair.class).getDeclaringClass() != ChunkMetaDataHandler.class) {
+                if (clazz.getMethod("requestData", ChunkEvent.Load.class).getDeclaringClass() != ChunkMetaDataHandler.class) {
                     clientSyncHandlers.add(handler);
                 }
             } catch (NoSuchMethodException e) {
@@ -199,14 +217,6 @@ public class ChunkDataHandler {
 
     public ChunkHashMap getChunkData(ChunkMetaDataHandler chunkMetaDataHandler,int world){
         return dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()).get(world);
-    }
-
-    private HashMap<ChunkCoordIntPair, NBTChunk> createDimensionData(Integer dim) {
-        HashMap<ChunkCoordIntPair, NBTChunk> map = new HashMap<>();
-        for (String meta : metaDataHandlerHashMap.keySet()) {
-            dimensionWiseMetaChunkData.get(meta).put(dim, new ChunkHashMap(meta, map));
-        }
-        return map;
     }
 
     public static final class ChunkHashMap implements Map<ChunkCoordIntPair,NBTTagCompound>{

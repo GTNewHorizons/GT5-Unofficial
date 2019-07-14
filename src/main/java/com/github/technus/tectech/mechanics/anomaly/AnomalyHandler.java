@@ -54,13 +54,15 @@ public class AnomalyHandler implements ChunkMetaDataHandler {
     }
 
     public void addAnomaly(IGregTechTileEntity iGregTechTileEntity, double amount) {
-        World w=iGregTechTileEntity.getWorld();
-        addAnomaly(w.provider.dimensionId,
-                w.getChunkFromBlockCoords(
-                        iGregTechTileEntity.getXCoord(),
-                        iGregTechTileEntity.getZCoord())
-                        .getChunkCoordIntPair(),
-                amount);
+        if(iGregTechTileEntity.isServerSide()) {
+            World w = iGregTechTileEntity.getWorld();
+            addAnomaly(w.provider.dimensionId,
+                    w.getChunkFromBlockCoords(
+                            iGregTechTileEntity.getXCoord(),
+                            iGregTechTileEntity.getZCoord())
+                            .getChunkCoordIntPair(),
+                    amount);
+        }
     }
 
     public void addAnomaly(int world, ChunkCoordIntPair chunk,double amount) {

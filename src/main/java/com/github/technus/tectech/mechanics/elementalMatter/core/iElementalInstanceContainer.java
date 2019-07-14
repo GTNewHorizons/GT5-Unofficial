@@ -6,5 +6,5 @@ package com.github.technus.tectech.mechanics.elementalMatter.core;
 public interface iElementalInstanceContainer extends Cloneable {
     cElementalInstanceStackMap getContainerHandler();
 
-    float purgeOverflow();
+    void purgeOverflow();
 }

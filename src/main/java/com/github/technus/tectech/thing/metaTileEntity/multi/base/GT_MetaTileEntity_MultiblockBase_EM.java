@@ -39,8 +39,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.CommonValues.*;
-import static com.github.technus.tectech.Util.StructureCheckerExtreme;
-import static com.github.technus.tectech.Util.getTier;
+import static com.github.technus.tectech.Util.*;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 
@@ -675,15 +674,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     hatch.getBaseMetaTileEntity().setActive(false);
                 }
             }
+            cleanOutputEM_EM();
             if (ePowerPass && getEUVar()>V[3] || eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM()) {
                 explodeMultiblock();
-            }
-            if (outputEM != null) {
-                for (cElementalInstanceStackMap output : outputEM) {
-                    if (output != null && output.hasStacks()) {
-                        explodeMultiblock();
-                    }
-                }
             }
         } catch (Exception e) {
             if (DEBUG_MODE) {
@@ -1985,35 +1978,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             mass += tHatch.overflowMatter;
             tHatch.overflowMatter = 0;
         }
-        if (mass > 0) {
-            if (eMufflerHatches.size() < 1) {
-                explodeMultiblock();
-            }
-            mass /= eMufflerHatches.size();
-            for (GT_MetaTileEntity_Hatch_OverflowElemental dump : eMufflerHatches) {
-                if (dump.addOverflowMatter(mass)) {
-                    explodeMultiblock();
-                }
-            }
-        }
+        cleanMassEM_EM(mass);
     }
 
     public void cleanHatchContentEM_EM(GT_MetaTileEntity_Hatch_ElementalContainer target) {
         if (target == null) {
             return;
         }
-        float mass = target.getContainerHandler().getMass();
-        if (mass > 0) {
-            if (eMufflerHatches.size() < 1) {
-                explodeMultiblock();
-            }
-            mass /= eMufflerHatches.size();
-            for (GT_MetaTileEntity_Hatch_OverflowElemental dump : eMufflerHatches) {
-                if (dump.addOverflowMatter(mass)) {
-                    explodeMultiblock();
-                }
-            }
-        }
+        cleanMassEM_EM(target.getContainerHandler().getMass());
     }
 
     public void cleanStackEM_EM(cElementalInstanceStack target) {
@@ -2026,13 +1998,19 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public void cleanMassEM_EM(float mass) {
         if (mass > 0) {
             if (eMufflerHatches.size() < 1) {
+                TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(),mass);
                 explodeMultiblock();
+                return;
             }
             mass /= eMufflerHatches.size();
+            boolean shouldExplode=false;
             for (GT_MetaTileEntity_Hatch_OverflowElemental dump : eMufflerHatches) {
                 if (dump.addOverflowMatter(mass)) {
-                    explodeMultiblock();
+                    shouldExplode=true;
                 }
+            }
+            if(shouldExplode){
+                explodeMultiblock();
             }
         }
     }
@@ -2047,19 +2025,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 mass += map.getMass();
             }
         }
-
-        if (mass > 0) {
-            if (eMufflerHatches.size() < 1) {
-                explodeMultiblock();
-            }
-            mass /= eMufflerHatches.size();
-            for (GT_MetaTileEntity_Hatch_OverflowElemental dump : eMufflerHatches) {
-                if (dump.addOverflowMatter(mass)) {
-                    explodeMultiblock();
-                }
-            }
-        }
         outputEM = null;
+        cleanMassEM_EM(mass);
     }
     //endregion
 
