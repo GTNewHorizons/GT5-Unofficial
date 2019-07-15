@@ -67,6 +67,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private int transferRadiusTransceiver; //Radius for tower to transceiver transfers
     private int transferRadiusCoverUltimate; //Radius for tower to ultimate cover transfers
 
+
+    private long outputVoltageMax = 0; //Tesla Voltage Output
+    private long outputCurrentMax = 0; //Tesla Current Output
     private long outputVoltage = 0; //Tesla Voltage Output
     private long outputCurrent = 0; //Tesla Current Output
     private long energyCapacity = 0; //Total energy the tower can store
@@ -522,7 +525,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         vTier = -1;
 
         energyCapacity = 0;
-        outputCurrent = 0;
+        outputCurrentMax = 0;
         long[] capacitorData;
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
             if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
@@ -533,7 +536,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             }
         }
         if(vTier < 0){return false;}
-        outputVoltage = V[vTier];
+        outputVoltageMax = V[vTier];
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
             if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                 continue;
@@ -546,7 +549,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 }
                 eCaps.remove(cap);
             } else {
-                outputCurrent += capacitorData[1];
+                outputCurrentMax += capacitorData[1];
                 energyCapacity += capacitorData[2];
             }
         }
@@ -604,6 +607,21 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             }
         }
 
+        //Power Limits
+        if (outputVoltageSetting.get() > 0){
+            outputVoltage = Math.max(outputVoltageMax,(long)outputVoltageSetting.get());
+        } else {
+            outputVoltage = outputVoltageMax;
+        }
+        outputVoltageDisplay.set(outputVoltage);
+
+        if (outputCurrentSetting.get() > 0){
+            outputCurrent = Math.max(outputCurrentMax,(long)outputCurrentSetting.get());
+        } else {
+            outputCurrent = outputCurrentMax;
+        }
+        outputCurrentDisplay.set(0);
+
         //Stuff to do if ePowerPass
         if (ePowerPass) {
             //Range calculation and display
@@ -642,7 +660,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             //Power transfer
             long sparks = outputCurrent;
             System.out.println("Output Current at: " + outputCurrent + "A" );
-            long sparkz = 0;
             while (sparks > 0) {
                 boolean idle = true;
                 for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaMap)) {
@@ -665,7 +682,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                                     setEUVar(getEUVar() - outputVoltageConsumption);
                                     node.increaseStoredEnergyUnits(outputVoltageConsumption, true);
                                     sparks--;
-                                    sparkz++;
                                     idle = false;
                                 }
                             }
@@ -675,7 +691,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                                 if (node.injectEnergyUnits((byte) 6, outputVoltageInjectable, 1L) > 0L) {
                                     setEUVar(getEUVar() - outputVoltageConsumption);
                                     sparks--;
-                                    sparkz++;
                                     idle = false;
                                 }
                             }
@@ -683,26 +698,22 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                             if (node.injectEnergyUnits((byte) 1, outputVoltageInjectable, 1L) > 0L) {
                                 setEUVar(getEUVar() - outputVoltageConsumption);
                                 sparks--;
-                                sparkz++;
                                 idle = false;
                             }
                         }
                         if (sparks == 0) {
-                            System.out.println("Fresh out of sparks!");
                             break;
                         }
                     } else {
                         idle = true;
-                        System.out.println("ENERGY LOW!");
                         break;
                     }
                 }
                 if (idle) {
-                    System.out.println("IDLE DROP!");
                     break;
                 }
             }
-            System.out.println("I sent a total of :" + sparkz + " This tick!");
+            outputCurrentDisplay.set(outputCurrent - sparks);
         }
         return true;
     }
