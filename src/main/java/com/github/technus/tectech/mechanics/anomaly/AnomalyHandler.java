@@ -6,31 +6,19 @@ import com.github.technus.tectech.chunkData.IChunkMetaDataHandler;
 import com.github.technus.tectech.loader.network.ChunkDataMessage;
 import com.github.technus.tectech.loader.network.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import crazypants.util.BaublesUtil;
-import crazypants.util.GalacticraftUtil;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.player.PlayerDropsEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ListIterator;
 
 public class AnomalyHandler implements IChunkMetaDataHandler {
     private static final double SWAP_THRESHOLD = dAtomDefinition.getSomethingHeavy().getMass() * 10000D;
@@ -142,6 +130,16 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     }
 
     @Override
+    public void tickRender(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.RenderTickEvent aEvent) {
+        EntityClientPlayerMP player=Minecraft.getMinecraft().thePlayer;
+        if(player!=null) {
+            player.setAngles((TecTech.RANDOM.nextFloat() - .5F)*4, (TecTech.RANDOM.nextFloat() - .5F)*4);
+            player.setVelocity(TecTech.RANDOM.nextFloat()*2-1,TecTech.RANDOM.nextFloat()*2-1,TecTech.RANDOM.nextFloat()*2-1);
+            player.setInvisible(TecTech.RANDOM.nextBoolean());
+        }
+    }
+
+    @Override
     public void pullData(ChunkEvent.Load aEvent) {
         NetworkDispatcher.INSTANCE.sendToServer(new ChunkDataMessage.ChunkDataQuery(aEvent, this));
     }
@@ -178,28 +176,5 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
             old.setDouble(INTENSITY, old.getDouble(INTENSITY) + amount);
         }
         TecTech.chunkDataHandler.getChunkData(this, world).markForTransmissionToClient(chunk);
-    }
-
-    @SubscribeEvent
-    public void onPlayerClone(PlayerEvent.Clone evt) {
-        if (evt.wasDeath && !evt.isCanceled()) {
-            if (evt.original != null && evt.entityPlayer != null && !(evt.entityPlayer instanceof FakePlayer)) {
-                int i;
-                ItemStack item;
-                for (i = 0; i < evt.original.field_71071_by.field_70462_a.length; ++i) {
-                    item = evt.original.field_71071_by.field_70462_a[i];
-                    if (this.isSoulBound(item) && this.addToPlayerInventory(evt.entityPlayer, item)) {
-                        evt.original.field_71071_by.field_70462_a[i] = null;
-                    }
-                }
-
-                for (i = 0; i < evt.original.field_71071_by.field_70460_b.length; ++i) {
-                    item = evt.original.field_71071_by.field_70460_b[i];
-                    if (this.isSoulBound(item) && this.addToPlayerInventory(evt.entityPlayer, item)) {
-                        evt.original.field_71071_by.field_70460_b[i] = null;
-                    }
-                }
-            }
-        }
     }
 }
