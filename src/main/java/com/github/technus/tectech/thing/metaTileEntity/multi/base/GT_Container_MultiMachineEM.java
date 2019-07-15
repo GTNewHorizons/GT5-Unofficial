@@ -151,7 +151,7 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             allowedToWork = (par2 & 4) == 4;
         } else if(par1>=128 && par1<208){
             int pos=(par1-128)>>2;
-            eParamsIn[pos]=Util.receiveDouble(eParamsIn[pos],par1&0xFFFFFFFC,par1,par2);
+            eParamsOut[pos]=Util.receiveDouble(eParamsOut[pos],par1&0xFFFFFFFC,par1,par2);
         }else if(par1>=208 && par1<288){
             int pos=(par1-208)>>2;
             eParamsIn[pos]=Util.receiveDouble(eParamsIn[pos],par1&0xFFFFFFFC,par1,par2);
