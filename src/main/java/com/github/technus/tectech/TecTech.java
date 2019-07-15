@@ -81,6 +81,10 @@ public class TecTech {
             moduleAdminErrorLogs = new IngameErrorLog();
         }
 
+        playerPersistence=new PlayerPersistence("tec");
+        FMLCommonHandler.instance().bus().register(playerPersistence);
+        MinecraftForge.EVENT_BUS.register(playerPersistence);
+
         chunkDataHandler=new ChunkDataHandler();
         FMLCommonHandler.instance().bus().register(chunkDataHandler);
         MinecraftForge.EVENT_BUS.register(chunkDataHandler);
@@ -192,7 +196,6 @@ public class TecTech {
 
         chunkDataHandler.registerChunkMetaDataHandler(anomalyHandler=new AnomalyHandler());
 
-        playerPersistence=new PlayerPersistence("tec");
     }
 
     @Mod.EventHandler
@@ -208,5 +211,6 @@ public class TecTech {
     @Mod.EventHandler
     public void onServerAboutToStart(FMLServerAboutToStartEvent aEvent) {
         chunkDataHandler.clearData();
+        playerPersistence.clearData();
     }
 }
