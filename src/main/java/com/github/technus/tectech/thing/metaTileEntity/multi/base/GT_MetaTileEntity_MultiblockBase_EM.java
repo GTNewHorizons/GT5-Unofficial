@@ -1307,8 +1307,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 eOutputData.clear();
                 eInputData.clear();
 
-                if (getBaseMetaTileEntity() instanceof BaseTileEntity) {
-                    ((BaseTileEntity) getBaseMetaTileEntity()).ignoreUnloadedChunks = mMachine;
+                if (aBaseMetaTileEntity instanceof BaseTileEntity) {
+                    ((BaseTileEntity) aBaseMetaTileEntity).ignoreUnloadedChunks = mMachine;
                 }
                 mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 

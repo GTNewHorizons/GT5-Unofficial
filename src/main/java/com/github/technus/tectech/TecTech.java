@@ -4,6 +4,7 @@ import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.TecTechConfig;
 import com.github.technus.tectech.mechanics.ConvertFloat;
 import com.github.technus.tectech.mechanics.ConvertInteger;
+import com.github.technus.tectech.mechanics.PlayerPersistence;
 import com.github.technus.tectech.mechanics.anomaly.AnomalyHandler;
 import com.github.technus.tectech.chunkData.ChunkDataHandler;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.GiveEM;
@@ -44,6 +45,7 @@ public class TecTech {
 
     public static ChunkDataHandler chunkDataHandler;
     public static AnomalyHandler anomalyHandler;
+    public static PlayerPersistence playerPersistence;
 
     /**
      * For Loader.isModLoaded checks during the runtime
@@ -189,6 +191,8 @@ public class TecTech {
         MainLoader.postLoad();
 
         chunkDataHandler.registerChunkMetaDataHandler(anomalyHandler=new AnomalyHandler());
+
+        playerPersistence=new PlayerPersistence("tec");
     }
 
     @Mod.EventHandler

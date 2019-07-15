@@ -3,6 +3,8 @@ package com.github.technus.tectech;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -12,19 +14,27 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.IPlayerFileData;
+import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -1456,5 +1466,95 @@ public final class Util {
         int x=chunk.getCenterXPos();
         int z=chunk.getCenterZPosition();
         return world.checkChunksExist(x, 0, z, x, 0, z);
+    }
+
+    public static NBTTagCompound getPlayerData(EntityPlayer player,String extension) {
+        try {
+            if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+                if (player != null) {
+                    IPlayerFileData playerNBTManagerObj = MinecraftServer.getServer().worldServerForDimension(0).getSaveHandler().getSaveHandler();
+                    SaveHandler sh = (SaveHandler)playerNBTManagerObj;
+                    File dir = ObfuscationReflectionHelper.getPrivateValue(SaveHandler.class, sh, new String[]{"playersDirectory", "field_75771_c"});
+                    String id1=player.getUniqueID().toString();
+                    NBTTagCompound tagCompound=read(new File(dir, id1 + "."+extension));
+                    if(tagCompound!=null){
+                        return tagCompound;
+                    }
+                    tagCompound=readBackup(new File(dir, id1 + "."+extension+"_bak"));
+                    if(tagCompound!=null){
+                        return tagCompound;
+                    }
+                    String id2=UUID.nameUUIDFromBytes(player.getCommandSenderName().getBytes()).toString();
+                    tagCompound=read(new File(dir, id2 + "."+extension));
+                    if(tagCompound!=null){
+                        return tagCompound;
+                    }
+                    tagCompound=readBackup(new File(dir, id2 + "."+extension+"_bak"));
+                    if(tagCompound!=null){
+                        return tagCompound;
+                    }
+                }
+            }
+        } catch (Exception var9) {
+            TecTech.LOGGER.fatal("Error reading data for: "+player.getCommandSenderName());
+        }
+        return new NBTTagCompound();
+    }
+
+    public static void savePlayerFile(EntityPlayer player,String extension, NBTTagCompound data) {
+        try {
+            if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+                if (player != null) {
+                    IPlayerFileData playerNBTManagerObj = MinecraftServer.getServer().worldServerForDimension(0).getSaveHandler().getSaveHandler();
+                    SaveHandler sh = (SaveHandler)playerNBTManagerObj;
+                    File dir = ObfuscationReflectionHelper.getPrivateValue(SaveHandler.class, sh, new String[]{"playersDirectory", "field_75771_c"});
+                    String id1=player.getUniqueID().toString();
+                    write(new File(dir, id1 + "."+extension),data);
+                    write(new File(dir, id1 + "."+extension+"_bak"),data);
+                    String id2=UUID.nameUUIDFromBytes(player.getCommandSenderName().getBytes()).toString();
+                    write(new File(dir, id2 + "."+extension),data);
+                    write(new File(dir, id2 + "."+extension+"_bak"),data);
+                }
+            }
+        } catch (Exception var10) {
+            TecTech.LOGGER.fatal("Error saving data for: "+player.getCommandSenderName());
+        }
+    }
+
+    private static NBTTagCompound read(File file){
+        if (file != null && file.exists()) {
+            try(FileInputStream fileInputStream= new FileInputStream(file)) {
+                return CompressedStreamTools.readCompressed(fileInputStream);
+            } catch (Exception var9) {
+                TecTech.LOGGER.error("Cannot read NBT File: "+file.getAbsolutePath());
+            }
+        }
+        return null;
+    }
+
+    private static NBTTagCompound readBackup(File file){
+        if (file != null && file.exists()) {
+            try(FileInputStream fileInputStream= new FileInputStream(file)) {
+                return CompressedStreamTools.readCompressed(fileInputStream);
+            } catch (Exception var9) {
+                TecTech.LOGGER.error("Cannot read NBT File: "+file.getAbsolutePath());
+                return new NBTTagCompound();
+            }
+        }
+        return null;
+    }
+
+    private static void write(File file,NBTTagCompound tagCompound){
+        if (file != null) {
+            if(tagCompound==null){
+                if(file.exists()) file.delete();
+            }else {
+                try(FileOutputStream fileOutputStream= new FileOutputStream(file)) {
+                    CompressedStreamTools.writeCompressed(tagCompound,fileOutputStream);
+                } catch (Exception var9) {
+                    TecTech.LOGGER.error("Cannot write NBT File: "+file.getAbsolutePath());
+                }
+            }
+        }
     }
 }

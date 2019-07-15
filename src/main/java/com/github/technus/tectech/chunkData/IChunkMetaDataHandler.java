@@ -15,10 +15,8 @@ public interface IChunkMetaDataHandler {
     void mergeData(NBTTagCompound target, NBTTagCompound loadedData);
     NBTTagCompound createData();
     @SideOnly(Side.CLIENT)
-    default void requestData(ChunkEvent.Load aEvent){}
-    @SideOnly(Side.SERVER)
+    default void pullData(ChunkEvent.Load aEvent){}
     default void pushData(int world, ChunkCoordIntPair chunk){}
-    @SideOnly(Side.SERVER)
     default void pushPayload(int world, ArrayList<ChunkCoordIntPair> chunk){
         chunk.forEach(chunkCoordIntPair -> pushData(world,chunkCoordIntPair));
     }
@@ -30,7 +28,6 @@ public interface IChunkMetaDataHandler {
     @SideOnly(Side.CLIENT)
     default void tickClient(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.ClientTickEvent aEvent){}
     default void tickServer(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.ServerTickEvent event){}
-    @SideOnly(Side.SERVER)
     default void tickWorld(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.WorldTickEvent aEvent){}
     default void tickPlayer(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.PlayerTickEvent aEvent){}
 }
