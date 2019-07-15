@@ -1,4 +1,4 @@
-package com.github.technus.tectech.chunkData;
+package com.github.technus.tectech.mechanics.data;
 
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;

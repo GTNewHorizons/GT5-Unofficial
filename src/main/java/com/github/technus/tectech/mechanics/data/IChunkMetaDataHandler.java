@@ -1,4 +1,4 @@
-package com.github.technus.tectech.chunkData;
+package com.github.technus.tectech.mechanics.data;
 
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;

@@ -2,12 +2,12 @@ package com.github.technus.tectech.mechanics.anomaly;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.chunkData.ChunkDataHandler;
-import com.github.technus.tectech.chunkData.IChunkMetaDataHandler;
+import com.github.technus.tectech.mechanics.data.ChunkDataHandler;
+import com.github.technus.tectech.mechanics.data.IChunkMetaDataHandler;
 import com.github.technus.tectech.loader.MainLoader;
-import com.github.technus.tectech.loader.network.ChunkDataMessage;
-import com.github.technus.tectech.loader.network.NetworkDispatcher;
-import com.github.technus.tectech.loader.network.PlayerDataMessage;
+import com.github.technus.tectech.mechanics.data.ChunkDataMessage;
+import com.github.technus.tectech.loader.NetworkDispatcher;
+import com.github.technus.tectech.mechanics.data.PlayerDataMessage;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.api.GregTech_API;

@@ -6,11 +6,8 @@ import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.defin
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.AspectDefinitionCompatEnabled;
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat;
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompatEnabled;
-import com.github.technus.tectech.loader.entity.EntityLoader;
 import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
 import com.github.technus.tectech.loader.gui.ModGuiHandler;
-import com.github.technus.tectech.loader.mechanics.ElementalLoader;
-import com.github.technus.tectech.loader.network.NetworkDispatcher;
 import com.github.technus.tectech.loader.recipe.RecipeLoader;
 import com.github.technus.tectech.loader.thing.ComponentLoader;
 import com.github.technus.tectech.loader.thing.MachineLoader;

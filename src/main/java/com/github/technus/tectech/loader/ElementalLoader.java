@@ -1,4 +1,4 @@
-package com.github.technus.tectech.loader.mechanics;
+package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition;

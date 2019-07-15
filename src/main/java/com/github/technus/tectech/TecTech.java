@@ -2,11 +2,11 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.TecTechConfig;
-import com.github.technus.tectech.mechanics.ConvertFloat;
-import com.github.technus.tectech.mechanics.ConvertInteger;
-import com.github.technus.tectech.mechanics.PlayerPersistence;
+import com.github.technus.tectech.mechanics.commands.ConvertFloat;
+import com.github.technus.tectech.mechanics.commands.ConvertInteger;
 import com.github.technus.tectech.mechanics.anomaly.AnomalyHandler;
-import com.github.technus.tectech.chunkData.ChunkDataHandler;
+import com.github.technus.tectech.mechanics.data.ChunkDataHandler;
+import com.github.technus.tectech.mechanics.data.PlayerPersistence;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.GiveEM;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.ListEM;
 import com.github.technus.tectech.proxy.CommonProxy;

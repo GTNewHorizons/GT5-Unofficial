@@ -1,4 +1,4 @@
-package com.github.technus.tectech.mechanics;
+package com.github.technus.tectech.mechanics.commands;
 
 import com.github.technus.tectech.Util;
 import net.minecraft.command.ICommand;
