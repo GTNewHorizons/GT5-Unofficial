@@ -2,12 +2,12 @@ package com.github.technus.tectech.mechanics.anomaly;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.chunkData.ChunkDataHandler;
-import com.github.technus.tectech.chunkData.IChunkMetaDataHandler;
+import com.github.technus.tectech.mechanics.data.ChunkDataHandler;
+import com.github.technus.tectech.mechanics.data.IChunkMetaDataHandler;
 import com.github.technus.tectech.loader.MainLoader;
-import com.github.technus.tectech.loader.network.ChunkDataMessage;
-import com.github.technus.tectech.loader.network.NetworkDispatcher;
-import com.github.technus.tectech.loader.network.PlayerDataMessage;
+import com.github.technus.tectech.mechanics.data.ChunkDataMessage;
+import com.github.technus.tectech.loader.NetworkDispatcher;
+import com.github.technus.tectech.mechanics.data.PlayerDataMessage;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.api.GregTech_API;
@@ -33,11 +33,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AnomalyHandler implements IChunkMetaDataHandler {
-    private static final double SWAP_THRESHOLD = dAtomDefinition.getSomethingHeavy().getMass() * 10000D;
-    private static final int COUNT_DIV=32;
-    private static final double PER_PARTICLE=SWAP_THRESHOLD/COUNT_DIV;
-    private static final String INTENSITY = "intensity",SPACE_CANCER="space_cancer";
-    private static final int MEAN_DELAY =50;
+    public static final double SWAP_THRESHOLD = dAtomDefinition.getSomethingHeavy().getMass() * 10000D;
+    public static final int COUNT_DIV=32;
+    public static final double PER_PARTICLE=SWAP_THRESHOLD/COUNT_DIV;
+    public static final String INTENSITY = "intensity",SPACE_CANCER="space_cancer";
+    public static final int MEAN_DELAY =50;
+
+    private boolean fixMe=false;
 
     @Override
     public String getTagName() {
@@ -198,19 +200,25 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     @Override
     public void tickRender(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.RenderTickEvent aEvent) {
         EntityClientPlayerMP player=Minecraft.getMinecraft().thePlayer;
-        if(player!=null && !player.capabilities.isCreativeMode) {
-            NBTTagCompound tagCompound=TecTech.playerPersistence.getDataOrSetToNewTag(Minecraft.getMinecraft().thePlayer);
-            if(tagCompound!=null) {
-                float cancer = tagCompound.getFloat(SPACE_CANCER);
-                if (cancer > 0) {
-                    player.setAngles((TecTech.RANDOM.nextFloat() - .5F) * 4 * cancer, (TecTech.RANDOM.nextFloat() - .5F) * 4 * cancer);
-                    player.setInvisible(TecTech.RANDOM.nextFloat() * 2 < cancer);
-                    if (cancer > 1.9f) {
-                        player.setVelocity((TecTech.RANDOM.nextFloat() - .5F) * cancer*cancer/2, (TecTech.RANDOM.nextFloat() - .5F) * cancer*cancer/2, (TecTech.RANDOM.nextFloat() - .5F) * cancer*cancer/2);
-                    } else{
-                        player.addVelocity((TecTech.RANDOM.nextFloat() - .5F) * cancer*cancer/2, (TecTech.RANDOM.nextFloat() - .5F) * cancer*cancer/2, (TecTech.RANDOM.nextFloat() - .5F) * cancer*cancer/2);
+        if(player!=null) {
+            if(player.capabilities.isCreativeMode) {
+                NBTTagCompound tagCompound = TecTech.playerPersistence.getDataOrSetToNewTag(Minecraft.getMinecraft().thePlayer);
+                if (tagCompound != null) {
+                    float cancer = tagCompound.getFloat(SPACE_CANCER);
+                    if (cancer > 0) {
+                        player.setAngles((TecTech.RANDOM.nextFloat() - .5F) * 4 * cancer, (TecTech.RANDOM.nextFloat() - .5F) * 4 * cancer);
+                        player.setInvisible(fixMe = TecTech.RANDOM.nextFloat() * 2 < cancer);
+                        if (cancer > 1.9f) {
+                            player.setVelocity((TecTech.RANDOM.nextFloat() - .5F) * cancer * cancer / 2, (TecTech.RANDOM.nextFloat() - .5F) * cancer * cancer / 2, (TecTech.RANDOM.nextFloat() - .5F) * cancer * cancer / 2);
+                        } else {
+                            player.addVelocity((TecTech.RANDOM.nextFloat() - .5F) * cancer * cancer / 2, (TecTech.RANDOM.nextFloat() - .5F) * cancer * cancer / 2, (TecTech.RANDOM.nextFloat() - .5F) * cancer * cancer / 2);
+                        }
                     }
                 }
+            }
+            if (fixMe){
+                player.setInvisible(false);
+                fixMe=false;
             }
         }
     }

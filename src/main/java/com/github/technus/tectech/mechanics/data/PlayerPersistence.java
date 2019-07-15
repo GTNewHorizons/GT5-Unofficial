@@ -1,8 +1,7 @@
-package com.github.technus.tectech.mechanics;
+package com.github.technus.tectech.mechanics.data;
 
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.loader.network.NetworkDispatcher;
-import com.github.technus.tectech.loader.network.PlayerDataMessage;
+import com.github.technus.tectech.loader.NetworkDispatcher;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import net.minecraft.entity.player.EntityPlayer;

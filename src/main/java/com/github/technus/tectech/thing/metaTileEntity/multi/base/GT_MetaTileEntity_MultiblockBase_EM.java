@@ -10,8 +10,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElement
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
-import com.github.technus.tectech.loader.network.RotationMessage;
-import com.github.technus.tectech.loader.network.NetworkDispatcher;
+import com.github.technus.tectech.thing.metaTileEntity.RotationMessage;
+import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

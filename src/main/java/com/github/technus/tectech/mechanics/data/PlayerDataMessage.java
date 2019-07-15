@@ -1,6 +1,7 @@
-package com.github.technus.tectech.loader.network;
+package com.github.technus.tectech.mechanics.data;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.loader.NetworkDispatcher;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;

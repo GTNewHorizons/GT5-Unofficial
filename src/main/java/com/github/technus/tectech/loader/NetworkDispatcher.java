@@ -1,4 +1,9 @@
-package com.github.technus.tectech.loader.network;
+package com.github.technus.tectech.loader;
+
+import com.github.technus.tectech.thing.metaTileEntity.pipe.PipeActivityMessage;
+import com.github.technus.tectech.thing.metaTileEntity.RotationMessage;
+import com.github.technus.tectech.mechanics.data.ChunkDataMessage;
+import com.github.technus.tectech.mechanics.data.PlayerDataMessage;
 
 import static com.github.technus.tectech.Reference.MODID;
 
