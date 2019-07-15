@@ -15,7 +15,7 @@ public interface IChunkMetaDataHandler {
     void mergeData(NBTTagCompound target, NBTTagCompound loadedData);
     NBTTagCompound createData();
     @SideOnly(Side.CLIENT)
-    default void requestData(ChunkEvent.Load aEvent){}
+    default void pullData(ChunkEvent.Load aEvent){}
     default void pushData(int world, ChunkCoordIntPair chunk){}
     default void pushPayload(int world, ArrayList<ChunkCoordIntPair> chunk){
         chunk.forEach(chunkCoordIntPair -> pushData(world,chunkCoordIntPair));

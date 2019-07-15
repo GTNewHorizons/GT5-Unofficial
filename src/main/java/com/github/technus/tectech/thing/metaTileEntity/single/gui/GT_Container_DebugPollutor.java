@@ -104,6 +104,11 @@ public class GT_Container_DebugPollutor
                     break;
                 default: return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
             }
+            if(dpg.anomaly==Float.POSITIVE_INFINITY){
+                dpg.anomaly=Float.MAX_VALUE;
+            }else if (dpg.anomaly==Float.NEGATIVE_INFINITY){
+                dpg.anomaly=-Float.MAX_VALUE;
+            }
             return null;
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
@@ -119,7 +124,7 @@ public class GT_Container_DebugPollutor
         GT_MetaTileEntity_DebugPollutor dpg = (GT_MetaTileEntity_DebugPollutor) mTileEntity.getMetaTileEntity();
         pollution =dpg.pollution;
         anomaly =dpg.anomaly;
-        
+
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;
             Util.sendInteger(pollution,this,var1,100);

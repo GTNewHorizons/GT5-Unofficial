@@ -56,8 +56,10 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
             if (worldDataArrayList.size() >= 2) {
                 Chunk a = worldDataArrayList.remove(TecTech.RANDOM.nextInt(worldDataArrayList.size()));
                 Chunk b = worldDataArrayList.remove(TecTech.RANDOM.nextInt(worldDataArrayList.size()));
-                data.get(dim).get(a.getChunkCoordIntPair()).setDouble(INTENSITY, SWAP_THRESHOLD * TecTech.RANDOM.nextFloat() * 0.25F);
-                data.get(dim).get(b.getChunkCoordIntPair()).setDouble(INTENSITY, SWAP_THRESHOLD * TecTech.RANDOM.nextFloat() * 0.25F);
+                double avg=.5* (data.get(dim).get(a.getChunkCoordIntPair()).getDouble(INTENSITY)+
+                                data.get(dim).get(b.getChunkCoordIntPair()).getDouble(INTENSITY));
+                data.get(dim).get(a.getChunkCoordIntPair()).setDouble(INTENSITY, Math.min(SWAP_THRESHOLD,avg * (TecTech.RANDOM.nextFloat()+.5F) * 0.5F));
+                data.get(dim).get(b.getChunkCoordIntPair()).setDouble(INTENSITY, Math.min(SWAP_THRESHOLD,avg * (TecTech.RANDOM.nextFloat()+.5F) * 0.5F));
                 data.get(dim).markForTransmissionToClient(a.getChunkCoordIntPair());
                 data.get(dim).markForTransmissionToClient(b.getChunkCoordIntPair());
                 swapSomething(a, b);
@@ -123,7 +125,7 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     }
 
     @Override
-    public void requestData(ChunkEvent.Load aEvent) {
+    public void pullData(ChunkEvent.Load aEvent) {
         NetworkDispatcher.INSTANCE.sendToServer(new ChunkDataMessage.ChunkDataQuery(aEvent, this));
     }
 

@@ -21,6 +21,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 
@@ -116,6 +118,7 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
             for(byte i=0;i<6;i++){
                 if(i!=aBaseMetaTileEntity.getFrontFacing()){
                     TecTech.proxy.em_particle(aBaseMetaTileEntity, i);
+                    pollutionParticles(aBaseMetaTileEntity.getWorld(),"largesmoke",i);
                 }
             }
         }
@@ -152,5 +155,30 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
     @Override
     public boolean isElectric() {
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void pollutionParticles(World aWorld, String name,byte face) {
+        IGregTechTileEntity aMuffler = this.getBaseMetaTileEntity();
+        ForgeDirection aDir = ForgeDirection.getOrientation(face);
+        float xPos = aDir.offsetX * 0.76F + aMuffler.getXCoord() + 0.25F;
+        float yPos = aDir.offsetY * 0.76F + aMuffler.getYCoord() + 0.25F;
+        float zPos = aDir.offsetZ * 0.76F + aMuffler.getZCoord() + 0.25F;
+
+        float ySpd = aDir.offsetY * 0.1F + 0.2F + 0.1F * TecTech.RANDOM.nextFloat();
+        float xSpd;
+        float zSpd;
+
+        if (aDir.offsetY == -1) {
+            float temp = TecTech.RANDOM.nextFloat() * 2 * (float) Math.PI;
+            xSpd = (float) Math.sin(temp) * 0.1F;
+            zSpd = (float) Math.cos(temp) * 0.1F;
+        } else {
+            xSpd = aDir.offsetX * (0.1F + 0.2F * TecTech.RANDOM.nextFloat());
+            zSpd = aDir.offsetZ * (0.1F + 0.2F * TecTech.RANDOM.nextFloat());
+        }
+        aWorld.spawnParticle(name, xPos + TecTech.RANDOM.nextFloat() * 0.5F, yPos + TecTech.RANDOM.nextFloat() * 0.5F, zPos + TecTech.RANDOM.nextFloat() * 0.5F, xSpd, ySpd, zSpd);
+        aWorld.spawnParticle(name, xPos + TecTech.RANDOM.nextFloat() * 0.5F, yPos + TecTech.RANDOM.nextFloat() * 0.5F, zPos + TecTech.RANDOM.nextFloat() * 0.5F, xSpd, ySpd, zSpd);
+        aWorld.spawnParticle(name, xPos + TecTech.RANDOM.nextFloat() * 0.5F, yPos + TecTech.RANDOM.nextFloat() * 0.5F, zPos + TecTech.RANDOM.nextFloat() * 0.5F, xSpd, ySpd, zSpd);
     }
 }
