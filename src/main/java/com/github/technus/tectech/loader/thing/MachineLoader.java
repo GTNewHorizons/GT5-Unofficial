@@ -595,6 +595,7 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
         // Debug Stuff
         // ===================================================================================================
+        Machine_DebugPollutor.set(new GT_MetaTileEntity_DebugPollutor(15495,"debug.tt.pollutor","Debug Pollution Generator",15).getStackForm(1));
         hatch_CreativeData.set(new GT_MetaTileEntity_Hatch_CreativeData(15496,"debug.tt.data","Debug Data Hatch",15).getStackForm(1));
         hatch_CreativeMaitenance.set(new GT_MetaTileEntity_Hatch_CreativeMaintenance(15497, "debug.tt.maintenance", "Debug Maintenance Hatch", 15).getStackForm(1L));
         Machine_DebugGenny.set(new GT_MetaTileEntity_DebugPowerGenerator(15498, "debug.tt.genny", "Debug Power Generator", 15).getStackForm(1L));

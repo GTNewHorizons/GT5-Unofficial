@@ -38,8 +38,8 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Mult
 public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity_Hatch {
     private static Textures.BlockIcons.CustomIcon EM_T_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
-    private static Textures.BlockIcons.CustomIcon MufflerEM;
-    private static Textures.BlockIcons.CustomIcon MufflerEMidle;
+    public static Textures.BlockIcons.CustomIcon MufflerEM;
+    public static Textures.BlockIcons.CustomIcon MufflerEMidle;
     private float overflowMatter;
     public final float overflowMax;
     private final float overflowDisperse;
@@ -159,8 +159,8 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
                     aBaseMetaTileEntity.getWorld().updateLightByType(EnumSkyBlock.Block, aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord());
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && getBaseMetaTileEntity().isActive()) {
-            TecTech.proxy.em_particle(getBaseMetaTileEntity(), getBaseMetaTileEntity().getFrontFacing());
+        } else if (aBaseMetaTileEntity.isClientSide() && aBaseMetaTileEntity.isActive()) {
+            TecTech.proxy.em_particle(aBaseMetaTileEntity, aBaseMetaTileEntity.getFrontFacing());
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
         //DOES NOT CHECK FOR TOO MUCH, it is done only while putting stuff in (OPTIMIZATION!!!)

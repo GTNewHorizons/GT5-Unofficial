@@ -130,38 +130,39 @@ public class ChunkDataHandler {
                         dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
     }
 
-    @SideOnly(Side.SERVER)
     @SubscribeEvent
     public void onWorldTickEvent(TickEvent.WorldTickEvent aEvent) {
-        int dim=aEvent.world.provider.dimensionId;
-        clientSyncHandlers.forEach(chunkMetaDataHandler -> {
-            ChunkHashMap data=dimensionWiseMetaChunkData
-                    .get(chunkMetaDataHandler.getTagName()).get(dim);
-            int cycle=chunkMetaDataHandler.pushPayloadSpreadPeriod();
-            int epoch=(int)(aEvent.world.getTotalWorldTime()%cycle);
-            ArrayList<ChunkCoordIntPair> work;
-            if(epoch==0){
-                int per=data.dirtyBoys.size()/cycle;
-                int mod=data.dirtyBoys.size()%cycle;
-                Iterator<ChunkCoordIntPair> iter=data.dirtyBoys.iterator();
-                for (int periodWork = 0; periodWork < cycle; periodWork++) {
-                    work=data.workLoad.get(periodWork);
-                    for (int i = 0; i < per; i++) {
-                        work.add(iter.next());
+        if(aEvent.side.isServer()) {
+            int dim = aEvent.world.provider.dimensionId;
+            clientSyncHandlers.forEach(chunkMetaDataHandler -> {
+                ChunkHashMap data = dimensionWiseMetaChunkData
+                        .get(chunkMetaDataHandler.getTagName()).get(dim);
+                int cycle = chunkMetaDataHandler.pushPayloadSpreadPeriod();
+                int epoch = (int) (aEvent.world.getTotalWorldTime() % cycle);
+                ArrayList<ChunkCoordIntPair> work;
+                if (epoch == 0) {
+                    int per = data.dirtyBoys.size() / cycle;
+                    int mod = data.dirtyBoys.size() % cycle;
+                    Iterator<ChunkCoordIntPair> iter = data.dirtyBoys.iterator();
+                    for (int periodWork = 0; periodWork < cycle; periodWork++) {
+                        work = data.workLoad.get(periodWork);
+                        for (int i = 0; i < per; i++) {
+                            work.add(iter.next());
+                        }
+                        if (periodWork < mod) {
+                            work.add(iter.next());
+                        }
                     }
-                    if(periodWork<mod){
-                        work.add(iter.next());
-                    }
+                    data.dirtyBoys.clear();
                 }
-                data.dirtyBoys.clear();
-            }
-            work=data.workLoad.get(epoch);
-            chunkMetaDataHandler.pushPayload(dim,work);
-            work.clear();
-        });
-        worldHandlers.forEach(chunkMetaDataHandler ->
-                chunkMetaDataHandler.tickWorld(
-                        dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
+                work = data.workLoad.get(epoch);
+                chunkMetaDataHandler.pushPayload(dim, work);
+                work.clear();
+            });
+            worldHandlers.forEach(chunkMetaDataHandler ->
+                    chunkMetaDataHandler.tickWorld(
+                            dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
+        }
     }
 
     @SubscribeEvent
@@ -196,7 +197,7 @@ public class ChunkDataHandler {
                 clientSyncHandlers.add(handler);
             }
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException("Cannot register common event handlers!");
+            throw new RuntimeException("Cannot register common event handlers!",e);
         }
         if(FMLCommonHandler.instance().getEffectiveSide().isServer()) {
             try {
@@ -204,7 +205,7 @@ public class ChunkDataHandler {
                     worldHandlers.add(handler);
                 }
             } catch (NoSuchMethodException e) {
-                throw new RuntimeException("Cannot register client event handlers!");
+                throw new RuntimeException("Cannot register server event handlers!",e);
             }
         }
         if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
@@ -216,7 +217,7 @@ public class ChunkDataHandler {
                     renderHandlers.add(handler);
                 }
             } catch (NoSuchMethodException e) {
-                throw new RuntimeException("Cannot register client event handlers!");
+                throw new RuntimeException("Cannot register client event handlers!",e);
             }
         }
     }
