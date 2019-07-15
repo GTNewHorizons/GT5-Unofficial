@@ -568,6 +568,11 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         float energyFrac = (float)energyStored/energyMax;
         float rangeFrac = (float)((-0.5*Math.pow(energyFrac,2))+(1.5*energyFrac));
 
+        energyCapacityDisplay.set(energyMax);
+        energyStoredDisplay.set(energyStored);
+        energyFractionDisplay.set(energyFrac);
+
+
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
             if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                 continue;
@@ -613,24 +618,24 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         } else {
             outputVoltage = outputVoltageMax;
         }
-        outputVoltageDisplay.set((double)outputVoltage);
+        outputVoltageDisplay.set(outputVoltage);
 
         if (outputCurrentSetting.get() > 0){
             outputCurrent = Math.min(outputCurrentMax,(long)outputCurrentSetting.get());
         } else {
             outputCurrent = outputCurrentMax;
         }
-        outputCurrentDisplay.set((double) 0);
+        outputCurrentDisplay.set(0);
 
         //Stuff to do if ePowerPass
         if (ePowerPass) {
             //Range calculation and display
             transferRadiusTower = (int)(transferRadiusTowerSetting.get()*rangeFrac);
-            transferRadiusTowerDisplay.set((double)transferRadiusTower);
+            transferRadiusTowerDisplay.set(transferRadiusTower);
             transferRadiusTransceiver = (int)(transferRadiusTransceiverSetting.get()*rangeFrac);
-            transferRadiusTransceiverDisplay.set((double)transferRadiusTransceiver);
+            transferRadiusTransceiverDisplay.set(transferRadiusTransceiver);
             transferRadiusCoverUltimate=(int)(transferRadiusCoverUltimateSetting.get()*rangeFrac);
-            transferRadiusCoverUltimateDisplay.set((double)transferRadiusCoverUltimate);
+            transferRadiusCoverUltimateDisplay.set(transferRadiusCoverUltimate);
 
             //Clean the eTeslaMap
             for (Map.Entry<IGregTechTileEntity, Integer> Rx : eTeslaMap.entrySet()) {
