@@ -93,11 +93,6 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     }
 
     @Override
-    public void tickServer(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.ServerTickEvent event) {
-
-    }
-
-    @Override
     public void tickPlayer(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.PlayerTickEvent aEvent) {
         if (aEvent.side.isClient()) {
             ChunkCoordIntPair pair = new ChunkCoordIntPair(aEvent.player.chunkCoordX, aEvent.player.chunkCoordZ);

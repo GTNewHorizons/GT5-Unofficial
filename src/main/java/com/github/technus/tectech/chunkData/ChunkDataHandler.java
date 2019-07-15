@@ -102,7 +102,7 @@ public class ChunkDataHandler {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onUnLoadChunk(ChunkEvent.Unload aEvent){
-        pushSyncHandlers.forEach(chunkMetaDataHandler -> dimensionWiseMetaChunkData
+        pullSyncHandlers.forEach(chunkMetaDataHandler -> dimensionWiseMetaChunkData
                 .get(chunkMetaDataHandler.getTagName())
                 .get(aEvent.world.provider.dimensionId)
                 .remove(aEvent.getChunk().getChunkCoordIntPair()));
