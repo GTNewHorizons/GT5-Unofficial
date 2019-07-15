@@ -39,6 +39,8 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     private static final String INTENSITY = "intensity",SPACE_CANCER="space_cancer";
     private static final int MEAN_DELAY =50;
 
+    private boolean fixMe=false;
+
     @Override
     public String getTagName() {
         return "anomaly";
@@ -198,19 +200,25 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     @Override
     public void tickRender(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.RenderTickEvent aEvent) {
         EntityClientPlayerMP player=Minecraft.getMinecraft().thePlayer;
-        if(player!=null && !player.capabilities.isCreativeMode) {
-            NBTTagCompound tagCompound=TecTech.playerPersistence.getDataOrSetToNewTag(Minecraft.getMinecraft().thePlayer);
-            if(tagCompound!=null) {
-                float cancer = tagCompound.getFloat(SPACE_CANCER);
-                if (cancer > 0) {
-                    player.setAngles((TecTech.RANDOM.nextFloat() - .5F) * 4 * cancer, (TecTech.RANDOM.nextFloat() - .5F) * 4 * cancer);
-                    player.setInvisible(TecTech.RANDOM.nextFloat() * 2 < cancer);
-                    if (cancer > 1.9f) {
-                        player.setVelocity((TecTech.RANDOM.nextFloat() - .5F) * cancer*cancer/2, (TecTech.RANDOM.nextFloat() - .5F) * cancer*cancer/2, (TecTech.RANDOM.nextFloat() - .5F) * cancer*cancer/2);
-                    } else{
-                        player.addVelocity((TecTech.RANDOM.nextFloat() - .5F) * cancer*cancer/2, (TecTech.RANDOM.nextFloat() - .5F) * cancer*cancer/2, (TecTech.RANDOM.nextFloat() - .5F) * cancer*cancer/2);
+        if(player!=null) {
+            if(player.capabilities.isCreativeMode) {
+                NBTTagCompound tagCompound = TecTech.playerPersistence.getDataOrSetToNewTag(Minecraft.getMinecraft().thePlayer);
+                if (tagCompound != null) {
+                    float cancer = tagCompound.getFloat(SPACE_CANCER);
+                    if (cancer > 0) {
+                        player.setAngles((TecTech.RANDOM.nextFloat() - .5F) * 4 * cancer, (TecTech.RANDOM.nextFloat() - .5F) * 4 * cancer);
+                        player.setInvisible(fixMe = TecTech.RANDOM.nextFloat() * 2 < cancer);
+                        if (cancer > 1.9f) {
+                            player.setVelocity((TecTech.RANDOM.nextFloat() - .5F) * cancer * cancer / 2, (TecTech.RANDOM.nextFloat() - .5F) * cancer * cancer / 2, (TecTech.RANDOM.nextFloat() - .5F) * cancer * cancer / 2);
+                        } else {
+                            player.addVelocity((TecTech.RANDOM.nextFloat() - .5F) * cancer * cancer / 2, (TecTech.RANDOM.nextFloat() - .5F) * cancer * cancer / 2, (TecTech.RANDOM.nextFloat() - .5F) * cancer * cancer / 2);
+                        }
                     }
                 }
+            }
+            if (fixMe){
+                player.setInvisible(false);
+                fixMe=false;
             }
         }
     }
