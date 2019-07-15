@@ -201,7 +201,7 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     public void tickRender(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.RenderTickEvent aEvent) {
         EntityClientPlayerMP player=Minecraft.getMinecraft().thePlayer;
         if(player!=null) {
-            if(player.capabilities.isCreativeMode) {
+            if(!player.capabilities.isCreativeMode) {
                 NBTTagCompound tagCompound = TecTech.playerPersistence.getDataOrSetToNewTag(Minecraft.getMinecraft().thePlayer);
                 if (tagCompound != null) {
                     float cancer = tagCompound.getFloat(SPACE_CANCER);
