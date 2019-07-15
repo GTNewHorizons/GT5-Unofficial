@@ -25,8 +25,10 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.IPlayerFileData;
 import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.fluids.FluidStack;
@@ -42,6 +44,7 @@ import java.util.regex.Pattern;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.GT_Values.E;
+import static java.nio.charset.Charset.forName;
 
 /**
  * Created by Tec on 21.03.2017.
@@ -1468,14 +1471,14 @@ public final class Util {
         return world.checkChunksExist(x, 0, z, x, 0, z);
     }
 
-    public static NBTTagCompound getPlayerData(EntityPlayer player,String extension) {
+    public static NBTTagCompound getPlayerData(UUID uuid1,UUID uuid2,String extension) {
         try {
             if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-                if (player != null) {
+                if (uuid1 != null && uuid2!=null) {
                     IPlayerFileData playerNBTManagerObj = MinecraftServer.getServer().worldServerForDimension(0).getSaveHandler().getSaveHandler();
                     SaveHandler sh = (SaveHandler)playerNBTManagerObj;
                     File dir = ObfuscationReflectionHelper.getPrivateValue(SaveHandler.class, sh, new String[]{"playersDirectory", "field_75771_c"});
-                    String id1=player.getUniqueID().toString();
+                    String id1=uuid1.toString();
                     NBTTagCompound tagCompound=read(new File(dir, id1 + "."+extension));
                     if(tagCompound!=null){
                         return tagCompound;
@@ -1484,7 +1487,7 @@ public final class Util {
                     if(tagCompound!=null){
                         return tagCompound;
                     }
-                    String id2=UUID.nameUUIDFromBytes(player.getCommandSenderName().getBytes()).toString();
+                    String id2=uuid2.toString();
                     tagCompound=read(new File(dir, id2 + "."+extension));
                     if(tagCompound!=null){
                         return tagCompound;
@@ -1495,9 +1498,7 @@ public final class Util {
                     }
                 }
             }
-        } catch (Exception var9) {
-            TecTech.LOGGER.fatal("Error reading data for: "+player.getCommandSenderName());
-        }
+        } catch (Exception ignored) {}
         return new NBTTagCompound();
     }
 
@@ -1511,14 +1512,12 @@ public final class Util {
                     String id1=player.getUniqueID().toString();
                     write(new File(dir, id1 + "."+extension),data);
                     write(new File(dir, id1 + "."+extension+"_bak"),data);
-                    String id2=UUID.nameUUIDFromBytes(player.getCommandSenderName().getBytes()).toString();
+                    String id2=UUID.nameUUIDFromBytes(player.getCommandSenderName().getBytes(forName("UTF-8"))).toString();
                     write(new File(dir, id2 + "."+extension),data);
                     write(new File(dir, id2 + "."+extension+"_bak"),data);
                 }
             }
-        } catch (Exception var10) {
-            TecTech.LOGGER.fatal("Error saving data for: "+player.getCommandSenderName());
-        }
+        } catch (Exception ignored) {}
     }
 
     private static NBTTagCompound read(File file){
@@ -1556,5 +1555,17 @@ public final class Util {
                 }
             }
         }
+    }
+
+    public static AxisAlignedBB fromChunkCoordIntPair(ChunkCoordIntPair chunkCoordIntPair){
+        int x=chunkCoordIntPair.chunkXPos<<4;
+        int z=chunkCoordIntPair.chunkZPos<<4;
+        return AxisAlignedBB.getBoundingBox(x,-128,z,x+16,512,z+16);
+    }
+
+    public static AxisAlignedBB fromChunk(Chunk chunk){
+        int x=chunk.xPosition<<4;
+        int z=chunk.zPosition<<4;
+        return AxisAlignedBB.getBoundingBox(x,-128,z,x+16,512,z+16);
     }
 }
