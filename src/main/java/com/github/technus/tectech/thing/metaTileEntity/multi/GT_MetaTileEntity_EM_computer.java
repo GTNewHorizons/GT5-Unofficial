@@ -10,11 +10,11 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -50,17 +50,17 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     //region parameters
     protected Parameters.Group.ParameterIn overclock,overvolt;
     protected Parameters.Group.ParameterOut maxCurrentTemp,availableData;
-    private static final NameFunction<GT_MetaTileEntity_EM_computer> OC_NAME = (base, p)-> "Overclock ratio";
-    private static final NameFunction<GT_MetaTileEntity_EM_computer> OV_NAME = (base,p)-> "Overvoltage ratio";
-    private static final NameFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_NAME = (base,p)-> "Current max. heat";
-    private static final NameFunction<GT_MetaTileEntity_EM_computer> COMPUTE_NAME = (base,p)-> "Produced computation";
-    private static final StatusFunction<GT_MetaTileEntity_EM_computer> OC_STATUS=
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> OC_NAME = (base, p)-> "Overclock ratio";
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> OV_NAME = (base, p)-> "Overvoltage ratio";
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_NAME = (base, p)-> "Current max. heat";
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> COMPUTE_NAME = (base, p)-> "Produced computation";
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OC_STATUS=
             (base,p)->LedStatus.fromLimitsInclusiveOuterBoundary(p.get(),0,1,1,3);
-    private static final StatusFunction<GT_MetaTileEntity_EM_computer> OV_STATUS=
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OV_STATUS=
             (base,p)->LedStatus.fromLimitsInclusiveOuterBoundary(p.get(),.7,.8,1.2,2);
-    private static final StatusFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_STATUS=
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_STATUS=
             (base,p)->LedStatus.fromLimitsInclusiveOuterBoundary(p.get(),-10000,0,0,5000);
-    private static final StatusFunction<GT_MetaTileEntity_EM_computer> COMPUTE_STATUS=(base,p)->{
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> COMPUTE_STATUS=(base, p)->{
         if(base.eAvailableData<0){
             return STATUS_TOO_LOW;
         }
@@ -80,7 +80,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     private static final String[][] slice = new String[][]{{"-01", "A!2", "A!2", "-01",},};
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{2, 1, 3};
-    private final HatchAdder[] addingMethods = new HatchAdder[]{this::addToMachineList, this::addRackToMachineList};
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addToMachineList, this::addRackToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset + 1, textureOffset + 3};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{1, 3};

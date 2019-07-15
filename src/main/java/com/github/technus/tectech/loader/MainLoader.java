@@ -50,7 +50,7 @@ import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeT
 import static gregtech.api.enums.GT_Values.W;
 
 public final class MainLoader {
-    public static DamageSource microwaving, elementalPollution;
+    public static DamageSource microwaving, elementalPollution,subspace;
 
     private MainLoader(){}
 
@@ -107,6 +107,7 @@ public final class MainLoader {
         progressBarLoad.step("Add damage types");
         microwaving =new DamageSource("microwaving").setDamageBypassesArmor();
         elementalPollution =new DamageSource("elementalPollution").setDamageBypassesArmor();
+        subspace =new DamageSource("subspace").setDamageBypassesArmor().setDamageIsAbsolute();
         LOGGER.info("Damage types addition Done");
 
         progressBarLoad.step("Register Packet Dispatcher");

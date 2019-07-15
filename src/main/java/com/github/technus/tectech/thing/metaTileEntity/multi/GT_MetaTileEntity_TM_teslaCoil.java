@@ -34,6 +34,10 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static gregtech.api.enums.GT_Values.E;
 
+/**
+ * Created by danie_000 on 17.12.2016.
+ * edited by Bass on like 2018-02-05
+ */
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
@@ -141,7 +145,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static final byte[] blockMetaT4 = new byte[]{7, 4, 6, 8};
     private static final byte[] blockMetaT5 = new byte[]{7, 5, 6, 8};
     private static final byte[][] blockMetas = new byte[][]{blockMetaT0,blockMetaT1,blockMetaT2,blockMetaT3,blockMetaT4,blockMetaT5};
-    private final HatchAdder[] addingMethods = new HatchAdder[]{this::addCapacitorToMachineList, this::addFrameToMachineList};
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addCapacitorToMachineList, this::addFrameToMachineList};
     private static final short[] casingTextures = new short[]{(texturePage << 7)+16+6, 0};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsBA0, null};
     private static final byte[] blockMetaFallback = new byte[]{6, 0};
@@ -155,32 +159,32 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     //region parameters
     protected Parameters.Group.ParameterIn histLowSetting,histHighSetting,transferRadiusTowerSetting,transferRadiusTransceiverSetting,transferRadiusCoverUltimateSetting,outputVoltageSetting,outputCurrentSetting,scanTimeMinSetting,overDriveSetting;
     //protected Parameters.Group.ParameterOut timerValue,remainingTime;
-    private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_SETTING_NAME = (base, p)-> "Hysteresis low setting";
-    private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_SETTING_NAME = (base, p)-> "Hysteresis high setting";
-    private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_SETTING_NAME = (base, p)-> "Tesla Towers transfer radius";
-    private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME = (base, p)-> "Tesla Transceiver transfer radius";
-    private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME = (base, p)-> "Tesla Ultimate Cover transfer radius";
-    private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_SETTING_NAME = (base, p)-> "Output voltage setting";
-    private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_SETTING_NAME = (base, p)-> "Output current setting";
-    private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_SETTING_NAME = (base, p)-> "Scan time Min setting";
-    private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_SETTING_NAME = (base, p)-> "Overdrive setting";
-    private static final NameFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_NAME = (base, p)-> "POPOGA";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_SETTING_NAME = (base, p)-> "Hysteresis low setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_SETTING_NAME = (base, p)-> "Hysteresis high setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_SETTING_NAME = (base, p)-> "Tesla Towers transfer radius";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME = (base, p)-> "Tesla Transceiver transfer radius";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME = (base, p)-> "Tesla Ultimate Cover transfer radius";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_SETTING_NAME = (base, p)-> "Output voltage setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_SETTING_NAME = (base, p)-> "Output current setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_SETTING_NAME = (base, p)-> "Scan time Min setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_SETTING_NAME = (base, p)-> "Overdrive setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_NAME = (base, p)-> "POPOGA";
 
-    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_STATUS=(base, p)->{
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)){return STATUS_WRONG;}
         if(value<=0.05) return STATUS_TOO_LOW;
         if(value>base.histHighSetting.get()) return STATUS_TOO_HIGH;
         return STATUS_OK;
     };
-    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_STATUS=(base, p)->{
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
         if(value<=base.histLowSetting.get()) return STATUS_TOO_LOW;
         if(value>0.95) return STATUS_TOO_HIGH;
         return STATUS_OK;
     };
-    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_STATUS=(base, p)->{
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
         value=(int)value;
@@ -189,7 +193,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if(value<32) return STATUS_LOW;
         return STATUS_OK;
     };
-    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_STATUS=(base, p)->{
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
         value=(int)value;
@@ -198,7 +202,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if(value<16) return STATUS_LOW;
         return STATUS_OK;
     };
-    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_STATUS=(base, p)->{
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
         value=(int)value;
@@ -207,7 +211,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if(value<16) return STATUS_LOW;
         return STATUS_OK;
     };
-    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_STATUS=(base, p)->{
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
         value=(long)value;
@@ -215,7 +219,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if(value<=0) return STATUS_TOO_LOW;
         return STATUS_OK;
     };
-    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_STATUS=(base, p)->{
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
         value=(long)value;
@@ -223,7 +227,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if(value<=0) return STATUS_TOO_LOW;
         return STATUS_LOW;
     };
-    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_STATUS=(base, p)->{
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
         value=(int)value;
@@ -231,7 +235,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if(value==100) return STATUS_OK;
         return STATUS_HIGH;
     };
-    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_STATUS=(base, p)->{
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_STATUS=(base, p)->{
         double value=p.get();
         if(Double.isNaN(value)) return STATUS_WRONG;
         value=(int)value;
@@ -239,7 +243,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if(value==0) return STATUS_LOW;
         return STATUS_HIGH;
     };
-    private static final StatusFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_STATUS=(base, p)-> STATUS_WTF;
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_STATUS=(base, p)-> STATUS_WTF;
     //endregion
 
     public GT_MetaTileEntity_TM_teslaCoil(int aID, String aName, String aNameRegional) {

@@ -5,9 +5,9 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInsta
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 
 import java.util.Arrays;
 
@@ -18,12 +18,12 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 /**
  * Created by danie_000 on 24.12.2017.
  */
-public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behaviour {
+public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.IBehaviour {
     private final byte tier;
     private float radius, maxRPM, maxRCF, maxForce, maxCapacity;
     private Parameters.Group.ParameterIn settingRPM, settingFraction;
-    private final static NameFunction<GT_MetaTileEntity_EM_machine> rpmName= (gt_metaTileEntity_em_machine, iParameter) -> "RPM Setting";
-    private final StatusFunction<GT_MetaTileEntity_EM_machine> rpmStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
+    private final static INameFunction<GT_MetaTileEntity_EM_machine> rpmName= (gt_metaTileEntity_em_machine, iParameter) -> "RPM Setting";
+    private final IStatusFunction<GT_MetaTileEntity_EM_machine> rpmStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
         double v=iParameter.get();
         if(Double.isNaN(v)){
             return STATUS_WRONG;
@@ -35,8 +35,8 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
         }
         return STATUS_OK;
     };
-    private final static NameFunction<GT_MetaTileEntity_EM_machine> fractionName= (gt_metaTileEntity_em_machine, iParameter) -> "Fraction Count";
-    private static final StatusFunction<GT_MetaTileEntity_EM_machine> fractionStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
+    private final static INameFunction<GT_MetaTileEntity_EM_machine> fractionName= (gt_metaTileEntity_em_machine, iParameter) -> "Fraction Count";
+    private static final IStatusFunction<GT_MetaTileEntity_EM_machine> fractionStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
         double v=iParameter.get();
         if(Double.isNaN(v)){
             return STATUS_WRONG;

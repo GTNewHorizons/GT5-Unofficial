@@ -7,7 +7,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 /**
  * Created by danie_000 on 24.12.2017.
  */
-public class Behaviour_Electrolyzer implements GT_MetaTileEntity_EM_machine.Behaviour {
+public class Behaviour_Electrolyzer implements GT_MetaTileEntity_EM_machine.IBehaviour {
     final int tier;
     public Behaviour_Electrolyzer(int tier){
         this.tier=tier;

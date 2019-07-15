@@ -5,9 +5,9 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInsta
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
@@ -15,7 +15,7 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 /**
  * Created by danie_000 on 24.12.2017.
  */
-public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_machine.Behaviour {
+public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_machine.IBehaviour {
     private final byte tier;
     private int ticks;
     private byte precisionFull,precisionMinimal;
@@ -23,8 +23,8 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
     private long maxCharge;
     private int offsetMax;
     private Parameters.Group.ParameterIn fullSetting,minimalSetting,offsetSetting;
-    private final static NameFunction<GT_MetaTileEntity_EM_machine> fullName= (gt_metaTileEntity_em_machine, iParameter) -> "Full Precision Input [e/3]";
-    private final StatusFunction<GT_MetaTileEntity_EM_machine> fullStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
+    private final static INameFunction<GT_MetaTileEntity_EM_machine> fullName= (gt_metaTileEntity_em_machine, iParameter) -> "Full Precision Input [e/3]";
+    private final IStatusFunction<GT_MetaTileEntity_EM_machine> fullStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
         double v=iParameter.get();
         if(Double.isNaN(v)){
             return STATUS_WRONG;
@@ -39,8 +39,8 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
         }
         return STATUS_OK;
     };
-    private final static NameFunction<GT_MetaTileEntity_EM_machine> minimalName= (gt_metaTileEntity_em_machine, iParameter) -> "Minimal Precision Input [e/3]";
-    private final StatusFunction<GT_MetaTileEntity_EM_machine> minimalStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
+    private final static INameFunction<GT_MetaTileEntity_EM_machine> minimalName= (gt_metaTileEntity_em_machine, iParameter) -> "Minimal Precision Input [e/3]";
+    private final IStatusFunction<GT_MetaTileEntity_EM_machine> minimalStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
         double minimal=iParameter.get();
         double full=fullSetting.get();
         if(Double.isInfinite(minimal) && minimal>0) {
@@ -63,8 +63,8 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
             return STATUS_WRONG;
         }
     };
-    private final static NameFunction<GT_MetaTileEntity_EM_machine> offsetName= (gt_metaTileEntity_em_machine, iParameter) -> "Offset Input [e/3]";
-    private final StatusFunction<GT_MetaTileEntity_EM_machine> offsetStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
+    private final static INameFunction<GT_MetaTileEntity_EM_machine> offsetName= (gt_metaTileEntity_em_machine, iParameter) -> "Offset Input [e/3]";
+    private final IStatusFunction<GT_MetaTileEntity_EM_machine> offsetStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
         double offset=iParameter.get();
         if(offset>offsetMax){
             return STATUS_TOO_HIGH;

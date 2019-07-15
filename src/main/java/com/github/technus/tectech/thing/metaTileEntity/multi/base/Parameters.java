@@ -6,8 +6,8 @@ import java.util.ArrayList;
  * Instantiate parameters as field in parametersInstantiation_EM();
  */
 public class Parameters {
-    private static final StatusFunction LED_STATUS_FUNCTION_DEFAULT = (b,p)->LedStatus.STATUS_UNDEFINED;
-    private static final NameFunction NAME_FUNCTION_DEFAULT= (b,p)->"Undefined";
+    private static final IStatusFunction LED_STATUS_FUNCTION_DEFAULT = (b, p)->LedStatus.STATUS_UNDEFINED;
+    private static final INameFunction NAME_FUNCTION_DEFAULT= (b, p)->"Undefined";
 
     final Group[] groups = new Group[10];
 
@@ -140,11 +140,11 @@ public class Parameters {
             groups[hatchNo]=this;
         }
 
-        public ParameterIn makeInParameter(int paramID, double defaultValue, NameFunction name, StatusFunction status){
+        public ParameterIn makeInParameter(int paramID, double defaultValue, INameFunction name, IStatusFunction status){
             return new ParameterIn(paramID, defaultValue,name, status);
         }
 
-        public ParameterOut makeOutParameter(int paramID, double defaultValue, NameFunction name, StatusFunction status){
+        public ParameterOut makeOutParameter(int paramID, double defaultValue, INameFunction name, IStatusFunction status){
             return new ParameterOut(paramID, defaultValue, name, status);
         }
 
@@ -181,10 +181,10 @@ public class Parameters {
         public class ParameterOut implements IParameter {
             public final int id;
             public final double defaultValue;
-            StatusFunction status;
-            NameFunction name;
+            IStatusFunction status;
+            INameFunction name;
 
-            private ParameterOut(int paramID, double defaultValue, NameFunction name, StatusFunction status){
+            private ParameterOut(int paramID, double defaultValue, INameFunction name, IStatusFunction status){
                 this.name= name==null?NAME_FUNCTION_DEFAULT:name;
                 if(paramID<0 || paramID>2){
                     throw new IllegalArgumentException("Parameter id must be in 0 to 1 range");
@@ -258,10 +258,10 @@ public class Parameters {
         public class ParameterIn implements IParameter {
             public final int id;
             public final double defaultValue;
-            StatusFunction status;
-            NameFunction name;
+            IStatusFunction status;
+            INameFunction name;
 
-            private ParameterIn(int paramID, double defaultValue, NameFunction name, StatusFunction status){
+            private ParameterIn(int paramID, double defaultValue, INameFunction name, IStatusFunction status){
                 this.name= name==null?NAME_FUNCTION_DEFAULT:name;
                 this.id=hatchNo+10*paramID;
                 if(paramID<0 || paramID>2){

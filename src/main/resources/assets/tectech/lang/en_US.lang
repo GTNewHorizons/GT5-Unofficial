@@ -17,3 +17,6 @@ death.attack.microwaving.player=%1$s was dehydrated by radiation while fighting 
 
 death.attack.elementalPollution=%1$s was vaping from the wrong hole.
 death.attack.elementalPollution.player=%1$s was vaping from the wrong hole while fighting %2$s.
+
+death.attack.subspace=%1$s was N-th dimensionally displeased.
+death.attack.subspace.player=%1$s N-th dimensionally displeased while fighting %2$s.

@@ -142,10 +142,10 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == DISPERSE_AT) {
             if (aBaseMetaTileEntity.isActive()) {
                 if (overflowMatter > overflowDisperse) {
-                    //todo add full dose of dispersed pollution (reduced by tier, or make recycler machine only capable of reduction?)
+                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity,overflowDisperse);
                     overflowMatter -= overflowDisperse;
                 } else {
-                    //todo add partial dose of dispersed pollution (reduced by tier, or make recycler machine only capable of reduction?)
+                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity,overflowMatter);
                     overflowMatter = 0;
                     aBaseMetaTileEntity.setActive(false);
                     aBaseMetaTileEntity.setLightValue((byte) 0);
@@ -202,6 +202,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     @Override
     public void onRemoval() {
         if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) {
+            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(),overflowMatter*8D);
             if (TecTech.configTecTech.BOOM_ENABLE) {
                 getBaseMetaTileEntity().doExplosion(V[15]);
             } else {
