@@ -33,11 +33,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AnomalyHandler implements IChunkMetaDataHandler {
-    private static final double SWAP_THRESHOLD = dAtomDefinition.getSomethingHeavy().getMass() * 10000D;
-    private static final int COUNT_DIV=32;
-    private static final double PER_PARTICLE=SWAP_THRESHOLD/COUNT_DIV;
-    private static final String INTENSITY = "intensity",SPACE_CANCER="space_cancer";
-    private static final int MEAN_DELAY =50;
+    public static final double SWAP_THRESHOLD = dAtomDefinition.getSomethingHeavy().getMass() * 10000D;
+    public static final int COUNT_DIV=32;
+    public static final double PER_PARTICLE=SWAP_THRESHOLD/COUNT_DIV;
+    public static final String INTENSITY = "intensity",SPACE_CANCER="space_cancer";
+    public static final int MEAN_DELAY =50;
 
     private boolean fixMe=false;
 
