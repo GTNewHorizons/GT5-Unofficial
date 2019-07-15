@@ -536,7 +536,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             }
         }
         if(vTier < 0){return false;}
-        outputVoltageMax = V[vTier];
+        outputVoltageMax = V[vTier+1];
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
             if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                 continue;
@@ -609,28 +609,28 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         //Power Limits
         if (outputVoltageSetting.get() > 0){
-            outputVoltage = Math.max(outputVoltageMax,(long)outputVoltageSetting.get());
+            outputVoltage = Math.min(outputVoltageMax,(long)outputVoltageSetting.get());
         } else {
             outputVoltage = outputVoltageMax;
         }
-        outputVoltageDisplay.set(outputVoltage);
+        outputVoltageDisplay.set((double)outputVoltage);
 
         if (outputCurrentSetting.get() > 0){
-            outputCurrent = Math.max(outputCurrentMax,(long)outputCurrentSetting.get());
+            outputCurrent = Math.min(outputCurrentMax,(long)outputCurrentSetting.get());
         } else {
             outputCurrent = outputCurrentMax;
         }
-        outputCurrentDisplay.set(0);
+        outputCurrentDisplay.set((double) 0);
 
         //Stuff to do if ePowerPass
         if (ePowerPass) {
             //Range calculation and display
             transferRadiusTower = (int)(transferRadiusTowerSetting.get()*rangeFrac);
-            transferRadiusTowerDisplay.set(transferRadiusTower);
+            transferRadiusTowerDisplay.set((double)transferRadiusTower);
             transferRadiusTransceiver = (int)(transferRadiusTransceiverSetting.get()*rangeFrac);
-            transferRadiusTransceiverDisplay.set(transferRadiusTransceiver);
-            transferRadiusCoverUltimate = (int)(transferRadiusCoverUltimateSetting.get()*rangeFrac);
-            transferRadiusCoverUltimateDisplay.set(transferRadiusCoverUltimate);
+            transferRadiusTransceiverDisplay.set((double)transferRadiusTransceiver);
+            transferRadiusCoverUltimate=(int)(transferRadiusCoverUltimateSetting.get()*rangeFrac);
+            transferRadiusCoverUltimateDisplay.set((double)transferRadiusCoverUltimate);
 
             //Clean the eTeslaMap
             for (Map.Entry<IGregTechTileEntity, Integer> Rx : eTeslaMap.entrySet()) {
