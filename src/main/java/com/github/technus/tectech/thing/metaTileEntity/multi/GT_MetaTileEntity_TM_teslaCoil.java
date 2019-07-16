@@ -331,7 +331,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         popogaDisplay=hatch_4.makeOutParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
         outputCurrentDisplay=hatch_5.makeOutParameter(0,0, OUTPUT_CURRENT_DISPLAY_NAME,POWER_STATUS);
         energyCapacityDisplay=hatch_5.makeOutParameter(1,0, ENERGY_CAPACITY_DISPLAY_NAME,ENERGY_STATUS);
-        energyCapacityDisplay=hatch_6.makeOutParameter(0,0, ENERGY_STORED_DISPLAY_NAME,ENERGY_STATUS);
+        energyStoredDisplay=hatch_6.makeOutParameter(0,0, ENERGY_STORED_DISPLAY_NAME,ENERGY_STATUS);
         energyFractionDisplay=hatch_6.makeOutParameter(1,0, ENERGY_FRACTION_DISPLAY_NAME,ENERGY_STATUS);
         scanTimeDisplay=hatch_7.makeOutParameter(0,0, SCAN_TIME_DISPLAY_NAME,SCAN_TIME_STATUS);
         popogaDisplay=hatch_7.makeOutParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
@@ -568,9 +568,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         float energyFrac = (float)energyStored/energyMax;
         float rangeFrac = (float)((-0.5*Math.pow(energyFrac,2))+(1.5*energyFrac));
 
-        energyCapacityDisplay.set(energyMax);
-        energyStoredDisplay.set(energyStored);
-        energyFractionDisplay.set(energyFrac);
+        energyCapacityDisplay.set((double)energyMax);
+        energyStoredDisplay.set((double)energyStored);
+        energyFractionDisplay.set((double)energyFrac);
 
 
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
@@ -589,6 +589,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         ////Scanning for active teslas
 
         scanTime++;
+        scanTimeDisplay.set(scanTime);
         if (scanTime >= 100) {
             scanTime = 0;
             eTeslaMap.clear();
