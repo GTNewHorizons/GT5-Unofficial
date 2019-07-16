@@ -14,6 +14,7 @@ import cpw.mods.fml.common.Loader;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityExplodeFX;
@@ -137,5 +138,10 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void renderAABB(AxisAlignedBB box) {
         renderAABB(Minecraft.getMinecraft().theWorld,box);
+    }
+
+    @Override
+    public EntityClientPlayerMP getPlayer(){
+        return Minecraft.getMinecraft().thePlayer;
     }
 }
