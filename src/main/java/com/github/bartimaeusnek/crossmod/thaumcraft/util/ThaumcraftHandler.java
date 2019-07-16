@@ -39,6 +39,24 @@ public class ThaumcraftHandler {
 
     private static Integer taintBiomeID;
 
+    private static Class mWandInterface;
+
+    static {
+        try {
+            ThaumcraftHandler.mWandInterface = Class.forName("thaumcraft.common.items.wands.ItemWandCasting");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean isWand(ItemStack aStack) {
+        try {
+            return aStack != null && ThaumcraftHandler.mWandInterface.isAssignableFrom(aStack.getItem().getClass());
+        } catch (Throwable var3) {
+            return false;
+        }
+    }
+
     public static boolean isTaintBiome(int biomeID){
         if (ThaumcraftHandler.taintBiomeID == null) {
             try {

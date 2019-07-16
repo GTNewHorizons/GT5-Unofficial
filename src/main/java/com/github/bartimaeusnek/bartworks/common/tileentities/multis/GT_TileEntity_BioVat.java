@@ -80,7 +80,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
     private boolean needsVisualUpdate = true;
     private byte mGlassTier = 0;
     private int mSievert = 0;
-
+    private int mNeededSievert = 0;
 
     public GT_TileEntity_BioVat(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -203,12 +203,14 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
             if (gtRecipe == null)
                 return false;
 
-            if (!BW_Util.areStacksEqual((ItemStack) gtRecipe.mSpecialItems, itemStack))
+            if (!BW_Util.areStacksEqualOrNull((ItemStack) gtRecipe.mSpecialItems, itemStack))
                 return false;
 
             int[] conditions = specialValueUnpack(gtRecipe.mSpecialValue);
 
-            if (conditions[2] == 0 ? (this.mSievert < conditions[3] || this.mGlassTier < conditions[0]) : (this.mSievert != conditions[3] || this.mGlassTier < conditions[0]))
+            this.mNeededSievert = conditions[3];
+
+            if (conditions[2] == 0 ? (this.mSievert < this.mNeededSievert || this.mGlassTier < conditions[0]) : (this.mSievert != conditions[3] || this.mGlassTier < conditions[0]))
                 return false;
 
             int times = 1;
@@ -494,7 +496,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
 
                 height = reCalculateHeight();
                 if (this.mFluid != null && height > 1 && this.reCalculateFluidAmmount() > 0) {
-                    if ((!(BW_Util.areStacksEqual(aStack, mStack))) || (needsVisualUpdate && this.getBaseMetaTileEntity().getTimer() % TIMERDIVIDER == 1)) {
+                    if ((!(BW_Util.areStacksEqualOrNull(aStack, mStack))) || (needsVisualUpdate && this.getBaseMetaTileEntity().getTimer() % TIMERDIVIDER == 1)) {
                         for (int x = -1; x < 2; x++) {
                             for (int y = 1; y < height; y++) {
                                 for (int z = -1; z < 2; z++) {
@@ -529,8 +531,11 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
         if (height != reCalculateHeight())
             needsVisualUpdate = true;
         doAllVisualThings();
-        if (this.getBaseMetaTileEntity().isServerSide() && this.mRadHatches.size() == 1)
+        if (this.getBaseMetaTileEntity().isServerSide() && this.mRadHatches.size() == 1) {
             this.mSievert = this.mRadHatches.get(0).getSievert();
+            if (this.getBaseMetaTileEntity().isActive() && this.mNeededSievert > this.mSievert)
+                this.mOutputFluids = null;
+        }
     }
 
     @Override
@@ -543,6 +548,8 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
         }
         if (this.mFluid != null)
             aNBT.setString("mFluid", mFluid.getName());
+        aNBT.setInteger("mSievert",this.mSievert);
+        aNBT.setInteger("mNeededSievert",this.mNeededSievert);
         super.saveNBTData(aNBT);
     }
 
@@ -580,10 +587,12 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        height = aNBT.getInteger("mFluidHeight");
-        mCulture = BioCulture.getBioCulture(aNBT.getString("mCulture"));
+        this.height = aNBT.getInteger("mFluidHeight");
+        this.mCulture = BioCulture.getBioCulture(aNBT.getString("mCulture"));
         if (!aNBT.getString("mFluid").isEmpty())
-            mFluid = FluidRegistry.getFluid(aNBT.getString("mFluid"));
+            this.mFluid = FluidRegistry.getFluid(aNBT.getString("mFluid"));
+        this.mSievert = aNBT.getInteger("mSievert");
+        this.mNeededSievert = aNBT.getInteger("mNeededSievert");
         super.loadNBTData(aNBT);
     }
 
@@ -610,6 +619,6 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[MCASING_INDEX], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER)} : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[MCASING_INDEX]};
+        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[GT_TileEntity_BioVat.MCASING_INDEX], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER)} : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[MCASING_INDEX]};
     }
 }

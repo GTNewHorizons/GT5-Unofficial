@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.system.material;
 
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import gregtech.api.enums.*;
@@ -108,10 +109,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         if (toolTip.isEmpty()) {
             for (Pair<ISubTagContainer, Integer> p : contents) {
                 if (p.getKey() instanceof Materials) {
-                    this.toolTip += ((Materials) p.getKey()).mChemicalFormula + (p.getValue() > 1 ? p.getValue() : "");
+                    this.toolTip += ((Materials) p.getKey()).mChemicalFormula + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
                 }
                 if (p.getKey() instanceof Werkstoff)
-                    this.toolTip += ((Werkstoff) p.getKey()).toolTip + (p.getValue() > 1 ? p.getValue() : "");
+                    this.toolTip += ((Werkstoff) p.getKey()).toolTip + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
             }
         } else
             this.toolTip = toolTip;
@@ -172,7 +173,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public Pair<Object,Integer>[] getTCAspects(){
-        return getTCAspects(1);
+        return this.getTCAspects(1);
     }
 
     public Werkstoff.Types getType() {
@@ -317,7 +318,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         metal 10
         gem 100
         ore 1000
-        cell 1000
+        cell 10000
          */
         public byte toGenerate = 0b0001001;
         public byte blacklist;
@@ -372,6 +373,15 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
            return (this.extraRecipes & 1) != 0;
         }
 
+        public Werkstoff.GenerationFeatures addMixerRecipes(){
+            this.extraRecipes = (byte) (this.extraRecipes | 10);
+            return this;
+        }
+        public boolean hasMixerRecipes() {
+            return (this.extraRecipes & 10) != 0;
+        }
+
+
         public Werkstoff.GenerationFeatures addSifterRecipes(){
             this.extraRecipes = (byte) (this.extraRecipes | 100);
             return this;
@@ -381,7 +391,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
 
         public Werkstoff.GenerationFeatures onlyDust() {
-            this.toGenerate = (byte) (1);
+            this.toGenerate = (byte) (0b1);
+            return this;
+        }
+
+        public Werkstoff.GenerationFeatures addMetalItems() {
+            this.toGenerate = (byte) (this.toGenerate | 0b10);
             return this;
         }
 
@@ -395,7 +410,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return this;
         }
 
-
     }
 
     public static class Stats {
@@ -403,6 +417,25 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         public static final int NULL_KELVIN = 0;
 
         int boilingPoint;
+
+        public int getBoilingPoint() {
+            return this.boilingPoint;
+        }
+
+        public Stats setBoilingPoint(int boilingPoint) {
+            this.boilingPoint = boilingPoint;
+            return this;
+        }
+
+        public int getMeltingPoint() {
+            return this.meltingPoint;
+        }
+
+        public Stats setMeltingPoint(int meltingPoint) {
+            this.meltingPoint = meltingPoint;
+            return this;
+        }
+
         int meltingPoint;
         long protons;
         long neutrons;

@@ -560,7 +560,7 @@ public class BWRecipes {
 
             // Check the Recipe which has been used last time in order to not have to search for it again, if possible.
             if (aRecipe != null)
-                if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs) && BW_Util.areStacksEqual((ItemStack) aRecipe.mSpecialItems, aSpecialSlot))
+                if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs) && BW_Util.areStacksEqualOrNull((ItemStack) aRecipe.mSpecialItems, aSpecialSlot))
                     return aRecipe.mEnabled && aVoltage * mAmperage >= aRecipe.mEUt ? aRecipe : null;
 
             // Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
@@ -570,12 +570,12 @@ public class BWRecipes {
                         Collection<GT_Recipe> tRecipes = mRecipeItemMap.get(new GT_ItemStack(tStack));
                         if (tRecipes != null)
                             for (GT_Recipe tRecipe : tRecipes)
-                                if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs) && BW_Util.areStacksEqual((ItemStack) tRecipe.mSpecialItems, aSpecialSlot))
+                                if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs) && BW_Util.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot))
                                     return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
                         tRecipes = mRecipeItemMap.get(new GT_ItemStack(GT_Utility.copyMetaData(GT_Values.W, tStack)));
                         if (tRecipes != null)
                             for (GT_Recipe tRecipe : tRecipes)
-                                if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs) && BW_Util.areStacksEqual((ItemStack) tRecipe.mSpecialItems, aSpecialSlot))
+                                if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs) && BW_Util.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot))
                                     return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
                     }
 
@@ -585,7 +585,7 @@ public class BWRecipes {
                     if (aFluid != null) {
                         Collection<GT_Recipe> tRecipes = mRecipeFluidMap.get(aFluid.getFluid());
                         if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes)
-                            if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs) && BW_Util.areStacksEqual((ItemStack) tRecipe.mSpecialItems, aSpecialSlot))
+                            if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs) && BW_Util.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot))
                                 return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
                     }
 
@@ -601,7 +601,7 @@ public class BWRecipes {
             if (aRecipe.mFluidInputs.length < this.mMinimalInputFluids && aRecipe.mInputs.length < this.mMinimalInputItems) {
                 return null;
             } else {
-                return aCheckForCollisions && isthere != null && BW_Util.areStacksEqual((ItemStack) isthere.mSpecialItems, (ItemStack) aRecipe.mSpecialItems) ? null : this.add(aRecipe);
+                return aCheckForCollisions && isthere != null && BW_Util.areStacksEqualOrNull((ItemStack) isthere.mSpecialItems, (ItemStack) aRecipe.mSpecialItems) ? null : this.add(aRecipe);
             }
         }
 

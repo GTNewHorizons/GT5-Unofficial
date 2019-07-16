@@ -46,7 +46,7 @@ public class UniversalTeleportType implements ITeleportType {
 
     @Override
     public Vector3 getPlayerSpawnLocation(WorldServer world, EntityPlayerMP player) {
-        return getEntitySpawnLocation(world, player);
+        return this.getEntitySpawnLocation(world, player);
     }
 
     @Override

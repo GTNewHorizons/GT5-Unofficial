@@ -39,6 +39,8 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.ForgeHooks;
 
+import java.nio.ByteBuffer;
+import java.security.SecureRandom;
 import java.util.Random;
 
 import static net.minecraftforge.common.ChestGenHooks.DUNGEON_CHEST;
@@ -114,7 +116,7 @@ public abstract class MapGenRuins extends WorldGenerator {
             }
 
             Random rand = new XSTR(rand1.nextLong());
-
+            SecureRandom secureRandom = new SecureRandom();
 
             x=x+5;
             z=z+5;
@@ -140,7 +142,7 @@ public abstract class MapGenRuins extends WorldGenerator {
             boolean useColor = rand.nextBoolean();
             byte set = 0;
             byte toSet = (byte) (rand.nextInt(6-tier)+1);
-            short cablemeta = GT_WorldgenUtil.getCable(rand,tier);
+            short cablemeta = GT_WorldgenUtil.getCable(secureRandom,tier);
             byte treeinaRow = 0;
             boolean lastset = rand.nextBoolean();
             for (int dx = -6; dx <= 6; dx++) {
@@ -184,12 +186,12 @@ public abstract class MapGenRuins extends WorldGenerator {
                                     setBlock(worldObj,x + dx, y + dy, z + dz,Blocks.chest,5);
                                     IInventory chest = (IInventory)worldObj.getTileEntity(x + dx, y + dy, z + dz);
                                     if (chest != null) {
-                                        WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(PYRAMID_JUNGLE_CHEST, rand), chest, ChestGenHooks.getCount(PYRAMID_JUNGLE_CHEST, rand));
+                                        WeightedRandomChestContent.generateChestContents(secureRandom, ChestGenHooks.getItems(PYRAMID_JUNGLE_CHEST, rand), chest, ChestGenHooks.getCount(PYRAMID_JUNGLE_CHEST, rand));
                                     }
                                 }
 
                                 if (dx == 4 && dz==4) {
-                                    short meta = GT_WorldgenUtil.getGenerator(rand,tier);
+                                    short meta = GT_WorldgenUtil.getGenerator(secureRandom,tier);
                                     setBlock(worldObj, x + dx, y + dy, z + dz, GT_WorldgenUtil.GT_TILES,GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
                                     BaseMetaTileEntity BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x + dx, y + dy, z + dz);
                                     BTE.setInitialValuesAsNBT(null,meta);
@@ -199,7 +201,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                 }
                                 else if (dx == 3 && dz==4) {
                                     if (tier>0) {
-                                        short meta = GT_WorldgenUtil.getBuffer(rand, tier);
+                                        short meta = GT_WorldgenUtil.getBuffer(secureRandom, tier);
                                         setBlock(worldObj, x + dx, y + dy, z + dz, GT_WorldgenUtil.GT_TILES, GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
                                         BaseMetaTileEntity BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x + dx, y + dy, z + dz);
                                         BTE.setInitialValuesAsNBT(null, meta);
@@ -241,7 +243,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                 }
                                 else if (dx < 3 && dx > -5 && dz == 3 && set < toSet){
                                     if (!lastset || treeinaRow > 2) {
-                                        short meta = GT_WorldgenUtil.getMachine(rand, tier);
+                                        short meta = GT_WorldgenUtil.getMachine(secureRandom, tier);
                                         setBlock(worldObj, x + dx, y + dy, z + dz, GT_WorldgenUtil.GT_TILES, GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
                                         BaseMetaTileEntity BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x + dx, y + dy, z + dz);
                                         BTE.setInitialValuesAsNBT(null, meta);
@@ -298,7 +300,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                 for (int dx = 2; dx > -5; dx--) {
                     if (set < toSet){
                         if (!lastset || treeinaRow > 2 && worldObj.getTileEntity(x + dx, y + dy, z + dz) == null) {
-                            short meta = GT_WorldgenUtil.getMachine(rand, tier);
+                            short meta = GT_WorldgenUtil.getMachine(secureRandom, tier);
                             setBlock(worldObj, x + dx, y + dy, z + dz, GT_WorldgenUtil.GT_TILES, GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
                             BaseMetaTileEntity BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x + dx, y + dy, z + dz);
                             BTE.setInitialValuesAsNBT(null, meta);
