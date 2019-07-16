@@ -158,7 +158,6 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
                 continue;
             }
             CapacitorComponent cap = componentBinds.get(getUniqueIdentifier(mInventory[i]));
-            System.out.println(getUniqueIdentifier(mInventory[i]));
             if (cap != null && cap.tier > tier) {
                 tier = cap.tier;
             }
