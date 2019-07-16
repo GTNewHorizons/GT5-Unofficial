@@ -141,7 +141,7 @@ public class RadioHatchCompat implements Runnable {
                         ownerItems.replace(ui,bartworks,gtpp);
 
                         String tanslate = it.getUnlocalizedName()+".name="+RadioHatchCompat.localizedName.get(mats)+" Rod";
-                        TranslateSet.add(tanslate);
+                        RadioHatchCompat.TranslateSet.add(tanslate);
 
                         DebugLog.log(tanslate);
                         DebugLog.log("Generate: " + RadioHatchCompat.rod + RadioHatchCompat.unlocalizedName.get(mats));
@@ -178,11 +178,11 @@ public class RadioHatchCompat implements Runnable {
 
         static final HashMap<Object,Integer> BUFFER = new HashMap<>();
 
-        public GTPPRadAdapter(Object m) {
+        GTPPRadAdapter(Object m) {
             this.m = m;
         }
 
-        public GTPPRadAdapter(int amount, Object m) {
+        GTPPRadAdapter(int amount, Object m) {
             this.amount = (byte) amount;
             this.m = m;
         }
