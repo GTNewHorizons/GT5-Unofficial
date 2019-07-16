@@ -43,8 +43,8 @@ public class GT_GUIContainer_Destructopack extends GuiContainer {
     @Override
     public void drawGuiContainerBackgroundLayer(float f, int j, int i) {
         GL11.glColor4f(1F, 1F, 1F, 1F);
-        Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-        drawTexturedModalRect(guiLeft, guiTop, 0, 0, 175, 165);
+        Minecraft.getMinecraft().getTextureManager().bindTexture(GT_GUIContainer_Destructopack.texture);
+        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, 175, 165);
     }
 
     @Override

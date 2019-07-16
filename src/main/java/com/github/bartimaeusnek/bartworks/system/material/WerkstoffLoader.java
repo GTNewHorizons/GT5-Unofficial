@@ -717,7 +717,7 @@ public class WerkstoffLoader implements Runnable {
                                 WerkstoffLoader.getCorresopndingItemStack(dust, werkstoff)
                         },
                         new int[]{
-                                100, 400, 1500, 2000, 4000, 5000
+                                200, 1000, 2500, 2000, 4000, 5000
                         },
                         800,
                         16

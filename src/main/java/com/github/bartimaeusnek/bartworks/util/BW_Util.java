@@ -32,6 +32,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import ic2.api.item.IElectricItem;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -49,7 +50,6 @@ public class BW_Util {
     public static final int STANDART = 0;
     public static final int CLEANROOM = -100;
     public static final int LOWGRAVITY = -200;
-
 
     public static String subscriptNumbers(String b){
         char[] chars = b.toCharArray();
@@ -182,7 +182,7 @@ public class BW_Util {
         return 8 << (2*tier);
     }
 
-    public static boolean areStacksEqual(ItemStack aStack1, ItemStack aStack2) {
+    public static boolean areStacksEqualOrNull(ItemStack aStack1, ItemStack aStack2) {
         return (aStack1 == null && aStack2 == null) || GT_Utility.areStacksEqual(aStack1, aStack2);
     }
 

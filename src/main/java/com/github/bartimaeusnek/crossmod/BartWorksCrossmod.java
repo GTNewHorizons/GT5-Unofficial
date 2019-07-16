@@ -23,16 +23,16 @@
 package com.github.bartimaeusnek.crossmod;
 
 import com.github.bartimaeusnek.bartworks.common.commands.SummonRuin;
+import com.github.bartimaeusnek.crossmod.GTpp.loader.RadioHatchCompat;
 import com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy;
 import com.github.bartimaeusnek.crossmod.thaumcraft.CustomAspects;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.List;
 
 @Mod(
         modid = BartWorksCrossmod.MOD_ID, name = BartWorksCrossmod.NAME, version = BartWorksCrossmod.VERSION,
@@ -42,6 +42,7 @@ import org.apache.logging.log4j.Logger;
                 + "after:GalacticraftMars; "
                 + "after:GalacticraftCore; "
                 + "after:Micdoodlecore; "
+                + "after:miscutils;"
 )
 public class BartWorksCrossmod {
     public static final String NAME = "BartWorks Mod Additions";
@@ -70,8 +71,16 @@ public class BartWorksCrossmod {
     public void postInit(FMLPostInitializationEvent init) {
         if (Loader.isModLoaded("GalacticraftCore"))
             GalacticraftProxy.postInit(init);
+        if (Loader.isModLoaded("miscutils"))
+            new RadioHatchCompat().run();
     }
 
+//    @Mod.EventHandler
+//    public void onFMLMissingMappingsEvent(FMLMissingMappingsEvent event){
+//        for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()){
+//            if (mapping.name.equalsIgnoreCase())
+//        }
+//    }
 
     @Mod.EventHandler
     public void onFMLServerStart(FMLServerStartingEvent event) {
