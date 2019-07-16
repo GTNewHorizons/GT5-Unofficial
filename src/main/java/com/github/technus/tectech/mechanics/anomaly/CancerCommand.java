@@ -1,4 +1,4 @@
-package com.github.technus.tectech.mechanics.commands;
+package com.github.technus.tectech.mechanics.anomaly;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
@@ -18,7 +18,10 @@ public class CancerCommand implements ICommand {
     ArrayList<String> aliases=new ArrayList<>();
 
     public CancerCommand(){
+        aliases.add("cancer_EM");
         aliases.add("cancer");
+        aliases.add("sanser");
+        aliases.add("sancer");
     }
 
     @Override
@@ -69,7 +72,7 @@ public class CancerCommand implements ICommand {
 
     @Override
     public String getCommandUsage(ICommandSender p_71518_1_) {
-        return "cancer [Amount 0.0-2.0]";
+        return "cancer_EM [Amount 0.0-2.0]";
     }
 
     @Override
