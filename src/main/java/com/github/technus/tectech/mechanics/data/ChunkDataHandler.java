@@ -5,6 +5,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.event.world.ChunkDataEvent;
@@ -102,10 +103,12 @@ public class ChunkDataHandler {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onUnLoadChunk(ChunkEvent.Unload aEvent){
-        pullSyncHandlers.forEach(chunkMetaDataHandler -> dimensionWiseMetaChunkData
-                .get(chunkMetaDataHandler.getTagName())
-                .get(aEvent.world.provider.dimensionId)
-                .remove(aEvent.getChunk().getChunkCoordIntPair()));
+        if(aEvent.world.isRemote && !Minecraft.getMinecraft().isSingleplayer()) {
+            pullSyncHandlers.forEach(chunkMetaDataHandler -> dimensionWiseMetaChunkData
+                    .get(chunkMetaDataHandler.getTagName())
+                    .get(aEvent.world.provider.dimensionId)
+                    .remove(aEvent.getChunk().getChunkCoordIntPair()));
+        }
     }
 
     @SideOnly(Side.CLIENT)

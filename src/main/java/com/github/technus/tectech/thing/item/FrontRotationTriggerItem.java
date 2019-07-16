@@ -40,7 +40,6 @@ public final class FrontRotationTriggerItem extends Item {
                 IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                 if (metaTE instanceof IFrontRotation) {
                     ((IFrontRotation) metaTE).rotateAroundFrontPlane(!aPlayer.isSneaking());
-                    System.out.println("DID SHIT");
                     return true;
                 }
             } else if (tTileEntity instanceof IFrontRotation) {

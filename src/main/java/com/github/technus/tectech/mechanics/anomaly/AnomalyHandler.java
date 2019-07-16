@@ -2,11 +2,11 @@ package com.github.technus.tectech.mechanics.anomaly;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.mechanics.data.ChunkDataHandler;
-import com.github.technus.tectech.mechanics.data.IChunkMetaDataHandler;
 import com.github.technus.tectech.loader.MainLoader;
-import com.github.technus.tectech.mechanics.data.ChunkDataMessage;
 import com.github.technus.tectech.loader.NetworkDispatcher;
+import com.github.technus.tectech.mechanics.data.ChunkDataHandler;
+import com.github.technus.tectech.mechanics.data.ChunkDataMessage;
+import com.github.technus.tectech.mechanics.data.IChunkMetaDataHandler;
 import com.github.technus.tectech.mechanics.data.PlayerDataMessage;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -14,8 +14,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -152,7 +150,7 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     @Override
     public void tickPlayer(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.PlayerTickEvent aEvent) {
         if (aEvent.side.isClient()) {
-            EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+            EntityPlayer player = TecTech.proxy.getPlayer();
             ChunkCoordIntPair pair = new ChunkCoordIntPair(player.chunkCoordX, player.chunkCoordZ);
             NBTTagCompound compound = data.get(player.worldObj.provider.dimensionId).get(pair);
             if (compound != null) {
@@ -199,10 +197,10 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
 
     @Override
     public void tickRender(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.RenderTickEvent aEvent) {
-        EntityClientPlayerMP player=Minecraft.getMinecraft().thePlayer;
+        EntityPlayer player=TecTech.proxy.getPlayer();
         if(player!=null) {
             if(!player.capabilities.isCreativeMode) {
-                NBTTagCompound tagCompound = TecTech.playerPersistence.getDataOrSetToNewTag(Minecraft.getMinecraft().thePlayer);
+                NBTTagCompound tagCompound = TecTech.playerPersistence.getDataOrSetToNewTag(player);
                 if (tagCompound != null) {
                     float cancer = tagCompound.getFloat(SPACE_CANCER);
                     if (cancer > 0) {
