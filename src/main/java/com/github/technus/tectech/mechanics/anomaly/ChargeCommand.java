@@ -12,16 +12,14 @@ import net.minecraft.util.ChatComponentText;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.technus.tectech.mechanics.anomaly.AnomalyHandler.SPACE_CANCER;
+import static com.github.technus.tectech.mechanics.anomaly.AnomalyHandler.SPACE_CHARGE;
 
-public class CancerCommand implements ICommand {
+public class ChargeCommand implements ICommand {
     ArrayList<String> aliases=new ArrayList<>();
 
-    public CancerCommand(){
-        aliases.add("cancer_EM");
-        aliases.add("cancer");
-        aliases.add("sanser");
-        aliases.add("sancer");
+    public ChargeCommand(){
+        aliases.add("charge_EM");
+        aliases.add("charge");
     }
 
     @Override
@@ -34,19 +32,15 @@ public class CancerCommand implements ICommand {
                 sender.addChatMessage(new ChatComponentText("Cannot parse amount!"));
                 return;
             }
-            if(amount<0||amount>2){
-                sender.addChatMessage(new ChatComponentText("Invalid amount provided!"));
-                return;
-            }
             EntityPlayerMP player=(EntityPlayerMP)sender;
             NBTTagCompound playerTag = TecTech.playerPersistence.getDataOrSetToNewTag(player);
             if(player.capabilities.isCreativeMode){
                 sender.addChatMessage(new ChatComponentText("Doesn't really work in creative mode!"));
             }else {
-                playerTag.setDouble(SPACE_CANCER, amount);
+                playerTag.setDouble(SPACE_CHARGE, amount);
                 TecTech.playerPersistence.saveData(player);
-                NetworkDispatcher.INSTANCE.sendTo(new PlayerDataMessage.PlayerDataData(player), player);
-                sender.addChatMessage(new ChatComponentText("Cancer set to: "+amount));
+                NetworkDispatcher.INSTANCE.sendToAll(new PlayerDataMessage.PlayerDataData(player));
+                sender.addChatMessage(new ChatComponentText("Charge set to: "+amount));
             }
         }
     }
@@ -73,7 +67,7 @@ public class CancerCommand implements ICommand {
 
     @Override
     public String getCommandUsage(ICommandSender p_71518_1_) {
-        return "cancer_EM [Amount 0.0-2.0]";
+        return "charge_EM [Amount]";
     }
 
     @Override

@@ -85,4 +85,8 @@ public class CommonProxy implements IGuiHandler {
     public EntityPlayer getPlayer(){
         return null;
     }
+
+    public boolean isThePlayer(EntityPlayer player){
+        return false;
+    }
 }

@@ -144,4 +144,8 @@ public class ClientProxy extends CommonProxy {
     public EntityClientPlayerMP getPlayer(){
         return Minecraft.getMinecraft().thePlayer;
     }
+
+    public boolean isThePlayer(EntityPlayer player){
+        return getPlayer()==player;
+    }
 }
