@@ -60,6 +60,9 @@ public class RadioHatchCompat implements Runnable {
 
     private static Object rod;
     private static Object longRod;
+
+    public static HashSet TranslateSet = new HashSet();
+
     static{
         try {
             RadioHatchCompat.intf = Class.forName("gtPlusPlus.core.item.base.BaseItemComponent");
@@ -137,6 +140,10 @@ public class RadioHatchCompat implements Runnable {
                         GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(it);
                         ownerItems.replace(ui,bartworks,gtpp);
 
+                        String tanslate = it.getUnlocalizedName()+".name="+RadioHatchCompat.localizedName.get(mats)+" Rod";
+                        TranslateSet.add(tanslate);
+
+                        DebugLog.log(tanslate);
                         DebugLog.log("Generate: " + RadioHatchCompat.rod + RadioHatchCompat.unlocalizedName.get(mats));
                     }
                     if (OreDictionary.getOres("stickLong" + RadioHatchCompat.unlocalizedName.get(mats)).isEmpty()) {

@@ -28,11 +28,16 @@ import com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy;
 import com.github.bartimaeusnek.crossmod.thaumcraft.CustomAspects;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import net.minecraft.util.StringTranslate;
+import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
+import java.io.StringReader;
 
 @Mod(
         modid = BartWorksCrossmod.MOD_ID, name = BartWorksCrossmod.NAME, version = BartWorksCrossmod.VERSION,
@@ -85,5 +90,9 @@ public class BartWorksCrossmod {
     @Mod.EventHandler
     public void onFMLServerStart(FMLServerStartingEvent event) {
         event.registerServerCommand(new SummonRuin());
+        if (Loader.isModLoaded("miscutils"))
+            for (Object s : RadioHatchCompat.TranslateSet){
+                StringTranslate.inject(new ReaderInputStream(new StringReader((String) s)));
+            }
     }
 }
