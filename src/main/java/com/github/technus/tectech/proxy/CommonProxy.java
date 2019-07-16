@@ -13,9 +13,12 @@ import net.minecraft.world.WorldServer;
 public class CommonProxy implements IGuiHandler {
     public void registerRenderInfo() {}
 
-    public void hint_particle(World world, int x, int y, int z, Block block, int meta){}
+    public void hint_particle(World w,int x, int y, int z, Block block, int meta){}
     public void em_particle(IGregTechTileEntity aMuffler, byte facing) {}//CUTE!
-    public void em_particle(World w,double x,double y,double z){}
+    public void pollutor_particle(IGregTechTileEntity aPollutor, byte facing) {}//CUTE!
+    public void em_particle(World w,double x, double y, double z){}
+    public void pollutor_particle(World w,double x, double y, double z){}
+    public void renderAABB(World w,AxisAlignedBB box){}
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -45,9 +48,6 @@ public class CommonProxy implements IGuiHandler {
     public void printInchat(String... strings){}
 
     public void playSound(IGregTechTileEntity base,String name){}
-
-    public void renderAABB(AxisAlignedBB box){}
-    public void renderAABB(World w,AxisAlignedBB box){}
 
     public String getUUID(String name) {
         for(WorldServer worldServer:MinecraftServer.getServer().worldServers){
