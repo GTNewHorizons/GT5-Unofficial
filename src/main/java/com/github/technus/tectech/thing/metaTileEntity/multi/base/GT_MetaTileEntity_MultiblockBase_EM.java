@@ -115,20 +115,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //if u need to force some things to be fixed - u might need to override doRandomMaintenanceDamage
     protected byte minRepairStatus = 3;
 
+    //functionality toggles - changed by buttons in gui also
+    public boolean ePowerPass = false, eSafeVoid = false;
+
     //endregion
 
     //region READ ONLY unless u really need to change it
-
-    //functionality toggles - changed by buttons in gui also
-    protected boolean ePowerPass = false, eSafeVoid = false;
-
-    public boolean isPowerPass() {
-        return ePowerPass;
-    }
-
-    public boolean isSafeVoid() {
-        return eSafeVoid;
-    }
 
     //max amperes machine can take in after computing it to the lowest tier (exchange packets to min tier count)
     protected long eMaxAmpereFlow = 0,eMaxAmpereGen=0;
