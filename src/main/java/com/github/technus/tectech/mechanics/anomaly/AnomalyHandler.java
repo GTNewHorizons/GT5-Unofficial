@@ -79,7 +79,7 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                 data.get(dim).get(b.getChunkCoordIntPair()).setDouble(INTENSITY, Math.min(SWAP_THRESHOLD, avg * (TecTech.RANDOM.nextFloat() + .5F) * 0.5F));
                 data.get(dim).markForTransmissionToClient(a.getChunkCoordIntPair());
                 data.get(dim).markForTransmissionToClient(b.getChunkCoordIntPair());
-                swapSomething(a, b, (float) Math.min(Math.log10(avg-5), 20));
+                swapSomething(a, b, (float) Math.min(Math.log10(avg), 20));
             }
             worldDataArrayList.clear();
         }
