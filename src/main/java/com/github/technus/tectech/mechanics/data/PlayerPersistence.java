@@ -7,6 +7,8 @@ import cpw.mods.fml.common.gameevent.PlayerEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.WorldServer;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -61,8 +63,13 @@ public class PlayerPersistence {
 
     @SubscribeEvent
     public void onLogin(PlayerEvent.PlayerLoggedInEvent event){
-        if(event.player instanceof EntityPlayerMP){
-            NetworkDispatcher.INSTANCE.sendTo(new PlayerDataMessage.PlayerDataData(event.player),(EntityPlayerMP)event.player);
+        if(!event.player.worldObj.isRemote){
+            for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
+                for (Object playerEntity : worldServer.playerEntities) {
+                    NetworkDispatcher.INSTANCE.sendTo(new PlayerDataMessage.PlayerDataData((EntityPlayer) playerEntity),(EntityPlayerMP) event.player);
+                }
+            }
+            NetworkDispatcher.INSTANCE.sendToAll(new PlayerDataMessage.PlayerDataData(event.player));
         }
     }
 

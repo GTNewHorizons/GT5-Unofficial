@@ -10,7 +10,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
 import net.minecraft.block.Block;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -63,7 +62,7 @@ public final class ConstructableTriggerItem extends Item {
                 }
             }
             return true;
-        }else if (aPlayer instanceof EntityClientPlayerMP){//particles and text client side
+        }else if (TecTech.proxy.isThePlayer(aPlayer)){//particles and text client side
             //if ((!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode)) {
                 if(tTileEntity instanceof IGregTechTileEntity) {
                     IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
