@@ -65,10 +65,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private long outputCurrent = 0; //Tesla Current Output
     private long energyCapacity = 0; //Total energy the tower can store
 
-    public boolean tPowerPass(){
-        return ePowerPass;
-    }
-
     public int vTier = -1;
 
     private long lossPerBlock = 1; //EU lost per block traveled
@@ -686,7 +682,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
                         if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && Rx.getValue() <= transferRadiusTower) {
                             GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
-                            if (!nodeTesla.tPowerPass()) {
+                            if (!nodeTesla.ePowerPass) {
                                 if (nodeTesla.getEUVar() + outputVoltageInjectable <= (nodeTesla.maxEUStore() / 2)) {
                                     setEUVar(getEUVar() - outputVoltageConsumption);
                                     node.increaseStoredEnergyUnits(outputVoltageConsumption, true);

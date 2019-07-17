@@ -236,7 +236,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                             }
                             if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && Rx.getValue() <= transferRadiusTower) {
                                 GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
-                                if (!nodeTesla.tPowerPass()) {
+                                if (!nodeTesla.ePowerPass) {
                                    if (nodeTesla.getEUVar() + outputVoltageInjectable <= (nodeTesla.maxEUStore() / 2)) {
                                        setEUVar(getEUVar() - outputVoltageConsumption);
                                        node.increaseStoredEnergyUnits(outputVoltageInjectable, true);
