@@ -35,10 +35,6 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static gregtech.api.enums.GT_Values.E;
 
-/**
- * Created by danie_000 on 17.12.2016.
- * edited by Bass on like 2018-02-05
- */
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
@@ -48,18 +44,19 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private int maxTier = 6; //Max tier for efficiency calcuation
     private int minTier = 1; //Min tier for efficiency calcuation
 
-    private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>(); //Tesla Map to map them tesla bois!
-    private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCaps = new ArrayList<>(); //Capacitor List
+    private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>(); //Used to store targets for power transmission
+    private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCapacitorHatches = new ArrayList<>(); //Used to determine count and tier of capacitors present
 
 
     private int scanTime = 0; //Scan timer used for tesla search intervals
-    private int scanRadius = 32; //Tesla scan radius
+    private int scanRadius = 32; //Radius of transmission target scan each interval
     private int transferRadiusTower; //Radius for tower to tower transfers
     private int transferRadiusTransceiver; //Radius for tower to transceiver transfers
     private int transferRadiusCoverUltimate; //Radius for tower to ultimate cover transfers
 
     private long energyCapacity = 0; //Total energy storage limited by capacitors
     private long outputVoltageMax = 0; //Tesla voltage output limited by capacitors
+    private long energyRestore = 0;//EU Restored on NBT Load and Recipe check
     public int vTier = -1; //Tesla voltage tier limited by capacitors
     private long outputCurrentMax = 0; //Tesla current output limited by capacitors
     private long outputVoltage = 0; //Tesla voltage output limited by settings
@@ -68,14 +65,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private long lossPerBlock = 1; //Distance loss of each packet sent
     private float energyEfficiencyMax = 0.95F; //Max efficiency of each packet sent at highest mTier
     private float energyEfficiencyMin = 0.75F; //Min efficiency of each packet sent at lowest mTier
-    private boolean overDriveToggle(){return (overDriveSetting.get() > 0);}
     private float overdriveEfficiency = 0.95F; //Overdrive efficiency added losses
     private long outputVoltageConsumption = 0; //Packet size consumed including efficiency losses
     private long outputVoltageInjectable = 0; //Packet size injected into target post losses
 
 
-    private long getEnergyEfficiency(long voltage, int mTier){
-        if (overDriveToggle()){
+    private long getEnergyEfficiency(long voltage, int mTier, boolean overDriveToggle){
+        if (overDriveToggle){
             return (long)(voltage * (2-energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier)*(2- overdriveEfficiency)); //Sum overdrive efficiency formula
         } else {
             return (long)(voltage * energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier); //Efficiency Formula
@@ -164,7 +160,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_STORED_DISPLAY_NAME = (base, p)-> "Energy Stored display";
     private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_FRACTION_DISPLAY_NAME = (base, p)-> "Energy Fraction display";
     private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_DISPLAY_NAME = (base, p)-> "Scan time display";
-
 
     private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_STATUS=(base, p)->{
         double value=p.get();
@@ -269,13 +264,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setLong("energyCapacity", energyCapacity);
+        aNBT.setLong("energyRestore", getEUVar());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        energyCapacity = aNBT.getLong("energyCapacity");
+        energyRestore = aNBT.getLong("energyRestore");
     }
 
     @Override
@@ -363,7 +358,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public void onRemoval() {
         super.onRemoval();
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
+        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
             cap.getBaseMetaTileEntity().setActive(false);
         }
     }
@@ -371,7 +366,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public void stopMachine() {
         super.stopMachine();
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
+        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
             cap.getBaseMetaTileEntity().setActive(false);
         }
 
@@ -382,12 +377,12 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
+        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                 cap.getBaseMetaTileEntity().setActive(false);
             }
         }
-        eCaps.clear();
+        eCapacitorHatches.clear();
 
         int coilX0 = 0;
         int coilX1 = 0;
@@ -471,8 +466,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             return false;
         }
 
-        if (structureCheck_EM(shapes[orientation], blockType, blockMetas[mTier], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, xOffset, yOffset, zOffset) && eCaps.size() > 0) {
-            for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
+        if (structureCheck_EM(shapes[orientation], blockType, blockMetas[mTier], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, xOffset, yOffset, zOffset) && eCapacitorHatches.size() > 0) {
+            for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
                 if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                     cap.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
                 }
@@ -522,7 +517,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         energyCapacity = 0;
         outputCurrentMax = 0;
         long[] capacitorData;
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
+        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
             if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                 continue;
             }
@@ -538,7 +533,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         }
 
         outputVoltageMax = V[vTier+1];
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
+        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
             if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                 continue;
             }
@@ -548,11 +543,17 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 if(getEUVar() > 0 && capacitorData[0] != 0){
                     cap.getBaseMetaTileEntity().setToFire();
                 }
-                eCaps.remove(cap);
+                eCapacitorHatches.remove(cap);
             } else {
                 outputCurrentMax += capacitorData[1];
                 energyCapacity += capacitorData[2];
             }
+        }
+
+        //Restores power AFTER recipe check might change capacity value
+        if (energyRestore > 0) {
+            setEUVar(energyRestore);
+            energyRestore = 0;
         }
         return true;
     }
@@ -562,7 +563,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (getBaseMetaTileEntity().isClientSide()) {
             return true;
         }
-        ////Hysteresis based ePowerPass Config
+
+        //Hysteresis based ePowerPass setting
         long energyMax = maxEUStore() / 2;
         long energyStored = getEUVar();
 
@@ -573,14 +575,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         energyStoredDisplay.set(energyStored);
         energyFractionDisplay.set(energyFrac);
 
-        //ePowerPass hist toggle
         if (!ePowerPass && energyFrac > histHighSetting.get()) {
             ePowerPass = true;
         } else if (ePowerPass && energyFrac < histLowSetting.get()) {
             ePowerPass = false;
         }
 
-        //Scanning for active teslas
+        //Scan for transmission targets
         scanTime++;
         if (scanTime >= 100) {
             scanTime = 0;
@@ -609,7 +610,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             scanTimeDisplay.set(scanTime);
         }
 
-        //Power Limits
+        //Power Limit Settings
         if (outputVoltageSetting.get() > 0){
             outputVoltage = Math.min(outputVoltageMax,(long)outputVoltageSetting.get());
         } else {
@@ -664,15 +665,15 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             while (sparks > 0) {
                 boolean idle = true;
                 for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaMap)) {
-                    if(energyStored >= (overDriveToggle() ? outputVoltage*2 : outputVoltage)) {
+                    if(energyStored >= (overDriveSetting.get() > 0 ? outputVoltage*2 : outputVoltage)) {
                         IGregTechTileEntity node = Rx.getKey();
                         IMetaTileEntity nodeInside = node.getMetaTileEntity();
 
-                        if (overDriveToggle()){
+                        if (overDriveSetting.get() > 0){
                             outputVoltageInjectable = outputVoltage;
-                            outputVoltageConsumption = getEnergyEfficiency(outputVoltage, mTier) + (lossPerBlock * Rx.getValue());
+                            outputVoltageConsumption = getEnergyEfficiency(outputVoltage, mTier, true) + (lossPerBlock * Rx.getValue());
                         } else {
-                            outputVoltageInjectable = getEnergyEfficiency(outputVoltage, mTier) - (lossPerBlock * Rx.getValue());
+                            outputVoltageInjectable = getEnergyEfficiency(outputVoltage, mTier, false) - (lossPerBlock * Rx.getValue());
                             outputVoltageConsumption = outputVoltage;
                         }
 
@@ -733,7 +734,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Capacitor) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eCaps.add((GT_MetaTileEntity_Hatch_Capacitor) aMetaTileEntity);
+            return eCapacitorHatches.add((GT_MetaTileEntity_Hatch_Capacitor) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
