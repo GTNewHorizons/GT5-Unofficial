@@ -8,8 +8,6 @@ import net.minecraft.world.World;
 @SideOnly(Side.CLIENT)
 public class WeightlessParticleFX extends EntityFX
 {
-    private static final String __OBFID = "CL_00000903";
-
     public WeightlessParticleFX(World p_i1205_1_, double p_i1205_2_, double p_i1205_4_, double p_i1205_6_, double p_i1205_8_, double p_i1205_10_, double p_i1205_12_)
     {
         super(p_i1205_1_, p_i1205_2_, p_i1205_4_, p_i1205_6_, p_i1205_8_, p_i1205_10_, p_i1205_12_);
@@ -41,11 +39,5 @@ public class WeightlessParticleFX extends EntityFX
         this.motionX *= 0.8999999761581421D;
         this.motionY *= 0.8999999761581421D;
         this.motionZ *= 0.8999999761581421D;
-
-        if (this.onGround)
-        {
-            this.motionX *= 0.699999988079071D;
-            this.motionZ *= 0.699999988079071D;
-        }
     }
 }

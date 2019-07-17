@@ -1424,9 +1424,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                 eMaxAmpereGen += hatch.maxEUOutput() / maxEUoutputMin * hatch.Amperes;
                             }
                         }
-                        if (getEUVar() > maxEUStore()) {
-                            setEUVar(maxEUStore());
-                        }
                     } else {
                         maxEUinputMin = 0;
                         maxEUinputMax = 0;
@@ -1434,7 +1431,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         maxEUoutputMin = 0;
                         maxEUoutputMax = 0;
                         eMaxAmpereGen = 0;
-                        setEUVar(0);
+                    }
+                    if (getEUVar() > maxEUStore()) {
+                        setEUVar(maxEUStore());
                     }
 
                     for (GT_MetaTileEntity_Hatch_Uncertainty hatch : eUncertainHatches) {
