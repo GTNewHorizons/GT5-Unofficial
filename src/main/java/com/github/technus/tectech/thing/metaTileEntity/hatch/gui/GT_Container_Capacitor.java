@@ -1,19 +1,13 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch.gui;
 
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_Capacitor extends GT_ContainerMetaTile_Machine {
-    public boolean charged = false;
-
     public GT_Container_Capacitor(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
@@ -50,12 +44,11 @@ public class GT_Container_Capacitor extends GT_ContainerMetaTile_Machine {
         if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) {
             return;
         }
-        charged = ((GT_MetaTileEntity_Hatch_Capacitor) mTileEntity.getMetaTileEntity()).energyStoredFrac > 0;
     }
 
     @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
-        if (charged || mActive != 0) {
+        if (mActive != 0) {
             return null;
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
@@ -63,7 +56,7 @@ public class GT_Container_Capacitor extends GT_ContainerMetaTile_Machine {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
-        if (charged || mActive != 0) {
+        if (mActive != 0) {
             return null;
         }
         return super.transferStackInSlot(aPlayer, aSlotIndex);
@@ -71,7 +64,7 @@ public class GT_Container_Capacitor extends GT_ContainerMetaTile_Machine {
 
     @Override
     public boolean canDragIntoSlot(Slot par1Slot) {
-        if (charged || mActive != 0) {
+        if (mActive != 0) {
             return false;
         }
         return super.canDragIntoSlot(par1Slot);
@@ -79,7 +72,7 @@ public class GT_Container_Capacitor extends GT_ContainerMetaTile_Machine {
 
     @Override
     public void putStacksInSlots(ItemStack[] par1ArrayOfItemStack) {
-        if (charged || mActive != 0) {
+        if (mActive != 0) {
             return;
         }
         super.putStacksInSlots(par1ArrayOfItemStack);
@@ -87,7 +80,7 @@ public class GT_Container_Capacitor extends GT_ContainerMetaTile_Machine {
 
     @Override
     protected boolean mergeItemStack(ItemStack aStack, int aStartIndex, int aSlotCount, boolean par4) {
-        if (charged || mActive != 0) {
+        if (mActive != 0) {
             return false;
         }
         return super.mergeItemStack(aStack, aStartIndex, aSlotCount, par4);
@@ -95,7 +88,7 @@ public class GT_Container_Capacitor extends GT_ContainerMetaTile_Machine {
 
     @Override
     public void putStackInSlot(int par1, ItemStack par2ItemStack) {
-        if (charged || mActive != 0) {
+        if (mActive != 0) {
             return;
         }
         super.putStackInSlot(par1, par2ItemStack);

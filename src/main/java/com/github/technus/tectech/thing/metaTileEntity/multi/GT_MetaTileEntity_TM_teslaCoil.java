@@ -43,37 +43,36 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    private int mTier = 0;
-    private int orientation = 0;
-    private int maxTier = 6;
-    private int minTier = 1;
-
-    private int scanTime = 0; //Sets scan time to Z E R O :epic:
+    private int mTier = 0; //Determines max voltage and efficiency (MV to LuV)
+    private int orientation = 0; //Direction of multi for structure check
+    private int maxTier = 6; //Max tier for efficiency calcuation
+    private int minTier = 1; //Min tier for efficiency calcuation
 
     private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>(); //Tesla Map to map them tesla bois!
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCaps = new ArrayList<>(); //Capacitor List
 
-    private int scanRadius = 32; //Tesla scan radius
 
+    private int scanTime = 0; //Scan timer used for tesla search intervals
+    private int scanRadius = 32; //Tesla scan radius
     private int transferRadiusTower; //Radius for tower to tower transfers
     private int transferRadiusTransceiver; //Radius for tower to transceiver transfers
     private int transferRadiusCoverUltimate; //Radius for tower to ultimate cover transfers
 
-    private long outputVoltageMax = 0; //Tesla Voltage Output
-    private long outputCurrentMax = 0; //Tesla Current Output
-    private long outputVoltage = 0; //Tesla Voltage Output
-    private long outputCurrent = 0; //Tesla Current Output
-    private long energyCapacity = 0; //Total energy the tower can store
+    private long energyCapacity = 0; //Total energy storage limited by capacitors
+    private long outputVoltageMax = 0; //Tesla voltage output limited by capacitors
+    public int vTier = -1; //Tesla voltage tier limited by capacitors
+    private long outputCurrentMax = 0; //Tesla current output limited by capacitors
+    private long outputVoltage = 0; //Tesla voltage output limited by settings
+    private long outputCurrent = 0; //Tesla current output limited by settings
 
-    public int vTier = -1;
-
-    private long lossPerBlock = 1; //EU lost per block traveled
-    private float energyEfficiencyMax = 0.95F; //Max efficiency
-    private float energyEfficiencyMin = 0.75F; //Min efficiency
+    private long lossPerBlock = 1; //Distance loss of each packet sent
+    private float energyEfficiencyMax = 0.95F; //Max efficiency of each packet sent at highest mTier
+    private float energyEfficiencyMin = 0.75F; //Min efficiency of each packet sent at lowest mTier
     private boolean overDriveToggle(){return (overDriveSetting.get() > 0);}
-    private float overdriveEfficiency = 0.95F; //Overdrive efficiency
-    private long outputVoltageInjectable = 0; //How much EU will be received post distance losses
-    private long outputVoltageConsumption = 0; //How much EU will be drained
+    private float overdriveEfficiency = 0.95F; //Overdrive efficiency added losses
+    private long outputVoltageConsumption = 0; //Packet size consumed including efficiency losses
+    private long outputVoltageInjectable = 0; //Packet size injected into target post losses
+
 
     private long getEnergyEfficiency(long voltage, int mTier){
         if (overDriveToggle()){
@@ -81,7 +80,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         } else {
             return (long)(voltage * energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier); //Efficiency Formula
         }
-    }
+    }//Efficiency function used on power transfers
 
     //region structure
     private static final String[][] shape0 = new String[][]{//3 16 0
@@ -138,7 +137,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             EnumChatFormatting.AQUA + "Hint Details:",
             "1 - Classic Hatches or Steel Pipe Casing",
             "2 - Titanium Frames",
-    };
+    };//TODO Update casings + hatches
     //endregion
 
     //region parameters
@@ -375,6 +374,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
             cap.getBaseMetaTileEntity().setActive(false);
         }
+
+        setEUVar(0);
+        energyStoredDisplay.set(0);
+        energyFractionDisplay.set(0);
     }
 
     @Override
@@ -569,13 +572,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         energyCapacityDisplay.set(energyMax);
         energyStoredDisplay.set(energyStored);
         energyFractionDisplay.set(energyFrac);
-
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
-            if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
-                continue;
-            }
-            cap.energyStoredFrac = energyFrac;
-        }
 
         //ePowerPass hist toggle
         if (!ePowerPass && energyFrac > histHighSetting.get()) {

@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.HashMap;
@@ -35,7 +34,6 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
     private static Textures.BlockIcons.CustomIcon TM_H;
     private static Textures.BlockIcons.CustomIcon TM_H_ACTIVE;
     private static Map<String, GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> componentBinds = new HashMap<>();
-    public float energyStoredFrac = 0;
 
     public GT_MetaTileEntity_Hatch_Capacitor(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 16, descr);
@@ -44,18 +42,6 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_Hatch_Capacitor(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 16, aDescription, aTextures);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setFloat("energyStoredFrac", energyStoredFrac);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        energyStoredFrac = aNBT.getFloat("energyStoredFrac");
     }
 
     @Override
@@ -137,7 +123,7 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public int getSizeInventory() {
-        return energyStoredFrac > 0.2 || getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
+        return getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
     }
 
     @Override
