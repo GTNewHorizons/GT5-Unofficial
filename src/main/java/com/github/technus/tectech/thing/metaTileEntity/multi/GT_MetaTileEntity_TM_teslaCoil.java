@@ -69,15 +69,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private long outputVoltageConsumption = 0; //Packet size consumed including efficiency losses
     private long outputVoltageInjectable = 0; //Packet size injected into target post losses
 
-
-    private long getEnergyEfficiency(long voltage, int mTier, boolean overDriveToggle){
-        if (overDriveToggle){
-            return (long)(voltage * (2-energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier)*(2- overdriveEfficiency)); //Sum overdrive efficiency formula
-        } else {
-            return (long)(voltage * energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier); //Efficiency Formula
-        }
-    }//Efficiency function used on power transfers
-
     //region structure
     private static final String[][] shape0 = new String[][]{//3 16 0
             {"\u000F", "A  .  ",},
@@ -262,18 +253,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setLong("energyRestore", getEUVar());
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        energyRestore = aNBT.getLong("energyRestore");
-    }
-
-    @Override
     protected void parametersInstantiation_EM() {
         Parameters.Group hatch_0=parametrization.getGroup(0, true);
         Parameters.Group hatch_1=parametrization.getGroup(1, true);
@@ -341,6 +320,26 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_WH_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setLong("energyCapacity",energyCapacity);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        energyCapacity=aNBT.getLong("energyCapacity");
+    }
+
+    private long getEnergyEfficiency(long voltage, int mTier, boolean overDriveToggle){
+        if (overDriveToggle){
+            return (long)(voltage * (2-energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier)*(2- overdriveEfficiency)); //Sum overdrive efficiency formula
+        } else {
+            return (long)(voltage * energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier); //Efficiency Formula
+        }
+    }//Efficiency function used on power transfers
 
     @Override
     public long maxEUStore() {
@@ -513,9 +512,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = 20;
         vTier = -1;
-
-        energyCapacity = 0;
-        outputCurrentMax = 0;
         long[] capacitorData;
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
             if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
@@ -532,6 +528,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             explodeMultiblock();
         }
 
+
+        energyCapacity = 0;
+        outputCurrentMax = 0;
         outputVoltageMax = V[vTier+1];
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
             if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
@@ -548,12 +547,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 outputCurrentMax += capacitorData[1];
                 energyCapacity += capacitorData[2];
             }
-        }
-
-        //Restores power AFTER recipe check might change capacity value
-        if (energyRestore > 0) {
-            setEUVar(energyRestore);
-            energyRestore = 0;
         }
         return true;
     }
