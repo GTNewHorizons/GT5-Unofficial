@@ -21,7 +21,7 @@ public class ScanDisplayScreen extends GuiScreen {
     private int baseX,baseY;
     private Button up,down,pgUp,pgDown;
     private final String[] lines;
-    private int firstLine =0;
+    private int firstLine;
 
     private static final ResourceLocation[] BACKGROUNDS =new ResourceLocation[]{new ResourceLocation(MODID+":textures/gui/scanDisplayScreen1.png"),
                                                                                 new ResourceLocation(MODID+":textures/gui/scanDisplayScreen2.png"),
@@ -31,7 +31,7 @@ public class ScanDisplayScreen extends GuiScreen {
                                                                                 new ResourceLocation(MODID+":textures/gui/scanDisplayScreen6.png"),
                                                                                 new ResourceLocation(MODID+":textures/gui/scanDisplayScreen7.png"),
                                                                                 new ResourceLocation(MODID+":textures/gui/scanDisplayScreen8.png")};
-    private static final ResourceLocation ITEM =new ResourceLocation(MODID+"::textures/gui/scanDisplayItem.png");
+    private static final ResourceLocation ITEM =new ResourceLocation(MODID+":textures/gui/scanDisplayItem.png");
 
     public ScanDisplayScreen(EntityPlayer player){
         lines=ElementalDefinitionScanStorage_EM.getLines(player.getHeldItem());
@@ -82,6 +82,8 @@ public class ScanDisplayScreen extends GuiScreen {
                 TecTech.proxy.renderUnicodeString(lines[i], textBaseX, textBaseY + 17 - j, 200, itick);
             }
         }
+        TecTech.proxy.renderUnicodeString(Integer.toString(firstLine), textBaseX, baseY+146, 200, itick);
+        TecTech.proxy.renderUnicodeString(Integer.toString(lines.length), textBaseX, baseY+157, 200, itick);
     }
 
     @Override

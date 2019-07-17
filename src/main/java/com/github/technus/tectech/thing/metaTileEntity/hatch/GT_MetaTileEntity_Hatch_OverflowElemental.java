@@ -38,9 +38,9 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Mult
 public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity_Hatch {
     private static Textures.BlockIcons.CustomIcon EM_T_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
-    private static Textures.BlockIcons.CustomIcon MufflerEM;
-    private static Textures.BlockIcons.CustomIcon MufflerEMidle;
-    private float overflowMatter = 0f;
+    public static Textures.BlockIcons.CustomIcon MufflerEM;
+    public static Textures.BlockIcons.CustomIcon MufflerEMidle;
+    private float overflowMatter;
     public final float overflowMax;
     private final float overflowDisperse;
 
@@ -142,10 +142,10 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == DISPERSE_AT) {
             if (aBaseMetaTileEntity.isActive()) {
                 if (overflowMatter > overflowDisperse) {
-                    //todo add full dose of dispersed pollution (reduced by tier, or make recycler machine only capable of reduction?)
+                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity,overflowDisperse);
                     overflowMatter -= overflowDisperse;
                 } else {
-                    //todo add partial dose of dispersed pollution (reduced by tier, or make recycler machine only capable of reduction?)
+                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity,overflowMatter);
                     overflowMatter = 0;
                     aBaseMetaTileEntity.setActive(false);
                     aBaseMetaTileEntity.setLightValue((byte) 0);
@@ -159,8 +159,8 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
                     aBaseMetaTileEntity.getWorld().updateLightByType(EnumSkyBlock.Block, aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord());
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && getBaseMetaTileEntity().isActive()) {
-            TecTech.proxy.em_particle(getBaseMetaTileEntity(), getBaseMetaTileEntity().getFrontFacing());
+        } else if (aBaseMetaTileEntity.isClientSide() && aBaseMetaTileEntity.isActive()) {
+            TecTech.proxy.em_particle(aBaseMetaTileEntity, aBaseMetaTileEntity.getFrontFacing());
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
         //DOES NOT CHECK FOR TOO MUCH, it is done only while putting stuff in (OPTIMIZATION!!!)
@@ -195,13 +195,14 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
                 "Contained mass:",
                 EnumChatFormatting.RED + Double.toString(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
                 EnumChatFormatting.GREEN + Double.toString(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
-                "Mass Disposal speed: " + EnumChatFormatting.BLUE + Double.toString(overflowDisperse) + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
+                "Mass Disposal speed: " + EnumChatFormatting.BLUE + overflowDisperse + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
         };
     }
 
     @Override
     public void onRemoval() {
         if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) {
+            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(),overflowMatter*8D);
             if (TecTech.configTecTech.BOOM_ENABLE) {
                 getBaseMetaTileEntity().doExplosion(V[15]);
             } else {

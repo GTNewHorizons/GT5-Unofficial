@@ -10,7 +10,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
 import net.minecraft.block.Block;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -33,7 +32,7 @@ import static gregtech.api.GregTech_API.sBlockCasings1;
 public final class ConstructableTriggerItem extends Item {
     public static ConstructableTriggerItem INSTANCE;
 
-    private static HashMap<String,MultiblockInfoContainer> multiblockMap= new HashMap<>();
+    private static HashMap<String, IMultiblockInfoContainer> multiblockMap= new HashMap<>();
 
     private ConstructableTriggerItem() {
         setUnlocalizedName("em.constructable");
@@ -63,7 +62,7 @@ public final class ConstructableTriggerItem extends Item {
                 }
             }
             return true;
-        }else if (aPlayer instanceof EntityClientPlayerMP){//particles and text client side
+        }else if (TecTech.proxy.isThePlayer(aPlayer)){//particles and text client side
             //if ((!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode)) {
                 if(tTileEntity instanceof IGregTechTileEntity) {
                     IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
@@ -121,7 +120,7 @@ public final class ConstructableTriggerItem extends Item {
         INSTANCE = new ConstructableTriggerItem();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
 
-        registerMetaClass(GT_MetaTileEntity_ElectricBlastFurnace.class, new MultiblockInfoContainer() {
+        registerMetaClass(GT_MetaTileEntity_ElectricBlastFurnace.class, new IMultiblockInfoContainer() {
             //region Structure
             private final String[][] shape = new String[][]{
                     {"000","\"\"\"","\"\"\""," . ",},
@@ -150,17 +149,17 @@ public final class ConstructableTriggerItem extends Item {
         });
     }
 
-    public interface MultiblockInfoContainer {
+    public interface IMultiblockInfoContainer {
         void construct(int stackSize, boolean hintsOnly, TileEntity tileEntity, int aSide);
         @SideOnly(Side.CLIENT)
         String[] getDescription(int stackSize);
     }
 
-    public static void registerTileClass(Class<? extends TileEntity> clazz,MultiblockInfoContainer info){
+    public static void registerTileClass(Class<? extends TileEntity> clazz, IMultiblockInfoContainer info){
         multiblockMap.put(clazz.getCanonicalName(),info);
     }
 
-    public static void registerMetaClass(Class<? extends IMetaTileEntity> clazz,MultiblockInfoContainer info){
+    public static void registerMetaClass(Class<? extends IMetaTileEntity> clazz, IMultiblockInfoContainer info){
         multiblockMap.put(clazz.getCanonicalName(),info);
     }
 }

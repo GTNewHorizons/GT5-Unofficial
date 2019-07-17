@@ -1,6 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.loader.NetworkDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -28,10 +30,12 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 /**
  * Created by Tec on 26.02.2017.
  */
-public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConnectsToDataPipe {
+public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConnectsToDataPipe,IActivePipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
-    private static Textures.BlockIcons.CustomIcon EMbar;
+    private static Textures.BlockIcons.CustomIcon EMbar,EMbarActive;
     public byte connectionCount = 0;
+
+    private boolean active;
 
     public GT_MetaTileEntity_Pipe_Data(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
@@ -51,12 +55,13 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     public void registerIcons(IIconRegister aBlockIconRegister) {
         EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_DATA");
         EMbar = new Textures.BlockIcons.CustomIcon("iconsets/EM_BAR");
+        EMbarActive = new Textures.BlockIcons.CustomIcon("iconsets/EM_BAR_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[]{new GT_RenderedTexture(EMpipe), new GT_RenderedTexture(EMbar, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))};
+        return new ITexture[]{new GT_RenderedTexture(EMpipe), new GT_RenderedTexture(getActive()?EMbarActive:EMbar, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))};
     }
 
     @Override
@@ -71,10 +76,12 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
 
     @Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {
+        active=nbtTagCompound.getBoolean("eActive");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound nbtTagCompound) {
+        nbtTagCompound.setBoolean("eActive",active);
     }
 
     @Override
@@ -100,6 +107,9 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if(aBaseMetaTileEntity.isClientSide()){
+            NetworkDispatcher.INSTANCE.sendToServer(new PipeActivityMessage.PipeActivityQuery(this));
+        }
         onPostTick(aBaseMetaTileEntity, 31);
     }
 
@@ -107,6 +117,26 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
+                if(active){
+                    if(TecTech.RANDOM.nextInt(15)==0) {
+                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                                aBaseMetaTileEntity.getXCoord(),
+                                aBaseMetaTileEntity.getYCoord(),
+                                aBaseMetaTileEntity.getZCoord(),
+                                256);
+                    }
+                    active=false;
+                }else if(getActive()){
+                    if(TecTech.RANDOM.nextInt(15)==0) {
+                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                                aBaseMetaTileEntity.getXCoord(),
+                                aBaseMetaTileEntity.getYCoord(),
+                                aBaseMetaTileEntity.getZCoord(),
+                                256);
+                    }
+                }
                 mConnections = 0;
                 connectionCount = 0;
                 byte myColor=aBaseMetaTileEntity.getColorization();
@@ -236,5 +266,21 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     @Override
     public byte getColorization() {
         return getBaseMetaTileEntity().getColorization();
+    }
+
+    @Override
+    public void markUsed() {
+        this.active = true;
+    }
+
+    @Override
+    public void setActive(boolean active) {
+        this.active=active;
+        getBaseMetaTileEntity().issueTextureUpdate();
+    }
+
+    @Override
+    public boolean getActive() {
+        return active;
     }
 }

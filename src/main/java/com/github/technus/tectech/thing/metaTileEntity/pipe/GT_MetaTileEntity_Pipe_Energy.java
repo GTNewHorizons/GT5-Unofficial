@@ -1,6 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.loader.NetworkDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -24,12 +26,15 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import static com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM.EMCandyActive;
+import static com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM.EMcandy;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements IConnectsToEnergyTunnel {
+public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements IConnectsToEnergyTunnel,IActivePipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
-    private static Textures.BlockIcons.CustomIcon EMcandy;
     public byte connectionCount = 0;
+
+    private boolean active;
 
     public GT_MetaTileEntity_Pipe_Energy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
@@ -48,13 +53,12 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_LASER");
-        EMcandy = new Textures.BlockIcons.CustomIcon("iconsets/EM_CANDY");
         super.registerIcons(aBlockIconRegister);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[]{new GT_RenderedTexture(EMpipe), new GT_RenderedTexture(EMcandy, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))};
+        return new ITexture[]{new GT_RenderedTexture(EMpipe), new GT_RenderedTexture(getActive()?EMCandyActive:EMcandy, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))};
     }
 
     @Override
@@ -69,10 +73,12 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
 
     @Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {
+        active=nbtTagCompound.getBoolean("eActive");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound nbtTagCompound) {
+        nbtTagCompound.setBoolean("eActive",active);
     }
 
     @Override
@@ -89,15 +95,18 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Energy tunneling device.",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Not a portal!!!",
+                "Laser tunneling device.",
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Bright Vacuum!!!",
                 EnumChatFormatting.AQUA + "Must be painted to work",
-                EnumChatFormatting.AQUA + "Do not cross,split or turn"
+                EnumChatFormatting.AQUA + "Do not split or turn"
         };
     }
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if(getBaseMetaTileEntity().isClientSide()){
+            NetworkDispatcher.INSTANCE.sendToServer(new PipeActivityMessage.PipeActivityQuery(this));
+        }
         onPostTick(aBaseMetaTileEntity, 31);
     }
 
@@ -105,6 +114,26 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
+                if(active){
+                    if(TecTech.RANDOM.nextInt(31)==0) {
+                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                                aBaseMetaTileEntity.getXCoord(),
+                                aBaseMetaTileEntity.getYCoord(),
+                                aBaseMetaTileEntity.getZCoord(),
+                                256);
+                    }
+                    active=false;
+                }else if(getActive()){
+                    if(TecTech.RANDOM.nextInt(31)==0) {
+                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                                aBaseMetaTileEntity.getXCoord(),
+                                aBaseMetaTileEntity.getYCoord(),
+                                aBaseMetaTileEntity.getZCoord(),
+                                256);
+                    }
+                }
                 mConnections = 0;
                 connectionCount = 0;
                 if (aBaseMetaTileEntity.getColorization() < 0) {
@@ -146,6 +175,22 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
         } else if (aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {
             aBaseMetaTileEntity.issueTextureUpdate();
         }
+    }
+
+    @Override
+    public void setActive(boolean state){
+        this.active=state;
+        getBaseMetaTileEntity().issueTextureUpdate();
+    }
+
+    @Override
+    public boolean getActive() {
+        return active;
+    }
+
+    @Override
+    public void markUsed() {
+        this.active = true;
     }
 
     @Override

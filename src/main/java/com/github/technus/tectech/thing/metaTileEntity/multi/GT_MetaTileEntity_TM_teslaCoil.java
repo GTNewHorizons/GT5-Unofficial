@@ -6,6 +6,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -23,7 +24,6 @@ import java.util.ArrayList;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static gregtech.api.GregTech_API.*;
 import static gregtech.api.enums.GT_Values.E;
@@ -88,7 +88,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static final byte[] blockMetaT1 = new byte[]{15, 1, 13, 0};
     private static final byte[] blockMetaT2 = new byte[]{15, 2, 13, 0};
     private static final byte[][] blockMetas = new byte[][]{blockMetaT0,blockMetaT1,blockMetaT2};
-    private static final String[] addingMethods = new String[]{"addCapacitorToMachineList", "addFrameToMachineList"};
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addCapacitorToMachineList, this::addFrameToMachineList};
     private static final short[] casingTextures = new short[]{29, 0};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasings2, null};
     private static final byte[] blockMetaFallback = new byte[]{13, 0};
@@ -288,7 +288,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             float yPos = mte.getYCoord() + 0.5f;
             float zPos = mte.getZCoord() + 0.5f;
             long reqSum = 0;
-            for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaList.toArray(new GT_MetaTileEntity_TM_teslaCoil[eTeslaList.size()])) {
+            for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaList.toArray(new GT_MetaTileEntity_TM_teslaCoil[0])) {
                 try {
                     reqSum += Rx.maxEUStore() - Rx.getEUVar();
                 } catch (Exception e) {
@@ -347,16 +347,5 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             return eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
         }
         return false;
-    }
-
-    public static void run() {
-        try {
-            adderMethodMap.put("addFrameToMachineList", GT_MetaTileEntity_TM_teslaCoil.class.getMethod("addFrameToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addCapacitorToMachineList", GT_MetaTileEntity_TM_teslaCoil.class.getMethod("addCapacitorToMachineList", IGregTechTileEntity.class, int.class));
-        } catch (NoSuchMethodException e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
-            }
-        }
     }
 }

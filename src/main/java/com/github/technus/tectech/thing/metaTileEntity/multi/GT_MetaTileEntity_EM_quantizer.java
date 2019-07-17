@@ -13,6 +13,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.transformations
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -52,7 +53,10 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, QuantumGlassBlock.INSTANCE};
     private static final byte[] blockMeta = new byte[]{4, 0, 0};
-    private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalOutputToMachineList", "addElementalMufflerToMachineList"};
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{
+            this::addClassicToMachineList,
+            this::addElementalOutputToMachineList,
+            this::addElementalMufflerToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4, 4};
@@ -113,7 +117,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     public boolean checkRecipe_EM(ItemStack itemStack) {//TODO implement instance quantization
         if (GregTech_API.sPostloadFinished) {
             ArrayList<ItemStack> storedInputs = getStoredInputs();
-            ItemStack[] inI = storedInputs.toArray(new ItemStack[storedInputs.size()]);
+            ItemStack[] inI = storedInputs.toArray(new ItemStack[0]);
             if (inI.length > 0) {
                 for (ItemStack is : inI) {
                     //ITEM STACK quantization
@@ -152,7 +156,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                 }
             }
             ArrayList<FluidStack> storedFluids = getStoredFluids();
-            FluidStack[] inF = storedFluids.toArray(new FluidStack[storedFluids.size()]);
+            FluidStack[] inF = storedFluids.toArray(new FluidStack[0]);
             if (inF.length > 0) {
                 for (FluidStack fs : inF) {
                     aFluidQuantizationInfo aFQI = bTransformationInfo.fluidQuantization.get(fs.getFluid().getID());

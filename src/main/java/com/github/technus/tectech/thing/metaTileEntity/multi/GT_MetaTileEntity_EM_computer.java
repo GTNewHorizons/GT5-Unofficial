@@ -10,6 +10,11 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,10 +35,10 @@ import java.util.ArrayList;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -42,8 +47,31 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
+    //region parameters
+    protected Parameters.Group.ParameterIn overclock,overvolt;
+    protected Parameters.Group.ParameterOut maxCurrentTemp,availableData;
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> OC_NAME = (base, p)-> "Overclock ratio";
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> OV_NAME = (base, p)-> "Overvoltage ratio";
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_NAME = (base, p)-> "Current max. heat";
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> COMPUTE_NAME = (base, p)-> "Produced computation";
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OC_STATUS=
+            (base,p)->LedStatus.fromLimitsInclusiveOuterBoundary(p.get(),0,1,1,3);
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OV_STATUS=
+            (base,p)->LedStatus.fromLimitsInclusiveOuterBoundary(p.get(),.7,.8,1.2,2);
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_STATUS=
+            (base,p)->LedStatus.fromLimitsInclusiveOuterBoundary(p.get(),-10000,0,0,5000);
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> COMPUTE_STATUS=(base, p)->{
+        if(base.eAvailableData<0){
+            return STATUS_TOO_LOW;
+        }
+        if(base.eAvailableData==0){
+            return STATUS_NEUTRAL;
+        }
+        return STATUS_OK;
+    };
+    //endregion
+
     private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
-    private int maxCurrentTemp = 0;
 
     //region Structure
     private static final String[][] front = new String[][]{{"A  ", "A  ", "A. ", "A  ",},};
@@ -52,7 +80,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     private static final String[][] slice = new String[][]{{"-01", "A!2", "A!2", "-01",},};
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{2, 1, 3};
-    private static final String[] addingMethods = new String[]{"addToMachineList", "addRackToMachineList"};
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addToMachineList, this::addRackToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset + 1, textureOffset + 3};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{1, 3};
@@ -73,6 +101,15 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         super(aName);
         eCertainMode = 5;
         eCertainStatus = -128;//no-brain value
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        Parameters.Group hatch_0=parametrization.getGroup(0);
+        overclock=hatch_0.makeInParameter(0,1,OC_NAME,OC_STATUS);
+        overvolt=hatch_0.makeInParameter(1,1,OV_NAME,OV_STATUS);
+        maxCurrentTemp=hatch_0.makeOutParameter(0,0,MAX_TEMP_NAME,MAX_TEMP_STATUS);
+        availableData=hatch_0.makeOutParameter(1,0,COMPUTE_NAME,COMPUTE_STATUS);
     }
 
     @Override
@@ -104,14 +141,15 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
+        parametrization.setToDefaults(false,true);
         eAvailableData = 0;
-        maxCurrentTemp = 0;
-        double overClockRatio= getParameterIn(0,0);
-        double overVoltageRatio= getParameterIn(0,1);
+        double maxTemp=0;
+        double overClockRatio= overclock.get();
+        double overVoltageRatio= overvolt.get();
         if(Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) {
             return false;
         }
-        if(overClockRatio>0 && overVoltageRatio>=0.7f && overClockRatio<=3 && overVoltageRatio<=2){
+        if(overclock.getStatus(true).isOk && overvolt.getStatus(true).isOk){
             float eut=V[8] * (float)overVoltageRatio * (float)overClockRatio;
             if(eut<Integer.MAX_VALUE-7) {
                 mEUt = -(int) eut;
@@ -126,8 +164,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
                     continue;
                 }
-                if (rack.heat > maxCurrentTemp) {
-                    maxCurrentTemp = rack.heat;
+                if (rack.heat > maxTemp) {
+                    maxTemp=rack.heat;
                 }
                 rackComputation = rack.tickComponents((float) overClockRatio, (float) overVoltageRatio);
                 if (rackComputation > 0) {
@@ -149,6 +187,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 eAmpereFlow = 1 + (thingsActive >> 2);
                 mMaxProgresstime = 20;
                 mEfficiencyIncrease = 10000;
+                maxCurrentTemp.set(maxTemp);
+                availableData.set(eAvailableData);
                 return true;
             } else {
                 eAvailableData=0;
@@ -156,6 +196,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 eAmpereFlow = 1;
                 mMaxProgresstime = 20;
                 mEfficiencyIncrease = 10000;
+                maxCurrentTemp.set(maxTemp);
+                availableData.set(eAvailableData);
                 return true;
             }
         }
@@ -194,78 +236,20 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     protected void afterRecipeCheckFailed() {
         super.afterRecipeCheckFailed();
-        for (GT_MetaTileEntity_Hatch_Rack r : eRacks) {
-            r.getBaseMetaTileEntity().setActive(false);
+        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
+                rack.getBaseMetaTileEntity().setActive(false);
+            }
         }
     }
-
-    @Override
-    protected void parametersLoadDefault_EM() {
-        setParameterPairIn_ClearOut(0, false, 1, 1);
-    }
-
-    @Override
-    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
-        double ocRatio = getParameterIn(0, 0);
-        if (ocRatio < 0) {
-            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
-        } else if (ocRatio < 1) {
-            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
-        } else if (ocRatio == 1) {
-            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
-        } else if (ocRatio <= 3) {
-            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
-        } else if (Double.isNaN(ocRatio)) {
-            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
-        } else {
-            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
-        }
-
-        double ovRatio = getParameterIn(0, 1);
-        if (ovRatio < 0.7f) {
-            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
-        } else if (ovRatio < 0.8f) {
-            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
-        } else if (ovRatio <= 1.2f) {
-            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
-        } else if (ovRatio <= 2) {
-            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
-        } else if (Double.isNaN(ovRatio)) {
-            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
-        } else {
-            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
-        }
-
-        setParameterOut(0, 0, maxCurrentTemp);
-        setParameterOut(0, 1, eAvailableData);
-
-        if (maxCurrentTemp < -10000) {
-            setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
-        } else if (maxCurrentTemp < 0) {
-            setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
-        } else if (maxCurrentTemp == 0) {
-            setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
-        } else if (maxCurrentTemp <= 5000) {
-            setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
-        } else {
-            setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
-        }
-
-        if (!machineBusy) {
-            setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_NEUTRAL);
-        } else if (eAvailableData <= 0) {
-            setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
-        } else {
-            setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
-        }
-    }
-
 
     @Override
     public void onRemoval() {
         super.onRemoval();
-        for (GT_MetaTileEntity_Hatch_Rack r : eRacks) {
-            r.getBaseMetaTileEntity().setActive(false);
+        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
+                rack.getBaseMetaTileEntity().setActive(false);
+            }
         }
     }
 
@@ -273,8 +257,10 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public void stopMachine() {
         super.stopMachine();
         eAvailableData=0;
-        for (GT_MetaTileEntity_Hatch_Rack r : eRacks) {
-            r.getBaseMetaTileEntity().setActive(false);
+        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
+                rack.getBaseMetaTileEntity().setActive(false);
+            }
         }
     }
 
@@ -368,15 +354,5 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             return eRacks.add((GT_MetaTileEntity_Hatch_Rack) aMetaTileEntity);
         }
         return false;
-    }
-
-    public static void run() {
-        try {
-            adderMethodMap.put("addRackToMachineList", GT_MetaTileEntity_EM_computer.class.getMethod("addRackToMachineList", IGregTechTileEntity.class, int.class));
-        } catch (NoSuchMethodException e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
-            }
-        }
     }
 }

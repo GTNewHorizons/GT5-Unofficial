@@ -20,12 +20,12 @@ public class TT_recipe extends GT_Recipe {
     public final cElementalDefinitionStackMap[] input;
     public final cElementalDefinitionStackMap[] output;
     public final cElementalDefinitionStackMap[] eCatalyst;
-    public final AdditionalCheck additionalCheck;
+    public final IAdditionalCheck additionalCheck;
 
     public TT_recipe(boolean aOptimize,
                      ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
                      FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,
-                     cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, AdditionalCheck check){
+                     cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, IAdditionalCheck check){
         super(aOptimize,aInputs,aOutputs,aSpecialItems,aChances,aFluidInputs,aFluidOutputs,aDuration,aEUt,aSpecialValue);
         input=in;
         output=out;
@@ -127,7 +127,7 @@ public class TT_recipe extends GT_Recipe {
         return super.isRecipeInputEqual(consume, doNotCheckStackSizes, fluidStacks, itemStacks);
     }
     
-    public interface AdditionalCheck {
+    public interface IAdditionalCheck {
         boolean check(TT_recipe thisRecipe, boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks, FluidStack[] fluidStacks, cElementalInstanceStackMap[] in, cElementalInstanceStackMap[] e);
         boolean check(TT_recipe thisRecipe, boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks, FluidStack[] fluidStacks, cElementalInstanceStackMap in, cElementalInstanceStackMap[] e);
     }
@@ -165,8 +165,8 @@ public class TT_recipe extends GT_Recipe {
     }
 
     public static class GT_Recipe_MapTT extends GT_Recipe.GT_Recipe_Map {
-        public static GT_Recipe_MapTT sResearchableFakeRecipes =new GT_Recipe_MapTT(new HashSet<GT_Recipe>(32), "gt.recipe.researchStation", "Research station", (String)null, "gregtech:textures/gui/multimachines/ResearchFake", 1, 1,1,0,1,"", 1, "", true, false);//nei to false - using custom handler
-        public static GT_Recipe_MapTT sScannableFakeRecipes = new GT_Recipe_MapTT(new HashSet<GT_Recipe>(32),"gt.recipe.em_scanner","EM Scanner Research",(String)null,"gregtech:textures/gui/multimachines/ResearchFake",1,1,1,0,1,"",1,"",true,false);
+        public static GT_Recipe_MapTT sResearchableFakeRecipes =new GT_Recipe_MapTT(new HashSet<>(32), "gt.recipe.researchStation", "Research station", null, "gregtech:textures/gui/multimachines/ResearchFake", 1, 1,1,0,1,"", 1, "", true, false);//nei to false - using custom handler
+        public static GT_Recipe_MapTT sScannableFakeRecipes = new GT_Recipe_MapTT(new HashSet<>(32),"gt.recipe.em_scanner","EM Scanner Research", null,"gregtech:textures/gui/multimachines/ResearchFake",1,1,1,0,1,"",1,"",true,false);
 
         public GT_Recipe_MapTT(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
             super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
@@ -179,7 +179,7 @@ public class TT_recipe extends GT_Recipe {
         public TT_assLineRecipe(boolean aOptimize, ItemStack researchItem,
                                 ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
                                 FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
-                                cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, AdditionalCheck check) {
+                                cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, IAdditionalCheck check) {
             super(aOptimize, aInputs, aOutputs, aSpecialItems, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue, in, out, catalyst, check);
             mResearchItem=researchItem;
         }
@@ -199,7 +199,7 @@ public class TT_recipe extends GT_Recipe {
         public TT_EMRecipe(boolean aOptimize, GT_Recipe scannerRecipe, iElementalDefinition researchEM,
                                 ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
                                 FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
-                                cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, AdditionalCheck check) {
+                                cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, IAdditionalCheck check) {
             super(aOptimize, aInputs, aOutputs, aSpecialItems, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue, in, out, catalyst, check);
             mResearchEM=researchEM;
             this.scannerRecipe=scannerRecipe;

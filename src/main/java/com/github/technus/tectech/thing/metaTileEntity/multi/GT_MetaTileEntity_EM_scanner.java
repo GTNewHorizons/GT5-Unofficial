@@ -14,6 +14,11 @@ import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -57,6 +62,24 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     private long totalComputationRemaining, totalComputationRequired;
     private int[] scanComplexity;
 
+    //region parameters
+    private static final INameFunction<GT_MetaTileEntity_EM_scanner> CONFIG_NAME=
+            (base,p)->"Config at Depth: "+(p.hatchId()*2+p.parameterId());
+    private static final IStatusFunction<GT_MetaTileEntity_EM_scanner> CONFIG_STATUS=
+            (base,p)->{
+                double v=p.get();
+                if(Double.isNaN(v)){
+                    return LedStatus.STATUS_WRONG;
+                }
+                v=(int)v;
+                if(v==0) return LedStatus.STATUS_NEUTRAL;
+                if(v>=SCAN_GET_CLASS_TYPE) return LedStatus.STATUS_TOO_HIGH;
+                if(v<0) return LedStatus.STATUS_TOO_LOW;
+                return LedStatus.STATUS_OK;
+            };
+    protected Parameters.Group.ParameterIn[] scanConfiguration;
+    //endregion
+
     //region structure
     private static final String[][] shape = new String[][]{
             {"     ", " 222 ", " 2.2 ", " 222 ", "     ",},
@@ -70,11 +93,11 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4, 0, 0};
-    private static final String[] addingMethods = new String[]{
-            "addClassicToMachineList",
-            "addElementalInputToMachineList",
-            "addElementalOutputToMachineList",
-            "addElementalMufflerToMachineList"};
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{
+            this::addClassicToMachineList,
+            this::addElementalInputToMachineList,
+            this::addElementalOutputToMachineList,
+            this::addElementalMufflerToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};
@@ -95,6 +118,16 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     public GT_MetaTileEntity_EM_scanner(String aName) {
         super(aName);
         eDismantleBoom=true;
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        scanConfiguration=new Parameters.Group.ParameterIn[20];
+        for (int i = 0; i < 10; i++) {
+            Parameters.Group hatch = parametrization.getGroup(i);
+            scanConfiguration[i*2] = hatch.makeInParameter(0, 0, CONFIG_NAME, CONFIG_STATUS);
+            scanConfiguration[i*2+1] = hatch.makeInParameter(1, 0, CONFIG_NAME, CONFIG_STATUS);
+        }
     }
 
     @Override
@@ -248,7 +281,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     cleanStackEM_EM(stackEM);
                     researchEM.remove(stackEM.definition);
                 }
-                if(eRecipe!=null && scannerRecipe!=null){//make sure it werks
+                if(eRecipe!=null && scannerRecipe!=null){//todo make sure it werks
                     totalComputationRequired = totalComputationRemaining = scannerRecipe.mDuration * 20L;
                     mMaxProgresstime = 20;//const
                     mEfficiencyIncrease = 10000;
@@ -272,9 +305,8 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     //get depth scan complexity array
                     {
                         int[] scanComplexityTemp = new int[20];
-                        for (int i = 0; i < 10; i++) {
-                            scanComplexityTemp[i] = getParameterInInt(i, 0);
-                            scanComplexityTemp[i + 10] = getParameterInInt(i, 1);
+                        for (int i = 0; i < 20; i++) {
+                            scanComplexityTemp[i]=(int)scanConfiguration[i].get();
                         }
                         int maxDepth = 0;
                         for (int i = 0; i < 20; i++) {
@@ -418,20 +450,20 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         return new String[]{
                 "Energy Hatches:",
                 EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
-                        EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET + " EU",
+                        EnumChatFormatting.YELLOW + maxEnergy + EnumChatFormatting.RESET + " EU",
                 (mEUt <= 0 ? "Probably uses: " : "Probably makes: ") +
-                        EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t at " +
+                        EnumChatFormatting.RED + Math.abs(mEUt) + EnumChatFormatting.RESET + " EU/t at " +
                         EnumChatFormatting.RED + eAmpereFlow + EnumChatFormatting.RESET + " A",
                 "Tier Rating: " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET +
                         " Amp Rating: " + EnumChatFormatting.GREEN + eMaxAmpereFlow + EnumChatFormatting.RESET + " A",
                 "Problems: " + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
-                        " Efficiency: " + EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %",
+                        " Efficiency: " + EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
                 "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
                         " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
                 "Computation Available: " + EnumChatFormatting.GREEN + eAvailableData +EnumChatFormatting.RESET+" / "+EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET,
                 "Computation Remaining:",
                 EnumChatFormatting.GREEN + Long.toString(totalComputationRemaining / 20L) + EnumChatFormatting.RESET + " / " +
-                        EnumChatFormatting.YELLOW + Long.toString(totalComputationRequired / 20L)
+                        EnumChatFormatting.YELLOW + totalComputationRequired / 20L
         };
     }
 

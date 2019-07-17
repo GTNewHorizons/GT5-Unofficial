@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,8 +12,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
-    public byte[] eParamsInStatus = new byte[20];//unused 0,G ok 1, B too low 2, R too high 3, Y blink dangerous 4,5
-    public byte[] eParamsOutStatus = new byte[20];
+    public LedStatus[] eParamsInStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNDEFINED);
+    public LedStatus[] eParamsOutStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNDEFINED);
+    public double[] eParamsIn = new double[20];//number I from parametrizers
+    public double[] eParamsOut = new double[20];//number O to parametrizers
     public byte eCertainMode = 5, eCertainStatus = 127;
     public boolean ePowerPass = false, eSafeVoid = false, allowedToWork = false;
     public final boolean ePowerPassButton, eSafeVoidButton, allowedToWorkButton;
@@ -106,8 +109,10 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
         if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null || eParamsInStatus == null) {
             return;
         }
-        eParamsInStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eParamsInStatus;
-        eParamsOutStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eParamsOutStatus;
+        eParamsInStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.eParamsInStatus;
+        eParamsOutStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.eParamsOutStatus;
+        eParamsIn= ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.iParamsIn;
+        eParamsOut= ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.iParamsOut;
         eCertainMode = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eCertainMode;
         eCertainStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eCertainStatus;
         ePowerPass = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).ePowerPass;
@@ -116,12 +121,15 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;
-            int i = 100;
-            for (int j = 0; j < eParamsInStatus.length; j++) {
-                var1.sendProgressBarUpdate(this, i++, eParamsInStatus[j] | eParamsOutStatus[j] << 8);
+            for (int i=100, j = 0; j < eParamsInStatus.length; j++) {
+                var1.sendProgressBarUpdate(this, i++, (eParamsInStatus[j].getOrdinalByte() | (eParamsOutStatus[j].getOrdinalByte() << 8)));
             }
-            var1.sendProgressBarUpdate(this, 120, eCertainMode | eCertainStatus << 8);
+            var1.sendProgressBarUpdate(this, 120, eCertainMode | (eCertainStatus << 8));
             var1.sendProgressBarUpdate(this, 121, (ePowerPass ? 1 : 0) + (eSafeVoid ? 2 : 0) + (allowedToWork ? 4 : 0));
+            for(int i=128,k=208,j=0;j<20;j++,i+=4,k+=4) {
+                Util.sendDouble(eParamsOut[j], this, var1, i);
+                Util.sendDouble(eParamsIn[j], this, var1, k);
+            }
         }
     }
 
@@ -132,8 +140,8 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             return;
         }
         if (par1 >= 100 && par1 < 120) {
-            eParamsInStatus[par1 - 100] = (byte) (par2 & 0xff);
-            eParamsOutStatus[par1 - 100] = (byte) (par2 >>> 8);
+            eParamsInStatus[par1 - 100] = LedStatus.getStatus ((byte) (par2 & 0xff));
+            eParamsOutStatus[par1 - 100] = LedStatus.getStatus ((byte) (par2 >>> 8));
         } else if (par1 == 120) {
             eCertainMode = (byte) (par2 & 0xff);
             eCertainStatus = (byte) (par2 >>> 8);
@@ -141,6 +149,12 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             ePowerPass = (par2 & 1) == 1;
             eSafeVoid = (par2 & 2) == 2;
             allowedToWork = (par2 & 4) == 4;
+        } else if(par1>=128 && par1<208){
+            int pos=(par1-128)>>2;
+            eParamsOut[pos]=Util.receiveDouble(eParamsOut[pos],par1&0xFFFFFFFC,par1,par2);
+        }else if(par1>=208 && par1<288){
+            int pos=(par1-208)>>2;
+            eParamsIn[pos]=Util.receiveDouble(eParamsIn[pos],par1&0xFFFFFFFC,par1,par2);
         }
     }
 

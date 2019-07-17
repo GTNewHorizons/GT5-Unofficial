@@ -127,6 +127,7 @@ public class GT_MetaTileEntity_Hatch_OutputDataItems extends GT_MetaTileEntity_H
         }
         IMetaTileEntity meta = next.getMetaTileEntity();
         if (meta instanceof GT_MetaTileEntity_Pipe_Data){
+            ((GT_MetaTileEntity_Pipe_Data) meta).markUsed();
             return (IConnectsToDataPipe) meta;
         }else if (meta instanceof GT_MetaTileEntity_Hatch_InputDataItems &&
                 ((GT_MetaTileEntity_Hatch_InputDataItems) meta).getColorization()==color &&

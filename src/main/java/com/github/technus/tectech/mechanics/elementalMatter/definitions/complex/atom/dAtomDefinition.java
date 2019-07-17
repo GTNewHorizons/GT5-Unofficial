@@ -396,35 +396,35 @@ public final class dAtomDefinition extends cElementalDefinition {
             switch (decayMode) {
                 case -2:
                     if(TecTech.RANDOM.nextBoolean() && ElectronCapture(decaysList)) {
-                        return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                        return decaysList.toArray(new cElementalDecay[0]);
                     } else if(PbetaDecay(decaysList)) {
-                        return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                        return decaysList.toArray(new cElementalDecay[0]);
                     }
                     break;
                 case -1:
                     if(Emmision(decaysList, dHadronDefinition.hadron_p1)) {
-                        return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                        return decaysList.toArray(new cElementalDecay[0]);
                     }
                     break;
                 case 0:
                     if(alphaDecay(decaysList)) {
-                        return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                        return decaysList.toArray(new cElementalDecay[0]);
                     }
                     break;
                 case 1:
                     if(Emmision(decaysList, dHadronDefinition.hadron_n1)) {
-                        return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                        return decaysList.toArray(new cElementalDecay[0]);
                     }
                     break;
                 case 2:
                     if(MbetaDecay(decaysList)) {
-                        return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                        return decaysList.toArray(new cElementalDecay[0]);
                     }
                     break;
                 default:
                     if(decayMode>8){
                         if(iaeaDecay(decaysList,0)) {
-                            return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                            return decaysList.toArray(new cElementalDecay[0]);
                         }
                         return getDecayArray(decaysList,decayMode- BYTE_OFFSET,false);
                     }
@@ -1167,7 +1167,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         if (iaeaDefinitionExistsAndHasEnergyLevels) {
             ArrayList<cElementalDecay> decays=new ArrayList<>(4);
             if(iaeaDecay(decays,energyLevel)){
-                return decays.toArray(new cElementalDecay[decays.size()]);
+                return decays.toArray(new cElementalDecay[0]);
             }
         }
         if(energyLevel< Math.abs(charge)/3+neutralCount) {
@@ -1257,7 +1257,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                 decaysInto.add(new cElementalDefinitionStack(boson_Y__, 2));
             }
         }
-        return new cElementalDecay[]{new cElementalDecay(0.75F, decaysInto.toArray(new cElementalDefinitionStack[decaysInto.size()])), deadEnd};
+        return new cElementalDecay[]{new cElementalDecay(0.75F, decaysInto.toArray(new cElementalDefinitionStack[0])), deadEnd};
     }
 
     //@Override
@@ -1357,10 +1357,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                 float rawLifeTime = calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, false);
                 iaeaNuclide nuclide = iaeaNuclide.get(element, isotope);
                 if (rawLifeTime >= STABLE_RAW_LIFE_TIME || nuclide != null && nuclide.halfTime >= STABLE_RAW_LIFE_TIME) {
-                    TreeSet<Integer> isotopes = stableIsotopes.get(element);
-                    if (isotopes == null) {
-                        stableIsotopes.put(element, isotopes = new TreeSet<>());
-                    }
+                    TreeSet<Integer> isotopes = stableIsotopes.computeIfAbsent(element, k -> new TreeSet<>());
                     isotopes.add(isotope);
                 }
             }
@@ -1375,10 +1372,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                 int izoDiff = isotope - Isotope;
                 int izoDiffAbs = Math.abs(izoDiff);
                 float rawLifeTime = calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, false);
-                TreeMap<Float, Integer> isotopes = mostStableUnstableIsotopes.get(element);
-                if (isotopes == null) {
-                    mostStableUnstableIsotopes.put(element, isotopes = new TreeMap<>());
-                }
+                TreeMap<Float, Integer> isotopes = mostStableUnstableIsotopes.computeIfAbsent(element, k -> new TreeMap<>());
                 isotopes.put(rawLifeTime, isotope);
             }
         }
@@ -1652,7 +1646,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         }
         if(iaeaDefinitionExistsAndHasEnergyLevels && Util.areBitsSet(SCAN_GET_ENERGY_STATES,capabilities)){
             for(int i=1;i<iaea.energeticStatesArray.length;i++){
-                lines.add("ENERGY LEVEL "+i+" = "+iaea.energeticStatesArray[i].energy+" eV");
+                lines.add("E LEVEL "+i+" = "+iaea.energeticStatesArray[i].energy+" eV");
             }
         }
         if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){

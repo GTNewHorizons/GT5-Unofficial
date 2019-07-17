@@ -4,6 +4,7 @@ import com.github.technus.tectech.Util;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
+import org.lwjgl.opengl.GL11;
 
 import java.util.Locale;
 
@@ -20,12 +21,15 @@ public class GT_GUIContainer_Param extends GT_GUIContainerMetaTile_Machine {
         if (mContainer != null) {
             proxy.renderUnicodeString("Parameters: " + ((GT_Container_Param) mContainer).param, 46, 7, 167, 0xffffff);
             Locale locale= Locale.getDefault();
-            proxy.renderUnicodeString("\u24EA\u2b07" + String.format(locale, "%+d", ((GT_Container_Param) mContainer).input0f), 46, 16, 167, 0x22ddff);
-            proxy.renderUnicodeString("\u2460\u2b07" + String.format(locale, "%+d", ((GT_Container_Param) mContainer).input1f), 46, 24, 167, 0x00ffff);
-            proxy.renderUnicodeString("\u24EA\u2b06" + String.format(locale, "%+d", ((GT_Container_Param) mContainer).value0f), 46, 33, 167, 0x00bbff);
-            proxy.renderUnicodeString("\u2460\u2b06" + String.format(locale, "%+d", ((GT_Container_Param) mContainer).value1f), 46, 41, 167, 0x0077ff);
-            proxy.renderUnicodeString("\u24EA\u2b06" + Util.intBitsToShortString(((GT_Container_Param) mContainer).value0f), 46, 50, 167, 0x00bbff);
-            proxy.renderUnicodeString("\u2460\u2b06" + Util.intBitsToShortString(((GT_Container_Param) mContainer).value1f), 46, 58, 167, 0x0077ff);
+            proxy.renderUnicodeString("\u24EA\u2b07" + String.format(locale, "%+.5E", ((GT_Container_Param) mContainer).input0f), 46, 16, 167, 0x22ddff);
+            proxy.renderUnicodeString("\u2460\u2b07" + String.format(locale, "%+.5E", ((GT_Container_Param) mContainer).input1f), 46, 24, 167, 0x00ffff);
+            proxy.renderUnicodeString("\u24EA\u2b06" + String.format(locale, "%+.5E", ((GT_Container_Param) mContainer).value0f), 46, 33, 167, 0x00bbff);
+            proxy.renderUnicodeString("\u2460\u2b06" + String.format(locale, "%+.5E", ((GT_Container_Param) mContainer).value1f), 46, 41, 167, 0x0077ff);
+            GL11.glPushMatrix();
+            GL11.glScalef(.5f,.5f,.5f);
+            proxy.renderUnicodeString("\u24EA\u2b06" + Util.longBitsToShortString(Double.doubleToLongBits(((GT_Container_Param) mContainer).value0f)), 92, 100, 334, 0x00bbff);
+            proxy.renderUnicodeString("\u2460\u2b06" + Util.longBitsToShortString(Double.doubleToLongBits(((GT_Container_Param) mContainer).value1f)), 92, 116, 334, 0x0077ff);
+            GL11.glPopMatrix();
         } else {
             proxy.renderUnicodeString("Parameters", 46, 7, 167, 0xffffff);
         }

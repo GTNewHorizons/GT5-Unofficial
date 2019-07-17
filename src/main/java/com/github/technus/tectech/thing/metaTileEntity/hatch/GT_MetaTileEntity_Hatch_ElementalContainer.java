@@ -124,7 +124,8 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                                 if (TecTech.configTecTech.BOOM_ENABLE) {
                                     tGTTileEntity.doExplosion(V[14]);
                                 } else {
-                                    TecTech.proxy.broadcast("Container1 BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
+                                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity,overflowMatter*32D);
+                                    TecTech.proxy.broadcast("Container1 BOOM! " +aBaseMetaTileEntity.getXCoord() + ' ' + aBaseMetaTileEntity.getYCoord() + ' ' + aBaseMetaTileEntity.getZCoord());
                                 }
                             }
                             deathDelay = 3;//needed in some cases like repetitive failures. Should be 4 since there is -- at end but meh...
@@ -132,11 +133,12 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                         }
                     } else if (deathDelay < 1) {
                         if (TecTech.configTecTech.BOOM_ENABLE) {
-                            getBaseMetaTileEntity().doExplosion(V[14]);
+                            aBaseMetaTileEntity.doExplosion(V[14]);
                         } else {
+                            TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity,overflowMatter*32D);
                             deathDelay=3;
                             overflowMatter=0;
-                            TecTech.proxy.broadcast("Container0 BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
+                            TecTech.proxy.broadcast("Container0 BOOM! " + aBaseMetaTileEntity.getXCoord() + ' ' + aBaseMetaTileEntity.getYCoord() + ' ' + aBaseMetaTileEntity.getZCoord());
                         }
                     }
                     deathDelay--;
@@ -207,8 +209,8 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     @Override
-    public float purgeOverflow() {
-        return overflowMatter += content.removeOverflow(getMaxStacksCount(), getMaxStackSize());
+    public void purgeOverflow() {
+        overflowMatter += content.removeOverflow(getMaxStacksCount(), getMaxStackSize());
     }
 
     @Override
@@ -248,8 +250,8 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         }
     }
 
-    public float updateSlots() {
-        return purgeOverflow();
+    public void updateSlots() {
+        purgeOverflow();
     }
 
     @Override
@@ -271,10 +273,12 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     @Override
     public void onRemoval() {
         if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) {
+            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(),(overflowMatter+content.getMass())*16D);
+            IGregTechTileEntity base=getBaseMetaTileEntity();
             if (TecTech.configTecTech.BOOM_ENABLE) {
-                getBaseMetaTileEntity().doExplosion(V[15]);
+                base.doExplosion(V[15]);
             } else {
-                TecTech.proxy.broadcast("BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
+                TecTech.proxy.broadcast("BOOM! " +base.getXCoord() + ' ' + base.getYCoord() + ' ' + base.getZCoord());
             }
         }
     }

@@ -38,13 +38,7 @@ public class rElementalRecipe implements Comparable<rElementalRecipe> {
         if(compare!=0) {
             return compare;
         }
-        if(ID>o.ID) {
-            return 1;
-        }
-        if(ID<o.ID) {
-            return -1;
-        }
-        return 0;
+        return Short.compare(ID, o.ID);
     }
 
     @Override

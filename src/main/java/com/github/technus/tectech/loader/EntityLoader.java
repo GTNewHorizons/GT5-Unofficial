@@ -1,4 +1,4 @@
-package com.github.technus.tectech.loader.entity;
+package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileEM;

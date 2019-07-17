@@ -4,26 +4,83 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
-
-import java.util.ArrayList;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 
 import static com.github.technus.tectech.CommonValues.V;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 
 /**
  * Created by danie_000 on 24.12.2017.
  */
-public class Behaviour_ElectromagneticSeparator extends GT_MetaTileEntity_EM_machine.Behaviour {
+public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_machine.IBehaviour {
     private final byte tier;
-    private final int ticks;
-    private final byte precisionFull;
-    private final byte precisionMinimal;
-    private final float maxCapacity;
-    private final long maxCharge;
-    private final int offsetMax;
-    private final static String[] DESCRIPTION_I =new String[]{"Full Precision Input [e/3]","Minimal Precision Input [e/3]","Offset Input [e/3]",null};
-    private final static String[] DESCRIPTION_O =new String[]{"Full Precision Limit [e/3]","Minimal Precision Limit [e/3]","Offset Limit [e/3]",null,"Max Charge [e/3]","Max Capacity [eV/c^2]","Max Power Usage[EU/t]","Max Recipe Rime [tick]"};
+    private int ticks;
+    private byte precisionFull,precisionMinimal;
+    private float maxCapacity;
+    private long maxCharge;
+    private int offsetMax;
+    private Parameters.Group.ParameterIn fullSetting,minimalSetting,offsetSetting;
+    private final static INameFunction<GT_MetaTileEntity_EM_machine> fullName= (gt_metaTileEntity_em_machine, iParameter) -> "Full Precision Input [e/3]";
+    private final IStatusFunction<GT_MetaTileEntity_EM_machine> fullStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
+        double v=iParameter.get();
+        if(Double.isNaN(v)){
+            return STATUS_WRONG;
+        }
+        v=(int)v;
+        if(Double.isInfinite(v) && v>0) {
+            return STATUS_TOO_HIGH;
+        }else if(v>precisionFull){
+            return STATUS_HIGH;
+        }else if(v<precisionFull){
+            return STATUS_TOO_LOW;
+        }
+        return STATUS_OK;
+    };
+    private final static INameFunction<GT_MetaTileEntity_EM_machine> minimalName= (gt_metaTileEntity_em_machine, iParameter) -> "Minimal Precision Input [e/3]";
+    private final IStatusFunction<GT_MetaTileEntity_EM_machine> minimalStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
+        double minimal=iParameter.get();
+        double full=fullSetting.get();
+        if(Double.isInfinite(minimal) && minimal>0) {
+            return STATUS_TOO_HIGH;
+        }else if(minimal>precisionMinimal){
+            if(minimal>full){
+                return STATUS_TOO_HIGH;
+            }else {
+                return STATUS_HIGH;
+            }
+        }else if(minimal==precisionMinimal){
+            if(minimal>full){
+                return STATUS_TOO_HIGH;
+            }else {
+                return STATUS_OK;
+            }
+        }else if(minimal<precisionMinimal){
+            return STATUS_TOO_LOW;
+        }else {
+            return STATUS_WRONG;
+        }
+    };
+    private final static INameFunction<GT_MetaTileEntity_EM_machine> offsetName= (gt_metaTileEntity_em_machine, iParameter) -> "Offset Input [e/3]";
+    private final IStatusFunction<GT_MetaTileEntity_EM_machine> offsetStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
+        double offset=iParameter.get();
+        if(offset>offsetMax){
+            return STATUS_TOO_HIGH;
+        }else if(offset>0){
+            return STATUS_HIGH;
+        }else if(offset==0){
+            return STATUS_OK;
+        }else if(offset>=-offsetMax){
+            return STATUS_LOW;
+        }else if(offset<-offsetMax){
+            return STATUS_TOO_LOW;
+        }else {
+            return STATUS_WRONG;
+        }
+    };
+    //private final static String[] DESCRIPTION_O =new String[]{"Full Precision Limit [e/3]","Minimal Precision Limit [e/3]","Offset Limit [e/3]",null,"Max Charge [e/3]","Max Capacity [eV/c^2]","Max Power Usage[EU/t]","Max Recipe Rime [tick]"};
 
     public Behaviour_ElectromagneticSeparator(int desiredTier){
         tier=(byte) desiredTier;
@@ -69,113 +126,21 @@ public class Behaviour_ElectromagneticSeparator extends GT_MetaTileEntity_EM_mac
     }
 
     @Override
-    protected void getFullLedDescriptionIn(ArrayList<String> baseDescr, int hatchNo, int paramID) {
-        if(hatchNo<=1) {
-            String desc=DESCRIPTION_I[(hatchNo << 1) + paramID];
-            if(desc!=null){
-                baseDescr.add(desc);
-            }
-        }
+    public void parametersInstantiation(GT_MetaTileEntity_EM_machine te, Parameters parameters) {
+        Parameters.Group hatch1=parameters.getGroup(7);
+        fullSetting=hatch1.makeInParameter(0,0,fullName,fullStatus);
+        minimalSetting=hatch1.makeInParameter(1,2,minimalName,minimalStatus);
+        Parameters.Group hatch2=parameters.getGroup(8);
+        offsetSetting=hatch2.makeInParameter(0,0,offsetName,offsetStatus);
     }
 
     @Override
-    protected void getFullLedDescriptionOut(ArrayList<String> baseDescr, int hatchNo, int paramID) {
-        if(hatchNo<=3){
-            String desc=DESCRIPTION_O[(hatchNo<<1)+paramID];
-            if(desc!=null){
-                baseDescr.add(desc);
-            }
-        }
+    public boolean checkParametersInAndSetStatuses(GT_MetaTileEntity_EM_machine te, Parameters parameters) {
+        return fullSetting.getStatus(true).isOk && minimalSetting.getStatus(true).isOk && offsetSetting.getStatus(true).isOk;
     }
 
     @Override
-    public boolean setAndCheckParametersOutAndStatuses(GT_MetaTileEntity_EM_machine te, double[] parametersToCheckAndFix) {
-        boolean check=true;
-
-        te.setParameterOut(0,0,precisionFull);
-        te.setParameterOut(0,1,precisionMinimal);
-        te.setParameterOut(1,0,offsetMax);
-        te.setStatusOfParameterOut(1,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
-        te.setParameterOut(2,0,maxCharge);
-        te.setParameterOut(2,1,maxCapacity);
-        te.setParameterOut(3,0,V[tier]);
-        te.setParameterOut(3,1,ticks);
-
-        for(int i=4;i<=9;i++) {
-            te.setStatusOfParameterOut(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
-            te.setStatusOfParameterOut(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
-        }
-        te.setStatusOfParameterIn(1, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
-        for(int i=2;i<=3;i++) {
-            te.setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
-            te.setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
-        }
-
-        double full=parametersToCheckAndFix[0];
-        if(Double.isInfinite(full) && full>0) {
-            te.setStatusOfParameterIn(0,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
-            check=false;
-        }else if(full>precisionFull){
-            te.setStatusOfParameterIn(0,0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
-        }else if(full==precisionFull){
-            te.setStatusOfParameterIn(0,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
-        }else if(full<precisionFull){
-            te.setStatusOfParameterIn(0,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
-            check=false;
-        }else {
-            te.setStatusOfParameterIn(0,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
-            check=false;
-        }
-
-        double minimal=parametersToCheckAndFix[1];
-        if(Double.isInfinite(minimal) && minimal>0) {
-            te.setStatusOfParameterIn(0,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
-            check=false;
-        }else if(minimal>precisionMinimal){
-            if(minimal>full){
-                te.setStatusOfParameterIn(0,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
-                check=false;
-            }else {
-                te.setStatusOfParameterIn(0,1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
-            }
-        }else if(minimal==precisionMinimal){
-            if(minimal>full){
-                te.setStatusOfParameterIn(0,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
-                check=false;
-            }else {
-                te.setStatusOfParameterIn(0,1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
-            }
-        }else if(minimal<precisionMinimal){
-            te.setStatusOfParameterIn(0,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
-            check=false;
-        }else {
-            te.setStatusOfParameterIn(0,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
-            check=false;
-        }
-
-        double offset=parametersToCheckAndFix[2];
-        if(offset>offsetMax){
-            te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
-            check=false;
-        }else if(offset>0){
-            te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
-        }else if(offset==0){
-            te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
-        }else if(offset>=-offsetMax){
-            te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
-        }else if(offset<-offsetMax){
-            te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
-            check=false;
-        }else {
-            te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
-            check=false;
-        }
-
-        return check;
-    }
-
-    @Override
-    public MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, double[] checkedAndFixedParameters) {
+    public MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
         cElementalInstanceStackMap input = inputs[0];
         if (input == null || input.isEmpty()) return null;//nothing in only valid input
 
@@ -211,9 +176,9 @@ public class Behaviour_ElectromagneticSeparator extends GT_MetaTileEntity_EM_mac
             outputs[i] = new cElementalInstanceStackMap();
         }
 
-        double offsetIn=checkedAndFixedParameters[2];
-        double precisionFullIn=checkedAndFixedParameters[0];
-        double precisionMinimalIn=checkedAndFixedParameters[1];
+        double offsetIn=offsetSetting.get();
+        double precisionFullIn=fullSetting.get();
+        double precisionMinimalIn=minimalSetting.get();
         double levelsCountPlus1=precisionFullIn-precisionMinimalIn+1;
 
         //take all from hatch handler and put into new map - this takes from hatch to inner data storage

@@ -100,6 +100,7 @@ public final class QuantumGlassBlock extends BlockBase {
         if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
             GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
+
     }
 
     @Override
