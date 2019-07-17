@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition.refMass;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition.refUnstableMass;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refMass;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 

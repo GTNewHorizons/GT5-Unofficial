@@ -1,16 +1,18 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalInstanceContainer;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo;
+import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,6 +25,7 @@ import net.minecraft.world.World;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
@@ -30,7 +33,9 @@ import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 /**
  * Created by Tec on 15.03.2017.
  */
-public final class DebugElementalInstanceContainer_EM extends Item {
+public final class DebugElementalInstanceContainer_EM extends Item implements IElementalItem {
+    public static final TreeSet<iElementalDefinition> stacksRegistered=new TreeSet<>();
+
     public static DebugElementalInstanceContainer_EM INSTANCE;
 
     private DebugElementalInstanceContainer_EM() {
@@ -60,11 +65,13 @@ public final class DebugElementalInstanceContainer_EM extends Item {
                         }
                         ((iElementalInstanceContainer) metaTE).purgeOverflow();
                         tNBT.removeTag("content");
+                        tNBT.removeTag("symbols");
                         tNBT.removeTag("info");
                     } else if (content.hasStacks()) {
                         ((iElementalInstanceContainer) metaTE).purgeOverflow();
                         tNBT.setTag("info", content.getInfoNBT());
                         tNBT.setTag("content", content.toNBT());
+                        tNBT.setTag("symbols", content.getShortSymbolsNBT());
                         content.clear();
                     }
                     return true;
@@ -90,9 +97,11 @@ public final class DebugElementalInstanceContainer_EM extends Item {
             }
             tNBT.removeTag("content");
             tNBT.removeTag("info");
+            tNBT.removeTag("symbols");
         } else if (content.hasStacks()) {
             tNBT.setTag("info", content.getInfoNBT());
             tNBT.setTag("content", content.toNBT());
+            tNBT.setTag("symbols", content.getShortSymbolsNBT());
             content.clear();
         }
         return aStack;
@@ -125,10 +134,30 @@ public final class DebugElementalInstanceContainer_EM extends Item {
         ItemStack that = new ItemStack(this, 1);
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
-        for(iElementalDefinition defintion:bTransformationInfo.stacksRegistered){
+        for(iElementalDefinition defintion:stacksRegistered){
             list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+1),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,1))));
             list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+144),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,144))));
             list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+1000),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,1000))));
         }
+    }
+
+    @Override
+    public String getSymbol(ItemStack aStack, int index) {
+        try {
+            NBTTagCompound tNBT = aStack.getTagCompound();
+            if (tNBT != null && tNBT.hasKey("symbols")) {
+                String[] strings=Util.infoFromNBT(tNBT.getCompoundTag("symbols"));
+                return strings[index%strings.length];
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            return "#!";
+        }
+    }
+
+    @Override
+    public FontRenderer getFontRenderer(ItemStack stack) {
+        return (FontRenderer) (Object) TecTechFontRender.INSTANCE;
     }
 }

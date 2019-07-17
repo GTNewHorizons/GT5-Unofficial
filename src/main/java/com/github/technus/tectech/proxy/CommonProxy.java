@@ -34,13 +34,6 @@ public class CommonProxy implements IGuiHandler {
         return null;
     }
 
-    public void renderUnicodeString(String str, int x, int y, int maxWidth, int color) {
-    }
-
-    public void setCustomRenderer() {}
-
-    public void setCustomRenderers() {}
-
     public void broadcast(String str) {
         MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText(str));
     }

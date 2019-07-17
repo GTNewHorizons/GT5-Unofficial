@@ -1,4 +1,4 @@
-package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom;
+package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex;
 
 import com.github.technus.tectech.Util;
 

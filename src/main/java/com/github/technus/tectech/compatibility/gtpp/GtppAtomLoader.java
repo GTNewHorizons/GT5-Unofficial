@@ -6,7 +6,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.Method;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.*;
 
 public class GtppAtomLoader implements Runnable{
     //region reflect a bit

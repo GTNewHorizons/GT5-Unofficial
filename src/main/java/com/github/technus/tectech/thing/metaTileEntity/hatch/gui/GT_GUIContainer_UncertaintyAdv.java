@@ -1,10 +1,10 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch.gui;
 
+import com.github.technus.tectech.font.TecTechFontRender;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
-import static com.github.technus.tectech.TecTech.proxy;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -17,11 +17,11 @@ public class GT_GUIContainer_UncertaintyAdv extends GT_GUIContainerMetaTile_Mach
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        proxy.renderUnicodeString("Schr\u00F6dinger X", 46, 7, 167, 0xffffff);
+        TecTechFontRender.INSTANCE.drawSplitString("Schr\u00F6dinger X", 46, 7, 167, 0xffffff);
         if (mContainer != null && ((GT_Container_Uncertainty) mContainer).status == 0) {
-            proxy.renderUnicodeString("Status: OK", 46, 16, 167, 0xffffff);
+            TecTechFontRender.INSTANCE.drawSplitString("Status: OK", 46, 16, 167, 0xffffff);
         } else {
-            proxy.renderUnicodeString("Status: NG", 46, 16, 167, 0xffffff);
+            TecTechFontRender.INSTANCE.drawSplitString("Status: NG", 46, 16, 167, 0xffffff);
         }
     }
 
