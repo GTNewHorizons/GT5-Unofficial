@@ -109,6 +109,25 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
+    public String getShortSymbol() {
+        StringBuilder symbol = new StringBuilder(8);
+        for (cElementalDefinitionStack aspect : aspectStacks.values()) {
+            if (aspect.definition instanceof ePrimalAspectDefinition) {
+                for (int i = 0; i < aspect.amount; i++) {
+                    symbol.append(aspect.definition.getShortSymbol());
+                }
+            } else {
+                symbol.append('(');
+                for (int i = 0; i < aspect.amount; i++) {
+                    symbol.append(aspect.definition.getShortSymbol());
+                }
+                symbol.append(')');
+            }
+        }
+        return symbol.toString();
+    }
+
+    @Override
     public NBTTagCompound toNBT() {
         return getNbtTagCompound(nbtType, aspectStacks);
     }
@@ -264,6 +283,13 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     @Override
     public int hashCode() {
         return hash;
+    }
+
+    @Override
+    public void addScanShortSymbols(ArrayList<String> lines, int capabilities, long energyLevel) {
+        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS, capabilities)) {
+            lines.add(getShortSymbol());
+        }
     }
 
     @Override

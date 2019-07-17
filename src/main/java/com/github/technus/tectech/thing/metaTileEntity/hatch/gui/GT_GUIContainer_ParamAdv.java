@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch.gui;
 
+import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.Util;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -8,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.Locale;
 
-import static com.github.technus.tectech.TecTech.proxy;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_ParamAdv extends GT_GUIContainerMetaTile_Machine {
@@ -19,20 +19,20 @@ public class GT_GUIContainer_ParamAdv extends GT_GUIContainerMetaTile_Machine {
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         if (mContainer != null) {
-            proxy.renderUnicodeString("Parameters X: " + ((GT_Container_ParamAdv) mContainer).param, 46, 7, 167, 0xffffff);
+            TecTechFontRender.INSTANCE.drawSplitString("Parameters X: " + ((GT_Container_ParamAdv) mContainer).param, 46, 7, 167, 0xffffff);
             Locale locale = Locale.getDefault();
-            proxy.renderUnicodeString("\u24EA\u2b07" + String.format(locale, "%+.5E", (((GT_Container_ParamAdv) mContainer).input0f)), 46, 16, 167, 0x22ddff);
-            proxy.renderUnicodeString("\u2460\u2b07" + String.format(locale, "%+.5E", (((GT_Container_ParamAdv) mContainer).input1f)), 46, 24, 167, 0x00ffff);
-            proxy.renderUnicodeString("\u24EA\u2b06" + String.format(locale, "%+.5E", (((GT_Container_ParamAdv) mContainer).value0f)), 46, 33, 167, 0x00bbff);
-            proxy.renderUnicodeString("\u2460\u2b06" + String.format(locale, "%+.5E", (((GT_Container_ParamAdv) mContainer).value1f)), 46, 41, 167, 0x0077ff);
+            TecTechFontRender.INSTANCE.drawSplitString("\u24EA\u2b07" + String.format(locale, "%+.5E", (((GT_Container_ParamAdv) mContainer).input0f)), 46, 16, 167, 0x22ddff);
+            TecTechFontRender.INSTANCE.drawSplitString("\u2460\u2b07" + String.format(locale, "%+.5E", (((GT_Container_ParamAdv) mContainer).input1f)), 46, 24, 167, 0x00ffff);
+            TecTechFontRender.INSTANCE.drawSplitString("\u24EA\u2b06" + String.format(locale, "%+.5E", (((GT_Container_ParamAdv) mContainer).value0f)), 46, 33, 167, 0x00bbff);
+            TecTechFontRender.INSTANCE.drawSplitString("\u2460\u2b06" + String.format(locale, "%+.5E", (((GT_Container_ParamAdv) mContainer).value1f)), 46, 41, 167, 0x0077ff);
             GL11.glPushMatrix();
             GL11.glScalef(.5f,.5f,.5f);
-            proxy.renderUnicodeString("\u24EA\u2b06" + Util.longBitsToShortString(Double.doubleToLongBits(((GT_Container_ParamAdv) mContainer).value0f)), 92, 100, 334, 0x00bbff);
-            proxy.renderUnicodeString("\u2460\u2b06" + Util.longBitsToShortString(Double.doubleToLongBits(((GT_Container_ParamAdv) mContainer).value1f)), 92, 116, 334, 0x0077ff);
+            TecTechFontRender.INSTANCE.drawSplitString("\u24EA\u2b06" + Util.longBitsToShortString(Double.doubleToLongBits(((GT_Container_ParamAdv) mContainer).value0f)), 92, 100, 334, 0x00bbff);
+            TecTechFontRender.INSTANCE.drawSplitString("\u2460\u2b06" + Util.longBitsToShortString(Double.doubleToLongBits(((GT_Container_ParamAdv) mContainer).value1f)), 92, 116, 334, 0x0077ff);
             GL11.glPopMatrix();
-            proxy.renderUnicodeString("Pointer " + Integer.toHexString(((GT_Container_ParamAdv) mContainer).pointer | 0x10000).substring(1), 46, 66, 167, 0x0033ff);
+            TecTechFontRender.INSTANCE.drawSplitString("Pointer " + Integer.toHexString(((GT_Container_ParamAdv) mContainer).pointer | 0x10000).substring(1), 46, 66, 167, 0x0033ff);
         } else {
-            proxy.renderUnicodeString("Parameters X", 46, 7, 167, 0xffffff);
+            TecTechFontRender.INSTANCE.drawSplitString("Parameters X", 46, 7, 167, 0xffffff);
         }
     }
 

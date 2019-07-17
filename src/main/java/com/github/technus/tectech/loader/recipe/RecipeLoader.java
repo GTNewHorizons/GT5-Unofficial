@@ -2,8 +2,8 @@ package com.github.technus.tectech.loader.recipe;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.compatibility.dreamcraft.DreamCraftRecipeLoader;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.hadron.dHadronDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.item.ConstructableTriggerItem;

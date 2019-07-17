@@ -1,4 +1,4 @@
-package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom;
+package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
@@ -16,7 +16,6 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.transformations
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aItemDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.hadron.dHadronDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eLeptonDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eNeutrinoDefinition;
@@ -344,12 +343,12 @@ public final class dAtomDefinition extends cElementalDefinition {
     @Override
     public String getName() {
         int element = Math.abs(this.element);
-        boolean negative = element < 0;
+        boolean negative = this.element < 0;
         try {
-            if (type != 1) {
+            if (Math.abs(type) != 1) {
                 return (negative ? "~? " : "? ") + nomenclature.Name[element];
             }
-            return negative ? '~' + nomenclature.Name[-element] : nomenclature.Name[element];
+            return negative ? '~' + nomenclature.Name[element] : nomenclature.Name[element];
         } catch (Exception e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
@@ -361,7 +360,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     @Override
     public String getSymbol() {
         int element = Math.abs(this.element);
-        boolean negative = element < 0;
+        boolean negative = this.element < 0;
         try {
             return (negative ? "~" : "") + nomenclature.Symbol[element] + " N:" + neutralCount + " I:" + (neutralCount+element) + " C:" + getCharge();
         } catch (Exception e) {
@@ -376,6 +375,28 @@ public final class dAtomDefinition extends cElementalDefinition {
                     e.printStackTrace();
                 }
                 return (negative ? "~" : "") + "? N:" + neutralCount + " I:" + (neutralCount+element) + " C:" + getCharge();
+            }
+        }
+    }
+
+    @Override
+    public String getShortSymbol() {
+        int element = Math.abs(this.element);
+        boolean negative = this.element < 0;
+        try {
+            return (negative ? "~" : "") + nomenclature.Symbol[element];
+        } catch (Exception e) {
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
+            try {
+                int s100 = element / 100, s1 = element / 10 % 10, s10 = element % 10;
+                return (negative ? "~" : "") + nomenclature.SymbolIUPAC[10 + s100] + nomenclature.SymbolIUPAC[s10] + nomenclature.SymbolIUPAC[s1];
+            } catch (Exception E) {
+                if (DEBUG_MODE) {
+                    e.printStackTrace();
+                }
+                return (negative ? "~" : "") + "?";
             }
         }
     }
@@ -1624,6 +1645,13 @@ public final class dAtomDefinition extends cElementalDefinition {
     @Override
     public int hashCode() {
         return hash;
+    }
+
+    @Override
+    public void addScanShortSymbols(ArrayList<String> lines, int capabilities, long energyLevel) {
+        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
+            lines.add(getShortSymbol());
+        }
     }
 
     @Override

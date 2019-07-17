@@ -24,6 +24,10 @@ public abstract class iElementalDefinition implements Comparable<iElementalDefin
 
     public abstract String getSymbol();
 
+    public abstract String getShortSymbol();
+
+    public abstract void addScanShortSymbols(ArrayList<String> lines, int capabilities, long energyLevel);
+
     public abstract void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel);
 
     public abstract byte getType();
@@ -75,7 +79,7 @@ public abstract class iElementalDefinition implements Comparable<iElementalDefin
     @Override
     public abstract iElementalDefinition clone();
 
-    final /*default*/ int compareClassID(iElementalDefinition obj) {
+    final int compareClassID(iElementalDefinition obj) {
         return (int) getClassType() - obj.getClassType();
     }
 }

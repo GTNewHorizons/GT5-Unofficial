@@ -316,6 +316,15 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return var.toArray(new cElementalInstanceStack[0])[i];
     }
 
+    public String[] getShortSymbolsInfo() {
+        String[] info = new String[map.size()];
+        int i = 0;
+        for (cElementalInstanceStack instance : map.values()) {
+            info[i++] = instance.definition.getShortSymbol();
+        }
+        return info;
+    }
+
     public String[] getElementalInfo() {
         String[] info = new String[map.size() * 4];
         int i = 0;
@@ -327,6 +336,14 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
             i += 4;
         }
         return info;
+    }
+
+    public ArrayList<String> getScanShortSymbols(int[] capabilities) {
+        ArrayList<String> list=new ArrayList<>(16);
+        for(Map.Entry<iElementalDefinition,cElementalInstanceStack> e:map.entrySet()){
+            e.getValue().addScanShortSymbols(list,capabilities);
+        }
+        return list;
     }
 
     public ArrayList<String> getScanInfo(int[] capabilities) {
@@ -412,12 +429,32 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     //NBT
+    public NBTTagCompound getShortSymbolsNBT() {
+        NBTTagCompound nbt = new NBTTagCompound();
+        String[] info = getShortSymbolsInfo();
+        nbt.setInteger("i", info.length);
+        for (int i = 0; i < info.length; i++) {
+            nbt.setString(Integer.toString(i), info[i]);
+        }
+        return nbt;
+    }
+
     public NBTTagCompound getInfoNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
         String[] info = getElementalInfo();
         nbt.setInteger("i", info.length);
         for (int i = 0; i < info.length; i++) {
             nbt.setString(Integer.toString(i), info[i]);
+        }
+        return nbt;
+    }
+
+    public NBTTagCompound getScanShortSymbolsNBT(int[] capabilities) {
+        NBTTagCompound nbt = new NBTTagCompound();
+        ArrayList<String> info = getScanShortSymbols(capabilities);
+        nbt.setInteger("i", info.size());
+        for (int i = 0; i < info.size(); i++) {
+            nbt.setString(Integer.toString(i), info.get(i));
         }
         return nbt;
     }

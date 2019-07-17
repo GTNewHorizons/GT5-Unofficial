@@ -1,4 +1,4 @@
-package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.hadron;
+package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition.getNbtTagCompound;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition.transformation;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.transformation;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static gregtech.api.enums.OrePrefixes.dust;
@@ -166,6 +166,17 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         for (cElementalDefinitionStack quark : quarkStacks.values()) {
             for (int i = 0; i < quark.amount; i++) {
                 symbol.append(quark.definition.getSymbol());
+            }
+        }
+        return symbol.toString();
+    }
+
+    @Override
+    public String getShortSymbol() {
+        StringBuilder symbol = new StringBuilder(8);
+        for (cElementalDefinitionStack quark : quarkStacks.values()) {
+            for (int i = 0; i < quark.amount; i++) {
+                symbol.append(quark.definition.getShortSymbol());
             }
         }
         return symbol.toString();
@@ -435,6 +446,13 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     @Override
     public int hashCode() {
         return hash;
+    }
+
+    @Override
+    public void addScanShortSymbols(ArrayList<String> lines, int capabilities, long energyLevel) {
+        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
+            lines.add(getShortSymbol());
+        }
     }
 
     @Override
