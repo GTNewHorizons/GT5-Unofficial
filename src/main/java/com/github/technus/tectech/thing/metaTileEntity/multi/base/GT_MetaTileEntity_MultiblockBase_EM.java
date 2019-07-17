@@ -122,6 +122,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //functionality toggles - changed by buttons in gui also
     protected boolean ePowerPass = false, eSafeVoid = false;
 
+    public boolean isPowerPass() {
+        return ePowerPass;
+    }
+
+    public boolean isSafeVoid() {
+        return eSafeVoid;
+    }
+
     //max amperes machine can take in after computing it to the lowest tier (exchange packets to min tier count)
     protected long eMaxAmpereFlow = 0,eMaxAmpereGen=0;
 
