@@ -20,6 +20,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
@@ -42,8 +43,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    private int tier = 0;
-    private int mTier = 1;//Tier offset by +1
+    private int mTier = 0;
     private int orientation = 0;
     private int maxTier = 6;
     private int minTier = 1;
@@ -81,9 +81,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     private long getEnergyEfficiency(long voltage, int mTier){
         if (overDriveToggle()){
-            return (long)(voltage * (2-energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * (mTier - 1))*(2- overdriveEfficiency)); //Sum overdrive efficiency formula
+            return (long)(voltage * (2-energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier)*(2- overdriveEfficiency)); //Sum overdrive efficiency formula
         } else {
-            return (long)(voltage * energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * (mTier - 1)); //Efficiency Formula
+            return (long)(voltage * energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier); //Efficiency Formula
         }
     }
 
@@ -272,6 +272,18 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setLong("energyCapacity", energyCapacity);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        energyCapacity = aNBT.getLong("energyCapacity");
+    }
+
+    @Override
     protected void parametersInstantiation_EM() {
         Parameters.Group hatch_0=parametrization.getGroup(0, true);
         Parameters.Group hatch_1=parametrization.getGroup(1, true);
@@ -437,32 +449,30 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             yOffset = 16;
             zOffset = 0;
             orientation = 0;
-            tier = iGregTechTileEntity.getMetaIDOffset(coilX0, coilY0, coilZ0);
+            mTier = iGregTechTileEntity.getMetaIDOffset(coilX0, coilY0, coilZ0);
         } else if (coil1 == sBlockCasingsBA0) {
             xOffset = 3;
             yOffset = 0;
             zOffset = 0;
             orientation = 1;
-            tier = iGregTechTileEntity.getMetaIDOffset(coilX0, -coilY0, coilZ0);
+            mTier = iGregTechTileEntity.getMetaIDOffset(coilX0, -coilY0, coilZ0);
         } else if (coil2 == sBlockCasingsBA0) {
             xOffset = 16;
             yOffset = 3;
             zOffset = 0;
             orientation = 2;
-            tier = iGregTechTileEntity.getMetaIDOffset(coilX1, coilY1, coilZ1);
+            mTier = iGregTechTileEntity.getMetaIDOffset(coilX1, coilY1, coilZ1);
         } else if (coil3 == sBlockCasingsBA0) {
             xOffset = 0;
             yOffset = 3;
             zOffset = 0;
             orientation = 3;
-            tier = iGregTechTileEntity.getMetaIDOffset(coilX2, coilY2, coilZ2);
+            mTier = iGregTechTileEntity.getMetaIDOffset(coilX2, coilY2, coilZ2);
         } else {
             return false;
         }
 
-        mTier = tier + 1;
-
-        if (structureCheck_EM(shapes[orientation], blockType, blockMetas[tier], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, xOffset, yOffset, zOffset) && eCaps.size() > 0) {
+        if (structureCheck_EM(shapes[orientation], blockType, blockMetas[mTier], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, xOffset, yOffset, zOffset) && eCaps.size() > 0) {
             for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
                 if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                     cap.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
@@ -521,7 +531,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 vTier = (int) cap.getCapacitors()[0];
             }
         }
-        if(vTier < 0){return false;}
+
+        if(vTier < 0){
+            return false;
+        } else if (vTier > mTier && getEUVar() > 0){
+            explodeMultiblock();
+        }
+
         outputVoltageMax = V[vTier+1];
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
             if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {

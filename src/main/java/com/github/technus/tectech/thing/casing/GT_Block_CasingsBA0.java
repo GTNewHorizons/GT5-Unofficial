@@ -84,7 +84,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
         tM6[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_BASE_TOP_BOTTOM");
         tM6[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_BASE_SIDES");
         tM7 = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_TOROID");
-        tM8[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_TOP_BOTTOM");
+        tM8[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_SECONDARY_TOP_BOTTOM");
         tM8[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_SECONDARY_SIDES");
     }
 
