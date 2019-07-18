@@ -34,6 +34,15 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
         return map.get(def);
     }
 
+    public String[] getShortSymbolsInfo() {
+        String[] info = new String[map.size()];
+        int i = 0;
+        for (cElementalDefinitionStack instance : map.values()) {
+            info[i++] = instance.definition.getShortSymbol();
+        }
+        return info;
+    }
+
     public final String[] getElementalInfo() {
         String[] info = new String[map.size() * 3];
         int i = 0;
@@ -86,6 +95,16 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
     }
 
     //NBT
+    public final NBTTagCompound getShortSymbolsNBT() {
+        NBTTagCompound nbt = new NBTTagCompound();
+        String[] info = getShortSymbolsInfo();
+        nbt.setInteger("i", info.length);
+        for (int i = 0; i < info.length; i++) {
+            nbt.setString(Integer.toString(i), info[i]);
+        }
+        return nbt;
+    }
+
     public final NBTTagCompound getInfoNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
         String[] info = getElementalInfo();

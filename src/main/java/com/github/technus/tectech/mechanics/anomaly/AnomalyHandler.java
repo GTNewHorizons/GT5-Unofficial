@@ -8,7 +8,7 @@ import com.github.technus.tectech.mechanics.data.ChunkDataHandler;
 import com.github.technus.tectech.mechanics.data.ChunkDataMessage;
 import com.github.technus.tectech.mechanics.data.IChunkMetaDataHandler;
 import com.github.technus.tectech.mechanics.data.PlayerDataMessage;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

@@ -1,10 +1,13 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -20,7 +23,7 @@ import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 /**
  * Created by Tec on 15.03.2017.
  */
-public final class ElementalDefinitionContainer_EM extends Item {
+public final class ElementalDefinitionContainer_EM extends Item implements IElementalItem {
     public static ElementalDefinitionContainer_EM INSTANCE;
 
     private ElementalDefinitionContainer_EM() {
@@ -49,6 +52,7 @@ public final class ElementalDefinitionContainer_EM extends Item {
             }
             tNBT.setTag("info", definitions.getInfoNBT());
             tNBT.setTag("content", definitions.toNBT());
+            tNBT.setTag("symbols",definitions.getShortSymbolsNBT());
             return oldMap;
         }
         return null;
@@ -91,6 +95,7 @@ public final class ElementalDefinitionContainer_EM extends Item {
             }
             tNBT.removeTag("info");
             tNBT.removeTag("content");
+            tNBT.removeTag("symbols");
             return oldMap;
         }
         return null;
@@ -122,5 +127,25 @@ public final class ElementalDefinitionContainer_EM extends Item {
         ItemStack that = new ItemStack(this, 1);
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
+    }
+
+    @Override
+    public String getSymbol(ItemStack aStack, int index) {
+        try {
+            NBTTagCompound tNBT = aStack.getTagCompound();
+            if (tNBT != null && tNBT.hasKey("symbols")) {
+                String[] strings=Util.infoFromNBT(tNBT.getCompoundTag("symbols"));
+                return strings[index%strings.length];
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            return "#!";
+        }
+    }
+
+    @Override
+    public FontRenderer getFontRenderer(ItemStack stack) {
+        return (FontRenderer) (Object) TecTechFontRender.INSTANCE;
     }
 }

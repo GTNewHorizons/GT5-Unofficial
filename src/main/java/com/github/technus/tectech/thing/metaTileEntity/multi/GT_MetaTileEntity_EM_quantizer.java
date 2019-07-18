@@ -34,8 +34,8 @@ import static com.github.technus.tectech.Util.isInputEqual;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition.refMass;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition.refUnstableMass;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refMass;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 

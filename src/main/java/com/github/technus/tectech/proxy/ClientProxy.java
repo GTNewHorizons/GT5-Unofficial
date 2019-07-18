@@ -9,6 +9,9 @@ import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffRender;
+import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
+import com.github.technus.tectech.thing.item.ElementalDefinitionContainer_EM;
+import com.github.technus.tectech.thing.item.renderElemental.RenderElementalName;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
@@ -16,15 +19,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
 
 public class ClientProxy extends CommonProxy {
     @Override
@@ -34,6 +36,9 @@ public class ClientProxy extends CommonProxy {
 
         QuantumStuffBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(QuantumStuffBlock.renderID, new QuantumStuffRender());
+
+        MinecraftForgeClient.registerItemRenderer(ElementalDefinitionContainer_EM.INSTANCE, RenderElementalName.INSTANCE);
+        MinecraftForgeClient.registerItemRenderer(DebugElementalInstanceContainer_EM.INSTANCE, RenderElementalName.INSTANCE);
 
         if(Loader.isModLoaded("openmodularturrets")) {
             new TT_turret_loader().run();
@@ -117,34 +122,6 @@ public class ClientProxy extends CommonProxy {
     @Override
     public World getClientWorld() {
         return FMLClientHandler.instance().getClient().theWorld;
-    }
-
-    @Override
-    public void renderUnicodeString(String str, int x, int y, int maxWidth, int color) {
-        Minecraft mc = Minecraft.getMinecraft();
-        FontRenderer fontRenderer = mc.fontRenderer;
-
-        boolean origFont = fontRenderer.getUnicodeFlag();
-
-        if (mc.gameSettings.guiScale == 3) {
-            fontRenderer.setUnicodeFlag(true);
-            float dist = 0.08F;
-            y--;
-            for (int cycle = 0; cycle < 2; cycle++) {
-                GL11.glTranslatef(-dist, 0F, 0F);
-                fontRenderer.drawSplitString(str, x, y, maxWidth, color);
-                GL11.glTranslatef(dist, -dist, 0F);
-                fontRenderer.drawSplitString(str, x, y, maxWidth, color);
-                GL11.glTranslatef(dist, 0F, 0F);
-                fontRenderer.drawSplitString(str, x, y, maxWidth, color);
-                GL11.glTranslatef(-dist, dist, 0F);
-
-                dist = -dist;
-            }
-            fontRenderer.setUnicodeFlag(origFont);
-        } else {
-            fontRenderer.drawSplitString(str, x, y, maxWidth, color);
-        }
     }
 
     @Override

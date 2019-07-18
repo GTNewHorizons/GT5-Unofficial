@@ -3,7 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;

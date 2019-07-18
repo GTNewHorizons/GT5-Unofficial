@@ -8,8 +8,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInsta
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalMutableDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalPrimitive;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.hadron.dHadronDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;

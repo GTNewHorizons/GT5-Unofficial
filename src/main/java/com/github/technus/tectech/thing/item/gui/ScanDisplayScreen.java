@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.item.gui;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -57,33 +58,33 @@ public class ScanDisplayScreen extends GuiScreen {
         for(int i=firstLine-1, j=8;i>=0 && j!=0;i--,j/=2){
             int equalPos=lines[i].indexOf('=');
             if(equalPos>=0){
-                TecTech.proxy.renderUnicodeString(lines[i].substring(0,equalPos), textBaseX, textBaseY - 8 + j, 200, itick);
-                TecTech.proxy.renderUnicodeString(lines[i].substring(equalPos), textBaseXX, textBaseY - 8 + j, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(lines[i].substring(0,equalPos), textBaseX, textBaseY - 8 + j, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(lines[i].substring(equalPos), textBaseXX, textBaseY - 8 + j, 200, itick);
             }else {
-                TecTech.proxy.renderUnicodeString(lines[i], textBaseX, textBaseY - 8 + j, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(lines[i], textBaseX, textBaseY - 8 + j, 200, itick);
             }
         }
         for(int i = firstLine, j = 0; i<lines.length && j< renderedLines; i++,j++){
             textBaseY += 9;
             int equalPos=lines[i].indexOf('=');
             if(equalPos>=0){
-                TecTech.proxy.renderUnicodeString(lines[i].substring(0,equalPos), textBaseX, textBaseY, 200, itick);
-                TecTech.proxy.renderUnicodeString(lines[i].substring(equalPos), textBaseXX, textBaseY, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(lines[i].substring(0,equalPos), textBaseX, textBaseY, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(lines[i].substring(equalPos), textBaseXX, textBaseY, 200, itick);
             }else {
-                TecTech.proxy.renderUnicodeString(lines[i], textBaseX, textBaseY, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(lines[i], textBaseX, textBaseY, 200, itick);
             }
         }
         for(int i = firstLine+ renderedLines, j = 8; i<lines.length && j!=0; i++,j/=2){
             int equalPos=lines[i].indexOf('=');
             if(equalPos>=0){
-                TecTech.proxy.renderUnicodeString(lines[i].substring(0,equalPos), textBaseX, textBaseY + 17 - j, 200, itick);
-                TecTech.proxy.renderUnicodeString(lines[i].substring(equalPos), textBaseXX, textBaseY + 17 - j, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(lines[i].substring(0,equalPos), textBaseX, textBaseY + 17 - j, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(lines[i].substring(equalPos), textBaseXX, textBaseY + 17 - j, 200, itick);
             }else {
-                TecTech.proxy.renderUnicodeString(lines[i], textBaseX, textBaseY + 17 - j, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(lines[i], textBaseX, textBaseY + 17 - j, 200, itick);
             }
         }
-        TecTech.proxy.renderUnicodeString(Integer.toString(firstLine), textBaseX, baseY+146, 200, itick);
-        TecTech.proxy.renderUnicodeString(Integer.toString(lines.length), textBaseX, baseY+157, 200, itick);
+        TecTechFontRender.INSTANCE.drawSplitString(Integer.toString(firstLine), textBaseX, baseY+146, 200, itick);
+        TecTechFontRender.INSTANCE.drawSplitString(Integer.toString(lines.length), textBaseX, baseY+157, 200, itick);
     }
 
     @Override

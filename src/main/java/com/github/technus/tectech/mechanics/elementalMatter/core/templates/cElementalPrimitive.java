@@ -18,6 +18,7 @@ import java.util.Map;
 import static com.github.technus.tectech.Util.areBitsSet;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.null__;
+import static com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM.stacksRegistered;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 
 /**
@@ -67,6 +68,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         if (bindsBO.put(ID, this) != null) {
             Minecraft.getMinecraft().crashed(new CrashReport("Primitive definition", new tElementalException("Duplicate ID")));
         }
+        stacksRegistered.add(this);
     }
 
     //
@@ -85,6 +87,11 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
 
     @Override
     public String getSymbol() {
+        return symbol;
+    }
+
+    @Override
+    public String getShortSymbol() {
         return symbol;
     }
 
@@ -208,6 +215,13 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
 
     public static byte getClassTypeStatic(){
         return -128;
+    }
+
+    @Override
+    public void addScanShortSymbols(ArrayList<String> lines, int capabilities, long energyLevel) {
+        if(areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
+            lines.add(getShortSymbol());
+        }
     }
 
     @Override

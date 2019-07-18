@@ -420,6 +420,22 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         return this;
     }
 
+    public void addScanShortSymbols(ArrayList<String> lines, int[] detailsOnDepthLevels){
+        int capabilities=detailsOnDepthLevels[0];
+        definition.addScanShortSymbols(lines,capabilities,energy);
+        //scanShortSymbolsContents(lines,definition.getSubParticles(),1,detailsOnDepthLevels);
+    }
+
+    //private void scanShortSymbolsContents(ArrayList<String> lines, cElementalDefinitionStackMap definitions, int depth, int[] detailsOnDepthLevels){
+    //    if(definitions!=null && depth<detailsOnDepthLevels.length){
+    //        int deeper=depth+1;
+    //        for(cElementalDefinitionStack definitionStack:definitions.values()) {
+    //            definition.addScanShortSymbols(lines,detailsOnDepthLevels[depth],energy);
+    //            scanSymbolsContents(lines,definitionStack.definition.getSubParticles(),deeper,detailsOnDepthLevels);
+    //        }
+    //    }
+    //}
+
     public void addScanResults(ArrayList<String> lines, int[] detailsOnDepthLevels){
         int capabilities=detailsOnDepthLevels[0];
         if(Util.areBitsSet(SCAN_GET_DEPTH_LEVEL,capabilities)) {
