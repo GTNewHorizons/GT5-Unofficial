@@ -2,7 +2,6 @@ package com.github.technus.tectech.mechanics.data;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.loader.NetworkDispatcher;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -10,7 +9,6 @@ import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
 import eu.usrv.yamcore.network.server.AbstractServerMessageHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.event.world.ChunkEvent;
@@ -92,10 +90,7 @@ public class ChunkDataMessage implements IMessage {
     public static class ServerHandler extends AbstractServerMessageHandler<ChunkDataQuery> {
         @Override
         public IMessage handleServerMessage(EntityPlayer pPlayer, ChunkDataQuery pMessage, MessageContext pCtx) {
-            if(pPlayer instanceof EntityPlayerMP){
-                NetworkDispatcher.INSTANCE.sendTo(new ChunkDataData(pMessage),(EntityPlayerMP) pPlayer);
-            }
-            return null;
+            return new ChunkDataData(pMessage);
         }
     }
 }
