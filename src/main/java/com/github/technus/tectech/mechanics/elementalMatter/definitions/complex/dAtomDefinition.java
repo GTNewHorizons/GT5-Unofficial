@@ -417,35 +417,35 @@ public final class dAtomDefinition extends cElementalDefinition {
             switch (decayMode) {
                 case -2:
                     if(TecTech.RANDOM.nextBoolean() && ElectronCapture(decaysList)) {
-                        return decaysList.toArray(new cElementalDecay[0]);
+                        return decaysList.toArray(cElementalDecay.noProduct);
                     } else if(PbetaDecay(decaysList)) {
-                        return decaysList.toArray(new cElementalDecay[0]);
+                        return decaysList.toArray(cElementalDecay.noProduct);
                     }
                     break;
                 case -1:
                     if(Emmision(decaysList, dHadronDefinition.hadron_p1)) {
-                        return decaysList.toArray(new cElementalDecay[0]);
+                        return decaysList.toArray(cElementalDecay.noProduct);
                     }
                     break;
                 case 0:
                     if(alphaDecay(decaysList)) {
-                        return decaysList.toArray(new cElementalDecay[0]);
+                        return decaysList.toArray(cElementalDecay.noProduct);
                     }
                     break;
                 case 1:
                     if(Emmision(decaysList, dHadronDefinition.hadron_n1)) {
-                        return decaysList.toArray(new cElementalDecay[0]);
+                        return decaysList.toArray(cElementalDecay.noProduct);
                     }
                     break;
                 case 2:
                     if(MbetaDecay(decaysList)) {
-                        return decaysList.toArray(new cElementalDecay[0]);
+                        return decaysList.toArray(cElementalDecay.noProduct);
                     }
                     break;
                 default:
                     if(decayMode>8){
                         if(iaeaDecay(decaysList,0)) {
-                            return decaysList.toArray(new cElementalDecay[0]);
+                            return decaysList.toArray(cElementalDecay.noProduct);
                         }
                         return getDecayArray(decaysList,decayMode- BYTE_OFFSET,false);
                     }
@@ -1188,7 +1188,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         if (iaeaDefinitionExistsAndHasEnergyLevels) {
             ArrayList<cElementalDecay> decays=new ArrayList<>(4);
             if(iaeaDecay(decays,energyLevel)){
-                return decays.toArray(new cElementalDecay[0]);
+                return decays.toArray(cElementalDecay.noProduct);
             }
         }
         if(energyLevel< Math.abs(charge)/3+neutralCount) {

@@ -18,10 +18,9 @@ public class ModGuiHandler implements IGuiHandler {
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        switch (ID){
-            case SCAN_DISPLAY_SCREEN_ID:
-                return new ScanDisplayScreen(player);
-            default: return null;
+        if (ID == SCAN_DISPLAY_SCREEN_ID) {
+            return new ScanDisplayScreen(player);
         }
+        return null;
     }
 }

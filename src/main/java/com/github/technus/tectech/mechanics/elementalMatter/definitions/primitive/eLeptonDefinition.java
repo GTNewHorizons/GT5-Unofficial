@@ -9,20 +9,20 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElem
  */
 public final class eLeptonDefinition extends cElementalPrimitive {
     public static final eLeptonDefinition
-            lepton_e = new eLeptonDefinition("Electron", "\u03b2-", 1, 0.511e6F, -3, -1, 15),
-            lepton_m = new eLeptonDefinition("Muon", "\u03bc-", 2, 105.658e6F, -3, -1, 17),
-            lepton_t = new eLeptonDefinition("Tauon", "\u03c4-", 3, 1776.83e6F, -3, -1, 19),
-            lepton_e_ = new eLeptonDefinition("Positron", "\u03b2+", -1, 0.511e6F, 3, -1, 16),
-            lepton_m_ = new eLeptonDefinition("Antimuon", "\u03bc+", -2, 105.658e6F, 3, -1, 18),
-            lepton_t_ = new eLeptonDefinition("Antitauon", "\u03c4+", -3, 1776.83e6F, 3, -1, 20);
+            lepton_e = new eLeptonDefinition("Electron", "\u03b2-", 1, 0.511e6F, -3, 15),
+            lepton_m = new eLeptonDefinition("Muon", "\u03bc-", 2, 105.658e6F, -3, 17),
+            lepton_t = new eLeptonDefinition("Tauon", "\u03c4-", 3, 1776.83e6F, -3, 19),
+            lepton_e_ = new eLeptonDefinition("Positron", "\u03b2+", -1, 0.511e6F, 3, 16),
+            lepton_m_ = new eLeptonDefinition("Antimuon", "\u03bc+", -2, 105.658e6F, 3, 18),
+            lepton_t_ = new eLeptonDefinition("Antitauon", "\u03c4+", -3, 1776.83e6F, 3, 20);
 
     public static final cElementalDefinitionStack lepton_e1 = new cElementalDefinitionStack(lepton_e, 1);
     public static final cElementalDefinitionStack lepton_e2 = new cElementalDefinitionStack(lepton_e, 2);
     public static final cElementalDefinitionStack lepton_e_1 = new cElementalDefinitionStack(lepton_e_, 1);
     public static final cElementalDefinitionStack lepton_e_2 = new cElementalDefinitionStack(lepton_e_, 2);
 
-    private eLeptonDefinition(String name, String symbol, int type, float mass, int charge, int color, int ID) {
-        super(name, symbol, type, mass, charge, color, ID);
+    private eLeptonDefinition(String name, String symbol, int type, float mass, int charge, int ID) {
+        super(name, symbol, type, mass, charge, -1, ID);
         //this.itemThing=null;
         //this.fluidThing=null;
     }

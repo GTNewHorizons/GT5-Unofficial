@@ -49,19 +49,21 @@ public class GiveEM implements ICommand {
                 String energy=list.remove(0);
 
                 cElementalDefinitionStack def= getDefinitionStack(list);
-                cElementalInstanceStack instanceStack=new cElementalInstanceStack(def,1,0,Long.parseLong(energy));
+                if(def!=null) {
+                    cElementalInstanceStack instanceStack = new cElementalInstanceStack(def, 1, 0, Long.parseLong(energy));
 
-                sender.addChatMessage(new ChatComponentText(instanceStack.definition.getSymbol()+" - "+instanceStack.definition.getName()));
+                    sender.addChatMessage(new ChatComponentText(instanceStack.definition.getSymbol() + " - " + instanceStack.definition.getName()));
 
-                cElementalInstanceStackMap instanceMap=new cElementalInstanceStackMap(instanceStack);
+                    cElementalInstanceStackMap instanceMap = new cElementalInstanceStackMap(instanceStack);
 
-                ItemStack itemStack=new ItemStack(DebugElementalInstanceContainer_EM.INSTANCE);
-                NBTTagCompound contents=new NBTTagCompound();
-                contents.setTag("info", instanceMap.getInfoNBT());
-                contents.setTag("content", instanceMap.toNBT());
-                itemStack.setTagCompound(contents);
+                    ItemStack itemStack = new ItemStack(DebugElementalInstanceContainer_EM.INSTANCE);
+                    NBTTagCompound contents = new NBTTagCompound();
+                    contents.setTag("info", instanceMap.getInfoNBT());
+                    contents.setTag("content", instanceMap.toNBT());
+                    itemStack.setTagCompound(contents);
 
-                ((EntityPlayerMP) sender).inventory.addItemStackToInventory(itemStack);
+                    ((EntityPlayerMP) sender).inventory.addItemStackToInventory(itemStack);
+                }
             }
         }
     }

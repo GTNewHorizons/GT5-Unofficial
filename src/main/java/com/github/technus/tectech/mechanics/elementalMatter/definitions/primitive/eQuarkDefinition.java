@@ -8,21 +8,21 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElem
  */
 public final class eQuarkDefinition extends cElementalPrimitive {
     public static final eQuarkDefinition
-            quark_u = new eQuarkDefinition("Up", "u", 1, 2.3e6F, 2, 0, 3),
-            quark_c = new eQuarkDefinition("Charm", "c", 2, 1.29e9F, 2, 0, 9),
-            quark_t = new eQuarkDefinition("Top", "t", 3, 172.44e9F, 2, 0, 13),
-            quark_d = new eQuarkDefinition("Down", "d", 1, 4.8e6F, -1, 0, 5),
-            quark_s = new eQuarkDefinition("Strange", "s", 2, 95e6F, -1, 0, 7),
-            quark_b = new eQuarkDefinition("Bottom", "b", 3, 4.65e9F, -1, 0, 11),
-            quark_u_ = new eQuarkDefinition("AntiUp", "~u", -1, 2.3e6F, -2, 0, 4),
-            quark_c_ = new eQuarkDefinition("AntiCharm", "~c", -2, 1.29e9F, -2, 0, 10),
-            quark_t_ = new eQuarkDefinition("AntiTop", "~t", -3, 172.44e9F, -2, 0, 14),
-            quark_d_ = new eQuarkDefinition("AntiDown", "~d", -1, 4.8e6F, 1, 0, 6),
-            quark_s_ = new eQuarkDefinition("AntiStrange", "~s", -2, 95e6F, 1, 0, 8),
-            quark_b_ = new eQuarkDefinition("AntiBottom", "~b", -3, 4.65e9F, 1, 0, 12);
+            quark_u = new eQuarkDefinition("Up", "u", 1, 2.3e6F, 2, 3),
+            quark_c = new eQuarkDefinition("Charm", "c", 2, 1.29e9F, 2, 9),
+            quark_t = new eQuarkDefinition("Top", "t", 3, 172.44e9F, 2, 13),
+            quark_d = new eQuarkDefinition("Down", "d", 1, 4.8e6F, -1, 5),
+            quark_s = new eQuarkDefinition("Strange", "s", 2, 95e6F, -1, 7),
+            quark_b = new eQuarkDefinition("Bottom", "b", 3, 4.65e9F, -1, 11),
+            quark_u_ = new eQuarkDefinition("AntiUp", "~u", -1, 2.3e6F, -2, 4),
+            quark_c_ = new eQuarkDefinition("AntiCharm", "~c", -2, 1.29e9F, -2, 10),
+            quark_t_ = new eQuarkDefinition("AntiTop", "~t", -3, 172.44e9F, -2, 14),
+            quark_d_ = new eQuarkDefinition("AntiDown", "~d", -1, 4.8e6F, 1, 6),
+            quark_s_ = new eQuarkDefinition("AntiStrange", "~s", -2, 95e6F, 1, 8),
+            quark_b_ = new eQuarkDefinition("AntiBottom", "~b", -3, 4.65e9F, 1, 12);
 
-    private eQuarkDefinition(String name, String symbol, int type, float mass, int charge, int color, int ID) {
-        super(name, symbol, type, mass, charge, color, ID);
+    private eQuarkDefinition(String name, String symbol, int type, float mass, int charge, int ID) {
+        super(name, symbol, type, mass, charge, 0, ID);
     }
 
     public static void run() {
