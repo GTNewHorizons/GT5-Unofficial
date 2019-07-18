@@ -49,7 +49,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
 
     private int scanTime = 0; //Scan timer used for tesla search intervals
-    private int scanRadius = 32; //Radius of transmission target scan each interval
+    private int scanRadius = 40; //Radius of transmission target scan each interval TODO make dynamic!
     private int transferRadiusTower; //Radius for tower to tower transfers
     private int transferRadiusTransceiver; //Radius for tower to transceiver transfers
     private int transferRadiusCoverUltimate; //Radius for tower to ultimate cover transfers
@@ -317,7 +317,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     public void registerIcons(IIconRegister aBlockIconRegister) {
         ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_WH");
         ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_WH_ACTIVE");
-        super.registerIcons(aBlockIconRegister);
+        super.registerIcons(aBlockIconRegister);//TODO front texture
     }
 
     @Override
@@ -533,8 +533,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         } else if (vTier > mTier && getEUVar() > 0){
             explodeMultiblock();
         }
-
-
+        
         energyCapacity = 0;
         outputCurrentMax = 0;
         outputVoltageMax = V[vTier+1];
