@@ -20,7 +20,7 @@ import static com.github.technus.tectech.Reference.MODID;
 
 public final class TeslaCoilCapacitor extends Item {
     public static TeslaCoilCapacitor INSTANCE;
-    public static IIcon LVicon, MVicon, HVicon, EVicon, IVicon, LuVicon, ZPMicon, UVicon;
+    public static IIcon LVicon, MVicon, HVicon, EVicon, IVicon;
 
     public TeslaCoilCapacitor() {
         setUnlocalizedName("tm.teslaCoilCapacitor");
@@ -31,9 +31,6 @@ public final class TeslaCoilCapacitor extends Item {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "HV Tesla Capacitor");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "EV Tesla Capacitor");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "IV Tesla Capacitor");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "LuV Tesla Capacitor");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "ZPM Tesla Capacitor");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "UV Tesla Capacitor");
     }
 
     @Override
@@ -54,15 +51,6 @@ public final class TeslaCoilCapacitor extends Item {
                 break;
             case 4://"IV"
                 aList.add("Stores energy for tesla towers! (IV)");
-                break;
-            case 5://"LuV"
-                aList.add("Stores energy for tesla towers! (LuV)");
-                break;
-            case 6://"ZPM"
-                aList.add("Stores energy for tesla towers! (ZPM)");
-                break;
-            case 7://"UV"
-                aList.add("Stores energy for tesla towers! (UV)");
                 break;
             default://
                 aList.add("Yeet this broken item into some spicy water!");
@@ -90,9 +78,6 @@ public final class TeslaCoilCapacitor extends Item {
         HVicon = iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
         EVicon = iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
         IVicon = iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
-        LuVicon = iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
-        ZPMicon = iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
-        UVicon = iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
     }
 
     @Override
@@ -106,19 +91,13 @@ public final class TeslaCoilCapacitor extends Item {
                 return EVicon;
             case 4:
                 return IVicon;
-            case 5:
-                return LuVicon;
-            case 6:
-                return ZPMicon;
-            case 7:
-                return UVicon;
             default:
                 return LVicon;
         }
     }
 
     public void getSubItems(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        for (int i = 0; i <= 7; i++) {
+        for (int i = 0; i <= 4; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
     }

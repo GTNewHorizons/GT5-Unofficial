@@ -177,9 +177,6 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
         new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.2", 2, 1, V[2]*512);//HV Capacitor
         new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.3", 3, 1, V[3]*512);//EV Capacitor
         new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.4", 4, 1, V[4]*512);//IV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.5", 5, 1, V[5]*512);//LuV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.6", 6, 1, V[6]*512);//ZPM Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.7", 7, 1, V[7]*512);//UV Capacitor
     }
 
     public static class CapacitorComponent implements Comparable<GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> {

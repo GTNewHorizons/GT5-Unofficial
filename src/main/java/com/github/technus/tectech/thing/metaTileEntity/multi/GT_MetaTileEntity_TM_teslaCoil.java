@@ -56,7 +56,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     private long energyCapacity = 0; //Total energy storage limited by capacitors
     private long outputVoltageMax = 0; //Tesla voltage output limited by capacitors
-    private long energyRestore = 0;//EU Restored on NBT Load and Recipe check
     public int vTier = -1; //Tesla voltage tier limited by capacitors
     private long outputCurrentMax = 0; //Tesla current output limited by capacitors
     private long outputVoltage = 0; //Tesla voltage output limited by settings
@@ -171,7 +170,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if(Double.isNaN(value)) return STATUS_WRONG;
         value=(int)value;
         if(value<0) return STATUS_TOO_LOW;
-        if(value>32) return STATUS_TOO_HIGH;
+        if(value>40) return STATUS_TOO_HIGH;
         if(value<32) return STATUS_LOW;
         return STATUS_OK;
     };
@@ -180,7 +179,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if(Double.isNaN(value)) return STATUS_WRONG;
         value=(int)value;
         if(value<0) return STATUS_TOO_LOW;
-        if(value>16) return STATUS_TOO_HIGH;
+        if(value>20) return STATUS_TOO_HIGH;
         if(value<16) return STATUS_LOW;
         return STATUS_OK;
     };
@@ -340,6 +339,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             return (long)(voltage * energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier); //Efficiency Formula
         }
     }//Efficiency function used on power transfers
+
+    private float getRangeMulti(int mTier, int vTier){
+        if (vTier > mTier){
+            return 1.25F;
+        }
+        return 1F;
+    }
 
     @Override
     public long maxEUStore() {
@@ -621,11 +627,11 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         //Stuff to do if ePowerPass
         if (ePowerPass) {
             //Range calculation and display
-            transferRadiusTower = (int)(transferRadiusTowerSetting.get()*rangeFrac);
+            transferRadiusTower = (int)(transferRadiusTowerSetting.get()*getRangeMulti(mTier,vTier)*rangeFrac);
             transferRadiusTowerDisplay.set(transferRadiusTower);
-            transferRadiusTransceiver = (int)(transferRadiusTransceiverSetting.get()*rangeFrac);
+            transferRadiusTransceiver = (int)(transferRadiusTransceiverSetting.get()*getRangeMulti(mTier,vTier)*rangeFrac);
             transferRadiusTransceiverDisplay.set(transferRadiusTransceiver);
-            transferRadiusCoverUltimate=(int)(transferRadiusCoverUltimateSetting.get()*rangeFrac);
+            transferRadiusCoverUltimate=(int)(transferRadiusCoverUltimateSetting.get()*getRangeMulti(mTier,vTier)*rangeFrac);
             transferRadiusCoverUltimateDisplay.set(transferRadiusCoverUltimate);
 
             //Clean the eTeslaMap
