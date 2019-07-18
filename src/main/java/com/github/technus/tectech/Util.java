@@ -65,6 +65,39 @@ public final class Util {
         return sortedEntries;
     }
 
+    public static int bitStringToInt(String bits){
+        if(bits==null){
+            return 0;
+        }
+        bits=bits.replaceAll("[^-01]","");
+        if(bits.length() > 32){
+            return 0;
+        }
+        return Integer.parseInt(bits,2);
+    }
+
+    public static int hexStringToInt(String hex){
+        if(hex==null){
+            return 0;
+        }
+        hex=hex.toLowerCase().replaceAll("[^-0-9a-f]","");
+        if(hex.length()>8){
+            return 0;
+        }
+        return Integer.parseInt(hex,16);
+    }
+
+    public static double stringToDouble(String str){
+        if(str==null){
+            return 0;
+        }
+        str=str.toLowerCase().replaceAll("[^-0-9.,e]","");
+        if(str.length()>8){
+            return 0;
+        }
+        return Integer.parseInt(str,16);
+    }
+
     public static String intBitsToString(int number) {
         StringBuilder result = new StringBuilder(16);
 
@@ -1392,6 +1425,17 @@ public final class Util {
         }
     }
 
+    public static StringBuilder receiveString(StringBuilder previousValue, int startIndex, int index, int value){
+        int sizeReq=index-startIndex;
+        if(value==0){
+            previousValue.setLength(Math.min(previousValue.length(),sizeReq));
+        }else {
+            previousValue.setLength(Math.max(previousValue.length(),sizeReq));
+            previousValue.setCharAt(sizeReq,(char)value);
+        }
+        return previousValue;
+    }
+
     public static double receiveDouble(double previousValue, int startIndex, int index, int value){
         return Double.longBitsToDouble(receiveLong(Double.doubleToLongBits(previousValue),startIndex,index,value));
     }
@@ -1417,6 +1461,13 @@ public final class Util {
                 break;
         }
         return previousValue;
+    }
+
+    public static void sendString(StringBuilder string,Container container, ICrafting crafter,int startIndex){
+        for (int i = 0; i < string.length(); i++) {
+            crafter.sendProgressBarUpdate(container,startIndex++,string.charAt(i));
+        }
+        crafter.sendProgressBarUpdate(container,startIndex,0);
     }
 
     public static void sendDouble(double value,Container container, ICrafting crafter,int startIndex){
