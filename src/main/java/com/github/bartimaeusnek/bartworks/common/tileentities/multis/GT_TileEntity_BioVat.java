@@ -149,7 +149,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     private int calcMod(double x) {
-        int ret = (int) Math.ceil(100D*(-(2*(this.getOutputCapacity()-x))*(2*(this.getOutputCapacity()-x))+1D));
+        int ret = (int) Math.ceil(100D*(-(((2*x/this.getOutputCapacity())-1)*(2*x/this.getOutputCapacity()-1D))+1D));
         return ret <= 0 ? 1 : ret > 100 ? 100 : ret;//(int) Math.ceil((-0.00000025D * x * (x - this.getOutputCapacity())));
     }
 
