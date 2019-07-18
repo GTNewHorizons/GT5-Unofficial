@@ -86,6 +86,9 @@ task getGregTech(type: Download) {
         !file("libs/gregtech-${config.gregtech.version}-dev.jar").exists()
     }
     src "http://jenkins.usrv.eu:8080/job/Gregtech-5-Unofficial/${config.gregtech.jenkinsbuild}/artifact/build/libs/gregtech-${config.gregtech.version}-dev.jar"
+    delete fileTree("$projectDir/libs/") {
+        include 'gregtech-*-dev.jar'
+    }
     dest file("libs/gregtech-${config.gregtech.version}-dev.jar")
     mustRunAfter "deobfBinJar"
     mustRunAfter "repackMinecraft"
