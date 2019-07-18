@@ -169,7 +169,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         timerValue.set(timerValue.get()+1);
         remainingTime.set(timerSetting.get()-timerValue.get());
         IGregTechTileEntity mte=getBaseMetaTileEntity();
-        double[] xyzOffsets= getTranslatedOffsets(0,-1,2);
+        int[] xyzOffsets= getTranslatedOffsets(0,-1,2);
         double xPos=mte.getXCoord()+0.5f+xyzOffsets[0];
         double yPos=mte.getYCoord()+0.5f+xyzOffsets[1];
         double zPos=mte.getZCoord()+0.5f+xyzOffsets[2];
