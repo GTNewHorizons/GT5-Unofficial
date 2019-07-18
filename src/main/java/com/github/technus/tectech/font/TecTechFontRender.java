@@ -21,34 +21,36 @@ public class TecTechFontRender extends FontRenderer {
     private static float DISTANCE_M = 0.06F;
     private static float DISTANCE_M2 = DISTANCE_M *2F;
 
-    private static float DISTANCE_S = 0.06F;
-    private static float DISTANCE_S2 = DISTANCE_S *2F;
-
     private static float DISTANCE_A = 0.06F;
     private static float DISTANCE_A2 = DISTANCE_A *2F;
 
-    private Method reset;
-    private Method render;
+    private static final Method reset;
+    private static final Method render;
 
     private final GameSettings gameSettings;
 
-    private TecTechFontRender() {
-        super(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().renderEngine, false);
-        gameSettings = Minecraft.getMinecraft().gameSettings;
-
+    static {
+        Method resetMethod,renderMethod;
         try {
-            reset =FontRenderer.class.getDeclaredMethod("resetStyles");
-            render=FontRenderer.class.getDeclaredMethod("renderString", String.class, int.class, int.class, int.class, boolean.class);
+            resetMethod =FontRenderer.class.getDeclaredMethod("resetStyles");
+            renderMethod=FontRenderer.class.getDeclaredMethod("renderString", String.class, int.class, int.class, int.class, boolean.class);
         } catch (NoSuchMethodException e) {
             try {
-                reset =FontRenderer.class.getDeclaredMethod("func_78265_b");
-                render=FontRenderer.class.getDeclaredMethod("func_78258_a", String.class, int.class, int.class, int.class, boolean.class);
+                resetMethod =FontRenderer.class.getDeclaredMethod("func_78265_b");
+                renderMethod=FontRenderer.class.getDeclaredMethod("func_78258_a", String.class, int.class, int.class, int.class, boolean.class);
             } catch (NoSuchMethodException ex) {
                 throw new RuntimeException("Cannot get methods!",ex);
             }
         }
-        reset.setAccessible(true);
-        render.setAccessible(true);
+        resetMethod.setAccessible(true);
+        renderMethod.setAccessible(true);
+        reset=resetMethod;
+        render=renderMethod;
+    }
+
+    private TecTechFontRender() {
+        super(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().renderEngine, false);
+        gameSettings = Minecraft.getMinecraft().gameSettings;
     }
 
     private void resetStyles2(){
