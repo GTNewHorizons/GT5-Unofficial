@@ -23,8 +23,6 @@
 package com.github.bartimaeusnek.bartworks.system.oregen;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -32,9 +30,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
 import static com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy.uo_dimensionList;
 import static gregtech.api.enums.Materials.*;
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
 
 public class BW_WorldGenRoss128b extends BW_OreLayer {
 

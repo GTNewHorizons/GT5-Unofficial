@@ -30,7 +30,7 @@ import java.util.HashSet;
 
 public class CircuitImprintLoader implements Runnable {
 
-    private static HashSet<NBTTagCompound> circuitTypes = new HashSet<>();
+    private static final HashSet<NBTTagCompound> circuitTypes = new HashSet<>();
 
     @Override
     public void run() {

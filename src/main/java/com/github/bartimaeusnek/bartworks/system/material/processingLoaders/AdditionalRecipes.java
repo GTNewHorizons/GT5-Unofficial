@@ -28,7 +28,6 @@ import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -43,7 +42,7 @@ public class AdditionalRecipes implements Runnable {
     public void run() {
         //Cubic Circonia
         GT_Values.RA.addChemicalRecipe(Materials.Yttrium.getDust(2), GT_Utility.getIntegratedCircuit(11),Materials.Oxygen.getGas(3000),null, WerkstoffLoader.YttriumOxide.get(dust,5),64, BW_Util.getMachineVoltageFromTier(4));
-        GT_Recipe.GT_Recipe_Map.sBlastRecipes.addRecipe(false, new ItemStack[]{WerkstoffLoader.Zirconium.get(dust,10), WerkstoffLoader.YttriumOxide.get(dust)}, new ItemStack[]{WerkstoffLoader.YttriumOxide.get(dust), WerkstoffLoader.Zirconia.get(gemFlawed, 40)}, (Object) null, (int[]) null, new FluidStack[]{Materials.Oxygen.getGas(20000)}, null, 14400, BW_Util.getMachineVoltageFromTier(4), 2953);
+        GT_Recipe.GT_Recipe_Map.sBlastRecipes.addRecipe(false, new ItemStack[]{WerkstoffLoader.Zirconium.get(dust,10), WerkstoffLoader.YttriumOxide.get(dust)}, new ItemStack[]{WerkstoffLoader.YttriumOxide.get(dust), WerkstoffLoader.Zirconia.get(gemFlawed, 40)}, null, null, new FluidStack[]{Materials.Oxygen.getGas(20000)}, null, 14400, BW_Util.getMachineVoltageFromTier(4), 2953);
         //Thorium/Yttrium Glas
         GT_Values.RA.addBlastRecipe(WerkstoffLoader.YttriumOxide.get(dustSmall,2),WerkstoffLoader.Thorianit.get(dustSmall,2),Materials.Glass.getMolten(144),null,new ItemStack(ItemRegistry.bw_glasses[0],1,12),null,800,BW_Util.getMachineVoltageFromTier(5),3663);
         //Thorianit recipes

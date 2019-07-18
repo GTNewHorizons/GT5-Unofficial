@@ -37,10 +37,10 @@ import java.util.Arrays;
 
 public class ChunkProviderRoss128ba extends ChunkProviderMoon {
 
-    private XSTR rand = new XSTR();
-    private World worldObj;
+    private final XSTR rand = new XSTR();
+    private final World worldObj;
     private BiomeGenBase[] biomesForGeneration;
-    private MapGenBaseMeta caveGenerator;
+    private final MapGenBaseMeta caveGenerator;
 
     public ChunkProviderRoss128ba(World world, long seed, boolean mapFeaturesEnabled) {
         super(world, seed, mapFeaturesEnabled);

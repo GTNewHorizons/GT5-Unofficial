@@ -37,9 +37,9 @@ import java.awt.*;
 public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
     public BW_NEI_BioLabHandler(GT_Recipe.GT_Recipe_Map aRecipeMap) {
         super(aRecipeMap);
-        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier()));
+        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), this.getOverlayIdentifier()));
         if (!NEI_BW_Config.sIsAdded) {
-            FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtech@" + getRecipeName() + "@" + getOverlayIdentifier());
+            FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
             GuiUsageRecipe.usagehandlers.add(this);
         }
@@ -51,7 +51,7 @@ public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
 
     public void loadCraftingRecipes(ItemStack aResult) {
         if (aResult != null && aResult.getItem() instanceof LabParts && aResult.getItemDamage() < 3) {
-            for (GT_Recipe recipe : getSortedRecipes()) {
+            for (GT_Recipe recipe : this.getSortedRecipes()) {
                 if (aResult.getTagCompound() != null && recipe != null)
                     for (int i = 0; i < recipe.mOutputs.length; i++) {
                         if (recipe.mOutputs[i] != null)
@@ -69,7 +69,7 @@ public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
     @Override
     public void loadUsageRecipes(ItemStack aResult) {
         if (aResult != null && aResult.getItem() instanceof LabParts && aResult.getItemDamage() < 3) {
-            for (GT_Recipe recipe : getSortedRecipes()) {
+            for (GT_Recipe recipe : this.getSortedRecipes()) {
                 if (aResult.getTagCompound() != null && recipe != null)
                     for (int i = 0; i < recipe.mInputs.length; i++) {
                         if (recipe.mInputs[i] != null)

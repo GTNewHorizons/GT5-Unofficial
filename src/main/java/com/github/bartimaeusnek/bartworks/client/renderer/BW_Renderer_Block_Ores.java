@@ -48,27 +48,27 @@ public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         Tessellator.instance.startDrawingQuads();
         Tessellator.instance.setNormal(0.0F, -1.0F, 0.0F);
-        renderNegativeYFacing((IBlockAccess) null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 0), true);
+        renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 0), true);
         Tessellator.instance.draw();
         Tessellator.instance.startDrawingQuads();
         Tessellator.instance.setNormal(0.0F, 1.0F, 0.0F);
-        renderPositiveYFacing((IBlockAccess) null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 1), true);
+        renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 1), true);
         Tessellator.instance.draw();
         Tessellator.instance.startDrawingQuads();
         Tessellator.instance.setNormal(0.0F, 0.0F, -1.0F);
-        renderNegativeZFacing((IBlockAccess) null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 2), true);
+        renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 2), true);
         Tessellator.instance.draw();
         Tessellator.instance.startDrawingQuads();
         Tessellator.instance.setNormal(0.0F, 0.0F, 1.0F);
-        renderPositiveZFacing((IBlockAccess) null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 3), true);
+        renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 3), true);
         Tessellator.instance.draw();
         Tessellator.instance.startDrawingQuads();
         Tessellator.instance.setNormal(-1.0F, 0.0F, 0.0F);
-        renderNegativeXFacing((IBlockAccess) null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 4), true);
+        renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 4), true);
         Tessellator.instance.draw();
         Tessellator.instance.startDrawingQuads();
         Tessellator.instance.setNormal(1.0F, 0.0F, 0.0F);
-        renderPositiveXFacing((IBlockAccess) null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 5), true);
+        renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 5), true);
         Tessellator.instance.draw();
         aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -77,7 +77,7 @@ public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-        return GT_Renderer_Block.renderStandardBlock(world, x, y, z, block, renderer);
+        return renderStandardBlock(world, x, y, z, block, renderer);
     }
 
     @Override
@@ -87,6 +87,6 @@ public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return mRenderID;
+        return this.mRenderID;
     }
 }

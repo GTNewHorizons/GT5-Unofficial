@@ -39,17 +39,17 @@ public class ThreadedLoader  implements Runnable {
     public synchronized void run() {
         MainMod.LOGGER.warn("EXPERIMENTAL THREADED-LOADER ENABLED!");
         MainMod.LOGGER.info("Starting to register BartWorks Materials Recipes to Gregtech");
-        threads.add(new AllRecipes());
-        threads.forEach(Thread::start);
+        this.threads.add(new AllRecipes());
+        this.threads.forEach(Thread::start);
 
     }
 
     public synchronized void runInit() {
         MainMod.LOGGER.warn("EXPERIMENTAL THREADED-LOADER ENABLED!");
         MainMod.LOGGER.info("Starting the Material Generation Thread");
-        threadsInit.add(new MaterialGen());
-        threadsInit.forEach(Thread::start);
-        for (Thread thread : threadsInit) {
+        this.threadsInit.add(new MaterialGen());
+        this.threadsInit.forEach(Thread::start);
+        for (Thread thread : this.threadsInit) {
             try {
                 MainMod.LOGGER.info("Trying to join the Material Generation Thread");
                 thread.join();

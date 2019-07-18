@@ -35,9 +35,9 @@ import java.util.List;
 
 public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implements ITileAddsInformation {
 
-    recursiveBelowCheck check = new recursiveBelowCheck();
-    private long ticks = 0;
-    private long noOfIts = 0;
+    BW_TileEntity_ExperimentalFloodGate.recursiveBelowCheck check = new BW_TileEntity_ExperimentalFloodGate.recursiveBelowCheck();
+    private long ticks;
+    private long noOfIts;
     private Coords paused;
 
     public BW_TileEntity_ExperimentalFloodGate() {
@@ -46,31 +46,31 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
 
     @Override
     public void updateEntity() {
-        if (paused == null) {
+        if (this.paused == null) {
             this.paused = new Coords(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
         }
-        ticks++;
-        if (check.called != -1) {
-            if (ticks % 20 == 0) {
+        this.ticks++;
+        if (this.check.called != -1) {
+            if (this.ticks % 20 == 0) {
                 HashSet<Coords> toRem = new HashSet<>();
-                for (Coords c : check.hashset) {
+                for (Coords c : this.check.hashset) {
                     this.worldObj.setBlock(c.x, c.y, c.z, Blocks.water, 0, 4);
                     toRem.add(c);
                 }
-                check.hashset.removeAll(toRem);
+                this.check.hashset.removeAll(toRem);
             }
         } else {
-            noOfIts = 0;
-            setUpHashSet();
-            this.paused = check.hashset.get(check.hashset.size() - 1);
+            this.noOfIts = 0;
+            this.setUpHashSet();
+            this.paused = this.check.hashset.get(this.check.hashset.size() - 1);
         }
-        if (ticks % 50 == 0)
-            ticks = 0;
+        if (this.ticks % 50 == 0)
+            this.ticks = 0;
     }
 
     private synchronized void setUpHashSet() {
-        check = new recursiveBelowCheck();
-        Thread t = new Thread(check);
+        this.check = new BW_TileEntity_ExperimentalFloodGate.recursiveBelowCheck();
+        Thread t = new Thread(this.check);
         t.run();
         while (t.isAlive()) {
             try {
@@ -79,7 +79,7 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
                 e.printStackTrace();
             }
         }
-        check.hashset.remove(new Coords(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId));
+        this.check.hashset.remove(new Coords(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId));
     }
 
     @Override
@@ -108,10 +108,10 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
             byte ret = 0;
             int wID = w.provider.dimensionId;
 
-            if (hashset.contains(new Coords(x, y, z, wID)))
+            if (this.hashset.contains(new Coords(x, y, z, wID)))
                 return ret;
 
-            hashset.add(new Coords(x, y, z, wID));
+            this.hashset.add(new Coords(x, y, z, wID));
 
             if (w.getBlock(x, y + 1, z).equals(b))
                 ret = (byte) (ret | 0b000001);
@@ -142,53 +142,53 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
             int ret = 0;
             iterations++;
             int wID = w.provider.dimensionId;
-            byte sides = check_sourroundings(w, x, y, z, b);
+            byte sides = this.check_sourroundings(w, x, y, z, b);
 
-            if (((sides | 0b111110) == 0b111111) && !hashset.contains(new Coords(x, y + 1, z, wID)) && y + 1 <= yCoord) {
-                tail = get_connected(w, x, y + 1, z, b, iterations);
+            if (((sides | 0b111110) == 0b111111) && !this.hashset.contains(new Coords(x, y + 1, z, wID)) && y + 1 <= BW_TileEntity_ExperimentalFloodGate.this.yCoord) {
+                tail = this.get_connected(w, x, y + 1, z, b, iterations);
                 if (tail == -1)
-                    return tail;
+                    return -1;
                 ret++;
                 ret += tail;
             }
 
-            if (((sides | 0b111101) == 0b111111) && !hashset.contains(new Coords(x, y - 1, z, wID))) {
-                tail = get_connected(w, x, y - 1, z, b, iterations);
+            if (((sides | 0b111101) == 0b111111) && !this.hashset.contains(new Coords(x, y - 1, z, wID))) {
+                tail = this.get_connected(w, x, y - 1, z, b, iterations);
                 if (tail == -1)
-                    return tail;
+                    return -1;
                 ret++;
                 ret += tail;
             }
 
-            if (((sides | 0b111011) == 0b111111) && !hashset.contains(new Coords(x + 1, y, z, wID))) {
-                tail = get_connected(w, x + 1, y, z, b, iterations);
+            if (((sides | 0b111011) == 0b111111) && !this.hashset.contains(new Coords(x + 1, y, z, wID))) {
+                tail = this.get_connected(w, x + 1, y, z, b, iterations);
                 if (tail == -1)
-                    return tail;
+                    return -1;
                 ret++;
                 ret += tail;
             }
 
-            if (((sides | 0b110111) == 0b111111) && !hashset.contains(new Coords(x - 1, y, z, wID))) {
-                tail = get_connected(w, x - 1, y, z, b, iterations);
+            if (((sides | 0b110111) == 0b111111) && !this.hashset.contains(new Coords(x - 1, y, z, wID))) {
+                tail = this.get_connected(w, x - 1, y, z, b, iterations);
                 if (tail == -1)
-                    return tail;
+                    return -1;
                 ret++;
                 ret += tail;
             }
 
-            if (((sides | 0b101111) == 0b111111) && !hashset.contains(new Coords(x, y, z + 1, wID))) {
-                tail = get_connected(w, x, y, z + 1, b, iterations);
+            if (((sides | 0b101111) == 0b111111) && !this.hashset.contains(new Coords(x, y, z + 1, wID))) {
+                tail = this.get_connected(w, x, y, z + 1, b, iterations);
                 if (tail == -1)
-                    return tail;
+                    return -1;
                 ret++;
                 ret += tail;
 
             }
 
-            if (((sides | 0b011111) == 0b111111) && !hashset.contains(new Coords(x, y, z - 1, wID))) {
-                tail = get_connected(w, x, y, z - 1, b, iterations);
+            if (((sides | 0b011111) == 0b111111) && !this.hashset.contains(new Coords(x, y, z - 1, wID))) {
+                tail = this.get_connected(w, x, y, z - 1, b, iterations);
                 if (tail == -1)
-                    return tail;
+                    return -1;
                 ret++;
                 ret += tail;
             }
@@ -198,8 +198,8 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
 
         @Override
         public synchronized void run() {
-            called = check.get_connected(worldObj, paused.x, paused.y, paused.z, Blocks.air, 0);
-            notifyAll();
+            this.called = BW_TileEntity_ExperimentalFloodGate.this.check.get_connected(BW_TileEntity_ExperimentalFloodGate.this.worldObj, BW_TileEntity_ExperimentalFloodGate.this.paused.x, BW_TileEntity_ExperimentalFloodGate.this.paused.y, BW_TileEntity_ExperimentalFloodGate.this.paused.z, Blocks.air, 0);
+            this.notifyAll();
         }
     }
 }

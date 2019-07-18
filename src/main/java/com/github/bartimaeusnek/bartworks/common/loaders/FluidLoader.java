@@ -27,7 +27,6 @@ import com.github.bartimaeusnek.bartworks.client.renderer.RendererSwitchingColor
 import com.github.bartimaeusnek.bartworks.common.blocks.BioFluidBlock;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BWTileEntityDimIDBridge;
 import com.github.bartimaeusnek.bartworks.util.BioCulture;
-import com.github.bartimaeusnek.bartworks.util.Pair;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -44,8 +43,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.Arrays;
 import java.awt.*;
+import java.util.Arrays;
 
 public class FluidLoader implements Runnable {
 

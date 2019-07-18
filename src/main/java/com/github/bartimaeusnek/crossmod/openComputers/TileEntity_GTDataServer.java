@@ -38,12 +38,12 @@ import java.util.HashMap;
 //@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")
 public class TileEntity_GTDataServer extends TileEntity implements ITileWithGUI, ITileAddsInformation, ITileHasDifferentTextureSides/*, SimpleComponent*/ {
 
-    private static HashMap<Long,GT_NBT_DataBase> OrbDataBase = new HashMap<>();
+    private static final HashMap<Long,GT_NBT_DataBase> OrbDataBase = new HashMap<>();
 
-    private ItemStack[] mItems = new ItemStack[2];
+    private final ItemStack[] mItems = new ItemStack[2];
     
     
-    private byte TickTimer = 0;
+    private byte TickTimer;
 
     public String getComponentName() {
         return "GT-Data Server";

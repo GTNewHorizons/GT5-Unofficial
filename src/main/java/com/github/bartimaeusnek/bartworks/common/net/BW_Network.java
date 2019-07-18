@@ -54,11 +54,11 @@ import java.util.List;
 @ChannelHandler.Sharable
 public class BW_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet> implements IGT_NetworkHandler {
 
-    private EnumMap<Side, FMLEmbeddedChannel> mChannel;
-    private GT_Packet[] mSubChannels;
+    private final EnumMap<Side, FMLEmbeddedChannel> mChannel;
+    private final GT_Packet[] mSubChannels;
 
     public BW_Network() {
-        this.mChannel = NetworkRegistry.INSTANCE.newChannel("BartWorks", new ChannelHandler[]{this, new HandlerShared()});
+        this.mChannel = NetworkRegistry.INSTANCE.newChannel("BartWorks", this, new BW_Network.HandlerShared());
         this.mSubChannels = new GT_Packet[]{new RendererPacket(), new CircuitProgrammerPacket(), new OrePacket(), new OreDictCachePacket()};
     }
 
@@ -98,10 +98,8 @@ public class BW_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
 
     public void sendPacketToAllPlayersInRange(World aWorld, @Nonnull GT_Packet aPacket, int aX, int aZ) {
         if (!aWorld.isRemote) {
-            Iterator var5 = aWorld.playerEntities.iterator();
 
-            while (var5.hasNext()) {
-                Object tObject = var5.next();
+            for (Object tObject : aWorld.playerEntities) {
                 if (!(tObject instanceof EntityPlayerMP)) {
                     break;
                 }

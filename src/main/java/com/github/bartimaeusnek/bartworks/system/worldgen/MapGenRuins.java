@@ -32,19 +32,14 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.ForgeHooks;
 
-import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.util.Random;
 
-import static net.minecraftforge.common.ChestGenHooks.DUNGEON_CHEST;
-import static net.minecraftforge.common.ChestGenHooks.PYRAMID_DESERT_CHEST;
 import static net.minecraftforge.common.ChestGenHooks.PYRAMID_JUNGLE_CHEST;
 
 public abstract class MapGenRuins extends WorldGenerator {
@@ -57,30 +52,30 @@ public abstract class MapGenRuins extends WorldGenerator {
     }
 
     protected void setFloorBlocks(int[] metas, Block... blocks){
-        ToBuildWith[0]=new Pair[metas.length];
+        this.ToBuildWith[0]=new Pair[metas.length];
         for (int i = 0; i < metas.length; i++) {
-            ToBuildWith[0][i]=new Pair<>(blocks[i%blocks.length],metas[i]);
+            this.ToBuildWith[0][i]=new Pair<>(blocks[i%blocks.length],metas[i]);
         }
     }
 
     protected void setWallBlocks(int[] metas,Block... blocks){
-        ToBuildWith[1]=new Pair[metas.length];
+        this.ToBuildWith[1]=new Pair[metas.length];
         for (int i = 0; i < metas.length; i++) {
-            ToBuildWith[1][i]=new Pair<>(blocks[i%blocks.length],metas[i]);
+            this.ToBuildWith[1][i]=new Pair<>(blocks[i%blocks.length],metas[i]);
         }
     }
 
     protected void setRoofBlocks(int[] metas,Block... blocks){
-        ToBuildWith[2]=new Pair[metas.length];
+        this.ToBuildWith[2]=new Pair[metas.length];
         for (int i = 0; i < metas.length; i++) {
-            ToBuildWith[2][i]=new Pair<>(blocks[i%blocks.length],metas[i]);
+            this.ToBuildWith[2][i]=new Pair<>(blocks[i%blocks.length],metas[i]);
         }
     }
 
     protected void setMiscBlocks(int[] metas,Block... blocks){
-        ToBuildWith[3]=new Pair[metas.length];
+        this.ToBuildWith[3]=new Pair[metas.length];
         for (int i = 0; i < metas.length; i++) {
-            ToBuildWith[3][i]=new Pair<>(blocks[i%blocks.length],metas[i]);
+            this.ToBuildWith[3][i]=new Pair<>(blocks[i%blocks.length],metas[i]);
         }
     }
 
@@ -88,9 +83,9 @@ public abstract class MapGenRuins extends WorldGenerator {
 
     protected void setRandomBlockWAirChance(World worldObj, int x, int y, int z, Random rand, int airchance, Pair<Block,Integer>... blocks){
         if (rand.nextInt(100) > airchance)
-            setRandomBlock(worldObj,x,y,z,rand,blocks);
+            this.setRandomBlock(worldObj,x,y,z,rand,blocks);
         else
-            setBlock(worldObj,x,y,z,Blocks.air,0);
+            this.setBlock(worldObj,x,y,z,Blocks.air,0);
     }
 
     protected void setRandomBlock(World worldObj, int x, int y, int z, Random rand, Pair<Block,Integer>... blocks){
@@ -132,11 +127,11 @@ public abstract class MapGenRuins extends WorldGenerator {
                 y--;
             }
 
-            setFloorBlocks(new int[]{0,0,0},Blocks.brick_block,Blocks.double_stone_slab,Blocks.stonebrick);
-            setWallBlocks(new int[]{0,1,2,1,1},Blocks.stonebrick);
-            setRoofBlocks(new int[]{9},Blocks.log);
-            setMiscBlocks(new int[]{1},Blocks.log);
-            statBlocks= new int[]{rand.nextInt(ToBuildWith[0].length)};
+            this.setFloorBlocks(new int[]{0,0,0},Blocks.brick_block,Blocks.double_stone_slab,Blocks.stonebrick);
+            this.setWallBlocks(new int[]{0,1,2,1,1},Blocks.stonebrick);
+            this.setRoofBlocks(new int[]{9},Blocks.log);
+            this.setMiscBlocks(new int[]{1},Blocks.log);
+            this.statBlocks = new int[]{rand.nextInt(this.ToBuildWith[0].length)};
             int colored=rand.nextInt(15);
             int tier = rand.nextInt(6);
             boolean useColor = rand.nextBoolean();
@@ -150,40 +145,40 @@ public abstract class MapGenRuins extends WorldGenerator {
                     for (int dz = -6; dz <= 6; dz++) {
                         this.setBlock(worldObj,x+dx,y+dy,z+dz,Blocks.air,0);
                         if (dy == 0){
-                            Pair<Block,Integer> floor = ToBuildWith[0][statBlocks[0]];
-                            this.setBlock(worldObj,x+dx,y+dy,z+dz, floor.getKey(),floor.getValue());
+                            Pair<Block,Integer> floor = this.ToBuildWith[0][this.statBlocks[0]];
+                            this.setBlock(worldObj,x+dx,y+ 0,z+dz, floor.getKey(),floor.getValue());
                         }
                         else if (dy > 0 && dy < 4){
                             if (Math.abs(dx) == 5 && Math.abs(dz) == 5){
-                                setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,5, ToBuildWith[3][0]);
+                                this.setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,5, this.ToBuildWith[3][0]);
                             }
                             else if ((dx == 0) && dz == -5 && (dy == 1 || dy == 2)){
                                 if (dy == 1)
-                                    this.setBlock(worldObj,x+dx,y+dy,z+dz, Blocks.iron_door,1);
+                                    this.setBlock(worldObj,x+dx,y+ 1,z+ -5, Blocks.iron_door,1);
                                 if (dy == 2)
-                                    this.setBlock(worldObj,x+dx,y+dy,z+dz, Blocks.iron_door,8);
+                                    this.setBlock(worldObj,x+dx,y+ 2,z+dz, Blocks.iron_door,8);
                             }
                             else if (Math.abs(dx)== 5 && Math.abs(dz) < 5 || Math.abs(dz)== 5 && Math.abs(dx) < 5){
-                                setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25,ToBuildWith[1]);
+                                this.setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25, this.ToBuildWith[1]);
                                 if (dy == 2) {
                                     if (rand.nextInt(100)<12)
                                         if (useColor)
-                                            setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25,new Pair<>(Blocks.stained_glass_pane,colored));
+                                            this.setRandomBlockWAirChance(worldObj,x+dx,y+ 2,z+dz,rand,25,new Pair<>(Blocks.stained_glass_pane,colored));
                                         else
-                                            setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25,new Pair<>(Blocks.glass_pane,0));
+                                            this.setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25,new Pair<>(Blocks.glass_pane,0));
                                 }
                             }
 
                             if (dy == 3 && Math.abs(dx)== 6){
-                                setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25,ToBuildWith[2]);
+                                this.setRandomBlockWAirChance(worldObj,x+dx,y+ 3,z+dz,rand,25, this.ToBuildWith[2]);
                             }
 
                             if (dy == 1){
                                 if (dx == 3 && dz == -3){
-                                    setBlock(worldObj,x + dx, y + dy, z + dz,Blocks.crafting_table,0);
+                                    this.setBlock(worldObj,x + 3, y + 1, z + dz,Blocks.crafting_table,0);
                                 }
                                 if (dx == -3 && (dz == -3 || dz == -2)){
-                                    setBlock(worldObj,x + dx, y + dy, z + dz,Blocks.chest,5);
+                                    this.setBlock(worldObj,x + -3, y + dy, z + dz,Blocks.chest,5);
                                     IInventory chest = (IInventory)worldObj.getTileEntity(x + dx, y + dy, z + dz);
                                     if (chest != null) {
                                         WeightedRandomChestContent.generateChestContents(secureRandom, ChestGenHooks.getItems(PYRAMID_JUNGLE_CHEST, rand), chest, ChestGenHooks.getCount(PYRAMID_JUNGLE_CHEST, rand));
@@ -192,7 +187,7 @@ public abstract class MapGenRuins extends WorldGenerator {
 
                                 if (dx == 4 && dz==4) {
                                     short meta = GT_WorldgenUtil.getGenerator(secureRandom,tier);
-                                    setBlock(worldObj, x + dx, y + dy, z + dz, GT_WorldgenUtil.GT_TILES,GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
+                                    this.setBlock(worldObj, x + 4, y + dy, z + dz, GT_WorldgenUtil.GT_TILES,GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
                                     BaseMetaTileEntity BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x + dx, y + dy, z + dz);
                                     BTE.setInitialValuesAsNBT(null,meta);
                                     BTE.setOwnerName("Ancient Cultures");
@@ -202,28 +197,28 @@ public abstract class MapGenRuins extends WorldGenerator {
                                 else if (dx == 3 && dz==4) {
                                     if (tier>0) {
                                         short meta = GT_WorldgenUtil.getBuffer(secureRandom, tier);
-                                        setBlock(worldObj, x + dx, y + dy, z + dz, GT_WorldgenUtil.GT_TILES, GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
+                                        this.setBlock(worldObj, x + 3, y + dy, z + dz, GT_WorldgenUtil.GT_TILES, GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
                                         BaseMetaTileEntity BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x + dx, y + dy, z + dz);
                                         BTE.setInitialValuesAsNBT(null, meta);
                                         BTE.setOwnerName("Ancient Cultures");
                                         BTE.setFrontFacing((byte) 4);
                                     }else{
                                         short meta = cablemeta;
-                                        setRandomBlockWAirChance(worldObj, x + dx, y + dy, z + dz, rand, 33, new Pair<Block, Integer>(GT_WorldgenUtil.GT_TILES, (int) GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType()));
+                                        this.setRandomBlockWAirChance(worldObj, x + dx, y + dy, z + dz, rand, 33, new Pair<Block, Integer>(GT_WorldgenUtil.GT_TILES, (int) GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType()));
                                         BaseMetaPipeEntity BTE = (BaseMetaPipeEntity) worldObj.getTileEntity(x + dx, y + dy, z + dz);
                                         if (BTE != null) {
                                             BTE.setInitialValuesAsNBT(null, meta);
                                             BTE.setOwnerName("Ancient Cultures");
                                             BTE.setFrontFacing((byte) 4);
                                             BTE.mConnections = (byte) (BTE.mConnections | 1 << (byte) 4);
-                                            BTE.mConnections = (byte) (BTE.mConnections | 1 << (byte) GT_Utility.getOppositeSide(4));
+                                            BTE.mConnections = (byte) (BTE.mConnections | 1 << GT_Utility.getOppositeSide(4));
                                             ((MetaPipeEntity) BTE.getMetaTileEntity()).mConnections = BTE.mConnections;
                                         }
                                     }
                                 }
                                 else if (dx < 3 && dx > -5 && dz == 4) {
                                     short meta = cablemeta;
-                                    setRandomBlockWAirChance(worldObj, x + dx, y + dy, z + dz, rand, 33, new Pair<Block, Integer>(GT_WorldgenUtil.GT_TILES, (int) GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType()));
+                                    this.setRandomBlockWAirChance(worldObj, x + dx, y + dy, z + 4, rand, 33, new Pair<Block, Integer>(GT_WorldgenUtil.GT_TILES, (int) GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType()));
 
                                     BaseMetaPipeEntity BTE = (BaseMetaPipeEntity) worldObj.getTileEntity(x + dx, y + dy, z + dz);
                                     if (BTE != null) {
@@ -231,7 +226,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                         BTE.setOwnerName("Ancient Cultures");
                                         BTE.setFrontFacing((byte) 4);
                                         BTE.mConnections = (byte)(BTE.mConnections | 1 << (byte)4);
-                                        BTE.mConnections = (byte)(BTE.mConnections | 1 << (byte) GT_Utility.getOppositeSide(4));
+                                        BTE.mConnections = (byte)(BTE.mConnections | 1 << GT_Utility.getOppositeSide(4));
 
                                         BaseMetaTileEntity BPE = (BaseMetaTileEntity) worldObj.getTileEntity(x + dx, y + dy, z + dz-1);
                                         if (BPE != null) {
@@ -244,7 +239,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                 else if (dx < 3 && dx > -5 && dz == 3 && set < toSet){
                                     if (!lastset || treeinaRow > 2) {
                                         short meta = GT_WorldgenUtil.getMachine(secureRandom, tier);
-                                        setBlock(worldObj, x + dx, y + dy, z + dz, GT_WorldgenUtil.GT_TILES, GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
+                                        this.setBlock(worldObj, x + dx, y + dy, z + 3, GT_WorldgenUtil.GT_TILES, GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
                                         BaseMetaTileEntity BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x + dx, y + dy, z + dz);
                                         BTE.setInitialValuesAsNBT(null, meta);
                                         BTE.setOwnerName("Ancient Cultures");
@@ -264,31 +259,31 @@ public abstract class MapGenRuins extends WorldGenerator {
                         }
                         else if(dy == 4){
                             if (Math.abs(dx)== 5)
-                                setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25,ToBuildWith[2]);
+                                this.setRandomBlockWAirChance(worldObj,x+dx,y+ 4,z+dz,rand,25, this.ToBuildWith[2]);
                             else if (Math.abs(dz) == 5 && Math.abs(dx) < 5)
-                                setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25,ToBuildWith[1]);
+                                this.setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25, this.ToBuildWith[1]);
                         }
                         else if(dy == 5){
                             if (Math.abs(dx)== 4)
-                                setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25,ToBuildWith[2]);
+                                this.setRandomBlockWAirChance(worldObj,x+dx,y+ 5,z+dz,rand,25, this.ToBuildWith[2]);
                             else if (Math.abs(dz) == 5 && Math.abs(dx) < 4)
-                                setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25,ToBuildWith[1]);
+                                this.setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25, this.ToBuildWith[1]);
                         }
                         else if(dy == 6){
                             if (Math.abs(dx)== 3)
-                                setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25,ToBuildWith[2]);
+                                this.setRandomBlockWAirChance(worldObj,x+dx,y+ 6,z+dz,rand,25, this.ToBuildWith[2]);
                             else if (Math.abs(dz) == 5 && Math.abs(dx) < 3)
-                                setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25,ToBuildWith[1]);
+                                this.setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25, this.ToBuildWith[1]);
                         }
                         else if(dy == 7){
                             if (Math.abs(dx)== 2)
-                                setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25,ToBuildWith[2]);
+                                this.setRandomBlockWAirChance(worldObj,x+dx,y+ 7,z+dz,rand,25, this.ToBuildWith[2]);
                             else if (Math.abs(dz) == 5 && Math.abs(dx) < 2)
-                                setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25,ToBuildWith[1]);
+                                this.setRandomBlockWAirChance(worldObj,x+dx,y+dy,z+dz,rand,25, this.ToBuildWith[1]);
                         }
                         else if(dy == 8) {
                             if (Math.abs(dx) == 1 || Math.abs(dx) == 0)
-                                setRandomBlockWAirChance(worldObj, x + dx, y + dy, z + dz, rand, 25, ToBuildWith[2]);
+                                this.setRandomBlockWAirChance(worldObj, x + dx, y + 8, z + dz, rand, 25, this.ToBuildWith[2]);
                         }
                     }
                 }
@@ -301,7 +296,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                     if (set < toSet){
                         if (!lastset || treeinaRow > 2 && worldObj.getTileEntity(x + dx, y + dy, z + dz) == null) {
                             short meta = GT_WorldgenUtil.getMachine(secureRandom, tier);
-                            setBlock(worldObj, x + dx, y + dy, z + dz, GT_WorldgenUtil.GT_TILES, GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
+                            this.setBlock(worldObj, x + dx, y + dy, z + dz, GT_WorldgenUtil.GT_TILES, GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
                             BaseMetaTileEntity BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x + dx, y + dy, z + dz);
                             BTE.setInitialValuesAsNBT(null, meta);
                             BTE.setOwnerName("Ancient Cultures");

@@ -44,15 +44,16 @@ import gregtech.api.enums.*;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.recipe.Recipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -112,8 +113,8 @@ public class WerkstoffLoader implements Runnable {
             new Werkstoff.GenerationFeatures().onlyDust().addGems(),
             4,
             TextureSet.SET_DIAMOND,
-            Arrays.asList(Zirconium),
-            new Pair<>(Zirconium, 1),
+            Arrays.asList(WerkstoffLoader.Zirconium),
+            new Pair<>(WerkstoffLoader.Zirconium, 1),
             new Pair<>(Materials.Oxygen, 2)
     );
     public static final Werkstoff FluorBuergerit = new Werkstoff(
@@ -310,8 +311,8 @@ public class WerkstoffLoader implements Runnable {
             new Werkstoff.GenerationFeatures().addGems(),
             19,
             TextureSet.SET_GEM_VERTICAL,
-            Arrays.asList(Zirconium,Materials.Silicon),
-            new Pair<>(Zirconium, 1),
+            Arrays.asList(WerkstoffLoader.Zirconium,Materials.Silicon),
+            new Pair<>(WerkstoffLoader.Zirconium, 1),
             new Pair<>(Materials.Silicon, 1),
             new Pair<>(Materials.Oxygen, 4)
     );
@@ -604,7 +605,7 @@ public class WerkstoffLoader implements Runnable {
         }
     }
 
-    public static int toGenerateGlobal = 0b0000000;
+    public static int toGenerateGlobal;
     private void addItemsForGeneration() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             for (OrePrefixes p : values())
@@ -612,20 +613,20 @@ public class WerkstoffLoader implements Runnable {
                     MainMod.LOGGER.info("Found: "+(p+werkstoff.getDefaultName().replaceAll(" ",""))+" in oreDict, disable and reroute my Items to that, also add a Tooltip.");
                     werkstoff.getGenerationFeatures().setBlacklist(p);
                 }
-            toGenerateGlobal = (toGenerateGlobal | werkstoff.getGenerationFeatures().toGenerate);
+            WerkstoffLoader.toGenerateGlobal = (WerkstoffLoader.toGenerateGlobal | werkstoff.getGenerationFeatures().toGenerate);
             //System.out.println(werkstoff.getDefaultName()+": "+werkstoff.getGenerationFeatures().toGenerate);
         }
 
-        if ((toGenerateGlobal & 0b1) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & 0b1) != 0) {
             WerkstoffLoader.items.put(dust, new BW_MetaGenerated_Items(dust));
             WerkstoffLoader.items.put(dustTiny, new BW_MetaGenerated_Items(dustTiny));
             WerkstoffLoader.items.put(dustSmall, new BW_MetaGenerated_Items(dustSmall));
         }
-        if ((toGenerateGlobal & 0b10) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & 0b10) != 0) {
             WerkstoffLoader.items.put(ingot, new BW_MetaGenerated_Items(ingot));
             WerkstoffLoader.items.put(nugget, new BW_MetaGenerated_Items(nugget));
         }
-        if ((toGenerateGlobal & 0b100) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & 0b100) != 0) {
             WerkstoffLoader.items.put(gem, new BW_MetaGenerated_Items(gem));
             WerkstoffLoader.items.put(gemChipped, new BW_MetaGenerated_Items(gemChipped));
             WerkstoffLoader.items.put(gemExquisite, new BW_MetaGenerated_Items(gemExquisite));
@@ -633,16 +634,16 @@ public class WerkstoffLoader implements Runnable {
             WerkstoffLoader.items.put(gemFlawless, new BW_MetaGenerated_Items(gemFlawless));
             WerkstoffLoader.items.put(lens,new BW_MetaGenerated_Items(lens));
         }
-        if ((toGenerateGlobal & 0b1000) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & 0b1000) != 0) {
             if (!ConfigHandler.experimentalThreadedLoader)
-                gameRegistryHandler();
+                this.gameRegistryHandler();
             WerkstoffLoader.items.put(crushed, new BW_MetaGenerated_Items(crushed));
             WerkstoffLoader.items.put(crushedPurified, new BW_MetaGenerated_Items(crushedPurified));
             WerkstoffLoader.items.put(crushedCentrifuged, new BW_MetaGenerated_Items(crushedCentrifuged));
             WerkstoffLoader.items.put(dustPure, new BW_MetaGenerated_Items(dustPure));
             WerkstoffLoader.items.put(dustImpure, new BW_MetaGenerated_Items(dustImpure));
         }
-        if ((toGenerateGlobal & 0b10000) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & 0b10000) != 0) {
             WerkstoffLoader.items.put(cell, new BW_MetaGenerated_Items(cell));
             WerkstoffLoader.items.put(bottle, new BW_MetaGenerated_Items(bottle));
             WerkstoffLoader.items.put(capsule, new BW_MetaGenerated_Items(capsule));
@@ -655,7 +656,7 @@ public class WerkstoffLoader implements Runnable {
         GameRegistry.registerTileEntity(BW_MetaGeneratedOreTE.class, "bw.blockoresTE");
         WerkstoffLoader.BWOres = new BW_MetaGenerated_Ores(Material.rock, BW_MetaGeneratedOreTE.class, "bw.blockores");
         GameRegistry.registerBlock(WerkstoffLoader.BWOres, BW_MetaGeneratedOre_Item.class, "bw.blockores.01");
-        runGTItemDataRegistrator();
+        WerkstoffLoader.runGTItemDataRegistrator();
     }
 
     public static void runGTItemDataRegistrator(){

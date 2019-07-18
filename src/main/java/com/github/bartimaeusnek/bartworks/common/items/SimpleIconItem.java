@@ -29,15 +29,14 @@ import net.minecraft.item.Item;
 
 public class SimpleIconItem extends Item {
 
-    String tex;
+    private final String tex;
 
     public SimpleIconItem(String tex) {
-        super();
         this.tex = tex;
     }
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
-        itemIcon = iconRegister.registerIcon("bartworks:" + tex);
+        this.itemIcon = iconRegister.registerIcon("bartworks:" + this.tex);
     }
 }

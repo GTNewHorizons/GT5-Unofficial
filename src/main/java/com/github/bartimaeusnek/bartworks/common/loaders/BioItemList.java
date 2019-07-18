@@ -40,18 +40,18 @@ public class BioItemList {
 
 
     private static final Item mItemBioLabParts = new LabModule(new String[]{"DNAExtractionModule", "PCRThermoclyclingModule", "PlasmidSynthesisModule", "TransformationModule", "ClonalCellularSynthesisModule"});
-    public static final ItemStack[] mBioLabParts = {new ItemStack(mItemBioLabParts), new ItemStack(mItemBioLabParts, 1, 1), new ItemStack(mItemBioLabParts, 1, 2), new ItemStack(mItemBioLabParts, 1, 3), new ItemStack(mItemBioLabParts, 1, 4)};
+    public static final ItemStack[] mBioLabParts = {new ItemStack(BioItemList.mItemBioLabParts), new ItemStack(BioItemList.mItemBioLabParts, 1, 1), new ItemStack(BioItemList.mItemBioLabParts, 1, 2), new ItemStack(BioItemList.mItemBioLabParts, 1, 3), new ItemStack(BioItemList.mItemBioLabParts, 1, 4)};
     private static final Item vanillaBioLabParts = new LabParts(new String[]{"petriDish", "DNASampleFlask", "PlasmidCell", "DetergentPowder", "Agarose", "IncubationModule", "PlasmaMembrane"});
 
     public BioItemList() {
-        GameRegistry.registerItem(mItemBioLabParts, "BioLabModules");
-        GameRegistry.registerItem(vanillaBioLabParts, "BioLabParts");
+        GameRegistry.registerItem(BioItemList.mItemBioLabParts, "BioLabModules");
+        GameRegistry.registerItem(BioItemList.vanillaBioLabParts, "BioLabParts");
     }
 
     public static Collection<ItemStack> getAllPetriDishes() {
         HashSet<ItemStack> ret = new HashSet<>();
         for (BioCulture Culture : BioCulture.BIO_CULTURE_ARRAY_LIST) {
-            ret.add(getPetriDish(Culture));
+            ret.add(BioItemList.getPetriDish(Culture));
         }
         return ret;
     }
@@ -59,7 +59,7 @@ public class BioItemList {
     public static Collection<ItemStack> getAllDNASampleFlasks() {
         HashSet<ItemStack> ret = new HashSet<>();
         for (BioData dna : BioData.BIO_DATA_ARRAY_LIST) {
-            ret.add(getDNASampleFlask(BioDNA.convertDataToDNA(dna)));
+            ret.add(BioItemList.getDNASampleFlask(BioDNA.convertDataToDNA(dna)));
         }
         return ret;
     }
@@ -67,32 +67,32 @@ public class BioItemList {
     public static Collection<ItemStack> getAllPlasmidCells() {
         HashSet<ItemStack> ret = new HashSet<>();
         for (BioData dna : BioData.BIO_DATA_ARRAY_LIST) {
-            ret.add(getPlasmidCell(BioPlasmid.convertDataToPlasmid(dna)));
+            ret.add(BioItemList.getPlasmidCell(BioPlasmid.convertDataToPlasmid(dna)));
         }
         return ret;
     }
 
     public static ItemStack getPetriDish(BioCulture Culture) {
         if (Culture == null)
-            return new ItemStack(vanillaBioLabParts);
-        ItemStack ret = new ItemStack(vanillaBioLabParts);
+            return new ItemStack(BioItemList.vanillaBioLabParts);
+        ItemStack ret = new ItemStack(BioItemList.vanillaBioLabParts);
         ret.setTagCompound(BioCulture.getNBTTagFromCulture(Culture));
         return ret;
     }
 
     public static ItemStack getDNASampleFlask(BioDNA dna) {
         if (dna == null)
-            return new ItemStack(vanillaBioLabParts, 1, 1);
+            return new ItemStack(BioItemList.vanillaBioLabParts, 1, 1);
 
-        ItemStack ret = new ItemStack(vanillaBioLabParts, 1, 1);
+        ItemStack ret = new ItemStack(BioItemList.vanillaBioLabParts, 1, 1);
         ret.setTagCompound(BioData.getNBTTagFromBioData(dna));
         return ret;
     }
 
     public static ItemStack getPlasmidCell(BioPlasmid plasmid) {
         if (plasmid == null)
-            return new ItemStack(vanillaBioLabParts, 1, 2);
-        ItemStack ret = new ItemStack(vanillaBioLabParts, 1, 2);
+            return new ItemStack(BioItemList.vanillaBioLabParts, 1, 2);
+        ItemStack ret = new ItemStack(BioItemList.vanillaBioLabParts, 1, 2);
         ret.setTagCompound(BioData.getNBTTagFromBioData(plasmid));
         return ret;
     }
@@ -111,6 +111,6 @@ public class BioItemList {
         if (selection < 1 || selection > 4)
             return null;
 
-        return new ItemStack(vanillaBioLabParts, 1, 2 + selection);
+        return new ItemStack(BioItemList.vanillaBioLabParts, 1, 2 + selection);
     }
 }

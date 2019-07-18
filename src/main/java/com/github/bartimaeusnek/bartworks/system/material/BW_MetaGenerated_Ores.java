@@ -60,7 +60,7 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
                 if ((w.getGenerationFeatures().toGenerate & 0b1000) == 0 || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
                     continue;
                 GT_ModHandler.addValuableOre(this, w.getmID(), 1);
-                GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + w.getmID() + ".name", w.getDefaultName() + OrePrefixes.ore.mLocalizedMaterialPost);
+                GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + "." + w.getmID() + ".name", w.getDefaultName() + OrePrefixes.ore.mLocalizedMaterialPost);
             }
         }
     }
@@ -91,7 +91,7 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
     }
 
     public String getLocalizedName() {
-        return StatCollector.translateToLocal(getUnlocalizedName() + ".name");
+        return StatCollector.translateToLocal(this.getUnlocalizedName() + ".name");
     }
 
     @Override
@@ -131,7 +131,7 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         TileEntity tTileEntity = world.getTileEntity(x, y, z);
         if ((tTileEntity instanceof BW_MetaGeneratedOreTE)) {
-            mTemporaryTileEntity.set((BW_MetaGeneratedOreTE) tTileEntity);
+            BW_MetaGenerated_Ores.mTemporaryTileEntity.set((BW_MetaGeneratedOreTE) tTileEntity);
         }
         super.breakBlock(world, x, y, z, block, meta);
     }
@@ -141,7 +141,7 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
         if ((tTileEntity instanceof BW_MetaGeneratedOreTE)) {
             return ((BW_MetaGeneratedOreTE) tTileEntity).getDrops(WerkstoffLoader.BWOres);
         }
-        return mTemporaryTileEntity.get() == null ? new ArrayList() : ((BW_MetaGeneratedOreTE) mTemporaryTileEntity.get()).getDrops(WerkstoffLoader.BWOres);
+        return BW_MetaGenerated_Ores.mTemporaryTileEntity.get() == null ? new ArrayList() : BW_MetaGenerated_Ores.mTemporaryTileEntity.get().getDrops(WerkstoffLoader.BWOres);
     }
 
     public int getHarvestLevel(int metadata) {

@@ -35,16 +35,16 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class DebugLog {
-    private static boolean init = false;
+    private static boolean init;
     private static FileHandler fh;
     private static Logger utilLog;
     public DebugLog(FMLPreInitializationEvent event) throws IOException {
-        if (init)
+        if (DebugLog.init)
             return;
-        fh = new FileHandler(new File(new File(event.getModConfigurationDirectory().getParentFile(),"logs"),"BWLog.log").toString());
-        utilLog = Logger.getLogger("DebugLog");
-        utilLog.setUseParentHandlers(false);
-        utilLog.addHandler(fh);
+        DebugLog.fh = new FileHandler(new File(new File(event.getModConfigurationDirectory().getParentFile(),"logs"),"BWLog.log").toString());
+        DebugLog.utilLog = Logger.getLogger("DebugLog");
+        DebugLog.utilLog.setUseParentHandlers(false);
+        DebugLog.utilLog.addHandler(DebugLog.fh);
         Formatter formatter = new Formatter() {
             @Override
             public String format(LogRecord record) {
@@ -56,13 +56,13 @@ public class DebugLog {
                         + " " + record.getMessage() + "\n";
             }
         };
-        fh.setFormatter(formatter);
-        init = true;
+        DebugLog.fh.setFormatter(formatter);
+        DebugLog.init = true;
     }
 
     public static void log(String record){
-        if (!init)
+        if (!DebugLog.init)
             return;
-        utilLog.info(record);
+        DebugLog.utilLog.info(record);
     }
 }

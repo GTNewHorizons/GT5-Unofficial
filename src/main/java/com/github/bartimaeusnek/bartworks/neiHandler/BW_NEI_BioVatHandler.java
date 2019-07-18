@@ -42,9 +42,9 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
 
     public BW_NEI_BioVatHandler(GT_Recipe.GT_Recipe_Map aRecipeMap) {
         super(aRecipeMap);
-        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier()));
+        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), this.getOverlayIdentifier()));
         if (!NEI_BW_Config.sIsAdded) {
-            FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtech@" + getRecipeName() + "@" + getOverlayIdentifier());
+            FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
             GuiUsageRecipe.usagehandlers.add(this);
         }
@@ -63,38 +63,38 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
         int tSpecial;
         if (recipeDesc == null) {
             if (tEUt != 0) {
-                drawText(10, lines[0], this.trans("152", "Total: ") + (long) tDuration * (long) tEUt + " EU", -16777216);
-                drawText(10, lines[1], this.trans("153", "Usage: ") + tEUt + " EU/t", -16777216);
+                GT_NEI_DefaultHandler.drawText(10, lines[0], this.trans("152", "Total: ") + (long) tDuration * (long) tEUt + " EU", -16777216);
+                GT_NEI_DefaultHandler.drawText(10, lines[1], this.trans("153", "Usage: ") + tEUt + " EU/t", -16777216);
                 if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
-                    drawText(10, lines[2], this.trans("154", "Voltage: ") + tEUt / this.mRecipeMap.mAmperage + " EU", -16777216);
-                    drawText(10, lines[3], this.trans("155", "Amperage: ") + this.mRecipeMap.mAmperage, -16777216);
+                    GT_NEI_DefaultHandler.drawText(10, lines[2], this.trans("154", "Voltage: ") + tEUt / this.mRecipeMap.mAmperage + " EU", -16777216);
+                    GT_NEI_DefaultHandler.drawText(10, lines[3], this.trans("155", "Amperage: ") + this.mRecipeMap.mAmperage, -16777216);
                 } else {
-                    drawText(10, lines[2], this.trans("156", "Voltage: unspecified"), -16777216);
-                    drawText(10, lines[3], this.trans("157", "Amperage: unspecified"), -16777216);
+                    GT_NEI_DefaultHandler.drawText(10, lines[2], this.trans("156", "Voltage: unspecified"), -16777216);
+                    GT_NEI_DefaultHandler.drawText(10, lines[3], this.trans("157", "Amperage: unspecified"), -16777216);
                 }
             }
 
 
             if (tDuration > 0) {
-                drawText(10, lines[4], this.trans("158", "Time: ") + String.format("%.2f " + this.trans("161", " secs"), 0.05F * (float) tDuration), -16777216);
+                GT_NEI_DefaultHandler.drawText(10, lines[4], this.trans("158", "Time: ") + String.format("%.2f " + this.trans("161", " secs"), 0.05F * (float) tDuration), -16777216);
             }
 
             tSpecial = ((GT_NEI_DefaultHandler.CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
 
             int[] tSpecialA = GT_TileEntity_BioVat.specialValueUnpack(tSpecial);
 
-            drawText(10, lines[5], StatCollector.translateToLocal("nei.biovat.0.name") + " " + tSpecialA[0], -16777216);
+            GT_NEI_DefaultHandler.drawText(10, lines[5], StatCollector.translateToLocal("nei.biovat.0.name") + " " + tSpecialA[0], -16777216);
 
             if (tSpecialA[1] == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {
-                drawText(10, lines[7], this.trans("159", "Needs Low Gravity"), -16777216);
+                GT_NEI_DefaultHandler.drawText(10, lines[7], this.trans("159", "Needs Low Gravity"), -16777216);
             } else if (tSpecialA[1] == -200 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-                drawText(10, lines[7], this.trans("160", "Needs Cleanroom"), -16777216);
+                GT_NEI_DefaultHandler.drawText(10, lines[7], this.trans("160", "Needs Cleanroom"), -16777216);
             } else if (tSpecialA[1] == -300 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-                drawText(10, lines[7], this.trans("160", "Needs Cleanroom & LowGrav"), -16777216);
+                GT_NEI_DefaultHandler.drawText(10, lines[7], this.trans("160", "Needs Cleanroom & LowGrav"), -16777216);
             } else if (tSpecialA[1] == -400) {
-                drawText(10, lines[7], this.trans("216", "Deprecated Recipe"), -16777216);
+                GT_NEI_DefaultHandler.drawText(10, lines[7], this.trans("216", "Deprecated Recipe"), -16777216);
             } else if (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre) || GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost)) {
-                drawText(10, lines[6], (tSpecialA[2] == 1 ? StatCollector.translateToLocal("nei.biovat.1.name") : StatCollector.translateToLocal("nei.biovat.2.name")) + this.mRecipeMap.mNEISpecialValuePre + tSpecialA[3] * this.mRecipeMap.mNEISpecialValueMultiplier + this.mRecipeMap.mNEISpecialValuePost, -16777216);
+                GT_NEI_DefaultHandler.drawText(10, lines[6], (tSpecialA[2] == 1 ? StatCollector.translateToLocal("nei.biovat.1.name") : StatCollector.translateToLocal("nei.biovat.2.name")) + this.mRecipeMap.mNEISpecialValuePre + tSpecialA[3] * this.mRecipeMap.mNEISpecialValueMultiplier + this.mRecipeMap.mNEISpecialValuePost, -16777216);
             }
         } else {
             tSpecial = 0;
@@ -103,7 +103,7 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
 
             for (int var8 = 0; var8 < var7; ++var8) {
                 String descLine = var6[var8];
-                drawText(10, 73 + 10 * tSpecial, descLine, -16777216);
+                GT_NEI_DefaultHandler.drawText(10, 73 + 10 * tSpecial, descLine, -16777216);
                 ++tSpecial;
             }
         }

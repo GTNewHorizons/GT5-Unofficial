@@ -37,7 +37,7 @@ import java.util.Collection;
 public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBlockBase {
 
     private NBTTagCompound type;
-    private GT_Recipe bufferedRecipe = null;
+    private GT_Recipe bufferedRecipe;
 
     public GT_TileEntity_CircuitAssemblyLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -56,24 +56,24 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        type = aNBT.getCompoundTag("Type");
+        this.type = aNBT.getCompoundTag("Type");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setTag("Type",type);
+        aNBT.setTag("Type", this.type);
     }
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-        if (type == null)
+        if (this.type == null)
             return false;
 
-        if (bufferedRecipe != null && bufferedRecipe.isRecipeInputEqual(false,true,BW_Util.getFluidsFromInputHatches(this),BW_Util.getItemsFromInputBusses(this)))
+        if (this.bufferedRecipe != null && this.bufferedRecipe.isRecipeInputEqual(false,true,BW_Util.getFluidsFromInputHatches(this),BW_Util.getItemsFromInputBusses(this)))
             return true;
 
-        ItemStack stack = ItemStack.loadItemStackFromNBT(type);
+        ItemStack stack = ItemStack.loadItemStackFromNBT(this.type);
 
         if (stack == null)
             return false;
@@ -92,7 +92,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
 
         for (GT_Recipe recipe : recipes){
             if (recipe.isRecipeInputEqual(false,true,BW_Util.getFluidsFromInputHatches(this),BW_Util.getItemsFromInputBusses(this)))
-                bufferedRecipe = recipe;
+                this.bufferedRecipe = recipe;
         }
 
 

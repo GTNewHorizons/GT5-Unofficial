@@ -53,9 +53,9 @@ public class BartWorksCrossmod {
     public static final String NAME = "BartWorks Mod Additions";
     public static final String VERSION = "0.0.1";
     public static final String MOD_ID = "bartworkscrossmod";
-    public static final Logger LOGGER = LogManager.getLogger(NAME);
+    public static final Logger LOGGER = LogManager.getLogger(BartWorksCrossmod.NAME);
 
-    @Mod.Instance(MOD_ID)
+    @Mod.Instance(BartWorksCrossmod.MOD_ID)
     public static BartWorksCrossmod instance;
 
     @Mod.EventHandler

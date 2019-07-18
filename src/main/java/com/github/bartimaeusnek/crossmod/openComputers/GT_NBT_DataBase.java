@@ -28,7 +28,7 @@ import java.util.HashMap;
 
 public class GT_NBT_DataBase {
 
-    private static HashMap<NBTTagCompound, Long> tagToIdMap = new HashMap<>();
+    private static final HashMap<NBTTagCompound, Long> tagToIdMap = new HashMap<>();
 
     private static long maxID = Long.MIN_VALUE+1;
 
@@ -43,7 +43,7 @@ public class GT_NBT_DataBase {
         this.mDataTitle = mDataTitle;
         this.tagCompound = tagCompound;
         this.id = GT_NBT_DataBase.maxID;
-        GT_NBT_DataBase.tagToIdMap.put(tagCompound,id);
+        GT_NBT_DataBase.tagToIdMap.put(tagCompound, this.id);
         ++GT_NBT_DataBase.maxID;
     }
 

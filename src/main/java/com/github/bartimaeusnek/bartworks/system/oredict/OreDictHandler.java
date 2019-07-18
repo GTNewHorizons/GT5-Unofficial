@@ -50,14 +50,14 @@ public class OreDictHandler {
     }
 
     public static void adaptCacheForWorld(){
-        Set<String> used = new HashSet<>(cache.keySet());
+        Set<String> used = new HashSet<>(OreDictHandler.cache.keySet());
         OreDictHandler.cache.clear();
         OreDictHandler.cacheNonBW.clear();
         for (String s : used) {
             if (!OreDictionary.getOres(s).isEmpty()) {
                 ItemStack tmpstack = OreDictionary.getOres(s).get(0).copy();
                 Pair<Integer, Short> p = new Pair<>(Item.getIdFromItem(tmpstack.getItem()), (short) tmpstack.getItemDamage());
-                cache.put(s, p);
+                OreDictHandler.cache.put(s, p);
                 for (ItemStack tmp : OreDictionary.getOres(s)) {
                     Pair<Integer, Short> p2 = new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage());
                     GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(tmp.getItem());
@@ -72,12 +72,12 @@ public class OreDictHandler {
     }
 
     public static ItemStack getItemStack(String elementName, OrePrefixes prefixes, int amount){
-        if (cache.get(prefixes+elementName.replaceAll(" ","")) != null){
-            Pair<Integer,Short> p = cache.get(prefixes+elementName.replaceAll(" ",""));
+        if (OreDictHandler.cache.get(prefixes+elementName.replaceAll(" ","")) != null){
+            Pair<Integer,Short> p = OreDictHandler.cache.get(prefixes+elementName.replaceAll(" ",""));
             return new ItemStack(Item.getItemById(p.getKey()),amount,p.getValue());
         } else if (!OreDictionary.getOres(prefixes+elementName.replaceAll(" ","")).isEmpty()){
             ItemStack tmp = OreDictionary.getOres(prefixes+elementName.replaceAll(" ","")).get(0).copy();
-            cache.put(prefixes+elementName.replaceAll(" ",""),new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage()));
+            OreDictHandler.cache.put(prefixes+elementName.replaceAll(" ",""),new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage()));
             tmp.stackSize=amount;
             return tmp;
         }

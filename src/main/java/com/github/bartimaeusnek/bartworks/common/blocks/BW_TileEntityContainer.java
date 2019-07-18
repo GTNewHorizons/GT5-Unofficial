@@ -43,7 +43,6 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -54,7 +53,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class BW_TileEntityContainer extends BlockContainer implements ITileAddsInformation {
 
-    Class<? extends TileEntity> tileEntity = null;
+    Class<? extends TileEntity> tileEntity;
 
     public BW_TileEntityContainer(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_);
@@ -71,7 +70,7 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
         if (worldObj.isRemote) {
             return false;
         }
-        final TileEntity tile = worldObj.getTileEntity(x, y, z);
+        TileEntity tile = worldObj.getTileEntity(x, y, z);
         if (tile instanceof BW_TileEntity_HeatedWaterPump) {
             if (player.getHeldItem() != null && (player.getHeldItem().getItem().equals(Items.bucket) || player.getHeldItem().getItem() instanceof IFluidContainerItem) && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false) != null)
                 if (player.getHeldItem().getItem().equals(Items.bucket) && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false).amount == 1000) {
@@ -93,14 +92,14 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
         return false;
     }
 
-    public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack itemStack) {
-        final TileEntity tile = world.getTileEntity(x, y, z);
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
+        TileEntity tile = world.getTileEntity(x, y, z);
         if (tile instanceof IWrenchable && itemStack != null) {
-            final IWrenchable tile2 = (IWrenchable) tile;
+            IWrenchable tile2 = (IWrenchable) tile;
             int meta = itemStack.getItemDamage();
             world.setBlockMetadataWithNotify(x, y, z, meta, 2);
             if (entity != null) {
-                final int face = MathHelper.floor_double(entity.rotationYaw * 4.0f / 360.0f + 0.5) & 0x3;
+                int face = MathHelper.floor_double(entity.rotationYaw * 4.0f / 360.0f + 0.5) & 0x3;
                 switch (face) {
                     case 0:
                         tile2.setFacing((short) 2);

@@ -222,7 +222,7 @@ public class RecipeLoader implements Runnable {
             if (!ConfigHandler.GTNH)
                 GT_ModHandler.addCraftingRecipe(
                         ItemRegistry.dehp,
-                        BITSD,
+                        RecipeLoader.BITSD,
                         new Object[]{
                                 "GPG",
                                 "NCN",

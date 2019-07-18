@@ -36,13 +36,13 @@ import net.minecraft.util.StatCollector;
 
 public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 
-    private long maxAmps = 0L;
-    private long aAmps = 0L;
+    private long maxAmps;
+    private long aAmps;
 
     public GT_MetaTileEntity_Diode(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, StatCollector.translateToLocal("tooltip.tile.diode.0.name"));
-        maxAmps = getAmpsfromMeta(aID);
-        aAmps = maxAmps;
+        this.maxAmps = this.getAmpsfromMeta(aID);
+        this.aAmps = this.maxAmps;
     }
 
     public GT_MetaTileEntity_Diode(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -52,9 +52,9 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
-        if (maxAmps == 0 && !this.getBaseMetaTileEntity().getWorld().isRemote) {
-            maxAmps = getAmpsfromMeta(this.getBaseMetaTileEntity().getMetaTileID());
-            aAmps = maxAmps;
+        if (this.maxAmps == 0 && !this.getBaseMetaTileEntity().getWorld().isRemote) {
+            this.maxAmps = this.getAmpsfromMeta(this.getBaseMetaTileEntity().getMetaTileID());
+            this.aAmps = this.maxAmps;
         }
     }
 
@@ -65,40 +65,40 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
         if (this.getBaseMetaTileEntity().getWorld().isRemote)
             return;
         if (!aPlayer.isSneaking()) {
-            --aAmps;
-            if (aAmps < 0)
-                aAmps = maxAmps;
-            GT_Utility.sendChatToPlayer(aPlayer, "Max Amps: " + aAmps);
+            --this.aAmps;
+            if (this.aAmps < 0)
+                this.aAmps = this.maxAmps;
+            GT_Utility.sendChatToPlayer(aPlayer, "Max Amps: " + this.aAmps);
         }else{
-            ++aAmps;
-            if (aAmps > maxAmps)
-                aAmps = 0;
-            GT_Utility.sendChatToPlayer(aPlayer, "Max Amps: " + aAmps);
+            ++this.aAmps;
+            if (this.aAmps > this.maxAmps)
+                this.aAmps = 0;
+            GT_Utility.sendChatToPlayer(aPlayer, "Max Amps: " + this.aAmps);
         }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setLong("maxAmp", maxAmps);
-        aNBT.setLong("Amps", aAmps);
+        aNBT.setLong("maxAmp", this.maxAmps);
+        aNBT.setLong("Amps", this.aAmps);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        maxAmps = aNBT.getLong("maxAmp");
-        aAmps = aNBT.getLong("Amps");
+        this.maxAmps = aNBT.getLong("maxAmp");
+        this.aAmps = aNBT.getLong("Amps");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public long maxAmperesOut() {
-        return aAmps;
+        return this.aAmps;
     }
 
     @Override
     public long maxAmperesIn() {
-        return aAmps;
+        return this.aAmps;
     }
 
     @Override
@@ -123,6 +123,6 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 
     @SuppressWarnings("deprecation")
     public String[] getDescription() {
-        return new String[]{mDescription, StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " " + ChatColorHelper.YELLOW + maxAmperesIn(), StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " " + ChatColorHelper.YELLOW + maxAmperesOut(), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
+        return new String[]{this.mDescription, StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " " + ChatColorHelper.YELLOW + this.maxAmperesIn(), StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " " + ChatColorHelper.YELLOW + this.maxAmperesOut(), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
     }
 }

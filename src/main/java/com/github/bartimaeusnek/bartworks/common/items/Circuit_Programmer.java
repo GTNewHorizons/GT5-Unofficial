@@ -69,13 +69,13 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List itemList) {
         ItemStack itemStack = new ItemStack(this, 1);
-        if (getChargedItem(itemStack) == this) {
+        if (this.getChargedItem(itemStack) == this) {
             ItemStack charged = new ItemStack(this, 1);
             ElectricItem.manager.charge(charged, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
             itemList.add(charged);
         }
-        if (getEmptyItem(itemStack) == this) {
-            itemList.add(new ItemStack(this, 1, getMaxDamage()));
+        if (this.getEmptyItem(itemStack) == this) {
+            itemList.add(new ItemStack(this, 1, this.getMaxDamage()));
         }
     }
 

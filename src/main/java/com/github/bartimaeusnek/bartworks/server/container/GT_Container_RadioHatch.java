@@ -40,7 +40,7 @@ public class GT_Container_RadioHatch extends GT_Container_1by1 {
     public short sv, dsv, sievert, r, g, b, dsievert, dr, dg, db;
     public byte[] teTimer = new byte[8], dteTimer = new byte[8];
     GT_MetaTileEntity_RadioHatch TE;
-    private long timer = 0;
+    private long timer;
 
     public GT_Container_RadioHatch(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -49,49 +49,49 @@ public class GT_Container_RadioHatch extends GT_Container_1by1 {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         if (!this.mTileEntity.isClientSide() && this.mTileEntity.getMetaTileEntity() != null) {
-            TE = (GT_MetaTileEntity_RadioHatch) this.mTileEntity.getMetaTileEntity();
-            mass = TE.getMass();
-            sievert = (short) TE.sievert;
-            short[] rgb = TE.getColorForGUI();
-            r = rgb[0];
-            g = rgb[1];
-            b = rgb[2];
-            sv = (short) TE.getSievert();
-            teTimer = ByteBuffer.allocate(8).putLong(TE.getTimer()).array();
-            ++timer;
+            this.TE = (GT_MetaTileEntity_RadioHatch) this.mTileEntity.getMetaTileEntity();
+            this.mass = this.TE.getMass();
+            this.sievert = (short) this.TE.sievert;
+            short[] rgb = this.TE.getColorForGUI();
+            this.r = rgb[0];
+            this.g = rgb[1];
+            this.b = rgb[2];
+            this.sv = (short) this.TE.getSievert();
+            this.teTimer = ByteBuffer.allocate(8).putLong(this.TE.getTimer()).array();
+            ++this.timer;
             Iterator var2 = this.crafters.iterator();
-            if (timer >= Long.MAX_VALUE - 1)
-                timer = 0;
+            if (this.timer >= Long.MAX_VALUE - 1)
+                this.timer = 0;
             while (true) {
                 do {
                     if (!var2.hasNext()) {
-                        dmass = mass;
-                        dsievert = sievert;
-                        dr = r;
-                        dg = g;
-                        db = b;
-                        dteTimer = teTimer;
-                        dsv = sv;
+                        this.dmass = this.mass;
+                        this.dsievert = this.sievert;
+                        this.dr = this.r;
+                        this.dg = this.g;
+                        this.db = this.b;
+                        this.dteTimer = this.teTimer;
+                        this.dsv = this.sv;
                         return;
                     }
                     ICrafting var1 = (ICrafting) var2.next();
 
-                    if (this.timer % 500 == 10 || this.dmass != mass)
-                        var1.sendProgressBarUpdate(this, 21, mass);
-                    if (this.timer % 500 == 10 || this.dsievert != sievert)
-                        var1.sendProgressBarUpdate(this, 22, (sievert - 100));
-                    if (this.timer % 500 == 10 || this.dr != r)
-                        var1.sendProgressBarUpdate(this, 23, r);
-                    if (this.timer % 500 == 10 || this.dg != g)
-                        var1.sendProgressBarUpdate(this, 24, g);
-                    if (this.timer % 500 == 10 || this.db != b)
-                        var1.sendProgressBarUpdate(this, 25, b);
-                    if (this.timer % 500 == 10 || this.dteTimer != teTimer)
-                        for (int i = 0; i < teTimer.length; i++) {
-                            var1.sendProgressBarUpdate(this, 26 + i, teTimer[i]);
+                    if (this.timer % 500 == 10 || this.dmass != this.mass)
+                        var1.sendProgressBarUpdate(this, 21, this.mass);
+                    if (this.timer % 500 == 10 || this.dsievert != this.sievert)
+                        var1.sendProgressBarUpdate(this, 22, (this.sievert - 100));
+                    if (this.timer % 500 == 10 || this.dr != this.r)
+                        var1.sendProgressBarUpdate(this, 23, this.r);
+                    if (this.timer % 500 == 10 || this.dg != this.g)
+                        var1.sendProgressBarUpdate(this, 24, this.g);
+                    if (this.timer % 500 == 10 || this.db != this.b)
+                        var1.sendProgressBarUpdate(this, 25, this.b);
+                    if (this.timer % 500 == 10 || this.dteTimer != this.teTimer)
+                        for (int i = 0; i < this.teTimer.length; i++) {
+                            var1.sendProgressBarUpdate(this, 26 + i, this.teTimer[i]);
                         }
-                    if (this.timer % 500 == 10 || this.dsv != sv)
-                        var1.sendProgressBarUpdate(this, 34, sv);
+                    if (this.timer % 500 == 10 || this.dsv != this.sv)
+                        var1.sendProgressBarUpdate(this, 34, this.sv);
 
                 } while (this.timer % 500 != 10 && this.dmass == this.mass);
             }
@@ -104,46 +104,46 @@ public class GT_Container_RadioHatch extends GT_Container_1by1 {
         super.updateProgressBar(par1, par2);
         switch (par1) {
             case 21:
-                mass = (byte) par2;
+                this.mass = (byte) par2;
                 break;
             case 22:
-                sievert = (short) (par2 + 100);
+                this.sievert = (short) (par2 + 100);
                 break;
             case 23:
-                r = (short) par2;
+                this.r = (short) par2;
                 break;
             case 24:
-                g = (short) par2;
+                this.g = (short) par2;
                 break;
             case 25:
-                b = (short) par2;
+                this.b = (short) par2;
                 break;
             case 26:
-                teTimer[0] = (byte) par2;
+                this.teTimer[0] = (byte) par2;
                 break;
             case 27:
-                teTimer[1] = (byte) par2;
+                this.teTimer[1] = (byte) par2;
                 break;
             case 28:
-                teTimer[2] = (byte) par2;
+                this.teTimer[2] = (byte) par2;
                 break;
             case 29:
-                teTimer[3] = (byte) par2;
+                this.teTimer[3] = (byte) par2;
                 break;
             case 30:
-                teTimer[4] = (byte) par2;
+                this.teTimer[4] = (byte) par2;
                 break;
             case 31:
-                teTimer[5] = (byte) par2;
+                this.teTimer[5] = (byte) par2;
                 break;
             case 32:
-                teTimer[6] = (byte) par2;
+                this.teTimer[6] = (byte) par2;
                 break;
             case 33:
-                teTimer[7] = (byte) par2;
+                this.teTimer[7] = (byte) par2;
                 break;
             case 34:
-                sv = (short) par2;
+                this.sv = (short) par2;
                 break;
         }
     }

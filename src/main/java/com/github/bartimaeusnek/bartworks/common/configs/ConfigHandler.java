@@ -23,7 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.configs;
 
 
-import com.github.bartimaeusnek.ASM.BWCoreTransformer;;
+import com.github.bartimaeusnek.ASM.BWCoreTransformer;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -42,7 +42,7 @@ public class ConfigHandler {
     public static int ross128batier = 3;
     public static int landerType = 3;
     public static int ross128bRuinChance = 512;
-    public static int creativeScannerID = 0;
+    public static int creativeScannerID;
 
     public static long energyPerCell = 1000000L;
 

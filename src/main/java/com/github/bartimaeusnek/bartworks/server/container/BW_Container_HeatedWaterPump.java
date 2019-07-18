@@ -42,7 +42,7 @@ public class BW_Container_HeatedWaterPump extends Container {
     final BW_TileEntity_HeatedWaterPump TILE;
     final IInventory INVENTORY;
     public int fuel, water, awater, maxfuel;
-    long timer = 0;
+    long timer;
     byte[] anetfuel, netfuel, anetmaxfuel, netmaxfuel;
 
     public BW_Container_HeatedWaterPump(BW_TileEntity_HeatedWaterPump TILE, EntityPlayer INVENTORY) {
@@ -77,108 +77,108 @@ public class BW_Container_HeatedWaterPump extends Container {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (TILE.getWorldObj().isRemote)
+        if (this.TILE.getWorldObj().isRemote)
             return;
 
-        fuel = this.TILE.fuel;
-        maxfuel = this.TILE.maxfuel;
-        water = this.TILE.outputstack.amount;
-        netfuel = ByteBuffer.allocate(8).putInt(fuel).array();
-        netmaxfuel = ByteBuffer.allocate(8).putInt(maxfuel).array();
-        ++timer;
+        this.fuel = this.TILE.fuel;
+        this.maxfuel = this.TILE.maxfuel;
+        this.water = this.TILE.outputstack.amount;
+        this.netfuel = ByteBuffer.allocate(8).putInt(this.fuel).array();
+        this.netmaxfuel = ByteBuffer.allocate(8).putInt(this.maxfuel).array();
+        ++this.timer;
         Iterator var2 = this.crafters.iterator();
-        if (timer >= Long.MAX_VALUE - 1)
-            timer = 0;
+        if (this.timer >= Long.MAX_VALUE - 1)
+            this.timer = 0;
         while (true) {
             do {
                 if (!var2.hasNext()) {
-                    netfuel = anetfuel;
-                    netmaxfuel = anetmaxfuel;
-                    water = awater;
+                    this.netfuel = this.anetfuel;
+                    this.netmaxfuel = this.anetmaxfuel;
+                    this.water = this.awater;
                     return;
                 }
                 ICrafting var1 = (ICrafting) var2.next();
-                if (this.timer % 500 == 10 || this.water != awater)
-                    var1.sendProgressBarUpdate(this, 0, water);
-                if (this.timer % 500 == 10 || netfuel != anetfuel)
-                    for (int i = 0; i < netfuel.length; i++) {
-                        var1.sendProgressBarUpdate(this, i + 1, netfuel[i]);
+                if (this.timer % 500 == 10 || this.water != this.awater)
+                    var1.sendProgressBarUpdate(this, 0, this.water);
+                if (this.timer % 500 == 10 || this.netfuel != this.anetfuel)
+                    for (int i = 0; i < this.netfuel.length; i++) {
+                        var1.sendProgressBarUpdate(this, i + 1, this.netfuel[i]);
                     }
-                if (this.timer % 500 == 10 || netmaxfuel != anetmaxfuel)
-                    for (int i = 0; i < netmaxfuel.length; i++) {
-                        var1.sendProgressBarUpdate(this, i + 9, netmaxfuel[i]);
+                if (this.timer % 500 == 10 || this.netmaxfuel != this.anetmaxfuel)
+                    for (int i = 0; i < this.netmaxfuel.length; i++) {
+                        var1.sendProgressBarUpdate(this, i + 9, this.netmaxfuel[i]);
                     }
-            } while (this.timer % 500 != 10 && this.water != awater);
+            } while (this.timer % 500 != 10 && this.water != this.awater);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int packetID, int valure) {
-        if (netfuel == null)
-            netfuel = new byte[8];
-        if (netmaxfuel == null)
-            netmaxfuel = new byte[8];
+        if (this.netfuel == null)
+            this.netfuel = new byte[8];
+        if (this.netmaxfuel == null)
+            this.netmaxfuel = new byte[8];
         switch (packetID) {
             case 0: {
-                water = valure;
+                this.water = valure;
                 this.getSlot(1).putStack(this.getSlot(1).getStack().setStackDisplayName(this.water + "L Water"));
                 break;
             }
             case 1:
-                netfuel[0] = (byte) valure;
+                this.netfuel[0] = (byte) valure;
                 break;
             case 2:
-                netfuel[1] = (byte) valure;
+                this.netfuel[1] = (byte) valure;
                 break;
             case 3:
-                netfuel[2] = (byte) valure;
+                this.netfuel[2] = (byte) valure;
                 break;
             case 4:
-                netfuel[3] = (byte) valure;
+                this.netfuel[3] = (byte) valure;
                 break;
             case 5:
-                netfuel[4] = (byte) valure;
+                this.netfuel[4] = (byte) valure;
                 break;
             case 6:
-                netfuel[5] = (byte) valure;
+                this.netfuel[5] = (byte) valure;
                 break;
             case 7:
-                netfuel[6] = (byte) valure;
+                this.netfuel[6] = (byte) valure;
                 break;
             case 8:
-                netfuel[7] = (byte) valure;
+                this.netfuel[7] = (byte) valure;
                 break;
             case 9:
-                netmaxfuel[0] = (byte) valure;
+                this.netmaxfuel[0] = (byte) valure;
                 break;
             case 10:
-                netmaxfuel[1] = (byte) valure;
+                this.netmaxfuel[1] = (byte) valure;
                 break;
             case 11:
-                netmaxfuel[2] = (byte) valure;
+                this.netmaxfuel[2] = (byte) valure;
                 break;
             case 12:
-                netmaxfuel[3] = (byte) valure;
+                this.netmaxfuel[3] = (byte) valure;
                 break;
             case 13:
-                netmaxfuel[4] = (byte) valure;
+                this.netmaxfuel[4] = (byte) valure;
                 break;
             case 14:
-                netmaxfuel[5] = (byte) valure;
+                this.netmaxfuel[5] = (byte) valure;
                 break;
             case 15:
-                netmaxfuel[6] = (byte) valure;
+                this.netmaxfuel[6] = (byte) valure;
                 break;
             case 16:
-                netmaxfuel[7] = (byte) valure;
+                this.netmaxfuel[7] = (byte) valure;
                 break;
             default:
                 break;
         }
         if (packetID > 0 && packetID < 9)
-            this.fuel = ByteBuffer.wrap(netfuel).getInt();
+            this.fuel = ByteBuffer.wrap(this.netfuel).getInt();
         if (packetID > 8 && packetID < 17)
-            this.maxfuel = ByteBuffer.wrap(netmaxfuel).getInt();
+            this.maxfuel = ByteBuffer.wrap(this.netmaxfuel).getInt();
     }
 }

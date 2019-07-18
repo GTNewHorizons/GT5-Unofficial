@@ -29,7 +29,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -44,7 +43,7 @@ import static com.github.bartimaeusnek.bartworks.MainMod.BW_Network_instance;
 
 public class BW_MetaGeneratedOreTE extends TileEntity implements ITexturedTileEntity {
 
-    public short mMetaData = 0;
+    public short mMetaData;
 
     public static boolean placeOre(World aWorld, Coords coords, Werkstoff werkstoff) {
         short meta = werkstoff.getmID();

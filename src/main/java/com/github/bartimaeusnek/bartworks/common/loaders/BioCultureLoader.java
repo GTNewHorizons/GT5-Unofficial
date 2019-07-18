@@ -48,12 +48,12 @@ public class BioCultureLoader implements Runnable {
     public static BioCulture anaerobicOil;
     @Override
     public void run() {
-        CommonYeast = BioCulture.createAndRegisterBioCulture(new Color(255, 248, 200), "Saccharomyces cerevisiae", BioPlasmid.convertDataToPlasmid(BIO_DATA_YEAST), BioDNA.convertDataToDNA(BIO_DATA_YEAST), true);
-        WhineYeast = BioCulture.createAndRegisterBioCulture(new Color(255, 248, 200), "Saccharomyces cerevisiae var bayanus", BioPlasmid.convertDataToPlasmid(BIO_DATA_YEAST), BIO_DNA_WHINE_YEAST, true);
-        BeerYeast = BioCulture.createAndRegisterBioCulture(new Color(255, 248, 200), "Saccharomyces cerevisiae var cerevisiae", BioPlasmid.convertDataToPlasmid(BIO_DATA_YEAST), BIO_DNA_BEER_YEAST, true);
-        rottenFleshBacteria = BioCulture.createAndRegisterBioCulture(new Color(110, 40, 25), "Escherichia cadaver", BioPlasmid.convertDataToPlasmid(BIO_DATA_BETA_LACMATASE), BioDNA.convertDataToDNA(BIO_DATA_BETA_LACMATASE), false);
-        eColi = BioCulture.createAndRegisterBioCulture(new Color(149, 132, 75), "Escherichia koli", BioPlasmid.convertDataToPlasmid(eColiData), BioDNA.convertDataToDNA(eColiData), true);
-        anaerobicOil = BioCulture.createAndRegisterBioCulture(new Color(0, 0, 0), "Pseudomonas Veronii", BioPlasmid.convertDataToPlasmid(BIO_DNA_ANAEROBIC_OIL), BioDNA.convertDataToDNA(BIO_DATA_ANAEROBIC_OIL), true);
+        BioCultureLoader.CommonYeast = BioCulture.createAndRegisterBioCulture(new Color(255, 248, 200), "Saccharomyces cerevisiae", BioPlasmid.convertDataToPlasmid(BioCultureLoader.BIO_DATA_YEAST), BioDNA.convertDataToDNA(BioCultureLoader.BIO_DATA_YEAST), true);
+        BioCultureLoader.WhineYeast = BioCulture.createAndRegisterBioCulture(new Color(255, 248, 200), "Saccharomyces cerevisiae var bayanus", BioPlasmid.convertDataToPlasmid(BioCultureLoader.BIO_DATA_YEAST), BioCultureLoader.BIO_DNA_WHINE_YEAST, true);
+        BioCultureLoader.BeerYeast = BioCulture.createAndRegisterBioCulture(new Color(255, 248, 200), "Saccharomyces cerevisiae var cerevisiae", BioPlasmid.convertDataToPlasmid(BioCultureLoader.BIO_DATA_YEAST), BioCultureLoader.BIO_DNA_BEER_YEAST, true);
+        BioCultureLoader.rottenFleshBacteria = BioCulture.createAndRegisterBioCulture(new Color(110, 40, 25), "Escherichia cadaver", BioPlasmid.convertDataToPlasmid(BioCultureLoader.BIO_DATA_BETA_LACMATASE), BioDNA.convertDataToDNA(BioCultureLoader.BIO_DATA_BETA_LACMATASE), false);
+        BioCultureLoader.eColi = BioCulture.createAndRegisterBioCulture(new Color(149, 132, 75), "Escherichia koli", BioPlasmid.convertDataToPlasmid(BioCultureLoader.eColiData), BioDNA.convertDataToDNA(BioCultureLoader.eColiData), true);
+        BioCultureLoader.anaerobicOil = BioCulture.createAndRegisterBioCulture(new Color(0, 0, 0), "Pseudomonas Veronii", BioPlasmid.convertDataToPlasmid(BioCultureLoader.BIO_DNA_ANAEROBIC_OIL), BioDNA.convertDataToDNA(BioCultureLoader.BIO_DATA_ANAEROBIC_OIL), true);
     }
 
 }

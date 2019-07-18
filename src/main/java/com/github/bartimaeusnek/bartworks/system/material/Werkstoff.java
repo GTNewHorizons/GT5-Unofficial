@@ -422,7 +422,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return this.boilingPoint;
         }
 
-        public Stats setBoilingPoint(int boilingPoint) {
+        public Werkstoff.Stats setBoilingPoint(int boilingPoint) {
             this.boilingPoint = boilingPoint;
             return this;
         }
@@ -431,7 +431,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return this.meltingPoint;
         }
 
-        public Stats setMeltingPoint(int meltingPoint) {
+        public Werkstoff.Stats setMeltingPoint(int meltingPoint) {
             this.meltingPoint = meltingPoint;
             return this;
         }
@@ -445,12 +445,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         //logic gate shit
         byte quality = ~0b111111;
 
-        public Stats setmTC_AspectsArray(Pair<Object, Integer>[] mTC_Aspects) {
+        public Werkstoff.Stats setmTC_AspectsArray(Pair<Object, Integer>[] mTC_Aspects) {
             this.mTC_Aspects = mTC_Aspects;
             return this;
         }
 
-        public Stats setmTC_AspectsVarArg(Pair<Object, Integer>... mTC_Aspects) {
+        public Werkstoff.Stats setmTC_AspectsVarArg(Pair<Object, Integer>... mTC_Aspects) {
             this.mTC_Aspects = mTC_Aspects;
             return this;
         }

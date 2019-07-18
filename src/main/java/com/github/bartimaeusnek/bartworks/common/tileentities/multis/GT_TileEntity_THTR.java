@@ -76,30 +76,30 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        HeliumSupply=aNBT.getInteger("HeliumSupply");
-        BISOPeletSupply=aNBT.getInteger("BISOPeletSupply");
-        TRISOPeletSupply=aNBT.getInteger("TRISOPeletSupply");
-        empty=aNBT.getBoolean("EmptyMode");
+        this.HeliumSupply =aNBT.getInteger("HeliumSupply");
+        this.BISOPeletSupply =aNBT.getInteger("BISOPeletSupply");
+        this.TRISOPeletSupply =aNBT.getInteger("TRISOPeletSupply");
+        this.empty =aNBT.getBoolean("EmptyMode");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("HeliumSupply",HeliumSupply);
-        aNBT.setInteger("BISOPeletSupply",BISOPeletSupply);
-        aNBT.setInteger("TRISOPeletSupply",TRISOPeletSupply);
-        aNBT.setBoolean("EmptyMode",empty);
+        aNBT.setInteger("HeliumSupply", this.HeliumSupply);
+        aNBT.setInteger("BISOPeletSupply", this.BISOPeletSupply);
+        aNBT.setInteger("TRISOPeletSupply", this.TRISOPeletSupply);
+        aNBT.setBoolean("EmptyMode", this.empty);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()){
-            if (HeliumSupply < HELIUM_NEEDED){
+            if (this.HeliumSupply < GT_TileEntity_THTR.HELIUM_NEEDED){
                 for (FluidStack fluidStack : this.getStoredFluids()){
                     if (fluidStack.isFluidEqual(Materials.Helium.getGas(1000))) {
-                        while (HeliumSupply < HELIUM_NEEDED && fluidStack.amount > 0) {
-                            HeliumSupply++;
+                        while (this.HeliumSupply < GT_TileEntity_THTR.HELIUM_NEEDED && fluidStack.amount > 0) {
+                            this.HeliumSupply++;
                             fluidStack.amount--;
                         }
                     }
@@ -107,18 +107,18 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
             }
             for (ItemStack itemStack : this.getStoredInputs()) {
                 if (GT_Utility.areStacksEqual(itemStack, new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 3))) {
-                    if (BISOPeletSupply + TRISOPeletSupply < 675000) {
-                        while (BISOPeletSupply + TRISOPeletSupply < 675000 && itemStack.stackSize > 0) {
+                    if (this.BISOPeletSupply + this.TRISOPeletSupply < 675000) {
+                        while (this.BISOPeletSupply + this.TRISOPeletSupply < 675000 && itemStack.stackSize > 0) {
                             itemStack.stackSize--;
-                            TRISOPeletSupply++;
+                            this.TRISOPeletSupply++;
                         }
                         this.updateSlots();
                     }
                 } else if (GT_Utility.areStacksEqual(itemStack, new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 1))) {
-                    if (BISOPeletSupply + TRISOPeletSupply < 675000) {
-                        while (BISOPeletSupply + TRISOPeletSupply < 675000 && itemStack.stackSize > 0) {
+                    if (this.BISOPeletSupply + this.TRISOPeletSupply < 675000) {
+                        while (this.BISOPeletSupply + this.TRISOPeletSupply < 675000 && itemStack.stackSize > 0) {
                             itemStack.stackSize--;
-                            BISOPeletSupply++;
+                            this.BISOPeletSupply++;
 
                         }
                         this.updateSlots();
@@ -131,7 +131,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public boolean checkRecipe(ItemStack controllerStack) {
 
-        if (!(HeliumSupply >= HELIUM_NEEDED && BISOPeletSupply + TRISOPeletSupply >= 100000))
+        if (!(this.HeliumSupply >= GT_TileEntity_THTR.HELIUM_NEEDED && this.BISOPeletSupply + this.TRISOPeletSupply >= 100000))
             return false;
 
         if (new XSTR().nextBoolean()) {
@@ -160,10 +160,10 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public boolean onRunningTick(ItemStack aStack) {
 
-        if (empty){
-            this.addOutput(Materials.Helium.getGas(HeliumSupply));
-            this.addOutput(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, TRISOPeletSupply, 3));
-            this.addOutput(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, BISOPeletSupply, 1));
+        if (this.empty){
+            this.addOutput(Materials.Helium.getGas(this.HeliumSupply));
+            this.addOutput(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, this.TRISOPeletSupply, 3));
+            this.addOutput(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, this.BISOPeletSupply, 1));
             this.HeliumSupply = 0;
             this.TRISOPeletSupply = 0;
             this.BISOPeletSupply = 0;
@@ -213,7 +213,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        final byte xz = 5;
+        byte xz = 5;
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * xz;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * xz;
         for (int x = -xz; x <= xz; x++) {
@@ -230,9 +230,9 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                                 if (!(aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z) == GregTech_API.sBlockCasings3 && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 12)) {
                                     if (
                                             (
-                                                    !(this.addInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), BASECASINGINDEX) && y == 11) &&
-                                                    !(this.addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), BASECASINGINDEX) && y == 0)) &&
-                                                    !this.addMaintenanceToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), BASECASINGINDEX)
+                                                    !(this.addInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), GT_TileEntity_THTR.BASECASINGINDEX) && y == 11) &&
+                                                    !(this.addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), GT_TileEntity_THTR.BASECASINGINDEX) && y == 0)) &&
+                                                    !this.addMaintenanceToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), GT_TileEntity_THTR.BASECASINGINDEX)
                                     ) {
                                         return false;
                                     }
@@ -250,7 +250,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                         {
                             if (!(aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z) == GregTech_API.sBlockCasings3 && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 12)) {
                             if (
-                                    !this.addMaintenanceToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), BASECASINGINDEX))
+                                    !this.addMaintenanceToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), GT_TileEntity_THTR.BASECASINGINDEX))
                             {
                                 return false;
                             }
@@ -296,7 +296,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                 "Progress:", this.mProgresstime / 20 + "secs", this.mMaxProgresstime / 20 + "secs",
                 "BISO-Pebbles:", this.BISOPeletSupply + "pcs.",
                 "TRISO-Pebbles:", this.TRISOPeletSupply + "pcs.",
-                "Helium-Level:", this.HeliumSupply+"L / "+HELIUM_NEEDED+"L",
+                "Helium-Level:", this.HeliumSupply+"L / "+ GT_TileEntity_THTR.HELIUM_NEEDED +"L",
                 "Coolant/t:", this.BISOPeletSupply+this.TRISOPeletSupply >= 100000 ? (long) ((0.03471*(float)this.TRISOPeletSupply + 0.0267*(float)this.BISOPeletSupply))+"L/t" : "0L/t",
                 "Problems:", String.valueOf(this.getIdealStatus() - this.getRepairStatus())
         };
@@ -315,13 +315,13 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[BASECASINGINDEX], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)} : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[BASECASINGINDEX]};
+        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[GT_TileEntity_THTR.BASECASINGINDEX], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)} : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[GT_TileEntity_THTR.BASECASINGINDEX]};
     }
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        empty = !empty;
-        GT_Utility.sendChatToPlayer(aPlayer,empty ? "THTR will now empty itself." : "THTR is back in normal Operation");
+        this.empty = !this.empty;
+        GT_Utility.sendChatToPlayer(aPlayer, this.empty ? "THTR will now empty itself." : "THTR is back in normal Operation");
     }
 
     public static class THTRMaterials{
@@ -340,16 +340,16 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                     40,
                     BW_Util.getMachineVoltageFromTier(5)
                     );
-            GT_Values.RA.addMixerRecipe(WerkstoffLoader.Thorium232.get(OrePrefixes.dust,10),Materials.Uranium235.getDust(1),GT_Utility.getIntegratedCircuit(1),null,null,null,new ItemStack(aTHTR_Materials),400,30);
-            GT_Values.RA.addFormingPressRecipe(new ItemStack(aTHTR_Materials),Materials.Graphite.getDust(64),new ItemStack(aTHTR_Materials,1,4),40,30);
+            GT_Values.RA.addMixerRecipe(WerkstoffLoader.Thorium232.get(OrePrefixes.dust,10),Materials.Uranium235.getDust(1),GT_Utility.getIntegratedCircuit(1),null,null,null,new ItemStack(THTRMaterials.aTHTR_Materials),400,30);
+            GT_Values.RA.addFormingPressRecipe(new ItemStack(THTRMaterials.aTHTR_Materials),Materials.Graphite.getDust(64),new ItemStack(THTRMaterials.aTHTR_Materials,1,4),40,30);
             ItemStack[] pellets = new ItemStack[6];
-            Arrays.fill(pellets,new ItemStack(aTHTR_Materials,64,1));
-            GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false,new ItemStack[]{new ItemStack(aTHTR_Materials,1,4),GT_Utility.getIntegratedCircuit(17)},pellets,null,null,null,null,24000,30,0);
-            GT_Values.RA.addFormingPressRecipe(new ItemStack(aTHTR_Materials,1,4),Materials.Silicon.getDust(64),new ItemStack(aTHTR_Materials,1,2),40,30);
-            GT_Values.RA.addFormingPressRecipe(new ItemStack(aTHTR_Materials,1,2),Materials.Graphite.getDust(64),new ItemStack(aTHTR_Materials,1,5),40,30);
+            Arrays.fill(pellets,new ItemStack(THTRMaterials.aTHTR_Materials,64,1));
+            GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false,new ItemStack[]{new ItemStack(THTRMaterials.aTHTR_Materials,1,4),GT_Utility.getIntegratedCircuit(17)},pellets,null,null,null,null,24000,30,0);
+            GT_Values.RA.addFormingPressRecipe(new ItemStack(THTRMaterials.aTHTR_Materials,1,4),Materials.Silicon.getDust(64),new ItemStack(THTRMaterials.aTHTR_Materials,1,2),40,30);
+            GT_Values.RA.addFormingPressRecipe(new ItemStack(THTRMaterials.aTHTR_Materials,1,2),Materials.Graphite.getDust(64),new ItemStack(THTRMaterials.aTHTR_Materials,1,5),40,30);
             pellets = new ItemStack[6];
-            Arrays.fill(pellets,new ItemStack(aTHTR_Materials,64,3));
-            GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false,new ItemStack[]{new ItemStack(aTHTR_Materials,1,5),GT_Utility.getIntegratedCircuit(17)},pellets,null,null,null,null,48000,30,0);
+            Arrays.fill(pellets,new ItemStack(THTRMaterials.aTHTR_Materials,64,3));
+            GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false,new ItemStack[]{new ItemStack(THTRMaterials.aTHTR_Materials,1,5),GT_Utility.getIntegratedCircuit(17)},pellets,null,null,null,null,48000,30,0);
         }
 
     }

@@ -42,7 +42,7 @@ public class BW_Blocks extends Block {
 
     @SideOnly(Side.CLIENT)
     protected IIcon[] texture;
-    protected String[] textureNames;
+    String[] textureNames;
     protected String name;
 
     public BW_Blocks(String name, String[] texture) {
@@ -73,14 +73,14 @@ public class BW_Blocks extends Block {
     }
 
     @Override
-    public int damageDropped(final int meta) {
+    public int damageDropped(int meta) {
         return meta;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {
-        for (int i = 0; i < textureNames.length; i++) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+        for (int i = 0; i < this.textureNames.length; i++) {
             list.add(new ItemStack(item, 1, i));
         }
     }
@@ -88,21 +88,21 @@ public class BW_Blocks extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return meta < texture.length ? texture[meta] : texture[0];
+        return meta < this.texture.length ? this.texture[meta] : this.texture[0];
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister) {
-        texture = new IIcon[textureNames.length];
-        for (int i = 0; i < textureNames.length; i++) {
-            texture[i] = par1IconRegister.registerIcon(textureNames[i]);
+        this.texture = new IIcon[this.textureNames.length];
+        for (int i = 0; i < this.textureNames.length; i++) {
+            this.texture[i] = par1IconRegister.registerIcon(this.textureNames[i]);
         }
     }
 
     @Override
     public String getUnlocalizedName() {
-        return name;
+        return this.name;
     }
 
     @Override

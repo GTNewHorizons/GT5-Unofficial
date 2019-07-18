@@ -26,16 +26,13 @@ import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.github.bartimaeusnek.crossmod.galacticraft.UniversalTeleportType;
 import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b.WorldProviderRoss128b;
-import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128ba.WorldProviderRoss128Ba;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.DimensionManager;
 
 import java.util.Arrays;
 

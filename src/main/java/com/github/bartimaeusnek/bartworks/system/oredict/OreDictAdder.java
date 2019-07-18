@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class OreDictAdder {
 
-    private static ConcurrentHashMap<String, ItemStack> toAddMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, ItemStack> toAddMap = new ConcurrentHashMap<>();
 
     public static synchronized void addToMap(Pair<String, ItemStack> element){
             OreDictAdder.toAddMap.put(element.getKey(),element.getValue());
@@ -43,7 +43,7 @@ public class OreDictAdder {
     }
 
     public static void addToOreDict(){
-        for (Map.Entry<String, ItemStack> entry: toAddMap.entrySet()){
+        for (Map.Entry<String, ItemStack> entry: OreDictAdder.toAddMap.entrySet()){
             GT_OreDictUnificator.registerOre(entry.getKey(),entry.getValue());
         }
     }
