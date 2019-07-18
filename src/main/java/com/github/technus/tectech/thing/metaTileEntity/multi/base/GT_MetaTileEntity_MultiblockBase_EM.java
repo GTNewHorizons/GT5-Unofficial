@@ -184,7 +184,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      * @param maxC
      * @return
      */
-    public final AxisAlignedBB getBoundingBox(int minA,int minB,int minC,int maxA,int maxB,int maxC){
+    public final AxisAlignedBB getBoundingBox(double minA,double minB,double minC,double maxA,double maxB,double maxC){
         double[] offSetsMin= getTranslatedOffsets(minA,minB,minC);
         double[] offSetsMax= getTranslatedOffsets(maxA,maxB,maxC);
         for (int i=0;i<3;i++){
@@ -210,6 +210,139 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      */
     public final double[] getTranslatedOffsets(double a, double b, double c){
         double[] result=new double[3];
+        switch (getBaseMetaTileEntity().getFrontFacing() +(frontRotation<<3)){
+            case 4:
+                result[0]=  c;
+                result[2]=  a;
+                result[1]=- b;
+                break;
+            case 12:
+                result[0]=  c;
+                result[1]=- a;
+                result[2]=- b;
+                break;
+            case 20:
+                result[0]=  c;
+                result[2]=- a;
+                result[1]=  b;
+                break;
+            case 28:
+                result[0]=  c;
+                result[1]=  a;
+                result[2]=  b;
+                break;
+
+            case 3:
+                result[0]=  a;
+                result[2]=- c;
+                result[1]=- b;
+                break;
+            case 11:
+                result[1]=- a;
+                result[2]=- c;
+                result[0]=- b;
+                break;
+            case 19:
+                result[0]=- a;
+                result[2]=- c;
+                result[1]=  b;
+                break;
+            case 27:
+                result[1]=  a;
+                result[2]=- c;
+                result[0]=  b;
+                break;
+
+            case 5:
+                result[0]=- c;
+                result[2]=- a;
+                result[1]=- b;
+                break;
+            case 13:
+                result[0]=- c;
+                result[1]=- a;
+                result[2]=  b;
+                break;
+            case 21:
+                result[0]=- c;
+                result[2]=  a;
+                result[1]=  b;
+                break;
+            case 29:
+                result[0]=- c;
+                result[1]=  a;
+                result[2]=- b;
+                break;
+
+            case 2:
+                result[0]=- a;
+                result[2]=  c;
+                result[1]=- b;
+                break;
+            case 10:
+                result[1]=- a;
+                result[2]=  c;
+                result[0]=  b;
+                break;
+            case 18:
+                result[0]=  a;
+                result[2]=  c;
+                result[1]=  b;
+                break;
+            case 26:
+                result[1]=  a;
+                result[2]=  c;
+                result[0]=- b;
+                break;
+            //Things get odd if the block faces up or down...
+            case 1:
+                result[0]=  a;
+                result[2]=  b;
+                result[1]=- c;
+                break;//similar to 3
+            case 9:
+                result[2]=  a;
+                result[0]=- b;
+                result[1]=- c;
+                break;//similar to 3
+            case 17:
+                result[0]=- a;
+                result[2]=- b;
+                result[1]=- c;
+                break;//similar to 3
+            case 25:
+                result[2]=- a;
+                result[0]=  b;
+                result[1]=- c;
+                break;//similar to 3
+
+            case 0:
+                result[0]=- a;
+                result[2]=  b;
+                result[1]=  c;
+                break;//similar to 2
+            case 8:
+                result[2]=  a;
+                result[0]=  b;
+                result[1]=  c;
+                break;
+            case 16:
+                result[0]=  a;
+                result[2]=- b;
+                result[1]=  c;
+                break;
+            case 24:
+                result[2]=- a;
+                result[0]=- b;
+                result[0]=- b;
+                result[1]=+ c;
+                break;
+        }
+        return result;
+    }
+
+    public final int[] getTranslatedOffsets(int a, int b, int c){
+        int[] result=new int[3];
         switch (getBaseMetaTileEntity().getFrontFacing() +(frontRotation<<3)){
             case 4:
                 result[0]=  c;
