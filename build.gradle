@@ -89,6 +89,10 @@ task getGregTech(type: Download) {
     dest file("libs/gregtech-${config.gregtech.version}-dev.jar")
     mustRunAfter "deobfBinJar"
     mustRunAfter "repackMinecraft"
+    delete fileTree("$projectDir/libs/") {
+        include 'gregtech-*-dev.jar'
+        exclude "gregtech-${config.gregtech.version}-dev.jar"
+    }
 }
 
 tasks.setupCIWorkspace.dependsOn getGregTech
