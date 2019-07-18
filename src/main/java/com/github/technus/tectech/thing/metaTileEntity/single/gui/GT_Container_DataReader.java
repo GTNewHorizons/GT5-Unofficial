@@ -71,9 +71,8 @@ public class GT_Container_DataReader extends GT_Container_BasicTank {
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
-        switch(par1) {
-            case 102:
-                this.mStuttering = par2 != 0;
+        if (par1 == 102) {
+            this.mStuttering = par2 != 0;
         }
 
     }

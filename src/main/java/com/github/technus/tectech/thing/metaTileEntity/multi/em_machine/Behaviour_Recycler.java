@@ -28,9 +28,9 @@ public class Behaviour_Recycler implements GT_MetaTileEntity_EM_machine.IBehavio
     @Override
     public MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
         float mass=0;
-        for (int i = 0; i < inputs.length; i++) {
-            if(inputs[i]!=null) {
-                mass+=inputs[i].getMass();
+        for (cElementalInstanceStackMap input : inputs) {
+            if (input != null) {
+                mass += input.getMass();
             }
         }
         return new MultiblockControl<>(null,(int)V[tier], 4,

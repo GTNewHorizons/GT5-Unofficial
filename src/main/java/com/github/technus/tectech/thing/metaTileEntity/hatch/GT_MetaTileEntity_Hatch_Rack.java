@@ -222,10 +222,10 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
                     heat -= Math.min(heat / 1000, -1);
                 }
 
-                if (heat > 9000) {
-                    aBaseMetaTileEntity.setOnFire();
-                } else if (heat > 10000) {
+                if (heat > 10000) {
                     aBaseMetaTileEntity.setToFire();
+                } else if (heat > 9000) {
+                    aBaseMetaTileEntity.setOnFire();
                 } else if (heat < -10000) {
                     heat = -10000;
                 }

@@ -47,12 +47,6 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
  * Created by danie_000 on 27.10.2016.
  */
 public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEntity_MultiBlockBase implements IFrontRotation {
-    //region Constants
-    //Placeholders for nothing feel free to use
-    public static final ItemStack[] nothingI = new ItemStack[0];
-    public static final FluidStack[] nothingF = new FluidStack[0];
-    //endregion
-
     //region Client side variables (static - one per class)
 
     //Front icon holders - static so it is default one for my blocks

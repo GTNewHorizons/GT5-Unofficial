@@ -25,6 +25,7 @@ import java.util.HashSet;
 
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.loader.MainLoader.microwaving;
+import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static gregtech.api.GregTech_API.sBlockCasings4;
 
@@ -219,7 +220,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
             damagingFactor>>=1;
         } while(damagingFactor>0);
 
-        mOutputItems= itemsToOutput.toArray(new ItemStack[0]);
+        mOutputItems= itemsToOutput.toArray(nullItem);
 
         if(remainingTime.get() <=0) {
             mte.getWorld().playSoundEffect(xPos,yPos,zPos, Reference.MODID+":microwave_ding", 1, 1);

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
+import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -137,7 +138,7 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
             }
         }
         if(stacks.size()>0){
-            ItemStack[] arr=stacks.toArray(new ItemStack[0]);
+            ItemStack[] arr=stacks.toArray(nullItem);
             for(GT_MetaTileEntity_Hatch_OutputDataItems hatch:eStacksDataOutputs){
                 hatch.q=new InventoryDataPacket(arr);
             }

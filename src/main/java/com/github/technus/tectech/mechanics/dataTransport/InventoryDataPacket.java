@@ -5,6 +5,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
 
+import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
+
 public class InventoryDataPacket extends DataPacket<ItemStack[]> {
     public InventoryDataPacket(ItemStack[] content){
         super(content);
@@ -25,7 +27,7 @@ public class InventoryDataPacket extends DataPacket<ItemStack[]> {
                     stacks.add(stack);
                 }
             }
-            return stacks.size()>0?stacks.toArray(new ItemStack[0]):null;
+            return stacks.size()>0?stacks.toArray(nullItem):null;
         }
         return null;
     }

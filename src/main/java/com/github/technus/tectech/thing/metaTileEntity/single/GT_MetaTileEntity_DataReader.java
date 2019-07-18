@@ -32,6 +32,7 @@ import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -241,7 +242,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
                     }
                     if(array.size()>0){
                         slots2.put(new GT_Slot_Holo(null,0,17+(i&0x3)*18,19+(i>>2)*18,false,false,64),
-                                array.toArray(new ItemStack[0]));
+                                array.toArray(nullItem));
                     }
                 }
                 for (int i = 0; i < 4; i++) {

@@ -9,15 +9,15 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElem
  */
 public final class eBosonDefinition extends cElementalPrimitive {
     public static final eBosonDefinition
-            boson_Y__ = new eBosonDefinition("Photon", "\u03b3", 0, 1e-18F, 0, -1, 27),
-            boson_H__ = new eBosonDefinition("Higgs", "\u0397", 0, 126.09e9F, 0, -2, 28);
+            boson_Y__ = new eBosonDefinition("Photon", "\u03b3", 1e-18F, -1, 27),
+            boson_H__ = new eBosonDefinition("Higgs", "\u0397", 126.09e9F, -2, 28);
     //deadEnd
     public static final cElementalDecay deadEnd = new cElementalDecay(boson_Y__, boson_Y__);
     public static final cElementalDecay deadEndHalf = new cElementalDecay(boson_Y__);
     public static final cElementalDefinitionStack boson_Y__1=new cElementalDefinitionStack(boson_Y__,1);
 
-    private eBosonDefinition(String name, String symbol, int type, float mass, int charge, int color, int ID) {
-        super(name, symbol, type, mass, charge, color, ID);
+    private eBosonDefinition(String name, String symbol, float mass, int color, int ID) {
+        super(name, symbol, 0, mass, 0, color, ID);
     }
 
     public static void run() {

@@ -9,20 +9,20 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElem
  */
 public final class eNeutrinoDefinition extends cElementalPrimitive {
     public static final eNeutrinoDefinition
-            lepton_Ve = new eNeutrinoDefinition("Electron neutrino", "\u03bd\u03b2", 1, 2e0F, 0, -1, 21),
-            lepton_Vm = new eNeutrinoDefinition("Muon neutrino", "\u03bd\u03bc", 2, 0.15e6F, 0, -1, 23),
-            lepton_Vt = new eNeutrinoDefinition("Tauon neutrino", "\u03bd\u03c4", 3, 15e6F, 0, -1, 25),
-            lepton_Ve_ = new eNeutrinoDefinition("Positron neutrino", "~\u03bd\u03b2", -1, 2e0F, 0, -1, 22),
-            lepton_Vm_ = new eNeutrinoDefinition("Antimuon neutrino", "~\u03bd\u03bc", -2, 0.15e6F, 0, -1, 24),
-            lepton_Vt_ = new eNeutrinoDefinition("Antitauon neutrino", "~\u03bd\u03c4", -3, 15e6F, 0, -1, 26);
+            lepton_Ve = new eNeutrinoDefinition("Electron neutrino", "\u03bd\u03b2", 1, 2e0F, 21),
+            lepton_Vm = new eNeutrinoDefinition("Muon neutrino", "\u03bd\u03bc", 2, 0.15e6F, 23),
+            lepton_Vt = new eNeutrinoDefinition("Tauon neutrino", "\u03bd\u03c4", 3, 15e6F, 25),
+            lepton_Ve_ = new eNeutrinoDefinition("Positron neutrino", "~\u03bd\u03b2", -1, 2e0F, 22),
+            lepton_Vm_ = new eNeutrinoDefinition("Antimuon neutrino", "~\u03bd\u03bc", -2, 0.15e6F, 24),
+            lepton_Vt_ = new eNeutrinoDefinition("Antitauon neutrino", "~\u03bd\u03c4", -3, 15e6F, 26);
 
     public static final cElementalDefinitionStack lepton_Ve1 = new cElementalDefinitionStack(lepton_Ve, 1);
     public static final cElementalDefinitionStack lepton_Ve2 = new cElementalDefinitionStack(lepton_Ve, 2);
     public static final cElementalDefinitionStack lepton_Ve_1 = new cElementalDefinitionStack(lepton_Ve_, 1);
     public static final cElementalDefinitionStack lepton_Ve_2 = new cElementalDefinitionStack(lepton_Ve_, 2);
 
-    private eNeutrinoDefinition(String name, String symbol, int type, float mass, int charge, int color, int ID) {
-        super(name, symbol, type, mass, charge, color, ID);
+    private eNeutrinoDefinition(String name, String symbol, int type, float mass, int ID) {
+        super(name, symbol, type, mass, 0, -1, ID);
     }
 
     public static void run() {

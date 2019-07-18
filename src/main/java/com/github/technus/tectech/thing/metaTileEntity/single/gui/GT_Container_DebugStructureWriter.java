@@ -133,15 +133,12 @@ public class GT_Container_DebugStructureWriter
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
-        switch (par1) {
-            case 106:
-                size = par2 == 1;
-                break;
-            default:
-                if (numbers != null && par1 >= 100 && par1 <= 105) {
-                    numbers[par1 - 100] = (short) par2;
-                }
-                break;
+        if (par1 == 106) {
+            size = par2 == 1;
+        } else {
+            if (numbers != null && par1 >= 100 && par1 <= 105) {
+                numbers[par1 - 100] = (short) par2;
+            }
         }
     }
 }

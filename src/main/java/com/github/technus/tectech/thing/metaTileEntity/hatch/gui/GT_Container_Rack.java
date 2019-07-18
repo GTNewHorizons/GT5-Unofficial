@@ -57,9 +57,8 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
-        switch (par1) {
-            case 100:
-                heat = par2 != 0;
+        if (par1 == 100) {
+            heat = par2 != 0;
         }
     }
 

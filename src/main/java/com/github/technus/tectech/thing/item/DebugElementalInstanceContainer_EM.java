@@ -84,7 +84,8 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
     public ItemStack setContent(ItemStack aStack,cElementalInstanceStackMap content){
         NBTTagCompound tNBT = aStack.getTagCompound();
         if(tNBT==null){
-            aStack.setTagCompound(new NBTTagCompound());
+            tNBT=new NBTTagCompound();
+            aStack.setTagCompound(tNBT);
         }
         if (tNBT.hasKey("content")) {
             try {
