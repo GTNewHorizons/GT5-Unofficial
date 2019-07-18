@@ -19,6 +19,7 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.CommonValues.MOVE_AT;
+import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.*;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
@@ -168,7 +169,7 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
                 }
             }
             if(stacks.size()>0) {
-                this.stacks = stacks.toArray(new ItemStack[0]);
+                this.stacks = stacks.toArray(nullItem);
             }
         }
     }

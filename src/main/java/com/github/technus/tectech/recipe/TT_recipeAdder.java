@@ -95,7 +95,7 @@ public class  TT_recipeAdder extends GT_RecipeAdder {
                                 if (tInputs[i] == null) tInputs[i] = uStack;
                             }
                         }
-                        tAlts[i] = uList.toArray(new ItemStack[0]);
+                        tAlts[i] = uList.toArray(nullItem);
                         continue;
                     } catch (Exception t) {
                         TecTech.LOGGER.error("addAssemblingLineRecipe "+aResearchItem.getDisplayName()+" --> there is some ... in that recipe");

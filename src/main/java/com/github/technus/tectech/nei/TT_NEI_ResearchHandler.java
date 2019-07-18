@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static gregtech.api.enums.ItemList.Display_Fluid;
 
 public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
@@ -365,7 +366,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
                     }
                 }
             }
-            items = tDisplayStacks.toArray(new ItemStack[0]);
+            items = tDisplayStacks.toArray(nullItem);
             if (items.length == 0) {
                 items = new ItemStack[]{new ItemStack(Blocks.fire)};
             }
