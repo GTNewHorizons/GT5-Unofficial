@@ -16,6 +16,7 @@ public class aFluidQuantizationInfo implements iExchangeInfo {
         out=emOut;
     }
 
+    @Deprecated
     public aFluidQuantizationInfo(int fluidID,int fluidAmount, iHasElementalDefinition emOut){
         in=new FluidStack(fluidID,fluidAmount);
         out=emOut;
