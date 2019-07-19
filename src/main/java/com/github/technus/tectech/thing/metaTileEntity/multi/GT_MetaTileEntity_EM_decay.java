@@ -42,9 +42,9 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    private static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10;
-    private static final double MASS_TO_EU_PARTIAL = ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear") * 3_000_000.0 / URANIUM_INGOT_MASS_DIFF;
-    private static final double MASS_TO_EU_INSTANT= MASS_TO_EU_PARTIAL *20;
+    public static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10;
+    private static final double URANIUM_MASS_TO_EU_PARTIAL = ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear") * 3_000_000.0 / URANIUM_INGOT_MASS_DIFF;
+    public static final double URANIUM_MASS_TO_EU_INSTANT = URANIUM_MASS_TO_EU_PARTIAL *20;
 
     //region parameters
     protected Parameters.Group.ParameterIn ampereFlow;
@@ -164,7 +164,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         for(cElementalInstanceStack stack:outputEM[0].values()){
             if (stack.getEnergy() == 0 && stack.definition.decayMakesEnergy(1)
                     && getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                            (long) (stack.getEnergySettingCost(1) * MASS_TO_EU_INSTANT), false)) {
+                            (long) (stack.getEnergySettingCost(1) * URANIUM_MASS_TO_EU_INSTANT), false)) {
                 stack.setEnergy(1);
             }else if(!stack.definition.decayMakesEnergy(stack.getEnergy())){
                 outputEM[0].remove(stack.definition);
@@ -175,7 +175,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
         float preMass=outputEM[0].getMass();
         outputEM[0].tickContent(1,0,1);
-        double energyDose=((preMass-outputEM[0].getMass())* MASS_TO_EU_PARTIAL);
+        double energyDose=((preMass-outputEM[0].getMass())* URANIUM_MASS_TO_EU_PARTIAL);
         eAmpereFlow=(long) ampereFlow.get();
         if (eAmpereFlow <= 0) {
             mEUt=0;

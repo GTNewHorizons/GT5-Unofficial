@@ -551,8 +551,9 @@ public class MachineLoader implements Runnable {
         // Hatches
         // ===================================================================================================
 
-        Parametrizer_Hatch.set(new GT_MetaTileEntity_Hatch_Param(15420, "hatch.param.tier.07", "Parametrizer", 7).getStackForm(1L));
-        ParametrizerX_Hatch.set(new GT_MetaTileEntity_Hatch_Param(15421, "hatch.param.tier.10", "Parametrizer X", 10).getStackForm(1L));
+        Parametrizer_Hatch.set(new GT_MetaTileEntity_Hatch_Param(15420, "hatch.param.tier.05", "Parametrizer", 5).getStackForm(1L));
+        ParametrizerX_Hatch.set(new GT_MetaTileEntity_Hatch_Param(15421, "hatch.param.tier.07", "Parametrizer X", 7).getStackForm(1L));
+        ParametrizerTXT_Hatch.set(new GT_MetaTileEntity_Hatch_ParamText(15422, "hatch.param.tier.10", "Parametrizer tXt", 10).getStackForm(1L));
 
         Uncertainty_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15430, "hatch.certain.tier.07", "Uncertainty Resolver", 7).getStackForm(1L));
         UncertaintyX_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15431, "hatch.certain.tier.10", "Uncertainty Resolver X", 10).getStackForm(1L));

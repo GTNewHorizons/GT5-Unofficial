@@ -2,7 +2,9 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.*;
+import com.github.technus.tectech.loader.NetworkDispatcher;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_ParamText;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_ParamText;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -13,6 +15,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,9 +25,10 @@ import net.minecraftforge.fluids.FluidStack;
 /**
  * Created by danie_000 on 15.12.2016.
  */
-public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
-    public int pointer = 0;
+public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch {
     public int param = -1;
+    public String value0s="";
+    public String value1s="";
     public double value0D = 0;
     public double value1D = 0;
     public double input0D = 0;
@@ -32,12 +36,12 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
 
-    public GT_MetaTileEntity_Hatch_Param(int aID, String aName, String aNameRegional, int aTier) {
+    public GT_MetaTileEntity_Hatch_ParamText(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "For parametrization of Multiblocks");
         Util.setTier(aTier,this);
     }
 
-    public GT_MetaTileEntity_Hatch_Param(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_ParamText(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -51,18 +55,15 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mTier > 5) {
-            return new GT_Container_ParamAdv(aPlayerInventory, aBaseMetaTileEntity);
+        if(aPlayerInventory.player instanceof EntityPlayerMP) {
+            NetworkDispatcher.INSTANCE.sendTo(new TextParametersMessage.ParametersTextData(this), (EntityPlayerMP) aPlayerInventory.player);
         }
-        return new GT_Container_Param(aPlayerInventory, aBaseMetaTileEntity);
+        return new GT_Container_ParamText(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mTier > 5) {
-            return new GT_GUIContainer_ParamAdv(aPlayerInventory, aBaseMetaTileEntity);
-        }
-        return new GT_GUIContainer_Param(aPlayerInventory, aBaseMetaTileEntity);
+        return new GT_GUIContainer_ParamText(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
@@ -91,7 +92,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Param(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_ParamText(mName, mTier, mDescription, mTextures);
     }
 
     @Override
@@ -103,6 +104,8 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
     public String[] getInfoData() {
         return new String[]{
                 "Parametrizer ID: " + EnumChatFormatting.GREEN + param,
+                "Value 0S: " + EnumChatFormatting.DARK_AQUA + value0s,
+                "Value 1S: " + EnumChatFormatting.DARK_BLUE + value1s,
                 "Value 0D: " + EnumChatFormatting.AQUA + value0D,
                 "Value 1D: " + EnumChatFormatting.BLUE + value1D,
                 "Input 0D: " + EnumChatFormatting.GOLD   + input0D,
@@ -128,42 +131,31 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("ePointer", pointer);
         aNBT.setDouble("eValue0D", value0D);
         aNBT.setDouble("eValue1D", value1D);
         aNBT.setDouble("eInput0D", input0D);
         aNBT.setDouble("eInput1D", input1D);
         aNBT.setInteger("eParam", param);
+        aNBT.setString("eIeValue0S", value0s);
+        aNBT.setString("eIeValue1S", value1s);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        pointer = aNBT.getInteger("ePointer");
-        if(aNBT.hasKey("eFloats") ||
-                aNBT.hasKey("eValue0i") ||
-                aNBT.hasKey("eValue1i") ||
-                aNBT.hasKey("eInput0i") ||
-                aNBT.hasKey("eInput1i")){
-            boolean usesFloat = aNBT.getBoolean("eFloats");
-            if(usesFloat){
-                value0D=Float.intBitsToFloat(aNBT.getInteger("eValue0i"));
-                value1D=Float.intBitsToFloat(aNBT.getInteger("eValue1i"));
-                input0D=Float.intBitsToFloat(aNBT.getInteger("eInput0i"));
-                input1D=Float.intBitsToFloat(aNBT.getInteger("eInput1i"));
-            }else {
-                value0D=aNBT.getInteger("eValue0i");
-                value1D=aNBT.getInteger("eValue1i");
-                input0D=aNBT.getInteger("eInput0i");
-                input1D=aNBT.getInteger("eInput1i");
-            }
-        }else{
-            value0D=aNBT.getDouble("eValue0D");
-            value1D=aNBT.getDouble("eValue1D");
-            input0D=aNBT.getDouble("eInput0D");
-            input1D=aNBT.getDouble("eInput1D");
-        }
+        value0D = aNBT.getDouble("eValue0D");
+        value1D = aNBT.getDouble("eValue1D");
+        input0D = aNBT.getDouble("eInput0D");
+        input1D = aNBT.getDouble("eInput1D");
         param = aNBT.getInteger("eParam");
+        value0s = aNBT.getString("eIeValue0S");
+        if (value0s==null){
+            value0s="";
+        }
+        value1s = aNBT.getString("eIeValue1S");
+        if(value1s==null){
+            value1s="";
+        }
     }
 
     @Override
