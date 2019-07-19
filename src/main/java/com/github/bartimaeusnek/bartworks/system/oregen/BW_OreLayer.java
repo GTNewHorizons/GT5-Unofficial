@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.system.oregen;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGeneratedOreTE;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import gregtech.api.GregTech_API;
@@ -149,10 +150,16 @@ public abstract class BW_OreLayer extends GT_Worldgen {
     }
 
     public boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean isSmallOre) {
+        //security stuff to prevent crashes with 2 TileEntites on the same Spot
+        TileEntity te = aWorld.getTileEntity(aX,aY,aZ);
+        if (te instanceof BW_MetaGeneratedOreTE || te instanceof GT_TileEntity_Ores)
+            return true;
+
         if ((aMetaData == this.mSporadicMeta && (this.bwOres & 0b0001) != 0) || (aMetaData == this.mBetweenMeta && (this.bwOres & 0b0010) != 0) || (aMetaData == this.mPrimaryMeta && (this.bwOres & 0b1000) != 0) || (aMetaData == this.mSecondaryMeta && (this.bwOres & 0b0100) != 0)) {
-            return BW_MetaGenerated_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, getDefaultBlockToReplace());
+            return BW_MetaGenerated_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, this.getDefaultBlockToReplace());
         }
-        return setGTOreBlockSpace(aWorld, aX, aY, aZ, aMetaData, getDefaultBlockToReplace());
+
+        return this.setGTOreBlockSpace(aWorld, aX, aY, aZ, aMetaData, this.getDefaultBlockToReplace());
     }
 
     public boolean setGTOreBlockSpace(World aWorld, int aX, int aY, int aZ, int aMetaData, Block block){

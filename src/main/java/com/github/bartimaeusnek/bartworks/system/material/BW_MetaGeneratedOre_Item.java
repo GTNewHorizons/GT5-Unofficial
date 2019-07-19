@@ -23,11 +23,17 @@
 package com.github.bartimaeusnek.bartworks.system.material;
 
 import com.github.bartimaeusnek.bartworks.common.items.BW_ItemBlocks;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BW_MetaGeneratedOre_Item extends BW_ItemBlocks {
 
@@ -45,6 +51,16 @@ public class BW_MetaGeneratedOre_Item extends BW_ItemBlocks {
 
     public String getItemStackDisplayName(ItemStack aStack) {
         return GT_LanguageManager.getTranslation("bw.blockores.01." + aStack.getItemDamage() + ".name");
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+        if (!GT_Utility.isStackValid(aStack) || aPlayer == null || aStack.getItemDamage() <= 0)
+            return;
+        if (aList == null)
+            aList = new ArrayList<String>();
+        aList.add(Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage()).getToolTip());
     }
 
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side, float hitX, float hitY, float hitZ, int aMeta) {

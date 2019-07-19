@@ -24,6 +24,7 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.GregTech_API;
@@ -42,6 +43,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import static gregtech.api.enums.GT_Values.V;
@@ -93,6 +95,21 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                 returnset.add(false);
         return returnset.size() > 0 && !returnset.contains(false);
     }
+
+//    @Override
+//    public long getMaxInputVoltage() {
+//        long rVoltage = 0L;
+//        Iterator var3 = this.mEnergyHatches.iterator();
+//
+//        while(var3.hasNext()) {
+//            GT_MetaTileEntity_Hatch_Energy tHatch = (GT_MetaTileEntity_Hatch_Energy)var3.next();
+//            if (isValidMetaTileEntity(tHatch)) {
+//                rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
+//            }
+//        }
+//        //glass tier needs NBT persistance if this is enabled
+//        return glasTier != 8 && rVoltage > BW_Util.getTierVoltage(glasTier) ? BW_Util.getTierVoltage(glasTier) : rVoltage ;
+//    }
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
@@ -223,7 +240,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         mHeatingCapacity = 0;
         HashSet<Boolean> ret = new HashSet<Boolean>();
-        ret.add(BW_Util.check_layer(iGregTechTileEntity, 7, -2, -1, GregTech_API.sBlockCasings1, 11, 7, 11));
+        ret.add(BW_Util.check_layer(iGregTechTileEntity, 7, -2, -1, GregTech_API.sBlockCasings1, 11, 7, false,false,true,GregTech_API.sBlockCasings1,11,true,11));
         ret.add(BW_Util.check_layer(iGregTechTileEntity, 7, 17, 18, GregTech_API.sBlockCasings1, 11, 7, false, null, -1, 11));
         ret.add(BW_Util.check_layer(iGregTechTileEntity, 6, -1, 17, GregTech_API.sBlockCasings5, -1, 7, false, false, true, Blocks.air, -1, false, 11));
         for (int y = -1; y < 17; y++) {

@@ -46,9 +46,9 @@ public class GT_GUIContainer_LESU extends GT_GUIContainer {
     private GT_TileEntity_LESU c;
 
     public GT_GUIContainer_LESU(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-        super(new GT_Container_LESU(aInventoryPlayer, aTileEntity), texture.getResourceDomain());
-        mContainer = ((GT_Container_LESU) this.inventorySlots);
-        c = ((GT_TileEntity_LESU) (this.mContainer.mTileEntity.getMetaTileEntity()));
+        super(new GT_Container_LESU(aInventoryPlayer, aTileEntity), GT_GUIContainer_LESU.texture.getResourceDomain());
+        this.mContainer = ((GT_Container_LESU) this.inventorySlots);
+        this.c = ((GT_TileEntity_LESU) (this.mContainer.mTileEntity.getMetaTileEntity()));
     }
 
     @Override
@@ -60,7 +60,7 @@ public class GT_GUIContainer_LESU extends GT_GUIContainer {
             this.drawString(this.fontRendererObj, "MAX: " + (this.c.getBaseMetaTileEntity().isActive() ? String.valueOf(this.mContainer.mOutput) + percell : Integer.toString(0)), 11, 24, 16448255);
             this.drawString(this.fontRendererObj, "MAX EU/t IN: " + String.valueOf(this.mContainer.mInput), 11, 32, 16448255);
             this.drawString(this.fontRendererObj, "EU/t OUT: " + String.valueOf(this.mContainer.mOutput), 11, 40, 16448255);
-            this.drawString(this.fontRendererObj, "AMP/t IN/OUT: " + String.valueOf(c.getBaseMetaTileEntity().getInputAmperage()), 11, 48, 16448255);
+            this.drawString(this.fontRendererObj, "AMP/t IN/OUT: " + String.valueOf(this.c.getBaseMetaTileEntity().getInputAmperage()), 11, 48, 16448255);
             if (c.maxEUStore() >= Long.MAX_VALUE - 1) {
                 this.drawString(this.fontRendererObj, StatCollector.translateToLocal("tooltip.LESU.0.name"), 11, 56, Color.YELLOW.getRGB());
             }

@@ -26,6 +26,7 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.server.container.BW_Container_RadioHatch;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
@@ -37,7 +38,7 @@ public class BW_GUIContainer_RadLevel extends GuiContainer {
 
     public BW_GUIContainer_RadLevel(Container p_i1072_1_) {
         super(p_i1072_1_);
-        container = (BW_Container_RadioHatch) p_i1072_1_;
+        this.container = (BW_Container_RadioHatch) p_i1072_1_;
     }
 
 
@@ -45,16 +46,16 @@ public class BW_GUIContainer_RadLevel extends GuiContainer {
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor3f(1, 1, 1);
         this.mc.getTextureManager().bindTexture(new ResourceLocation(MainMod.MOD_ID, "textures/GUI/GUI_RSC.png"));
-        drawTexturedModalRect(guiLeft - 79, guiTop, 0, 0, 256, 165);
+        this.drawTexturedModalRect(this.guiLeft - 79, this.guiTop, 0, 0, 256, 165);
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-        int y = 51 + (container.coverage / 2 - 3);
+        int y = 51 + (this.container.coverage / 2 - 3);
         int x = -63;
-        if (container.coverage != 100 && container.coverage != 0)
-            drawRect(x, y, x + 51, y + 1, 0xFF60D82E);
-        drawRect(x, 48, x + 51, y, 0xFF8B8B8B);
-        this.fontRendererObj.drawString(Byte.toString(container.coverage), 88 - 79, 50, 16448255);
+        if (this.container.coverage != 100 && this.container.coverage != 0)
+            Gui.drawRect(x, y, x + 51, y + 1, 0xFF60D82E);
+        Gui.drawRect(x, 48, x + 51, y, 0xFF8B8B8B);
+        this.fontRendererObj.drawString(Byte.toString(this.container.coverage), 88 - 79, 50, 16448255);
     }
 }
