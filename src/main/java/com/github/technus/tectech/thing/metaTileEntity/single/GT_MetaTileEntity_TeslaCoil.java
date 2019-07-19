@@ -24,15 +24,16 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private int maxTier = 4; //Max tier of transceiver
     private int minTier = 1; //Min tier of transceiver
 
-    private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<IGregTechTileEntity, Integer>();//Tesla Map to map them tesla bois!
-    private int scanTime = 0; //Sets scan time to Z E R O :epic:
-    private int scanTimeMin = 100; //Min scan time in ticks
-    private int scanTimeTill = scanTimeMin; //Set default scan time
-    private int scanRadiusMax = 20; //Tesla scan radius
-    private int scanRadiusMin = 4; //Tesla scan radius
-    private int scanRadiusLimitTop = scanRadiusMin + (scanRadiusMax - scanRadiusMin) / (maxTier - minTier + 1) * (mTier - 1); //Tesla scan radius Formula
-    private int scanRadiusLimitBottom = 1; //Minimum user configurable scanRadius
-    private int scanRadius = scanRadiusLimitTop; //Default scanRadius setting
+    //private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<IGregTechTileEntity, Integer>();//Tesla Map to map them tesla bois!
+    public Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<IGregTechTileEntity, Integer>();//Tesla Map to map them tesla bois!
+    //private int scanTime = 0; //Sets scan time to Z E R O :epic:
+    //private int scanTimeMin = 100; //Min scan time in ticks
+    //private int scanTimeTill = scanTimeMin; //Set default scan time
+    private int transferRadiusMax = 20; //Tesla scan radius
+    private int transferRadiusMin = 4; //Tesla scan radius
+    private int transferRadiusLimitTop = transferRadiusMin + (transferRadiusMax - transferRadiusMin) / (maxTier - minTier + 1) * (mTier - 1); //Tesla scan radius Formula
+    private int transferRadiusLimitBottom = 1; //Minimum user configurable
+    private int transferRadius = transferRadiusLimitTop; //Default transferRadius setting
     private int transferRadiusTower = 0; //Radius for transceiver to tower transfers
     private int transferRadiusCover = 0; //Radius for transceiver to cover transfers
 
@@ -105,19 +106,19 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     @Override
     public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
-            if (scanRadius > scanRadiusLimitBottom) {
-                scanRadius--;
+            if (transferRadius > transferRadiusLimitBottom) {
+                transferRadius--;
             } else {
-                scanRadius = scanRadiusLimitTop;
+                transferRadius = transferRadiusLimitTop;
             }
         } else {
-            if (scanRadius < scanRadiusLimitTop) {
-                scanRadius++;
+            if (transferRadius < transferRadiusLimitTop) {
+                transferRadius++;
             } else {
-                scanRadius = scanRadiusLimitBottom;
+                transferRadius = transferRadiusLimitBottom;
             }
         }
-        PlayerChatHelper.SendInfo(aPlayer, "Tesla Radius Changed to " + scanRadius + " Blocks");
+        PlayerChatHelper.SendInfo(aPlayer, "Tesla Radius Changed to " + transferRadius + " Blocks");
         return false;
     }
 
@@ -155,50 +156,51 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide()) {
+        if (aBaseMetaTileEntity.isServerSide() && !eTeslaMap.isEmpty()) {
 
             ////Hysteresis based ePowerPass Config
             long energyMax = getStoredEnergy()[1];
             long energyStored = getStoredEnergy()[0];
-            float energyFraction = (float) energyStored / energyMax;
+            float energyFrac = (float) energyStored / energyMax;
 
             //ePowerPass hist toggle
-            if (!powerPassToggle && energyFraction > histHigh) {
+            if (!powerPassToggle && energyFrac > histHigh) {
                 powerPassToggle = true;
-            } else if (powerPassToggle && energyFraction < histLow) {
+            } else if (powerPassToggle && energyFrac < histLow) {
                 powerPassToggle = false;
             }
 
-            ////Scanning for active teslas
-            scanTime++;
-            if (scanTime >= scanTimeTill) {
-                scanTime = 0;
-                eTeslaMap.clear();
-
-                for (int xPosOffset = -scanRadius; xPosOffset <= scanRadius; xPosOffset++) {
-                    for (int yPosOffset = -scanRadius; yPosOffset <= scanRadius; yPosOffset++) {
-                        for (int zPosOffset = -scanRadius; zPosOffset <= scanRadius; zPosOffset++) {
-                            if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0) {
-                                continue;
-                            }
-                            IGregTechTileEntity node = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
-                            if (node == null) {
-                                continue;
-                            }
-                            IMetaTileEntity nodeInside = node.getMetaTileEntity();
-                            if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
-                                eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(xPosOffset * xPosOffset + yPosOffset * yPosOffset + zPosOffset * zPosOffset)));
-                            }
-                        }
-                    }
-                }
-            }
+            //Scanning for active teslas
+            //scanTime++;
+            //if (scanTime >= scanTimeTill) {
+            //    scanTime = 0;
+            //    eTeslaMap.clear();
+            //
+            //    for (int xPosOffset = -transferRadius; xPosOffset <= transferRadius; xPosOffset++) {
+            //        for (int yPosOffset = -transferRadius; yPosOffset <= transferRadius; yPosOffset++) {
+            //            for (int zPosOffset = -transferRadius; zPosOffset <= transferRadius; zPosOffset++) {
+            //                if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0) {
+            //                    continue;
+            //                }
+            //                IGregTechTileEntity node = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
+            //                if (node == null) {
+            //                    continue;
+            //                }
+            //                IMetaTileEntity nodeInside = node.getMetaTileEntity();
+            //                if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
+            //                    eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(xPosOffset * xPosOffset + yPosOffset * yPosOffset + zPosOffset * zPosOffset)));
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
             //Stuff to do if ePowerPass
             if (powerPassToggle) {
+                float rangeFrac = (float)((-0.5*Math.pow(energyFrac,2))+(1.5*energyFrac));
                 outputCurrent = mBatteryCount;
-                transferRadiusTower = (int) (scanRadius * energyFraction);
-                transferRadiusCover = (int) (transferRadiusTower / 1.5);
+                transferRadiusTower = (int) (transferRadius * rangeFrac);
+                transferRadiusCover = (int) (transferRadiusTower / 1.25);
 
                 //Clean the eTeslaMap
                 for (Map.Entry<IGregTechTileEntity, Integer> Rx : eTeslaMap.entrySet()) {

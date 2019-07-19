@@ -617,7 +617,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         long energyStored = getEUVar();
 
         float energyFrac = (float)energyStored/energyMax;
-        float rangeFrac = (float)((-0.5*Math.pow(energyFrac,2))+(1.5*energyFrac));
 
         energyCapacityDisplay.set(energyMax);
         energyStoredDisplay.set(energyStored);
@@ -678,6 +677,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         //Stuff to do if ePowerPass
         if (ePowerPass) {
             //Range calculation and display
+            float rangeFrac = (float)((-0.5*Math.pow(energyFrac,2))+(1.5*energyFrac));
             transferRadiusTower = (int)(transferRadiusTowerSetting.get()*getRangeMulti(mTier,vTier)*rangeFrac);
             transferRadiusTowerDisplay.set(transferRadiusTower);
             transferRadiusTransceiver = (int)(transferRadiusTransceiverSetting.get()*getRangeMulti(mTier,vTier)*rangeFrac);
