@@ -24,6 +24,7 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.items.LabParts;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
@@ -149,7 +150,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     private int calcMod(double x) {
-        int ret = (int) Math.ceil(100D*(-(((2*x/this.getOutputCapacity())-1)*(2*x/this.getOutputCapacity()-1D))+1D));
+        int ret = (int) Math.ceil(ConfigHandler.bioVatMaxParallelBonus*(-(((2D*x/(double)this.getOutputCapacity())-1D)*(2D*x/(double)this.getOutputCapacity()-1D))+1D));
         return ret <= 0 ? 1 : ret > 100 ? 100 : ret;//(int) Math.ceil((-0.00000025D * x * (x - this.getOutputCapacity())));
     }
 

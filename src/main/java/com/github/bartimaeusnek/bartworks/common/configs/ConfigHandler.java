@@ -43,6 +43,7 @@ public class ConfigHandler {
     public static int landerType = 3;
     public static int ross128bRuinChance = 512;
     public static int creativeScannerID;
+    public static int bioVatMaxParallelBonus = 1000;
 
     public static long energyPerCell = 1000000L;
 
@@ -75,6 +76,7 @@ public class ConfigHandler {
         ConfigHandler.DEHPDirectSteam = ConfigHandler.c.get("Multiblocks", "DEHP Direct Steam Mode", false, "This switch enables the Direct Steam Mode of the DEHP. If enabled it will take in Waterand output steam. If disabled it will Input IC2Coolant and output hot coolant").getBoolean(false);
         ConfigHandler.megaMachinesMax = ConfigHandler.c.get("Multiblocks", "Mega Machines Maximum Recipes per Operation", 256, "This changes the Maximum Recipes per Operation to the specified Valure").getInt(256);
         ConfigHandler.mbWaterperSec = ConfigHandler.c.get("Singleblocks", "mL Water per Sec for the StirlingPump", 150).getInt(150);
+        ConfigHandler.bioVatMaxParallelBonus = ConfigHandler.c.get("Multiblocks","BioVat Maximum Bonus on Recipes", 1000,"This are the maximum parallel Operations the BioVat can do, when the output is half full.").getInt(1000);
         if (ConfigHandler.IDOffset == 0) {
             ConfigHandler.IDOffset = 12600;
             ConfigHandler.c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + ConfigHandler.IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").set(12600);
