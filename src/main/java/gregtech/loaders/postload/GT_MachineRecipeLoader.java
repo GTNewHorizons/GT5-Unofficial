@@ -1909,6 +1909,7 @@ if(Loader.isModLoaded("Railcraft")){
 		addProcess(tCrop,Materials.Titanium,100, true);
 		addProcess(tCrop,Materials.Ilmenite,100, false);
 		addProcess(tCrop,Materials.Bauxite,100, false);
+		addProcess(tCrop,Materials.Rutile,100, false);
 		tCrop = ItemList.Crop_Drop_Scheelite.get(1, new Object[0]);
 		addProcess(tCrop,Materials.Scheelite,100, true);
 		addProcess(tCrop,Materials.Tungstate,100, false);
