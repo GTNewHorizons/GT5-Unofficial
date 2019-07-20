@@ -125,7 +125,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
             return "%material";
         default:
             return "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
-        }
+    	}
     }
 
     public String getLocalizedName(Materials aMaterial) {
