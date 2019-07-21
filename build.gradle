@@ -26,6 +26,15 @@ allprojects {
     targetCompatibility = 1.8
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+            srcDir 'AVRcore/src'
+        }
+    }
+}
+
 file "build.properties" withReader {
     def prop = new Properties()
     prop.load(it)
