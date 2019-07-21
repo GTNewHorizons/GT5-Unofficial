@@ -192,7 +192,7 @@ public class DreamCraftRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Transformer_MAX_UV.get(1), CustomItemList.eM_dynamoMulti4_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4)}, Materials.Electrum.getMolten(1152), CustomItemList.eM_dynamoMulti16_UV.get(1), 200, 122880);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("WetTransformer_UHV_UV").get(1), CustomItemList.eM_dynamoMulti16_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.NaquadahAlloy, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 6)}, Materials.Tungsten.getMolten(1152), CustomItemList.eM_dynamoMulti64_UV.get(1), 400, 122880);
 
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hatch_Dynamo_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Superconductor, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2)}, Materials.Silver.getMolten(2304), CustomItemList.eM_dynamoMulti4_UHV.get(1), 100, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hatch_Dynamo_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2)}, Materials.Silver.getMolten(2304), CustomItemList.eM_dynamoMulti4_UHV.get(1), 100, 500000);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Transformer_UEV_UHV").get(1), CustomItemList.eM_dynamoMulti4_UHV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUHV, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 4)}, Materials.Electrum.getMolten(2304), CustomItemList.eM_dynamoMulti16_UHV.get(1), 200, 500000);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("WetTransformer_UEV_UHV").get(1), CustomItemList.eM_dynamoMulti16_UHV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.SuperconductorUHV, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 6)}, Materials.Tungsten.getMolten(2304), CustomItemList.eM_dynamoMulti64_UHV.get(1), 400, 500000);
 
@@ -209,7 +209,7 @@ public class DreamCraftRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Transformer_MAX_UV.get(1), CustomItemList.eM_energyMulti4_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4)}, Materials.Electrum.getMolten(1000), CustomItemList.eM_energyMulti16_UV.get(1), 200, 122880);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("WetTransformer_UHV_UV").get(1), CustomItemList.eM_energyMulti16_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.NaquadahAlloy, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 6)}, Materials.Tungsten.getMolten(1000), CustomItemList.eM_energyMulti64_UV.get(1), 400, 122880);
 
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hatch_Energy_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Superconductor, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2)}, Materials.Silver.getMolten(2000), CustomItemList.eM_energyMulti4_UHV.get(1), 100, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hatch_Energy_MAX.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2)}, Materials.Silver.getMolten(2000), CustomItemList.eM_energyMulti4_UHV.get(1), 100, 500000);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("Transformer_UEV_UHV").get(1), CustomItemList.eM_energyMulti4_UHV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUHV, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 4)}, Materials.Electrum.getMolten(2000), CustomItemList.eM_energyMulti16_UHV.get(1), 200, 500000);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{getItemContainer("WetTransformer_UEV_UHV").get(1), CustomItemList.eM_energyMulti16_UHV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.SuperconductorUHV, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 6)}, Materials.Tungsten.getMolten(2000), CustomItemList.eM_energyMulti64_UHV.get(1), 400, 500000);
 
@@ -483,7 +483,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 ItemList.Robot_Arm_LuV.get(2),
                 ItemList.Electric_Piston_LuV.get(2),
                 ItemList.Circuit_Wetwaresupercomputer.get(2),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 4),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(1000),
                 Materials.Naquadah.getMolten(1296),
@@ -498,7 +498,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 4),
                 ItemList.Emitter_UV.get(2),
                 ItemList.Circuit_Wetwaresupercomputer.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 2),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 2),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(1000),
                 Materials.Naquadah.getMolten(1296),
@@ -513,7 +513,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 4),
                 ItemList.Sensor_UV.get(2),
                 ItemList.Circuit_Wetwaresupercomputer.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 2),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 2),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(1000),
                 Materials.Naquadah.getMolten(1296),
@@ -1066,7 +1066,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                     ItemList.Circuit_Wafer_HPIC.get(64),
                     ItemList.Circuit_Wafer_HPIC.get(64),
                     ItemList.Circuit_Parts_DiodeSMD.get(64),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 32),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 32),
             }, new FluidStack[]{
                     Materials.SolderingAlloy.getMolten(2880),
                     new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)
