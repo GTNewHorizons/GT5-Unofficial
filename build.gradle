@@ -114,15 +114,16 @@ task submodulesUpdate(type: Exec) {
     group 'Build Setup'
 }
 
-tasks.setupCIWorkspace.dependsOn getGregTech
-tasks.setupDevWorkspace.dependsOn getGregTech
-tasks.setupDecompWorkspace.dependsOn getGregTech
-tasks.compileJava.dependsOn getGregTech
-
 tasks.setupCIWorkspace.dependsOn submodulesUpdate
 tasks.setupDevWorkspace.dependsOn submodulesUpdate
 tasks.setupDecompWorkspace.dependsOn submodulesUpdate
 tasks.compileJava.dependsOn submodulesUpdate
+tasks.sourceMainJava.dependsOn submodulesUpdate
+
+tasks.setupCIWorkspace.dependsOn getGregTech
+tasks.setupDevWorkspace.dependsOn getGregTech
+tasks.setupDecompWorkspace.dependsOn getGregTech
+tasks.compileJava.dependsOn getGregTech
 
 processResources
         {
