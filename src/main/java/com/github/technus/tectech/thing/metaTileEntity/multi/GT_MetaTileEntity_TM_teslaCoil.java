@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
@@ -342,9 +343,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         energyCapacity=aNBT.getLong("energyCapacity");
     }
 
+    //TODO Rewrite efficiency formulas
     private long getEnergyEfficiency(long voltage, int mTier, boolean overDriveToggle){
         if (overDriveToggle){
-            return (long)(voltage * (2-energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier)*(2- overdriveEfficiency)); //Sum overdrive efficiency formula
+            return (long)(voltage * (2-energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier)*(2 - overdriveEfficiency)); //Sum overdrive efficiency formula
         } else {
             return (long)(voltage * energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier); //Efficiency Formula
         }
@@ -597,8 +599,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                         continue;
                     }
                     IMetaTileEntity nodeInside = node.getMetaTileEntity();
-                    if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil || nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil_Ultimate)) {
-                        eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(xPosOffset * xPosOffset + yPosOffset * yPosOffset + zPosOffset * zPosOffset)));
+                    if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil || nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
+                       // eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(xPosOffset * xPosOffset + yPosOffset * yPosOffset + zPosOffset * zPosOffset)));//TODO Test if range valid
+                        eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(Math.pow(xPosOffset,2) + Math.pow(yPosOffset,2) + Math.pow(zPosOffset,2))));
                     }
                 }
             }
@@ -651,11 +654,53 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 scanForTransmissionTargets((int) xPosScanMin, (int) yPosScan4, (int) zPosScanMin, (int) xPosScanMax, (int) yPosScan5, (int) zPosScanMax);
                 break;
             default:
-                if (scanTime == (int) scanTimeMinSetting.get()-1) {
+                if (scanTime == (int) scanTimeMinSetting.get() - 1) {
                     scanTime = -1;
+
+                    IGregTechTileEntity mte = getBaseMetaTileEntity();
+                    for (Map.Entry<IGregTechTileEntity, Integer> Rx : eTeslaMap.entrySet()) {
+                        IGregTechTileEntity node = Rx.getKey();
+                        if (node != null) {
+                            IMetaTileEntity nodeInside = node.getMetaTileEntity();
+                            try {
+                                if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil) {
+                                    GT_MetaTileEntity_TeslaCoil teslaCoil = (GT_MetaTileEntity_TeslaCoil) nodeInside;
+
+                                    float tX = node.getXCoord();
+                                    float tY = node.getYCoord();
+                                    float tZ = node.getZCoord();
+
+                                    float tXN = mte.getXCoord();
+                                    float tYN = mte.getYCoord();
+                                    float tZN = mte.getZCoord();
+
+                                    int tOffset = (int) Math.ceil(Math.sqrt(Math.pow(tX-tXN,2) + Math.pow(tY-tYN,2) + Math.pow(tZ-tZN,2)));
+                                    teslaCoil.eTeslaMap.put(mte,tOffset);
+
+                                    for (Map.Entry<IGregTechTileEntity, Integer> RRx : eTeslaMap.entrySet()) {
+                                        IGregTechTileEntity nodeN = RRx.getKey();
+                                        if (nodeN == node){
+                                            continue;
+                                        }
+                                        tXN = nodeN.getXCoord();
+                                        tYN = nodeN.getYCoord();
+                                        tZN = nodeN.getZCoord();
+                                        tOffset = (int) Math.ceil(Math.sqrt(Math.pow(tX-tXN,2) + Math.pow(tY-tYN,2) + Math.pow(tZ-tZN,2)));
+                                        if (tOffset > 20){
+                                            continue;
+                                        }
+                                        teslaCoil.eTeslaMap.put(nodeN,tOffset);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                eTeslaMap.remove(Rx.getKey());
+                            }
+                        }
+                    }
                 }
                 break;
         }
+
         scanTime++;
         scanTimeDisplay.set(scanTime);
 
@@ -701,7 +746,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                             if (teslaCoil.getStoredEnergy()[1] > 0) {
                                 continue;
                             }
-                        } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil_Ultimate) && node.getEUCapacity() > 0) {
+                        } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil) && node.getEUCapacity() > 0) {
                             continue;
                         }
                     } catch (Exception e) {
