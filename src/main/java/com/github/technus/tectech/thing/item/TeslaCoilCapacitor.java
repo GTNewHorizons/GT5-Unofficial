@@ -24,7 +24,7 @@ public final class TeslaCoilCapacitor extends Item {
 
     public TeslaCoilCapacitor() {
         setUnlocalizedName("tm.teslaCoilCapacitor");
-        setTextureName(MODID + ":itemParametrizerMemoryCardUnlocked");
+        setTextureName(MODID + ":itemCapacitorLV");
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "LV Tesla Capacitor");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "MV Tesla Capacitor");
@@ -74,10 +74,10 @@ public final class TeslaCoilCapacitor extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         LVicon = itemIcon = iconRegister.registerIcon(getIconString());
-        MVicon = iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
-        HVicon = iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
-        EVicon = iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
-        IVicon = iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
+        MVicon = iconRegister.registerIcon(MODID + ":itemCapacitorMV");
+        HVicon = iconRegister.registerIcon(MODID + ":itemCapacitorHV");
+        EVicon = iconRegister.registerIcon(MODID + ":itemCapacitorEV");
+        IVicon = iconRegister.registerIcon(MODID + ":itemCapacitorIV");
     }
 
     @Override
