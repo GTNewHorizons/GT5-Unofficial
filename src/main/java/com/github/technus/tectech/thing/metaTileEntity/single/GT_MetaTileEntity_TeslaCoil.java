@@ -54,13 +54,10 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private float sumOverdriveEfficiency = (2 - energyEfficiency) * (2 - overdriveEfficiency); //Sum overdrive efficiency formula
 
     //TODO Rewrite over drive efficiency formulas
-    public boolean overDriveToggle = false; //Overdrive toggle
+    private boolean overDriveToggle = false; //Overdrive toggle
     private long outputVoltage = V[mTier]; //Tesla Voltage Output
     private long outputVoltagePostEfficiency = (long) (outputVoltage * energyEfficiency); //Max power a machine can actually receive
     private long outputVoltagePostOverdrive = (long) (outputVoltage * sumOverdriveEfficiency); //Max power the sender can consume
-    private long outputVoltageInjectable = 0; //How much EU will be received post distance losses
-    private long outputVoltageConsumption = 0; //How much EU will be drained
-    private long outputCurrent = 0; //Tesla Current Output
 
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, "Tesla Coil Transceiver", aSlotCount);
@@ -75,10 +72,10 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (overDriveToggle) {
             overDriveToggle = false;
-            PlayerChatHelper.SendInfo(aPlayer, "Overdrive Disengaged");
+            PlayerChatHelper.SendInfo(aPlayer, "Overdrive disengaged");
         } else {
             overDriveToggle = true;
-            PlayerChatHelper.SendInfo(aPlayer, "Overdrive Engaged");
+            PlayerChatHelper.SendInfo(aPlayer, "Overdrive engaged");
         }
         return true;
     }
@@ -92,7 +89,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                 histSettingHigh = histSettingLow + 1;
             }
             histHigh = (float) histSettingHigh / histSteps;
-            PlayerChatHelper.SendInfo(aPlayer, "Hysteresis High Changed to " + round(histHigh * 100F) + "%");
+            PlayerChatHelper.SendInfo(aPlayer, "Hysteresis high set to " + round(histHigh * 100F) + "%");
         } else {
             if (histSettingLow > histLowLimit) {
                 histSettingLow--;
@@ -100,7 +97,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                 histSettingLow = histSettingHigh - 1;
             }
             histLow = (float) histSettingLow / histSteps;
-            PlayerChatHelper.SendInfo(aPlayer, "Hysteresis Low Changed to " + round(histLow * 100F) + "%");
+            PlayerChatHelper.SendInfo(aPlayer, "Hysteresis low set to " + round(histLow * 100F) + "%");
         }
     }
 
@@ -109,17 +106,13 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         if (aPlayer.isSneaking()) {
             if (transferRadius > transferRadiusLimitBottom) {
                 transferRadius--;
-            } else {
-                transferRadius = transferRadiusLimitTop;
             }
         } else {
-            if (transferRadius < transferRadiusLimitTop) {
+            if (transferRadius < 0) {
                 transferRadius++;
-            } else {
-                transferRadius = transferRadiusLimitBottom;
             }
         }
-        PlayerChatHelper.SendInfo(aPlayer, "Tesla Radius Changed to " + transferRadius + " Blocks");
+        PlayerChatHelper.SendInfo(aPlayer, "Tesla radius set to " + transferRadius + "m");
         return false;
     }
 
@@ -131,7 +124,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     @Override
     public String getAlternativeModeText() {
-        ////Hysteresis based ePowerPass Config
+        //Hysteresis based ePowerPass Config
         long energyMax = getStoredEnergy()[1];
         long energyStored = getStoredEnergy()[0];
         float energyFrac = (float) energyStored / energyMax;
@@ -146,7 +139,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         }
 
         //And after this cheeky-ness, toss the string XD
-        return powerPassToggle ? "Sending Power!" : "Receiving Power!";
+        return powerPassToggle ? "Sending power!" : "Receiving power!";
     }
 
     @Override
@@ -176,7 +169,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         //Stuff to do if ePowerPass
         if (powerPassToggle) {
             float rangeFrac = (float) ((-0.5 * Math.pow(energyFrac, 2)) + (1.5 * energyFrac));
-            outputCurrent = mBatteryCount;
+            long outputCurrent = mBatteryCount;
             transferRadiusTower = (int) (transferRadius * rangeFrac);
             transferRadiusCover = (int) (transferRadiusTower / 1.25);
 
@@ -207,6 +200,9 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                     if (getEUVar() >= (overDriveToggle ? outputVoltage * 2 : outputVoltage)) {
                         IGregTechTileEntity node = Rx.getKey();
                         IMetaTileEntity nodeInside = node.getMetaTileEntity();
+
+                        long outputVoltageInjectable;
+                        long outputVoltageConsumption;
                         if (overDriveToggle) {
                             outputVoltageInjectable = outputVoltage;
                             outputVoltageConsumption = outputVoltagePostOverdrive + (lossPerBlock * Rx.getValue());

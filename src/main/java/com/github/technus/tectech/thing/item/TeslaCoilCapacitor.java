@@ -20,9 +20,9 @@ import static com.github.technus.tectech.Reference.MODID;
 
 public final class TeslaCoilCapacitor extends Item {
     public static TeslaCoilCapacitor INSTANCE;
-    public static IIcon LVicon, MVicon, HVicon, EVicon, IVicon;
+    private static IIcon LVicon, MVicon, HVicon, EVicon, IVicon;
 
-    public TeslaCoilCapacitor() {
+    private TeslaCoilCapacitor() {
         setUnlocalizedName("tm.teslaCoilCapacitor");
         setTextureName(MODID + ":itemCapacitorLV");
 
