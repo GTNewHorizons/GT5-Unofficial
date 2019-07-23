@@ -33,6 +33,9 @@ public class Textures {
     private static final IIconContainer MACHINE_OPV_BOTTOM = new CustomIcon("iconsets/MACHINE_OPV_BOTTOM");
     private static final IIconContainer MACHINE_MAXV_BOTTOM = new CustomIcon("iconsets/MACHINE_MAXV_BOTTOM");
 
+    private static final IIconContainer TESLA_COVER_ICON = new CustomIcon("iconsets/TESLA_COVER");
+    private static final IIconContainer TESLA_COVER_ULTIMATE_ICON = new CustomIcon("iconsets/TESLA_COVER_ULT");
+
     public static IIconContainer[] MACHINECASINGS_SIDE_TT = new IIconContainer[]{
             MACHINE_8V_SIDE, MACHINE_LV_SIDE, MACHINE_MV_SIDE, MACHINE_HV_SIDE,
             MACHINE_EV_SIDE, MACHINE_IV_SIDE, MACHINE_LuV_SIDE, MACHINE_ZPM_SIDE,
@@ -188,6 +191,11 @@ public class Textures {
     };
 
     public static ITexture[][] MACHINE_CASINGS_TT = new ITexture[16][17];
+
+    public static ITexture[] TESLA_COVER_TEXTURES = new ITexture[]{
+            new GT_RenderedTexture(TESLA_COVER_ICON),
+            new GT_RenderedTexture(TESLA_COVER_ULTIMATE_ICON)
+    };
 
     public Textures(){
         for (byte i = 0; i < MACHINE_CASINGS_TT.length; i++) {
