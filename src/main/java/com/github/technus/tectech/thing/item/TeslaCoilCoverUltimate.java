@@ -17,7 +17,7 @@ public final class TeslaCoilCoverUltimate extends Item {
 
     public TeslaCoilCoverUltimate() {
         setUnlocalizedName("tm.teslaCoilCoverUltimate");
-        setTextureName(MODID + ":itemParametrizerMemoryCardUnlocked");
+        setTextureName(MODID + ":itemTeslaCoverUltimate");
     }
 
     @Override

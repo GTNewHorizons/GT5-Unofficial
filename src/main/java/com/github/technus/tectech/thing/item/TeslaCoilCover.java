@@ -17,7 +17,7 @@ public final class TeslaCoilCover extends Item {
 
     public TeslaCoilCover() {
         setUnlocalizedName("tm.teslaCoilCover");
-        setTextureName(MODID + ":itemParametrizerMemoryCardUnlocked");
+        setTextureName(MODID + ":itemTeslaCover");
     }
 
     @Override
