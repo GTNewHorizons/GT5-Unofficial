@@ -173,34 +173,34 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     @Override
     public String getSymbol() {
-        StringBuilder symbol = new StringBuilder(8);
         String sym=SYMBOL_MAP.get(this);
         if(sym!=null){
-            symbol.append(sym);
+            return sym;
         }else {
+            StringBuilder symbol = new StringBuilder(8);
             for (cElementalDefinitionStack quark : quarkStacks.values()) {
                 for (int i = 0; i < quark.amount; i++) {
                     symbol.append(quark.definition.getSymbol());
                 }
             }
+            return symbol.toString();
         }
-        return symbol.toString();
     }
 
     @Override
     public String getShortSymbol() {
-        StringBuilder symbol = new StringBuilder(8);
         String sym=SYMBOL_MAP.get(this);
         if(sym!=null){
-            symbol.append(sym);
+            return sym;
         }else {
+            StringBuilder symbol = new StringBuilder(8);
             for (cElementalDefinitionStack quark : quarkStacks.values()) {
                 for (int i = 0; i < quark.amount; i++) {
                     symbol.append(quark.definition.getShortSymbol());
                 }
             }
+            return symbol.toString();
         }
-        return symbol.toString();
     }
 
     @Override
@@ -425,11 +425,11 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
             hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(1), eQuarkDefinition.quark_d.getStackForm(2)));
             SYMBOL_MAP.put(hadron_n, "n");
             NAME_MAP.put(hadron_n, "Neutron");
-            DebugElementalInstanceContainer_EM.STACKS_REGISTERED.add(hadron_p);
+            DebugElementalInstanceContainer_EM.STACKS_REGISTERED.add(hadron_n);
             hadron_n_ = (dHadronDefinition) hadron_n.getAnti();
             SYMBOL_MAP.put(hadron_n_,"~n");
             NAME_MAP.put(hadron_n_,"Anti Neutron");
-            DebugElementalInstanceContainer_EM.STACKS_REGISTERED.add(hadron_p_);
+            DebugElementalInstanceContainer_EM.STACKS_REGISTERED.add(hadron_n_);
         } catch (tElementalException e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
