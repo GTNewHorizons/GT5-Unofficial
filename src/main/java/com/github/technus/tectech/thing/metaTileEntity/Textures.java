@@ -34,7 +34,7 @@ public class Textures {
     private static final IIconContainer MACHINE_MAXV_BOTTOM = new CustomIcon("iconsets/MACHINE_MAXV_BOTTOM");
 
     private static final IIconContainer TESLA_COVER_ICON = new CustomIcon("iconsets/TESLA_COVER");
-    private static final IIconContainer TESLA_COVER_ULTIMATE_ICON = new CustomIcon("iconsets/TESLA_COVER_ULT");
+    private static final IIconContainer TESLA_COVER_ULTIMATE_ICON = new CustomIcon("iconsets/TESLA_COVER_ULTIMATE");
 
     public static IIconContainer[] MACHINECASINGS_SIDE_TT = new IIconContainer[]{
             MACHINE_8V_SIDE, MACHINE_LV_SIDE, MACHINE_MV_SIDE, MACHINE_HV_SIDE,
