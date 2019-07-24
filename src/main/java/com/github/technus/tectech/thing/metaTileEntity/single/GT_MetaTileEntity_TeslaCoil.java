@@ -5,6 +5,7 @@ import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_TM_teslaCoil;
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -12,16 +13,17 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import net.minecraft.entity.player.EntityPlayer;
 
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.entriesSortedByValues;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.TESLA_TRANSCEIVER_TOP_BA;
 import static java.lang.Math.round;
 
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer {
-    private int maxTier = 3; //Max tier of transceiver
+    private int maxTier = 4; //Max tier of transceiver
     private int minTier = 0; //Min tier of transceiver
 
     public Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap();//Tesla Map to map them tesla bois!
@@ -140,6 +142,27 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
         //And after this cheeky-ness, toss the string XD
         return powerPassToggle ? "Sending power!" : "Receiving power!";
+    }
+
+    @Override
+    public boolean isFacingValid(byte aSide) {return aSide != 1;}//Prevents output at the top side
+
+    @Override
+    public ITexture[][][] getTextureSet(ITexture[] aTextures) {
+        ITexture[][][] rTextures = new ITexture[3][17][];
+
+        for(byte i = -1; i < 16; ++i) {
+            rTextures[0][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1]};
+            rTextures[1][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], TESLA_TRANSCEIVER_TOP_BA};
+            rTextures[2][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], this.mInventory.length == 16 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[this.mTier] : (this.mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier])};
+        }
+
+        return rTextures;
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        return this.mTextures[aSide == aFacing ? 2 : aSide == 1 ? 1 : 0][aColorIndex + 1];
     }
 
     @Override
