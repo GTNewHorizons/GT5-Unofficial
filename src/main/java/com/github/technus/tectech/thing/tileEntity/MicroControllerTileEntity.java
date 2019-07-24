@@ -2,16 +2,25 @@ package com.github.technus.tectech.thing.tileEntity;
 
 import com.github.technus.avrClone.AvrCore;
 import com.github.technus.avrClone.instructions.ExecutionEvent;
+import com.github.technus.avrClone.instructions.Instruction;
 import com.github.technus.avrClone.instructions.InstructionRegistry;
+import com.github.technus.avrClone.instructions.exceptions.DebugEvent;
+import com.github.technus.avrClone.instructions.exceptions.DelayEvent;
 import com.github.technus.avrClone.memory.EepromMemory;
 import com.github.technus.avrClone.memory.RemovableMemory;
 import com.github.technus.avrClone.memory.program.ProgramMemory;
+import com.github.technus.tectech.TecTech;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class MicroControllerTileEntity extends TileEntity {
+    static {
+        Instruction.random= TecTech.RANDOM;
+    }
     private final AvrCore core;
     private int[] tempData;
+    private boolean debugRun;
+    private int delay;
 
     public MicroControllerTileEntity(){
         core=new AvrCore();
@@ -24,6 +33,10 @@ public class MicroControllerTileEntity extends TileEntity {
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
+        debugRun=tag.getBoolean("debugRun");
+        delay=tag.getInteger("delay");
+        core.active =tag.getBoolean("active");
+        core.awoken=(tag.getBoolean("awoken"));
         core.programCounter=tag.getInteger("programCounter");
         if(tag.hasKey("instructions")){
             int[] instructions=tag.getIntArray("instructions");
@@ -45,6 +58,10 @@ public class MicroControllerTileEntity extends TileEntity {
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
+        tag.setBoolean("debugRun",debugRun);
+        tag.setInteger("delay",delay);
+        tag.setBoolean("active",core.active);
+        tag.setBoolean("awoken",core.awoken);
         tag.setInteger("programCounter",core.programCounter);
         ProgramMemory programMemory=core.getProgramMemory();
         if(programMemory!=null){
@@ -74,10 +91,27 @@ public class MicroControllerTileEntity extends TileEntity {
             core.dataMemory = tempData;
             tempData = null;
         }
-        for (int i = 0, cycles = Math.min(1 << getBlockMetadata(), 512); i < cycles; i++) {
-            ExecutionEvent executionEvent = core.cpuCycle();
-            if (executionEvent != null) {
-                break;
+        if (core.active) {
+            core.interruptsHandle();
+            if (core.awoken) {
+                delay=0;
+                for (int i = 0, cycles = Math.min(1 << getBlockMetadata(), 512); i < cycles; i++) {
+                    ExecutionEvent executionEvent = core.cpuCycleForce();
+                    if (executionEvent != null) {
+                        if (executionEvent.throwable instanceof DelayEvent) {
+                            delay = executionEvent.data[0];
+                            break;
+                        } else if (debugRun && executionEvent.throwable instanceof DebugEvent) {
+                            core.active = false;
+                            break;
+                        }
+                    }
+                }
+            }else if(delay>0){
+                delay--;
+                if(delay==0){
+                    core.awoken=true;
+                }
             }
         }
     }
