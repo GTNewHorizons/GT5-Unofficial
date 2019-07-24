@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>(); //Used to store targets for power transmission
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCapacitorHatches = new ArrayList<>(); //Used to determine count and tier of capacitors present
+    private float[][] eLightningTargets;
 
     private int scanTime = 0; //Scan timer used for tesla search intervals
 
@@ -593,7 +595,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                     }
                     IMetaTileEntity nodeInside = node.getMetaTileEntity();
                     if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil || nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
-                       // eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(xPosOffset * xPosOffset + yPosOffset * yPosOffset + zPosOffset * zPosOffset)));//TODO Test if range valid
                         eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(Math.pow(xPosOffset,2) + Math.pow(yPosOffset,2) + Math.pow(zPosOffset,2))));
                     }
                 }
@@ -604,9 +605,11 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (getBaseMetaTileEntity().isClientSide()) {
-            return true;
-        }
+        IGregTechTileEntity mte = getBaseMetaTileEntity();
+
+        float tXN = mte.getXCoord();
+        float tYN = mte.getYCoord();
+        float tZN = mte.getZCoord();
 
         //Hysteresis based ePowerPass setting
         long energyMax = maxEUStore() / 2;
@@ -650,7 +653,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 if (scanTime == (int) scanTimeMinSetting.get() - 1) {
                     scanTime = -1;
 
-                    IGregTechTileEntity mte = getBaseMetaTileEntity();
                     for (Map.Entry<IGregTechTileEntity, Integer> Rx : eTeslaMap.entrySet()) {
                         IGregTechTileEntity node = Rx.getKey();
                         if (node != null) {
@@ -663,10 +665,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                                     float tY = node.getYCoord();
                                     float tZ = node.getZCoord();
 
-                                    float tXN = mte.getXCoord();
-                                    float tYN = mte.getYCoord();
-                                    float tZN = mte.getZCoord();
+                                    FXLightningBolt bolt = new FXLightningBolt(mte.getWorld(),tXN,tYN,tZN,tX,tY,tZ,mte.getWorld().rand.nextLong(), 6, 0.5F, 8);
+                                    bolt.defaultFractal();
+                                    bolt.setType(2);
+                                    bolt.setWidth(0.125F);
+                                    bolt.finalizeBolt();
 
+                                    new FXLightningBolt(getBaseMetaTileEntity().getWorld(),tX,tY,tZ,tXN,tYN,tZN,10000,1,1);
                                     int tOffset = (int) Math.ceil(Math.sqrt(Math.pow(tX-tXN,2) + Math.pow(tY-tYN,2) + Math.pow(tZ-tZN,2)));
                                     teslaCoil.eTeslaMap.put(mte,tOffset);
 
