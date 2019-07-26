@@ -15,6 +15,7 @@ import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import net.minecraftforge.common.config.Configuration;
 
@@ -72,12 +73,28 @@ public class Preloader_DummyContainer extends DummyModContainer {
 	}
 	
 	public static void handleConfigFile(final FMLPreInitializationEvent event) {
-		final Configuration config = new Configuration(
-				new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
+		final Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
 		config.load();
 
+		//BGM Watchdog
+		CORE_Preloader.enableWatchdogBGM = config.getInt("enableWatchdogBGM", "features", 0, 0, Short.MAX_VALUE, "Set to a value greater than 0 to reduce the ticks taken to delay between BGM tracks. Acceptable Values are 1-32767, where 0 is disabled. Vanilla Uses 12,000 & 24,000. 200 is 10s.");
+		
 		// Circuits
-		CORE_Preloader.enableOldGTcircuits = config.getBoolean("enableOldGTcircuits", "gregtech", false,
-				"Restores circuits and their recipes from Pre-5.09.28 times.");
+		CORE_Preloader.enableOldGTcircuits = config.getBoolean("enableOldGTcircuits", "gregtech", false, "Restores circuits and their recipes from Pre-5.09.28 times.");
+	}
+	
+	public static boolean getConfig(){
+		final Configuration config = new Configuration(	new File(Utils.getMcDir(), "config/GTplusplus/GTplusplus.cfg"));
+		if (config != null){		
+			config.load();
+			// Circuits
+			CORE_Preloader.enableOldGTcircuits = config.getBoolean("enableOldGTcircuits", "gregtech", false, "Restores circuits and their recipes from Pre-5.09.28 times.");
+			CORE_Preloader.enableWatchdogBGM = config.getInt("enableWatchdogBGM", "features", 0, 0, Short.MAX_VALUE, "Set to a value greater than 0 to reduce the ticks taken to delay between BGM tracks. Acceptable Values are 1-32767, where 0 is disabled. Vanilla Uses 12,000 & 24,000. 200 is 10s.");
+						
+			Logger.INFO("GT++ Preloader - Loaded the configuration file.");
+			return true;
+		}
+		Logger.INFO("GT++ Preloader - Failed loading the configuration file.");
+		return false;
 	}
 }

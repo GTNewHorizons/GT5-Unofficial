@@ -74,5 +74,37 @@ public class Core_Manager {
 		return false;		
 	}
 	
+	public static boolean serverStart() {
+		try {			
+			for (IPlugin h : mPlugins) {
+				if (h.serverStart()) {
+					Logger.INFO("[Plugin] Completed Server Start Phase for "+h.getPluginName()+".");
+				}
+				else {
+					Logger.INFO("[Plugin] Failed during Server Start Phase for "+h.getPluginName()+".");					
+				}
+			}			
+			return true;
+		}
+		catch (Throwable t) {}
+		return false;		
+	}
+	
+	public static boolean serverStop() {
+		try {			
+			for (IPlugin h : mPlugins) {
+				if (h.serverStop()) {
+					Logger.INFO("[Plugin] Completed Server Stop Phase for "+h.getPluginName()+".");
+				}
+				else {
+					Logger.INFO("[Plugin] Failed during Server Stop Phase for "+h.getPluginName()+".");					
+				}
+			}			
+			return true;
+		}
+		catch (Throwable t) {}
+		return false;		
+	}
+	
 	
 }

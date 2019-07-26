@@ -34,4 +34,7 @@ public interface IPlugin {
 	public boolean init();
 	public boolean postInit();
 	
+	public boolean serverStart();
+	public boolean serverStop();
+	
 }

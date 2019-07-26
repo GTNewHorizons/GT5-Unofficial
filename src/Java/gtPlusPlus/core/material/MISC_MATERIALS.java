@@ -83,6 +83,22 @@ public final class MISC_MATERIALS {
                        new MaterialStack(ELEMENT.getInstance().HYDROGEN, 8),
                        new MaterialStack(ELEMENT.getInstance().OXYGEN, 4)
                });
+       
+       public static final Material HYDROGEN_CYANIDE = new Material(
+	            "Hydrogen Cyanide",
+	            MaterialState.PURE_LIQUID, //State
+	            null, //Material Colour
+	            4, //Melting Point in C
+	            26, //Boiling Point in C
+	            -1, //Protons
+	            -1,
+	            false, //Uses Blast furnace?
+	            //Material Stacks with Percentage of required elements.
+	            new MaterialStack[]{
+	                    new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+	                    new MaterialStack(ELEMENT.getInstance().CARBON, 1),
+	                    new MaterialStack(ELEMENT.getInstance().NITROGEN, 1)
+	            });
 
 	
 	

@@ -1,14 +1,25 @@
 package gtPlusPlus.core.tileentities;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.general.BlockSuperLight.TileEntitySuperLight;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.tileentities.general.*;
-import gtPlusPlus.core.tileentities.general.redstone.TileEntityRedstoneHandler;
-import gtPlusPlus.core.tileentities.machines.*;
+import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
+import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
+import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
+import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
+import gtPlusPlus.core.tileentities.general.TileEntityInfiniteFluid;
+import gtPlusPlus.core.tileentities.general.TileEntityPlayerDoorBase;
+import gtPlusPlus.core.tileentities.general.TileEntityXpConverter;
+import gtPlusPlus.core.tileentities.machines.TileEntityAdvPooCollector;
+import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
+import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
+import gtPlusPlus.core.tileentities.machines.TileEntityPooCollector;
+import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
+import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
+import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
+import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
 
 public class ModTileEntities {
@@ -32,6 +43,7 @@ public class ModTileEntities {
 		GameRegistry.registerTileEntity(TileEntityDecayablesChest.class, "TileDecayablesChest");		
 		GameRegistry.registerTileEntity(TileEntitySuperJukebox.class, "TileEntitySuperJukebox");
 		GameRegistry.registerTileEntity(TileEntitySuperLight.class, "TileEntitySuperLight");
+		GameRegistry.registerTileEntity(TileEntityPestKiller.class, "TileEntityPestKiller");
 
 		
 		//Mod TEs

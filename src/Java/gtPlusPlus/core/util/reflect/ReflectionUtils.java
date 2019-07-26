@@ -25,7 +25,7 @@ import gtPlusPlus.core.util.data.StringUtils;
 
 public class ReflectionUtils {
 
-	public static Map<String, Class> mCachedClasses = new LinkedHashMap<String, Class>();
+	public static Map<String, Class<?>> mCachedClasses = new LinkedHashMap<String, Class<?>>();
 	public static Map<String, CachedMethod> mCachedMethods = new LinkedHashMap<String, CachedMethod>();
 	public static Map<String, CachedField> mCachedFields = new LinkedHashMap<String, CachedField>();
 
@@ -69,11 +69,11 @@ public class ReflectionUtils {
 
 	}
 
-	private static boolean cacheClass(Class aClass) {		
+	private static boolean cacheClass(Class<?> aClass) {		
 		if (aClass == null) {
 			return false;
 		}		
-		Class y = mCachedClasses.get(aClass.getCanonicalName());
+		Class<?> y = mCachedClasses.get(aClass.getCanonicalName());
 		if (y == null) {
 			mCachedClasses.put(aClass.getCanonicalName(), aClass);
 			return true;
@@ -81,7 +81,7 @@ public class ReflectionUtils {
 		return false;
 	}
 
-	private static boolean cacheMethod(Class aClass, Method aMethod) {		
+	private static boolean cacheMethod(Class<?> aClass, Method aMethod) {		
 		if (aMethod == null) {
 			return false;
 		}		
@@ -94,7 +94,7 @@ public class ReflectionUtils {
 		return false;
 	}
 
-	private static boolean cacheField(Class aClass, Field aField) {		
+	private static boolean cacheField(Class<?> aClass, Field aField) {		
 		if (aField == null) {
 			return false;
 		}		
@@ -113,11 +113,11 @@ public class ReflectionUtils {
 	 * @param aClassCanonicalName - The canonical name of the underlying class.
 	 * @return - Valid, {@link Class} object, or {@link null}.
 	 */
-	public static Class getClass(String aClassCanonicalName) {
+	public static Class<?> getClass(String aClassCanonicalName) {
 		if (aClassCanonicalName == null || aClassCanonicalName.length() <= 0) {
 			return null;
 		}		
-		Class y = mCachedClasses.get(aClassCanonicalName);
+		Class<?> y = mCachedClasses.get(aClassCanonicalName);
 		if (y == null) {
 			y = getClass_Internal(aClassCanonicalName);
 			if (y != null) {
@@ -149,7 +149,7 @@ public class ReflectionUtils {
 	 * @param aTypes - Varags Class Types for {@link Method}'s constructor.
 	 * @return - Valid, non-final, {@link Method} object, or {@link null}.
 	 */
-	public static Method getMethod(Class aClass, String aMethodName, Class... aTypes) {
+	public static Method getMethod(Class<?> aClass, String aMethodName, Class<?>... aTypes) {
 		if (aClass == null || aMethodName == null || aMethodName.length() <= 0) {
 			return null;
 		}		
@@ -178,7 +178,7 @@ public class ReflectionUtils {
 	 * @param aFieldName - Field name in {@link String} form.
 	 * @return - Valid, non-final, {@link Field} object, or {@link null}.
 	 */
-	public static Field getField(final Class aClass, final String aFieldName) {
+	public static Field getField(final Class<?> aClass, final String aFieldName) {
 		if (aClass == null || aFieldName == null || aFieldName.length() <= 0) {
 			return null;
 		}		
@@ -662,7 +662,7 @@ public class ReflectionUtils {
 		return m;
 	}
 
-	private static Method getMethod_Internal(Class aClass, String aMethodName, Class... aTypes) {
+	private static Method getMethod_Internal(Class<?> aClass, String aMethodName, Class<?>... aTypes) {
 		Method m = null;
 		try {
 			Logger.REFLECTION("Method: Internal Lookup: "+aMethodName);
@@ -704,7 +704,7 @@ public class ReflectionUtils {
 		}
 	}	
 
-	private static void dumpClassInfo(Class aClass) {
+	private static void dumpClassInfo(Class<?> aClass) {
 		Logger.INFO("We ran into an error processing reflection in "+aClass.getName()+", dumping all data for debugging.");	
 		// Get the methods
 		Method[] methods = aClass.getDeclaredMethods();
@@ -720,7 +720,7 @@ public class ReflectionUtils {
 			System.out.println(f.getName());
 		}
 		Logger.INFO("Dumping all Constructors.");	
-		for (Constructor c : consts) {
+		for (Constructor<?> c : consts) {
 			System.out.println(c.getName()+" | "+c.getParameterCount()+" | "+StringUtils.getDataStringFromArray(c.getParameterTypes()));
 		}
 	}
@@ -797,6 +797,20 @@ public class ReflectionUtils {
 		modifiers = modifiers & ~Modifier.FINAL;
 		modifierField.setAccessible(true);
 		modifierField.setInt(nameField, modifiers);
+	}
+
+
+	public static boolean doesFieldExist(String clazz, String string) {
+		return doesFieldExist(ReflectionUtils.getClass(clazz), string);
+	}
+	
+	public static boolean doesFieldExist(Class<?> clazz, String string) {
+		if (clazz != null) {
+			if (ReflectionUtils.getField(clazz, string) != null) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 

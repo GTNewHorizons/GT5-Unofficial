@@ -35,6 +35,7 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.BaseCustomTileEntity;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.BaseCustomPower_MTE;
 import net.minecraft.block.Block;
@@ -94,8 +95,13 @@ public class Meta_GT_Proxy {
 		
         //Gotta set it here so that we don't try call gregtech too early.        
         //Must set on the correct side
-    	StaticFields59.mGT6StylePipes = (boolean) StaticFields59.getFieldFromGregtechProxy("gt6Pipe");        	
         
+        if (ReflectionUtils.doesFieldExist(GT_Proxy.class, "gt6Pipe")) {
+        	StaticFields59.mGT6StylePipes = (boolean) StaticFields59.getFieldFromGregtechProxy("gt6Pipe");        	
+        }
+        else {
+        	StaticFields59.mGT6StylePipes = false;        	
+        }       
         
         GT_Log.out.println("GT++ Mod: Registering the BaseMetaTileEntity.");
         GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity_GTPP");

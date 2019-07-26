@@ -2956,3 +2956,6 @@ item.GTPP.bauble.fireprotection.0.name=Supreme Pizza Gloves
 //Added 16/5/19
 item.itemCellSeleniumDioxide.name=Selenium Dioxide Cell
 item.itemCellSeleniousAcid.name=Selenious Acid Cell
+
+//Added 25/8/19
+container.pestkiller=Pest Killer

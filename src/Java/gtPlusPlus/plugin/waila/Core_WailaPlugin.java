@@ -37,6 +37,16 @@ public class Core_WailaPlugin implements IPlugin {
 	}
 
 	@Override
+	public boolean serverStart() {
+		return mActive;
+	}
+
+	@Override
+	public boolean serverStop() {
+		return mActive;
+	}
+
+	@Override
 	public String getPluginName() {
 		return "GT++ WAILA module";
 	}

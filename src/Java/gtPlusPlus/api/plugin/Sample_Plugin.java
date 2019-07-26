@@ -25,6 +25,16 @@ public final class Sample_Plugin implements IPlugin {
 	}
 
 	@Override
+	public boolean serverStart() {
+		return true;
+	}
+
+	@Override
+	public boolean serverStop() {
+		return true;
+	}
+
+	@Override
 	public String getPluginName() {
 		return "Sample Plugin";
 	}

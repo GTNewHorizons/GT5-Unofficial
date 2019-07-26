@@ -11,6 +11,7 @@ import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.sys.GeoUtils;
 import gtPlusPlus.core.util.sys.NetworkUtils;
+import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
@@ -209,6 +210,7 @@ public class CORE {
 		public static boolean enableCustomCircuits = true;
 		public static boolean enableOldGTcircuits = false;
 		public static boolean disableZombieReinforcement = false;
+		public static int enableWatchdogBGM = CORE_Preloader.enableWatchdogBGM;
 
 		//GT Fixes
 		public static boolean enableNitroFix = false;

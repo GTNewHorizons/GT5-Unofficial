@@ -112,7 +112,7 @@ public class Logger {
 	 * Special Logger for Materials related content
 	 */
 	public static void MATERIALS(final String s) {
-		if (CORE.DEVENV || CORE.DEBUG)
+		if (/* CORE.DEVENV || */CORE.DEBUG)
 		modLogger.info("[Materials] "+s);
 	}
 	/**

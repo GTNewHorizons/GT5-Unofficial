@@ -238,12 +238,14 @@ public class GTplusplus implements ActionListener {
 		if (LoadedMods.Thaumcraft) {
 			event.registerServerCommand(new CommandDumpAspects());
 		}
+		Core_Manager.serverStart();
 		INIT_PHASE.STARTED.setPhaseActive(true);
 	}
 
 	@Mod.EventHandler
 	public synchronized void serverStopping(final FMLServerStoppingEvent event) {
 		mChunkLoading.serverStopping(event);
+		Core_Manager.serverStop();
 		if (GregtechBufferThread.mBufferThreadAllocation.size() > 0) {
 			for (GregtechBufferThread i : GregtechBufferThread.mBufferThreadAllocation.values()) {
 				i.destroy();
