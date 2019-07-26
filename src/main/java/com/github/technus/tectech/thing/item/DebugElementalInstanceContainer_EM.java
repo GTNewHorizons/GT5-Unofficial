@@ -29,6 +29,7 @@ import java.util.TreeSet;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -42,6 +43,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         setMaxStackSize(1);
         setUnlocalizedName("em.debugContainer");
         setTextureName(MODID + ":itemDebugContainer");
+        setCreativeTab(creativeTabTecTech);
     }
 
     @Override
