@@ -12,6 +12,7 @@ public final class Reference {
     public static final String THAUMCRAFT = "Thaumcraft";
     public static final String DREAMCRAFT = "dreamcraft";
     public static final String GTPLUSPLUS = "miscutils";
+    public static final String SPARTAKCORE = "spartakcore";
 
     private Reference() {}
 }

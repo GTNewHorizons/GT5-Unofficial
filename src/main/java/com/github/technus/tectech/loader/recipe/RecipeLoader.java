@@ -2,6 +2,7 @@ package com.github.technus.tectech.loader.recipe;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.compatibility.dreamcraft.DreamCraftRecipeLoader;
+import com.github.technus.tectech.compatibility.spartakcore.SpartakCoreRecipeLoader;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
 import com.github.technus.tectech.thing.CustomItemList;
@@ -110,8 +111,11 @@ public class RecipeLoader implements Runnable {
 
         if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
             new DreamCraftRecipeLoader().run();//init recipes for GTNH version
+        } else if (Loader.isModLoaded(Reference.SPARTAKCORE)) {
+        	new SpartakCoreRecipeLoader().run();//init recipes for SpartakCore version
         } else {
             new BloodyRecipeLoader().run();//init recipes for NON-GTNH version
         }
     }
 }
+
