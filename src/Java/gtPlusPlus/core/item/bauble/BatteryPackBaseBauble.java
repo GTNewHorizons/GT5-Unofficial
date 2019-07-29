@@ -90,7 +90,7 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
 		String aString2 = StatCollector.translateToLocal("GTPP.battpack.tooltip.2");
 		String aString3 = StatCollector.translateToLocal("GTPP.battpack.tooltip.3");
 		String aString4 = StatCollector.translateToLocal("GTPP.battpack.tooltip.4");
-		
+
 		String aEU = StatCollector.translateToLocal("GTPP.info.eu");	
 		String aEUT = aEU+"/t";
 
@@ -128,31 +128,34 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
 	@Override // TODO
 	public void onWornTick(final ItemStack aBaubleStack, final EntityLivingBase aPlayer) {
 		if (!aPlayer.worldObj.isRemote) {
-			if (this.getCharge(aBaubleStack) >= getTransferLimit(aBaubleStack)) {
-				// Try Iterate Armour Slots of Player
-				if (aPlayer instanceof EntityPlayer) {
 
-					// amour
-					for (final ItemStack aInvStack : ((EntityPlayer) aPlayer).inventory.armorInventory) {
-						if (aInvStack != null) {
-							if (aInvStack == aBaubleStack) {
-								continue;
-							}
-							if (ChargingHelper.isItemValid(aInvStack)) {
-								double aTransferRate = 0;
-								final IElectricItem electricItem = (IElectricItem) aInvStack.getItem();
-								if (electricItem != null) {
-									aTransferRate = electricItem.getTransferLimit(aInvStack);
-									double aItemCharge = ElectricItem.manager.getCharge(aInvStack);
-									if (aItemCharge >= 0 && aItemCharge != electricItem.getMaxCharge(aInvStack)) {
-										if (aItemCharge <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
+			try {
+
+				if (this.getCharge(aBaubleStack) >= getTransferLimit(aBaubleStack)) {
+					// Try Iterate Armour Slots of Player
+					if (aPlayer instanceof EntityPlayer) {
+
+						// amour
+						for (final ItemStack aInvStack : ((EntityPlayer) aPlayer).inventory.armorInventory) {
+							if (aInvStack != null) {
+								if (aInvStack == aBaubleStack) {
+									continue;
+								}
+								if (ChargingHelper.isItemValid(aInvStack)) {
+									double aTransferRate = 0;
+									final IElectricItem electricItem = (IElectricItem) aInvStack.getItem();
+									if (electricItem != null) {
+										aTransferRate = electricItem.getTransferLimit(aInvStack);
+										double aItemCharge = ElectricItem.manager.getCharge(aInvStack);
+										if (aItemCharge >= 0 && aItemCharge != electricItem.getMaxCharge(aInvStack)) {
+											if (aItemCharge <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
 												if (ElectricItem.manager.getCharge(aBaubleStack) >= aTransferRate) {
 													if (ElectricItem.manager.getCharge(aInvStack) <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
 														double d = ElectricItem.manager.charge(aInvStack, aTransferRate * 16, mTier, false, true);
 														if (d > 0) {
-														d = ElectricItem.manager.charge(aInvStack, aTransferRate * 16, mTier, false, false);
-														ElectricItem.manager.discharge(aBaubleStack, d, mTier, false, true,	false);
-														//Logger.INFO("Charging " + aInvStack.getDisplayName() + " | " + d	 + " | "+electricItem.getMaxCharge(aInvStack));
+															d = ElectricItem.manager.charge(aInvStack, aTransferRate * 16, mTier, false, false);
+															ElectricItem.manager.discharge(aBaubleStack, d, mTier, false, true,	false);
+															//Logger.INFO("Charging " + aInvStack.getDisplayName() + " | " + d	 + " | "+electricItem.getMaxCharge(aInvStack));
 														}
 													}
 													else {
@@ -167,29 +170,29 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
 												//Logger.INFO("3");
 											}
 
+										}
+										else {
+											//Logger.INFO("1");
+										}
 									}
-									else {
-										//Logger.INFO("1");
-									}
-								}
 
+								}
+							}
+							if (this.getCharge(aBaubleStack) > 0) {
+								continue;
+							} else {
+								break;
 							}
 						}
-						if (this.getCharge(aBaubleStack) > 0) {
-							continue;
-						} else {
-							break;
-						}
-					}
 
-					// Hotbar Slots
-					int aSlotCounter = 0;
-					for (final ItemStack aInvStack : ((EntityPlayer) aPlayer).inventory.mainInventory) {
-						if (aSlotCounter > (InventoryPlayer.getHotbarSize() - 1)) {
-							break;
-						}
-						aSlotCounter++;
-						if (aInvStack != null) {
+						// Hotbar Slots
+						int aSlotCounter = 0;
+						for (final ItemStack aInvStack : ((EntityPlayer) aPlayer).inventory.mainInventory) {
+							if (aSlotCounter > (InventoryPlayer.getHotbarSize() - 1)) {
+								break;
+							}
+							aSlotCounter++;
+							if (aInvStack != null) {
 								if (aInvStack == aBaubleStack) {
 									continue;
 								}
@@ -201,26 +204,26 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
 										double aItemCharge = ElectricItem.manager.getCharge(aInvStack);
 										if (aItemCharge >= 0 && aItemCharge != electricItem.getMaxCharge(aInvStack)) {
 											if (aItemCharge <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
-													if (ElectricItem.manager.getCharge(aBaubleStack) >= aTransferRate) {
-														if (ElectricItem.manager.getCharge(aInvStack) <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
-															double d = ElectricItem.manager.charge(aInvStack, aTransferRate, mTier, false, true);
-															if (d > 0) {
+												if (ElectricItem.manager.getCharge(aBaubleStack) >= aTransferRate) {
+													if (ElectricItem.manager.getCharge(aInvStack) <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
+														double d = ElectricItem.manager.charge(aInvStack, aTransferRate, mTier, false, true);
+														if (d > 0) {
 															d = ElectricItem.manager.charge(aInvStack, aTransferRate, mTier, false, false);
 															ElectricItem.manager.discharge(aBaubleStack, d, mTier, false, true,	false);
 															//Logger.INFO("Charging " + aInvStack.getDisplayName() + " | " + d	 + " | "+electricItem.getMaxCharge(aInvStack));
-															}
-														}
-														else {
-															//Logger.INFO("5");
 														}
 													}
 													else {
-														//Logger.INFO("4");
+														//Logger.INFO("5");
 													}
 												}
 												else {
-													//Logger.INFO("3");
+													//Logger.INFO("4");
 												}
+											}
+											else {
+												//Logger.INFO("3");
+											}
 
 										}
 										else {
@@ -228,16 +231,24 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
 										}
 									}
 								}							
-						}
-						if (this.getCharge(aBaubleStack) > 0) {
-							continue;
-						} else {
-							break;
+							}
+							if (this.getCharge(aBaubleStack) > 0) {
+								continue;
+							} else {
+								break;
+							}
 						}
 					}
-				}
+				}			
 			}
+			catch (Throwable t) {
+
+			}			
 		}
+
+
+
+
 	}
 
 	@Override
