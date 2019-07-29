@@ -286,39 +286,34 @@ public class CoalTar extends ItemPackage {
 
 	}
 
-	private static void recipeHydrogenPeroxide() {		
-		GT_Values.RA.addElectrolyzerRecipe(
+	private static void recipeHydrogenPeroxide() {	
+		
+		CORE.RA.addChemicalRecipe(
 				GT_ModHandler.getAirCell(15),
 				ItemUtils.getItemStackOfAmountFromOreDict("cell2Ethylanthrahydroquinone", 5),
+				20,
 				FluidUtils.getFluidStack("fluid.anthracene", 50),
 				FluidUtils.getFluidStack("fluid.2ethylanthrahydroquinone", 4450),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 18), 
-				null, 
-				null,
-				null,
-				null,
-				new int[]{10000, 10000}, 
-				20*90, 
-				240);		
+				CI.emptyCells(18),
+				20*30,
+				240);
+		
 	}
 
 
 	private static void recipeLithiumHydroperoxide() {
-		GT_Values.RA.addElectrolyzerRecipe(
+		
+		CORE.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 7),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 1),
+				20,
 				FluidUtils.getFluidStack("fluid.cellhydrogenperoxide", 50),
 				null,
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 14),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1), 
-				null, 
-				null,
-				null,
-				null,
-				new int[]{10000, 10000}, 
-				20*60, 
-				240);		
+				CI.emptyCells(1),
+				20*30,
+				240);	
 	}
 
 

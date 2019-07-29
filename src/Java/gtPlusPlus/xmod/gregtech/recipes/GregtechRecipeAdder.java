@@ -874,6 +874,25 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     }
 
     @Override
+    public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, int aCircuit, FluidStack inputFluid, FluidStack outputFluid,	ItemStack output, ItemStack output2, int time, int eu) {
+    	if (aCircuit < 0 || aCircuit > 24) {
+    		aCircuit = 22;
+    	}    	
+    	GT_Recipe aSpecialRecipe = new Recipe_GT(
+    			false,
+    			new ItemStack[] {input1, input2},
+    			new ItemStack[] {output, output2},
+    			CI.getNumberedCircuit(aCircuit),
+    			new int[] {},
+    			new FluidStack[] {inputFluid},
+    			new FluidStack[] {outputFluid},
+    			time,
+    			eu,
+    			0);    	
+    	return GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList.add(aSpecialRecipe);    	
+    }
+
+    @Override
     public boolean addMultiblockChemicalRecipe(ItemStack[] itemStacks, FluidStack[] fluidStacks, FluidStack[] fluidStacks2, ItemStack[] outputs, int time, int eu) {
         if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || mLargeChemReactor == null) {
             return false;
