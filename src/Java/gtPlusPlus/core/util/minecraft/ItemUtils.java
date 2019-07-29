@@ -31,6 +31,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
@@ -1218,6 +1219,10 @@ public class ItemUtils {
 
 	public static boolean doesOreDictHaveEntryFor(String string) {		
 		return OreDictionary.doesOreNameExist(string);
+	}
+
+	public static void hideItemFromNEI(ItemStack aItemToHide) {
+		codechicken.nei.api.API.hideItem(aItemToHide);		
 	}
 
 }
