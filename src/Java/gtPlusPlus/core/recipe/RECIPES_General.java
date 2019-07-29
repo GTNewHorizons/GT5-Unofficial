@@ -56,7 +56,6 @@ public class RECIPES_General {
 			OUTPUT_Blueprint = ItemUtils.getSimpleStack(ModItems.itemBlueprintBase);	
 			run();
 			addCompressedObsidian();
-			addHandPumpRecipes();
 			migratedRecipes();
 		}
 	}
@@ -334,49 +333,6 @@ public class RECIPES_General {
 
 		}
 		return true;
-	}
-
-	private static void addHandPumpRecipes() {
-
-		ItemStack aFluidReg1 = Utils.getValueOfItemList("FluidRegulator_LV", ItemList.Pump_LV).get(1);
-		ItemStack aFluidReg2 = Utils.getValueOfItemList("FluidRegulator_MV", ItemList.Pump_MV).get(1);
-		ItemStack aFluidReg3 = Utils.getValueOfItemList("FluidRegulator_HV", ItemList.Pump_HV).get(1);
-		ItemStack aFluidReg4 = Utils.getValueOfItemList("FluidRegulator_EV", ItemList.Pump_EV).get(1);
-		
-		
-		if (RecipeUtils.recipeBuilder(
-				aFluidReg1, "circuitPrimitive", null,
-				"ringBrass", CI.electricMotor_LV, "circuitBasic",
-				"plateSteel", "plateSteel", "rodBrass",
-				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1)))	
-			Logger.INFO("Added recipe for Hand Pump I - true");
-		if (RecipeUtils.recipeBuilder(
-				aFluidReg2, "circuitBasic", null,
-				"ringMagnalium", CI.electricMotor_MV, "circuitAdvanced",
-				"plateAluminium", "plateAluminium", "rodMagnalium",
-				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1)))	
-			Logger.INFO("Added recipe for Hand Pump II - true");	
-		if (RecipeUtils.recipeBuilder(
-				aFluidReg3, "circuitAdvanced", null,
-				"ringChrome", CI.electricMotor_HV, "circuitData",
-				"plateStainlessSteel", "plateStainlessSteel", "rodChrome",
-				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1)))		
-			Logger.INFO("Added recipe for Hand Pump III - true");
-		if (RecipeUtils.recipeBuilder(
-				aFluidReg4, "circuitData", null,
-				"ringTitanium", CI.electricMotor_EV, "circuitElite",
-				"plateTungstenSteel", "plateTungstenSteel", "rodTitanium",
-				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1)))	
-			Logger.INFO("Added recipe for Hand Pump IV - true");
-
-
-
-		GT_Values.RA.addAssemblerRecipe(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1), CI.getNumberedCircuit(20), ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1000, 1), 30, 30);
-		GT_Values.RA.addAssemblerRecipe(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1), CI.getNumberedCircuit(20), ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1001, 1), 120, 120);
-		GT_Values.RA.addAssemblerRecipe(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1), CI.getNumberedCircuit(20), ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1002, 1), 480, 480);
-		GT_Values.RA.addAssemblerRecipe(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1), CI.getNumberedCircuit(20), ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1003, 1), 1820, 1820);
-
-
 	}
 
 	private static void migratedRecipes() {
