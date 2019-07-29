@@ -17,7 +17,7 @@ public class RECIPES_SeleniumProcessing {
     public static void init() {
         
         //We need this
-        MaterialUtils.generateSpecialDustAndAssignToAMaterial(MISC_MATERIALS.SELENIUM_DIOXIDE);       
+        MaterialUtils.generateSpecialDustAndAssignToAMaterial(MISC_MATERIALS.SELENIUM_DIOXIDE, false);       
         
         // Makes Selenium Dioxide        
         processCopperRecipes();
@@ -116,8 +116,7 @@ public class RECIPES_SeleniumProcessing {
                        1000
                 },
                 40 * 20, // Time in ticks
-                1024); // EU
-        
+                1024); // EU        
         
         //Tetra
         CORE.RA.addDehydratorRecipe(
@@ -150,6 +149,7 @@ public class RECIPES_SeleniumProcessing {
                 },
                 40 * 20, // Time in ticks
                 1024); // EU
+        
         //Chalco
         CORE.RA.addDehydratorRecipe(
                 new ItemStack[]{
@@ -181,6 +181,7 @@ public class RECIPES_SeleniumProcessing {
                 },
                 40 * 20, // Time in ticks
                 1024); // EU
+        
         //Malachite
         CORE.RA.addDehydratorRecipe(
                 new ItemStack[]{
