@@ -330,7 +330,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		AutoMap<String> aOrderedMap = new AutoMap<String>();		
 		if (showHatches) {
 			aOrderedMap.put(aRequiresMaint);
-			aOrderedMap.put(aRequiresCoreModule);
+			//aOrderedMap.put(aRequiresCoreModule);
 			if (showPollution) {
 				aOrderedMap.put(aRequiresMuffler);				
 			}
