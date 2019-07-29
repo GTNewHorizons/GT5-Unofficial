@@ -16,6 +16,7 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
@@ -336,26 +337,33 @@ public class RECIPES_General {
 	}
 
 	private static void addHandPumpRecipes() {
+
+		ItemStack aFluidReg1 = Utils.getValueOfItemList("FluidRegulator_LV", ItemList.Pump_LV).get(1);
+		ItemStack aFluidReg2 = Utils.getValueOfItemList("FluidRegulator_MV", ItemList.Pump_MV).get(1);
+		ItemStack aFluidReg3 = Utils.getValueOfItemList("FluidRegulator_HV", ItemList.Pump_HV).get(1);
+		ItemStack aFluidReg4 = Utils.getValueOfItemList("FluidRegulator_EV", ItemList.Pump_EV).get(1);
+		
+		
 		if (RecipeUtils.recipeBuilder(
-				CI.electricPump_LV, "circuitBasic", null,
+				aFluidReg1, "circuitPrimitive", null,
 				"ringBrass", CI.electricMotor_LV, "circuitBasic",
 				"plateSteel", "plateSteel", "rodBrass",
 				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1)))	
 			Logger.INFO("Added recipe for Hand Pump I - true");
 		if (RecipeUtils.recipeBuilder(
-				CI.electricPump_MV, "circuitAdvanced", null,
+				aFluidReg2, "circuitBasic", null,
 				"ringMagnalium", CI.electricMotor_MV, "circuitAdvanced",
 				"plateAluminium", "plateAluminium", "rodMagnalium",
 				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1)))	
 			Logger.INFO("Added recipe for Hand Pump II - true");	
 		if (RecipeUtils.recipeBuilder(
-				CI.electricPump_HV, "circuitData", null,
+				aFluidReg3, "circuitAdvanced", null,
 				"ringChrome", CI.electricMotor_HV, "circuitData",
 				"plateStainlessSteel", "plateStainlessSteel", "rodChrome",
 				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1)))		
 			Logger.INFO("Added recipe for Hand Pump III - true");
 		if (RecipeUtils.recipeBuilder(
-				CI.electricPump_EV, "circuitElite", null,
+				aFluidReg4, "circuitData", null,
 				"ringTitanium", CI.electricMotor_EV, "circuitElite",
 				"plateTungstenSteel", "plateTungstenSteel", "rodTitanium",
 				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1)))	
