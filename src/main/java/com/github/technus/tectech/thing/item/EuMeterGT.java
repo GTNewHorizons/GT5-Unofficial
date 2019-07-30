@@ -21,14 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 
 public class EuMeterGT extends Item {
     public static EuMeterGT INSTANCE;
 
     private EuMeterGT() {
+        setMaxStackSize(1);
         setUnlocalizedName("em.EuMeterGT");
         setTextureName(MODID + ":itemEuMeterGT");
-        setMaxStackSize(1);
+        setCreativeTab(creativeTabTecTech);
     }
 
     @Override

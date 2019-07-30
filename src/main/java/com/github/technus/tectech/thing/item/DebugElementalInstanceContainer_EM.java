@@ -161,6 +161,6 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
 
     @Override
     public FontRenderer getFontRenderer(ItemStack stack) {
-        return (FontRenderer) (Object) TecTechFontRender.INSTANCE;
+        return TecTechFontRender.INSTANCE;
     }
 }

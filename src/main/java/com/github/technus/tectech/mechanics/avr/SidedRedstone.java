@@ -8,7 +8,7 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity> {
     public static final RSINT RSINT =new RSINT();
 
     public SidedRedstone(int offset) {
-        super(offset, 23);
+        super(offset, Register.values().length);
         addRegisters(Register.values());
         addBits(RegisterBitsPCMSK.values());
         addBits(RegisterBitsPCFR.values());

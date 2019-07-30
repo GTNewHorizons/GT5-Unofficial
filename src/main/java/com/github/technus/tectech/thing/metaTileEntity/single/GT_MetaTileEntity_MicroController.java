@@ -24,82 +24,96 @@ import net.minecraft.nbt.NBTTagCompound;
 import static com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DataReader.READER_OFFLINE;
 import static com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DataReader.READER_ONLINE;
 
-public class GT_MetaTileEntity_MicroControllerTileEntity extends GT_MetaTileEntity_TieredMachineBlock {
+public class GT_MetaTileEntity_MicroController extends GT_MetaTileEntity_TieredMachineBlock {
+    public static final int OPS_PER_TICK_MAX =512;
+
     static {
         Instruction.random= TecTech.RANDOM;
     }
-    private AvrCore core;
+    public AvrCore core;
     private int[] tempData;
-    private boolean debugRun;
+    public boolean debugRun;
     private int delay;
+    private int maxLoad;
 
-    public static final SidedRedstone sidedRedstone=new SidedRedstone(0x1b);
+    public static final SidedRedstone sidedRedstone=new SidedRedstone(0x16);
 
-    public GT_MetaTileEntity_MicroControllerTileEntity(int aID, String aName, String aNameRegional, int aTier) {
+    public GT_MetaTileEntity_MicroController(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "AVR Micro-controller");
         Util.setTier(aTier,this);
     }
 
-    public GT_MetaTileEntity_MicroControllerTileEntity(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_MicroController(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         Util.setTier(aTier,this);
         core=new AvrCore();
         core.setUsingImmersiveOperands(false);
         core.setInstructionRegistry(InstructionRegistry.INSTRUCTION_REGISTRY_OP);
-        core.setDataMemory(1<<aTier,1<<aTier);
+        core.setDataMemory(Math.max(64,1<<aTier),Math.max(64,1<<aTier));
         core.setCpuRegisters(0x30);
         core.putDataBindings(sidedRedstone);
+        maxLoad=Math.min(1 << mTier, OPS_PER_TICK_MAX);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_MetaTileEntity_MicroControllerTileEntity(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_MicroController(mName, mTier, mDescription, mTextures);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound tag) {
-        debugRun=tag.getBoolean("debugRun");
-        delay=tag.getInteger("delay");
-        core.active =tag.getBoolean("active");
-        core.awoken=(tag.getBoolean("awoken"));
-        core.programCounter=tag.getInteger("programCounter");
-        if(tag.hasKey("instructions")){
-            int[] instructions=tag.getIntArray("instructions");
-            int[] param0=tag.getIntArray("param0");
-            int[] param1=tag.getIntArray("param1");
-            core.setProgramMemory(new ProgramMemory(
-                    core.getInstructionRegistry(),core.isUsingImmersiveOperands(),
-                    instructions,param0,param1));
+        NBTTagCompound avr=tag.getCompoundTag("avr");
+        debugRun=avr.getBoolean("debugRun");
+        delay=avr.getInteger("delay");
+        core.active =avr.getBoolean("active");
+        core.awoken=(avr.getBoolean("awoken"));
+        core.programCounter=avr.getInteger("programCounter");
+        if(avr.hasKey("instructions")){
+            InstructionRegistry registry=
+                    InstructionRegistry.REGISTRIES.
+                            get(avr.getString("instructionRegistry"));
+            if(registry!=null) {
+                core.setProgramMemory(new ProgramMemory(
+                        registry,
+                        avr.getBoolean("immersive"),
+                        avr.getIntArray("instructions"),
+                        avr.getIntArray("param0"),
+                        avr.getIntArray("param1")));
+            }
         }
-        if(tag.hasKey("eepromSize")){
-            core.setEepromDefinition(EepromMemory.make(tag.getInteger("eepromSize")));
+        if(avr.hasKey("eepromSize")){
+            core.restoreEepromDefinition(EepromMemory.make(avr.getInteger("eepromSize")));
         }
-        if(tag.hasKey("dataMemory")){
-            tempData=tag.getIntArray("dataMemory");
+        if(avr.hasKey("dataMemory")){
+            tempData=avr.getIntArray("dataMemory");
         }
         core.checkValid();
     }
 
     @Override
     public void saveNBTData(NBTTagCompound tag) {
-        tag.setBoolean("debugRun",debugRun);
-        tag.setInteger("delay",delay);
-        tag.setBoolean("active",core.active);
-        tag.setBoolean("awoken",core.awoken);
-        tag.setInteger("programCounter",core.programCounter);
+        NBTTagCompound avr=new NBTTagCompound();
+        avr.setBoolean("debugRun",debugRun);
+        avr.setInteger("delay",delay);
+        avr.setBoolean("active",core.active);
+        avr.setBoolean("awoken",core.awoken);
+        avr.setInteger("programCounter",core.programCounter);
         ProgramMemory programMemory=core.getProgramMemory();
         if(programMemory!=null){
-            tag.setIntArray("instructions",programMemory.instructions);
-            tag.setIntArray("param0",programMemory.param0);
-            tag.setIntArray("param1",programMemory.param1);
+            avr.setIntArray("instructions",programMemory.instructions);
+            avr.setIntArray("param0",programMemory.param0);
+            avr.setIntArray("param1",programMemory.param1);
+            avr.setBoolean("immersive",programMemory.immersiveOperands);
+            avr.setString("instructionRegistry",programMemory.registry.toString());
         }
         RemovableMemory<EepromMemory> eeprom=core.getEepromMemory();
         if(eeprom!=null){
-            tag.setInteger("eepromSize",eeprom.getDefinition().getSize());
+            avr.setInteger("eepromSize",eeprom.getDefinition().getSize());
         }
         if(core.dataMemory!=null){
-            tag.setIntArray("dataMemory",core.dataMemory);
+            avr.setIntArray("dataMemory",core.dataMemory);
         }
+        tag.setTag("avr",avr);
     }
 
     @Override
@@ -109,20 +123,23 @@ public class GT_MetaTileEntity_MicroControllerTileEntity extends GT_MetaTileEnti
             core.dataMemory = tempData;
             tempData = null;
         }
-        if (core.active) {
+        if (aBaseMetaTileEntity.isActive()) {
             sidedRedstone.preSync(core,aBaseMetaTileEntity);
             core.interruptsHandle();
             if (core.awoken) {
                 delay=0;
-                for (int i = 0, cycles = Math.min(1 << mTier, 512); i < cycles; i++) {
+                for (int load=0; load < maxLoad;) {
+                    load+=core.getInstruction().getCost(core);
                     ExecutionEvent executionEvent = core.cpuCycleForce();
                     if (executionEvent != null) {
                         if (executionEvent.throwable instanceof DelayEvent) {
                             delay = executionEvent.data[0];
                             break;
-                        } else if (debugRun && executionEvent.throwable instanceof DebugEvent) {
-                            core.active = false;
-                            break;
+                        } else if (executionEvent.throwable instanceof DebugEvent) {
+                            if(debugRun) {
+                                aBaseMetaTileEntity.setActive(false);
+                                break;
+                            }
                         }
                     }
                 }
@@ -134,6 +151,7 @@ public class GT_MetaTileEntity_MicroControllerTileEntity extends GT_MetaTileEnti
             }
             sidedRedstone.postSync(core,aBaseMetaTileEntity);
         }
+        core.active=aBaseMetaTileEntity.isActive();
     }
 
     @Override

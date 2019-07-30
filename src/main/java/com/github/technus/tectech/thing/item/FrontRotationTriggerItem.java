@@ -17,6 +17,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -25,8 +26,10 @@ public final class FrontRotationTriggerItem extends Item {
     public static FrontRotationTriggerItem INSTANCE;
 
     private FrontRotationTriggerItem() {
+        setMaxStackSize(1);
         setUnlocalizedName("em.frontRotate");
         setTextureName(MODID + ":itemFrontRotate");
+        setCreativeTab(creativeTabTecTech);
     }
 
     @Override

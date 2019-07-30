@@ -152,6 +152,6 @@ public final class ElementalDefinitionScanStorage_EM extends Item implements IEl
 
     @Override
     public FontRenderer getFontRenderer(ItemStack stack) {
-        return (FontRenderer) (Object) TecTechFontRender.INSTANCE;
+        return TecTechFontRender.INSTANCE;
     }
 }
