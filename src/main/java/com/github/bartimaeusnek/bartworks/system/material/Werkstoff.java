@@ -108,11 +108,27 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.toolTip = "";
         if (toolTip.isEmpty()) {
             for (Pair<ISubTagContainer, Integer> p : contents) {
-                if (p.getKey() instanceof Materials) {
-                    this.toolTip += ((Materials) p.getKey()).mChemicalFormula + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
+                if (contents.length > 1) {
+                    if (p.getKey() instanceof Materials) {
+                        if (((Materials) p.getKey()).mMaterialList.size() > 1 && p.getValue() > 1)
+//                    if (((Materials) p.getKey()).mChemicalFormula != null && Character.isDigit(((Materials) p.getKey()).mChemicalFormula.toCharArray()[((Materials) p.getKey()).mChemicalFormula.length()-1]))
+                            this.toolTip += "(" + ((Materials) p.getKey()).mChemicalFormula + ")" + (BW_Util.subscriptNumber(p.getValue()));
+                        else
+                            this.toolTip += ((Materials) p.getKey()).mChemicalFormula + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
+                    }
+                    if (p.getKey() instanceof Werkstoff) {
+                        if (((Werkstoff) p.getKey()).contents.size() > 1 && p.getValue() > 1)
+//                    if (((Werkstoff) p.getKey()).toolTip != null && Character.isDigit(((Werkstoff) p.getKey()).toolTip.toCharArray()[((Werkstoff) p.getKey()).toolTip.length()-1]))
+                            this.toolTip += "(" + ((Werkstoff) p.getKey()).toolTip + ")" + (BW_Util.subscriptNumber(p.getValue()));
+                        else
+                            this.toolTip += ((Werkstoff) p.getKey()).toolTip + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
+                    }
+                } else {
+                    if (p.getKey() instanceof Materials) {
+                        this.toolTip += ((Materials) p.getKey()).mChemicalFormula + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
+                    } else if (p.getKey() instanceof Werkstoff)
+                        this.toolTip += ((Werkstoff) p.getKey()).toolTip + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
                 }
-                if (p.getKey() instanceof Werkstoff)
-                    this.toolTip += ((Werkstoff) p.getKey()).toolTip + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
             }
         } else
             this.toolTip = toolTip;

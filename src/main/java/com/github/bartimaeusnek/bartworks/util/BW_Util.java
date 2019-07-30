@@ -24,6 +24,7 @@ package com.github.bartimaeusnek.bartworks.util;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
@@ -416,5 +417,22 @@ public class BW_Util {
             }
         }
         return ret;
+    }
+
+    public static byte getCircuitTierFromOreDictName(String name) {
+        switch (name){
+            case "circuitPrimitive": return 0;
+            case "circuitBasic": return 1;
+            case "circuitGood": return 2;
+            case "circuitAdvanced": return 3;
+            case "circuitData": return 4;
+            case "circuitElite": return 5;
+            case "circuitMaster": return 6;
+            case "circuitUltimate": return 7;
+            case "circuitSuperconductor": return 8;
+            case "circuitInfinite": return 9;
+            case "circuitBio": return 10;
+            default: return -1;
+        }
     }
 }

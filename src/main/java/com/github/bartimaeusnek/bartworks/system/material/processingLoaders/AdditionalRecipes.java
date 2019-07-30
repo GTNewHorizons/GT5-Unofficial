@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -40,9 +41,6 @@ public class AdditionalRecipes implements Runnable {
 
     @Override
     public void run() {
-        //Cubic Circonia
-        GT_Values.RA.addChemicalRecipe(Materials.Yttrium.getDust(2), GT_Utility.getIntegratedCircuit(11),Materials.Oxygen.getGas(3000),null, WerkstoffLoader.YttriumOxide.get(dust,5),64, BW_Util.getMachineVoltageFromTier(4));
-        GT_Recipe.GT_Recipe_Map.sBlastRecipes.addRecipe(false, new ItemStack[]{WerkstoffLoader.Zirconium.get(dust,10), WerkstoffLoader.YttriumOxide.get(dust)}, new ItemStack[]{WerkstoffLoader.YttriumOxide.get(dust), WerkstoffLoader.Zirconia.get(gemFlawed, 40)}, null, null, new FluidStack[]{Materials.Oxygen.getGas(20000)}, null, 14400, BW_Util.getMachineVoltageFromTier(4), 2953);
         //Thorium/Yttrium Glas
         GT_Values.RA.addBlastRecipe(WerkstoffLoader.YttriumOxide.get(dustSmall,2),WerkstoffLoader.Thorianit.get(dustSmall,2),Materials.Glass.getMolten(144),null,new ItemStack(ItemRegistry.bw_glasses[0],1,12),null,800,BW_Util.getMachineVoltageFromTier(5),3663);
         //Thorianit recipes
@@ -61,6 +59,14 @@ public class AdditionalRecipes implements Runnable {
         GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(dust),Materials.Aluminium.getDust(1),Materials.Thorium.getDust(1),1000);
         GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(dust),Materials.Magnesium.getDust(1),Materials.Thorium.getDust(1),1000);
         GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(crushed), ItemList.Crop_Drop_Thorium.get(9),Materials.Water.getFluid(1000),Materials.Thorium.getMolten(144),WerkstoffLoader.Thorianit.get(crushedPurified,4),96,24);
+
+        //TODO: Gem & Circuit Stuff
+        //Prasiolite
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(dust,Materials.Quartzite,40L),Materials.Amethyst.getDust(10),GT_Values.NF,GT_Values.NF,WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed,20),GT_Values.NI,800, BW_Util.getMachineVoltageFromTier(2),500);
+        GT_Values.RA.addPrimitiveBlastRecipe(GT_OreDictUnificator.get(dust,Materials.Quartzite,40L),Materials.Amethyst.getDust(10),6,WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed,20),GT_Values.NI,800);
+        //Cubic Circonia
+        GT_Values.RA.addChemicalRecipe(Materials.Yttrium.getDust(2), GT_Utility.getIntegratedCircuit(11),Materials.Oxygen.getGas(3000),null, WerkstoffLoader.YttriumOxide.get(dust,5),64, BW_Util.getMachineVoltageFromTier(4));
+        GT_Recipe.GT_Recipe_Map.sBlastRecipes.addRecipe(false, new ItemStack[]{WerkstoffLoader.Zirconium.get(dust,10), WerkstoffLoader.YttriumOxide.get(dust)}, new ItemStack[]{WerkstoffLoader.YttriumOxide.get(dust), WerkstoffLoader.CubicZirconia.get(gemFlawed, 40)}, null, null, new FluidStack[]{Materials.Oxygen.getGas(20000)}, null, 14400, BW_Util.getMachineVoltageFromTier(4), 2953);
         //Tellurium
         GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(crushed,Materials.Lead,10L),GT_Utility.getIntegratedCircuit(17),GT_Values.NF,GT_Values.NF,Materials.Lead.getIngots(10),Materials.Tellurium.getNuggets(20),800,BW_Util.getMachineVoltageFromTier(2),722);
     }

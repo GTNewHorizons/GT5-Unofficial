@@ -20,24 +20,11 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.common.loaders;
+package com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.HashSet;
-
-public class CircuitImprintLoader implements Runnable {
-
-    private static final HashSet<NBTTagCompound> circuitTypes = new HashSet<>();
-
+public class CircuitPartLoader implements Runnable {
     @Override
     public void run() {
-        for(String names : OreDictionary.getOreNames()){
-            if (names.contains("circuit") || names.contains("Circuit"))
-                for (ItemStack itemStack : OreDictionary.getOres(names))
-                    CircuitImprintLoader.circuitTypes.add(itemStack.copy().splitStack(1).writeToNBT(new NBTTagCompound()));
-        }
+        CircuitImprintLoader.makeCircuitParts();
     }
 }

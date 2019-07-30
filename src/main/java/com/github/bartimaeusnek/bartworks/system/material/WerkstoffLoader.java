@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.bartworks.client.renderer.BW_Renderer_Block_Ores
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.AdditionalRecipes;
+import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_CircuitsLoader;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
@@ -103,10 +104,10 @@ public class WerkstoffLoader implements Runnable {
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().onlyDust(),
             3,
-            TextureSet.SET_METALLIC,
-            Arrays.asList()
+            TextureSet.SET_METALLIC
+            //No Byproducts
     );
-    public static final Werkstoff Zirconia = new Werkstoff(
+    public static final Werkstoff CubicZirconia = new Werkstoff(
             new short[]{255, 255, 255, 0},
             "Cubic Zirconia",
             Werkstoff.Types.COMPOUND,
@@ -462,6 +463,7 @@ public class WerkstoffLoader implements Runnable {
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             30,
             TextureSet.SET_METALLIC
+            //No Byproducts
     );
     public static final Werkstoff BismuthTellurite = new Werkstoff(
             new short[]{32,72,32,0},
@@ -471,6 +473,7 @@ public class WerkstoffLoader implements Runnable {
             new Werkstoff.GenerationFeatures().disable().onlyDust().addChemicalRecipes(),
             31,
             TextureSet.SET_METALLIC,
+            //No Byproducts
             new Pair<>(Materials.Bismuth, 2),
             new Pair<>(Materials.Tellurium, 3)
     );
@@ -479,9 +482,10 @@ public class WerkstoffLoader implements Runnable {
             "Tellurium",
             new Werkstoff.Stats(),
             Werkstoff.Types.ELEMENT,
-            new Werkstoff.GenerationFeatures().disable().addMetalItems(),
+            new Werkstoff.GenerationFeatures().addMetalItems().removeOres(),
             32,
             TextureSet.SET_METALLIC,
+            //No Byproducts
             new Pair<>(Materials.Tellurium, 1)
     );
     public static final Werkstoff BismuthHydroBorat = new Werkstoff(
@@ -492,21 +496,52 @@ public class WerkstoffLoader implements Runnable {
             new Werkstoff.GenerationFeatures().disable().onlyDust().addChemicalRecipes(),
             33,
             TextureSet.SET_METALLIC,
+            //No Byproducts
             new Pair<>(Materials.Bismuth, 2),
             new Pair<>(Materials.Boron, 1),
             new Pair<>(Materials.Hydrogen, 1)
     );
     public static final Werkstoff ArInGaPhoBiBoTe = new Werkstoff(
             new short[]{36,36,36,0},
-            "Circuit Compound MK1",
+            "Circuit Compound MK3",
             new Werkstoff.Stats().setCentrifuge(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMixerRecipes(),
             34,
             TextureSet.SET_METALLIC,
+            //No Byproducts
             new Pair<>(Materials.IndiumGalliumPhosphide, 1),
             new Pair<>(WerkstoffLoader.BismuthHydroBorat, 3),
             new Pair<>(WerkstoffLoader.BismuthTellurite, 2)
+    );
+
+    public static final Werkstoff Prasiolite = new Werkstoff(
+            new short[]{0xD0,0xDD,0x95,0},
+            "Prasiolite",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().addGems(),
+            35,
+            TextureSet.SET_QUARTZ,
+            //No Byproducts
+            new Pair<>(Materials.Silicon,5),
+            new Pair<>(Materials.Oxygen,10),
+            new Pair<>(Materials.Iron,1)
+    );
+
+    public static final Werkstoff MagnetoResonaticDust = new Werkstoff(
+            new short[]{0xDD,0x77,0xDD,0},
+            "Magneto Resonatic Dust",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().onlyDust().addMixerRecipes(),
+            36,
+            TextureSet.SET_MAGNETIC,
+            //No Byproducts
+            new Pair<>(WerkstoffLoader.Prasiolite,3),
+            new Pair<>(WerkstoffLoader.BismuthTellurite,4),
+            new Pair<>(WerkstoffLoader.CubicZirconia,1),
+            new Pair<>(Materials.SteelMagnetic,1)
     );
 
     public static HashMap<OrePrefixes, BW_MetaGenerated_Items> items = new HashMap<>();
@@ -571,6 +606,8 @@ public class WerkstoffLoader implements Runnable {
                     DebugLog.log("Loading Aspects"+" " +(System.nanoTime()-timepreone));
                     ThaumcraftHandler.AspectAdder.addAspectToAll(werkstoff);
                 }
+                DebugLog.log("Loading New Circuits"+" " +(System.nanoTime()-timepreone));
+                new BW_CircuitsLoader();
                 DebugLog.log("Done"+" " +(System.nanoTime()-timepreone));
                 progressBar.step(werkstoff.getDefaultName());
             }
@@ -690,7 +727,7 @@ public class WerkstoffLoader implements Runnable {
                     OreDictAdder.addToMap(new Pair<>("craftingLens" + BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""), werkstoff.get(lens)));
             }
 
-            OreDictAdder.addToMap(new Pair<>("craftingIndustrialDiamond", WerkstoffLoader.Zirconia.get(gemExquisite)));
+            OreDictAdder.addToMap(new Pair<>("craftingIndustrialDiamond", WerkstoffLoader.CubicZirconia.get(gemExquisite)));
         } else {
             for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
                 if (werkstoff.getGenerationFeatures().hasOres())
@@ -699,7 +736,7 @@ public class WerkstoffLoader implements Runnable {
                     OreDictionary.registerOre("craftingLens" + BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""), werkstoff.get(lens));
             }
 
-            GT_OreDictUnificator.registerOre("craftingIndustrialDiamond", WerkstoffLoader.Zirconia.get(gemExquisite));
+            GT_OreDictUnificator.registerOre("craftingIndustrialDiamond", WerkstoffLoader.CubicZirconia.get(gemExquisite));
         }
     }
 
