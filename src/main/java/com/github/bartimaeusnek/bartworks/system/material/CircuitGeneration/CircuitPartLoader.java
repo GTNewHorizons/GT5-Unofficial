@@ -22,9 +22,14 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration;
 
+import com.github.bartimaeusnek.bartworks.client.renderer.BW_GT_ItemRenderer;
+import cpw.mods.fml.common.FMLCommonHandler;
+
 public class CircuitPartLoader implements Runnable {
     @Override
     public void run() {
         CircuitImprintLoader.makeCircuitParts();
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+            new BW_GT_ItemRenderer();
     }
 }

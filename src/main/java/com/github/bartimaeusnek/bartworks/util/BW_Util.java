@@ -53,6 +53,16 @@ public class BW_Util {
     public static final int CLEANROOM = -100;
     public static final int LOWGRAVITY = -200;
 
+    public static void set2DCoordTo1DArray(int indexX, int indexY, int sizeY, Object value, Object[] array) {
+        int index = indexX * sizeY + indexY;
+        array[index] = value;
+    }
+
+    public static Object get2DCoordFrom1DArray(int indexX, int indexY, int sizeY, Object[] array){
+        int index = indexX * sizeY + indexY;
+        return array[index];
+    }
+
     public static String subscriptNumbers(String b){
         char[] chars = b.toCharArray();
         char[] nu = new char[chars.length];

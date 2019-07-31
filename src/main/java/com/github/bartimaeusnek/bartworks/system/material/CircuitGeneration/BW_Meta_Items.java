@@ -22,17 +22,40 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration;
 
+import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.util.Pair;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.enums.TC_Aspects;
+import gregtech.api.interfaces.IItemBehaviour;
+import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.objects.ItemData;
+import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
+
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.HashSet;
+import java.util.List;
 
 
 public class BW_Meta_Items {
@@ -75,16 +98,12 @@ public class BW_Meta_Items {
 
 
         public BW_GT_MetaGenCircuits() {
-            super("bwMetaGeneratedItem0", (short) 0, (short) 32766);
+            super("bwMetaGeneratedItem0");
         }
 
         public final ItemStack addCircuit(int aID, String aEnglish, String aToolTip, int tier){
             CircuitImprintLoader.bwCircuitTagMap.put(new CircuitData(BW_Util.getMachineVoltageFromTier(tier-2),0,(byte)tier), CircuitImprintLoader.getTagFromStack(new ItemStack(BW_Meta_Items.NEWCIRCUITS,1,aID)));
             return this.addItem(aID, aEnglish, aToolTip,SubTag.NO_UNIFICATION);
-        }
-
-        public final void modifyIIconIndex(int aID, IIcon icon){
-            this.mIconList[aID][0] = icon;
         }
 
         public final ItemStack getStack(int... meta_amount){
@@ -101,9 +120,162 @@ public class BW_Meta_Items {
         }
     }
 
-    private static class BW_GT_MetaGen_Item_Hook extends GT_MetaGenerated_Item{
-        private BW_GT_MetaGen_Item_Hook(String aUnlocalized, short aOffset, short aItemAmount) {
-            super(aUnlocalized, aOffset, aItemAmount);
+    public static class BW_GT_MetaGen_Item_Hook extends GT_MetaBase_Item {
+        public static final HashSet<BW_Meta_Items.BW_GT_MetaGen_Item_Hook> sInstances = new HashSet<>();
+        public final IIcon[] mIconList;
+        public final BitSet mEnabledItems;
+        {
+            this.mIconList = new IIcon[Short.MAX_VALUE*2];
+            this.mEnabledItems = new BitSet(Short.MAX_VALUE);
+        }
+
+        private BW_GT_MetaGen_Item_Hook(String aUnlocalized) {
+            super(aUnlocalized);
+
+            this.setCreativeTab(new CreativeTabs("bw.MetaItems.0") {
+                @Override
+                public Item getTabIconItem() {
+                    return ItemRegistry.TAB;
+                }
+            });
+            this.setHasSubtypes(true);
+            this.setMaxDamage(0);
+            BW_Meta_Items.BW_GT_MetaGen_Item_Hook.sInstances.add(this);
+        }
+
+        @Override
+        public Long[] getElectricStats(ItemStack itemStack) {
+            return null;
+        }
+
+        @Override
+        public Long[] getFluidContainerStats(ItemStack itemStack) {
+            return null;
+        }
+
+        public final ItemStack addItem(int aID, String aEnglish, String aToolTip, Object... aRandomData) {
+            if (aToolTip == null) {
+                aToolTip = "";
+            }
+                ItemStack rStack = new ItemStack(this, 1, aID);
+                GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".name", aEnglish);
+                GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+                List<TC_Aspects.TC_AspectStack> tAspects = new ArrayList<>();
+                this.mEnabledItems.set(aID);
+                Object[] var7 = aRandomData;
+                int var8 = aRandomData.length;
+
+                int var9;
+                Object tRandomData;
+                for(var9 = 0; var9 < var8; ++var9) {
+                    tRandomData = var7[var9];
+                    if (tRandomData instanceof SubTag) {
+                        if (tRandomData == SubTag.NO_UNIFICATION) {
+                            GT_OreDictUnificator.addToBlacklist(rStack);
+                        }
+                    }
+                }
+
+                var7 = aRandomData;
+                var8 = aRandomData.length;
+
+                for(var9 = 0; var9 < var8; ++var9) {
+                    tRandomData = var7[var9];
+                    if (tRandomData != null) {
+                        boolean tUseOreDict = true;
+
+                        if (tRandomData instanceof IItemBehaviour) {
+                            this.addItemBehavior(aID, (IItemBehaviour) tRandomData);
+                            tUseOreDict = false;
+                        }
+
+                        if (tRandomData instanceof IItemContainer) {
+                            ((IItemContainer)tRandomData).set(rStack);
+                            tUseOreDict = false;
+                        }
+
+                        if (!(tRandomData instanceof SubTag)) {
+                            if (tRandomData instanceof TC_Aspects.TC_AspectStack) {
+                                ((TC_Aspects.TC_AspectStack)tRandomData).addToAspectList(tAspects);
+                            } else if (tRandomData instanceof ItemData) {
+                                if (GT_Utility.isStringValid(tRandomData)) {
+                                    GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                                } else {
+                                    GT_OreDictUnificator.addItemData(rStack, (ItemData)tRandomData);
+                                }
+                            } else if (tUseOreDict) {
+                                GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                            }
+                        }
+                    }
+                }
+
+                if (GregTech_API.sThaumcraftCompat != null) {
+                    GregTech_API.sThaumcraftCompat.registerThaumcraftAspectsToItem(rStack, tAspects, false);
+                }
+
+             return rStack;
+        }
+
+        @SideOnly(Side.CLIENT)
+        public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+            int j = this.mEnabledItems.length();
+
+            for(int i = 0; i < j; ++i) {
+                if (this.mEnabledItems.get(i)) {
+                    ItemStack tStack = new ItemStack(this, 1, i);
+                    this.isItemStackUsable(tStack);
+                    aList.add(tStack);
+                }
+            }
+
+        }
+
+        @SideOnly(Side.CLIENT)
+        public final void registerIcons(IIconRegister aIconRegister) {
+
+            for(short i = 0; i < CircuitImprintLoader.reverseIDs; ++i) {
+                if (this.mEnabledItems.get(i)) {
+                    BW_Util.set2DCoordTo1DArray(i,0,2,aIconRegister.registerIcon("gregtech:" + (GT_Config.troll ? "troll" : this.getUnlocalizedName() + "/" + i)),this.mIconList);
+                }
+            }
+
+            for (short i = CircuitImprintLoader.reverseIDs; i < Short.MAX_VALUE; i++) {
+                if (this.mEnabledItems.get(i)) {
+                    BW_Util.set2DCoordTo1DArray(i,0,2,CircuitImprintLoader.circuitIIconRefs.get(i).get(1).getIconIndex(),this.mIconList);
+                    BW_Util.set2DCoordTo1DArray(i,1,2,aIconRegister.registerIcon(MainMod.MOD_ID+":WrapOverlay"),this.mIconList);
+                     //aIconRegister.registerIcon("gregtech:" + (GT_Config.troll ? "troll" : this.getUnlocalizedName() + "/" + i));
+                }
+            }
+
+        }
+
+        @Override
+        protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+            super.addAdditionalToolTips(aList, aStack, aPlayer);
+            aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
+        }
+
+        @Override
+        public String getUnlocalizedName(ItemStack aStack) {
+            return this.getUnlocalizedName() + "." + aStack.getItemDamage();
+        }
+
+        @Override
+        public IIcon getIconFromDamage(int i) {
+            if (this.mEnabledItems.get(i))
+                return (IIcon) BW_Util.get2DCoordFrom1DArray(i,0,2,this.mIconList);
+            return null;
+        }
+
+        @Override
+        public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+            return getIconFromDamage(stack.getItemDamage());
+        }
+
+        @Override
+        public IIcon getIcon(ItemStack stack, int pass) {
+            return getIconFromDamage(stack.getItemDamage());
         }
     }
 }
