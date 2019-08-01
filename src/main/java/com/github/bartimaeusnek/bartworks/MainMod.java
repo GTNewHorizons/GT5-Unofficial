@@ -165,34 +165,17 @@ public final class MainMod {
         new CircuitImprintLoader().run();
     }
 
-    private void addElectricImplosionCompressorRecipes(){
+    private void addElectricImplosionCompressorRecipes() {
         if (eicMap == null) {
             eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet<GT_Recipe>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
-            recipeLoop:
             for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList) {
                 if (recipe == null || recipe.mInputs == null)
                     continue;
-                try {
-                    ItemStack input = recipe.mInputs[0];
-                    int i = 0;
-                    if (this.checkForExplosives(recipe.mInputs[1])) {
-                        continue;
-                    }
-                    while (this.checkForExplosives(input)) {
-                        if (GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L))) {
-                            i++;
-                            input = recipe.mInputs[i];
-                        }
-                        else
-                            continue recipeLoop;
-
-                    }
-
-                    eicMap.addRecipe(true, new ItemStack[]{input}, recipe.mOutputs, null, null, null, recipe.mDuration, BW_Util.getMachineVoltageFromTier(10), 0);
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    MainMod.LOGGER.error("CAUGHT DEFECTIVE IMPLOSION COMPRESSOR RECIPE!");
-                    e.printStackTrace();
-                }
+                HashSet<ItemStack> inputs = new HashSet<>();
+                for (ItemStack is : recipe.mInputs)
+                    if (!this.checkForExplosives(is))
+                        inputs.add(is);
+                eicMap.addRecipe(true, inputs.toArray(new ItemStack[0]), recipe.mOutputs, null, null, null, recipe.mDuration, BW_Util.getMachineVoltageFromTier(10), 0);
             }
         }
     }

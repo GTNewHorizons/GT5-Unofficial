@@ -25,32 +25,30 @@ package com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
+import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -66,6 +64,14 @@ public class BW_Meta_Items {
 
     private static final BW_Meta_Items.BW_GT_MetaGenCircuits NEWCIRCUITS = new BW_Meta_Items.BW_GT_MetaGenCircuits();
 
+    static{
+        BW_Meta_Items.NEWCIRCUITS.addItem(0,"Circuit Imprint","",SubTag.NO_UNIFICATION,SubTag.NO_RECYCLING);
+        BW_Meta_Items.NEWCIRCUITS.addItem(1,"Sliced Circuit","",SubTag.NO_UNIFICATION,SubTag.NO_RECYCLING);
+        BW_Meta_Items.NEWCIRCUITS.addItem(2,"Raw Imprint supporting Board","A Raw Board needed for Circuit Imprints");
+        BW_Meta_Items.NEWCIRCUITS.addItem(3,"Imprint supporting Board","A Board needed for Circuit Imprints");
+        GT_Values.RA.addFormingPressRecipe(WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust,1),WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust,4),BW_Meta_Items.NEWCIRCUITS.getStack(2),300,480);
+        GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes.add(new BWRecipes.DynamicGTRecipe(false,new ItemStack[]{BW_Meta_Items.NEWCIRCUITS.getStack(2)},new ItemStack[]{BW_Meta_Items.NEWCIRCUITS.getStack(3)},null,new int[]{7500},new FluidStack[]{Materials.SolderingAlloy.getMolten(576)},null,300,BW_Util.getMachineVoltageFromTier(4),BW_Util.CLEANROOM));
+    }
 
     public void addNewCircuit(int aTier, int aID, String aName){
 
@@ -102,7 +108,7 @@ public class BW_Meta_Items {
         }
 
         public final ItemStack addCircuit(int aID, String aEnglish, String aToolTip, int tier){
-            CircuitImprintLoader.bwCircuitTagMap.put(new CircuitData(BW_Util.getMachineVoltageFromTier(tier-2),0,(byte)tier), CircuitImprintLoader.getTagFromStack(new ItemStack(BW_Meta_Items.NEWCIRCUITS,1,aID)));
+            CircuitImprintLoader.bwCircuitTagMap.put(new CircuitData(BW_Util.getMachineVoltageFromTier(tier-2),tier > 2 ? BW_Util.CLEANROOM : 0,(byte)tier), CircuitImprintLoader.getTagFromStack(new ItemStack(BW_Meta_Items.NEWCIRCUITS,1,aID)));
             return this.addItem(aID, aEnglish, aToolTip,SubTag.NO_UNIFICATION);
         }
 
@@ -117,6 +123,46 @@ public class BW_Meta_Items {
             ret.setItemDamage(meta_amount[0]);
             ret.stackSize=meta_amount[1];
             return ret;
+        }
+
+        public final ItemStack getStackWithNBT(NBTTagCompound tag, int... meta_amount){
+            ItemStack ret = this.getStack(meta_amount);
+            ret.setTagCompound(tag);
+            return ret;
+        }
+
+        @SideOnly(Side.CLIENT)
+        public final void registerIcons(IIconRegister aIconRegister) {
+
+            for(short i = 0; i < CircuitImprintLoader.reverseIDs; ++i) {
+                if (this.mEnabledItems.get(i)) {
+                    BW_Util.set2DCoordTo1DArray(i,0,2,aIconRegister.registerIcon("gregtech:" + (GT_Config.troll ? "troll" : this.getUnlocalizedName() + "/" + i)),this.mIconList);
+                }
+            }
+
+            for (short i = CircuitImprintLoader.reverseIDs; i < Short.MAX_VALUE; i++) {
+                if (this.mEnabledItems.get(i)) {
+                    BW_Util.set2DCoordTo1DArray(i,0,2,CircuitImprintLoader.circuitIIconRefs.get(i).get(1).getIconIndex(),this.mIconList);
+                    BW_Util.set2DCoordTo1DArray(i,1,2,aIconRegister.registerIcon(MainMod.MOD_ID+":WrapOverlay"),this.mIconList);
+                    //aIconRegister.registerIcon("gregtech:" + (GT_Config.troll ? "troll" : this.getUnlocalizedName() + "/" + i));
+                }
+            }
+
+        }
+
+        @Override
+        protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+            if (aStack.getItemDamage() == 0 )
+                if (aStack.getTagCompound() != null && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
+                    aList.add("An Imprint for: "+GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
+                else
+                    aList.add("An Imprint for a Circuit");
+            else if (aStack.getItemDamage() == 1 )
+                if (aStack.getTagCompound() != null && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
+                    aList.add("A Sliced "+GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
+                else
+                    aList.add("A Sliced Circuit");
+            super.addAdditionalToolTips(aList, aStack, aPlayer);
         }
     }
 
@@ -231,25 +277,6 @@ public class BW_Meta_Items {
 
         }
 
-        @SideOnly(Side.CLIENT)
-        public final void registerIcons(IIconRegister aIconRegister) {
-
-            for(short i = 0; i < CircuitImprintLoader.reverseIDs; ++i) {
-                if (this.mEnabledItems.get(i)) {
-                    BW_Util.set2DCoordTo1DArray(i,0,2,aIconRegister.registerIcon("gregtech:" + (GT_Config.troll ? "troll" : this.getUnlocalizedName() + "/" + i)),this.mIconList);
-                }
-            }
-
-            for (short i = CircuitImprintLoader.reverseIDs; i < Short.MAX_VALUE; i++) {
-                if (this.mEnabledItems.get(i)) {
-                    BW_Util.set2DCoordTo1DArray(i,0,2,CircuitImprintLoader.circuitIIconRefs.get(i).get(1).getIconIndex(),this.mIconList);
-                    BW_Util.set2DCoordTo1DArray(i,1,2,aIconRegister.registerIcon(MainMod.MOD_ID+":WrapOverlay"),this.mIconList);
-                     //aIconRegister.registerIcon("gregtech:" + (GT_Config.troll ? "troll" : this.getUnlocalizedName() + "/" + i));
-                }
-            }
-
-        }
-
         @Override
         protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
             super.addAdditionalToolTips(aList, aStack, aPlayer);
@@ -270,12 +297,12 @@ public class BW_Meta_Items {
 
         @Override
         public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-            return getIconFromDamage(stack.getItemDamage());
+            return this.getIconFromDamage(stack.getItemDamage());
         }
 
         @Override
         public IIcon getIcon(ItemStack stack, int pass) {
-            return getIconFromDamage(stack.getItemDamage());
+            return this.getIconFromDamage(stack.getItemDamage());
         }
     }
 }

@@ -33,16 +33,16 @@ public class BW_CircuitsLoader {
 
     static {
         NEW_CIRCUITS = new BW_Meta_Items();
-        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(0,1, "Primitive Magneto Resonatic Circuit");
-        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(1,2, "Basic Magneto Resonatic Circuit");
-        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(2,3, "Good Magneto Resonatic Circuit");
-        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(3,4, "Advanced Magneto Resonatic Circuit");
-        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(4,5, "Data Magneto Resonatic Circuit");
-        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(5,6, "Elite Magneto Resonatic Circuit");
-        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(6,7, "Master Magneto Resonatic Circuit");
-        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(7,8, "Ultimate Magneto Resonatic Circuit");
-        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(8,9, "Superconductor Magneto Resonatic Circuit");
-        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(9,10, "Infinite Magneto Resonatic Circuit");
-        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(10,11, "Bio Magneto Resonatic Circuit");
+        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(0,4, "Primitive Magneto Resonatic Circuit");
+        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(1,5, "Basic Magneto Resonatic Circuit");
+        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(2,6, "Good Magneto Resonatic Circuit");
+        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(3,7, "Advanced Magneto Resonatic Circuit");
+        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(4,8, "Data Magneto Resonatic Circuit");
+        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(5,9, "Elite Magneto Resonatic Circuit");
+        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(6,10, "Master Magneto Resonatic Circuit");
+        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(7,11, "Ultimate Magneto Resonatic Circuit");
+        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(8,12, "Superconductor Magneto Resonatic Circuit");
+        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(9,13, "Infinite Magneto Resonatic Circuit");
+        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(10,14, "Bio Magneto Resonatic Circuit");
     }
 }

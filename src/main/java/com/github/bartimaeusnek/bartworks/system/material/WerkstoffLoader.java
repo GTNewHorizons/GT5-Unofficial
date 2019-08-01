@@ -532,7 +532,7 @@ public class WerkstoffLoader implements Runnable {
 
     public static final Werkstoff MagnetoResonaticDust = new Werkstoff(
             new short[]{0xDD,0x77,0xDD,0},
-            "Magneto Resonatic Dust",
+            "Magneto Resonatic",
             new Werkstoff.Stats().setElektrolysis(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().onlyDust().addMixerRecipes(),

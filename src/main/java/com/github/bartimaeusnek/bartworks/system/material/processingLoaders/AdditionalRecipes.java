@@ -60,7 +60,6 @@ public class AdditionalRecipes implements Runnable {
         GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(dust),Materials.Magnesium.getDust(1),Materials.Thorium.getDust(1),1000);
         GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(crushed), ItemList.Crop_Drop_Thorium.get(9),Materials.Water.getFluid(1000),Materials.Thorium.getMolten(144),WerkstoffLoader.Thorianit.get(crushedPurified,4),96,24);
 
-        //TODO: Gem & Circuit Stuff
         //Prasiolite
         GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(dust,Materials.Quartzite,40L),Materials.Amethyst.getDust(10),GT_Values.NF,GT_Values.NF,WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed,20),GT_Values.NI,800, BW_Util.getMachineVoltageFromTier(2),500);
         GT_Values.RA.addPrimitiveBlastRecipe(GT_OreDictUnificator.get(dust,Materials.Quartzite,40L),Materials.Amethyst.getDust(10),6,WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed,20),GT_Values.NI,800);

@@ -24,7 +24,6 @@ package com.github.bartimaeusnek.bartworks.util;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
@@ -50,8 +49,8 @@ import static gregtech.api.enums.GT_Values.V;
 public class BW_Util {
 
     public static final int STANDART = 0;
-    public static final int CLEANROOM = -100;
-    public static final int LOWGRAVITY = -200;
+    public static final int LOWGRAVITY = -100;
+    public static final int CLEANROOM = -200;
 
     public static void set2DCoordTo1DArray(int indexX, int indexY, int sizeY, Object value, Object[] array) {
         int index = indexX * sizeY + indexY;
@@ -147,11 +146,11 @@ public class BW_Util {
 
     public static byte specialToByte(int aSpecialValue) {
         byte special = 0;
-        if (aSpecialValue == (CLEANROOM))
+        if (aSpecialValue == (LOWGRAVITY))
             special = 1;
-        else if (aSpecialValue == (LOWGRAVITY))
+        else if (aSpecialValue == (CLEANROOM))
             special = 2;
-        else if (aSpecialValue == (CLEANROOM | LOWGRAVITY)) {
+        else if (aSpecialValue == (LOWGRAVITY | CLEANROOM)) {
             special = 3;
         }
         return special;
