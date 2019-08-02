@@ -288,6 +288,10 @@ public final class ModItems {
 	public static Item itemAirFilter;
 
 	public static Item itemCoalCoke;
+	public static Item itemCactusCharcoal;
+	public static Item itemSugarCharcoal;
+	public static Item itemCactusCoke;
+	public static Item itemSugarCoke;
 
 	public static Item itemCircuitLFTR;
 
@@ -394,11 +398,8 @@ public final class ModItems {
 		//Some Simple forms of materials
 		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemStickyRubber");
 		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
-		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStackFromFQRN(CORE.MODID+":itemStickyRubber", 1));
-
-
-		itemCoalCoke = new BaseItemBurnable("itemCoalCoke", "Coking Coal", tabMisc, 64, 0, "Used for metallurgy.", "fuelCoke", 3200, 0).setTextureName(CORE.MODID + ":itemCoalCoke");
-
+		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStackFromFQRN(CORE.MODID+":itemStickyRubber", 1));		
+		
 		//Register Hydrogen Blobs first, so we can replace old helium blobs.
 		itemHydrogenBlob = new CoreItem("itemHydrogenBlob", "Mysterious Hydrogen Blob", tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
 		//Register Old Helium Blob, this will be replaced when held by a player.

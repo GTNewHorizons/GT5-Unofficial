@@ -12,6 +12,7 @@ import gtPlusPlus.xmod.galacticraft.HANDLER_GalactiCraft;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.growthcraft.HANDLER_GC;
 import gtPlusPlus.xmod.ic2.HANDLER_IC2;
+import gtPlusPlus.xmod.railcraft.HANDLER_Railcraft;
 import gtPlusPlus.xmod.sc2.HANDLER_SC2;
 import gtPlusPlus.xmod.thaumcraft.HANDLER_Thaumcraft;
 import gtPlusPlus.xmod.thermalfoundation.HANDLER_TF;
@@ -33,6 +34,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_SC2.preInit();
 		HANDLER_GalactiCraft.preInit();
 		HANDLER_CropsPlusPlus.preInit(preinit);
+		HANDLER_Railcraft.preInit();
 	}
 
 	public static void init(FMLInitializationEvent init){
@@ -49,6 +51,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_SC2.init();
 		HANDLER_GalactiCraft.init();
 		HANDLER_CropsPlusPlus.init(init);
+		HANDLER_Railcraft.init();
 	}
 
 	public static void postInit(FMLPostInitializationEvent postinit){
@@ -65,6 +68,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_SC2.postInit();
 		HANDLER_GalactiCraft.postInit();
 		HANDLER_CropsPlusPlus.postInit(postinit);
+		HANDLER_Railcraft.postInit();
 	}
 
 	public static void onLoadComplete(FMLLoadCompleteEvent event) {
