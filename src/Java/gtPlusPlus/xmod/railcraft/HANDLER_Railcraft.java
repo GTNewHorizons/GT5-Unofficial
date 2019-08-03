@@ -10,6 +10,8 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.railcraft.utils.RailcraftUtils;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class HANDLER_Railcraft {
@@ -53,8 +55,8 @@ public class HANDLER_Railcraft {
 	
 	private static void generateCokeOvenRecipes() {
 		ItemStack[] aInputs1 = new ItemStack[] {
-				ItemUtils.getSimpleStack(ModItems.itemCactusCharcoal),
-				ItemUtils.getSimpleStack(ModItems.itemSugarCharcoal)
+				ItemUtils.getSimpleStack(Blocks.cactus),
+				ItemUtils.getSimpleStack(Blocks.reeds)
 		};
 		ItemStack[] aInputs2 = new ItemStack[] {
 				ItemUtils.getSimpleStack(ModItems.itemCactusCharcoal),

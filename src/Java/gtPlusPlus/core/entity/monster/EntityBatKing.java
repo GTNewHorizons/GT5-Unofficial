@@ -1,20 +1,23 @@
 package gtPlusPlus.core.entity.monster;
 
+import java.lang.reflect.Field;
+
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.entity.ai.batking.EntityAIBatKingAttack;
+import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,7 +45,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 	public int attackCounter;
 	private int explosionStrength = 1;
 
-	private EntityAIArrowAttack aiArrowAttack = new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F);
+	private EntityAIBatKingAttack aiAttack = new EntityAIBatKingAttack(this, null, 1.0D, 20, 60, 15.0F, true);
 	private EntityAIAttackOnCollide aiAttackOnCollide = new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.2D,
 			false);
 
@@ -54,15 +57,16 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 		this.isImmuneToFire = true;
 		this.experienceValue = 1000;
 
-		//this.tasks.addTask(3, this.aiArrowAttack);
+		this.tasks.addTask(3, this.aiAttack);
 		//this.tasks.addTask(4, this.aiAttackOnCollide);
 		//this.tasks.addTask(4, new EntityAIRestrictSun(this));
 		//this.tasks.addTask(5, new EntityAIFleeSun(this, 1.0D));
-		this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(6, new EntityAILookIdle(this));
+		this.tasks.addTask(4, new EntityAIWander(this, 1.0D));
+		//this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		//this.tasks.addTask(6, new EntityAILookIdle(this));
 
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+		this.targetTasks.addTask(2, this.aiAttack);
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityBat.class, 0, false));
 
@@ -152,6 +156,20 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 	}
 
 	public void setIsBatHanging(boolean p_82236_1_) {
+		generateParticles(this);
+		generateParticles(this);
+		generateParticles(this);
+		for (int i = 0; i < 32; ++i) {
+			//
+			String particleName = "lava";
+			if (MathUtils.randInt(0, 3) <= 2) {
+				particleName = "crit";
+			}
+			this.worldObj.spawnParticle(particleName,
+					this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width,
+					this.posY + this.rand.nextDouble() * (double) this.height,
+					this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0.0D, 0.0D, 0.0D);
+		}
 
 	}
 
@@ -168,6 +186,37 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 	public void onUpdate() {
 		super.onUpdate();
 		generateParticles(this);
+
+		if (!this.worldObj.isRemote && (this.targetedEntity == null || this.aggroCooldown-- <= 0)) {
+			this.targetedEntity = this.worldObj.getClosestVulnerablePlayerToEntity(this, 100.0D);
+
+			if (this.targetedEntity != null) {
+				this.aggroCooldown = 30;
+				if (aiAttack.hasValidTarget()) {
+					this.setAttackTarget(aiAttack.getTarget());
+				}
+				else {
+					Logger.INFO("No valid target.");	
+					if (ReflectionUtils.doesFieldExist(aiAttack.getClass(), "mEntityTarget")) {
+						Logger.INFO("Found field.");						
+					}
+					else {
+						Logger.INFO("Did not find field.");						
+					}
+					Field target = ReflectionUtils.getField(EntityAIBatKingAttack.class, "mEntityTarget");					
+					if (target != null) {
+						ReflectionUtils.setField(aiAttack, target, this.targetedEntity);
+						Logger.INFO("Set target.");
+					}
+					else {
+						Logger.INFO("Could not set via reflection.");
+					}
+					
+					
+				}
+			}
+		}
+
 	}
 
 	private static void generateParticles(EntityBatKing aKing) {
@@ -213,19 +262,18 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 	private boolean hasAir() {
 		BlockPos p = EntityUtils.findBlockPosUnderEntity(this);
 		int y = p.yPos;
-		int yOriginal = p.yPos;
-		int breaker = 0;
-		while (y > 0) {
-			if (breaker > 50) {
+		int yOriginal = p.yPos;		
+		
+		for (int u = 0; u<5;u++) {
+			if (u > 50 || y <= 0) {
 				break;
 			}
 			if (!this.worldObj.isAirBlock(p.xPos, y, p.zPos)) {
 				break;
 			}
 			y--;
-			breaker++;
 		}
-		if (yOriginal - y < 3) {
+		if (yOriginal != y) {
 			for (int i = 0; i < y; y++) {
 				this.jump();
 			}
@@ -287,9 +335,19 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 	 */
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase p_82196_1_, float p_82196_2_) {
-
+		Logger.INFO("Trying to do ranged attack 1 |"+(this.targetedEntity != null)+"|");
+		
+		if (!this.isFlying() || !this.isAirBorne) {
+			//this.hasAir();
+			/*
+			 * for (int i=0;i<3;i++) { this.jump(); }
+			 */
+		}
+		
+		
 		double d4 = 64.0D;
-		if (this.targetedEntity != null && this.targetedEntity.getDistanceSqToEntity(this) < d4 * d4) {
+		if (this.targetedEntity != null && this.targetedEntity.getDistanceSqToEntity(this) < d4 * d4 * 8) {
+			Logger.INFO("Trying to do ranged attack 2");
 			double d5 = this.targetedEntity.posX - this.posX;
 			double d6 = this.targetedEntity.boundingBox.minY + (double) (this.targetedEntity.height / 2.0F)
 					- (this.posY + (double) (this.height / 2.0F));
@@ -297,31 +355,78 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 			this.renderYawOffset = this.rotationYaw = -((float) Math.atan2(d5, d7)) * 180.0F / (float) Math.PI;
 
 			++this.attackCounter;
-			
-			if (this.canEntityBeSeen(this.targetedEntity)) {				
+
+			if (this.canEntityBeSeen(this.targetedEntity)) {	
+				Logger.INFO("Trying to do ranged attack 3a | "+attackCounter);			
 
 
-				if (this.attackCounter == 20) {
+				if (this.attackCounter >= 2) {
+					Logger.INFO("Trying to do ranged attack 3a1");					
+
 					this.worldObj.playAuxSFXAtEntity((EntityPlayer) null, 1008, (int) this.posX, (int) this.posY,
 							(int) this.posZ, 0);
-					EntityLargeFireball entitylargefireball = new EntityLargeFireball(this.worldObj, this, d5, d6, d7);
-					entitylargefireball.field_92057_e = this.explosionStrength;
+					setIsBatHanging(true);
+
+					EntityThrowableBomb entitylargefireball = new EntityThrowableBomb(this.worldObj, this/*d5, d6, d7*/);
+					//entitylargefireball.field_92057_e = this.explosionStrength;
+					//entitylargefireball.accelerationX *= 2;
+					//entitylargefireball.accelerationY *= 2;
+					//entitylargefireball.accelerationZ *= 2;
 					double d8 = 4.0D;
 					Vec3 vec3 = this.getLook(1.0F);
 					entitylargefireball.posX = this.posX + vec3.xCoord * d8;
 					entitylargefireball.posY = this.posY + (double) (this.height / 2.0F) + 0.5D;
 					entitylargefireball.posZ = this.posZ + vec3.zCoord * d8;
-					this.worldObj.spawnEntityInWorld(entitylargefireball);
-					this.attackCounter = -40;
+					this.worldObj.spawnEntityInWorld(entitylargefireball);					
+
+					for (int u=0; u<MathUtils.randInt(2, 10);u++) {
+					if (this.attackCounter > 0) {
+						Logger.INFO("Trying to do ranged attack 5a");
+						--this.attackCounter;
+						EntityArrow entityarrow = new EntityArrow(this.worldObj, this, p_82196_1_, MathUtils.randFloat(1f, 3f),
+								(float) (14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
+						int i = MathUtils.randInt(0, 4);
+						int j = MathUtils.randInt(0, 3);
+						int k = MathUtils.randInt(0, 3);
+						entityarrow.setDamage((double) (p_82196_2_ * 2.0F) + this.rand.nextGaussian() * 0.25D
+								+ (double) ((float) this.worldObj.difficultySetting.getDifficultyId() * 0.11F));
+
+						boolean boostAttack = MathUtils.randInt(0, 100) <= 21;
+						if (boostAttack) {
+							if (i > 0) {
+								entityarrow.setDamage(entityarrow.getDamage() + (double) i * 0.5D + 0.5D);
+							}
+
+							if (j > 0) {
+								entityarrow.setKnockbackStrength(j);
+							}
+							if (k > 0) {
+								entityarrow.setFire(50 * k);
+							}
+						}
+
+						this.playSound("mob.skeleton.say", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+						this.worldObj.spawnEntityInWorld(entityarrow);
+						Logger.INFO("Trying to do ranged attack 5a done");
+					}
+				}
+					
+					
+
+
+					this.attackCounter = 0;
 				}
 			} else if (this.attackCounter > 0) {
+				Logger.INFO("Trying to do ranged attack 3b");
 				--this.attackCounter;
 			}
 		} else {
+			Logger.INFO("Trying to do ranged attack 4a");
 			this.renderYawOffset = this.rotationYaw = -((float) Math.atan2(this.motionX, this.motionZ)) * 180.0F
 					/ (float) Math.PI;
 
 			if (this.attackCounter > 0) {
+				Logger.INFO("Trying to do ranged attack 5a");
 				--this.attackCounter;
 				EntityArrow entityarrow = new EntityArrow(this.worldObj, this, p_82196_1_, 1.6F,
 						(float) (14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
@@ -347,6 +452,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 
 				this.playSound("mob.skeleton.say", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 				this.worldObj.spawnEntityInWorld(entityarrow);
+				Logger.INFO("Trying to do ranged attack 5a done");
 			}
 
 		}

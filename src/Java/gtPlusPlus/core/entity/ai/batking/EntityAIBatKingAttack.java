@@ -1,6 +1,8 @@
 package gtPlusPlus.core.entity.ai.batking;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.monster.EntityBatKing;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -26,16 +28,17 @@ public class EntityAIBatKingAttack extends EntityAIBase {
 
 	private final Class mClassTarget;
 
-	public EntityAIBatKingAttack(EntityAIBatKingAttack aParent, EntityBatKing aAttacker, Class aClassTarget,
+	public EntityAIBatKingAttack(EntityBatKing aAttacker, Class aClassTarget,
 			double aMovementSpeed, int someInt, int aMaxRangedAttackTime, float someFloat, boolean aLongMemory) {
-		mRangedAI = new Ranged(aParent, aMovementSpeed, someInt, aMaxRangedAttackTime, someFloat);
-		mMeleeAI = new Melee(aParent, aClassTarget, aMovementSpeed, aLongMemory);		
+		mRangedAI = new Ranged(this, aMovementSpeed, someInt, 5, someFloat);
+		mMeleeAI = new Melee(this, aClassTarget, aMovementSpeed, aLongMemory);		
 		mAttackingEntity = aAttacker;	
 		mClassTarget = aClassTarget;
 	}
 
 	@Override
 	public boolean shouldExecute() {		
+		determineCombatStyle();
 		EntityLivingBase entitylivingbase = this.mAttackingEntity.getAttackTarget();
 		if (entitylivingbase == null) {
 			this.mEntityTarget = null;
@@ -74,6 +77,7 @@ public class EntityAIBatKingAttack extends EntityAIBase {
 
 	@Override
 	public boolean continueExecuting() {
+		determineCombatStyle();
 		if (mIsMelee) {
 			return mMeleeAI.continueExecuting();
 		} else {
@@ -93,6 +97,7 @@ public class EntityAIBatKingAttack extends EntityAIBase {
 
 	@Override
 	public void startExecuting() {
+		determineCombatStyle();
 		if (mIsMelee) {
 			mMeleeAI.startExecuting();
 		} else {
@@ -102,6 +107,7 @@ public class EntityAIBatKingAttack extends EntityAIBase {
 
 	@Override
 	public void resetTask() {
+		determineCombatStyle();
 		if (mIsMelee) {
 			mMeleeAI.resetTask();
 		} else {
@@ -121,11 +127,15 @@ public class EntityAIBatKingAttack extends EntityAIBase {
 	
 	
 	private final void determineCombatStyle() {
+		boolean aisMeleeNow = this.mIsMelee;
 		if (this.mEntityTarget != null && EntityUtils.getDistance(getBatKing(), mEntityTarget) < 4) {
 			this.mIsMelee = true;
 		}
 		else {
 			this.mIsMelee = false;
+		}
+		if (aisMeleeNow != this.mIsMelee) {
+			Logger.INFO("Bat King changed combat style from "+(aisMeleeNow ? "Melee" : "Ranged")+" to "+(this.mIsMelee ? "Melee" : "Ranged"));
 		}
 	}
 
@@ -146,7 +156,7 @@ public class EntityAIBatKingAttack extends EntityAIBase {
 		 */
 		private int maxRangedAttackTime;
 		private float field_96562_i;
-		private float field_82642_h;
+		private float field_82642_h; //Max range
 
 		public Ranged(EntityAIBatKingAttack aParent, double aMovementSpeed, int someInt,
 				int aMaxRangedAttackTime, float someFloat) {
@@ -156,7 +166,7 @@ public class EntityAIBatKingAttack extends EntityAIBase {
 			this.field_96561_g = someInt;
 			this.maxRangedAttackTime = aMaxRangedAttackTime;
 			this.field_96562_i = someFloat;
-			this.field_82642_h = someFloat * someFloat;
+			this.field_82642_h = someFloat * someFloat * 8;
 			parentAI.setMutexBits(3);
 
 		}
@@ -187,7 +197,12 @@ public class EntityAIBatKingAttack extends EntityAIBase {
 		/**
 		 * Updates the task
 		 */
-		public void updateTask() {
+		public void updateTask() {			
+			
+			if (MathUtils.randInt(0, 100) == 0) {
+				maxRangedAttackTime = MathUtils.balance(maxRangedAttackTime, 20, 40);
+			}
+			
 			double d0 = parentAI.getBatKing().getDistanceSq(parentAI.mEntityTarget.posX, parentAI.mEntityTarget.boundingBox.minY,
 					parentAI.mEntityTarget.posZ);
 			boolean flag = parentAI.getBatKing().getEntitySenses().canSee(parentAI.mEntityTarget);
@@ -201,14 +216,21 @@ public class EntityAIBatKingAttack extends EntityAIBase {
 			if (d0 <= (double) this.field_82642_h && this.mCooldownTime >= 20) {
 				parentAI.getBatKing().getNavigator().clearPathEntity();
 			} else {
-				parentAI.getBatKing().getNavigator().tryMoveToEntityLiving(parentAI.mEntityTarget, this.entityMoveSpeed);
+				if (parentAI.getBatKing().getNavigator().tryMoveToEntityLiving(parentAI.mEntityTarget, this.entityMoveSpeed)) {
+					Logger.INFO("Doing Ranged Ai Task.");
+				}
+				else {
+					Logger.INFO("Not Doing Ranged Ai Task.");
+				}
 			}
 
 			parentAI.getBatKing().getLookHelper().setLookPositionWithEntity(parentAI.mEntityTarget, 30.0F, 30.0F);
 			float f;
+			Logger.INFO("Ranged AI - "+rangedAttackTime);
 
 			if (--this.rangedAttackTime == 0) {
 				if (d0 > (double) this.field_82642_h || !flag) {
+					Logger.INFO("Stopping ranged attack. "+flag+"|"+(d0 > (double) this.field_82642_h)+"|"+d0+"|"+(double) this.field_82642_h);
 					return;
 				}
 
@@ -222,7 +244,7 @@ public class EntityAIBatKingAttack extends EntityAIBase {
 				if (f1 > 1.0F) {
 					f1 = 1.0F;
 				}
-
+				Logger.INFO("Trying to do a ranged attack.");
 				parentAI.getBatKingAsIRangedAttackMob().attackEntityWithRangedAttack(parentAI.mEntityTarget, f1);
 				this.rangedAttackTime = MathHelper.floor_float(
 						f * (float) (this.maxRangedAttackTime - this.field_96561_g) + (float) this.field_96561_g);
