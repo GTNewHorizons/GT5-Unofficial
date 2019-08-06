@@ -210,16 +210,21 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
             //Long EUt calculation
             long xEUt = aEUt;
             //Isnt too low EUt check?
-            long tempEUt = xEUt < V[1] ? V[1] : xEUt;
+            long tempEUt = Math.max(xEUt, V[1]);
 
             this.mMaxProgresstime = aDuration;
-
             while (tempEUt <= V[mTier - 1]) {
                 tempEUt <<= 2;//this actually controls overclocking
                 //xEUt *= 4;//this is effect of everclocking
                 this.mMaxProgresstime >>= 1;//this is effect of overclocking
-                xEUt = this.mMaxProgresstime == 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
+                xEUt = this.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
                 timesOverclocked++;
+            }
+            if (xEUt > maxInputVoltage){
+                //downclock one notch, we have overshot.
+                xEUt >>=2;
+                this.mMaxProgresstime <<= 1;
+                timesOverclocked--;
             }
             if (xEUt > Integer.MAX_VALUE - 1) {
                 this.mEUt = Integer.MAX_VALUE - 1;
@@ -228,7 +233,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                 this.mEUt = (int) xEUt;
                 if (this.mEUt == 0)
                     this.mEUt = 1;
-                if (this.mMaxProgresstime == 0)
+                if (this.mMaxProgresstime <= 0)
                     this.mMaxProgresstime = 1;//set time to 1 tick
             }
         }
@@ -243,7 +248,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         ret.add(BW_Util.check_layer(iGregTechTileEntity, 7, 17, 18, GregTech_API.sBlockCasings1, 11, 7, false, null, -1, 11));
         ret.add(BW_Util.check_layer(iGregTechTileEntity, 6, -1, 17, GregTech_API.sBlockCasings5, -1, 7, false, false, true, Blocks.air, -1, false, 11));
         for (int y = -1; y < 17; y++) {
-            ret.add(BW_Util.check_layer(iGregTechTileEntity, 7, y, y + 1, ItemRegistry.bw_glasses[0], -1, 7, y == 0, false, false, null, -1, true, 11));
+            ret.add(BW_Util.check_layer(iGregTechTileEntity, 7, y, y + 1, ItemRegistry.bw_glasses[0], -1, 7, y == 0, false, false, null, -1, false, 11));
             if (!this.getCoilHeat(iGregTechTileEntity, 7, y, 6))
                 return false;
             List<Byte> metasFromLayer = BW_Util.getMetasFromLayer(iGregTechTileEntity, 7, y, y + 1, 7, y == 0, false, false);

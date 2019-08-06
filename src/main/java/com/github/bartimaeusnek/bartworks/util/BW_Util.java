@@ -30,6 +30,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -259,7 +260,7 @@ public class BW_Util {
             //Long EUt calculation
             long xEUt = aEUt;
             //Isnt too low EUt check?
-            long tempEUt = xEUt < V[1] ? V[1] : xEUt;
+            long tempEUt = Math.max(xEUt, V[1]);
 
             base.mMaxProgresstime = aDuration;
 
@@ -267,8 +268,15 @@ public class BW_Util {
                 tempEUt <<= 2;//this actually controls overclocking
                 //xEUt *= 4;//this is effect of everclocking
                 base.mMaxProgresstime >>= 1;//this is effect of overclocking
-                xEUt = base.mMaxProgresstime == 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
+                xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
             }
+
+            if (xEUt > maxInputVoltage){
+                //downclock one notch, we have overshot.
+                xEUt >>=2;
+                base.mMaxProgresstime <<= 1;
+            }
+
             if (xEUt > Integer.MAX_VALUE - 1) {
                 base.mEUt = Integer.MAX_VALUE - 1;
                 base.mMaxProgresstime = Integer.MAX_VALUE - 1;
@@ -276,7 +284,7 @@ public class BW_Util {
                 base.mEUt = (int) xEUt;
                 if (base.mEUt == 0)
                     base.mEUt = 1;
-                if (base.mMaxProgresstime == 0)
+                if (base.mMaxProgresstime <= 0)
                     base.mMaxProgresstime = 1;//set time to 1 tick
             }
         }
@@ -374,8 +382,9 @@ public class BW_Util {
                         continue;
                     if (controllerLayer && (xDir + x == 0 && zDir + z == 0))
                         continue;
-                    if (insideCheck && (Math.abs(x) < radius && Math.abs(z) != radius)) {
-                        if (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(inside) || (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmginside && dmginside > (-1))) {
+                    boolean b = Math.abs(x) < radius && Math.abs(z) != radius;
+                    if (insideCheck && b) {
+                        if (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(inside) && (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmginside || dmginside > (-1))) {
                             if (!(allowHatches && (
                                     ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addDynamoToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
                                             ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
@@ -388,7 +397,7 @@ public class BW_Util {
                             }
                         }
                     }
-                    if (((!(Math.abs(x) < radius && Math.abs(z) != radius))) && (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block) || (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmg && dmg > (-1)))) {
+                    if (!b && !aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block) && (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmg || dmg > (-1))) {
                         if (!(allowHatches && (
                                 ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addDynamoToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
                                         ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||

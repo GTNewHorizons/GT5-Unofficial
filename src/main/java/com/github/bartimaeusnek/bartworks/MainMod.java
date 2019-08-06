@@ -54,6 +54,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -155,6 +156,10 @@ public final class MainMod {
                 new ThreadedLoader().run();
             else
                 WerkstoffLoader.INSTANCE.run();
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor","Electric Implosions?");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor.desc","Basically a giant Hammer that presses Stuff - No more TNT!");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.DEHP","Heat from below!");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.DEHP.desc","Get ALL the thermal energy!");
         }
     }
     @Mod.EventHandler
