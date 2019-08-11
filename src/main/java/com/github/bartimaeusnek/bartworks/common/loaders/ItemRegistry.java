@@ -32,6 +32,7 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBl
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_ExperimentalFloodGate;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
 import com.github.bartimaeusnek.bartworks.common.tileentities.debug.CreativeScanner;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_CircuitAssemblyLine;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_DEHP;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_THTR;
@@ -135,12 +136,13 @@ public class ItemRegistry {
     public static ItemStack dehp;
     public static ItemStack thtr;
     public static ItemStack eic;
+    public static ItemStack cal;
 
     public static void run() {
 
         if (newStuff) {
             if (ConfigHandler.creativeScannerID != 0)
-                new CreativeScanner(ConfigHandler.creativeScannerID,"ZPM Creative Debug Scanner","ZPM Creative Debug Scanner",7);
+                new CreativeScanner(ConfigHandler.creativeScannerID,"Creative Debug Scanner","Creative Debug Scanner",20);
             ItemRegistry.eic = new GT_TileEntity_ElectricImplosionCompressor(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 6, "ElectricImplosionCompressor", "Electric Implosion Compressor").getStackForm(1L);
             ItemRegistry.thtr = new GT_TileEntity_THTR(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 5, "THTR", "Thorium High Temperature Reactor").getStackForm(1L);
             GT_TileEntity_THTR.THTRMaterials.registeraTHR_Materials();
@@ -177,6 +179,7 @@ public class ItemRegistry {
             ItemRegistry.dehp = new GT_TileEntity_DEHP(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 1, 1, "DEHP", "Deep Earth Heating Pump").getStackForm(1L);
             ItemRegistry.megaMachines[0] = new GT_TileEntity_MegaBlastFurnace(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 2, "MegaBlastFurnace", StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
             ItemRegistry.megaMachines[1] = new GT_TileEntity_MegaVacuumFreezer(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 3, "MegaVacuumFreezer", StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
+            ItemRegistry.cal = new GT_TileEntity_CircuitAssemblyLine(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 7, "CircuitAssemblyLine", "Circuit Assembly Line").getStackForm(1L);
         }
 
 

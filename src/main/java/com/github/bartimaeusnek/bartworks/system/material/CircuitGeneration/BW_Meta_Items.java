@@ -131,6 +131,17 @@ public class BW_Meta_Items {
             return ret;
         }
 
+        @Override
+        public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+            if (aCreativeTab == this.getCreativeTab())
+                for (NBTTagCompound tag : CircuitImprintLoader.recipeTagMap.keySet()){
+                    ItemStack stack = new ItemStack(BW_Meta_Items.NEWCIRCUITS,1,0);
+                    stack.setTagCompound(tag);
+                    aList.add(stack);
+                }
+            super.getSubItems(var1, aCreativeTab, aList);
+        }
+
         @SideOnly(Side.CLIENT)
         public final void registerIcons(IIconRegister aIconRegister) {
 

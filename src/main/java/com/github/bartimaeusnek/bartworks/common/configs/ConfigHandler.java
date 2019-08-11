@@ -53,6 +53,7 @@ public class ConfigHandler {
 
     public static boolean DEHPDirectSteam;
     public static boolean teslastaff;
+    public static boolean classicMode;
     public static boolean experimentalThreadedLoader;
     public static boolean GTNH;
     public static boolean ezmode;
@@ -65,17 +66,20 @@ public class ConfigHandler {
 
     public ConfigHandler(Configuration C) {
         ConfigHandler.c = C;
+        ConfigHandler.classicMode= ConfigHandler.c.get("System", "Enable Classic Mode", false, "Enables the classic Mode (all recipes in normal machines are doable in MV").getBoolean(false);
         ConfigHandler.creativeScannerID = ConfigHandler.c.get("System", "Creative Debug Scanner", 0, "ID for the Creative Debug Scanner Block").getInt(0);
         ConfigHandler.tooltips = ConfigHandler.c.get("System", "BartWorksToolTips", true, "If you wish to enable extra tooltips").getBoolean(true);
         ConfigHandler.IDOffset = ConfigHandler.c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + ConfigHandler.IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").getInt(12600);
-        ConfigHandler.energyPerCell = ConfigHandler.c.get("Multiblocks", "energyPerLESUCell", 1000000, "This will set Up the Energy per LESU Cell", 1000000, Integer.MAX_VALUE).getInt(1000000);
         ConfigHandler.ezmode = ConfigHandler.c.get("System", "Mode switch", false, "If GTNH is Loaded, this will enable easy recipes, if not, it will enable harder recipes.").getBoolean(false);
         ConfigHandler.teslastaff = ConfigHandler.c.get("System", "Enable Teslastaff", false, "Enables the Teslastaff, an Item used to destroy Electric Armors").getBoolean(false);
         ConfigHandler.newStuff = !ConfigHandler.c.get("System", "Disable non-original-GT-stuff", false, "This switch disables my new content, that is not part of the GT2 compat").getBoolean(false);
         ConfigHandler.BioLab = !ConfigHandler.c.get("System", "Disable BioLab", false, "This switch disables the BioLab, BioVat etc. If you use GT5.08 or equivalent, this needs to be turned off!").getBoolean(false);
+
+        ConfigHandler.mbWaterperSec = ConfigHandler.c.get("Singleblocks", "mL Water per Sec for the StirlingPump", 150).getInt(150);
+
+        ConfigHandler.energyPerCell = ConfigHandler.c.get("Multiblocks", "energyPerLESUCell", 1000000, "This will set Up the Energy per LESU Cell", 1000000, Integer.MAX_VALUE).getInt(1000000);
         ConfigHandler.DEHPDirectSteam = ConfigHandler.c.get("Multiblocks", "DEHP Direct Steam Mode", false, "This switch enables the Direct Steam Mode of the DEHP. If enabled it will take in Waterand output steam. If disabled it will Input IC2Coolant and output hot coolant").getBoolean(false);
         ConfigHandler.megaMachinesMax = ConfigHandler.c.get("Multiblocks", "Mega Machines Maximum Recipes per Operation", 256, "This changes the Maximum Recipes per Operation to the specified Valure").getInt(256);
-        ConfigHandler.mbWaterperSec = ConfigHandler.c.get("Singleblocks", "mL Water per Sec for the StirlingPump", 150).getInt(150);
         ConfigHandler.bioVatMaxParallelBonus = ConfigHandler.c.get("Multiblocks","BioVat Maximum Bonus on Recipes", 1000,"This are the maximum parallel Operations the BioVat can do, when the output is half full.").getInt(1000);
         if (ConfigHandler.IDOffset == 0) {
             ConfigHandler.IDOffset = 12600;
@@ -89,7 +93,6 @@ public class ConfigHandler {
         }
         ConfigHandler.enabledPatches = new boolean[BWCoreTransformer.shouldTransform.length];
         ConfigHandler.enabledPatches = Arrays.copyOf(BWCoreTransformer.shouldTransform,BWCoreTransformer.shouldTransform.length);
-
         ConfigHandler.ross128BID = ConfigHandler.c.get("CrossMod Interactions", "DimID - Ross128b", -64, "The Dim ID for Ross128b").getInt(-64);
         ConfigHandler.ross128BAID = ConfigHandler.c.get("CrossMod Interactions", "DimID - Ross128ba", -63, "The Dim ID for Ross128ba (Ross128b's Moon)").getInt(-63);
         ConfigHandler.ross128btier = ConfigHandler.c.get("CrossMod Interactions", "Rocket Tier - Ross128b", 3, "The Rocket Tier for Ross128b").getInt(3);
@@ -105,8 +108,8 @@ public class ConfigHandler {
 
     private static void setUpComments() {
         ConfigHandler.c.addCustomCategoryComment("ASM fixes", "Disable ASM fixes here.");
-        ConfigHandler.c.addCustomCategoryComment("Multiblocks", "Multliblock Options can be set here.");
         ConfigHandler.c.addCustomCategoryComment("Singleblocks", "Singleblock Options can be set here.");
+        ConfigHandler.c.addCustomCategoryComment("Multiblocks", "Multliblock Options can be set here.");
         ConfigHandler.c.addCustomCategoryComment("System", "Different System Settings can be set here.");
         ConfigHandler.c.addCustomCategoryComment("CrossMod Interactions", "CrossMod Interaction Settings can be set here. For Underground Fluid settings change the Gregtech.cfg!");
     }

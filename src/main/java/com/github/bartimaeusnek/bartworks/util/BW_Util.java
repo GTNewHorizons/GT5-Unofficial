@@ -63,6 +63,20 @@ public class BW_Util {
         return array[index];
     }
 
+    public static GT_Recipe copyAndSetTierToNewRecipe(GT_Recipe recipe, byte tier){
+        byte oldTier = GT_Utility.getTier(recipe.mEUt);
+        int newTime = recipe.mDuration;
+        int newVoltage = recipe.mEUt;
+        if (tier < oldTier) {
+            newTime <<= (oldTier - tier);
+            newVoltage >>= 2 * (oldTier - tier);
+        } else {
+            newTime >>= (tier - oldTier);
+            newVoltage <<= 2 * (tier - oldTier);
+        }
+        return new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, recipe.mFluidInputs, recipe.mFluidOutputs, newTime, newVoltage, recipe.mSpecialValue);
+    }
+
     public static String subscriptNumbers(String b){
         char[] chars = b.toCharArray();
         char[] nu = new char[chars.length];
@@ -312,14 +326,14 @@ public class BW_Util {
         for (GT_MetaTileEntity_Hatch_Input fip : aBaseMetaTileEntity.mInputHatches){
             tmp.add(fip.getFluid());
         }
-        return (FluidStack[]) tmp.toArray();
+        return tmp.toArray(new FluidStack[0]);
     }
     public static ItemStack[] getItemsFromInputBusses(GT_MetaTileEntity_MultiBlockBase aBaseMetaTileEntity){
         ArrayList<ItemStack> tmp = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_InputBus fip : aBaseMetaTileEntity.mInputBusses){
             tmp.addAll(Arrays.asList(fip.mInventory));
         }
-        return (ItemStack[]) tmp.toArray();
+        return tmp.toArray(new ItemStack[0]);
     }
 
 

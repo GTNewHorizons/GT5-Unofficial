@@ -44,7 +44,7 @@ import java.util.Iterator;
 
 public class CircuitImprintLoader implements Runnable {
 
-    static final ArrayListMultimap<NBTTagCompound,GT_Recipe> recipeTagMap = ArrayListMultimap.create();
+    public static final ArrayListMultimap<NBTTagCompound,GT_Recipe> recipeTagMap = ArrayListMultimap.create();
     static final HashBiMap<CircuitData,NBTTagCompound> bwCircuitTagMap = HashBiMap.create(20);
     static final HashSet<NBTTagCompound> refs = new HashSet<>();
     public static short reverseIDs = Short.MAX_VALUE-1;
