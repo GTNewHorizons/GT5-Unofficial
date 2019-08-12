@@ -56,7 +56,7 @@ public class HANDLER_Railcraft {
 	private static void generateCokeOvenRecipes() {
 		ItemStack[] aInputs1 = new ItemStack[] {
 				ItemUtils.getSimpleStack(Blocks.cactus),
-				ItemUtils.getSimpleStack(Blocks.reeds)
+				ItemUtils.getSimpleStack(Items.reeds)
 		};
 		ItemStack[] aInputs2 = new ItemStack[] {
 				ItemUtils.getSimpleStack(ModItems.itemCactusCharcoal),

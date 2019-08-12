@@ -55,6 +55,7 @@ public class LoadedMods {
 	public static boolean Witchery = false;
 	public static boolean Waila = false;
 	public static boolean CropsPlusPlus = false; //Barts Crop Mod
+	public static boolean Reliquary = false;
 
 
 
@@ -100,6 +101,11 @@ public class LoadedMods {
 		if (Loader.isModLoaded("berriespp")) {
 			CropsPlusPlus = true;
 			Logger.INFO("Components enabled for: Crops++");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("xreliquary")) {
+			Reliquary = true;
+			Logger.INFO("Components enabled for: Reliquary");
 			totalMods++;
 		}
 		if (Loader.isModLoaded("TConstruct")){

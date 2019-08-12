@@ -18,6 +18,7 @@ import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.player.EntityPlayer;
@@ -66,7 +67,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 		//this.tasks.addTask(6, new EntityAILookIdle(this));
 
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-		this.targetTasks.addTask(2, this.aiAttack);
+		//this.targetTasks.addTask(2, this.aiAttack);
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityBat.class, 0, false));
 
@@ -123,7 +124,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 	 * colliding.
 	 */
 	public boolean canBePushed() {
-		return false;
+		return true;
 	}
 
 	protected void collideWithEntity(Entity aEntity) {
@@ -145,10 +146,10 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.movementSpeed);
 		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.followRange);
 
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(250.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D);
-		this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(32.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1D);
+		this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(120.0D);
 	}
 
 	public boolean getIsBatHanging() {
@@ -214,6 +215,15 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 					
 					
 				}
+			}
+			else {
+				 Vec3 vec3 = RandomPositionGenerator.findRandomTarget(this, 32, 20);
+		            if (vec3 != null) {
+		            	double xPosition = vec3.xCoord;
+		                double yPosition = vec3.yCoord;
+		                double zPosition = vec3.zCoord;
+				        this.getNavigator().tryMoveToXYZ(xPosition, yPosition, zPosition, 3);
+		            }				
 			}
 		}
 
