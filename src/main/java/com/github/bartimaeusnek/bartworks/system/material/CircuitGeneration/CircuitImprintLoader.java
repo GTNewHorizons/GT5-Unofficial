@@ -107,8 +107,9 @@ public class CircuitImprintLoader implements Runnable {
         GT_Recipe newRecipe = original.copy();
         for (ItemStack is : newRecipe.mInputs){
             int[] oreIDs = OreDictionary.getOreIDs(is);
-            if(oreIDs == null || oreIDs.length < 1 || !OreDictionary.getOreName(oreIDs[0]).contains("circuit"))
-                is.stackSize = Math.max( 64, is.stackSize *= 4);
+            if(oreIDs == null || oreIDs.length < 1 || !OreDictionary.getOreName(oreIDs[0]).contains("circuit")) {
+                is.stackSize = Math.max(64,  is.stackSize*4);
+            }
         }
         newRecipe.mFluidInputs[0].amount *= 4;
         newRecipe.mDuration *= 4;
@@ -117,39 +118,38 @@ public class CircuitImprintLoader implements Runnable {
 
     public static GT_Recipe reBuildRecipe(GT_Recipe original){
        ItemStack out = original.copy().getOutput(0);
-       out.stackSize = 16;
+       out.stackSize *= 16;
        ItemStack[] in = new  ItemStack[6];
        BiMap<ItemList, Short> inversed = CircuitImprintLoader.circuitIIconRefs.inverse();
        for (int i = 0; i < 6; i++) {
            try {
-           for (ItemList il : inversed.keySet()){
+                for (ItemList il : inversed.keySet()){
                    if (GT_Utility.areStacksEqual(il.get(1), original.mInputs[i])) {
                        in[i] = BW_Meta_Items.getNEWCIRCUITS().getStack(inversed.get(il), original.mInputs[i].stackSize);
                    }
 
-           }
-           if (original.mInputs[i] != null && in[i] == null){
-               if (BW_Util.checkStackAndPrefix(original.mInputs[i]) && GT_OreDictUnificator.getAssociation(original.mInputs[i]).mPrefix == OrePrefixes.wireGt01){
-                   in[i] = GT_OreDictUnificator.get(OrePrefixes.wireGt16,GT_OreDictUnificator.getAssociation(original.mInputs[i]).mMaterial.mMaterial,original.mInputs[i].stackSize);
-               }
-               else {
-                   in[i] = original.mInputs[i].copy();
-                   in[i].stackSize *= 16;
-               }
-//               if (in[i].stackSize > 64)
-//                   return null;
-           }
-           } catch (ArrayIndexOutOfBoundsException e){
-               break;
-           } catch (NullPointerException e){
-               e.printStackTrace();
-           }
-       }
-       if (CircuitImprintLoader.checkForBlacklistedComponents(in)){
+                }
+                if (original.mInputs[i] != null && in[i] == null){
+                    if (BW_Util.checkStackAndPrefix(original.mInputs[i]) && GT_OreDictUnificator.getAssociation(original.mInputs[i]).mPrefix == OrePrefixes.wireGt01){
+                        in[i] = GT_OreDictUnificator.get(OrePrefixes.wireGt16,GT_OreDictUnificator.getAssociation(original.mInputs[i]).mMaterial.mMaterial,original.mInputs[i].stackSize);
+                    }
+                    else {
+                        in[i] = original.mInputs[i].copy();
+                        in[i].stackSize *= 16;
+                    }
+//                  if (in[i].stackSize > 64)
+//                      return null;
+                    }
+                } catch (ArrayIndexOutOfBoundsException e){
+                    break;
+                } catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+        }
+        if (CircuitImprintLoader.checkForBlacklistedComponents(in)){
            return null;
-       }
-
-       return new BWRecipes.DynamicGTRecipe(false,in,new ItemStack[]{out},BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(CircuitImprintLoader.getTagFromStack(original.mOutputs[0]),0,0),null, original.mFluidInputs,null,original.mDuration,original.mEUt,original.mSpecialValue);
+        }
+        return new BWRecipes.DynamicGTRecipe(false,in,new ItemStack[]{out},BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(CircuitImprintLoader.getTagFromStack(original.mOutputs[0]),0,0),null, original.mFluidInputs,null,original.mDuration,original.mEUt,original.mSpecialValue);
     }
 
 

@@ -86,7 +86,8 @@ public class CircuitPartLoader implements Runnable {
                 name = OreDictionary.getOreName(oreIDS[0]);
             if ((name == null || name.isEmpty()) && (single.toString().contains("Circuit") || single.toString().contains("circuit") || single.toString().contains("board")) && single.getBlock() == Blocks.air) {
                 ArrayList<String> toolTip = new ArrayList<>();
-                single.getItem().addInformation(single.get(1).copy(), null, toolTip, true);
+                if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+                    single.getItem().addInformation(single.get(1).copy(), null, toolTip, true);
                 String tt = (toolTip.size() > 0 ? toolTip.get(0) : "");
                 //  tt += "Internal Name = "+single;
                 String localised = GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(itemStack));

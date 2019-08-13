@@ -20,25 +20,45 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.server.EventHandler;
+package com.github.bartimaeusnek.bartworks.common.net;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.common.net.OreDictCachePacket;
-import com.github.bartimaeusnek.bartworks.common.net.ServerJoinedPackage;
-import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.google.common.io.ByteArrayDataInput;
+import gregtech.api.net.GT_Packet;
+import net.minecraft.world.IBlockAccess;
 
-public class ServerEventHandler {
+public class ServerJoinedPackage extends GT_Packet {
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
-        if (event == null || !(event.entity instanceof EntityPlayerMP) || !FMLCommonHandler.instance().getSide().isServer())
-            return;
-        MainMod.BW_Network_instance.sendToPlayer(new OreDictCachePacket(OreDictHandler.getNonBWCache()), (EntityPlayerMP) event.entity);
-        MainMod.BW_Network_instance.sendToPlayer(new ServerJoinedPackage(null),(EntityPlayerMP) event.entity);
+    private boolean config;
+
+    ServerJoinedPackage() {
+        super(true);
+    }
+
+    public ServerJoinedPackage(Object obj) {
+        super(false);
+        this.config = ConfigHandler.classicMode;
+    }
+
+    @Override
+    public byte getPacketID() {
+        return 4;
+    }
+
+    @Override
+    public byte[] encode() {
+        return new byte[]{(byte) (this.config ? 1 : 0)};
+    }
+
+    @Override
+    public GT_Packet decode(ByteArrayDataInput byteArrayDataInput) {
+        this.config = byteArrayDataInput.readBoolean();
+        return this;
+    }
+
+    @Override
+    public void process(IBlockAccess iBlockAccess) {
+        MainMod.runOnPlayerJoined(this.config);
     }
 }

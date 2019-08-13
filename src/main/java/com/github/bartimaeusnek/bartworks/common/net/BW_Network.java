@@ -45,7 +45,6 @@ import net.minecraft.world.chunk.Chunk;
 
 import javax.annotation.Nonnull;
 import java.util.EnumMap;
-import java.util.Iterator;
 import java.util.List;
 
 /*
@@ -59,7 +58,7 @@ public class BW_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
 
     public BW_Network() {
         this.mChannel = NetworkRegistry.INSTANCE.newChannel("BartWorks", this, new BW_Network.HandlerShared());
-        this.mSubChannels = new GT_Packet[]{new RendererPacket(), new CircuitProgrammerPacket(), new OrePacket(), new OreDictCachePacket()};
+        this.mSubChannels = new GT_Packet[]{new RendererPacket(), new CircuitProgrammerPacket(), new OrePacket(), new OreDictCachePacket(), new ServerJoinedPackage()};
     }
 
     protected void encode(ChannelHandlerContext aContext, GT_Packet aPacket, List<Object> aOutput) throws Exception {

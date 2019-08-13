@@ -84,21 +84,21 @@ public final class MainMod {
     public static final String VERSION = "@version@";
     public static final String MOD_ID = "bartworks";
     public static final String APIVERSION = "@apiversion@";
-    public static final Logger LOGGER = LogManager.getLogger(NAME);
+    public static final Logger LOGGER = LogManager.getLogger(MainMod.NAME);
     public static final CreativeTabs GT2 = new GT2Tab("GT2C");
     public static final CreativeTabs BIO_TAB = new BioTab("BioTab");
     public static final CreativeTabs BWT = new bartworksTab("bartworks");
     public static final IGuiHandler GH = new GuiHandler();
 
-    @Mod.Instance(MOD_ID)
+    @Mod.Instance(MainMod.MOD_ID)
     public static MainMod instance;
     public static BW_Network BW_Network_instance = new BW_Network();
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent preinit) {
 
-        if (!(API_REFERENCE.VERSION.equals(APIVERSION))) {
-            LOGGER.error("Something has loaded an old API. Please contact the Mod authors to update!");
+        if (!(API_REFERENCE.VERSION.equals(MainMod.APIVERSION))) {
+            MainMod.LOGGER.error("Something has loaded an old API. Please contact the Mod authors to update!");
         }
 
         //fixing BorosilicateGlass... -_-'
@@ -116,7 +116,7 @@ public final class MainMod {
             }
         }
         if (ConfigHandler.GTNH)
-            LOGGER.info("GTNH-Detected . . . ACTIVATE HARDMODE.");
+            MainMod.LOGGER.info("GTNH-Detected . . . ACTIVATE HARDMODE.");
 
         if (ConfigHandler.BioLab) {
             BioCultureLoader bioCultureLoader = new BioCultureLoader();
@@ -148,7 +148,7 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent postinit) {
-        NetworkRegistry.INSTANCE.registerGuiHandler(instance, GH);
+        NetworkRegistry.INSTANCE.registerGuiHandler(MainMod.instance, MainMod.GH);
         if (ConfigHandler.BioLab)
             new GTNHBlocks().run();
         BioObjectAdder.regenerateBioFluids();
@@ -166,14 +166,18 @@ public final class MainMod {
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
         OreDictHandler.adaptCacheForWorld();
+        MainMod.runOnPlayerJoined(ConfigHandler.classicMode);
+    }
+
+    public static void runOnPlayerJoined(boolean classicMode){
         WerkstoffLoader.removeIC2Recipes();
-        this.addElectricImplosionCompressorRecipes();
+        MainMod.addElectricImplosionCompressorRecipes();
         new CircuitImprintLoader().run();
-        if (ConfigHandler.classicMode)
+        if (classicMode)
             new DownTierLoader().run();
     }
 
-    private void addElectricImplosionCompressorRecipes() {
+    private static void addElectricImplosionCompressorRecipes() {
         if (eicMap == null) {
             eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet<GT_Recipe>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
             for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList) {
@@ -181,14 +185,14 @@ public final class MainMod {
                     continue;
                 HashSet<ItemStack> inputs = new HashSet<>();
                 for (ItemStack is : recipe.mInputs)
-                    if (!this.checkForExplosives(is))
+                    if (!checkForExplosives(is))
                         inputs.add(is);
                 eicMap.addRecipe(true, inputs.toArray(new ItemStack[0]), recipe.mOutputs, null, null, null, recipe.mDuration, BW_Util.getMachineVoltageFromTier(10), 0);
             }
         }
     }
 
-    private boolean checkForExplosives(ItemStack input) {
+    private static boolean checkForExplosives(ItemStack input) {
         return (GT_Utility.areStacksEqual(input, new ItemStack(Blocks.tnt)) || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L)) || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("dynamite", 1L)) || GT_Utility.areStacksEqual(input, ItemList.Block_Powderbarrel.get(1L)));
     }
 
