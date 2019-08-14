@@ -30,24 +30,20 @@ public class ClassTransformer_Railcraft_InvTools {
 	private final ClassWriter writer;	
 	
 	
-	public static ItemStack depleteItem(ItemStack stack) {		
+	public static ItemStack depleteItem(ItemStack stack) {
 		if (stack == null) {
 			return GT_Values.NI;
-		}
-		else {
+		} else {
 			if (stack.stackSize <= 1) {
 				ItemStack container = stack.getItem().getContainerItem(stack);
 				if (container != null) {
 					return container;
+				} else {
+					return GT_Values.NI;
 				}
-				else {
-					return GT_Values.NI;					
-				}
-				
-			}
-			else {
+			} else {
 				ItemUtils.depleteStack(stack);
-				return stack;				
+				return stack;
 			}
 		}
 	}

@@ -133,23 +133,25 @@ public class BasePlayer extends ClientPlayerBase
 			/*
 			 * 		Begin ToggleSneak Changes - ToggleSprint
 			 */
+			SneakManager aSneak = SneakManager.get(this.player);
 
 			final boolean isSprintDisabled	= false;
-			final boolean canDoubleTap		= SneakManager.optionDoubleTap;
+			final boolean canDoubleTap		= aSneak.optionDoubleTap;
 
+			
 			// Detect when ToggleSprint was disabled in the in-game options menu
-			if(SneakManager.wasSprintDisabled)
+			if(aSneak.wasSprintDisabled)
 			{
 				this.player.setSprinting(false);
-				this.customMovementInput.UpdateSprint(false, false);
-				SneakManager.wasSprintDisabled = false;
+				this.customMovementInput.UpdateSprint(false, false, aSneak);
+				aSneak.wasSprintDisabled = false;
 			}
 
 			// Default Sprint routine converted to PlayerAPI, use if ToggleSprint is disabled - TODO - Disable sprinting as a whole
 			if(isSprintDisabled)
 			{
 				//Utils.LOG_INFO("Sprint pressed");
-				if(SneakManager.optionDoubleTap && this.player.onGround && !isMovingForward && (this.player.movementInput.moveForward >= minSpeed) && !this.player.isSprinting() && enoughHunger && !this.player.isUsingItem() && !this.player.isPotionActive(Potion.blindness))
+				if(aSneak.optionDoubleTap && this.player.onGround && !isMovingForward && (this.player.movementInput.moveForward >= minSpeed) && !this.player.isSprinting() && enoughHunger && !this.player.isUsingItem() && !this.player.isPotionActive(Potion.blindness))
 				{
 					if((this.playerAPI.getSprintToggleTimerField() <= 0) && !this.settings.keyBindSprint.getIsKeyPressed())
 					{
@@ -157,26 +159,26 @@ public class BasePlayer extends ClientPlayerBase
 					}
 					else
 					{
-						if (SneakManager.Sprinting()){
+						if (aSneak.Sprinting()){
 							this.player.setSprinting(true);
-							this.customMovementInput.UpdateSprint(true, false);
+							this.customMovementInput.UpdateSprint(true, false, aSneak);
 						}
 						else {
 							this.player.setSprinting(false);
-							this.customMovementInput.UpdateSprint(false, false);
+							this.customMovementInput.UpdateSprint(false, false, aSneak);
 						}
 					}
 				}
 
 				if(!this.player.isSprinting() && (this.player.movementInput.moveForward >= minSpeed) && enoughHunger && !this.player.isUsingItem() && !this.player.isPotionActive(Potion.blindness) && this.settings.keyBindSprint.getIsKeyPressed())
 				{
-					if (SneakManager.Sprinting()){
+					if (aSneak.Sprinting()){
 						this.player.setSprinting(true);
-						this.customMovementInput.UpdateSprint(true, false);
+						this.customMovementInput.UpdateSprint(true, false, aSneak);
 					}
 					else {
 						this.player.setSprinting(false);
-						this.customMovementInput.UpdateSprint(false, false);
+						this.customMovementInput.UpdateSprint(false, false, aSneak);
 					}
 				}
 			}
@@ -194,7 +196,7 @@ public class BasePlayer extends ClientPlayerBase
 				{
 					if((canDoubleTap && !this.player.isSprinting()) || !canDoubleTap)
 					{
-						if (SneakManager.Sprinting()){
+						if (aSneak.Sprinting()){
 							this.player.setSprinting(state);
 						} else {
 							this.player.setSprinting(false);
@@ -210,9 +212,9 @@ public class BasePlayer extends ClientPlayerBase
 					}
 					else
 					{
-						if (SneakManager.Sprinting()){
+						if (aSneak.Sprinting()){
 							this.player.setSprinting(true);
-							this.customMovementInput.UpdateSprint(true, true);
+							this.customMovementInput.UpdateSprint(true, true, aSneak);
 							this.playerAPI.setSprintToggleTimerField(0);
 						}
 					}
@@ -228,7 +230,7 @@ public class BasePlayer extends ClientPlayerBase
 				// Undo toggle if we resumed vanilla operation due to Hold&Release, DoubleTap, Fly, Ride
 				if ((this.customMovementInput.sprintHeldAndReleased == true) || isSprintDisabled || this.customMovementInput.sprintDoubleTapped || this.player.capabilities.isFlying || this.player.isRiding())
 				{
-					this.customMovementInput.UpdateSprint(false, false);
+					this.customMovementInput.UpdateSprint(false, false, aSneak);
 				}
 			}
 
