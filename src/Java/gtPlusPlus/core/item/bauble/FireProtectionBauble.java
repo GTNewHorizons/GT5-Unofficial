@@ -37,7 +37,11 @@ public class FireProtectionBauble extends BaseBauble {
 	}
 	
 	public static boolean setEntityImmuneToFire(Entity aEntity, boolean aImmune) {
-		return ReflectionUtils.setField(aEntity, isImmuneToFire, aImmune);
+		try {
+			return ReflectionUtils.setField(aEntity, isImmuneToFire, aImmune);
+		}
+		catch (Throwable t) {}
+		return false;
 	}	
 	
 	public FireProtectionBauble() {		

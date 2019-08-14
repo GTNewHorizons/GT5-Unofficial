@@ -30,9 +30,15 @@ public class TexturesGtBlock {
 	public static class CustomIcon implements IIconContainer, Runnable {
 		protected IIcon mIcon;
 		protected String mIconName;
+		protected String mModID;
 
 		public CustomIcon(final String aIconName) {
+			this(CORE.MODID, aIconName);
+		}
+		
+		public CustomIcon(final String aModID, final String aIconName) {
 			this.mIconName = aIconName;
+			this.mModID = aModID;
 			mCustomiconMap.put(this);
 			Logger.WARNING("Constructing a Custom Texture. " + this.mIconName);
 			GregTech_API.sGTBlockIconload.add(this);
@@ -50,7 +56,7 @@ public class TexturesGtBlock {
 
 		@Override
 		public void run() {
-			this.mIcon = GregTech_API.sBlockIcons.registerIcon(CORE.MODID + ":"  + this.mIconName);
+			this.mIcon = GregTech_API.sBlockIcons.registerIcon(this.mModID + ":"  + this.mIconName);
 			Logger.WARNING("FIND ME _ Processing texture: "+this.getTextureFile().getResourcePath());
 		}
 
@@ -555,10 +561,7 @@ public class TexturesGtBlock {
 
 
 
-	public static Object Casing_Material_Turbine;
-
-
-
+	public static Object Casing_Material_Turbine;	
 
 	
 }

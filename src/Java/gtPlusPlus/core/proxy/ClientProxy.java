@@ -1,9 +1,5 @@
 package gtPlusPlus.core.proxy;
 
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Scanner;
-
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Optional;
@@ -17,6 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.australia.entity.model.ModelBoar;
 import gtPlusPlus.australia.entity.model.ModelDingo;
 import gtPlusPlus.australia.entity.model.ModelOctopus;
@@ -29,6 +26,7 @@ import gtPlusPlus.australia.entity.type.EntityBoar;
 import gtPlusPlus.australia.entity.type.EntityDingo;
 import gtPlusPlus.australia.entity.type.EntityOctopus;
 import gtPlusPlus.core.client.model.ModelGiantChicken;
+import gtPlusPlus.core.client.renderer.CustomItemBlockRenderer;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
 import gtPlusPlus.core.client.renderer.RenderBatKing;
 import gtPlusPlus.core.client.renderer.RenderDecayChest;
@@ -61,11 +59,13 @@ import gtPlusPlus.core.util.minecraft.particles.EntityParticleFXMysterious;
 import gtPlusPlus.xmod.gregtech.common.render.GTPP_CapeRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.GTPP_Render_MachineBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBat;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
 
 public class ClientProxy extends CommonProxy implements Runnable{
 
@@ -113,6 +113,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		 * Custom Block Renderers
 		 */
 		new CustomOreBlockRenderer();
+		new CustomItemBlockRenderer();
 		new GTPP_Render_MachineBlock();	
 
 		super.init(e);
@@ -164,6 +165,20 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		RenderingRegistry.registerEntityRenderingHandler(EntityBoar.class, new RenderBoar(new ModelBoar(), new ModelBoar(0.5F), 0.7F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityDingo.class, new RenderDingo(new ModelDingo(), new ModelDingo(), 0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityOctopus.class, new RenderOctopus(new ModelOctopus(), 0.7F));
+		
+		
+		
+		
+		
+		
+		
+		/**
+		 * Items
+		 */		
+		for (Pair<Item, IItemRenderer> sItemRenderMappings : mItemRenderMappings) {
+			MinecraftForgeClient.registerItemRenderer(sItemRenderMappings.getKey(), sItemRenderMappings.getValue());			
+		}
+		
 	}
 
 	@Override

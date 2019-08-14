@@ -12,6 +12,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.ChunkManager;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -51,12 +53,13 @@ import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.galacticraft.handler.HandlerTooltip_GC;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.thermalfoundation.item.TF_Items;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.ForgeChunkManager;
 
 public class CommonProxy {
@@ -258,7 +261,7 @@ public class CommonProxy {
 		
 		//Special mobs Support
 		if (ReflectionUtils.doesClassExist("toast.specialMobs.entity.zombie.EntityBrutishZombie")) {
-			Class aBrutishZombie = ReflectionUtils.getClass("toast.specialMobs.entity.zombie.EntityBrutishZombie");
+			Class<?> aBrutishZombie = ReflectionUtils.getClass("toast.specialMobs.entity.zombie.EntityBrutishZombie");
 			ItemStack aFortune1 = ItemUtils.getEnchantedBook(Enchantment.fortune, 1);
 			ItemStack aFortune2 = ItemUtils.getEnchantedBook(Enchantment.fortune, 1);
 			ItemStack aFortune3 = ItemUtils.getEnchantedBook(Enchantment.fortune, 1);
@@ -270,6 +273,22 @@ public class CommonProxy {
 		
 		
 		
+	}
+	
+	protected final AutoMap<Pair<Item, IItemRenderer>> mItemRenderMappings = new AutoMap<Pair<Item, IItemRenderer>>();
+	
+
+	public static void registerItemRendererGlobal(Item aItem, IItemRenderer aRenderer) {
+		GTplusplus.proxy.registerItemRenderer(aItem, aRenderer);
+	}
+	
+	public void registerItemRenderer(Item aItem, IItemRenderer aRenderer) {
+		if (Utils.isServer()) {
+			return;
+		}
+		else {
+			mItemRenderMappings.add(new Pair<Item, IItemRenderer>(aItem, aRenderer));
+		}		
 	}
 
 }
