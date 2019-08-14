@@ -7,6 +7,7 @@ import java.util.Map;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -30,6 +31,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
@@ -1223,6 +1225,26 @@ public class ItemUtils {
 
 	public static void hideItemFromNEI(ItemStack aItemToHide) {
 		codechicken.nei.api.API.hideItem(aItemToHide);		
+	}
+	
+	public static ItemStack getNullStack() {
+		return GT_Values.NI;
+	}
+	
+
+	public static ItemStack depleteStack(ItemStack aStack) {
+		return depleteStack(aStack, 1);
+	}
+	
+	public static ItemStack depleteStack(ItemStack aStack, int aAmount) {
+		final int cap = aStack.stackSize;
+		if (cap > 1 && cap > aAmount) {
+			aStack.stackSize = (MathUtils.balance((aStack.stackSize - 1), 0, 64));
+			if (aStack.stackSize > 0) {
+				return aStack;				
+			}
+		}
+		return getNullStack();
 	}
 
 }

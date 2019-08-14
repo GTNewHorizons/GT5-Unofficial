@@ -96,6 +96,11 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_Railcraft_FluidHelper(basicClass, obfuscated).getWriter().toByteArray();
 		}
+		//Fix Weird glitch involving negative itemstacks.
+		if (transformedName.equals("mods.railcraft.common.util.inventory.InvTools")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_Railcraft_InvTools(basicClass, obfuscated).getWriter().toByteArray();
+		}
 
 		//Fix GC stuff
 		if (mConfig.enableGcFuelChanges) {
