@@ -4,6 +4,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.common.tools.GT_Tool_WireCutter;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechToolDictNames;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_AngelGrinder;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_Choocher;
@@ -40,13 +41,16 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 						new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
 						new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) });
 
+
 		// Electric Wire Cutter
-		this.addTool(ELECTRIC_SNIPS, "Automatic Snips", "Hand-held electric wire cutter",
-				new TOOL_Gregtech_ElectricSnips(),
-				new Object[] { GregtechToolDictNames.craftingToolElectricSnips, ToolDictNames.craftingToolWireCutter,
-						new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
-						new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
-						new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) });
+		GregTech_API.registerTool(
+				this.addTool(ELECTRIC_SNIPS, "Automatic Snips", "Hand-held electric wire cutter",
+						new TOOL_Gregtech_ElectricSnips(),
+						new Object[] { GregtechToolDictNames.craftingToolElectricSnips, ToolDictNames.craftingToolWireCutter,
+								new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 4L),
+								new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L),
+								new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L) }), GregTech_API.sWireCutterList);
+
 
 		// Electric Lighter
 		this.addTool(ELECTRIC_LIGHTER, "Pyromatic 9k", "Electric Fire!",
