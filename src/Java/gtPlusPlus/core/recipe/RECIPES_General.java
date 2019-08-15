@@ -1,5 +1,6 @@
 package gtPlusPlus.core.recipe;
 
+import static gtPlusPlus.core.lib.CORE.GTNH;
 import static gtPlusPlus.core.recipe.common.CI.bitsd;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
@@ -291,6 +292,19 @@ public class RECIPES_General {
 				20 * 30, // Dur
 				16); // Eu
 
+		// Pest Killer
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(16),
+						CI.getTieredMachineCasing(1),
+						CI.getElectricPump(2, 1),
+						CI.getPlate(2, GTNH ? 4 : 2),
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(0), GTNH ? 2 : 1),
+						},
+				FluidUtils.getHotWater(500), // Fluid
+				ItemUtils.getSimpleStack(ModBlocks.blockPestKiller), // Output
+				20 * 60, // Dur
+				16); // Eu
 
 
 
