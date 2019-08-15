@@ -55,7 +55,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
 	static {
 		mEntityMap.put(EntityBat.class);
 		if (LoadedMods.Forestry) {
-			mEntityMap.put(ReflectionUtils.getClass("forestry.lepidopterology.entities.EntityButterfly.class"));
+			mEntityMap.put(ReflectionUtils.getClass("forestry.lepidopterology.entities.EntityButterfly"));
 		}
 	}
 

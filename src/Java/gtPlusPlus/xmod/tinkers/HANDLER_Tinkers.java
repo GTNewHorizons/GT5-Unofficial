@@ -40,7 +40,7 @@ public class HANDLER_Tinkers {
 
 			//Generate Drying Rack recipes
 			TinkersDryingRecipe.generateAllDryingRecipes();
-			
+						
 			for (BaseTinkersMaterial y : mTinkerMaterials) {
 				//y.generate();
 			}			

@@ -26,8 +26,12 @@ public class TinkersDryingRecipe {
 		List<?> aRecipes = TinkersUtils.getDryingRecipes();
 		if (aRecipes != null && aRecipes.size() > 0) {
 			for (Object o : aRecipes) {
+				Logger.INFO("Trying to generate recipe using object of type "+o.getClass().getSimpleName());
 				generateFromTinkersRecipeObject(o);
 			}
+		}
+		else {
+			Logger.INFO("Error generating Drying recipes, map was either null or empty. Null? "+(aRecipes != null)+", Size: "+aRecipes.size());
 		}
 		if (!recipes.isEmpty()) {
 			Logger.INFO("Adding "+recipes.size()+" drying rack recipes to the dehydrator.");
@@ -41,8 +45,8 @@ public class TinkersDryingRecipe {
 						GT_Values.NF,
 						new ItemStack[] {r.result},
 						new int[] {},
-						r.time,
-						120);
+						r.time/10,
+						30);
 			}
 		}
 	}
@@ -51,9 +55,31 @@ public class TinkersDryingRecipe {
 		Field aTime;
 		Field aInput;
 		Field aOutput;
-		Class aTinkerClass = ReflectionUtils.getClass("tconstruct.library.crafting.DryingRackRecipes.DryingRecipe");
+		Class aTinkerClass = ReflectionUtils.getClass("tconstruct.library.crafting.DryingRackRecipes.DryingRecipe");//o.getClass();
 		if (aTinkerClass == null || !LoadedMods.TiCon) {
-			return null;
+			Logger.INFO("Error generating Drying Recipe, could not find class. Exists? "+ReflectionUtils.doesClassExist("tconstruct.library.crafting.DryingRackRecipes.DryingRecipe"));
+			Class clazz = ReflectionUtils.getClass("tconstruct.library.crafting.DryingRackRecipes");
+			Class[] y = clazz.getDeclaredClasses();
+			if (y == null || y.length <= 0) {
+				Logger.INFO("No hidden inner classes.");
+				return null;				
+			}
+			else {
+				boolean found = false;
+				for (Class h : y) {
+					Logger.INFO("Found hidden inner class: "+h.getCanonicalName());
+					if (h.getSimpleName().toLowerCase().equals("dryingrecipe")) {
+						Logger.INFO("Found correct recipe. Caching at correct location.");
+						ReflectionUtils.mCachedClasses.put("tconstruct.library.crafting.DryingRackRecipes.DryingRecipe", h);
+						aTinkerClass = h;
+						found = true;
+						break;						
+					}
+				}
+				if (!found) {
+					return null;
+				}
+			}			
 		}
 		aTime = ReflectionUtils.getField(aTinkerClass, "time");
 		aInput = ReflectionUtils.getField(aTinkerClass, "input");
@@ -64,15 +90,16 @@ public class TinkersDryingRecipe {
 			ItemStack result_internal = (ItemStack) aOutput.get(o);
 			return new TinkersDryingRecipe(input_internal, time_internal, result_internal);
 		} catch (Throwable b) {
-
+			b.printStackTrace();
 		}
 		return null;
 	}
 
-	TinkersDryingRecipe(final ItemStack input, final int time, final ItemStack result) {
+	public TinkersDryingRecipe(final ItemStack input, final int time, final ItemStack result) {
 		this.time = time;
 		this.input = input;
 		this.result = result;
+		Logger.INFO("Generating Drying Recipe. Input: "+input.getDisplayName()+", Output: "+result.getDisplayName());
 		recipes.add(this);
 	}
 

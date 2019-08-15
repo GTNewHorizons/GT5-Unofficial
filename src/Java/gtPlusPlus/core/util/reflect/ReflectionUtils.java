@@ -293,7 +293,7 @@ public class ReflectionUtils {
 		return loaded > 0;
 	}
 
-	
+
 
 	public static boolean setField(final Object object, final String fieldName, final Object fieldValue) {
 		Class<?> clazz = object.getClass();
@@ -313,8 +313,8 @@ public class ReflectionUtils {
 			}
 		}
 		return false;
-	
-		
+
+
 	}
 
 	public static boolean setField(final Object object, final Field field, final Object fieldValue) {
@@ -484,11 +484,11 @@ public class ReflectionUtils {
 	 * Internal Magic that probably should not get exposed.
 	 */	
 
-	
-	
-	
-	
-	
+
+
+
+
+
 
 
 
@@ -767,15 +767,52 @@ public class ReflectionUtils {
 	}
 
 	private static Class<?> getClass_Internal(String string) {
+		Class aClass = null;
 		if (ReflectionUtils.doesClassExist(string)) {
 			try {
-				return Class.forName(string);
+				aClass = Class.forName(string);
 			}
 			catch (ClassNotFoundException e) {
-				return getNonPublicClass(string);
+				aClass = getNonPublicClass(string);
 			}
 		}
-		return null;
+
+		if (aClass == null) {			
+			String aClassName = "";
+			Logger.REFLECTION("Splitting "+string+" to try look for hidden classes.");
+			String[] aData = string.split("\\.");
+			Logger.REFLECTION("Obtained "+aData.length+" pieces.");
+			for (int i=0;i<(aData.length-1);i++) {
+				aClassName += (i > 0) ? "."+aData[i] : ""+aData[i];
+				Logger.REFLECTION("Building: "+aClassName);
+			}
+			Logger.REFLECTION("Trying to search '"+aClassName+"' for inner classes.");
+			Class clazz = ReflectionUtils.getClass(aClassName);			
+			
+			Class[] y = clazz.getDeclaredClasses();
+			if (y == null || y.length <= 0) {
+				Logger.REFLECTION("No hidden inner classes found.");
+				return null;				
+			}
+			else {
+				boolean found = false;
+				for (Class h : y) {
+					Logger.REFLECTION("Found hidden inner class: "+h.getCanonicalName());
+					if (h.getSimpleName().toLowerCase().equals(aData[aData.length-1].toLowerCase())) {
+						Logger.REFLECTION("Found correct class. ["+aData[aData.length-1]+"] Caching at correct location: "+string);
+						Logger.REFLECTION("Found at location: "+h.getCanonicalName());
+						ReflectionUtils.mCachedClasses.put(string, h);
+						aClass = h;
+						found = true;
+						break;						
+					}
+				}
+				if (!found) {
+					return null;
+				}
+			}
+		}
+		return aClass;
 	}
 
 	/**
@@ -803,7 +840,7 @@ public class ReflectionUtils {
 	public static boolean doesFieldExist(String clazz, String string) {
 		return doesFieldExist(ReflectionUtils.getClass(clazz), string);
 	}
-	
+
 	public static boolean doesFieldExist(Class<?> clazz, String string) {
 		if (clazz != null) {
 			if (ReflectionUtils.getField(clazz, string) != null) {
