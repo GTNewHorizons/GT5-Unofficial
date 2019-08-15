@@ -58,11 +58,19 @@ public class MetaCustomCoverItem extends Item {
 		Logger.INFO("[Covers] Generated Custom covers for "+mModID+" using "+aTextureCount+" textures from "+mTextureSetName+".");
 	}
 
+	public boolean hide() {
+		return true;
+	}
+	
 	private final void registerCover() {		
 		//CommonProxy.registerItemRendererGlobal(this, new CustomItemBlockRenderer());		
 		for (int i=0;i<icons.length;i++) {
+			ItemStack thisStack = ItemUtils.simpleMetaStack(this, i, 1);
+			if (i > 0 && hide()) {
+				ItemUtils.hideItemFromNEI(thisStack);
+			}			
 			GregTech_API.registerCover(
-					ItemUtils.simpleMetaStack(this, i, 1),
+					thisStack,
 					new GT_MultiTexture(
 							new ITexture[]{
 									new GT_RenderedTexture(mTextures[i])
@@ -93,7 +101,7 @@ public class MetaCustomCoverItem extends Item {
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack tItem) {
-		return EnumChatFormatting.LIGHT_PURPLE + StringUtils.capitalize(mTextureSetName) + " [" + tItem.getItemDamage() + "]"; //super.getItemStackDisplayName(tItem);
+		return StringUtils.capitalize(mTextureSetName) + " (" + tItem.getItemDamage() + ")"; //super.getItemStackDisplayName(tItem);
 	}
 
 	private static boolean createNBT(ItemStack rStack) {

@@ -23,6 +23,10 @@ public class MetaItemCoverCasings extends MetaCustomCoverItem {
 		}
 	}
 
+	public boolean hide() {
+		return false;
+	}
+
 	@Override
 	public IIcon getIconFromDamage(int meta) {
 		return this.icons[MathUtils.balance(meta, 0, 15)];

@@ -5,6 +5,7 @@ import static gregtech.api.enums.GT_Values.VN;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.entity.Entity;
@@ -218,6 +219,18 @@ public class GregtechMetaPipeEntityBase_Cable extends MetaPipeEntity implements 
 		}
 		return this.transferElectricity(aSide, aVoltage, aAmperage,
 				new ArrayList<>(Arrays.asList((TileEntity) this.getBaseMetaTileEntity())));
+	}
+	
+
+	/**
+	 * Adds support for the newer function added by https://github.com/Blood-Asp/GT5-Unofficial/commit/73ee102b63efd92c0f164a7ed7a79ebcd2619617#diff-3051838621d8ae87aa5ccd1345e1f07d
+	 */
+	public long transferElectricity(byte arg0, long arg1, long arg2, HashSet<TileEntity> arg3) {
+		ArrayList<TileEntity> aTiles = new ArrayList<TileEntity>();
+		for (TileEntity y : arg3) {
+			aTiles.add(y);
+		}
+		return transferElectricity(arg0, arg1, arg2, aTiles);
 	}
 
 	@Override
