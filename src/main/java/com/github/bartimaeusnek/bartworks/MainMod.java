@@ -165,11 +165,11 @@ public final class MainMod {
     }
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
-        OreDictHandler.adaptCacheForWorld();
         MainMod.runOnPlayerJoined(ConfigHandler.classicMode);
     }
 
     public static void runOnPlayerJoined(boolean classicMode){
+        OreDictHandler.adaptCacheForWorld();
         WerkstoffLoader.removeIC2Recipes();
         MainMod.addElectricImplosionCompressorRecipes();
         new CircuitImprintLoader().run();

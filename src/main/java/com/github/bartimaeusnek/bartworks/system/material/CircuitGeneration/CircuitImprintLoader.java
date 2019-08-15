@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -175,14 +176,20 @@ public class CircuitImprintLoader implements Runnable {
             eut = Math.min(eut,BW_Util.getMachineVoltageFromTier(BW_Util.getCircuitTierFromOreDictName(OreDictionary.getOreName(OreDictionary.getOreIDs(stack)[0]))));
             GT_Recipe slicingRecipe = new BWRecipes.DynamicGTRecipe(true,new ItemStack[]{stack,ItemList.Shape_Slicer_Flat.get(0)},new ItemStack[]{BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1)},null,null,null,null,300,eut,BW_Util.CLEANROOM);
             GT_Recipe.GT_Recipe_Map.sSlicerRecipes.add(slicingRecipe);
-            GT_ModHandler.addCraftingRecipe(BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,0,1),GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS ,new Object[]{
+            GameRegistry.addRecipe(new BWRecipes.BWNBTDependantCraftingRecipe(BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,0,1),
                     " X ",
                     "GPG",
                     " X ",
                     'P', BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1),
                     'G', WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite,1),
-                    'X', BW_Meta_Items.getNEWCIRCUITS().getStack(3)
-            });
+                    'X', BW_Meta_Items.getNEWCIRCUITS().getStack(3)));
+            GT_ModHandler.addCraftingRecipe(BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,0,1), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{
+                    " X ",
+                    "GPG",
+                    " X ",
+                    'P', BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1),
+                    'G', WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite,1),
+                    'X', BW_Meta_Items.getNEWCIRCUITS().getStack(3)});
         }
 //      for (NBTTagCompound tag : CircuitImprintLoader.bwCircuitTagMap.values()){
 //          CircuitData data = CircuitImprintLoader.bwCircuitTagMap.inverse().get(tag);
