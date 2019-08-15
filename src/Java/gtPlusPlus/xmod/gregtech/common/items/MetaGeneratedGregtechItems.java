@@ -333,7 +333,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
             }
             else {              
                 aTierName = GT_Values.VN[i];
-                mMachineCasingCovers[i].set(this.addItem(aFirstMachineCasingID++, aTierName+" Machine Plate Cover", "Change connection status with Shift+Rmb", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L)}));
+                mMachineCasingCovers[i].set(this.addItem(aFirstMachineCasingID++, aTierName+" Machine Plate Cover", "Deprecated - Shapeless Craft to new version", new Object[]{}));
                 GregTech_API.registerCover(mMachineCasingCovers[i].get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[i][0]}), new GTPP_Cover_ToggleVisual());
              }
         }

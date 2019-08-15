@@ -5,11 +5,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehavior;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.xmod.gregtech.common.items.MetaCustomCoverItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -32,12 +34,12 @@ public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
 
 	public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
 			EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		return true;
+		return super.onCoverRightclick(aSide, aCoverID, aCoverVariable, aTileEntity, aPlayer, aX, aY, aZ);
 	}
 
 	public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
 			EntityPlayer aPlayer, float aX, float aY, float aZ) {		
-		return aCoverVariable;
+		return super.onCoverScrewdriverclick(aSide, aCoverID, aCoverVariable, aTileEntity, aPlayer, aX, aY, aZ);
 	}
 
 	public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
@@ -69,7 +71,7 @@ public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
 	}
 
 	public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-		return 0;
+		return 1;
 	}
 
 	@Override
@@ -105,19 +107,37 @@ public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
 	@Override
 	public void placeCover(byte aSide, ItemStack aCover, ICoverable aTileEntity) {
 		String aKey = generateUniqueKey(aSide, aTileEntity);
+		boolean state = getCoverConnections(aCover);
 		sPrefixMap.put(aKey, aCover.getUnlocalizedName());
-		sConnectionStateForEntityMap.put(aKey, MetaCustomCoverItem.getCoverConnections(aCover));
+		//Logger.INFO("Mapping key "+aKey+" to "+state);
+		sConnectionStateForEntityMap.put(aKey, state);
 		super.placeCover(aSide, aCover, aTileEntity);
 	}
 
 	@Override
 	public boolean onCoverRemoval(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
 			boolean aForced) {
-		sConnectionStateForEntityMap.remove(generateUniqueKey(aSide, aTileEntity));
+		String aKey = generateUniqueKey(aSide, aTileEntity);
+		sConnectionStateForEntityMap.remove(aKey);
+		//Logger.INFO("Unmapping key "+aKey+".");
 		return true;
 	}
 	
 	public static boolean getConnectionState(byte aSide, ICoverable aTile) {
-		return sConnectionStateForEntityMap.get(generateUniqueKey(aSide, aTile));
+		String aKey = generateUniqueKey(aSide, aTile);
+		boolean b = sConnectionStateForEntityMap.get(aKey);
+		//Logger.INFO("Get State: "+b+" | "+aKey);
+		return b;
+	}
+	
+	public static final boolean getCoverConnections(final ItemStack aStack) {
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		if (aNBT != null) {
+			aNBT = aNBT.getCompoundTag("CustomCoverMeta");
+			if (aNBT != null) {
+				return aNBT.getBoolean("AllowConnections");
+			}
+		}
+		return false;
 	}
 }
