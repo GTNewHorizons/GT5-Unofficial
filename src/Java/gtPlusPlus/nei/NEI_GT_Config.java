@@ -1,9 +1,9 @@
 package gtPlusPlus.nei;
 
+import codechicken.nei.api.API;
+import codechicken.nei.api.IConfigureNEI;
 import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
-
-import codechicken.nei.api.IConfigureNEI;
 
 public class NEI_GT_Config
 implements IConfigureNEI {
@@ -23,6 +23,8 @@ implements IConfigureNEI {
 			}
 		}
 		sIsAdded = true;
+		API.registerRecipeHandler(new DecayableRecipeHandler());
+		API.registerUsageHandler(new DecayableRecipeHandler());
 	}
 
 	@Override

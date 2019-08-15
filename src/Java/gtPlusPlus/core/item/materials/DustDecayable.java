@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.materials;
 
+import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
 import gtPlusPlus.core.item.base.BaseItemTickable;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -25,6 +28,7 @@ public class DustDecayable extends BaseItemTickable {
 		this.turnsIntoItem = turnsInto;
 		this.radLevel = radLevel;
 		GT_OreDictUnificator.registerOre(unlocal, ItemUtils.getSimpleStack(this));
+		new DecayableRecipe(maxTicks, getSimpleStack(this), getSimpleStack(turnsInto));
 	}
 
 	@Override

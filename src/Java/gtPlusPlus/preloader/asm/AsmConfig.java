@@ -20,6 +20,8 @@ public class AsmConfig {
 	public static boolean enableGcFuelChanges;
 	public static boolean enableRcFlowFix;
 	public static boolean enableTcAspectSafety;
+	
+	public static boolean disableAllLogging;
 
 	public AsmConfig(File file) {
 		if (!loaded) {
@@ -40,7 +42,13 @@ public class AsmConfig {
 
 			Property prop;	
 			
-			//Debug
+			//Debug			
+			prop = config.get("debug", "disableAllLogging", false);
+			prop.comment = "Disables ALL logging from GT++.";
+			prop.setLanguageKey("gtpp.disableAllLogging").setRequiresMcRestart(false);
+			disableAllLogging = prop.getBoolean(false);
+			propOrderDebug.add(prop.getName());
+			
 			prop = config.get("debug", "enableChunkDebugging", false);
 			prop.comment = "Enable/Disable Chunk Debugging Features, Must Be enabled on Client and Server.";
 			prop.setLanguageKey("gtpp.enableChunkDebugging").setRequiresMcRestart(true);

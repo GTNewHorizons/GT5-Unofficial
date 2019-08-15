@@ -447,7 +447,10 @@ public class CI {
 	}
 
 	public static final ItemStack getTieredMachineCasing(int tier){
-		if (tier == 0){
+		if (tier == 0){			
+			if (machineCasing_ULV == null) {
+				machineCasing_ULV = ItemList.Casing_ULV.get(1);				
+			}			
 			return machineCasing_ULV;
 		}
 		else if (tier == 1){

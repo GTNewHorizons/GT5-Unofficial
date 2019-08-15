@@ -190,11 +190,17 @@ public class CommonProxy {
 		}
 
 		// Compat Handling
+		Logger.INFO("Removing recipes from other mods.");
 		COMPAT_HANDLER.RemoveRecipesFromOtherMods();
+		Logger.INFO("Initialising Handler, Then Adding Recipes");
 		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
+		Logger.INFO("Loading Gregtech API recipes.");
 		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
+		Logger.INFO("Loading Intermod staging.");
 		COMPAT_IntermodStaging.postInit(e);
+		Logger.INFO("Loading queued recipes.");
 		COMPAT_HANDLER.runQueuedRecipes();
+		Logger.INFO("Registering custom mob drops.");
 		registerCustomMobDrops();
 	}
 

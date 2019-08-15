@@ -2957,5 +2957,15 @@ item.GTPP.bauble.fireprotection.0.name=Supreme Pizza Gloves
 item.itemCellSeleniumDioxide.name=Selenium Dioxide Cell
 item.itemCellSeleniousAcid.name=Selenious Acid Cell
 
-//Added 25/8/19
+//Added 25/7/19
 container.pestkiller=Pest Killer
+
+//Added 15/8/19
+gtpp.nei.decayables=Decayables Chest
+entity.batKing.name=Bat King
+item.itemCellCarbyne.name=Carbyne Cell
+item.itemCellHydrogenCyanide.name=Cell of Hydrogen Cyanide
+item.itemCactusCharcoal.name=Cactus Charcoal
+item.itemCactusCoke.name=Cactus Coke
+item.itemSugarCharcoal.name=Sugar Charcoal
+item.itemSugarCoke.name=Sugar Coke

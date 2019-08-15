@@ -6,7 +6,9 @@ import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generateWireRecipes;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
@@ -15,16 +17,13 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -117,12 +116,6 @@ public class RECIPES_General {
 				"stickWood", "dustBone", "stickWood",
 				ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Rainforest))){
 			Logger.INFO("Added a recipe for Rainforest oak Saplings.");
-		}
-
-
-		// Try fix this ore
-		if (ModBlocks.blockOreFluorite != null){
-			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(ModBlocks.blockOreFluorite)}, FLUORIDES.FLUORITE.getOre(1));
 		}
 
 		//Iron bars

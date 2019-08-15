@@ -7,6 +7,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.preloader.asm.AsmConfig;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,6 +34,9 @@ public class CommandEnableDebugWhileRunning implements ICommand
 
 	}
 
+	
+	// Use '/debugmodegtpp' along with 'logging' or 'debug' to toggle Debug mode and Logging.
+	// Using nothing after the command toggles both to their opposite states respectively.	
 	@Override
 	public String getCommandUsage(final ICommandSender var1){
 		return "/debugmodegtpp";
@@ -47,16 +51,44 @@ public class CommandEnableDebugWhileRunning implements ICommand
 
 	@Override
 	public void processCommand(final ICommandSender S, final String[] argString){
-		Logger.INFO("Toggling Debug Mode");	
 		
-		final World W = S.getEntityWorld();
-		final EntityPlayer P = CommandUtils.getPlayer(S);
-		
-		if (PlayerUtils.isPlayerOP(P)) {
-		    CORE.DEBUG = Utils.invertBoolean(CORE.DEBUG);
-		    PlayerUtils.messagePlayer(P, "Toggled GT++ Debug Mode - Enabled: "+CORE.DEBUG);
+		if (argString == null || argString.length == 0 || argString.length > 1) {
+			Logger.INFO("Toggling Debug Mode & Logging.");			
+			final EntityPlayer P = CommandUtils.getPlayer(S);		
+			if (PlayerUtils.isPlayerOP(P)) {
+			    CORE.DEBUG = Utils.invertBoolean(CORE.DEBUG);
+			    PlayerUtils.messagePlayer(P, "Toggled GT++ Debug Mode - Enabled: "+CORE.DEBUG);
+			    AsmConfig.disableAllLogging = Utils.invertBoolean(AsmConfig.disableAllLogging);
+			    PlayerUtils.messagePlayer(P, "Toggled GT++ Logging - Enabled: "+(!AsmConfig.disableAllLogging));
+			}	
+		}
+		else {
+			if (argString[0].toLowerCase().equals("debug")) {
+				Logger.INFO("Toggling Debug Mode.");			
+				final EntityPlayer P = CommandUtils.getPlayer(S);		
+				if (PlayerUtils.isPlayerOP(P)) {
+				    CORE.DEBUG = Utils.invertBoolean(CORE.DEBUG);
+				    PlayerUtils.messagePlayer(P, "Toggled GT++ Debug Mode - Enabled: "+CORE.DEBUG);
+				}
+			}
+			else if (argString[0].toLowerCase().equals("logging")) {
+				Logger.INFO("Toggling Logging.");			
+				final EntityPlayer P = CommandUtils.getPlayer(S);		
+				if (PlayerUtils.isPlayerOP(P)) {
+				    AsmConfig.disableAllLogging = Utils.invertBoolean(AsmConfig.disableAllLogging);
+				    PlayerUtils.messagePlayer(P, "Toggled GT++ Logging - Enabled: "+(!AsmConfig.disableAllLogging));
+				}
+			}
+			else {		
+				final EntityPlayer P = CommandUtils.getPlayer(S);		
+				if (PlayerUtils.isPlayerOP(P)) {
+				    PlayerUtils.messagePlayer(P, "Invalid command, use 'debug' or 'logging'");
+				}
+			}
 		}
 		
+		
+			
 	}
 
 	@Override
