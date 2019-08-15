@@ -9,7 +9,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import xreliquary.Reliquary;
 
 public class ReliquaryItems {
 
@@ -35,7 +34,7 @@ public class ReliquaryItems {
 	}
 	
 	public static ItemStack emptyVial() {
-		return new ItemStack(Reliquary.CONTENT.getItem("potion"), 1, 0);
+		return new ItemStack(getItem("potion"), 1, 0);
 	}
 	
 	public static ItemStack emperorChalice() {
