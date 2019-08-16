@@ -87,7 +87,7 @@ public class TecTech {
         FMLCommonHandler.instance().bus().register(playerPersistence);
         MinecraftForge.EVENT_BUS.register(playerPersistence);
 
-        chunkDataHandler=new ChunkDataHandler();
+        chunkDataHandler=new  ChunkDataHandler();
         FMLCommonHandler.instance().bus().register(chunkDataHandler);
         MinecraftForge.EVENT_BUS.register(chunkDataHandler);
 
@@ -197,7 +197,6 @@ public class TecTech {
         MainLoader.postLoad();
 
         chunkDataHandler.registerChunkMetaDataHandler(anomalyHandler=new AnomalyHandler());
-
     }
 
     @Mod.EventHandler

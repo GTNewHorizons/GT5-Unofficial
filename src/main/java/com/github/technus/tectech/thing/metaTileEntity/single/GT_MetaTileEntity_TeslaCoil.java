@@ -1,6 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
 import com.github.technus.tectech.Util;
+import com.github.technus.tectech.loader.NetworkDispatcher;
+import com.github.technus.tectech.mechanics.data.RendererMessage;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_TM_teslaCoil;
@@ -12,8 +14,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.V;
@@ -23,6 +30,9 @@ import static java.lang.Math.round;
 
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer {
+    private final static HashSet<Util.thaumSpark> sparkList = new HashSet<Util.thaumSpark>();
+    private byte sparkCount = 0;
+
     private int maxTier = 4; //Max tier of transceiver
     private int minTier = 0; //Min tier of transceiver
 
@@ -170,10 +180,24 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         return new GT_MetaTileEntity_TeslaCoil(mName, mTier, mDescription, mTextures, mInventory.length);
     }
 
+    private static void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
+        int x = mte.getXCoord();
+        byte y = (byte) mte.getYCoord();
+        int z = mte.getZCoord();
+
+        byte xR = (byte) (node.getXCoord() - x);
+        byte yR = (byte) (node.getYCoord() - y);
+        byte zR = (byte) (node.getZCoord() - z);
+
+        int wID = mte.getWorld().provider.dimensionId;
+
+        sparkList.add(new Util.thaumSpark(x,y,z,xR,yR,zR,wID));
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isClientSide() || eTeslaMap.isEmpty()) {
+        if (aBaseMetaTileEntity.isClientSide()) {
             return;
         }
 
@@ -239,6 +263,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                                 if (nodeTesla.getEUVar() + outputVoltageInjectable <= (nodeTesla.maxEUStore() / 2)) {
                                     setEUVar(getEUVar() - outputVoltageConsumption);
                                     node.increaseStoredEnergyUnits(outputVoltageInjectable, true);
+                                    thaumLightning(aBaseMetaTileEntity,node);
                                     outputCurrent--;
                                     idle = false;
                                 }
@@ -246,6 +271,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                         } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil) && !(node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil_Ultimate) && Rx.getValue() <= transferRadiusCover) {
                             if (node.injectEnergyUnits((byte) 1, outputVoltageInjectable, 1L) > 0L) {
                                 setEUVar(getEUVar() - outputVoltageConsumption);
+                                thaumLightning(aBaseMetaTileEntity,node);
                                 outputCurrent--;
                                 idle = false;
                             }
@@ -262,6 +288,26 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                     break;
                 }
             }
+        }
+        sparkCount++;
+        if (sparkCount == 60){
+            sparkCount = 0;
+            World aWorld = aBaseMetaTileEntity.getWorld();
+            Iterator iterator = aWorld.playerEntities.iterator();
+            while (iterator.hasNext()) {
+                Object tObject = iterator.next();
+
+                if (!(tObject instanceof EntityPlayerMP)) {
+                    break;
+                }
+
+                EntityPlayerMP tPlayer = (EntityPlayerMP) tObject;
+                Chunk tChunk = aWorld.getChunkFromBlockCoords(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getZCoord());
+                if (tPlayer.getServerForPlayer().getPlayerManager().isPlayerWatchingChunk(tPlayer, tChunk.xPosition, tChunk.zPosition)) {
+                    NetworkDispatcher.INSTANCE.sendTo(new RendererMessage.RendererData(sparkList), tPlayer);
+                }
+            }
+            sparkList.clear();
         }
     }
 }
