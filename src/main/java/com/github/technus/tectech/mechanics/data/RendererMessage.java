@@ -13,6 +13,7 @@ import net.minecraftforge.common.DimensionManager;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class RendererMessage implements IMessage {
@@ -23,7 +24,10 @@ public class RendererMessage implements IMessage {
     @Override
     public void fromBytes(ByteBuf pBuffer) {
         try {
-            InputStream is = new ByteArrayInputStream(pBuffer.array());
+            //I'd love to know why I need to offset by one byte for this to work
+            byte[] boop = pBuffer.array();
+            boop = Arrays.copyOfRange(boop, 1, boop.length);
+            InputStream is = new ByteArrayInputStream(boop);
             ObjectInputStream ois = new ObjectInputStream(is);
             Object data = ois.readObject();
             sparkList = (HashSet<Util.thaumSpark>)data;

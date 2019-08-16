@@ -290,7 +290,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             }
         }
         sparkCount++;
-        if (sparkCount == 60){
+        if (sparkCount == 60 && !sparkList.isEmpty()){
             sparkCount = 0;
             World aWorld = aBaseMetaTileEntity.getWorld();
             Iterator iterator = aWorld.playerEntities.iterator();
