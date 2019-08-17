@@ -1,6 +1,8 @@
 package gtPlusPlus.nei;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import codechicken.lib.gui.GuiDraw;
@@ -9,7 +11,9 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import crazypants.enderio.machine.enchanter.GuiEnchanter;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
+import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.VanillaColours;
@@ -47,7 +51,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 	}
 
 	public void loadCraftingRecipes(ItemStack result) {
-		if (result == null || !DustDecayable.class.isInstance(result.getItem())) {
+		if (result == null || (!DustDecayable.class.isInstance(result.getItem()) && !BaseItemDustUnique.class.isInstance(result.getItem()))) {
 			return;
 		}
 		if (result != null) {
@@ -64,6 +68,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 				Logger.INFO("Showing Usage result for "+ItemUtils.getItemName(result));
 				final DecayableRecipeNEI rec = new DecayableRecipeNEI(input, output, recipe.mTime);
 				this.arecipes.add(rec);
+				sort();
 			}
 		}
 	}
@@ -77,6 +82,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 					final ItemStack output = recipe.mOutput.copy();
 					final DecayableRecipeNEI rec = new DecayableRecipeNEI(input, output, recipe.mTime);
 					this.arecipes.add(rec);
+					sort();
 				}
 			}
 		}
@@ -101,8 +107,19 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 				final DecayableRecipeNEI rec = new DecayableRecipeNEI(input, output, recipe.mTime);				
 				//rec.setIngredientPermutation((Collection) rec.input, ingredient);
 				this.arecipes.add(rec);
+				sort();
 			}
 		}}
+	
+	private final void sort() {
+		List<DecayableRecipeNEI> g = new ArrayList<DecayableRecipeNEI>();
+		for (CachedRecipe u : arecipes) {
+			g.add((DecayableRecipeNEI) u);
+		}
+		if (g != null && !g.isEmpty()) {
+			Collections.sort(g);			
+		}
+	}
 
 	public void drawExtras(int recipeIndex) {
 		DecayableRecipeNEI recipe = (DecayableRecipeNEI) this.arecipes.get(recipeIndex);
@@ -199,7 +216,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 		NeiTextureHandler.RECIPE_BUTTON.renderIcon(6.0D, 3.0D, 16.0D, 16.0D, 0.0D, true);
 	}
 
-	public class DecayableRecipeNEI extends TemplateRecipeHandler.CachedRecipe
+	public class DecayableRecipeNEI extends TemplateRecipeHandler.CachedRecipe implements Comparable<CachedRecipe>
 	{
 		private PositionedStack input;
 		private PositionedStack output; 
@@ -219,6 +236,23 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 			this.input = new PositionedStack(input, 93, 24);
 			this.output = new PositionedStack(result, 142, 42);
 			this.time = time;
+		}
+
+		@Override
+		public int compareTo(CachedRecipe o) {
+			if (o instanceof DecayableRecipeNEI) {
+				DecayableRecipeNEI p = (DecayableRecipeNEI) o;
+				if (p.time > this.time) {
+					return 1;
+				}
+				else if (p.time == this.time) {
+					return 0;
+				}
+				else {
+					return -1;
+				}
+			}
+			return 0;
 		}
 	}
 }
