@@ -35,10 +35,12 @@ public class VanillaBackgroundMusicFix implements IBugFix {
 	}
 
 	public void manage() {
-		TimerTask task = new ManageTask(this.mFixInstance);
-		Timer timer = new Timer("BGM-WatchDog");
-		long delay = 1000 * 60;
-		timer.scheduleAtFixedRate(task, delay, 5000);
+		if (CORE_Preloader.enableWatchdogBGM > 0 && Utils.isClient()) {
+			TimerTask task = new ManageTask(this.mFixInstance);
+			Timer timer = new Timer("BGM-WatchDog");
+			long delay = 1000 * 60;
+			timer.scheduleAtFixedRate(task, delay, 5000);
+		}
 	}
 
 	private static class ManageTask extends TimerTask {
@@ -50,8 +52,10 @@ public class VanillaBackgroundMusicFix implements IBugFix {
 
 		@Override
 		public void run() {
-			if (!A.mVanillaManager) {
-				A.run();
+			if (CORE_Preloader.enableWatchdogBGM > 0 && Utils.isClient()) {
+				if (!A.mVanillaManager) {
+					A.run();
+				}
 			}
 		}
 	}
