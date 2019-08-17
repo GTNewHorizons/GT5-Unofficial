@@ -30,7 +30,7 @@ public class GregtechRocketFuelGenerator {
 
 	private static void run1() {
 		GregtechItemList.Controller_RocketEngine.set(
-				new GregtechMetaTileEntity_LargeRocketEngine(30410, "gtpp.multimachine.rocketengine", "Rocketdyne F-1A Engine").getStackForm(1L));
+				new GregtechMetaTileEntity_LargeRocketEngine(996, "gtpp.multimachine.rocketengine", "Rocketdyne F-1A Engine").getStackForm(1L));
 				
 		 GT_ModHandler.addCraftingRecipe(
 				 GregtechItemList.Controller_RocketEngine.get(1L),

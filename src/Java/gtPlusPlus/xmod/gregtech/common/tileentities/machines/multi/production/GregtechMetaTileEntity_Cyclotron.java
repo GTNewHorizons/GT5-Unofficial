@@ -432,6 +432,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				mChargeHatches.clear();
 				mDischargeHatches.clear();
 				mControlCoreBus.clear();
+				mAirIntakes.clear();
 				mMultiDynamoHatches.clear();
 				mMachine = aFormCheck;
 			}

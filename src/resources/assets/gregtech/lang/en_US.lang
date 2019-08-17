@@ -20,18 +20,6 @@ GTPP.CC.machinetier=Control Core Tier
 GTPP.CC.discount=EU Discount
 GTPP.CC.parallel=Maximum Parallel Processing
 
-
-
-//Some Generic Words
-GTPP.info.eu=EU
-GTPP.info.euInfo=EU Information
-GTPP.info.inputLimit=Input Limit
-GTPP.info.currentPower=Current Power
-GTPP.info.hidden=Hidden
-
-
-
-
 //Tooltips for the Charger Packs
 GTPP.battpack.tooltip.1=Worn as a Belt within Baubles
 GTPP.battpack.tooltip.2=Drains
@@ -52,6 +40,53 @@ GTPP.monsterkiller.tooltip.1=Worn as an Amulet within Baubles
 GTPP.monsterkiller.tooltip.2=Drains
 GTPP.monsterkiller.tooltip.3=per each kill
 GTPP.monsterkiller.tooltip.4=Target Type:
+
+//17/08/19
+GTPP.container.decaychest.name=Decayables
+
+
+
+
+
+
+
+
+
+
+
+
+//NEI INFORMATION
+GTPP.nei.info=Information
+GTPP.nei.eutick=Eu/t
+GTPP.nei.timetaken=Time Taken
+GTPP.nei.output=Output
+GTPP.nei.input=Input
+GTPP.nei.result=Result
+GTPP.nei.radioation=Radiation Level
+
+//Some Generic Words
+GTPP.info.eu=EU
+GTPP.info.euInfo=EU Information
+GTPP.info.inputLimit=Input Limit
+GTPP.info.currentPower=Current Power
+GTPP.info.hidden=Hidden
+
+//Some Time Words
+GTPP.time.ticks=Ticks
+GTPP.time.seconds=Seconds
+GTPP.time.minutes=Minutes
+GTPP.time.hours=Hours
+GTPP.time.days=Days
+GTPP.time.weeks=Weeks
+GTPP.time.months=Months
+
+
+
+
+
+
+
+
 
 
 

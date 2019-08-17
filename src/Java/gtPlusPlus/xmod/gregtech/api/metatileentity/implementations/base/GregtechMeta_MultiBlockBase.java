@@ -53,6 +53,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_Multi_Basic_Slotted;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
@@ -98,6 +99,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	//Control Core Hatch
 	public ArrayList<GT_MetaTileEntity_Hatch_ControlCore> mControlCoreBus = new ArrayList<GT_MetaTileEntity_Hatch_ControlCore>();
+	public ArrayList<GT_MetaTileEntity_Hatch_AirIntake> mAirIntakes = new ArrayList<GT_MetaTileEntity_Hatch_AirIntake>();
 	public ArrayList<GT_MetaTileEntity_Hatch_InputBattery> mChargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_InputBattery>();
 	public ArrayList<GT_MetaTileEntity_Hatch_OutputBattery> mDischargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_OutputBattery>();
 
@@ -835,7 +837,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		log("GOOD RETURN - 1");
 		return true;
-}
+	}
 
 
 
@@ -932,10 +934,10 @@ GT_MetaTileEntity_MultiBlockBase {
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
-		
+
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		
+
 		log("Running checkRecipeGeneric(0)");
 
 		GT_Recipe tRecipe = aRecipe != null ? aRecipe : findRecipe(
@@ -943,12 +945,12 @@ GT_MetaTileEntity_MultiBlockBase {
 				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 
 		log("Running checkRecipeGeneric(1)");
-		
+
 		//First we check whether or not we have an input cached for boosting.
 		//If not, we set it to the current recipe.
 		//If we do, we compare it against the current recipe, if thy are the same, we try return a boosted recipe, if not, we boost a new recipe.
 		boolean isRecipeInputTheSame = false;	
-		
+
 		//No cached recipe inputs, assume first run.
 		if (mInputVerificationForBoosting == null) {
 			mInputVerificationForBoosting = tRecipe.mInputs;	
@@ -963,7 +965,7 @@ GT_MetaTileEntity_MultiBlockBase {
 				isRecipeInputTheSame = false;
 			}
 		}
-		
+
 		//Inputs are the same, let's see if there's a boosted version.
 		if (isRecipeInputTheSame) {
 			//Yes, let's just set that as the recipe
@@ -999,14 +1001,14 @@ GT_MetaTileEntity_MultiBlockBase {
 				mHasBoostedCurrentRecipe = false;				
 			}
 		}
-		
+
 		//Bad modify, let's just use the original recipe.
 		if (!mHasBoostedCurrentRecipe || mBoostedRecipe == null) {
 			tRecipe = aRecipe != null ? aRecipe : findRecipe(
 					getBaseMetaTileEntity(), mLastRecipe, false,
 					gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 		}		
-		
+
 		// Remember last recipe - an optimization for findRecipe()
 		this.mLastRecipe = tRecipe;
 
@@ -1188,6 +1190,7 @@ GT_MetaTileEntity_MultiBlockBase {
 				this.mChargeHatches.clear();
 				this.mDischargeHatches.clear();
 				this.mControlCoreBus.clear();
+				this.mAirIntakes.clear();
 				this.mMultiDynamoHatches.clear();
 			}
 		}
@@ -1252,7 +1255,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		ItemStack guiSlot = this.mInventory[1];		
 		return guiSlot;
 	}
-	
+
 	protected boolean setGUIItemStack(ItemStack aNewGuiSlotContents) {
 		boolean result = false;
 		if (this.mInventory[1] == null) {
@@ -1263,11 +1266,11 @@ GT_MetaTileEntity_MultiBlockBase {
 		}	
 		return result;
 	}
-	
+
 	protected boolean clearGUIItemSlot() {
 		return setGUIItemStack(null);
 	}
-	
+
 
 	public ItemStack findItemInInventory(Item aSearchStack) {
 		return findItemInInventory(aSearchStack, 0);
@@ -1276,7 +1279,7 @@ GT_MetaTileEntity_MultiBlockBase {
 	public ItemStack findItemInInventory(Item aSearchStack, int aMeta) {
 		return findItemInInventory(ItemUtils.simpleMetaStack(aSearchStack, aMeta, 1));
 	}
-	
+
 	public ItemStack findItemInInventory(ItemStack aSearchStack) {
 		if (aSearchStack != null && this.mInputBusses.size() > 0) {
 			for (GT_MetaTileEntity_Hatch_InputBus bus : this.mInputBusses) {
@@ -1365,14 +1368,14 @@ GT_MetaTileEntity_MultiBlockBase {
 		if (aTileEntity == null) {
 			return false;
 		}		
-		
+
 		//Check type
 		/*
 		 * Class <?> aHatchType = ReflectionUtils.getTypeOfGenericObject(aList); if
 		 * (!aHatchType.isInstance(aTileEntity)) { return false; }
 		 */
-		
-		
+
+
 		if (aList.isEmpty()) {
 			if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
 				if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
@@ -1543,6 +1546,20 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public boolean addOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		return addToMachineList(aTileEntity, aBaseCasingIndex);
+	}
+
+	public boolean addAirIntakeToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) {
+			return false;
+		}
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_AirIntake) {
+			this.mAirIntakes.add((GT_MetaTileEntity_Hatch_AirIntake)aMetaTileEntity);
+		}
 		return addToMachineList(aTileEntity, aBaseCasingIndex);
 	}
 
@@ -2103,6 +2120,31 @@ GT_MetaTileEntity_MultiBlockBase {
 		log("A3");
 		return false;
 	}
+	
+	@Override
+	public boolean depleteInput(final FluidStack aLiquid) {
+        if (aLiquid == null) {
+            return false;
+        }
+        for (final GT_MetaTileEntity_Hatch_Input tHatch : this.mInputHatches) {
+            tHatch.mRecipeMap = this.getRecipeMap();
+            if (isValidMetaTileEntity(tHatch)) {
+                FluidStack tLiquid = tHatch.getFluid();
+                if (tLiquid == null || !tLiquid.isFluidEqual(aLiquid) || tLiquid.amount < aLiquid.amount) {
+                    continue;
+                }
+                tLiquid = tHatch.drain(aLiquid.amount, false);
+                if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
+                    tLiquid = tHatch.drain(aLiquid.amount, true);
+                    return tLiquid != null && tLiquid.amount >= aLiquid.amount;
+                }
+                continue;
+            }
+        }
+        return false;
+    }
+	
+	
 
 
 
