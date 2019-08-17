@@ -45,10 +45,7 @@ import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
@@ -133,8 +130,11 @@ public final class MainMod {
     public void init(FMLInitializationEvent init) {
         if (FMLCommonHandler.instance().getSide().isClient() && ConfigHandler.tooltips)
             MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
-        if (FMLCommonHandler.instance().getSide().isServer())
-            MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
+        if (FMLCommonHandler.instance().getSide().isServer()) {
+            ServerEventHandler serverEventHandler = new ServerEventHandler();
+            MinecraftForge.EVENT_BUS.register(serverEventHandler);
+//            FMLCommonHandler.instance().bus().register(serverEventHandler);
+        }
         new LoaderRegistry().run();
         if (ConfigHandler.BioLab)
             new BioLabLoader().run();
@@ -185,7 +185,7 @@ public final class MainMod {
                     continue;
                 HashSet<ItemStack> inputs = new HashSet<>();
                 for (ItemStack is : recipe.mInputs)
-                    if (!checkForExplosives(is))
+                    if (!MainMod.checkForExplosives(is))
                         inputs.add(is);
                 eicMap.addRecipe(true, inputs.toArray(new ItemStack[0]), recipe.mOutputs, null, null, null, recipe.mDuration, BW_Util.getMachineVoltageFromTier(10), 0);
             }

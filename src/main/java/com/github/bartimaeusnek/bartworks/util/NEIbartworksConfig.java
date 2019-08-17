@@ -55,18 +55,18 @@ public class NEIbartworksConfig implements IConfigureNEI {
         API.hideItem(new ItemStack(FluidLoader.bioFluidBlock));
         API.hideItem(new ItemStack(ItemRegistry.bw_fake_glasses));
         ItemStack[] prefixesToHide = {
-                WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.dustTiny, WerkstoffLoader.Bismutite).copy(),
-                WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.dustSmall, WerkstoffLoader.Bismutite).copy(),
-                WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.crushed, WerkstoffLoader.Bismutite).copy(),
-                WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.crushedPurified, WerkstoffLoader.Bismutite).copy(),
-                WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.crushedCentrifuged, WerkstoffLoader.Bismutite).copy(),
-                WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.nugget, WerkstoffLoader.Bismutite).copy(),
-                WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.gemChipped, WerkstoffLoader.Bismutite).copy(),
-                WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.gemFlawed, WerkstoffLoader.Bismutite).copy(),
-                WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.gemFlawless, WerkstoffLoader.Bismutite).copy(),
-                WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.gemExquisite, WerkstoffLoader.Bismutite).copy(),
-                WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.dustImpure, WerkstoffLoader.Bismutite).copy(),
-                WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.dustPure, WerkstoffLoader.Bismutite).copy(),
+                WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustTiny, WerkstoffLoader.Bismutite).copy(),
+                WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustSmall, WerkstoffLoader.Bismutite).copy(),
+                WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushed, WerkstoffLoader.Bismutite).copy(),
+                WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushedPurified, WerkstoffLoader.Bismutite).copy(),
+                WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushedCentrifuged, WerkstoffLoader.Bismutite).copy(),
+                WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.nugget, WerkstoffLoader.Bismutite).copy(),
+                WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemChipped, WerkstoffLoader.Bismutite).copy(),
+                WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemFlawed, WerkstoffLoader.Bismutite).copy(),
+                WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemFlawless, WerkstoffLoader.Bismutite).copy(),
+                WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemExquisite, WerkstoffLoader.Bismutite).copy(),
+                WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustImpure, WerkstoffLoader.Bismutite).copy(),
+                WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustPure, WerkstoffLoader.Bismutite).copy(),
         };
         for (ItemStack stack : prefixesToHide) {
             stack.setItemDamage(Short.MAX_VALUE);

@@ -25,12 +25,19 @@ package com.github.bartimaeusnek.bartworks.server.EventHandler;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.net.OreDictCachePacket;
 import com.github.bartimaeusnek.bartworks.common.net.ServerJoinedPackage;
+import com.github.bartimaeusnek.bartworks.system.material.BWUnificationEnforcer;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.ArrayList;
 
 public class ServerEventHandler {
 
@@ -41,4 +48,24 @@ public class ServerEventHandler {
         MainMod.BW_Network_instance.sendToPlayer(new OreDictCachePacket(OreDictHandler.getNonBWCache()), (EntityPlayerMP) event.entity);
         MainMod.BW_Network_instance.sendToPlayer(new ServerJoinedPackage(null),(EntityPlayerMP) event.entity);
     }
+
+//    @SubscribeEvent(priority = EventPriority.HIGHEST)
+//    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
+//        if (!BWUnificationEnforcer.isEnabled() || event == null || !(event.player instanceof EntityPlayerMP) || !FMLCommonHandler.instance().getSide().isServer())
+//            return;
+//
+//        for (int i = 0; i < event.player.inventory.mainInventory.length; i++) {
+//           ItemStack stack = event.player.inventory.mainInventory[i];
+//           for (int id : OreDictionary.getOreIDs(stack))
+//               if (BWUnificationEnforcer.getUnificationTargets().contains(OreDictionary.getOreName(id))){
+//                   ArrayList<ItemStack> stacks = OreDictionary.getOres(OreDictionary.getOreName(id));
+//                   for (int j = 0; j < stacks.size(); j++) {
+//                       GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(stacks.get(j).getItem());
+//                       if (UI.modId.equals(MainMod.MOD_ID)){
+//                           event.player.inventory.mainInventory[i] = stacks.get(j).copy().splitStack(stack.stackSize);
+//                       }
+//                   }
+//           }
+//       }
+//    }
 }

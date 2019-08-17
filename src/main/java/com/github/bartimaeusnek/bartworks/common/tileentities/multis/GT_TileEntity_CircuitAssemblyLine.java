@@ -105,6 +105,8 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
 
     }
 
+    private final Collection<GT_Recipe> GT_RECIPE_COLLECTION = new HashSet<>();
+
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
         if (this.type.equals(new NBTTagCompound()))
@@ -113,11 +115,12 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
 
         if (this.bufferedRecipe != null && this.bufferedRecipe.isRecipeInputEqual(true,false,BW_Util.getFluidsFromInputHatches(this),BW_Util.getItemsFromInputBusses(this))) {
             BW_Util.calculateOverclockedNessMulti(this.bufferedRecipe.mEUt,this.bufferedRecipe.mDuration,1,this.getMaxInputVoltage(),this);
-            if (this.mEUt < 0)
+            if (this.mEUt > 0)
                 this.mEUt = -this.mEUt;
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
             this.mOutputItems = this.bufferedRecipe.mOutputs;
             this.mOutputFluids = this.bufferedRecipe.mFluidOutputs;
+            this.updateSlots();
             return true;
         }
 
@@ -126,30 +129,27 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
         if (stack == null)
             return false;
 
-        Collection<GT_Recipe> recipes = new HashSet<>();
-
-        for (GT_Recipe recipe : BWRecipes.instance.getMappingsFor((byte)3).mRecipeList){
-            if (GT_Utility.areStacksEqual(recipe.mOutputs[0],stack,true)){
-                recipes.add(recipe);
-                break;
+        if (this.GT_RECIPE_COLLECTION.isEmpty()) {
+            for (GT_Recipe recipe : BWRecipes.instance.getMappingsFor((byte) 3).mRecipeList) {
+                if (GT_Utility.areStacksEqual(recipe.mOutputs[0], stack, true)) {
+                    this.GT_RECIPE_COLLECTION.add(recipe);
+                }
             }
         }
 
-        if (recipes.isEmpty())
-            return false;
-
-        for (GT_Recipe recipe : recipes){
+        for (GT_Recipe recipe : this.GT_RECIPE_COLLECTION) {
             if (recipe.isRecipeInputEqual(true,false, BW_Util.getFluidsFromInputHatches(this),BW_Util.getItemsFromInputBusses(this)))
                 this.bufferedRecipe = recipe;
             else
                 continue;
 
             BW_Util.calculateOverclockedNessMulti(this.bufferedRecipe.mEUt,this.bufferedRecipe.mDuration,1,this.getMaxInputVoltage(),this);
-            if (this.mEUt < 0)
+            if (this.mEUt > 0)
                 this.mEUt = -this.mEUt;
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
             this.mOutputItems = this.bufferedRecipe.mOutputs;
             this.mOutputFluids = this.bufferedRecipe.mFluidOutputs;
+            this.updateSlots();
             return true;
         }
         return false;
@@ -313,6 +313,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
     @Override
     public String[] getInfoData() {
         String[] ret = new String[super.getInfoData().length+1];
+        System.arraycopy(super.getInfoData(),0,ret,0,super.getInfoData().length);
         ret[super.getInfoData().length] = "Imprinted with: "+ GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(this.type)));
         return ret;
     }

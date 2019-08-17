@@ -100,7 +100,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
                         Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
                         byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                         if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
-                            aItemEntity.setEntityItemStack(WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
+                            aItemEntity.setEntityItemStack(WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
                             aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                             return true;
                         }
@@ -108,7 +108,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
                         Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
                         byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                         if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
-                            aItemEntity.setEntityItemStack(WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
+                            aItemEntity.setEntityItemStack(WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
                             aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                             return true;
                         }
@@ -143,7 +143,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
 
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
-        return werkstoffHashMap.get((short) aMetaData) == null ? null : werkstoffHashMap.get((short) aMetaData).getTexSet().mTextures[this.orePrefixes.mTextureIndex];
+        return werkstoffHashMap.get((short) aMetaData) == null ? null : this.orePrefixes.mTextureIndex == -1 ? null : werkstoffHashMap.get((short) aMetaData).getTexSet().mTextures[this.orePrefixes.mTextureIndex];
     }
 
     @Override
