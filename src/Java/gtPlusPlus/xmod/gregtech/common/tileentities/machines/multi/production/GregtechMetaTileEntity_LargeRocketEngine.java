@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -42,7 +43,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 	public static String mGearboxName = "Inconel Reinforced Casing";
 
     
-    private final static int CASING_ID = 50;
+    private final static int CASING_ID = TAE.getIndexFromPage(3, 11);
     
     public GregtechMetaTileEntity_LargeRocketEngine(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -226,7 +227,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
     }
     
     public byte getCasingTextureIndex() {
-        return CASING_ID;
+        return (byte) CASING_ID;
     }
     
     @Override

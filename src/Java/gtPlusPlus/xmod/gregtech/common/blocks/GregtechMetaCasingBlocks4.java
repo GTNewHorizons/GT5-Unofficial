@@ -122,7 +122,7 @@ extends GregtechMetaCasingBlocksAbstract {
 					
 					//Multitank Exterior Casing
 				case 11:
-					return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
+					return TexturesGtBlock.TEXTURE_CASING_ROCKETDYNE.getIcon();
 					//Reactor Casing I
 				case 12:
 					return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
