@@ -5,12 +5,20 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import gregtech.GT_Mod;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.common.GT_Proxy;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.MISC_MATERIALS;
+import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fluids.FluidStack;
 
 public class PollutionUtils {
 
@@ -21,6 +29,8 @@ public class PollutionUtils {
 
 	private static Method mGetPollution;
 	private static Method mGetPollution2;
+
+	public static AutoMap<FluidStack> mPollutionFluidStacks = new AutoMap<FluidStack>();
 
 	static {
 		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH) {
@@ -163,6 +173,33 @@ public class PollutionUtils {
 					| IllegalArgumentException | InvocationTargetException e) {
 			}
 		return 0;
+	}
+	
+	public static boolean setPollutionFluids() {
+		FluidStack CD, CM, SD;
+		CD = FluidUtils.getFluidStack("carbondioxide", 1000);
+		CM = FluidUtils.getFluidStack("carbonmonoxide", 1000);
+		SD = FluidUtils.getFluidStack("sulfuredioxide", 1000);
+		if (PollutionUtils.mPollutionFluidStacks.size() == 0) {
+			if (CD != null) {
+				PollutionUtils.mPollutionFluidStacks.put(CD);
+				ItemStack cellCD = ItemUtils.getItemStackOfAmountFromOreDict("cellCarbonDioxide", 1);
+				if (ItemUtils.checkForInvalidItems(cellCD)) {
+					MISC_MATERIALS.CARBON_DIOXIDE.registerComponentForMaterial(OrePrefixes.cell, cellCD);
+				}
+			}
+			else {
+				MaterialGenerator.generate(MISC_MATERIALS.CARBON_DIOXIDE, false, false);
+			}
+			if (CM != null)
+				PollutionUtils.mPollutionFluidStacks.put(CM);
+			if (SD != null)
+				PollutionUtils.mPollutionFluidStacks.put(SD);
+		}
+		if (PollutionUtils.mPollutionFluidStacks.size() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 }

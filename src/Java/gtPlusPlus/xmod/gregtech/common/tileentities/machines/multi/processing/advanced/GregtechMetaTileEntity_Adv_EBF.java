@@ -20,11 +20,10 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -44,34 +43,14 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 	private int controllerY;
 
 	private static boolean mUsingPollutionOutputs = false;
-	private static AutoMap<FluidStack> mPollutionFluidStacks = new AutoMap<FluidStack>();
-
-	private static boolean setPollutionFluids() {
-		FluidStack CD, CM, SD;
-		CD = FluidUtils.getFluidStack("carbondioxide", 1000);
-		CM = FluidUtils.getFluidStack("carbonmonoxide", 1000);
-		SD = FluidUtils.getFluidStack("sulfuredioxide", 1000);
-		if (mPollutionFluidStacks.size() == 0) {
-			if (CD != null)
-				mPollutionFluidStacks.put(CD);
-			if (CM != null)
-				mPollutionFluidStacks.put(CM);
-			if (SD != null)
-				mPollutionFluidStacks.put(SD);
-		}
-		if (mPollutionFluidStacks.size() > 0) {
-			return true;
-		}
-		return false;
-	}
-
+	
 	public GregtechMetaTileEntity_Adv_EBF(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 11);
 		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
 		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
-		mUsingPollutionOutputs = setPollutionFluids();
+		mUsingPollutionOutputs = PollutionUtils.setPollutionFluids();
 	}
 
 	public GregtechMetaTileEntity_Adv_EBF(String aName) {
@@ -80,7 +59,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
 		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
-		mUsingPollutionOutputs = setPollutionFluids();
+		mUsingPollutionOutputs = PollutionUtils.setPollutionFluids();
 	}
 
 	@Override
@@ -238,7 +217,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		FluidStack tLiquid = aLiquid.copy();
 		boolean isOutputPollution = false;
 		if (mUsingPollutionOutputs) {
-			for (FluidStack pollutionFluidStack : mPollutionFluidStacks) {
+			for (FluidStack pollutionFluidStack : PollutionUtils.mPollutionFluidStacks) {
 				if (tLiquid.isFluidEqual(pollutionFluidStack)) {
 					isOutputPollution = true;
 					break;

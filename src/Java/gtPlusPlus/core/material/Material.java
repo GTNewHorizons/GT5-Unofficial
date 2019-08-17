@@ -463,9 +463,10 @@ public class Material {
 			}
 
 			if (generateFluid){
-				final Materials isValid = Materials.get(this.getLocalizedName());
-				if (FluidUtils.getFluidStack(localizedName, 1) != null){
-					this.vMoltenFluid = FluidUtils.getFluidStack(localizedName, 1).getFluid();
+				final Materials isValid = Materials.get(this.getLocalizedName());				
+				FluidStack aTest = FluidUtils.getWildcardFluidStack(localizedName, 1);				
+				if (aTest != null){
+					this.vMoltenFluid = aTest.getFluid();
 				}
 				else if (isValid == null || isValid == Materials._NULL){
 					queueFluidGeneration();

@@ -40,6 +40,7 @@ public class RocketFuels extends ItemPackage {
 	public static Fluid Nitrous_Oxide;		
 	public static Fluid Hydrated_Ammonium_Nitrate_Slurry;	
 	public static Fluid Liquid_Oxygen;
+	public static Fluid Liquid_Hydrogen;
 	public static Fluid Formaldehyde;
 
 
@@ -728,6 +729,21 @@ public class RocketFuels extends ItemPackage {
 			}
 		}
 		
+		//Create Liquid_Hydrogen
+				if (FluidUtils.getFluidStack("LiquidHydrogen", 1) == null && FluidUtils.getFluidStack("liquidhydrogen", 1) == null){
+					Liquid_Hydrogen = FluidUtils.generateFluidNonMolten("LiquidHydrogen", "Liquid Hydrogen", -240, new short[]{75, 75, 220, 100}, null, null);
+				}
+				else {
+					if (FluidUtils.getFluidStack("LiquidHydrogen", 1) != null ) {
+						Liquid_Hydrogen = FluidUtils.getFluidStack("LiquidHydrogen", 1).getFluid();				
+					}
+					else {
+						Liquid_Hydrogen = FluidUtils.getFluidStack("liquidhydrogen", 1).getFluid();
+					}
+					if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellLiquidHydrogen", 1) == null){				
+						new BaseItemComponent("LiquidHydrogen", "Liquid Hydrogen", new short[] {10, 10, 175});
+					}
+				}
 
 		Formaldehyde = FluidUtils.generateFluidNonMolten("Formaldehyde", "Formaldehyde", -92, new short[]{150, 75, 150, 100}, null, null);
 		
