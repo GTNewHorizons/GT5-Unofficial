@@ -78,10 +78,11 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static int zPosOffsetScanMax;
 
     //Lightning Origin
-    private static int xPosTop;
-    private static byte yPosTop;
-    private static int zPosTop;
+    public int xPosTop;
+    public byte yPosTop;
+    public int zPosTop;
 
+    //TODO Add center bottom
     //region structure
     private static final String[][] shape0 = new String[][]{//3 16 0
             {"\u000F", "A  .  ",},
@@ -618,7 +619,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     }
 
-    private static void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
+    private void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
         byte xR = (byte) (node.getXCoord() - xPosTop);
         byte yR = (byte) (node.getYCoord() - yPosTop);
         byte zR = (byte) (node.getZCoord() - zPosTop);
@@ -646,6 +647,31 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             ePowerPass = true;
         } else if (ePowerPass && energyFrac < histLowSetting.get()) {
             ePowerPass = false;
+        }
+
+        //Clean the eTeslaMap
+        for (Map.Entry<IGregTechTileEntity, Integer> Rx : eTeslaMap.entrySet()) {
+            IGregTechTileEntity node = Rx.getKey();
+            if (node != null) {
+                IMetaTileEntity nodeInside = node.getMetaTileEntity();
+                try {
+                    if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()) {
+                        GT_MetaTileEntity_TM_teslaCoil teslaTower = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
+                        if (teslaTower.maxEUStore() > 0) {
+                            continue;
+                        }
+                    } else if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil){
+                        GT_MetaTileEntity_TeslaCoil teslaTransceiver = (GT_MetaTileEntity_TeslaCoil) nodeInside;
+                        if (teslaTransceiver.mBatteryCount > 0){
+                            continue;
+                        }
+                    } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil) && node.getEUCapacity() > 0) {
+                        continue;
+                    }
+                } catch (Exception e) {
+                }
+            }
+            eTeslaMap.remove(Rx.getKey());
         }
 
         //Scan for transmission targets
@@ -683,11 +709,11 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                                     GT_MetaTileEntity_TeslaCoil teslaCoil = (GT_MetaTileEntity_TeslaCoil) nodeInside;
 
                                     int tX = node.getXCoord();
-                                    int tY = node.getYCoord();
+                                    byte tY = (byte)node.getYCoord();
                                     int tZ = node.getZCoord();
 
                                     int tXN = mte.getXCoord();
-                                    int tYN = mte.getYCoord();
+                                    byte tYN = (byte)mte.getYCoord();
                                     int tZN = mte.getZCoord();
 
                                     int tOffset = (int) Math.ceil(Math.sqrt(Math.pow(tX - tXN, 2) + Math.pow(tY - tYN, 2) + Math.pow(tZ - tZN, 2)));
@@ -699,7 +725,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                                             continue;
                                         }
                                         tXN = nodeN.getXCoord();
-                                        tYN = nodeN.getYCoord();
+                                        tYN = (byte)nodeN.getYCoord();
                                         tZN = nodeN.getZCoord();
                                         tOffset = (int) Math.ceil(Math.sqrt(Math.pow(tX - tXN, 2) + Math.pow(tY - tYN, 2) + Math.pow(tZ - tZN, 2)));
                                         if (tOffset > 20) {
@@ -719,7 +745,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         scanTime++;
         scanTimeDisplay.set(scanTime);
-
 
         //Power Limit Settings
         long outputVoltage;

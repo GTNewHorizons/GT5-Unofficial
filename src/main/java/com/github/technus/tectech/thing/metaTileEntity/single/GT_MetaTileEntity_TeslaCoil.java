@@ -180,18 +180,30 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         return new GT_MetaTileEntity_TeslaCoil(mName, mTier, mDescription, mTextures, mInventory.length);
     }
 
-    private static void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
+    private void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
         int x = mte.getXCoord();
         byte y = (byte) mte.getYCoord();
         int z = mte.getZCoord();
 
-        byte xR = (byte) (node.getXCoord() - x);
-        byte yR = (byte) (node.getYCoord() - y);
-        byte zR = (byte) (node.getZCoord() - z);
+        byte xR;
+        byte yR;
+        byte zR;
+
+        IMetaTileEntity nodeInside = node.getMetaTileEntity();
+        if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil) {//TODO Fix lightning alignment
+            GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
+            xR = (byte) (nodeTesla.xPosTop - x);
+            yR = (byte) (nodeTesla.yPosTop - y);
+            zR = (byte) (nodeTesla.zPosTop - z);
+        } else {
+            xR = (byte) (node.getXCoord() - x);
+            yR = (byte) (node.getYCoord() - y);
+            zR = (byte) (node.getZCoord() - z);
+        }
 
         int wID = mte.getWorld().provider.dimensionId;
 
-        sparkList.add(new Util.thaumSpark(x,y,z,xR,yR,zR,wID));
+        sparkList.add(new Util.thaumSpark(x, y, z, xR, yR, zR, wID));
     }
 
     @Override
