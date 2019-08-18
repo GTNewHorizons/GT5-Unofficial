@@ -23,14 +23,14 @@ import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.*;
@@ -683,9 +683,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                         if (teslaTower.maxEUStore() > 0) {
                             continue;
                         }
-                    } else if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil){
+                    } else if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil) {
                         GT_MetaTileEntity_TeslaCoil teslaTransceiver = (GT_MetaTileEntity_TeslaCoil) nodeInside;
-                        if (teslaTransceiver.mBatteryCount > 0){
+                        if (teslaTransceiver.mBatteryCount > 0) {
                             continue;
                         }
                     } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil) && node.getEUCapacity() > 0) {
@@ -885,23 +885,14 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             }
             outputCurrentDisplay.set(outputCurrent - sparks);
             if (scanTime % 60 == 0 && !sparkList.isEmpty()) {
-                World aWorld = mte.getWorld();
-                Iterator iterator = aWorld.playerEntities.iterator();
-                while (iterator.hasNext()) {
-                    Object tObject = iterator.next();
-
-                    if (!(tObject instanceof EntityPlayerMP)) {
-                        break;
-                    }
-
-                    EntityPlayerMP tPlayer = (EntityPlayerMP) tObject;
-                    Chunk tChunk = aWorld.getChunkFromBlockCoords(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getZCoord());
-                    if (tPlayer.getServerForPlayer().getPlayerManager().isPlayerWatchingChunk(tPlayer, tChunk.xPosition, tChunk.zPosition)) {
-                        NetworkDispatcher.INSTANCE.sendTo(new RendererMessage.RendererData(sparkList), tPlayer);
-                    }
-                }
-                sparkList.clear();
+                NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
+                        mte.getWorld().provider.dimensionId,
+                        mte.getXCoord(),
+                        mte.getYCoord(),
+                        mte.getZCoord(),
+                        256);
             }
+            sparkList.clear();
         } else {
             outputCurrentDisplay.set(0);
         }

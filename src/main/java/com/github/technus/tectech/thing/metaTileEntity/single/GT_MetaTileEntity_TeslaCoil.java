@@ -14,13 +14,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.V;
@@ -61,7 +57,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private float minEfficency = 0.955F;
     private float maxEfficency = 0.975F;
     private float overdriveEfficiencyExtra = 0.010F;
-    private float energyEfficiency = map(mTier+1, minTier+1, maxTier+1, minEfficency, maxEfficency);
+    private float energyEfficiency = map(mTier + 1, minTier + 1, maxTier + 1, minEfficency, maxEfficency);
     private float overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
     private boolean overDriveToggle = false; //Overdrive toggle
 
@@ -150,13 +146,15 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     }
 
     @Override
-    public boolean isFacingValid(byte aSide) {return aSide != 1;}//Prevents output at the top side
+    public boolean isFacingValid(byte aSide) {
+        return aSide != 1;
+    }//Prevents output at the top side
 
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[3][17][];
 
-        for(byte i = -1; i < 16; ++i) {
+        for (byte i = -1; i < 16; ++i) {
             rTextures[0][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1]};
             rTextures[1][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], TESLA_TRANSCEIVER_TOP_BA};
             rTextures[2][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], this.mInventory.length == 16 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[this.mTier] : (this.mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier])};
@@ -203,9 +201,9 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     private long getEnergyEfficiency(long voltage, int distance, boolean overDriveToggle) {
         if (overDriveToggle) {
-            return (long)((voltage * 2) - (voltage * Math.pow(overdriveEfficiency, distance)));
+            return (long) ((voltage * 2) - (voltage * Math.pow(overdriveEfficiency, distance)));
         } else {
-            return (long)(voltage * Math.pow(energyEfficiency, distance));
+            return (long) (voltage * Math.pow(energyEfficiency, distance));
         }
     }
 
@@ -278,7 +276,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                                 if (nodeTesla.getEUVar() + outputVoltageInjectable <= (nodeTesla.maxEUStore() / 2)) {
                                     setEUVar(getEUVar() - outputVoltageConsumption);
                                     node.increaseStoredEnergyUnits(outputVoltageInjectable, true);
-                                    thaumLightning(aBaseMetaTileEntity,node);
+                                    thaumLightning(aBaseMetaTileEntity, node);
                                     outputCurrent--;
                                     idle = false;
                                 }
@@ -286,7 +284,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                         } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil) && !(node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil_Ultimate) && Rx.getValue() <= transferRadiusCover) {
                             if (node.injectEnergyUnits((byte) 1, outputVoltageInjectable, 1L) > 0L) {
                                 setEUVar(getEUVar() - outputVoltageConsumption);
-                                thaumLightning(aBaseMetaTileEntity,node);
+                                thaumLightning(aBaseMetaTileEntity, node);
                                 outputCurrent--;
                                 idle = false;
                             }
@@ -305,24 +303,15 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             }
         }
         sparkCount++;
-        if (sparkCount == 60 && !sparkList.isEmpty()){
+        if (sparkCount == 60 && !sparkList.isEmpty()) {
             sparkCount = 0;
-            World aWorld = aBaseMetaTileEntity.getWorld();
-            Iterator iterator = aWorld.playerEntities.iterator();
-            while (iterator.hasNext()) {
-                Object tObject = iterator.next();
-
-                if (!(tObject instanceof EntityPlayerMP)) {
-                    break;
-                }
-
-                EntityPlayerMP tPlayer = (EntityPlayerMP) tObject;
-                Chunk tChunk = aWorld.getChunkFromBlockCoords(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getZCoord());
-                if (tPlayer.getServerForPlayer().getPlayerManager().isPlayerWatchingChunk(tPlayer, tChunk.xPosition, tChunk.zPosition)) {
-                    NetworkDispatcher.INSTANCE.sendTo(new RendererMessage.RendererData(sparkList), tPlayer);
-                }
-            }
-            sparkList.clear();
+            NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
+                    aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                    aBaseMetaTileEntity.getXCoord(),
+                    aBaseMetaTileEntity.getYCoord(),
+                    aBaseMetaTileEntity.getZCoord(),
+                    256);
         }
+        sparkList.clear();
     }
 }
