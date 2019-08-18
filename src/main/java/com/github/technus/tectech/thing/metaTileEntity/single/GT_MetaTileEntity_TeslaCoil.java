@@ -61,7 +61,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private float minEfficency = 0.955F;
     private float maxEfficency = 0.975F;
     private float overdriveEfficiencyExtra = 0.010F;
-    private float energyEfficiency = map(mTier+1, minTier, maxTier, minEfficency, maxEfficency);
+    private float energyEfficiency = map(mTier+1, minTier+1, maxTier+1, minEfficency, maxEfficency);
     private float overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
     private boolean overDriveToggle = false; //Overdrive toggle
 
