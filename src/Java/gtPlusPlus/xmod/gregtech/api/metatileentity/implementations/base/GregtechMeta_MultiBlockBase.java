@@ -1362,6 +1362,15 @@ GT_MetaTileEntity_MultiBlockBase {
 		return b;
 	}
 
+	public void fixAllMaintenanceIssue() {
+		this.mCrowbar = true;
+		this.mWrench = true;
+		this.mHardHammer = true;
+		this.mSoftHammer = true;
+		this.mSolderingTool = true;
+		this.mScrewdriver = true;		
+	}
+
 
 	public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IMetaTileEntity aTileEntity,
 			final int aBaseCasingIndex) {		
@@ -1586,6 +1595,10 @@ GT_MetaTileEntity_MultiBlockBase {
 		return false;
 	}
 
+	public boolean clearRecipeMapForAllInputHatches() {
+		return resetRecipeMapForAllInputHatches(null);
+	}
+
 	public boolean resetRecipeMapForAllInputHatches() {
 		return resetRecipeMapForAllInputHatches(this.getRecipeMap());
 	}
@@ -1605,17 +1618,22 @@ GT_MetaTileEntity_MultiBlockBase {
 		return cleared > 0;
 	}
 	public boolean resetRecipeMapForHatch(IGregTechTileEntity aTileEntity, GT_Recipe_Map aMap) {
-		if (aTileEntity == null) {
-			return false;
+		try {
+			if (aTileEntity == null) {
+				return false;
+			}
+			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity == null) {
+				return false;
+			}
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+				return resetRecipeMapForHatch((GT_MetaTileEntity_Hatch)aMetaTileEntity, aMap);
+			}
+			else {
+				return false;
+			}
 		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();;
-		if (aMetaTileEntity == null) {
-			return false;
-		}
-		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-			return resetRecipeMapForHatch((GT_MetaTileEntity_Hatch)aMetaTileEntity, aMap);
-		}
-		else {
+		catch (Throwable t) {
 			return false;
 		}
 	}
@@ -1645,8 +1663,9 @@ GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-		resetRecipeMapForAllInputHatches();
+		clearRecipeMapForAllInputHatches();
 		onModeChangeByScrewdriver(aSide, aPlayer, aX, aY, aZ);
+		resetRecipeMapForAllInputHatches();
 	}
 
 	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
@@ -2120,31 +2139,31 @@ GT_MetaTileEntity_MultiBlockBase {
 		log("A3");
 		return false;
 	}
-	
+
 	@Override
 	public boolean depleteInput(final FluidStack aLiquid) {
-        if (aLiquid == null) {
-            return false;
-        }
-        for (final GT_MetaTileEntity_Hatch_Input tHatch : this.mInputHatches) {
-            tHatch.mRecipeMap = this.getRecipeMap();
-            if (isValidMetaTileEntity(tHatch)) {
-                FluidStack tLiquid = tHatch.getFluid();
-                if (tLiquid == null || !tLiquid.isFluidEqual(aLiquid) || tLiquid.amount < aLiquid.amount) {
-                    continue;
-                }
-                tLiquid = tHatch.drain(aLiquid.amount, false);
-                if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
-                    tLiquid = tHatch.drain(aLiquid.amount, true);
-                    return tLiquid != null && tLiquid.amount >= aLiquid.amount;
-                }
-                continue;
-            }
-        }
-        return false;
-    }
-	
-	
+		if (aLiquid == null) {
+			return false;
+		}
+		for (final GT_MetaTileEntity_Hatch_Input tHatch : this.mInputHatches) {
+			tHatch.mRecipeMap = this.getRecipeMap();
+			if (isValidMetaTileEntity(tHatch)) {
+				FluidStack tLiquid = tHatch.getFluid();
+				if (tLiquid == null || !tLiquid.isFluidEqual(aLiquid) || tLiquid.amount < aLiquid.amount) {
+					continue;
+				}
+				tLiquid = tHatch.drain(aLiquid.amount, false);
+				if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
+					tLiquid = tHatch.drain(aLiquid.amount, true);
+					return tLiquid != null && tLiquid.amount >= aLiquid.amount;
+				}
+				continue;
+			}
+		}
+		return false;
+	}
+
+
 
 
 

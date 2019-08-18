@@ -66,6 +66,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		return new String[]{
 				"[BUG] GUI does not work until structure is assembled correctly. (Do Not Report issue)",
 				"Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches",
+				"Does not require maintenance",
 				"Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "",
 				"Hatches can be placed nearly anywhere",
 				"HV Energy/Dynamo Hatches are the lowest tier you can use",
@@ -302,7 +303,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		}
 
 		// Only set this here, after the machine check is 100% passed.
-
+		this.fixAllMaintenanceIssue();
 		this.mBatteryCapacity = getCapacityFromCellTier(tOverallCellTier) * tCellCount;
 		return true;
 	}
@@ -376,6 +377,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		this.mMaxProgresstime = 1;
 		this.mEUt = 0;
 		this.mEfficiencyIncrease = 10000;
+		this.fixAllMaintenanceIssue();
 		return true;
 	}
 
