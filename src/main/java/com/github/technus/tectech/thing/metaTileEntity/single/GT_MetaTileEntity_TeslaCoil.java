@@ -182,7 +182,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     private void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
         int x = mte.getXCoord();
-        byte y = (byte) mte.getYCoord();
+        int y = mte.getYCoord();
         int z = mte.getZCoord();
 
         byte xR;
@@ -190,7 +190,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         byte zR;
 
         IMetaTileEntity nodeInside = node.getMetaTileEntity();
-        if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil) {//TODO Fix lightning alignment
+        if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil) {
             GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
             xR = (byte) (nodeTesla.xPosTop - x);
             yR = (byte) (nodeTesla.yPosTop - y);

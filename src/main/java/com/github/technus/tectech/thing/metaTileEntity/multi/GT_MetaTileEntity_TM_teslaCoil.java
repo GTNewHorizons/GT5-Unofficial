@@ -68,21 +68,25 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     //Scan range fields
     private static int xPosOffsetScanMin;
     private static int xPosOffsetScanMax;
-    private static byte yPosOffsetScan0;
-    private static byte yPosOffsetScan1;
-    private static byte yPosOffsetScan2;
-    private static byte yPosOffsetScan3;
-    private static byte yPosOffsetScan4;
-    private static byte yPosOffsetScan5;
+    private static int yPosOffsetScan0;
+    private static int yPosOffsetScan1;
+    private static int yPosOffsetScan2;
+    private static int yPosOffsetScan3;
+    private static int yPosOffsetScan4;
+    private static int yPosOffsetScan5;
     private static int zPosOffsetScanMin;
     private static int zPosOffsetScanMax;
 
+    //Power Transfer Origin
+    public int xPosZap;
+    public int yPosZap;
+    public int zPosZap;
+
     //Lightning Origin
     public int xPosTop;
-    public byte yPosTop;
+    public int yPosTop;
     public int zPosTop;
 
-    //TODO Add center bottom
     //region structure
     private static final String[][] shape0 = new String[][]{//3 16 0
             {"\u000F", "A  .  ",},
@@ -496,27 +500,33 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             }
 
             //Calculate offsets for scanning
-            int[] xyzOffsets=getTranslatedOffsets(40,0,43);
-            xPosOffsetScanMin =xyzOffsets[0];
-            yPosOffsetScan0 =(byte)xyzOffsets[1];
-            zPosOffsetScanMin =xyzOffsets[2];
-            xyzOffsets=getTranslatedOffsets(-40,-4,-37);
-            yPosOffsetScan1 =(byte)xyzOffsets[1];
-            xyzOffsets=getTranslatedOffsets(-40,-8,-37);
-            yPosOffsetScan2 =(byte)xyzOffsets[1];
-            xyzOffsets=getTranslatedOffsets(-40,-12,-37);
-            yPosOffsetScan3 =(byte)xyzOffsets[1];
-            xyzOffsets=getTranslatedOffsets(-40,-16,-37);
-            yPosOffsetScan4 =(byte)xyzOffsets[1];
-            xyzOffsets=getTranslatedOffsets(-40,-20,-37);
-            xPosOffsetScanMax=xyzOffsets[0];
-            yPosOffsetScan5 =(byte)xyzOffsets[1];
-            zPosOffsetScanMax =xyzOffsets[2];
+            int[] xyzOffsets = getTranslatedOffsets(40,0,43);
+            xPosOffsetScanMin = xyzOffsets[0];
+            yPosOffsetScan0 = xyzOffsets[1];
+            zPosOffsetScanMin = xyzOffsets[2];
+            xyzOffsets = getTranslatedOffsets(-40,-4,-37);
+            yPosOffsetScan1 = xyzOffsets[1];
+            xyzOffsets = getTranslatedOffsets(-40,-8,-37);
+            yPosOffsetScan2 = xyzOffsets[1];
+            xyzOffsets = getTranslatedOffsets(-40,-12,-37);
+            yPosOffsetScan3 = xyzOffsets[1];
+            xyzOffsets = getTranslatedOffsets(-40,-16,-37);
+            yPosOffsetScan4 = xyzOffsets[1];
+            xyzOffsets = getTranslatedOffsets(-40,-20,-37);
+            xPosOffsetScanMax= xyzOffsets[0];
+            yPosOffsetScan5 = xyzOffsets[1];
+            zPosOffsetScanMax = xyzOffsets[2];
 
-            //Calculate coordinates of the top of the tesla
+            //Calculate coordinates of the middle bottom
+            xyzOffsets=getTranslatedOffsets(0,0,2);
+            xPosZap = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
+            yPosZap = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
+            zPosZap = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
+
+            //Calculate coordinates of the top sphere
             xyzOffsets=getTranslatedOffsets(0,-14,2);
             xPosTop = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
-            yPosTop = (byte)(iGregTechTileEntity.getYCoord() + xyzOffsets[1]);
+            yPosTop = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
             zPosTop = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
 
             return true;
@@ -570,14 +580,17 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             }
         }
 
+        energyCapacity = 0;
+        outputCurrentMax = 0;
+
         if(vTier < 0){
-            return false;
+            //Returning true to allow for 'passive running'
+            outputVoltageMax = 0;
+            return true;
         } else if (vTier > mTier && getEUVar() > 0){
             explodeMultiblock();
         }
 
-        energyCapacity = 0;
-        outputCurrentMax = 0;
         outputVoltageMax = V[vTier+1];
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
             if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
@@ -598,14 +611,21 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         return true;
     }
 
-    private void scanForTransmissionTargets(int xMin,int yMin, int zMin, int xMax, int yMax, int zMax){
+    private void scanForTransmissionTargets(IGregTechTileEntity mte, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax){
+        int rX = mte.getXCoord();
+        int rY = mte.getYCoord();
+        int rZ = mte.getZCoord();
+
         for (int xPosOffset = xMin; xPosOffset <= xMax; xPosOffset++) {
             for (int yPosOffset = yMin; yPosOffset <= yMax; yPosOffset++) {
                 for (int zPosOffset = zMin; zPosOffset <= zMax; zPosOffset++) {
-                    if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0) {
+                    int tX = xPosZap+xPosOffset;
+                    int tY = yPosZap+yPosOffset;
+                    int tZ = zPosZap+zPosOffset;
+                    if (rX == tX && rY == tY && rZ == tZ) {
                         continue;
                     }
-                    IGregTechTileEntity node = getBaseMetaTileEntity().getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
+                    IGregTechTileEntity node = getBaseMetaTileEntity().getIGregTechTileEntity(tX,tY,tZ);
                     if (node == null) {
                         continue;
                     }
@@ -620,9 +640,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     private void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
-        byte xR = (byte) (node.getXCoord() - xPosTop);
-        byte yR = (byte) (node.getYCoord() - yPosTop);
-        byte zR = (byte) (node.getZCoord() - zPosTop);
+        byte xR = (byte)(node.getXCoord() - xPosTop);
+        byte yR = (byte)(node.getYCoord() - yPosTop);
+        byte zR = (byte)(node.getZCoord() - zPosTop);
 
         int wID = mte.getWorld().provider.dimensionId;
 
@@ -678,23 +698,23 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         switch (scanTime) {
             case 0:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(xPosOffsetScanMin, yPosOffsetScan0, zPosOffsetScanMin, xPosOffsetScanMax - 1, yPosOffsetScan1 - 1, zPosOffsetScanMax - 1);
+                scanForTransmissionTargets(mte, xPosOffsetScanMin, yPosOffsetScan0, zPosOffsetScanMin, xPosOffsetScanMax - 1, yPosOffsetScan1 - 1, zPosOffsetScanMax - 1);
                 break;
             case 20:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(xPosOffsetScanMin, yPosOffsetScan1, zPosOffsetScanMin, xPosOffsetScanMax - 1, yPosOffsetScan1 - 1, zPosOffsetScanMax - 1);
+                scanForTransmissionTargets(mte, xPosOffsetScanMin, yPosOffsetScan1, zPosOffsetScanMin, xPosOffsetScanMax - 1, yPosOffsetScan1 - 1, zPosOffsetScanMax - 1);
                 break;
             case 40:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(xPosOffsetScanMin, yPosOffsetScan2, zPosOffsetScanMin, xPosOffsetScanMax - 1, yPosOffsetScan1 - 1, zPosOffsetScanMax - 1);
+                scanForTransmissionTargets(mte, xPosOffsetScanMin, yPosOffsetScan2, zPosOffsetScanMin, xPosOffsetScanMax - 1, yPosOffsetScan1 - 1, zPosOffsetScanMax - 1);
                 break;
             case 60:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(xPosOffsetScanMin, yPosOffsetScan3, zPosOffsetScanMin, xPosOffsetScanMax - 1, yPosOffsetScan4 - 1, zPosOffsetScanMax - 1);
+                scanForTransmissionTargets(mte, xPosOffsetScanMin, yPosOffsetScan3, zPosOffsetScanMin, xPosOffsetScanMax - 1, yPosOffsetScan4 - 1, zPosOffsetScanMax - 1);
                 break;
             case 80:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(xPosOffsetScanMin, yPosOffsetScan4, zPosOffsetScanMin, xPosOffsetScanMax, yPosOffsetScan5, zPosOffsetScanMax);
+                scanForTransmissionTargets(mte, xPosOffsetScanMin, yPosOffsetScan4, zPosOffsetScanMin, xPosOffsetScanMax, yPosOffsetScan5, zPosOffsetScanMax);
                 break;
             default:
                 if (scanTime == (int) scanTimeMinSetting.get() - 1) {
@@ -709,12 +729,12 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                                     GT_MetaTileEntity_TeslaCoil teslaCoil = (GT_MetaTileEntity_TeslaCoil) nodeInside;
 
                                     int tX = node.getXCoord();
-                                    byte tY = (byte)node.getYCoord();
+                                    int tY = node.getYCoord();
                                     int tZ = node.getZCoord();
 
-                                    int tXN = mte.getXCoord();
-                                    byte tYN = (byte)mte.getYCoord();
-                                    int tZN = mte.getZCoord();
+                                    int tXN = xPosZap;
+                                    int tYN = yPosZap;
+                                    int tZN = zPosZap;
 
                                     int tOffset = (int) Math.ceil(Math.sqrt(Math.pow(tX - tXN, 2) + Math.pow(tY - tYN, 2) + Math.pow(tZ - tZN, 2)));
                                     teslaCoil.eTeslaMap.put(mte, tOffset);
@@ -725,7 +745,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                                             continue;
                                         }
                                         tXN = nodeN.getXCoord();
-                                        tYN = (byte)nodeN.getYCoord();
+                                        tYN = nodeN.getYCoord();
                                         tZN = nodeN.getZCoord();
                                         tOffset = (int) Math.ceil(Math.sqrt(Math.pow(tX - tXN, 2) + Math.pow(tY - tYN, 2) + Math.pow(tZ - tZN, 2)));
                                         if (tOffset > 20) {

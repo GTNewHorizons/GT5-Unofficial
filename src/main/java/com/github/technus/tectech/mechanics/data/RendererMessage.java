@@ -19,7 +19,8 @@ import java.util.HashSet;
 public class RendererMessage implements IMessage {
     HashSet<Util.thaumSpark> sparkList = new HashSet<Util.thaumSpark>();
 
-    public RendererMessage(){}
+    public RendererMessage() {
+    }
 
     @Override
     public void fromBytes(ByteBuf pBuffer) {
@@ -30,7 +31,7 @@ public class RendererMessage implements IMessage {
             InputStream is = new ByteArrayInputStream(boop);
             ObjectInputStream ois = new ObjectInputStream(is);
             Object data = ois.readObject();
-            sparkList = (HashSet<Util.thaumSpark>)data;
+            sparkList = (HashSet<Util.thaumSpark>) data;
         } catch (IOException | ClassNotFoundException ex) {
         }
     }
@@ -58,20 +59,20 @@ public class RendererMessage implements IMessage {
         public RendererData() {
         }
 
-        public RendererData(RendererQuery query){
-            sparkList=query.sparkList;
+        public RendererData(RendererQuery query) {
+            sparkList = query.sparkList;
         }
 
         public RendererData(HashSet<Util.thaumSpark> eSparkList) {
-            sparkList=eSparkList;
+            sparkList = eSparkList;
         }
     }
 
 
-    public static class ClientHandler extends AbstractClientMessageHandler<RendererData>{
+    public static class ClientHandler extends AbstractClientMessageHandler<RendererData> {
         @Override
         public IMessage handleClientMessage(EntityPlayer pPlayer, RendererData pMessage, MessageContext pCtx) {
-            for(Util.thaumSpark sp : pMessage.sparkList){
+            for (Util.thaumSpark sp : pMessage.sparkList) {
                 thaumLightning(sp.x, sp.y, sp.z, sp.xR, sp.yR, sp.zR, sp.wID);
             }
             pMessage.sparkList.clear();
@@ -79,17 +80,17 @@ public class RendererMessage implements IMessage {
         }
     }
 
-    public static class ServerHandler extends AbstractServerMessageHandler<RendererQuery>{
+    public static class ServerHandler extends AbstractServerMessageHandler<RendererQuery> {
         @Override
         public IMessage handleServerMessage(EntityPlayer pPlayer, RendererQuery pMessage, MessageContext pCtx) {
             return new RendererData(pMessage);
         }
     }
 
-    private static void thaumLightning(int tX, byte tY, int tZ, int tXN, byte tYN, int tZN, int wID){
-        if(Loader.isModLoaded("Thaumcraft")){
+    private static void thaumLightning(int tX, int tY, int tZ, int tXN, int tYN, int tZN, int wID) {
+        if (Loader.isModLoaded("Thaumcraft")) {
             World world = DimensionManager.getWorld(wID);
-            FXLightningBolt bolt = new FXLightningBolt(world,tX+0.5F,tY+0.5F,tZ+0.5F,tX+tXN+0.5F,tY+tYN+0.5F,tZ+tZN+0.5F,world.rand.nextLong(), 6, 0.5F, 8);
+            FXLightningBolt bolt = new FXLightningBolt(world, tX + 0.5F, tY + 0.5F, tZ + 0.5F, tX + tXN + 0.5F, tY + tYN + 0.5F, tZ + tZN + 0.5F, world.rand.nextLong(), 6, 0.5F, 8);
             bolt.defaultFractal();
             bolt.setType(2);
             bolt.setWidth(0.125F);

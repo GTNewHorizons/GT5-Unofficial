@@ -149,8 +149,8 @@ public final class Util {
 
     public static class thaumSpark implements Serializable {
         private static final long serialVersionUID = 3235649915488422364L;
-        public int x, z, wID;
-        public byte y, xR, yR, zR;
+        public int x, y, z, wID;
+        public byte xR, yR, zR;
 
         public thaumSpark(){
             this.x = 0;
@@ -164,7 +164,7 @@ public final class Util {
             this.wID = 0;
         }
 
-        public thaumSpark(int x, byte y, int z, byte xR, byte yR, byte zR, int wID) {
+        public thaumSpark(int x, int y, int z, byte xR, byte yR, byte zR, int wID) {
             this.x = x;
             this.z = z;
             this.y = y;
@@ -192,7 +192,7 @@ public final class Util {
 
         @Override
         public int hashCode() {
-            return Objects.hash(x, z,  y, wID, xR, yR, zR);
+            return Objects.hash(x, y, z, wID, xR, yR, zR);
         }
     }
 
