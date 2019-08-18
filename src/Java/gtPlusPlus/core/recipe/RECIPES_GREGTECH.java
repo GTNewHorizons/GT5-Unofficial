@@ -1622,6 +1622,27 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void centrifugeRecipes() {
+		
+		//Try use all woods found, fix/add methane extraction.
+		ArrayList<ItemStack> aLogData = OreDictionary.getOres("logWood");
+		ArrayList<ItemStack> aRubberLogs = OreDictionary.getOres("logRubber");
+		if (!aLogData.isEmpty() && !aRubberLogs.isEmpty()) {
+			Logger.INFO("Fixing Methane output of centrifuged logs.");			
+			//First Check to see if it's a rubber log
+			for (ItemStack stack : aLogData) {				
+				if (aRubberLogs.contains(stack)) {
+					if (GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, stack), null, null, Materials.Methane.getGas(60L), ItemList.IC2_Resin.get(1L, new Object[0]), GT_ModHandler.getIC2Item("plantBall", 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L), null, null, new int[] { 5000, 3750, 2500, 2500 }, 200, 20)) {
+						Logger.INFO("Added rubber plant based methane extraction for "+ItemUtils.getItemName(stack));	
+					}
+				}
+				else {
+					if (GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, stack), null, null, Materials.Methane.getGas(60L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 200, 20)) {
+						Logger.INFO("Added methane extraction for "+ItemUtils.getItemName(stack));	
+					}
+				}
+			}			
+		}		
+
 		GT_Values.RA.addCentrifugeRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustThorium", 8), GT_Values.NI,
 				GT_Values.NF, GT_Values.NF, ELEMENT.getInstance().THORIUM232.getDust(2),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallThorium", 20),
