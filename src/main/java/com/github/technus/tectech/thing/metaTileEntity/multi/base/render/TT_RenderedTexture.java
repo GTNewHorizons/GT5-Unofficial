@@ -229,6 +229,7 @@ public class TT_RenderedTexture implements ITexture,IColorModulationContainer {
 
         if (aRenderer.renderMinZ < 0.0D || aRenderer.renderMaxZ > 1.0D) {
             d5 = (double) icon.getMinV();
+
             d6 = (double) icon.getMaxV();
         }
 

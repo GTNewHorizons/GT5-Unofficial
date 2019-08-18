@@ -148,7 +148,7 @@ public final class Util {
     }
 
     public static class thaumSpark implements Serializable {
-        private static final long serialVersionUID = 3235649915488422364L;
+        private static final long serialVersionUID = -7037856938316679566L;
         public int x, y, z, wID;
         public byte xR, yR, zR;
 
@@ -194,6 +194,10 @@ public final class Util {
         public int hashCode() {
             return Objects.hash(x, y, z, wID, xR, yR, zR);
         }
+    }
+
+    public static float map(float x, float in_min, float in_max, float out_min, float out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
 
     //region junk

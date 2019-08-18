@@ -25,6 +25,7 @@ import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.entriesSortedByValues;
+import static com.github.technus.tectech.Util.map;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.TESLA_TRANSCEIVER_TOP_BA;
 import static java.lang.Math.round;
 
@@ -47,29 +48,23 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private int transferRadiusTower = 0; //Radius for transceiver to tower transfers
     private int transferRadiusCover = 0; //Radius for transceiver to cover transfers
 
-    //TODO Rewrite histSetting to improve readability
     public boolean powerPassToggle = false; //Power Pass for public viewing
     private int histSteps = 20; //Hysteresis Resolution
     private int histSettingLow = 3; //Hysteresis Low Limit
     private int histSettingHigh = 15; //Hysteresis High Limit
     private int histLowLimit = 1; //How low can you configure it?
-    private int histHighLimit = histSteps - 1; //How high can you configure it?
+    private int histHighLimit = 19; //How high can you configure it?
     private float histLow = (float) histSettingLow / histSteps; //Power pass is disabled if power is under this fraction
     private float histHigh = (float) histSettingHigh / histSteps; //Power pass is enabled if power is over this fraction
 
-    //TODO Rewrite efficiency formulas
-    private long lossPerBlock = 2; //EU lost per block traveled
-    private float energyEfficiencyMax = 0.95F; //Max efficiency
-    private float energyEfficiencyMin = 0.75F; //Min efficiency
-    private float overdriveEfficiency = 0.95F; //Overdrive efficiency
-    private float energyEfficiency = energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier; //Efficiency Formula
-    private float sumOverdriveEfficiency = (2 - energyEfficiency) * (2 - overdriveEfficiency); //Sum overdrive efficiency formula
-
-    //TODO Rewrite over drive efficiency formulas
+    private long outputVoltage = V[mTier];
+    private float minEfficency = 0.955F;
+    private float maxEfficency = 0.975F;
+    private float overdriveEfficiencyExtra = 0.010F;
+    private float energyEfficiency = map(mTier+1, minTier, maxTier, minEfficency, maxEfficency);
+    private float overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
     private boolean overDriveToggle = false; //Overdrive toggle
-    private long outputVoltage = V[mTier]; //Tesla Voltage Output
-    private long outputVoltagePostEfficiency = (long) (outputVoltage * energyEfficiency); //Max power a machine can actually receive
-    private long outputVoltagePostOverdrive = (long) (outputVoltage * sumOverdriveEfficiency); //Max power the sender can consume
+
 
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, "Tesla Coil Transceiver", aSlotCount);
@@ -206,6 +201,14 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         sparkList.add(new Util.thaumSpark(x, y, z, xR, yR, zR, wID));
     }
 
+    private long getEnergyEfficiency(long voltage, int distance, boolean overDriveToggle) {
+        if (overDriveToggle) {
+            return (long)((voltage * 2) - (voltage * Math.pow(overdriveEfficiency, distance)));
+        } else {
+            return (long)(voltage * Math.pow(energyEfficiency, distance));
+        }
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -264,9 +267,9 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                         long outputVoltageConsumption;
                         if (overDriveToggle) {
                             outputVoltageInjectable = outputVoltage;
-                            outputVoltageConsumption = outputVoltagePostOverdrive + (lossPerBlock * Rx.getValue());
+                            outputVoltageConsumption = getEnergyEfficiency(outputVoltage, Rx.getValue(), true);
                         } else {
-                            outputVoltageInjectable = outputVoltagePostEfficiency - (lossPerBlock * Rx.getValue());
+                            outputVoltageInjectable = getEnergyEfficiency(outputVoltage, Rx.getValue(), false);
                             outputVoltageConsumption = outputVoltage;
                         }
                         if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && Rx.getValue() <= transferRadiusTower) {

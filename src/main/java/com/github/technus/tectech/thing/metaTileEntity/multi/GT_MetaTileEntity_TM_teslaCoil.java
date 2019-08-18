@@ -33,8 +33,7 @@ import net.minecraft.world.chunk.Chunk;
 import java.util.*;
 
 import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.Util.entriesSortedByValues;
+import static com.github.technus.tectech.Util.*;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsBA0;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
@@ -47,8 +46,14 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
     private int mTier = 0; //Determines max voltage and efficiency (MV to LuV)
-    private int maxTier = 6; //Max tier for efficiency calcuation
     private int minTier = 1; //Min tier for efficiency calcuation
+    private int maxTier = 6; //Max tier for efficiency calcuation
+
+    private float energyEfficiency = 1;
+    private float overdriveEfficiency = 1;
+    private float minEfficency = 0.955F;
+    private float maxEfficency = 0.98F;
+    private float overdriveEfficiencyExtra = 0.005F;
 
     private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>(); //Used to store targets for power transmission
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCapacitorHatches = new ArrayList<>(); //Used to determine count and tier of capacitors present
@@ -60,27 +65,22 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private int vTier = -1; //Tesla voltage tier limited by capacitors
     private long outputCurrentMax = 0; //Tesla current output limited by capacitors
 
-    private long lossPerBlock = 1; //Distance loss of each packet sent
-    private float energyEfficiencyMax = 0.95F; //Max efficiency of each packet sent at highest mTier
-    private float energyEfficiencyMin = 0.75F; //Min efficiency of each packet sent at lowest mTier
-    private float overdriveEfficiency = 0.95F; //Overdrive efficiency added losses
-
     //Scan range fields
-    private static int xPosOffsetScanMin;
-    private static int xPosOffsetScanMax;
-    private static int yPosOffsetScan0;
-    private static int yPosOffsetScan1;
-    private static int yPosOffsetScan2;
-    private static int yPosOffsetScan3;
-    private static int yPosOffsetScan4;
-    private static int yPosOffsetScan5;
-    private static int zPosOffsetScanMin;
-    private static int zPosOffsetScanMax;
+    private static int xPosScanMin;
+    private static int xPosScanMax;
+    private static int yPosScan0;
+    private static int yPosScan1;
+    private static int yPosScan2;
+    private static int yPosScan3;
+    private static int yPosScan4;
+    private static int yPosScan5;
+    private static int zPosScanMin;
+    private static int zPosScanMax;
 
     //Power Transfer Origin
-    public int xPosZap;
-    public int yPosZap;
-    public int zPosZap;
+    private int xPosZap;
+    private int yPosZap;
+    private int zPosZap;
 
     //Lightning Origin
     public int xPosTop;
@@ -342,24 +342,25 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setLong("energyCapacity",energyCapacity);
+        aNBT.setLong("eEnergyCapacity",energyCapacity);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        energyCapacity=aNBT.getLong("energyCapacity");
+        energyCapacity=aNBT.getLong("eEnergyCapacity");
     }
 
-    //TODO Rewrite efficiency formulas
-    private long getEnergyEfficiency(long voltage, int mTier, boolean overDriveToggle){
-        if (overDriveToggle){
-            return (long)(voltage * (2-energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier)*(2 - overdriveEfficiency)); //Sum overdrive efficiency formula
+    //Efficiency function used on power transfers
+    private long getEnergyEfficiency(long voltage, int distance, boolean overDriveToggle) {
+        if (overDriveToggle) {
+            return (long)((voltage * 2) - (voltage * Math.pow(overdriveEfficiency, distance)));
         } else {
-            return (long)(voltage * energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * mTier); //TODO redo Efficiency Formula
+            return (long)(voltage * Math.pow(energyEfficiency, distance));
         }
-    }//Efficiency function used on power transfers
+    }
 
+    //Over-tiered coils will add +25% range
     private float getRangeMulti(int mTier, int vTier){
         if (vTier > mTier){
             return 1.25F;
@@ -499,24 +500,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 }
             }
 
-            //Calculate offsets for scanning
-            int[] xyzOffsets = getTranslatedOffsets(40,0,43);
-            xPosOffsetScanMin = xyzOffsets[0];
-            yPosOffsetScan0 = xyzOffsets[1];
-            zPosOffsetScanMin = xyzOffsets[2];
-            xyzOffsets = getTranslatedOffsets(-40,-4,-37);
-            yPosOffsetScan1 = xyzOffsets[1];
-            xyzOffsets = getTranslatedOffsets(-40,-8,-37);
-            yPosOffsetScan2 = xyzOffsets[1];
-            xyzOffsets = getTranslatedOffsets(-40,-12,-37);
-            yPosOffsetScan3 = xyzOffsets[1];
-            xyzOffsets = getTranslatedOffsets(-40,-16,-37);
-            yPosOffsetScan4 = xyzOffsets[1];
-            xyzOffsets = getTranslatedOffsets(-40,-20,-37);
-            xPosOffsetScanMax= xyzOffsets[0];
-            yPosOffsetScan5 = xyzOffsets[1];
-            zPosOffsetScanMax = xyzOffsets[2];
-
+            int[] xyzOffsets;
             //Calculate coordinates of the middle bottom
             xyzOffsets=getTranslatedOffsets(0,0,2);
             xPosZap = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
@@ -528,6 +512,28 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             xPosTop = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
             yPosTop = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
             zPosTop = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
+
+            //Calculate offsets for scanning
+            xyzOffsets = getTranslatedOffsets(40,0,43);
+            xPosScanMin = xPosZap +xyzOffsets[0];
+            yPosScan0 = yPosZap + xyzOffsets[1];
+            zPosScanMin = zPosZap + xyzOffsets[2];
+            xyzOffsets = getTranslatedOffsets(-40,-4,-37);
+            yPosScan1 = yPosZap + xyzOffsets[1];
+            xyzOffsets = getTranslatedOffsets(-40,-8,-37);
+            yPosScan2 = yPosZap + xyzOffsets[1];
+            xyzOffsets = getTranslatedOffsets(-40,-12,-37);
+            yPosScan3 = yPosZap + xyzOffsets[1];
+            xyzOffsets = getTranslatedOffsets(-40,-16,-37);
+            yPosScan4 = yPosZap + xyzOffsets[1];
+            xyzOffsets = getTranslatedOffsets(-40,-20,-37);
+            xPosScanMax = xPosZap + xyzOffsets[0];
+            yPosScan5 = yPosZap + xyzOffsets[1];
+            zPosScanMax = zPosZap + xyzOffsets[2];
+
+            //Calculate Efficiency values
+            energyEfficiency = map(mTier+1, minTier, maxTier, minEfficency, maxEfficency);
+            overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
 
             return true;
         }
@@ -612,26 +618,23 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     private void scanForTransmissionTargets(IGregTechTileEntity mte, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax){
-        int rX = mte.getXCoord();
-        int rY = mte.getYCoord();
-        int rZ = mte.getZCoord();
+        int mX = mte.getXCoord();
+        int mY = mte.getYCoord();
+        int mZ = mte.getZCoord();
 
-        for (int xPosOffset = xMin; xPosOffset <= xMax; xPosOffset++) {
-            for (int yPosOffset = yMin; yPosOffset <= yMax; yPosOffset++) {
-                for (int zPosOffset = zMin; zPosOffset <= zMax; zPosOffset++) {
-                    int tX = xPosZap+xPosOffset;
-                    int tY = yPosZap+yPosOffset;
-                    int tZ = zPosZap+zPosOffset;
-                    if (rX == tX && rY == tY && rZ == tZ) {
+        for (int xPos = xMin; xPos <= xMax; xPos++) {
+            for (int yPos = yMin; yPos <= yMax; yPos++) {
+                for (int zPos = zMin; zPos <= zMax; zPos++) {
+                    if (mX == xPos && mY == yPos && mZ == zPos) {
                         continue;
                     }
-                    IGregTechTileEntity node = getBaseMetaTileEntity().getIGregTechTileEntity(tX,tY,tZ);
+                    IGregTechTileEntity node = getBaseMetaTileEntity().getIGregTechTileEntity(xPos,yPos,zPos);
                     if (node == null) {
                         continue;
                     }
                     IMetaTileEntity nodeInside = node.getMetaTileEntity();
                     if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil || nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
-                        eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(Math.pow(xPosOffset,2) + Math.pow(yPosOffset,2) + Math.pow(zPosOffset,2))));
+                        eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(Math.pow(xPos,2) + Math.pow(yPos,2) + Math.pow(zPos,2))));
                     }
                 }
             }
@@ -698,23 +701,23 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         switch (scanTime) {
             case 0:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(mte, xPosOffsetScanMin, yPosOffsetScan0, zPosOffsetScanMin, xPosOffsetScanMax - 1, yPosOffsetScan1 - 1, zPosOffsetScanMax - 1);
+                scanForTransmissionTargets(mte, xPosScanMin, yPosScan0, zPosScanMin, xPosScanMax, yPosScan1 - 1, zPosScanMax);
                 break;
             case 20:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(mte, xPosOffsetScanMin, yPosOffsetScan1, zPosOffsetScanMin, xPosOffsetScanMax - 1, yPosOffsetScan1 - 1, zPosOffsetScanMax - 1);
+                scanForTransmissionTargets(mte, xPosScanMin, yPosScan1, zPosScanMin, xPosScanMax, yPosScan2 - 1, zPosScanMax);
                 break;
             case 40:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(mte, xPosOffsetScanMin, yPosOffsetScan2, zPosOffsetScanMin, xPosOffsetScanMax - 1, yPosOffsetScan1 - 1, zPosOffsetScanMax - 1);
+                scanForTransmissionTargets(mte, xPosScanMin, yPosScan2, zPosScanMin, xPosScanMax, yPosScan3 - 1, zPosScanMax);
                 break;
             case 60:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(mte, xPosOffsetScanMin, yPosOffsetScan3, zPosOffsetScanMin, xPosOffsetScanMax - 1, yPosOffsetScan4 - 1, zPosOffsetScanMax - 1);
+                scanForTransmissionTargets(mte, xPosScanMin, yPosScan3, zPosScanMin, xPosScanMax, yPosScan4 - 1, zPosScanMax);
                 break;
             case 80:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(mte, xPosOffsetScanMin, yPosOffsetScan4, zPosOffsetScanMin, xPosOffsetScanMax, yPosOffsetScan5, zPosOffsetScanMax);
+                scanForTransmissionTargets(mte, xPosScanMin, yPosScan4, zPosScanMin, xPosScanMax, yPosScan5, zPosScanMax);
                 break;
             default:
                 if (scanTime == (int) scanTimeMinSetting.get() - 1) {
@@ -822,19 +825,20 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             //Power transfer
             long sparks = outputCurrent;
             while (sparks > 0) {
+                boolean overdriveToggle = overDriveSetting.get() > 0;
                 boolean idle = true;
                 for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaMap)) {
-                    if (energyStored >= (overDriveSetting.get() > 0 ? outputVoltage * 2 : outputVoltage)) {
+                    if (energyStored >= (overdriveToggle ? outputVoltage * 2 : outputVoltage)) {
                         IGregTechTileEntity node = Rx.getKey();
                         IMetaTileEntity nodeInside = node.getMetaTileEntity();
 
                         long outputVoltageInjectable;
                         long outputVoltageConsumption;
-                        if (overDriveSetting.get() > 0) {
+                        if (overdriveToggle) {
                             outputVoltageInjectable = outputVoltage;
-                            outputVoltageConsumption = getEnergyEfficiency(outputVoltage, mTier, true) + (lossPerBlock * Rx.getValue());
+                            outputVoltageConsumption = getEnergyEfficiency(outputVoltage, Rx.getValue(), true);
                         } else {
-                            outputVoltageInjectable = getEnergyEfficiency(outputVoltage, mTier, false) - (lossPerBlock * Rx.getValue());
+                            outputVoltageInjectable = getEnergyEfficiency(outputVoltage, Rx.getValue(), false);
                             outputVoltageConsumption = outputVoltage;
                         }
 
