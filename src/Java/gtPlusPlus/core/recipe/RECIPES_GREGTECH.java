@@ -2,6 +2,8 @@ package gtPlusPlus.core.recipe;
 
 import static gtPlusPlus.core.lib.CORE.GTNH;
 
+import java.util.ArrayList;
+
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -15,6 +17,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.HotFuel;
 import gregtech.api.util.ThermalFuel;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.GenericChem;
@@ -46,6 +49,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RECIPES_GREGTECH {
 
@@ -761,11 +765,20 @@ public class RECIPES_GREGTECH {
 
 	private static void cokeOvenRecipes() {
 		Logger.INFO("Loading Recipes for Industrial Coking Oven.");
-
-		// Wood to Charcoal
-		AddGregtechRecipe.addCokeAndPyrolyseRecipes(GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 20L), 20,
-				GT_ModHandler.getSteam(1000), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24L),
-				FluidUtils.getFluidStack("fluid.coalgas", 1440), 60, 30);
+		// Wood to Charcoal		
+		//Try use all woods found
+		ArrayList<ItemStack> aLogData = OreDictionary.getOres("logWood");
+		if (aLogData.isEmpty()) {
+			AddGregtechRecipe.addCokeAndPyrolyseRecipes(GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 20L), 20,
+					GT_ModHandler.getSteam(1000), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24L),
+					FluidUtils.getFluidStack("fluid.coalgas", 1440), 60, 30);		}
+		else {
+			for (ItemStack stack : aLogData) {
+				AddGregtechRecipe.addCokeAndPyrolyseRecipes(ItemUtils.getSimpleStack(stack, 20), 20,
+						GT_ModHandler.getSteam(1000), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24L),
+						FluidUtils.getFluidStack("fluid.coalgas", 1440), 60, 30);
+			}			
+		}		
 
 		// Coal to Coke
 		AddGregtechRecipe.addCokeAndPyrolyseRecipes(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16L), 22,
