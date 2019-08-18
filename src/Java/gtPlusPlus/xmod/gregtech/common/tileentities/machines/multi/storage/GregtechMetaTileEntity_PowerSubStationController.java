@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -15,6 +16,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.BookHandler;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -67,11 +69,12 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				"Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "",
 				"Hatches can be placed nearly anywhere",
 				"HV Energy/Dynamo Hatches are the lowest tier you can use",
-				"Controller (Bottom, Centre)",
-				"Size(WxHxD): External 5xHx5, Sub-Station External Casings", 
-				"Size(WxHxD): Internal 3x(H-2)x3, Vanadium Redox Power Cells",
-				"Read '"+BookHandler.ItemBookWritten_MultiPowerStorage.getDisplayName()+"' for more info.",
-				};
+				CORE.GTNH ? "Supports voltages >= UHV using MAX tier components." : "Supports upto "+GT_Values.VOLTAGE_NAMES[GT_Values.VOLTAGE_NAMES.length-1],
+						"Controller (Bottom, Centre)",
+						"Size(WxHxD): External 5xHx5, Sub-Station External Casings", 
+						"Size(WxHxD): Internal 3x(H-2)x3, Vanadium Redox Power Cells",
+						"Read '"+BookHandler.ItemBookWritten_MultiPowerStorage.getDisplayName()+"' for more info.",
+		};
 	}
 
 	@Override
@@ -124,14 +127,14 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			return 4;
 		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 4) {
 			return 5;
- 		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 5) {
+		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 5) {
 			return 6;
 		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 6) {
 			return 7;
 		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 7) {
 			return 8;
 		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 8) {
-			return 9;
+			return CORE.GTNH ? GT_Values.V.length : 9;
 		} else {
 			return -1;
 		}
@@ -375,7 +378,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		this.mEfficiencyIncrease = 10000;
 		return true;
 	}
-	
+
 	@Override
 	public int getMaxParallelRecipes() {
 		return 1;
@@ -493,7 +496,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		} else {
 			storedEnergyText = EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.getEUVar()) + EnumChatFormatting.RESET;
 		}
-		
+
 		int errorCode = this.getBaseMetaTileEntity().getErrorDisplayID();
 		boolean mMaint = (errorCode != 0);
 
