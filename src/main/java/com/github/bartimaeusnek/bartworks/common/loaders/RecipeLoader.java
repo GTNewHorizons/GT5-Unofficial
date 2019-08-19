@@ -27,11 +27,13 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEnti
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ManualTrafo;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_THTR;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_Windmill;
+import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
@@ -770,6 +772,27 @@ public class RecipeLoader implements Runnable {
                     ItemRegistry.eic.copy(),
                     240000,
                     BW_Util.getMachineVoltageFromTier(8)
+            );
+            GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.add(new BWRecipes.DynamicGTRecipe(false,new ItemStack[]{ItemList.Hatch_Input_HV.get(64),Materials.LiquidAir.getCells(1),GT_Utility.getIntegratedCircuit(17)},new ItemStack[]{ItemRegistry.compressedHatch.copy()},null,null,null,null,300,BW_Util.getMachineVoltageFromTier(3),0));
+            GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.add(new BWRecipes.DynamicGTRecipe(false,new ItemStack[]{ItemList.Hatch_Output_HV.get(64),GT_Utility.getIntegratedCircuit(17)},new ItemStack[]{ItemRegistry.giantOutputHatch.copy()},null,null,null,null,300,BW_Util.getMachineVoltageFromTier(3),0));
+
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemList.Machine_LuV_CircuitAssembler.get(1L),24000,
+                    new ItemStack[]{
+                            ItemList.Machine_LuV_CircuitAssembler.get(1L),
+                            ItemList.Robot_Arm_LuV.get(4L),
+                            ItemList.Electric_Motor_LuV.get(4L),
+                            ItemList.Field_Generator_LuV.get(1L),
+                            ItemList.Emitter_LuV.get(1L),
+                            ItemList.Sensor_LuV.get(1L),
+                            Materials.Chrome.getPlates(8)
+                    },
+                    new FluidStack[]{
+                            Materials.SolderingAlloy.getMolten(1440)
+                    },
+                    ItemRegistry.cal.copy(),
+                    240000,
+                    BW_Util.getMachineVoltageFromTier(6)
             );
         }
     }

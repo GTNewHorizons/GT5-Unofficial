@@ -58,9 +58,6 @@ public class FluidLoader implements Runnable {
     //OilProcessing chain
     public static Fluid fulvicAcid,heatedfulvicAcid,Kerogen;
 
-
-
-
     @Override
     public void run() {
         FluidLoader.renderID = RenderingRegistry.getNextAvailableRenderId();

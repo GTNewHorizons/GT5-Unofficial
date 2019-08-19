@@ -30,7 +30,10 @@ import com.github.bartimaeusnek.bartworks.client.creativetabs.BioTab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.GT2Tab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.bartworksTab;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.common.loaders.*;
+import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
+import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
+import com.github.bartimaeusnek.bartworks.common.loaders.GTNHBlocks;
+import com.github.bartimaeusnek.bartworks.common.loaders.LoaderRegistry;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
 import com.github.bartimaeusnek.bartworks.server.EventHandler.ServerEventHandler;
 import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
@@ -38,7 +41,6 @@ import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.Circ
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitPartLoader;
 import com.github.bartimaeusnek.bartworks.system.material.ThreadedLoader;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.DownTierLoader;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
@@ -47,12 +49,17 @@ import com.google.common.collect.ArrayListMultimap;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import net.minecraft.creativetab.CreativeTabs;
@@ -60,6 +67,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
@@ -67,7 +75,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 
 import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor.eicMap;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
@@ -165,6 +175,8 @@ public final class MainMod {
             GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor.desc","Basically a giant Hammer that presses Stuff - No more TNT!");
             GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.DEHP","Heat from below!");
             GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.DEHP.desc","Get ALL the thermal energy!");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.CircuitAssemblyLine","Cheaper Circuits?");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.CircuitAssemblyLine.desc","Well, yes, but actually no...");
         }
     }
     @Mod.EventHandler
@@ -190,6 +202,25 @@ public final class MainMod {
     private static void unificationEnforcer() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashMap.values()) {
             if (werkstoff.getGenerationFeatures().enforceUnification) {
+                if (werkstoff.contains(NOBLE_GAS)){
+                        String name = werkstoff.getFluidOrGas(1).getFluid().getName();
+                        String wrongname ="molten."+name;
+                        FluidStack wrongNamedFluid = FluidRegistry.getFluidStack(wrongname,1);
+                        for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings) {
+                            for (GT_Recipe recipe : map.mRecipeList) {
+                                for (int i = 0; i < recipe.mFluidInputs.length; i++) {
+                                    if (GT_Utility.areFluidsEqual(recipe.mFluidInputs[i], wrongNamedFluid)) {
+                                        recipe.mFluidInputs[i] = werkstoff.getFluidOrGas(recipe.mFluidInputs[i].amount);
+                                    }
+                                }
+                                for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
+                                    if (GT_Utility.areFluidsEqual(recipe.mFluidOutputs[i], wrongNamedFluid)) {
+                                        recipe.mFluidOutputs[i] = werkstoff.getFluidOrGas(recipe.mFluidOutputs[i].amount);
+                                    }
+                                }
+                            }
+                        }
+                }
                 MainMod.runMoltenUnificationEnfocement(werkstoff);
                 for (OrePrefixes prefixes : OrePrefixes.values()) {
                     if (OreDictionary.getOres(prefixes + werkstoff.getDefaultName()).size() > 1) {
@@ -245,7 +276,7 @@ public final class MainMod {
                 Field f = GT_Utility.class.getDeclaredField("sFilledContainerToData");
                 f.setAccessible(true);
                 Map<GT_ItemStack, FluidContainerRegistry.FluidContainerData> sFilledContainerToData = (Map<GT_ItemStack, FluidContainerRegistry.FluidContainerData>) f.get(null);
-                HashSet torem = new HashSet();
+                HashSet torem = new HashSet<>();
                 ItemStack toReplace = null;
                 for (Map.Entry<GT_ItemStack, FluidContainerRegistry.FluidContainerData> entry : sFilledContainerToData.entrySet()) {
                     if (entry.getValue().fluid.equals(data.fluid) && !entry.getValue().filledContainer.equals(data.filledContainer)) {
@@ -253,8 +284,8 @@ public final class MainMod {
                         torem.add(entry);
                     }
                 }
-                torem.clear();
                 sFilledContainerToData.entrySet().removeAll(torem);
+                torem.clear();
                 if (toReplace != null) {
                     for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings) {
                         torem.clear();
@@ -285,7 +316,6 @@ public final class MainMod {
                         map.mRecipeList.removeAll(torem);
                     }
                 }
-
                 GT_Utility.addFluidContainerData(data);
             } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
                 e.printStackTrace();
@@ -315,7 +345,7 @@ public final class MainMod {
     private static HashSet<ItemStack> getNoGasItems(ArrayListMultimap<SubTag,GT_Recipe> base){
         Iterator<GT_Recipe> it = GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeList.iterator();
         HashSet<ItemStack> toAdd = new HashSet<>();
-        ArrayListMultimap repToAdd = ArrayListMultimap.create();
+        ArrayListMultimap<SubTag,GT_Recipe> repToAdd = ArrayListMultimap.create();
         while (it.hasNext()) {
             GT_Recipe recipe = it.next();
             for (SubTag tag : base.keySet())
