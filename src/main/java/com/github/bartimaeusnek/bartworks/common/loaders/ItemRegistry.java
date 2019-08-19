@@ -38,9 +38,7 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEnti
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_THTR;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaBlastFurnace;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaVacuumFreezer;
-import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_AcidGenerator;
-import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_Diode;
-import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_EnergyDistributor;
+import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.*;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
@@ -137,6 +135,8 @@ public class ItemRegistry {
     public static ItemStack thtr;
     public static ItemStack eic;
     public static ItemStack cal;
+    public static ItemStack compressedHatch;
+    public static ItemStack giantOutputHatch;
 
     public static void run() {
 
@@ -180,6 +180,8 @@ public class ItemRegistry {
             ItemRegistry.megaMachines[0] = new GT_TileEntity_MegaBlastFurnace(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 2, "MegaBlastFurnace", StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
             ItemRegistry.megaMachines[1] = new GT_TileEntity_MegaVacuumFreezer(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 3, "MegaVacuumFreezer", StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
             ItemRegistry.cal = new GT_TileEntity_CircuitAssemblyLine(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 7, "CircuitAssemblyLine", "Circuit Assembly Line").getStackForm(1L);
+            ItemRegistry.compressedHatch = new GT_MetaTileEntity_CompressedFluidHatch(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 8, "CompressedFluidHatch", "Liquid Air Fluid Hatch").getStackForm(1L);
+            ItemRegistry.giantOutputHatch = new GT_MetaTileEntity_GiantOutputHatch(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 9, "GiantOutputHatch", "Giant Output Hatch").getStackForm(1L);
         }
 
 

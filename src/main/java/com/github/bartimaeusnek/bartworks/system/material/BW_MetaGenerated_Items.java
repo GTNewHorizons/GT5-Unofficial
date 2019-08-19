@@ -33,6 +33,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -52,6 +53,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import java.util.List;
 
@@ -76,7 +78,9 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         for (int i = 0; i < this.aNumToGen; i++) {
             ItemStack tStack = new ItemStack(this, 1, i);
             Werkstoff w = werkstoffHashMap.get((short) i);
-            if (w == null || ((w.getGenerationFeatures().toGenerate & orePrefixes.mMaterialGenerationBits) == 0) || ((w.getGenerationFeatures().blacklist & orePrefixes.mMaterialGenerationBits) != 0) )
+            if (w == null || ((w.getGenerationFeatures().blacklist & orePrefixes.mMaterialGenerationBits) != 0) )
+                continue;
+            if ((w.getGenerationFeatures().toGenerate & orePrefixes.mMaterialGenerationBits) == 0 && orePrefixes.mMaterialGenerationBits != 0)
                 continue;
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", this.getDefaultLocalization(w));
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", w.getToolTip());
@@ -225,5 +229,10 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     public String getNameForGUI(ItemStack aStack) {
         Werkstoff w = werkstoffHashMap.get((short)aStack.getItemDamage());
         return w.getDefaultName();
+    }
+
+    @Override
+    public int getCapacity(ItemStack aStack) {
+        return this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma ? 1000 : this.orePrefixes == WerkstoffLoader.cellMolten ? 144 : 0;
     }
 }

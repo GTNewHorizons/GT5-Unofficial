@@ -46,7 +46,7 @@ import java.util.Iterator;
 public class CircuitImprintLoader implements Runnable {
 
     public static final ArrayListMultimap<NBTTagCompound,GT_Recipe> recipeTagMap = ArrayListMultimap.create();
-    static final HashBiMap<CircuitData,NBTTagCompound> bwCircuitTagMap = HashBiMap.create(20);
+    static final HashBiMap<CircuitData,ItemStack> bwCircuitTagMap = HashBiMap.create(20);
     static final HashSet<NBTTagCompound> refs = new HashSet<>();
     public static short reverseIDs = Short.MAX_VALUE-1;
     public static HashBiMap<Short, ItemList> circuitIIconRefs = HashBiMap.create(20);
@@ -109,7 +109,7 @@ public class CircuitImprintLoader implements Runnable {
         for (ItemStack is : newRecipe.mInputs){
             int[] oreIDs = OreDictionary.getOreIDs(is);
             if(oreIDs == null || oreIDs.length < 1 || !OreDictionary.getOreName(oreIDs[0]).contains("circuit")) {
-                is.stackSize = Math.max(64,  is.stackSize*4);
+                is.stackSize = 64;
             }
         }
         newRecipe.mFluidInputs[0].amount *= 4;
@@ -191,20 +191,26 @@ public class CircuitImprintLoader implements Runnable {
                     'G', WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite,1),
                     'X', BW_Meta_Items.getNEWCIRCUITS().getStack(3)});
         }
-//      for (NBTTagCompound tag : CircuitImprintLoader.bwCircuitTagMap.values()){
-//          CircuitData data = CircuitImprintLoader.bwCircuitTagMap.inverse().get(tag);
-//          ItemStack stack = CircuitImprintLoader.getStackFromTag(tag);
-//          GT_Recipe slicingRecipe = new BWRecipes.DynamicGTRecipe(true,new ItemStack[]{stack,ItemList.Shape_Slicer_Flat.get(0)},new ItemStack[]{BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1)},null,null,null,null,300, Math.toIntExact(data.getaVoltage()),data.getaSpecial());
-//          GT_Recipe.GT_Recipe_Map.sSlicerRecipes.add(slicingRecipe);
-//          GT_ModHandler.addCraftingRecipe(BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,0,1),GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS ,new Object[]{
-//                  "DXD",
-//                  "GPG",
-//                  "DXD",
-//                  'D', WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust,1),
-//                  'P', BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1),
-//                  'G', WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite,1),
-//                  'X', WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust,1)
-//          });
-//      }
+      for (ItemStack stack : CircuitImprintLoader.bwCircuitTagMap.values()){
+          NBTTagCompound tag = CircuitImprintLoader.getTagFromStack(stack);
+          CircuitData data = CircuitImprintLoader.bwCircuitTagMap.inverse().get(stack);
+          GT_Recipe slicingRecipe = new BWRecipes.DynamicGTRecipe(true,new ItemStack[]{stack,ItemList.Shape_Slicer_Flat.get(0)},new ItemStack[]{BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1)},null,null,null,null,300, Math.toIntExact(data.getaVoltage()),data.getaSpecial());
+          GT_Recipe.GT_Recipe_Map.sSlicerRecipes.add(slicingRecipe);
+          GameRegistry.addRecipe(new BWRecipes.BWNBTDependantCraftingRecipe(BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,0,1),
+                  " X ",
+                  "GPG",
+                  " X ",
+                  'P', BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1),
+                  'G', WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite,1),
+                  'X', BW_Meta_Items.getNEWCIRCUITS().getStack(3)));
+          GT_ModHandler.addCraftingRecipe(BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,0,1),GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS ,new Object[]{
+                  " X ",
+                  "GPG",
+                  " X ",
+                  'P', BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1),
+                  'G', WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite,1),
+                  'X', BW_Meta_Items.getNEWCIRCUITS().getStack(3)
+          });
+      }
     }
 }

@@ -108,7 +108,7 @@ public class BW_Meta_Items {
         }
 
         public final ItemStack addCircuit(int aID, String aEnglish, String aToolTip, int tier){
-            CircuitImprintLoader.bwCircuitTagMap.put(new CircuitData(BW_Util.getMachineVoltageFromTier(tier-2),tier > 2 ? BW_Util.CLEANROOM : 0,(byte)tier), CircuitImprintLoader.getTagFromStack(new ItemStack(BW_Meta_Items.NEWCIRCUITS,1,aID)));
+            CircuitImprintLoader.bwCircuitTagMap.put(new CircuitData(BW_Util.getMachineVoltageFromTier(Math.min(1,(tier-2))),tier > 2 ? BW_Util.CLEANROOM : 0,(byte)tier), new ItemStack(BW_Meta_Items.NEWCIRCUITS,1,aID));
             return this.addItem(aID, aEnglish, aToolTip,SubTag.NO_UNIFICATION);
         }
 

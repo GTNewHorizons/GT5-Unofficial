@@ -20,36 +20,30 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.common.commands;
+package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
-import com.github.bartimaeusnek.bartworks.system.worldgen.MapGenRuins;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommandSender;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 
-public class SummonRuin extends CommandBase {
+public class GT_MetaTileEntity_GiantOutputHatch extends GT_MetaTileEntity_Hatch_Output {
 
-    @Override
-    public String getCommandName() {
-        return "SummonRuin";
+    public GT_MetaTileEntity_GiantOutputHatch(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional, 0);
+    }
+
+    public GT_MetaTileEntity_GiantOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
-    public String getCommandUsage(ICommandSender p_71518_1_) {
-        return "SummonRuin <x> <z>";
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_GiantOutputHatch(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
-    public void processCommand(ICommandSender iCommandSender, String[] p_71515_2_) {
-        try {
-            new MapGenRuins.RuinsBase().generate(
-                    iCommandSender.getEntityWorld(),
-                    iCommandSender.getEntityWorld().rand,
-                    Integer.parseInt(p_71515_2_[0]),
-                    256,
-                    Integer.parseInt(p_71515_2_[1])
-            );
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    public int getCapacity() {
+        return 100000000;
     }
 }
