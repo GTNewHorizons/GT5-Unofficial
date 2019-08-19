@@ -35,10 +35,9 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     public Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap();//Tesla Map to map them tesla bois!
 
-    //TODO Rewrite range limits, use new formula
-    private int transferRadiusMax = 20; //Tesla scan radius
-    private int transferRadiusMin = 4; //Tesla scan radius
-    private int transferRadiusLimitTop = transferRadiusMin + (transferRadiusMax - transferRadiusMin) / (maxTier - minTier + 1) * mTier; //Tesla scan radius Formula
+    private int transferRadiusMax = 20;
+    private int transferRadiusMin = 4;
+    private int transferRadiusLimitTop = (int) map(mTier + 1, minTier + 1, maxTier + 1, transferRadiusMin, transferRadiusMax);
     private int transferRadiusLimitBottom = 1; //Minimum user configurable
     private int transferRadius = transferRadiusLimitTop; //Default transferRadius setting
     private int transferRadiusTower = 0; //Radius for transceiver to tower transfers
@@ -54,14 +53,13 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private float histHigh = (float) histSettingHigh / histSteps; //Power pass is enabled if power is over this fraction
 
     private long outputVoltage = V[mTier];
-    private float minEfficency = 0.955F;
-    private float maxEfficency = 0.975F;
+    private float minEfficency = 0.91F;
+    private float maxEfficency = 0.95F;
     private float overdriveEfficiencyExtra = 0.010F;
     private float energyEfficiency = map(mTier + 1, minTier + 1, maxTier + 1, minEfficency, maxEfficency);
     private float overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
     private boolean overDriveToggle = false; //Overdrive toggle
-
-
+    
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, "Tesla Coil Transceiver", aSlotCount);
         Util.setTier(aTier, this);
