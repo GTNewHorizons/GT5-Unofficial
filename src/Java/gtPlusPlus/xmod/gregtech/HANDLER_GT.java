@@ -40,7 +40,7 @@ import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.Gregtech_Blocks;
-import gtPlusPlus.xmod.gregtech.loaders.ProcessingAngelGrinder;
+import gtPlusPlus.xmod.gregtech.loaders.ProcessingAngleGrinder;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricButcherKnife;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricLighter;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricSnips;
@@ -107,7 +107,7 @@ public class HANDLER_GT {
 		if (CORE.ConfigSwitches.enableSkookumChoochers){
 			new ProcessingToolHeadChoocher().run();
 		}
-		new ProcessingAngelGrinder().run();
+		new ProcessingAngleGrinder().run();
 		new ProcessingElectricSnips().run();
 		new ProcessingElectricButcherKnife().run();
 		new ProcessingElectricLighter().run();

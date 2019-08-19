@@ -29,6 +29,7 @@ import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_Cyclotron;
+import gtPlusPlus.xmod.gregtech.api.gui.GUI_Cyclotron;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
@@ -71,18 +72,19 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	@Override
 	public String getCustomGUIResourceName() {
-		return "FusionComputer";
+		return null;
 	}	
 
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new CONTAINER_Cyclotron(aPlayerInventory, aBaseMetaTileEntity);
+		return super.getServerGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
+		//return new CONTAINER_Cyclotron(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_FusionReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "FusionComputer.png", Recipe_GT.Gregtech_Recipe_Map.sCyclotronRecipes.mNEIName);
-		//return null;
+		return super.getClientGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
+		//return new GUI_Cyclotron(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), Recipe_GT.Gregtech_Recipe_Map.sCyclotronRecipes.mNEIName);
 	}
 
 	@Override

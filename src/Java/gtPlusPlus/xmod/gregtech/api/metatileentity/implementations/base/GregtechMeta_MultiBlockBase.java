@@ -51,6 +51,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
+import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine_NoPlayerInventory;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_Multi_Basic_Slotted;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
@@ -128,7 +129,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return new GT_Container_MultiMachine(aPlayerInventory,	aBaseMetaTileEntity);			
 		}
 		else {
-			return new CONTAINER_MultiMachine(aPlayerInventory,	aBaseMetaTileEntity);			
+			return new CONTAINER_MultiMachine_NoPlayerInventory(aPlayerInventory,	aBaseMetaTileEntity);			
 		}
 	}
 
@@ -141,7 +142,7 @@ GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {		
 		String aCustomGUI = getCustomGUIResourceName();
-		aCustomGUI = aCustomGUI != null ? aCustomGUI : "MultiblockDisplay";
+		aCustomGUI = aCustomGUI != null ? aCustomGUI : "MultiblockDisplay_Generic";
 		aCustomGUI = aCustomGUI + ".png";
 		if (hasSlotInGUI()) {
 			if (!requiresVanillaGtGUI()) {

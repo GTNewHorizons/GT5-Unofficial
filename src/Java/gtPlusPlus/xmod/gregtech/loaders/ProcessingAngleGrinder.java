@@ -19,8 +19,8 @@ import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegis
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingAngelGrinder implements Interface_OreRecipeRegistrator, Runnable {
-	public ProcessingAngelGrinder() {
+public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, Runnable {
+	public ProcessingAngleGrinder() {
 		GregtechOrePrefixes.toolAngleGrinder.add(this);
 	}
 
