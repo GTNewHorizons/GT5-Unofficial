@@ -43,12 +43,12 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
             /*IMPORTANT for block recoloring**/
         }
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "T0 Primary Tesla Windings");//TODO Decide tesla coil winding materials to rename
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "T1 Primary Tesla Windings");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "T2 Primary Tesla Windings");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "T3 Primary Tesla Windings");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "T4 Primary Tesla Windings");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "T5 Primary Tesla Windings");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Redstone Alloy Primary Tesla Windings");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "MV Superconductor Primary Tesla Windings");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "HV Superconductor Primary Tesla Windings");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "EV Superconductor Primary Tesla Windings");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "IV Superconductor Primary Tesla Windings");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "LuV Superconductor Primary Tesla Windings");
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Tesla Base Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Tesla Toroid Casing");

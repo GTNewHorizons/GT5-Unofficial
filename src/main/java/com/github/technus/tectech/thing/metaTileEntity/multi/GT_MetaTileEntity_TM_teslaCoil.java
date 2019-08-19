@@ -141,9 +141,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static final byte[] blockMetaFallback = new byte[]{6, 0};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + "Hint Details:",
-            "1 - Classic Hatches or Steel Pipe Casing",
+            "1 - Classic Hatches, Capacitor Hatches or Tesla Base Casing",
             "2 - Titanium Frames",
-    };//TODO Update casings + hatches
+    };
     //endregion
 
     //region parameters

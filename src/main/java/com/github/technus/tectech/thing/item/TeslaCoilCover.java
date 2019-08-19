@@ -24,8 +24,8 @@ public final class TeslaCoilCover extends Item {
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.BASS_MARK);
         aList.add("Tesla-Enables Machines!");
-        aList.add(EnumChatFormatting.BLUE + "Use on a machine to apply Tesla capabilities");
-        aList.add(EnumChatFormatting.BLUE + "Who the hell need cables anyway?");
+        aList.add(EnumChatFormatting.BLUE + "Use on top of a machine to enable Tesla capabilities");
+        aList.add(EnumChatFormatting.BLUE + "Who the hell uses cables anyway?");
     }
 
     public static void run() {

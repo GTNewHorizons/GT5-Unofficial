@@ -10,9 +10,6 @@ import java.util.List;
 
 import static com.github.technus.tectech.CommonValues.*;
 
-/**
- * Created by danie_000 on 03.10.2016.
- */
 public class GT_Item_CasingsBA0 extends GT_Item_Casings_Abstract {
     public GT_Item_CasingsBA0(Block par1) {
         super(par1);
@@ -26,41 +23,41 @@ public class GT_Item_CasingsBA0 extends GT_Item_Casings_Abstract {
             aList.add(COSMIC_MARK);
         }
         switch (aStack.getItemDamage()) {
-            case 0://"T0 Primary Tesla Windings"
-                aList.add("Well suited for high power applications.");
-                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "The power levels are rising!");
+            case 0://"Redstone Alloy Primary Tesla Windings"
+                aList.add("Handles up to 32 EU/t");
+                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "What one man calls God, another calls the laws of physics.");
                 break;
-            case 1://"T1 Primary Tesla Windings"
-                aList.add("Nice and clean casing.");
-                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Dust can break it!?");
+            case 1://"MV Superconductor Primary Tesla Windings"
+                aList.add("Handles up to 128 EU/t");
+                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "What one man calls God, another calls the laws of physics.");
                 break;
-            case 2://"T2 Primary Tesla Windings"
-                aList.add("Air vent with a filter.");
-                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Perfectly muffled sound!");
+            case 2://"HV Superconductor Primary Tesla Windings"
+                aList.add("Handles up to 512 EU/t");
+                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "What one man calls God, another calls the laws of physics.");
                 break;
-            case 3://"T3 Primary Tesla Windings"
-                aList.add("Contains high bandwidth bus");
-                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "couple thousand qubits wide.");
+            case 3://"EV Superconductor Primary Tesla Windings"
+                aList.add("Handles up to 2048 EU/t");
+                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "What one man calls God, another calls the laws of physics.");
                 break;
-            case 4://"T4 Primary Tesla Windings"
-                aList.add("Stops elemental things.");
-                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Radiation and emotions too...");
+            case 4://"IV Superconductor Primary Tesla Windings"
+                aList.add("Handles up to 8192 EU/t");
+                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "What one man calls God, another calls the laws of physics.");
                 break;
-            case 5://"T5 Primary Tesla Windings"
-                aList.add("Cooling and stabilization.");
-                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "A comfortable machine bed.");
+            case 5://"LuV Superconductor Primary Tesla Windings"
+                aList.add("Handles up to 32768 EU/t");
+                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "What one man calls God, another calls the laws of physics.");
                 break;
             case 6://"Tesla Base Casing"
-                aList.add("Creates a field that...");
-                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "can stop even force carriers.");
+                aList.add("The base of a wondrous contraption");
+                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "it's alive, IT'S ALIVE!");
                 break;
             case 7://"Tesla Toroid Casing"
-                aList.add("Well it does things too...");
-                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "[Use this coil!]");
+                aList.add("A shell for your coils");
+                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Faraday suits might come later");
                 break;
             case 8://"Tesla Secondary Windings"
-                aList.add("Reinforced accelerator tunnel.");
-                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Most advanced pipe ever.");
+                aList.add("Picks up power from a primary coil");
+                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Who wouldn't want a 32k epoxy multi?");
                 break;
             default://WTF?
                 aList.add("Damn son where did you get that!?");
