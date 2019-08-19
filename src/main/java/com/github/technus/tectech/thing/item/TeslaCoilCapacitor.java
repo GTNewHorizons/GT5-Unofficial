@@ -15,6 +15,7 @@ import net.minecraft.util.IIcon;
 
 import java.util.List;
 
+import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Reference.MODID;
 
 
@@ -36,25 +37,10 @@ public final class TeslaCoilCapacitor extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.BASS_MARK);
-        switch (aStack.getItemDamage()) {
-            case 0://"LV"
-                aList.add("Stores energy for tesla towers! (LV)");
-                break;
-            case 1://"MV"
-                aList.add("Stores energy for tesla towers! (MV)");
-                break;
-            case 2://"HV"
-                aList.add("Stores energy for tesla towers! (HV)");
-                break;
-            case 3://"EV"
-                aList.add("Stores energy for tesla towers! (EV)");
-                break;
-            case 4://"IV"
-                aList.add("Stores energy for tesla towers! (IV)");
-                break;
-            default://
-                aList.add("Yeet this broken item into some spicy water!");
-                break;
+        if (aStack.getItemDamage() >= 0 && aStack.getItemDamage() <= 4){
+            aList.add("Stores " + V[aStack.getItemDamage()+1]*512 + " EU in a tesla tower at " + V[aStack.getItemDamage()+1] +" EU/t");
+        } else {
+            aList.add("Yeet this broken item into some spicy water!");
         }
         aList.add(EnumChatFormatting.BLUE + "Insert into a Capacitor hatch of a Tesla Tower");
         aList.add(EnumChatFormatting.BLUE + "Capacitors are the same thing as batteries, right?");

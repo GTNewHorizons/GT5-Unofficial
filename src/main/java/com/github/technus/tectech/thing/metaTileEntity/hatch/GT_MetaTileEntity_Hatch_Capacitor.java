@@ -172,11 +172,11 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
     }
 
     public static void run() {
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.0", 0, 1, V[0]*512);//LV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.1", 1, 1, V[1]*512);//MV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.2", 2, 1, V[2]*512);//HV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.3", 3, 1, V[3]*512);//EV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.4", 4, 1, V[4]*512);//IV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.0", 0, 1, V[1]*512);//LV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.1", 1, 1, V[2]*512);//MV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.2", 2, 1, V[3]*512);//HV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.3", 3, 1, V[4]*512);//EV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.4", 4, 1, V[5]*512);//IV Capacitor
     }
 
     public static class CapacitorComponent implements Comparable<GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> {
