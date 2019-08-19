@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.data.RendererMessage;
@@ -51,9 +52,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     private float energyEfficiency = 1;
     private float overdriveEfficiency = 1;
-    private float minEfficency = 0.955F;
-    private float maxEfficency = 0.98F;
-    private float overdriveEfficiencyExtra = 0.005F;
+    private float minEfficiency = TecTech.configTecTech.TESLA_MULTI_MIN_EFFICIENCY;//Default is 0.955F
+    private float maxEfficiency = TecTech.configTecTech.TESLA_MULTI_MAX_EFFICIENCY;//Default is 0.98F;
+    private float overdriveEfficiencyExtra = TecTech.configTecTech.TESLA_MULTI_OVERDRIVE_LOSS;//Default is 0.005F
 
     private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>(); //Used to store targets for power transmission
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCapacitorHatches = new ArrayList<>(); //Used to determine count and tier of capacitors present
@@ -532,7 +533,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             zPosScanMax = zPosZap + xyzOffsets[2];
 
             //Calculate Efficiency values
-            energyEfficiency = map(mTier+1, minTier, maxTier, minEfficency, maxEfficency);
+            energyEfficiency = map(mTier+1, minTier, maxTier, minEfficiency, maxEfficiency);
             overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
 
             return true;

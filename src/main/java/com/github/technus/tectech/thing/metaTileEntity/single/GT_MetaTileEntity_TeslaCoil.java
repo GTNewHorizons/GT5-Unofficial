@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.data.RendererMessage;
@@ -53,13 +54,13 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private float histHigh = (float) histSettingHigh / histSteps; //Power pass is enabled if power is over this fraction
 
     private long outputVoltage = V[mTier];
-    private float minEfficency = 0.91F;
-    private float maxEfficency = 0.95F;
-    private float overdriveEfficiencyExtra = 0.010F;
-    private float energyEfficiency = map(mTier + 1, minTier + 1, maxTier + 1, minEfficency, maxEfficency);
+    private float minEfficiency = TecTech.configTecTech.TESLA_SINGLE_MIN_EFFICIENCY;//Default is 0.91F
+    private float maxEfficiency = TecTech.configTecTech.TESLA_SINGLE_MAX_EFFICIENCY;//Default is 0.95F
+    private float overdriveEfficiencyExtra = TecTech.configTecTech.TESLA_SINGLE_OVERDRIVE_LOSS;//Default is 0.010F
+    private float energyEfficiency = map(mTier + 1, minTier + 1, maxTier + 1, minEfficiency, maxEfficiency);
     private float overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
-    private boolean overDriveToggle = false; //Overdrive toggle
-    
+    private boolean overdriveToggle = false;
+
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, "Tesla Coil Transceiver", aSlotCount);
         Util.setTier(aTier, this);
@@ -71,11 +72,11 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     @Override
     public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (overDriveToggle) {
-            overDriveToggle = false;
+        if (overdriveToggle) {
+            overdriveToggle = false;
             PlayerChatHelper.SendInfo(aPlayer, "Overdrive disengaged");
         } else {
-            overDriveToggle = true;
+            overdriveToggle = true;
             PlayerChatHelper.SendInfo(aPlayer, "Overdrive engaged");
         }
         return true;
@@ -255,13 +256,13 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             while (outputCurrent > 0) {
                 boolean idle = true;
                 for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaMap)) {
-                    if (getEUVar() >= (overDriveToggle ? outputVoltage * 2 : outputVoltage)) {
+                    if (getEUVar() >= (overdriveToggle ? outputVoltage * 2 : outputVoltage)) {
                         IGregTechTileEntity node = Rx.getKey();
                         IMetaTileEntity nodeInside = node.getMetaTileEntity();
 
                         long outputVoltageInjectable;
                         long outputVoltageConsumption;
-                        if (overDriveToggle) {
+                        if (overdriveToggle) {
                             outputVoltageInjectable = outputVoltage;
                             outputVoltageConsumption = getEnergyEfficiency(outputVoltage, Rx.getValue(), true);
                         } else {

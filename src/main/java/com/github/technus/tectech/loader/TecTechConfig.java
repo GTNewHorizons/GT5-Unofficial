@@ -20,6 +20,14 @@ public class TecTechConfig extends ConfigManager {
     public boolean DISABLE_MATERIAL_LOADING_FFS;
     public float TURRET_DAMAGE_FACTOR;
     public float TURRET_EXPLOSION_FACTOR;
+    public float TESLA_MULTI_MIN_EFFICIENCY;
+    public float TESLA_MULTI_MAX_EFFICIENCY;
+    public float TESLA_MULTI_OVERDRIVE_LOSS;
+    public float TESLA_SINGLE_MIN_EFFICIENCY;
+    public float TESLA_SINGLE_MAX_EFFICIENCY;
+    public float TESLA_SINGLE_OVERDRIVE_LOSS;
+
+
 
     /**
      * This loading phases do not correspond to mod loading phases!
@@ -34,6 +42,12 @@ public class TecTechConfig extends ConfigManager {
         DISABLE_MATERIAL_LOADING_FFS=false;
         TURRET_DAMAGE_FACTOR = 10;
         TURRET_EXPLOSION_FACTOR = 1;
+        TESLA_MULTI_MIN_EFFICIENCY = 0.955F;
+        TESLA_MULTI_MAX_EFFICIENCY = 0.98F;
+        TESLA_MULTI_OVERDRIVE_LOSS = 0.005F;
+        TESLA_SINGLE_MIN_EFFICIENCY = 0.91F;
+        TESLA_SINGLE_MAX_EFFICIENCY = 0.95F;
+        TESLA_SINGLE_OVERDRIVE_LOSS = 0.010F;
     }
 
 
@@ -60,6 +74,18 @@ public class TecTechConfig extends ConfigManager {
                 "Explosion strength is multiplied by this number");
         DISABLE_MATERIAL_LOADING_FFS =  _mainConfig.getBoolean("DisableMaterialLoading", "Debug", DISABLE_MATERIAL_LOADING_FFS,
                 "Set to true to disable gregtech material processing");
+        TESLA_MULTI_MIN_EFFICIENCY =  _mainConfig.getFloat("teslaMultiMinEfficency", "Features", TESLA_MULTI_MIN_EFFICIENCY, 0, 1,
+                "Worst possible power loss per block for the multi block tesla");
+        TESLA_MULTI_MAX_EFFICIENCY =  _mainConfig.getFloat("teslaMultiMaxEfficency", "Features", TESLA_MULTI_MAX_EFFICIENCY, 0, 1,
+                "Best possible power loss per block for the multi block tesla");
+        TESLA_MULTI_OVERDRIVE_LOSS =  _mainConfig.getFloat("teslaMultiOverdriveLoss", "Features", TESLA_MULTI_OVERDRIVE_LOSS, 0, 1,
+                "Additional losses for overdrive use on the multi block tesla");
+        TESLA_SINGLE_MIN_EFFICIENCY =  _mainConfig.getFloat("teslaSingleMinEfficency", "Features", TESLA_SINGLE_MIN_EFFICIENCY, 0, 1,
+                "Worst possible power loss per block for the single block tesla");
+        TESLA_SINGLE_MAX_EFFICIENCY =  _mainConfig.getFloat("teslaSingleMaxEfficency", "Features", TESLA_SINGLE_MAX_EFFICIENCY, 0, 1,
+                "Best possible power loss per block for the single block tesla");
+        TESLA_SINGLE_OVERDRIVE_LOSS =  _mainConfig.getFloat("teslaSingleOverdriveLoss", "Features", TESLA_SINGLE_OVERDRIVE_LOSS, 0, 1,
+                "Additional losses for overdrive use on the single block tesla");
     }
 
     /**
