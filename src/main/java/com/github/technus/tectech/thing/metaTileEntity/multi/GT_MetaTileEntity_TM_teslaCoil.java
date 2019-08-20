@@ -66,6 +66,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private int vTier = -1; //Tesla voltage tier limited by capacitors
     private long outputCurrentMax = 0; //Tesla current output limited by capacitors
 
+    //Prevents unnecessary offset calculation
+    private byte oldRotation;
+    private byte oldOrientation;
+
     //Scan range fields
     private static int xPosScanMin;
     private static int xPosScanMax;
@@ -385,47 +389,48 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         xyzOffsets = getTranslatedOffsets(0, -1, 1);
         mTier = iGregTechTileEntity.getMetaIDOffset(xyzOffsets[0], xyzOffsets[1], xyzOffsets[2]);
 
-        if (structureCheck_EM(shape, blockType, blockMetas[0], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 3, 16, 0) && eCapacitorHatches.size() > 0) {
+        if (structureCheck_EM(shape, blockType, blockMetas[mTier], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 3, 16, 0) && eCapacitorHatches.size() > 0) {
             for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
                 if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                     cap.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
                 }
             }
 
-            //Calculate coordinates of the middle bottom
-            xyzOffsets = getTranslatedOffsets(0, 0, 2);
-            xPosZap = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
-            yPosZap = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
-            zPosZap = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
+            //Only recalculate offsets on orientation or rotation change
+            if (oldRotation != getFrontRotation() || oldOrientation != iGregTechTileEntity.getFrontFacing()) {
+                oldRotation = getFrontRotation();
+                oldOrientation = iGregTechTileEntity.getFrontFacing();
 
-            //Calculate coordinates of the top sphere
-            xyzOffsets = getTranslatedOffsets(0, -14, 2);
-            xPosTop = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
-            yPosTop = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
-            zPosTop = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
+                //Calculate coordinates of the middle bottom
+                xyzOffsets = getTranslatedOffsets(0, 0, 2);
+                xPosZap = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
+                yPosZap = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
+                zPosZap = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
 
-            //Calculate offsets for scanning
-            xyzOffsets = getTranslatedOffsets(40, 0, 43);
-            xPosScanMin = xPosZap + xyzOffsets[0];
-            yPosScan0 = yPosZap + xyzOffsets[1];
-            zPosScanMin = zPosZap + xyzOffsets[2];
-            xyzOffsets = getTranslatedOffsets(-40, -4, -37);
-            yPosScan1 = yPosZap + xyzOffsets[1];
-            xyzOffsets = getTranslatedOffsets(-40, -8, -37);
-            yPosScan2 = yPosZap + xyzOffsets[1];
-            xyzOffsets = getTranslatedOffsets(-40, -12, -37);
-            yPosScan3 = yPosZap + xyzOffsets[1];
-            xyzOffsets = getTranslatedOffsets(-40, -16, -37);
-            yPosScan4 = yPosZap + xyzOffsets[1];
-            xyzOffsets = getTranslatedOffsets(-40, -20, -37);
-            xPosScanMax = xPosZap + xyzOffsets[0];
-            yPosScan5 = yPosZap + xyzOffsets[1];
-            zPosScanMax = zPosZap + xyzOffsets[2];
+                //Calculate coordinates of the top sphere
+                xyzOffsets = getTranslatedOffsets(0, -14, 2);
+                xPosTop = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
+                yPosTop = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
+                zPosTop = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
 
-            //Calculate Efficiency values
-            energyEfficiency = map(mTier + 1, minTier, maxTier, minEfficiency, maxEfficiency);
-            overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
-
+                //Calculate offsets for scanning
+                xyzOffsets = getTranslatedOffsets(40, 0, 43);
+                xPosScanMin = xPosZap + xyzOffsets[0];
+                yPosScan0 = yPosZap + xyzOffsets[1];
+                zPosScanMin = zPosZap + xyzOffsets[2];
+                xyzOffsets = getTranslatedOffsets(-40, -4, -37);
+                yPosScan1 = yPosZap + xyzOffsets[1];
+                xyzOffsets = getTranslatedOffsets(-40, -8, -37);
+                yPosScan2 = yPosZap + xyzOffsets[1];
+                xyzOffsets = getTranslatedOffsets(-40, -12, -37);
+                yPosScan3 = yPosZap + xyzOffsets[1];
+                xyzOffsets = getTranslatedOffsets(-40, -16, -37);
+                yPosScan4 = yPosZap + xyzOffsets[1];
+                xyzOffsets = getTranslatedOffsets(-40, -20, -37);
+                xPosScanMax = xPosZap + xyzOffsets[0];
+                yPosScan5 = yPosZap + xyzOffsets[1];
+                zPosScanMax = zPosZap + xyzOffsets[2];
+            }
             return true;
         }
         return false;
@@ -476,6 +481,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 vTier = (int) cap.getCapacitors()[0];
             }
         }
+
+        //Calculate Efficiency values
+        energyEfficiency = map(mTier + 1, minTier, maxTier, minEfficiency, maxEfficiency);
+        overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
 
         energyCapacity = 0;
         outputCurrentMax = 0;
