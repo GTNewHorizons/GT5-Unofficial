@@ -79,7 +79,7 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean isFacingValid(byte aFacing) {
-        return aFacing >= 2;
+        return true;
     }
 
     @Override

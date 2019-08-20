@@ -13,6 +13,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TeslaCoil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,7 +22,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -89,7 +89,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     public int zPosTop;
 
     //region structure
-    private static final String[][] shape0 = new String[][]{//3 16 0
+    private static final String[][] shape = new String[][]{//3 16 0
             {"\u000F", "A  .  ",},
             {E, "B000", "B000", "B000", "\u0001", "B000", E, "B000", E, "B000", E, "B000", "\u0001", "B111", " 22222 ",},
             {"B000", "A00000", "A00000", "A00000", "B000", E, "A0A!A0", E, "A0A!A0", E, "A0A!A0", E, "A0A!A0", "\u0001", "A1C1", " 21112 ",},
@@ -98,35 +98,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             {E, "B000", "B000", "B000", "\u0001", "B000", E, "B000", E, "B000", E, "B000", "\u0001", "B111", " 22222 ",},
             {"\u000F", "A     ",},
     };
-    private static final String[][] shape1 = new String[][]{//3 0 0
-            {"A  .  ",},
-            {" 22222 ","A11111","\u0001","B000",E,"B000",E,"B000",E,"B000","\u0001","B000","B000","B000",},
-            {" 21112 ","A1C1","\u0001","A0A!A0",E,"A0A!A0",E,"A0A!A0",E,"A0A!A0",E,"B000","A00000","A00000","A00000","B000",},
-            {" 21212 ","A1A3A1","C3","C3","A0!3!0","C3","A0!3!0","C3","A0!3!0","C3","A0!3!0","C3","B030","A00000","A00000","A00000","B000",},
-            {" 21112 ","A1C1","\u0001","A0A!A0",E,"A0A!A0",E,"A0A!A0",E,"A0A!A0",E,"B000","A00000","A00000","A00000","B000",},
-            {" 22222 ","A11111","\u0001","B000",E,"B000",E,"B000",E,"B000","\u0001","B000","B000","B000",},
-            {"A     ",},
-    };
-    private static final String[][] shape2 = new String[][]{//16 3 0
-            {E,"P ","P ","P.","P ","P ",},
-            {"P ","O12","A000B0A0A0A0B12","A000B0A0A0A0B12","A000B0A0A0A0B12","O12","P ",},
-            {"P ","A000B0A0A0A0B12","00000K1","00000A!A!A!A!C1","00000K1","A000B0A0A0A0B12","P ",},
-            {"P ","A000B0A0A0A0B12","00000A!A!A!A!C1","00003333333333332","00000A!A!A!A!C1","A000B0A0A0A0B12","P ",},
-            {"P ","A000B0A0A0A0B12","00000K1","00000A!A!A!A!C1","00000K1","A000B0A0A0A0B12","P ",},
-            {"P ","O12","A000B0A0A0A0B12","A000B0A0A0A0B12","A000B0A0A0A0B12","F0H12","P ",},
-            {E,"P ","P ","P ","P ","P ",},
-    };
-    private static final String[][] shape3 = new String[][]{//0 3 0
-            {E," "," ","."," "," ",},
-            {" ","21","21B0A0A0A0B000","21B0A0A0A0B000","21B0A0A0A0B000","21H0"," ",},
-            {" ","21B0A0A0A0B000","1K00000","1C!A!A!A!A00000","1K00000","21B0A0A0A0B000"," ",},
-            {" ","21B0A0A0A0B000","1C!A!A!A!A00000","23333333333330000","1C!A!A!A!A00000","21B0A0A0A0B000"," ",},
-            {" ","21B0A0A0A0B000","1K00000","1C!A!A!A!A00000","1K00000","21B0A0A0A0B000"," ",},
-            {" ","21","21B0A0A0A0B000","21B0A0A0A0B000","21B0A0A0A0B000","21"," ",},
-            {E," "," "," "," "," ",},
-    };
-
-    private static final String[][][] shapes = new String[][][]{shape0,shape1,shape2,shape3};
     private static final Block[] blockType = new Block[]{sBlockCasingsBA0,sBlockCasingsBA0,sBlockCasingsBA0,sBlockCasingsBA0};
     private static final byte[] blockMetaT0 = new byte[]{7, 0, 6, 8};
     private static final byte[] blockMetaT1 = new byte[]{7, 1, 6, 8};
@@ -352,7 +323,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         energyCapacity=aNBT.getLong("eEnergyCapacity");
     }
 
-    //Efficiency function used on power transfers
     private long getEnergyEfficiency(long voltage, int distance, boolean overDriveToggle) {
         if (overDriveToggle) {
             return (long)((voltage * 2) - (voltage * Math.pow(overdriveEfficiency, distance)));
@@ -361,8 +331,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         }
     }
 
-    //Over-tiered coils will add +25% range
     private float getRangeMulti(int mTier, int vTier){
+        //Over-tiered coils will add +25% range
         if (vTier > mTier){
             return 1.25F;
         }
@@ -377,7 +347,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16+6], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16+6], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16+6]};
     }
@@ -411,129 +381,49 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         }
         eCapacitorHatches.clear();
 
-        int coilX0 = 0;
-        int coilX1 = 0;
-        int coilX2 = 0;
+        int[] xyzOffsets;
+        xyzOffsets = getTranslatedOffsets(0, -1, 1);
+        mTier = iGregTechTileEntity.getMetaIDOffset(xyzOffsets[0], xyzOffsets[1], xyzOffsets[2]);
 
-        int coilY0 = 1;
-        int coilY1 = 0;
-        int coilY2 = 0;
-
-        int coilZ0 = 0;
-        int coilZ1 = 0;
-        int coilZ2 = 0;
-
-        switch (iGregTechTileEntity.getFrontFacing()) {
-            case 2:
-                coilZ0 = 1;
-                coilZ1 = 1;
-                coilZ2 = 1;
-                coilX1 = 1;
-                coilX2 = -1;
-                break;
-            case 3:
-                coilZ0 = -1;
-                coilZ1 = -1;
-                coilZ2 = -1;
-                coilX1 = -1;
-                coilX2 = 1;
-                break;
-            case 4:
-                coilX0 = 1;
-                coilX1 = 1;
-                coilX2 = 1;
-                coilZ1 = -1;
-                coilZ2 = 1;
-                break;
-            case 5:
-                coilX0 = -1;
-                coilX1 = -1;
-                coilX2 = -1;
-                coilZ1 = 1;
-                coilZ2 = -1;
-                break;
-            default:
-                return false;
-        }
-
-        Block coil0 = iGregTechTileEntity.getBlockOffset(coilX0, coilY0, coilZ0);
-        Block coil1 = iGregTechTileEntity.getBlockOffset(coilX0, -coilY0, coilZ0);
-        Block coil2 = iGregTechTileEntity.getBlockOffset(coilX1, coilY1, coilZ1);
-        Block coil3 = iGregTechTileEntity.getBlockOffset(coilX2, coilY2, coilZ2);
-
-        int xOffset;
-        int yOffset;
-        int zOffset;
-        int orientation;
-
-        if (coil0 == sBlockCasingsBA0) {
-            xOffset = 3;
-            yOffset = 16;
-            zOffset = 0;
-            orientation = 0;
-            mTier = iGregTechTileEntity.getMetaIDOffset(coilX0, coilY0, coilZ0);
-        } else if (coil1 == sBlockCasingsBA0) {
-            xOffset = 3;
-            yOffset = 0;
-            zOffset = 0;
-            orientation = 1;
-            mTier = iGregTechTileEntity.getMetaIDOffset(coilX0, -coilY0, coilZ0);
-        } else if (coil2 == sBlockCasingsBA0) {
-            xOffset = 16;
-            yOffset = 3;
-            zOffset = 0;
-            orientation = 2;
-            mTier = iGregTechTileEntity.getMetaIDOffset(coilX1, coilY1, coilZ1);
-        } else if (coil3 == sBlockCasingsBA0) {
-            xOffset = 0;
-            yOffset = 3;
-            zOffset = 0;
-            orientation = 3;
-            mTier = iGregTechTileEntity.getMetaIDOffset(coilX2, coilY2, coilZ2);
-        } else {
-            return false;
-        }
-
-        if (structureCheck_EM(shapes[orientation], blockType, blockMetas[mTier], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, xOffset, yOffset, zOffset) && eCapacitorHatches.size() > 0) {
+        if (structureCheck_EM(shape, blockType, blockMetas[0], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 3, 16, 0) && eCapacitorHatches.size() > 0) {
             for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
                 if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                     cap.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
                 }
             }
 
-            int[] xyzOffsets;
             //Calculate coordinates of the middle bottom
-            xyzOffsets=getTranslatedOffsets(0,0,2);
+            xyzOffsets = getTranslatedOffsets(0, 0, 2);
             xPosZap = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
             yPosZap = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
             zPosZap = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
 
             //Calculate coordinates of the top sphere
-            xyzOffsets=getTranslatedOffsets(0,-14,2);
+            xyzOffsets = getTranslatedOffsets(0, -14, 2);
             xPosTop = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
             yPosTop = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
             zPosTop = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
 
             //Calculate offsets for scanning
-            xyzOffsets = getTranslatedOffsets(40,0,43);
-            xPosScanMin = xPosZap +xyzOffsets[0];
+            xyzOffsets = getTranslatedOffsets(40, 0, 43);
+            xPosScanMin = xPosZap + xyzOffsets[0];
             yPosScan0 = yPosZap + xyzOffsets[1];
             zPosScanMin = zPosZap + xyzOffsets[2];
-            xyzOffsets = getTranslatedOffsets(-40,-4,-37);
+            xyzOffsets = getTranslatedOffsets(-40, -4, -37);
             yPosScan1 = yPosZap + xyzOffsets[1];
-            xyzOffsets = getTranslatedOffsets(-40,-8,-37);
+            xyzOffsets = getTranslatedOffsets(-40, -8, -37);
             yPosScan2 = yPosZap + xyzOffsets[1];
-            xyzOffsets = getTranslatedOffsets(-40,-12,-37);
+            xyzOffsets = getTranslatedOffsets(-40, -12, -37);
             yPosScan3 = yPosZap + xyzOffsets[1];
-            xyzOffsets = getTranslatedOffsets(-40,-16,-37);
+            xyzOffsets = getTranslatedOffsets(-40, -16, -37);
             yPosScan4 = yPosZap + xyzOffsets[1];
-            xyzOffsets = getTranslatedOffsets(-40,-20,-37);
+            xyzOffsets = getTranslatedOffsets(-40, -20, -37);
             xPosScanMax = xPosZap + xyzOffsets[0];
             yPosScan5 = yPosZap + xyzOffsets[1];
             zPosScanMax = zPosZap + xyzOffsets[2];
 
             //Calculate Efficiency values
-            energyEfficiency = map(mTier+1, minTier, maxTier, minEfficiency, maxEfficiency);
+            energyEfficiency = map(mTier + 1, minTier, maxTier, minEfficiency, maxEfficiency);
             overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
 
             return true;
@@ -543,7 +433,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilder(shapes[0], blockType, blockMetas[(stackSize-1)%6], 3, 16, 0, getBaseMetaTileEntity(), hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMetas[(stackSize-1)%6], 3, 16, 0, getBaseMetaTileEntity(), this, hintsOnly);
     }
 
     @Override

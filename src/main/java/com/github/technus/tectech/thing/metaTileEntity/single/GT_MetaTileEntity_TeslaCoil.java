@@ -281,6 +281,12 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                                 }
                             }
                         } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil) && !(node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil_Ultimate) && Rx.getValue() <= transferRadiusCover) {
+                            if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil){
+                                GT_MetaTileEntity_TeslaCoil nodeTesla = (GT_MetaTileEntity_TeslaCoil) nodeInside;
+                                if (nodeTesla.powerPassToggle){
+                                    continue;
+                                }
+                            }
                             if (node.injectEnergyUnits((byte) 1, outputVoltageInjectable, 1L) > 0L) {
                                 setEUVar(getEUVar() - outputVoltageConsumption);
                                 thaumLightning(aBaseMetaTileEntity, node);
