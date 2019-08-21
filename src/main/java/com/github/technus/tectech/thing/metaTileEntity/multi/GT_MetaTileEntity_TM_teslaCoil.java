@@ -420,7 +420,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMetas[(stackSize-1)%6], 3, 16, 0, getBaseMetaTileEntity(), this, hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMetas[(stackSize - 1) % 6], 3, 16, 0, getBaseMetaTileEntity(), this, hintsOnly);
     }
 
     @Override
@@ -440,14 +440,14 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        if (!histHighSetting.getStatus(false).isOk||
-                !histLowSetting.getStatus(false).isOk||
-                !transferRadiusTowerSetting.getStatus(false).isOk||
-                !transferRadiusTransceiverSetting.getStatus(false).isOk||
-                !transferRadiusCoverUltimateSetting.getStatus(false).isOk||
-                !outputVoltageSetting.getStatus(false).isOk||
-                !outputCurrentSetting.getStatus(false).isOk||
-                !scanTimeMinSetting.getStatus(false).isOk||
+        if (!histHighSetting.getStatus(false).isOk ||
+                !histLowSetting.getStatus(false).isOk ||
+                !transferRadiusTowerSetting.getStatus(false).isOk ||
+                !transferRadiusTransceiverSetting.getStatus(false).isOk ||
+                !transferRadiusCoverUltimateSetting.getStatus(false).isOk ||
+                !outputVoltageSetting.getStatus(false).isOk ||
+                !outputCurrentSetting.getStatus(false).isOk ||
+                !scanTimeMinSetting.getStatus(false).isOk ||
                 !overDriveSetting.getStatus(false).isOk
         ) return false;
 
@@ -471,15 +471,15 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         energyCapacity = 0;
         outputCurrentMax = 0;
 
-        if(vTier < 0){
+        if (vTier < 0) {
             //Returning true to allow for 'passive running'
             outputVoltageMax = 0;
             return true;
-        } else if (vTier > mTier && getEUVar() > 0){
+        } else if (vTier > mTier && getEUVar() > 0) {
             explodeMultiblock();
         }
 
-        outputVoltageMax = V[vTier+1];
+        outputVoltageMax = V[vTier + 1];
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
             if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                 continue;
@@ -487,7 +487,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             cap.getBaseMetaTileEntity().setActive(true);
             capacitorData = cap.getCapacitors();
             if (capacitorData[0] < vTier) {
-                if(getEUVar() > 0 && capacitorData[0] != 0){
+                if (getEUVar() > 0 && capacitorData[0] != 0) {
                     cap.getBaseMetaTileEntity().setToFire();
                 }
                 eCapacitorHatches.remove(cap);
@@ -500,31 +500,14 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     private void scanForTransmissionTargets(int[] coordsMin, int[] coordsMax) {
-        int xMin = coordsMin[0];
-        int yMin = coordsMin[1];
-        int zMin = coordsMin[2];
-
-        int xMax = coordsMax[0];
-        int yMax = coordsMax[1];
-        int zMax = coordsMax[2];
-
-        if (xMin > xMax) {
-            int xMax2 = xMin;
-            xMin = xMax;
-            xMax = xMax2;
-        }
-
-        if (yMin > yMax) {
-            int yMax2 = yMin;
-            yMin = yMax;
-            yMax = yMax2;
-        }
-
-        if (zMin > zMax) {
-            int zMax2 = zMin;
-            zMin = zMax;
-            zMax = zMax2;
-        }
+        //This makes sure the minimums are actually smaller than the maximums
+        int xMin = coordsMin[0] < coordsMax[0] ? coordsMin[0] : coordsMax[0];
+        int yMin = coordsMin[1] < coordsMax[1] ? coordsMin[1] : coordsMax[1];
+        int zMin = coordsMin[2] < coordsMax[2] ? coordsMin[2] : coordsMax[2];
+        //And vice versa
+        int xMax = coordsMin[0] > coordsMax[0] ? coordsMin[0] : coordsMax[0];
+        int yMax = coordsMin[1] > coordsMax[1] ? coordsMin[1] : coordsMax[1];
+        int zMax = coordsMin[2] > coordsMax[2] ? coordsMin[2] : coordsMax[2];
 
         for (int xPos = xMin; xPos <= xMax; xPos++) {
             for (int yPos = yMin; yPos <= yMax; yPos++) {
@@ -547,13 +530,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     private void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
-        byte xR = (byte)(node.getXCoord() - posTop[0]);
-        byte yR = (byte)(node.getYCoord() - posTop[1]);
-        byte zR = (byte)(node.getZCoord() - posTop[2]);
+        byte xR = (byte) (node.getXCoord() - posTop[0]);
+        byte yR = (byte) (node.getYCoord() - posTop[1]);
+        byte zR = (byte) (node.getZCoord() - posTop[2]);
 
         int wID = mte.getWorld().provider.dimensionId;
 
-        sparkList.add(new Util.thaumSpark(posTop[0],posTop[1],posTop[2],xR,yR,zR,wID));
+        sparkList.add(new Util.thaumSpark(posTop[0], posTop[1], posTop[2], xR, yR, zR, wID));
     }
 
     @Override
@@ -605,23 +588,23 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         switch (scanTime) {
             case 0:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(scanPosOffsets[0],scanPosOffsets[1]);
+                scanForTransmissionTargets(scanPosOffsets[0], scanPosOffsets[1]);
                 break;
             case 20:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(scanPosOffsets[2],scanPosOffsets[3]);
+                scanForTransmissionTargets(scanPosOffsets[2], scanPosOffsets[3]);
                 break;
             case 40:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(scanPosOffsets[4],scanPosOffsets[5]);
+                scanForTransmissionTargets(scanPosOffsets[4], scanPosOffsets[5]);
                 break;
             case 60:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(scanPosOffsets[6],scanPosOffsets[7]);
+                scanForTransmissionTargets(scanPosOffsets[6], scanPosOffsets[7]);
                 break;
             case 80:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(scanPosOffsets[8],scanPosOffsets[9]);
+                scanForTransmissionTargets(scanPosOffsets[8], scanPosOffsets[9]);
                 break;
             default:
                 if (scanTime == (int) scanTimeMinSetting.get() - 1) {

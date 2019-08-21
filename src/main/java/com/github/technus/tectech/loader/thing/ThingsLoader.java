@@ -61,6 +61,9 @@ public class ThingsLoader implements Runnable {
         TeslaCoilCapacitor.run();
         TecTech.LOGGER.info("Useful Items registered");
 
+        TeslaCoilComponent.run();
+        TecTech.LOGGER.info("Crafting Components registered");
+
         ElementalDefinitionContainer_EM.run();
         DebugElementalInstanceContainer_EM.run();
         TecTech.LOGGER.info("Debug Items registered");
