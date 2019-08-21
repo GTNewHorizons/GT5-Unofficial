@@ -63,7 +63,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
 
         CustomItemList.tM_TeslaBase.set(new ItemStack(this, 1, 6));
         CustomItemList.tM_TeslaToroid.set(new ItemStack(this, 1, 7));
-        CustomItemList.tM_TeslaFrame.set(new ItemStack(this, 1, 8));
+        CustomItemList.tM_TeslaSecondary.set(new ItemStack(this, 1, 8));
     }
 
     @Override
