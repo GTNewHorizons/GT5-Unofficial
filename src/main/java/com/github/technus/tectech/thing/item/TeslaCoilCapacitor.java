@@ -17,6 +17,7 @@ import java.util.List;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.thing.CustomItemList.teslaCapacitor;
 
 
 public final class TeslaCoilCapacitor extends Item {
@@ -24,6 +25,7 @@ public final class TeslaCoilCapacitor extends Item {
     private static IIcon LVicon, MVicon, HVicon, EVicon, IVicon;
 
     private TeslaCoilCapacitor() {
+        setHasSubtypes(true);
         setUnlocalizedName("tm.teslaCoilCapacitor");
         setTextureName(MODID + ":itemCapacitorLV");
 
@@ -37,8 +39,8 @@ public final class TeslaCoilCapacitor extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.BASS_MARK);
-        if (aStack.getItemDamage() >= 0 && aStack.getItemDamage() <= 4){
-            aList.add("Stores " + V[aStack.getItemDamage()+1]*512 + " EU in a tesla tower at " + V[aStack.getItemDamage()+1] +" EU/t");
+        if (aStack.getItemDamage() >= 0 && aStack.getItemDamage() <= 4) {
+            aList.add("Stores " + V[aStack.getItemDamage() + 1] * 512 + " EU in a tesla tower at " + V[aStack.getItemDamage() + 1] + " EU/t");
         } else {
             aList.add("Yeet this broken item into some spicy water!");
         }
@@ -54,6 +56,7 @@ public final class TeslaCoilCapacitor extends Item {
     public static void run() {
         INSTANCE = new TeslaCoilCapacitor();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
+        teslaCapacitor.set(INSTANCE);
     }
 
     @Override
@@ -82,6 +85,7 @@ public final class TeslaCoilCapacitor extends Item {
         }
     }
 
+    @Override
     public void getSubItems(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
         for (int i = 0; i <= 4; i++) {
             aList.add(new ItemStack(aItem, 1, i));

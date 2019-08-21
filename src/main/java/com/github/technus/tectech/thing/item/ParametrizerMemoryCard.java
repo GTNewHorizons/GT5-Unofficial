@@ -31,11 +31,10 @@ import static com.github.technus.tectech.thing.CustomItemList.parametrizerMemory
  */
 public final class ParametrizerMemoryCard extends Item {
     public static ParametrizerMemoryCard INSTANCE;
-    public static IIcon locked,unlocked;
+    private static IIcon locked, unlocked;
 
     private ParametrizerMemoryCard() {
         setMaxStackSize(1);
-        setHasSubtypes(true);
         setUnlocalizedName("em.parametrizerMemoryCard");
         setTextureName(MODID + ":itemParametrizerMemoryCardUnlocked");
     }
@@ -66,13 +65,13 @@ public final class ParametrizerMemoryCard extends Item {
                             tNBT.setDouble("value1D", parametrizer.value1D);
                         }
                         return true;
-                    }else if(metaTE instanceof GT_MetaTileEntity_MultiblockBase_EM){
+                    } else if (metaTE instanceof GT_MetaTileEntity_MultiblockBase_EM) {
                         GT_MetaTileEntity_MultiblockBase_EM base = (GT_MetaTileEntity_MultiblockBase_EM) metaTE;
                         if (aStack.getTagCompound() == null) {
                             aStack.setTagCompound(new NBTTagCompound());
                         }
                         NBTTagCompound tNBT = aStack.getTagCompound();
-                        if(aStack.getItemDamage()== 1){
+                        if (aStack.getItemDamage() == 1) {
                             base.parametrization.trySetParameters(
                                     tNBT.getInteger("param"),
                                     tNBT.getDouble("value0D"),
@@ -90,9 +89,9 @@ public final class ParametrizerMemoryCard extends Item {
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (aPlayer instanceof EntityPlayerMP && aPlayer.isSneaking()) {
             aStack.stackSize = 1;
-            if(aStack.getItemDamage()==1) {
+            if (aStack.getItemDamage() == 1) {
                 aStack.setItemDamage(0);
-            }else{
+            } else {
                 aStack.setItemDamage(1);
             }
             return aStack;
@@ -106,23 +105,23 @@ public final class ParametrizerMemoryCard extends Item {
         aList.add(CommonValues.BASS_MARK);
         aList.add("Stores Parameters");
 
-        if(aStack.getItemDamage()==1) {
+        if (aStack.getItemDamage() == 1) {
             aList.add(EnumChatFormatting.BLUE + "Use on Parametrizer/Controller to configure it");
-        }else{
+        } else {
             aList.add(EnumChatFormatting.BLUE + "Use on Parametrizer to store parameters");
         }
         aList.add(EnumChatFormatting.BLUE + "Sneak right click to lock/unlock");
 
         long temp;
-        if(tNBT!=null && tNBT.hasKey("param")) {
-            aList.add("Hatch ID: "+EnumChatFormatting.AQUA + tNBT.getInteger("param"));
-            temp=tNBT.getInteger("value0D");
-            aList.add("Value 0D: "+EnumChatFormatting.AQUA + temp);
-            aList.add("Value 0B: "+EnumChatFormatting.AQUA + Util.longBitsToShortString(Double.doubleToLongBits(temp)));
-            temp=tNBT.getInteger("value1D");
-            aList.add("Value 1D: "+EnumChatFormatting.AQUA + temp);
-            aList.add("Value 1B: "+EnumChatFormatting.AQUA + Util.longBitsToShortString(Double.doubleToLongBits(temp)));
-            aList.add("Uses Floats: "+(tNBT.getBoolean("usesFloats")?EnumChatFormatting.GREEN+"TRUE":EnumChatFormatting.RED+"FALSE"));
+        if (tNBT != null && tNBT.hasKey("param")) {
+            aList.add("Hatch ID: " + EnumChatFormatting.AQUA + tNBT.getInteger("param"));
+            temp = tNBT.getInteger("value0D");
+            aList.add("Value 0D: " + EnumChatFormatting.AQUA + temp);
+            aList.add("Value 0B: " + EnumChatFormatting.AQUA + Util.longBitsToShortString(Double.doubleToLongBits(temp)));
+            temp = tNBT.getInteger("value1D");
+            aList.add("Value 1D: " + EnumChatFormatting.AQUA + temp);
+            aList.add("Value 1B: " + EnumChatFormatting.AQUA + Util.longBitsToShortString(Double.doubleToLongBits(temp)));
+            aList.add("Uses Floats: " + (tNBT.getBoolean("usesFloats") ? EnumChatFormatting.GREEN + "TRUE" : EnumChatFormatting.RED + "FALSE"));
         }
 
     }
@@ -136,17 +135,16 @@ public final class ParametrizerMemoryCard extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
-        locked =iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
+        locked = iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
         unlocked = itemIcon = iconRegister.registerIcon(getIconString());
     }
 
     @Override
     public IIcon getIconFromDamage(int damage) {
-        if(damage==1) {
+        if (damage == 1) {
             return locked;
-        }else{
-            return unlocked;
         }
+        return unlocked;
     }
 
     @Override

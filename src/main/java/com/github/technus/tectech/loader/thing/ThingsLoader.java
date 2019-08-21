@@ -52,19 +52,13 @@ public class ThingsLoader implements Runnable {
         ReactorSimBlock.run();
         TecTech.LOGGER.info("Reactor Simulator registered");
 
-        TeslaCoilCover.run();
-        TeslaCoilCoverUltimate.run();
-        TecTech.LOGGER.info("Covers Items registered");
-
         ConstructableTriggerItem.run();
         FrontRotationTriggerItem.run();
         ParametrizerMemoryCard.run();
         ElementalDefinitionScanStorage_EM.run();
         EuMeterGT.run();
-
-
+        TeslaCoilCover.run();
         TeslaCoilCapacitor.run();
-
         TecTech.LOGGER.info("Useful Items registered");
 
         ElementalDefinitionContainer_EM.run();
