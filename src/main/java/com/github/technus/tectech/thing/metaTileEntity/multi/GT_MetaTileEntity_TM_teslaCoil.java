@@ -47,7 +47,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
     private int mTier = 0; //Determines max voltage and efficiency (MV to LuV)
-    private int minTier = 1; //Min tier for efficiency calcuation
     private int maxTier = 6; //Max tier for efficiency calcuation
 
     private float energyEfficiency = 1;
@@ -67,30 +66,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private long outputCurrentMax = 0; //Tesla current output limited by capacitors
 
     //Prevents unnecessary offset calculation
-    private byte oldRotation;
-    private byte oldOrientation;
+    private byte oldRotation = -1;
+    private byte oldOrientation = -1;
 
-    //Scan range fields
-    private static int xPosScanMin;
-    private static int xPosScanMax;
-    private static int yPosScan0;
-    private static int yPosScan1;
-    private static int yPosScan2;
-    private static int yPosScan3;
-    private static int yPosScan4;
-    private static int yPosScan5;
-    private static int zPosScanMin;
-    private static int zPosScanMax;
-
-    //Power Transfer Origin
-    private int xPosZap;
-    private int yPosZap;
-    private int zPosZap;
-
-    //Lightning Origin
-    public int xPosTop;
-    public int yPosTop;
-    public int zPosTop;
+    //Coordinate Arrays
+    private int[][] scanPosOffsets = new int[10][3];
+    private int[] posZap = new int[3];//Power Transfer Origin
+    public int[] posTop = new int[3];//Lightning Origin
 
     //region structure
     private static final String[][] shape = new String[][]{//3 16 0
@@ -102,16 +84,16 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             {E, "B000", "B000", "B000", "\u0001", "B000", E, "B000", E, "B000", E, "B000", "\u0001", "B111", " 22222 ",},
             {"\u000F", "A     ",},
     };
-    private static final Block[] blockType = new Block[]{sBlockCasingsBA0,sBlockCasingsBA0,sBlockCasingsBA0,sBlockCasingsBA0};
+    private static final Block[] blockType = new Block[]{sBlockCasingsBA0, sBlockCasingsBA0, sBlockCasingsBA0, sBlockCasingsBA0};
     private static final byte[] blockMetaT0 = new byte[]{7, 0, 6, 8};
     private static final byte[] blockMetaT1 = new byte[]{7, 1, 6, 8};
     private static final byte[] blockMetaT2 = new byte[]{7, 2, 6, 8};
     private static final byte[] blockMetaT3 = new byte[]{7, 3, 6, 8};
     private static final byte[] blockMetaT4 = new byte[]{7, 4, 6, 8};
     private static final byte[] blockMetaT5 = new byte[]{7, 5, 6, 8};
-    private static final byte[][] blockMetas = new byte[][]{blockMetaT0,blockMetaT1,blockMetaT2,blockMetaT3,blockMetaT4,blockMetaT5};
+    private static final byte[][] blockMetas = new byte[][]{blockMetaT0, blockMetaT1, blockMetaT2, blockMetaT3, blockMetaT4, blockMetaT5};
     private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addCapacitorToMachineList, this::addFrameToMachineList};
-    private static final short[] casingTextures = new short[]{(texturePage << 7)+16+6, 0};
+    private static final short[] casingTextures = new short[]{(texturePage << 7) + 16 + 6, 0};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsBA0, null};
     private static final byte[] blockMetaFallback = new byte[]{6, 0};
     private static final String[] description = new String[]{
@@ -122,112 +104,114 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     //endregion
 
     //region parameters
-    protected Parameters.Group.ParameterIn popogaSetting,histLowSetting,histHighSetting,transferRadiusTowerSetting,transferRadiusTransceiverSetting,transferRadiusCoverUltimateSetting,outputVoltageSetting,outputCurrentSetting,scanTimeMinSetting,overDriveSetting;
-    protected Parameters.Group.ParameterOut popogaDisplay,transferRadiusTowerDisplay,transferRadiusTransceiverDisplay,transferRadiusCoverUltimateDisplay,outputVoltageDisplay,outputCurrentDisplay,energyCapacityDisplay,energyStoredDisplay,energyFractionDisplay,scanTimeDisplay;
+    protected Parameters.Group.ParameterIn popogaSetting, histLowSetting, histHighSetting, transferRadiusTowerSetting, transferRadiusTransceiverSetting, transferRadiusCoverUltimateSetting, outputVoltageSetting, outputCurrentSetting, scanTimeMinSetting, overDriveSetting;
+    protected Parameters.Group.ParameterOut popogaDisplay, transferRadiusTowerDisplay, transferRadiusTransceiverDisplay, transferRadiusCoverUltimateDisplay, outputVoltageDisplay, outputCurrentDisplay, energyCapacityDisplay, energyStoredDisplay, energyFractionDisplay, scanTimeDisplay;
 
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_SETTING_NAME = (base, p)-> "Hysteresis low setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_SETTING_NAME = (base, p)-> "Hysteresis high setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_SETTING_NAME = (base, p)-> "Tesla Towers transfer radius setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME = (base, p)-> "Tesla Transceiver transfer radius setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME = (base, p)-> "Tesla Ultimate Cover transfer radius setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_SETTING_NAME = (base, p)-> "Output voltage setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_SETTING_NAME = (base, p)-> "Output current setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_SETTING_NAME = (base, p)-> "Scan time Min setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_SETTING_NAME = (base, p)-> "Overdrive setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_NAME = (base, p)-> "Unused";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_SETTING_NAME = (base, p) -> "Hysteresis low setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_SETTING_NAME = (base, p) -> "Hysteresis high setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_SETTING_NAME = (base, p) -> "Tesla Towers transfer radius setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME = (base, p) -> "Tesla Transceiver transfer radius setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME = (base, p) -> "Tesla Ultimate Cover transfer radius setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_SETTING_NAME = (base, p) -> "Output voltage setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_SETTING_NAME = (base, p) -> "Output current setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_SETTING_NAME = (base, p) -> "Scan time Min setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_SETTING_NAME = (base, p) -> "Overdrive setting";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_NAME = (base, p) -> "Unused";
 
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_DISPLAY_NAME = (base, p)-> "Tesla Towers transfer radius display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME = (base, p)-> "Tesla Transceiver transfer radius display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME = (base, p)-> "Tesla Ultimate Cover transfer radius display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_DISPLAY_NAME = (base, p)-> "Output voltage display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_DISPLAY_NAME = (base, p)-> "Output current display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_CAPACITY_DISPLAY_NAME = (base, p)-> "Energy Capacity display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_STORED_DISPLAY_NAME = (base, p)-> "Energy Stored display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_FRACTION_DISPLAY_NAME = (base, p)-> "Energy Fraction display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_DISPLAY_NAME = (base, p)-> "Scan time display";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_DISPLAY_NAME = (base, p) -> "Tesla Towers transfer radius display";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME = (base, p) -> "Tesla Transceiver transfer radius display";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME = (base, p) -> "Tesla Ultimate Cover transfer radius display";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_DISPLAY_NAME = (base, p) -> "Output voltage display";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_DISPLAY_NAME = (base, p) -> "Output current display";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_CAPACITY_DISPLAY_NAME = (base, p) -> "Energy Capacity display";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_STORED_DISPLAY_NAME = (base, p) -> "Energy Stored display";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_FRACTION_DISPLAY_NAME = (base, p) -> "Energy Fraction display";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_DISPLAY_NAME = (base, p) -> "Scan time display";
 
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_STATUS=(base, p)->{
-        double value=p.get();
-        if(Double.isNaN(value)){return STATUS_WRONG;}
-        if(value<=0.05) return STATUS_TOO_LOW;
-        if(value>base.histHighSetting.get()) return STATUS_TOO_HIGH;
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_STATUS = (base, p) -> {
+        double value = p.get();
+        if (Double.isNaN(value)) {
+            return STATUS_WRONG;
+        }
+        if (value <= 0.05) return STATUS_TOO_LOW;
+        if (value > base.histHighSetting.get()) return STATUS_TOO_HIGH;
         return STATUS_OK;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_STATUS=(base, p)->{
-        double value=p.get();
-        if(Double.isNaN(value)) return STATUS_WRONG;
-        if(value<=base.histLowSetting.get()) return STATUS_TOO_LOW;
-        if(value>0.95) return STATUS_TOO_HIGH;
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_STATUS = (base, p) -> {
+        double value = p.get();
+        if (Double.isNaN(value)) return STATUS_WRONG;
+        if (value <= base.histLowSetting.get()) return STATUS_TOO_LOW;
+        if (value > 0.95) return STATUS_TOO_HIGH;
         return STATUS_OK;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_STATUS=(base, p)->{
-        double value=p.get();
-        if(Double.isNaN(value)) return STATUS_WRONG;
-        value=(int)value;
-        if(value<0) return STATUS_TOO_LOW;
-        if(value>40) return STATUS_TOO_HIGH;
-        if(value<32) return STATUS_LOW;
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_STATUS = (base, p) -> {
+        double value = p.get();
+        if (Double.isNaN(value)) return STATUS_WRONG;
+        value = (int) value;
+        if (value < 0) return STATUS_TOO_LOW;
+        if (value > 40) return STATUS_TOO_HIGH;
+        if (value < 32) return STATUS_LOW;
         return STATUS_OK;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS=(base, p)->{
-        double value=p.get();
-        if(Double.isNaN(value)) return STATUS_WRONG;
-        value=(int)value;
-        if(value<0) return STATUS_TOO_LOW;
-        if(value>20) return STATUS_TOO_HIGH;
-        if(value<16) return STATUS_LOW;
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS = (base, p) -> {
+        double value = p.get();
+        if (Double.isNaN(value)) return STATUS_WRONG;
+        value = (int) value;
+        if (value < 0) return STATUS_TOO_LOW;
+        if (value > 20) return STATUS_TOO_HIGH;
+        if (value < 16) return STATUS_LOW;
         return STATUS_OK;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_OR_CURRENT_STATUS=(base, p)->{
-        double value=p.get();
-        if(Double.isNaN(value)) return STATUS_WRONG;
-        value=(long)value;
-        if(value==-1) return STATUS_OK;
-        if(value<=0) return STATUS_TOO_LOW;
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_OR_CURRENT_STATUS = (base, p) -> {
+        double value = p.get();
+        if (Double.isNaN(value)) return STATUS_WRONG;
+        value = (long) value;
+        if (value == -1) return STATUS_OK;
+        if (value <= 0) return STATUS_TOO_LOW;
         return STATUS_OK;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_STATUS=(base, p)->{
-        double value=p.get();
-        if(Double.isNaN(value)) return STATUS_WRONG;
-        value=(int)value;
-        if(value<100) return STATUS_TOO_LOW;
-        if(value==100) return STATUS_OK;
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_STATUS = (base, p) -> {
+        double value = p.get();
+        if (Double.isNaN(value)) return STATUS_WRONG;
+        value = (int) value;
+        if (value < 100) return STATUS_TOO_LOW;
+        if (value == 100) return STATUS_OK;
         return STATUS_HIGH;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_STATUS=(base, p)->{
-        double value=p.get();
-        if(Double.isNaN(value)) return STATUS_WRONG;
-        value=(int)value;
-        if(value<0) return STATUS_TOO_LOW;
-        if(value==0) return STATUS_LOW;
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_STATUS = (base, p) -> {
+        double value = p.get();
+        if (Double.isNaN(value)) return STATUS_WRONG;
+        value = (int) value;
+        if (value < 0) return STATUS_TOO_LOW;
+        if (value == 0) return STATUS_LOW;
         return STATUS_HIGH;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_STATUS=(base, p)->{
-        if(base.getBaseMetaTileEntity().getWorld().isThundering()){
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_STATUS = (base, p) -> {
+        if (base.getBaseMetaTileEntity().getWorld().isThundering()) {
             return STATUS_WTF;
         }
         return STATUS_NEUTRAL;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_STATUS=(base, p)->{
-        double value=p.get();
-        if(Double.isNaN(value)) return STATUS_WRONG;
-        value=(int)value;
-        if(value==0||value==20||value==40||value==60||value==80) return STATUS_HIGH;
-        return STATUS_LOW;
-    };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> POWER_STATUS=(base, p)-> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_STATUS = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
-        value=(long)value;
+        value = (int) value;
+        if (value == 0 || value == 20 || value == 40 || value == 60 || value == 80) return STATUS_HIGH;
+        return STATUS_LOW;
+    };
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> POWER_STATUS = (base, p) -> {
+        double value = p.get();
+        if (Double.isNaN(value)) return STATUS_WRONG;
+        value = (long) value;
         if (value > 0) {
             return STATUS_OK;
         } else {
             return STATUS_LOW;
         }
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_STATUS=(base, p)->{
-        double value=p.get();
-        if(Double.isNaN(value)) return STATUS_WRONG;
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_STATUS = (base, p) -> {
+        double value = p.get();
+        if (Double.isNaN(value)) return STATUS_WRONG;
         if (base.energyFractionDisplay.get() > base.histHighSetting.get()) {
             return STATUS_HIGH;
         } else if (base.energyFractionDisplay.get() < base.histLowSetting.get()) {
@@ -248,58 +232,58 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0=parametrization.getGroup(0, true);
-        Parameters.Group hatch_1=parametrization.getGroup(1, true);
-        Parameters.Group hatch_2=parametrization.getGroup(2, true);
-        Parameters.Group hatch_3=parametrization.getGroup(3, true);
-        Parameters.Group hatch_4=parametrization.getGroup(4, true);
-        Parameters.Group hatch_5=parametrization.getGroup(5, true);
-        Parameters.Group hatch_6=parametrization.getGroup(6, true);
-        Parameters.Group hatch_7=parametrization.getGroup(7, true);
-        Parameters.Group hatch_8=parametrization.getGroup(8, true);
-        Parameters.Group hatch_9=parametrization.getGroup(9, true);
+        Parameters.Group hatch_0 = parametrization.getGroup(0, true);
+        Parameters.Group hatch_1 = parametrization.getGroup(1, true);
+        Parameters.Group hatch_2 = parametrization.getGroup(2, true);
+        Parameters.Group hatch_3 = parametrization.getGroup(3, true);
+        Parameters.Group hatch_4 = parametrization.getGroup(4, true);
+        Parameters.Group hatch_5 = parametrization.getGroup(5, true);
+        Parameters.Group hatch_6 = parametrization.getGroup(6, true);
+        Parameters.Group hatch_7 = parametrization.getGroup(7, true);
+        Parameters.Group hatch_8 = parametrization.getGroup(8, true);
+        Parameters.Group hatch_9 = parametrization.getGroup(9, true);
 
-        histLowSetting=hatch_0.makeInParameter(0,0.25, HYSTERESIS_LOW_SETTING_NAME,HYSTERESIS_LOW_STATUS);
-        popogaSetting=hatch_0.makeInParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        histHighSetting=hatch_1.makeInParameter(0,0.75, HYSTERESIS_HIGH_SETTING_NAME,HYSTERESIS_HIGH_STATUS);
-        popogaSetting=hatch_1.makeInParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        transferRadiusTowerSetting=hatch_2.makeInParameter(0,32, TRANSFER_RADIUS_TOWER_SETTING_NAME,TRANSFER_RADIUS_TOWER_STATUS);
-        popogaSetting=hatch_2.makeInParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        transferRadiusTransceiverSetting=hatch_3.makeInParameter(0,16, TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME,TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
-        transferRadiusCoverUltimateSetting=hatch_3.makeInParameter(1,16, TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME,TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
-        outputVoltageSetting=hatch_4.makeInParameter(0,-1, OUTPUT_VOLTAGE_SETTING_NAME,OUTPUT_VOLTAGE_OR_CURRENT_STATUS);
-        popogaSetting=hatch_4.makeInParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        outputCurrentSetting=hatch_5.makeInParameter(0,-1, OUTPUT_CURRENT_SETTING_NAME,OUTPUT_VOLTAGE_OR_CURRENT_STATUS);
-        popogaSetting=hatch_5.makeInParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        popogaSetting=hatch_6.makeInParameter(0,0, POPOGA_NAME,POPOGA_STATUS);
-        popogaSetting=hatch_6.makeInParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        scanTimeMinSetting=hatch_7.makeInParameter(0,100, SCAN_TIME_MIN_SETTING_NAME,SCAN_TIME_MIN_STATUS);
-        popogaSetting=hatch_7.makeInParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        overDriveSetting=hatch_8.makeInParameter(0,0, OVERDRIVE_SETTING_NAME,OVERDRIVE_STATUS);
-        popogaSetting=hatch_8.makeInParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        popogaSetting=hatch_9.makeInParameter(0,0, POPOGA_NAME,POPOGA_STATUS);
-        popogaSetting=hatch_9.makeInParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
+        histLowSetting = hatch_0.makeInParameter(0, 0.25, HYSTERESIS_LOW_SETTING_NAME, HYSTERESIS_LOW_STATUS);
+        popogaSetting = hatch_0.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        histHighSetting = hatch_1.makeInParameter(0, 0.75, HYSTERESIS_HIGH_SETTING_NAME, HYSTERESIS_HIGH_STATUS);
+        popogaSetting = hatch_1.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        transferRadiusTowerSetting = hatch_2.makeInParameter(0, 32, TRANSFER_RADIUS_TOWER_SETTING_NAME, TRANSFER_RADIUS_TOWER_STATUS);
+        popogaSetting = hatch_2.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        transferRadiusTransceiverSetting = hatch_3.makeInParameter(0, 16, TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
+        transferRadiusCoverUltimateSetting = hatch_3.makeInParameter(1, 16, TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
+        outputVoltageSetting = hatch_4.makeInParameter(0, -1, OUTPUT_VOLTAGE_SETTING_NAME, OUTPUT_VOLTAGE_OR_CURRENT_STATUS);
+        popogaSetting = hatch_4.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        outputCurrentSetting = hatch_5.makeInParameter(0, -1, OUTPUT_CURRENT_SETTING_NAME, OUTPUT_VOLTAGE_OR_CURRENT_STATUS);
+        popogaSetting = hatch_5.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaSetting = hatch_6.makeInParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaSetting = hatch_6.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        scanTimeMinSetting = hatch_7.makeInParameter(0, 100, SCAN_TIME_MIN_SETTING_NAME, SCAN_TIME_MIN_STATUS);
+        popogaSetting = hatch_7.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        overDriveSetting = hatch_8.makeInParameter(0, 0, OVERDRIVE_SETTING_NAME, OVERDRIVE_STATUS);
+        popogaSetting = hatch_8.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaSetting = hatch_9.makeInParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaSetting = hatch_9.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
 
-        popogaDisplay=hatch_0.makeOutParameter(0,0, POPOGA_NAME,POPOGA_STATUS);
-        popogaDisplay=hatch_0.makeOutParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        popogaDisplay=hatch_1.makeOutParameter(0,0, POPOGA_NAME,POPOGA_STATUS);
-        popogaDisplay=hatch_1.makeOutParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        transferRadiusTowerDisplay=hatch_2.makeOutParameter(0,0, TRANSFER_RADIUS_TOWER_DISPLAY_NAME,TRANSFER_RADIUS_TOWER_STATUS);
-        popogaDisplay=hatch_2.makeOutParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        transferRadiusTransceiverDisplay=hatch_3.makeOutParameter(0,0, TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME,TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
-        transferRadiusCoverUltimateDisplay=hatch_3.makeOutParameter(1,0, TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME,TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
-        outputVoltageDisplay=hatch_4.makeOutParameter(0,0, OUTPUT_VOLTAGE_DISPLAY_NAME,POWER_STATUS);
-        popogaDisplay=hatch_4.makeOutParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        outputCurrentDisplay=hatch_5.makeOutParameter(0,0, OUTPUT_CURRENT_DISPLAY_NAME,POWER_STATUS);
-        energyCapacityDisplay=hatch_5.makeOutParameter(1,0, ENERGY_CAPACITY_DISPLAY_NAME,ENERGY_STATUS);
-        energyStoredDisplay=hatch_6.makeOutParameter(0,0, ENERGY_STORED_DISPLAY_NAME,ENERGY_STATUS);
-        energyFractionDisplay=hatch_6.makeOutParameter(1,0, ENERGY_FRACTION_DISPLAY_NAME,ENERGY_STATUS);
-        scanTimeDisplay=hatch_7.makeOutParameter(0,0, SCAN_TIME_DISPLAY_NAME,SCAN_TIME_STATUS);
-        popogaDisplay=hatch_7.makeOutParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        popogaDisplay=hatch_8.makeOutParameter(0,0, POPOGA_NAME,POPOGA_STATUS);
-        popogaDisplay=hatch_8.makeOutParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
-        popogaDisplay=hatch_9.makeOutParameter(0,0, POPOGA_NAME,POPOGA_STATUS);
-        popogaDisplay=hatch_9.makeOutParameter(1,0, POPOGA_NAME,POPOGA_STATUS);
+        popogaDisplay = hatch_0.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_0.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_1.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_1.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        transferRadiusTowerDisplay = hatch_2.makeOutParameter(0, 0, TRANSFER_RADIUS_TOWER_DISPLAY_NAME, TRANSFER_RADIUS_TOWER_STATUS);
+        popogaDisplay = hatch_2.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        transferRadiusTransceiverDisplay = hatch_3.makeOutParameter(0, 0, TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
+        transferRadiusCoverUltimateDisplay = hatch_3.makeOutParameter(1, 0, TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
+        outputVoltageDisplay = hatch_4.makeOutParameter(0, 0, OUTPUT_VOLTAGE_DISPLAY_NAME, POWER_STATUS);
+        popogaDisplay = hatch_4.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        outputCurrentDisplay = hatch_5.makeOutParameter(0, 0, OUTPUT_CURRENT_DISPLAY_NAME, POWER_STATUS);
+        energyCapacityDisplay = hatch_5.makeOutParameter(1, 0, ENERGY_CAPACITY_DISPLAY_NAME, ENERGY_STATUS);
+        energyStoredDisplay = hatch_6.makeOutParameter(0, 0, ENERGY_STORED_DISPLAY_NAME, ENERGY_STATUS);
+        energyFractionDisplay = hatch_6.makeOutParameter(1, 0, ENERGY_FRACTION_DISPLAY_NAME, ENERGY_STATUS);
+        scanTimeDisplay = hatch_7.makeOutParameter(0, 0, SCAN_TIME_DISPLAY_NAME, SCAN_TIME_STATUS);
+        popogaDisplay = hatch_7.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_8.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_8.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_9.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_9.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
     }
 
     @Override
@@ -318,26 +302,26 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setLong("eEnergyCapacity",energyCapacity);
+        aNBT.setLong("eEnergyCapacity", energyCapacity);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        energyCapacity=aNBT.getLong("eEnergyCapacity");
+        energyCapacity = aNBT.getLong("eEnergyCapacity");
     }
 
     private long getEnergyEfficiency(long voltage, int distance, boolean overDriveToggle) {
         if (overDriveToggle) {
-            return (long)((voltage * 2) - (voltage * Math.pow(overdriveEfficiency, distance)));
+            return (long) ((voltage * 2) - (voltage * Math.pow(overdriveEfficiency, distance)));
         } else {
-            return (long)(voltage * Math.pow(energyEfficiency, distance));
+            return (long) (voltage * Math.pow(energyEfficiency, distance));
         }
     }
 
-    private float getRangeMulti(int mTier, int vTier){
+    private float getRangeMulti(int mTier, int vTier) {
         //Over-tiered coils will add +25% range
-        if (vTier > mTier){
+        if (vTier > mTier) {
             return 1.25F;
         }
         return 1F;
@@ -351,9 +335,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16+6], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16 + 6], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
-        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16+6]};
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16 + 6]};
     }
 
     @Override
@@ -403,33 +387,31 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
                 //Calculate coordinates of the middle bottom
                 xyzOffsets = getTranslatedOffsets(0, 0, 2);
-                xPosZap = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
-                yPosZap = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
-                zPosZap = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
+                posZap[0] = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
+                posZap[1] = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
+                posZap[2] = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
 
                 //Calculate coordinates of the top sphere
                 xyzOffsets = getTranslatedOffsets(0, -14, 2);
-                xPosTop = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
-                yPosTop = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
-                zPosTop = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
+                posTop[0] = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
+                posTop[1] = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
+                posTop[2] = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
 
                 //Calculate offsets for scanning
-                xyzOffsets = getTranslatedOffsets(40, 0, 43);
-                xPosScanMin = xPosZap + xyzOffsets[0];
-                yPosScan0 = yPosZap + xyzOffsets[1];
-                zPosScanMin = zPosZap + xyzOffsets[2];
-                xyzOffsets = getTranslatedOffsets(-40, -4, -37);
-                yPosScan1 = yPosZap + xyzOffsets[1];
-                xyzOffsets = getTranslatedOffsets(-40, -8, -37);
-                yPosScan2 = yPosZap + xyzOffsets[1];
-                xyzOffsets = getTranslatedOffsets(-40, -12, -37);
-                yPosScan3 = yPosZap + xyzOffsets[1];
-                xyzOffsets = getTranslatedOffsets(-40, -16, -37);
-                yPosScan4 = yPosZap + xyzOffsets[1];
-                xyzOffsets = getTranslatedOffsets(-40, -20, -37);
-                xPosScanMax = xPosZap + xyzOffsets[0];
-                yPosScan5 = yPosZap + xyzOffsets[1];
-                zPosScanMax = zPosZap + xyzOffsets[2];
+                scanPosOffsets[0] = getTranslatedOffsets(40, 0, 43);
+                scanPosOffsets[1] = getTranslatedOffsets(-40, -4, -37);
+
+                scanPosOffsets[2] = getTranslatedOffsets(40, -5, 43);
+                scanPosOffsets[3] = getTranslatedOffsets(-40, -8, -37);
+
+                scanPosOffsets[4] = getTranslatedOffsets(40, -9, 43);
+                scanPosOffsets[5] = getTranslatedOffsets(-40, -12, -37);
+
+                scanPosOffsets[6] = getTranslatedOffsets(40, -13, 43);
+                scanPosOffsets[7] = getTranslatedOffsets(-40, -16, -37);
+
+                scanPosOffsets[8] = getTranslatedOffsets(40, -17, 43);
+                scanPosOffsets[9] = getTranslatedOffsets(-40, -20, -37);
             }
             return true;
         }
@@ -483,7 +465,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         }
 
         //Calculate Efficiency values
-        energyEfficiency = map(mTier + 1, minTier, maxTier, minEfficiency, maxEfficiency);
+        energyEfficiency = map(mTier + 1, 1, maxTier, minEfficiency, maxEfficiency);
         overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
 
         energyCapacity = 0;
@@ -517,24 +499,46 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         return true;
     }
 
-    private void scanForTransmissionTargets(IGregTechTileEntity mte, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax){
-        int mX = mte.getXCoord();
-        int mY = mte.getYCoord();
-        int mZ = mte.getZCoord();
+    private void scanForTransmissionTargets(int[] coordsMin, int[] coordsMax) {
+        int xMin = coordsMin[0];
+        int yMin = coordsMin[1];
+        int zMin = coordsMin[2];
+
+        int xMax = coordsMax[0];
+        int yMax = coordsMax[1];
+        int zMax = coordsMax[2];
+
+        if (xMin > xMax) {
+            int xMax2 = xMin;
+            xMin = xMax;
+            xMax = xMax2;
+        }
+
+        if (yMin > yMax) {
+            int yMax2 = yMin;
+            yMin = yMax;
+            yMax = yMax2;
+        }
+
+        if (zMin > zMax) {
+            int zMax2 = zMin;
+            zMin = zMax;
+            zMax = zMax2;
+        }
 
         for (int xPos = xMin; xPos <= xMax; xPos++) {
             for (int yPos = yMin; yPos <= yMax; yPos++) {
                 for (int zPos = zMin; zPos <= zMax; zPos++) {
-                    if (mX == xPos && mY == yPos && mZ == zPos) {
+                    if (xPos == 0 && yPos == 0 && zPos == 0) {
                         continue;
                     }
-                    IGregTechTileEntity node = getBaseMetaTileEntity().getIGregTechTileEntity(xPos,yPos,zPos);
+                    IGregTechTileEntity node = getBaseMetaTileEntity().getIGregTechTileEntityOffset(xPos, yPos, zPos);
                     if (node == null) {
                         continue;
                     }
                     IMetaTileEntity nodeInside = node.getMetaTileEntity();
                     if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil || nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
-                        eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(Math.pow(xPos,2) + Math.pow(yPos,2) + Math.pow(zPos,2))));
+                        eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(Math.pow(xPos, 2) + Math.pow(yPos, 2) + Math.pow(zPos, 2))));
                     }
                 }
             }
@@ -543,13 +547,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     private void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
-        byte xR = (byte)(node.getXCoord() - xPosTop);
-        byte yR = (byte)(node.getYCoord() - yPosTop);
-        byte zR = (byte)(node.getZCoord() - zPosTop);
+        byte xR = (byte)(node.getXCoord() - posTop[0]);
+        byte yR = (byte)(node.getYCoord() - posTop[1]);
+        byte zR = (byte)(node.getZCoord() - posTop[2]);
 
         int wID = mte.getWorld().provider.dimensionId;
 
-        sparkList.add(new Util.thaumSpark(xPosTop,yPosTop,zPosTop,xR,yR,zR,wID));
+        sparkList.add(new Util.thaumSpark(posTop[0],posTop[1],posTop[2],xR,yR,zR,wID));
     }
 
     @Override
@@ -601,23 +605,23 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         switch (scanTime) {
             case 0:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(mte, xPosScanMin, yPosScan0, zPosScanMin, xPosScanMax, yPosScan1 - 1, zPosScanMax);
+                scanForTransmissionTargets(scanPosOffsets[0],scanPosOffsets[1]);
                 break;
             case 20:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(mte, xPosScanMin, yPosScan1, zPosScanMin, xPosScanMax, yPosScan2 - 1, zPosScanMax);
+                scanForTransmissionTargets(scanPosOffsets[2],scanPosOffsets[3]);
                 break;
             case 40:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(mte, xPosScanMin, yPosScan2, zPosScanMin, xPosScanMax, yPosScan3 - 1, zPosScanMax);
+                scanForTransmissionTargets(scanPosOffsets[4],scanPosOffsets[5]);
                 break;
             case 60:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(mte, xPosScanMin, yPosScan3, zPosScanMin, xPosScanMax, yPosScan4 - 1, zPosScanMax);
+                scanForTransmissionTargets(scanPosOffsets[6],scanPosOffsets[7]);
                 break;
             case 80:
                 scanTimeDisplay.updateStatus();
-                scanForTransmissionTargets(mte, xPosScanMin, yPosScan4, zPosScanMin, xPosScanMax, yPosScan5, zPosScanMax);
+                scanForTransmissionTargets(scanPosOffsets[8],scanPosOffsets[9]);
                 break;
             default:
                 if (scanTime == (int) scanTimeMinSetting.get() - 1) {
@@ -635,9 +639,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                                     int tY = node.getYCoord();
                                     int tZ = node.getZCoord();
 
-                                    int tXN = xPosZap;
-                                    int tYN = yPosZap;
-                                    int tZN = zPosZap;
+                                    int tXN = posZap[0];
+                                    int tYN = posZap[1];
+                                    int tZN = posZap[2];
 
                                     int tOffset = (int) Math.ceil(Math.sqrt(Math.pow(tX - tXN, 2) + Math.pow(tY - tYN, 2) + Math.pow(tZ - tZN, 2)));
                                     teslaCoil.eTeslaMap.put(mte, tOffset);

@@ -184,9 +184,9 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         IMetaTileEntity nodeInside = node.getMetaTileEntity();
         if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil) {
             GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
-            xR = (byte) (nodeTesla.xPosTop - x);
-            yR = (byte) (nodeTesla.yPosTop - y);
-            zR = (byte) (nodeTesla.zPosTop - z);
+            xR = (byte) (nodeTesla.posTop[0] - x);
+            yR = (byte) (nodeTesla.posTop[1] - y);
+            zR = (byte) (nodeTesla.posTop[2] - z);
         } else {
             xR = (byte) (node.getXCoord() - x);
             yR = (byte) (node.getYCoord() - y);
