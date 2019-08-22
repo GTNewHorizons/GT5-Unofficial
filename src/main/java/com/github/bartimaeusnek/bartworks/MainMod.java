@@ -41,6 +41,7 @@ import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.Circ
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitPartLoader;
 import com.github.bartimaeusnek.bartworks.system.material.ThreadedLoader;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.DownTierLoader;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
@@ -60,6 +61,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import net.minecraft.creativetab.CreativeTabs;
@@ -366,12 +368,14 @@ public final class MainMod {
     }
 
     private static void editRecipes(ArrayListMultimap<SubTag,GT_Recipe> base, HashSet<ItemStack> noGas) {
+        if (GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeFluidNameMap.contains(fluids.get(Oganesson).getName()))
+            return;
         HashSet<GT_Recipe> toAdd = new HashSet<>();
         for (SubTag GasTag : base.keySet()) {
             for (GT_Recipe recipe : base.get(GasTag)) {
                 if (recipe.mFluidInputs != null && recipe.mFluidInputs.length > 0) {
-                    String FluidString = recipe.mFluidInputs[0].getFluid().getName().replaceAll("molten", "").replaceAll("fluid", "");
-                    Materials mat = Materials.get(FluidString.substring(0, 1).toUpperCase() + FluidString.substring(1));
+                    String materialString = recipe.mFluidInputs[0].getFluid().getName().replaceAll("molten", "").replaceAll("fluid", "");
+                    Materials mat = Materials.get(materialString.substring(0, 1).toUpperCase() + materialString.substring(1));
                     if (mat != Materials._NULL) {
                         for (Werkstoff werkstoff : Werkstoff.werkstoffHashMap.values()) {
                             if (!werkstoff.contains(GasTag))
@@ -393,7 +397,8 @@ public final class MainMod {
             }
             GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeList.removeAll(base.get(GasTag));
         }
-        GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeList.addAll(toAdd);
+        for (GT_Recipe recipe : toAdd)
+            GT_Recipe.GT_Recipe_Map.sBlastRecipes.add(recipe);
     }
 
     private static void addElectricImplosionCompressorRecipes() {

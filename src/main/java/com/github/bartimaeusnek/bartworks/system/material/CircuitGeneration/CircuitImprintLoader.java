@@ -63,6 +63,8 @@ public class CircuitImprintLoader implements Runnable {
 
     @Override
     public void run() {
+        if (BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).mRecipeList.size() > 0)
+            return;
         Iterator<GT_Recipe> it = GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList.iterator();
         GT_Recipe circuitRecipe;
         HashSet<GT_Recipe> toRem = new HashSet<>();

@@ -115,8 +115,6 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
 
         if (this.bufferedRecipe != null && this.bufferedRecipe.isRecipeInputEqual(true,false,BW_Util.getFluidsFromInputHatches(this),BW_Util.getItemsFromInputBusses(this))) {
             BW_Util.calculateOverclockedNessMulti(this.bufferedRecipe.mEUt,this.bufferedRecipe.mDuration,1,this.getMaxInputVoltage(),this);
-            if (this.mEUt > 0)
-                this.mEUt = -this.mEUt;
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
             this.mOutputItems = this.bufferedRecipe.mOutputs;
             this.mOutputFluids = this.bufferedRecipe.mFluidOutputs;
@@ -144,8 +142,6 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
                 continue;
 
             BW_Util.calculateOverclockedNessMulti(this.bufferedRecipe.mEUt,this.bufferedRecipe.mDuration,1,this.getMaxInputVoltage(),this);
-            if (this.mEUt > 0)
-                this.mEUt = -this.mEUt;
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
             this.mOutputItems = this.bufferedRecipe.mOutputs;
             this.mOutputFluids = this.bufferedRecipe.mFluidOutputs;
