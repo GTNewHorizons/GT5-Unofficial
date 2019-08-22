@@ -52,7 +52,7 @@ public class GT_Item_CasingsBA0 extends GT_Item_Casings_Abstract {
                 aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "it's alive, IT'S ALIVE!");
                 break;
             case 7://"Tesla Toroid Casing"
-                aList.add("A shell for your coils");
+                aList.add("Made out of the finest tin foil!");
                 aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Faraday suits might come later");
                 break;
             case 8://"Tesla Secondary Windings"

@@ -168,8 +168,71 @@ public class DreamCraftRecipeLoader implements Runnable {
                         getOrDefault("Trinium",Materials.Osmium).getMolten(1296),
                 }, CustomItemList.eM_Coil.get(4), 800, 2000000);
 
-        //endregion
+        //Tesla Base
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 6),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.NickelZincFerrite, 1)
+        }, null, CustomItemList.tM_TeslaBase.get(1), 50, 16);
+        GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaBase.get(1),
+                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                new Object[]{"PhP","PFP","PwP",
+                        'P', OrePrefixes.plate.get(Materials.NickelZincFerrite),
+                        'F', OrePrefixes.frameGt.get(Materials.NickelZincFerrite)});
 
+        //Tesla Toroid
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 6),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1)
+        }, null, CustomItemList.tM_TeslaToroid.get(1), 50, 16);
+        GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaToroid.get(1),
+                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                new Object[]{"PhP","PFP","PwP",
+                        'P', OrePrefixes.foil.get(Materials.Aluminium),
+                        'F', OrePrefixes.frameGt.get(Materials.Aluminium)});
+
+        //Tesla Secondary Windings
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                CustomItemList.teslaComponent.getWithDamage(8,0),
+                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(12)
+        }, Materials.Silver.getMolten(144), CustomItemList.tM_TeslaSecondary.get(1), 200, 120);
+
+        //Tesla Primary Coils T0
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.RedstoneAlloy, 8),
+                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(8)
+        }, Materials.RedAlloy.getMolten(144), CustomItemList.tM_TeslaPrimary_0.get(1), 200, 30);
+
+        //Tesla Primary Coils T1
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorMV, 8),
+                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(12)
+        }, Materials.Magnesium.getMolten(144), CustomItemList.tM_TeslaPrimary_1.get(1), 200, 120);
+
+        //Tesla Primary Coils T2
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorHV, 8),
+                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(16)
+        }, Materials.Barium.getMolten(144), CustomItemList.tM_TeslaPrimary_2.get(1), 200, 480);
+
+        //Tesla Primary Coils T3
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorEV, 8),
+                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(20)
+        }, Materials.Platinum.getMolten(144), CustomItemList.tM_TeslaPrimary_3.get(1), 200, 1920);
+
+        //Tesla Primary Coils T4
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorIV, 8),
+                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(24)
+        }, Materials.Vanadium.getMolten(144), CustomItemList.tM_TeslaPrimary_4.get(1), 200, 7680);
+
+        //Tesla Primary Coils T5
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 8),
+                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(28)
+        }, Materials.Indium.getMolten(144), CustomItemList.tM_TeslaPrimary_5.get(1), 50, 30720);
+
+        //endregion
 
         //region hatches
 
@@ -412,10 +475,21 @@ public class DreamCraftRecipeLoader implements Runnable {
 
         //endregion
 
-
         //region multi blocks
 
-        //Tesla Coil
+        //Tesla Winding Components (ADD BLOOD VARIANT)
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 32),
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NickelZincFerrite, 8),
+        }, Materials.Epoxid.getMolten(18), CustomItemList.teslaComponent.getWithDamage(1,0), 320, 30);
+
+        //Tesla Winding Components Ultimate (ADD BLOOD VARIANT)
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV,4),
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NickelZincFerrite, 1),
+        }, Materials.Polytetrafluoroethylene.getMolten(18), CustomItemList.teslaComponent.getWithDamage(1,1), 320, 7680);
+
+        //Tesla Coil (ADD BLOOD VARIANT)
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.tM_TeslaSecondary.get(6),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4),
@@ -423,61 +497,6 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 16),
                 ItemList.Upgrade_Overclocker.get(4),
         }, Materials.Copper.getMolten(576), CustomItemList.Machine_Multi_TeslaCoil.get(1), 800, 480);
-
-        //Tesla Winding Components
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 4),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NickelZincFerrite, 1),
-        }, Materials.Epoxid.getMolten(18), CustomItemList.teslaComponent.getWithDamage(1,0), 320, 30);
-
-        //Tesla Winding Components Ultimate
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV,4),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NickelZincFerrite, 1),
-        }, Materials.Polytetrafluoroethylene.getMolten(18), CustomItemList.teslaComponent.getWithDamage(1,1), 320, 7680);
-
-        //Tesla Secondary Windings
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                CustomItemList.teslaComponent.getWithDamage(64,0),
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
-                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(12)
-        }, Materials.Silver.getMolten(144), CustomItemList.tM_TeslaSecondary.get(1), 200, 120);
-
-        //Tesla Primary Coils T0
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.RedstoneAlloy, 8),
-                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(8)
-        }, Materials.RedAlloy.getMolten(144), CustomItemList.tM_TeslaPrimary_0.get(1), 200, 30);
-
-        //Tesla Primary Coils T1
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorMV, 8),
-                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(12)
-        }, Materials.RedAlloy.getMolten(144), CustomItemList.tM_TeslaPrimary_1.get(1), 200, 120);
-
-        //Tesla Primary Coils T2
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorHV, 8),
-                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(16)
-        }, Materials.RedAlloy.getMolten(144), CustomItemList.tM_TeslaPrimary_2.get(1), 200, 480);
-
-        //Tesla Primary Coils T3
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorEV, 8),
-                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(20)
-        }, Materials.RedAlloy.getMolten(144), CustomItemList.tM_TeslaPrimary_3.get(1), 200, 1920);
-
-        //Tesla Primary Coils T4
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorIV, 8),
-                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(24)
-        }, Materials.RedAlloy.getMolten(144), CustomItemList.tM_TeslaPrimary_4.get(1), 200, 7680);
-
-        //Tesla Primary Coils T5
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 8),
-                com.dreammaster.item.ItemList.MicaInsulatorFoil.getIS(28)
-        }, Materials.RedAlloy.getMolten(144), CustomItemList.tM_TeslaPrimary_5.get(1), 200, 30720);
 
         //Microwave Grinder
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
