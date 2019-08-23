@@ -29,7 +29,7 @@ death.attack.elementalPollution=%1$s was vaping from the wrong hole.
 death.attack.elementalPollution.player=%1$s was vaping from the wrong hole while fighting %2$s.
 death.attack.subspace=%1$s was N-th dimensionally displeased.
 death.attack.subspace.player=%1$s N-th dimensionally displeased while fighting %2$s.
-#Machines
+#Singleblock Machines
 gt.blockmachines.wetransformer.tier.00.name=Ultra Low Voltage Power Transformer
 gt.blockmachines.wetransformer.tier.00.desc=LV -> ULV (Use Soft Mallet to invert)
 gt.blockmachines.wetransformer.tier.01.name=Low Voltage Power Transformer
@@ -91,7 +91,24 @@ gt.blockmachines.transformer.ha.tier.13.name=Extended Mega Ultimate Hi-Amp Trans
 gt.blockmachines.transformer.ha.tier.13.desc=OPV -> UXV (Use Soft Mallet to invert)
 gt.blockmachines.transformer.ha.tier.14.name=Overpowered Hi-Amp Transformer
 gt.blockmachines.transformer.ha.tier.14.desc=MAX -> OPV (Use Soft Mallet to invert)
+#Multiblock Machines
+gt.blockmachines.multimachine.em.emtoessentia.name=Essentia Dequantizer
+gt.blockmachines.multimachine.em.emtoessentia.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.emtoessentia.hint.1=2 - Elemental Input Hatch
+gt.blockmachines.multimachine.em.emtoessentia.hint.2=3 - Elemental Overflow Hatches or Elemental Casing
+gt.blockmachines.multimachine.em.emtoessentia.hint.3=General - Some sort of Essentia Storage
+gt.blockmachines.multimachine.em.emtoessentia.desc.0=Transform quantum form back to...
+gt.blockmachines.multimachine.em.emtoessentia.desc.1=regular one, but why?
+gt.blockmachines.multimachine.em.essentiatoem.name=Essentia Quantizer
+gt.blockmachines.multimachine.em.essentiatoem.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.essentiatoem.hint.1=2 - Elemental Output Hatch
+gt.blockmachines.multimachine.em.essentiatoem.hint.2=3 - Elemental Overflow Hatches or Elemental Casing
+gt.blockmachines.multimachine.em.essentiatoem.hint.3=General - Some sort of Essentia Storage
+gt.blockmachines.multimachine.em.essentiatoem.desc.0=Conveniently convert regular stuff into quantum form.
+gt.blockmachines.multimachine.em.essentiatoem.desc.1=To make it more inconvenient.
+
 #Thaumcraft compatibility
+tt.keyword.Hint_Details=Hint Details
 tt.keyword.Air=Air
 tt.keyword.Earth=Earth
 tt.keyword.Fire=Fire

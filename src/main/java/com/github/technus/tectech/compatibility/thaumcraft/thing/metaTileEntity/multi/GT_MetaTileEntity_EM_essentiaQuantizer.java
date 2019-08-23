@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.CommonValues.V;
@@ -38,27 +39,27 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
-            {"   "," . ","   ",},
-            {"0A0",E,"0A0",},
-            {"121","232","121",},
-            {"\"\"\"","\"1\"","\"\"\"",},
-            {"010","1!1","010",},
+            {"   ", " . ", "   ",},
+            {"0A0", E, "0A0",},
+            {"121", "232", "121",},
+            {"\"\"\"", "\"1\"", "\"\"\"",},
+            {"010", "1!1", "010",},
     };
     private static final Block[] blockType = new Block[]{QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{0,4,0,8};
+    private static final byte[] blockMeta = new byte[]{0, 4, 0, 8};
     private final IHatchAdder[] addingMethods = new IHatchAdder[]{
             this::addClassicToMachineList,
             this::addElementalOutputToMachineList,
             this::addElementalMufflerToMachineList};
-    private static final short[] casingTextures = new short[]{textureOffset, textureOffset+4, textureOffset + 4};
+    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4, 4};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA+"Hint Details:",
-            "1 - Classic Hatches or High Power Casing",
-            "2 - Elemental Output Hatch",
-            "3 - Elemental Overflow Hatches or Elemental Casing",
-            "General - Some sort of Essentia Storage",
+            EnumChatFormatting.AQUA + StatCollector.translateToLocal("tt.keyword.Hint_Details") + ":",
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.hint.0"),//1 - Classic Hatches or High Power Casing
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.hint.1"),//2 - Elemental Output Hatch
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.hint.2"),//3 - Elemental Overflow Hatches or Elemental Casing
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.hint.3"),//General - Some sort of Essentia Storage
     };
     //endregion
 
@@ -72,7 +73,7 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound(){
+    protected ResourceLocation getActivitySound() {
         return GT_MetaTileEntity_EM_quantizer.activitySound;
     }
 
@@ -88,22 +89,22 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        IGregTechTileEntity iGregTechTileEntity=getBaseMetaTileEntity();
+        IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
         int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
         int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ;
-        if(hintsOnly){
+        if (hintsOnly) {
             TecTech.proxy.hint_particle(iGregTechTileEntity.getWorld(),
-                    iGregTechTileEntity.getXCoord()+xDir,
-                    iGregTechTileEntity.getYCoord()+yDir,
-                    iGregTechTileEntity.getZCoord()+zDir,
-                    TT_Container_Casings.sHintCasingsTT,12);
-        } else{
-            if(iGregTechTileEntity.getBlockOffset(xDir,0,zDir).getMaterial() == Material.air) {
+                    iGregTechTileEntity.getXCoord() + xDir,
+                    iGregTechTileEntity.getYCoord() + yDir,
+                    iGregTechTileEntity.getZCoord() + zDir,
+                    TT_Container_Casings.sHintCasingsTT, 12);
+        } else {
+            if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir).getMaterial() == Material.air) {
                 iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord() + yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
             }
         }
-        StructureBuilderExtreme(shape, blockType, blockMeta,1, 1, 0, iGregTechTileEntity,this,hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, iGregTechTileEntity, this, hintsOnly);
     }
 
     @Override
@@ -115,19 +116,19 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Conveniently convert regular stuff into quantum form.",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "To make it more inconvenient."
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.desc.0"),//Conveniently convert regular stuff into quantum form.
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + StatCollector.translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.desc.1")//To make it more inconvenient.
         };
     }
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         TileEntity container = essentiaContainerCompat.getContainer(this);
-        cElementalInstanceStack newStack=essentiaContainerCompat.getFromContainer(container);
-        if(newStack!=null){
+        cElementalInstanceStack newStack = essentiaContainerCompat.getFromContainer(container);
+        if (newStack != null) {
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
-            eAmpereFlow=1;
+            eAmpereFlow = 1;
             outputEM = new cElementalInstanceStackMap[]{
                     new cElementalInstanceStackMap(newStack)
             };
@@ -148,6 +149,6 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
             return;
         }
         eOutputHatches.get(0).getContainerHandler().putUnifyAll(outputEM[0]);
-        outputEM=null;
+        outputEM = null;
     }
 }
