@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
+import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.loader.NetworkDispatcher;
@@ -15,7 +16,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
+import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -68,6 +72,18 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     public GT_MetaTileEntity_TeslaCoil(String aName, int aTier, String aDescription, ITexture[][][] aTextures, int aSlotCount) {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
+    }
+
+    @Override
+    public String[] getDescription() {
+        String[] jargon = new String[3];
+        jargon[0] = CommonValues.BASS_MARK;
+        jargon[1] = "Your Tesla I/O machine of choice";
+        jargon[2] = EnumChatFormatting.AQUA + "Lightning stoves for the rich";
+        String[] sDesc = super.getDescription();
+        sDesc = Arrays.copyOfRange(sDesc, 1, sDesc.length);
+        String[] desc = ArrayUtils.addAll(jargon, sDesc);
+        return desc;
     }
 
     @Override

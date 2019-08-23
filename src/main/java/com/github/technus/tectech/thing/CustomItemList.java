@@ -94,10 +94,10 @@ public enum CustomItemList implements IItemContainer {
 
     scanContainer,parametrizerMemory,teslaCapacitor,teslaCoilCover,teslaComponent,
 
-    Machine_TeslaCoil_LV_1A, Machine_TeslaCoil_MV_1A, Machine_TeslaCoil_HV_1A, Machine_TeslaCoil_EV_1A, Machine_TeslaCoil_IV_1A,
-    Machine_TeslaCoil_LV_4A, Machine_TeslaCoil_MV_4A, Machine_TeslaCoil_HV_4A, Machine_TeslaCoil_EV_4A, Machine_TeslaCoil_IV_4A,
-    Machine_TeslaCoil_LV_9A, Machine_TeslaCoil_MV_9A, Machine_TeslaCoil_HV_9A, Machine_TeslaCoil_EV_9A, Machine_TeslaCoil_IV_9A,
-    Machine_TeslaCoil_LV_16A, Machine_TeslaCoil_MV_16A, Machine_TeslaCoil_HV_16A, Machine_TeslaCoil_EV_16A, Machine_TeslaCoil_IV_16A;
+    Machine_TeslaCoil_1by1_LV, Machine_TeslaCoil_1by1_MV, Machine_TeslaCoil_1by1_HV, Machine_TeslaCoil_1by1_EV, Machine_TeslaCoil_1by1_IV,
+    Machine_TeslaCoil_2by2_LV, Machine_TeslaCoil_2by2_MV, Machine_TeslaCoil_2by2_HV, Machine_TeslaCoil_2by2_EV, Machine_TeslaCoil_2by2_IV,
+    Machine_TeslaCoil_3by3_LV, Machine_TeslaCoil_3by3_MV, Machine_TeslaCoil_3by3_HV, Machine_TeslaCoil_3by3_EV, Machine_TeslaCoil_3by3_IV,
+    Machine_TeslaCoil_4by4_LV, Machine_TeslaCoil_4by4_MV, Machine_TeslaCoil_4by4_HV, Machine_TeslaCoil_4by4_EV, Machine_TeslaCoil_4by4_IV;
 
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;

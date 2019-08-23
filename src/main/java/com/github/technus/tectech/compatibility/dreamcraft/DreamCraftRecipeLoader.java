@@ -475,13 +475,7 @@ public class DreamCraftRecipeLoader implements Runnable {
 
         //endregion
 
-        //region multi blocks
-
-        //Tesla Winding Components (ADD BLOOD VARIANT)
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 32),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NickelZincFerrite, 8),
-        }, Materials.Epoxid.getMolten(18), CustomItemList.teslaComponent.getWithDamage(1,0), 320, 30);
+        //region multiblocks
 
         //Tesla Winding Components Ultimate (ADD BLOOD VARIANT)
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
@@ -489,14 +483,14 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NickelZincFerrite, 1),
         }, Materials.Polytetrafluoroethylene.getMolten(18), CustomItemList.teslaComponent.getWithDamage(1,1), 320, 7680);
 
-        //Tesla Coil (ADD BLOOD VARIANT)
+        //Tesla Coil
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                CustomItemList.tM_TeslaSecondary.get(6),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4),
+                GT_ModHandler.getIC2Item("teslaCoil", 1),
+                CustomItemList.tM_TeslaSecondary.get(4),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 4),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 16),
                 ItemList.Upgrade_Overclocker.get(4),
-        }, Materials.Copper.getMolten(576), CustomItemList.Machine_Multi_TeslaCoil.get(1), 800, 480);
+        }, Materials.Silver.getMolten(576), CustomItemList.Machine_Multi_TeslaCoil.get(1), 800, 480);
 
         //Microwave Grinder
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
@@ -1169,6 +1163,360 @@ public class DreamCraftRecipeLoader implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000)
             }, ItemList.ZPM3.get(1), 4000, 1600000);
         }
+        //endregion
+
+        //region singleblocks
+
+        //Tesla Transceiver LV 1A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_LV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_1by1_LV.get(1), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_LV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_1by1_LV.get(1), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_LV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_1by1_LV.get(1), 400, 30);
+
+        //Tesla Transceiver MV 1A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_MV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_1by1_MV.get(1), 400, 120);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_MV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_1by1_MV.get(1), 400, 120);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_MV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_1by1_MV.get(1), 400, 120);
+
+        //Tesla Transceiver HV 1A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_HV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_1by1_HV.get(1), 400, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_HV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_1by1_HV.get(1), 400, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_HV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_1by1_HV.get(1), 400, 480);
+
+        //Tesla Transceiver EV 1A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_EV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_1by1_EV.get(1), 400, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_EV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_1by1_EV.get(1), 400, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_EV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_1by1_EV.get(1), 400, 1920);
+
+        //Tesla Transceiver IV 1A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_IV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_1by1_IV.get(1), 400, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_IV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_1by1_IV.get(1), 400, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_1by1_IV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_1by1_IV.get(1), 400, 7680);
+
+        //Tesla Transceiver LV 4A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_LV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_2by2_LV.get(1), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_LV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_2by2_LV.get(1), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_LV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_2by2_LV.get(1), 400, 30);
+
+        //Tesla Transceiver MV 4A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_MV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_2by2_MV.get(1), 400, 120);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_MV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_2by2_MV.get(1), 400, 120);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_MV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_2by2_MV.get(1), 400, 120);
+
+        //Tesla Transceiver HV 4A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_HV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_2by2_HV.get(1), 400, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_HV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_2by2_HV.get(1), 400, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_HV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_2by2_HV.get(1), 400, 480);
+
+        //Tesla Transceiver EV 4A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_EV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_2by2_EV.get(1), 400, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_EV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_2by2_EV.get(1), 400, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_EV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_2by2_EV.get(1), 400, 1920);
+
+        //Tesla Transceiver IV 4A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_IV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_2by2_IV.get(1), 400, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_IV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_2by2_IV.get(1), 400, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_2by2_IV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_2by2_IV.get(1), 400, 7680);
+
+        //Tesla Transceiver LV 9A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_LV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_3by3_LV.get(1), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_LV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_3by3_LV.get(1), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_LV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_3by3_LV.get(1), 400, 30);
+
+        //Tesla Transceiver MV 9A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_MV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_3by3_MV.get(1), 400, 120);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_LV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_3by3_MV.get(1), 400, 120);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_MV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_3by3_MV.get(1), 400, 120);
+
+        //Tesla Transceiver HV 9A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_HV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_3by3_HV.get(1), 400, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_HV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_3by3_HV.get(1), 400, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_HV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_3by3_HV.get(1), 400, 480);
+
+        //Tesla Transceiver EV 9A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_EV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_3by3_EV.get(1), 400, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_EV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_3by3_EV.get(1), 400, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_EV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_3by3_EV.get(1), 400, 1920);
+
+        //Tesla Transceiver IV 9A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_IV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_3by3_IV.get(1), 400, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_IV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_3by3_IV.get(1), 400, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_3by3_IV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_3by3_IV.get(1), 400, 7680);
+
+        //Tesla Transceiver LV 16A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_LV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_4by4_LV.get(1), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_LV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_4by4_LV.get(1), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_LV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_4by4_LV.get(1), 400, 30);
+
+        //Tesla Transceiver MV 16A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_MV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_4by4_MV.get(1), 400, 120);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_MV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_4by4_MV.get(1), 400, 120);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_MV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_4by4_MV.get(1), 400, 120);
+
+        //Tesla Transceiver HV 16A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_HV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_4by4_HV.get(1), 400, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_HV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_4by4_HV.get(1), 400, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_HV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_4by4_HV.get(1), 400, 480);
+
+        //Tesla Transceiver EV 16A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_EV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_4by4_EV.get(1), 400, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_EV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_4by4_EV.get(1), 400, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_EV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_4by4_EV.get(1), 400, 1920);
+
+        //Tesla Transceiver IV 16A
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_IV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Lead.getMolten(576),
+                CustomItemList.Machine_TeslaCoil_4by4_IV.get(1), 400, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_IV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.Tin.getMolten(288),
+                CustomItemList.Machine_TeslaCoil_4by4_IV.get(1), 400, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Battery_Buffer_4by4_IV.get(1),
+                        CustomItemList.teslaCoilCover.getWithDamage(1,0)},
+                Materials.SolderingAlloy.getMolten(144),
+                CustomItemList.Machine_TeslaCoil_4by4_IV.get(1), 400, 7680);
+
+        //endregion
+
+        //region crafting components
+
+        //Tesla Winding Components
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 32),
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NickelZincFerrite, 8),
+        }, Materials.Epoxid.getMolten(288), CustomItemList.teslaComponent.getWithDamage(1,0), 320, 30);
+
         //endregion
 
         register_machine_EM_behaviours();
