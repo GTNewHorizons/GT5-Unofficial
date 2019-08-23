@@ -565,7 +565,7 @@ public class MachineLoader implements Runnable {
         rack_Hatch.set(new GT_MetaTileEntity_Hatch_Rack(15450, "hatch.rack.tier.08", "Computer Rack", 8, "4 Slot Rack").getStackForm(1L));
         holder_Hatch.set(new GT_MetaTileEntity_Hatch_Holder(15451, "hatch.holder.tier.09", "Object Holder", 8, "For Research Station").getStackForm(1L));
 
-        capacitor_Hatch.set(new GT_MetaTileEntity_Hatch_Capacitor(15452, "hatch.capacitor.tier.05", "Capacitor Hatch", 5, "For Tesla Coil").getStackForm(1L));
+        capacitor_Hatch.set(new GT_MetaTileEntity_Hatch_Capacitor(15452, "hatch.capacitor.tier.03", "Capacitor Hatch", 3, "For Tesla Tower").getStackForm(1L));
 
         // ===================================================================================================
         // Pipes

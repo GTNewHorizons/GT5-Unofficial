@@ -597,6 +597,18 @@ public class BloodyRecipeLoader implements Runnable {
                 ItemList.Field_Generator_UV.get(1)
         }, Materials.Osmiridium.getMolten(1296), CustomItemList.eM_muffler_UV.get(1), 800, 500000);
 
+        //Capacitor Hatch
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                ItemList.Hatch_Input_Bus_HV.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 4),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Gold, 4),
+        }, Materials.Silver.getMolten(576), CustomItemList.capacitor_Hatch.get(1), 800, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                ItemList.Hatch_Output_Bus_HV.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 4),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Gold, 4),
+        }, Materials.Silver.getMolten(576), CustomItemList.capacitor_Hatch.get(1), 800, 480);
+
         //endregion
 
         //region multiblocks
@@ -794,7 +806,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_1by1_LV.get(1), 400, 30);
-
         //Tesla Transceiver MV 1A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_1by1_MV.get(1),
@@ -811,7 +822,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_1by1_MV.get(1), 400, 120);
-
         //Tesla Transceiver HV 1A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_1by1_HV.get(1),
@@ -828,7 +838,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_1by1_HV.get(1), 400, 480);
-
         //Tesla Transceiver EV 1A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_1by1_EV.get(1),
@@ -845,7 +854,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_1by1_EV.get(1), 400, 1920);
-
         //Tesla Transceiver IV 1A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_1by1_IV.get(1),
@@ -862,7 +870,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_1by1_IV.get(1), 400, 7680);
-
         //Tesla Transceiver LV 4A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_2by2_LV.get(1),
@@ -879,7 +886,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_2by2_LV.get(1), 400, 30);
-
         //Tesla Transceiver MV 4A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_2by2_MV.get(1),
@@ -896,7 +902,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_2by2_MV.get(1), 400, 120);
-
         //Tesla Transceiver HV 4A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_2by2_HV.get(1),
@@ -913,7 +918,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_2by2_HV.get(1), 400, 480);
-
         //Tesla Transceiver EV 4A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_2by2_EV.get(1),
@@ -930,7 +934,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_2by2_EV.get(1), 400, 1920);
-
         //Tesla Transceiver IV 4A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_2by2_IV.get(1),
@@ -947,7 +950,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_2by2_IV.get(1), 400, 7680);
-
         //Tesla Transceiver LV 9A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_3by3_LV.get(1),
@@ -964,7 +966,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_3by3_LV.get(1), 400, 30);
-
         //Tesla Transceiver MV 9A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_3by3_MV.get(1),
@@ -981,7 +982,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_3by3_MV.get(1), 400, 120);
-
         //Tesla Transceiver HV 9A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_3by3_HV.get(1),
@@ -998,7 +998,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_3by3_HV.get(1), 400, 480);
-
         //Tesla Transceiver EV 9A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_3by3_EV.get(1),
@@ -1015,7 +1014,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_3by3_EV.get(1), 400, 1920);
-
         //Tesla Transceiver IV 9A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_3by3_IV.get(1),
@@ -1032,7 +1030,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_3by3_IV.get(1), 400, 7680);
-
         //Tesla Transceiver LV 16A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_4by4_LV.get(1),
@@ -1049,7 +1046,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_4by4_LV.get(1), 400, 30);
-
         //Tesla Transceiver MV 16A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_4by4_MV.get(1),
@@ -1066,7 +1062,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_4by4_MV.get(1), 400, 120);
-
         //Tesla Transceiver HV 16A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_4by4_HV.get(1),
@@ -1083,7 +1078,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_4by4_HV.get(1), 400, 480);
-
         //Tesla Transceiver EV 16A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_4by4_EV.get(1),
@@ -1100,7 +1094,6 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.SolderingAlloy.getMolten(144),
                 CustomItemList.Machine_TeslaCoil_4by4_EV.get(1), 400, 1920);
-
         //Tesla Transceiver IV 16A
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                         ItemList.Battery_Buffer_4by4_IV.get(1),
@@ -1127,8 +1120,7 @@ public class BloodyRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 32),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NickelZincFerrite, 8),
         }, Materials.Epoxid.getMolten(288), CustomItemList.teslaComponent.getWithDamage(1, 0), 320, 30);
-
-        //Tesla Winding Components Ultimate (ADD BLOOD VARIANT)
+        //Tesla Winding Components Ultimate
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 16),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NickelZincFerrite, 8),
@@ -1145,7 +1137,6 @@ public class BloodyRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 8),
         }, Materials.Epoxid.getMolten(72), CustomItemList.teslaCapacitor.getWithDamage(1, 0), 320, 30);
-
         //MV Tesla Capacitor
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Copper, 4),
@@ -1153,7 +1144,6 @@ public class BloodyRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 12),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 12),
         }, Materials.Epoxid.getMolten(144), CustomItemList.teslaCapacitor.getWithDamage(1, 1), 320, 120);
-
         //HV Tesla Capacitor
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 4),
@@ -1161,7 +1151,6 @@ public class BloodyRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 16),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 16),
         }, Materials.Epoxid.getMolten(216), CustomItemList.teslaCapacitor.getWithDamage(1, 2), 320, 480);
-
         //EV Tesla Capacitor
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 4),
@@ -1169,7 +1158,6 @@ public class BloodyRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 20),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 20),
         }, Materials.Epoxid.getMolten(288), CustomItemList.teslaCapacitor.getWithDamage(1, 3), 320, 1920);
-
         //IV Tesla Capacitor
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 4),
@@ -1177,7 +1165,6 @@ public class BloodyRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 24),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 24),
         }, Materials.Epoxid.getMolten(360), CustomItemList.teslaCapacitor.getWithDamage(1, 4), 320, 7680);
-
         //Tesla Cover
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.teslaComponent.getWithDamage(4, 0),
@@ -1200,7 +1187,6 @@ public class BloodyRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8),
         }, Materials.SolderingAlloy.getMolten(72), CustomItemList.teslaCover.getWithDamage(1, 0), 320, 480);
-
         //Ultimate Tesla Cover
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.teslaComponent.getWithDamage(4, 1),
@@ -1231,19 +1217,15 @@ public class BloodyRecipeLoader implements Runnable {
         //LV Tesla Capacitor
         GT_Values.RA.addExtractorRecipe(CustomItemList.teslaCapacitor.getWithDamage(1, 0),
                 GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 4), 300, 2);
-
         //MV Tesla Capacitor
         GT_Values.RA.addExtractorRecipe(CustomItemList.teslaCapacitor.getWithDamage(1, 1),
                 GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 6), 300, 2);
-
         //HV Tesla Capacitor
         GT_Values.RA.addExtractorRecipe(CustomItemList.teslaCapacitor.getWithDamage(1, 2),
                 GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 8), 300, 2);
-
         //EV Tesla Capacitor
         GT_Values.RA.addExtractorRecipe(CustomItemList.teslaCapacitor.getWithDamage(1, 3),
                 GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 10), 300, 2);
-
         //IV Tesla Capacitor
         GT_Values.RA.addExtractorRecipe(CustomItemList.teslaCapacitor.getWithDamage(1, 4),
                 GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 12), 300, 2);
