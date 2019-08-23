@@ -13,6 +13,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.transformations
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 
@@ -58,12 +59,12 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
             throw new tElementalException("Hadron Definition error");
         }
         aspectStacks = aspects;
-        float mass=0;
-        for(cElementalDefinitionStack stack:aspects.values()){
-            mass+=stack.getMass();
+        float mass = 0;
+        for (cElementalDefinitionStack stack : aspects.values()) {
+            mass += stack.getMass();
         }
-        this.mass=mass;
-        hash=super.hashCode();
+        this.mass = mass;
+        hash = super.hashCode();
     }
 
     //public but u can just try{}catch(){} the constructor it still calls this method
@@ -75,18 +76,18 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
             }
             amount += aspects.amount;
         }
-        return amount==2;
+        return amount == 2;
     }
 
     @Override
     public String getName() {
-        String name= AspectDefinitionCompat.aspectDefinitionCompat.getAspectTag(this);
-        if(name!=null){
-            name=name.substring(0,1).toUpperCase()+name.substring(1);
-        }else{
-            name=getSymbol();
+        String name = AspectDefinitionCompat.aspectDefinitionCompat.getAspectTag(this);
+        if (name != null) {
+            name = name.substring(0, 1).toUpperCase() + name.substring(1);
+        } else {
+            name = getSymbol();
         }
-        return "Aspect: "+name;
+        return StatCollector.translateToLocal("tt.keyword.Aspect") + ": " + name;
     }
 
     @Override
@@ -195,7 +196,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
 
     @Override
     public float getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
-        return iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT *(newEnergyLevel-currentEnergyLevel);
+        return iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT * (newEnergyLevel - currentEnergyLevel);
     }
 
     @Override
@@ -260,13 +261,13 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
 
     public static void run() {
         try {
-            cElementalDefinition.addCreatorFromNBT(nbtType, dComplexAspectDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-96);
+            cElementalDefinition.addCreatorFromNBT(nbtType, dComplexAspectDefinition.class.getMethod("fromNBT", NBTTagCompound.class), (byte) -96);
         } catch (Exception e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
             }
         }
-        if(DEBUG_MODE) {
+        if (DEBUG_MODE) {
             TecTech.LOGGER.info("Registered Elemental Matter Class: ComplexAspect " + nbtType + ' ' + -96);
         }
     }
@@ -276,7 +277,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
         return -96;
     }
 
-    public static byte getClassTypeStatic(){
+    public static byte getClassTypeStatic() {
         return -96;
     }
 
@@ -287,32 +288,32 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
 
     @Override
     public void addScanShortSymbols(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS, capabilities)) {
+        if (Util.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS, capabilities)) {
             lines.add(getShortSymbol());
         }
     }
 
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
-            lines.add("CLASS = " + nbtType + ' ' + getClassType());
+        if (Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
+            lines.add(StatCollector.translateToLocal("tt.keyword.CLASS") + " = " + nbtType + ' ' + getClassType());
         }
-        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS, capabilities)) {
-            lines.add("NAME = "+getName());
+        if (Util.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS, capabilities)) {
+            lines.add(StatCollector.translateToLocal("tt.keyword.NAME") + " = " + getName());
             //lines.add("SYMBOL = "+getSymbol());
         }
-        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities)) {
-            lines.add("CHARGE = " + getCharge() / 3f + " e");
+        if (Util.areBitsSet(SCAN_GET_CHARGE, capabilities)) {
+            lines.add(StatCollector.translateToLocal("tt.keyword.CHARGE") + " = " + getCharge() / 3f + " e");
         }
-        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities)) {
-            lines.add(getColor() < 0 ? "COLORLESS" : "CARRIES COLOR");
+        if (Util.areBitsSet(SCAN_GET_COLOR, capabilities)) {
+            lines.add(getColor() < 0 ? StatCollector.translateToLocal("tt.keyword.COLORLESS") : StatCollector.translateToLocal("tt.keyword.CARRIES_COLOR"));
         }
-        if(Util.areBitsSet(SCAN_GET_MASS,capabilities)) {
-            lines.add("MASS = " + getMass() + " eV/c\u00b2");
+        if (Util.areBitsSet(SCAN_GET_MASS, capabilities)) {
+            lines.add(StatCollector.translateToLocal("tt.keyword.MASS") + " = " + getMass() + " eV/c\u00b2");
         }
-        if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
-            lines.add("LIFE TIME = "+getRawTimeSpan(energyLevel)+ " s");
-            lines.add("    "+"At current energy level");
+        if (Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)) {
+            lines.add(StatCollector.translateToLocal("tt.keyword.LIFE_TIME") + " = " + getRawTimeSpan(energyLevel) + " s");
+            lines.add("    " + StatCollector.translateToLocal("tt.keyphrase.At_current_energy_level"));
         }
     }
 }

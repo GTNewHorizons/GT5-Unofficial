@@ -1,6 +1,9 @@
+#Creative Tab Name
 itemGroup.TecTech=TecTech Interdimensional
+#Blocks
 tile.quantumGlass.name=Quantum Glass
 tile.quantumStuff.name=Quantum Stuff
+#Items
 item.em.debugContainer.name=Debug EM Container
 item.em.definitionContainer.name=EM Recipe Hint
 item.em.definitionScanStorage.name=EM Scan Storage
@@ -8,12 +11,100 @@ item.em.constructable.name=Multiblock Machine Blueprint
 item.em.frontRotate.name=Front Rotation Scrench
 item.em.parametrizerMemoryCard.name=Parametrizer Memory Card
 item.em.EuMeterGT.name=GT EU meter
-
+item.tm.teslaCover.0.name=Tesla Coil Cover
+item.tm.teslaCover.1.name=Tesla Coil Cover Rich Edition
+item.tm.teslaCoilCapacitor.0.name=LV Tesla Capacitor
+item.tm.teslaCoilCapacitor.1.name=MV Tesla Capacitor
+item.tm.teslaCoilCapacitor.2.name=HV Tesla Capacitor
+item.tm.teslaCoilCapacitor.3.name=EV Tesla Capacitor
+item.tm.teslaCoilCapacitor.4.name=IV Tesla Capacitor
+item.tm.itemTeslaComponent.0.name=Electrum Tesla Windings
+item.tm.itemTeslaComponent.1.name=Superconductive Tesla Windings
+tile.turretHeadEM.name=Elemental Matter Turret
+tile.turretBaseEM.name=Elemental Turret Base
+#Death Messages
 death.attack.microwaving=%1$s was dehydrated by radiation.
 death.attack.microwaving.player=%1$s was dehydrated by radiation while fighting %2$s.
-
 death.attack.elementalPollution=%1$s was vaping from the wrong hole.
 death.attack.elementalPollution.player=%1$s was vaping from the wrong hole while fighting %2$s.
-
 death.attack.subspace=%1$s was N-th dimensionally displeased.
 death.attack.subspace.player=%1$s N-th dimensionally displeased while fighting %2$s.
+#Machines
+gt.blockmachines.wetransformer.tier.00.name=Ultra Low Voltage Power Transformer
+gt.blockmachines.wetransformer.tier.00.desc=LV -> ULV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.01.name=Low Voltage Power Transformer
+gt.blockmachines.wetransformer.tier.01.desc=MV -> LV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.02.name=Medium Voltage Power Transformer
+gt.blockmachines.wetransformer.tier.02.desc=HV -> MV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.03.name=High Voltage Power Transformer
+gt.blockmachines.wetransformer.tier.03.desc=EV -> HV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.04.name=Extreme Power Transformer
+gt.blockmachines.wetransformer.tier.04.desc=IV -> EV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.05.name=Insane Power Transformer
+gt.blockmachines.wetransformer.tier.05.desc=LuV -> IV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.06.name=Ludicrous Power Transformer
+gt.blockmachines.wetransformer.tier.06.desc=ZPM -> LuV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.07.name=ZPM Voltage Power Transformer
+gt.blockmachines.wetransformer.tier.07.desc=UV -> ZPM (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.08.name=Ultimate Power Transformer
+gt.blockmachines.wetransformer.tier.08.desc=UHV -> UV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.09.name=Highly Ultimate Power Transformer
+gt.blockmachines.wetransformer.tier.09.desc=UEV -> UHV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.10.name=Extremely Ultimate Power Transformer
+gt.blockmachines.wetransformer.tier.10.desc=UIV -> UEV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.11.name=Insanely Ultimate Power Transformer
+gt.blockmachines.wetransformer.tier.11.desc=UMV -> UIV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.12.name=Mega Ultimate Power Transformer
+gt.blockmachines.wetransformer.tier.12.desc=UXV -> UMV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.13.name=Extended Mega Ultimate Power Transformer
+gt.blockmachines.wetransformer.tier.13.desc=OPV -> UXV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.14.name=Overpowered Power Transformer
+gt.blockmachines.wetransformer.tier.14.desc=MAX -> OPV (Use Soft Mallet to invert)
+#The rainbow 'You just gotta use your Imagination' bit isn't ever translated anyway
+gt.blockmachines.hull.tier.10.name=UEV Machine Hull
+gt.blockmachines.hull.tier.11.name=UIV Machine Hull
+gt.blockmachines.hull.tier.12.name=UMV Machine Hull
+gt.blockmachines.hull.tier.13.name=UXV Machine Hull
+gt.blockmachines.hull.tier.14.name=OPV Machine Hull
+gt.blockmachines.hull.tier.15.name=MAX Machine Hull
+gt.blockmachines.transformer.tier.09.name=Highly Ultimate Transformer
+gt.blockmachines.transformer.tier.09.desc=UEV -> UHV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.tier.10.name=Extremely Ultimate Transformer
+gt.blockmachines.transformer.tier.10.desc=UIV -> UEV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.tier.11.name=Insanely Ultimate Transformer
+gt.blockmachines.transformer.tier.11.desc=UMV -> UIV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.tier.12.name=Mega Ultimate Transformer
+gt.blockmachines.transformer.tier.12.desc=UXV -> UMV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.tier.13.name=Extended Mega Ultimate Transformer
+gt.blockmachines.transformer.tier.13.desc=OPV -> UXV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.tier.14.name=Overpowered Transformer
+gt.blockmachines.transformer.tier.14.desc=MAX -> OPV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.ha.tier.09.name=Highly Ultimate Hi-Amp Transformer
+gt.blockmachines.transformer.ha.tier.09.desc=UEV -> UHV (Use Soft Mallet to invert
+gt.blockmachines.transformer.ha.tier.10.name=Extremely Ultimate Hi-Amp Transformer
+gt.blockmachines.transformer.ha.tier.10.desc=UIV -> UEV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.ha.tier.11.name=Insanely Ultimate Hi-Amp Transformer
+gt.blockmachines.transformer.ha.tier.11.desc=UMV -> UIV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.ha.tier.12.name=Mega Ultimate Hi-Amp Transformer
+gt.blockmachines.transformer.ha.tier.12.desc=UXV -> UMV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.ha.tier.13.name=Extended Mega Ultimate Hi-Amp Transformer
+gt.blockmachines.transformer.ha.tier.13.desc=OPV -> UXV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.ha.tier.14.name=Overpowered Hi-Amp Transformer
+gt.blockmachines.transformer.ha.tier.14.desc=MAX -> OPV (Use Soft Mallet to invert)
+#Thaumcraft compatibility
+tt.keyword.Air=Air
+tt.keyword.Earth=Earth
+tt.keyword.Fire=Fire
+tt.keyword.Water=Water
+tt.keyword.Order=Order
+tt.keyword.Entropy=Entropy
+tt.keyword.Primal=Primal
+tt.keyword.Aspect=Aspect
+tt.keyword.CLASS=CLASS
+tt.keyword.NAME=NAME
+tt.keyword.CHARGE=CHARGE
+tt.keyword.COLORLESS=COLORLESS
+tt.keyword.CARRIES_COLOR=CARRIES COLOR
+tt.keyword.MASS=MASS
+tt.keyword.LIFE_TIME=LIFE TIME
+tt.keyphrase.At_current_energy_level=At current energy level

@@ -4,7 +4,6 @@ import com.github.technus.tectech.CommonValues;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,12 +27,6 @@ public final class TeslaCoilCapacitor extends Item {
         setHasSubtypes(true);
         setUnlocalizedName("tm.teslaCoilCapacitor");
         setTextureName(MODID + ":itemCapacitorLV");
-
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "LV Tesla Capacitor");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "MV Tesla Capacitor");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "HV Tesla Capacitor");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "EV Tesla Capacitor");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "IV Tesla Capacitor");
     }
 
     @Override

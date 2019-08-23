@@ -17,6 +17,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
@@ -79,6 +80,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         String[] jargon = new String[3];
         jargon[0] = CommonValues.BASS_MARK;
         jargon[1] = "Your Tesla I/O machine of choice";
+        jargon[1] = StatCollector.translateToLocal("desc.test");
         jargon[2] = EnumChatFormatting.AQUA + "Lightning stoves for the rich";
         String[] sDesc = super.getDescription();
         sDesc = Arrays.copyOfRange(sDesc, 1, sDesc.length);

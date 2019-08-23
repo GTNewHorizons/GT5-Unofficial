@@ -4,7 +4,6 @@ import com.github.technus.tectech.CommonValues;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,9 +26,6 @@ public final class TeslaCoilComponent extends Item {
         setHasSubtypes(true);
         setUnlocalizedName("tm.itemTeslaComponent");
         setTextureName(MODID + ":itemTeslaComponent");
-
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Electrum Tesla Windings");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Superconductive Tesla Windings");
     }
 
     @Override
