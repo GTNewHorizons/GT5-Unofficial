@@ -34,6 +34,7 @@ public final class ParametrizerMemoryCard extends Item {
     private static IIcon locked, unlocked;
 
     private ParametrizerMemoryCard() {
+        setHasSubtypes(true);
         setMaxStackSize(1);
         setUnlocalizedName("em.parametrizerMemoryCard");
         setTextureName(MODID + ":itemParametrizerMemoryCardUnlocked");
