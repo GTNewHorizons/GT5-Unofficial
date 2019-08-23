@@ -146,7 +146,6 @@ public class BloodyRecipeLoader implements Runnable {
                 new Object[]{"PhP", "PFP", "PwP",
                         'P', OrePrefixes.plate.get(Materials.NickelZincFerrite),
                         'F', OrePrefixes.frameGt.get(Materials.NickelZincFerrite)});
-
         //Tesla Toroid
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 6),
@@ -157,43 +156,36 @@ public class BloodyRecipeLoader implements Runnable {
                 new Object[]{"PhP", "PFP", "PwP",
                         'P', OrePrefixes.foil.get(Materials.Aluminium),
                         'F', OrePrefixes.frameGt.get(Materials.Aluminium)});
-
         //Tesla Secondary Windings
         GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaSecondary.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"WWW", "WwW", "WWW",
                         'W', CustomItemList.teslaComponent.getWithDamage(1, 0)});
-
         //Tesla Primary Coils T0
         GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaPrimary_0.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"WWW", "WwW", "WWW",
                         'W', OrePrefixes.wireGt02.get(Materials.RedstoneAlloy)});
-
         //Tesla Primary Coils T1
         GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaPrimary_1.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"WWW", "WwW", "WWW",
                         'W', OrePrefixes.wireGt02.get(Materials.SuperconductorMV)});
-
         //Tesla Primary Coils T2
         GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaPrimary_2.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"WWW", "WwW", "WWW",
                         'W', OrePrefixes.wireGt02.get(Materials.SuperconductorHV)});
-
         //Tesla Primary Coils T3
         GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaPrimary_3.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"WWW", "WwW", "WWW",
                         'W', OrePrefixes.wireGt02.get(Materials.SuperconductorEV)});
-
         //Tesla Primary Coils T4
         GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaPrimary_4.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"WWW", "WwW", "WWW",
                         'W', OrePrefixes.wireGt02.get(Materials.SuperconductorIV)});
-
         //Tesla Primary Coils T5
         GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaPrimary_5.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
