@@ -16,7 +16,7 @@ import net.minecraft.util.IIcon;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.thing.CustomItemList.teslaCoilCover;
+import static com.github.technus.tectech.thing.CustomItemList.teslaCover;
 
 
 public final class TeslaCoilCover extends Item {
@@ -25,7 +25,7 @@ public final class TeslaCoilCover extends Item {
 
     private TeslaCoilCover() {
         setHasSubtypes(true);
-        setUnlocalizedName("tm.teslaCoilCover");
+        setUnlocalizedName("tm.teslaCover");
         setTextureName(MODID + ":itemTeslaCover");
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Tesla Coil Cover");
@@ -58,7 +58,7 @@ public final class TeslaCoilCover extends Item {
     public static void run() {
         INSTANCE = new TeslaCoilCover();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
-        teslaCoilCover.set(INSTANCE);
+        teslaCover.set(INSTANCE);
     }
 
     @Override
