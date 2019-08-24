@@ -17,7 +17,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.HotFuel;
 import gregtech.api.util.ThermalFuel;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.GenericChem;
@@ -30,8 +29,6 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MISC_MATERIALS;
-import gtPlusPlus.core.material.MaterialStack;
-import gtPlusPlus.core.material.NONMATERIAL;
 import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
@@ -102,6 +99,7 @@ public class RECIPES_GREGTECH {
 		 * Special Recipe handlers
 		 */
 		RECIPES_SeleniumProcessing.init();
+		RECIPES_RareEarthProcessing.init();
 
 
 
@@ -2285,24 +2283,6 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void sifterRecipes() {		
-
-		// Rare Earth Processing
-		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustRareEarth", 1),
-				new ItemStack[] { 
-						ELEMENT.getInstance().YTTRIUM.getSmallDust(1),
-						ELEMENT.getInstance().NEODYMIUM.getSmallDust(1),
-						ELEMENT.getInstance().LANTHANUM.getSmallDust(1),
-						ELEMENT.getInstance().CERIUM.getSmallDust(1),
-						ELEMENT.getInstance().CADMIUM.getSmallDust(1),
-						ELEMENT.getInstance().CAESIUM.getSmallDust(1),
-						ORES.SAMARSKITE_YB.getSmallDust(1),
-						ORES.FLORENCITE.getSmallDust(1),
-						ORES.FLUORCAPHITE.getSmallDust(1),
-						//ELEMENT.getInstance().YTTERBIUM.getTinyDust(1),
-						//ELEMENT.getInstance().SAMARIUM.getTinyDust(1),
-						//ELEMENT.getInstance().GADOLINIUM.getTinyDust(1)
-		},
-				new int[] { 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000 }, 20 * 30, 500);
 
 		// Zirconium
 		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedIlmenite", 1),

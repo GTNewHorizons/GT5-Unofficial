@@ -55,9 +55,6 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 		//if (material.getMaterialComposites().length > 1){
 		Logger.MATERIALS("[Recipe Generator Debug] ["+material.getLocalizedName()+"]");
 		int tVoltageMultiplier = MaterialUtils.getVoltageForTier(material.vTier);
-		if (tVoltageMultiplier < 120) {
-			tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 480 : 120;
-		}
 
 		final ItemStack dustStone = ItemUtils.getItemStackOfAmountFromOreDict("dustStone", 1);
 		Material bonusA = null; //Ni
@@ -362,7 +359,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 						mInternalOutputs[4],
 						mInternalOutputs[5],
 						mChances, 
-						20*1*(tVoltageMultiplier/10), 
+						(int) Math.max(material.getMass() * 3L * 1, 1), 
 						tVoltageMultiplier)){
 					Logger.MATERIALS("[Electrolyzer] Generated Electrolyzer recipe for "+matDust.getDisplayName());
 				}
@@ -445,7 +442,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 						null,
 						mInternalOutputs,
 						mChances,
-						20*1*(tVoltageMultiplier/10),
+						(int) Math.max(material.getMass() * 4L * 1, 1),
 						tVoltageMultiplier)){
 					Logger.MATERIALS("[Dehydrator] Generated Dehydrator recipe for "+matDust.getDisplayName());
 				}

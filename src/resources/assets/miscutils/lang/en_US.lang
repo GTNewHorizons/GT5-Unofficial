@@ -2970,3 +2970,59 @@ item.itemCactusCoke.name=Cactus Coke
 item.itemSugarCharcoal.name=Sugar Charcoal
 item.itemSugarCoke.name=Sugar Coke
 item.LiquidHydrogen.name=Liquid Hydrogen Cell [LOH]
+
+
+
+//Added 24/8/19
+//Debug Labels
+tile.blockDoorAlloy.name=Reinforced Door
+tile.blockInhibitorObelisk.name=Inhibitor Obelisk
+tile.Battlesign.name=Battlesign
+tile.blockMagicBox.name=Magic Box
+tile.blockManaPod.name=Mana Pod Stem
+tile.buildToolBlock.name=Tool Block
+tile.blockRedPlasma.name=Red Plasma Block
+tile.pipeBlock.name=Pipe
+item.null.name=REPORT ERROR TO ALKALUS
+
+
+//Added 24/8/19
+tile.OreGreenockite.name=Greenockite Ore
+item.crushedGreenockite.name=Crushed Greenockite Ore
+item.crushedCentrifugedGreenockite.name=Centrifuged Crushed Greenockite Ore
+item.crushedPurifiedGreenockite.name=Purified Crushed Greenockite Ore
+item.dustImpureGreenockite.name=Impure Greenockite Dust
+item.dustPureGreenockite.name=Purified Greenockite Dust
+item.itemDustGreenockite.name=Greenockite Dust
+item.itemDustTinyGreenockite.name=Tiny Pile of Greenockite Dust
+item.itemDustSmallGreenockite.name=Small Pile of Greenockite Dust
+
+tile.OreRareEarthI.name=Rare Earth (I) Ore
+item.crushedRareEarthI.name=Crushed Rare Earth (I) Ore
+item.crushedCentrifugedRareEarthI.name=Centrifuged Crushed Rare Earth (I) Ore
+item.crushedPurifiedRareEarthI.name=Purified Crushed Rare Earth (I) Ore
+item.dustImpureRareEarthI.name=Impure Rare Earth (I) Dust
+item.dustPureRareEarthI.name=Purified Rare Earth (I) Dust
+item.itemDustRareEarthI.name=Rare Earth (I) Dust
+item.itemDustTinyRareEarthI.name=Tiny Pile of Rare Earth (I) Dust
+item.itemDustSmallRareEarthI.name=Small Pile of Rare Earth (I) Dust
+
+tile.OreRareEarthII.name=Rare Earth (II) Ore
+item.crushedRareEarthII.name=Crushed Rare Earth (II) Ore
+item.crushedCentrifugedRareEarthII.name=Centrifuged Crushed Rare Earth (II) Ore
+item.crushedPurifiedRareEarthII.name=Purified Crushed Rare Earth (II) Ore
+item.dustImpureRareEarthII.name=Impure Rare Earth (II) Dust
+item.dustPureRareEarthII.name=Purified Rare Earth (II) Dust
+item.itemDustRareEarthII.name=Rare Earth (II) Dust
+item.itemDustTinyRareEarthII.name=Tiny Pile of Rare Earth (II) Dust
+item.itemDustSmallRareEarthII.name=Small Pile of Rare Earth (II) Dust
+
+tile.OreRareEarthIII.name=Rare Earth (III) Ore
+item.crushedRareEarthIII.name=Crushed Rare Earth (III) Ore
+item.crushedCentrifugedRareEarthIII.name=Centrifuged Crushed Rare Earth (III) Ore
+item.crushedPurifiedRareEarthIII.name=Purified Crushed Rare Earth (III) Ore
+item.dustImpureRareEarthIII.name=Impure Rare Earth (III) Dust
+item.dustPureRareEarthIII.name=Purified Rare Earth (III) Dust
+item.itemDustRareEarthIII.name=Rare Earth (III) Dust
+item.itemDustTinyRareEarthIII.name=Tiny Pile of Rare Earth (III) Dust
+item.itemDustSmallRareEarthIII.name=Small Pile of Rare Earth (III) Dust

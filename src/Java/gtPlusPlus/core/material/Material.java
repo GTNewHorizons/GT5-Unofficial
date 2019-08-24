@@ -94,8 +94,8 @@ public class Material {
 		this(materialName, defaultState, null, 0, rgba, j, k, l, m, false, "", radiationLevel, false, materialStacks);
 	}
 
-	public Material(String materialName, MaterialState defaultState, final TextureSet set, short[] rgba, int j, int k, int l, int m, int radiationLevel, MaterialStack[] materialStacks){
-		this(materialName, defaultState, set, 0, rgba, j, k, l, m, false, "", radiationLevel, false, materialStacks);
+	public Material(String materialName, MaterialState defaultState, final TextureSet set, short[] rgba, int meltingPoint, int boilingPoint, int protons, int neutrons, int radiationLevel, MaterialStack[] materialStacks){
+		this(materialName, defaultState, set, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, false, "", radiationLevel, false, materialStacks);
 	}
 	
 	public Material(final String materialName, final MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final MaterialStack... inputs){

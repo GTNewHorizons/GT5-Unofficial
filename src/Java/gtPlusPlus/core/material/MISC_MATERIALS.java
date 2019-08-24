@@ -1,6 +1,8 @@
 package gtPlusPlus.core.material;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
+import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -113,6 +115,79 @@ public final class MISC_MATERIALS {
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CARBON, 1),
 					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2)
+			});
+	
+	
+	
+	
+	/*
+	 * Rare Earth Materials
+	 */
+	
+	public static final Material RARE_EARTH_LOW = new Material(
+			"Rare Earth (I)", //Material Name
+			MaterialState.ORE, //State
+			TextureSets.GEM_A.get(), //Texture Set
+			null, //Material Colour
+			1200,
+			2500,
+			-1,
+			-1,
+			-1, //Radiation
+			new MaterialStack[]{
+					new MaterialStack(ORES.GREENOCKITE, 1),
+					new MaterialStack(ORES.LANTHANITE_CE, 1),					
+					new MaterialStack(ORES.AGARDITE_CD, 1),					
+					new MaterialStack(ORES.XENOTIME, 1),
+					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.NetherQuartz), 1),
+					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Galena), 1),
+					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Chalcopyrite), 1),
+					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Cobaltite), 1),
+					new MaterialStack(ELEMENT.STANDALONE.BLACK_METAL, 1)
+			});
+	
+	public static final Material RARE_EARTH_MID = new Material(
+			"Rare Earth (II)", //Material Name
+			MaterialState.ORE, //State
+			TextureSets.ENRICHED.get(), //Texture Set
+			null, //Material Colour
+			3500,
+			5000,
+			-1,
+			-1,
+			-1, //Radiation
+			new MaterialStack[]{
+					new MaterialStack(ORES.LANTHANITE_ND, 1),
+					new MaterialStack(ORES.AGARDITE_ND, 1),					
+					new MaterialStack(ORES.YTTRIAITE, 1),					
+					new MaterialStack(ORES.CROCROITE, 1),					
+					new MaterialStack(ORES.NICHROMITE, 1),					
+					new MaterialStack(ORES.ZIRCON, 1),
+					new MaterialStack(ELEMENT.STANDALONE.BLACK_METAL, 1),
+					new MaterialStack(ELEMENT.STANDALONE.WHITE_METAL, 1),
+					new MaterialStack(ELEMENT.STANDALONE.RUNITE, 1)			
+			});
+	
+	public static final Material RARE_EARTH_HIGH = new Material(
+			"Rare Earth (III)", //Material Name
+			MaterialState.ORE, //State
+			TextureSets.REFINED.get(), //Texture Set
+			null, //Material Colour
+			5200,
+			7500,
+			-1,
+			-1,
+			-1, //Radiation
+			new MaterialStack[]{
+					new MaterialStack(ORES.GADOLINITE_Y, 1),
+					new MaterialStack(ORES.LEPERSONNITE, 1),
+					new MaterialStack(ORES.FLORENCITE, 1),					
+					new MaterialStack(ORES.FLUORCAPHITE, 1),
+					new MaterialStack(ORES.LAUTARITE, 1),
+					new MaterialStack(ORES.DEMICHELEITE_BR, 1),					
+					new MaterialStack(ORES.ALBURNITE, 1),
+					new MaterialStack(ORES.KASHINITE, 1),
+					new MaterialStack(ORES.AGARDITE_LA, 1),
 			});
 
 

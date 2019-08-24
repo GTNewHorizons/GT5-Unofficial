@@ -115,6 +115,7 @@ public class GTplusplus_Everglades implements ActionListener {
 		MaterialGenerator.generateOreMaterial(ORES.MIESSIITE);
 		MaterialGenerator.generateOreMaterial(ORES.KASHINITE);
 		MaterialGenerator.generateOreMaterial(ORES.IRARSITE);
+		MaterialGenerator.generateOreMaterial(ORES.GREENOCKITE);
 		MaterialGenerator.generateOreMaterial(ORES.RADIOBARITE);
 		MaterialGenerator.generateOreMaterial(ORES.DEEP_EARTH_REACTOR_FUEL_DEPOSIT);
 		
