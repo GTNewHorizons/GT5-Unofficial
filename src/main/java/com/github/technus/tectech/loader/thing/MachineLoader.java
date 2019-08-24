@@ -297,7 +297,7 @@ public class MachineLoader implements Runnable {
         eM_energyTunnel7_UXV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
                 15198, "hatch.energytunnel7.tier.13", "UXV 1048576/t Laser Target Hatch", 13, 1048576).getStackForm(1L));
         eM_energyTunnel9001.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15199, "hatch.energytunnel.tier.14", "Legendary Laser Target Hatch", 14, (int)V[14]).getStackForm(1L));
+                15199, "hatch.energytunnel.tier.14", "Legendary Laser Target Hatch", 14, (int) V[14]).getStackForm(1L));
 
         // ===================================================================================================
         // Multi AMP Power OUTPUTS
@@ -506,8 +506,8 @@ public class MachineLoader implements Runnable {
         eM_dynamoTunnel7_UXV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
                 15298, "hatch.dynamotunnel7.tier.13", "UXV 1048576/t Laser Source Hatch", 13, 1048576).getStackForm(1L));
         eM_dynamoTunnel9001.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15299, "hatch.dynamotunnel.tier.14", "Legendary Laser Source Hatch", 14, (int)V[14]).getStackForm(1L));
-        
+                15299, "hatch.dynamotunnel.tier.14", "Legendary Laser Source Hatch", 14, (int) V[14]).getStackForm(1L));
+
         // ===================================================================================================
         // MULTIBLOCKS
         // ===================================================================================================
@@ -600,25 +600,25 @@ public class MachineLoader implements Runnable {
         // Tesla Transceiver
         // ===================================================================================================
 
-        Machine_TeslaCoil_1by1_LV.set(new GT_MetaTileEntity_TeslaCoil(16000, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1,1).getStackForm(1L));
+        Machine_TeslaCoil_1by1_LV.set(new GT_MetaTileEntity_TeslaCoil(16000, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1, 1).getStackForm(1L));
         Machine_TeslaCoil_1by1_MV.set(new GT_MetaTileEntity_TeslaCoil(16001, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 1).getStackForm(1L));
         Machine_TeslaCoil_1by1_HV.set(new GT_MetaTileEntity_TeslaCoil(16002, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 1).getStackForm(1L));
         Machine_TeslaCoil_1by1_EV.set(new GT_MetaTileEntity_TeslaCoil(16003, "machine.tt.tesla.04", "Ultimate Power Tesla Transceiver", 4, 1).getStackForm(1L));
         Machine_TeslaCoil_1by1_IV.set(new GT_MetaTileEntity_TeslaCoil(16004, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 1).getStackForm(1L));
 
-        Machine_TeslaCoil_2by2_LV.set(new GT_MetaTileEntity_TeslaCoil(16005, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1,4).getStackForm(1L));
+        Machine_TeslaCoil_2by2_LV.set(new GT_MetaTileEntity_TeslaCoil(16005, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1, 4).getStackForm(1L));
         Machine_TeslaCoil_2by2_MV.set(new GT_MetaTileEntity_TeslaCoil(16006, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 4).getStackForm(1L));
         Machine_TeslaCoil_2by2_HV.set(new GT_MetaTileEntity_TeslaCoil(16007, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 4).getStackForm(1L));
         Machine_TeslaCoil_2by2_EV.set(new GT_MetaTileEntity_TeslaCoil(16008, "machine.tt.tesla.04", "Ultimate Power Tesla Transceiver", 4, 4).getStackForm(1L));
         Machine_TeslaCoil_2by2_IV.set(new GT_MetaTileEntity_TeslaCoil(16009, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 4).getStackForm(1L));
 
-        Machine_TeslaCoil_3by3_LV.set(new GT_MetaTileEntity_TeslaCoil(16010, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1,9).getStackForm(1L));
+        Machine_TeslaCoil_3by3_LV.set(new GT_MetaTileEntity_TeslaCoil(16010, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1, 9).getStackForm(1L));
         Machine_TeslaCoil_3by3_MV.set(new GT_MetaTileEntity_TeslaCoil(16011, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 9).getStackForm(1L));
         Machine_TeslaCoil_3by3_HV.set(new GT_MetaTileEntity_TeslaCoil(16012, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 9).getStackForm(1L));
         Machine_TeslaCoil_3by3_EV.set(new GT_MetaTileEntity_TeslaCoil(16013, "machine.tt.tesla.04", "Ultimate Power Tesla Transceiver", 4, 9).getStackForm(1L));
         Machine_TeslaCoil_3by3_IV.set(new GT_MetaTileEntity_TeslaCoil(16014, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 9).getStackForm(1L));
 
-        Machine_TeslaCoil_4by4_LV.set(new GT_MetaTileEntity_TeslaCoil(16015, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1,16).getStackForm(1L));
+        Machine_TeslaCoil_4by4_LV.set(new GT_MetaTileEntity_TeslaCoil(16015, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1, 16).getStackForm(1L));
         Machine_TeslaCoil_4by4_MV.set(new GT_MetaTileEntity_TeslaCoil(16016, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 16).getStackForm(1L));
         Machine_TeslaCoil_4by4_HV.set(new GT_MetaTileEntity_TeslaCoil(16017, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 16).getStackForm(1L));
         Machine_TeslaCoil_4by4_EV.set(new GT_MetaTileEntity_TeslaCoil(16018, "machine.tt.tesla.04", "Ultimate Power Tesla Transceiver", 4, 16).getStackForm(1L));
@@ -627,8 +627,8 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
         // Debug Stuff
         // ===================================================================================================
-        Machine_DebugPollutor.set(new GT_MetaTileEntity_DebugPollutor(15495,"debug.tt.pollutor","Debug Pollution Generator",15).getStackForm(1));
-        hatch_CreativeData.set(new GT_MetaTileEntity_Hatch_CreativeData(15496,"debug.tt.data","Debug Data Hatch",15).getStackForm(1));
+        Machine_DebugPollutor.set(new GT_MetaTileEntity_DebugPollutor(15495, "debug.tt.pollutor", "Debug Pollution Generator", 15).getStackForm(1));
+        hatch_CreativeData.set(new GT_MetaTileEntity_Hatch_CreativeData(15496, "debug.tt.data", "Debug Data Hatch", 15).getStackForm(1));
         hatch_CreativeMaintenance.set(new GT_MetaTileEntity_Hatch_CreativeMaintenance(15497, "debug.tt.maintenance", "Debug Maintenance Hatch", 15).getStackForm(1L));
         Machine_DebugGenny.set(new GT_MetaTileEntity_DebugPowerGenerator(15498, "debug.tt.genny", "Debug Power Generator", 15).getStackForm(1L));
         Machine_DebugWriter.set(new GT_MetaTileEntity_DebugStructureWriter(15499, "debug.tt.writer", "Debug Structure Writer", 15).getStackForm(1L));

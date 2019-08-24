@@ -20,8 +20,6 @@ item.tm.teslaCoilCapacitor.3.name=EV Tesla Capacitor
 item.tm.teslaCoilCapacitor.4.name=IV Tesla Capacitor
 item.tm.itemTeslaComponent.0.name=Electrum Tesla Windings
 item.tm.itemTeslaComponent.1.name=Superconductive Tesla Windings
-tile.turretHeadEM.name=Elemental Matter Turret
-tile.turretBaseEM.name=Elemental Turret Base
 #Death Messages
 death.attack.microwaving=%1$s was dehydrated by radiation.
 death.attack.microwaving.player=%1$s was dehydrated by radiation while fighting %2$s.
@@ -29,7 +27,14 @@ death.attack.elementalPollution=%1$s was vaping from the wrong hole.
 death.attack.elementalPollution.player=%1$s was vaping from the wrong hole while fighting %2$s.
 death.attack.subspace=%1$s was N-th dimensionally displeased.
 death.attack.subspace.player=%1$s N-th dimensionally displeased while fighting %2$s.
-#Singleblock Machines
+#Machine hulls
+gt.blockmachines.hull.tier.10.name=UEV Machine Hull
+gt.blockmachines.hull.tier.11.name=UIV Machine Hull
+gt.blockmachines.hull.tier.12.name=UMV Machine Hull
+gt.blockmachines.hull.tier.13.name=UXV Machine Hull
+gt.blockmachines.hull.tier.14.name=OPV Machine Hull
+gt.blockmachines.hull.tier.15.name=MAX Machine Hull
+#Transformers
 gt.blockmachines.wetransformer.tier.00.name=Ultra Low Voltage Power Transformer
 gt.blockmachines.wetransformer.tier.00.desc=LV -> ULV (Use Soft Mallet to invert)
 gt.blockmachines.wetransformer.tier.01.name=Low Voltage Power Transformer
@@ -60,13 +65,6 @@ gt.blockmachines.wetransformer.tier.13.name=Extended Mega Ultimate Power Transfo
 gt.blockmachines.wetransformer.tier.13.desc=OPV -> UXV (Use Soft Mallet to invert)
 gt.blockmachines.wetransformer.tier.14.name=Overpowered Power Transformer
 gt.blockmachines.wetransformer.tier.14.desc=MAX -> OPV (Use Soft Mallet to invert)
-#The rainbow 'You just gotta use your Imagination' bit isn't ever translated anyway
-gt.blockmachines.hull.tier.10.name=UEV Machine Hull
-gt.blockmachines.hull.tier.11.name=UIV Machine Hull
-gt.blockmachines.hull.tier.12.name=UMV Machine Hull
-gt.blockmachines.hull.tier.13.name=UXV Machine Hull
-gt.blockmachines.hull.tier.14.name=OPV Machine Hull
-gt.blockmachines.hull.tier.15.name=MAX Machine Hull
 gt.blockmachines.transformer.tier.09.name=Highly Ultimate Transformer
 gt.blockmachines.transformer.tier.09.desc=UEV -> UHV (Use Soft Mallet to invert)
 gt.blockmachines.transformer.tier.10.name=Extremely Ultimate Transformer
@@ -91,7 +89,48 @@ gt.blockmachines.transformer.ha.tier.13.name=Extended Mega Ultimate Hi-Amp Trans
 gt.blockmachines.transformer.ha.tier.13.desc=OPV -> UXV (Use Soft Mallet to invert)
 gt.blockmachines.transformer.ha.tier.14.name=Overpowered Hi-Amp Transformer
 gt.blockmachines.transformer.ha.tier.14.desc=MAX -> OPV (Use Soft Mallet to invert)
-#Multiblock Machines
+#Hatches
+tt.base.emhatch.desc.0=Max stacks amount:
+tt.base.emhatch.desc.1=Stack capacity:
+tt.base.emhatch.desc.2=Place Overflow Hatch behind,on top or below
+tt.base.emhatch.desc.3=to provide overflow protection while this block
+tt.base.emhatch.desc.4=is not attached to multi block.
+tt.base.emhatch.desc.5=Transport range can be extended in straight
+tt.base.emhatch.desc.6=line up to 15 blocks with quantum tunnels.
+tt.base.emhatch.desc.7=Must be painted to work
+gt.blockmachines.hatch.emmuffler.tier.08.name=UV Overflow Output Hatch
+gt.blockmachines.hatch.emmuffler.tier.09.name=UHV Overflow Output Hatch
+gt.blockmachines.hatch.emmuffler.tier.10.name=UEV Overflow Output Hatch
+gt.blockmachines.hatch.emmuffler.tier.11.name=UIV Overflow Output Hatch
+gt.blockmachines.hatch.emmuffler.tier.12.name=UMV Overflow Output Hatch
+gt.blockmachines.hatch.emmuffler.tier.13.name=UXV Overflow Output Hatch
+gt.blockmachines.hatch.emmuffler.desc.0=Disposes excess elemental Matter
+gt.blockmachines.hatch.emmuffler.desc.1=Mass capacity
+gt.blockmachines.hatch.emmuffler.desc.2=Disposal Speed
+gt.blockmachines.hatch.emmuffler.desc.3=DO NOT OBSTRUCT THE OUTPUT!
+
+tt.keyword.BOOM=BOOM!
+tt.keyword.ID=ID
+tt.keyphrase.No_Stacks=No Stacks
+tt.keyphrase.Contains_EM=Contains EM
+tt.keyphrase.Contained_mass=Contained mass
+tt.keyphrase.Mass_Disposal_speed=Mass Disposal speed
+tt.keyphrase.Muffler_BOOM=Muffler BOOM!
+gt.blockmachines.emin.tier.08.name=UV Elemental Input Hatch
+gt.blockmachines.emin.tier.09.name=UHV Elemental Input Hatch
+gt.blockmachines.emin.tier.10.name=UEV Elemental Input Hatch
+gt.blockmachines.emin.tier.11.name=UIV Elemental Input Hatch
+gt.blockmachines.emin.tier.12.name=UMV Elemental Input Hatch
+gt.blockmachines.emin.tier.13.name=UXV Elemental Input Hatch
+gt.blockmachines.emin.desc=Elemental Input for Multiblocks
+gt.blockmachines.emout.tier.08.name=UV Elemental Output Hatch
+gt.blockmachines.emout.tier.09.name=UHV Elemental Output Hatch
+gt.blockmachines.emout.tier.10.name=UEV Elemental Output Hatch
+gt.blockmachines.emout.tier.11.name=UIV Elemental Output Hatch
+gt.blockmachines.emout.tier.12.name=UMV Elemental Output Hatch
+gt.blockmachines.emout.tier.13.name=UXV Elemental Output Hatch
+gt.blockmachines.emout.desc=Elemental Output for Multiblocks
+#Multiblocks
 gt.blockmachines.multimachine.em.emtoessentia.name=Essentia Dequantizer
 gt.blockmachines.multimachine.em.emtoessentia.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.emtoessentia.hint.1=2 - Elemental Input Hatch
@@ -106,7 +145,6 @@ gt.blockmachines.multimachine.em.essentiatoem.hint.2=3 - Elemental Overflow Hatc
 gt.blockmachines.multimachine.em.essentiatoem.hint.3=General - Some sort of Essentia Storage
 gt.blockmachines.multimachine.em.essentiatoem.desc.0=Conveniently convert regular stuff into quantum form.
 gt.blockmachines.multimachine.em.essentiatoem.desc.1=To make it more inconvenient.
-
 #Thaumcraft compatibility
 tt.keyword.Hint_Details=Hint Details
 tt.keyword.Air=Air
@@ -125,3 +163,6 @@ tt.keyword.CARRIES_COLOR=CARRIES COLOR
 tt.keyword.MASS=MASS
 tt.keyword.LIFE_TIME=LIFE TIME
 tt.keyphrase.At_current_energy_level=At current energy level
+#OpenTurrets compatibility
+tile.turretHeadEM.name=Elemental Matter Turret
+tile.turretBaseEM.name=Elemental Turret Base

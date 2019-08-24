@@ -21,6 +21,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -45,11 +46,11 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     private final float overflowDisperse;
 
     public GT_MetaTileEntity_Hatch_OverflowElemental(int aID, String aName, String aNameRegional, int aTier, float max) {
-        super(aID, aName, aNameRegional, aTier, 0, "Disposes excess elemental Matter");
+        super(aID, aName, aNameRegional, aTier, 0, StatCollector.translateToLocal("gt.blockmachines.hatch.emmuffler.desc.0"));//Disposes excess elemental Matter
         overflowMatter = max / 2;
         overflowMax = max;
         overflowDisperse = overflowMax / (float) (30 - aTier);
-        Util.setTier(aTier,this);
+        Util.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_OverflowElemental(String aName, int aTier, float max, String aDescription, ITexture[][][] aTextures) {
@@ -84,9 +85,9 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         return new String[]{
                 CommonValues.TEC_MARK_EM,
                 mDescription,
-                "Mass capacity: " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c\u00b2",
-                "Disposal Speed: " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c\u00b2)/s",
-                "DO NOT OBSTRUCT THE OUTPUT!"
+                StatCollector.translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c\u00b2",
+                StatCollector.translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c\u00b2)/s",
+                StatCollector.translateToLocal("gt.blockmachines.hatch.emmuffler.desc.3")
         };
     }
 
@@ -142,10 +143,10 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == DISPERSE_AT) {
             if (aBaseMetaTileEntity.isActive()) {
                 if (overflowMatter > overflowDisperse) {
-                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity,overflowDisperse);
+                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowDisperse);
                     overflowMatter -= overflowDisperse;
                 } else {
-                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity,overflowMatter);
+                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowMatter);
                     overflowMatter = 0;
                     aBaseMetaTileEntity.setActive(false);
                     aBaseMetaTileEntity.setLightValue((byte) 0);
@@ -166,20 +167,20 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         //DOES NOT CHECK FOR TOO MUCH, it is done only while putting stuff in (OPTIMIZATION!!!)
     }
 
-    private void vapePollution(IGregTechTileEntity mte){
-        float xPos=mte.getXCoord()+0.5f;
-        float yPos=mte.getYCoord()+0.5f;
-        float zPos=mte.getZCoord()+0.5f;
+    private void vapePollution(IGregTechTileEntity mte) {
+        float xPos = mte.getXCoord() + 0.5f;
+        float yPos = mte.getYCoord() + 0.5f;
+        float zPos = mte.getZCoord() + 0.5f;
 
         int xDirShift = ForgeDirection.getOrientation(mte.getFrontFacing()).offsetX;
         int yDirShift = ForgeDirection.getOrientation(mte.getFrontFacing()).offsetY;
         int zDirShift = ForgeDirection.getOrientation(mte.getFrontFacing()).offsetZ;
 
-        AxisAlignedBB aabb=AxisAlignedBB.getBoundingBox(xPos-.5+xDirShift,yPos-.5+yDirShift,zPos-.5+zDirShift,xPos+.5+xDirShift,yPos+1.5+yDirShift,zPos+.5+zDirShift);
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(xPos - .5 + xDirShift, yPos - .5 + yDirShift, zPos - .5 + zDirShift, xPos + .5 + xDirShift, yPos + 1.5 + yDirShift, zPos + .5 + zDirShift);
         for (Object entity : mte.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, aabb)) {
-            float damagingFactor = (float)Math.log(overflowDisperse);
-            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.confusion.id,1,(int)(damagingFactor*20)));
-            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.wither.id,2,(int)(damagingFactor*15)));
+            float damagingFactor = (float) Math.log(overflowDisperse);
+            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.confusion.id, 1, (int) (damagingFactor * 20)));
+            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.wither.id, 2, (int) (damagingFactor * 15)));
             ((EntityLivingBase) entity).attackEntityFrom(elementalPollution, damagingFactor);
         }
     }
@@ -192,28 +193,28 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     @Override
     public String[] getInfoData() {
         return new String[]{
-                "Contained mass:",
+                StatCollector.translateToLocal("tt.keyphrase.Contained_mass") + ":",
                 EnumChatFormatting.RED + Double.toString(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
                 EnumChatFormatting.GREEN + Double.toString(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
-                "Mass Disposal speed: " + EnumChatFormatting.BLUE + overflowDisperse + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
+                StatCollector.translateToLocal("tt.keyphrase.Mass_Disposal_speed") + ": " + EnumChatFormatting.BLUE + overflowDisperse + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
         };
     }
 
     @Override
     public void onRemoval() {
         if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) {
-            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(),overflowMatter*8D);
+            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(), overflowMatter * 8D);
             if (TecTech.configTecTech.BOOM_ENABLE) {
                 getBaseMetaTileEntity().doExplosion(V[15]);
             } else {
-                TecTech.proxy.broadcast("Muffler BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
+                TecTech.proxy.broadcast(StatCollector.translateToLocal("tt.keyphrase.Muffler_BOOM") + " " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
             }
         }
     }
 
     //Return - Should Explode
-    public boolean addOverflowMatter(float matter){
-        overflowMatter+=matter;
+    public boolean addOverflowMatter(float matter) {
+        overflowMatter += matter;
         return overflowMatter > overflowMax;
     }
 
