@@ -4,7 +4,6 @@ import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -53,6 +52,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine_NoPlayerInventory;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
+import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine_Default;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_Multi_Basic_Slotted;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
@@ -68,6 +68,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class GregtechMeta_MultiBlockBase
@@ -122,14 +123,24 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	public abstract boolean hasSlotInGUI();
+	
+	public long getTotalRuntimeInTicks() {
+		return this.mTotalRunTime;
+	}
 
 	@Override
 	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
 		if (hasSlotInGUI()) {
 			return new GT_Container_MultiMachine(aPlayerInventory,	aBaseMetaTileEntity);			
 		}
-		else {
-			return new CONTAINER_MultiMachine_NoPlayerInventory(aPlayerInventory,	aBaseMetaTileEntity);			
+		else {			
+			String aCustomGUI = getCustomGUIResourceName();
+			if (aCustomGUI == null) {
+				return new CONTAINER_MultiMachine_NoPlayerInventory(aPlayerInventory,	aBaseMetaTileEntity);	
+			}
+			else {
+				return new CONTAINER_MultiMachine(aPlayerInventory,	aBaseMetaTileEntity);	
+			}					
 		}
 	}
 
@@ -142,7 +153,7 @@ GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {		
 		String aCustomGUI = getCustomGUIResourceName();
-		aCustomGUI = aCustomGUI != null ? aCustomGUI : "MultiblockDisplay_Generic";
+		aCustomGUI = aCustomGUI != null ? aCustomGUI : hasSlotInGUI() ? "MultiblockDisplay" : "MultiblockDisplay_Generic";
 		aCustomGUI = aCustomGUI + ".png";
 		if (hasSlotInGUI()) {
 			if (!requiresVanillaGtGUI()) {
@@ -153,7 +164,12 @@ GT_MetaTileEntity_MultiBlockBase {
 			}			
 		}
 		else {
-			return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), aCustomGUI);			
+			if (getCustomGUIResourceName() == null && !hasSlotInGUI()) {
+				return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), aCustomGUI);
+			}
+			else {				
+				return new GUI_MultiMachine_Default(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), aCustomGUI);
+			}						
 		}		
 	}
 
@@ -192,31 +208,17 @@ GT_MetaTileEntity_MultiBlockBase {
 		long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
 		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
 
-		int mPollutionReduction=0;
-		for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-			if (isValidMetaTileEntity(tHatch)) {
-				mPollutionReduction=Math.max(calculatePollutionReductionForHatch(tHatch, 100),mPollutionReduction);
-			}
-		}
-
-		long storedEnergy=0;
-		long maxEnergy=0;
-		for(GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-			if (isValidMetaTileEntity(tHatch)) {
-				storedEnergy+=tHatch.getBaseMetaTileEntity().getStoredEU();
-				maxEnergy+=tHatch.getBaseMetaTileEntity().getEUCapacity();
-			}
-		}
-
+		int mPollutionReduction = getPollutionReductionForAllMufflers();
+		long storedEnergy = getStoredEnergyInAllEnergyHatches();
+		long maxEnergy = getMaxEnergyStorageOfAllEnergyHatches();
 		int tTier = this.getControlCoreTier();
-
 		mInfo.add(getMachineTooltip());
 
 
 
 		//Lets borrow the GTNH handling
 
-		mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.Progress")+": "+
+		mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.progress")+": "+
 				EnumChatFormatting.GREEN + Integer.toString(mProgresstime/20) + EnumChatFormatting.RESET +" s / "+
 				EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime/20) + EnumChatFormatting.RESET +" s");
 
@@ -261,6 +263,36 @@ GT_MetaTileEntity_MultiBlockBase {
 
 
 
+	}
+	
+	public int getPollutionReductionForAllMufflers() {
+		int mPollutionReduction=0;
+		for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
+			if (isValidMetaTileEntity(tHatch)) {
+				mPollutionReduction=Math.max(calculatePollutionReductionForHatch(tHatch, 100),mPollutionReduction);
+			}
+		}
+		return mPollutionReduction;
+	}
+	
+	public long getStoredEnergyInAllEnergyHatches() {
+		long storedEnergy=0;
+		for(GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+			if (isValidMetaTileEntity(tHatch)) {
+				storedEnergy+=tHatch.getBaseMetaTileEntity().getStoredEU();
+			}
+		}
+		return storedEnergy;
+	}
+	
+	public long getMaxEnergyStorageOfAllEnergyHatches() {
+		long maxEnergy=0;
+		for(GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+			if (isValidMetaTileEntity(tHatch)) {
+				maxEnergy+=tHatch.getBaseMetaTileEntity().getEUCapacity();
+			}
+		}
+		return maxEnergy;
 	}
 
 	@Override
@@ -2164,7 +2196,35 @@ GT_MetaTileEntity_MultiBlockBase {
 		return false;
 	}
 
+	@Override
+	public void onServerStart() {
+		super.onServerStart();
+		tryTickWaitTimerDown();
+	}
 
+	@Override
+	public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+		super.onFirstTick(aBaseMetaTileEntity);
+		tryTickWaitTimerDown();
+	}
+
+	@Override
+	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPreTick(aBaseMetaTileEntity, aTick);
+		tryTickWaitTimerDown();
+	}
+
+	@Override
+	public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+		super.onCreated(aStack, aWorld, aPlayer);
+		tryTickWaitTimerDown();
+	}
+
+	private final void tryTickWaitTimerDown() {		
+		if (mStartUpCheck > 10) {
+			mStartUpCheck = 10;			
+		}		
+	}
 
 
 

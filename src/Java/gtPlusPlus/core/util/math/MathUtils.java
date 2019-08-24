@@ -692,6 +692,39 @@ public class MathUtils {
 	public static int balance(int aInput, int aMin, int aMax) {		
 		return Math.max(Math.min(aInput, aMax), aMin);
 	}
+	
+	/**
+	 * Balances a number within a range.
+	 * @param aInput - The number to balance
+	 * @param aMin - The minimum bounds
+	 * @param aMax - The maximum bounds
+	 * @return - A Number which will be between the bounds, or a boundary value.
+	 */
+	public static Number balance(Number aInput, Number aMin, Number aMax) {		
+		return max(min(aInput, aMax), aMin);
+	}
+	
+	/**
+	 * Balances a number within a range.
+	 * @param aInput - The number to balance
+	 * @param aMin - The minimum bounds
+	 * @param aMax - The maximum bounds
+	 * @return - An Integer which will be between the bounds, or a boundary value.
+	 */
+	public static int balanceInt(Number aInput, Number aMin, Number aMax) {		
+		return MathUtils.safeCast_LongToInt((long) balance(max(min(aInput, aMax), aMin), Integer.MIN_VALUE, Integer.MAX_VALUE));
+	}
+	
+	/**
+	 * Balances a number within a range.
+	 * @param aInput - The number to balance
+	 * @param aMin - The minimum bounds
+	 * @param aMax - The maximum bounds
+	 * @return - A Long which will be between the bounds, or a boundary value.
+	 */
+	public static long balanceLong(Number aInput, Number aMin, Number aMax) {		
+		return (long) balance(max(min(aInput, aMax), aMin), Long.MIN_VALUE, Long.MAX_VALUE);
+	}
 
 	public static int getValueWithinRange(int i, int aMin, int aMax) {
 		int aAmount = Math.max(Math.min(i, aMax), aMin);
@@ -703,5 +736,37 @@ public class MathUtils {
 		int aRemainder = (int) (aLong - (aIntMaxInLong * Integer.MAX_VALUE));
 		return new Pair<Integer, Integer>(aIntMaxInLong, aRemainder);		
 	}
+	
+	
+
+
+    /**
+     * Returns the smaller of two {@code Number}s. That is,
+     * the result the argument closer to the value of
+     * {@link Long#MIN_VALUE}.  If the arguments have the same
+     * value, the result is that same value.
+     *
+     * @param   a   an argument.
+     * @param   b   another argument.
+     * @return  the smaller of {@code a} and {@code b}.
+     */
+    public static Number min(Number a, Number b) {
+        return (a.longValue() <= b.longValue()) ? a : b;
+    }
+
+    /**
+     * Returns the greater of two {@code Number}s. That is, the
+     * result is the argument closer to the value of
+     * {@link Long#MAX_VALUE}. If the arguments have the same value,
+     * the result is that same value.
+     *
+     * @param   a   an argument.
+     * @param   b   another argument.
+     * @return  the larger of {@code a} and {@code b}.
+     */
+    public static Number max(Number a, Number b) {
+        return (a.longValue() >= b.longValue()) ? a : b;
+    }
+	
 
 }

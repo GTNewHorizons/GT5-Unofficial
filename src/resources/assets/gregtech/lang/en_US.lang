@@ -4,15 +4,19 @@
 GTPP.EBF.heat=Heat capacity
 
 GTPP.machines.tier=Tier
+GTPP.machines.input=Input
+GTPP.machines.output=Output
 
 GTPP.multiblock.pollutionreduced=Pollution reduced to
 GTPP.multiblock.pollution=Pollution
 GTPP.multiblock.energy=Stored Energy
-GTPP.multiblock.Progress=Progress
+GTPP.multiblock.progress=Progress
 GTPP.multiblock.efficiency=Efficiency
 GTPP.multiblock.problems=Problems
 GTPP.multiblock.mei=Max Energy Income
 GTPP.multiblock.usage=Probably uses
+GTPP.multiblock.specialvalue=Special Value
+GTPP.multiblock.duration=Duration
 
 
 

@@ -408,23 +408,25 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
 	}
 
-	private volatile int mGraceTimer = 100;
+	private volatile int mGraceTimer = 2;
 
-	@SuppressWarnings("unused")
 	@Override
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {			
-			if (aTick % 10 == 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
-				if (!this.depleteInput(FluidUtils.getFluidStack("pyrotheum", 5))) {
-					this.causeMaintenanceIssue();
-					this.stopMachine();
-				}
-				if (false) { // To be replaced with a config option or something
-					this.explodeMultiblock();
-				}
-			}			
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {		
+		super.onPostTick(aBaseMetaTileEntity, aTick);		
+		//Try dry Pyrotheum after all other logic
+		if (this.mStartUpCheck < 0) {
+			if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {			
+				if (aTick % 10 == 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
+					if (!this.depleteInput(FluidUtils.getFluidStack("pyrotheum", 5))) {						
+						if (mGraceTimer-- == 0) {
+							this.causeMaintenanceIssue();
+							this.stopMachine();
+						}						
+					}
+				}			
+			}
 		}
-		super.onPostTick(aBaseMetaTileEntity, aTick);
+		
 	}
 
 	@Override
