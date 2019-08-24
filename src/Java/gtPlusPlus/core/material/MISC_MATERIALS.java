@@ -3,8 +3,8 @@ package gtPlusPlus.core.material;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
-import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.state.MaterialState;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public final class MISC_MATERIALS {	
@@ -17,6 +17,7 @@ public final class MISC_MATERIALS {
 	public static void run() {
 		MaterialUtils.generateSpecialDustAndAssignToAMaterial(STRONTIUM_OXIDE, false);
 		MaterialUtils.generateSpecialDustAndAssignToAMaterial(STRONTIUM_HYDROXIDE, false);
+		WATER.registerComponentForMaterial(FluidUtils.getWater(1000));
 	}
 
 	public static final Material STRONTIUM_OXIDE = new Material(
@@ -52,7 +53,7 @@ public final class MISC_MATERIALS {
 			false,
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().STRONTIUM, 1),
-					new MaterialStack(FLUORIDES.HYDROXIDE, 2)
+					new MaterialStack(MISC_MATERIALS.HYDROXIDE, 2)
 			});
 
 	public static final Material SELENIUM_DIOXIDE = new Material(
@@ -116,14 +117,12 @@ public final class MISC_MATERIALS {
 					new MaterialStack(ELEMENT.getInstance().CARBON, 1),
 					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2)
 			});
-	
-	
-	
-	
+
+
 	/*
 	 * Rare Earth Materials
 	 */
-	
+
 	public static final Material RARE_EARTH_LOW = new Material(
 			"Rare Earth (I)", //Material Name
 			MaterialState.ORE, //State
@@ -145,7 +144,7 @@ public final class MISC_MATERIALS {
 					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Cobaltite), 1),
 					new MaterialStack(ELEMENT.STANDALONE.BLACK_METAL, 1)
 			});
-	
+
 	public static final Material RARE_EARTH_MID = new Material(
 			"Rare Earth (II)", //Material Name
 			MaterialState.ORE, //State
@@ -167,7 +166,7 @@ public final class MISC_MATERIALS {
 					new MaterialStack(ELEMENT.STANDALONE.WHITE_METAL, 1),
 					new MaterialStack(ELEMENT.STANDALONE.RUNITE, 1)			
 			});
-	
+
 	public static final Material RARE_EARTH_HIGH = new Material(
 			"Rare Earth (III)", //Material Name
 			MaterialState.ORE, //State
@@ -188,6 +187,105 @@ public final class MISC_MATERIALS {
 					new MaterialStack(ORES.ALBURNITE, 1),
 					new MaterialStack(ORES.KASHINITE, 1),
 					new MaterialStack(ORES.AGARDITE_LA, 1),
+			});
+
+	public static final Material WATER = new Material(
+			"Water",
+			MaterialState.PURE_LIQUID,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 2),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1)
+			});
+
+	//OH
+	public static final Material HYDROXIDE = new Material(
+			"Hydroxide", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1)
+			});
+
+	//NH3
+	public static final Material AMMONIA = new Material(
+			"Ammonia", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-77, //Melting Point in C
+			-33, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 3)
+			});
+
+	//NH4
+	public static final Material AMMONIUM = new Material(
+			"Ammonium", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 4)
+			});
+
+
+	public static final Material HYDROGEN_CHLORIDE = new Material(
+			"Hydrogen Chloride",
+			MaterialState.PURE_LIQUID,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().CHLORINE, 1),
+			});
+
+
+	public static final Material SODIUM_CHLORIDE = new Material(
+			"Sodium Chloride",
+			MaterialState.PURE_LIQUID,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().CHLORINE, 1),
+			});
+
+
+	public static final Material SODIUM_HYDROXIDE = new Material(
+			"Sodium Hydroxide",
+			MaterialState.PURE_LIQUID,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
+					new MaterialStack(HYDROXIDE, 1),
+			});
+
+	public static final Material SALT_WATER = new Material(
+			"Salt Water",
+			MaterialState.PURE_LIQUID,
+			new MaterialStack[]{
+					new MaterialStack(WATER, 3),
+					new MaterialStack(SODIUM_CHLORIDE, 1),
+			});
+
+	public static final Material BRINE = new Material(
+			"Brine",
+			MaterialState.PURE_LIQUID,
+			new MaterialStack[]{
+					new MaterialStack(SALT_WATER, 1),
+					new MaterialStack(SODIUM_CHLORIDE, 2),
 			});
 
 

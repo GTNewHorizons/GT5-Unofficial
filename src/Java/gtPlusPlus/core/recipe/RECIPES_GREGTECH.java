@@ -724,6 +724,26 @@ public class RECIPES_GREGTECH {
 				480*4);
 
 
+		//Wood's Glass Laser Lens
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[] { 
+						ItemUtils.getGregtechCircuit(5),
+						ItemList.Shape_Mold_Ball.get(0),
+						ELEMENT.getInstance().BARIUM.getDust(1),
+						ELEMENT.getInstance().SODIUM.getDust(1),
+						ELEMENT.getInstance().SILICON.getDust(2),
+						ELEMENT.getInstance().NICKEL.getDust(1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustGlass", 5)
+				},
+				FluidUtils.getUUM(1000),
+				null,
+				new ItemStack[] { 
+						GregtechItemList.Laser_Lens_WoodsGlass.get(1)
+				},
+				new int[] {10000},
+				20 * 300,
+				(int) GT_Values.V[3]);
+
 
 
 	}
@@ -1892,7 +1912,6 @@ public class RECIPES_GREGTECH {
 					500,
 					Materials.Titanium.mBlastFurnaceTemp);
 		}
-
 
 	}
 

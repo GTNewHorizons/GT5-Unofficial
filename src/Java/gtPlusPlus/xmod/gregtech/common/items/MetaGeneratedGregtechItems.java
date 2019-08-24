@@ -337,6 +337,8 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                 GregTech_API.registerCover(mMachineCasingCovers[i].get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[i][0]}), new GTPP_Cover_ToggleVisual());
              }
         }
+        GregtechItemList.Laser_Lens_WoodsGlass.set(this.addItem(140, "Wood's Glass Lens", "Allows UV & IF to pass through, blocks visible light spectrums", new Object[0]));
+
 		
 		
 	}

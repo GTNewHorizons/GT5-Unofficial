@@ -221,7 +221,12 @@ public class ItemUtils {
 		if (size < 0 || size > 64) {
 			size = 1;
 		}
-		Logger.INFO("Found Metastack: " + item.getUnlocalizedName() + ":" + meta);
+		//Logger.INFO("Found Metastack: " + item.getUnlocalizedName() + ":" + meta);
+		//Logger.INFO(""+ReflectionUtils.getMethodName(0));
+		//Logger.INFO(""+ReflectionUtils.getMethodName(1));
+		//Logger.INFO(""+ReflectionUtils.getMethodName(2));
+		//Logger.INFO(""+ReflectionUtils.getMethodName(3));
+		//Logger.INFO(""+ReflectionUtils.getMethodName(4));
 		final ItemStack metaStack = new ItemStack(item, size, meta);
 		return metaStack;
 	}

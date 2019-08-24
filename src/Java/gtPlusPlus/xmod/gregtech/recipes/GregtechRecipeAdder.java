@@ -19,11 +19,13 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;
@@ -1114,6 +1116,35 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
             return false;
         }
     }
+
+	@Override
+	public boolean addUvLaserRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int time, long eu) {
+		// Generate Special Laser Recipe
+		GT_Recipe u = new Recipe_GT(
+				false,
+				new ItemStack[] {
+						aInput1,
+						aInput2,
+				},
+				new ItemStack[] {
+						aOutput
+				},
+				GregtechItemList.Laser_Lens_WoodsGlass.get(1),
+				new int[] {
+						10000
+				}, 
+				new FluidStack[] {},
+				new FluidStack[] {},
+				time,
+				(int) eu,
+				0);
+		return GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes.mRecipeList.add(u);
+	}
+
+	@Override
+	public boolean addIrLaserRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int time, long eu) {
+		return addUvLaserRecipe(aInput1, aInput2, aOutput, time, eu);
+	}
 
 
 

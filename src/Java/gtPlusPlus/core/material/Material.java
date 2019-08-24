@@ -85,8 +85,17 @@ public class Material {
 
 
 	public static AutoMap<Materials> invalidMaterials = new AutoMap<Materials>();
+	
 
-	public Material(String materialName, MaterialState defaultState, short[] rgba, int radiationLevel, MaterialStack[] materialStacks) {
+	public Material(final String materialName, final MaterialState defaultState, final MaterialStack... inputs){
+		this(materialName, defaultState, null, inputs);
+	}
+	
+	public Material(final String materialName, final MaterialState defaultState, final short[] rgba, final MaterialStack... inputs){
+		this(materialName, defaultState, null, 0, rgba, -1, -1, -1, -1, false, "", 0, false, false, inputs);
+	}
+
+	public Material(final String materialName, final MaterialState defaultState, final short[] rgba, int radiationLevel, MaterialStack... materialStacks) {
 		this(materialName, defaultState, null, 0, rgba, -1, -1, -1, -1, false, "", radiationLevel, false, materialStacks);
 	}
 
@@ -1335,7 +1344,17 @@ public class Material {
 	}
 	
 	
+	public boolean registerComponentForMaterial(FluidStack aStack) {
+		return registerComponentForMaterial(this, aStack);
+	}
 	
+	private static boolean registerComponentForMaterial(Material componentMaterial, FluidStack aStack) {		
+		if (componentMaterial != null && aStack != null && componentMaterial.vMoltenFluid == null) {
+			componentMaterial.vMoltenFluid = aStack.getFluid();
+			return true;
+		}
+		return false;
+	}
 	
 	public boolean registerComponentForMaterial(ComponentTypes aPrefix, ItemStack aStack) {
 		return registerComponentForMaterial(this, aPrefix.getGtOrePrefix(), aStack);

@@ -565,9 +565,9 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.TUNGSTEN_TITANIUM_CARBIDE);
 
 			//LFTR Fuel components
-			MaterialGenerator.generate(FLUORIDES.HYDROXIDE); //LFTR fuel component
-			MaterialGenerator.generate(FLUORIDES.AMMONIA); //LFTR fuel component
-			MaterialGenerator.generate(FLUORIDES.AMMONIUM); //LFTR fuel component
+			MaterialGenerator.generate(MISC_MATERIALS.HYDROXIDE); //LFTR fuel component
+			MaterialGenerator.generate(MISC_MATERIALS.AMMONIA); //LFTR fuel component
+			MaterialGenerator.generate(MISC_MATERIALS.AMMONIUM); //LFTR fuel component
 			MaterialGenerator.generate(FLUORIDES.AMMONIUM_BIFLUORIDE); //LFTR fuel component
 			MaterialGenerator.generate(FLUORIDES.BERYLLIUM_HYDROXIDE); //LFTR fuel component
 			MaterialGenerator.generate(FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE); //LFTR fuel component
