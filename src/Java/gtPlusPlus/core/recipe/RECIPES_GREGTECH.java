@@ -1539,8 +1539,10 @@ public class RECIPES_GREGTECH {
 				new ItemStack[] { 
 						ItemUtils.getItemStackOfAmountFromOreDict("nuggetBronze", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("nuggetElectrum", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("nuggetTantalum", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSmallTungstate", 1),
 						ItemUtils.getSimpleStack(Blocks.obsidian) },
-				new int[] { 750, 250, 1850 }, 0);
+				new int[] { 750, 250, 250, 250, 1850 }, 0);
 
 		/*
 		 * HotFuel.addNewHotFuel( FluidUtils.getFluidStack("ic2hotcoolant",
