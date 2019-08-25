@@ -8,6 +8,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
@@ -19,9 +20,9 @@ public class GT_MetaTileEntity_Hatch_DynamoMulti extends GT_MetaTileEntity_Hatch
     public final int Amperes;
 
     public GT_MetaTileEntity_Hatch_DynamoMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(aID, aName, aNameRegional, aTier, 0, "Multiple Ampere Energy Extractor for Multiblocks");
+        super(aID, aName, aNameRegional, aTier, 0, StatCollector.translateToLocal("gt.blockmachines.hatch.dynamomulti.desc.0"));//Multiple Ampere Energy Extractor for Multiblocks
         Amperes = aAmp;
-        Util.setTier(aTier,this);
+        Util.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_DynamoMulti(String aName, int aTier, int aAmp, String aDescription, ITexture[][][] aTextures) {

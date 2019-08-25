@@ -29,12 +29,12 @@ import static gregtech.api.GregTech_API.sBlockCasings1;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable{
+public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region Structure
     private static final String[][] shape = new String[][]{
-            {"   "," . ","   ",},
-            {"   "," 0 ","   ",},
-            {"   ","   ","   ",},
+            {"   ", " . ", "   ",},
+            {"   ", " 0 ", "   ",},
+            {"   ", "   ", "   ",},
     };
     private static final Block[] blockType = new Block[]{sBlockCasings1};
     private static final byte[] blockMeta = new byte[]{15};
@@ -43,7 +43,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA+"Hint Details:",
+            EnumChatFormatting.AQUA + "Hint Details:",
             "1 - Energy IO Hatches or High Power Casing",
     };
     //endregion
@@ -56,7 +56,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
         mHardHammer = true;
         mSolderingTool = true;
         mCrowbar = true;
-        eDismantleBoom=true;
+        eDismantleBoom = true;
     }
 
     public GT_MetaTileEntity_EM_transformer(String aName) {
@@ -67,14 +67,14 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
         mHardHammer = true;
         mSolderingTool = true;
         mCrowbar = true;
-        eDismantleBoom=true;
+        eDismantleBoom = true;
     }
 
-    public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_noise");
+    public final static ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_noise");
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound(){
+    protected ResourceLocation getActivitySound() {
         return activitySound;
     }
 
@@ -90,17 +90,17 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta,1, 1, 0, getBaseMetaTileEntity(),this,hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
     }
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity,true,false,false);
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, true, false, false);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",true,false,false);
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", true, false, false);
     }
 
     @Override

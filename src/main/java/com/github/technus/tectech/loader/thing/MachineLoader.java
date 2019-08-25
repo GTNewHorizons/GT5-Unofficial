@@ -157,7 +157,6 @@ public class MachineLoader implements Runnable {
         eM_energyMulti64_UXV.set(new GT_MetaTileEntity_Hatch_EnergyMulti(
                 15128, "hatch.energymulti64.tier.13", "UXV 64A Energy Hatch", 13, 64).getStackForm(1L));
 
-
         // ===================================================================================================
         // Multi AMP Laser INPUTS
         // ===================================================================================================
@@ -302,7 +301,6 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
         // Multi AMP Power OUTPUTS
         // ===================================================================================================
-
 
         eM_dynamoMulti4_IV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(
                 15200, "hatch.dynamomulti04.tier.05", "IV 4A Dynamo Hatch", 5, 4).getStackForm(1L));
