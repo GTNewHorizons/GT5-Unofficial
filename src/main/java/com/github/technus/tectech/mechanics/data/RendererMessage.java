@@ -5,7 +5,6 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
-import eu.usrv.yamcore.network.server.AbstractServerMessageHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -49,18 +48,8 @@ public class RendererMessage implements IMessage {
         }
     }
 
-
-    public static class RendererQuery extends RendererMessage {
-        public RendererQuery() {
-        }
-    }
-
     public static class RendererData extends RendererMessage {
         public RendererData() {
-        }
-
-        public RendererData(RendererQuery query) {
-            sparkList = query.sparkList;
         }
 
         public RendererData(HashSet<Util.thaumSpark> eSparkList) {
@@ -77,13 +66,6 @@ public class RendererMessage implements IMessage {
             }
             pMessage.sparkList.clear();
             return null;
-        }
-    }
-
-    public static class ServerHandler extends AbstractServerMessageHandler<RendererQuery> {
-        @Override
-        public IMessage handleServerMessage(EntityPlayer pPlayer, RendererQuery pMessage, MessageContext pCtx) {
-            return new RendererData(pMessage);
         }
     }
 

@@ -57,6 +57,7 @@ public class ThingsLoader implements Runnable {
         ParametrizerMemoryCard.run();
         ElementalDefinitionScanStorage_EM.run();
         EuMeterGT.run();
+        TeslaStaff.run();
         TeslaCoilCover.run();
         TeslaCoilCapacitor.run();
         TecTech.LOGGER.info("Useful Items registered");

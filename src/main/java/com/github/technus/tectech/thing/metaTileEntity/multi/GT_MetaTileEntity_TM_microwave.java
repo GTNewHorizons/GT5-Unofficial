@@ -19,6 +19,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -52,7 +53,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasings4};
     private static final byte[] blockMetaFallback = new byte[]{1};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA+"Hint Details:",
+            EnumChatFormatting.AQUA+ StatCollector.translateToLocal("tt.keyword.Hint_Details") + ":",
             "1 - Classic Hatches or Clean Stainless Steel Casing",
             "Also acts like a hopper so give it an Output Bus",
     };

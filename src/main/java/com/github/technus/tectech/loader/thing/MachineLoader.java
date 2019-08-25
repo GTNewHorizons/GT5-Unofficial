@@ -511,12 +511,12 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
 
         Machine_Multi_Transformer.set(new GT_MetaTileEntity_EM_transformer(15300, "multimachine.em.transformer", "Active Transformer").getStackForm(1L));
+        Machine_Multi_Microwave.set(new GT_MetaTileEntity_TM_microwave(15312, "multimachine.tm.microwave", "Microwave Grinder").getStackForm(1L));
+        Machine_Multi_TeslaCoil.set(new GT_MetaTileEntity_TM_teslaCoil(15314, "multimachine.tm.teslaCoil", "Tesla Tower").getStackForm(1L));
 
         Machine_Multi_Switch.set(new GT_MetaTileEntity_EM_switch(15310, "multimachine.em.switch", "Network Switch With QoS").getStackForm(1L));
         Machine_Multi_Computer.set(new GT_MetaTileEntity_EM_computer(15311, "multimachine.em.computer", "Quantum Computer").getStackForm(1L));
-        Machine_Multi_Microwave.set(new GT_MetaTileEntity_TM_microwave(15312, "multimachine.tm.microwave", "Microwave Grinder").getStackForm(1L));
         Machine_Multi_DataBank.set(new GT_MetaTileEntity_EM_dataBank(15313, "multimachine.em.databank", "Data Bank").getStackForm(1L));
-        Machine_Multi_TeslaCoil.set(new GT_MetaTileEntity_TM_teslaCoil(15314, "multimachine.tm.teslaCoil", "Tesla Tower").getStackForm(1L));
 
         Machine_Multi_EMjunction.set(new GT_MetaTileEntity_EM_junction(15320, "multimachine.em.junction", "Matter Junction").getStackForm(1L));
         Machine_Multi_MatterToEM.set(new GT_MetaTileEntity_EM_quantizer(15321, "multimachine.em.mattertoem", "Matter Quantizer").getStackForm(1L));

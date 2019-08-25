@@ -324,6 +324,22 @@ gt.blockmachines.emout.tier.12.name=UMV Elemental Output Hatch
 gt.blockmachines.emout.tier.13.name=UXV Elemental Output Hatch
 gt.blockmachines.emout.desc=Elemental Output for Multiblocks
 #Multiblocks
+gt.blockmachines.multimachine.em.transformer.name=Active Transformer
+gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
+gt.blockmachines.multimachine.em.transformer.desc.0=Power substation
+gt.blockmachines.multimachine.em.transformer.desc.1=All the transformation!
+gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.78125% power loss, HAYO!
+
+gt.blockmachines.multimachine.tm.microwave.name=Microwave Grinder
+
+gt.blockmachines.multimachine.tm.teslaCoil.name=Tesla Tower
+gt.blockmachines.multimachine.em.switch.name=Network Switch With QoS
+gt.blockmachines.multimachine.em.computer.name=Quantum Computer
+gt.blockmachines.multimachine.em.databank.name=Data Bank
+gt.blockmachines.multimachine.em.junction.name=Matter Junction
+gt.blockmachines.multimachine.em.mattertoem.name=Matter Quantizer
+gt.blockmachines.multimachine.em.emtomatter.name=Matter Dequantizer
+
 gt.blockmachines.multimachine.em.emtoessentia.name=Essentia Dequantizer
 gt.blockmachines.multimachine.em.emtoessentia.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.emtoessentia.hint.1=2 - Elemental Input Hatch
@@ -339,6 +355,19 @@ gt.blockmachines.multimachine.em.essentiatoem.hint.2=3 - Elemental Overflow Hatc
 gt.blockmachines.multimachine.em.essentiatoem.hint.3=General - Some sort of Essentia Storage
 gt.blockmachines.multimachine.em.essentiatoem.desc.0=Conveniently convert regular stuff into quantum form.
 gt.blockmachines.multimachine.em.essentiatoem.desc.1=To make it more inconvenient.
+
+gt.blockmachines.multimachine.em.scanner.name=Elemental Scanner
+gt.blockmachines.multimachine.em.research.name=Research station
+gt.blockmachines.multimachine.em.collider.name=Matter Collider
+gt.blockmachines.multimachine.em.infuser.name=Energy Infuser
+gt.blockmachines.multimachine.em.processing.name=Quantum Processing Machine
+gt.blockmachines.multimachine.em.crafter.name=Matter Assembler
+gt.blockmachines.multimachine.em.stabilizer.name=Elemental Stabilizer
+gt.blockmachines.multimachine.em.wormhole.name=Wormhole
+gt.blockmachines.multimachine.em.decay.name=Decay Generator
+gt.blockmachines.multimachine.em.annihilation.name=Annihilation Generator
+gt.blockmachines.multimachine.em.blackholegenerator.name=Black Hole Generator
+
 #Keywords and phrases
 tt.keyword.Hint_Details=Hint Details
 tt.keyword.Air=Air
@@ -358,6 +387,7 @@ tt.keyword.MASS=MASS
 tt.keyword.LIFE_TIME=LIFE TIME
 tt.keyword.BOOM=BOOM!
 tt.keyword.ID=ID
+
 tt.keyphrase.At_current_energy_level=At current energy level
 tt.keyphrase.No_Stacks=No Stacks
 tt.keyphrase.Contains_EM=Contains EM

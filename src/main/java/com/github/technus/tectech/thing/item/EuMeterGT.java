@@ -34,33 +34,33 @@ public class EuMeterGT extends Item {
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if(tTileEntity==null || aPlayer instanceof FakePlayer) {
+        if (tTileEntity == null || aPlayer instanceof FakePlayer) {
             return aPlayer instanceof EntityPlayerMP;
         }
         if (aPlayer instanceof EntityPlayerMP && !aPlayer.isSneaking() && tTileEntity instanceof IGregTechTileEntity) {
             if (tTileEntity instanceof BaseMetaTileEntity) {
-                GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.AQUA+"----- X:"+aX+" Y:"+aY+" Z:"+aZ+" D:"+aWorld.provider.dimensionId+" S:"+aSide + " -----");
-                GT_Utility.sendChatToPlayer(aPlayer, "Stored energy: "+EnumChatFormatting.YELLOW+(((BaseMetaTileEntity) tTileEntity).getUniversalEnergyStored())+EnumChatFormatting.RESET+'/'+EnumChatFormatting.GREEN+(((BaseMetaTileEntity) tTileEntity).getUniversalEnergyCapacity()));
-                GT_Utility.sendChatToPlayer(aPlayer, "Stored EU: "+EnumChatFormatting.YELLOW+(((BaseMetaTileEntity) tTileEntity).getStoredEU())+EnumChatFormatting.RESET+'/'+EnumChatFormatting.GREEN+(((BaseMetaTileEntity) tTileEntity).getEUCapacity()));
-                GT_Utility.sendChatToPlayer(aPlayer, "Average I/O: "+EnumChatFormatting.YELLOW+(((BaseMetaTileEntity) tTileEntity).getAverageElectricInput())+EnumChatFormatting.RESET+'/'+EnumChatFormatting.YELLOW+(((BaseMetaTileEntity) tTileEntity).getAverageElectricOutput()));
-                GT_Utility.sendChatToPlayer(aPlayer, "Voltage I/O (max): "+EnumChatFormatting.GOLD+(((BaseMetaTileEntity) tTileEntity).getInputVoltage())+EnumChatFormatting.RESET+'/'+EnumChatFormatting.GOLD+(((BaseMetaTileEntity) tTileEntity).getOutputVoltage()));
-                GT_Utility.sendChatToPlayer(aPlayer, "Voltage I/O max: "+EnumChatFormatting.RED+(((BaseMetaTileEntity) tTileEntity).getMaxSafeInput())+EnumChatFormatting.RESET+'/'+EnumChatFormatting.RED+(((BaseMetaTileEntity) tTileEntity).getMaxEnergyOutput()));
-                GT_Utility.sendChatToPlayer(aPlayer, "Amperage I/O (max): "+EnumChatFormatting.GOLD+(((BaseMetaTileEntity) tTileEntity).getInputAmperage())+EnumChatFormatting.RESET+'/'+EnumChatFormatting.GOLD+(((BaseMetaTileEntity) tTileEntity).getOutputAmperage()));
-                GT_Utility.sendChatToPlayer(aPlayer, "Side capabilities: "+(((BaseMetaTileEntity) tTileEntity).inputEnergyFrom((byte) aSide)?"input ":"")+(((BaseMetaTileEntity) tTileEntity).outputsEnergyTo((byte) aSide)?"output ":""));
+                GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.AQUA + "----- X:" + aX + " Y:" + aY + " Z:" + aZ + " D:" + aWorld.provider.dimensionId + " S:" + aSide + " -----");
+                GT_Utility.sendChatToPlayer(aPlayer, "Stored energy: " + EnumChatFormatting.YELLOW + (((BaseMetaTileEntity) tTileEntity).getUniversalEnergyStored()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.GREEN + (((BaseMetaTileEntity) tTileEntity).getUniversalEnergyCapacity()));
+                GT_Utility.sendChatToPlayer(aPlayer, "Stored EU: " + EnumChatFormatting.YELLOW + (((BaseMetaTileEntity) tTileEntity).getStoredEU()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.GREEN + (((BaseMetaTileEntity) tTileEntity).getEUCapacity()));
+                GT_Utility.sendChatToPlayer(aPlayer, "Average I/O: " + EnumChatFormatting.YELLOW + (((BaseMetaTileEntity) tTileEntity).getAverageElectricInput()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.YELLOW + (((BaseMetaTileEntity) tTileEntity).getAverageElectricOutput()));
+                GT_Utility.sendChatToPlayer(aPlayer, "Voltage I/O (max): " + EnumChatFormatting.GOLD + (((BaseMetaTileEntity) tTileEntity).getInputVoltage()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.GOLD + (((BaseMetaTileEntity) tTileEntity).getOutputVoltage()));
+                GT_Utility.sendChatToPlayer(aPlayer, "Voltage I/O max: " + EnumChatFormatting.RED + (((BaseMetaTileEntity) tTileEntity).getMaxSafeInput()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.RED + (((BaseMetaTileEntity) tTileEntity).getMaxEnergyOutput()));
+                GT_Utility.sendChatToPlayer(aPlayer, "Amperage I/O (max): " + EnumChatFormatting.GOLD + (((BaseMetaTileEntity) tTileEntity).getInputAmperage()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.GOLD + (((BaseMetaTileEntity) tTileEntity).getOutputAmperage()));
+                GT_Utility.sendChatToPlayer(aPlayer, "Side capabilities: " + (((BaseMetaTileEntity) tTileEntity).inputEnergyFrom((byte) aSide) ? "input " : "") + (((BaseMetaTileEntity) tTileEntity).outputsEnergyTo((byte) aSide) ? "output " : ""));
                 return true;
             } else if (tTileEntity instanceof BaseMetaPipeEntity) {
-                if(((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable){
+                if (((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
                     ArrayList<String> tList = new ArrayList<>();
                     GT_Utility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, aSide, hitX, hitY, hitZ);
-                    for(String str:tList){
-                        GT_Utility.sendChatToPlayer(aPlayer,str);
+                    for (String str : tList) {
+                        GT_Utility.sendChatToPlayer(aPlayer, str);
                     }
                 }
                 return true;
             }
         }
-        if(!(aPlayer instanceof EntityPlayerMP)){
-            GT_Utility.doSoundAtClient(Reference.MODID+":fx_scan", 1, 1.0F, (double)aX, (double)aY, (double)aZ);
+        if (!(aPlayer instanceof EntityPlayerMP)) {
+            GT_Utility.doSoundAtClient(Reference.MODID + ":fx_scan", 1, 1.0F, (double) aX, (double) aY, (double) aZ);
         }
         return false;
     }

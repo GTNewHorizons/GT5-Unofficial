@@ -27,7 +27,6 @@ public class NetworkDispatcher extends eu.usrv.yamcore.network.PacketDispatcher 
         registerMessage(ChunkDataMessage.ClientHandler.class, ChunkDataMessage.ChunkDataData.class);
         registerMessage(PlayerDataMessage.ServerHandler.class, PlayerDataMessage.PlayerDataQuery.class);
         registerMessage(PlayerDataMessage.ClientHandler.class, PlayerDataMessage.PlayerDataData.class);
-        registerMessage(RendererMessage.ServerHandler.class, RendererMessage.RendererQuery.class);
         registerMessage(RendererMessage.ClientHandler.class, RendererMessage.RendererData.class);
     }
 }
