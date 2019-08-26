@@ -331,8 +331,42 @@ gt.blockmachines.multimachine.em.transformer.desc.1=All the transformation!
 gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.78125% power loss, HAYO!
 
 gt.blockmachines.multimachine.tm.microwave.name=Microwave Grinder
+gt.blockmachines.multimachine.tm.microwave.hint.0=1 - Classic Hatches or Clean Stainless Steel Casing
+gt.blockmachines.multimachine.tm.microwave.hint.1=Also acts like a hopper so give it an Output Bus
+gt.blockmachines.multimachine.tm.microwave.desc.0=High Frequency Oven
+gt.blockmachines.multimachine.tm.microwave.desc.1=From live to done in seconds!
+gt.blockmachines.multimachine.tm.microwave.desc.3=I said nuke the... I meant microwave supper!
+gt.blockmachines.multimachine.tm.microwave.cfgi.0=Power setting
+gt.blockmachines.multimachine.tm.microwave.cfgi.1=Timer setting
+gt.blockmachines.multimachine.tm.microwave.cfgo.0=Timer value
+gt.blockmachines.multimachine.tm.microwave.cfgo.1=Timer remaining
 
 gt.blockmachines.multimachine.tm.teslaCoil.name=Tesla Tower
+gt.blockmachines.multimachine.tm.teslaCoil.hint.0=1 - Classic Hatches, Capacitor Hatches or Tesla Base Casing
+gt.blockmachines.multimachine.tm.teslaCoil.hint.1=2 - Titanium Frames
+gt.blockmachines.multimachine.tm.teslaCoil.desc.0=Tower of Wireless Power
+gt.blockmachines.multimachine.tm.teslaCoil.desc.1=Fewer pesky cables!
+gt.blockmachines.multimachine.tm.teslaCoil.desc.2=Survival chances might be affected
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=Hysteresis low setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1=Hysteresis high setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2=Tesla Towers transfer radius setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.3=Tesla Transceiver transfer radius setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.4=Tesla Ultimate Cover transfer radius setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.5=Output voltage setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.6=Output current setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.7=Scan time Min setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.8=Overdrive setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9=Unused
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.0=Tesla Towers transfer radius display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.1=Tesla Transceiver transfer radius display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.2=Tesla Ultimate Cover transfer radius display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.3=Output voltage display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.4=Output current display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.5=Energy Capacity display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6=Energy Stored display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=Energy Fraction display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Scan time display
+
 gt.blockmachines.multimachine.em.switch.name=Network Switch With QoS
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
 gt.blockmachines.multimachine.em.databank.name=Data Bank
@@ -369,6 +403,7 @@ gt.blockmachines.multimachine.em.annihilation.name=Annihilation Generator
 gt.blockmachines.multimachine.em.blackholegenerator.name=Black Hole Generator
 
 #Keywords and phrases
+#SOME ARE PHRASES!!!
 tt.keyword.Hint_Details=Hint Details
 tt.keyword.Air=Air
 tt.keyword.Earth=Earth

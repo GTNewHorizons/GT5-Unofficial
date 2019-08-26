@@ -27,6 +27,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,9 +98,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsBA0, null};
     private static final byte[] blockMetaFallback = new byte[]{6, 0};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA + "Hint Details:",
-            "1 - Classic Hatches, Capacitor Hatches or Tesla Base Casing",
-            "2 - Titanium Frames",
+            EnumChatFormatting.AQUA + StatCollector.translateToLocal("tt.keyword.Hint_Details") + ":",
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.0"),//1 - Classic Hatches, Capacitor Hatches or Tesla Base Casing
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.1"),//2 - Titanium Frames
     };
     //endregion
 
@@ -107,26 +108,26 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     protected Parameters.Group.ParameterIn popogaSetting, histLowSetting, histHighSetting, transferRadiusTowerSetting, transferRadiusTransceiverSetting, transferRadiusCoverUltimateSetting, outputVoltageSetting, outputCurrentSetting, scanTimeMinSetting, overDriveSetting;
     protected Parameters.Group.ParameterOut popogaDisplay, transferRadiusTowerDisplay, transferRadiusTransceiverDisplay, transferRadiusCoverUltimateDisplay, outputVoltageDisplay, outputCurrentDisplay, energyCapacityDisplay, energyStoredDisplay, energyFractionDisplay, scanTimeDisplay;
 
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_SETTING_NAME = (base, p) -> "Hysteresis low setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_SETTING_NAME = (base, p) -> "Hysteresis high setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_SETTING_NAME = (base, p) -> "Tesla Towers transfer radius setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME = (base, p) -> "Tesla Transceiver transfer radius setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME = (base, p) -> "Tesla Ultimate Cover transfer radius setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_SETTING_NAME = (base, p) -> "Output voltage setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_SETTING_NAME = (base, p) -> "Output current setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_SETTING_NAME = (base, p) -> "Scan time Min setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_SETTING_NAME = (base, p) -> "Overdrive setting";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_NAME = (base, p) -> "Unused";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_SETTING_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0");//Hysteresis low setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_SETTING_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1");//Hysteresis high setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_SETTING_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2");//Tesla Towers transfer radius setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.3)";//Tesla Transceiver transfer radius setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.4)";//Tesla Ultimate Cover transfer radius setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_SETTING_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.5");//Output voltage setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_SETTING_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.6");//Output current setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_SETTING_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.7");//Scan time Min setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_SETTING_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.8");//Overdrive setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9");//Unused
 
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_DISPLAY_NAME = (base, p) -> "Tesla Towers transfer radius display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME = (base, p) -> "Tesla Transceiver transfer radius display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME = (base, p) -> "Tesla Ultimate Cover transfer radius display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_DISPLAY_NAME = (base, p) -> "Output voltage display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_DISPLAY_NAME = (base, p) -> "Output current display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_CAPACITY_DISPLAY_NAME = (base, p) -> "Energy Capacity display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_STORED_DISPLAY_NAME = (base, p) -> "Energy Stored display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_FRACTION_DISPLAY_NAME = (base, p) -> "Energy Fraction display";
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_DISPLAY_NAME = (base, p) -> "Scan time display";
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_DISPLAY_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.0");//Tesla Towers transfer radius display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.1");//Tesla Transceiver transfer radius display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.2");//Tesla Ultimate Cover transfer radius display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_DISPLAY_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.3");//Output voltage display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_DISPLAY_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.4");//Output current display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_CAPACITY_DISPLAY_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.5");//Energy Capacity display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_STORED_DISPLAY_NAME = (base, p) ->StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6");//Energy Stored display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_FRACTION_DISPLAY_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7");//Energy Fraction display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_DISPLAY_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8");//Scan time display
 
     private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_STATUS = (base, p) -> {
         double value = p.get();
@@ -432,9 +433,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     public String[] getDescription() {
         return new String[]{
                 CommonValues.BASS_MARK,
-                "Tower of Wireless Power",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Fewer pesky cables!",
-                EnumChatFormatting.BLUE + "Survival chances might be affected",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.0"),//Tower of Wireless Power
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.1"),//Fewer pesky cables!
+                EnumChatFormatting.BLUE + StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.2"),//Survival chances might be affected
         };
     }
 
