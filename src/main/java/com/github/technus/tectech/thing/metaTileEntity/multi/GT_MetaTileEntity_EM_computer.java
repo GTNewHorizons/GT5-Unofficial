@@ -30,6 +30,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 
@@ -44,34 +45,10 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
+
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
-
-    //region parameters
-    protected Parameters.Group.ParameterIn overclock,overvolt;
-    protected Parameters.Group.ParameterOut maxCurrentTemp,availableData;
-    private static final INameFunction<GT_MetaTileEntity_EM_computer> OC_NAME = (base, p)-> "Overclock ratio";
-    private static final INameFunction<GT_MetaTileEntity_EM_computer> OV_NAME = (base, p)-> "Overvoltage ratio";
-    private static final INameFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_NAME = (base, p)-> "Current max. heat";
-    private static final INameFunction<GT_MetaTileEntity_EM_computer> COMPUTE_NAME = (base, p)-> "Produced computation";
-    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OC_STATUS=
-            (base,p)->LedStatus.fromLimitsInclusiveOuterBoundary(p.get(),0,1,1,3);
-    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OV_STATUS=
-            (base,p)->LedStatus.fromLimitsInclusiveOuterBoundary(p.get(),.7,.8,1.2,2);
-    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_STATUS=
-            (base,p)->LedStatus.fromLimitsInclusiveOuterBoundary(p.get(),-10000,0,0,5000);
-    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> COMPUTE_STATUS=(base, p)->{
-        if(base.eAvailableData<0){
-            return STATUS_TOO_LOW;
-        }
-        if(base.eAvailableData==0){
-            return STATUS_NEUTRAL;
-        }
-        return STATUS_OK;
-    };
-    //endregion
-
-    private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
 
     //region Structure
     private static final String[][] front = new String[][]{{"A  ", "A  ", "A. ", "A  ",},};
@@ -85,9 +62,34 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{1, 3};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA+"Hint Details:",
-            "1 - Classic/Data Hatches or Computer casing",
-            "2 - Rack Hatches or Advanced computer casing",
+            EnumChatFormatting.AQUA + StatCollector.translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.hint.0"),//1 - Classic/Data Hatches or Computer casing
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.hint.1"),//2 - Rack Hatches or Advanced computer casing
+    };
+    //endregion
+
+    //region parameters
+    protected Parameters.Group.ParameterIn overclock, overvolt;
+    protected Parameters.Group.ParameterOut maxCurrentTemp, availableData;
+
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> OC_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0");//Overclock ratio
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> OV_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.1");//Overvoltage ratio
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.0");//Current max. heat
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> COMPUTE_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.1");//Produced computation
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OC_STATUS =
+            (base, p) -> LedStatus.fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1, 3);
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OV_STATUS =
+            (base, p) -> LedStatus.fromLimitsInclusiveOuterBoundary(p.get(), .7, .8, 1.2, 2);
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_STATUS =
+            (base, p) -> LedStatus.fromLimitsInclusiveOuterBoundary(p.get(), -10000, 0, 0, 5000);
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> COMPUTE_STATUS = (base, p) -> {
+        if (base.eAvailableData < 0) {
+            return STATUS_TOO_LOW;
+        }
+        if (base.eAvailableData == 0) {
+            return STATUS_NEUTRAL;
+        }
+        return STATUS_OK;
     };
     //endregion
 
@@ -105,16 +107,16 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0=parametrization.getGroup(0);
-        overclock=hatch_0.makeInParameter(0,1,OC_NAME,OC_STATUS);
-        overvolt=hatch_0.makeInParameter(1,1,OV_NAME,OV_STATUS);
-        maxCurrentTemp=hatch_0.makeOutParameter(0,0,MAX_TEMP_NAME,MAX_TEMP_STATUS);
-        availableData=hatch_0.makeOutParameter(1,0,COMPUTE_NAME,COMPUTE_STATUS);
+        Parameters.Group hatch_0 = parametrization.getGroup(0);
+        overclock = hatch_0.makeInParameter(0, 1, OC_NAME, OC_STATUS);
+        overvolt = hatch_0.makeInParameter(1, 1, OV_NAME, OV_STATUS);
+        maxCurrentTemp = hatch_0.makeOutParameter(0, 0, MAX_TEMP_NAME, MAX_TEMP_STATUS);
+        availableData = hatch_0.makeOutParameter(1, 0, COMPUTE_NAME, COMPUTE_STATUS);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound(){
+    protected ResourceLocation getActivitySound() {
         return GT_MetaTileEntity_EM_switch.activitySound;
     }
 
@@ -141,20 +143,20 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        parametrization.setToDefaults(false,true);
+        parametrization.setToDefaults(false, true);
         eAvailableData = 0;
-        double maxTemp=0;
-        double overClockRatio= overclock.get();
-        double overVoltageRatio= overvolt.get();
-        if(Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) {
+        double maxTemp = 0;
+        double overClockRatio = overclock.get();
+        double overVoltageRatio = overvolt.get();
+        if (Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) {
             return false;
         }
-        if(overclock.getStatus(true).isOk && overvolt.getStatus(true).isOk){
-            float eut=V[8] * (float)overVoltageRatio * (float)overClockRatio;
-            if(eut<Integer.MAX_VALUE-7) {
+        if (overclock.getStatus(true).isOk && overvolt.getStatus(true).isOk) {
+            float eut = V[8] * (float) overVoltageRatio * (float) overClockRatio;
+            if (eut < Integer.MAX_VALUE - 7) {
                 mEUt = -(int) eut;
-            } else{
-                mEUt = -(int)V[8];
+            } else {
+                mEUt = -(int) V[8];
                 return false;
             }
             short thingsActive = 0;
@@ -165,7 +167,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                     continue;
                 }
                 if (rack.heat > maxTemp) {
-                    maxTemp=rack.heat;
+                    maxTemp = rack.heat;
                 }
                 rackComputation = rack.tickComponents((float) overClockRatio, (float) overVoltageRatio);
                 if (rackComputation > 0) {
@@ -191,8 +193,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 availableData.set(eAvailableData);
                 return true;
             } else {
-                eAvailableData=0;
-                mEUt = -(int)V[8];
+                eAvailableData = 0;
+                mEUt = -(int) V[8];
                 eAmpereFlow = 1;
                 mMaxProgresstime = 20;
                 mEfficiencyIncrease = 10000;
@@ -209,7 +211,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         if (!eOutputData.isEmpty()) {
             Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
             QuantumDataPacket pack = new QuantumDataPacket(eAvailableData / eOutputData.size()).unifyTraceWith(pos);
-            if(pack==null){
+            if (pack == null) {
                 return;
             }
             for (GT_MetaTileEntity_Hatch_InputData hatch : eInputData) {
@@ -256,7 +258,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void stopMachine() {
         super.stopMachine();
-        eAvailableData=0;
+        eAvailableData = 0;
         for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
                 rack.getBaseMetaTileEntity().setActive(false);
@@ -306,17 +308,17 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        IGregTechTileEntity igt=getBaseMetaTileEntity();
-        StructureBuilderExtreme(front, blockType, blockMeta, 1, 2, 0, igt,this,hintsOnly);
-        StructureBuilderExtreme(cap, blockType, blockMeta, 1, 2, -1, igt,this,hintsOnly);
+        IGregTechTileEntity igt = getBaseMetaTileEntity();
+        StructureBuilderExtreme(front, blockType, blockMeta, 1, 2, 0, igt, this, hintsOnly);
+        StructureBuilderExtreme(cap, blockType, blockMeta, 1, 2, -1, igt, this, hintsOnly);
 
-        byte offset=-2;
-        for (int rackSlices = stackSize >12?12: stackSize; rackSlices>0 ; rackSlices--) {
-            StructureBuilderExtreme(slice, blockType, blockMeta, 1, 2, offset--, igt,this,hintsOnly);
+        byte offset = -2;
+        for (int rackSlices = stackSize > 12 ? 12 : stackSize; rackSlices > 0; rackSlices--) {
+            StructureBuilderExtreme(slice, blockType, blockMeta, 1, 2, offset--, igt, this, hintsOnly);
         }
 
-        StructureBuilderExtreme(cap, blockType, blockMeta, 1, 2, offset--, igt,this,hintsOnly);
-        StructureBuilderExtreme(terminator, blockType, blockMeta, 1, 2, offset,igt,this,hintsOnly);
+        StructureBuilderExtreme(cap, blockType, blockMeta, 1, 2, offset--, igt, this, hintsOnly);
+        StructureBuilderExtreme(terminator, blockType, blockMeta, 1, 2, offset, igt, this, hintsOnly);
     }
 
     @Override
@@ -336,7 +338,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         return new String[]{
                 CommonValues.TEC_MARK_EM,
                 Util.intBitsToString(TecTech.RANDOM.nextInt()),
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "You need it to process the number above"
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.desc")//You need it to process the number above
         };
     }
 

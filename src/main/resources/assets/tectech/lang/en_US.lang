@@ -368,7 +368,19 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=Energy Fraction display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Scan time display
 
 gt.blockmachines.multimachine.em.switch.name=Network Switch With QoS
+gt.blockmachines.multimachine.em.switch.hint=1 - Classic/Data Hatches or Computer casing
+gt.blockmachines.multimachine.em.switch.desc.0=User controlled computation power routing
+gt.blockmachines.multimachine.em.switch.desc.1=Quality of service is a must
+
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
+gt.blockmachines.multimachine.em.computer.hint.0=1 - Classic/Data Hatches or Computer casing
+gt.blockmachines.multimachine.em.computer.hint.1=2 - Rack Hatches or Advanced computer casing
+gt.blockmachines.multimachine.em.computer.desc=You need it to process the number above
+gt.blockmachines.multimachine.em.computer.cfgi.0=Overclock ratio
+gt.blockmachines.multimachine.em.computer.cfgi.1=Overvoltage ratio
+gt.blockmachines.multimachine.em.computer.cfgo.0=Current max. heat
+gt.blockmachines.multimachine.em.computer.cfgo.1=Produced computation
+
 gt.blockmachines.multimachine.em.databank.name=Data Bank
 gt.blockmachines.multimachine.em.junction.name=Matter Junction
 gt.blockmachines.multimachine.em.mattertoem.name=Matter Quantizer
@@ -403,8 +415,6 @@ gt.blockmachines.multimachine.em.annihilation.name=Annihilation Generator
 gt.blockmachines.multimachine.em.blackholegenerator.name=Black Hole Generator
 
 #Keywords and phrases
-#SOME ARE PHRASES!!!
-tt.keyword.Hint_Details=Hint Details
 tt.keyword.Air=Air
 tt.keyword.Earth=Earth
 tt.keyword.Fire=Fire
@@ -417,12 +427,15 @@ tt.keyword.CLASS=CLASS
 tt.keyword.NAME=NAME
 tt.keyword.CHARGE=CHARGE
 tt.keyword.COLORLESS=COLORLESS
-tt.keyword.CARRIES_COLOR=CARRIES COLOR
 tt.keyword.MASS=MASS
-tt.keyword.LIFE_TIME=LIFE TIME
 tt.keyword.BOOM=BOOM!
 tt.keyword.ID=ID
+tt.keyword.Destination=Destination
+tt.keyword.Weight=Weight
 
+tt.keyphrase.LIFE_TIME=LIFE TIME
+tt.keyphrase.CARRIES_COLOR=CARRIES COLOR
+tt.keyphrase.Hint_Details=Hint Details
 tt.keyphrase.At_current_energy_level=At current energy level
 tt.keyphrase.No_Stacks=No Stacks
 tt.keyphrase.Contains_EM=Contains EM

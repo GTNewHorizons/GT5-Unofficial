@@ -306,13 +306,13 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
             lines.add(StatCollector.translateToLocal("tt.keyword.CHARGE") + " = " + getCharge() / 3f + " e");
         }
         if (Util.areBitsSet(SCAN_GET_COLOR, capabilities)) {
-            lines.add(getColor() < 0 ? StatCollector.translateToLocal("tt.keyword.COLORLESS") : StatCollector.translateToLocal("tt.keyword.CARRIES_COLOR"));
+            lines.add(getColor() < 0 ? StatCollector.translateToLocal("tt.keyword.COLORLESS") : StatCollector.translateToLocal("tt.keyphrase.CARRIES_COLOR"));
         }
         if (Util.areBitsSet(SCAN_GET_MASS, capabilities)) {
             lines.add(StatCollector.translateToLocal("tt.keyword.MASS") + " = " + getMass() + " eV/c\u00b2");
         }
         if (Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)) {
-            lines.add(StatCollector.translateToLocal("tt.keyword.LIFE_TIME") + " = " + getRawTimeSpan(energyLevel) + " s");
+            lines.add(StatCollector.translateToLocal("tt.keyphrase.LIFE_TIME") + " = " + getRawTimeSpan(energyLevel) + " s");
             lines.add("    " + StatCollector.translateToLocal("tt.keyphrase.At_current_energy_level"));
         }
     }

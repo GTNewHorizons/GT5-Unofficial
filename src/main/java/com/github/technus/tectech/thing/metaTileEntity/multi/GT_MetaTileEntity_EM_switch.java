@@ -23,6 +23,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
@@ -34,40 +35,40 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable{
+public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region Structure
     private static final String[][] shape = new String[][]{
-            {"   "," . ","   ",},
-            {"   "," 0 ","   ",},
-            {"   ","   ","   ",},
+            {"   ", " . ", "   ",},
+            {"   ", " 0 ", "   ",},
+            {"   ", "   ", "   ",},
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{3};
     private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList};
-    private static final short[] casingTextures = new short[]{textureOffset+1};
+    private static final short[] casingTextures = new short[]{textureOffset + 1};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{1};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA+"Hint Details:",
-            "1 - Classic/Data Hatches or Computer casing",
+            EnumChatFormatting.AQUA + StatCollector.translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            "1 - Classic/Data Hatches or Computer casing",//1 - Classic/Data Hatches or Computer casing
     };
     //endregion
 
     //region parameters
-    private static final INameFunction<GT_MetaTileEntity_EM_switch> ROUTE_NAME=
-            (base,p)->(p.parameterId()==0?"Destination ":"Weight ")+p.hatchId();
+    private static final INameFunction<GT_MetaTileEntity_EM_switch> ROUTE_NAME =
+            (base, p) -> (p.parameterId() == 0 ? StatCollector.translateToLocal("tt.keyword.Destination") + " " : StatCollector.translateToLocal("tt.keyword.Weight") + " ") + p.hatchId();
     private static final IStatusFunction<GT_MetaTileEntity_EM_switch> WEI_STATUS =
-            (base,p)-> {
-                double v=p.get();
+            (base, p) -> {
+                double v = p.get();
                 if (Double.isNaN(v)) return STATUS_WRONG;
-                if(v<0) return STATUS_TOO_LOW;
-                if(v==0) return STATUS_LOW;
-                if(Double.isInfinite(v)) return STATUS_HIGH;
+                if (v < 0) return STATUS_TOO_LOW;
+                if (v == 0) return STATUS_LOW;
+                if (Double.isInfinite(v)) return STATUS_HIGH;
                 return STATUS_OK;
             };
     private static final IStatusFunction<GT_MetaTileEntity_EM_switch> DST_STATUS =
-            (base,p)->{
-                if(base.weight[p.hatchId()].getStatus(false).isOk) {
+            (base, p) -> {
+                if (base.weight[p.hatchId()].getStatus(false).isOk) {
                     double v = p.get();
                     if (Double.isNaN(v)) return STATUS_WRONG;
                     v = (int) v;
@@ -91,20 +92,20 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     protected void parametersInstantiation_EM() {
-        dst=new Parameters.Group.ParameterIn[10];
-        weight =new Parameters.Group.ParameterIn[10];
+        dst = new Parameters.Group.ParameterIn[10];
+        weight = new Parameters.Group.ParameterIn[10];
         for (int i = 0; i < 10; i++) {
             Parameters.Group hatch = parametrization.getGroup(i);
             dst[i] = hatch.makeInParameter(0, i, ROUTE_NAME, DST_STATUS);
-            weight[i] = hatch.makeInParameter(1,0, ROUTE_NAME, WEI_STATUS);
+            weight[i] = hatch.makeInParameter(1, 0, ROUTE_NAME, WEI_STATUS);
         }
     }
 
-    public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_hi_freq");
+    public final static ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_hi_freq");
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound(){
+    protected ResourceLocation getActivitySound() {
         return activitySound;
     }
 
@@ -128,7 +129,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta,1, 1, 0, getBaseMetaTileEntity(),this,hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
     }
 
     @Override
@@ -162,7 +163,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
             double total = 0;
             double weight;
             for (int i = 0; i < 10; i++) {//each param pair
-                weight= this.weight[i].get();
+                weight = this.weight[i].get();
                 if (weight > 0 && dst[i].get() >= 0) {
                     total += weight;//Total weighted div
                 }
@@ -170,7 +171,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
             Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
             QuantumDataPacket pack = new QuantumDataPacket(0L).unifyTraceWith(pos);
-            if(pack==null) {
+            if (pack == null) {
                 return;
             }
             for (GT_MetaTileEntity_Hatch_InputData hatch : eInputData) {
@@ -187,27 +188,27 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
             double dest;
             for (int i = 0; i < 10; i++) {
-                dest= dst[i].get();
-                weight= this.weight[i].get();
+                dest = dst[i].get();
+                weight = this.weight[i].get();
                 if (weight > 0 && dest >= 0) {
-                    int outIndex = (int)dest - 1;
+                    int outIndex = (int) dest - 1;
                     if (outIndex < 0 || outIndex >= eOutputData.size()) {
                         continue;
                     }
                     GT_MetaTileEntity_Hatch_OutputData out = eOutputData.get(outIndex);
-                    if(Double.isInfinite(total)){
-                        if(Double.isInfinite(weight)){
+                    if (Double.isInfinite(total)) {
+                        if (Double.isInfinite(weight)) {
                             out.q = new QuantumDataPacket(remaining).unifyTraceWith(pack);
                             break;
                         }
-                    }else{
+                    } else {
                         long part = (long) Math.floor(pack.getContent() * weight / total);
                         if (part > 0) {
                             remaining -= part;
                             if (remaining > 0) {
                                 out.q = new QuantumDataPacket(part).unifyTraceWith(pack);
                             } else if (part + remaining > 0) {
-                                out.q = new QuantumDataPacket( part + remaining).unifyTraceWith(pack);
+                                out.q = new QuantumDataPacket(part + remaining).unifyTraceWith(pack);
                                 break;
                             } else {
                                 break;
@@ -223,8 +224,8 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "User controlled computation power routing",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Quality of service is a must"
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0"),//User controlled computation power routing
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + StatCollector.translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1")//Quality of service is a must
         };
     }
 }
