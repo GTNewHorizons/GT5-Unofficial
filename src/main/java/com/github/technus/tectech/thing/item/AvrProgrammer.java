@@ -12,7 +12,6 @@ import dan200.computercraft.api.filesystem.IWritableMount;
 import dan200.computercraft.api.media.IMedia;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import li.cil.oc.api.fs.FileSystem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -32,9 +31,9 @@ import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 
 @Optional.InterfaceList(
-        @Optional.Interface(iface="dan200.computercraft.api.media.IMedia",modid = "ComputerCraft"),
-        @Optional.Interface(iface="li.cil.oc.api.fs.FileSystem",modid="OpenComputers"))
-public class AvrProgrammer extends Item implements IMedia,FileSystem {
+        {@Optional.Interface(iface="dan200.computercraft.api.media.IMedia",modid = "ComputerCraft"),
+        @Optional.Interface(iface="li.cil.oc.api.fs.FileSystem",modid="OpenComputers")})
+public class AvrProgrammer extends Item implements IMedia {
     public static AvrProgrammer INSTANCE=new AvrProgrammer();
 
     private AvrProgrammer(){
