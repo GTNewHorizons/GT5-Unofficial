@@ -3,6 +3,7 @@ package com.github.technus.tectech.thing.item;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_ParamText;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -34,8 +35,8 @@ public final class ParametrizerMemoryCard extends Item {
     private static IIcon locked, unlocked;
 
     private ParametrizerMemoryCard() {
-        setHasSubtypes(true);
         setMaxStackSize(1);
+        setHasSubtypes(true);
         setUnlocalizedName("em.parametrizerMemoryCard");
         setTextureName(MODID + ":itemParametrizerMemoryCardUnlocked");
     }
@@ -64,6 +65,8 @@ public final class ParametrizerMemoryCard extends Item {
                             tNBT.setInteger("param", parametrizer.param);
                             tNBT.setDouble("value0D", parametrizer.value0D);
                             tNBT.setDouble("value1D", parametrizer.value1D);
+                            tNBT.removeTag("value0s");
+                            tNBT.removeTag("value1s");
                         }
                         return true;
                     } else if (metaTE instanceof GT_MetaTileEntity_MultiblockBase_EM) {
@@ -79,6 +82,28 @@ public final class ParametrizerMemoryCard extends Item {
                                     tNBT.getDouble("value1D"));
                             return true;
                         }
+                    } else if (metaTE instanceof GT_MetaTileEntity_Hatch_ParamText) {
+                        GT_MetaTileEntity_Hatch_ParamText parametrizer = (GT_MetaTileEntity_Hatch_ParamText) metaTE;
+                        if (aStack.getTagCompound() == null) {
+                            aStack.setTagCompound(new NBTTagCompound());
+                        }
+                        NBTTagCompound tNBT = aStack.getTagCompound();
+                        if (aStack.getItemDamage() == 1) {
+                            //write to parametrizer
+                            parametrizer.param = tNBT.getInteger("param");
+                            parametrizer.value0D = tNBT.getDouble("value0D");
+                            parametrizer.value1D = tNBT.getDouble("value1D");
+                            parametrizer.value0s = tNBT.getString("value0s");
+                            parametrizer.value1s = tNBT.getString("value1s");
+                        } else {
+                            //read from parametrizer
+                            tNBT.setInteger("param", parametrizer.param);
+                            tNBT.setDouble("value0D", parametrizer.value0D);
+                            tNBT.setDouble("value1D", parametrizer.value1D);
+                            tNBT.setString("value0s", parametrizer.value0s);
+                            tNBT.setString("value1s", parametrizer.value1s);
+                        }
+                        return true;
                     }
                 }
             }
@@ -113,16 +138,21 @@ public final class ParametrizerMemoryCard extends Item {
         }
         aList.add(EnumChatFormatting.BLUE + "Sneak right click to lock/unlock");
 
-        long temp;
-        if (tNBT != null && tNBT.hasKey("param")) {
-            aList.add("Hatch ID: " + EnumChatFormatting.AQUA + tNBT.getInteger("param"));
-            temp = tNBT.getInteger("value0D");
-            aList.add("Value 0D: " + EnumChatFormatting.AQUA + temp);
-            aList.add("Value 0B: " + EnumChatFormatting.AQUA + Util.longBitsToShortString(Double.doubleToLongBits(temp)));
-            temp = tNBT.getInteger("value1D");
-            aList.add("Value 1D: " + EnumChatFormatting.AQUA + temp);
-            aList.add("Value 1B: " + EnumChatFormatting.AQUA + Util.longBitsToShortString(Double.doubleToLongBits(temp)));
-            aList.add("Uses Floats: " + (tNBT.getBoolean("usesFloats") ? EnumChatFormatting.GREEN + "TRUE" : EnumChatFormatting.RED + "FALSE"));
+        double temp;
+        if(tNBT!=null && tNBT.hasKey("param")) {
+            aList.add("Hatch ID: "+EnumChatFormatting.AQUA + tNBT.getInteger("param"));
+            temp=tNBT.getInteger("value0D");
+            aList.add("Value 0D: "+EnumChatFormatting.AQUA + temp);
+            aList.add("Value 0B: "+EnumChatFormatting.AQUA + Util.longBitsToShortString(Double.doubleToLongBits(temp)));
+            if(tNBT.hasKey("value0s")) {
+                aList.add("Value 0s: " + EnumChatFormatting.AQUA + tNBT.getString("value0s"));
+            }
+            temp=tNBT.getInteger("value1D");
+            aList.add("Value 1D: "+EnumChatFormatting.AQUA + temp);
+            aList.add("Value 1B: "+EnumChatFormatting.AQUA + Util.longBitsToShortString(Double.doubleToLongBits(temp)));
+            if(tNBT.hasKey("value1s")) {
+                aList.add("Value 1s: " + EnumChatFormatting.AQUA + tNBT.getString("value1s"));
+            }
         }
 
     }

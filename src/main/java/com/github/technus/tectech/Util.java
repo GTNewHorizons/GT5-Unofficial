@@ -70,9 +70,8 @@ public final class Util {
         if(bits==null){
             return 0;
         }
-        bits=bits.replaceAll("[^-01]","");
         if(bits.length() > 32){
-            return 0;
+            throw new NumberFormatException("Too long!");
         }
         return Integer.parseInt(bits,2);
     }
@@ -81,9 +80,8 @@ public final class Util {
         if(hex==null){
             return 0;
         }
-        hex=hex.toLowerCase().replaceAll("[^-0-9a-f]","");
         if(hex.length()>8){
-            return 0;
+            throw new NumberFormatException("Too long!");
         }
         return Integer.parseInt(hex,16);
     }
@@ -92,12 +90,28 @@ public final class Util {
         if(str==null){
             return 0;
         }
-        str=str.toLowerCase().replaceAll("[^-0-9.,e]","");
-        if(str.length()>8){
+        return Double.parseDouble(str);
+    }
+
+    public static double getValue(String in1) {
+        String str = in1.toLowerCase();
+        double val;
+        try {
+            if (str.contains("b")) {
+                String[] split = str.split("b");
+                val = Util.bitStringToInt(split[0].replaceAll("[^-]", "") + split[1].replaceAll("_", ""));
+            } else if (str.contains("x")) {
+                String[] split = str.split("x");
+                val = Util.hexStringToInt(split[0].replaceAll("[^-]", "") + split[1].replaceAll("_", ""));
+            } else {
+                val = Util.stringToDouble(str);
+            }
+            return val;
+        } catch (Exception e) {
             return 0;
         }
-        return Integer.parseInt(str,16);
     }
+
 
     public static String intBitsToString(int number) {
         StringBuilder result = new StringBuilder(16);

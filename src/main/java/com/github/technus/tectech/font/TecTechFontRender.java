@@ -212,13 +212,13 @@ public class TecTechFontRender extends FontRenderer {
     }
 
     private int drawStringFront(String p_85187_1_, int p_85187_2_, int p_85187_3_, int p_85187_4_) {
-        enableAlpha();
+        GL11.glEnable(3008);
         resetStyles2();
         return renderString2(p_85187_1_, p_85187_2_, p_85187_3_, p_85187_4_, false);
     }
 
     private int drawStringBack(String p_85187_1_, int p_85187_2_, int p_85187_3_, int p_85187_4_) {
-        enableAlpha();
+        GL11.glEnable(3008);
         resetStyles2();
         return renderString2(p_85187_1_, p_85187_2_ + 1, p_85187_3_ + 1, p_85187_4_, true);
     }
