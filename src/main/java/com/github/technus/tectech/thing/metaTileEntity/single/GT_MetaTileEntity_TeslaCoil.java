@@ -33,13 +33,13 @@ import static java.lang.Math.round;
 
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer {
-    private final static HashSet<Util.thaumSpark> sparkList = new HashSet<Util.thaumSpark>();
+    private final static HashSet<Util.thaumSpark> sparkList = new HashSet<>();
     private byte sparkCount = 0;
 
     private int maxTier = 4; //Max tier of transceiver
     private int minTier = 0; //Min tier of transceiver
 
-    public Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap();//Tesla Map to map them tesla bois!
+    public Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>();//Tesla Map to map them tesla bois!
 
     private int transferRadiusMax = 20;
     private int transferRadiusMin = 4;
