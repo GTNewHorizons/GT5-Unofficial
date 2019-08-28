@@ -1,6 +1,5 @@
 package com.github.technus.tectech.mechanics.data;
 
-import com.github.technus.tectech.Util;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -16,7 +15,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public class RendererMessage implements IMessage {
-    HashSet<Util.thaumSpark> sparkList = new HashSet<Util.thaumSpark>();
+    HashSet<thaumSpark> sparkList = new HashSet<thaumSpark>();
 
     public RendererMessage() {
     }
@@ -30,7 +29,7 @@ public class RendererMessage implements IMessage {
             InputStream is = new ByteArrayInputStream(boop);
             ObjectInputStream ois = new ObjectInputStream(is);
             Object data = ois.readObject();
-            sparkList = (HashSet<Util.thaumSpark>) data;
+            sparkList = (HashSet<thaumSpark>) data;
         } catch (IOException | ClassNotFoundException ex) {
         }
     }
@@ -52,7 +51,7 @@ public class RendererMessage implements IMessage {
         public RendererData() {
         }
 
-        public RendererData(HashSet<Util.thaumSpark> eSparkList) {
+        public RendererData(HashSet<thaumSpark> eSparkList) {
             sparkList = eSparkList;
         }
     }
@@ -61,7 +60,7 @@ public class RendererMessage implements IMessage {
     public static class ClientHandler extends AbstractClientMessageHandler<RendererData> {
         @Override
         public IMessage handleClientMessage(EntityPlayer pPlayer, RendererData pMessage, MessageContext pCtx) {
-            for (Util.thaumSpark sp : pMessage.sparkList) {
+            for (thaumSpark sp : pMessage.sparkList) {
                 thaumLightning(sp.x, sp.y, sp.z, sp.xR, sp.yR, sp.zR, sp.wID);
             }
             pMessage.sparkList.clear();
