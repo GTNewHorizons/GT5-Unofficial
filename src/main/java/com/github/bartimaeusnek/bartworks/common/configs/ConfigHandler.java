@@ -24,6 +24,7 @@ package com.github.bartimaeusnek.bartworks.common.configs;
 
 
 import com.github.bartimaeusnek.ASM.BWCoreTransformer;
+import gregtech.api.enums.GT_Values;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -44,6 +45,7 @@ public class ConfigHandler {
     public static int ross128bRuinChance = 512;
     public static int creativeScannerID;
     public static int bioVatMaxParallelBonus = 1000;
+    public static int cutoffTier = 5;
 
     public static long energyPerCell = 1000000L;
 
@@ -51,6 +53,8 @@ public class ConfigHandler {
     public static boolean BioLab = true;
     public static boolean Ross128Enabled = true;
 
+    public static boolean disableExtraGassesForEBF;
+    public static boolean disableMagicalForest;
     public static boolean DEHPDirectSteam;
     public static boolean teslastaff;
     public static boolean classicMode;
@@ -74,6 +78,9 @@ public class ConfigHandler {
         ConfigHandler.teslastaff = ConfigHandler.c.get("System", "Enable Teslastaff", false, "Enables the Teslastaff, an Item used to destroy Electric Armors").getBoolean(false);
         ConfigHandler.newStuff = !ConfigHandler.c.get("System", "Disable non-original-GT-stuff", false, "This switch disables my new content, that is not part of the GT2 compat").getBoolean(false);
         ConfigHandler.BioLab = !ConfigHandler.c.get("System", "Disable BioLab", false, "This switch disables the BioLab, BioVat etc. If you use GT5.08 or equivalent, this needs to be turned off!").getBoolean(false);
+        ConfigHandler.cutoffTier = ConfigHandler.c.get("System", "Tier to nerf circuits", 5, "This switch sets the lowest unnerfed Circuit Recipe Tier. -1 to disable it completely.").getInt(5);
+        ConfigHandler.cutoffTier = (ConfigHandler.cutoffTier == -1 ? GT_Values.VN.length : ConfigHandler.cutoffTier);
+        ConfigHandler.disableExtraGassesForEBF = ConfigHandler.c.get("System", "Disable Extra Gases for EBF", false, "This switch disables extra gas recipes for the EBF, i.e. Xenon instead of Nitrogen").getBoolean(false);
 
         ConfigHandler.mbWaterperSec = ConfigHandler.c.get("Singleblocks", "mL Water per Sec for the StirlingPump", 150).getInt(150);
 
@@ -100,6 +107,8 @@ public class ConfigHandler {
         ConfigHandler.ross128bRuinChance = ConfigHandler.c.get("CrossMod Interactions", "Ruin Chance - Ross128b", 512, "Higher Values mean lesser Ruins.").getInt(512);
         ConfigHandler.Ross128Enabled = ConfigHandler.c.get("CrossMod Interactions", "Galacticraft - Activate Ross128 System", true, "If the Ross128 System should be activated").getBoolean(true);
         ConfigHandler.landerType = ConfigHandler.c.get("CrossMod Interactions", "LanderType", 3, "1 = Moon Lander, 2 = Landing Balloons, 3 = Asteroid Lander").getInt(3);
+        ConfigHandler.disableMagicalForest = ConfigHandler.c.get("CrossMod Interactions", "Disable Magical Forest - Ross128b", false, "True disables the magical Forest Biome on Ross for more performance during World generation.").getBoolean(false);
+
         ConfigHandler.setUpComments();
 
         if (ConfigHandler.c.hasChanged())

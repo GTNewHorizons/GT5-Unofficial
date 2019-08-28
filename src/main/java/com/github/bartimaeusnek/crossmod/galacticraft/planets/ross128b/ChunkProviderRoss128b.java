@@ -44,6 +44,7 @@ import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
+import sun.security.krb5.Config;
 
 import java.util.List;
 
@@ -85,6 +86,8 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             if (Loader.isModLoaded("Thaumcraft")) {
                 if (ThaumcraftHandler.isTaintBiome(biomeGenBase.biomeID))
                     this.biomesForGeneration[i] = BiomeGenBase.taiga;
+                else if (ConfigHandler.disableMagicalForest && ThaumcraftHandler.isMagicalForestBiome(biomeGenBase.biomeID))
+                    this.biomesForGeneration[i] = BiomeGenBase.birchForest;
             }
         }
         this.replaceBlocksForBiome(p_73154_1_, p_73154_2_, ablock, abyte, this.biomesForGeneration);

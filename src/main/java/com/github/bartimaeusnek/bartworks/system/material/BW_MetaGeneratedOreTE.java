@@ -79,10 +79,9 @@ public class BW_MetaGeneratedOreTE extends TileEntity implements ITexturedTileEn
         return rList;
     }
 
-    public Packet getDescriptionPacket() {
+    public void sendPacket(){
         if (!this.worldObj.isRemote)
             BW_Network_instance.sendPacketToAllPlayersInRange(this.worldObj, new OrePacket(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData), this.xCoord, this.zCoord);
-        return null;
     }
 
     @Override

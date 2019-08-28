@@ -24,6 +24,7 @@ package com.github.bartimaeusnek.bartworks.system.material;
 
 import com.github.bartimaeusnek.bartworks.client.renderer.BW_Renderer_Block_Ores;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer;
+import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
@@ -165,11 +166,27 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
 
     @Override
     public void onNeighborBlockChange(World aWorld, int aX, int aY, int aZ, Block p_149695_5_) {
-        aWorld.getTileEntity(aX, aY, aZ).getDescriptionPacket();
+        if ((!aWorld.isRemote || this.checkForAir(aWorld,aX,aY,aZ)) && aWorld.getTileEntity(aX, aY, aZ) instanceof BW_MetaGeneratedOreTE)
+            ((BW_MetaGeneratedOreTE)aWorld.getTileEntity(aX, aY, aZ)).sendPacket();
     }
 
     @Override
     public void onNeighborChange(IBlockAccess aWorld, int aX, int aY, int aZ, int tileX, int tileY, int tileZ) {
-        aWorld.getTileEntity(aX, aY, aZ).getDescriptionPacket();
+        if ((FMLCommonHandler.instance().getEffectiveSide().isServer() || this.checkForAir(aWorld,aX,aY,aZ)) && aWorld.getTileEntity(aX, aY, aZ) instanceof BW_MetaGeneratedOreTE)
+            ((BW_MetaGeneratedOreTE)aWorld.getTileEntity(aX, aY, aZ)).sendPacket();
+    }
+
+    private boolean checkForAir(IBlockAccess aWorld, int aX, int aY, int aZ){
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                for (int z = -1; z <= 1; z++) {
+                    if (x == 0 && y == 0 && z == 0)
+                        continue;
+                    if (aWorld.getBlock(aX+x,aY+y,aZ+z).isAir(aWorld,aX+x,aY+y,aZ+z))
+                        return true;
+                }
+            }
+        }
+        return false;
     }
 }

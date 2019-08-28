@@ -791,7 +791,7 @@ public class RecipeLoader implements Runnable {
                             Materials.SolderingAlloy.getMolten(1440)
                     },
                     ItemRegistry.cal.copy(),
-                    240000,
+                    24000,
                     BW_Util.getMachineVoltageFromTier(6)
             );
         }

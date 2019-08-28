@@ -41,7 +41,6 @@ import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.Circ
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitPartLoader;
 import com.github.bartimaeusnek.bartworks.system.material.ThreadedLoader;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.DownTierLoader;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
@@ -61,7 +60,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import net.minecraft.creativetab.CreativeTabs;
@@ -74,6 +72,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import java.util.ArrayList;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -183,18 +182,20 @@ public final class MainMod {
     }
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
-        MainMod.runOnPlayerJoined(ConfigHandler.classicMode);
+        MainMod.runOnPlayerJoined(ConfigHandler.classicMode, ConfigHandler.disableExtraGassesForEBF);
     }
 
-    public static void runOnPlayerJoined(boolean classicMode){
+    public static void runOnPlayerJoined(boolean classicMode, boolean extraGasRecipes){
         OreDictHandler.adaptCacheForWorld();
         removeIC2Recipes();
         MainMod.addElectricImplosionCompressorRecipes();
         MainMod.unificationEnforcer();
 
-        ArrayListMultimap tochange = MainMod.getRecipesToChange(NOBLE_GAS,ANAEROBE_GAS);
-        HashSet noGas = MainMod.getNoGasItems(tochange);
-        MainMod.editRecipes(tochange,noGas);
+        if (!extraGasRecipes) {
+            ArrayListMultimap<SubTag, GT_Recipe> toChange = MainMod.getRecipesToChange(NOBLE_GAS, ANAEROBE_GAS);
+            HashSet<ItemStack> noGas = MainMod.getNoGasItems(toChange);
+            MainMod.editRecipes(toChange, noGas);
+        }
 
         new CircuitImprintLoader().run();
         if (classicMode)
@@ -389,7 +390,12 @@ public final class MainMod {
                         }
                         for (ItemStack is : noGas)
                             if (GT_Utility.areStacksEqual(is, recipe.mOutputs[0])) {
-                                toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, null, recipe.mFluidOutputs, (int) ((double) recipe.mDuration / 200D * (200D + (double) mat.getProtons())), recipe.mEUt, recipe.mSpecialValue));
+                                ArrayList<ItemStack> inputs = new ArrayList<>(recipe.mInputs.length);
+                                for (ItemStack stack : recipe.mInputs)
+                                    if (!GT_Utility.areStacksEqual(GT_Utility.getIntegratedCircuit(11),stack))
+                                        inputs.add(stack);
+                                    inputs.add(GT_Utility.getIntegratedCircuit(0));
+                                toAdd.add(new BWRecipes.DynamicGTRecipe(false, inputs.toArray(new ItemStack[0]), recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, null, recipe.mFluidOutputs, (int) ((double) recipe.mDuration / 200D * (200D + ((double) mat.getProtons()*2.5D))), recipe.mEUt, recipe.mSpecialValue));
                                 break;
                             }
                     }
@@ -397,6 +403,25 @@ public final class MainMod {
             }
             GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeList.removeAll(base.get(GasTag));
         }
+        HashSet<GT_Recipe> duplicates = new HashSet<GT_Recipe>();
+        for (GT_Recipe recipe : toAdd){
+            for (GT_Recipe recipe2 : toAdd){
+                if (recipe.mEUt != recipe2.mEUt || recipe.mDuration != recipe2.mDuration || recipe.mSpecialValue != recipe2.mSpecialValue || recipe == recipe2 || recipe.mInputs.length != recipe2.mInputs.length || recipe.mFluidInputs.length != recipe2.mFluidInputs.length)
+                    continue;
+                boolean isSame = true;
+                for (int i = 0; i < recipe.mInputs.length; i++) {
+                    if (!GT_Utility.areStacksEqual(recipe.mInputs[i],recipe2.mInputs[i]))
+                        isSame = false;
+                }
+                for (int i = 0; i < recipe.mFluidInputs.length; i++) {
+                    if (!GT_Utility.areFluidsEqual(recipe.mFluidInputs[i],recipe2.mFluidInputs[i]))
+                        isSame = false;
+                }
+                if (isSame)
+                    duplicates.add(recipe2);
+            }
+        }
+        toAdd.removeAll(duplicates);
         for (GT_Recipe recipe : toAdd)
             GT_Recipe.GT_Recipe_Map.sBlastRecipes.add(recipe);
     }

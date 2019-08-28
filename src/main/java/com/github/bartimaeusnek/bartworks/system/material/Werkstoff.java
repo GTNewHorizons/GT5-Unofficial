@@ -282,9 +282,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     @Override
     public boolean contains(SubTag subTag) {
-        for (Pair<ISubTagContainer, Integer> p : this.contents)
-            if (p.getKey().contains(subTag))
-                return true;
+        if (!subTag.equals(WerkstoffLoader.NOBLE_GAS) && !subTag.equals(WerkstoffLoader.ANAEROBE_GAS))
+            for (Pair<ISubTagContainer, Integer> p : this.contents)
+                if (p.getKey().contains(subTag))
+                    return true;
         return this.subtags.contains(subTag);
     }
 
@@ -442,6 +443,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         public Werkstoff.GenerationFeatures addCells() {
             this.toGenerate = (byte) (this.toGenerate | 0b10000);
             return this;
+        }
+
+        public boolean hasCells() {
+            return (this.toGenerate & 0b10000) != 0;
         }
 
         public boolean hasMolten() {

@@ -30,7 +30,7 @@ import net.minecraft.world.IBlockAccess;
 
 public class ServerJoinedPackage extends GT_Packet {
 
-    private boolean config;
+    private byte config;
 
     ServerJoinedPackage() {
         super(true);
@@ -38,7 +38,8 @@ public class ServerJoinedPackage extends GT_Packet {
 
     public ServerJoinedPackage(Object obj) {
         super(false);
-        this.config = ConfigHandler.classicMode;
+        this.config =(byte) (ConfigHandler.classicMode && ConfigHandler.disableExtraGassesForEBF ? 3 : ConfigHandler.classicMode ? 2 : ConfigHandler.disableExtraGassesForEBF ? 1 : 0);
+
     }
 
     @Override
@@ -48,17 +49,19 @@ public class ServerJoinedPackage extends GT_Packet {
 
     @Override
     public byte[] encode() {
-        return new byte[]{(byte) (this.config ? 1 : 0)};
+        return new byte[]{this.config};
     }
 
     @Override
     public GT_Packet decode(ByteArrayDataInput byteArrayDataInput) {
-        this.config = byteArrayDataInput.readBoolean();
+        this.config = byteArrayDataInput.readByte();
         return this;
     }
 
     @Override
     public void process(IBlockAccess iBlockAccess) {
-        MainMod.runOnPlayerJoined(this.config);
+        boolean gas = (this.config & 1) != 0;
+        boolean classic = (this.config & 0b10) != 0;
+        MainMod.runOnPlayerJoined(classic,gas);
     }
 }

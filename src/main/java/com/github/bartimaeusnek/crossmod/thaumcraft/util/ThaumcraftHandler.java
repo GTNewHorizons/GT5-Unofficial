@@ -38,7 +38,7 @@ public class ThaumcraftHandler {
     private ThaumcraftHandler(){}
 
     private static Integer taintBiomeID;
-
+    private static Integer magicalForestBiomeID;
     private static Class mWandInterface;
 
     static {
@@ -55,6 +55,19 @@ public class ThaumcraftHandler {
         } catch (Throwable var3) {
             return false;
         }
+    }
+
+    public static boolean isMagicalForestBiome(int biomeID){
+        if (ThaumcraftHandler.magicalForestBiomeID == null) {
+            try {
+                BiomeGenBase biome = (BiomeGenBase) Class.forName("thaumcraft.common.lib.world.ThaumcraftWorldGenerator").getField("biomeMagicalForest").get(null);
+                return biomeID == (ThaumcraftHandler.magicalForestBiomeID = biome.biomeID);
+            } catch (ClassCastException | ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return biomeID == ThaumcraftHandler.magicalForestBiomeID;
     }
 
     public static boolean isTaintBiome(int biomeID){

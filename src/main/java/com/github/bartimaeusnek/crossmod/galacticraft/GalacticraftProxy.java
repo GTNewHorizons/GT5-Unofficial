@@ -23,12 +23,14 @@
 package com.github.bartimaeusnek.crossmod.galacticraft;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.github.bartimaeusnek.crossmod.galacticraft.atmosphere.BWAtmosphereManager;
 import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128SolarSystem;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.objects.GT_UO_DimensionList;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
@@ -74,6 +76,7 @@ public class GalacticraftProxy {
         if (GalacticraftProxy.gtConf.hasChanged())
             GalacticraftProxy.gtConf.save();
         init_OresRoss128();
+        MinecraftForge.EVENT_BUS.register(BWAtmosphereManager.INSTANCE);
     }
 
     public static void init(FMLInitializationEvent e) {

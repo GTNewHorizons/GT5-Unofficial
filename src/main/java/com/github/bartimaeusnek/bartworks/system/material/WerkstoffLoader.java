@@ -78,8 +78,8 @@ public class WerkstoffLoader implements Runnable {
     public static final SubTag NOBLE_GAS = SubTag.getNewSubTag("NobleGas");
     public static final SubTag ANAEROBE_GAS = SubTag.getNewSubTag("AnaerobeGas");
     public static final SubTag ANAEROBE_SMELTING = SubTag.getNewSubTag("AnaerobeSmelting");
-
     public static OrePrefixes cellMolten;
+
     static {
         for (OrePrefixes prefix : OrePrefixes.values()){
             if (prefix.toString().equals("cellMolten"))
@@ -636,13 +636,46 @@ public class WerkstoffLoader implements Runnable {
             //No Byproducts
             //No Ingredients
     );
-
+    public static final Werkstoff BArTiMaEuSNeK = new Werkstoff(
+            new short[]{0x00,0xff,0x00},
+            "BArTiMaEuSNeK",
+            "Are you serious?",
+            new Werkstoff.Stats().setMeltingPoint(9001).setCentrifuge(true).setBlastFurnace(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().addGems().addMetalItems().addMolten(),
+            43,
+            TextureSet.SET_DIAMOND,
+            Arrays.asList(
+                    Materials.Boron,
+                    Materials.Titanium,
+                    Materials.Europium
+            ),
+            new Pair<>(Materials.Boron,1),
+            new Pair<>(Materials.Argon,1),
+            new Pair<>(Materials.Titanium,1),
+            new Pair<>(Materials.Magic,1),
+            new Pair<>(Materials.Europium,1),
+            new Pair<>(Materials.Sulfur,1),
+            new Pair<>(WerkstoffLoader.Neon,1),
+            new Pair<>(Materials.Potassium,1)
+    );
 
     public static HashMap<OrePrefixes, BW_MetaGenerated_Items> items = new HashMap<>();
     public static HashMap<Werkstoff, Fluid> fluids = new HashMap<>();
     public static HashMap<Werkstoff, Fluid> molten = new HashMap<>();
     public static Block BWOres;
     public boolean registered;
+
+    public static Werkstoff getWerkstoff(String Name){
+        try{
+            Field f = WerkstoffLoader.class.getField(Name);
+            if (f != null)
+                return (Werkstoff) f.get(null);
+        } catch (IllegalAccessException | NoSuchFieldException | ClassCastException e) {
+            e.printStackTrace();
+        }
+        return Werkstoff.default_null_Werkstoff;
+    }
 
     public static ItemStack getCorrespondingItemStack(OrePrefixes orePrefixes, Werkstoff werkstoff) {
         return WerkstoffLoader.getCorrespondingItemStack(orePrefixes, werkstoff, 1);
@@ -723,20 +756,20 @@ public class WerkstoffLoader implements Runnable {
     }
 
     private void addSubTags() {
-
-        WerkstoffLoader.Krypton.add(WerkstoffLoader.NOBLE_GAS);
-        WerkstoffLoader.Xenon.add(WerkstoffLoader.NOBLE_GAS);
-        WerkstoffLoader.Neon.add(WerkstoffLoader.NOBLE_GAS);
         Materials.Helium.add(WerkstoffLoader.NOBLE_GAS);
-
+        WerkstoffLoader.Neon.add(WerkstoffLoader.NOBLE_GAS);
         Materials.Argon.add(WerkstoffLoader.NOBLE_GAS);
-
+        WerkstoffLoader.Krypton.add(WerkstoffLoader.NOBLE_GAS);
+        WerkstoffLoader.Xenon.add(WerkstoffLoader.NOBLE_GAS,WerkstoffLoader.ANAEROBE_GAS);
+        Materials.Radon.add(WerkstoffLoader.NOBLE_GAS);
         WerkstoffLoader.Oganesson.add(WerkstoffLoader.NOBLE_GAS,WerkstoffLoader.ANAEROBE_GAS);
-        Materials.Radon.add(WerkstoffLoader.NOBLE_GAS,WerkstoffLoader.ANAEROBE_GAS);
 
         Materials.Nitrogen.add(WerkstoffLoader.ANAEROBE_GAS);
 
         WerkstoffLoader.Calcium.add(WerkstoffLoader.ANAEROBE_SMELTING);
+
+        //Calcium Smelting block
+        Materials.Calcium.mBlastFurnaceRequired=true;
 
         for (Werkstoff W : Werkstoff.werkstoffHashMap.values()) {
             for (Pair<ISubTagContainer, Integer> pair : W.getContents().getValue().toArray(new Pair[0])) {
@@ -980,6 +1013,8 @@ public class WerkstoffLoader implements Runnable {
                                 cells += container.getValue();
                             }
                         } else {
+                            if (((Materials) container.getKey()).getDust(container.getValue()) == null )
+                                continue;
                             if (!tracker.containsKey(container.getKey())) {
                                 stOutputs.add(((Materials) container.getKey()).getDust(container.getValue()));
                                 tracker.put(container.getKey(), new Pair<>(container.getValue(), stOutputs.size() - 1));
@@ -989,9 +1024,25 @@ public class WerkstoffLoader implements Runnable {
                             }
                         }
                     } else if (container.getKey() instanceof Werkstoff) {
-                        if (((Werkstoff) container.getKey()).getTexSet() == TextureSet.SET_FLUID) {
-                            //not yet implemented no fluids from me...
+                        if (((Werkstoff) container.getKey()).getStats().isGas() || ((Werkstoff) container.getKey()).getGenerationFeatures().hasCells()) {
+                            FluidStack tmpFl = ((Werkstoff) container.getKey()).getFluidOrGas(1000 * container.getValue());
+                            if (tmpFl == null || tmpFl.getFluid() == null) {
+                                tmpFl = ((Werkstoff) container.getKey()).getFluidOrGas(1000 * container.getValue());
+                            }
+                            flOutputs.add(tmpFl);
+                            if (flOutputs.size() > 1) {
+                                if (!tracker.containsKey(container.getKey())) {
+                                    stOutputs.add(((Werkstoff) container.getKey()).get(cell, container.getValue()));
+                                    tracker.put(container.getKey(), new Pair<>(container.getValue(), stOutputs.size() - 1));
+                                } else {
+                                    stOutputs.add(((Werkstoff) container.getKey()).get(cell, tracker.get(container.getKey()).getKey() + container.getValue()));
+                                    stOutputs.remove(tracker.get(container.getKey()).getValue() + 1);
+                                }
+                                cells += container.getValue();
+                            }
                         } else {
+                            if (!((Werkstoff) container.getKey()).getGenerationFeatures().hasDusts())
+                               continue;
                             if (!tracker.containsKey(container.getKey())) {
                                 stOutputs.add(((Werkstoff) container.getKey()).get(dust, container.getValue()));
                                 tracker.put(container.getKey(), new Pair<>(container.getValue(), stOutputs.size() - 1));
