@@ -15,6 +15,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -23,6 +24,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.Locale;
 
@@ -32,6 +34,7 @@ import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 /**
  * Created by danie_000 on 12.12.2016.
@@ -44,6 +47,8 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     private float overflowMatter;
     public final float overflowMax;
     private final float overflowDisperse;
+
+    private String clientLocale = "en_US";
 
     public GT_MetaTileEntity_Hatch_OverflowElemental(int aID, String aName, String aNameRegional, int aTier, float max) {
         super(aID, aName, aNameRegional, aTier, 0, translateToLocal("gt.blockmachines.hatch.emmuffler.desc.0"));//Disposes excess elemental Matter
@@ -186,6 +191,22 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     }
 
     @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
+            try {
+                EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+                clientLocale = (String) FieldUtils.readField(player, "translator", true);
+            } catch (Exception e) {
+                clientLocale = "en_US";
+            }
+        } else {
+            return true;
+        }
+        System.out.println(clientLocale);
+        return true;
+    }
+
+    @Override
     public boolean isGivingInformation() {
         return true;
     }
@@ -193,10 +214,10 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     @Override
     public String[] getInfoData() {
         return new String[]{
-                translateToLocal("tt.keyphrase.Contained_mass") + ":",
+                translateToLocalFormatted("tt.keyphrase.Contained_mass", clientLocale) + ":",
                 EnumChatFormatting.RED + Double.toString(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
                 EnumChatFormatting.GREEN + Double.toString(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
-                translateToLocal("tt.keyphrase.Mass_Disposal_speed") + ": " + EnumChatFormatting.BLUE + overflowDisperse + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
+                translateToLocalFormatted("tt.keyphrase.Mass_Disposal_speed", clientLocale) + ": " + EnumChatFormatting.BLUE + overflowDisperse + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
         };
     }
 
@@ -207,7 +228,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
             if (TecTech.configTecTech.BOOM_ENABLE) {
                 getBaseMetaTileEntity().doExplosion(V[15]);
             } else {
-                TecTech.proxy.broadcast(translateToLocal("tt.keyphrase.Muffler_BOOM") + " " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
+                TecTech.proxy.broadcast(translateToLocalFormatted("tt.keyphrase.Muffler_BOOM", clientLocale) + " " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
             }
         }
     }
