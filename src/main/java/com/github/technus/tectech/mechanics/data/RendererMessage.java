@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public class RendererMessage implements IMessage {
-    HashSet<thaumSpark> sparkList = new HashSet<thaumSpark>();
+    HashSet<ThaumSpark> sparkList = new HashSet<ThaumSpark>();
 
     public RendererMessage() {
     }
@@ -29,7 +29,7 @@ public class RendererMessage implements IMessage {
             InputStream is = new ByteArrayInputStream(boop);
             ObjectInputStream ois = new ObjectInputStream(is);
             Object data = ois.readObject();
-            sparkList = (HashSet<thaumSpark>) data;
+            sparkList = (HashSet<ThaumSpark>) data;
         } catch (IOException | ClassNotFoundException ex) {
         }
     }
@@ -51,7 +51,7 @@ public class RendererMessage implements IMessage {
         public RendererData() {
         }
 
-        public RendererData(HashSet<thaumSpark> eSparkList) {
+        public RendererData(HashSet<ThaumSpark> eSparkList) {
             sparkList = eSparkList;
         }
     }
@@ -60,7 +60,7 @@ public class RendererMessage implements IMessage {
     public static class ClientHandler extends AbstractClientMessageHandler<RendererData> {
         @Override
         public IMessage handleClientMessage(EntityPlayer pPlayer, RendererData pMessage, MessageContext pCtx) {
-            for (thaumSpark sp : pMessage.sparkList) {
+            for (ThaumSpark sp : pMessage.sparkList) {
                 thaumLightning(sp.x, sp.y, sp.z, sp.xR, sp.yR, sp.zR, sp.wID);
             }
             pMessage.sparkList.clear();

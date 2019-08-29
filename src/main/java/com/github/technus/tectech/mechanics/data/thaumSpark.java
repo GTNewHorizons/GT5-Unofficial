@@ -3,12 +3,12 @@ package com.github.technus.tectech.mechanics.data;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class thaumSpark implements Serializable {
+public class ThaumSpark implements Serializable {
     private static final long serialVersionUID = -7037856938316679566L;
     public int x, y, z, wID;
     public byte xR, yR, zR;
 
-    public thaumSpark(){
+    public ThaumSpark(){
         this.x = 0;
         this.z = 0;
         this.y = 0;
@@ -20,7 +20,7 @@ public class thaumSpark implements Serializable {
         this.wID = 0;
     }
 
-    public thaumSpark(int x, int y, int z, byte xR, byte yR, byte zR, int wID) {
+    public ThaumSpark(int x, int y, int z, byte xR, byte yR, byte zR, int wID) {
         this.x = x;
         this.z = z;
         this.y = y;
@@ -36,7 +36,7 @@ public class thaumSpark implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        thaumSpark that = (thaumSpark) o;
+        ThaumSpark that = (ThaumSpark) o;
         return x == that.x &&
                 y == that.y &&
                 z == that.z &&

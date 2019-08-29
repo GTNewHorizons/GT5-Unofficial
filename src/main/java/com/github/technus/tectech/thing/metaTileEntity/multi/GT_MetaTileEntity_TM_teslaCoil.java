@@ -4,7 +4,7 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.data.RendererMessage;
-import com.github.technus.tectech.mechanics.data.thaumSpark;
+import com.github.technus.tectech.mechanics.data.ThaumSpark;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
@@ -42,7 +42,7 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 import static gregtech.api.enums.GT_Values.E;
 
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-    private final static HashSet<thaumSpark> sparkList = new HashSet<>();
+    private final static HashSet<ThaumSpark> sparkList = new HashSet<>();
 
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
@@ -537,7 +537,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         int wID = mte.getWorld().provider.dimensionId;
 
-        sparkList.add(new thaumSpark(posTop[0], posTop[1], posTop[2], xR, yR, zR, wID));
+        sparkList.add(new ThaumSpark(posTop[0], posTop[1], posTop[2], xR, yR, zR, wID));
     }
 
     @Override

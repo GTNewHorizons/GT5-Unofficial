@@ -5,7 +5,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.data.RendererMessage;
-import com.github.technus.tectech.mechanics.data.thaumSpark;
+import com.github.technus.tectech.mechanics.data.ThaumSpark;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_TM_teslaCoil;
@@ -34,7 +34,7 @@ import static java.lang.Math.round;
 
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer {
-    private final static HashSet<thaumSpark> sparkList = new HashSet<>();
+    private final static HashSet<ThaumSpark> sparkList = new HashSet<>();
     private byte sparkCount = 0;
 
     private int maxTier = 4; //Max tier of transceiver
@@ -214,7 +214,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
         int wID = mte.getWorld().provider.dimensionId;
 
-        sparkList.add(new thaumSpark(x, y, z, xR, yR, zR, wID));
+        sparkList.add(new ThaumSpark(x, y, z, xR, yR, zR, wID));
     }
 
     private long getEnergyEfficiency(long voltage, int distance, boolean overDriveToggle) {
