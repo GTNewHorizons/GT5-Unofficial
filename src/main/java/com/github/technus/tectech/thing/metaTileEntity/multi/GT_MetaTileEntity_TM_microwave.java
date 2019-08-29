@@ -19,7 +19,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,6 +28,7 @@ import static com.github.technus.tectech.loader.MainLoader.microwaving;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static gregtech.api.GregTech_API.sBlockCasings4;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -53,20 +53,20 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasings4};
     private static final byte[] blockMetaFallback = new byte[]{1};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA + StatCollector.translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.0"),//1 - Classic Hatches or Clean Stainless Steel Casing
-            StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.1"),//Also acts like a hopper so give it an Output Bus
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.0"),//1 - Classic Hatches or Clean Stainless Steel Casing
+            translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.1"),//Also acts like a hopper so give it an Output Bus
     };
     //endregion
 
     //region parameters
     protected Parameters.Group.ParameterIn powerSetting, timerSetting;
     protected Parameters.Group.ParameterOut timerValue, remainingTime;
-    private static final INameFunction<GT_MetaTileEntity_TM_microwave> POWER_SETTING_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.0");//Power setting
-    private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_SETTING_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.1");//Timer setting
+    private static final INameFunction<GT_MetaTileEntity_TM_microwave> POWER_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.0");//Power setting
+    private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.1");//Timer setting
 
-    private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_VALUE_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.0");//Timer value
-    private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_REMAINING_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.1");//Timer remaining
+    private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_VALUE_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.0");//Timer value
+    private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_REMAINING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.1");//Timer remaining
     private static final IStatusFunction<GT_MetaTileEntity_TM_microwave> POWER_STATUS =
             (base, p) -> LedStatus.fromLimitsInclusiveOuterBoundary(p.get(), 300, 1000, 1000, Double.POSITIVE_INFINITY);
     private static final IStatusFunction<GT_MetaTileEntity_TM_microwave> TIMER_STATUS = (base, p) -> {
@@ -141,9 +141,9 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     public String[] getDescription() {
         return new String[]{
                 CommonValues.BASS_MARK,
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.0"),//High Frequency Oven
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.1"),//From live to done in seconds!
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.2"),//I said nuke the... I meant microwave supper!
+                translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.0"),//High Frequency Oven
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.1"),//From live to done in seconds!
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.2"),//I said nuke the... I meant microwave supper!
         };
     }
 

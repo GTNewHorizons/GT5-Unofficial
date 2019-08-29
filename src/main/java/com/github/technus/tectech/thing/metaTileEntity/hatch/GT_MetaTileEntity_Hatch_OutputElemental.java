@@ -7,15 +7,16 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.util.StatCollector;
+
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 27.10.2016.
  */
 public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_Hatch_ElementalContainer {
     public GT_MetaTileEntity_Hatch_OutputElemental(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, StatCollector.translateToLocal("gt.blockmachines.emout.desc"));//Elemental Output for Multiblocks
-        Util.setTier(aTier,this);
+        super(aID, aName, aNameRegional, aTier, translateToLocal("gt.blockmachines.emout.desc"));//Elemental Output for Multiblocks
+        Util.setTier(aTier, this);
     }
 
     //public GT_MetaTileEntity_Hatch_OutputElemental(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -28,7 +29,7 @@ public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_H
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_OutputElemental(mName, mTier,  mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_OutputElemental(mName, mTier, mDescription, mTextures);
     }
 
     @Override
@@ -68,7 +69,7 @@ public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_H
                     } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_EM) {
                         if (((GT_MetaTileEntity_Pipe_EM) aMetaTileEntity).connectionCount != 2) {
                             return;
-                        }else {
+                        } else {
                             ((GT_MetaTileEntity_Pipe_EM) aMetaTileEntity).markUsed();
                         }
                     } else {

@@ -4,9 +4,9 @@ import com.github.technus.tectech.CommonValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.util.StatCollector;
 
 import static com.github.technus.tectech.CommonValues.V;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_WetTransformer extends GT_MetaTileEntity_TT_Transformer {
     public GT_MetaTileEntity_WetTransformer(int aID, String aName, String aNameRegional, int aTier) {
@@ -24,7 +24,7 @@ public class GT_MetaTileEntity_WetTransformer extends GT_MetaTileEntity_TT_Trans
 
     @Override
     public String[] getDescription() {
-        return new String[]{StatCollector.translateToLocal("gt.blockmachines.wetransformer.tier." + (mTier > 9 ? "" : "0") + mTier + ".desc"), "Accepts 16A and outputs 64A", CommonValues.TEC_MARK_GENERAL};
+        return new String[]{translateToLocal("gt.blockmachines.wetransformer.tier." + (mTier > 9 ? "" : "0") + mTier + ".desc"), "Accepts 16A and outputs 64A", CommonValues.TEC_MARK_GENERAL};
     }
 
     @Override

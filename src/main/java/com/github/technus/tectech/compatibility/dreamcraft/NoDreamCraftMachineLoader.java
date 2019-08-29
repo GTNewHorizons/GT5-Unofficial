@@ -13,13 +13,13 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import static gregtech.api.GregTech_API.METATILEENTITIES;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class NoDreamCraftMachineLoader implements Runnable {
     public final static String imagination = EnumChatFormatting.RESET +
@@ -208,13 +208,13 @@ public class NoDreamCraftMachineLoader implements Runnable {
                 temp = constructor.newInstance(
                         11989, "transformer.ha.tier.09", "Highly Ultimate Hi-Amp Transformer", 9,
                         //UEV -> UHV (Use Soft Mallet to invert
-                        StatCollector.translateToLocal("gt.blockmachines.transformer.ha.tier.09.desc"));
+                        translateToLocal("gt.blockmachines.transformer.ha.tier.09.desc"));
                 CustomItemList.Transformer_HA_UEV_UHV.set(temp.getStackForm(1));
 
                 temp = constructor.newInstance(
                         11910, "transformer.ha.tier.10", "Extremely Ultimate Hi-Amp Transformer", 10,
                         //UIV -> UEV (Use Soft Mallet to invert)
-                        StatCollector.translateToLocal("gt.blockmachines.transformer.ha.tier.10.desc"));
+                        translateToLocal("gt.blockmachines.transformer.ha.tier.10.desc"));
                 Util.setTier(10, temp);
                 if (GT_Values.GT.isClientSide()) {
                     field.set(temp, method.invoke(temp, iTexture));
@@ -224,7 +224,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
                 temp = constructor.newInstance(
                         11911, "transformer.ha.tier.11", "Insanely Ultimate Hi-Amp Transformer", 11,
                         //UMV -> UIV (Use Soft Mallet to invert)
-                        StatCollector.translateToLocal("gt.blockmachines.transformer.ha.tier.11.desc"));
+                        translateToLocal("gt.blockmachines.transformer.ha.tier.11.desc"));
                 Util.setTier(11, temp);
                 if (GT_Values.GT.isClientSide()) {
                     field.set(temp, method.invoke(temp, iTexture));
@@ -234,7 +234,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
                 temp = constructor.newInstance(
                         11912, "transformer.ha.tier.12", "Mega Ultimate Hi-Amp Transformer", 12,
                         //UXV -> UMV (Use Soft Mallet to invert)
-                        StatCollector.translateToLocal("gt.blockmachines.transformer.ha.tier.12.desc"));
+                        translateToLocal("gt.blockmachines.transformer.ha.tier.12.desc"));
                 Util.setTier(12, temp);
                 if (GT_Values.GT.isClientSide()) {
                     field.set(temp, method.invoke(temp, iTexture));
@@ -244,7 +244,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
                 temp = constructor.newInstance(
                         11913, "transformer.ha.tier.13", "Extended Mega Ultimate Hi-Amp Transformer", 13,
                         //OPV -> UXV (Use Soft Mallet to invert)
-                        StatCollector.translateToLocal("gt.blockmachines.transformer.ha.tier.13.desc"));
+                        translateToLocal("gt.blockmachines.transformer.ha.tier.13.desc"));
                 Util.setTier(13, temp);
                 if (GT_Values.GT.isClientSide()) {
                     field.set(temp, method.invoke(temp, iTexture));
@@ -254,7 +254,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
                 temp = constructor.newInstance(
                         11914, "transformer.ha.tier.14", "Overpowered Hi-Amp Transformer", 14,
                         //MAX -> OPV (Use Soft Mallet to invert)
-                        StatCollector.translateToLocal("gt.blockmachines.transformer.ha.tier.14.desc"));
+                        translateToLocal("gt.blockmachines.transformer.ha.tier.14.desc"));
                 Util.setTier(14, temp);
                 if (GT_Values.GT.isClientSide()) {
                     field.set(temp, method.invoke(temp, iTexture));

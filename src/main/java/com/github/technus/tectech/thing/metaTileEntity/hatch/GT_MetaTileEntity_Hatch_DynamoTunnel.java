@@ -12,18 +12,18 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import static com.github.technus.tectech.CommonValues.TRANSFER_AT;
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 16.12.2016.
  */
 public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatch_DynamoMulti implements IConnectsToEnergyTunnel {
     public GT_MetaTileEntity_Hatch_DynamoTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(aID, aName, aNameRegional, aTier, 0, StatCollector.translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.0"), aAmp);//Energy extracting terminal for Multiblocks
+        super(aID, aName, aNameRegional, aTier, 0, translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.0"), aAmp);//Energy extracting terminal for Multiblocks
         Util.setTier(aTier, this);
     }
 
@@ -105,8 +105,8 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
-                mDescription,
-                StatCollector.translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": " + EnumChatFormatting.YELLOW + (Amperes * maxEUOutput()) + EnumChatFormatting.RESET + " EU/t"//Throughput
+                mDescription,//TODO NOT PASS DESCRIPTION
+                translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": " + EnumChatFormatting.YELLOW + (Amperes * maxEUOutput()) + EnumChatFormatting.RESET + " EU/t"//Throughput
         };
     }
 

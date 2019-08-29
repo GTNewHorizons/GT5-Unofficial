@@ -21,7 +21,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -32,6 +31,7 @@ import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 12.12.2016.
@@ -46,7 +46,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     private final float overflowDisperse;
 
     public GT_MetaTileEntity_Hatch_OverflowElemental(int aID, String aName, String aNameRegional, int aTier, float max) {
-        super(aID, aName, aNameRegional, aTier, 0, StatCollector.translateToLocal("gt.blockmachines.hatch.emmuffler.desc.0"));//Disposes excess elemental Matter
+        super(aID, aName, aNameRegional, aTier, 0, translateToLocal("gt.blockmachines.hatch.emmuffler.desc.0"));//Disposes excess elemental Matter
         overflowMatter = max / 2;
         overflowMax = max;
         overflowDisperse = overflowMax / (float) (30 - aTier);
@@ -85,9 +85,9 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         return new String[]{
                 CommonValues.TEC_MARK_EM,
                 mDescription,
-                StatCollector.translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c\u00b2",
-                StatCollector.translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c\u00b2)/s",
-                StatCollector.translateToLocal("gt.blockmachines.hatch.emmuffler.desc.3")
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c\u00b2",
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c\u00b2)/s",
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.3")
         };
     }
 
@@ -193,10 +193,10 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     @Override
     public String[] getInfoData() {
         return new String[]{
-                StatCollector.translateToLocal("tt.keyphrase.Contained_mass") + ":",
+                translateToLocal("tt.keyphrase.Contained_mass") + ":",
                 EnumChatFormatting.RED + Double.toString(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
                 EnumChatFormatting.GREEN + Double.toString(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
-                StatCollector.translateToLocal("tt.keyphrase.Mass_Disposal_speed") + ": " + EnumChatFormatting.BLUE + overflowDisperse + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
+                translateToLocal("tt.keyphrase.Mass_Disposal_speed") + ": " + EnumChatFormatting.BLUE + overflowDisperse + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
         };
     }
 
@@ -207,7 +207,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
             if (TecTech.configTecTech.BOOM_ENABLE) {
                 getBaseMetaTileEntity().doExplosion(V[15]);
             } else {
-                TecTech.proxy.broadcast(StatCollector.translateToLocal("tt.keyphrase.Muffler_BOOM") + " " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
+                TecTech.proxy.broadcast(translateToLocal("tt.keyphrase.Muffler_BOOM") + " " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
             }
         }
     }

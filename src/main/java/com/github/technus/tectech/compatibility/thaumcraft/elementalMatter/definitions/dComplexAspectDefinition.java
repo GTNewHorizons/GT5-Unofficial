@@ -13,13 +13,13 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.transformations
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay.noDecay;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 06.05.2017.
@@ -87,7 +87,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
         } else {
             name = getSymbol();
         }
-        return StatCollector.translateToLocal("tt.keyword.Aspect") + ": " + name;
+        return translateToLocal("tt.keyword.Aspect") + ": " + name;
     }
 
     @Override
@@ -296,24 +296,24 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
         if (Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
-            lines.add(StatCollector.translateToLocal("tt.keyword.CLASS") + " = " + nbtType + ' ' + getClassType());
+            lines.add(translateToLocal("tt.keyword.CLASS") + " = " + nbtType + ' ' + getClassType());
         }
         if (Util.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS, capabilities)) {
-            lines.add(StatCollector.translateToLocal("tt.keyword.NAME") + " = " + getName());
+            lines.add(translateToLocal("tt.keyword.NAME") + " = " + getName());
             //lines.add("SYMBOL = "+getSymbol());
         }
         if (Util.areBitsSet(SCAN_GET_CHARGE, capabilities)) {
-            lines.add(StatCollector.translateToLocal("tt.keyword.CHARGE") + " = " + getCharge() / 3f + " e");
+            lines.add(translateToLocal("tt.keyword.CHARGE") + " = " + getCharge() / 3f + " e");
         }
         if (Util.areBitsSet(SCAN_GET_COLOR, capabilities)) {
-            lines.add(getColor() < 0 ? StatCollector.translateToLocal("tt.keyword.COLORLESS") : StatCollector.translateToLocal("tt.keyphrase.CARRIES_COLOR"));
+            lines.add(getColor() < 0 ? translateToLocal("tt.keyword.COLORLESS") : translateToLocal("tt.keyphrase.CARRIES_COLOR"));
         }
         if (Util.areBitsSet(SCAN_GET_MASS, capabilities)) {
-            lines.add(StatCollector.translateToLocal("tt.keyword.MASS") + " = " + getMass() + " eV/c\u00b2");
+            lines.add(translateToLocal("tt.keyword.MASS") + " = " + getMass() + " eV/c\u00b2");
         }
         if (Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)) {
-            lines.add(StatCollector.translateToLocal("tt.keyphrase.LIFE_TIME") + " = " + getRawTimeSpan(energyLevel) + " s");
-            lines.add("    " + StatCollector.translateToLocal("tt.keyphrase.At_current_energy_level"));
+            lines.add(translateToLocal("tt.keyphrase.LIFE_TIME") + " = " + getRawTimeSpan(energyLevel) + " s");
+            lines.add("    " + translateToLocal("tt.keyphrase.At_current_energy_level"));
         }
     }
 }

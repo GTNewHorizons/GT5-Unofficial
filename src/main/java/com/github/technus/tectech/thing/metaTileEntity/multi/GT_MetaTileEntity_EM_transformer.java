@@ -19,13 +19,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.GregTech_API.sBlockCasings1;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -44,8 +44,8 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA + StatCollector.translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.hint"),//1 - Energy IO Hatches or High Power Casing
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.transformer.hint"),//1 - Energy IO Hatches or High Power Casing
     };
     //endregion
 
@@ -121,9 +121,9 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.0"),//Power substation
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1"),//All the transformation!
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2"),//Only 0.78125% power loss, HAYO!
+                translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.0"),//Power substation
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1"),//All the transformation!
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2"),//Only 0.78125% power loss, HAYO!
         };
     }
 

@@ -9,12 +9,7 @@ import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,7 +25,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 
@@ -40,6 +34,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -62,9 +57,9 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{1, 3};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA + StatCollector.translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.hint.0"),//1 - Classic/Data Hatches or Computer casing
-            StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.hint.1"),//2 - Rack Hatches or Advanced computer casing
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.computer.hint.0"),//1 - Classic/Data Hatches or Computer casing
+            translateToLocal("gt.blockmachines.multimachine.em.computer.hint.1"),//2 - Rack Hatches or Advanced computer casing
     };
     //endregion
 
@@ -72,10 +67,10 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     protected Parameters.Group.ParameterIn overclock, overvolt;
     protected Parameters.Group.ParameterOut maxCurrentTemp, availableData;
 
-    private static final INameFunction<GT_MetaTileEntity_EM_computer> OC_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0");//Overclock ratio
-    private static final INameFunction<GT_MetaTileEntity_EM_computer> OV_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.1");//Overvoltage ratio
-    private static final INameFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.0");//Current max. heat
-    private static final INameFunction<GT_MetaTileEntity_EM_computer> COMPUTE_NAME = (base, p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.1");//Produced computation
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> OC_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0");//Overclock ratio
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> OV_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.1");//Overvoltage ratio
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.0");//Current max. heat
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> COMPUTE_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.1");//Produced computation
     private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OC_STATUS =
             (base, p) -> LedStatus.fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1, 3);
     private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OV_STATUS =
@@ -338,7 +333,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         return new String[]{
                 CommonValues.TEC_MARK_EM,
                 Util.intBitsToString(TecTech.RANDOM.nextInt()),
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + StatCollector.translateToLocal("gt.blockmachines.multimachine.em.computer.desc")//You need it to process the number above
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.computer.desc")//You need it to process the number above
         };
     }
 

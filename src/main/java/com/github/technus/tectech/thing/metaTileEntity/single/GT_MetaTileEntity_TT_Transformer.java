@@ -7,9 +7,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
-import net.minecraft.util.StatCollector;
 
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_TT_Transformer extends GT_MetaTileEntity_Transformer {
     public GT_MetaTileEntity_TT_Transformer(int aID, String aName, String aNameRegional, int aTier) {
@@ -49,6 +49,6 @@ public class GT_MetaTileEntity_TT_Transformer extends GT_MetaTileEntity_Transfor
 
     @Override
     public String[] getDescription() {
-        return new String[]{StatCollector.translateToLocal("gt.blockmachines.tt.transformer.tier." + (mTier > 9 ? "" : "0") + mTier + ".desc"), CommonValues.TEC_MARK_GENERAL};
+        return new String[]{translateToLocal("gt.blockmachines.tt.transformer.tier." + (mTier > 9 ? "" : "0") + mTier + ".desc"), CommonValues.TEC_MARK_GENERAL};
     }
 }

@@ -20,7 +20,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -28,6 +27,7 @@ import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
+import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 /**
@@ -131,7 +131,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                                     tGTTileEntity.doExplosion(V[14]);
                                 } else {
                                     TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowMatter * 32D);
-                                    TecTech.proxy.broadcast("Container1 " + StatCollector.translateToLocal("tt.keyword.BOOM") + " " + aBaseMetaTileEntity.getXCoord() + ' ' + aBaseMetaTileEntity.getYCoord() + ' ' + aBaseMetaTileEntity.getZCoord());
+                                    TecTech.proxy.broadcast("Container1 " + translateToLocal("tt.keyword.BOOM") + " " + aBaseMetaTileEntity.getXCoord() + ' ' + aBaseMetaTileEntity.getYCoord() + ' ' + aBaseMetaTileEntity.getZCoord());
                                 }
                             }
                             deathDelay = 3;//needed in some cases like repetitive failures. Should be 4 since there is -- at end but meh...
@@ -144,7 +144,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                             TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowMatter * 32D);
                             deathDelay = 3;
                             overflowMatter = 0;
-                            TecTech.proxy.broadcast("Container0 " + StatCollector.translateToLocal("tt.keyword.BOOM") + " " + aBaseMetaTileEntity.getXCoord() + ' ' + aBaseMetaTileEntity.getYCoord() + ' ' + aBaseMetaTileEntity.getZCoord());
+                            TecTech.proxy.broadcast("Container0 " + translateToLocal("tt.keyword.BOOM") + " " + aBaseMetaTileEntity.getXCoord() + ' ' + aBaseMetaTileEntity.getYCoord() + ' ' + aBaseMetaTileEntity.getZCoord());
                         }
                     }
                     deathDelay--;
@@ -220,7 +220,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
             try {
                 EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-                clientLocale = (String) FieldUtils.readField(player,"translator",true);
+                clientLocale = (String) FieldUtils.readField(player, "translator", true);
             } catch (Exception e) {
                 clientLocale = "en_US";
             }
@@ -238,35 +238,34 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     @Override
     public String[] getInfoData() {
-        return new String[]{translateToLocalFormatted("tt.keyword.ID", clientLocale)};
-        //if (TecTech.configTecTech.EASY_SCAN) {
-        //    if (id > 0) {
-        //        if (content == null || content.size() == 0) {
-        //            return new String[]{StatCollector.translateToLocal("tt.keyword.ID") + ": " + EnumChatFormatting.AQUA + id, StatCollector.translateToLocal("tt.keyphrase.No_Stacks")};
-        //        } else {
-        //            String[] lines = content.getElementalInfo();
-        //            String[] output = new String[lines.length + 1];
-        //            output[0] = StatCollector.translateToLocal("tt.keyword.ID") + ": " + EnumChatFormatting.AQUA + id;
-        //            System.arraycopy(lines, 0, output, 1, lines.length);
-        //            return output;
-        //        }
-        //    }
-        //    if (content == null || content.size() == 0) {
-        //        return new String[]{StatCollector.translateToLocal("tt.keyphrase.No_Stacks")};
-        //    }
-        //    return content.getElementalInfo();
-        //} else {
-        //    if (id > 0) {
-        //        if (content == null || content.size() == 0) {
-        //            return new String[]{StatCollector.translateToLocal("tt.keyword.ID") + ": " + EnumChatFormatting.AQUA + id, StatCollector.translateToLocal("tt.keyphrase.No_Stacks")};
-        //        }
-        //        return new String[]{StatCollector.translateToLocal("tt.keyword.ID") + ": " + EnumChatFormatting.AQUA + id, StatCollector.translateToLocal("tt.keyphrase.Contains_EM")};
-        //    }
-        //    if (content == null || content.size() == 0) {
-        //        return new String[]{StatCollector.translateToLocal("tt.keyphrase.No_Stacks")};
-        //    }
-        //    return new String[]{StatCollector.translateToLocal("tt.keyphrase.Contains_EM")};
-        //}
+        if (TecTech.configTecTech.EASY_SCAN) {
+            if (id > 0) {
+                if (content == null || content.size() == 0) {
+                    return new String[]{translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id, translateToLocalFormatted("tt.keyphrase.No_Stacks", clientLocale)};
+                } else {
+                    String[] lines = content.getElementalInfo();
+                    String[] output = new String[lines.length + 1];
+                    output[0] = translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id;
+                    System.arraycopy(lines, 0, output, 1, lines.length);
+                    return output;
+                }
+            }
+            if (content == null || content.size() == 0) {
+                return new String[]{translateToLocalFormatted("tt.keyphrase.No_Stacks", clientLocale)};
+            }
+            return content.getElementalInfo();
+        } else {
+            if (id > 0) {
+                if (content == null || content.size() == 0) {
+                    return new String[]{translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id, translateToLocalFormatted("tt.keyphrase.No_Stacks", clientLocale)};
+                }
+                return new String[]{translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id, translateToLocalFormatted("tt.keyphrase.Contains_EM", clientLocale)};
+            }
+            if (content == null || content.size() == 0) {
+                return new String[]{translateToLocalFormatted("tt.keyphrase.No_Stacks", clientLocale)};
+            }
+            return new String[]{translateToLocalFormatted("tt.keyphrase.Contains_EM", clientLocale)};
+        }
     }
 
     public void updateSlots() {
@@ -278,14 +277,14 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         return new String[]{
                 TEC_MARK_EM,
                 mDescription,
-                StatCollector.translateToLocal("tt.base.emhatch.desc.0") + " " + EnumChatFormatting.AQUA + getMaxStacksCount(),//Max stacks amount:
-                StatCollector.translateToLocal("tt.base.emhatch.desc.1") + " " + EnumChatFormatting.AQUA + getMaxStackSize(),//Stack capacity:
-                StatCollector.translateToLocal("tt.base.emhatch.desc.2"),//Place Overflow Hatch behind,on top or below
-                StatCollector.translateToLocal("tt.base.emhatch.desc.3"),//to provide overflow protection while this block
-                StatCollector.translateToLocal("tt.base.emhatch.desc.4"),//is not attached to multi block.
-                StatCollector.translateToLocal("tt.base.emhatch.desc.5"),//Transport range can be extended in straight
-                StatCollector.translateToLocal("tt.base.emhatch.desc.6"),//line up to 15 blocks with quantum tunnels.
-                EnumChatFormatting.AQUA + StatCollector.translateToLocal("tt.base.emhatch.desc.7")//Must be painted to work
+                translateToLocal("tt.base.emhatch.desc.0") + " " + EnumChatFormatting.AQUA + getMaxStacksCount(),//Max stacks amount:
+                translateToLocal("tt.base.emhatch.desc.1") + " " + EnumChatFormatting.AQUA + getMaxStackSize(),//Stack capacity:
+                translateToLocal("tt.base.emhatch.desc.2"),//Place Overflow Hatch behind,on top or below
+                translateToLocal("tt.base.emhatch.desc.3"),//to provide overflow protection while this block
+                translateToLocal("tt.base.emhatch.desc.4"),//is not attached to multi block.
+                translateToLocal("tt.base.emhatch.desc.5"),//Transport range can be extended in straight
+                translateToLocal("tt.base.emhatch.desc.6"),//line up to 15 blocks with quantum tunnels.
+                EnumChatFormatting.AQUA + translateToLocal("tt.base.emhatch.desc.7")//Must be painted to work
         };
     }
 
@@ -297,7 +296,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
             if (TecTech.configTecTech.BOOM_ENABLE) {
                 base.doExplosion(V[15]);
             } else {
-                TecTech.proxy.broadcast(StatCollector.translateToLocal("tt.keyword.BOOM") + " " + base.getXCoord() + ' ' + base.getYCoord() + ' ' + base.getZCoord());
+                TecTech.proxy.broadcast(translateToLocal("tt.keyword.BOOM") + " " + base.getXCoord() + ' ' + base.getYCoord() + ' ' + base.getZCoord());
             }
         }
     }

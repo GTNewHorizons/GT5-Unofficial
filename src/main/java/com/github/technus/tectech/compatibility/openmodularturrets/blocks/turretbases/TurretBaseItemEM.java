@@ -6,9 +6,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import java.util.List;
+
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 28/07/2017.
@@ -22,13 +23,14 @@ public class TurretBaseItemEM extends ItemBlock {
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
         list.add(CommonValues.TEC_MARK_EM);
         list.add("");
-        list.add(EnumChatFormatting.AQUA + "--" + StatCollector.translateToLocal("tooptip.energy.label") + "--");
-        list.add(StatCollector.translateToLocal("tooltip.rf.max") + ": " + EnumChatFormatting.WHITE + 1000000000);
-        list.add(StatCollector.translateToLocal("tooltip.rf.io") + ": " + EnumChatFormatting.WHITE + 50000);
+        list.add(EnumChatFormatting.AQUA + "--" + translateToLocal("tooptip.energy.label") + "--");
+        list.add(translateToLocal("tooltip.rf.max") + ": " + EnumChatFormatting.WHITE + 1000000000);
+        list.add(translateToLocal("tooltip.rf.io") + ": " + EnumChatFormatting.WHITE + 50000);
         list.add("");
-        list.add(EnumChatFormatting.GREEN + "--" + StatCollector.translateToLocal("tooltip.extras.label") + "--");
-        list.add(StatCollector.translateToLocal("tooltip.extras.addons.0"));
+        list.add(EnumChatFormatting.GREEN + "--" + translateToLocal("tooltip.extras.label") + "--");
+        list.add(translateToLocal("tooltip.extras.addons.2"));
+        list.add(translateToLocal("tooltip.extras.upgrade.2"));
         list.add("");
-        list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("flavour.base.0"));
+        list.add(EnumChatFormatting.DARK_GRAY + translateToLocal("flavour.base.0"));
     }
 }

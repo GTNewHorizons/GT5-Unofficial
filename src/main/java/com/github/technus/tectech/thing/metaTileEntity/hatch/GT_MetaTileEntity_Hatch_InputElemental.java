@@ -4,14 +4,15 @@ import com.github.technus.tectech.Util;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import net.minecraft.util.StatCollector;
+
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 27.10.2016.
  */
 public class GT_MetaTileEntity_Hatch_InputElemental extends GT_MetaTileEntity_Hatch_ElementalContainer {
     public GT_MetaTileEntity_Hatch_InputElemental(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, StatCollector.translateToLocal("gt.blockmachines.emin.desc"));//Elemental Input for Multiblocks
+        super(aID, aName, aNameRegional, aTier, translateToLocal("gt.blockmachines.emin.desc"));//Elemental Input for Multiblocks
         Util.setTier(aTier, this);
     }
 
