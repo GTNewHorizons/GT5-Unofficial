@@ -31,6 +31,7 @@ import static com.github.technus.tectech.mechanics.elementalMatter.definitions.c
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -55,10 +56,10 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4, 4};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA + "Hint Details:",
-            "1 - Classic Hatches or High Power Casing",
-            "2 - Elemental Input Hatch",
-            "3 - Elemental Overflow Hatches or Molecular Casing",
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.emtomatter.hint.0"),//1 - Classic Hatches or High Power Casing"
+            translateToLocal("gt.blockmachines.multimachine.em.emtomatter.hint.1"),//2 - Elemental Input Hatch
+            translateToLocal("gt.blockmachines.multimachine.em.emtomatter.hint.2"),//3 - Elemental Overflow Hatches or Molecular Casing
     };
     //endregion
 
@@ -72,7 +73,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound(){
+    protected ResourceLocation getActivitySound() {
         return GT_MetaTileEntity_EM_quantizer.activitySound;
     }
 
@@ -88,7 +89,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(),this, hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
     }
 
     @Override
@@ -105,7 +106,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                 if (info != null) {
                     if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
                         mOutputFluids = new FluidStack[]{(FluidStack) info.output()};
-                        startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
+                        startRecipe((iHasElementalDefinition) info.input(), stack.getEnergy());
                         return true;
                     }
                 }
@@ -114,7 +115,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                 if (info != null) {
                     if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
                         mOutputItems = new ItemStack[]{(ItemStack) info.output()};
-                        startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
+                        startRecipe((iHasElementalDefinition) info.input(), stack.getEnergy());
                         return true;
                     }
                 }
@@ -125,7 +126,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                         ArrayList<ItemStack> items = OreDictionary.getOres(((aOredictDequantizationInfo) info).out);
                         if (items != null && !items.isEmpty()) {
                             mOutputItems = new ItemStack[]{items.get(0)};
-                            startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
+                            startRecipe((iHasElementalDefinition) info.input(), stack.getEnergy());
                             return true;
                         }
                     }
@@ -152,8 +153,8 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Transform quantum form back to...",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "regular one, but why?"
+                translateToLocal("gt.blockmachines.multimachine.em.emtomatter.desc.0"),//Transform quantum form back to...
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.emtomatter.desc.1")//regular one, but why?
         };
     }
 }

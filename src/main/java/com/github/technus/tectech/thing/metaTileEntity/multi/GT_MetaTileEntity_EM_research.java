@@ -42,6 +42,7 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting.crafter;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine.machine;
 import static gregtech.api.enums.GT_Values.E;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -71,7 +72,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, Blocks.air};
     private static final byte[] blockMetaFallback = new byte[]{1, 0};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA+"Hint Details:",
+            EnumChatFormatting.AQUA+translateToLocal("tt.keyphrase.Hint_Details") + ":",
             "1 - Classic/Data Hatches or Computer casing",
             "2 - Holder Hatch",
     };

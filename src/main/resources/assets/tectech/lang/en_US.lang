@@ -383,9 +383,30 @@ gt.blockmachines.multimachine.em.computer.cfgo.0=Current max. heat
 gt.blockmachines.multimachine.em.computer.cfgo.1=Produced computation
 
 gt.blockmachines.multimachine.em.databank.name=Data Bank
+gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or high power casing
+gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Master Hatches or computer casing
+gt.blockmachines.multimachine.em.databank.desc.0=Remote assembly data delivery
+gt.blockmachines.multimachine.em.databank.desc.1=Apply directly to the forehead
+
 gt.blockmachines.multimachine.em.junction.name=Matter Junction
+gt.blockmachines.multimachine.em.junction.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.junction.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.junction.desc.0=Reroutes Matter
+gt.blockmachines.multimachine.em.junction.desc.1=Axis aligned movement!
+
 gt.blockmachines.multimachine.em.mattertoem.name=Matter Quantizer
+gt.blockmachines.multimachine.em.mattertoem.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.mattertoem.hint.1=2 - Elemental Output Hatch
+gt.blockmachines.multimachine.em.mattertoem.hint.2=3 - Elemental Overflow Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.mattertoem.desc.0=Conveniently convert regular stuff into quantum form.
+gt.blockmachines.multimachine.em.mattertoem.desc.1=To make it more inconvenient.
+
 gt.blockmachines.multimachine.em.emtomatter.name=Matter Dequantizer
+gt.blockmachines.multimachine.em.emtomatter.hint.0=1 - Classic Hatches or High Power Casing"
+gt.blockmachines.multimachine.em.emtomatter.hint.1=2 - Elemental Input Hatch
+gt.blockmachines.multimachine.em.emtomatter.hint.2=3 - Elemental Overflow Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.emtomatter.desc.0=Transform quantum form back to...
+gt.blockmachines.multimachine.em.emtomatter.desc.1=regular one, but why?
 
 gt.blockmachines.multimachine.em.emtoessentia.name=Essentia Dequantizer
 gt.blockmachines.multimachine.em.emtoessentia.hint.0=1 - Classic Hatches or High Power Casing
@@ -404,16 +425,33 @@ gt.blockmachines.multimachine.em.essentiatoem.desc.0=Conveniently convert regula
 gt.blockmachines.multimachine.em.essentiatoem.desc.1=To make it more inconvenient.
 
 gt.blockmachines.multimachine.em.scanner.name=Elemental Scanner
+gt.blockmachines.multimachine.em.scanner.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.scanner.hint.1=2 - Elemental Input Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.scanner.hint.2=3 - Elemental Output Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.scanner.hint.3=4 - Elemental Overflow Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.scanner.desc.0=What is existing here?
+gt.blockmachines.multimachine.em.scanner.desc.1=I HAVE NO IDEA (yet)!
+
 gt.blockmachines.multimachine.em.research.name=Research station
+
 gt.blockmachines.multimachine.em.collider.name=Matter Collider
+
 gt.blockmachines.multimachine.em.infuser.name=Energy Infuser
+
 gt.blockmachines.multimachine.em.processing.name=Quantum Processing Machine
+
 gt.blockmachines.multimachine.em.crafter.name=Matter Assembler
+
 gt.blockmachines.multimachine.em.stabilizer.name=Elemental Stabilizer
+
 gt.blockmachines.multimachine.em.wormhole.name=Wormhole
+
 gt.blockmachines.multimachine.em.decay.name=Decay Generator
+
 gt.blockmachines.multimachine.em.annihilation.name=Annihilation Generator
+
 gt.blockmachines.multimachine.em.blackholegenerator.name=Black Hole Generator
+
 
 #Keywords and phrases
 tt.keyword.Air=Air
@@ -433,6 +471,7 @@ tt.keyword.BOOM=BOOM!
 tt.keyword.ID=ID
 tt.keyword.Destination=Destination
 tt.keyword.Weight=Weight
+tt.keyword.Source=Source
 
 tt.keyphrase.LIFE_TIME=LIFE TIME
 tt.keyphrase.CARRIES_COLOR=CARRIES COLOR

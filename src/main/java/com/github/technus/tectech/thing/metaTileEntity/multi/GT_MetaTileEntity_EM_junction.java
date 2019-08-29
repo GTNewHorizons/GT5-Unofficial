@@ -22,6 +22,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static gregtech.api.enums.GT_Values.E;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -42,38 +43,38 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
             {"A!!!", "!000!", "!000!", "!000!", "A!!!",},
             {"A!!!", "!!!!!", "!!!!!", "!!!!!", "A!!!",},
     };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT,sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{4,5};
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
+    private static final byte[] blockMeta = new byte[]{4, 5};
     private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList, this::addElementalToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA+"Hint Details:",
-            "1 - Classic Hatches or High Power Casing",
-            "2 - Elemental Hatches or Molecular Casing",
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.junction.hint.0"),//1 - Classic Hatches or High Power Casing
+            translateToLocal("gt.blockmachines.multimachine.em.junction.hint.1"),//2 - Elemental Hatches or Molecular Casing
     };
     //endregion
 
     //region parameters
-    private static final INameFunction<GT_MetaTileEntity_EM_junction> ROUTE_NAME=
-            (base,p)->(p.parameterId()==0?"Source ":"Destination ")+p.hatchId();
+    private static final INameFunction<GT_MetaTileEntity_EM_junction> ROUTE_NAME =
+            (base, p) -> (p.parameterId() == 0 ? translateToLocal("tt.keyword.Source") + " " : translateToLocal("tt.keyword.Destination") + " ") + p.hatchId();
     private static final IStatusFunction<GT_MetaTileEntity_EM_junction> SRC_STATUS =
-            (base,p)-> {
+            (base, p) -> {
                 double v = p.get();
                 if (Double.isNaN(v)) return STATUS_WRONG;
-                v=(int)v;
+                v = (int) v;
                 if (v < 0) return STATUS_TOO_LOW;
                 if (v == 0) return STATUS_NEUTRAL;
                 if (v >= base.eInputHatches.size()) return STATUS_TOO_HIGH;
                 return STATUS_OK;
             };
     private static final IStatusFunction<GT_MetaTileEntity_EM_junction> DST_STATUS =
-            (base,p)->{
-                if(base.src[p.hatchId()].getStatus(false)== STATUS_OK){
+            (base, p) -> {
+                if (base.src[p.hatchId()].getStatus(false) == STATUS_OK) {
                     double v = p.get();
                     if (Double.isNaN(v)) return STATUS_WRONG;
-                    v=(int)v;
+                    v = (int) v;
                     if (v < 0) return STATUS_TOO_LOW;
                     if (v == 0) return STATUS_LOW;
                     if (v >= base.eInputHatches.size()) return STATUS_TOO_HIGH;
@@ -95,8 +96,8 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
 
     @Override
     protected void parametersInstantiation_EM() {
-        src=new Parameters.Group.ParameterIn[10];
-        dst=new Parameters.Group.ParameterIn[10];
+        src = new Parameters.Group.ParameterIn[10];
+        dst = new Parameters.Group.ParameterIn[10];
         for (int i = 0; i < 10; i++) {
             Parameters.Group hatch = parametrization.getGroup(i);
             src[i] = hatch.makeInParameter(0, i, ROUTE_NAME, SRC_STATUS);
@@ -111,10 +112,10 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        int meta=iGregTechTileEntity.getMetaIDAtSide(GT_Utility.getOppositeSide(iGregTechTileEntity.getFrontFacing()));
-        if(meta==4){
+        int meta = iGregTechTileEntity.getMetaIDAtSide(GT_Utility.getOppositeSide(iGregTechTileEntity.getFrontFacing()));
+        if (meta == 4) {
             return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
-        }else if(meta==5){
+        } else if (meta == 5) {
             return structureCheck_EM(shapeBig, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
         }
         return false;
@@ -122,7 +123,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta,1, 1, 0, getBaseMetaTileEntity(),this,hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
     }
 
     @Override
@@ -134,8 +135,8 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Reroutes Matter",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Axis aligned movement!"
+                translateToLocal("gt.blockmachines.multimachine.em.junction.desc.0"),//Reroutes Matter
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.junction.desc.1")//Axis aligned movement!
         };
     }
 
@@ -155,18 +156,18 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void outputAfterRecipe_EM() {
-        double src,dst;
+        double src, dst;
         for (int i = 0; i < 10; i++) {
-            src= this.src[i].get();
-            dst= this.dst[i].get();
-            if(Double.isNaN(src) || Double.isNaN(dst)) {
+            src = this.src[i].get();
+            dst = this.dst[i].get();
+            if (Double.isNaN(src) || Double.isNaN(dst)) {
                 continue;
             }
-            int inIndex = (int)src - 1;
+            int inIndex = (int) src - 1;
             if (inIndex < 0 || inIndex >= eInputHatches.size()) {
                 continue;
             }
-            int outIndex = (int)dst - 1;
+            int outIndex = (int) dst - 1;
             GT_MetaTileEntity_Hatch_InputElemental in = eInputHatches.get(inIndex);
             if (outIndex == -1) {//param==0 -> null the content
                 cleanHatchContentEM_EM(in);
