@@ -1,5 +1,6 @@
 package com.github.technus.tectech.mechanics.data;
 
+import com.github.technus.tectech.mechanics.commands.ThaumSpark;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
