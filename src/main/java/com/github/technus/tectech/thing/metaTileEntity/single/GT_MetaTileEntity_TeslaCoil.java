@@ -5,7 +5,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.data.RendererMessage;
-import com.github.technus.tectech.mechanics.commands.ThaumSpark;
+import com.github.technus.tectech.mechanics.data.ThaumSpark;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_TM_teslaCoil;

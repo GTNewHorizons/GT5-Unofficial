@@ -1,4 +1,4 @@
-package com.github.technus.tectech.mechanics.commands;
+package com.github.technus.tectech.mechanics.data;
 
 import java.io.Serializable;
 import java.util.Objects;
