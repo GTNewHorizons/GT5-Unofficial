@@ -16,16 +16,19 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 /**
  * Created by danie_000 on 11.12.2016.
@@ -34,6 +37,8 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     private static Textures.BlockIcons.CustomIcon EM_T_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     private static Textures.BlockIcons.CustomIcon EM_T_CONN;
+
+    private String clientLocale = "en_US";
 
     protected cElementalInstanceStackMap content = new cElementalInstanceStackMap();
     //float lifeTimeMult=1f;
@@ -161,10 +166,6 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         return content;
     }
 
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        return true;
-    }
 
     @Override
     public boolean isFacingValid(byte aFacing) {
@@ -215,13 +216,29 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
+            try {
+                EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+                clientLocale = (String) FieldUtils.readField(player,"translator",true);
+            } catch (Exception e) {
+                clientLocale = "en_US";
+            }
+        } else {
+            return true;
+        }
+        System.out.println(clientLocale);
+        return true;
+    }
+
+    @Override
     public boolean isGivingInformation() {
         return true;
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[]{StatCollector.translateToLocal("tt.keyword.ID")};
+        return new String[]{translateToLocalFormatted("tt.keyword.ID", clientLocale)};
         //if (TecTech.configTecTech.EASY_SCAN) {
         //    if (id > 0) {
         //        if (content == null || content.size() == 0) {
