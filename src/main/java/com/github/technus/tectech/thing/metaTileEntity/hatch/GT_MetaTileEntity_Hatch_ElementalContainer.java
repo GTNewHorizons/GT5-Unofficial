@@ -221,34 +221,35 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     @Override
     public String[] getInfoData() {
-        if (TecTech.configTecTech.EASY_SCAN) {
-            if (id > 0) {
-                if (content == null || content.size() == 0) {
-                    return new String[]{StatCollector.translateToLocal("tt.keyword.ID") + ": " + EnumChatFormatting.AQUA + id, StatCollector.translateToLocal("tt.keyphrase.No_Stacks")};
-                } else {
-                    String[] lines = content.getElementalInfo();
-                    String[] output = new String[lines.length + 1];
-                    output[0] = StatCollector.translateToLocal("tt.keyword.ID") + ": " + EnumChatFormatting.AQUA + id;
-                    System.arraycopy(lines, 0, output, 1, lines.length);
-                    return output;
-                }
-            }
-            if (content == null || content.size() == 0) {
-                return new String[]{StatCollector.translateToLocal("tt.keyphrase.No_Stacks")};
-            }
-            return content.getElementalInfo();
-        } else {
-            if (id > 0) {
-                if (content == null || content.size() == 0) {
-                    return new String[]{StatCollector.translateToLocal("tt.keyword.ID") + ": " + EnumChatFormatting.AQUA + id, StatCollector.translateToLocal("tt.keyphrase.No_Stacks")};
-                }
-                return new String[]{StatCollector.translateToLocal("tt.keyword.ID") + ": " + EnumChatFormatting.AQUA + id, StatCollector.translateToLocal("tt.keyphrase.Contains_EM")};
-            }
-            if (content == null || content.size() == 0) {
-                return new String[]{StatCollector.translateToLocal("tt.keyphrase.No_Stacks")};
-            }
-            return new String[]{StatCollector.translateToLocal("tt.keyphrase.Contains_EM")};
-        }
+        return new String[]{StatCollector.translateToLocal("tt.keyword.ID")};
+        //if (TecTech.configTecTech.EASY_SCAN) {
+        //    if (id > 0) {
+        //        if (content == null || content.size() == 0) {
+        //            return new String[]{StatCollector.translateToLocal("tt.keyword.ID") + ": " + EnumChatFormatting.AQUA + id, StatCollector.translateToLocal("tt.keyphrase.No_Stacks")};
+        //        } else {
+        //            String[] lines = content.getElementalInfo();
+        //            String[] output = new String[lines.length + 1];
+        //            output[0] = StatCollector.translateToLocal("tt.keyword.ID") + ": " + EnumChatFormatting.AQUA + id;
+        //            System.arraycopy(lines, 0, output, 1, lines.length);
+        //            return output;
+        //        }
+        //    }
+        //    if (content == null || content.size() == 0) {
+        //        return new String[]{StatCollector.translateToLocal("tt.keyphrase.No_Stacks")};
+        //    }
+        //    return content.getElementalInfo();
+        //} else {
+        //    if (id > 0) {
+        //        if (content == null || content.size() == 0) {
+        //            return new String[]{StatCollector.translateToLocal("tt.keyword.ID") + ": " + EnumChatFormatting.AQUA + id, StatCollector.translateToLocal("tt.keyphrase.No_Stacks")};
+        //        }
+        //        return new String[]{StatCollector.translateToLocal("tt.keyword.ID") + ": " + EnumChatFormatting.AQUA + id, StatCollector.translateToLocal("tt.keyphrase.Contains_EM")};
+        //    }
+        //    if (content == null || content.size() == 0) {
+        //        return new String[]{StatCollector.translateToLocal("tt.keyphrase.No_Stacks")};
+        //    }
+        //    return new String[]{StatCollector.translateToLocal("tt.keyphrase.Contains_EM")};
+        //}
     }
 
     public void updateSlots() {

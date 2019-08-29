@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class ThaumSpark implements Serializable {
+    //This works regardless of if TC is loaded
     private static final long serialVersionUID = -7037856938316679566L;
     public int x, y, z, wID;
     public byte xR, yR, zR;
