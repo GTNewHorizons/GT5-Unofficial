@@ -29,6 +29,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -52,6 +53,18 @@ public class BW_Util {
     public static final int STANDART = 0;
     public static final int LOWGRAVITY = -100;
     public static final int CLEANROOM = -200;
+
+    public static String translateGTItemStack(ItemStack itemStack){
+        if (!GT_Utility.isStackValid(itemStack))
+            return "Not a Valid ItemStack:"+itemStack;
+        String ret = GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(itemStack));
+        if (!ret.contains("%material"))
+            return ret;
+        String matname = "";
+        if (BW_Util.checkStackAndPrefix(itemStack))
+            matname = GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mDefaultLocalName;
+        return ret.replace("%material", matname);
+    }
 
     public static void set2DCoordTo1DArray(int indexX, int indexY, int sizeY, Object value, Object[] array) {
         int index = indexX * sizeY + indexY;
@@ -229,6 +242,7 @@ public class BW_Util {
                 ret = 4;
                 break;
             case 2:
+            case 12:
                 ret = 5;
                 break;
             case 3:
@@ -239,9 +253,6 @@ public class BW_Util {
                 break;
             case 5:
                 ret = 8;
-                break;
-            case 12:
-                ret = 5;
                 break;
             default:
                 ret = 3;

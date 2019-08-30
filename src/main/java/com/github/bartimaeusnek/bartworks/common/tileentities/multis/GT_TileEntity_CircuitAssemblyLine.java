@@ -113,7 +113,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
             if (!this.imprintMachine(itemStack))
                 return false;
 
-        if (this.bufferedRecipe != null && this.bufferedRecipe.isRecipeInputEqual(true,false,BW_Util.getFluidsFromInputHatches(this),BW_Util.getItemsFromInputBusses(this))) {
+        if (this.bufferedRecipe != null && this.bufferedRecipe.isRecipeInputEqual(true,false, BW_Util.getFluidsFromInputHatches(this), BW_Util.getItemsFromInputBusses(this))) {
             BW_Util.calculateOverclockedNessMulti(this.bufferedRecipe.mEUt,this.bufferedRecipe.mDuration,1,this.getMaxInputVoltage(),this);
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
             this.mOutputItems = this.bufferedRecipe.mOutputs;
@@ -136,7 +136,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
         }
 
         for (GT_Recipe recipe : this.GT_RECIPE_COLLECTION) {
-            if (recipe.isRecipeInputEqual(true,false, BW_Util.getFluidsFromInputHatches(this),BW_Util.getItemsFromInputBusses(this)))
+            if (recipe.isRecipeInputEqual(true,false, BW_Util.getFluidsFromInputHatches(this), BW_Util.getItemsFromInputBusses(this)))
                 this.bufferedRecipe = recipe;
             else
                 continue;

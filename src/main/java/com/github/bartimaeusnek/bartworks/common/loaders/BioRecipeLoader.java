@@ -376,8 +376,8 @@ public class BioRecipeLoader extends RecipeLoader {
                 2748,
                 BW_Util.getMachineVoltageFromTier(3)
         );
-        GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(10),new FluidStack(FluidLoader.fulvicAcid,1000),new FluidStack(FluidLoader.heatedfulvicAcid,1000),90,BW_Util.getMachineVoltageFromTier(2));
-        GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(10),null,new FluidStack(FluidLoader.heatedfulvicAcid,1000),new FluidStack(FluidLoader.Kerogen,1000),null,75,BW_Util.getMachineVoltageFromTier(2));
-        GT_Values.RA.addPyrolyseRecipe(Materials.Wood.getDust(10),new FluidStack(FluidLoader.Kerogen,1000),10,null,Materials.Oil.getFluid(1000),105,BW_Util.getMachineVoltageFromTier(3));
+        GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(10),new FluidStack(FluidLoader.fulvicAcid,1000),new FluidStack(FluidLoader.heatedfulvicAcid,1000),90, BW_Util.getMachineVoltageFromTier(2));
+        GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(10),null,new FluidStack(FluidLoader.heatedfulvicAcid,1000),new FluidStack(FluidLoader.Kerogen,1000),null,75, BW_Util.getMachineVoltageFromTier(2));
+        GT_Values.RA.addPyrolyseRecipe(Materials.Wood.getDust(10),new FluidStack(FluidLoader.Kerogen,1000),10,null,Materials.Oil.getFluid(1000),105, BW_Util.getMachineVoltageFromTier(3));
     }
 }

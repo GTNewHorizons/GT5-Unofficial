@@ -92,7 +92,7 @@ public class CircuitPartLoader implements Runnable {
                 //  tt += "Internal Name = "+single;
                 String localised = GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(itemStack));
                 BW_Meta_Items.getNEWCIRCUITS().addItem(CircuitImprintLoader.reverseIDs, "Wrap of " + localised+"s", tt);
-                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{single.get(16).copy()}, Materials.Plastic.getMolten(576),BW_Meta_Items.getNEWCIRCUITS().getStack(CircuitImprintLoader.reverseIDs),600,30);
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{single.get(16).copy()}, Materials.Plastic.getMolten(72),BW_Meta_Items.getNEWCIRCUITS().getStack(CircuitImprintLoader.reverseIDs),600,30);
                 CircuitImprintLoader.circuitIIconRefs.put(CircuitImprintLoader.reverseIDs,single);
                 CircuitImprintLoader.reverseIDs--;
             }

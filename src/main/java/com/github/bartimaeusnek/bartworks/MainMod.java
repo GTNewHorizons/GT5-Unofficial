@@ -336,8 +336,10 @@ public final class MainMod {
                 Materials mat = Materials.get(FluidString.substring(0, 1).toUpperCase() + FluidString.substring(1));
                 if (mat != Materials._NULL) {
                     for (SubTag tag : GasTags){
-                        if (mat.contains(tag))
-                            toAdd.put(tag,recipe);
+                        if (mat.contains(tag)) {
+                            DebugLog.log("Found EBF Recipe to change, Output:"+ BW_Util.translateGTItemStack(recipe.mOutputs[0]));
+                            toAdd.put(tag, recipe);
+                        }
                     }
                 }
             }
@@ -356,7 +358,7 @@ public final class MainMod {
                         for (GT_Recipe baseRe : base.get(tag)) {
                             if (recipe.mInputs.length == baseRe.mInputs.length && recipe.mOutputs.length == baseRe.mOutputs.length)
                                 for (int i = 0; i < recipe.mInputs.length; i++) {
-                                    if ((recipe.mFluidInputs == null || recipe.mFluidInputs.length == 0) && BW_Util.checkStackAndPrefix(recipe.mInputs[i]) && BW_Util.checkStackAndPrefix(baseRe.mInputs[i]) && GT_OreDictUnificator.getAssociation(recipe.mInputs[i]).mMaterial.mMaterial.equals(GT_OreDictUnificator.getAssociation(baseRe.mInputs[i]).mMaterial.mMaterial) && GT_Utility.areStacksEqual(recipe.mOutputs[0], recipe.mOutputs[0])) {
+                                    if ((recipe.mFluidInputs == null || recipe.mFluidInputs.length == 0) && BW_Util.checkStackAndPrefix(recipe.mInputs[i]) && BW_Util.checkStackAndPrefix(baseRe.mInputs[i]) && GT_OreDictUnificator.getAssociation(recipe.mInputs[i]).mMaterial.mMaterial.equals(GT_OreDictUnificator.getAssociation(baseRe.mInputs[i]).mMaterial.mMaterial) && GT_Utility.areStacksEqual(recipe.mOutputs[0], baseRe.mOutputs[0])) {
                                         toAdd.add(recipe.mOutputs[0]);
                                         repToAdd.put(tag,recipe);
                                         continue recipeLoop;
@@ -381,29 +383,36 @@ public final class MainMod {
                         for (Werkstoff werkstoff : Werkstoff.werkstoffHashMap.values()) {
                             if (!werkstoff.contains(GasTag))
                                 continue;
-                            toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{new FluidStack(fluids.get(werkstoff), recipe.mFluidInputs[0].amount)}, recipe.mFluidOutputs, (int) ((double) recipe.mDuration / 200D * (200D + (double) mat.getProtons() - (double) werkstoff.getStats().getProtons())), recipe.mEUt, recipe.mSpecialValue));
+                            int time = (int) ((double) recipe.mDuration / 200D * (200D + (werkstoff.getStats().getProtons() > mat.getProtons() ? (double) mat.getProtons() - (double) werkstoff.getStats().getProtons() : (double) mat.getProtons()*2.75D - (double) werkstoff.getStats().getProtons())));
+                            toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{new FluidStack(fluids.get(werkstoff), recipe.mFluidInputs[0].amount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
                         }
                         for (Materials materials : Materials.values()) {
                             if (!materials.contains(GasTag))
                                 continue;
-                            toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{materials.getGas(recipe.mFluidInputs[0].amount)}, recipe.mFluidOutputs, (int) ((double) recipe.mDuration / 200D * (200D + (double) mat.getProtons() - (double) materials.getProtons())), recipe.mEUt, recipe.mSpecialValue));
+                            int time = (int) ((double) recipe.mDuration / 200D * (200D + (materials.getProtons() > mat.getProtons() ? (double) mat.getProtons() - (double) materials.getProtons() : (double) mat.getProtons()*2.75D - (double) materials.getProtons())));
+                            toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{materials.getGas(recipe.mFluidInputs[0].amount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
                         }
-                        for (ItemStack is : noGas)
+                        for (ItemStack is : noGas) {
+                            byte circuitConfiguration = 1;
                             if (GT_Utility.areStacksEqual(is, recipe.mOutputs[0])) {
                                 ArrayList<ItemStack> inputs = new ArrayList<>(recipe.mInputs.length);
                                 for (ItemStack stack : recipe.mInputs)
-                                    if (!GT_Utility.areStacksEqual(GT_Utility.getIntegratedCircuit(11),stack))
+                                    if (!GT_Utility.areStacksEqual(GT_Utility.getIntegratedCircuit(11), stack) && !GT_Utility.areStacksEqual(GT_Utility.getIntegratedCircuit(14), stack) && !GT_Utility.areStacksEqual(GT_Utility.getIntegratedCircuit(19), stack)) {
+                                        if (BW_Util.checkStackAndPrefix(stack))
+                                            circuitConfiguration = (byte) (GT_OreDictUnificator.getAssociation(stack).mPrefix.equals(OrePrefixes.dustSmall) ? 4 : GT_OreDictUnificator.getAssociation(stack).mPrefix.equals(OrePrefixes.dustTiny) ? 9 : 1);
                                         inputs.add(stack);
-                                    inputs.add(GT_Utility.getIntegratedCircuit(0));
-                                toAdd.add(new BWRecipes.DynamicGTRecipe(false, inputs.toArray(new ItemStack[0]), recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, null, recipe.mFluidOutputs, (int) ((double) recipe.mDuration / 200D * (200D + ((double) mat.getProtons()*2.5D))), recipe.mEUt, recipe.mSpecialValue));
+                                    }
+                                inputs.add(GT_Utility.getIntegratedCircuit(circuitConfiguration));
+                                toAdd.add(new BWRecipes.DynamicGTRecipe(false, inputs.toArray(new ItemStack[0]), recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, null, recipe.mFluidOutputs, (int) ((double) recipe.mDuration / 200D * (200D + ((double) mat.getProtons() * 2.75D))), recipe.mEUt, recipe.mSpecialValue));
                                 break;
                             }
+                        }
                     }
                 }
             }
             GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeList.removeAll(base.get(GasTag));
         }
-        HashSet<GT_Recipe> duplicates = new HashSet<GT_Recipe>();
+        HashSet<GT_Recipe> duplicates = new HashSet<>();
         for (GT_Recipe recipe : toAdd){
             for (GT_Recipe recipe2 : toAdd){
                 if (recipe.mEUt != recipe2.mEUt || recipe.mDuration != recipe2.mDuration || recipe.mSpecialValue != recipe2.mSpecialValue || recipe == recipe2 || recipe.mInputs.length != recipe2.mInputs.length || recipe.mFluidInputs.length != recipe2.mFluidInputs.length)

@@ -29,10 +29,8 @@ import com.github.bartimaeusnek.bartworks.util.Pair;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.objects.GT_Fluid;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.nio.ByteBuffer;

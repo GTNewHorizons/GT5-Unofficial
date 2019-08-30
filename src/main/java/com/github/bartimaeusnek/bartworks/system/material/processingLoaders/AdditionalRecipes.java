@@ -23,10 +23,7 @@
 package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
 
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
-import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_CircuitsLoader;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_Meta_Items;
-import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
-import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitPartLoader;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
@@ -50,7 +47,7 @@ public class AdditionalRecipes implements Runnable {
     @Override
     public void run() {
         //Thorium/Yttrium Glas
-        GT_Values.RA.addBlastRecipe(WerkstoffLoader.YttriumOxide.get(dustSmall,2),WerkstoffLoader.Thorianit.get(dustSmall,2),Materials.Glass.getMolten(144),null,new ItemStack(ItemRegistry.bw_glasses[0],1,12),null,800,BW_Util.getMachineVoltageFromTier(5),3663);
+        GT_Values.RA.addBlastRecipe(WerkstoffLoader.YttriumOxide.get(dustSmall,2),WerkstoffLoader.Thorianit.get(dustSmall,2),Materials.Glass.getMolten(144),null,new ItemStack(ItemRegistry.bw_glasses[0],1,12),null,800, BW_Util.getMachineVoltageFromTier(5),3663);
         //Thorianit recipes
         GT_Values.RA.addSifterRecipe(WerkstoffLoader.Thorianit.get(crushedPurified),
                 new ItemStack[]{
@@ -75,12 +72,12 @@ public class AdditionalRecipes implements Runnable {
         GT_Values.RA.addChemicalRecipe(Materials.Yttrium.getDust(2), GT_Utility.getIntegratedCircuit(11),Materials.Oxygen.getGas(3000),null, WerkstoffLoader.YttriumOxide.get(dust,5),64, BW_Util.getMachineVoltageFromTier(4));
         GT_Recipe.GT_Recipe_Map.sBlastRecipes.addRecipe(false, new ItemStack[]{WerkstoffLoader.Zirconium.get(dust,10), WerkstoffLoader.YttriumOxide.get(dust)}, new ItemStack[]{WerkstoffLoader.YttriumOxide.get(dust), WerkstoffLoader.CubicZirconia.get(gemFlawed, 40)}, null, null, new FluidStack[]{Materials.Oxygen.getGas(20000)}, null, 14400, BW_Util.getMachineVoltageFromTier(4), 2953);
         //Tellurium
-        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(crushed,Materials.Lead,10L),GT_Utility.getIntegratedCircuit(17),GT_Values.NF,GT_Values.NF,Materials.Lead.getIngots(10),Materials.Tellurium.getNuggets(20),800,BW_Util.getMachineVoltageFromTier(2),722);
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(crushed,Materials.Lead,10L),GT_Utility.getIntegratedCircuit(17),GT_Values.NF,GT_Values.NF,Materials.Lead.getIngots(10),Materials.Tellurium.getNuggets(20),800, BW_Util.getMachineVoltageFromTier(2),722);
         GT_Values.RA.addFusionReactorRecipe(Materials.Plutonium.getMolten(16), Materials.Beryllium.getMolten(16), WerkstoffLoader.Californium.getMolten(16), 250,49152, 480000000);
         GT_Values.RA.addFusionReactorRecipe(WerkstoffLoader.Californium.getMolten(16), WerkstoffLoader.Calcium.getMolten(16), WerkstoffLoader.Oganesson.getFluidOrGas(16), 500,49152, 600000000);
-        GT_Values.RA.addDistillationTowerRecipe(Materials.LiquidAir.getFluid(100000000),new FluidStack[]{Materials.Nitrogen.getGas(78084000),Materials.Oxygen.getGas(20946000),Materials.Argon.getGas(934000),Materials.CarbonDioxide.getGas(40700),WerkstoffLoader.Neon.getFluidOrGas(1818),Materials.Helium.getGas(524),Materials.Methane.getGas(180),WerkstoffLoader.Krypton.getFluidOrGas(114),Materials.Hydrogen.getGas(55),WerkstoffLoader.Xenon.getFluidOrGas(9)},null,7500,BW_Util.getMachineVoltageFromTier(4));
-        GT_Values.RA.addAutoclaveRecipe(WerkstoffLoader.MagnetoResonaticDust.get(dust),WerkstoffLoader.Neon.getFluidOrGas(1000),WerkstoffLoader.MagnetoResonaticDust.get(gemChipped,9),9000,4500,BW_Util.getMachineVoltageFromTier(5));
-        GT_Values.RA.addAutoclaveRecipe(WerkstoffLoader.MagnetoResonaticDust.get(dust),WerkstoffLoader.Krypton.getFluidOrGas(1000),WerkstoffLoader.MagnetoResonaticDust.get(gem),10000,4500,BW_Util.getMachineVoltageFromTier(5));
+        GT_Values.RA.addDistillationTowerRecipe(Materials.LiquidAir.getFluid(100000000),new FluidStack[]{Materials.Nitrogen.getGas(78084000),Materials.Oxygen.getGas(20946000),Materials.Argon.getGas(934000),Materials.CarbonDioxide.getGas(40700),WerkstoffLoader.Neon.getFluidOrGas(1818),Materials.Helium.getGas(524),Materials.Methane.getGas(180),WerkstoffLoader.Krypton.getFluidOrGas(114),Materials.Hydrogen.getGas(55),WerkstoffLoader.Xenon.getFluidOrGas(9)},null,7500, BW_Util.getMachineVoltageFromTier(4));
+        GT_Values.RA.addAutoclaveRecipe(WerkstoffLoader.MagnetoResonaticDust.get(dust),WerkstoffLoader.Neon.getFluidOrGas(1000),WerkstoffLoader.MagnetoResonaticDust.get(gemChipped,9),9000,4500, BW_Util.getMachineVoltageFromTier(5));
+        GT_Values.RA.addAutoclaveRecipe(WerkstoffLoader.MagnetoResonaticDust.get(dust),WerkstoffLoader.Krypton.getFluidOrGas(1000),WerkstoffLoader.MagnetoResonaticDust.get(gem),10000,4500, BW_Util.getMachineVoltageFromTier(5));
 
 
         for (int i = 0; i < 11; i++) {
@@ -99,7 +96,7 @@ public class AdditionalRecipes implements Runnable {
                                 },null,null,
                                 new FluidStack[]{
                                         Materials.SolderingAlloy.getMolten((i+1)*36)
-                                },null,(i+1)*750,BW_Util.getMachineVoltageFromTier((i+1)),CLEANROOM));
+                                },null,(i+1)*750, BW_Util.getMachineVoltageFromTier((i+1)),CLEANROOM));
         }
 
         //manual override for older GT
@@ -130,7 +127,7 @@ public class AdditionalRecipes implements Runnable {
         ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
         Behaviour_DataOrb.setDataTitle(scannerOutput,"Elemental-Scan");
         Behaviour_DataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
-        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(cell)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass()* 8192L),32,0));
-        GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false,new ItemStack[]{Materials.Empty.getCells(1)} ,new ItemStack[]{werkstoff.get(cell)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L),32,0));
+        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(cell)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass()* 8192L),30,0));
+        GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false,new ItemStack[]{Materials.Empty.getCells(1)} ,new ItemStack[]{werkstoff.get(cell)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L),30,0));
    }
 }

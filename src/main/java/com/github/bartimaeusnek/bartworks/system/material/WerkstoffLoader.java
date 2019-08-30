@@ -1136,8 +1136,8 @@ public class WerkstoffLoader implements Runnable {
                 ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
                 Behaviour_DataOrb.setDataTitle(scannerOutput,"Elemental-Scan");
                 Behaviour_DataOrb.setDataName(scannerOutput,werkstoff.getToolTip());
-                GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(dust)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass()* 8192L),32,0));
-                GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false, null,new ItemStack[]{werkstoff.get(dust)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L),32,0));
+                GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(dust)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass()* 8192L),30,0));
+                GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false, null,new ItemStack[]{werkstoff.get(dust)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L),30,0));
             }
         }
     }
@@ -1253,8 +1253,8 @@ public class WerkstoffLoader implements Runnable {
             ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
             Behaviour_DataOrb.setDataTitle(scannerOutput,"Elemental-Scan");
             Behaviour_DataOrb.setDataName(scannerOutput,werkstoff.getToolTip());
-            GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(cell)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass()* 8192L),32,0));
-            GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false,new ItemStack[]{Materials.Empty.getCells(1)} ,new ItemStack[]{werkstoff.get(cell)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L),32,0));
+            GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(cell)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass()* 8192L),30,0));
+            GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false,new ItemStack[]{Materials.Empty.getCells(1)} ,new ItemStack[]{werkstoff.get(cell)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L),30,0));
         }
     }
     private void addMoltenRecipes(Werkstoff werkstoff) {

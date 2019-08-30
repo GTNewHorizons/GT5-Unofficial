@@ -70,7 +70,7 @@ public class BW_Meta_Items {
         BW_Meta_Items.NEWCIRCUITS.addItem(2,"Raw Imprint supporting Board","A Raw Board needed for Circuit Imprints");
         BW_Meta_Items.NEWCIRCUITS.addItem(3,"Imprint supporting Board","A Board needed for Circuit Imprints");
         GT_Values.RA.addFormingPressRecipe(WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust,1),WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust,4),BW_Meta_Items.NEWCIRCUITS.getStack(2),300,480);
-        GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes.add(new BWRecipes.DynamicGTRecipe(false,new ItemStack[]{BW_Meta_Items.NEWCIRCUITS.getStack(2)},new ItemStack[]{BW_Meta_Items.NEWCIRCUITS.getStack(3)},null,new int[]{7500},new FluidStack[]{Materials.SolderingAlloy.getMolten(576)},null,300,BW_Util.getMachineVoltageFromTier(4),BW_Util.CLEANROOM));
+        GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes.add(new BWRecipes.DynamicGTRecipe(false,new ItemStack[]{BW_Meta_Items.NEWCIRCUITS.getStack(2)},new ItemStack[]{BW_Meta_Items.NEWCIRCUITS.getStack(3)},null,new int[]{7500},new FluidStack[]{Materials.SolderingAlloy.getMolten(576)},null,300, BW_Util.getMachineVoltageFromTier(4), BW_Util.CLEANROOM));
     }
 
     public void addNewCircuit(int aTier, int aID, String aName){

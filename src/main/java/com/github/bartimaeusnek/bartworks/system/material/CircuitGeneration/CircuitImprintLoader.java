@@ -137,6 +137,9 @@ public class CircuitImprintLoader implements Runnable {
                     if (BW_Util.checkStackAndPrefix(original.mInputs[i]) && GT_OreDictUnificator.getAssociation(original.mInputs[i]).mPrefix == OrePrefixes.wireGt01){
                         in[i] = GT_OreDictUnificator.get(OrePrefixes.wireGt16,GT_OreDictUnificator.getAssociation(original.mInputs[i]).mMaterial.mMaterial,original.mInputs[i].stackSize);
                     }
+                    else if (BW_Util.checkStackAndPrefix(original.mInputs[i]) && GT_OreDictUnificator.getAssociation(original.mInputs[i]).mPrefix == OrePrefixes.wireFine){
+                        in[i] = GT_OreDictUnificator.get(OrePrefixes.wireGt04,GT_OreDictUnificator.getAssociation(original.mInputs[i]).mMaterial.mMaterial,original.mInputs[i].stackSize);
+                    }
                     else {
                         in[i] = original.mInputs[i].copy();
                         in[i].stackSize *= 16;
@@ -176,8 +179,8 @@ public class CircuitImprintLoader implements Runnable {
             for (GT_Recipe recipe : CircuitImprintLoader.recipeTagMap.get(tag)) {
                 eut = Math.min(eut, recipe.mEUt);
             }
-            eut = Math.min(eut,BW_Util.getMachineVoltageFromTier(BW_Util.getCircuitTierFromOreDictName(OreDictionary.getOreName(OreDictionary.getOreIDs(stack)[0]))));
-            GT_Recipe slicingRecipe = new BWRecipes.DynamicGTRecipe(true,new ItemStack[]{stack,ItemList.Shape_Slicer_Flat.get(0)},new ItemStack[]{BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1)},null,null,null,null,300,eut,BW_Util.CLEANROOM);
+            eut = Math.min(eut, BW_Util.getMachineVoltageFromTier(BW_Util.getCircuitTierFromOreDictName(OreDictionary.getOreName(OreDictionary.getOreIDs(stack)[0]))));
+            GT_Recipe slicingRecipe = new BWRecipes.DynamicGTRecipe(true,new ItemStack[]{stack,ItemList.Shape_Slicer_Flat.get(0)},new ItemStack[]{BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1)},null,null,null,null,300,eut, BW_Util.CLEANROOM);
             GT_Recipe.GT_Recipe_Map.sSlicerRecipes.add(slicingRecipe);
             GameRegistry.addRecipe(new BWRecipes.BWNBTDependantCraftingRecipe(BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,0,1),
                     " X ",
