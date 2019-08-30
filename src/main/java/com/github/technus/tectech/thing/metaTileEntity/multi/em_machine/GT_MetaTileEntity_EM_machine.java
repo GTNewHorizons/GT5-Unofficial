@@ -30,10 +30,12 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    //region variables
     public static final String machine = "EM Machinery";
 
     private ItemStack loadedMachine;
     private IBehaviour currentBehaviour;
+    //endregion
 
     //region structure
     private static final String[][] shape = new String[][]{
@@ -92,181 +94,6 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     public GT_MetaTileEntity_EM_machine(String aName) {
         super(aName);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        if(aNBT.hasKey("eLoadedMachine")){
-            loadedMachine = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("eLoadedMachine"));
-        }
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        if(loadedMachine !=null) {
-            aNBT.setTag("eLoadedMachine", loadedMachine.writeToNBT(new NBTTagCompound()));
-        }
-    }
-
-    @Override
-    protected void parametersInstantiation_EM() {
-        inputMux=new Parameters.Group.ParameterIn[6];
-        outputMux=new Parameters.Group.ParameterIn[6];
-        for (int i=0;i<6;i++){
-            Parameters.Group hatch=parametrization.getGroup(i);
-            inputMux[i]=hatch.makeInParameter(0,i,ROUTE_NAME,SRC_STATUS);
-            outputMux[i]=hatch.makeInParameter(1,i,ROUTE_NAME,DST_STATUS);
-        }
-    }
-
-    @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_machine(mName);
-    }
-
-    @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 1);
-    }
-
-    @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 2, 2, 1, getBaseMetaTileEntity(), this,hintsOnly);
-    }
-
-    @Override
-    public String[] getStructureDescription(int stackSize) {
-        return description;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[]{CommonValues.TEC_MARK_EM, "Processing quantum matter since...", EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "the time u started using it."};
-    }
-
-    @Override
-    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
-        setCurrentBehaviour();
-        if(aBaseMetaTileEntity.isServerSide()) {
-            quantumStuff(aBaseMetaTileEntity.isActive());
-        }
-    }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if(aBaseMetaTileEntity.isClientSide() && (aTick & 0x2)==0){
-            if((aTick&0x10)==0) {
-                setCurrentBehaviour();
-            }
-            if(aBaseMetaTileEntity.isActive()){
-                int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX*2+aBaseMetaTileEntity.getXCoord();
-                int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY*2+aBaseMetaTileEntity.getYCoord();
-                int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ*2+aBaseMetaTileEntity.getZCoord();
-                aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(xDir,yDir,zDir,xDir,yDir,zDir);
-            }
-        }
-    }
-
-    @Override
-    public void onRemoval() {
-        quantumStuff(false);
-        super.onRemoval();
-    }
-
-    @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
-        setCurrentBehaviour();
-        if(currentBehaviour==null){
-            return false;
-        }
-
-        if (!currentBehaviour.checkParametersInAndSetStatuses(this, parametrization)) {
-            return false;
-        }
-
-        cElementalInstanceStackMap[] handles = new cElementalInstanceStackMap[6];
-        for (int i = 0; i < 6; i++) {
-            int pointer = (int)inputMux[i].get();
-            if (pointer >= 0 && pointer < eInputHatches.size()) {
-                handles[i] = eInputHatches.get(pointer).getContainerHandler();
-            }
-        }
-
-        for (int i = 1; i < 6; i++) {
-            if (handles[i] != null) {
-                for (int j = 0; j < i; j++) {
-                    if (handles[i] == handles[j]) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        MultiblockControl<cElementalInstanceStackMap[]> control = currentBehaviour.process(handles,this, parametrization);
-        if (control == null) {
-            return false;
-        }
-        cleanMassEM_EM(control.getExcessMass());
-        if (control.shouldExplode()) {
-            explodeMultiblock();
-            return false;
-        }
-        //update other parameters
-        outputEM = control.getValue();
-        mEUt = control.getEUT();
-        eAmpereFlow = control.getAmperage();
-        mMaxProgresstime = control.getMaxProgressTime();
-        eRequiredData = control.getRequiredData();
-        mEfficiencyIncrease = control.getEffIncrease();
-        boolean polluted=polluteEnvironment(control.getPollutionToAdd());
-        quantumStuff(polluted);
-        return polluted;
-    }
-
-    @Override
-    protected void afterRecipeCheckFailed() {
-        quantumStuff(false);
-        super.afterRecipeCheckFailed();
-    }
-
-    @Override
-    public void outputAfterRecipe_EM() {
-        if (setCurrentBehaviour()) {
-            return;
-        }
-
-        cElementalInstanceStackMap[] handles = new cElementalInstanceStackMap[6];
-        for (int i = 0; i < 6; i++) {
-            int pointer = (int)outputMux[i].get();
-            if (pointer >= 0 && pointer < eOutputHatches.size()) {
-                handles[i] = eOutputHatches.get(pointer).getContainerHandler();
-            }
-        }
-        //output
-        for (int i = 0; i < 6 && i < outputEM.length; i++) {
-            if (handles[i] != null && outputEM[i] != null && outputEM[i].hasStacks()) {
-                handles[i].putUnifyAll(outputEM[i]);
-                outputEM[i] = null;
-            }
-        }
-        quantumStuff(false);
-        //all other are handled by base multi block code - cleaning is automatic
-    }
-
-    @Override
-    public void stopMachine() {
-        quantumStuff(false);
-        super.stopMachine();
-    }
-
-    @Override
-    public void parametersStatusesWrite_EM(boolean machineBusy) {
-        if (!machineBusy) {
-            setCurrentBehaviour();
-        }
-        super.parametersStatusesWrite_EM(machineBusy);
     }
 
     private boolean setCurrentBehaviour(){
@@ -329,14 +156,14 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
         MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters);
     }
 
-    private void quantumStuff(boolean shouldExist){
+    private void quantumStuff(boolean shouldIExist){
         IGregTechTileEntity base=getBaseMetaTileEntity();
         if(base!=null && base.getWorld()!=null) {
             int xDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetX * 2+base.getXCoord();
             int yDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetY * 2+base.getYCoord();
             int zDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetZ * 2+base.getZCoord();
             Block block = base.getWorld().getBlock(xDir, yDir, zDir);
-            if (shouldExist) {
+            if (shouldIExist) {
                 if(block != null && block.getMaterial()== Material.air) {
                     base.getWorld().setBlock(xDir, yDir, zDir, QuantumStuffBlock.INSTANCE, 0, 2);
                 }
@@ -346,5 +173,181 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
                 }
             }
         }
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_EM_machine(mName);
+    }
+
+    @Override
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 1);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        if(aNBT.hasKey("eLoadedMachine")){
+            loadedMachine = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("eLoadedMachine"));
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if(loadedMachine !=null) {
+            aNBT.setTag("eLoadedMachine", loadedMachine.writeToNBT(new NBTTagCompound()));
+        }
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        inputMux=new Parameters.Group.ParameterIn[6];
+        outputMux=new Parameters.Group.ParameterIn[6];
+        for (int i=0;i<6;i++){
+            Parameters.Group hatch=parametrization.getGroup(i);
+            inputMux[i]=hatch.makeInParameter(0,i,ROUTE_NAME,SRC_STATUS);
+            outputMux[i]=hatch.makeInParameter(1,i,ROUTE_NAME,DST_STATUS);
+        }
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[]{CommonValues.TEC_MARK_EM, "Processing quantum matter since...", EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "the time u started using it."};
+    }
+
+    @Override
+    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
+        setCurrentBehaviour();
+        if(aBaseMetaTileEntity.isServerSide()) {
+            quantumStuff(aBaseMetaTileEntity.isActive());
+        }
+    }
+
+    @Override
+    public void onRemoval() {
+        quantumStuff(false);
+        super.onRemoval();
+    }
+
+    @Override
+    public boolean checkRecipe_EM(ItemStack itemStack) {
+        setCurrentBehaviour();
+        if(currentBehaviour==null){
+            return false;
+        }
+
+        if (!currentBehaviour.checkParametersInAndSetStatuses(this, parametrization)) {
+            return false;
+        }
+
+        cElementalInstanceStackMap[] handles = new cElementalInstanceStackMap[6];
+        for (int i = 0; i < 6; i++) {
+            int pointer = (int)inputMux[i].get();
+            if (pointer >= 0 && pointer < eInputHatches.size()) {
+                handles[i] = eInputHatches.get(pointer).getContainerHandler();
+            }
+        }
+
+        for (int i = 1; i < 6; i++) {
+            if (handles[i] != null) {
+                for (int j = 0; j < i; j++) {
+                    if (handles[i] == handles[j]) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        MultiblockControl<cElementalInstanceStackMap[]> control = currentBehaviour.process(handles,this, parametrization);
+        if (control == null) {
+            return false;
+        }
+        cleanMassEM_EM(control.getExcessMass());
+        if (control.shouldExplode()) {
+            explodeMultiblock();
+            return false;
+        }
+        //update other parameters
+        outputEM = control.getValue();
+        mEUt = control.getEUT();
+        eAmpereFlow = control.getAmperage();
+        mMaxProgresstime = control.getMaxProgressTime();
+        eRequiredData = control.getRequiredData();
+        mEfficiencyIncrease = control.getEffIncrease();
+        boolean polluted=polluteEnvironment(control.getPollutionToAdd());
+        quantumStuff(polluted);
+        return polluted;
+    }
+
+
+    @Override
+    public void stopMachine() {
+        quantumStuff(false);
+        super.stopMachine();
+    }
+
+    @Override
+    protected void afterRecipeCheckFailed() {
+        quantumStuff(false);
+        super.afterRecipeCheckFailed();
+    }
+
+    @Override
+    public void outputAfterRecipe_EM() {
+        if (setCurrentBehaviour()) {
+            return;
+        }
+
+        cElementalInstanceStackMap[] handles = new cElementalInstanceStackMap[6];
+        for (int i = 0; i < 6; i++) {
+            int pointer = (int)outputMux[i].get();
+            if (pointer >= 0 && pointer < eOutputHatches.size()) {
+                handles[i] = eOutputHatches.get(pointer).getContainerHandler();
+            }
+        }
+        //output
+        for (int i = 0; i < 6 && i < outputEM.length; i++) {
+            if (handles[i] != null && outputEM[i] != null && outputEM[i].hasStacks()) {
+                handles[i].putUnifyAll(outputEM[i]);
+                outputEM[i] = null;
+            }
+        }
+        quantumStuff(false);
+        //all other are handled by base multi block code - cleaning is automatic
+    }
+
+    @Override
+    public void parametersStatusesWrite_EM(boolean machineBusy) {
+        if (!machineBusy) {
+            setCurrentBehaviour();
+        }
+        super.parametersStatusesWrite_EM(machineBusy);
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if(aBaseMetaTileEntity.isClientSide() && (aTick & 0x2)==0){
+            if((aTick&0x10)==0) {
+                setCurrentBehaviour();
+            }
+            if(aBaseMetaTileEntity.isActive()){
+                int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX*2+aBaseMetaTileEntity.getXCoord();
+                int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY*2+aBaseMetaTileEntity.getYCoord();
+                int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ*2+aBaseMetaTileEntity.getZCoord();
+                aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(xDir,yDir,zDir,xDir,yDir,zDir);
+            }
+        }
+    }
+
+    @Override
+    public void construct(int stackSize, boolean hintsOnly) {
+        StructureBuilderExtreme(shape, blockType, blockMeta, 2, 2, 1, getBaseMetaTileEntity(), this,hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 }

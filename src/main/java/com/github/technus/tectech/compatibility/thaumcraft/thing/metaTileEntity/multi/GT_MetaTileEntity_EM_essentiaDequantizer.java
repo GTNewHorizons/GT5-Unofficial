@@ -35,8 +35,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-
-    //region Structure
+    //region structure
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
             {"   ", " . ", "   ",},
@@ -77,39 +76,8 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound() {
-        return GT_MetaTileEntity_EM_quantizer.activitySound;
-    }
-
-    @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return essentiaContainerCompat.check(this) && structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
-    }
-
-    @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
-        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ;
-        if (hintsOnly) {
-            TecTech.proxy.hint_particle(iGregTechTileEntity.getWorld(),
-                    iGregTechTileEntity.getXCoord() + xDir,
-                    iGregTechTileEntity.getYCoord() + yDir,
-                    iGregTechTileEntity.getZCoord() + zDir,
-                    TT_Container_Casings.sHintCasingsTT, 12);
-        } else {
-            if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir).getMaterial() == Material.air) {
-                iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord() + yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
-            }
-        }
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, iGregTechTileEntity, this, hintsOnly);
-    }
-
-    @Override
-    public String[] getStructureDescription(int stackSize) {
-        return description;
     }
 
     @Override
@@ -146,5 +114,36 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
                 translateToLocal("gt.blockmachines.multimachine.em.emtoessentia.desc.0"),//Transform quantum form back to...
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.emtoessentia.desc.1")//regular one, but why?
         };
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound() {
+        return GT_MetaTileEntity_EM_quantizer.activitySound;
+    }
+
+    @Override
+    public void construct(int stackSize, boolean hintsOnly) {
+        IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
+        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
+        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
+        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ;
+        if (hintsOnly) {
+            TecTech.proxy.hint_particle(iGregTechTileEntity.getWorld(),
+                    iGregTechTileEntity.getXCoord() + xDir,
+                    iGregTechTileEntity.getYCoord() + yDir,
+                    iGregTechTileEntity.getZCoord() + zDir,
+                    TT_Container_Casings.sHintCasingsTT, 12);
+        } else {
+            if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir).getMaterial() == Material.air) {
+                iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord() + yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
+            }
+        }
+        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, iGregTechTileEntity, this, hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 }

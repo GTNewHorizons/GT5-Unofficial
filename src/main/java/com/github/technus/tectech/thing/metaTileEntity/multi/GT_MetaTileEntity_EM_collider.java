@@ -15,11 +15,7 @@ import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -48,6 +44,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    //region variables
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenON_Slave;
@@ -57,12 +54,12 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     private static double MASS_TO_EU_INSTANT;
     private static int STARTUP_COST, KEEPUP_COST;
 
-    public static void setValues(int heliumPlasmaValue) {
-        double MASS_TO_EU_PARTIAL = heliumPlasmaValue / 1.75893000478707E07;//mass diff
-        MASS_TO_EU_INSTANT = MASS_TO_EU_PARTIAL * 20;
-        STARTUP_COST = -heliumPlasmaValue * 10000;
-        KEEPUP_COST = -heliumPlasmaValue;
-    }
+    protected byte eTier = 0;
+    protected cElementalInstanceStack stack;
+    private long plasmaEnergy;
+
+    protected boolean started = false;
+    //endregion
 
     //region collision handlers
     public static final HashMap<Integer, IColliderHandler> FUSE_HANDLERS = new HashMap<>();
@@ -266,10 +263,6 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
     //endregion
 
-    protected byte eTier = 0;
-    protected cElementalInstanceStack stack;
-    private long plasmaEnergy;
-
     //region parameters
     protected Parameters.Group.ParameterIn mode;
     private static final IStatusFunction<GT_MetaTileEntity_EM_collider> MODE_STATUS = (base_EM, p) -> {
@@ -300,9 +293,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     };
     //endregion
 
-    protected boolean started = false;
-
-    //region Structure
+    //region structure
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
             {"I0A0A0", "I00000", "I0A0A0",},
@@ -363,169 +354,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         super(aName);
     }
 
-    @Override
-    protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0 = parametrization.getGroup(0);
-        mode = hatch_0.makeInParameter(0, FUSE_MODE, MODE_NAME, MODE_STATUS);
-    }
-
-    @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_collider(mName);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_COLLIDER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_COLLIDER_ACTIVE");
-        ScreenOFF_Slave = new Textures.BlockIcons.CustomIcon("iconsets/EM_COLLIDER_SLAVE");
-        ScreenON_Slave = new Textures.BlockIcons.CustomIcon("iconsets/EM_COLLIDER_ACTIVE_SLAVE");
-        super.registerIcons(aBlockIconRegister);
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            if (aFacing % 2 == 0) {
-                return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
-            } else {
-                return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new TT_RenderedTexture(aActive ? ScreenON_Slave : ScreenOFF_Slave)};
-            }
-        }
-        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4]};
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setByte("eTier", eTier);//collider tier
-        aNBT.setBoolean("eStarted", started);
-        if (stack != null) {
-            aNBT.setTag("eStack", stack.toNBT());
-        }
-        aNBT.setLong("ePlasmaEnergy", plasmaEnergy);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        eTier = aNBT.getByte("eTier");//collider tier
-        started = aNBT.getBoolean("eStarted");
-        if (aNBT.hasKey("eStack")) {
-            stack = cElementalInstanceStack.fromNBT(aNBT.getCompoundTag("eStack"));
-        }
-        plasmaEnergy = aNBT.getLong("ePlasmaEnergy");
-    }
-
-    @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 2;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 2;
-        if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir) != sBlockCasingsTT) {
-            eTier = 0;
-            return false;
-        }
-
-        if (iGregTechTileEntity.getMetaIDOffset(xDir, 0, zDir) == 8) {
-            eTier = 1;
-        } else if (iGregTechTileEntity.getMetaIDOffset(xDir, 0, zDir) == 9) {
-            eTier = 2;
-        } else {
-            eTier = 0;
-            return false;
-        }
-
-        boolean test;
-        switch (eTier) {
-            case 1:
-                test = structureCheck_EM(shape, blockType, blockMeta1, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 11, 1, 18);
-                break;
-            case 2:
-                test = structureCheck_EM(shape, blockType, blockMeta2, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 11, 1, 18);
-                break;
-            default:
-                eTier = 0;
-                return false;
-        }
-        if (test) {
-            return true;
-        }
-        eTier = 0;
-        return false;
-    }
-
-    @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
-        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
-        if (hintsOnly) {
-            TecTech.proxy.hint_particle(iGregTechTileEntity.getWorld(),
-                    iGregTechTileEntity.getXCoord() + xDir,
-                    iGregTechTileEntity.getYCoord() + yDir,
-                    iGregTechTileEntity.getZCoord() + zDir,
-                    TT_Container_Casings.sHintCasingsTT, 12);
-        } else {
-            if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir).getMaterial() == Material.air) {
-                iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord() + yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
-            }
-        }
-        if ((stackSize & 1) == 1) {
-            StructureBuilderExtreme(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity, this, hintsOnly);
-        } else {
-            StructureBuilderExtreme(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity, this, hintsOnly);
-        }
-    }
-
-    @Override
-    public void parametersStatusesWrite_EM(boolean machineBusy) {
-        if (isMaster()) {
-            super.parametersStatusesWrite_EM(machineBusy);
-        }
-    }
-
-    @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
-        GT_MetaTileEntity_EM_collider partner = getPartner();
-        if (partner == null) {
-            return false;
-        }
-        mEfficiencyIncrease = 10000;
-        if (started) {
-            if (stack == null) {
-                for (GT_MetaTileEntity_Hatch_InputElemental inputElemental : eInputHatches) {
-                    cElementalInstanceStackMap container = inputElemental.getContainerHandler();
-                    if (container.isEmpty()) {
-                        continue;
-                    }
-                    stack = container.remove(container.getFirst().definition);
-                    long eut = KEEPUP_COST + (long) (KEEPUP_COST * Math.abs(stack.getMass() / dAtomDefinition.getSomethingHeavy().getMass())) / 2;
-                    if (eut < Integer.MIN_VALUE + 7) {
-                        return false;
-                    }
-                    mMaxProgresstime = 20;
-                    mEUt = (int) eut;
-                    eAmpereFlow = 5;
-                    return true;
-                }
-                mMaxProgresstime = 20;
-                mEUt = KEEPUP_COST;
-                eAmpereFlow = 1;
-                return true;
-            }
-            mMaxProgresstime = 20;
-            mEUt = KEEPUP_COST;
-            eAmpereFlow = 2;
-            return true;
-        } else {
-            started = true;
-            mMaxProgresstime = 20;
-            mEUt = STARTUP_COST;
-            eAmpereFlow = 10;
-            return true;
-        }
+    public static void setValues(int heliumPlasmaValue) {
+        double MASS_TO_EU_PARTIAL = heliumPlasmaValue / 1.75893000478707E07;//mass diff
+        MASS_TO_EU_INSTANT = MASS_TO_EU_PARTIAL * 20;
+        STARTUP_COST = -heliumPlasmaValue * 10000;
+        KEEPUP_COST = -heliumPlasmaValue;
     }
 
     protected double fuse(GT_MetaTileEntity_EM_collider partner) {
@@ -572,35 +405,6 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         return false;
     }
 
-    @Override
-    protected void afterRecipeCheckFailed() {
-        started = false;
-        if (stack != null) {
-            cleanMassEM_EM(stack.getMass());
-            stack = null;
-        }
-        getBaseMetaTileEntity().disableWorking();
-        super.afterRecipeCheckFailed();
-    }
-
-    @Override
-    public void stopMachine() {
-        started = false;
-        if (stack != null) {
-            cleanMassEM_EM(stack.getMass());
-            stack = null;
-        }
-        super.stopMachine();
-    }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (!aBaseMetaTileEntity.isAllowedToWork()) {
-            started = false;
-        }
-        super.onPreTick(aBaseMetaTileEntity, aTick);
-    }
-
     protected GT_MetaTileEntity_EM_collider getPartner() {
         IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
@@ -619,6 +423,108 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     protected final boolean isMaster() {
         return getBaseMetaTileEntity().getFrontFacing() % 2 == 0;
+    }
+
+    private void makeEU(double massDiff) {
+        plasmaEnergy += massDiff * MASS_TO_EU_INSTANT;
+        System.out.println("plasmaEnergy = " + plasmaEnergy);
+    }
+
+    private cElementalInstanceStackMap tickStack() {
+        if (stack == null) {
+            return null;
+        }
+        cElementalInstanceStackMap newInstances = stack.decay(1, stack.age += 1, 0);
+        if (newInstances == null) {
+            stack.nextColor();
+        } else {
+            stack = newInstances.remove(newInstances.getLast().definition);
+        }
+        return newInstances;
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_EM_collider(mName);
+    }
+
+    @Override
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 2;
+        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 2;
+        if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir) != sBlockCasingsTT) {
+            eTier = 0;
+            return false;
+        }
+
+        if (iGregTechTileEntity.getMetaIDOffset(xDir, 0, zDir) == 8) {
+            eTier = 1;
+        } else if (iGregTechTileEntity.getMetaIDOffset(xDir, 0, zDir) == 9) {
+            eTier = 2;
+        } else {
+            eTier = 0;
+            return false;
+        }
+
+        boolean test;
+        switch (eTier) {
+            case 1:
+                test = structureCheck_EM(shape, blockType, blockMeta1, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 11, 1, 18);
+                break;
+            case 2:
+                test = structureCheck_EM(shape, blockType, blockMeta2, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 11, 1, 18);
+                break;
+            default:
+                eTier = 0;
+                return false;
+        }
+        if (test) {
+            return true;
+        }
+        eTier = 0;
+        return false;
+    }
+
+    @Override
+    public boolean checkRecipe_EM(ItemStack itemStack) {
+        GT_MetaTileEntity_EM_collider partner = getPartner();
+        if (partner == null) {
+            return false;
+        }
+        mEfficiencyIncrease = 10000;
+        if (started) {
+            if (stack == null) {
+                for (GT_MetaTileEntity_Hatch_InputElemental inputElemental : eInputHatches) {
+                    cElementalInstanceStackMap container = inputElemental.getContainerHandler();
+                    if (container.isEmpty()) {
+                        continue;
+                    }
+                    stack = container.remove(container.getFirst().definition);
+                    long eut = KEEPUP_COST + (long) (KEEPUP_COST * Math.abs(stack.getMass() / dAtomDefinition.getSomethingHeavy().getMass())) / 2;
+                    if (eut < Integer.MIN_VALUE + 7) {
+                        return false;
+                    }
+                    mMaxProgresstime = 20;
+                    mEUt = (int) eut;
+                    eAmpereFlow = 5;
+                    return true;
+                }
+                mMaxProgresstime = 20;
+                mEUt = KEEPUP_COST;
+                eAmpereFlow = 1;
+                return true;
+            }
+            mMaxProgresstime = 20;
+            mEUt = KEEPUP_COST;
+            eAmpereFlow = 2;
+            return true;
+        } else {
+            started = true;
+            mMaxProgresstime = 20;
+            mEUt = STARTUP_COST;
+            eAmpereFlow = 10;
+            return true;
+        }
     }
 
     @Override
@@ -663,29 +569,6 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         }
     }
 
-    private void makeEU(double massDiff) {
-        plasmaEnergy += massDiff * MASS_TO_EU_INSTANT;
-        System.out.println("plasmaEnergy = " + plasmaEnergy);
-    }
-
-    private cElementalInstanceStackMap tickStack() {
-        if (stack == null) {
-            return null;
-        }
-        cElementalInstanceStackMap newInstances = stack.decay(1, stack.age += 1, 0);
-        if (newInstances == null) {
-            stack.nextColor();
-        } else {
-            stack = newInstances.remove(newInstances.getLast().definition);
-        }
-        return newInstances;
-    }
-
-    @Override
-    public String[] getStructureDescription(int stackSize) {
-        return description;
-    }
-
     @Override
     public String[] getDescription() {
         return new String[]{
@@ -693,5 +576,120 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                 "Collide matter at extreme velocities.",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Faster than light*!!!"
         };
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aBlockIconRegister) {
+        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_COLLIDER");
+        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_COLLIDER_ACTIVE");
+        ScreenOFF_Slave = new Textures.BlockIcons.CustomIcon("iconsets/EM_COLLIDER_SLAVE");
+        ScreenON_Slave = new Textures.BlockIcons.CustomIcon("iconsets/EM_COLLIDER_ACTIVE_SLAVE");
+        super.registerIcons(aBlockIconRegister);
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            if (aFacing % 2 == 0) {
+                return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            } else {
+                return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new TT_RenderedTexture(aActive ? ScreenON_Slave : ScreenOFF_Slave)};
+            }
+        }
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4]};
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        Parameters.Group hatch_0 = parametrization.getGroup(0);
+        mode = hatch_0.makeInParameter(0, FUSE_MODE, MODE_NAME, MODE_STATUS);
+    }
+
+    @Override
+    public void parametersStatusesWrite_EM(boolean machineBusy) {
+        if (isMaster()) {
+            super.parametersStatusesWrite_EM(machineBusy);
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setByte("eTier", eTier);//collider tier
+        aNBT.setBoolean("eStarted", started);
+        if (stack != null) {
+            aNBT.setTag("eStack", stack.toNBT());
+        }
+        aNBT.setLong("ePlasmaEnergy", plasmaEnergy);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        eTier = aNBT.getByte("eTier");//collider tier
+        started = aNBT.getBoolean("eStarted");
+        if (aNBT.hasKey("eStack")) {
+            stack = cElementalInstanceStack.fromNBT(aNBT.getCompoundTag("eStack"));
+        }
+        plasmaEnergy = aNBT.getLong("ePlasmaEnergy");
+    }
+
+    @Override
+    public void stopMachine() {
+        started = false;
+        if (stack != null) {
+            cleanMassEM_EM(stack.getMass());
+            stack = null;
+        }
+        super.stopMachine();
+    }
+
+    @Override
+    protected void afterRecipeCheckFailed() {
+        started = false;
+        if (stack != null) {
+            cleanMassEM_EM(stack.getMass());
+            stack = null;
+        }
+        getBaseMetaTileEntity().disableWorking();
+        super.afterRecipeCheckFailed();
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (!aBaseMetaTileEntity.isAllowedToWork()) {
+            started = false;
+        }
+        super.onPreTick(aBaseMetaTileEntity, aTick);
+    }
+
+    @Override
+    public void construct(int stackSize, boolean hintsOnly) {
+        IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
+        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
+        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
+        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
+        if (hintsOnly) {
+            TecTech.proxy.hint_particle(iGregTechTileEntity.getWorld(),
+                    iGregTechTileEntity.getXCoord() + xDir,
+                    iGregTechTileEntity.getYCoord() + yDir,
+                    iGregTechTileEntity.getZCoord() + zDir,
+                    TT_Container_Casings.sHintCasingsTT, 12);
+        } else {
+            if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir).getMaterial() == Material.air) {
+                iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord() + yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
+            }
+        }
+        if ((stackSize & 1) == 1) {
+            StructureBuilderExtreme(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity, this, hintsOnly);
+        } else {
+            StructureBuilderExtreme(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity, this, hintsOnly);
+        }
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 }

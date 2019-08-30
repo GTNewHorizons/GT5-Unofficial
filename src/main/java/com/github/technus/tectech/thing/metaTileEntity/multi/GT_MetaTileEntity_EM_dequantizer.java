@@ -37,8 +37,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-
-    //region Structure
+    //region structure
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
             {"   ", " . ", "   ",},
@@ -71,10 +70,17 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         super(aName);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound() {
-        return GT_MetaTileEntity_EM_quantizer.activitySound;
+    private void startRecipe(iHasElementalDefinition from, long energy) {
+        mMaxProgresstime = 20;
+        mEfficiencyIncrease = 10000;
+        float mass = from.getMass();
+        float euMult = Math.abs(mass / refMass);
+        eAmpereFlow = (int) Math.ceil(Math.sqrt(Math.sqrt(euMult)));
+        if (mass > refUnstableMass || from.getDefinition().getRawTimeSpan(energy) < STABLE_RAW_LIFE_TIME) {
+            mEUt = (int) -V[8];
+        } else {
+            mEUt = (int) -V[6];
+        }
     }
 
     @Override
@@ -85,16 +91,6 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
-    }
-
-    @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
-    }
-
-    @Override
-    public String[] getStructureDescription(int stackSize) {
-        return description;
     }
 
     @Override
@@ -136,19 +132,6 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         return false;
     }
 
-    private void startRecipe(iHasElementalDefinition from, long energy) {
-        mMaxProgresstime = 20;
-        mEfficiencyIncrease = 10000;
-        float mass = from.getMass();
-        float euMult = Math.abs(mass / refMass);
-        eAmpereFlow = (int) Math.ceil(Math.sqrt(Math.sqrt(euMult)));
-        if (mass > refUnstableMass || from.getDefinition().getRawTimeSpan(energy) < STABLE_RAW_LIFE_TIME) {
-            mEUt = (int) -V[8];
-        } else {
-            mEUt = (int) -V[6];
-        }
-    }
-
     @Override
     public String[] getDescription() {
         return new String[]{
@@ -156,5 +139,21 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                 translateToLocal("gt.blockmachines.multimachine.em.emtomatter.desc.0"),//Transform quantum form back to...
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.emtomatter.desc.1")//regular one, but why?
         };
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound() {
+        return GT_MetaTileEntity_EM_quantizer.activitySound;
+    }
+
+    @Override
+    public void construct(int stackSize, boolean hintsOnly) {
+        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 }

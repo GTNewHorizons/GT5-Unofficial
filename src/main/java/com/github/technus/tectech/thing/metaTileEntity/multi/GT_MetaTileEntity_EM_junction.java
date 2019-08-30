@@ -4,11 +4,7 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputElemental;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
@@ -28,7 +24,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-    //region Structure
+    //region structure
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
             {"   ", " . ", "   ",},
@@ -95,17 +91,6 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    protected void parametersInstantiation_EM() {
-        src = new Parameters.Group.ParameterIn[10];
-        dst = new Parameters.Group.ParameterIn[10];
-        for (int i = 0; i < 10; i++) {
-            Parameters.Group hatch = parametrization.getGroup(i);
-            src[i] = hatch.makeInParameter(0, i, ROUTE_NAME, SRC_STATUS);
-            dst[i] = hatch.makeInParameter(1, i, ROUTE_NAME, DST_STATUS);
-        }
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_junction(mName);
     }
@@ -119,25 +104,6 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
             return structureCheck_EM(shapeBig, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
         }
         return false;
-    }
-
-    @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
-    }
-
-    @Override
-    public String[] getStructureDescription(int stackSize) {
-        return description;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.multimachine.em.junction.desc.0"),//Reroutes Matter
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.junction.desc.1")//Axis aligned movement!
-        };
     }
 
     @Override
@@ -180,5 +146,35 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
                 in.getContainerHandler().clear();
             }
         }
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[]{
+                CommonValues.TEC_MARK_EM,
+                translateToLocal("gt.blockmachines.multimachine.em.junction.desc.0"),//Reroutes Matter
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.junction.desc.1")//Axis aligned movement!
+        };
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        src = new Parameters.Group.ParameterIn[10];
+        dst = new Parameters.Group.ParameterIn[10];
+        for (int i = 0; i < 10; i++) {
+            Parameters.Group hatch = parametrization.getGroup(i);
+            src[i] = hatch.makeInParameter(0, i, ROUTE_NAME, SRC_STATUS);
+            dst[i] = hatch.makeInParameter(1, i, ROUTE_NAME, DST_STATUS);
+        }
+    }
+
+    @Override
+    public void construct(int stackSize, boolean hintsOnly) {
+        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 }

@@ -31,7 +31,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-    //region Structure
+    //region structure
     private static final String[][] shape = new String[][]{
             {"   ", " . ", "   ",},
             {"   ", " 0 ", "   ",},
@@ -71,14 +71,6 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
         eDismantleBoom = true;
     }
 
-    public final static ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_noise");
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound() {
-        return activitySound;
-    }
-
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_transformer(mName);
@@ -87,44 +79,6 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
-    }
-
-    @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, true, false, false);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", true, false, false);
-    }
-
-    @Override
-    public String[] getStructureDescription(int stackSize) {
-        return description;
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][0], new TT_RenderedTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
-        }
-        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][0]};
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.0"),//Power substation
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1"),//All the transformation!
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2"),//Only 0.78125% power loss, HAYO!
-        };
     }
 
     @Override
@@ -142,7 +96,48 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
+    public String[] getDescription() {
+        return new String[]{
+                CommonValues.TEC_MARK_GENERAL,
+                translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.0"),//Power substation
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1"),//All the transformation!
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2"),//Only 0.78125% power loss, HAYO!
+        };
+    }
+
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, true, false, false);
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", true, false, false);
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][0], new TT_RenderedTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
+        }
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][0]};
+    }
+
+    public final static ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_noise");
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound() {
+        return activitySound;
+    }
+
+    @Override
     public boolean onRunningTick(ItemStack aStack) {
+        return true;
+    }
+
+    @Override
+    public boolean doRandomMaintenanceDamage() {
         return true;
     }
 
@@ -154,7 +149,12 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public boolean doRandomMaintenanceDamage() {
-        return true;
+    public void construct(int stackSize, boolean hintsOnly) {
+        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 }

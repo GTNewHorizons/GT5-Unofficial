@@ -6,11 +6,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElement
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -39,22 +35,13 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    //region variables
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
     public static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10;
     private static final double URANIUM_MASS_TO_EU_PARTIAL = ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear") * 3_000_000.0 / URANIUM_INGOT_MASS_DIFF;
     public static final double URANIUM_MASS_TO_EU_INSTANT = URANIUM_MASS_TO_EU_PARTIAL *20;
-
-    //region parameters
-    protected Parameters.Group.ParameterIn ampereFlow;
-    private static final INameFunction<GT_MetaTileEntity_EM_decay> FLOW_NAME= (base, p)->"Ampere divider";
-    private static final IStatusFunction<GT_MetaTileEntity_EM_decay> FLOW_STATUS= (base, p)->{
-        if(base.eAmpereFlow<=0){
-            return STATUS_TOO_LOW;
-        }
-        return STATUS_OK;
-    };
     //endregion
 
     //region structure
@@ -82,6 +69,17 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     };
     //endregion
 
+    //region parameters
+    protected Parameters.Group.ParameterIn ampereFlow;
+    private static final INameFunction<GT_MetaTileEntity_EM_decay> FLOW_NAME= (base, p)->"Ampere divider";
+    private static final IStatusFunction<GT_MetaTileEntity_EM_decay> FLOW_STATUS= (base, p)->{
+        if(base.eAmpereFlow<=0){
+            return STATUS_TOO_LOW;
+        }
+        return STATUS_OK;
+    };
+    //endregion
+
     public GT_MetaTileEntity_EM_decay(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -91,54 +89,13 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     }
 
     @Override
-    protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0=parametrization.getGroup(0, true);
-        ampereFlow=hatch_0.makeInParameter(0,1,FLOW_NAME,FLOW_STATUS);
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_decay(mName);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_DECAY");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_DECAY_ACTIVE");
-        super.registerIcons(aBlockIconRegister);
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
-        }
-        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12]};
-    }
-
-    @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
-    }
-
-    @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity(),this,hintsOnly);
-    }
-
-    @Override
-    public String[] getStructureDescription(int stackSize) {
-        return description;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                "Is life time too long?",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Make it half-life (3) instead!"
-        };
     }
 
     @Override
@@ -164,7 +121,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         for(cElementalInstanceStack stack:outputEM[0].values()){
             if (stack.getEnergy() == 0 && stack.definition.decayMakesEnergy(1)
                     && getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                            (long) (stack.getEnergySettingCost(1) * URANIUM_MASS_TO_EU_INSTANT), false)) {
+                    (long) (stack.getEnergySettingCost(1) * URANIUM_MASS_TO_EU_INSTANT), false)) {
                 stack.setEnergy(1);
             }else if(!stack.definition.decayMakesEnergy(stack.getEnergy())){
                 outputEM[0].remove(stack.definition);
@@ -191,6 +148,15 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
             eOutputHatches.get(i).getContainerHandler().putUnifyAll(outputEM[i]);
             outputEM[i]=null;
         }
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[]{
+                CommonValues.TEC_MARK_EM,
+                "Is life time too long?",
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Make it half-life (3) instead!"
+        };
     }
 
     @Override
@@ -228,5 +194,37 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
                         " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
                 "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET,
         };
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aBlockIconRegister) {
+        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_DECAY");
+        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_DECAY_ACTIVE");
+        super.registerIcons(aBlockIconRegister);
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+        }
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12]};
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        Parameters.Group hatch_0=parametrization.getGroup(0, true);
+        ampereFlow=hatch_0.makeInParameter(0,1,FLOW_NAME,FLOW_STATUS);
+    }
+
+    @Override
+    public void construct(int stackSize, boolean hintsOnly) {
+        StructureBuilderExtreme(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity(),this,hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 }

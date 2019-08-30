@@ -42,6 +42,7 @@ import static gregtech.api.enums.GT_Values.E;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    //region variables
     private final static HashSet<ThaumSpark> sparkList = new HashSet<>();
 
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
@@ -74,6 +75,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private int[][] scanPosOffsets = new int[10][3];
     private int[] posZap = new int[3];//Power Transfer Origin
     public int[] posTop = new int[3];//Lightning Origin
+    //endregion
 
     //region structure
     private static final String[][] shape = new String[][]{//3 16 0
@@ -231,87 +233,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         super(aName);
     }
 
-    @Override
-    protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0 = parametrization.getGroup(0, true);
-        Parameters.Group hatch_1 = parametrization.getGroup(1, true);
-        Parameters.Group hatch_2 = parametrization.getGroup(2, true);
-        Parameters.Group hatch_3 = parametrization.getGroup(3, true);
-        Parameters.Group hatch_4 = parametrization.getGroup(4, true);
-        Parameters.Group hatch_5 = parametrization.getGroup(5, true);
-        Parameters.Group hatch_6 = parametrization.getGroup(6, true);
-        Parameters.Group hatch_7 = parametrization.getGroup(7, true);
-        Parameters.Group hatch_8 = parametrization.getGroup(8, true);
-        Parameters.Group hatch_9 = parametrization.getGroup(9, true);
-
-        histLowSetting = hatch_0.makeInParameter(0, 0.25, HYSTERESIS_LOW_SETTING_NAME, HYSTERESIS_LOW_STATUS);
-        popogaSetting = hatch_0.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        histHighSetting = hatch_1.makeInParameter(0, 0.75, HYSTERESIS_HIGH_SETTING_NAME, HYSTERESIS_HIGH_STATUS);
-        popogaSetting = hatch_1.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        transferRadiusTowerSetting = hatch_2.makeInParameter(0, 32, TRANSFER_RADIUS_TOWER_SETTING_NAME, TRANSFER_RADIUS_TOWER_STATUS);
-        popogaSetting = hatch_2.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        transferRadiusTransceiverSetting = hatch_3.makeInParameter(0, 16, TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
-        transferRadiusCoverUltimateSetting = hatch_3.makeInParameter(1, 16, TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
-        outputVoltageSetting = hatch_4.makeInParameter(0, -1, OUTPUT_VOLTAGE_SETTING_NAME, OUTPUT_VOLTAGE_OR_CURRENT_STATUS);
-        popogaSetting = hatch_4.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        outputCurrentSetting = hatch_5.makeInParameter(0, -1, OUTPUT_CURRENT_SETTING_NAME, OUTPUT_VOLTAGE_OR_CURRENT_STATUS);
-        popogaSetting = hatch_5.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaSetting = hatch_6.makeInParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaSetting = hatch_6.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        scanTimeMinSetting = hatch_7.makeInParameter(0, 100, SCAN_TIME_MIN_SETTING_NAME, SCAN_TIME_MIN_STATUS);
-        popogaSetting = hatch_7.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        overDriveSetting = hatch_8.makeInParameter(0, 0, OVERDRIVE_SETTING_NAME, OVERDRIVE_STATUS);
-        popogaSetting = hatch_8.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaSetting = hatch_9.makeInParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaSetting = hatch_9.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-
-        popogaDisplay = hatch_0.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_0.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_1.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_1.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        transferRadiusTowerDisplay = hatch_2.makeOutParameter(0, 0, TRANSFER_RADIUS_TOWER_DISPLAY_NAME, TRANSFER_RADIUS_TOWER_STATUS);
-        popogaDisplay = hatch_2.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        transferRadiusTransceiverDisplay = hatch_3.makeOutParameter(0, 0, TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
-        transferRadiusCoverUltimateDisplay = hatch_3.makeOutParameter(1, 0, TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
-        outputVoltageDisplay = hatch_4.makeOutParameter(0, 0, OUTPUT_VOLTAGE_DISPLAY_NAME, POWER_STATUS);
-        popogaDisplay = hatch_4.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        outputCurrentDisplay = hatch_5.makeOutParameter(0, 0, OUTPUT_CURRENT_DISPLAY_NAME, POWER_STATUS);
-        energyCapacityDisplay = hatch_5.makeOutParameter(1, 0, ENERGY_CAPACITY_DISPLAY_NAME, ENERGY_STATUS);
-        energyStoredDisplay = hatch_6.makeOutParameter(0, 0, ENERGY_STORED_DISPLAY_NAME, ENERGY_STATUS);
-        energyFractionDisplay = hatch_6.makeOutParameter(1, 0, ENERGY_FRACTION_DISPLAY_NAME, ENERGY_STATUS);
-        scanTimeDisplay = hatch_7.makeOutParameter(0, 0, SCAN_TIME_DISPLAY_NAME, SCAN_TIME_STATUS);
-        popogaDisplay = hatch_7.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_8.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_8.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_9.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_9.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-    }
-
-    @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_TM_teslaCoil(mName);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_TOWER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_TOWER_ACTIVE");
-        super.registerIcons(aBlockIconRegister);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setLong("eEnergyCapacity", energyCapacity);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        energyCapacity = aNBT.getLong("eEnergyCapacity");
-    }
-
     private long getEnergyEfficiency(long voltage, int distance, boolean overDriveToggle) {
         if (overDriveToggle) {
             return (long) ((voltage * 2) - (voltage * Math.pow(overdriveEfficiency, distance)));
@@ -328,37 +249,49 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         return 1F;
     }
 
-    @Override
-    public long maxEUStore() {
-        return energyCapacity * 2;
+    private void scanForTransmissionTargets(int[] coordsMin, int[] coordsMax) {
+        //This makes sure the minimums are actually smaller than the maximums
+        int xMin = coordsMin[0] < coordsMax[0] ? coordsMin[0] : coordsMax[0];
+        int yMin = coordsMin[1] < coordsMax[1] ? coordsMin[1] : coordsMax[1];
+        int zMin = coordsMin[2] < coordsMax[2] ? coordsMin[2] : coordsMax[2];
+        //And vice versa
+        int xMax = coordsMin[0] > coordsMax[0] ? coordsMin[0] : coordsMax[0];
+        int yMax = coordsMin[1] > coordsMax[1] ? coordsMin[1] : coordsMax[1];
+        int zMax = coordsMin[2] > coordsMax[2] ? coordsMin[2] : coordsMax[2];
+
+        for (int xPos = xMin; xPos <= xMax; xPos++) {
+            for (int yPos = yMin; yPos <= yMax; yPos++) {
+                for (int zPos = zMin; zPos <= zMax; zPos++) {
+                    if (xPos == 0 && yPos == 0 && zPos == 0) {
+                        continue;
+                    }
+                    IGregTechTileEntity node = getBaseMetaTileEntity().getIGregTechTileEntityOffset(xPos, yPos, zPos);
+                    if (node == null) {
+                        continue;
+                    }
+                    IMetaTileEntity nodeInside = node.getMetaTileEntity();
+                    if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil || nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
+                        eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(Math.pow(xPos, 2) + Math.pow(yPos, 2) + Math.pow(zPos, 2))));
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
+        byte xR = (byte) (node.getXCoord() - posTop[0]);
+        byte yR = (byte) (node.getYCoord() - posTop[1]);
+        byte zR = (byte) (node.getZCoord() - posTop[2]);
+
+        int wID = mte.getWorld().provider.dimensionId;
+
+        sparkList.add(new ThaumSpark(posTop[0], posTop[1], posTop[2], xR, yR, zR, wID));
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16 + 6], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
-        }
-        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16 + 6]};
-    }
-
-    @Override
-    public void onRemoval() {
-        super.onRemoval();
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
-            cap.getBaseMetaTileEntity().setActive(false);
-        }
-    }
-
-    @Override
-    public void stopMachine() {
-        super.stopMachine();
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
-            cap.getBaseMetaTileEntity().setActive(false);
-        }
-
-        setEUVar(0);
-        energyStoredDisplay.set(0);
-        energyFractionDisplay.set(0);
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_TM_teslaCoil(mName);
     }
 
     @Override
@@ -417,26 +350,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMetas[(stackSize - 1) % 6], 3, 16, 0, getBaseMetaTileEntity(), this, hintsOnly);
-    }
-
-    @Override
-    public String[] getStructureDescription(int stackSize) {
-        return description;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.BASS_MARK,
-                translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.0"),//Tower of Wireless Power
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.1"),//Fewer pesky cables!
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.2"),//Survival chances might be affected
-        };
     }
 
     @Override
@@ -500,44 +413,118 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         return true;
     }
 
-    private void scanForTransmissionTargets(int[] coordsMin, int[] coordsMax) {
-        //This makes sure the minimums are actually smaller than the maximums
-        int xMin = coordsMin[0] < coordsMax[0] ? coordsMin[0] : coordsMax[0];
-        int yMin = coordsMin[1] < coordsMax[1] ? coordsMin[1] : coordsMax[1];
-        int zMin = coordsMin[2] < coordsMax[2] ? coordsMin[2] : coordsMax[2];
-        //And vice versa
-        int xMax = coordsMin[0] > coordsMax[0] ? coordsMin[0] : coordsMax[0];
-        int yMax = coordsMin[1] > coordsMax[1] ? coordsMin[1] : coordsMax[1];
-        int zMax = coordsMin[2] > coordsMax[2] ? coordsMin[2] : coordsMax[2];
-
-        for (int xPos = xMin; xPos <= xMax; xPos++) {
-            for (int yPos = yMin; yPos <= yMax; yPos++) {
-                for (int zPos = zMin; zPos <= zMax; zPos++) {
-                    if (xPos == 0 && yPos == 0 && zPos == 0) {
-                        continue;
-                    }
-                    IGregTechTileEntity node = getBaseMetaTileEntity().getIGregTechTileEntityOffset(xPos, yPos, zPos);
-                    if (node == null) {
-                        continue;
-                    }
-                    IMetaTileEntity nodeInside = node.getMetaTileEntity();
-                    if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil || nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
-                        eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(Math.pow(xPos, 2) + Math.pow(yPos, 2) + Math.pow(zPos, 2))));
-                    }
-                }
-            }
-        }
-
+    @Override
+    public String[] getDescription() {
+        return new String[]{
+                CommonValues.BASS_MARK,
+                translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.0"),//Tower of Wireless Power
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.1"),//Fewer pesky cables!
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.2"),//Survival chances might be affected
+        };
     }
 
-    private void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
-        byte xR = (byte) (node.getXCoord() - posTop[0]);
-        byte yR = (byte) (node.getYCoord() - posTop[1]);
-        byte zR = (byte) (node.getZCoord() - posTop[2]);
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aBlockIconRegister) {
+        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_TOWER");
+        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_TOWER_ACTIVE");
+        super.registerIcons(aBlockIconRegister);
+    }
 
-        int wID = mte.getWorld().provider.dimensionId;
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16 + 6], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+        }
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16 + 6]};
+    }
 
-        sparkList.add(new ThaumSpark(posTop[0], posTop[1], posTop[2], xR, yR, zR, wID));
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
+            cap.getBaseMetaTileEntity().setActive(false);
+        }
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        Parameters.Group hatch_0 = parametrization.getGroup(0, true);
+        Parameters.Group hatch_1 = parametrization.getGroup(1, true);
+        Parameters.Group hatch_2 = parametrization.getGroup(2, true);
+        Parameters.Group hatch_3 = parametrization.getGroup(3, true);
+        Parameters.Group hatch_4 = parametrization.getGroup(4, true);
+        Parameters.Group hatch_5 = parametrization.getGroup(5, true);
+        Parameters.Group hatch_6 = parametrization.getGroup(6, true);
+        Parameters.Group hatch_7 = parametrization.getGroup(7, true);
+        Parameters.Group hatch_8 = parametrization.getGroup(8, true);
+        Parameters.Group hatch_9 = parametrization.getGroup(9, true);
+
+        histLowSetting = hatch_0.makeInParameter(0, 0.25, HYSTERESIS_LOW_SETTING_NAME, HYSTERESIS_LOW_STATUS);
+        popogaSetting = hatch_0.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        histHighSetting = hatch_1.makeInParameter(0, 0.75, HYSTERESIS_HIGH_SETTING_NAME, HYSTERESIS_HIGH_STATUS);
+        popogaSetting = hatch_1.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        transferRadiusTowerSetting = hatch_2.makeInParameter(0, 32, TRANSFER_RADIUS_TOWER_SETTING_NAME, TRANSFER_RADIUS_TOWER_STATUS);
+        popogaSetting = hatch_2.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        transferRadiusTransceiverSetting = hatch_3.makeInParameter(0, 16, TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
+        transferRadiusCoverUltimateSetting = hatch_3.makeInParameter(1, 16, TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
+        outputVoltageSetting = hatch_4.makeInParameter(0, -1, OUTPUT_VOLTAGE_SETTING_NAME, OUTPUT_VOLTAGE_OR_CURRENT_STATUS);
+        popogaSetting = hatch_4.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        outputCurrentSetting = hatch_5.makeInParameter(0, -1, OUTPUT_CURRENT_SETTING_NAME, OUTPUT_VOLTAGE_OR_CURRENT_STATUS);
+        popogaSetting = hatch_5.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaSetting = hatch_6.makeInParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaSetting = hatch_6.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        scanTimeMinSetting = hatch_7.makeInParameter(0, 100, SCAN_TIME_MIN_SETTING_NAME, SCAN_TIME_MIN_STATUS);
+        popogaSetting = hatch_7.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        overDriveSetting = hatch_8.makeInParameter(0, 0, OVERDRIVE_SETTING_NAME, OVERDRIVE_STATUS);
+        popogaSetting = hatch_8.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaSetting = hatch_9.makeInParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaSetting = hatch_9.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+
+        popogaDisplay = hatch_0.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_0.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_1.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_1.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        transferRadiusTowerDisplay = hatch_2.makeOutParameter(0, 0, TRANSFER_RADIUS_TOWER_DISPLAY_NAME, TRANSFER_RADIUS_TOWER_STATUS);
+        popogaDisplay = hatch_2.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        transferRadiusTransceiverDisplay = hatch_3.makeOutParameter(0, 0, TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
+        transferRadiusCoverUltimateDisplay = hatch_3.makeOutParameter(1, 0, TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
+        outputVoltageDisplay = hatch_4.makeOutParameter(0, 0, OUTPUT_VOLTAGE_DISPLAY_NAME, POWER_STATUS);
+        popogaDisplay = hatch_4.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        outputCurrentDisplay = hatch_5.makeOutParameter(0, 0, OUTPUT_CURRENT_DISPLAY_NAME, POWER_STATUS);
+        energyCapacityDisplay = hatch_5.makeOutParameter(1, 0, ENERGY_CAPACITY_DISPLAY_NAME, ENERGY_STATUS);
+        energyStoredDisplay = hatch_6.makeOutParameter(0, 0, ENERGY_STORED_DISPLAY_NAME, ENERGY_STATUS);
+        energyFractionDisplay = hatch_6.makeOutParameter(1, 0, ENERGY_FRACTION_DISPLAY_NAME, ENERGY_STATUS);
+        scanTimeDisplay = hatch_7.makeOutParameter(0, 0, SCAN_TIME_DISPLAY_NAME, SCAN_TIME_STATUS);
+        popogaDisplay = hatch_7.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_8.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_8.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_9.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
+        popogaDisplay = hatch_9.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setLong("eEnergyCapacity", energyCapacity);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        energyCapacity = aNBT.getLong("eEnergyCapacity");
+    }
+
+    @Override
+    public void stopMachine() {
+        super.stopMachine();
+        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
+            cap.getBaseMetaTileEntity().setActive(false);
+        }
+
+        setEUVar(0);
+        energyStoredDisplay.set(0);
+        energyFractionDisplay.set(0);
     }
 
     @Override
@@ -787,8 +774,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         return true;
     }
 
-    private boolean addFrameToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        return aTileEntity != null && aTileEntity.getMetaTileEntity() instanceof GT_MetaPipeEntity_Frame;
+    @Override
+    public long maxEUStore() {
+        return energyCapacity * 2;
     }
 
     private boolean addCapacitorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -828,5 +816,19 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             return eParamHatches.add((GT_MetaTileEntity_Hatch_Param) aMetaTileEntity);
         }
         return false;
+    }
+
+    private boolean addFrameToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        return aTileEntity != null && aTileEntity.getMetaTileEntity() instanceof GT_MetaPipeEntity_Frame;
+    }
+
+    @Override
+    public void construct(int stackSize, boolean hintsOnly) {
+        StructureBuilderExtreme(shape, blockType, blockMetas[(stackSize - 1) % 6], 3, 16, 0, getBaseMetaTileEntity(), this, hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 }

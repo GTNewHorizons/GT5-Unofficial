@@ -32,7 +32,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-    //region Structure
+    //region structure
     private static final String[][] shape = new String[][]{
             {"   ", " . ", "   ",},
             {"   ", " 0 ", "   ",},
@@ -87,50 +87,13 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    protected void parametersInstantiation_EM() {
-        dst = new Parameters.Group.ParameterIn[10];
-        weight = new Parameters.Group.ParameterIn[10];
-        for (int i = 0; i < 10; i++) {
-            Parameters.Group hatch = parametrization.getGroup(i);
-            dst[i] = hatch.makeInParameter(0, i, ROUTE_NAME, DST_STATUS);
-            weight[i] = hatch.makeInParameter(1, 0, ROUTE_NAME, WEI_STATUS);
-        }
-    }
-
-    public final static ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_hi_freq");
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound() {
-        return activitySound;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_switch(mName);
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][1], new TT_RenderedTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
-        }
-        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][1]};
-    }
-
-    @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
-    }
-
-    @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
-    }
-
-    @Override
-    public String[] getStructureDescription(int stackSize) {
-        return description;
     }
 
     @Override
@@ -223,5 +186,42 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                 translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0"),//User controlled computation power routing
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1")//Quality of service is a must
         };
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][1], new TT_RenderedTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
+        }
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][1]};
+    }
+
+    public final static ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_hi_freq");
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound() {
+        return activitySound;
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        dst = new Parameters.Group.ParameterIn[10];
+        weight = new Parameters.Group.ParameterIn[10];
+        for (int i = 0; i < 10; i++) {
+            Parameters.Group hatch = parametrization.getGroup(i);
+            dst[i] = hatch.makeInParameter(0, i, ROUTE_NAME, DST_STATUS);
+            weight[i] = hatch.makeInParameter(1, 0, ROUTE_NAME, WEI_STATUS);
+        }
+    }
+
+    @Override
+    public void construct(int stackSize, boolean hintsOnly) {
+        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 }

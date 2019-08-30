@@ -40,12 +40,14 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    //region variables
     private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
 
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
+    //endregion
 
-    //region Structure
+    //region structure
     private static final String[][] front = new String[][]{{"A  ", "A  ", "A. ", "A  ",},};
     private static final String[][] terminator = new String[][]{{"A  ", "A  ", "A  ", "A  ",},};
     private static final String[][] cap = new String[][]{{"-01", "A22", "A22", "-01",},};
@@ -101,39 +103,48 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0 = parametrization.getGroup(0);
-        overclock = hatch_0.makeInParameter(0, 1, OC_NAME, OC_STATUS);
-        overvolt = hatch_0.makeInParameter(1, 1, OV_NAME, OV_STATUS);
-        maxCurrentTemp = hatch_0.makeOutParameter(0, 0, MAX_TEMP_NAME, MAX_TEMP_STATUS);
-        availableData = hatch_0.makeOutParameter(1, 0, COMPUTE_NAME, COMPUTE_STATUS);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound() {
-        return GT_MetaTileEntity_EM_switch.activitySound;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_computer(mName);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER_ACTIVE");
-        super.registerIcons(aBlockIconRegister);
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
+                rack.getBaseMetaTileEntity().setActive(false);
+            }
         }
-        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3]};
+        eRacks.clear();
+        if (!structureCheck_EM(front, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, 0)) {
+            return false;
+        }
+        if (!structureCheck_EM(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, -1)) {
+            return false;
+        }
+        byte offset = -2, totalLen = 4;
+        while (offset > -16) {
+            if (!structureCheck_EM(slice, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, offset)) {
+                break;
+            }
+            totalLen++;
+            offset--;
+        }
+        if (totalLen > 16) {
+            return false;
+        }
+        if (!structureCheck_EM(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, ++offset)) {
+            return false;
+        }
+        if (!structureCheck_EM(terminator, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, --offset)) {
+            return false;
+        }
+        eCertainMode = (byte) Math.min(totalLen / 3, 5);
+        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
+                rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
+            }
+        }
+        return eUncertainHatches.size() == 1;
     }
 
     @Override
@@ -226,21 +237,37 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    protected long getAvailableData_EM() {
-        return eAvailableData;
+    public String[] getDescription() {
+        return new String[]{
+                CommonValues.TEC_MARK_EM,
+                Util.intBitsToString(TecTech.RANDOM.nextInt()),
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.computer.desc")//You need it to process the number above
+        };
     }
 
     @Override
-    protected void afterRecipeCheckFailed() {
-        super.afterRecipeCheckFailed();
-        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
-                rack.getBaseMetaTileEntity().setActive(false);
-            }
-        }
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aBlockIconRegister) {
+        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER");
+        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER_ACTIVE");
+        super.registerIcons(aBlockIconRegister);
     }
 
-    @Override//Had a crash bug with breaking a rack and then the multi
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+        }
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3]};
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound() {
+        return GT_MetaTileEntity_EM_switch.activitySound;
+    }
+
+    @Override
     public void onRemoval() {
         super.onRemoval();
         for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
@@ -248,6 +275,27 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 rack.getBaseMetaTileEntity().setActive(false);
             }
         }
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        Parameters.Group hatch_0 = parametrization.getGroup(0);
+        overclock = hatch_0.makeInParameter(0, 1, OC_NAME, OC_STATUS);
+        overvolt = hatch_0.makeInParameter(1, 1, OV_NAME, OV_STATUS);
+        maxCurrentTemp = hatch_0.makeOutParameter(0, 0, MAX_TEMP_NAME, MAX_TEMP_STATUS);
+        availableData = hatch_0.makeOutParameter(1, 0, COMPUTE_NAME, COMPUTE_STATUS);
+    }
+
+    @Override
+    protected void extraExplosions_EM() {
+        for (MetaTileEntity tTileEntity : eRacks) {
+            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
+        }
+    }
+
+    @Override
+    protected long getAvailableData_EM() {
+        return eAvailableData;
     }
 
     @Override
@@ -262,43 +310,28 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    protected void afterRecipeCheckFailed() {
+        super.afterRecipeCheckFailed();
         for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
                 rack.getBaseMetaTileEntity().setActive(false);
             }
         }
-        eRacks.clear();
-        if (!structureCheck_EM(front, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, 0)) {
+    }
+
+    public final boolean addRackToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
             return false;
         }
-        if (!structureCheck_EM(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, -1)) {
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) {
             return false;
         }
-        byte offset = -2, totalLen = 4;
-        while (offset > -16) {
-            if (!structureCheck_EM(slice, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, offset)) {
-                break;
-            }
-            totalLen++;
-            offset--;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Rack) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return eRacks.add((GT_MetaTileEntity_Hatch_Rack) aMetaTileEntity);
         }
-        if (totalLen > 16) {
-            return false;
-        }
-        if (!structureCheck_EM(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, ++offset)) {
-            return false;
-        }
-        if (!structureCheck_EM(terminator, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, --offset)) {
-            return false;
-        }
-        eCertainMode = (byte) Math.min(totalLen / 3, 5);
-        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
-                rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
-            }
-        }
-        return eUncertainHatches.size() == 1;
+        return false;
     }
 
     @Override
@@ -319,37 +352,5 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public String[] getStructureDescription(int stackSize) {
         return description;
-    }
-
-    @Override
-    protected void extraExplosions_EM() {
-        for (MetaTileEntity tTileEntity : eRacks) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
-        }
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                Util.intBitsToString(TecTech.RANDOM.nextInt()),
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.computer.desc")//You need it to process the number above
-        };
-    }
-
-    //NEW METHOD
-    public final boolean addRackToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        }
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Rack) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eRacks.add((GT_MetaTileEntity_Hatch_Rack) aMetaTileEntity);
-        }
-        return false;
     }
 }
