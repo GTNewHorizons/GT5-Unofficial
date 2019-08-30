@@ -25,19 +25,12 @@ package com.github.bartimaeusnek.bartworks.server.EventHandler;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.net.OreDictCachePacket;
 import com.github.bartimaeusnek.bartworks.common.net.ServerJoinedPackage;
-import com.github.bartimaeusnek.bartworks.system.material.BWUnificationEnforcer;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.ArrayList;
 
 public class ServerEventHandler {
 

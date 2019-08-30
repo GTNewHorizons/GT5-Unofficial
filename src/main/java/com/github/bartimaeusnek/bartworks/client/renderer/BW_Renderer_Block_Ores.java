@@ -25,7 +25,6 @@ package com.github.bartimaeusnek.bartworks.client.renderer;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGeneratedOreTE;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import gregtech.common.render.GT_Renderer_Block;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;

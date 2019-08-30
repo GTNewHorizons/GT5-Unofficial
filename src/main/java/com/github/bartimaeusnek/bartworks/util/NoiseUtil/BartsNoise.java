@@ -25,11 +25,6 @@ package com.github.bartimaeusnek.bartworks.util.NoiseUtil;
 import com.github.bartimaeusnek.bartworks.API.INoiseGen;
 import gregtech.api.objects.XSTR;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
 
 public class BartsNoise implements INoiseGen {

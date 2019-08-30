@@ -36,7 +36,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 
 import static gregtech.api.enums.ItemList.*;
-import static gregtech.api.enums.ItemList.Circuit_Parts_Transistor;
 
 public class CircuitPartLoader implements Runnable {
     @Override

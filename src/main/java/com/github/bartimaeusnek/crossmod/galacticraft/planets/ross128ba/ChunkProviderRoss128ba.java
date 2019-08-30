@@ -26,7 +26,6 @@ import com.github.bartimaeusnek.bartworks.util.NoiseUtil.BartsNoise;
 import gregtech.api.objects.XSTR;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.world.gen.BiomeGenBaseMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.MapGenCavesMoon;

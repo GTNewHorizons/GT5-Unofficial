@@ -22,8 +22,6 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration;
 
-import gregtech.api.GregTech_API;
-
 public class BW_CircuitsLoader {
     private static final BW_Meta_Items NEW_CIRCUITS;
 
