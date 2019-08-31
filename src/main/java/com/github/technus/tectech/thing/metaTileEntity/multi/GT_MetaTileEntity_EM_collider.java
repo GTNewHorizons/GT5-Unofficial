@@ -283,13 +283,13 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         if (base_EM.isMaster()) {
             double mode = p.get();
             if (mode == FUSE_MODE) {
-                return "Mode: Fuse";
+                return translateToLocal("gt.blockmachines.multimachine.em.collider.mode.0");//Mode: Fuse
             } else if (mode == COLLIDE_MODE) {
-                return "Mode: Collide";
+                return translateToLocal("gt.blockmachines.multimachine.em.collider.mode.1");//Mode: Collide
             }
-            return "Mode: Undefined";
+            return translateToLocal("gt.blockmachines.multimachine.em.collider.mode.2");//Mode: Undefined
         }
-        return "Currently Slaves...";
+        return translateToLocal("gt.blockmachines.multimachine.em.collider.mode.3");//Currently Slaves...
     };
     //endregion
 
@@ -338,11 +338,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            "1 - Classic Hatches or High Power Casing",
-            "2 - Elemental Input Hatches or Molecular Casing",
-            "3 - Elemental Output Hatches or Molecular Casing",
-            "4 - Elemental Overflow Hatches or Molecular Casing",
-            "General - Another Controller facing opposite direction",
+            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.0"),//1 - Classic Hatches or High Power Casing
+            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.1"),//2 - Elemental Input Hatches or Molecular Casing
+            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.2"),//3 - Elemental Output Hatches or Molecular Casing
+            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.3"),//4 - Elemental Overflow Hatches or Molecular Casing
+            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.4"),//General - Another Controller facing opposite direction
     };
     //endregion
 
@@ -573,8 +573,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Collide matter at extreme velocities.",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Faster than light*!!!"
+                translateToLocal("gt.blockmachines.multimachine.em.collider.desc.0"),//Collide matter at extreme velocities.
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.collider.desc.1")//Faster than light*!!!
         };
     }
 

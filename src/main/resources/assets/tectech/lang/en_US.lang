@@ -324,6 +324,7 @@ gt.blockmachines.emout.tier.11.name=UIV Elemental Output Hatch
 gt.blockmachines.emout.tier.12.name=UMV Elemental Output Hatch
 gt.blockmachines.emout.tier.13.name=UXV Elemental Output Hatch
 gt.blockmachines.emout.desc=Elemental Output for Multiblocks
+
 #Multiblocks
 gt.blockmachines.multimachine.em.transformer.name=Active Transformer
 gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
@@ -433,8 +434,23 @@ gt.blockmachines.multimachine.em.scanner.desc.0=What is existing here?
 gt.blockmachines.multimachine.em.scanner.desc.1=I HAVE NO IDEA (yet)!
 
 gt.blockmachines.multimachine.em.research.name=Research station
+gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer casing
+gt.blockmachines.multimachine.em.research.hint.1=2 - Holder Hatch
+gt.blockmachines.multimachine.em.research.desc.0=Philosophers didn't even...
+gt.blockmachines.multimachine.em.research.desc.1=dream about it!
 
 gt.blockmachines.multimachine.em.collider.name=Matter Collider
+gt.blockmachines.multimachine.em.collider.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.collider.hint.1=2 - Elemental Input Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.collider.hint.2=3 - Elemental Output Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.collider.hint.3=4 - Elemental Overflow Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.collider.hint.4=General - Another Controller facing opposite direction
+gt.blockmachines.multimachine.em.collider.desc.0=Collide matter at extreme velocities.
+gt.blockmachines.multimachine.em.collider.desc.1=Faster than light*!!!
+gt.blockmachines.multimachine.em.collider.mode.0=Mode: Fuse
+gt.blockmachines.multimachine.em.collider.mode.1=Mode: Collide
+gt.blockmachines.multimachine.em.collider.mode.2=Mode: Undefined
+gt.blockmachines.multimachine.em.collider.mode.3=Currently Slaves...
 
 gt.blockmachines.multimachine.em.infuser.name=Energy Infuser
 
@@ -452,8 +468,12 @@ gt.blockmachines.multimachine.em.annihilation.name=Annihilation Generator
 
 gt.blockmachines.multimachine.em.blackholegenerator.name=Black Hole Generator
 
-
 #Keywords and phrases
+#Example: ID:3
+tt.keyword.ID=ID
+#Example: 32EU at 1A
+tt.keyword.at=at
+#These are Thaumcraft aspects
 tt.keyword.Air=Air
 tt.keyword.Earth=Earth
 tt.keyword.Fire=Fire
@@ -468,20 +488,35 @@ tt.keyword.CHARGE=CHARGE
 tt.keyword.COLORLESS=COLORLESS
 tt.keyword.MASS=MASS
 tt.keyword.BOOM=BOOM!
-tt.keyword.ID=ID
 tt.keyword.Destination=Destination
 tt.keyword.Weight=Weight
 tt.keyword.Source=Source
+#Problemns as in maintanance issues
+tt.keyword.Problems=Problems
+tt.keyword.Efficiency=Efficiency
+#Button that allows to pass power to other machines
+tt.keyword.PowerPass=PowerPass
+#Button that vents EM
+tt.keyword.SafeVoid=SafeVoid
 
 tt.keyphrase.LIFE_TIME=LIFE TIME
 tt.keyphrase.CARRIES_COLOR=CARRIES COLOR
 tt.keyphrase.Hint_Details=Hint Details
 tt.keyphrase.At_current_energy_level=At current energy level
+#Used when 0 Elemental Matter Stacks
 tt.keyphrase.No_Stacks=No Stacks
 tt.keyphrase.Contains_EM=Contains EM
 tt.keyphrase.Contained_mass=Contained mass
 tt.keyphrase.Mass_Disposal_speed=Mass Disposal speed
 tt.keyphrase.Muffler_BOOM=Muffler BOOM!
+tt.keyphrase.Energy_Hatches=Energy Hatches
+tt.keyphrase.Probably_uses=Probably uses
+tt.keyphrase.Probably_makes=Probably makes
+tt.keyphrase.Tier_Rating=Tier Rating
+tt.keyphrase.Amp_Rating=Amp Rating
+tt.keyphrase.Computation_Available=Computation Available
+tt.keyphrase.Computation_Remaining=Computation Remaining
+
 #OpenTurrets compatibility
 tile.turretHeadEM.name=Elemental Matter Turret
 tile.turretBaseEM.name=Elemental Turret Base

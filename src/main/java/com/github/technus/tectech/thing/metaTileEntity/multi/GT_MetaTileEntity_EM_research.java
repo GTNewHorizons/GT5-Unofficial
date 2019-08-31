@@ -22,12 +22,15 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumChatFormatting;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -43,6 +46,7 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileE
 import static com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine.machine;
 import static gregtech.api.enums.GT_Values.E;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -55,6 +59,10 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private String machineType;
     private ItemStack holdItem;
     private long computationRemaining, computationRequired;
+
+    private static LinkedHashMap<String, String> lServerNames;
+
+    private String clientLocale = "en_US";
     //endregion
 
     //region structure
@@ -75,8 +83,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private static final byte[] blockMetaFallback = new byte[]{1, 0};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            "1 - Classic/Data Hatches or Computer casing",
-            "2 - Holder Hatch",
+            translateToLocal("gt.blockmachines.multimachine.em.research.hint.0"),//1 - Classic/Data Hatches or Computer casing
+            translateToLocal("gt.blockmachines.multimachine.em.research.hint.1"),//2 - Holder Hatch
     };
     //endregion
 
@@ -118,8 +126,6 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         }
         tNBT.setTag("pages", tNBTList);
     }
-
-    private static LinkedHashMap<String, String> lServerNames;
 
     static {
         try {
@@ -339,8 +345,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Philosophers didn't even...",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "dream about it!"
+                translateToLocal("gt.blockmachines.multimachine.em.research.desc.0"),//Philosophers didn't even...
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.research.desc.0")//dream about it!
         };
     }
 
@@ -362,20 +368,20 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         }
 
         return new String[]{
-                "Energy Hatches:",
+                translateToLocalFormatted("tt.keyphrase.Energy_Hatches", clientLocale) + ":",
                 EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
                         EnumChatFormatting.YELLOW + maxEnergy + EnumChatFormatting.RESET + " EU",
-                (mEUt <= 0 ? "Probably uses: " : "Probably makes: ") +
-                        EnumChatFormatting.RED + Math.abs(mEUt) + EnumChatFormatting.RESET + " EU/t at " +
+                (mEUt <= 0 ? translateToLocalFormatted("tt.keyphrase.Probably_uses", clientLocale) + ": " : translateToLocalFormatted("tt.keyphrase.Probably_makes", clientLocale) + ": ") +
+                        EnumChatFormatting.RED + Math.abs(mEUt) + EnumChatFormatting.RESET + " EU/t " + translateToLocalFormatted("tt.keyword.at", clientLocale) + " " +
                         EnumChatFormatting.RED + eAmpereFlow + EnumChatFormatting.RESET + " A",
-                "Tier Rating: " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET +
-                        " Amp Rating: " + EnumChatFormatting.GREEN + eMaxAmpereFlow + EnumChatFormatting.RESET + " A",
-                "Problems: " + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
-                        " Efficiency: " + EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
-                "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
-                        " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
-                "Computation Available: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET,
-                "Computation Remaining:",
+                translateToLocalFormatted("tt.keyphrase.Tier_Rating", clientLocale) + ": " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET +
+                        " " + translateToLocalFormatted("tt.keyphrase.Amp_Rating", clientLocale) + ": " + EnumChatFormatting.GREEN + eMaxAmpereFlow + EnumChatFormatting.RESET + " A",
+                translateToLocalFormatted("tt.keyword.Problems", clientLocale) + ": " + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
+                        " " + translateToLocalFormatted("tt.keyword.Efficiency", clientLocale) + ": " + EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
+                translateToLocalFormatted("tt.keyword.PowerPass", clientLocale) + ": " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
+                        " " + translateToLocalFormatted("tt.keyword.SafeVoid", clientLocale) + ": " + EnumChatFormatting.BLUE + eSafeVoid,
+                translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET,
+                translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ":",
                 EnumChatFormatting.GREEN + Long.toString(computationRemaining / 20L) + EnumChatFormatting.RESET + " / " +
                         EnumChatFormatting.YELLOW + computationRequired / 20L
         };
@@ -517,6 +523,22 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             return eHolders.add((GT_MetaTileEntity_Hatch_Holder) aMetaTileEntity);
         }
         return false;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
+            try {
+                EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+                clientLocale = (String) FieldUtils.readField(player, "translator", true);
+            } catch (Exception e) {
+                clientLocale = "en_US";
+            }
+        } else {
+            return true;
+        }
+        System.out.println(clientLocale);
+        return true;
     }
 
     @Override
