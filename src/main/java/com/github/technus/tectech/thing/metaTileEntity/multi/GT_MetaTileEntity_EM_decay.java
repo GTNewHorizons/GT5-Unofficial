@@ -41,29 +41,29 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     public static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10;
     private static final double URANIUM_MASS_TO_EU_PARTIAL = ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear") * 3_000_000.0 / URANIUM_INGOT_MASS_DIFF;
-    public static final double URANIUM_MASS_TO_EU_INSTANT = URANIUM_MASS_TO_EU_PARTIAL *20;
+    public static final double URANIUM_MASS_TO_EU_INSTANT = URANIUM_MASS_TO_EU_PARTIAL * 20;
     //endregion
 
     //region structure
     private static final String[][] shape = new String[][]{
-            {"0C0","A   ","A . ","A   ","0C0",},
-            {"00000","00000","00000","00000","00000",},
-            {"0C0","A!!!","A!0!","A!!!","0C0",},
-            {"01110","12221","12221","12221","01110",},
-            {"01310","12221","32223","12221","01310",},
-            {"01110","12221","12221","12221","01110",},
-            {"0C0","A!!!","A!0!","A!!!","0C0",},
-            {"00000","00000","00000","00000","00000",},
-            {"0C0","A   ","A   ","A   ","0C0",},
+            {"0C0", "A   ", "A . ", "A   ", "0C0",},
+            {"00000", "00000", "00000", "00000", "00000",},
+            {"0C0", "A!!!", "A!0!", "A!!!", "0C0",},
+            {"01110", "12221", "12221", "12221", "01110",},
+            {"01310", "12221", "32223", "12221", "01310",},
+            {"01110", "12221", "12221", "12221", "01110",},
+            {"0C0", "A!!!", "A!0!", "A!!!", "0C0",},
+            {"00000", "00000", "00000", "00000", "00000",},
+            {"0C0", "A   ", "A   ", "A   ", "0C0",},
     };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT ,sBlockCasingsTT};
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4, 5, 8, 6};
     private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList, this::addElementalToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA+"Hint Details:",
+            EnumChatFormatting.AQUA + "Hint Details:",
             "1 - Classic Hatches or High Power Casing",
             "2 - Elemental Hatches or Molecular Casing",
     };
@@ -71,9 +71,9 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     //region parameters
     protected Parameters.Group.ParameterIn ampereFlow;
-    private static final INameFunction<GT_MetaTileEntity_EM_decay> FLOW_NAME= (base, p)->"Ampere divider";
-    private static final IStatusFunction<GT_MetaTileEntity_EM_decay> FLOW_STATUS= (base, p)->{
-        if(base.eAmpereFlow<=0){
+    private static final INameFunction<GT_MetaTileEntity_EM_decay> FLOW_NAME = (base, p) -> "Ampere divider";
+    private static final IStatusFunction<GT_MetaTileEntity_EM_decay> FLOW_STATUS = (base, p) -> {
+        if (base.eAmpereFlow <= 0) {
             return STATUS_TOO_LOW;
         }
         return STATUS_OK;
@@ -100,9 +100,9 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        cElementalInstanceStackMap map= getInputsClone_EM();
-        if(map!=null && map.hasStacks()){
-            for(GT_MetaTileEntity_Hatch_InputElemental i:eInputHatches){
+        cElementalInstanceStackMap map = getInputsClone_EM();
+        if (map != null && map.hasStacks()) {
+            for (GT_MetaTileEntity_Hatch_InputElemental i : eInputHatches) {
                 i.getContainerHandler().clear();
             }
             return startRecipe(map);
@@ -113,40 +113,40 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     private boolean startRecipe(cElementalInstanceStackMap input) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
-        outputEM=new cElementalInstanceStackMap[2];
-        outputEM[0]=input;
-        outputEM[1]=new cElementalInstanceStackMap();
+        outputEM = new cElementalInstanceStackMap[2];
+        outputEM[0] = input;
+        outputEM[1] = new cElementalInstanceStackMap();
 
 
-        for(cElementalInstanceStack stack:outputEM[0].values()){
+        for (cElementalInstanceStack stack : outputEM[0].values()) {
             if (stack.getEnergy() == 0 && stack.definition.decayMakesEnergy(1)
                     && getBaseMetaTileEntity().decreaseStoredEnergyUnits(
                     (long) (stack.getEnergySettingCost(1) * URANIUM_MASS_TO_EU_INSTANT), false)) {
                 stack.setEnergy(1);
-            }else if(!stack.definition.decayMakesEnergy(stack.getEnergy())){
+            } else if (!stack.definition.decayMakesEnergy(stack.getEnergy())) {
                 outputEM[0].remove(stack.definition);
                 outputEM[1].putReplace(stack);
             }
             //System.out.println(stack.definition.getSymbol()+" "+stack.amount);
         }
 
-        float preMass=outputEM[0].getMass();
-        outputEM[0].tickContent(1,0,1);
-        double energyDose=((preMass-outputEM[0].getMass())* URANIUM_MASS_TO_EU_PARTIAL);
-        eAmpereFlow=(long) ampereFlow.get();
+        float preMass = outputEM[0].getMass();
+        outputEM[0].tickContent(1, 0, 1);
+        double energyDose = ((preMass - outputEM[0].getMass()) * URANIUM_MASS_TO_EU_PARTIAL);
+        eAmpereFlow = (long) ampereFlow.get();
         if (eAmpereFlow <= 0) {
-            mEUt=0;
+            mEUt = 0;
             return false;
         }
-        mEUt=(int)(energyDose/eAmpereFlow);
+        mEUt = (int) (energyDose / eAmpereFlow);
         return outputEM[0].hasStacks();
     }
 
     @Override
     public void outputAfterRecipe_EM() {
-        for(int i=0;i<2&&i<eOutputHatches.size();i++){
+        for (int i = 0; i < 2 && i < eOutputHatches.size(); i++) {
             eOutputHatches.get(i).getContainerHandler().putUnifyAll(outputEM[i]);
-            outputEM[i]=null;
+            outputEM[i] = null;
         }
     }
 
@@ -214,13 +214,13 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0=parametrization.getGroup(0, true);
-        ampereFlow=hatch_0.makeInParameter(0,1,FLOW_NAME,FLOW_STATUS);
+        Parameters.Group hatch_0 = parametrization.getGroup(0, true);
+        ampereFlow = hatch_0.makeInParameter(0, 1, FLOW_NAME, FLOW_STATUS);
     }
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity(),this,hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), this, hintsOnly);
     }
 
     @Override
