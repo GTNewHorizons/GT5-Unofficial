@@ -192,6 +192,8 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        super.onRightclick(aBaseMetaTileEntity, aPlayer);
+
         if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
             try {
                 EntityPlayerMP player = (EntityPlayerMP) aPlayer;

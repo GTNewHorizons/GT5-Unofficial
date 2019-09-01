@@ -483,11 +483,25 @@ gt.blockmachines.multimachine.em.wormhole.hint.1=2 - Elemental Hatches or Molecu
 gt.blockmachines.multimachine.em.wormhole.desc.0=It is not full of worms.
 gt.blockmachines.multimachine.em.wormhole.desc.1=It is full of anti-worms!!!
 
+#GET INFODATA IS FUCKED!
 gt.blockmachines.multimachine.em.decay.name=Decay Generator
+gt.blockmachines.multimachine.em.decay.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.decay.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.decay.desc.0=Is life time too long?
+gt.blockmachines.multimachine.em.decay.desc.1=Make it half-life (3) instead!
+gt.blockmachines.multimachine.em.decay.conf=Ampere divider
 
 gt.blockmachines.multimachine.em.annihilation.name=Annihilation Generator
+gt.blockmachines.multimachine.em.annihilation.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.annihilation.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.annihilation.desc.0=Things+Anti Things don't like each other.
+gt.blockmachines.multimachine.em.annihilation.desc.1=Matter into power!
 
 gt.blockmachines.multimachine.em.blackholegenerator.name=Black Hole Generator
+gt.blockmachines.multimachine.em.blackholegenerator.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.blackholegenerator.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.blackholegenerator.desc.0=Singularity based power generation.
+gt.blockmachines.multimachine.em.blackholegenerator.desc.1=Super unstable!!!
 
 #Keywords and phrases
 #Example: ID:3
@@ -512,6 +526,8 @@ tt.keyword.BOOM=BOOM!
 tt.keyword.Destination=Destination
 tt.keyword.Weight=Weight
 tt.keyword.Source=Source
+tt.keyword.Progress=Progress
+tt.keyword.Computation=Computation
 #Problemns as in maintanance issues
 tt.keyword.Problems=Problems
 tt.keyword.Efficiency=Efficiency

@@ -527,6 +527,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        super.onRightclick(aBaseMetaTileEntity, aPlayer);
+
         if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
             try {
                 EntityPlayerMP player = (EntityPlayerMP) aPlayer;

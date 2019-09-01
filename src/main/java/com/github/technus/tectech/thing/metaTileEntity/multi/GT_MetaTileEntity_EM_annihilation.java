@@ -21,6 +21,7 @@ import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -52,9 +53,9 @@ public class GT_MetaTileEntity_EM_annihilation extends GT_MetaTileEntity_Multibl
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA + "Hint Details:",
-            "1 - Classic Hatches or High Power Casing",
-            "2 - Elemental Hatches or Molecular Casing",
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.annihilation.hint.0"),//1 - Classic Hatches or High Power Casing
+            translateToLocal("gt.blockmachines.multimachine.em.annihilation.hint.1"),//2 - Elemental Hatches or Molecular Casing
     };
     //endregion
 
@@ -80,8 +81,8 @@ public class GT_MetaTileEntity_EM_annihilation extends GT_MetaTileEntity_Multibl
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Things+Anti Things don't like each other.",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Matter into power!"
+                translateToLocal("gt.blockmachines.multimachine.em.annihilation.desc.0"),//Things+Anti Things don't like each other.
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.annihilation.desc.1")//Matter into power!
         };
     }
 

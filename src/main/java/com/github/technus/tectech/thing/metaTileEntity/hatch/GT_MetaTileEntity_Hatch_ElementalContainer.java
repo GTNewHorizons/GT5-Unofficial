@@ -217,6 +217,8 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        super.onRightclick(aBaseMetaTileEntity, aPlayer);
+
         if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
             try {
                 EntityPlayerMP player = (EntityPlayerMP) aPlayer;

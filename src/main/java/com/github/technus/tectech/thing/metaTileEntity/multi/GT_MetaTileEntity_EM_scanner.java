@@ -482,6 +482,8 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        super.onRightclick(aBaseMetaTileEntity, aPlayer);
+
         if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
             try {
                 EntityPlayerMP player = (EntityPlayerMP) aPlayer;

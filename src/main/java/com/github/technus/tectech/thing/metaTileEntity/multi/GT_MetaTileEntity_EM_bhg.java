@@ -24,6 +24,7 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_decay.URANIUM_INGOT_MASS_DIFF;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_decay.URANIUM_MASS_TO_EU_INSTANT;
 import static gregtech.api.enums.GT_Values.E;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -88,9 +89,9 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA + "Hint Details:",
-            "1 - Classic Hatches or High Power Casing",
-            "2 - Elemental Hatches or Molecular Casing",
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.blackholegenerator.hint.0"),//1 - Classic Hatches or High Power Casing
+            translateToLocal("gt.blockmachines.multimachine.em.blackholegenerator.hint.1"),//2 - Elemental Hatches or Molecular Casing
     };
     //endregion
 
@@ -274,8 +275,8 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Singularity based power generation.",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Super unstable!!!"
+                translateToLocal("gt.blockmachines.multimachine.em.blackholegenerator.desc.0"),//Singularity based power generation.
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.blackholegenerator.desc.1")//Super unstable!!!
         };
     }
 
