@@ -453,14 +453,35 @@ gt.blockmachines.multimachine.em.collider.mode.2=Mode: Undefined
 gt.blockmachines.multimachine.em.collider.mode.3=Currently Slaves...
 
 gt.blockmachines.multimachine.em.infuser.name=Energy Infuser
+gt.blockmachines.multimachine.em.infuser.hint=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.infuser.desc.0=Power Transfer Extreme!
+gt.blockmachines.multimachine.em.infuser.desc.1=Insanely fast charging!
+gt.blockmachines.multimachine.em.infuser.desc.2=Doesn't work while broken!
+gt.blockmachines.multimachine.em.infuser.desc.3=Power loss is a thing.
 
 gt.blockmachines.multimachine.em.processing.name=Quantum Processing Machine
+gt.blockmachines.multimachine.em.processing.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.processing.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.processing.desc.0=Processing quantum matter since...
+gt.blockmachines.multimachine.em.processing.desc.1=the time u started using it.
 
 gt.blockmachines.multimachine.em.crafter.name=Matter Assembler
+gt.blockmachines.multimachine.em.crafter.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.crafter.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.crafter.desc.0=The most precise way of making stuff.
+gt.blockmachines.multimachine.em.crafter.desc.1=(Trans-Planck process)
 
 gt.blockmachines.multimachine.em.stabilizer.name=Elemental Stabilizer
+gt.blockmachines.multimachine.em.stabilizer.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.stabilizer.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.stabilizer.desc.0=Alters time to stabilize matter
+gt.blockmachines.multimachine.em.stabilizer.desc.1=Wibbly wobbly timey wimey, stuff.
 
 gt.blockmachines.multimachine.em.wormhole.name=Wormhole
+gt.blockmachines.multimachine.em.wormhole.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.wormhole.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.wormhole.desc.0=It is not full of worms.
+gt.blockmachines.multimachine.em.wormhole.desc.1=It is full of anti-worms!!!
 
 gt.blockmachines.multimachine.em.decay.name=Decay Generator
 

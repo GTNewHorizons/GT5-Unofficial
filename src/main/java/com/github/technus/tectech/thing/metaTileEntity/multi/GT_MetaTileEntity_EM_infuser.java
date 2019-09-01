@@ -27,6 +27,7 @@ import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.GregTech_API.mEUtoRF;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -45,8 +46,8 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA + "Hint Details:",
-            "1 - Classic Hatches or High Power Casing",
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.infuser.hint"),//1 - Classic Hatches or High Power Casing
     };
     //endregion
 
@@ -155,10 +156,10 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
-                "Power Transfer Extreme!",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Insanely fast charging!",
-                EnumChatFormatting.BLUE + "Doesn't work while broken!",
-                EnumChatFormatting.BLUE + "Power loss is a thing."
+                translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.0"),//Power Transfer Extreme!
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.1"),
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.2"),
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.3")
         };
     }
 
