@@ -75,10 +75,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor.eicMap;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
@@ -213,7 +210,11 @@ public final class MainMod {
                             for (GT_Recipe recipe : map.mRecipeList) {
                                 for (int i = 0; i < recipe.mFluidInputs.length; i++) {
                                     if (GT_Utility.areFluidsEqual(recipe.mFluidInputs[i], wrongNamedFluid)) {
+                                        Collection<GT_Recipe> col = map.mRecipeFluidMap.get(wrongNamedFluid.getFluid());
+                                        map.mRecipeFluidMap.remove(wrongNamedFluid.getFluid());
+                                        map.mRecipeFluidMap.put(werkstoff.getFluidOrGas(1).getFluid(),col);
                                         recipe.mFluidInputs[i] = werkstoff.getFluidOrGas(recipe.mFluidInputs[i].amount);
+                                        map.mRecipeFluidNameMap.add(werkstoff.getFluidOrGas(1).getFluid().getName());
                                     }
                                 }
                                 for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
@@ -223,6 +224,7 @@ public final class MainMod {
                                 }
                             }
                         }
+                    GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.add(new BWRecipes.DynamicGTRecipe(false,null,null,null,null,new FluidStack[]{wrongNamedFluid},new FluidStack[]{werkstoff.getFluidOrGas(1)},1,1,0));
                 }
                 MainMod.runMoltenUnificationEnfocement(werkstoff);
                 for (OrePrefixes prefixes : OrePrefixes.values()) {
@@ -383,13 +385,13 @@ public final class MainMod {
                         for (Werkstoff werkstoff : Werkstoff.werkstoffHashMap.values()) {
                             if (!werkstoff.contains(GasTag))
                                 continue;
-                            int time = (int) ((double) recipe.mDuration / 200D * (200D + (werkstoff.getStats().getProtons() > mat.getProtons() ? (double) mat.getProtons() - (double) werkstoff.getStats().getProtons() : (double) mat.getProtons()*2.75D - (double) werkstoff.getStats().getProtons())));
+                            int time = (int) ((double) recipe.mDuration / 200D * (200D + (werkstoff.getStats().getProtons() >= mat.getProtons() ? (double) mat.getProtons() - (double) werkstoff.getStats().getProtons() : (double) mat.getProtons()*2.75D - (double) werkstoff.getStats().getProtons())));
                             toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{new FluidStack(fluids.get(werkstoff), recipe.mFluidInputs[0].amount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
                         }
                         for (Materials materials : Materials.values()) {
                             if (!materials.contains(GasTag))
                                 continue;
-                            int time = (int) ((double) recipe.mDuration / 200D * (200D + (materials.getProtons() > mat.getProtons() ? (double) mat.getProtons() - (double) materials.getProtons() : (double) mat.getProtons()*2.75D - (double) materials.getProtons())));
+                            int time = (int) ((double) recipe.mDuration / 200D * (200D + (materials.getProtons() >= mat.getProtons() ? (double) mat.getProtons() - (double) materials.getProtons() : (double) mat.getProtons()*2.75D - (double) materials.getProtons())));
                             toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{materials.getGas(recipe.mFluidInputs[0].amount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
                         }
                         for (ItemStack is : noGas) {

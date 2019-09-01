@@ -80,7 +80,7 @@ public class AdditionalRecipes implements Runnable {
         GT_Values.RA.addAutoclaveRecipe(WerkstoffLoader.MagnetoResonaticDust.get(dust),WerkstoffLoader.Krypton.getFluidOrGas(1000),WerkstoffLoader.MagnetoResonaticDust.get(gem),10000,4500, BW_Util.getMachineVoltageFromTier(5));
 
 
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i <= 6; i++) {
                 GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
                         new BWRecipes.DynamicGTRecipe(false,
                                 new ItemStack[]{
@@ -97,6 +97,24 @@ public class AdditionalRecipes implements Runnable {
                                 new FluidStack[]{
                                         Materials.SolderingAlloy.getMolten((i+1)*36)
                                 },null,(i+1)*750, BW_Util.getMachineVoltageFromTier((i+1)),CLEANROOM));
+        }
+        for (int i = 7; i <= 10; i++) {
+            GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
+                    new BWRecipes.DynamicGTRecipe(false,
+                            new ItemStack[]{
+                                    BW_Meta_Items.getNEWCIRCUITS().getStack(3),
+                                    WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite,(2)),
+                                    BW_Meta_Items.getNEWCIRCUITS().getStack(i+3),
+                                    ItemList.Circuit_Parts_DiodeSMD.get((i+6)*4),
+                                    ItemList.Circuit_Parts_CapacitorSMD.get((i+6)*4),
+                                    ItemList.Circuit_Parts_TransistorSMD.get((i+6)*4)
+                            },
+                            new ItemStack[]{
+                                    BW_Meta_Items.getNEWCIRCUITS().getStack(i+4)
+                            },null,null,
+                            new FluidStack[]{
+                                    Materials.SolderingAlloy.getMolten((i+1)*144)
+                            },null,(i+1)*1500, BW_Util.getMachineVoltageFromTier(i+1),CLEANROOM));
         }
 
         //manual override for older GT

@@ -149,10 +149,9 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         this.updateSlots();
         if (this.mOutputFluids == null || this.mOutputFluids[0] == null)
             this.mOutputFluids = new FluidStack[]{FluidRegistry.getFluidStack("ic2hotcoolant",0)};
-        //this.mOutputFluids[0].amount+=toProduce;
+
         this.mEUt=0;
         this.mMaxProgresstime=648000;
-
 
         return true;
     }
@@ -178,7 +177,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
             }
         }
 
-        toProduce = (long) ((0.03471*(float)this.TRISOPeletSupply + 0.0267*(float)this.BISOPeletSupply));
+        toProduce = (long) ((0.00711111111111111111111111111111D*(double)this.TRISOPeletSupply + 0.00474074074074074074074074074074D*(double)this.BISOPeletSupply));
 
         if (toProduce > accessibleCoolant) {
 //            new ExplosionIC2(
@@ -339,17 +338,17 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                     new ItemStack(GregTech_API.sBlockCasings3,1,12),
                     40,
                     BW_Util.getMachineVoltageFromTier(5)
-                    );
-            GT_Values.RA.addMixerRecipe(WerkstoffLoader.Thorium232.get(OrePrefixes.dust,10),Materials.Uranium235.getDust(1),GT_Utility.getIntegratedCircuit(1),null,null,null,new ItemStack(THTRMaterials.aTHTR_Materials),400,30);
-            GT_Values.RA.addFormingPressRecipe(new ItemStack(THTRMaterials.aTHTR_Materials),Materials.Graphite.getDust(64),new ItemStack(THTRMaterials.aTHTR_Materials,1,4),40,30);
+            );
+            GT_Values.RA.addMixerRecipe(WerkstoffLoader.Thorium232.get(OrePrefixes.dust,10),Materials.Uranium235.getDust(1),GT_Utility.getIntegratedCircuit(1),null,null,null,new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials),400,30);
+            GT_Values.RA.addFormingPressRecipe(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials),Materials.Graphite.getDust(64),new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials,1,4),40,30);
             ItemStack[] pellets = new ItemStack[6];
-            Arrays.fill(pellets,new ItemStack(THTRMaterials.aTHTR_Materials,64,1));
-            GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false,new ItemStack[]{new ItemStack(THTRMaterials.aTHTR_Materials,1,4),GT_Utility.getIntegratedCircuit(17)},pellets,null,null,null,null,24000,30,0);
-            GT_Values.RA.addFormingPressRecipe(new ItemStack(THTRMaterials.aTHTR_Materials,1,4),Materials.Silicon.getDust(64),new ItemStack(THTRMaterials.aTHTR_Materials,1,2),40,30);
-            GT_Values.RA.addFormingPressRecipe(new ItemStack(THTRMaterials.aTHTR_Materials,1,2),Materials.Graphite.getDust(64),new ItemStack(THTRMaterials.aTHTR_Materials,1,5),40,30);
+            Arrays.fill(pellets,new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials,64,1));
+            GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false,new ItemStack[]{new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials,1,4),GT_Utility.getIntegratedCircuit(17)},pellets,null,null,null,null,24000,30,0);
+            GT_Values.RA.addFormingPressRecipe(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials,1,4),Materials.Silicon.getDust(64),new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials,1,2),40,30);
+            GT_Values.RA.addFormingPressRecipe(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials,1,2),Materials.Graphite.getDust(64),new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials,1,5),40,30);
             pellets = new ItemStack[6];
-            Arrays.fill(pellets,new ItemStack(THTRMaterials.aTHTR_Materials,64,3));
-            GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false,new ItemStack[]{new ItemStack(THTRMaterials.aTHTR_Materials,1,5),GT_Utility.getIntegratedCircuit(17)},pellets,null,null,null,null,48000,30,0);
+            Arrays.fill(pellets,new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials,64,3));
+            GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false,new ItemStack[]{new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials,1,5),GT_Utility.getIntegratedCircuit(17)},pellets,null,null,null,null,48000,30,0);
         }
 
     }
