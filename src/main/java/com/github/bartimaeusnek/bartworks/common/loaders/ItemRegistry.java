@@ -40,6 +40,9 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_Til
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaVacuumFreezer;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.*;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -52,6 +55,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import org.apache.commons.lang3.reflect.FieldUtils;
+
+import java.lang.reflect.Field;
 
 import static com.github.bartimaeusnek.bartworks.MainMod.BWT;
 import static com.github.bartimaeusnek.bartworks.MainMod.GT2;
@@ -139,31 +145,14 @@ public class ItemRegistry {
     public static ItemStack giantOutputHatch;
 
     public static void run() {
-
         if (newStuff) {
             if (ConfigHandler.creativeScannerID != 0)
                 new CreativeScanner(ConfigHandler.creativeScannerID,"Creative Debug Scanner","Creative Debug Scanner",20);
             ItemRegistry.eic = new GT_TileEntity_ElectricImplosionCompressor(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 6, "ElectricImplosionCompressor", "Electric Implosion Compressor").getStackForm(1L);
             ItemRegistry.thtr = new GT_TileEntity_THTR(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 5, "THTR", "Thorium High Temperature Reactor").getStackForm(1L);
             GT_TileEntity_THTR.THTRMaterials.registeraTHR_Materials();
-            GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BW_ItemBlocks.class, "BW_GlasBlocks");
-            GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses, "BW_FakeGlasBlock");
             GT_OreDictUnificator.add(OrePrefixes.block, Materials.BorosilicateGlass, new ItemStack(ItemRegistry.bw_glasses[0], 1, 0));
-            GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BW_ItemBlocks.class, "BW_Machinery_Casings");
             GT_OreDictUnificator.registerOre(OrePrefixes.block, Materials.NickelZincFerrite, new ItemStack(ItemRegistry.BW_BLOCKS[2]));
-            GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");
-            GameRegistry.registerItem(ItemRegistry.WOOL_ROTOR, "BW_WoolRotor");
-            GameRegistry.registerItem(ItemRegistry.PAPER_ROTOR, "BW_PaperRotor");
-            GameRegistry.registerItem(ItemRegistry.COMBINED_ROTOR, "BW_CombinedRotor");
-            GameRegistry.registerItem(ItemRegistry.CRAFTING_PARTS, "craftingParts");
-            GameRegistry.registerTileEntity(BW_RotorBlock.class, "BWRotorBlockTE");
-            GameRegistry.registerBlock(ItemRegistry.ROTORBLOCK, BW_ItemBlocks.class, "BWRotorBlock");
-            GameRegistry.registerTileEntity(BW_TileEntity_HeatedWaterPump.class, "BWHeatedWaterPumpTE");
-            GameRegistry.registerBlock(ItemRegistry.PUMPBLOCK, BW_ItemBlocks.class, "BWHeatedWaterPumpBlock");
-            GameRegistry.registerItem(ItemRegistry.PUMPPARTS, "BWPumpParts");
-            GameRegistry.registerItem(ItemRegistry.WINDMETER, "BW_SimpleWindMeter");
-            GameRegistry.registerTileEntity(BW_TileEntity_ExperimentalFloodGate.class, "BWExpReversePump");
-            GameRegistry.registerBlock(ItemRegistry.EXPPUMP, BW_ItemBlocks.class, "BWExpReversePumpBlock");
             for (int i = 0; i < GT_Values.VN.length; i++) {
                 ItemRegistry.diode2A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length + 1 + i, "diode" + "2A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name") + " 2A " + GT_Values.VN[i], i).getStackForm(1L);
                 ItemRegistry.diode4A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 2 + 1 + i, "diode" + "4A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name") + " 4A " + GT_Values.VN[i], i).getStackForm(1L);
@@ -171,7 +160,6 @@ public class ItemRegistry {
                 ItemRegistry.diode12A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 4 + 1 + i, "diode" + "12A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name") + " 12A " + GT_Values.VN[i], i).getStackForm(1L);
                 ItemRegistry.diode16A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 5 + 1 + i, "diode" + "16A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name") + " 16A " + GT_Values.VN[i], i).getStackForm(1L);
                 ItemRegistry.energyDistributor[i] = new GT_MetaTileEntity_EnergyDistributor(ConfigHandler.IDOffset + 1 + i, "energydistributor" + GT_Values.VN[i], StatCollector.translateToLocal("tile.energydistributor.name") + " " + GT_Values.VN[i], i).getStackForm(1L);
-
             }
             for (int i = 0; i < 3; i++) {
                 ItemRegistry.acidGens[i] = new GT_MetaTileEntity_AcidGenerator(ConfigHandler.IDOffset + GT_Values.VN.length * 8 - 2 + i, "acidgenerator" + GT_Values.VN[i + 2], StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[i + 2], i + 2).getStackForm(1);
@@ -183,17 +171,5 @@ public class ItemRegistry {
             ItemRegistry.compressedHatch = new GT_MetaTileEntity_CompressedFluidHatch(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 8, "CompressedFluidHatch", "Liquid Air Fluid Hatch").getStackForm(1L);
             ItemRegistry.giantOutputHatch = new GT_MetaTileEntity_GiantOutputHatch(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 9, "GiantOutputHatch", "Giant Output Hatch").getStackForm(1L);
         }
-
-
-        //GT2 stuff
-        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[0], BW_ItemBlocks.class, "BW_ItemBlocks");
-        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[1], BW_ItemBlocks.class, "GT_LESU_CASING");
-        if (ConfigHandler.teslastaff)
-            GameRegistry.registerItem(ItemRegistry.TESLASTAFF, ItemRegistry.TESLASTAFF.getUnlocalizedName());
-
-        GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_LV, ItemRegistry.ROCKCUTTER_LV.getUnlocalizedName());
-        GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_MV, ItemRegistry.ROCKCUTTER_MV.getUnlocalizedName());
-        GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_HV, ItemRegistry.ROCKCUTTER_HV.getUnlocalizedName());
-        GameRegistry.registerItem(ItemRegistry.TAB, "tabIconGT2");
     }
 }

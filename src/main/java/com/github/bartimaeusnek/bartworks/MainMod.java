@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks;
 
 import com.github.bartimaeusnek.bartworks.API.API_REFERENCE;
 import com.github.bartimaeusnek.bartworks.API.BioObjectAdder;
+import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.client.ClientEventHandler.TooltipEventHandler;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.BioTab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.GT2Tab;
@@ -79,6 +80,7 @@ import java.util.*;
 
 import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor.eicMap;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
+import static gregtech.api.enums.GT_Values.VN;
 
 @Mod(
         modid = MainMod.MOD_ID, name = MainMod.NAME, version = MainMod.VERSION,
@@ -161,8 +163,13 @@ public final class MainMod {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent postinit) {
         NetworkRegistry.INSTANCE.registerGuiHandler(MainMod.instance, MainMod.GH);
-        if (ConfigHandler.BioLab)
+        if (ConfigHandler.BioLab) {
             new GTNHBlocks().run();
+            for (Map.Entry<BioVatLogicAdder.BlockMetaPair, Byte>pair : BioVatLogicAdder.BioVatGlass.getGlassMap().entrySet()){
+                GT_OreDictUnificator.registerOre("blockGlass"+VN[pair.getValue()],new ItemStack(pair.getKey().getBlock(),1,pair.getKey().getaByte()));
+            }
+        }
+
         BioObjectAdder.regenerateBioFluids();
         if (ConfigHandler.newStuff) {
             if (ConfigHandler.experimentalThreadedLoader)
