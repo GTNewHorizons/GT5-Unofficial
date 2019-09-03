@@ -12,7 +12,7 @@ cache:
   - "$HOME/.gradle/wrapper"
   - "$HOME/.gradle/minecraft"
 jdk:
-  - oraclejdk8
+  - openjdk8
 jobs:
  include:
 # - stage: sonar
