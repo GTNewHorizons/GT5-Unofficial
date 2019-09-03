@@ -29,7 +29,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 
 public class ConnectedBlocksChecker {
 

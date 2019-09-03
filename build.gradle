@@ -51,8 +51,6 @@ version = config.majorUpdate+"."+config.minorUpdate+"."+config.buildNumber
 group= "com.github.bartimaeusnek.bartworks" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "bartworks"+ "[" + config.mc_version + "]"
 
-
-
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
     replaceIn "MainMod.java"
@@ -138,8 +136,7 @@ processResources
 
 jar {
     manifest {
-        attributes 'FMLCorePlugin': 'com.github.bartimaeusnek.ASM.BWCorePlugin',
-				'FMLCorePluginContainsFMLMod': 'true'
+        attributes 'FMLCorePlugin': 'com.github.bartimaeusnek.ASM.BWCorePlugin','FMLCorePluginContainsFMLMod': 'true'
     }
 }
 

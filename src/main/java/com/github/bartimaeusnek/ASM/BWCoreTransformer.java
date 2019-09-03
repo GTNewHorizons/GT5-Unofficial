@@ -23,17 +23,12 @@
 package com.github.bartimaeusnek.ASM;
 
 import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraft.launchwrapper.Launch;
-import net.minecraftforge.oredict.OreDictionary;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.jar.JarFile;
 
 import static org.objectweb.asm.Opcodes.*;
 

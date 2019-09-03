@@ -42,7 +42,7 @@ public class OreDictCachePacket extends GT_Packet {
 
     public OreDictCachePacket(HashSet<Pair<Integer,Short>> set) {
         super(false);
-        hashSet = set;
+        this.hashSet = set;
     }
 
     @Override

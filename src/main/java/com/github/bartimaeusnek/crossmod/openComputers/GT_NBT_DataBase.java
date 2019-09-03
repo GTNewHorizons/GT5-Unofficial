@@ -22,13 +22,14 @@
 
 package com.github.bartimaeusnek.crossmod.openComputers;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import net.minecraft.nbt.NBTTagCompound;
-
-import java.util.HashMap;
 
 public class GT_NBT_DataBase {
 
-    private static HashMap<NBTTagCompound, Long> tagToIdMap = new HashMap<>();
+    private static final BiMap<NBTTagCompound, Long> tagIdBiMap = HashBiMap.create();
+    private static final BiMap<GT_NBT_DataBase, Long> GTNBTBIMAP = HashBiMap.create();
 
     private static long maxID = Long.MIN_VALUE+1;
 
@@ -43,12 +44,25 @@ public class GT_NBT_DataBase {
         this.mDataTitle = mDataTitle;
         this.tagCompound = tagCompound;
         this.id = GT_NBT_DataBase.maxID;
-        GT_NBT_DataBase.tagToIdMap.put(tagCompound,id);
+        GT_NBT_DataBase.tagIdBiMap.put(tagCompound, this.id);
+        GT_NBT_DataBase.GTNBTBIMAP.put(this,this.id);
         ++GT_NBT_DataBase.maxID;
     }
 
+    static GT_NBT_DataBase getGTTagFromId(Long id){
+        return GT_NBT_DataBase.GTNBTBIMAP.inverse().get(id);
+    }
+
+    static Long getIdFromGTTag(GT_NBT_DataBase tagCompound){
+        return GT_NBT_DataBase.GTNBTBIMAP.get(tagCompound);
+    }
+
+    static NBTTagCompound getTagFromId(Long id){
+        return GT_NBT_DataBase.tagIdBiMap.inverse().get(id);
+    }
+
     static Long getIdFromTag(NBTTagCompound tagCompound){
-        return GT_NBT_DataBase.tagToIdMap.get(tagCompound);
+        return GT_NBT_DataBase.tagIdBiMap.get(tagCompound);
     }
 
     public NBTTagCompound getTagCompound() {

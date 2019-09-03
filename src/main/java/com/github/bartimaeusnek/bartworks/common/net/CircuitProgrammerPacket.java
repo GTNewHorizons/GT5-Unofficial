@@ -60,7 +60,7 @@ public class CircuitProgrammerPacket extends GT_Packet {
 
     @Override
     public byte[] encode() {
-        return ByteBuffer.allocate(9).putInt(0, dimID).putInt(4, playerID).put(8, (hasChip ? chipCfg : -1)).array();
+        return ByteBuffer.allocate(9).putInt(0, this.dimID).putInt(4, this.playerID).put(8, (this.hasChip ? this.chipCfg : -1)).array();
     }
 
     @Override
@@ -72,18 +72,18 @@ public class CircuitProgrammerPacket extends GT_Packet {
 
     @Override
     public void process(IBlockAccess iBlockAccess) {
-        World w = DimensionManager.getWorld(dimID);
-        if (w != null && w.getEntityByID(playerID) instanceof EntityPlayer) {
-            ItemStack stack = ((EntityPlayer) w.getEntityByID(playerID)).getHeldItem();
+        World w = DimensionManager.getWorld(this.dimID);
+        if (w != null && w.getEntityByID(this.playerID) instanceof EntityPlayer) {
+            ItemStack stack = ((EntityPlayer) w.getEntityByID(this.playerID)).getHeldItem();
             if ((stack != null) && (stack.stackSize > 0)) {
                 Item item = stack.getItem();
                 if (item instanceof Circuit_Programmer) {
                     NBTTagCompound nbt = stack.getTagCompound();
-                    nbt.setBoolean("HasChip", hasChip);
-                    if (hasChip)
-                        nbt.setByte("ChipConfig", chipCfg);
+                    nbt.setBoolean("HasChip", this.hasChip);
+                    if (this.hasChip)
+                        nbt.setByte("ChipConfig", this.chipCfg);
                     stack.setTagCompound(nbt);
-                    ((EntityPlayer) w.getEntityByID(playerID)).inventory.setInventorySlotContents(((EntityPlayer) w.getEntityByID(playerID)).inventory.currentItem, stack);
+                    ((EntityPlayer) w.getEntityByID(this.playerID)).inventory.setInventorySlotContents(((EntityPlayer) w.getEntityByID(this.playerID)).inventory.currentItem, stack);
                 }
             }
         }

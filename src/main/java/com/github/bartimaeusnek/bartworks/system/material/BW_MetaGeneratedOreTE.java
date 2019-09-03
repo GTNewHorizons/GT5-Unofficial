@@ -29,12 +29,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -44,7 +42,7 @@ import static com.github.bartimaeusnek.bartworks.MainMod.BW_Network_instance;
 
 public class BW_MetaGeneratedOreTE extends TileEntity implements ITexturedTileEntity {
 
-    public short mMetaData = 0;
+    public short mMetaData;
 
     public static boolean placeOre(World aWorld, Coords coords, Werkstoff werkstoff) {
         short meta = werkstoff.getmID();
@@ -80,10 +78,9 @@ public class BW_MetaGeneratedOreTE extends TileEntity implements ITexturedTileEn
         return rList;
     }
 
-    public Packet getDescriptionPacket() {
+    public void sendPacket(){
         if (!this.worldObj.isRemote)
             BW_Network_instance.sendPacketToAllPlayersInRange(this.worldObj, new OrePacket(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData), this.xCoord, this.zCoord);
-        return null;
     }
 
     @Override

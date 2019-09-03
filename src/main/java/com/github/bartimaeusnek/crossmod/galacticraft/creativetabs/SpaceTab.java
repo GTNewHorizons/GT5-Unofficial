@@ -35,7 +35,7 @@ public class SpaceTab extends CreativeTabs {
     }
 
     public static SpaceTab getInstance() {
-        return instance;
+        return SpaceTab.instance;
     }
 
     @Override

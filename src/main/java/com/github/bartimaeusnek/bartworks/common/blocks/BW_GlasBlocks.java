@@ -36,14 +36,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class BW_GlasBlocks extends BW_Blocks {
 
     @SideOnly(Side.CLIENT)
-    IIcon[] connectedTexture;
+    private IIcon[] connectedTexture;
 
-    boolean connectedTex, fake;
-    short[][] color = new short[textureNames.length][3];
+    private final boolean connectedTex;
+    private boolean fake;
+    private short[][] color = new short[this.textureNames.length][3];
 
     public BW_GlasBlocks(String name, String[] texture, CreativeTabs tabs) {
         super(name, texture, tabs, Material.glass);
-        connectedTex = false;
+        this.connectedTex = false;
     }
 
 
@@ -55,7 +56,7 @@ public class BW_GlasBlocks extends BW_Blocks {
     }
 
     public short[] getColor(int meta) {
-        return meta < texture.length ? color[meta] : color[0];
+        return meta < this.texture.length ? this.color[meta] : this.color[0];
     }
 
     @Override
@@ -75,25 +76,25 @@ public class BW_GlasBlocks extends BW_Blocks {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return meta < texture.length ? texture[meta] : texture[0];
+        return meta < this.texture.length ? this.texture[meta] : this.texture[0];
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister) {
-        if (!connectedTex) {
-            texture = new IIcon[textureNames.length];
-            for (int i = 0; i < textureNames.length; i++) {
-                texture[i] = par1IconRegister.registerIcon(textureNames[i]);
+        if (!this.connectedTex) {
+            this.texture = new IIcon[this.textureNames.length];
+            for (int i = 0; i < this.textureNames.length; i++) {
+                this.texture[i] = par1IconRegister.registerIcon(this.textureNames[i]);
             }
             return;
         }
-        texture = new IIcon[textureNames.length];
-        connectedTexture = new IIcon[16];
-        for (int i = 0; i < textureNames.length; i++) {
-            texture[i] = par1IconRegister.registerIcon(textureNames[i]);
+        this.texture = new IIcon[this.textureNames.length];
+        this.connectedTexture = new IIcon[16];
+        for (int i = 0; i < this.textureNames.length; i++) {
+            this.texture[i] = par1IconRegister.registerIcon(this.textureNames[i]);
             for (int j = 0; j < 16; j++) {
-                connectedTexture[j] = par1IconRegister.registerIcon(textureNames[0] + "_" + j);
+                this.connectedTexture[j] = par1IconRegister.registerIcon(this.textureNames[0] + "_" + j);
             }
         }
     }
@@ -102,7 +103,7 @@ public class BW_GlasBlocks extends BW_Blocks {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess worldClient, int xCoord, int yCoord, int zCoord, int aSide) {
-        if (!connectedTex)
+        if (!this.connectedTex)
             return super.getIcon(worldClient, xCoord, yCoord, zCoord, aSide);
 
         ForgeDirection dir = ForgeDirection.getOrientation(aSide);
@@ -170,7 +171,7 @@ public class BW_GlasBlocks extends BW_Blocks {
                 break;
             }
         }
-        return connectedTexture[sides];
+        return this.connectedTexture[sides];
     }
 
     @Override
@@ -181,7 +182,7 @@ public class BW_GlasBlocks extends BW_Blocks {
 
     @Override
     public int getRenderType() {
-        if (!fake && FMLCommonHandler.instance().getSide().isClient())
+        if (!this.fake && FMLCommonHandler.instance().getSide().isClient())
             return RendererGlasBlock.RID;
         else
             return 0;

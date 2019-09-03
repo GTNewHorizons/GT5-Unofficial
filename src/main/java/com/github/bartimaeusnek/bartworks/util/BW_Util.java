@@ -24,32 +24,71 @@ package com.github.bartimaeusnek.bartworks.util;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import ic2.api.item.IElectricItem;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnegative;
-import java.util.*;
-import java.util.function.UnaryOperator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import static gregtech.api.enums.GT_Values.V;
 
 public class BW_Util {
 
     public static final int STANDART = 0;
-    public static final int CLEANROOM = -100;
-    public static final int LOWGRAVITY = -200;
+    public static final int LOWGRAVITY = -100;
+    public static final int CLEANROOM = -200;
+
+    public static String translateGTItemStack(ItemStack itemStack){
+        if (!GT_Utility.isStackValid(itemStack))
+            return "Not a Valid ItemStack:"+itemStack;
+        String ret = GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(itemStack));
+        if (!ret.contains("%material"))
+            return ret;
+        String matname = "";
+        if (BW_Util.checkStackAndPrefix(itemStack))
+            matname = GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mDefaultLocalName;
+        return ret.replace("%material", matname);
+    }
+
+    public static void set2DCoordTo1DArray(int indexX, int indexY, int sizeY, Object value, Object[] array) {
+        int index = indexX * sizeY + indexY;
+        array[index] = value;
+    }
+
+    public static Object get2DCoordFrom1DArray(int indexX, int indexY, int sizeY, Object[] array){
+        int index = indexX * sizeY + indexY;
+        return array[index];
+    }
+
+    public static GT_Recipe copyAndSetTierToNewRecipe(GT_Recipe recipe, byte tier){
+        byte oldTier = GT_Utility.getTier(recipe.mEUt);
+        int newTime = recipe.mDuration;
+        int newVoltage = recipe.mEUt;
+        if (tier < oldTier) {
+            newTime <<= (oldTier - tier);
+            newVoltage >>= 2 * (oldTier - tier);
+        } else {
+            newTime >>= (tier - oldTier);
+            newVoltage <<= 2 * (tier - oldTier);
+        }
+        return new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, recipe.mFluidInputs, recipe.mFluidOutputs, newTime, newVoltage, recipe.mSpecialValue);
+    }
 
     public static String subscriptNumbers(String b){
         char[] chars = b.toCharArray();
@@ -135,11 +174,11 @@ public class BW_Util {
 
     public static byte specialToByte(int aSpecialValue) {
         byte special = 0;
-        if (aSpecialValue == (CLEANROOM))
+        if (aSpecialValue == (LOWGRAVITY))
             special = 1;
-        else if (aSpecialValue == (LOWGRAVITY))
+        else if (aSpecialValue == (CLEANROOM))
             special = 2;
-        else if (aSpecialValue == (CLEANROOM | LOWGRAVITY)) {
+        else if (aSpecialValue == (LOWGRAVITY | CLEANROOM)) {
             special = 3;
         }
         return special;
@@ -149,7 +188,7 @@ public class BW_Util {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * offsetsize;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * offsetsize;
 
-        return aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block);
+        return block == Blocks.air ? aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z) : aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block);
     }
 
     public static boolean addBlockToMachine(int x, int y, int z, int offsetsize, IGregTechTileEntity aBaseMetaTileEntity, Block block, int damage) {
@@ -157,7 +196,7 @@ public class BW_Util {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * offsetsize;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * offsetsize;
 
-        return aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block) && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == dmg;
+        return block == Blocks.air ? aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z) : aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block) && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == dmg;
     }
 
     public static int calculateSv(Materials materials) {
@@ -203,6 +242,7 @@ public class BW_Util {
                 ret = 4;
                 break;
             case 2:
+            case 12:
                 ret = 5;
                 break;
             case 3:
@@ -213,9 +253,6 @@ public class BW_Util {
                 break;
             case 5:
                 ret = 8;
-                break;
-            case 12:
-                ret = 5;
                 break;
             default:
                 ret = 3;
@@ -248,7 +285,7 @@ public class BW_Util {
             //Long EUt calculation
             long xEUt = aEUt;
             //Isnt too low EUt check?
-            long tempEUt = xEUt < V[1] ? V[1] : xEUt;
+            long tempEUt = Math.max(xEUt, V[1]);
 
             base.mMaxProgresstime = aDuration;
 
@@ -256,8 +293,15 @@ public class BW_Util {
                 tempEUt <<= 2;//this actually controls overclocking
                 //xEUt *= 4;//this is effect of everclocking
                 base.mMaxProgresstime >>= 1;//this is effect of overclocking
-                xEUt = base.mMaxProgresstime == 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
+                xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
             }
+
+            if (xEUt > maxInputVoltage){
+                //downclock one notch, we have overshot.
+                xEUt >>=2;
+                base.mMaxProgresstime <<= 1;
+            }
+
             if (xEUt > Integer.MAX_VALUE - 1) {
                 base.mEUt = Integer.MAX_VALUE - 1;
                 base.mMaxProgresstime = Integer.MAX_VALUE - 1;
@@ -265,7 +309,7 @@ public class BW_Util {
                 base.mEUt = (int) xEUt;
                 if (base.mEUt == 0)
                     base.mEUt = 1;
-                if (base.mMaxProgresstime == 0)
+                if (base.mMaxProgresstime <= 0)
                     base.mMaxProgresstime = 1;//set time to 1 tick
             }
         }
@@ -293,14 +337,14 @@ public class BW_Util {
         for (GT_MetaTileEntity_Hatch_Input fip : aBaseMetaTileEntity.mInputHatches){
             tmp.add(fip.getFluid());
         }
-        return (FluidStack[]) tmp.toArray();
+        return tmp.toArray(new FluidStack[0]);
     }
     public static ItemStack[] getItemsFromInputBusses(GT_MetaTileEntity_MultiBlockBase aBaseMetaTileEntity){
         ArrayList<ItemStack> tmp = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_InputBus fip : aBaseMetaTileEntity.mInputBusses){
             tmp.addAll(Arrays.asList(fip.mInventory));
         }
-        return (ItemStack[]) tmp.toArray();
+        return tmp.toArray(new ItemStack[0]);
     }
 
 
@@ -363,8 +407,9 @@ public class BW_Util {
                         continue;
                     if (controllerLayer && (xDir + x == 0 && zDir + z == 0))
                         continue;
-                    if (insideCheck && (Math.abs(x) < radius && Math.abs(z) != radius)) {
-                        if (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(inside) || (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmginside && dmginside > (-1))) {
+                    boolean b = Math.abs(x) < radius && Math.abs(z) != radius;
+                    if (insideCheck && b) {
+                        if (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(inside) && (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmginside || dmginside > (-1))) {
                             if (!(allowHatches && (
                                     ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addDynamoToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
                                             ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
@@ -377,7 +422,7 @@ public class BW_Util {
                             }
                         }
                     }
-                    if (((!(Math.abs(x) < radius && Math.abs(z) != radius))) && (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block) || (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmg && dmg > (-1)))) {
+                    if (!b && !aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block) && (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmg || dmg > (-1))) {
                         if (!(allowHatches && (
                                 ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addDynamoToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
                                         ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
@@ -415,5 +460,22 @@ public class BW_Util {
             }
         }
         return ret;
+    }
+
+    public static byte getCircuitTierFromOreDictName(String name) {
+        switch (name){
+            case "circuitPrimitive": return 0;
+            case "circuitBasic": return 1;
+            case "circuitGood": return 2;
+            case "circuitAdvanced": return 3;
+            case "circuitData": return 4;
+            case "circuitElite": return 5;
+            case "circuitMaster": return 6;
+            case "circuitUltimate": return 7;
+            case "circuitSuperconductor": return 8;
+            case "circuitInfinite": return 9;
+            case "circuitBio": return 10;
+            default: return -1;
+        }
     }
 }

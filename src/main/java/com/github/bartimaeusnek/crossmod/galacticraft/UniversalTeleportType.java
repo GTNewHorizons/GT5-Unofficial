@@ -22,14 +22,12 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft;
 
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
-import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -71,18 +69,10 @@ public class UniversalTeleportType implements ITeleportType {
             }
 
             EntityLanderBase elb;
-
-            switch (ConfigHandler.landerType){
-                case 1:
-                    elb = new EntityLander(player);
-                    break;
-                case 2:
-                    elb = new EntityLandingBalloons(player);
-                    break;
-                default:
-                    elb = new EntityEntryPod(player);
-                    break;
-            }
+            if (Loader.isModLoaded("GalacticraftMars"))
+                elb=PlanetsHelperClass.getLanderType(player);
+            else
+                elb = new EntityLander(player);
 
             if (!newWorld.isRemote) {
                 newWorld.spawnEntityInWorld(elb);

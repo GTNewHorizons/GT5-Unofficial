@@ -35,7 +35,7 @@ public class SummonRuin extends CommandBase {
 
     @Override
     public String getCommandUsage(ICommandSender p_71518_1_) {
-        return "SummonRuin x z";
+        return "SummonRuin <x> <z>";
     }
 
     @Override

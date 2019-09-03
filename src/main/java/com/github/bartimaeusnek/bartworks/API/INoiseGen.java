@@ -20,24 +20,14 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.common.loaders;
+package com.github.bartimaeusnek.bartworks.API;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.oredict.OreDictionary;
+public interface INoiseGen {
 
-import java.util.HashSet;
-
-public class CircuitImprintLoader implements Runnable {
-
-    private static HashSet<NBTTagCompound> circuitTypes = new HashSet<>();
-
-    @Override
-    public void run() {
-        for(String names : OreDictionary.getOreNames()){
-            if (names.contains("circuit") || names.contains("Circuit"))
-                for (ItemStack itemStack : OreDictionary.getOres(names))
-                    CircuitImprintLoader.circuitTypes.add(itemStack.copy().splitStack(1).writeToNBT(new NBTTagCompound()));
-        }
-    }
+   double getNoise(int x, int z);
+   double[][] getNoiseForRegion(int xStart, int zStart, int xEnd, int zEnd);
+   void setOctaves(int octaves);
+   void setFrequency(double freq);
+   void setSeed(long seed);
+   void setAmplitude(double amplitude);
 }

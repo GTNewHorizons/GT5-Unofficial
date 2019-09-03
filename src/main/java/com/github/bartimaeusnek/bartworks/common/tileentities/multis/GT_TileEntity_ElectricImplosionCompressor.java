@@ -35,7 +35,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
@@ -65,8 +64,8 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
 
         for (int i = 0; i < tInputList_sS - 1; ++i) {
             for (int j = i + 1; j < tInputList_sS; ++j) {
-                if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
-                    if (((ItemStack) tInputList.get(i)).stackSize < ((ItemStack) tInputList.get(j)).stackSize) {
+                if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
+                    if (tInputList.get(i).stackSize < tInputList.get(j).stackSize) {
                         tInputList.remove(i--);
                         tInputList_sS = tInputList.size();
                         break;
@@ -78,10 +77,10 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
             }
         }
 
-        ItemStack[] tInputs = (ItemStack[]) tInputList.toArray(new ItemStack[tInputList.size()]);
+        ItemStack[] tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
         if (tInputList.size() > 0) {
-            GT_Recipe tRecipe = eicMap.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, (FluidStack[]) null, tInputs);
-            if (tRecipe != null && tRecipe.isRecipeInputEqual(true, (FluidStack[]) null, tInputs)) {
+            GT_Recipe tRecipe = GT_TileEntity_ElectricImplosionCompressor.eicMap.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
+            if (tRecipe != null && tRecipe.isRecipeInputEqual(true, null, tInputs)) {
                 this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
                 this.mEfficiencyIncrease = 10000;
                 this.mEUt = -tRecipe.mEUt;
@@ -99,24 +98,24 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mRuntime % 10 == 0)
-            togglePiston();
+            this.togglePiston();
         return super.onRunningTick(aStack);
     }
 
     public void stopMachine() {
-        resetPiston();
+        this.resetPiston();
         super.stopMachine();
     }
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        piston = true;
+        this.piston = true;
     }
 
     private void resetPiston() {
         if (this.getBaseMetaTileEntity().getWorld().isRemote)
             return;
-        if (!piston) {
+        if (!this.piston) {
             int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX;
             int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ;
             int aX = this.getBaseMetaTileEntity().getXCoord(), aY = this.getBaseMetaTileEntity().getYCoord(), aZ = this.getBaseMetaTileEntity().getZCoord();
@@ -126,8 +125,8 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
                         this.getBaseMetaTileEntity().getWorld().setBlock(xDir + aX + x, aY + 2, zDir + aZ + z, GregTech_API.sBlockMetal5, 2, 3);
                 }
             }
-            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
-            piston = !piston;
+            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
+            this.piston = !this.piston;
         }
     }
 
@@ -138,7 +137,7 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
         int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ;
         int aX = this.getBaseMetaTileEntity().getXCoord(), aY = this.getBaseMetaTileEntity().getYCoord(), aZ = this.getBaseMetaTileEntity().getZCoord();
         boolean hax = false;
-        if (piston) {
+        if (this.piston) {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
                     if (!(Math.abs(x) == 1 && Math.abs(z) == 1)) {
@@ -149,8 +148,8 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
                     }
                 }
             }
-            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
-            piston = !piston;
+            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
+            this.piston = !this.piston;
         } else {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
@@ -158,8 +157,8 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
                         this.getBaseMetaTileEntity().getWorld().setBlock(xDir + aX + x, aY + 2, zDir + aZ + z, GregTech_API.sBlockMetal5, 2, 3);
                 }
             }
-            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
-            piston = !piston;
+            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
+            this.piston = !this.piston;
         }
         if (hax)
             this.explodeMultiblock();
@@ -167,13 +166,13 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("piston", piston);
+        aNBT.setBoolean("piston", this.piston);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        piston = aNBT.getBoolean("piston");
+        this.piston = aNBT.getBoolean("piston");
         super.loadNBTData(aNBT);
     }
 
@@ -217,18 +216,18 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
                         }
 
                     } else if (y == 1) {
-                        if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 1, zDir + z), 1, aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z)), Materials.Neutronium.getBlocks(1)))
+                        if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 1, zDir + z), 1, aBaseMetaTileEntity.getMetaIDOffset(xDir + x, 1, zDir + z)), Materials.Neutronium.getBlocks(1)))
                             return false;
                     } else if (y == 2) {
-                        if (!piston) {
+                        if (!this.piston) {
                             if (Math.abs(x) == 1 && Math.abs(z) == 1) {
-                                if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 2, zDir + z), 1, aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z)), Materials.Neutronium.getBlocks(1)))
+                                if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 2, zDir + z), 1, aBaseMetaTileEntity.getMetaIDOffset(xDir + x, 2, zDir + z)), Materials.Neutronium.getBlocks(1)))
                                     return false;
                             }
                         } else if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 2, zDir + z), 1, aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z)), Materials.Neutronium.getBlocks(1)))
                             return false;
                     } else if (y == 3) {
-                        if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 3, zDir + z), 1, aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z)), Materials.Neutronium.getBlocks(1)))
+                        if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 3, zDir + z), 1, aBaseMetaTileEntity.getMetaIDOffset(xDir + x, 3, zDir + z)), Materials.Neutronium.getBlocks(1)))
                             return false;
                     }
                 }

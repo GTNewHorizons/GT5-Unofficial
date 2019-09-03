@@ -41,15 +41,17 @@ import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import ic2.core.Ic2Items;
 import ic2.core.item.ItemFluidCell;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnegative;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
+import java.io.Serializable;
+import java.util.*;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.calculateSv;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.specialToByte;
@@ -60,6 +62,8 @@ public class BWRecipes {
     public static final byte BIOLABBYTE = 0;
     public static final byte BACTERIALVATBYTE = 1;
     public static final byte ACIDGENMAPBYTE = 2;
+    public static final byte CIRCUITASSEMBLYLINE = 3;
+
     private final GT_Recipe.GT_Recipe_Map sBiolab = new GT_Recipe.GT_Recipe_Map(
             new HashSet<GT_Recipe>(150),
             "bw.recipe.biolab",
@@ -86,6 +90,15 @@ public class BWRecipes {
             "gregtech:textures/gui/basicmachines/Default",
             1, 1, 1, 1, 1,
             "EU generated: ", 1000, "", false, true
+    );
+    private final BWRecipes.SpecialObjectSensitiveMap sCircuitAssemblyLineMap = new SpecialObjectSensitiveMap(
+            new HashSet<GT_Recipe>(60),
+            "bw.recipe.cal",
+            "Circuit Assembly Line",
+            null,
+            "gregtech:textures/gui/basicmachines/Default",
+            6, 6, 1, 1, 1,
+            "", 1, "", true, true //special handler
     );
 
 
@@ -261,7 +274,7 @@ public class BWRecipes {
                         );
                         //aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue
                         sBiolab.addRecipe(
-                                new BioLabRecipe(
+                                new DynamicGTRecipe(
                                         false,
                                         new ItemStack[]{
                                                 BioItemList.getPetriDish(null),
@@ -304,8 +317,7 @@ public class BWRecipes {
 
 
     /**
-     * @param machine 0 = biolab; 1 = BacterialVat; 2 = sAcidGenFuels
-     * @return
+     * @param machine 0 = biolab; 1 = BacterialVat; 2 = sAcidGenFuels; 3 = circuitAssemblyLine
      */
     public GT_Recipe.GT_Recipe_Map getMappingsFor(byte machine) {
         switch (machine) {
@@ -315,6 +327,8 @@ public class BWRecipes {
                 return sBacteriaVat;
             case 2:
                 return sAcidGenFuels;
+            case 3:
+                return sCircuitAssemblyLineMap;
             default:
                 return null;
         }
@@ -322,54 +336,54 @@ public class BWRecipes {
     }
 
     public boolean addBioLabRecipe(ItemStack[] aInputs, ItemStack aOutput, ItemStack aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        if (sBiolab.addRecipe(new BioLabRecipe(true, aInputs, new ItemStack[]{aOutput}, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue)) != null)
+        if (sBiolab.addRecipe(new DynamicGTRecipe(true, aInputs, new ItemStack[]{aOutput}, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue)) != null)
             return true;
         return false;
     }
 
     public boolean addBioLabRecipeIncubation(ItemStack aInput, BioCulture aOutput, int[] aChances, FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue) {
-        if (sBiolab.addRecipe(new BioLabRecipe(true, new ItemStack[]{BioItemList.getPetriDish(null), aInput}, new ItemStack[]{BioItemList.getPetriDish(aOutput)}, null, aChances, aFluidInputs, new FluidStack[]{GT_Values.NF}, aDuration, aEUt, aSpecialValue)) != null)
+        if (sBiolab.addRecipe(new DynamicGTRecipe(true, new ItemStack[]{BioItemList.getPetriDish(null), aInput}, new ItemStack[]{BioItemList.getPetriDish(aOutput)}, null, aChances, aFluidInputs, new FluidStack[]{GT_Values.NF}, aDuration, aEUt, aSpecialValue)) != null)
             return true;
         return false;
     }
 
     public boolean addBioLabRecipeIncubation(ItemStack aInput, BioCulture aOutput, int[] aChances, FluidStack aFluidInputs, int aDuration, int aEUt, int aSpecialValue) {
-        if (sBiolab.addRecipe(new BioLabRecipe(true, new ItemStack[]{BioItemList.getPetriDish(null), aInput}, new ItemStack[]{BioItemList.getPetriDish(aOutput)}, null, aChances, new FluidStack[]{aFluidInputs}, new FluidStack[]{GT_Values.NF}, aDuration, aEUt, aSpecialValue)) != null)
+        if (sBiolab.addRecipe(new DynamicGTRecipe(true, new ItemStack[]{BioItemList.getPetriDish(null), aInput}, new ItemStack[]{BioItemList.getPetriDish(aOutput)}, null, aChances, new FluidStack[]{aFluidInputs}, new FluidStack[]{GT_Values.NF}, aDuration, aEUt, aSpecialValue)) != null)
             return true;
         return false;
     }
 
     @Deprecated
     public boolean addBioLabRecipeDNAExtraction(ItemStack[] aInputs, ItemStack aOutput, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        if (sBiolab.addRecipe(new BioLabRecipe(true, aInputs, new ItemStack[]{aOutput}, BioItemList.mBioLabParts[0], aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue)) != null)
+        if (sBiolab.addRecipe(new DynamicGTRecipe(true, aInputs, new ItemStack[]{aOutput}, BioItemList.mBioLabParts[0], aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue)) != null)
             return true;
         return false;
     }
 
     @Deprecated
     public boolean addBioLabRecipePCRThermoclycling(ItemStack[] aInputs, ItemStack aOutput, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        if (sBiolab.addRecipe(new BioLabRecipe(true, aInputs, new ItemStack[]{aOutput}, BioItemList.mBioLabParts[1], aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue)) != null)
+        if (sBiolab.addRecipe(new DynamicGTRecipe(true, aInputs, new ItemStack[]{aOutput}, BioItemList.mBioLabParts[1], aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue)) != null)
             return true;
         return false;
     }
 
     @Deprecated
     public boolean addBioLabRecipePlasmidSynthesis(ItemStack[] aInputs, ItemStack aOutput, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        if (sBiolab.addRecipe(new BioLabRecipe(true, aInputs, new ItemStack[]{aOutput}, BioItemList.mBioLabParts[2], aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue)) != null)
+        if (sBiolab.addRecipe(new DynamicGTRecipe(true, aInputs, new ItemStack[]{aOutput}, BioItemList.mBioLabParts[2], aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue)) != null)
             return true;
         return false;
     }
 
     @Deprecated
     public boolean addBioLabRecipeTransformation(ItemStack[] aInputs, ItemStack aOutput, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        if (sBiolab.addRecipe(new BioLabRecipe(true, aInputs, new ItemStack[]{aOutput}, BioItemList.mBioLabParts[3], aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue)) != null)
+        if (sBiolab.addRecipe(new DynamicGTRecipe(true, aInputs, new ItemStack[]{aOutput}, BioItemList.mBioLabParts[3], aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue)) != null)
             return true;
         return false;
     }
 
     @Deprecated
     public boolean addBioLabRecipeClonalCellularSynthesis(ItemStack[] aInputs, ItemStack aOutput, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        if (sBiolab.addRecipe(new BioLabRecipe(true, aInputs, new ItemStack[]{aOutput}, BioItemList.mBioLabParts[4], aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue)) != null)
+        if (sBiolab.addRecipe(new DynamicGTRecipe(true, aInputs, new ItemStack[]{aOutput}, BioItemList.mBioLabParts[4], aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue)) != null)
             return true;
         return false;
     }
@@ -483,7 +497,7 @@ public class BWRecipes {
         return false;
     }
 
-    public static class DynamicGTRecipe extends GT_Recipe {
+    public static class DynamicGTRecipe extends GT_Recipe implements Serializable {
         public DynamicGTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
             super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
         }
@@ -515,14 +529,65 @@ public class BWRecipes {
         }
     }
 
-    public static class BacteriaVatRecipeMap extends GT_Recipe.GT_Recipe_Map {
+    public static class BacteriaVatRecipeMap extends BWRecipes.SpecialObjectSensitiveMap {
 
         public BacteriaVatRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
             super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
         }
 
+        protected GT_Recipe addRecipe(GT_Recipe aRecipe, boolean aCheckForCollisions, boolean aFakeRecipe, boolean aHidden) {
+            aRecipe.mHidden = aHidden;
+            aRecipe.mFakeRecipe = aFakeRecipe;
+            GT_Recipe isthere = this.findRecipe((IHasWorldObjectAndCoords) null, false, false, 9223372036854775807L, aRecipe.mFluidInputs, aRecipe.mInputs);
+
+            if (aRecipe.mFluidInputs.length < this.mMinimalInputFluids && aRecipe.mInputs.length < this.mMinimalInputItems) {
+                return null;
+            } else {
+                return aCheckForCollisions && isthere != null && BW_Util.areStacksEqualOrNull((ItemStack) isthere.mSpecialItems, (ItemStack) aRecipe.mSpecialItems) ? null : this.add(aRecipe);
+            }
+        }
+
+        public GT_Recipe addRecipe(GT_Recipe aRecipe, boolean VanillaGT) {
+            if (VanillaGT)
+                return addRecipe(aRecipe, true, false, false);
+            else
+                return addRecipe(aRecipe);
+        }
+
+        public GT_Recipe addRecipe(GT_Recipe aRecipe) {
+            if (aRecipe.mInputs.length > 0 && GT_Utility.areStacksEqual(aRecipe.mInputs[aRecipe.mInputs.length - 1], GT_Utility.getIntegratedCircuit(32767)))
+                return aRecipe;
+            else {
+                ItemStack[] nu1 = Arrays.copyOf(aRecipe.mInputs, aRecipe.mInputs.length + 1);
+                nu1[nu1.length - 1] = GT_Utility.getIntegratedCircuit(9 + nu1.length);
+                aRecipe.mInputs = nu1;
+            }
+            if (this.findRecipe((IHasWorldObjectAndCoords) null, false, 9223372036854775807L, aRecipe.mFluidInputs, aRecipe.mInputs) != null) {
+                ItemStack[] nu = Arrays.copyOf(aRecipe.mInputs, aRecipe.mInputs.length + 1);
+                int i = 9 + nu.length;
+                do {
+                    nu[nu.length - 1] = GT_Utility.getIntegratedCircuit(i);
+                    i++;
+                    aRecipe.mInputs = nu;
+                    if (i > 24)
+                        i = 1;
+                    if (i == 9 + nu.length)
+                        return null;
+                }
+                while (this.findRecipe((IHasWorldObjectAndCoords) null, false, 9223372036854775807L, aRecipe.mFluidInputs, aRecipe.mInputs) != null);
+            }
+            return this.addRecipe(aRecipe, false, false, false);
+        }
+    }
+
+    public static class SpecialObjectSensitiveMap extends GT_Recipe.GT_Recipe_Map{
+
+        public SpecialObjectSensitiveMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
+            super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
+        }
+
         /**
-         * finds a Recipe matching the aFluid and ItemStack Inputs.
+         * finds a Recipe matching the aFluid, aSpecial and ItemStack Inputs.
          *
          * @param aTileEntity          an Object representing the current coordinates of the executing Block/Entity/Whatever. This may be null, especially during Startup.
          * @param aRecipe              in case this is != null it will try to use this Recipe first when looking things up.
@@ -530,7 +595,7 @@ public class BWRecipes {
          * @param aDontCheckStackSizes if set to false will only return recipes that can be executed at least once with the provided input
          * @param aVoltage             Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
          * @param aFluids              the Fluid Inputs
-         * @param aSpecialSlot         the content of the Special Slot, the regular Manager doesn't do anything with this, but some custom ones do.
+         * @param aSpecialSlot         the content of the Special Slot, the regular Manager doesn't do anything with this, but some custom ones do. Like this one.
          * @param aInputs              the Item Inputs
          * @return the Recipe it has found or null for no matching Recipe
          */
@@ -592,56 +657,72 @@ public class BWRecipes {
             // And nothing has been found.
             return null;
         }
-
-        protected GT_Recipe addRecipe(GT_Recipe aRecipe, boolean aCheckForCollisions, boolean aFakeRecipe, boolean aHidden) {
-            aRecipe.mHidden = aHidden;
-            aRecipe.mFakeRecipe = aFakeRecipe;
-            GT_Recipe isthere = this.findRecipe((IHasWorldObjectAndCoords) null, false, false, 9223372036854775807L, aRecipe.mFluidInputs, aRecipe.mInputs);
-
-            if (aRecipe.mFluidInputs.length < this.mMinimalInputFluids && aRecipe.mInputs.length < this.mMinimalInputItems) {
-                return null;
-            } else {
-                return aCheckForCollisions && isthere != null && BW_Util.areStacksEqualOrNull((ItemStack) isthere.mSpecialItems, (ItemStack) aRecipe.mSpecialItems) ? null : this.add(aRecipe);
-            }
-        }
-
-        public GT_Recipe addRecipe(GT_Recipe aRecipe, boolean VanillaGT) {
-            if (VanillaGT)
-                return addRecipe(aRecipe, true, false, false);
-            else
-                return addRecipe(aRecipe);
-        }
-
-        public GT_Recipe addRecipe(GT_Recipe aRecipe) {
-            if (aRecipe.mInputs.length > 0 && GT_Utility.areStacksEqual(aRecipe.mInputs[aRecipe.mInputs.length - 1], GT_Utility.getIntegratedCircuit(32767)))
-                return aRecipe;
-            else {
-                ItemStack[] nu1 = Arrays.copyOf(aRecipe.mInputs, aRecipe.mInputs.length + 1);
-                nu1[nu1.length - 1] = GT_Utility.getIntegratedCircuit(9 + nu1.length);
-                aRecipe.mInputs = nu1;
-            }
-            if (this.findRecipe((IHasWorldObjectAndCoords) null, false, 9223372036854775807L, aRecipe.mFluidInputs, aRecipe.mInputs) != null) {
-                ItemStack[] nu = Arrays.copyOf(aRecipe.mInputs, aRecipe.mInputs.length + 1);
-                int i = 9 + nu.length;
-                do {
-                    nu[nu.length - 1] = GT_Utility.getIntegratedCircuit(i);
-                    i++;
-                    aRecipe.mInputs = nu;
-                    if (i > 24)
-                        i = 1;
-                    if (i == 9 + nu.length)
-                        return null;
-                }
-                while (this.findRecipe((IHasWorldObjectAndCoords) null, false, 9223372036854775807L, aRecipe.mFluidInputs, aRecipe.mInputs) != null);
-            }
-            return this.addRecipe(aRecipe, false, false, false);
-        }
     }
 
-    class BioLabRecipe extends GT_Recipe {
-        protected BioLabRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, ItemStack aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-            super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
+    public static class BWNBTDependantCraftingRecipe implements IRecipe {
+
+        ItemStack result;
+        Map<Character, ItemStack> charToStackMap = new HashMap<>(9,1);
+        String[] shape;
+
+        public BWNBTDependantCraftingRecipe(ItemStack result, Object... recipe) {
+            this.result = result;
+            this.shape = new String[3];
+            System.arraycopy(recipe,0, this.shape,0,3);
+            this.charToStackMap.put(' ', null);
+            for (int i = 3; i < recipe.length; i+=2) {
+                this.charToStackMap.put((char)recipe[i],((ItemStack)recipe[i+1]).copy());
+            }
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof BWRecipes.BWNBTDependantCraftingRecipe)) return false;
+
+            BWRecipes.BWNBTDependantCraftingRecipe that = (BWRecipes.BWNBTDependantCraftingRecipe) o;
+
+            if (!Objects.equals(this.result, that.result)) return false;
+            if (!Objects.equals(this.charToStackMap, that.charToStackMap))
+                return false;
+            // Probably incorrect - comparing Object[] arrays with Arrays.equals
+            return Arrays.equals(this.shape, that.shape);
+        }
+
+        @Override
+        public int hashCode() {
+            int result1 = this.result != null ? this.result.hashCode() : 0;
+            result1 = 31 * result1 + (this.charToStackMap != null ? this.charToStackMap.hashCode() : 0);
+            result1 = 31 * result1 + Arrays.hashCode(this.shape);
+            return result1;
+        }
+
+        @Override
+        public boolean matches(InventoryCrafting p_77569_1_, World p_77569_2_) {
+            for (int x = 0; x < 3; x++) {
+                for (int y = 0; y < 3; y++) {
+                    ItemStack toCheck = p_77569_1_.getStackInRowAndColumn(y,x);
+                    ItemStack ref = this.charToStackMap.get(this.shape[x].toCharArray()[y]);
+                    if (!BW_Util.areStacksEqualOrNull(toCheck,ref))
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        @Override
+        public ItemStack getCraftingResult(InventoryCrafting p_77572_1_) {
+            return this.result.copy();
+        }
+
+        @Override
+        public int getRecipeSize() {
+            return 10;
+        }
+
+        @Override
+        public ItemStack getRecipeOutput() {
+            return this.result;
+        }
     }
 }

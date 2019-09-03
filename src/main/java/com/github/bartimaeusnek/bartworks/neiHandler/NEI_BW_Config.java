@@ -40,11 +40,11 @@ public class NEI_BW_Config implements IConfigureNEI {
         API.hideItem(new ItemStack(ItemRegistry.TAB));
         API.hideItem(new ItemStack(FluidLoader.bioFluidBlock));
         API.hideItem(new ItemStack(ItemRegistry.bw_fake_glasses));
-        sIsAdded = false;
+        NEI_BW_Config.sIsAdded = false;
         new BW_NEI_OreHandler();
         new BW_NEI_BioVatHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BACTERIALVATBYTE));
         new BW_NEI_BioLabHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BIOLABBYTE));
-        sIsAdded = true;
+        NEI_BW_Config.sIsAdded = true;
     }
 
     @Optional.Method(modid = "NotEnoughItems")

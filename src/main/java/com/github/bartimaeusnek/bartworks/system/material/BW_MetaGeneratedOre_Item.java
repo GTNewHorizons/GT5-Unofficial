@@ -46,7 +46,7 @@ public class BW_MetaGeneratedOre_Item extends BW_ItemBlocks {
     }
 
     public String getUnlocalizedName(ItemStack aStack) {
-        return this.field_150939_a.getUnlocalizedName() + "." + getDamage(aStack);
+        return this.field_150939_a.getUnlocalizedName() + "." + this.getDamage(aStack);
     }
 
     public String getItemStackDisplayName(ItemStack aStack) {
@@ -64,7 +64,7 @@ public class BW_MetaGeneratedOre_Item extends BW_ItemBlocks {
     }
 
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side, float hitX, float hitY, float hitZ, int aMeta) {
-        short tDamage = (short) getDamage(aStack);
+        short tDamage = (short) this.getDamage(aStack);
         if (tDamage > 0) {
             if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tDamage, 3)) {
                 return false;

@@ -54,11 +54,11 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
     private static final String MGUINAME = "BW.GUI.BioLab.png";
 
     public GT_MetaTileEntity_BioLab(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, (String) null, 6, 2, MGUINAME, null, new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")/*this is topactive*/), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT")/*this is top*/), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM")));
+        super(aID, aName, aNameRegional, aTier, 1, null, 6, 2, GT_MetaTileEntity_BioLab.MGUINAME, null, new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")/*this is topactive*/), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT")/*this is top*/), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM")));
     }
 
     public GT_MetaTileEntity_BioLab(String aName, int aTier, int aAmperage, String aDescription, ITexture[][][] aTextures, String aNEIName) {
-        super(aName, aTier, aAmperage, aDescription, aTextures, 6, 2, MGUINAME, aNEIName);
+        super(aName, aTier, aAmperage, aDescription, aTextures, 6, 2, GT_MetaTileEntity_BioLab.MGUINAME, aNEIName);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
         FluidStack dnaFluid = Loader.isModLoaded("gendustry") ? FluidRegistry.getFluidStack("liquiddna", 1000) : Materials.Biomass.getFluid(1000L);
 
         if (this.getSpecialSlot() != null && this.getSpecialSlot().getItem() instanceof LabModule) {
-            int damage = getSpecialSlot().getItemDamage();
+            int damage = this.getSpecialSlot().getItemDamage();
             switch (damage) {
                 case 0:
                     if (GT_Utility.isStackValid(this.mInventory[4]) && this.mInventory[4].getItem() instanceof LabParts && this.mInventory[4].getItemDamage() == 0 && this.mInventory[4].getTagCompound() != null &&  //checks if it is a Culture
@@ -101,7 +101,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                             return super.checkRecipe(skipOC);
 
                         if (this.mTier < rTier + cultureDNABioData.getTier())
-                            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                            return GT_MetaTileEntity_BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
                         for (int i = 4; i < 8; i++) {
                             if (this.mInventory[i] != null)
@@ -116,7 +116,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         this.mOutputItems[1] = GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L);
                         this.calculateOverclockedNess(BW_Util.getMachineVoltageFromTier(rTier + cultureDNABioData.getTier()), 500);
 
-                        return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+                        return GT_MetaTileEntity_BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                     break;
                 case 1: {
@@ -133,7 +133,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                             return super.checkRecipe(skipOC);
 
                         if (this.mTier < 1 + rTier + cultureDNABioData.getTier())
-                            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                            return GT_MetaTileEntity_BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
                         for (int i = 4; i < 8; i++) {
                             if (this.mInventory[i] != null)
@@ -154,7 +154,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
 
                         this.calculateOverclockedNess(BW_Util.getMachineVoltageFromTier(1 + rTier + cultureDNABioData.getTier()), 500);
 
-                        return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+                        return GT_MetaTileEntity_BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
 
                     }
                 }
@@ -174,7 +174,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         if (cultureDNABioData == null)
                             return super.checkRecipe(skipOC);
                         if (this.mTier < 1 + rTier + cultureDNABioData.getTier())
-                            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                            return GT_MetaTileEntity_BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         for (int i = 4; i < 6; i++) {
                             if (this.mInventory[i] != null)
                                 this.mInventory[i].stackSize--;
@@ -185,7 +185,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         }
                         this.mOutputItems[1] = ItemList.Cell_Universal_Fluid.get(1L);
                         this.calculateOverclockedNess(BW_Util.getMachineVoltageFromTier(1 + rTier + cultureDNABioData.getTier()), 500);
-                        return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+                        return GT_MetaTileEntity_BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
 
                 }
@@ -202,7 +202,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         if (cultureDNABioData == null || bioCulture == null)
                             return super.checkRecipe(skipOC);
                         if (this.mTier < 3 + rTier + cultureDNABioData.getTier())
-                            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                            return GT_MetaTileEntity_BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         for (int i = 4; i < 7; i++) {
                             if (this.mInventory[i] != null)
                                 this.mInventory[i].stackSize--;
@@ -210,11 +210,11 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         this.mFluid.amount -= 1000;
                         bioCulture.setPlasmid(BioPlasmid.convertDataToPlasmid(cultureDNABioData));
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
-                            this.mOutputItems[0] = BioItemList.getPetriDish(checkForExisting(bioCulture));
+                            this.mOutputItems[0] = BioItemList.getPetriDish(this.checkForExisting(bioCulture));
                         }
                         this.mOutputItems[1] = ItemList.Cell_Universal_Fluid.get(1L);
                         this.calculateOverclockedNess(BW_Util.getMachineVoltageFromTier(3 + rTier + cultureDNABioData.getTier()), 500);
-                        return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+                        return GT_MetaTileEntity_BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                 }
                 break;
@@ -234,7 +234,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         if (cultureDNABioData == null)
                             return super.checkRecipe(skipOC);
                         if (this.mTier < 3 + rTier + cultureDNABioData.getTier())
-                            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                            return GT_MetaTileEntity_BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         for (int i = 4; i < 7; i++) {
                             if (this.mInventory[i] != null)
                                 this.mInventory[i].stackSize--;
@@ -246,7 +246,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                             this.mOutputItems[0] = BioItemList.getPetriDish(out);
                         }
                         this.calculateOverclockedNess(BW_Util.getMachineVoltageFromTier(3 + rTier + cultureDNABioData.getTier()), 500);
-                        return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+                        return GT_MetaTileEntity_BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                 }
                 break;

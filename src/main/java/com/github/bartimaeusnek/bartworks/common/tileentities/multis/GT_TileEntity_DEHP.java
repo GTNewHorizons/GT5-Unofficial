@@ -52,12 +52,12 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
 
     public GT_TileEntity_DEHP(int aID, int tier, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        mTier = (byte) tier;
+        this.mTier = (byte) tier;
     }
 
     public GT_TileEntity_DEHP(String aName, byte mTier) {
         super(aName);
-        this.mTier = (byte) mTier;
+        this.mTier = mTier;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             Class c = TileEntityNuclearReactorElectric.class;
             Field f = c.getDeclaredField("huOutputModifier");
             f.setAccessible(true);
-            nulearHeatMod = f.getFloat(f);
+            GT_TileEntity_DEHP.nulearHeatMod = f.getFloat(f);
         } catch (SecurityException | IllegalArgumentException | ExceptionInInitializerError | NullPointerException | IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -75,21 +75,21 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setByte("mTier", mTier);
-        aNBT.setByte("mMode", mMode);
+        aNBT.setByte("mTier", this.mTier);
+        aNBT.setByte("mMode", this.mMode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mTier = aNBT.getByte("mTier");
-        mMode = aNBT.getByte("mMode");
+        this.mTier = aNBT.getByte("mTier");
+        this.mMode = aNBT.getByte("mMode");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_TileEntity_DEHP(this.mName, mTier);
+        return new GT_TileEntity_DEHP(this.mName, this.mTier);
     }
 
     @Override
@@ -99,8 +99,8 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
 
     @Override
     public String[] getDescription() {
-        String[] dscSteam = {"Controller Block for the Deep Earth Heat Pump " + (mTier > 1 ? mTier : ""), "Size(WxHxD): 3x7x3", "Controller (Front middle at bottom)", "3x1x3 Base of " + getCasingBlockItem().name(), "1x3x1 " + getCasingBlockItem().name() + " pillar (Center of base)", "1x3x1 " + this.getFrameMaterial().mName + " Frame Boxes (Each pillar side and on top)", "1x Input Hatch (One of base casings)", "1x Output Hatch (One of base casings)", "1x Maintenance Hatch (One of base casings)", "1x " + GT_Values.VN[this.getMinTier()] + "+ Energy Hatch (Any bottom layer casing)", "Consumes " + GT_Values.V[mTier + 2] + "EU/t", "Has 4 Modes, use the Screwdriver to change them:", "0 Idle, 1 Steam, 2 Superheated Steam (requires Distilled Water), 3 Retract", "Explodes when it runs out of Water/Distilled Water", "Converts " + (long) (mTier * 1200 * 20) + "L/s Water(minus 10% per Maintenance Problem) to Steam", "Converts " + (long) (mTier * 600 * 20) + "L/s Distilled Water(minus 10% per Maintenance Problem) to SuperheatedSteam"};
-        String[] dscCooleant = {"Controller Block for the Deep Earth Heat Pump " + (mTier > 1 ? mTier : ""), "Size(WxHxD): 3x7x3", "Controller (Front middle at bottom)", "3x1x3 Base of " + getCasingBlockItem().name(), "1x3x1 " + getCasingBlockItem().name() + " pillar (Center of base)", "1x3x1 " + this.getFrameMaterial().mName + " Frame Boxes (Each pillar side and on top)", "1x Input Hatch (One of base casings)", "1x Output Hatch (One of base casings)", "1x Maintenance Hatch (One of base casings)", "1x " + GT_Values.VN[this.getMinTier()] + "+ Energy Hatch (Any bottom layer casing)", "Consumes " + GT_Values.V[mTier + 2] + "EU/t", "Has 4 Modes, use the Screwdriver to change them:", "0 Idle, 1 & 2 Coolant Heating Mode (no Difference between them), 3 Retract", "Explodes when it runs out of Coolant", "Heats up " + (long) (mTier * 24 * ((double) nulearHeatMod)) * 20 + "L/s Coolant(minus 10% per Maintenance Problem)"};
+        String[] dscSteam = {"Controller Block for the Deep Earth Heat Pump " + (this.mTier > 1 ? this.mTier : ""), "Size(WxHxD): 3x7x3", "Controller (Front middle at bottom)", "3x1x3 Base of " + this.getCasingBlockItem().name(), "1x3x1 " + this.getCasingBlockItem().name() + " pillar (Center of base)", "1x3x1 " + this.getFrameMaterial().mName + " Frame Boxes (Each pillar side and on top)", "1x Input Hatch (One of base casings)", "1x Output Hatch (One of base casings)", "1x Maintenance Hatch (One of base casings)", "1x " + GT_Values.VN[this.getMinTier()] + "+ Energy Hatch (Any bottom layer casing)", "Consumes " + GT_Values.V[this.mTier + 2] + "EU/t", "Has 4 Modes, use the Screwdriver to change them:", "0 Idle, 1 Steam, 2 Superheated Steam (requires Distilled Water), 3 Retract", "Explodes when it runs out of Water/Distilled Water", "Converts " + (long) (this.mTier * 1200 * 20) + "L/s Water(minus 10% per Maintenance Problem) to Steam", "Converts " + (long) (this.mTier * 600 * 20) + "L/s Distilled Water(minus 10% per Maintenance Problem) to SuperheatedSteam"};
+        String[] dscCooleant = {"Controller Block for the Deep Earth Heat Pump " + (this.mTier > 1 ? this.mTier : ""), "Size(WxHxD): 3x7x3", "Controller (Front middle at bottom)", "3x1x3 Base of " + this.getCasingBlockItem().name(), "1x3x1 " + this.getCasingBlockItem().name() + " pillar (Center of base)", "1x3x1 " + this.getFrameMaterial().mName + " Frame Boxes (Each pillar side and on top)", "1x Input Hatch (One of base casings)", "1x Output Hatch (One of base casings)", "1x Maintenance Hatch (One of base casings)", "1x " + GT_Values.VN[this.getMinTier()] + "+ Energy Hatch (Any bottom layer casing)", "Consumes " + GT_Values.V[this.mTier + 2] + "EU/t", "Has 4 Modes, use the Screwdriver to change them:", "0 Idle, 1 & 2 Coolant Heating Mode (no Difference between them), 3 Retract", "Explodes when it runs out of Coolant", "Heats up " + (long) (this.mTier * 24 * ((double) GT_TileEntity_DEHP.nulearHeatMod)) * 20 + "L/s Coolant(minus 10% per Maintenance Problem)"};
         return ConfigHandler.DEHPDirectSteam ? dscSteam : dscCooleant;
     }
 
@@ -121,7 +121,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
 
     @Override
     protected int getMinTier() {
-        return 2 + mTier;
+        return 2 + this.mTier;
     }
 
     @Override
@@ -153,7 +153,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
 
     @Override
     protected boolean workingUpward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
-        if (mMode != 3) {
+        if (this.mMode != 3) {
             this.isPickingPipes = false;
             try {
                 Field workState = this.getClass().getField("workState");
@@ -169,15 +169,15 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (this.getBaseMetaTileEntity().getWorld().isRemote)
             return;
-        ++mMode;
-        if (mMode >= 4)
-            mMode = 0;
-        GT_Utility.sendChatToPlayer(aPlayer, "Mode: " + mMode);
+        ++this.mMode;
+        if (this.mMode >= 4)
+            this.mMode = 0;
+        GT_Utility.sendChatToPlayer(aPlayer, "Mode: " + this.mMode);
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
     }
 
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
-        if (mMode == 3) {
+        if (this.mMode == 3) {
             this.isPickingPipes = true;
             try {
                 Field workState = this.getClass().getSuperclass().getDeclaredField("workState");
@@ -191,40 +191,40 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             if (this.waitForPipes()) {
                 return false;
             } else {
-                if (mMode == 0)
-                    mMode = 1;
+                if (this.mMode == 0)
+                    this.mMode = 1;
                 if (ConfigHandler.DEHPDirectSteam) {
-                    if (mMode == 1) {
-                        long steamProduced = (mTier * 600 * 2L * this.mEfficiency / 10000L);
+                    if (this.mMode == 1) {
+                        long steamProduced = (this.mTier * 600 * 2L * this.mEfficiency / 10000L);
                         long waterConsume = ((steamProduced + 160) / 160);
 
-                        if (getWaterFromHatches(false) - waterConsume > 0) {
-                            consumeFluid(FluidRegistry.WATER, waterConsume);
-                            addOutput(GT_ModHandler.getSteam(steamProduced));
+                        if (this.getWaterFromHatches(false) - waterConsume > 0) {
+                            this.consumeFluid(FluidRegistry.WATER, waterConsume);
+                            this.addOutput(GT_ModHandler.getSteam(steamProduced));
                         } else {
-                            explodeMultiblock();
+                            this.explodeMultiblock();
                             return false;
                         }
-                    } else if (mMode == 2) {
-                        long steamProduced = (mTier * 300 * 2L * this.mEfficiency / 10000L);
+                    } else if (this.mMode == 2) {
+                        long steamProduced = (this.mTier * 300 * 2L * this.mEfficiency / 10000L);
                         long waterConsume = ((steamProduced + 160) / 160);
 
-                        if (getWaterFromHatches(true) - waterConsume > 0) {
-                            consumeFluid(GT_ModHandler.getDistilledWater(1).getFluid(), waterConsume);
-                            addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", (int) steamProduced));
+                        if (this.getWaterFromHatches(true) - waterConsume > 0) {
+                            this.consumeFluid(GT_ModHandler.getDistilledWater(1).getFluid(), waterConsume);
+                            this.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", (int) steamProduced));
                         } else {
-                            explodeMultiblock();
+                            this.explodeMultiblock();
                             return false;
                         }
                     }
                 } else {
-                    if (mMode == 1 || mMode == 2) {
-                        long coolantConverted = (long) (mTier * 24 * ((double) nulearHeatMod) * this.mEfficiency / 10000L);
-                        if (getFluidFromHatches(FluidRegistry.getFluid("ic2coolant")) - coolantConverted > 0) {
-                            consumeFluid(FluidRegistry.getFluid("ic2coolant"), coolantConverted);
-                            addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
+                    if (this.mMode == 1 || this.mMode == 2) {
+                        long coolantConverted = (long) (this.mTier * 24 * ((double) GT_TileEntity_DEHP.nulearHeatMod) * this.mEfficiency / 10000L);
+                        if (this.getFluidFromHatches(FluidRegistry.getFluid("ic2coolant")) - coolantConverted > 0) {
+                            this.consumeFluid(FluidRegistry.getFluid("ic2coolant"), coolantConverted);
+                            this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
                         } else {
-                            explodeMultiblock();
+                            this.explodeMultiblock();
                             return false;
                         }
                     }
@@ -249,11 +249,8 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
                 }
             }
 
-            if (tmp[tmp.length - 1] <= 0) {
-                return true;
-            }
+            return tmp[tmp.length - 1] <= 0;
 
-            return false;
         }
 
         long tmp = ammount;
@@ -269,14 +266,14 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     @Override
     protected void setElectricityStats() {
         try {
-            this.mEUt = isPickingPipes ? 60 : Math.toIntExact(GT_Values.V[getMinTier()]);
+            this.mEUt = this.isPickingPipes ? 60 : Math.toIntExact(GT_Values.V[this.getMinTier()]);
         } catch (ArithmeticException e) {
             e.printStackTrace();
             this.mEUt = Integer.MAX_VALUE - 7;
         }
         this.mProgresstime = 0;
         this.mMaxProgresstime = 1;
-        this.mEfficiency = this.getCurrentEfficiency((ItemStack) null);
+        this.mEfficiency = this.getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
     }
 }

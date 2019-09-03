@@ -45,15 +45,15 @@ import java.util.List;
 import java.util.Set;
 
 public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
-    private static Set effective = Sets.newHashSet(Blocks.web);
-    public double mCharge;
-    public double mTransfer;
+    private static final Set effective = Sets.newHashSet(Blocks.web);
+    private final double mCharge;
+    private final double mTransfer;
     public int mTier;
     @SideOnly(Side.CLIENT)
     private IIcon icon;
 
     public GT_Teslastaff_Item() {
-        super(0, ToolMaterial.GOLD, effective);
+        super(0, Item.ToolMaterial.GOLD, GT_Teslastaff_Item.effective);
         this.setCreativeTab(MainMod.GT2);
         this.setNoRepair();
         this.mCharge = 10000000D;
@@ -65,15 +65,15 @@ public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
     }
 
     @Override
-    public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         aList.add(StatCollector.translateToLocal("tooltip.teslastaff.0.name"));
         aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 
     public boolean hitEntity(ItemStack aStack, EntityLivingBase aTarget, EntityLivingBase aPlayer) {
         if (aTarget instanceof EntityLiving && ElectricItem.manager.canUse(aStack, 9000000)) {
-            final EntityLiving tTarget = (EntityLiving) aTarget;
-            final EntityLivingBase tPlayer = (EntityLivingBase) aPlayer;
+            EntityLiving tTarget = (EntityLiving) aTarget;
+            EntityLivingBase tPlayer = aPlayer;
             ElectricItem.manager.use(aStack, 9000000, tPlayer);
             for (int i = 1; i < 5; ++i) {
                 if (tTarget.getEquipmentInSlot(i) != null && tTarget.getEquipmentInSlot(i).getItem() instanceof IElectricItem) {
@@ -87,13 +87,13 @@ public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List itemList) {
         ItemStack itemStack = new ItemStack(this, 1);
-        if (getChargedItem(itemStack) == this) {
+        if (this.getChargedItem(itemStack) == this) {
             ItemStack charged = new ItemStack(this, 1);
             ElectricItem.manager.charge(charged, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
             itemList.add(charged);
         }
-        if (getEmptyItem(itemStack) == this) {
-            itemList.add(new ItemStack(this, 1, getMaxDamage()));
+        if (this.getEmptyItem(itemStack) == this) {
+            itemList.add(new ItemStack(this, 1, this.getMaxDamage()));
         }
     }
 

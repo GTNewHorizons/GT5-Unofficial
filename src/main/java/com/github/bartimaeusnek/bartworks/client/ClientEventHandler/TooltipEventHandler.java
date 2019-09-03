@@ -84,14 +84,14 @@ public class TooltipEventHandler {
                 }
             }
 
-            final Block BLOCK = Block.getBlockFromItem(event.itemStack.getItem());
+            Block BLOCK = Block.getBlockFromItem(event.itemStack.getItem());
             if (BLOCK != null && BLOCK != Blocks.air) {
                 if (BLOCK instanceof BW_Blocks) {
                     TooltipCache.put(event.itemStack, tooAdd);
                     return;
                 }
-                final BioVatLogicAdder.BlockMetaPair PAIR = new BioVatLogicAdder.BlockMetaPair(BLOCK, (byte) event.itemStack.getItemDamage());
-                final HashMap<BioVatLogicAdder.BlockMetaPair, Byte> GLASSMAP = BioVatLogicAdder.BioVatGlass.getGlassMap();
+                BioVatLogicAdder.BlockMetaPair PAIR = new BioVatLogicAdder.BlockMetaPair(BLOCK, (byte) event.itemStack.getItemDamage());
+                HashMap<BioVatLogicAdder.BlockMetaPair, Byte> GLASSMAP = BioVatLogicAdder.BioVatGlass.getGlassMap();
                 if (GLASSMAP.containsKey(PAIR)) {
                     int tier = GLASSMAP.get(PAIR);
                     tooAdd.add(

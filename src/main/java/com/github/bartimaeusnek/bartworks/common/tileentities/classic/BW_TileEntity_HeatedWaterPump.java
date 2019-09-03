@@ -31,7 +31,6 @@ import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -46,63 +45,63 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     public static final Fluid WATER = FluidRegistry.WATER;
     public ItemStack fuelstack;
     public FluidStack outputstack = new FluidStack(FluidRegistry.WATER, 0);
-    public int fuel = 0;
-    public byte tick = 0;
-    public int maxfuel = 0;
+    public int fuel;
+    public byte tick;
+    public int maxfuel;
     public ItemStack fakestack = new ItemStack(Blocks.water);
 
     @Override
     public void writeToNBT(NBTTagCompound p_145841_1_) {
         NBTTagCompound subItemStack = new NBTTagCompound();
-        if (fuelstack == null)
+        if (this.fuelstack == null)
             p_145841_1_.setTag("ItemStack", subItemStack);
         else {
-            fuelstack.writeToNBT(subItemStack);
+            this.fuelstack.writeToNBT(subItemStack);
             p_145841_1_.setTag("ItemStack", subItemStack);
         }
         NBTTagCompound subFluidStack = new NBTTagCompound();
-        outputstack.writeToNBT(subFluidStack);
+        this.outputstack.writeToNBT(subFluidStack);
         p_145841_1_.setTag("FluidStack", subFluidStack);
-        p_145841_1_.setInteger("fuel", fuel);
-        p_145841_1_.setInteger("maxfuel", maxfuel);
-        p_145841_1_.setByte("tick", tick);
+        p_145841_1_.setInteger("fuel", this.fuel);
+        p_145841_1_.setInteger("maxfuel", this.maxfuel);
+        p_145841_1_.setByte("tick", this.tick);
         super.writeToNBT(p_145841_1_);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound p_145839_1_) {
-        tick = p_145839_1_.getByte("tick");
-        fuel = p_145839_1_.getInteger("fuel");
-        maxfuel = p_145839_1_.getInteger("maxfuel");
-        outputstack = FluidStack.loadFluidStackFromNBT(p_145839_1_.getCompoundTag("FluidStack"));
+        this.tick = p_145839_1_.getByte("tick");
+        this.fuel = p_145839_1_.getInteger("fuel");
+        this.maxfuel = p_145839_1_.getInteger("maxfuel");
+        this.outputstack = FluidStack.loadFluidStackFromNBT(p_145839_1_.getCompoundTag("FluidStack"));
         if (!p_145839_1_.getCompoundTag("ItemStack").equals(new NBTTagCompound()))
-            fuelstack = ItemStack.loadItemStackFromNBT(p_145839_1_.getCompoundTag("ItemStack"));
+            this.fuelstack = ItemStack.loadItemStackFromNBT(p_145839_1_.getCompoundTag("ItemStack"));
         super.readFromNBT(p_145839_1_);
     }
 
     @Override
     public void updateEntity() {
-        if (worldObj.isRemote || ((fuelstack == null || fuelstack.stackSize <= 0) && fuel <= 0) || (tick == 0 && worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord) == Blocks.air)) {
+        if (this.worldObj.isRemote || ((this.fuelstack == null || this.fuelstack.stackSize <= 0) && this.fuel <= 0) || (this.tick == 0 && this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord) == Blocks.air)) {
             return;
         }
 
-        if (fuel < 0)
-            fuel = 0;
+        if (this.fuel < 0)
+            this.fuel = 0;
 
-        if (fuelstack != null && fuel == 0) {
-            fuel = maxfuel = TileEntityFurnace.getItemBurnTime(fuelstack);
-            --fuelstack.stackSize;
+        if (this.fuelstack != null && this.fuel == 0) {
+            this.fuel = this.maxfuel = TileEntityFurnace.getItemBurnTime(this.fuelstack);
+            --this.fuelstack.stackSize;
             if (this.fuelstack.stackSize <= 0)
                 this.fuelstack = null;
         }
 
-        if (fuel > 0) {
-            ++tick;
-            --fuel;
-            if (tick % 20 == 0) {
-                if (outputstack.amount <= (8000 - ConfigHandler.mbWaterperSec))
-                    outputstack.amount += ConfigHandler.mbWaterperSec;
-                tick = 0;
+        if (this.fuel > 0) {
+            ++this.tick;
+            --this.fuel;
+            if (this.tick % 20 == 0) {
+                if (this.outputstack.amount <= (8000 - ConfigHandler.mbWaterperSec))
+                    this.outputstack.amount += ConfigHandler.mbWaterperSec;
+                this.tick = 0;
             }
         }
     }
@@ -130,17 +129,17 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     @Override
     public ItemStack getStackInSlot(int p_70301_1_) {
         if (p_70301_1_ == 0)
-            return fuelstack;
+            return this.fuelstack;
         else
-            return fakestack;
+            return this.fakestack;
     }
 
     @Override
     public ItemStack decrStackSize(int slot, int ammount) {
-        if (slot != FUELSLOT || fuelstack == null || ammount > fuelstack.stackSize)
+        if (slot != BW_TileEntity_HeatedWaterPump.FUELSLOT || this.fuelstack == null || ammount > this.fuelstack.stackSize)
             return null;
 
-        return fuelstack.splitStack(ammount);
+        return this.fuelstack.splitStack(ammount);
     }
 
     @Override
@@ -150,10 +149,10 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
 
     @Override
     public void setInventorySlotContents(int slot, ItemStack p_70299_2_) {
-        if (slot == FUELSLOT)
-            fuelstack = p_70299_2_;
+        if (slot == BW_TileEntity_HeatedWaterPump.FUELSLOT)
+            this.fuelstack = p_70299_2_;
         else
-            fakestack = p_70299_2_;
+            this.fakestack = p_70299_2_;
     }
 
     @Override
@@ -187,17 +186,17 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
 
     @Override
     public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-        return TileEntityFurnace.getItemBurnTime(p_94041_2_) > 0 && p_94041_1_ == FUELSLOT;
+        return TileEntityFurnace.getItemBurnTime(p_94041_2_) > 0 && p_94041_1_ == BW_TileEntity_HeatedWaterPump.FUELSLOT;
     }
 
     @Override
     public FluidStack getFluid() {
-        return outputstack.amount > 0 ? outputstack : null;
+        return this.outputstack.amount > 0 ? this.outputstack : null;
     }
 
     @Override
     public int getFluidAmount() {
-        return outputstack.amount;
+        return this.outputstack.amount;
     }
 
     @Override
@@ -218,14 +217,14 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
         int actualdrain = maxDrain;
-        if (actualdrain > outputstack.amount)
-            actualdrain = outputstack.amount;
-        FluidStack ret = new FluidStack(WATER, actualdrain);
+        if (actualdrain > this.outputstack.amount)
+            actualdrain = this.outputstack.amount;
+        FluidStack ret = new FluidStack(BW_TileEntity_HeatedWaterPump.WATER, actualdrain);
         if (ret.amount == 0)
             ret = null;
         if (doDrain) {
-            outputstack.amount -= actualdrain;
-            FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(outputstack, this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord, this, actualdrain));
+            this.outputstack.amount -= actualdrain;
+            FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(this.outputstack, this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord, this, actualdrain));
         }
         return ret;
     }
@@ -242,14 +241,14 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        if (resource != null && resource.getFluid() == WATER && drain(resource.amount, false) != null)
-            return drain(resource.amount, doDrain);
+        if (resource != null && resource.getFluid() == BW_TileEntity_HeatedWaterPump.WATER && this.drain(resource.amount, false) != null)
+            return this.drain(resource.amount, doDrain);
         return null;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        return drain(maxDrain, doDrain);
+        return this.drain(maxDrain, doDrain);
     }
 
     @Override
@@ -259,12 +258,12 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
 
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        return fluid == null || fluid == WATER;
+        return fluid == null || fluid == BW_TileEntity_HeatedWaterPump.WATER;
     }
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[]{getInfo()};
+        return new FluidTankInfo[]{this.getInfo()};
     }
 
     @Override
@@ -274,10 +273,10 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
 
     @Override
     public void registerBlockIcons(IIconRegister par1IconRegister) {
-        texture[ForgeDirection.UP.ordinal()] = par1IconRegister.registerIcon(MainMod.MOD_ID + ":heatedWaterPumpTop");
-        texture[ForgeDirection.DOWN.ordinal()] = par1IconRegister.registerIcon(MainMod.MOD_ID + ":heatedWaterPumpDown");
+        ITileHasDifferentTextureSides.texture[ForgeDirection.UP.ordinal()] = par1IconRegister.registerIcon(MainMod.MOD_ID + ":heatedWaterPumpTop");
+        ITileHasDifferentTextureSides.texture[ForgeDirection.DOWN.ordinal()] = par1IconRegister.registerIcon(MainMod.MOD_ID + ":heatedWaterPumpDown");
         for (int i = 2; i < 7; i++) {
-            texture[i] = par1IconRegister.registerIcon(MainMod.MOD_ID + ":heatedWaterPumpSide");
+            ITileHasDifferentTextureSides.texture[i] = par1IconRegister.registerIcon(MainMod.MOD_ID + ":heatedWaterPumpSide");
         }
     }
 }

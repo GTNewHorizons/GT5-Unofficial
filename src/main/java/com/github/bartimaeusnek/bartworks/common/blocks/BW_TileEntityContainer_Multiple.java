@@ -49,9 +49,9 @@ import java.util.List;
 
 public class BW_TileEntityContainer_Multiple extends BlockContainer {
 
-    final protected String[] textureNames;
-    final protected String name;
-    final Class<? extends TileEntity>[] tileEntityArray;
+    protected final String[] textureNames;
+    protected final String name;
+    protected final Class<? extends TileEntity>[] tileEntityArray;
     @SideOnly(Side.CLIENT)
     protected IIcon[] texture;
 
@@ -59,8 +59,8 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
         super(p_i45386_1_);
         this.setHardness(15.0F);
         this.setResistance(30.0F);
-        tileEntityArray = tileEntity;
-        name = blockName;
+        this.tileEntityArray = tileEntity;
+        this.name = blockName;
         this.textureNames = textureNames;
         this.setCreativeTab(tabs);
         this.setBlockName(blockName);
@@ -73,7 +73,7 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
             return true;
         }
         if (!player.isSneaking()) {
-            final TileEntity tile = worldObj.getTileEntity(x, y, z);
+            TileEntity tile = worldObj.getTileEntity(x, y, z);
             if (tile instanceof IHasGui) {
                 return worldObj.isRemote || IC2.platform.launchGui(player, (IHasGui) tile);
             } else if (tile instanceof ITileWithGUI) {
@@ -84,14 +84,14 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
         return false;
     }
 
-    public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack itemStack) {
-        final TileEntity tile = world.getTileEntity(x, y, z);
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
+        TileEntity tile = world.getTileEntity(x, y, z);
         if (tile instanceof IWrenchable && itemStack != null) {
-            final IWrenchable tile2 = (IWrenchable) tile;
+            IWrenchable tile2 = (IWrenchable) tile;
             int meta = itemStack.getItemDamage();
             world.setBlockMetadataWithNotify(x, y, z, meta, 2);
             if (entity != null) {
-                final int face = MathHelper.floor_double(entity.rotationYaw * 4.0f / 360.0f + 0.5) & 0x3;
+                int face = MathHelper.floor_double(entity.rotationYaw * 4.0f / 360.0f + 0.5) & 0x3;
                 switch (face) {
                     case 0:
                         tile2.setFacing((short) 2);
@@ -111,14 +111,14 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
     }
 
     @Override
-    public int damageDropped(final int meta) {
+    public int damageDropped(int meta) {
         return meta;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {
-        for (int i = 0; i < textureNames.length; i++) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+        for (int i = 0; i < this.textureNames.length; i++) {
             list.add(new ItemStack(item, 1, i));
         }
     }
@@ -126,15 +126,15 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return meta < texture.length ? texture[meta] : texture[0];
+        return meta < this.texture.length ? this.texture[meta] : this.texture[0];
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister) {
-        texture = new IIcon[textureNames.length];
-        for (int i = 0; i < textureNames.length; i++) {
-            texture[i] = par1IconRegister.registerIcon(textureNames[i]);
+        this.texture = new IIcon[this.textureNames.length];
+        for (int i = 0; i < this.textureNames.length; i++) {
+            this.texture[i] = par1IconRegister.registerIcon(this.textureNames[i]);
         }
     }
 

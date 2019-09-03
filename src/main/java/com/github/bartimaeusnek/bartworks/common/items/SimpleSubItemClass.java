@@ -49,9 +49,9 @@ public class SimpleSubItemClass extends Item {
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
-        itemIcon = new IIcon[tex.length];
-        for (int i = 0; i < tex.length; i++) {
-            itemIcon[i] = iconRegister.registerIcon(MainMod.MOD_ID + ":" + tex[i]);
+        this.itemIcon = new IIcon[this.tex.length];
+        for (int i = 0; i < this.tex.length; i++) {
+            this.itemIcon[i] = iconRegister.registerIcon(MainMod.MOD_ID + ":" + this.tex[i]);
         }
 
     }
@@ -64,21 +64,21 @@ public class SimpleSubItemClass extends Item {
 
     @Override
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_) {
-        for (int i = 0; i < tex.length; i++) {
+        for (int i = 0; i < this.tex.length; i++) {
             p_150895_3_.add(new ItemStack(p_150895_1_, 1, i));
         }
     }
 
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int p_77617_1_) {
-        if (p_77617_1_ < tex.length)
+        if (p_77617_1_ < this.tex.length)
             return this.itemIcon[p_77617_1_];
         else
             return this.itemIcon[0];
     }
 
     public String getUnlocalizedName(ItemStack p_77667_1_) {
-        if (p_77667_1_.getItemDamage() < tex.length)
+        if (p_77667_1_.getItemDamage() < this.tex.length)
             return "item." + this.tex[p_77667_1_.getItemDamage()].replaceAll("/", ".");
         else
             return "WrongDamageItemDestroyIt";

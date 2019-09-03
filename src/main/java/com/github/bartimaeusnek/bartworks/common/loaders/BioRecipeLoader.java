@@ -312,6 +312,16 @@ public class BioRecipeLoader extends RecipeLoader {
                     BW_Util.STANDART
             );
 
+            BWRecipes.instance.addBioLabRecipeIncubation(
+                    new ItemStack(Blocks.dirt),
+                    BioCultureLoader.anaerobicOil,
+                    new int[]{100},
+                    new FluidStack[]{fluidStack},
+                    1500,
+                    BW_Util.getMachineVoltageFromTier(4),
+                    BW_Util.STANDART
+            );
+
             BWRecipes.instance.addBacterialVatRecipe(
                     new ItemStack[]{new ItemStack(Items.sugar, 64)},
                     new FluidStack[]{new FluidStack(fluidStack, 100)},
@@ -357,5 +367,17 @@ public class BioRecipeLoader extends RecipeLoader {
                 400,
                 BW_Util.getMachineVoltageFromTier(1)
         );
+
+        BWRecipes.instance.addBacterialVatRecipe(
+                null,
+                new FluidStack[]{Materials.FermentedBiomass.getFluid(10000)},
+                BioCultureLoader.anaerobicOil,
+                new FluidStack[]{new FluidStack(FluidLoader.fulvicAcid,1000)},
+                2748,
+                BW_Util.getMachineVoltageFromTier(3)
+        );
+        GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(10),new FluidStack(FluidLoader.fulvicAcid,1000),new FluidStack(FluidLoader.heatedfulvicAcid,1000),90, BW_Util.getMachineVoltageFromTier(2));
+        GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(10),null,new FluidStack(FluidLoader.heatedfulvicAcid,1000),new FluidStack(FluidLoader.Kerogen,1000),null,75, BW_Util.getMachineVoltageFromTier(2));
+        GT_Values.RA.addPyrolyseRecipe(Materials.Wood.getDust(10),new FluidStack(FluidLoader.Kerogen,1000),10,null,Materials.Oil.getFluid(1000),105, BW_Util.getMachineVoltageFromTier(3));
     }
 }

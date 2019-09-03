@@ -44,10 +44,10 @@ import java.util.List;
 
 public class BW_ItemBlocks extends ItemBlock {
 
-    protected final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
-    protected final String mNoTileEntityToolTip = GT_LanguageManager.addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
+    private final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
+    private final String mNoTileEntityToolTip = GT_LanguageManager.addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
-    public BW_ItemBlocks(final Block par1) {
+    public BW_ItemBlocks(Block par1) {
         super(par1);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
@@ -55,18 +55,18 @@ public class BW_ItemBlocks extends ItemBlock {
     }
 
     @Override
-    public int getMetadata(final int aMeta) {
+    public int getMetadata(int aMeta) {
         return aMeta;
     }
 
     @Override
-    public String getUnlocalizedName(final ItemStack aStack) {
+    public String getUnlocalizedName(ItemStack aStack) {
         return this.field_150939_a.getUnlocalizedName() + "." + this.getDamage(aStack);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         if (this.field_150939_a instanceof BW_GlasBlocks)
             aList.add(StatCollector.translateToLocal("tooltip.glas.0.name") + " " + BW_ColorUtil.getColorForTier(BW_Util.getTierFromGlasMeta(aStack.getItemDamage())) + GT_Values.VN[BW_Util.getTierFromGlasMeta(aStack.getItemDamage())]);
         if (this.field_150939_a instanceof ITileAddsInformation) {
@@ -90,7 +90,7 @@ public class BW_ItemBlocks extends ItemBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        return getIcon(stack, renderPass);
+        return this.getIcon(stack, renderPass);
     }
 
     @Override

@@ -61,7 +61,7 @@ public class RadioHatchCompat implements Runnable {
     private static Object rod;
     private static Object longRod;
 
-    public static HashSet TranslateSet = new HashSet();
+    public static HashSet<String> TranslateSet = new HashSet<>();
 
     static{
         try {
@@ -89,7 +89,7 @@ public class RadioHatchCompat implements Runnable {
             RadioHatchCompat.localizedName.setAccessible(true);
             RadioHatchCompat.unlocalizedName.setAccessible(true);
 
-            Object[] arr = enu.getEnumConstants();
+            Object[] arr = RadioHatchCompat.enu.getEnumConstants();
             for (Object o : arr){
                 if (RadioHatchCompat.rod != null && RadioHatchCompat.longRod != null)
                     break;
@@ -110,13 +110,13 @@ public class RadioHatchCompat implements Runnable {
         try {
             Class rodclass = Class.forName("gtPlusPlus.core.item.base.rods.BaseItemRod");
             Class longrodclass = Class.forName("gtPlusPlus.core.item.base.rods.BaseItemRodLong");
-            Constructor c1 = rodclass.getConstructor(RadioHatchCompat.materialClass);
-            Constructor c2 = longrodclass.getConstructor(RadioHatchCompat.materialClass);
+            Constructor<? extends Item> c1 = rodclass.getConstructor(RadioHatchCompat.materialClass);
+            Constructor<? extends Item> c2 = longrodclass.getConstructor(RadioHatchCompat.materialClass);
             Field cOwners = GameData.class.getDeclaredField("customOwners");
             cOwners.setAccessible(true);
             Field map = RegistryNamespaced.class.getDeclaredField("field_148758_b");
             map.setAccessible(true);
-            Map<Item,String> UniqueIdentifierMap = (Map) map.get(GameData.getItemRegistry());
+            Map<Item,String> UniqueIdentifierMap = (Map<Item, String>) map.get(GameData.getItemRegistry());
 
             Map<GameRegistry.UniqueIdentifier, ModContainer> ownerItems = (Map<GameRegistry.UniqueIdentifier, ModContainer>) cOwners.get(null);
             ModContainer gtpp = null;
@@ -135,7 +135,7 @@ public class RadioHatchCompat implements Runnable {
                 if (RadioHatchCompat.isRadioactive.getBoolean(mats)) {
 
                     if (OreDictionary.getOres("stick" + RadioHatchCompat.unlocalizedName.get(mats)).isEmpty()) {
-                        Item it = (Item) c1.newInstance(mats);
+                        Item it = c1.newInstance(mats);
                         UniqueIdentifierMap.replace(it,"miscutils:"+it.getUnlocalizedName());
                         GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(it);
                         ownerItems.replace(ui,bartworks,gtpp);
@@ -147,7 +147,7 @@ public class RadioHatchCompat implements Runnable {
                         DebugLog.log("Generate: " + RadioHatchCompat.rod + RadioHatchCompat.unlocalizedName.get(mats));
                     }
                     if (OreDictionary.getOres("stickLong" + RadioHatchCompat.unlocalizedName.get(mats)).isEmpty()) {
-                        Item it2 = (Item) c2.newInstance(mats);
+                        Item it2 = c2.newInstance(mats);
                         UniqueIdentifierMap.replace(it2,"miscutils:"+it2.getUnlocalizedName());
                         GameRegistry.UniqueIdentifier ui2 = GameRegistry.findUniqueIdentifierFor(it2);
                         ownerItems.replace(ui2,bartworks,gtpp);
@@ -212,7 +212,7 @@ public class RadioHatchCompat implements Runnable {
                     elements.add(RadioHatchCompat.stackMaterial.get(materialStack));
             }
             while (!toCheck.isEmpty()){
-                elements.addAll(getElemets(toCheck.poll()));
+                elements.addAll(GTPPRadAdapter.getElemets(toCheck.poll()));
             }
             return elements;
         }

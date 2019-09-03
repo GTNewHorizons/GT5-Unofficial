@@ -51,36 +51,36 @@ import java.util.List;
 import java.util.Set;
 
 public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
-    public static Set mineableBlocks = Sets.newHashSet(Blocks.stone, Blocks.cobblestone, Blocks.sand, Blocks.clay);
-    public int mCharge;
-    public int mTransfer;
+    private static Set mineableBlocks = Sets.newHashSet(Blocks.stone, Blocks.cobblestone, Blocks.sand, Blocks.clay);
+    private final int mCharge;
+    private final int mTransfer;
     public int mTier;
     @SideOnly(Side.CLIENT)
     private IIcon icon;
-    private int multi;
+    private final int multi;
 
     public GT_Rockcutter_Item(int aTier) {
-        super(2 * aTier, ToolMaterial.EMERALD, mineableBlocks);
+        super(2 * aTier, Item.ToolMaterial.EMERALD, GT_Rockcutter_Item.mineableBlocks);
         this.mTier = aTier;
-        multi = (int) Math.pow(10, (mTier - 1));
-        this.mineableBlocks = new HashSet();
+        this.multi = (int) Math.pow(10, (this.mTier - 1));
+        GT_Rockcutter_Item.mineableBlocks = new HashSet();
         this.maxStackSize = 1;
-        this.mCharge = 10000 * multi;
-        this.mTransfer = (int) GT_Values.V[mTier];
-        this.efficiencyOnProperMaterial = 2.0f * mTier;
+        this.mCharge = 10000 * this.multi;
+        this.mTransfer = (int) GT_Values.V[this.mTier];
+        this.efficiencyOnProperMaterial = 2.0f * this.mTier;
         this.setCreativeTab(MainMod.GT2);
-        this.setMaxDamage(27 + 10 * multi);
+        this.setMaxDamage(27 + 10 * this.multi);
         this.setNoRepair();
-        this.setUnlocalizedName("GT_Rockcutter_Item_" + GT_Values.VN[mTier]);
+        this.setUnlocalizedName("GT_Rockcutter_Item_" + GT_Values.VN[this.mTier]);
     }
 
-    public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         aList.add(StatCollector.translateToLocal("tooltip.bw.tier.name") + " " + GT_Values.VN[this.mTier]);
         aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 
     public void onUpdate(ItemStack aStack, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {
-        if (!ElectricItem.manager.canUse(aStack, 500 * multi)) {
+        if (!ElectricItem.manager.canUse(aStack, 500 * this.multi)) {
             if (aStack.isItemEnchanted()) {
                 aStack.getTagCompound().removeTag("ench");
             }
@@ -94,10 +94,10 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
         return false;
     }
 
-    public boolean onBlockDestroyed(final ItemStack var1, final World var2, final Block var3, final int var4, final int var5, final int var6, final EntityLivingBase var7) {
+    public boolean onBlockDestroyed(ItemStack var1, World var2, Block var3, int var4, int var5, int var6, EntityLivingBase var7) {
         ElectricItem.manager.use(var1, 0, var7);
-        if (ElectricItem.manager.canUse(var1, 500 * multi)) {
-            ElectricItem.manager.use(var1, 500 * multi, var7);
+        if (ElectricItem.manager.canUse(var1, 500 * this.multi)) {
+            ElectricItem.manager.use(var1, 500 * this.multi, var7);
         } else {
             ElectricItem.manager.discharge(var1, Integer.MAX_VALUE, Integer.MAX_VALUE, true, true, false);
         }
@@ -106,19 +106,19 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
 
     @Override
     public boolean canHarvestBlock(Block par1Block, ItemStack itemStack) {
-        return par1Block.getMaterial().equals(Material.glass) || par1Block.getMaterial().equals(Material.clay) || par1Block.getMaterial().equals(Material.packedIce) || par1Block.getMaterial().equals(Material.ice) || par1Block.getMaterial().equals(Material.sand) || par1Block.getMaterial().equals(Material.ground) || par1Block.getMaterial().equals(Material.rock) || this.mineableBlocks.contains(par1Block);
+        return par1Block.getMaterial().equals(Material.glass) || par1Block.getMaterial().equals(Material.clay) || par1Block.getMaterial().equals(Material.packedIce) || par1Block.getMaterial().equals(Material.ice) || par1Block.getMaterial().equals(Material.sand) || par1Block.getMaterial().equals(Material.ground) || par1Block.getMaterial().equals(Material.rock) || mineableBlocks.contains(par1Block);
     }
 
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List itemList) {
         ItemStack itemStack = new ItemStack(this, 1);
-        if (getChargedItem(itemStack) == this) {
+        if (this.getChargedItem(itemStack) == this) {
             ItemStack charged = new ItemStack(this, 1);
             ElectricItem.manager.charge(charged, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
             itemList.add(charged);
         }
-        if (getEmptyItem(itemStack) == this) {
-            itemList.add(new ItemStack(this, 1, getMaxDamage()));
+        if (this.getEmptyItem(itemStack) == this) {
+            itemList.add(new ItemStack(this, 1, this.getMaxDamage()));
         }
     }
 

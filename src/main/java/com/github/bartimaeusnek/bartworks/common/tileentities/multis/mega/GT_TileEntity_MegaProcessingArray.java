@@ -40,8 +40,8 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Basi
 
 public class GT_TileEntity_MegaProcessingArray extends GT_MetaTileEntity_ProcessingArray {
     private GT_Recipe mLastRecipe;
-    private int tTier = 0;
-    private int mMult = 0;
+    private int tTier;
+    private int mMult;
     private String mMachine = "";
     private GT_MetaTileEntity_Hatch_InputBus machineBus;
     public GT_TileEntity_MegaProcessingArray(int aID, String aName, String aNameRegional) {
@@ -53,77 +53,77 @@ public class GT_TileEntity_MegaProcessingArray extends GT_MetaTileEntity_Process
     }
 
     public boolean checkRecipe(ItemStack aStack) {
-        if (!isCorrectMachinePart(machineBus.mInventory[0])) {
+        if (!this.isCorrectMachinePart(this.machineBus.mInventory[0])) {
             return false;
         }
 
-        GT_Recipe.GT_Recipe_Map map = getRecipeMap();
+        GT_Recipe.GT_Recipe_Map map = this.getRecipeMap();
         if (map == null) return false;
-        ArrayList<ItemStack> tInputList = getStoredInputs();
+        ArrayList<ItemStack> tInputList = this.getStoredInputs();
 
-        if (mInventory[1].getUnlocalizedName().endsWith("10")) {
-            tTier = 9;
-            mMult = 2;//u need 4x less machines and they will use 4x less power
-        } else if (mInventory[1].getUnlocalizedName().endsWith("11")) {
-            tTier = 9;
-            mMult = 4;//u need 16x less machines and they will use 16x less power
-        } else if (mInventory[1].getUnlocalizedName().endsWith("12") ||
-                mInventory[1].getUnlocalizedName().endsWith("13") ||
-                mInventory[1].getUnlocalizedName().endsWith("14") ||
-                mInventory[1].getUnlocalizedName().endsWith("15")) {
-            tTier = 9;
-            mMult = 6;//u need 64x less machines and they will use 64x less power
-        } else if (mInventory[1].getUnlocalizedName().endsWith("1")) {
-            tTier = 1;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("2")) {
-            tTier = 2;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("3")) {
-            tTier = 3;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("4")) {
-            tTier = 4;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("5")) {
-            tTier = 5;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("6")) {
-            tTier = 6;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("7")) {
-            tTier = 7;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("8")) {
-            tTier = 8;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("9")) {
-            tTier = 9;
-            mMult = 0;//*1
+        if (this.mInventory[1].getUnlocalizedName().endsWith("10")) {
+            this.tTier = 9;
+            this.mMult = 2;//u need 4x less machines and they will use 4x less power
+        } else if (this.mInventory[1].getUnlocalizedName().endsWith("11")) {
+            this.tTier = 9;
+            this.mMult = 4;//u need 16x less machines and they will use 16x less power
+        } else if (this.mInventory[1].getUnlocalizedName().endsWith("12") ||
+                this.mInventory[1].getUnlocalizedName().endsWith("13") ||
+                this.mInventory[1].getUnlocalizedName().endsWith("14") ||
+                this.mInventory[1].getUnlocalizedName().endsWith("15")) {
+            this.tTier = 9;
+            this.mMult = 6;//u need 64x less machines and they will use 64x less power
+        } else if (this.mInventory[1].getUnlocalizedName().endsWith("1")) {
+            this.tTier = 1;
+            this.mMult = 0;//*1
+        } else if (this.mInventory[1].getUnlocalizedName().endsWith("2")) {
+            this.tTier = 2;
+            this.mMult = 0;//*1
+        } else if (this.mInventory[1].getUnlocalizedName().endsWith("3")) {
+            this.tTier = 3;
+            this.mMult = 0;//*1
+        } else if (this.mInventory[1].getUnlocalizedName().endsWith("4")) {
+            this.tTier = 4;
+            this.mMult = 0;//*1
+        } else if (this.mInventory[1].getUnlocalizedName().endsWith("5")) {
+            this.tTier = 5;
+            this.mMult = 0;//*1
+        } else if (this.mInventory[1].getUnlocalizedName().endsWith("6")) {
+            this.tTier = 6;
+            this.mMult = 0;//*1
+        } else if (this.mInventory[1].getUnlocalizedName().endsWith("7")) {
+            this.tTier = 7;
+            this.mMult = 0;//*1
+        } else if (this.mInventory[1].getUnlocalizedName().endsWith("8")) {
+            this.tTier = 8;
+            this.mMult = 0;//*1
+        } else if (this.mInventory[1].getUnlocalizedName().endsWith("9")) {
+            this.tTier = 9;
+            this.mMult = 0;//*1
         } else {
-            tTier = 0;
-            mMult = 0;//*1
+            this.tTier = 0;
+            this.mMult = 0;//*1
         }
 
-        if (!mMachine.equals(mInventory[1].getUnlocalizedName())) mLastRecipe = null;
-        mMachine = mInventory[1].getUnlocalizedName();
-        ItemStack[] tInputs = (ItemStack[]) tInputList.toArray(new ItemStack[tInputList.size()]);
+        if (!this.mMachine.equals(this.mInventory[1].getUnlocalizedName())) this.mLastRecipe = null;
+        this.mMachine = this.mInventory[1].getUnlocalizedName();
+        ItemStack[] tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
 
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
+        ArrayList<FluidStack> tFluidList = this.getStoredFluids();
 
-        FluidStack[] tFluids = (FluidStack[]) tFluidList.toArray(new FluidStack[tFluidList.size()]);
+        FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
         if (tInputList.size() > 0 || tFluids.length > 0) {
-            GT_Recipe tRecipe = map.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+            GT_Recipe tRecipe = map.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, gregtech.api.enums.GT_Values.V[this.tTier], tFluids, tInputs);
             if (tRecipe != null) {
                 if (GT_Mod.gregtechproxy.mLowGravProcessing && tRecipe.mSpecialValue == -100 &&
-                        !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
+                        !isValidForLowGravity(tRecipe, this.getBaseMetaTileEntity().getWorld().provider.dimensionId))
                     return false;
 
-                mLastRecipe = tRecipe;
+                this.mLastRecipe = tRecipe;
                 this.mEUt = 0;
                 this.mOutputItems = null;
                 this.mOutputFluids = null;
-                int machines = Math.min(64, mInventory[1].stackSize << mMult); //Upped max Cap to 64
+                int machines = Math.min(64, this.mInventory[1].stackSize << this.mMult); //Upped max Cap to 64
                 int i = 0;
                 for (; i < machines; i++) {
                     if (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
@@ -134,14 +134,14 @@ public class GT_TileEntity_MegaProcessingArray extends GT_MetaTileEntity_Process
                     }
                 }
                 this.mMaxProgresstime = tRecipe.mDuration;
-                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+                this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
-                BW_Util.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, map.mAmperage, GT_Values.V[tTier], this);
+                BW_Util.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, map.mAmperage, GT_Values.V[this.tTier], this);
                 //In case recipe is too OP for that machine
-                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
                     return false;
-                this.mEUt = GT_Utility.safeInt(((long) this.mEUt * i) >> mMult, 1);
-                if (mEUt == Integer.MAX_VALUE - 1)
+                this.mEUt = GT_Utility.safeInt(((long) this.mEUt * i) >> this.mMult, 1);
+                if (this.mEUt == Integer.MAX_VALUE - 1)
                     return false;
 
                 if (this.mEUt > 0) {
@@ -159,7 +159,7 @@ public class GT_TileEntity_MegaProcessingArray extends GT_MetaTileEntity_Process
                 for (int f = 0; f < tOut.length; f++) {
                     if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
                         for (int g = 0; g < i; g++) {
-                            if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(f))
+                            if (this.getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(f))
                                 tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
                         }
                     }
@@ -168,7 +168,7 @@ public class GT_TileEntity_MegaProcessingArray extends GT_MetaTileEntity_Process
                     int tSize = tFOut.amount;
                     tFOut.amount = tSize * i;
                 }
-                tOut = clean(tOut);
+                tOut = GT_MetaTileEntity_ProcessingArray.clean(tOut);
                 this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
                 List<ItemStack> overStacks = new ArrayList<ItemStack>();
                 for (int f = 0; f < tOut.length; f++) {
@@ -193,7 +193,7 @@ public class GT_TileEntity_MegaProcessingArray extends GT_MetaTileEntity_Process
                 tOut = tSList.toArray(new ItemStack[tSList.size()]);
                 this.mOutputItems = tOut;
                 this.mOutputFluids = new FluidStack[]{tFOut};
-                updateSlots();
+                this.updateSlots();
                 return true;
             }/* else{
                 ...remoteRecipeCheck()

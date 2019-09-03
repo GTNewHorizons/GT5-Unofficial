@@ -39,7 +39,7 @@ public class BW_Container_RadioHatch extends Container {
 
     public byte coverage, dcoverage;
     long timer;
-    private GT_MetaTileEntity_RadioHatch iGregTechTileEntity;
+    private final GT_MetaTileEntity_RadioHatch iGregTechTileEntity;
 
     public BW_Container_RadioHatch(InventoryPlayer inventory, IMetaTileEntity iGregTechTileEntity) {
         this.iGregTechTileEntity = (GT_MetaTileEntity_RadioHatch) iGregTechTileEntity;
@@ -112,37 +112,37 @@ public class BW_Container_RadioHatch extends Container {
         };
 
         for (int i = 0; i < 12; i++) {
-            addSlotToContainer(new GT_Slot_Holo(inv, i, -64 + i * 18, 22, false, false, 1));
+            this.addSlotToContainer(new GT_Slot_Holo(inv, i, -64 + i * 18, 22, false, false, 1));
         }
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                this.addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
+            this.addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
         }
     }
 
     @Override
     public void detectAndSendChanges() {
         if (!this.iGregTechTileEntity.getBaseMetaTileEntity().isClientSide() && this.iGregTechTileEntity.getBaseMetaTileEntity().getMetaTileEntity() != null) {
-            coverage = iGregTechTileEntity.getCoverage();
-            ++timer;
+            this.coverage = this.iGregTechTileEntity.getCoverage();
+            ++this.timer;
             Iterator var2 = this.crafters.iterator();
-            if (timer >= Long.MAX_VALUE - 1)
-                timer = 0;
+            if (this.timer >= Long.MAX_VALUE - 1)
+                this.timer = 0;
             while (true) {
                 do {
                     if (!var2.hasNext()) {
-                        dcoverage = coverage;
+                        this.dcoverage = this.coverage;
                         return;
                     }
                     ICrafting var1 = (ICrafting) var2.next();
-                    if (this.timer % 500 == 10 || this.dcoverage != coverage)
-                        var1.sendProgressBarUpdate(this, 0, coverage);
-                } while (this.timer % 500 != 10 && this.dcoverage != coverage);
+                    if (this.timer % 500 == 10 || this.dcoverage != this.coverage)
+                        var1.sendProgressBarUpdate(this, 0, this.coverage);
+                } while (this.timer % 500 != 10 && this.dcoverage != this.coverage);
             }
         }
     }
@@ -150,7 +150,7 @@ public class BW_Container_RadioHatch extends Container {
     @Override
     public void updateProgressBar(int p_75137_1_, int p_75137_2_) {
         if (p_75137_1_ == 0)
-            coverage = (byte) p_75137_2_;
+            this.coverage = (byte) p_75137_2_;
     }
 
     @Override
@@ -198,7 +198,7 @@ public class BW_Container_RadioHatch extends Container {
                     setto = 0;
             }
             this.iGregTechTileEntity.setCoverage((short) (this.iGregTechTileEntity.getCoverage() + setto));
-            detectAndSendChanges();
+            this.detectAndSendChanges();
             return null;
         }
         return super.slotClick(slot, button, aShifthold, entityPlayer);

@@ -29,9 +29,9 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_OreLayer;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b;
+import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
@@ -47,7 +47,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
 
     public BW_NEI_OreHandler() {
         if (!NEI_BW_Config.sIsAdded) {
-            FMLInterModComms.sendRuntimeMessage(MainMod.MOD_ID, "NEIPlugins", "register-crafting-handler", MainMod.MOD_ID + "@" + getRecipeName() + "@" + getOverlayIdentifier());
+            FMLInterModComms.sendRuntimeMessage(MainMod.MOD_ID, "NEIPlugins", "register-crafting-handler", MainMod.MOD_ID + "@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
 //            GuiUsageRecipe.usagehandlers.add(this);
         }
@@ -60,7 +60,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        transferRects.add(new RecipeTransferRect(new Rectangle(0,40,40,10),"quickanddirtyneihandler"));
+        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(0,40,40,10),"quickanddirtyneihandler"));
     }
 
     @Override
@@ -77,13 +77,13 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                     continue;
                 if (w.getGenerationFeatures().hasOres()) {
                     ItemStack result = w.get(OrePrefixes.ore);
-                    CachedRecipe tmp = new CachedRecipe() {
+                    TemplateRecipeHandler.CachedRecipe tmp = new TemplateRecipeHandler.CachedRecipe() {
 
                         PositionedStack stack = new PositionedStack(result, 0, 0);
 
                         @Override
                         public PositionedStack getResult() {
-                            return stack;
+                            return this.stack;
                         }
 
                         @Override
@@ -96,7 +96,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                                     if (worldGen.mPrimaryMeta == baseMeta || worldGen.mSecondaryMeta == baseMeta || worldGen.mBetweenMeta == baseMeta || worldGen.mSporadicMeta == baseMeta) {
                                         ItemStack other;
                                         other = result.copy().setStackDisplayName(result.getDisplayName().replaceAll("Ore", "Vein"));
-                                        stack = new PositionedStack(other, 83, 0);
+                                        this.stack = new PositionedStack(other, 83, 0);
                                         if (((worldGen.bwOres & 0b1000) != 0)) {
                                             other = result.copy();
                                             other.setItemDamage(worldGen.mPrimaryMeta);
@@ -141,7 +141,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                         }
                     };
                     boolean add = true;
-                    for (TemplateRecipeHandler.CachedRecipe recipe: arecipes) {
+                    for (TemplateRecipeHandler.CachedRecipe recipe: this.arecipes) {
                         if (recipe == null || recipe.getOtherStacks() == null || recipe.getOtherStacks().get(0) == null || recipe.getOtherStacks().get(0).item == null)
                             continue;
                         if (GT_Utility.areStacksEqual(recipe.getOtherStacks().get(0).item,tmp.getOtherStacks().get(0).item))
@@ -173,13 +173,13 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
     @Override
     public void loadCraftingRecipes(ItemStack result) {
         if (Block.getBlockFromItem(result.getItem()) instanceof BW_MetaGenerated_Ores) {
-            CachedRecipe tmp = new CachedRecipe() {
+            TemplateRecipeHandler.CachedRecipe tmp = new TemplateRecipeHandler.CachedRecipe() {
 
                 PositionedStack stack = new PositionedStack(result, 0, 0);
 
                 @Override
                 public PositionedStack getResult() {
-                    return stack;
+                    return this.stack;
                 }
 
                 @Override
@@ -192,7 +192,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                             if (worldGen.mPrimaryMeta == baseMeta || worldGen.mSecondaryMeta == baseMeta || worldGen.mBetweenMeta == baseMeta || worldGen.mSporadicMeta == baseMeta) {
                                 ItemStack other;
                                 other = result.copy().setStackDisplayName(result.getDisplayName().replaceAll("Ore", "Vein"));
-                                stack = new PositionedStack(other, 83, 0);
+                                this.stack = new PositionedStack(other, 83, 0);
                                 if (((worldGen.bwOres & 0b1000) != 0)) {
                                     other = result.copy();
                                     other.setItemDamage(worldGen.mPrimaryMeta);

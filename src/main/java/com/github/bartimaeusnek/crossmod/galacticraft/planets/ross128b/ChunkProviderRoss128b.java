@@ -53,15 +53,15 @@ import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.Ev
 public class ChunkProviderRoss128b extends ChunkProviderGenerate {
     XSTR rand = new XSTR();
     private BiomeGenBase[] biomesForGeneration;
-    private BW_WordGenerator BWOreGen = new BW_WordGenerator();
-    private World worldObj;
-    private MapGenBase caveGenerator = new MapGenCaves();
-    private MapGenBase ravineGenerator = new MapGenRavine();
-    private MapGenRuins.RuinsBase ruinsBase = new MapGenRuins.RuinsBase();
+    private final BW_WordGenerator BWOreGen = new BW_WordGenerator();
+    private final World worldObj;
+    private final MapGenBase caveGenerator = new MapGenCaves();
+    private final MapGenBase ravineGenerator = new MapGenRavine();
+    private final MapGenRuins.RuinsBase ruinsBase = new MapGenRuins.RuinsBase();
 
     public ChunkProviderRoss128b(World par1World, long seed, boolean mapFeaturesEnabled) {
         super(par1World, seed, mapFeaturesEnabled);
-        worldObj = par1World;
+        this.worldObj = par1World;
     }
 
     @Override
@@ -75,8 +75,8 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
         byte[] abyte = new byte[65536];
         this.func_147424_a(p_73154_1_, p_73154_2_, ablock);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, p_73154_1_ * 16, p_73154_2_ * 16, 16, 16);
-        for (int i = 0; i < biomesForGeneration.length; i++) {
-            BiomeGenBase biomeGenBase = biomesForGeneration[i];
+        for (int i = 0; i < this.biomesForGeneration.length; i++) {
+            BiomeGenBase biomeGenBase = this.biomesForGeneration[i];
             if (biomeGenBase.biomeID == BiomeGenBase.mushroomIsland.biomeID) {
                 this.biomesForGeneration[i] = BiomeGenBase.taiga;
             } else if (biomeGenBase.biomeID == BiomeGenBase.mushroomIslandShore.biomeID) {
@@ -85,6 +85,8 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             if (Loader.isModLoaded("Thaumcraft")) {
                 if (ThaumcraftHandler.isTaintBiome(biomeGenBase.biomeID))
                     this.biomesForGeneration[i] = BiomeGenBase.taiga;
+                else if (ConfigHandler.disableMagicalForest && ThaumcraftHandler.isMagicalForestBiome(biomeGenBase.biomeID))
+                    this.biomesForGeneration[i] = BiomeGenBase.birchForest;
             }
         }
         this.replaceBlocksForBiome(p_73154_1_, p_73154_2_, ablock, abyte, this.biomesForGeneration);
@@ -115,7 +117,7 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             this.rand.setSeed((long) p_73153_2_ * i1 + (long) p_73153_3_ * j1 ^ this.worldObj.getSeed());
         }
 
-        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, false));
+        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false));
 
         int x1;
         int y1;
@@ -126,11 +128,11 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
                 x1 = k + this.rand.nextInt(16) + 3;
                 y1 = this.rand.nextInt(256);
                 z1 = l + this.rand.nextInt(16) + 3;
-                ruinsBase.generate(worldObj, rand, x1, y1, z1);
+            this.ruinsBase.generate(this.worldObj, this.rand, x1, y1, z1);
         }
 
         if (biomegenbase != BiomeGenBase.desert && biomegenbase != BiomeGenBase.desertHills && this.rand.nextInt(4) == 0
-                && TerrainGen.populate(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, false, LAKE)) {
+                && TerrainGen.populate(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false, LAKE)) {
             x1 = k + this.rand.nextInt(16) + 8;
             y1 = this.rand.nextInt(256);
             z1 = l + this.rand.nextInt(16) + 8;
@@ -142,7 +144,7 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
         k += 8;
         l += 8;
 
-        boolean doGen = TerrainGen.populate(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, false, ICE);
+        boolean doGen = TerrainGen.populate(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false, ICE);
         for (x1 = 0; doGen && x1 < 16; ++x1) {
             for (y1 = 0; y1 < 16; ++y1) {
                 z1 = this.worldObj.getPrecipitationHeight(k + x1, l + y1);
@@ -157,8 +159,8 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             }
         }
 
-        BWOreGen.generate(rand, p_73153_2_, p_73153_3_, worldObj, this, this);
-        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, false));
+        this.BWOreGen.generate(this.rand, p_73153_2_, p_73153_3_, this.worldObj, this, this);
+        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false));
 
         BlockFalling.fallInstantly = false;
     }

@@ -59,8 +59,8 @@ public class OrePacket extends GT_Packet {
 
     @Override
     public byte[] encode() {
-        int hash = MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(12).putInt(x).putInt(z).putShort(y).putShort(meta).array(), 0, 12, 31);
-        return ByteBuffer.allocate(16).putInt(x).putInt(z).putShort(y).putShort(meta).putInt(hash).array();
+        int hash = MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(12).putInt(this.x).putInt(this.z).putShort(this.y).putShort(this.meta).array(), 0, 12, 31);
+        return ByteBuffer.allocate(16).putInt(this.x).putInt(this.z).putShort(this.y).putShort(this.meta).putInt(hash).array();
     }
 
     @Override
@@ -68,12 +68,12 @@ public class OrePacket extends GT_Packet {
         byte[] tmp = new byte[16];
         byteArrayDataInput.readFully(tmp);
         ByteBuffer buff = ByteBuffer.wrap(tmp);
-        x = buff.getInt();
-        z = buff.getInt();
-        y = buff.getShort();
-        meta = buff.getShort();
-        OrePacket todecode = new OrePacket(x, y, z, meta);
-        if (buff.getInt() != MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(12).putInt(x).putInt(z).putShort(y).putShort(meta).array(), 0, 12, 31)) {
+        this.x = buff.getInt();
+        this.z = buff.getInt();
+        this.y = buff.getShort();
+        this.meta = buff.getShort();
+        OrePacket todecode = new OrePacket(this.x, this.y, this.z, this.meta);
+        if (buff.getInt() != MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(12).putInt(this.x).putInt(this.z).putShort(this.y).putShort(this.meta).array(), 0, 12, 31)) {
             MainMod.LOGGER.error("PACKET HASH DOES NOT MATCH!");
             return null;
         }

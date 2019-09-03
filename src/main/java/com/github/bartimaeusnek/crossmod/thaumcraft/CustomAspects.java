@@ -22,15 +22,6 @@
 
 package com.github.bartimaeusnek.crossmod.thaumcraft;
 
-import com.github.bartimaeusnek.bartworks.MainMod;
-
-import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
-import net.minecraft.util.ResourceLocation;
-
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 public class CustomAspects {
 //    static Constructor aspectConstructor;
 //    static Object TRADE;

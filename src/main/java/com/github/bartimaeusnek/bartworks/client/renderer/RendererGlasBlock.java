@@ -90,6 +90,6 @@ public class RendererGlasBlock implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return RID;
+        return RendererGlasBlock.RID;
     }
 }

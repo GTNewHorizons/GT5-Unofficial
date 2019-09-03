@@ -72,10 +72,10 @@ public class GT_TileEntity_CrackingDistillTower extends GT_MetaTileEntity_Distil
             }
             BWRecipes.DynamicGTRecipe combined = new BWRecipes.DynamicGTRecipe(true, null, recipeDistill.mOutputs, null, recipeDistill.mChances, recipeCracking.mFluidInputs, nuoutputs, (int) (Math.floor(recipeDistill.mDuration * ratio)) + recipeCracking.mDuration, Math.max((int) (Math.floor(recipeDistill.mEUt * ratio)), recipeCracking.mEUt), 0);
             if (combined.isRecipeInputEqual(true, array)) {
-                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+                this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
                 BW_Util.calculateOverclockedNessMulti(combined.mEUt, combined.mDuration, 1, this.getMaxInputVoltage(), this);
-                if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
                     return false;
                 if (this.mEUt > 0) {
                     this.mEUt = (-this.mEUt);

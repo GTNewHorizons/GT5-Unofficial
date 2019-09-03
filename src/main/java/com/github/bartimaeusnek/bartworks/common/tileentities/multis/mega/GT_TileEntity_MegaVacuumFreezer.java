@@ -29,6 +29,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
@@ -71,8 +72,8 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
             return true;
         long allTheEu = 0;
         int hatches = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
-            if (isValidMetaTileEntity(tHatch)) {
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches)
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 allTheEu += tHatch.getEUVar();
                 hatches++;
             }
@@ -80,7 +81,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
             return false;
         long euperhatch = aEU / hatches;
         HashSet<Boolean> returnset = new HashSet<>();
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches)
             if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euperhatch, false))
                 returnset.add(true);
             else
@@ -90,7 +91,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-        ItemStack[] tInputs = (ItemStack[]) this.getStoredInputs().toArray(new ItemStack[0]);
+        ItemStack[] tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
         ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
 
         long tVoltage = this.getMaxInputVoltage();
@@ -112,7 +113,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
         }
 
         if (found_Recipe) {
-            this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+            this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
             long actualEUT = (long) (tRecipe.mEUt) * processed;
             if (actualEUT > Integer.MAX_VALUE) {
@@ -125,7 +126,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
             } else
                 BW_Util.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
             //In case recipe is too OP for that machine
-            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+            if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
                 return false;
             if (this.mEUt > 0) {
                 this.mEUt = (-this.mEUt);

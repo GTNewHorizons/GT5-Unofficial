@@ -35,7 +35,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GT_MetaTileEntity_Transistor extends GT_MetaTileEntity_TieredMachineBlock {
-    boolean powered = false;
+    boolean powered;
 
     public GT_MetaTileEntity_Transistor(int aID, String aName, String aNameRegional, int aTier, String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 0, aDescription, aTextures);
@@ -91,25 +91,25 @@ public class GT_MetaTileEntity_Transistor extends GT_MetaTileEntity_TieredMachin
             if (aBaseMetaTileEntity.inputEnergyFrom(side)) {
                 TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
                 if (!(tTileEntity instanceof IBasicEnergyContainer)) {
-                    powered = false;
+                    this.powered = false;
                     return;
                 }
                 IBasicEnergyContainer tileAtSide = (IBasicEnergyContainer) tTileEntity;
                 if (!tileAtSide.outputsEnergyTo((byte) ForgeDirection.WEST.flag) || !tileAtSide.isUniversalEnergyStored(4L)) {
-                    powered = false;
+                    this.powered = false;
                     return;
                 }
                 if (!tileAtSide.decreaseStoredEnergyUnits(4, false)) {
-                    powered = false;
+                    this.powered = false;
                     return;
                 }
                 if (aBaseMetaTileEntity.injectEnergyUnits(side, 4L, 1L) == 4L) {
-                    powered = true;
+                    this.powered = true;
                 }
             }
 
             if (aBaseMetaTileEntity.isAllowedToWork())
-                powered = !powered;
+                this.powered = !this.powered;
         }
     }
 
@@ -124,11 +124,11 @@ public class GT_MetaTileEntity_Transistor extends GT_MetaTileEntity_TieredMachin
 
     @Override
     public long maxAmperesOut() {
-        return powered ? 1L : 0;
+        return this.powered ? 1L : 0;
     }
 
     public long maxEUOutput() {
-        return powered ? GT_Values.V[this.mTier] : 0;
+        return this.powered ? GT_Values.V[this.mTier] : 0;
     }
 
     @Override

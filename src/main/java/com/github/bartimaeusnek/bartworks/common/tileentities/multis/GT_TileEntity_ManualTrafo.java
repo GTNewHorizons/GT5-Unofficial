@@ -48,9 +48,9 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
     private static final byte SINGLE_DOWNSTEP = 1;
     private static final byte MULTI_UPSTEP = 2;
     private static final byte MULTI_DOWNSTEP = 3;
-    private byte mode = 0;
-    private byte texid = 2;
-    private long mCoilWicks = 0;
+    private byte mode;
+    private final byte texid = 2;
+    private long mCoilWicks;
     private boolean upstep = true;
 
     public GT_TileEntity_ManualTrafo(int aID, String aName, String aNameRegional) {
@@ -89,7 +89,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
             else
                 this.mEfficiency = this.getMaxEfficiency(null);
 
-        if (this.mode > SINGLE_DOWNSTEP) {
+        if (this.mode > GT_TileEntity_ManualTrafo.SINGLE_DOWNSTEP) {
             return this.onRunningTickTabbedMode();
         }
 
@@ -100,8 +100,8 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
 
     public boolean onRunningTickTabbedMode() {
         boolean ret = false;
-        for (GT_MetaTileEntity_Hatch_Dynamo E : mDynamoHatches) {
-            for (GT_MetaTileEntity_Hatch_Energy I : mEnergyHatches) {
+        for (GT_MetaTileEntity_Hatch_Dynamo E : this.mDynamoHatches) {
+            for (GT_MetaTileEntity_Hatch_Energy I : this.mEnergyHatches) {
 
                 long vtt = I.getEUVar() >= (V[E.mTier] / 2) && E.getEUVar() < E.maxEUStore() ? I.getEUVar() : 0;
 
@@ -143,7 +143,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
         this.mProgresstime = 0;
         this.mMaxProgresstime = 1;
         this.mEfficiency = this.mEfficiency > 100 ? this.mEfficiency : 100;
-        return this.upstep ? this.getOutputTier() - this.getInputTier() == mCoilWicks : this.getInputTier() - this.getOutputTier() == mCoilWicks;
+        return this.upstep ? this.getOutputTier() - this.getInputTier() == this.mCoilWicks : this.getInputTier() - this.getOutputTier() == this.mCoilWicks;
     }
 
     @Override
@@ -166,7 +166,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
                             stillcoil = aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(ItemRegistry.BW_BLOCKS[2]) && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 1;
                             if (stillcoil) {
                                 ++this.mCoilWicks;
-                                if (mCoilWicks % 8 == 0) {
+                                if (this.mCoilWicks % 8 == 0) {
                                     ++y;
                                     continue;
                                 }
@@ -179,7 +179,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
                 }
             }
 
-            if (mCoilWicks % 8 != 0)
+            if (this.mCoilWicks % 8 != 0)
                 return false;
 
             this.mCoilWicks = this.mCoilWicks / 8;
@@ -196,7 +196,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
                 for (int z = -1; z <= 1; ++z)
                     if (xDir + x != 0 || zDir + z != 0) {
                         IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, 0, zDir + z);
-                        if (!this.addMaintenanceToMachineList(tTileEntity, texid) && !this.addEnergyInputToMachineList(tTileEntity, texid)) {
+                        if (!this.addMaintenanceToMachineList(tTileEntity, this.texid) && !this.addEnergyInputToMachineList(tTileEntity, this.texid)) {
                             if (aBaseMetaTileEntity.getBlockOffset(xDir + x, 0, zDir + z) != GregTech_API.sBlockCasings1) {
                                 return false;
                             }
@@ -212,7 +212,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
             for (int x = -1; x <= 1; ++x)
                 for (int z = -1; z <= 1; ++z) {
                     IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, (int) this.mCoilWicks + 1, zDir + z);
-                    if (!this.addMaintenanceToMachineList(tTileEntity, texid) && !this.addDynamoToMachineList(tTileEntity, texid)) {
+                    if (!this.addMaintenanceToMachineList(tTileEntity, this.texid) && !this.addDynamoToMachineList(tTileEntity, this.texid)) {
                         if (aBaseMetaTileEntity.getBlockOffset(xDir + x, (int) this.mCoilWicks + 1, zDir + z) != GregTech_API.sBlockCasings1) {
                             return false;
                         }
@@ -251,7 +251,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
                             stillcoil = aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(ItemRegistry.BW_BLOCKS[2]) && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 1;
                             if (stillcoil) {
                                 ++this.mCoilWicks;
-                                if (mCoilWicks % 8 == 0) {
+                                if (this.mCoilWicks % 8 == 0) {
                                     ++y;
                                     continue;
                                 }
@@ -264,7 +264,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
                 }
             }
 
-            if (mCoilWicks % 8 != 0)
+            if (this.mCoilWicks % 8 != 0)
                 return false;
 
             this.mCoilWicks = this.mCoilWicks / 8;
@@ -281,7 +281,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
                 for (int z = -2; z <= 2; ++z)
                     if (xDir + x != 0 || zDir + z != 0) {
                         IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, 0, zDir + z);
-                        if (!this.addMaintenanceToMachineList(tTileEntity, texid) && !this.addEnergyInputToMachineList(tTileEntity, texid)) {
+                        if (!this.addMaintenanceToMachineList(tTileEntity, this.texid) && !this.addEnergyInputToMachineList(tTileEntity, this.texid)) {
                             if (aBaseMetaTileEntity.getBlockOffset(xDir + x, 0, zDir + z) != GregTech_API.sBlockCasings1) {
                                 return false;
                             }
@@ -297,7 +297,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
             for (int x = -2; x <= 2; ++x)
                 for (int z = -2; z <= 2; ++z) {
                     IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, (int) this.mCoilWicks + 1, zDir + z);
-                    if (!this.addMaintenanceToMachineList(tTileEntity, texid) && !this.addDynamoToMachineList(tTileEntity, texid)) {
+                    if (!this.addMaintenanceToMachineList(tTileEntity, this.texid) && !this.addDynamoToMachineList(tTileEntity, this.texid)) {
                         if (aBaseMetaTileEntity.getBlockOffset(xDir + x, (int) this.mCoilWicks + 1, zDir + z) != GregTech_API.sBlockCasings1) {
                             return false;
                         }
@@ -340,7 +340,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
                     for (int z = -2; z <= 2; ++z)
                         if (x == -2 || z == -2 || x == 2 || z == 2) {
                             IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, ty, zDir + z);
-                            if (!this.addMaintenanceToMachineList(tTileEntity, texid) && !this.addEnergyInputToMachineList(tTileEntity, texid, leveltier) && !this.addDynamoToMachineList(tTileEntity, texid, leveltier)) {
+                            if (!this.addMaintenanceToMachineList(tTileEntity, this.texid) && !this.addEnergyInputToMachineList(tTileEntity, this.texid, leveltier) && !this.addDynamoToMachineList(tTileEntity, this.texid, leveltier)) {
                                 if (aBaseMetaTileEntity.getBlockOffset(xDir + x, ty, zDir + z) != GregTech_API.sBlockCasings1) {
                                     return false;
                                 }
@@ -348,10 +348,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
                         }
             }
         }
-        if (this.mDynamoHatches.isEmpty() || this.mEnergyHatches.isEmpty())
-            return false;
-
-        return true;
+        return !this.mDynamoHatches.isEmpty() && !this.mEnergyHatches.isEmpty();
     }
 
     @Override
@@ -376,7 +373,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_TileEntity_ManualTrafo(mName);
+        return new GT_TileEntity_ManualTrafo(this.mName);
     }
 
     @Override
@@ -392,19 +389,19 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
 
     @Override
     public void saveNBTData(NBTTagCompound ntag) {
-        ntag.setLong("mCoilWicks", mCoilWicks);
+        ntag.setLong("mCoilWicks", this.mCoilWicks);
         super.saveNBTData(ntag);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound ntag) {
         super.loadNBTData(ntag);
-        mCoilWicks = ntag.getLong("mCoilWicks");
+        this.mCoilWicks = ntag.getLong("mCoilWicks");
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[texid], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)} : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[texid]};
+        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[this.texid], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)} : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[this.texid]};
     }
 
     public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex, short tier) {
