@@ -26,7 +26,6 @@ import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.HashBiMap;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
@@ -133,9 +132,13 @@ public class TCRecipeHandler {
             }
         }
         for (ItemStack o : itemToAspectsMap.keySet()){
-            for (int j = 1; j <= itemToAspectsMap.get(o).size() ; j++) {
-                itemToCircuitConfigMap.put(o,j);
-            }
+            if (o.getItemDamage() == Short.MAX_VALUE)
+                itemToCircuitConfigMap.put(o,24);
+            else
+                for (int j = 1; j <= itemToAspectsMap.get(o).size(); j++) {
+                    itemToCircuitConfigMap.put(o,j%24);
+                }
+
 
             for (int j = 0; j < itemToAspectsMap.get(o).size() ; j++) {
                 ret.add(addRecipes(itemToResearchMap.get(o).get(j),itemToOutputMap.get(o).get(j),itemToAspectsMap.get(o).get(j),o,itemToCircuitConfigMap.get(o).get(j)));

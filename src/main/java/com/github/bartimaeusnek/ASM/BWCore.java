@@ -67,7 +67,7 @@ public class BWCore extends DummyModContainer {
 
     @Override
     public List<ArtifactVersion> getDependants() {
-        List<ArtifactVersion> ret = new ArrayList<ArtifactVersion>();
+        List<ArtifactVersion> ret = new ArrayList<>();
         ret.add(new DefaultArtifactVersion("ExtraUtilities", true));
         ret.add(new DefaultArtifactVersion("Thaumcraft", true));
         ret.add(new DefaultArtifactVersion(BartWorksCrossmod.MOD_ID, true));

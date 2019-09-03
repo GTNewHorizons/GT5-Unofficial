@@ -38,6 +38,7 @@ public class BWCoreTransformer implements IClassTransformer {
             "REMVOING CREATURES FROM LAST MILLENIUM (EXU)",
             "PATCHING GLOBAL RENDERER FOR USE WITH MY GALACTIC DIMS",
             "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
+            "PLACING MY GLASS-BLOCK RUNNABLE INTO THE GT_API"
            // "ADD EXECTION HANDLEING TO FIND OREIDS/OREDICT"
     };
     public static final String[] CLASSESBEEINGTRANSFORMED = {
@@ -45,6 +46,7 @@ public class BWCoreTransformer implements IClassTransformer {
             "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime",
             "net.minecraft.client.renderer.RenderGlobal",
             "thaumcraft.common.tiles.TileWandPedestal",
+            "gregtech.GT_Mod"
            // "net.minecraftforge.oredict.OreDictionary"
     };
     static boolean obfs;
@@ -221,7 +223,34 @@ public class BWCoreTransformer implements IClassTransformer {
                     break;
                 }
                 case 4 : {
+                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
+                    String name_deObfs = "<clinit>";
+                    for (int i = 0; i < methods.size(); i++) {
+                        MethodNode toPatch = methods.get(i);
+                        if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs) && (methods.get(i).access & ACC_STATIC) != 0) {
+                            BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
+                            InsnList nu = new InsnList();
+                            LabelNode[] LabelNodes = {new LabelNode(), new LabelNode()};
+                            for (int j = 0; j < 2; j++) {
+                                nu.add(toPatch.instructions.get(j));
+                            }
+                            nu.add(new FieldInsnNode(GETSTATIC, "gregtech/api/GregTech_API", "sBeforeGTPreload", "Ljava/util/List;"));
+                            nu.add(new TypeInsnNode(NEW, "com/github/bartimaeusnek/bartworks/common/loaders/BeforeGTPreload"));
+                            nu.add(new InsnNode(DUP));
+                            nu.add(new MethodInsnNode(INVOKESPECIAL, "com/github/bartimaeusnek/bartworks/common/loaders/BeforeGTPreload", "<init>", "()V", false));
+                            nu.add(new MethodInsnNode(INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z", true));
+                            nu.add(new InsnNode(POP));
+                            for (int j = 2; j < toPatch.instructions.size(); j++) {
+                                nu.add(toPatch.instructions.get(j));
+                            }
+                            toPatch.instructions = nu;
+                            break;
+                        }
+                    }
 
+                    break;
+                }
+                case 5: {
 //                    String name_deObfs = "getOreIDs";
 //                    String dsc_deObfs = "(Lnet/minecraft/item/ItemStack;)[I";
 //                    String dsc_Obfs = "(Ladd;)[I";

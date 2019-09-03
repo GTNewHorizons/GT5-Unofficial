@@ -40,9 +40,6 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_Til
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaVacuumFreezer;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.*;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import cpw.mods.fml.common.LoadController;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -55,9 +52,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import org.apache.commons.lang3.reflect.FieldUtils;
-
-import java.lang.reflect.Field;
 
 import static com.github.bartimaeusnek.bartworks.MainMod.BWT;
 import static com.github.bartimaeusnek.bartworks.MainMod.GT2;
@@ -145,6 +139,34 @@ public class ItemRegistry {
     public static ItemStack giantOutputHatch;
 
     public static void run() {
+        if (newStuff) {
+            GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses, "BW_FakeGlasBlock");
+            GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BW_ItemBlocks.class, "BW_Machinery_Casings");
+            GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");
+            GameRegistry.registerItem(ItemRegistry.WOOL_ROTOR, "BW_WoolRotor");
+            GameRegistry.registerItem(ItemRegistry.PAPER_ROTOR, "BW_PaperRotor");
+            GameRegistry.registerItem(ItemRegistry.COMBINED_ROTOR, "BW_CombinedRotor");
+            GameRegistry.registerItem(ItemRegistry.CRAFTING_PARTS, "craftingParts");
+            GameRegistry.registerTileEntity(BW_RotorBlock.class, "BWRotorBlockTE");
+            GameRegistry.registerBlock(ItemRegistry.ROTORBLOCK, BW_ItemBlocks.class, "BWRotorBlock");
+            GameRegistry.registerTileEntity(BW_TileEntity_HeatedWaterPump.class, "BWHeatedWaterPumpTE");
+            GameRegistry.registerBlock(ItemRegistry.PUMPBLOCK, BW_ItemBlocks.class, "BWHeatedWaterPumpBlock");
+            GameRegistry.registerItem(ItemRegistry.PUMPPARTS, "BWPumpParts");
+            GameRegistry.registerItem(ItemRegistry.WINDMETER, "BW_SimpleWindMeter");
+            GameRegistry.registerTileEntity(BW_TileEntity_ExperimentalFloodGate.class, "BWExpReversePump");
+            GameRegistry.registerBlock(ItemRegistry.EXPPUMP, BW_ItemBlocks.class, "BWExpReversePumpBlock");
+        }
+
+        //GT2 stuff
+        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[0], BW_ItemBlocks.class, "BW_ItemBlocks");
+        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[1], BW_ItemBlocks.class, "GT_LESU_CASING");
+        if (ConfigHandler.teslastaff)
+            GameRegistry.registerItem(ItemRegistry.TESLASTAFF, ItemRegistry.TESLASTAFF.getUnlocalizedName());
+
+        GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_LV, ItemRegistry.ROCKCUTTER_LV.getUnlocalizedName());
+        GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_MV, ItemRegistry.ROCKCUTTER_MV.getUnlocalizedName());
+        GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_HV, ItemRegistry.ROCKCUTTER_HV.getUnlocalizedName());
+        GameRegistry.registerItem(ItemRegistry.TAB, "tabIconGT2");
         if (newStuff) {
             if (ConfigHandler.creativeScannerID != 0)
                 new CreativeScanner(ConfigHandler.creativeScannerID,"Creative Debug Scanner","Creative Debug Scanner",20);
