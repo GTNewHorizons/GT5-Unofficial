@@ -33,6 +33,7 @@ import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -659,6 +660,245 @@ public class WerkstoffLoader implements Runnable {
             new Pair<>(WerkstoffLoader.Neon,1),
             new Pair<>(Materials.Potassium,1)
     );
+    public static final Werkstoff PTConcentrate = new Werkstoff(
+            Materials.Platinum.getRGBA(),
+            "Platin Concentrate",
+            "",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            44,
+            TextureSet.SET_FLUID
+            //No Byproducts
+            //No Ingredients
+    );
+    public static final Werkstoff PTSaltCrude = new Werkstoff(
+            Materials.Platinum.getRGBA(),
+            "Platin Salt",
+            "",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            45,
+            TextureSet.SET_DULL
+            //No Byproducts
+            //No Ingredients
+    );
+    public static final Werkstoff PTSaltRefined = new Werkstoff(
+            Materials.Platinum.getRGBA(),
+            "Refined Platin Salt",
+            "",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            46,
+            TextureSet.SET_METALLIC
+            //No Byproducts
+            //No Ingredients
+    );
+    public static final Werkstoff PTMetallicPowder = new Werkstoff(
+            Materials.Platinum.getRGBA(),
+            "Platin Metallic Powder",
+            "",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            47,
+            TextureSet.SET_METALLIC
+            //No Byproducts
+            //No Ingredients
+    );
+    public static final Werkstoff AquaRegia = new Werkstoff(
+            new short[]{0xff,0xb1,0x32},
+            "AquaRegia",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            48,
+            TextureSet.SET_FLUID,
+            //No Byproducts
+            new Pair<>(Materials.DilutedSulfuricAcid,1),
+            new Pair<>(Materials.NitricAcid,1)
+    );
+    public static final Werkstoff PTResidue = new Werkstoff(
+            Materials.Platinum.getRGBA(),
+            "Platinum Residue",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            49,
+            TextureSet.SET_ROUGH
+            //No Byproducts
+    );
+    public static final Werkstoff AmmoniumCloride = new Werkstoff(
+            new short[]{0xff,0xff,0xff},
+            "Ammonium Cloride",
+            subscriptNumbers("NH4Cl"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            50,
+            TextureSet.SET_FLUID,
+            //No Byproducts
+            new Pair<>(Materials.Ammonium,1),
+            new Pair<>(Materials.HydrochloricAcid,1)
+    );
+    public static final Werkstoff PTRawPowder = new Werkstoff(
+            Materials.Platinum.getRGBA(),
+            "Reprecipated Platin",
+            "PtCl",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            51,
+            TextureSet.SET_METALLIC
+            //No Byproducts
+            //No Ingredients
+    );
+    public static final Werkstoff PDAmmonia = new Werkstoff(
+            Materials.Palladium.getRGBA(),
+            "Palladium enriched Ammonia",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            52,
+            TextureSet.SET_FLUID,
+            //No Byproducts
+            new Pair<>(Materials.Ammonium,1),
+            new Pair<>(Materials.Palladium,1)
+    );
+    public static final Werkstoff PDMetallicPowder = new Werkstoff(
+            Materials.Palladium.getRGBA(),
+            "Palladium Metallic Powder",
+            "",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            53,
+            TextureSet.SET_METALLIC
+            //No Byproducts
+            //No Ingredients
+    );
+    public static final Werkstoff PDRawPowder = new Werkstoff(
+            Materials.Palladium.getRGBA(),
+            "Reprecipated Palladium",
+            subscriptNumbers("Pd2NH4"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            54,
+            TextureSet.SET_METALLIC
+            //No Byproducts
+            //No Ingredients
+    );
+    public static final Werkstoff PDSalt = new Werkstoff(
+            Materials.Palladium.getRGBA(),
+            "Palladium Salt",
+            "",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            55,
+            TextureSet.SET_METALLIC
+            //No Byproducts
+            //No Ingredients
+    );
+    public static final Werkstoff Sodiumformate = new Werkstoff(
+            new short[]{0xff,0xaa,0xaa},
+            "Sodium formate",
+            "HCOONa",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            56,
+            TextureSet.SET_FLUID,
+            //No Byproducts
+            new Pair<>(Materials.SodiumHydroxide,1),
+            new Pair<>(Materials.CarbonMonoxide,1)
+    );
+    public static final Werkstoff Sodiumsulfate = new Werkstoff(
+            new short[]{0xff,0xff,0xff},
+            "Sodium sulfate",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            57,
+            TextureSet.SET_FLUID,
+            //No Byproducts
+            new Pair<>(Materials.Sodium,2),
+            new Pair<>(Materials.Sulfur,1),
+            new Pair<>(Materials.Oxygen,4)
+    );
+    public static final Werkstoff FormicAcid = new Werkstoff(
+            new short[]{0xff,0xaa,0x77},
+            "Formic Acid",
+            subscriptNumbers("CH2O2"),
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            58,
+            TextureSet.SET_FLUID,
+            //No Byproducts
+            new Pair<>(Materials.Carbon,1),
+            new Pair<>(Materials.Hydrogen,2),
+            new Pair<>(Materials.Oxygen,2)
+    );
+    public static final Werkstoff PotassiumDisulfate = new Werkstoff(
+            new short[]{0xfb,0xbb,0x66},
+            "PotassiumDisulfate",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addChemicalRecipes(),
+            59,
+            TextureSet.SET_DULL,
+            //No Byproducts
+            new Pair<>(Materials.Potassium,2),
+            new Pair<>(Materials.Sulfur,2),
+            new Pair<>(Materials.Oxygen,7)
+    );
+    public static final Werkstoff PHLESSResidue = new Werkstoff(
+            Materials.Platinum.getRGBA(),
+            "Leach Residue",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            60,
+            TextureSet.SET_ROUGH
+            //No Byproducts
+    );
+    public static final Werkstoff RHSulfate = new Werkstoff(
+            new short[]{0xee,0xaa,0x55},
+            "Rh Sulfate",
+            new Werkstoff.Stats().setGas(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            61,
+            TextureSet.SET_ROUGH
+            //No Byproducts
+    );
+    public static final Werkstoff RHSulfateSolution = new Werkstoff(
+            new short[]{0xff,0xbb,0x66},
+            "Rh Sulfate Solution",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            62,
+            TextureSet.SET_ROUGH
+            //No Byproducts
+    );
+    public static final Werkstoff CalciumChloride = new Werkstoff(
+            new short[]{0xff,0xff,0xff},
+            "Calcium chloride",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            63,
+            TextureSet.SET_DULL,
+            new Pair<>(Materials.Calcium,1),
+            new Pair<>(Materials.Chlorine,2)
+            //No Byproducts
+    );
+
 
     public static HashMap<OrePrefixes, BW_MetaGenerated_Items> items = new HashMap<>();
     public static HashMap<Werkstoff, Fluid> fluids = new HashMap<>();
@@ -1136,8 +1376,8 @@ public class WerkstoffLoader implements Runnable {
                 ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
                 Behaviour_DataOrb.setDataTitle(scannerOutput,"Elemental-Scan");
                 Behaviour_DataOrb.setDataName(scannerOutput,werkstoff.getToolTip());
-                GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(dust)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass()* 8192L),30,0));
-                GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false, null,new ItemStack[]{werkstoff.get(dust)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L),30,0));
+                GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false,new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(dust)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass()* 8192L),30,0));
+                GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.addFakeRecipe(false,new BWRecipes.DynamicGTRecipe(false, null,new ItemStack[]{werkstoff.get(dust)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L),30,0));
             }
         }
     }
@@ -1220,6 +1460,69 @@ public class WerkstoffLoader implements Runnable {
         if ((werkstoff.getGenerationFeatures().toGenerate & 0b10000) == 0)
             return;
 
+        if (werkstoff.getStats().isElektrolysis() || werkstoff.getStats().isCentrifuge() || werkstoff.getGenerationFeatures().hasChemicalRecipes()) {
+            List<FluidStack> flOutputs = new ArrayList<>();
+            List<ItemStack> stOutputs = new ArrayList<>();
+            HashMap<ISubTagContainer, Pair<Integer, Integer>> tracker = new HashMap<>();
+            int cells = 0;
+            for (Pair<ISubTagContainer, Integer> container : werkstoff.getContents().getValue().toArray(new Pair[0])) {
+                if (container.getKey() instanceof Materials) {
+                    if (((Materials) container.getKey()).hasCorrespondingGas() || ((Materials) container.getKey()).hasCorrespondingFluid() || ((Materials) container.getKey()).mIconSet == TextureSet.SET_FLUID) {
+                        FluidStack tmpFl = ((Materials) container.getKey()).getGas(1000 * container.getValue());
+                        if (tmpFl == null || tmpFl.getFluid() == null) {
+                            tmpFl = ((Materials) container.getKey()).getFluid(1000 * container.getValue());
+                        }
+                        flOutputs.add(tmpFl);
+                        if (flOutputs.size() > 1) {
+                            if (!tracker.containsKey(container.getKey())) {
+                                stOutputs.add(((Materials) container.getKey()).getCells(container.getValue()));
+                                tracker.put(container.getKey(), new Pair<>(container.getValue(), stOutputs.size() - 1));
+                            } else {
+                                stOutputs.add(((Materials) container.getKey()).getCells(tracker.get(container.getKey()).getKey() + container.getValue()));
+                                stOutputs.remove(tracker.get(container.getKey()).getValue() + 1);
+                            }
+                            cells += container.getValue();
+                        }
+                    }
+                } else if (container.getKey() instanceof Werkstoff) {
+                    if (((Werkstoff) container.getKey()).getStats().isGas() || ((Werkstoff) container.getKey()).getGenerationFeatures().hasCells()) {
+                        FluidStack tmpFl = ((Werkstoff) container.getKey()).getFluidOrGas(1000 * container.getValue());
+                        if (tmpFl == null || tmpFl.getFluid() == null) {
+                            tmpFl = ((Werkstoff) container.getKey()).getFluidOrGas(1000 * container.getValue());
+                        }
+                        flOutputs.add(tmpFl);
+                        if (flOutputs.size() > 1) {
+                            if (!tracker.containsKey(container.getKey())) {
+                                stOutputs.add(((Werkstoff) container.getKey()).get(cell, container.getValue()));
+                                tracker.put(container.getKey(), new Pair<>(container.getValue(), stOutputs.size() - 1));
+                            } else {
+                                stOutputs.add(((Werkstoff) container.getKey()).get(cell, tracker.get(container.getKey()).getKey() + container.getValue()));
+                                stOutputs.remove(tracker.get(container.getKey()).getValue() + 1);
+                            }
+                            cells += container.getValue();
+                        }
+                    }
+                }
+            }
+            ItemStack input = werkstoff.get(cell);
+            input.stackSize = werkstoff.getContents().getKey();
+            stOutputs.add(Materials.Empty.getCells(cells));
+            if (werkstoff.getStats().isElektrolysis())
+                GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.addRecipe(true, new ItemStack[]{input, cells > 0 ? Materials.Empty.getCells(cells) : null}, stOutputs.toArray(new ItemStack[0]), null, null, new FluidStack[]{null}, new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null}, (int) Math.max(1L, Math.abs(werkstoff.getStats().protons * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 30, 0);
+            if (werkstoff.getStats().isCentrifuge())
+                GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(true, new ItemStack[]{input, cells > 0 ? Materials.Empty.getCells(cells) : null}, stOutputs.toArray(new ItemStack[0]), null, null, new FluidStack[]{null}, new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null}, (int) Math.max(1L, Math.abs(werkstoff.getStats().mass * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 5, 0);
+            if (werkstoff.getGenerationFeatures().hasChemicalRecipes()) {
+                if (cells > 0)
+                    stOutputs.add(Materials.Empty.getCells(cells));
+                GT_Recipe.GT_Recipe_Map.sChemicalRecipes.addRecipe(true, stOutputs.toArray(new ItemStack[0]),new ItemStack[]{input},null,null,new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null},null,(int) Math.max(1L, Math.abs(werkstoff.getStats().protons * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 30,0);
+            }
+            if (werkstoff.getGenerationFeatures().hasMixerRecipes()) {
+                if (cells > 0)
+                    stOutputs.add(Materials.Empty.getCells(cells));
+                GT_Recipe.GT_Recipe_Map.sMixerRecipes.addRecipe(true, stOutputs.toArray(new ItemStack[0]),new ItemStack[]{input},null,null,new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null},null,(int) Math.max(1L, Math.abs(werkstoff.getStats().mass * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 5,0);
+            }
+        }
+
         //Tank "Recipe"
         GT_Utility.addFluidContainerData(new FluidContainerRegistry.FluidContainerData(new FluidStack(WerkstoffLoader.fluids.get(werkstoff), 1000),werkstoff.get(cell),Materials.Empty.getCells(1)));
 
@@ -1253,8 +1556,8 @@ public class WerkstoffLoader implements Runnable {
             ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
             Behaviour_DataOrb.setDataTitle(scannerOutput,"Elemental-Scan");
             Behaviour_DataOrb.setDataName(scannerOutput,werkstoff.getToolTip());
-            GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(cell)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass()* 8192L),30,0));
-            GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.add(new BWRecipes.DynamicGTRecipe(false,new ItemStack[]{Materials.Empty.getCells(1)} ,new ItemStack[]{werkstoff.get(cell)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L),30,0));
+            GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false,new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(cell)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass()* 8192L),30,0));
+            GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.addFakeRecipe(false,new BWRecipes.DynamicGTRecipe(false,new ItemStack[]{Materials.Empty.getCells(1)} ,new ItemStack[]{werkstoff.get(cell)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L),30,0));
         }
     }
     private void addMoltenRecipes(Werkstoff werkstoff) {

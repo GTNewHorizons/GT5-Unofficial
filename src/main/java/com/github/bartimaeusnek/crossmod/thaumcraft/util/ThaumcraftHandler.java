@@ -32,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.biome.BiomeGenBase;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -95,6 +96,8 @@ public class ThaumcraftHandler {
         public static Method add;
         public static Method getAmount;
         public static Method getAspects;
+        public static Method isResearchComplete;
+        public static Field linkedAspektList;
 
         static {
             try {
@@ -108,7 +111,9 @@ public class ThaumcraftHandler {
                 ThaumcraftHandler.AspectAdder.getAmount = ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod("getAmount", ThaumcraftHandler.AspectAdder.mAspectClass);
                 ThaumcraftHandler.AspectAdder.getAspects = ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod("getAspects");
                 ThaumcraftHandler.AspectAdder.readAspectListFromNBT = ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod("readFromNBT", NBTTagCompound.class);
-            } catch (ClassNotFoundException | NoSuchMethodException e) {
+                ThaumcraftHandler.AspectAdder.isResearchComplete = Class.forName("thaumcraft.common.lib.research.ResearchManager").getMethod("isResearchComplete",String.class,String.class);
+                ThaumcraftHandler.AspectAdder.linkedAspektList = ThaumcraftHandler.AspectAdder.mAspectListClass.getField("aspects");
+            } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException e) {
                 e.printStackTrace();
             }
         }

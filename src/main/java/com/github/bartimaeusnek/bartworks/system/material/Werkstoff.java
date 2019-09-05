@@ -194,6 +194,14 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return this.type;
     }
 
+    public boolean containsStuff(ISubTagContainer stuff){
+        for (Pair<ISubTagContainer, Integer> pair : this.contents){
+            if (pair.getKey().equals(stuff))
+                return true;
+        }
+        return false;
+    }
+
     public Pair<Integer, LinkedHashSet<Pair<ISubTagContainer, Integer>>> getContents() {
         int ret = 0;
         switch (this.type) {

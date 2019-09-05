@@ -48,7 +48,7 @@ import java.util.HashSet;
 import static com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler.AspectAdder;
 
 public class TCRecipeHandler {
-    public static final GT_Recipe.GT_Recipe_Map alchemicalConstructHandler = new TCRecipeHandler.TCRecipeMap(new HashSet<>(),
+    public static final GT_Recipe.GT_Recipe_Map alchemicalConstructHandler = new TCRecipeHandler.TCRecipeMap(new HashSet<>(15000),
             "bwcm.recipe.alchemicalConstruct",
             "Industrical Alchemical Construct",
             null,
