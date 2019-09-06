@@ -346,14 +346,48 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         //logic gate shit
         /*
         dust 1
-        metal 10
+        metal 10 (ingot, nugget)
         gem 100
         ore 1000
         cell 10000
         plasma 100000
         molten 1000000
+        crafting metal 10000000 (sticks, plates)
+        meta crafting metal 100000000 (gears, screws, bolts, springs)
+        multiple ingotWorth stuff 1000000000 (double, triple, quadrupe, ingot/plates)
          */
-        public byte toGenerate = 0b0001001;
+        public short toGenerate = 0b0001001;
+        public static final HashMap<OrePrefixes,Integer> prefixLogic = new HashMap<>();
+
+        static {
+            for (OrePrefixes p : OrePrefixes.values()){
+                Werkstoff.GenerationFeatures.prefixLogic.put(p,0);
+            }
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dust,1);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustTiny,1);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustSmall,1);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingot,10);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotHot,10);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.nugget,10);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gem,100);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemFlawed,100);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemExquisite,100);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemChipped,100);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemFlawless,100);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ore,1000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustImpure,1000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustPure,1000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushed,1000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushedPurified,1000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushedCentrifuged,1000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.cell,10000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.cellMolten,1000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.cellMolten,1000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plate,10000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.stick,10000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.rod,10000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.stickLong,10000000);
+        }
 
         //public byte toGenerateSecondary = 0b0000000;
         public byte blacklist;
@@ -364,6 +398,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
          * Auto add Chemical Recipes 1
          * Auto add mixer Recipes 10
          * Auto add Sifter Recipe 100
+         * Auto add MetalWorking(sticks, plates) Recipe 1000
+         * Auto add MetalWorking(crafting components) Recipe 10000
          */
         public byte extraRecipes;
 
