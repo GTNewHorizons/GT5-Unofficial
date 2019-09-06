@@ -20,7 +20,7 @@ public class GT_UO_Dimension {
 			Dimension = aConfigCategory.get("Dimension").getString();
 		}
 		maxChance = 0;
-		//System.out.println("GT UO "+aConfigCategory.getName()+" Dimension:"+Dimension);
+		//GT_FML_LOGGER.info("GT UO "+aConfigCategory.getName()+" Dimension:"+Dimension);
 		for (int i = 0 ; i < aConfigCategory.getChildren().size(); i++) {
 			GT_UO_Fluid fluid = new GT_UO_Fluid((ConfigCategory)aConfigCategory.getChildren().toArray()[i]);
 			fFluids.put(fluid.Registry, fluid);
@@ -33,7 +33,7 @@ public class GT_UO_Dimension {
 		for (BiMap.Entry<String, GT_UO_Fluid> fl : fFluids.entrySet()) {
 			int chance = fl.getValue().Chance*1000/maxChance;
 			if (random<=chance) return fl.getValue();
-			//System.out.println("GT UO "+fl.getValue().Registry+" Chance:"+chance+" Random:"+random);
+			//GT_FML_LOGGER.info("GT UO "+fl.getValue().Registry+" Chance:"+chance+" Random:"+random);
 			random-=chance;
 		}
 		return null;

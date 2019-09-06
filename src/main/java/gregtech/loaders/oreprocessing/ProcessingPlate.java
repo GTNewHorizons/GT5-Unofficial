@@ -12,7 +12,7 @@ import gregtech.common.GT_Proxy;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegistrator {//TODO COMPARE WITH OLD PLATE## generator
     public ProcessingPlate() {
         OrePrefixes.plate.add(this);
         OrePrefixes.plateDouble.add(this);
@@ -35,7 +35,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_ModHandler.removeRecipe(new ItemStack[]{aStack});
 
                 if (aMaterial.mStandardMoltenFluid != null) {
-                    GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Plate.get(0L, new Object[0]), aMaterial.getMolten(144L), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), 32, 8);
+                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+                        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Plate.get(0L, new Object[0]), aMaterial.getMolten(144L), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), 32, 8);
+                    }
                 }
                 switch (aMaterial.mName) {
                     case "Iron":
@@ -87,7 +89,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 if (aMaterial.mFuelPower > 0)
                     GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, new Object[]{aStack}), null, aMaterial.mFuelPower, aMaterial.mFuelType);
                 GT_Utility.removeSimpleIC2MachineRecipe(GT_Utility.copyAmount(9L, new Object[]{aStack}), GT_ModHandler.getCompressorRecipeList(), GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L));
-                GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(aMaterial == Materials.MeteoricIron ? 1 : 2, new Object[]{aStack}), 2, GT_OreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
+                //DISABLED, moved to 3ple plate//GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(aMaterial == Materials.MeteoricIron ? 1 : 2, new Object[]{aStack}), 2, GT_OreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, 2L), GT_Proxy.tBits, new Object[]{"hX", 'X', OrePrefixes.plate.get(aMaterial)});
                 
                 if (aMaterial == Materials.Paper)
@@ -99,8 +101,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefixes.ingot.get(aMaterial)});
                         GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"h", "X", 'X', OrePrefixes.gem.get(aMaterial)});
                         GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefixes.gem.get(aMaterial)});
-                        GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"h", "X", 'X', OrePrefixes.ingotDouble.get(aMaterial)});
-                        GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L), GT_Proxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefixes.ingotDouble.get(aMaterial)});
+                        //GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"h", "X", 'X', OrePrefixes.ingotDouble.get(aMaterial)});
+                        //GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L), GT_Proxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefixes.ingotDouble.get(aMaterial)});
                     }
                     if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE)) && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true)))
                         GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"X", "m", 'X', OrePrefixes.plate.get(aMaterial)});
@@ -135,12 +137,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 }else {
                         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 3L), gregtech.api.enums.ItemList.Circuit_Integrated.getWithDamage(0L, 3L, new Object[0]), Materials.Glue.getFluid(20L), GT_Utility.copyAmount(1L, new Object[]{aStack}), 96, 8);
                     }
+                GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), 2, GT_OreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));//added
                 break;
             case plateQuadruple:
                 GT_ModHandler.removeRecipeByOutput(aStack);
                 GregTech_API.registerCover(aStack, new gregtech.api.objects.GT_RenderedTexture(aMaterial.mIconSet.mTextures[74], aMaterial.mRGBa, false), null);
                 if (!aNoWorking)
-                    GT_Values.RA.addCNCRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L), (int) Math.max(aMaterialMass * 2L, 1L), 32);
+                    GT_Values.RA.addCNCRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L), (int) Math.max(aMaterialMass * 2L, 1L), 30);
                 if (!aNoSmashing) {
                     if (GregTech_API.sRecipeFile.get(gregtech.api.enums.ConfigCategories.Tools.hammerquadrupleplate, OrePrefixes.plate.get(aMaterial).toString(), true)) {
                         Object aPlateStack = OrePrefixes.plate.get(aMaterial);
@@ -173,19 +176,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_Values.RA.addBenderRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L), GT_Utility.copyAmount(1L, new Object[]{aStack}), (int) Math.max(aMaterialMass * 9L, 1L), 96);
                 }
                 break;
-            case plateAlloy:
-                switch (aOreDictName) {
-                    case "plateAlloyCarbon":
-                        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("generator", 1L), GT_Utility.copyAmount(4L, new Object[]{aStack}), GT_ModHandler.getIC2Item("windMill", 1L), 6400, 8);
-                    case "plateAlloyAdvanced":
-                        GT_ModHandler.addAlloySmelterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), new ItemStack(Blocks.glass, 3, 32767), GT_ModHandler.getIC2Item("reinforcedGlass", 4L), 400, 4, false);
-                        GT_ModHandler.addAlloySmelterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 3L), GT_ModHandler.getIC2Item("reinforcedGlass", 4L), 400, 4, false);
-                    case "plateAlloyIridium":
-                        GT_ModHandler.removeRecipeByOutput(aStack);
-                    case "plateIron": case "plateCopper": case "plateTin": case "plateBronze": case "plateGold": case "plateSteel ": case "plateLead": case "plateAluminium": case "plateStainlessSteel": case "plateTitanium": case "plateTungsten": case "plateTungstenSteel": case "plateIridium": case "plateChrome": case "plateOsmium": case "plateNeutronium":
-                        GT_ModHandler.removeRecipeByOutput(aStack);
-                }
-                break;
             case itemCasing:
                 GT_ModHandler.removeRecipeByOutput(aStack);
                 if (aMaterial.mStandardMoltenFluid != null) {
@@ -202,6 +192,22 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_Values.RA.addExtruderRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), ItemList.Shape_Extruder_Casing.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L), (int) Math.max(aMaterial.getMass(), 1L), 45);
                 GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
                 break;
+
+            case plateAlloy:
+                switch (aOreDictName) {
+                    case "plateAlloyCarbon":
+                        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("generator", 1L), GT_Utility.copyAmount(4L, new Object[]{aStack}), GT_ModHandler.getIC2Item("windMill", 1L), 6400, 8);
+                    case "plateAlloyAdvanced":
+                        GT_ModHandler.addAlloySmelterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), new ItemStack(Blocks.glass, 3, 32767), GT_ModHandler.getIC2Item("reinforcedGlass", 4L), 400, 4, false);
+                        GT_ModHandler.addAlloySmelterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 3L), GT_ModHandler.getIC2Item("reinforcedGlass", 4L), 400, 4, false);
+                    case "plateAlloyIridium":
+                        GT_ModHandler.removeRecipeByOutput(aStack);
+                    case "plateIron": case "plateCopper": case "plateTin": case "plateBronze": case "plateGold": case "plateSteel ": case "plateLead": case "plateAluminium": case "plateStainlessSteel": case "plateTitanium": case "plateTungsten": case "plateTungstenSteel": case "plateIridium": case "plateChrome": case "plateOsmium": case "plateNeutronium":
+                        GT_ModHandler.removeRecipeByOutput(aStack);
+                }
+                break;
+		default:
+			break;
         }
     }
 }

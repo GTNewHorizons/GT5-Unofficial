@@ -124,26 +124,26 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MeatCooked, 1L));
                         break;
                     case "Mercury":
-                        System.err.println("Quicksilver Dust?, To melt that, you don't even need a Furnace...");
+                    //   System.err.println("Quicksilver Dust?, To melt that, you don't even need a Furnace...");
                         break;
-//                    case "Tetrahedrite": case "Chalcopyrite": case "Malachite":
-//                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Copper, 6L));
-//                        break;
-//                    case "Pentlandite":
-//                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Nickel, 6L));
-//                        break;
-//                    case "Garnierite":
-//                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Nickel, 1L));
-//                        break;
-//                    case "Cassiterite": case "CassiteriteSand":
-//                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L));
-//                        break;
-//                    case "Magnetite": case "VanadiumMagnetite": case "BasalticMineralSand": case "GraniticMineralSand":
-//                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 3L));
-//                        break;
-//                    case "YellowLimonite": case "BrownLimonite": case "BandedIron":
-//                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L));
-//                        break;
+                    // case "Tetrahedrite": case "Chalcopyrite": case "Malachite":
+                    //    GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Copper, 6L));
+                    //    break;
+                    //case "Pentlandite":
+                    //    GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Nickel, 6L));
+                    //    break;
+                    //case "Garnierite":
+                    //    GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Nickel, 1L));
+                    //   break;
+                    //case "Cassiterite": case "CassiteriteSand":
+                    //    GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L));
+                    //    break;
+                    //case "Magnetite": case "VanadiumMagnetite": case "BasalticMineralSand": case "GraniticMineralSand":
+                    //    GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 3L));
+                    //    break;
+                    //case "YellowLimonite": case "BrownLimonite": case "BandedIron":
+                    //    GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L));
+                    //    break;
                     case "Oilsands":
                         GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(true,new ItemStack[]{GT_Utility.copyAmount(1L, new Object[]{aStack})},null,null,null,new FluidStack[]{Materials.OilHeavy.getFluid(1000)},660,8,0);
                         break;

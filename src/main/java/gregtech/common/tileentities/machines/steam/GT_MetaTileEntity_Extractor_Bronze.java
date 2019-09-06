@@ -12,8 +12,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GT_MetaTileEntity_Extractor_Bronze
-        extends GT_MetaTileEntity_BasicMachine_Bronze {
+public class GT_MetaTileEntity_Extractor_Bronze extends GT_MetaTileEntity_BasicMachine_Bronze {
     public GT_MetaTileEntity_Extractor_Bronze(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, "Extracting your first Rubber", 1, 1, false);
     }

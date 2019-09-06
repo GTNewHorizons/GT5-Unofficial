@@ -1,7 +1,10 @@
 package gregtech.api.metatileentity.implementations;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.*;
+import gregtech.api.gui.GT_Container_2by2;
+import gregtech.api.gui.GT_Container_4by4;
+import gregtech.api.gui.GT_GUIContainer_2by2;
+import gregtech.api.gui.GT_GUIContainer_4by4;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -11,6 +14,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch {
+    private int timeout=4;
+
     public GT_MetaTileEntity_Hatch_DataAccess(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 16, new String[]{
         		"Data Access for Multiblocks",
@@ -69,38 +74,51 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-    	switch (mTier) {
-    	case 4:
-    		return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
-    	default:
-    		return new GT_Container_4by4(aPlayerInventory, aBaseMetaTileEntity);
-    	}
+        switch (mTier) {
+            case 4:
+                return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
+            default:
+                return new GT_Container_4by4(aPlayerInventory, aBaseMetaTileEntity);
+        }
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-    	switch (mTier) {
-    	case 4:
-    		return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, "Data Access Hatch", "DataAccess");
-    	case 6:
-    		return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, "Data Access Hatch", "DataAccess");
-    	default:
-    		return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, "Data Access Hatch", "DataAccess");
-    	}
+        switch (mTier) {
+            case 4:
+                return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, "Data Access Hatch", "DataAccess");
+            default:
+                return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, "Data Access Hatch", "DataAccess");
+        }
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return false;
+        return mTier>=8 && !aBaseMetaTileEntity.isActive();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return false;
+        return mTier>=8 && !aBaseMetaTileEntity.isActive();
     }
-  
     @Override
     public int getInventoryStackLimit() {
         return 1;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isActive()) {
+            timeout--;
+            if (timeout <= 0) {
+                aBaseMetaTileEntity.setActive(false);
+            }
+        }
+
+    }
+
+    public void setActive(boolean mActive){
+        getBaseMetaTileEntity().setActive(mActive);
+        timeout=mActive?4:0;
     }
 }

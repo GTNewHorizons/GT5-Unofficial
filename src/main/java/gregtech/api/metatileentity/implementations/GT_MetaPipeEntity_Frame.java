@@ -33,7 +33,7 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
 
     @Override
     public byte getTileEntityBaseType() {
-        return mMaterial == null ? 4 : (byte) ((mMaterial.contains(SubTag.WOOD) ? 12 : 4) + Math.max(0, Math.min(3, mMaterial.mToolQuality)));
+        return (byte) (mMaterial == null ? 4 : (byte) (4) + Math.max(0, Math.min(3, mMaterial.mToolQuality)));
     }
 
     @Override
@@ -96,5 +96,5 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     public int connect(byte aSide) {return 0;}
 
     @Override
-    public void disconnect(byte aSide) {/*Do nothing*/}
+    public void disconnect(byte aSide) {/* Do nothing*/}
 }

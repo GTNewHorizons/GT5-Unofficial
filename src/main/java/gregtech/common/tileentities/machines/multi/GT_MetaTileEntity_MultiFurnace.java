@@ -1,5 +1,9 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static gregtech.api.enums.GT_Values.VN;
+
+import java.util.ArrayList;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -18,10 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import static gregtech.api.enums.GT_Values.VN;
-
-import java.util.ArrayList;
 
 public class GT_MetaTileEntity_MultiFurnace
         extends GT_MetaTileEntity_MultiBlockBase {
@@ -81,7 +81,7 @@ public class GT_MetaTileEntity_MultiFurnace
     public boolean checkRecipe(ItemStack aStack) {
         ArrayList<ItemStack> tInputList = getStoredInputs();
         if (!tInputList.isEmpty()) {
-            byte tTier = (byte) Math.max(1, GT_Utility.getTier(getMaxInputVoltage()));
+            int mVolatage=GT_Utility.safeInt(getMaxInputVoltage());
 
             int j = 0;
             this.mOutputItems = new ItemStack[8 * this.mLevel];
@@ -93,9 +93,17 @@ public class GT_MetaTileEntity_MultiFurnace
             if (j > 0) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
+                calculateOverclockedNessMulti(4, 512, 1, mVolatage);
+                //In case recipe is too OP for that machine
+                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                    return false;
 
-                this.mEUt = (-4 * (1 << tTier - 1) * (1 << tTier - 1) * this.mLevel / this.mCostDiscount);
-                this.mMaxProgresstime = Math.max(1, 512 / (1 << tTier - 1));
+                this.mEUt = GT_Utility.safeInt(((long)mEUt) * this.mLevel / (long)this.mCostDiscount,1);
+                if (mEUt == Integer.MAX_VALUE - 1)
+                    return false;
+                if (this.mEUt > 0) {
+                    this.mEUt = (-this.mEUt);
+                }
             }
             updateSlots();
             return true;
@@ -103,7 +111,7 @@ public class GT_MetaTileEntity_MultiFurnace
         return false;
     }
 
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    private boolean checkMachineFunction(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
 
@@ -190,6 +198,11 @@ public class GT_MetaTileEntity_MultiFurnace
         }
         return true;
     }
+        public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack){
+        boolean result= this.checkMachineFunction(aBaseMetaTileEntity,aStack);
+              if (!result) this.mLevel=0;
+              return result;
+        }
 
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
@@ -226,7 +239,8 @@ public class GT_MetaTileEntity_MultiFurnace
             }
         }
     }
-    
+
+
     @Override
     public String[] getInfoData() {
         int mPollutionReduction=0;
@@ -266,4 +280,5 @@ public class GT_MetaTileEntity_MultiFurnace
                 StatCollector.translateToLocal("GT5U.multiblock.pollution")+": "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %"
         };
     }
+
 }

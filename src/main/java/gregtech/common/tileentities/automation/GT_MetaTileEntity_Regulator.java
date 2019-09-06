@@ -23,10 +23,10 @@ public class GT_MetaTileEntity_Regulator
 
     public GT_MetaTileEntity_Regulator(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 20, new String[]{
-        		"Filters up to 9 different Items",
-        		"Allows Item-specific output stack size",
-        		"Allows Item-specific output slot",
-        		"Consumes 3EU per moved Item"});
+                        		"Filters up to 9 different Items",
+                        		"Allows Item-specific output stack size",
+                        		"Allows Item-specific output slot",
+                        		"Consumes 1EU per moved Item"});
     }
 
     public GT_MetaTileEntity_Regulator(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
@@ -46,7 +46,7 @@ public class GT_MetaTileEntity_Regulator
     }
 
     public boolean isValidSlot(int aIndex) {
-        return aIndex < 9 ;
+        return aIndex < 9;
     }
 
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -84,8 +84,8 @@ public class GT_MetaTileEntity_Regulator
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-    	//Regulation per Screwdriver is overridden by GUI regulation.
+     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+            	//Regulation per Screwdriver is overridden by GUI regulation.
     }
 
     public void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {

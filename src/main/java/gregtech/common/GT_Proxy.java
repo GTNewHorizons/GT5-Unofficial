@@ -8,6 +8,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import forestry.api.genetics.AlleleManager;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
@@ -47,6 +48,7 @@ import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
@@ -75,6 +77,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import org.apache.commons.lang3.text.WordUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -135,7 +140,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     private final DateFormat mDateFormat = DateFormat.getInstance();
     public ArrayList<String> mBufferedPlayerActivity = new ArrayList();
     public boolean mHardcoreCables = false;
-    public boolean mSmallLavaBoilerEfficiencyLoss = true;
     public boolean mDisableVanillaOres = true;
     public boolean mNerfStorageBlocks = true;
     public boolean mHardMachineCasings = true;
@@ -179,7 +183,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public int mGraniteHavestLevel=3;
     public int mMaxHarvestLevel=7;
     public int mWireHeatingTicks = 4;
-    public int mPollutionSmogLimit = 500000;
+    public int mPollutionSmogLimit = 550000;
     public int mPollutionPoisonLimit = 750000;
     public int mPollutionVegetationLimit = 1000000;
     public int mPollutionSourRainLimit = 2000000;
@@ -212,10 +216,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean enableRedGraniteOres = true;
     public boolean enableMarbleOres = true;
     public boolean enableBasaltOres = true;
-    public boolean enableGCOres = true;
     public boolean enableUBOres = true;
-    public boolean enableCHOres = true;
-    public boolean enableEPOres = true;
     public boolean gt6Pipe = true;
     public boolean gt6Cable = true;
     public boolean ic2EnergySourceCompat = true;
@@ -516,6 +517,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         GT_OreDictUnificator.registerOre("cropGrape", GT_ModHandler.getModItem("magicalcrops", "magicalcrops_CropProduce", 1L, 4));
         GT_OreDictUnificator.registerOre("cropTea", GT_ModHandler.getModItem("ganyssurface", "teaLeaves", 1L, 0));
 
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getModItem("EMT", "NanoBootsTraveller", 1L, 32767));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getModItem("EMT", "NanosuitGogglesRevealing", 1L, 32767));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getModItem("EMT", "QuantumBootsTraveller", 1L, 32767));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getModItem("EMT", "QuantumGogglesRevealing", 1L, 32767));
+        
         GregTech_API.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
@@ -1327,6 +1333,102 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             tCount += tStack.stackSize * 64 / Math.max(1, tStack.getMaxStackSize());
                         }
                         if (this.mInventoryUnification) {
+                        	if (tStack.getTagCompound()!= null && (tStack.getTagCompound().getTag("Mate")!= null || tStack.getTagCompound().getTag("Genome")!= null )) {
+
+                                String orgMate = "";
+                                if(tStack.getTagCompound().getTag("Mate")!= null)
+                                    orgMate = (tStack.getTagCompound().getCompoundTag("Mate")).getTagList("Chromosomes",10).getCompoundTagAt(0).getString("UID1");
+
+                                String orgGen = orgMate;
+
+                                if(tStack.getTagCompound().getTag("Genome")!= null)
+                                    orgGen = (tStack.getTagCompound().getCompoundTag("Genome")).getTagList("Chromosomes",10).getCompoundTagAt(0).getString("UID1");
+
+                                final boolean[] yn = {orgMate.contains("gendustry"),orgGen.contains("gendustry")};
+
+                                if (yn[0] || yn[1]) {
+
+                                    final NBTTagCompound NBTTAGCOMPOUND = (NBTTagCompound) tStack.getTagCompound().copy();
+
+                                    //MATE
+                                    if (yn[0]) {
+                                        final NBTTagCompound MATE = NBTTAGCOMPOUND.getCompoundTag("Mate");
+                                        final NBTTagList chromosomesMate = MATE.getTagList("Chromosomes", 10);
+                                        final NBTTagCompound species = chromosomesMate.getCompoundTagAt(0);
+
+                                        String ident1 = species.getString("UID1");
+                                        final String[] split = ident1.split("[.]");
+                                        ident1 = "gregtech.bee.species" + WordUtils.capitalize(split[2].toLowerCase(Locale.ENGLISH));
+
+                                        if (AlleleManager.alleleRegistry.getAllele(ident1) == null)
+                                            return;
+
+                                        String ident2 = species.getString("UID0");
+                                        final String[] split2 = ident2.split("[.]");
+                                        ident2 = "gregtech.bee.species"+WordUtils.capitalize(split2[2].toLowerCase(Locale.ENGLISH));
+
+                                        if (AlleleManager.alleleRegistry.getAllele(ident2) == null)
+                                            return;
+
+                                        final NBTTagCompound nuspeciesmate = new NBTTagCompound();
+                                        nuspeciesmate.setString("UID1", ident1);
+                                        nuspeciesmate.setString("UID0", ident2);
+                                        nuspeciesmate.setByte("Slot", (byte) 0);
+
+                                        final NBTTagCompound nuMate2 = new NBTTagCompound();
+                                        final NBTTagList nuMate = new NBTTagList();
+                                        nuMate.appendTag(nuspeciesmate);
+
+                                        for (int j = 1; j < chromosomesMate.tagCount(); j++) {
+                                            nuMate.appendTag(chromosomesMate.getCompoundTagAt(j));
+                                        }
+
+                                        nuMate2.setTag("Chromosomes", nuMate);
+                                        NBTTAGCOMPOUND.removeTag("Mate");
+                                        NBTTAGCOMPOUND.setTag("Mate", nuMate2);
+                                    }
+                                    if (yn[1]) {
+                                        //Genome
+                                        final NBTTagCompound genome = NBTTAGCOMPOUND.getCompoundTag("Genome");
+                                        final NBTTagList chromosomesGenome = genome.getTagList("Chromosomes", 10);
+                                        final NBTTagCompound speciesGenome = chromosomesGenome.getCompoundTagAt(0);
+
+                                        String ident1Genome = speciesGenome.getString("UID1");
+                                        final String[] splitGenome = ident1Genome.split("[.]");
+                                        ident1Genome = "gregtech.bee.species" + WordUtils.capitalize(splitGenome[2].toLowerCase(Locale.ENGLISH));
+
+                                        if (AlleleManager.alleleRegistry.getAllele(ident1Genome) == null)
+                                            return;
+
+                                        String ident2Genome = speciesGenome.getString("UID0");
+                                        final String[] splitGenome2 = ident2Genome.split("[.]");
+                                        ident2Genome = "gregtech.bee.species" + WordUtils.capitalize(splitGenome2[2].toLowerCase(Locale.ENGLISH));
+
+                                        if (AlleleManager.alleleRegistry.getAllele(ident2Genome) == null)
+                                            return;
+
+                                        final NBTTagCompound nuspeciesgenome = new NBTTagCompound();
+                                        nuspeciesgenome.setString("UID1", ident1Genome);
+                                        nuspeciesgenome.setString("UID0", ident2Genome);
+                                        nuspeciesgenome.setByte("Slot", (byte) 0);
+
+                                        final NBTTagCompound nugenome2 = new NBTTagCompound();
+                                        final NBTTagList nuGenome = new NBTTagList();
+                                        nuGenome.appendTag(nuspeciesgenome);
+
+                                        for (int j = 1; j < chromosomesGenome.tagCount(); j++) {
+                                            nuGenome.appendTag(chromosomesGenome.getCompoundTagAt(j));
+                                        }
+
+                                        nugenome2.setTag("Chromosomes", nuGenome);
+                                        NBTTAGCOMPOUND.removeTag("Genome");
+                                        NBTTAGCOMPOUND.setTag("Genome", nugenome2);
+                                    }
+                                    tStack.setTagCompound(new NBTTagCompound());
+                                    tStack.setTagCompound(NBTTAGCOMPOUND);
+                                }
+                                else return;
+                            }
                             GT_OreDictUnificator.setStack(true, tStack);
                         }
                     }
@@ -1607,6 +1709,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 aMaterial.mMoltenRGBa, 4, aMaterial.mMeltingPoint <= 0 ? 1000 : aMaterial.mMeltingPoint, null, null, 0);
     }
 
+    public Fluid addAutogeneratedWetFluid(Materials aMaterial) {
+        return addFluid("wet." + aMaterial.mName.toLowerCase(Locale.ENGLISH), "wet.autogenerated", "Wet " + aMaterial.mDefaultLocalName, aMaterial,
+                        aMaterial.mMoltenRGBa, 4, aMaterial.mMeltingPoint <= 0 ? 1000 : aMaterial.mMeltingPoint, GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 144);
+    }
+        
     public Fluid addAutogeneratedPlasmaFluid(Materials aMaterial) {
         return addFluid("plasma." + aMaterial.mName.toLowerCase(Locale.ENGLISH), "plasma.autogenerated", aMaterial.mDefaultLocalName + " Plasma", aMaterial,
                 aMaterial.mMoltenRGBa, 3, 10000, GT_OreDictUnificator.get(OrePrefixes.cellPlasma, aMaterial, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
@@ -1799,13 +1906,23 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     }
 
     public void activateOreDictHandler() {
+    	final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech");
         this.mOreDictActivated = true;
         ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", mEvents.size());
+        int sizeStep = mEvents.size()/20-1;
+        int size = 5;
         OreDictEventContainer tEvent;
         for (Iterator i$ = this.mEvents.iterator(); i$.hasNext(); registerRecipes(tEvent)) {
             tEvent = (OreDictEventContainer) i$.next();
             
+            sizeStep--;
             progressBar.step(tEvent.mMaterial == null ? "" : tEvent.mMaterial.toString());
+            if( sizeStep == 0 )
+                {
+                    GT_FML_LOGGER.info("Baking : " + size + "%", new Object[0]);
+                    sizeStep = mEvents.size()/20-1;
+                    size += 5;
+                }
         }
         ProgressManager.pop(progressBar);
     }

@@ -1,14 +1,12 @@
 package gregtech.api.util;
 
 import cofh.api.transport.IItemDuct;
+import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
 import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IProjectileItem;
@@ -16,7 +14,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.*;
 import gregtech.api.items.GT_EnergyArmor_Item;
 import gregtech.api.items.GT_Generic_Item;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.net.GT_Packet_Sound;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
@@ -44,6 +41,9 @@ import net.minecraft.nbt.NBTBase.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.network.play.server.S07PacketRespawn;
+import net.minecraft.network.play.server.S1DPacketEntityEffect;
+import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
@@ -74,8 +74,7 @@ import java.text.NumberFormat;
 import java.util.*;
 import java.util.Map.Entry;
 
-import com.mojang.authlib.GameProfile;
-
+import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.common.GT_Proxy.GTPOLLUTION;
 import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
@@ -101,14 +100,14 @@ public class GT_Utility {
         GregTech_API.sItemStackMappings.add(sFilledContainerToData);
         GregTech_API.sItemStackMappings.add(sEmptyContainerToFluidToData);
     }
-    
+
     public static int safeInt(long number, int margin){
         return number>Integer.MAX_VALUE-margin ? Integer.MAX_VALUE-margin :(int)number;
     }
 
     public static int safeInt(long number){
         return number>GT_Values.V[GT_Values.V.length-1] ? safeInt(GT_Values.V[GT_Values.V.length-1],1) : number<Integer.MIN_VALUE ? Integer.MIN_VALUE : (int)number;
-}
+    }
 
     public static Field getPublicField(Object aObject, String aField) {
         Field rField = null;
@@ -368,6 +367,7 @@ public class GT_Utility {
         if (BC_CHECK && aTileEntity instanceof buildcraft.api.transport.IPipeTile)
             return ((buildcraft.api.transport.IPipeTile) aTileEntity).isPipeConnected(ForgeDirection.getOrientation(aSide));
         if (GregTech_API.mTranslocator && aTileEntity instanceof codechicken.translocator.TileItemTranslocator) return true;
+
         return false;
     }
     /**
@@ -530,17 +530,6 @@ public class GT_Utility {
         return 0;
     }
 
-    public  static  byte moveSomeItemStacks(Object aTileEntity1, Object aTileEntity2, byte aGrabFrom, byte aPutTo, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce, byte aTimes) {
-        byte movedItems = 0;
-        if (aTileEntity1 instanceof IInventory){
-            for (byte i = 0; i < aTimes; i++) {
-                movedItems += moveOneItemStack((IInventory) aTileEntity1, aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, true);
-            }
-            return movedItems;
-        }
-        return 0;
-    }
-    
     /**
      * This is only because I needed an additional Parameter for the Double Chest Check.
      */
@@ -573,14 +562,15 @@ public class GT_Utility {
                         if (isAllowedToTakeFromSlot(aTileEntity1, tGrabSlots[i], aGrabFrom, aTileEntity1.getStackInSlot(tGrabSlots[i]))) {
                             if (isAllowedToPutIntoSlot((IInventory) aTileEntity2, tPutSlots[j], aPutTo, aTileEntity1.getStackInSlot(tGrabSlots[i]), aMaxTargetStackSize)) {
                                 tMovedItemCount += moveStackFromSlotAToSlotB(aTileEntity1, (IInventory) aTileEntity2, tGrabSlots[i], tPutSlots[j], aMaxTargetStackSize, aMinTargetStackSize, (byte) (aMaxMoveAtOnce - tMovedItemCount), aMinMoveAtOnce);
-                                if (tMovedItemCount >= aMaxMoveAtOnce) {
-                                	return tMovedItemCount;
+                                 if (tMovedItemCount >= aMaxMoveAtOnce) {
+                                     return tMovedItemCount;
+
                                 }
                             }
                         }
                     }
                 }
-                if (tMovedItemCount > 0) return tMovedItemCount;
+            if (tMovedItemCount > 0) return tMovedItemCount;
             }
 
             if (aDoCheckChests && aTileEntity1 instanceof TileEntityChest) {
@@ -896,7 +886,7 @@ public class GT_Utility {
         ItemData tOreName = GT_OreDictUnificator.getAssociation(aInput);
         for (int i = 0; i < aOutput.length; i++) {
             if (aOutput[i] == null) {
-                System.out.println("EmptyIC2Output!" + aInput.getUnlocalizedName());
+                GT_FML_LOGGER.info("EmptyIC2Output!" + aInput.getUnlocalizedName());
                 return false;
             }
         }
@@ -1136,7 +1126,7 @@ public class GT_Utility {
                 aInventory.setInventorySlotContents(i, null);
         }
     }
-    
+
     /**
      * Initializes a new texture page.
      */
@@ -1496,145 +1486,119 @@ public class GT_Utility {
      * Used for my Teleporter.
      */
     public static boolean isRealDimension(int aDimensionID) {
-        try {
-            if (DimensionManager.getProvider(aDimensionID).getClass().getName().contains("com.xcompwiz.mystcraft"))
-                return true;
-        } catch (Throwable e) {/*Do nothing*/}
-        try {
-            if (DimensionManager.getProvider(aDimensionID).getClass().getName().contains("TwilightForest")) return true;
-        } catch (Throwable e) {/*Do nothing*/}
-        try {
-            if (DimensionManager.getProvider(aDimensionID).getClass().getName().contains("galacticraft")) return true;
-        } catch (Throwable e) {/*Do nothing*/}
-        return GregTech_API.sDimensionalList.contains(aDimensionID);
+        if(aDimensionID<=1 && aDimensionID>=-1 && !GregTech_API.sDimensionalList.contains(aDimensionID)) return true;
+        return !GregTech_API.sDimensionalList.contains(aDimensionID) && DimensionManager.isDimensionRegistered(aDimensionID);
     }
+	 
+    //public static boolean isRealDimension(int aDimensionID) {
+    //    try {
+    //        if (DimensionManager.getProvider(aDimensionID).getClass().getName().contains("com.xcompwiz.mystcraft"))
+    //            return true;
+    //    } catch (Throwable e) {/*Do nothing*/}
+    //    try {
+    //        if (DimensionManager.getProvider(aDimensionID).getClass().getName().contains("TwilightForest")) return true;
+    //    } catch (Throwable e) {/*Do nothing*/}
+    //    try {
+    //        if (DimensionManager.getProvider(aDimensionID).getClass().getName().contains("galacticraft")) return true;
+    //    } catch (Throwable e) {/*Do nothing*/}
+    //    return GregTech_API.sDimensionalList.contains(aDimensionID);
+    //}
+	
+    public static boolean moveEntityToDimensionAtCoords(Entity entity, int aDimension, double aX, double aY, double aZ) {
+        //Credit goes to BrandonCore Author :!:
 
-    public static boolean moveEntityToDimensionAtCoords(Entity aEntity, int aDimension, double aX, double aY, double aZ) {
-        WorldServer tTargetWorld = DimensionManager.getWorld(aDimension), tOriginalWorld = DimensionManager.getWorld(aEntity.worldObj.provider.dimensionId);
-        if (tTargetWorld != null && tOriginalWorld != null && tTargetWorld != tOriginalWorld) {
-            if (aEntity.ridingEntity != null) aEntity.mountEntity(null);
-            if (aEntity.riddenByEntity != null) aEntity.riddenByEntity.mountEntity(null);
-            if (aEntity instanceof EntityPlayerMP) {
-                EntityPlayerMP aPlayer = (EntityPlayerMP) aEntity;
-//                aPlayer.dimension = aDimension;
-//                aPlayer.playerNetServerHandler.sendPacket(new S07PacketRespawn(aPlayer.dimension, aPlayer.worldObj.difficultySetting, aPlayer.worldObj.getWorldInfo().getTerrainType(), aPlayer.theItemInWorldManager.getGameType()));
-//                tOriginalWorld.removePlayerEntityDangerously(aPlayer);
-//                aPlayer.isDead = false;
-//                aPlayer.setWorld(tTargetWorld);
-//                MinecraftServer.getServer().getConfigurationManager().func_72375_a(aPlayer, tOriginalWorld);
-//                aPlayer.playerNetServerHandler.setPlayerLocation(aX + 0.5, aY + 0.5, aZ + 0.5, aPlayer.rotationYaw, aPlayer.rotationPitch);
-//                aPlayer.theItemInWorldManager.setWorld(tTargetWorld);
-//                MinecraftServer.getServer().getConfigurationManager().updateTimeAndWeatherForPlayer(aPlayer, tTargetWorld);
-//                MinecraftServer.getServer().getConfigurationManager().syncPlayerInventory(aPlayer);
-//                Iterator tIterator = aPlayer.getActivePotionEffects().iterator();
-//                while (tIterator.hasNext()) {
-//                    PotionEffect potioneffect = (PotionEffect) tIterator.next();
-//                    aPlayer.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(aPlayer.getEntityId(), potioneffect));
-//                }
-//                FMLCommonHandler.instance().firePlayerChangedDimensionEvent(aPlayer, tOriginalWorld.provider.dimensionId, aDimension);
-            	aPlayer.travelToDimension(aDimension);
-                aPlayer.playerNetServerHandler.setPlayerLocation(aX + 0.5, aY + 0.5, aZ + 0.5, aPlayer.rotationYaw, aPlayer.rotationPitch);
-            	
-            } else {
-                aEntity.setPosition(aX + 0.5, aY + 0.5, aZ + 0.5);
-                aEntity.worldObj.removeEntity(aEntity);
-                aEntity.dimension = aDimension;
-                aEntity.isDead = false;
-                Entity tNewEntity = EntityList.createEntityByName(EntityList.getEntityString(aEntity), tTargetWorld);
-                if (tNewEntity != null) {
-                    tNewEntity.copyDataFrom(aEntity, true);
-                    aEntity.setDead();
-                    tNewEntity.isDead = false;
-                    boolean temp = tNewEntity.forceSpawn;
-                    tNewEntity.forceSpawn = true;
-                    tTargetWorld.spawnEntityInWorld(tNewEntity);
-                    tNewEntity.forceSpawn = temp;
-                    tNewEntity.isDead = false;
-                    aEntity = tNewEntity;
-                }
+        if (entity == null || entity.worldObj.isRemote) return false;
+        if (entity.ridingEntity != null) entity.mountEntity(null);
+        if (entity.riddenByEntity != null) entity.riddenByEntity.mountEntity(null);
+
+        World startWorld = entity.worldObj;
+        World destinationWorld = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(aDimension);
+
+        if (destinationWorld == null) {return false;}
+
+        boolean interDimensional = startWorld.provider.dimensionId != destinationWorld.provider.dimensionId;
+        if(!interDimensional)return false;
+        startWorld.updateEntityWithOptionalForce(entity, false);//added
+
+        if ((entity instanceof EntityPlayerMP) && interDimensional) {
+            EntityPlayerMP player = (EntityPlayerMP) entity;
+            player.closeScreen();//added
+            player.dimension = aDimension;
+            player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, destinationWorld.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+            ((WorldServer) startWorld).getPlayerManager().removePlayer(player);
+
+            startWorld.playerEntities.remove(player);
+            startWorld.updateAllPlayersSleepingFlag();
+            int i = entity.chunkCoordX;
+            int j = entity.chunkCoordZ;
+            if ((entity.addedToChunk) && (startWorld.getChunkProvider().chunkExists(i, j))) {
+                startWorld.getChunkFromChunkCoords(i, j).removeEntity(entity);
+                startWorld.getChunkFromChunkCoords(i, j).isModified = true;
             }
-
-            if (aEntity instanceof EntityLivingBase) {
-                ((EntityLivingBase) aEntity).setPositionAndUpdate(aX, aY, aZ);
-            } else {
-                aEntity.setPosition(aX, aY, aZ);
-            }
-
-            tOriginalWorld.resetUpdateEntityTick();
-            tTargetWorld.resetUpdateEntityTick();
-            return true;
+            startWorld.loadedEntityList.remove(entity);
+            startWorld.onEntityRemoved(entity);
         }
-        return false;
+
+        entity.setLocationAndAngles(aX, aY, aZ, entity.rotationYaw, entity.rotationPitch);
+
+        ((WorldServer) destinationWorld).theChunkProviderServer.loadChunk((int) aX >> 4, (int) aZ >> 4);
+
+        destinationWorld.theProfiler.startSection("placing");
+        if (interDimensional) {
+            if (!(entity instanceof EntityPlayer)) {
+                NBTTagCompound entityNBT = new NBTTagCompound();
+                entity.isDead = false;
+                entityNBT.setString("id", EntityList.getEntityString(entity));
+                entity.writeToNBT(entityNBT);
+                entity.isDead = true;
+                entity = EntityList.createEntityFromNBT(entityNBT, destinationWorld);
+                if (entity == null) {
+                    return false;
+                }
+                entity.dimension = destinationWorld.provider.dimensionId;
+            }
+            destinationWorld.spawnEntityInWorld(entity);
+            entity.setWorld(destinationWorld);
+        }
+        entity.setLocationAndAngles(aX, aY, aZ, entity.rotationYaw, entity.rotationPitch);
+
+        destinationWorld.updateEntityWithOptionalForce(entity, false);
+        entity.setLocationAndAngles(aX, aY, aZ, entity.rotationYaw, entity.rotationPitch);
+
+        if ((entity instanceof EntityPlayerMP)) {
+            EntityPlayerMP player = (EntityPlayerMP) entity;
+            if (interDimensional) {
+                player.mcServer.getConfigurationManager().func_72375_a(player, (WorldServer) destinationWorld);
+            }
+            player.playerNetServerHandler.setPlayerLocation(aX, aY, aZ, player.rotationYaw, player.rotationPitch);
+        }
+
+        destinationWorld.updateEntityWithOptionalForce(entity, false);
+
+        if (((entity instanceof EntityPlayerMP)) && interDimensional) {
+            EntityPlayerMP player = (EntityPlayerMP) entity;
+            player.theItemInWorldManager.setWorld((WorldServer) destinationWorld);
+            player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) destinationWorld);
+            player.mcServer.getConfigurationManager().syncPlayerInventory(player);
+
+            for (PotionEffect potionEffect : (Iterable<PotionEffect>) player.getActivePotionEffects()) {
+                player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), potionEffect));
+            }
+
+            player.playerNetServerHandler.sendPacket(new S1FPacketSetExperience(player.experience, player.experienceTotal, player.experienceLevel));
+            FMLCommonHandler.instance().firePlayerChangedDimensionEvent(player, startWorld.provider.dimensionId, destinationWorld.provider.dimensionId);
+        }
+        entity.setLocationAndAngles(aX, aY, aZ, entity.rotationYaw, entity.rotationPitch);
+
+        destinationWorld.theProfiler.endSection();
+        entity.fallDistance = 0;
+        return true;
     }
 
     public static int getScaleCoordinates(double aValue, int aScale) {
     	return (int)Math.floor(aValue / aScale);
     }
 
-//    public static FluidStack getUndergroundOil(World aWorld, int aX, int aZ) {
-//    	return getUndergroundOil(aWorld, aX, aZ, false);
-//    }
-//
-//    public static FluidStack getUndergroundOil(World aWorld, int aX, int aZ, boolean needConsumeOil) {
-//
-//    	if (GT_Mod.gregtechproxy.mUndergroundOil.CheckBlackList(aWorld.provider.dimensionId))
-//    		return null;
-//
-//        Random tRandom = new Random((aWorld.getSeed() + aWorld.provider.dimensionId * 2 + (getScaleCoordinates(aX,96)) + (7 * (getScaleCoordinates(aZ,96)))));
-//        int tAmount = 0;
-//        int tFluidId = 0;
-//        int tDecreasePerOperationAmount = 5;
-//        Fluid tFluid = null;
-////        System.out.println("Dimension: "+GT_Mod.gregtechproxy.mUndergroundOil.GetDimension(aWorld.provider.dimensionId).Dimension);
-//        try {
-//            GT_UO_Fluid uoFluid = GT_Mod.gregtechproxy.mUndergroundOil.GetDimension(aWorld.provider.dimensionId).getRandomFluid(tRandom);
-//            if (uoFluid != null)
-//            {
-//            	tFluid = uoFluid.getFluid();
-//            	tAmount = uoFluid.getRandomAmount(tRandom);
-//            	tDecreasePerOperationAmount = uoFluid.DecreasePerOperationAmount;
-//            	if (tFluid != null)
-//            		tFluidId = tFluid.getID();
-//                //System.out.println("Fluid: ("+tFluidId+")"+tFluid.getName()+" Amount:"+tAmount);
-//            }
-//			
-//		} catch (Exception e) {
-//	        tAmount = 0;
-//	        tFluidId = 0;
-//		}
-//
-//        try {
-//        ChunkPosition tPos = new ChunkPosition(getScaleCoordinates(aX,16), aWorld.provider.dimensionId, getScaleCoordinates(aZ,16));
-//        int[] tInts = new int[3];
-//    	if(GT_Proxy.chunkData.containsKey(tPos)){
-//    		tInts = GT_Proxy.chunkData.get(tPos);
-//    		if(tInts.length>0){
-//    			if(tInts[0]>0){tAmount = tInts[0];}
-//    		}
-//    		if(tInts.length>2){
-//    			if(tInts[2]>0&&tInts[2]!=tFluidId)
-//    			{
-//    				tFluidId = tInts[2];
-//    				tFluid = FluidRegistry.getFluid(tFluidId);
-//    			}
-//    		}
-//    		GT_Proxy.chunkData.remove(tPos);
-//    	}
-//
-//    	if (needConsumeOil && tAmount >= 5000)
-//    		tAmount = tAmount - tDecreasePerOperationAmount;
-//
-//    	tInts[0] = tAmount;
-//    	tInts[2] = tFluidId;
-//    	GT_Proxy.chunkData.put(tPos, tInts);
-//		} catch (Exception e) {
-//			System.out.println("getUndergroundOil() - Error put data");
-//		}
-//    	if (tFluid!=null)
-//    		return new FluidStack(tFluid, tAmount);
-//    	return null;
-//    }
-    
     public static int getCoordinateScan(ArrayList<String> aList, EntityPlayer aPlayer, World aWorld, int aScanLevel, int aX, int aY, int aZ, int aSide, float aClickX, float aClickY, float aClickZ) {
         if (aList == null) return 0;
 
@@ -1645,15 +1609,15 @@ public class GT_Utility {
 
         Block tBlock = aWorld.getBlock(aX, aY, aZ);
 
-        tList.add("----- X: " + aX + " Y: " + aY + " Z: " + aZ + " D: " + aWorld.provider.dimensionId + " -----");
+        tList.add("----- X: " +EnumChatFormatting.AQUA+ aX +EnumChatFormatting.RESET+ " Y: " +EnumChatFormatting.AQUA+ aY +EnumChatFormatting.RESET+ " Z: " +EnumChatFormatting.AQUA+ aZ +EnumChatFormatting.RESET+ " D: " +EnumChatFormatting.AQUA+ aWorld.provider.dimensionId +EnumChatFormatting.RESET+ " -----");
         try {
-            if (tTileEntity instanceof IInventory)
-                tList.add(trans("162","Name: ") + ((IInventory) tTileEntity).getInventoryName() + trans("163","  MetaData: ") + aWorld.getBlockMetadata(aX, aY, aZ));
+            if (tTileEntity != null && tTileEntity instanceof IInventory)
+                tList.add(trans("162","Name: ") +EnumChatFormatting.BLUE+ ((IInventory) tTileEntity).getInventoryName() +EnumChatFormatting.RESET+ trans("163"," MetaData: ") +EnumChatFormatting.AQUA+ aWorld.getBlockMetadata(aX, aY, aZ) +EnumChatFormatting.RESET);
             else
-                tList.add(trans("162","Name: ") + tBlock.getUnlocalizedName() + trans("163","  MetaData: ") + aWorld.getBlockMetadata(aX, aY, aZ));
+                tList.add(trans("162","Name: ") +EnumChatFormatting.BLUE+ tBlock.getUnlocalizedName() +EnumChatFormatting.RESET+ trans("163"," MetaData: ") +EnumChatFormatting.AQUA+ aWorld.getBlockMetadata(aX, aY, aZ) +EnumChatFormatting.RESET);
 
-            tList.add(trans("164","Hardness: ") + tBlock.getBlockHardness(aWorld, aX, aY, aZ) + trans("165","  Blast Resistance: ") + tBlock.getExplosionResistance(aPlayer, aWorld, aX, aY, aZ, aPlayer.posX, aPlayer.posY, aPlayer.posZ));
-            if (tBlock.isBeaconBase(aWorld, aX, aY, aZ, aX, aY + 1, aZ)) tList.add(trans("166","Is valid Beacon Pyramid Material"));
+            tList.add(trans("164","Hardness: ") +EnumChatFormatting.YELLOW+ tBlock.getBlockHardness(aWorld, aX, aY, aZ) +EnumChatFormatting.RESET+ trans("165"," Blast Resistance: ") +EnumChatFormatting.YELLOW+ tBlock.getExplosionResistance(aPlayer, aWorld, aX, aY, aZ, aPlayer.posX, aPlayer.posY, aPlayer.posZ) +EnumChatFormatting.RESET);
+            if (tBlock.isBeaconBase(aWorld, aX, aY, aZ, aX, aY + 1, aZ)) tList.add(EnumChatFormatting.GOLD+ trans("166","Is valid Beacon Pyramid Material") +EnumChatFormatting.RESET);
         } catch (Throwable e) {
             if (D1) e.printStackTrace(GT_Log.err);
         }
@@ -1663,7 +1627,7 @@ public class GT_Utility {
                     rEUAmount += 500;
                     FluidTankInfo[] tTanks = ((IFluidHandler) tTileEntity).getTankInfo(ForgeDirection.getOrientation(aSide));
                     if (tTanks != null) for (byte i = 0; i < tTanks.length; i++) {
-                        tList.add(trans("167","Tank ") + i + ": " + GT_Utility.formatNumbers((tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount)) + " / " + GT_Utility.formatNumbers(tTanks[i].capacity) + " " + getFluidName(tTanks[i].fluid, true));
+                    tList.add(trans("167","Tank ") + i + ": " +EnumChatFormatting.GREEN+ GT_Utility.formatNumbers((tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount)) +EnumChatFormatting.RESET+ " L / " +EnumChatFormatting.YELLOW+ GT_Utility.formatNumbers(tTanks[i].capacity) +EnumChatFormatting.RESET+ " L " +EnumChatFormatting.GOLD+ getFluidName(tTanks[i].fluid, true)+EnumChatFormatting.RESET);
                     }
                 }
             } catch (Throwable e) {
@@ -1680,8 +1644,8 @@ public class GT_Utility {
             try {
                 if (tTileEntity instanceof ic2.api.reactor.IReactor) {
                     rEUAmount += 500;
-                    tList.add(trans("168","Heat: ") + ((ic2.api.reactor.IReactor) tTileEntity).getHeat() + "/" + ((ic2.api.reactor.IReactor) tTileEntity).getMaxHeat()
-                            + trans("169","  HEM: ") + ((ic2.api.reactor.IReactor) tTileEntity).getHeatEffectModifier() + trans("170","  Base EU Output: ")/* + ((ic2.api.reactor.IReactor)tTileEntity).getOutput()*/);
+                    tList.add(trans("168","Heat: ") +EnumChatFormatting.GREEN+ ((ic2.api.reactor.IReactor) tTileEntity).getHeat() +EnumChatFormatting.RESET+ " / " +EnumChatFormatting.YELLOW+ ((ic2.api.reactor.IReactor) tTileEntity).getMaxHeat()+EnumChatFormatting.RESET);
+                    tList.add(trans("169","HEM: ") +EnumChatFormatting.YELLOW+((ic2.api.reactor.IReactor) tTileEntity).getHeatEffectModifier() +EnumChatFormatting.RESET/*+ trans("170"," Base EU Output: ")/* + ((ic2.api.reactor.IReactor)tTileEntity).getOutput()*/);
                 }
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);
@@ -1689,8 +1653,8 @@ public class GT_Utility {
             try {
                 if (tTileEntity instanceof ic2.api.tile.IWrenchable) {
                     rEUAmount += 100;
-                    tList.add(trans("171","Facing: ") + ((ic2.api.tile.IWrenchable) tTileEntity).getFacing() + trans("172"," / Chance: ") + (((ic2.api.tile.IWrenchable) tTileEntity).getWrenchDropRate() * 100) + "%");
-                    tList.add(((ic2.api.tile.IWrenchable) tTileEntity).wrenchCanRemove(aPlayer) ? trans("173","You can remove this with a Wrench") : trans("174","You can NOT remove this with a Wrench"));
+                    tList.add(trans("171","Facing: ") +EnumChatFormatting.GREEN+ ((ic2.api.tile.IWrenchable) tTileEntity).getFacing() +EnumChatFormatting.RESET+ trans("172"," / Chance: ") +EnumChatFormatting.YELLOW+ (((ic2.api.tile.IWrenchable) tTileEntity).getWrenchDropRate() * 100) +EnumChatFormatting.RESET+ "%");
+                    tList.add(((ic2.api.tile.IWrenchable) tTileEntity).wrenchCanRemove(aPlayer) ? EnumChatFormatting.GREEN+ trans("173","You can remove this with a Wrench") +EnumChatFormatting.RESET : EnumChatFormatting.RED+ trans("174","You can NOT remove this with a Wrench") +EnumChatFormatting.RESET);
                 }
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);
@@ -1724,7 +1688,7 @@ public class GT_Utility {
             try {
                 if (tTileEntity instanceof ic2.api.energy.tile.IEnergyConductor) {
                     rEUAmount += 200;
-                    tList.add(trans("175","Conduction Loss: ") + ((ic2.api.energy.tile.IEnergyConductor) tTileEntity).getConductionLoss());
+                    tList.add(trans("175","Conduction Loss: ") +EnumChatFormatting.YELLOW+ ((ic2.api.energy.tile.IEnergyConductor) tTileEntity).getConductionLoss()+EnumChatFormatting.RESET);
                 }
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);
@@ -1732,7 +1696,7 @@ public class GT_Utility {
             try {
                 if (tTileEntity instanceof ic2.api.tile.IEnergyStorage) {
                     rEUAmount += 200;
-                    tList.add(trans("176","Contained Energy: ") + ((ic2.api.tile.IEnergyStorage) tTileEntity).getStored() + trans("205"," of ") + ((ic2.api.tile.IEnergyStorage) tTileEntity).getCapacity());
+                    tList.add(trans("176","Contained Energy: ") +EnumChatFormatting.YELLOW+ ((ic2.api.tile.IEnergyStorage) tTileEntity).getStored() +EnumChatFormatting.RESET+ " EU / " +EnumChatFormatting.YELLOW+ ((ic2.api.tile.IEnergyStorage) tTileEntity).getCapacity()+EnumChatFormatting.RESET+" EU");
                     //aList.add(((ic2.api.tile.IEnergyStorage)tTileEntity).isTeleporterCompatible(ic2.api.Direction.YP)?"Teleporter Compatible":"Not Teleporter Compatible");
                 }
             } catch (Throwable e) {
@@ -1741,7 +1705,7 @@ public class GT_Utility {
             try {
                 if (tTileEntity instanceof IUpgradableMachine) {
                     rEUAmount += 500;
-                    if (((IUpgradableMachine) tTileEntity).hasMufflerUpgrade()) tList.add(trans("177","Has Muffler Upgrade"));
+                    if (((IUpgradableMachine) tTileEntity).hasMufflerUpgrade()) tList.add(EnumChatFormatting.GREEN+ trans("177","Has Muffler Upgrade") +EnumChatFormatting.RESET);
                 }
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);
@@ -1751,7 +1715,7 @@ public class GT_Utility {
                     rEUAmount += 400;
                     int tValue = 0;
                     if (0 < (tValue = ((IMachineProgress) tTileEntity).getMaxProgress()))
-                        tList.add(trans("178","Progress: ") + GT_Utility.formatNumbers(tValue) + " / " + GT_Utility.formatNumbers(((IMachineProgress) tTileEntity).getProgress()));
+                        tList.add(trans("178","Progress/Load: ") +EnumChatFormatting.GREEN+GT_Utility.formatNumbers(((IMachineProgress) tTileEntity).getProgress())  +EnumChatFormatting.RESET+ " / " +EnumChatFormatting.YELLOW+GT_Utility.formatNumbers(tValue) +EnumChatFormatting.RESET);
                 }
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);
@@ -1766,26 +1730,17 @@ public class GT_Utility {
                 if (D1) e.printStackTrace(GT_Log.err);
             }
             try {
-                if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
-                    GT_MetaPipeEntity_Cable c = (GT_MetaPipeEntity_Cable) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                    tList.add("Max voltage last second " + c.mTransferredVoltageLast20);
-                    tList.add("Max amperage last second " + c.mTransferredAmperageLast20);
-                }
-            } catch (Throwable e) {
-                if (D1) e.printStackTrace(GT_Log.err);
-            }
-            try {
                 if (tTileEntity instanceof IBasicEnergyContainer && ((IBasicEnergyContainer) tTileEntity).getEUCapacity() > 0) {
-                    tList.add(trans("179","Max IN: ") + ((IBasicEnergyContainer) tTileEntity).getInputVoltage() + trans("180"," EU"));
-                    tList.add(trans("181","Max OUT: ") + ((IBasicEnergyContainer) tTileEntity).getOutputVoltage() + trans("182"," EU at ") + ((IBasicEnergyContainer) tTileEntity).getOutputAmperage() + trans("183"," Amperes"));
-                    tList.add(trans("184","Energy: ") + GT_Utility.formatNumbers(((IBasicEnergyContainer) tTileEntity).getStoredEU()) + " / " + GT_Utility.formatNumbers(((IBasicEnergyContainer) tTileEntity).getEUCapacity()) + trans("185","EU"));
+                    tList.add(trans("179","Max IN: ")  +EnumChatFormatting.RED+ ((IBasicEnergyContainer) tTileEntity).getInputVoltage()  + " (" + GT_Values.VN[GT_Utility.getTier(((IBasicEnergyContainer) tTileEntity).getInputVoltage())] + ") " +EnumChatFormatting.RESET+ trans("182"," EU at ") +EnumChatFormatting.RED+((IBasicEnergyContainer)tTileEntity).getInputAmperage()+EnumChatFormatting.RESET+trans("183"," A"));
+                    tList.add(trans("181","Max OUT: ") +EnumChatFormatting.RED+ ((IBasicEnergyContainer) tTileEntity).getOutputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(((IBasicEnergyContainer) tTileEntity).getOutputVoltage())] + ") " +EnumChatFormatting.RESET+ trans("182"," EU at ") +EnumChatFormatting.RED+ ((IBasicEnergyContainer) tTileEntity).getOutputAmperage() +EnumChatFormatting.RESET+ trans("183"," A"));
+                    tList.add(trans("184","Energy: ")  +EnumChatFormatting.GREEN+ GT_Utility.formatNumbers(((IBasicEnergyContainer) tTileEntity).getStoredEU()) +EnumChatFormatting.RESET+ " EU / " +EnumChatFormatting.YELLOW+ GT_Utility.formatNumbers(((IBasicEnergyContainer) tTileEntity).getEUCapacity()) +EnumChatFormatting.RESET+ " EU");
                 }
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);
             }
             try {
                 if (tTileEntity instanceof IGregTechTileEntity) {
-                    tList.add(trans("186","Owned by: ") + ((IGregTechTileEntity) tTileEntity).getOwnerName());
+                    tList.add(trans("186","Owned by: ") +EnumChatFormatting.BLUE+ ((IGregTechTileEntity) tTileEntity).getOwnerName()+EnumChatFormatting.RESET);
                 }
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);
@@ -1833,12 +1788,12 @@ public class GT_Utility {
             }
         }
         
-        if (aPlayer.capabilities.isCreativeMode && GT_Values.D1) {
-            FluidStack tFluid = undergroundOilReadInformation(aWorld.getChunkFromBlockCoords(aX,aZ));
+        if (aPlayer.capabilities.isCreativeMode) {
+            FluidStack tFluid = undergroundOilReadInformation(aWorld.getChunkFromBlockCoords(aX,aZ));//-# to only read
             if (tFluid!=null)
-            	tList.add(EnumChatFormatting.GOLD+tFluid.getLocalizedName()+EnumChatFormatting.RESET+": " +EnumChatFormatting.YELLOW+ tFluid.amount +EnumChatFormatting.RESET+trans("200"," L"));
+            	tList.add(EnumChatFormatting.GOLD+tFluid.getLocalizedName()+EnumChatFormatting.RESET+": " +EnumChatFormatting.YELLOW+ tFluid.amount +EnumChatFormatting.RESET+" L");
             else
-                tList.add(EnumChatFormatting.GOLD+trans("201","Nothing")+EnumChatFormatting.RESET+": " +EnumChatFormatting.YELLOW+ '0' +EnumChatFormatting.RESET+trans("200"," L"));
+                tList.add(EnumChatFormatting.GOLD+trans("201","Nothing")+EnumChatFormatting.RESET+": " +EnumChatFormatting.YELLOW+ '0' +EnumChatFormatting.RESET+" L");
         }
 //      if(aPlayer.capabilities.isCreativeMode){
         int[] chunkData = GT_Proxy.dimensionWiseChunkData.get(aWorld.provider.dimensionId).get(aWorld.getChunkFromBlockCoords(aX,aZ).getChunkCoordIntPair());
@@ -1850,7 +1805,7 @@ public class GT_Utility {
             }
         }else{
             tList.add(EnumChatFormatting.GREEN+trans("204","No Pollution in Chunk! HAYO!")+EnumChatFormatting.RESET);
-}
+        }
 
         try {
             if (tBlock instanceof IDebugableBlock) {
@@ -1867,7 +1822,7 @@ public class GT_Utility {
         MinecraftForge.EVENT_BUS.post(tEvent);
         if (!tEvent.isCanceled()) aList.addAll(tList);
         return tEvent.mEUCost;
-    }    
+    }
 
     public static String trans(String aKey, String aEnglish){
     	return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_"+aKey, aEnglish, false);
@@ -2003,10 +1958,10 @@ public class GT_Utility {
     }
 
     public static String joinListToString(List<String> list) {
-        String result = "";
+        StringBuilder result = new StringBuilder(32);
         for (String s : list)
-            result += (result.isEmpty() ? "" : "|") + s;
-        return result;
+            result.append(result.length()==0?s:'|'+s);
+        return result.toString();
     }
 
     public static ItemStack getIntegratedCircuit(int config){
@@ -2014,37 +1969,37 @@ public class GT_Utility {
     }
 
     public static float getBlockHardnessAt(World aWorld, int aX, int aY, int aZ) {
-    	return aWorld.getBlock(aX, aY, aZ).getBlockHardness(aWorld, aX, aY, aZ);
+        return aWorld.getBlock(aX, aY, aZ).getBlockHardness(aWorld, aX, aY, aZ);
     }
 
     public static FakePlayer getFakePlayer(IGregTechTileEntity aBaseMetaTileEntity) {
-    	if (aBaseMetaTileEntity.getWorld() instanceof WorldServer) {
-    		return FakePlayerFactory.get((WorldServer) aBaseMetaTileEntity.getWorld(), new GameProfile(null, aBaseMetaTileEntity.getOwnerName()));
-    	}
-    	return null;
+        if (aBaseMetaTileEntity.getWorld() instanceof WorldServer) {
+            return FakePlayerFactory.get((WorldServer) aBaseMetaTileEntity.getWorld(), new GameProfile(null, aBaseMetaTileEntity.getOwnerName()));
+        }
+        return null;
     }
 
     public static boolean eraseBlockByFakePlayer(FakePlayer aPlayer, int aX, int aY, int aZ, boolean isSimulate) {
-    	if (aPlayer == null) return false;
-    	World aWorld = aPlayer.worldObj;
-    	BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(aX, aY, aZ, aWorld, aWorld.getBlock(aX, aY, aZ), aWorld.getBlockMetadata(aX, aY, aZ), aPlayer);
-    	MinecraftForge.EVENT_BUS.post(event);
-    	if (!event.isCanceled()) {
-    		if (!isSimulate) return aWorld.setBlockToAir(aX, aY, aZ);
-    		return true;
-    	}
-    	return false;
+        if (aPlayer == null) return false;
+        World aWorld = aPlayer.worldObj;
+        BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(aX, aY, aZ, aWorld, aWorld.getBlock(aX, aY, aZ), aWorld.getBlockMetadata(aX, aY, aZ), aPlayer);
+        MinecraftForge.EVENT_BUS.post(event);
+        if (!event.isCanceled()) {
+            if (!isSimulate) return aWorld.setBlockToAir(aX, aY, aZ);
+            return true;
+        }
+        return false;
     }
 
     public static boolean setBlockByFakePlayer(FakePlayer aPlayer, int aX, int aY, int aZ, Block aBlock, int aMeta, boolean isSimulate) {
-    	if (aPlayer == null) return false;
-    	World aWorld = aPlayer.worldObj;
-    	BlockEvent.PlaceEvent event = ForgeEventFactory.onPlayerBlockPlace(aPlayer, new BlockSnapshot(aWorld, aX, aY, aZ, aBlock, aMeta), ForgeDirection.UNKNOWN);
-    	if (!event.isCanceled()) {
-    		if (!isSimulate) return aWorld.setBlock(aX, aY, aZ, aBlock, aMeta, 3);
-    		return true;
-    	}
-    	return false;
+        if (aPlayer == null) return false;
+        World aWorld = aPlayer.worldObj;
+        BlockEvent.PlaceEvent event = ForgeEventFactory.onPlayerBlockPlace(aPlayer, new BlockSnapshot(aWorld, aX, aY, aZ, aBlock, aMeta), ForgeDirection.UNKNOWN);
+        if (!event.isCanceled()) {
+            if (!isSimulate) return aWorld.setBlock(aX, aY, aZ, aBlock, aMeta, 3);
+            return true;
+        }
+        return false;
     }
 
     public static class ItemNBT {
@@ -2124,11 +2079,11 @@ public class GT_Utility {
             return tNBT.getString("author");
         }
 
-        public static void setProspectionData(ItemStack aStack, int aX, int aY, int aZ, int aDim, FluidStack aFluid, String[] aOres) {
+        public static void setProspectionData(ItemStack aStack, int aX, int aY, int aZ, int aDim, FluidStack aFluid, String... aOres) {
             NBTTagCompound tNBT = getNBT(aStack);
             String tData = aX + "," + aY + "," + aZ + "," + aDim + ",";
             if (aFluid!=null)
-            	tData += (aFluid.amount) + "," + aFluid.getLocalizedName() + ",";
+            	tData += (aFluid.amount) + "," + aFluid.getLocalizedName() + ",";//TODO CHECK IF THAT /5000 is needed (Not needed)
             for (String tString : aOres) {
                 tData += tString + ",";
             }
@@ -2151,7 +2106,7 @@ public class GT_Utility {
             NBTTagCompound tNBT = GT_Utility.ItemNBT.getNBT(aStack);
             
             tNBT.setByte("prospection_tier", aTier);
-            tNBT.setString("prospection_pos", "X: " + aX + " Y: " + aY + " Z: " + aZ + " Dim: " + aDim);
+            tNBT.setString("prospection_pos", "Dim: " + aDim + "\nX: " + aX + " Y: " + aY + " Z: " + aZ);
 
             // ores
             tNBT.setString("prospection_near", joinListToString(aNearOres));
@@ -2162,8 +2117,8 @@ public class GT_Utility {
             ArrayList<String> tOilsTransformed = new ArrayList<String>(aOils.size());
             for (String aStr : aOils) {
             	String[] aStats = aStr.split(",");
-            	tOilsTransformed.add(aStats[0] + ":" + aStats[1] + "L " + aStats[2]);
-            	}
+            	tOilsTransformed.add(aStats[0] + ": " + aStats[1] + "L " + aStats[2]);
+            }
             
             tNBT.setString("prospection_oils", joinListToString(tOilsTransformed));
 
@@ -2180,13 +2135,13 @@ public class GT_Utility {
                 String tData = tNBT.getString("prospection");
                 String[] tDataArray = tData.split(",");
                 if (tDataArray.length > 6) {
-                    tNBT.setString("author", "X: " + tDataArray[0] + " Y: " + tDataArray[1] + " Z: " + tDataArray[2] + " Dim: " + tDataArray[3]);
+                    tNBT.setString("author", " Dim: " + tDataArray[3] + "X: " + tDataArray[0] + " Y: " + tDataArray[1] + " Z: " + tDataArray[2]);
                     NBTTagList tNBTList = new NBTTagList();
                     String tOres = " Prospected Ores: ";
                     for (int i = 6; tDataArray.length > i; i++) {
                         tOres += (tDataArray[i] + " ");
                     }
-                    tNBTList.appendTag(new NBTTagString("§nProspection Data §rFrom: X" + tDataArray[0] + " Z:" + tDataArray[2] + " Dim:" + tDataArray[3] + " Produces " + tDataArray[4] + "L " + tDataArray[5] + " " + tOres));
+                    tNBTList.appendTag(new NBTTagString("Tier " + tTier + " Prospecting Data From: X" + tDataArray[0] + " Z:" + tDataArray[2] + " Dim:" + tDataArray[3] + " Produces " + tDataArray[4] + "L " + tDataArray[5] + " " + tOres));
                     tNBT.setTag("pages", tNBTList);
                 }
                 setNBT(aStack, tNBT);
@@ -2206,48 +2161,37 @@ public class GT_Utility {
 
                 NBTTagList tNBTList = new NBTTagList();
 
-                String tPageText = "§nAdvanced prospection§r\n\n"
-                    + tPos + "\n"
-                    + "Results:\n"
-                    + "- Close Range Ores: " + (tNearOres != null ? tNearOres.length : 0) + "\n"
-                    + "- Mid Range Ores: " + (tMiddleOres != null ? tMiddleOres.length : 0) + "\n"
-                    + "- Far Range Ores: " + (tFarOres != null ? tFarOres.length : 0) + "\n"
-                    + "- Oils: " + (tOils != null ? tOils.length : 0) + "\n\n"
-                    + "Lists was sorted by volume";
+                String tPageText = "Prospector report\n"
+                    + tPos + "\n\n"
+                    + "Ores found:\n"
+                    + "Close <" + tBounds[0] + " blocks: " + (tNearOres != null ? tNearOres.length : 0) + "\n"
+                    + "Mid <" + tBounds[1] + " blocks: " + (tMiddleOres != null ? tMiddleOres.length : 0) + "\n"
+                    + "Far <" + tBounds[2] + " blocks: " + (tFarOres != null ? tFarOres.length : 0) + "\n"
+                    + "Oils: " + (tOils != null ? tOils.length : 0) + "\n\n"
+                    + "Lists sorted by volume\n"
+                    + "Location is center of chunk with ore";
                 tNBTList.appendTag(new NBTTagString(tPageText));
   
                 if (tNearOres != null)
-                	fillBookWithList(tNBTList, "Close Range Ores%s\n\n", "\n", 7, tNearOres);
+                    fillBookWithList(tNBTList, "Close Range Ores%s\n\n", "\n", 7, tNearOres);
                 if (tMiddleOres != null)
-                	fillBookWithList(tNBTList, "Mid Range Ores%s\n\n", "\n", 7, tMiddleOres);
+                    fillBookWithList(tNBTList, "Mid Range Ores%s\n\n", "\n", 7, tMiddleOres);
                 if (tFarOres != null)
-                	fillBookWithList(tNBTList, "Far Range Ores%s\n\n", "\n", 7, tFarOres);
+                    fillBookWithList(tNBTList, "Far Range Ores%s\n\n", "\n", 7, tFarOres);
                 
-                tPageText = "§nOre notes§r\n\n"
-                		+ "Close range:\nR <= " + tBounds[0] + "\n"
-                		+ "Mid range:\n" + tBounds[0] + " < R <= " + tBounds[1] + "\n"
-                		+ "Far range:\n" + tBounds[1] + " < R <= " + tBounds[2] + "\n"
-                		+ "\n"
-                		+ "[F][F][F][F][F]" + "\n"
-                		+ "[F][M][M][M][F]" + "\n"
-                		+ "[F][M]§2[C]§0[M][F]" + "\n"
-                		+ "[F][M][M][M][F]" + "\n"
-                		+ "[F][F][F][F][F]";
-                		tNBTList.appendTag(new NBTTagString(tPageText));
-                
-                if (tOils != null)
-                	fillBookWithList(tNBTList, "§nOils§r%s\n\n", "\n", 9, tOils);
+               if (tOils != null)
+                    fillBookWithList(tNBTList, "Oils%s\n\n", "\n", 9, tOils);
 
                 tPageText = "Oil notes\n\n"
-                		+"Prospects from NW to SE 324 chunks (9 8x8 oilfields)\n around and gives min-max amount" + "\n\n"
-                		+ "[1][2][3]" + "\n"
-                		+ "[4][5][6]" + "\n"
-                		+ "[7][8][9]" + "\n"
-                		+ "\n"
-                		+ "§2[5]§0  Prospector";
+                        + "Prospects from NW to SE 324 chunks (9 8x8 oilfields)\n around and gives min-max amount" + "\n\n"
+                        + "[1][2][3]" + "\n"
+                        + "[4][5][6]" + "\n"
+                        + "[7][8][9]" + "\n"
+                        + "\n"
+                        + "[5] - Prospector";
                 tNBTList.appendTag(new NBTTagString(tPageText));
 
-                tNBT.setString("author", tPos);
+                tNBT.setString("author", tPos.replace("\n"," "));
                 tNBT.setTag("pages", tNBTList);
                 setNBT(aStack, tNBT);
             }
@@ -2375,6 +2319,22 @@ public class GT_Utility {
                 aEnchantment.func_151368_a(mPlayer, mEntity, aLevel);
             }
         }
+    }
+
+    public static String toSubscript(long no){
+        char[] chars=Long.toString(no).toCharArray();
+        for(int i=0;i<chars.length;i++){
+            chars[i]+=8272;
+        }
+        return new String(chars);
+    }
+
+    public static boolean isPartOfMaterials(ItemStack aStack, Materials aMaterials){
+        return GT_OreDictUnificator.getAssociation(aStack) != null ? GT_OreDictUnificator.getAssociation(aStack).mMaterial.mMaterial.equals(aMaterials) : false;
+    }
+
+    public static boolean isPartOfOrePrefix(ItemStack aStack, OrePrefixes aPrefix){
+        return GT_OreDictUnificator.getAssociation(aStack) != null ? GT_OreDictUnificator.getAssociation(aStack).mPrefix.equals(aPrefix) : false;
     }
 
 }

@@ -47,10 +47,10 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * 9 = BaseMetaPipeEntity, Cutter lvl 1 to dismantle
      * 10 = BaseMetaPipeEntity, Cutter lvl 2 to dismantle
      * 11 = BaseMetaPipeEntity, Cutter lvl 3 to dismantle
-     * 12 = BaseMetaPipeEntity, Axe lvl 0 to dismantle
-     * 13 = BaseMetaPipeEntity, Axe lvl 1 to dismantle
-     * 14 = BaseMetaPipeEntity, Axe lvl 2 to dismantle
-     * 15 = BaseMetaPipeEntity, Axe lvl 3 to dismantle
+     * 12 = GT++
+     * 13 = GT++
+     * 14 = GT++
+     * 15 = GT++
      */
     byte getTileEntityBaseType();
 
@@ -406,4 +406,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean hasAlternativeModeText();
     
     String getAlternativeModeText();
+
+    boolean shouldJoinIc2Enet();
 }

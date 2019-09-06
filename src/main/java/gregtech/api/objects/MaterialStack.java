@@ -1,6 +1,7 @@
 package gregtech.api.objects;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_Utility;
 
 public class MaterialStack implements Cloneable {
     public long mAmount;
@@ -34,7 +35,7 @@ public class MaterialStack implements Cloneable {
     public String toString() {
          String temp1 = "", temp2 = mMaterial.getToolTip(true), temp3 = "", temp4 = "";
          if (mAmount > 1) {
-             temp4 = String.valueOf(mAmount);
+             temp4 = GT_Utility.toSubscript(mAmount);
              
              if (mMaterial.mMaterialList.size() > 1 || isMaterialListComplex(this)) {
                 temp1 = "(";

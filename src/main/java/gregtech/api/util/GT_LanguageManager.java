@@ -172,9 +172,9 @@ public class GT_LanguageManager {
     	addStringLocalization("Interaction_DESCRIPTION_Index_063", "Emit if 4 Maintenance Needed(inverted)");
     	addStringLocalization("Interaction_DESCRIPTION_Index_064", "Emit if 5 Maintenance Needed");
     	addStringLocalization("Interaction_DESCRIPTION_Index_065", "Emit if 5 Maintenance Needed(inverted)");
-    	addStringLocalization("Interaction_DESCRIPTION_Index_066", "Emit if rotor needs maintenance");
-    	addStringLocalization("Interaction_DESCRIPTION_Index_067", "Emit if rotor needs maintenance(inverted)");    	
-    	addStringLocalization("Interaction_DESCRIPTION_Index_068", "Emit if any Player is close");
+		addStringLocalization("Interaction_DESCRIPTION_Index_066", "Emit if rotor needs maintenance");
+		addStringLocalization("Interaction_DESCRIPTION_Index_067", "Emit if rotor needs maintenance(inverted)");
+		addStringLocalization("Interaction_DESCRIPTION_Index_068", "Emit if any Player is close");
     	addStringLocalization("Interaction_DESCRIPTION_Index_069", "Emit if other player is close");
     	addStringLocalization("Interaction_DESCRIPTION_Index_070", "Emit if you are close");    	
     	addStringLocalization("Interaction_DESCRIPTION_Index_071", "Conducts strongest Input");
@@ -239,7 +239,7 @@ public class GT_LanguageManager {
     	addStringLocalization("Interaction_DESCRIPTION_Index_130", "Fluids ");
     	addStringLocalization("Interaction_DESCRIPTION_Index_131", "Items ");    	
     	addStringLocalization("Interaction_DESCRIPTION_Index_132", "Pipe is loose.");
-    	addStringLocalization("Interaction_DESCRIPTION_Index_133", "Screws are missing.");
+    	addStringLocalization("Interaction_DESCRIPTION_Index_133", "Screws are loose.");
     	addStringLocalization("Interaction_DESCRIPTION_Index_134", "Something is stuck.");
     	addStringLocalization("Interaction_DESCRIPTION_Index_135", "Platings are dented.");
     	addStringLocalization("Interaction_DESCRIPTION_Index_136", "Circuitry burned out.");
@@ -312,18 +312,23 @@ public class GT_LanguageManager {
     	addStringLocalization("Interaction_DESCRIPTION_Index_203", " gibbl");
     	addStringLocalization("Interaction_DESCRIPTION_Index_204", "No Pollution in Chunk! HAYO!");
     	addStringLocalization("Interaction_DESCRIPTION_Index_205", " of ");
-//    	addStringLocalization("Interaction_DESCRIPTION_Index_206", "Grab");
+		addStringLocalization("Interaction_DESCRIPTION_Index_206", "Scan for Assembly Line");
 //    	addStringLocalization("Interaction_DESCRIPTION_Index_207", "Grab");
 //    	addStringLocalization("Interaction_DESCRIPTION_Index_208", "Grab");
 //    	addStringLocalization("Interaction_DESCRIPTION_Index_209", "Grab");
 //    	addStringLocalization("Interaction_DESCRIPTION_Index_210", "Grab");
-        addStringLocalization("Interaction_DESCRIPTION_Index_211", "Items per side: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_212", "Input enabled");
+		addStringLocalization("Interaction_DESCRIPTION_Index_211", "Items per side: ");
+		addStringLocalization("Interaction_DESCRIPTION_Index_212", "Input enabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_213", "Input disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_214", "Connected");
         addStringLocalization("Interaction_DESCRIPTION_Index_215", "Disconnected");
-        addStringLocalization("Interaction_DESCRIPTION_Index_216", "Deprecated Recipe");
-        addStringLocalization("Item_DESCRIPTION_Index_000", "Stored Heat: %s");
+		addStringLocalization("Interaction_DESCRIPTION_Index_216", "Deprecated Recipe");
+		addStringLocalization("Interaction_DESCRIPTION_Index_217", "Stocking mode. Keeps this many items in destination input slots.");
+		addStringLocalization("Interaction_DESCRIPTION_Index_218", "Transfer size mode. Add exactly this many items in destination input slots as long as there is room.");
+		addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
+		addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
+
+		addStringLocalization("Item_DESCRIPTION_Index_000", "Stored Heat: %s");
         addStringLocalization("Item_DESCRIPTION_Index_001", "Durability: %s/%s");
         addStringLocalization("Item_DESCRIPTION_Index_002", "%s lvl %s");
         addStringLocalization("Item_DESCRIPTION_Index_003", "Attack Damage: %s");
@@ -342,6 +347,8 @@ public class GT_LanguageManager {
         addStringLocalization("Item_DESCRIPTION_Index_016", "Amount: %s L");
         addStringLocalization("Item_DESCRIPTION_Index_017", "Temperature: %s K");
         addStringLocalization("Item_DESCRIPTION_Index_018", "State: %s");
+        addStringLocalization("Item_DESCRIPTION_Index_500", "Turbine Efficiency (Loose): %s");
+        addStringLocalization("Item_DESCRIPTION_Index_501", "Optimal Steam flow (Loose): %s L/t");
     }
     
 }

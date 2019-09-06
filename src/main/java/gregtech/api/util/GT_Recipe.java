@@ -10,7 +10,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.nei.GT_NEI_DefaultHandler.FixedPositionedStack;
-import mantle.items.ItemUtils;
+import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -278,7 +278,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
 	public static void reInit() {
         GT_Log.out.println("GT_Mod: Re-Unificating Recipes.");
-        for (GT_Recipe_Map tMapEntry : GT_Recipe_Map.sMappings) tMapEntry.reInit();
+        for (GT_Recipe_Map tMapEntry : GT_Recipe_Map.sMappings) 
+        	tMapEntry.reInit();
     }
 
     // -----
@@ -336,6 +337,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess, FluidStack[] aFluidInputs, ItemStack... aInputs) {
         return isRecipeInputEqual(aDecreaseStacksizeBySuccess, false, aFluidInputs, aInputs);
     }
+    
+    public static boolean GTppRecipeHelper;
 
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes, FluidStack[] aFluidInputs, ItemStack... aInputs) {
         if (mFluidInputs.length > 0 && aFluidInputs == null) return false;
@@ -367,6 +370,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 boolean temp = true;
                 for (ItemStack aStack : aInputs) {
                     if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
+                    	if (GTppRecipeHelper) {//remove once the fix is out
+                            if (GT_Utility.areStacksEqual(aStack, Ic2Items.FluidCell.copy(), true) || GT_Utility.areStacksEqual(aStack, ItemList.Tool_DataStick.get(1L), true) || GT_Utility.areStacksEqual(aStack, ItemList.Tool_DataOrb.get(1L), true)) {
+                                if (!GT_Utility.areStacksEqual(aStack, tStack, false))
+                                    continue;
+                            }
+                        }
                         if (aDontCheckStackSizes) {
                             temp = false;
                             break;
@@ -412,7 +421,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         amt = tStack.stackSize;
                         for (ItemStack aStack : aInputs) {
                             if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
-                                if (aDontCheckStackSizes) {
+                            	if (GTppRecipeHelper) {
+                                    if (GT_Utility.areStacksEqual(aStack, Ic2Items.FluidCell.copy(), true) || GT_Utility.areStacksEqual(aStack, ItemList.Tool_DataStick.get(1L), true) || GT_Utility.areStacksEqual(aStack, ItemList.Tool_DataOrb.get(1L), true)) {
+                                        if (!GT_Utility.areStacksEqual(aStack, tStack, false))
+                                            continue;
+                                    }
+                                }
+                            	if (aDontCheckStackSizes) {
                                     aStack.stackSize -= amt;
                                     break;
                                 }
@@ -563,6 +578,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sFlotationUnitRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(1000), "gt.recipe.flotationunit", "Flotation Unit", null, RES_PATH_GUI + "basicmachines/Default", 1, 6, 0, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sTesseractRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(1000), "gt.recipe.tesseract", "Tesseract", null, RES_PATH_GUI + "basicmachines/Tesseract", 1, 6, 0, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sTinyWormHoleRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(1000), "gt.recipe.tinywormhole", "Tiny Wormhole", null, RES_PATH_GUI + "basicmachines/Tesseract", 1, 6, 0, 0, 1, E, 1, E, true, true);
+        //public static final GT_Recipe_Map sTreeFarmRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(1000), "gt.recipe.trerefarm", "Tree Farm Factory", null, RES_PATH_GUI + "basicmachines/Default", 2, 6, 0, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sMultiblockChemicalRecipes = new GT_Recipe_Map_LargeChemicalReactor();
         public static final GT_Recipe_Map sDistillationRecipes = new GT_Recipe_Map_DistillationTower();
         public static final GT_Recipe_Map sCrakingRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.craker", "Oil Cracker", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 1, 2, 1, E, 1, E, true, true);
@@ -915,6 +931,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         @Override
+        public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,boolean hidden) {
+            return null;
+        }
+        
+        @Override
         public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial, int[] aOutputChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
             return null;
         }
@@ -1022,8 +1043,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                             || GT_Utility.areStacksEqual(tStack, new ItemStack(Items.fireworks, 1, W), true)
                             || GT_Utility.areStacksEqual(tStack, new ItemStack(Items.fire_charge, 1, W), true)
                             ) {
-                        if (aTileEntity instanceof IGregTechTileEntity)
+                    	if (aTileEntity instanceof IGregTechTileEntity) {
+                            GT_Log.exp.println("Microwave Explosion due to TNT || EGG || FIREWORKCHARGE || FIREWORK || FIRE CHARGE");
                             ((IGregTechTileEntity) aTileEntity).doExplosion(aVoltage * 4);
+                        }
                         return null;
                     }
                     ItemData tData = GT_OreDictUnificator.getItemData(tStack);
@@ -1032,8 +1055,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     if (tData != null) {
                         if (tData.mMaterial != null && tData.mMaterial.mMaterial != null) {
                             if (tData.mMaterial.mMaterial.contains(SubTag.METAL) || tData.mMaterial.mMaterial.contains(SubTag.EXPLOSIVE)) {
-                                if (aTileEntity instanceof IGregTechTileEntity)
-                                    ((IGregTechTileEntity) aTileEntity).doExplosion(aVoltage * 4);
+                            	if (aTileEntity instanceof IGregTechTileEntity) {
+                                    GT_Log.exp.println("Microwave INFLAMMATION due to FLAMMABLE insertion");
+                                    ((IGregTechTileEntity) aTileEntity).setOnFire();
+                                }
                                 return null;
                             }
                             if (tData.mMaterial.mMaterial.contains(SubTag.FLAMMABLE)) {
@@ -1045,19 +1070,26 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         for (MaterialStack tMaterial : tData.mByProducts)
                             if (tMaterial != null) {
                                 if (tMaterial.mMaterial.contains(SubTag.METAL) || tMaterial.mMaterial.contains(SubTag.EXPLOSIVE)) {
-                                    if (aTileEntity instanceof IGregTechTileEntity)
+                                	if (aTileEntity instanceof IGregTechTileEntity) {
+                                        GT_Log.exp.println("Microwave Explosion due to METAL insertion");
                                         ((IGregTechTileEntity) aTileEntity).doExplosion(aVoltage * 4);
+                                    }
                                     return null;
                                 }
                                 if (tMaterial.mMaterial.contains(SubTag.FLAMMABLE)) {
-                                    if (aTileEntity instanceof IGregTechTileEntity)
+                                	if (aTileEntity instanceof IGregTechTileEntity) {
                                         ((IGregTechTileEntity) aTileEntity).setOnFire();
+                                        GT_Log.exp.println("Microwave INFLAMMATION due to FLAMMABLE insertion");
+                                    }
                                     return null;
                                 }
                             }
                     }
                     if (TileEntityFurnace.getItemBurnTime(tStack) > 0) {
-                        if (aTileEntity instanceof IGregTechTileEntity) ((IGregTechTileEntity) aTileEntity).setOnFire();
+                    	if (aTileEntity instanceof IGregTechTileEntity) {
+                            ((IGregTechTileEntity) aTileEntity).setOnFire();
+                            GT_Log.exp.println("Microwave INFLAMMATION due to BURNABLE insertion");
+                        }
                         return null;
                     }
 
@@ -1474,38 +1506,44 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public GT_Recipe addDenseLiquidRecipe(GT_Recipe recipe) {
-            return addRecipe(recipe, ((double) recipe.mSpecialValue) / 10);
-        }
+    		return addRecipe(recipe, ((double)recipe.mSpecialValue) / 10);
+    	}
 
         public GT_Recipe addDieselRecipe(GT_Recipe recipe) {
-            return addRecipe(recipe, ((double) recipe.mSpecialValue) / 40);
-        }
+    		return addRecipe(recipe,((double)recipe.mSpecialValue) / 40);
+    	}
 
-        public void addSolidRecipes(ItemStack... itemStacks) {
-            for (ItemStack itemStack : itemStacks) {
-                addSolidRecipe(itemStack);
-            }
-        }
+        public void addSolidRecipes(ItemStack ... itemStacks) {
+    		for (ItemStack itemStack : itemStacks){
+    			addSolidRecipe(itemStack);
+    		}
+    	}
 
-        public GT_Recipe addSolidRecipe(ItemStack fuelItemStack) {
-            return addRecipe(new GT_Recipe(true, new ItemStack[]{fuelItemStack}, new ItemStack[]{}, null, null, null, null, 1, 0, GT_ModHandler.getFuelValue(fuelItemStack) / 1600), ((double) GT_ModHandler.getFuelValue(fuelItemStack)) / 1600);
-        }
-
-        private GT_Recipe addRecipe(GT_Recipe recipe, double baseBurnTime) {
-            recipe = new GT_Recipe(recipe);
-
-            double bronzeBurnTime = baseBurnTime * 2;
-            double steelBurnTime = baseBurnTime * 1.5;
-            double titaniumBurnTime = baseBurnTime * 1.3;
-            double tungstensteelBurnTime = baseBurnTime * 1.2;
-
-            recipe.setNeiDesc("Burn time in seconds:",
-                    String.format("Bronze Boiler: %.4f", bronzeBurnTime),
-                    String.format("Steel Boiler: %.4f", steelBurnTime),
-                    String.format("Titanium Boiler: %.4f", titaniumBurnTime),
-                    String.format("Tungstensteel Boiler: %.4f", tungstensteelBurnTime));
-            return super.addRecipe(recipe);
-        }
+        public GT_Recipe addSolidRecipe(ItemStack fuelItemStack){
+    		return addRecipe(new GT_Recipe(true, new ItemStack[]{fuelItemStack}, new ItemStack[]{}, null, null, null, null, 1, 0, GT_ModHandler.getFuelValue(fuelItemStack) / 1600), ((double)GT_ModHandler.getFuelValue(fuelItemStack)) / 1600);
+    	}
+    	
+    	private GT_Recipe addRecipe(GT_Recipe recipe, double baseBurnTime){
+			recipe = new GT_Recipe(recipe);
+			//Some recipes will have a burn time like 15.9999999 and % always rounds down
+			double floatErrorCorrection = 0.0001;
+			
+    		double bronzeBurnTime = baseBurnTime * 2 + floatErrorCorrection;
+    		bronzeBurnTime -= bronzeBurnTime % 0.05;
+    		double steelBurnTime = baseBurnTime * 1.5 + floatErrorCorrection;
+    		steelBurnTime -= steelBurnTime % 0.05;
+    		double titaniumBurnTime = baseBurnTime * 1.3 + floatErrorCorrection;
+    		titaniumBurnTime -= titaniumBurnTime % 0.05;
+    		double tungstensteelBurnTime = baseBurnTime * 1.2 + floatErrorCorrection;
+    		tungstensteelBurnTime -= tungstensteelBurnTime % 0.05;
+    		
+    		recipe.setNeiDesc("Burn time in seconds:", 
+    				String.format("Bronze Boiler: %.4f", bronzeBurnTime), 
+    				String.format("Steel Boiler: %.4f", steelBurnTime), 
+    				String.format("Titanium Boiler: %.4f", titaniumBurnTime), 
+    				String.format("Tungstensteel Boiler: %.4f", tungstensteelBurnTime));
+    		return super.addRecipe(recipe);
+    	}
     }
     
     public static class GT_Recipe_Map_LargeChemicalReactor extends GT_Recipe_Map{
@@ -1514,7 +1552,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     	private static int FLUID_OUTPUT_COUNT = 4;
     	
         public GT_Recipe_Map_LargeChemicalReactor() {
-            super(new HashSet<GT_Recipe>(200), "gt.recipe.largechemicalreactor", "Large Chemical Reactor", null, RES_PATH_GUI + "basicmachines/Default", 2, OUTPUT_COUNT, 0, 0, 1, E, 1, E, true, true);
+            super(new HashSet<GT_Recipe>(1000), "gt.recipe.largechemicalreactor", "Large Chemical Reactor", null, RES_PATH_GUI + "basicmachines/Default", 2, OUTPUT_COUNT, 0, 0, 1, E, 1, E, true, true);
         }
 
         @Override
@@ -1616,7 +1654,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         if (this != null && this.mInputs != null && this.mInputs[i] != null)
                             inputStacks.add(new FixedPositionedStack(this.mInputs[i].copy(), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
                         else {
-                            if (this.mOutputs != null && this.mOutputs[0] != null)
+                        	if (this.mOutputs != null && this.mOutputs.length > 0 && this.mOutputs[0] != null)
                                 GT_Log.out.println("recipe " + this.toString() + " Output 0:" + this.mOutputs[0].getDisplayName() + " has errored!");
                             else
                                 GT_Log.out.println("recipe " + this.toString() + " has errored!");
@@ -1631,7 +1669,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         if (this != null && this.mFluidInputs != null && this.mFluidInputs[i] != null)
                             inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
                         else {
-                            if (this.mOutputs != null && this.mOutputs[0] != null)
+                        	if (this.mOutputs != null && this.mOutputs.length > 0 && this.mOutputs[0] != null)
                                 GT_Log.out.println("recipe " + this.toString() + " Output 0:" + this.mOutputs[0].getDisplayName() + " has errored!");
                             else
                                 GT_Log.out.println("recipe " + this.toString() + " has errored!");

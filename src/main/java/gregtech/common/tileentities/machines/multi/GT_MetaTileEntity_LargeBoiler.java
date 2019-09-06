@@ -9,10 +9,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -43,23 +40,23 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                 "Produces " + (getEUt() * 40) * (runtimeBoost(20) / 20f) + "L of Steam with 1 Coal at " + getEUt() * 40 + "L/s",
                 "A programmed circuit in the main block throttles the boiler (-1000L/s per config)",
                 "Size(WxHxD): 3x5x3, Controller (Front middle in Fireboxes)",
-                "3x1x3 of " +getCasingMaterial()+ " Firebox Casings (Bottom layer, Min 3)",
-                "3x4x3 of " +getCasingMaterial()+ " " +getCasingBlockType()+ " (Above Fireboxes, hollow, Min 24!)",
-                "1x3x1 of " +getCasingMaterial()+ " Pipe Casings (Inside the Hollow Machine Casings/Plated Bricks)",
-                "1x Fuel Input Hatch/Bus (Any Firebox)",
-                "1x Water Input Hatch (Any Firebox)",
-                "1x Steam Output Hatch (Any Casing)",
+                "3x1x3 of "+getCasingMaterial()+" Fire Boxes (Bottom layer, Min 3)",
+                "3x4x3 of "+getCasingMaterial()+" " +getCasingBlockType()+ " Casings (Above Fireboxes, hollow, Min 24!)",
+                "3 "+getCasingMaterial()+" Pipe Casing Blocks (Inside the Hollow Casing)",
+                "1x Input Fuel Hatch/Bus (Any Firebox)",
+                "1x Input Water Hatch (Any Firebox)",
+                "1x Output Hatch (Any Casing)",
                 "1x Maintenance Hatch (Any Firebox)",
                 "1x Muffler Hatch (Any Firebox)",
-                "Diesel fuels have 1/4 efficiency",
-                String.format("Takes %.2f seconds to heat up", 500.0 / getEfficiencyIncrease()),
-                "Causes up to " + 20 * getPollutionPerTick(null) + " Pollution per second"};
+                String.format("Diesel fuels have 1/4 efficiency - Takes %.2f seconds to heat up", 500.0 / getEfficiencyIncrease()),
+                "Causes up to " + 20 * getPollutionPerTick(null) + " Pollution per second"
+};
     }
     
     public abstract String getCasingMaterial();
 
     public abstract Block getCasingBlock();
-    
+
     public abstract String getCasingBlockType();
 
     public abstract byte getCasingMeta();
@@ -140,24 +137,24 @@ public abstract class GT_MetaTileEntity_LargeBoiler
         ArrayList<ItemStack> tInputList = getStoredInputs();
         if (!tInputList.isEmpty()) {
             for (ItemStack tInput : tInputList) {
-				if (tInput != GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)){
-					if (GT_Utility.getFluidForFilledItem(tInput, true) == null && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0) {
-                    	this.excessFuel += GT_ModHandler.getFuelValue(tInput) % 80;
-                    	this.mMaxProgresstime += this.excessFuel / 80;
-                    	this.excessFuel %= 80;
-                    	this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
-                    	this.mEUt = adjustEUtForConfig(getEUt());
-                    	this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
-                    	this.mOutputItems = new ItemStack[]{GT_Utility.getContainerItem(tInput, true)};
-                    	tInput.stackSize -= 1;
-                    	updateSlots();
-                    	if (this.mEfficiencyIncrease > 5000) {
-                        	this.mEfficiencyIncrease = 0;
-                        	this.mSuperEfficencyIncrease = 20;
-                    	}
-                    	return true;
-                	}
-				}
+                if (tInput != GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)){
+                    if (GT_Utility.getFluidForFilledItem(tInput, true) == null && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0) {
+                        this.excessFuel += GT_ModHandler.getFuelValue(tInput) % 80;
+                        this.mMaxProgresstime += this.excessFuel / 80;
+                        this.excessFuel %= 80;
+                        this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
+                        this.mEUt = adjustEUtForConfig(getEUt());
+                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
+                        this.mOutputItems = new ItemStack[]{GT_Utility.getContainerItem(tInput, true)};
+                        tInput.stackSize -= 1;
+                        updateSlots();
+                        if (this.mEfficiencyIncrease > 5000) {
+                            this.mEfficiencyIncrease = 0;
+                            this.mSuperEfficencyIncrease = 20;
+                        }
+                        return true;
+                    }
+                }
             }
         }
         this.mMaxProgresstime = 0;
@@ -177,6 +174,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                 if (depleteInput(Materials.Water.getFluid(amount)) || depleteInput(GT_ModHandler.getDistilledWater(amount))) {
                     addOutput(GT_ModHandler.getSteam(tGeneratedEU));
                 } else {
+                    GT_Log.exp.println("Boiler "+this.mName+" had no Water!");
                     explodeMultiblock();
                 }
             }
@@ -260,7 +258,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
 
     public int getPollutionPerTick(ItemStack aStack) {
         int adjustedEUOutput = Math.max(25, getEUt() - 25 * integratedCircuitConfig);
-        return Math.max(1, 20 * adjustedEUOutput / getEUt());
+        return Math.max(1, 12 * adjustedEUOutput / getEUt());
     }
 
     public int getDamageToComponent(ItemStack aStack) {

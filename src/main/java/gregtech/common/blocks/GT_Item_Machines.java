@@ -2,8 +2,8 @@ package gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
@@ -108,21 +108,21 @@ public class GT_Item_Machines
 
     public String getItemStackDisplayName(ItemStack aStack) {
     	String aName = super.getItemStackDisplayName(aStack);
-    	short tDamage = (short) getDamage(aStack);
-    	if (tDamage >= 0 && tDamage < GregTech_API.METATILEENTITIES.length && GregTech_API.METATILEENTITIES[tDamage] != null) {
-    		Materials aMaterial = null;
-    		if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaPipeEntity_Fluid) {
-    			aMaterial = ((GT_MetaPipeEntity_Fluid) GregTech_API.METATILEENTITIES[tDamage]).mMaterial;
-            } else if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaPipeEntity_Cable) {
-    			aMaterial = ((GT_MetaPipeEntity_Cable) GregTech_API.METATILEENTITIES[tDamage]).mMaterial;
-            } else if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaPipeEntity_Item) {
-    			aMaterial = ((GT_MetaPipeEntity_Item) GregTech_API.METATILEENTITIES[tDamage]).mMaterial;
-            } else if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaPipeEntity_Frame) {
-    			aMaterial = ((GT_MetaPipeEntity_Frame) GregTech_API.METATILEENTITIES[tDamage]).mMaterial;
+    	short aDamage = (short) getDamage(aStack);
+    	if (aDamage >= 0 && aDamage < GregTech_API.METATILEENTITIES.length && GregTech_API.METATILEENTITIES[aDamage] != null) {
+            Materials aMaterial = null;
+            if (GregTech_API.METATILEENTITIES[aDamage] instanceof GT_MetaPipeEntity_Item) {
+            	aMaterial = ((GT_MetaPipeEntity_Item) GregTech_API.METATILEENTITIES[aDamage]).mMaterial;
+            } else if (GregTech_API.METATILEENTITIES[aDamage] instanceof GT_MetaPipeEntity_Fluid) {
+            	aMaterial = ((GT_MetaPipeEntity_Fluid) GregTech_API.METATILEENTITIES[aDamage]).mMaterial;
+            } else if (GregTech_API.METATILEENTITIES[aDamage] instanceof GT_MetaPipeEntity_Cable) {
+            	aMaterial = ((GT_MetaPipeEntity_Cable) GregTech_API.METATILEENTITIES[aDamage]).mMaterial;
+            } else if (GregTech_API.METATILEENTITIES[aDamage] instanceof GT_MetaPipeEntity_Frame) {
+            	aMaterial = ((GT_MetaPipeEntity_Frame) GregTech_API.METATILEENTITIES[aDamage]).mMaterial;
             }
-    		if (aMaterial != null) {
-    			return aMaterial.getLocalizedNameForItem(aName);
-    		}
+            if (aMaterial != null) {
+            	aName = aMaterial.getLocalizedNameForItem(aName);
+            }
         }
     	return aName;
     }
@@ -160,7 +160,7 @@ public class GT_Item_Machines
                 tTileEntity.getMetaTileEntity().initDefaultModes(aStack.getTagCompound());
                 final byte aSide = GT_Utility.getOppositeSide(side);
                 if (tTileEntity.getMetaTileEntity() instanceof IConnectable) {
-                	// If we're connectable, try connecting to whatever we're up against
+                    // If we're connectable, try connecting to whatever we're up against
                 	((IConnectable) tTileEntity.getMetaTileEntity()).connect(aSide);
                 } else if (aPlayer != null && aPlayer.isSneaking()) {
                     // If we're being placed against something that is connectable, try telling it to connect to us

@@ -15,27 +15,27 @@ public class GT_Cover_LiquidMeter
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         if ((aTileEntity instanceof IFluidHandler)) {
             FluidTankInfo[] tTanks = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN);
-            long tAll = 0L;
-            long tFull = 0L;
+            long tMax = 0;
+            long tUsed = 0;
             if (tTanks != null) {
                 for (FluidTankInfo tTank : tTanks) {
                     if (tTank != null) {
-                        tAll += tTank.capacity;
+                        tMax += tTank.capacity;
                         FluidStack tLiquid = tTank.fluid;
                         if (tLiquid != null) {
-                            tFull += tLiquid.amount;
+                            tUsed += tLiquid.amount;
                         }
                     }
                 }
             }
-            tAll /= 14L;
-            if (tAll > 0L) {
-                aTileEntity.setOutputRedstoneSignal(aSide, aCoverVariable != 0 ? (byte) (int) (15L - (tFull <= 0L ? 0L : tFull / tAll + 1L)) : tFull <= 0L ? 0 : (byte) (int) (tFull / tAll + 1L));
-            } else {
-                aTileEntity.setOutputRedstoneSignal(aSide, ((byte) (aCoverVariable != 0 ? 15 : 0)));
-            }
+            if(tUsed==0L)//nothing
+                aTileEntity.setOutputRedstoneSignal(aSide, (byte)(aCoverVariable == 0 ? 15 : 0));
+            else if(tUsed >= tMax)//full
+                aTileEntity.setOutputRedstoneSignal(aSide, (byte)(aCoverVariable == 0 ? 0 : 15));
+            else//1-14 range
+                aTileEntity.setOutputRedstoneSignal(aSide, (byte)(aCoverVariable == 0 ? 14-((14*tUsed)/tMax) : 1+((14*tUsed)/tMax)) );
         } else {
-            aTileEntity.setOutputRedstoneSignal(aSide, (byte) 0);
+            aTileEntity.setOutputRedstoneSignal(aSide, (byte)0);
         }
         return aCoverVariable;
     }

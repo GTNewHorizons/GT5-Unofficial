@@ -11,7 +11,6 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
@@ -36,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static gregtech.api.enums.GT_Values.D1;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     public final float mThickNess;
@@ -62,7 +62,6 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         mHeatResistance = aHeatResistance;
         mPipeAmount = aFluidTypes;
         mFluids = new FluidStack[mPipeAmount];
-        
         addInfo(aID);
     }
 
@@ -84,7 +83,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 
     @Override
     public byte getTileEntityBaseType() {
-        return mMaterial == null ? 4 : (byte) ((mMaterial.contains(SubTag.WOOD) ? 12 : 4) + Math.max(0, Math.min(3, mMaterial.mToolQuality)));
+        return (byte) (mMaterial == null ? 4 : (byte) (4) + Math.max(0, Math.min(3, mMaterial.mToolQuality)));
     }
 
     @Override
@@ -206,7 +205,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 
     @Override
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity aEntity) {
-        if ((((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections & -128) == 0 && aEntity instanceof EntityLivingBase) {
+    	if ((((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections & -128) == 0 && aEntity instanceof EntityLivingBase) {
         	for (FluidStack tFluid : mFluids) {
         		if (tFluid != null) {
         			int tTemperature = tFluid.getFluid().getTemperature(tFluid);
@@ -253,42 +252,45 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         // Check for hot liquids that melt the pipe or gasses that escape and burn/freeze people
         final FluidStack tFluid = mFluids[index];
 
-                if (tFluid != null && tFluid.amount > 0) {
-                    int tTemperature = tFluid.getFluid().getTemperature(tFluid);
-                    if (tTemperature > mHeatResistance) {
-                        if (aBaseMetaTileEntity.getRandomNumber(100) == 0) {
+        if (tFluid != null && tFluid.amount > 0) {
+            int tTemperature = tFluid.getFluid().getTemperature(tFluid);
+            if (tTemperature > mHeatResistance) {
+                if (aBaseMetaTileEntity.getRandomNumber(100) == 0) {
                     // Poof
-                            aBaseMetaTileEntity.setToFire();
+                    GT_Log.exp.println("Set Pipe to Fire due to to low heat resistance at "+aBaseMetaTileEntity.getXCoord()+ " | "+aBaseMetaTileEntity.getYCoord()+ " | "+aBaseMetaTileEntity.getZCoord()+ " DIMID: "+aBaseMetaTileEntity.getWorld().provider.dimensionId);
+                    aBaseMetaTileEntity.setToFire();
                     return true;
-                        }
-                // Mmhmm, Fire
-                        aBaseMetaTileEntity.setOnFire();
-                    }
-                    if (!mGasProof && tFluid.getFluid().isGaseous(tFluid)) {
-                        tFluid.amount -= 5;
-                        sendSound((byte) 9);
-                        if (tTemperature > 320) {
-                            try {
-                                for (EntityLivingBase tLiving : (ArrayList<EntityLivingBase>) getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(getBaseMetaTileEntity().getXCoord() - 2, getBaseMetaTileEntity().getYCoord() - 2, getBaseMetaTileEntity().getZCoord() - 2, getBaseMetaTileEntity().getXCoord() + 3, getBaseMetaTileEntity().getYCoord() + 3, getBaseMetaTileEntity().getZCoord() + 3))) {
-                                    GT_Utility.applyHeatDamage(tLiving, (tTemperature - 300) / 25.0F);
-                                }
-                            } catch (Throwable e) {
-                                if (D1) e.printStackTrace(GT_Log.err);
-                            }
-                        } else if (tTemperature < 260) {
-                            try {
-                                for (EntityLivingBase tLiving : (ArrayList<EntityLivingBase>) getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(getBaseMetaTileEntity().getXCoord() - 2, getBaseMetaTileEntity().getYCoord() - 2, getBaseMetaTileEntity().getZCoord() - 2, getBaseMetaTileEntity().getXCoord() + 3, getBaseMetaTileEntity().getYCoord() + 3, getBaseMetaTileEntity().getZCoord() + 3))) {
-                                    GT_Utility.applyFrostDamage(tLiving, (270 - tTemperature) / 12.5F);
-                                }
-                            } catch (Throwable e) {
-                                if (D1) e.printStackTrace(GT_Log.err);
-                            }
-                        }
-                    }
-            if (tFluid.amount <= 0) mFluids[index] = null;
                 }
-        return false;
+                // Mmhmm, Fire
+                aBaseMetaTileEntity.setOnFire();
+                GT_Log.exp.println("Set Blocks around Pipe to Fire due to to low heat resistance at "+aBaseMetaTileEntity.getXCoord()+ " | "+aBaseMetaTileEntity.getYCoord()+ " | "+aBaseMetaTileEntity.getZCoord()+ " DIMID: "+aBaseMetaTileEntity.getWorld().provider.dimensionId);
+
             }
+            if (!mGasProof && tFluid.getFluid().isGaseous(tFluid)) {
+                tFluid.amount -= 5;
+                sendSound((byte) 9);
+                if (tTemperature > 320) {
+                    try {
+                        for (EntityLivingBase tLiving : (ArrayList<EntityLivingBase>) getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(getBaseMetaTileEntity().getXCoord() - 2, getBaseMetaTileEntity().getYCoord() - 2, getBaseMetaTileEntity().getZCoord() - 2, getBaseMetaTileEntity().getXCoord() + 3, getBaseMetaTileEntity().getYCoord() + 3, getBaseMetaTileEntity().getZCoord() + 3))) {
+                            GT_Utility.applyHeatDamage(tLiving, (tTemperature - 300) / 25.0F);
+                        }
+                    } catch (Throwable e) {
+                        if (D1) e.printStackTrace(GT_Log.err);
+                    }
+                } else if (tTemperature < 260) {
+                    try {
+                        for (EntityLivingBase tLiving : (ArrayList<EntityLivingBase>) getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(getBaseMetaTileEntity().getXCoord() - 2, getBaseMetaTileEntity().getYCoord() - 2, getBaseMetaTileEntity().getZCoord() - 2, getBaseMetaTileEntity().getXCoord() + 3, getBaseMetaTileEntity().getYCoord() + 3, getBaseMetaTileEntity().getZCoord() + 3))) {
+                            GT_Utility.applyFrostDamage(tLiving, (270 - tTemperature) / 12.5F);
+                        }
+                    } catch (Throwable e) {
+                        if (D1) e.printStackTrace(GT_Log.err);
+                    }
+                }
+            }
+            if (tFluid.amount <= 0) mFluids[index] = null;
+        }
+        return false;
+    }
 
     private void distributeFluid(int index, IGregTechTileEntity aBaseMetaTileEntity) {
         final FluidStack tFluid = mFluids[index];
@@ -310,9 +312,9 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             {
                 if (tTank.fill(ForgeDirection.getOrientation(tSide), tFluid, false) > 0) {
                     tTanks.add(new MutableTriple<>(tTank, ForgeDirection.getOrientation(tSide), 0));
-                                }
-                        }
-                    }
+                }
+            }
+        }
 
         // How much of this fluid is available for distribution?
         double tAmount = Math.max(1, Math.min(mCapacity * 10, tFluid.amount)), tNumTanks = tTanks.size();
@@ -324,17 +326,18 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         for (MutableTriple<IFluidHandler, ForgeDirection, Integer> tEntry: tTanks) {
             tEntry.right = tEntry.left.fill(tEntry.middle, maxFluid, false);
             availableCapacity += tEntry.right;
-                        }
+        }
 
         // Now distribute
         for (MutableTriple<IFluidHandler, ForgeDirection, Integer> tEntry: tTanks) {
-            if (availableCapacity > tAmount) tEntry.right = (int) Math.floor(tEntry.right * tAmount / availableCapacity);
+            if (availableCapacity > tAmount) tEntry.right = (int) Math.floor(tEntry.right * tAmount / availableCapacity); // Distribue fluids based on percentage available space at destination
+            if (tEntry.right == 0) tEntry.right = (int)Math.min(1, tAmount); // If the percent is not enough to give at least 1L, try to give 1L
             if (tEntry.right <= 0) continue;
 
             int tFilledAmount = tEntry.left.fill(tEntry.middle, drainFromIndex(tEntry.right, false, index), false);
 
             if (tFilledAmount > 0) tEntry.left.fill(tEntry.middle, drainFromIndex(tFilledAmount, true, index), true);
-            }
+        }
 
     }
 
@@ -368,7 +371,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         return false;
     }
 
-	@Override
+    @Override
     public boolean letsIn(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return coverBehavior.letsFluidIn(aSide, aCoverID, aCoverVariable, null, aTileEntity);
     }
@@ -376,7 +379,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     @Override
     public boolean letsOut(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return coverBehavior.letsFluidOut(aSide, aCoverID, aCoverVariable, null, aTileEntity);
-                }
+    }
 
     @Override
     public boolean canConnect(byte aSide, TileEntity tTileEntity) {
@@ -406,7 +409,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                 if (gTileEntity != null && gTileEntity.getCoverBehaviorAtSide(tSide) instanceof GT_Cover_FluidRegulator) return true;
 
             }
-        }
+       }
         return false;
     }
 
@@ -414,7 +417,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     public boolean getGT6StyleConnection() {
         // Yes if GT6 pipes are enabled
         return GT_Mod.gregtechproxy.gt6Pipe;
-	}
+    }
 
     @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
@@ -422,14 +425,13 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         if (aIndex == 9) {
             GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 5, 1.0F, aX, aY, aZ);
             for (byte i = 0; i < 6; i++)
-                for (int l = 0; l < 2; ++l)
-                    getBaseMetaTileEntity().getWorld().spawnParticle("largesmoke", aX - 0.5 + (new XSTR()).nextFloat(), aY - 0.5 + (new XSTR()).nextFloat(), aZ - 0.5 + (new XSTR()).nextFloat(), ForgeDirection.getOrientation(i).offsetX / 5.0, ForgeDirection.getOrientation(i).offsetY / 5.0, ForgeDirection.getOrientation(i).offsetZ / 5.0);
+                    getBaseMetaTileEntity().getWorld().spawnParticle("largesmoke", aX - 0.5 + XSTR_INSTANCE.nextFloat(), aY - 0.5 + XSTR_INSTANCE.nextFloat(), aZ - 0.5 + XSTR_INSTANCE.nextFloat(), ForgeDirection.getOrientation(i).offsetX / 5.0, ForgeDirection.getOrientation(i).offsetY / 5.0, ForgeDirection.getOrientation(i).offsetZ / 5.0);
         }
     }
 
     @Override
     public final int getCapacity() {
-        return mCapacity * 20 * mPipeAmount;
+    	return mCapacity * 20 * mPipeAmount;
     }
 
     @Override
@@ -592,7 +594,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 
     @Override
     public float getThickNess() {
-        if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) return 0.0625F;
+    	if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) return 0.0625F;
         return mThickNess;
     }
 

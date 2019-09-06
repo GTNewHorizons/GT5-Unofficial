@@ -41,6 +41,7 @@ public class GT_MetaTileEntity_ImplosionCompressor
                 "1x Muffler Hatch (Any casing)",
                 "1x Energy Hatch (Any casing)",
                 "Solid Steel Machine Casings for the rest (16 at least!)",
+                "Casings can be replaced with Explosion Warning Signs",
                 "Causes " + 20 * getPollutionPerTick(null) + " Pollution per second"};
     }
 
@@ -88,9 +89,14 @@ public class GT_MetaTileEntity_ImplosionCompressor
             if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
-
-                this.mEUt = (-tRecipe.mEUt);
-                this.mMaxProgresstime = Math.max(1, tRecipe.mDuration);
+                //OC THAT EXPLOSIVE SHIT!!!
+                calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, getMaxInputVoltage());
+                //In case recipe is too OP for that machine
+                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                    return false;
+                if (this.mEUt > 0) {
+                    this.mEUt = (-this.mEUt);
+                }
                 this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
                 sendLoopStart((byte) 20);
                 updateSlots();
@@ -139,7 +145,7 @@ public class GT_MetaTileEntity_ImplosionCompressor
     }
 
     public int getPollutionPerTick(ItemStack aStack) {
-        return 1000;
+        return 500;
     }
 
     public int getDamageToComponent(ItemStack aStack) {

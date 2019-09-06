@@ -54,15 +54,19 @@ public class GT_MetaTileEntity_RockBreaker
                     tOutput = new ItemStack(Blocks.obsidian, 1);
                     if (canOutput(new ItemStack[]{tOutput})) {
                         getInputAt(0).stackSize -= 1;
+                        calculateOverclockedNess(32,128);
+                        //In case recipe is too OP for that machine
+                        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         this.mOutputItems[0] = tOutput;
-                        this.mMaxProgresstime = (128 / (1 << this.mTier - 1));
-                        this.mEUt = (32 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
                         return 2;
                     }
                 } else if (canOutput(new ItemStack[]{tOutput})) {
+                    calculateOverclockedNess(32,16);
+                    //In case recipe is too OP for that machine
+                    if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                        return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                     this.mOutputItems[0] = tOutput;
-                    this.mMaxProgresstime = (16 / (1 << this.mTier - 1));
-                    this.mEUt = (32 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
                     return 2;
                 }
             }

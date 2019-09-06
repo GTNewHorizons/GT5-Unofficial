@@ -7,6 +7,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -31,22 +32,20 @@ public class GT_MetaTileEntity_Charger extends GT_MetaTileEntity_BasicBatteryBuf
 
     @Override
     public long getMinimumStoredEU() {
-        return V[mTier] * 64 * mInventory.length;
+        return V[mTier] * 64L * mInventory.length;
     }
 
     @Override
-    public long maxEUStore() {
-        return V[mTier] * 256 * mInventory.length;
-    }
+    public long maxEUStore() { return V[mTier] * 256L * mInventory.length;}
 
     @Override
     public long maxAmperesIn() {
-        return mChargeableCount * 8;
+        return Math.max(mChargeableCount * 8L,4L);
     }
 
     @Override
     public long maxAmperesOut() {
-        return mBatteryCount * 4;
+        return Math.max(mBatteryCount * 4L,2L);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class GT_MetaTileEntity_Charger extends GT_MetaTileEntity_BasicBatteryBuf
                     if (mMetaTileEntity.dechargerSlotCount() > 0 && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
                         for (int i = mMetaTileEntity.dechargerSlotStartIndex(), k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
                             if (mMetaTileEntity.mInventory[i] != null && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
-                                mBaseMetaTileEntity.increaseStoredEnergyUnits(GT_ModHandler.dischargeElectricItem(mMetaTileEntity.mInventory[i], (int) Math.min(V[mTier] * 15, mBaseMetaTileEntity.getEUCapacity() - mBaseMetaTileEntity.getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()), true, false, false), true);
+                                mBaseMetaTileEntity.increaseStoredEnergyUnits(GT_ModHandler.dischargeElectricItem(mMetaTileEntity.mInventory[i], GT_Utility.safeInt(Math.min(V[mTier] * 15, mBaseMetaTileEntity.getEUCapacity() - mBaseMetaTileEntity.getStoredEU())), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()), true, false, false), true);
                                 if (mMetaTileEntity.mInventory[i].stackSize <= 0)
                                     mMetaTileEntity.mInventory[i] = null;
                             }
@@ -70,7 +69,7 @@ public class GT_MetaTileEntity_Charger extends GT_MetaTileEntity_BasicBatteryBuf
                     if (mMetaTileEntity.rechargerSlotCount() > 0 && mBaseMetaTileEntity.getStoredEU() > 0) {
                         for (int i = mMetaTileEntity.rechargerSlotStartIndex(), k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
                             if (mBaseMetaTileEntity.getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
-                                mBaseMetaTileEntity.decreaseStoredEU(GT_ModHandler.chargeElectricItem(mMetaTileEntity.mInventory[i], (int) Math.min(V[this.mTier] * 15, mBaseMetaTileEntity.getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getOutputTier()), true, false), true);
+                                mBaseMetaTileEntity.decreaseStoredEU(GT_ModHandler.chargeElectricItem(mMetaTileEntity.mInventory[i], GT_Utility.safeInt(Math.min(V[mTier] * 15, mBaseMetaTileEntity.getStoredEU())), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getOutputTier()), true, false), true);
                                 if (mMetaTileEntity.mInventory[i].stackSize <= 0)
                                     mMetaTileEntity.mInventory[i] = null;
                             }

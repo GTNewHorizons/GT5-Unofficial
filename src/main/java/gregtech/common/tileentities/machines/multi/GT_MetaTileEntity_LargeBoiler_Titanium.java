@@ -61,7 +61,7 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium
     }
 
     public int getEUt() {
-        return 900;
+        return 800;
     }
 
     public int getEfficiencyIncrease() {

@@ -92,7 +92,7 @@ public class GT_Tool_Screwdriver
 
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         String tTool = aBlock.getHarvestTool(aMetaData);
-        return ((tTool != null) && (tTool.equals("screwdriver"))) || (aBlock.getMaterial() == Material.circuits);
+        return aBlock.getHarvestLevel(aMetaData) != -1 &&  (tTool == null || tTool.isEmpty() || (tTool.equals("screwdriver"))) || (aBlock.getMaterial() == Material.circuits);
     }
 
     public ItemStack getBrokenItem(ItemStack aStack) {

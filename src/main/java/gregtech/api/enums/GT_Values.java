@@ -63,12 +63,24 @@ public class GT_Values {
     /**
      * The Voltage Tiers. Use this Array instead of the old named Voltage Variables
      */
-    public static final long[] V = new long[]{8, 32, 128, 512, 2048, 8192, 32768, 131072, 524288, 2097152, 8388608, 33554432, 134217728, 536870912, 1073741824, Integer.MAX_VALUE};
+    public static final long[] V = new long[]{8L, 32L, 128L, 512L, 2048L, 8192L, 32768L, 131072L, 524288L, 2097152L, 8388608L, 33554432L, 134217728L, 536870912L, 1073741824L, Integer.MAX_VALUE-7};
+    //TODO:tier 14,15 wires and transformers only (not even cables !!!)
+    //TODO:tier 12,13 the above + batteries, battery buffers, (maybe cables,12 also works for machines)
+    //TODO:tier 10,11 the above + chargers and other machines, (cables would be nice)
+    //TODO:tier 9     machines and batteries
 
+    //TODO:AND ALL THE MATERIALS... for that
+    //TODO:LIST OF MACHINES WITH POINTLESS TIERS (unless you implement some other tiering mechanism like reducing eu cost if time=1tick)
+    //Macerator/Compressor/Furnace... and for cheap recipes any
+    /**
+     * keeping Voltage*Amps < Integer.MAX_VALUE-7 for machines (and tier logic 4x EUt 2/ time)
+     * AMV[4]= max amps at tier 4
+     */
+    public static final long[] AatV = new long[]{268435455,67108863,16777215,4194303,1048575,262143,65535,16383,4095,1023,255,63,15,3,1,1};
     /**
      * The short Names for the Voltages
      */
-    public static final String[] VN = new String[]{"ULV", "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "UHV", "UEV", "UIV", "UMV", "UXV", "OPV", "MAX"};
+    public static final String[] VN = new String[]{"ULV", "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "UHV", "UEV", "UIV", "UMV", "UXV", "OpV", "MAX"};
 
     /**
      * The long Names for the Voltages
@@ -125,6 +137,11 @@ public class GT_Values {
      */
     public static int oreveinPlacerOresMultiplier;
     /**
+     * How wide to look for oreveins that affect a requested chunk. Trying to use oreveins larger than this will not work correctly. Increasing the size will cause additional worldgenerator lag.
+     * Disabled for now, using 64 in Deep Dark, 32 elsewhere
+     */
+    // public static int oreveinMaxSize; 
+    /**
      * Not really Constants, but they set using the Config and therefore should be constant (those are for the Debug Mode)
      */
     public static boolean D1 = false, D2 = false;
@@ -153,13 +170,19 @@ public class GT_Values {
      */
     public static boolean debugStones = false;
     /**
+     * Number of ticks between sending sound packets to clients for electric machines. Default is 1.5 seconds. Trying to mitigate lag and FPS drops.
+     */
+    public static int ticksBetweenSounds = 30;
+    /**
      * If you have to give something a World Parameter but there is no World... (Dummy World)
      */
     public static World DW;
+
     /**
      * This will prevent NEI from crashing but spams the Log.
      */
     public static boolean allow_broken_recipemap = false;
+
     /**
      * This will set the percentage how much ReinforcedGlass is Allowed in Cleanroom Walls.
      */

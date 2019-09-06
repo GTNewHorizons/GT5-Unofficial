@@ -1,11 +1,11 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.GT_Values.VN;
-
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
+import static gregtech.api.enums.GT_Values.VN;
 
 public class GT_MetaTileEntity_ConcreteBackfiller2 extends GT_MetaTileEntity_ConcreteBackfillerBase {
     public GT_MetaTileEntity_ConcreteBackfiller2(int aID, String aName, String aNameRegional) {
@@ -18,8 +18,8 @@ public class GT_MetaTileEntity_ConcreteBackfiller2 extends GT_MetaTileEntity_Con
 
     @Override
     public String[] getDescription() {
-    	String casings = getCasingBlockItem().get(0).getDisplayName();
-		return new String[]{
+        String casings = getCasingBlockItem().get(0).getDisplayName();
+        return new String[]{
                 "Controller Block for the Advanced Concrete Backfiller",
                 "Size(WxHxD): 3x7x3", "Controller (Front middle at bottom)",
                 "3x1x3 Base of " + casings,
@@ -55,7 +55,7 @@ public class GT_MetaTileEntity_ConcreteBackfiller2 extends GT_MetaTileEntity_Con
 
     @Override
     protected int getRadius() {
-    	int tConfig = getTotalConfigValue() * 2;
+        int tConfig = getTotalConfigValue() * 2;
         return tConfig >= 128 ? 128 : tConfig <= 0 ? 64 : tConfig;
     }
 

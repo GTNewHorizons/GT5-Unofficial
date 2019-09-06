@@ -132,11 +132,16 @@ public enum Element {
     Lv(116, 177, 0, -1, null, "Livermorium", false),
     Fa(117, 177, 0, -1, null, "Farnsium", false), // Uus, Ununseptium
     Uuo(118, 176, 0, -1, null, "Ununoctium", false),
-
-    Ma(0, 0, 100, -1, null, "Magic", false),
-    Nt(0, 1000, 0, -1, null, "Neutronium", false),
+    Tn(125, 198, 0, -1, null, "Tritanium", false),
+    
+    SpFe(26, 42, 0, -1, null, "Meteoric Iron", false),
+    De(22, 27, 0, -1, null, "Desh", false),
     Oh(76, 125, 0, -1, null, "Oriharukon", false),
-
+    
+    Ma(0, 0, 100, -1, null, "Magic", false),
+    Nq(130, 200, 0, -1, null, "Naquadah", false),
+    Nt(0, 1000, 0, -1, null, "Neutronium", false),
+    
     $H(-1, -0, 0, -1, null, "Anti-Hydrogen", false),
     $D(-1, -1, 0, -1, "H", "Anti-Deuterium", true),
     $T(-1, -2, 0, -1, "D", "Anti-Tritium", true),
@@ -260,8 +265,14 @@ public enum Element {
     $Lv(-116, -177, 0, -1, null, "Anti-Livermorium", false),
     $Uus(-117, -177, 0, -1, null, "Anti-Ununseptium", false),
     $Uuo(-118, -176, 0, -1, null, "Anti-Ununoctium", false),
-
+    $Tn(-125, -198, 0, -1, null, "Anti-Tritanium", false),
+    
+    $SpFe(-26, -42, 0, -1, null, "Anti-Meteoric Iron", true),
+    $De(-22, -27, 0, -1, null, "Anti-Desh", true), 
+    $Oh(-76, -125, 0, -1, null, "Anti-Oriharukon", true),
+    
     $Ma(0, 0, -100, -1, null, "Anti-Magic", false),
+    $Nq(-130, -200, 0, -1, null, "Anti-Naquadah", false),
     $Nt(0, -10000, 0, -1, null, "Anti-Neutronium", false);
 
     public static volatile int VERSION = 509;

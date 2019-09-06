@@ -12,7 +12,6 @@ import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_BaseCrop;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
@@ -41,7 +40,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
+import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public class GT_Block_Machines
         extends GT_Generic_Block
@@ -59,15 +60,8 @@ public class GT_Block_Machines
     }
 
     public String getHarvestTool(int aMeta) {
-        switch (aMeta / 4) {
-            case 0:
-                return "wrench";
-            case 1:
-                return "wrench";
-            case 2:
-                return "cutter";
-            case 3:
-                return "axe";
+        if (aMeta >= 8 && aMeta <= 11) {
+            return "cutter";
         }
         return "wrench";
     }
@@ -84,6 +78,13 @@ public class GT_Block_Machines
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((tTileEntity instanceof BaseTileEntity)) {
             ((BaseTileEntity) tTileEntity).onAdjacentBlockChange(aTileX, aTileY, aTileZ);
+        }
+    }
+
+    public void onNeighborBlockChange(World aWorld, int aX, int aY, int aZ, Block aBlock) {
+        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if ((tTileEntity instanceof BaseMetaPipeEntity)) {
+            ((BaseMetaPipeEntity) tTileEntity).onNeighborBlockChange(aX, aY, aZ);
         }
     }
 
@@ -198,7 +199,8 @@ public class GT_Block_Machines
 
     @Override
     @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ)
+    {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null)) {
             return ((IGregTechTileEntity) tTileEntity).getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
@@ -259,14 +261,14 @@ public class GT_Block_Machines
                 e.printStackTrace(GT_Log.err);
             }
             GT_Log.out.println("GT_Mod: Starting Block Icon Load Phase");
-            System.out.println("GT_Mod: Starting Block Icon Load Phase");
+            GT_FML_LOGGER.info("GT_Mod: Starting Block Icon Load Phase");
             try {
                 for (Runnable tRunnable : GregTech_API.sGTBlockIconload) {
                     tRunnable.run();
                 }
             } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
             GT_Log.out.println("GT_Mod: Finished Block Icon Load Phase");
-            System.out.println("GT_Mod: Finished Block Icon Load Phase");
+            GT_FML_LOGGER.info("GT_Mod: Finished Block Icon Load Phase");
         }
     }
 
@@ -325,6 +327,7 @@ public class GT_Block_Machines
     public void onBlockExploded(World aWorld, int aX, int aY, int aZ, Explosion aExplosion) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((tTileEntity instanceof BaseMetaTileEntity)) {
+            GT_Log.exp.println("Explosion at :"+aX + " | " + aY+ " | "  + aZ +" DIMID: " + aWorld.provider.dimensionId+ " due to near explosion!");
             ((BaseMetaTileEntity) tTileEntity).doEnergyExplosion();
         }
         super.onBlockExploded(aWorld, aX, aY, aZ, aExplosion);
@@ -335,18 +338,17 @@ public class GT_Block_Machines
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((tTileEntity instanceof IGregTechTileEntity)) {
             IGregTechTileEntity tGregTechTileEntity = (IGregTechTileEntity) tTileEntity;
-            Random tRandom = new XSTR();
             mTemporaryTileEntity.set(tGregTechTileEntity);
             for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); i++) {
                 ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
                 if ((tItem != null) && (tItem.stackSize > 0) && (tGregTechTileEntity.isValidSlot(i))) {
-                    EntityItem tItemEntity = new EntityItem(aWorld, aX + tRandom.nextFloat() * 0.8F + 0.1F, aY + tRandom.nextFloat() * 0.8F + 0.1F, aZ + tRandom.nextFloat() * 0.8F + 0.1F, new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
+                    EntityItem tItemEntity = new EntityItem(aWorld, aX + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F, aY + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F, aZ + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F, new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
                     if (tItem.hasTagCompound()) {
                         tItemEntity.getEntityItem().setTagCompound((NBTTagCompound) tItem.getTagCompound().copy());
                     }
-                    tItemEntity.motionX = (tRandom.nextGaussian() * 0.0500000007450581D);
-                    tItemEntity.motionY = (tRandom.nextGaussian() * 0.0500000007450581D + 0.2000000029802322D);
-                    tItemEntity.motionZ = (tRandom.nextGaussian() * 0.0500000007450581D);
+                    tItemEntity.motionX = (XSTR_INSTANCE.nextGaussian() * 0.0500000007450581D);
+                    tItemEntity.motionY = (XSTR_INSTANCE.nextGaussian() * 0.0500000007450581D + 0.2000000029802322D);
+                    tItemEntity.motionZ = (XSTR_INSTANCE.nextGaussian() * 0.0500000007450581D);
                     aWorld.spawnEntityInWorld(tItemEntity);
                     tItem.stackSize = 0;
                     tGregTechTileEntity.setInventorySlotContents(i, null);
@@ -364,7 +366,6 @@ public class GT_Block_Machines
         }
         return mTemporaryTileEntity.get() == null ? new ArrayList() : ((IGregTechTileEntity) mTemporaryTileEntity.get()).getDrops();
     }
-
     @Override
     public boolean removedByPlayer(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, boolean aWillHarvest) {
         if (aWillHarvest) {
@@ -380,7 +381,7 @@ public class GT_Block_Machines
         super.harvestBlock(aWorld, aPlayer, aX, aY, aZ, aMeta);
         aWorld.setBlockToAir(aX, aY, aZ);
     }
-
+    
     public int getComparatorInputOverride(World aWorld, int aX, int aY, int aZ, int aSide) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (((tTileEntity instanceof IGregTechTileEntity))) {
@@ -416,6 +417,7 @@ public class GT_Block_Machines
             TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if ((tTileEntity != null) && (chance < 1.0F)) {
                 if (((tTileEntity instanceof BaseMetaTileEntity)) && (GregTech_API.sMachineNonWrenchExplosions)) {
+                    GT_Log.exp.println("Explosion at :"+aX + " | " + aY+ " | "  + aZ +" DIMID: "+ aWorld.provider.dimensionId+ " due to NonWrench picking/Rain!");
                     ((BaseMetaTileEntity) tTileEntity).doEnergyExplosion();
                 }
             } else {

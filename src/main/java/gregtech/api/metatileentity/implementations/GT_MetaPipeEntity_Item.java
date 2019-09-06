@@ -53,13 +53,8 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
         this(aID, aName, aNameRegional, aThickNess, aMaterial, aInvSlotCount, aStepSize, aIsRestrictive, 20);
     }
 
-    @Deprecated
-    public GT_MetaPipeEntity_Item(String aName, float aThickNess, Materials aMaterial, int aInvSlotCount, int aStepSize, boolean aIsRestrictive) {
-        this(aName, aThickNess, aMaterial, aInvSlotCount, aStepSize, aIsRestrictive, 20);
-    }
-
     public GT_MetaPipeEntity_Item(String aName, float aThickNess, Materials aMaterial, int aInvSlotCount, int aStepSize, boolean aIsRestrictive, int aTickTime) {
-    	super(aName, aInvSlotCount);
+        super(aName, aInvSlotCount);
         mIsRestrictive = aIsRestrictive;
         mThickNess = aThickNess;
         mMaterial = aMaterial;
@@ -69,7 +64,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
 
     @Override
     public byte getTileEntityBaseType() {
-        return mMaterial == null ? 4 : (byte) ((mMaterial.contains(SubTag.WOOD) ? 12 : 4) + Math.max(0, Math.min(3, mMaterial.mToolQuality)));
+        return (byte) (mMaterial == null ? 4 : (byte) (4) + Math.max(0, Math.min(3, mMaterial.mToolQuality)));
     }
 
     @Override
@@ -205,7 +200,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
         return false;
     }
 
-	@Override
+    @Override
     public boolean letsIn(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return coverBehavior.letsItemsIn(aSide, aCoverID, aCoverVariable, -1, aTileEntity);
     }
@@ -213,7 +208,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     @Override
     public boolean letsOut(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return coverBehavior.letsItemsOut(aSide, aCoverID, aCoverVariable, -1, aTileEntity);
-                }
+    }
 
     @Override
     public boolean canConnect(byte aSide, TileEntity tTileEntity) {
@@ -227,26 +222,26 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
             if (gTileEntity.getMetaTileEntity() == null) return false;
             if (gTileEntity.getMetaTileEntity().connectsToItemPipe(tSide)) return true;
             connectable = true;
-                }
+        }
 
-            	if (tTileEntity instanceof IInventory) {
+        if (tTileEntity instanceof IInventory) {
             if (((IInventory) tTileEntity).getSizeInventory() <= 0) return false;
             connectable = true;
-                }
-                if (tTileEntity instanceof ISidedInventory) {
-                    int[] tSlots = ((ISidedInventory) tTileEntity).getAccessibleSlotsFromSide(tSide);
+        }
+        if (tTileEntity instanceof ISidedInventory) {
+            int[] tSlots = ((ISidedInventory) tTileEntity).getAccessibleSlotsFromSide(tSide);
             if (tSlots == null || tSlots.length <= 0) return false;
             connectable = true;
-                }
+        }
 
         return connectable;
-		}
+    }
 
     @Override
     public boolean getGT6StyleConnection() {
         // Yes if GT6 pipes are enabled
         return GT_Mod.gregtechproxy.gt6Pipe;
-        }
+    }
 
 
     @Override
@@ -331,12 +326,12 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
 
     @Override
     public String[] getDescription() {
-    	if (mTickTime == 20)
-    		return new String[]{"Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/sec", "Routing Value: %%%" + mStepSize};
-    	else if (mTickTime % 20 == 0)
-    		return new String[]{"Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/%%%" + (mTickTime / 20) + "%%% sec", "Routing Value: %%%" + mStepSize};
-    	else
-    		return new String[]{"Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/%%%" + mTickTime + "%%% ticks", "Routing Value: %%%" + mStepSize};
+        if (mTickTime == 20)
+            return new String[]{"Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/sec", "Routing Value: %%%" + mStepSize};
+        else if (mTickTime % 20 == 0)
+            return new String[]{"Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/%%%" + (mTickTime / 20) + "%%% sec", "Routing Value: %%%" + mStepSize};
+        else
+            return new String[]{"Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/%%%" + mTickTime + "%%% ticks", "Routing Value: %%%" + mStepSize};
     }
 
     private boolean isInventoryEmpty() {
@@ -346,7 +341,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
 
     @Override
     public float getThickNess() {
-        if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) return 0.0625F;
+        if(GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) return 0.0625F;
         return mThickNess;
     }
 

@@ -12,13 +12,14 @@ public class GT_UO_DimensionList {
 	private String fCategory;
 	private BiMap<String, GT_UO_Dimension> fDimensionList;
 
-	public int[] BlackList;
+	public int[] blackList =new int[0];
 	
 	public GT_UO_DimensionList() {
 		fDimensionList = HashBiMap.create();
 	}
 
 	public GT_UO_Dimension GetDimension(int aDimension) {
+		if(CheckBlackList(aDimension)) return null;
 		if (fDimensionList.containsKey(Integer.toString(aDimension)))
 			return fDimensionList.get(Integer.toString(aDimension));
 		for (BiMap.Entry <String, GT_UO_Dimension> dl : fDimensionList.entrySet())
@@ -26,12 +27,12 @@ public class GT_UO_DimensionList {
 				return dl.getValue();
 		return fDimensionList.get("Default");
 	}
-	
-	public boolean CheckBlackList(int aDimensionId){
+
+	private boolean CheckBlackList(int aDimensionId){
 		try {
-			if (java.util.Arrays.binarySearch(BlackList, aDimensionId) >= 0) return true;
-			else return false;
+			return java.util.Arrays.binarySearch(blackList, aDimensionId) >= 0;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -68,14 +69,13 @@ public class GT_UO_DimensionList {
 		fConfig.setCategoryComment(fCategory+".Overworld", "Set Overworld Generating");
 		fConfig.setCategoryComment(fCategory+".Moon", "Set Moon Generating");
 		
-		int[] BlackList = {-1,1};
-		BlackList = aConfig.get(fCategory, "DimBlackList", BlackList, "Dimension IDs Black List").getIntList();
-		java.util.Arrays.sort(BlackList);
+		blackList = new int[]{-1,1};
+		blackList = aConfig.get(fCategory, "DimBlackList", blackList, "Dimension IDs Black List").getIntList();
+		java.util.Arrays.sort(blackList);
 		
 		for (int i = 0 ; i < fConfig.getCategory(fCategory).getChildren().size(); i++) {
 			GT_UO_Dimension Dimension = new GT_UO_Dimension((ConfigCategory)fConfig.getCategory(fCategory).getChildren().toArray()[i]);
 			fDimensionList.put(Dimension.Dimension, Dimension);
 		}
 	}
-
 }

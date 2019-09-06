@@ -27,11 +27,11 @@ public class GT_Tool_ButcheryKnife
     }
 
     public int getToolDamagePerEntityAttack() {
-        return 400;
+        return 200;
     }
 
     public float getBaseDamage() {
-        return 1.0F;
+        return 3.0F;
     }
 
     public int getHurtResistanceTime(int aOriginalHurtResistance, Entity aEntity) {

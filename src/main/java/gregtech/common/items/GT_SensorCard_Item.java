@@ -25,6 +25,8 @@ public class GT_SensorCard_Item
         implements IRemoteSensor, IPanelDataSource {
     private static final UUID CARD_TYPE = new UUID(0L, 41L);
 
+    private int strCount;
+
     public GT_SensorCard_Item(String aUnlocalized, String aEnglish) {
         super(aUnlocalized, aEnglish, "Insert into Display Panel");
         setMaxStackSize(1);
@@ -35,9 +37,9 @@ public class GT_SensorCard_Item
         if (aStack != null) {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT == null) {
-                aList.add(trans("014", "Missing Coodinates!"));
+            	aList.add(trans("014", "Missing Coodinates!"));
             } else {
-                aList.add(trans("015", "Device at:"));
+            	aList.add(trans("015", "Device at:"));
                 aList.add(String.format("x: %d, y: %d, z: %d", new Object[]{Integer.valueOf(tNBT.getInteger("x")), Integer.valueOf(tNBT.getInteger("y")), Integer.valueOf(tNBT.getInteger("z"))}));
             }
         }
@@ -58,14 +60,15 @@ public class GT_SensorCard_Item
             for (int i = 0; i < tInfoData.length; i++) {
                 aCard.setString("mString" + i, tInfoData[i]);
             }
+            aCard.setInt("mString",strCount=tInfoData.length);
             return CardState.OK;
         }
         return CardState.NO_TARGET;
     }
 
     public List<PanelString> getStringData(int aSettings, ICardWrapper aCard, boolean aLabels) {
-        List<PanelString> rList = new LinkedList();
-        for (int i = 0; i < 8; i++) {
+        List<PanelString> rList = new LinkedList<>();
+        for (int i = 0; i < (strCount=aCard.getInt("mString")); i++) {
             if ((aSettings & 1 << i) != 0) {
                 PanelString line = new PanelString();
                 line.textLeft = GT_LanguageManager.getTranslation(aCard.getString("mString" + i), "\\\\");
@@ -76,8 +79,8 @@ public class GT_SensorCard_Item
     }
 
     public List<PanelSetting> getSettingsList() {
-        List<PanelSetting> rList = new ArrayList(30);
-        for (int i = 0; i < 8; i++) {
+        List<PanelSetting> rList = new ArrayList<>();
+        for (int i = 0; i < strCount; i++) {
             rList.add(new PanelSetting(String.valueOf((i + 1)), 1 << i, getCardType()));
         }
         return rList;

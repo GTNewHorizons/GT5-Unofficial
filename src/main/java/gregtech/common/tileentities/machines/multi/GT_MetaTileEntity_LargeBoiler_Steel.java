@@ -23,10 +23,10 @@ public class GT_MetaTileEntity_LargeBoiler_Steel
     	return "Steel";
     }
 
-	@Override
-	public String getCasingBlockType() {
-		return "Machine Casings";
-	}
+    @Override
+    public String getCasingBlockType() {
+        return "Machine Casings";
+    }
 
     public Block getCasingBlock() {
         return GregTech_API.sBlockCasings2;
@@ -61,7 +61,7 @@ public class GT_MetaTileEntity_LargeBoiler_Steel
     }
 
     public int getEUt() {
-        return 650;
+        return 600;
     }
 
     public int getEfficiencyIncrease() {

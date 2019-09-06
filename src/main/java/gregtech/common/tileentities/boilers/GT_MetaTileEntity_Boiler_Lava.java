@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.boilers;
 
-import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -9,14 +8,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.GT_Container_Boiler;
 import gregtech.common.gui.GT_GUIContainer_Boiler;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -27,8 +25,6 @@ public class GT_MetaTileEntity_Boiler_Lava
         super(aID, aName, aNameRegional, new String[]{
                 "A Boiler running off Lava",
                 "Produces 600L of Steam per second",
-                "Drops to 200L of Steam per second as byproduct slot fills",
-                "Clean out byproducts to keep efficiency high",
                 "Causes 20 Pollution per second"});
     }
 
@@ -98,40 +94,17 @@ public class GT_MetaTileEntity_Boiler_Lava
                         this.mHadNoWater = true;
                     } else {
                         if (this.mHadNoWater) {
+                            GT_Log.exp.println("Boiler "+this.mName+" had no Water!");
                             aBaseMetaTileEntity.doExplosion(2048L);
                             return;
                         }
-                        
-                        int maxOutput = 300;
-                        int minOutput = 100;
-                        
-                        double efficiency = 1.0;
-
-						if (GT_Mod.gregtechproxy.mSmallLavaBoilerEfficiencyLoss) {
-							ItemStack byproductStack = aBaseMetaTileEntity.getStackInSlot(3);
-
-							if (byproductStack != null && !(GT_Utility.isStackInvalid(byproductStack))) {
-								// Efficiency drops from 100% when there is no byproduct, 
-								// to 0% when there is a full stack of byproduct
-								efficiency = 1.0 - (double) byproductStack.stackSize / (double) byproductStack.getMaxStackSize();
-							}
-						}
-                        
-                        //Decrease water amount in proportion to steam production
-                        //Can't decrease by a fraction, as fluid amounts are integers, so need to decrease randomly so expected amount consumed is correct
-                        if(aBaseMetaTileEntity.getRandomNumber(100) < Math.round(efficiency * 100.0)) {
-                        	this.mFluid.amount -= 1;
-                        }
-                        
-                        //Steam output drops from maxOutput when efficiency is 100% to minOutput when efficiency is 0%
-                        long output = (minOutput + Math.round((double) (maxOutput - minOutput) * efficiency));
-
+                        this.mFluid.amount -= 1;
                         if (this.mSteam == null) {
-                            this.mSteam = GT_ModHandler.getSteam(output);
+                            this.mSteam = GT_ModHandler.getSteam(300L);
                         } else if (GT_ModHandler.isSteam(this.mSteam)) {
-                            this.mSteam.amount += output;
+                            this.mSteam.amount += 300;
                         } else {
-                            this.mSteam = GT_ModHandler.getSteam(output);
+                            this.mSteam = GT_ModHandler.getSteam(300L);
                         }
                     }
                 } else {
@@ -146,24 +119,16 @@ public class GT_MetaTileEntity_Boiler_Lava
             if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) &&
                     (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.bucket.get(Materials.Lava)))) {
                 this.mProcessingEnergy += 1000;
-                //Either we only had one bucket of lava in the input, and this is fine, or we had a stack of lava buckets.
-                //Those can only stack when cheating, so we don't care about voiding them as we can just cheat in more
-                aBaseMetaTileEntity.setInventorySlotContents(2, GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L));
+                aBaseMetaTileEntity.decrStackSize(2, 1);
+                aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L));
             }
             if ((this.mTemperature < 1000) && (this.mProcessingEnergy > 0) && (aTick % 8L == 0L)) {
                 this.mProcessingEnergy -= 3;
                 this.mTemperature += 1;
-                if (aBaseMetaTileEntity.getRandomNumber(333) == 0) {
-                    //Produce one byproduct on average every one bucket of lava
-                    if(!aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1L))) {
-                        //If the output slot had something in it already, stick one dust in:
-                        aBaseMetaTileEntity.setInventorySlotContents(3, GT_OreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1));
-                    }
-                }
             }
 
             if (this.mProcessingEnergy > 0 && (aTick % 20L == 0L)) {
-                GT_Pollution.addPollution(getBaseMetaTileEntity(), 40);
+                GT_Pollution.addPollution(getBaseMetaTileEntity(), 20);
             }
             aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
         }

@@ -91,7 +91,7 @@ public class GT_Tool_Soldering_Iron extends GT_Tool {
 
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         String tTool = aBlock.getHarvestTool(aMetaData);
-        return ((tTool != null) && (tTool.equals("soldering_iron"))) || (aBlock.getMaterial() == Material.circuits);
+        return aBlock.getHarvestLevel(aMetaData) != -1 &&  (tTool == null || tTool.isEmpty() || (tTool.equals("soldering_iron"))) || (aBlock.getMaterial() == Material.circuits);
     }
 
     public ItemStack getBrokenItem(ItemStack aStack) {

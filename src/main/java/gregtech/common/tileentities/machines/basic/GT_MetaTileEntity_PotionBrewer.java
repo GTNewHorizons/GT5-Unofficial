@@ -40,9 +40,15 @@ public class GT_MetaTileEntity_PotionBrewer
 
     public int checkRecipe() {
         int tCheck = super.checkRecipe();
-        if (tCheck != 0) {
+        if (tCheck != DID_NOT_FIND_RECIPE) {
             return tCheck;
         }
+
+        calculateOverclockedNess(4,128);
+        //In case recipe is too OP for that machine
+        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+
         FluidStack aFluid = getFillableStack();
         if ((getDrainableStack() == null) && (aFluid != null) && (getInputAt(0) != null)) {
             String tInputName = aFluid.getFluid().getName();
@@ -115,8 +121,6 @@ public class GT_MetaTileEntity_PotionBrewer
             this.mOutputFluid = FluidRegistry.getFluidStack("potion.mundane", getFillableStack().amount);
             getInputAt(0).stackSize -= 1;
             getFillableStack().amount = 0;
-            this.mEUt = (4 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
-            this.mMaxProgresstime = (128 / (1 << this.mTier - 1));
             return 2;
         }
         if (getFillableStack().amount < 750) {
@@ -124,8 +128,6 @@ public class GT_MetaTileEntity_PotionBrewer
         }
         getInputAt(0).stackSize -= 1;
         getFillableStack().amount -= 750;
-        this.mEUt = (4 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
-        this.mMaxProgresstime = (128 / (1 << this.mTier - 1));
         return 2;
     }
 

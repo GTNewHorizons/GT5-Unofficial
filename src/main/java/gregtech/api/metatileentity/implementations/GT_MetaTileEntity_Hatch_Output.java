@@ -22,7 +22,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
     public GT_MetaTileEntity_Hatch_Output(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, new String[]{
         		"Fluid Output for Multiblocks",
-        		"Capacity: " + 8000 * (aTier + 1) + "L",
+        		"Capacity: "  + (8000+8000*(aTier*(aTier+1)>>1)) + "L",
         		"Right click with screwdriver to restrict output",
         		"Can be restricted to put out Items and/or Steam/No Steam/1 specific Fluid",
         		"Restricted Output Hatches are given priority for Multiblock Fluid output"});
@@ -81,7 +81,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork()) {
+        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && (aTick&0x7)==0) {
             IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
             if (tTileEntity != null) {
                 for (boolean temp = true; temp && mFluid != null; ) {
@@ -103,7 +103,8 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("mMode", mMode);
-        aNBT.setString("lockedFluidName", lockedFluidName == null ? "" : lockedFluidName);
+        if(lockedFluidName!=null && lockedFluidName.length()!=0) aNBT.setString("lockedFluidName", lockedFluidName);
+        else aNBT.removeTag("lockedFluidName");
     }
 
     @Override
@@ -121,7 +122,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean doesEmptyContainers() {
-        return true;
+        return false;
     }
 
     @Override
@@ -156,7 +157,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
 
     @Override
     public int getCapacity() {
-        return 8000 * (mTier + 1);
+        return 8000+8000*(mTier*(mTier+1)>>1);
     }
 
     @Override

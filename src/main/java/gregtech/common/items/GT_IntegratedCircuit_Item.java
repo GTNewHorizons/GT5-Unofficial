@@ -18,6 +18,8 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
+
 public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
     private final static String aTextEmptyRow = "   ";
     public GT_IntegratedCircuit_Item() {
@@ -96,7 +98,7 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
         super.registerIcons(aIconRegister);
         if (GregTech_API.sPostloadFinished) {
             GT_Log.out.println("GT_Mod: Starting Item Icon Load Phase");
-            System.out.println("GT_Mod: Starting Item Icon Load Phase");
+            GT_FML_LOGGER.info("GT_Mod: Starting Item Icon Load Phase");
             GregTech_API.sItemIcons = aIconRegister;
             try {
                 for (Runnable tRunnable : GregTech_API.sGTItemIconload) {
@@ -104,7 +106,7 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
                 }
             } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
             GT_Log.out.println("GT_Mod: Finished Item Icon Load Phase");
-            System.out.println("GT_Mod: Finished Item Icon Load Phase");
+            GT_FML_LOGGER.info("GT_Mod: Finished Item Icon Load Phase");
         }
     }
 }

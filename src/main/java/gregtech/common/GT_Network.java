@@ -24,6 +24,8 @@ import net.minecraft.world.chunk.Chunk;
 import java.util.EnumMap;
 import java.util.List;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
+
 @ChannelHandler.Sharable
 public class GT_Network
         extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
@@ -49,10 +51,10 @@ public class GT_Network
 
     public void sendToPlayer(GT_Packet aPacket, EntityPlayerMP aPlayer) {
     	if(aPacket==null){
-    		System.out.println("packet null");return;
+    		GT_FML_LOGGER.info("packet null");return;
     	}
     	if(aPlayer==null){
-    		System.out.println("player null");return;
+    		GT_FML_LOGGER.info("player null");return;
     	}
         ((FMLEmbeddedChannel) this.mChannel.get(Side.SERVER)).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
         ((FMLEmbeddedChannel) this.mChannel.get(Side.SERVER)).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(aPlayer);

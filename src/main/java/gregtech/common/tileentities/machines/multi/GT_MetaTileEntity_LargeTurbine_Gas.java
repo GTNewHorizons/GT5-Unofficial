@@ -1,5 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -12,9 +15,6 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeTurbine {
 
@@ -42,8 +42,7 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
                 "1x Dynamo Hatch (Back centered)",
                 "Stainless Steel Turbine Casings for the rest (24 at least!)",
                 "Needs a Turbine Item (Inside controller GUI)",
-                "Output depending on Rotor: 102-6720EU/t",
-                "Causes " + 20 * getPollutionPerTick(null) + " Pollution per second"};
+                "Produces " + getPollutionPerTick(null)*20 + " pollution per second"};
     }
 
     public int getFuelValue(FluidStack aLiquid) {
@@ -83,43 +82,42 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
 
     @Override
     int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
-        int tEU = 0;
-
-        int actualOptimalFlow = 0;
-
         if (aFluids.size() >= 1) {
+            int tEU = 0;
+            int actualOptimalFlow = 0;
+
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
-            actualOptimalFlow = (int) (aOptFlow / fuelValue);
+            actualOptimalFlow = GT_Utility.safeInt((long)aOptFlow / fuelValue);
             this.realOptFlow = actualOptimalFlow;
 
-            int remainingFlow = (int) (actualOptimalFlow * 1.25f); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for multi-hatch scenarios.
+            int remainingFlow = GT_Utility.safeInt((long)(actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for multi-hatch scenarios.
             int flow = 0;
             int totalFlow = 0;
 
+            storedFluid=0;
             int aFluids_sS=aFluids.size();
             for (int i = 0; i < aFluids_sS; i++) {
                 if (aFluids.get(i).isFluidEqual(firstFuelType)) {
-                    flow = aFluids.get(i).amount; // Get all (steam) in hatch
-                    flow = Math.min(flow, Math.min(remainingFlow, (int) (actualOptimalFlow * 1.25f))); // try to use up to 125% of optimal flow w/o exceeding remainingFlow
+                    flow = Math.min(aFluids.get(i).amount, remainingFlow); // try to use up to 125% of optimal flow w/o exceeding remainingFlow
                     depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
-                    this.storedFluid = aFluids.get(i).amount;
+                    this.storedFluid += aFluids.get(i).amount;
                     remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
                     totalFlow += flow; // track total input used
                 }
             }
-
-            tEU = (int) (Math.min((float) actualOptimalFlow, totalFlow) * fuelValue);
+            if(totalFlow<=0)return 0;
+            tEU = GT_Utility.safeInt((long)totalFlow * fuelValue);
 
             if (totalFlow != actualOptimalFlow) {
-                float efficiency = 1.0f - Math.abs(((totalFlow - (float) actualOptimalFlow) / actualOptimalFlow));
-                if(totalFlow>actualOptimalFlow){efficiency = 1.0f;}
-                if (efficiency < 0)
-                    efficiency = 0; // Can happen with really ludicrously poor inefficiency.
+                float efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float)actualOptimalFlow);
+                //if(totalFlow>actualOptimalFlow){efficiency = 1.0f;}
+                //if (efficiency < 0)
+                //    efficiency = 0; // Can happen with really ludicrously poor inefficiency.
                 tEU *= efficiency;
-                tEU = Math.max(1, (int)((long)tEU * (long)aBaseEff / 10000L));
+                tEU = GT_Utility.safeInt((long)tEU * (long)aBaseEff / 10000L);
             } else {
-                tEU = (int)((long)tEU * (long)aBaseEff / 10000L);
+                tEU = GT_Utility.safeInt((long)tEU * (long)aBaseEff / 10000L);
             }
 
             return tEU;

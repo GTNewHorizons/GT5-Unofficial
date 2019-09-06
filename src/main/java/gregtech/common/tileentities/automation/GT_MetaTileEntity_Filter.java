@@ -20,9 +20,9 @@ public class GT_MetaTileEntity_Filter
 
     public GT_MetaTileEntity_Filter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 19, new String[]{
-        		"Filters up to 9 different Items",
-        		"Use Screwdriver to regulate output stack size",
-        		"Consumes 1EU per moved Item"});
+                        		"Filters up to 9 different Items",
+                        		"Use Screwdriver to regulate output stack size",
+                        		"Consumes 1EU per moved Item"});
     }
 
     public GT_MetaTileEntity_Filter(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {

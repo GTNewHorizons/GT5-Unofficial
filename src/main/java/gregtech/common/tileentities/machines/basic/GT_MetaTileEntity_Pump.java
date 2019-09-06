@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.basic;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_BasicTank;
 import gregtech.api.gui.GT_GUIContainer_BasicTank;
@@ -22,18 +20,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.ArrayDeque;
-import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.util.GT_Utility.getFakePlayer;
 
 public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
     private static final ItemStack MINING_PIPE = GT_ModHandler.getIC2Item("miningPipe", 0);
@@ -56,9 +54,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
     public Block mSecondaryPumpedBlock = null;
 
     public GT_MetaTileEntity_Pump(int aID, String aName, String aNameRegional, int aTier) {
-        
         super(aID, aName, aNameRegional, aTier, 3,
-                new String[]{"The best way to empty Oceans!",
+                new String[]{"The best way to empty Oceans! Outputs on top",
                         "Pumping Area: " + (GT_MetaTileEntity_Pump.getMaxDistanceForTier((byte)aTier) * 2 + 1) + "x" + 
                                            (GT_MetaTileEntity_Pump.getMaxDistanceForTier((byte)aTier) * 2 + 1)});
     }
@@ -249,6 +246,19 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                 }
                 getBaseMetaTileEntity().setActive(!this.mPumpList.isEmpty());
             }
+
+            if (this.mFluid != null && (aTick % 20 == 0)) {
+                // auto outputs on top every second or so
+                IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide((byte)1); //1 is up.
+                if (tTank != null) {
+                    FluidStack tDrained = drain(1000, false);
+                    if (tDrained != null) {
+                        int tFilledAmount = tTank.fill(ForgeDirection.DOWN, tDrained, false);
+                        if (tFilledAmount > 0)
+                            tTank.fill(ForgeDirection.DOWN, drain(tFilledAmount, true), true);
+                    }
+                }
+            }
         }
     }
 
@@ -282,7 +292,6 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
             // Either we didn't consume a fluid, or it's a non Air block
             return false;
         }
-
         // Try to set the block below us to a a tip 
         if (!GT_Utility.setBlockByFakePlayer(getFakePlayer(getBaseMetaTileEntity()), x, yHead - 1, z, MINING_PIPE_TIP_BLOCK, 0, false)) {
             return false;
@@ -319,14 +328,12 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
             }
         }
 
-
         if (getBaseMetaTileEntity().getBlock(x, y, z) != MINING_PIPE_TIP_BLOCK) {
             if (y != getBaseMetaTileEntity().getYCoord() - 1 && getBaseMetaTileEntity().getBlock(x, y + 1, z) == MINING_PIPE_BLOCK) {
                 // We're below the pump at the bottom of the pipes, we haven't found a tip; make the previous pipe a tip!
                 this.clearQueue(true);
                 getBaseMetaTileEntity().getWorld().setBlock(x, y + 1, z, MINING_PIPE_TIP_BLOCK);
             }
-
             return y + 1;
         }
         return y;
@@ -583,7 +590,6 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                 new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ADV_PUMP), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ADV_PUMP),
                 new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ADV_PUMP), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ADV_PUMP),};
     }
-
     private FakePlayer mFakePlayer = null;
 
     protected FakePlayer getFakePlayer(IGregTechTileEntity aBaseTile) {

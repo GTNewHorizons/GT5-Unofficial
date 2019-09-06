@@ -36,7 +36,7 @@ public class GT_MetaTileEntity_Boxinator
 
     public int checkRecipe() {
         int tCheck = super.checkRecipe();
-        if (tCheck != 0) {
+        if (tCheck != DID_NOT_FIND_RECIPE) {
             return tCheck;
         }
         if ((GT_Utility.isStackValid(getInputAt(0))) && (GT_Utility.isStackValid(getInputAt(1))) && (GT_Utility.getContainerItem(getInputAt(0), true) == null)) {
@@ -45,45 +45,50 @@ public class GT_MetaTileEntity_Boxinator
                 if (this.mOutputItems[0] != null) {
                     if (canOutput(new ItemStack[]{this.mOutputItems[0]})) {
                         getInputAt(0).stackSize -= 1;
-                        this.mEUt = (32 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
-                        this.mMaxProgresstime = (16 / (1 << this.mTier - 1));
-                        return 2;
+                        calculateOverclockedNess(32,16);
+                        //In case recipe is too OP for that machine
+                        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                        return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                 }
-                return 0;
+                return DID_NOT_FIND_RECIPE;
             }
             if ((ItemList.Schematic_2by2.isStackEqual(getInputAt(1))) && (getInputAt(0).stackSize >= 4)) {
                 this.mOutputItems[0] = GT_ModHandler.getRecipeOutput(new ItemStack[]{getInputAt(0), getInputAt(0), null, getInputAt(0), getInputAt(0)});
                 if (this.mOutputItems[0] != null) {
                     if (canOutput(new ItemStack[]{this.mOutputItems[0]})) {
                         getInputAt(0).stackSize -= 4;
-                        this.mEUt = (32 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
-                        this.mMaxProgresstime = (32 / (1 << this.mTier - 1));
-                        return 2;
+                        calculateOverclockedNess(32,32);
+                        //In case recipe is too OP for that machine
+                        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                        return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                 }
-                return 0;
+                return DID_NOT_FIND_RECIPE;
             }
             if ((ItemList.Schematic_3by3.isStackEqual(getInputAt(1))) && (getInputAt(0).stackSize >= 9)) {
                 this.mOutputItems[0] = GT_ModHandler.getRecipeOutput(new ItemStack[]{getInputAt(0), getInputAt(0), getInputAt(0), getInputAt(0), getInputAt(0), getInputAt(0), getInputAt(0), getInputAt(0), getInputAt(0)});
                 if (this.mOutputItems[0] != null) {
                     if (canOutput(new ItemStack[]{this.mOutputItems[0]})) {
                         getInputAt(0).stackSize -= 9;
-                        this.mEUt = (32 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
-                        this.mMaxProgresstime = (64 / (1 << this.mTier - 1));
-                        return 2;
+                        calculateOverclockedNess(32,64);
+                        //In case recipe is too OP for that machine
+                        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                     }
                 }
-                return 0;
+                return DID_NOT_FIND_RECIPE;
             }
         }
-        return 0;
+        return DID_NOT_FIND_RECIPE;
     }
 
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         if (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) {
             if ((ItemList.Schematic_1by1.isStackEqual(getInputAt(1))) || (ItemList.Schematic_2by2.isStackEqual(getInputAt(1))) || (ItemList.Schematic_3by3.isStackEqual(getInputAt(1)))) {
-                if (GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.findRecipe(getBaseMetaTileEntity(), true, gregtech.api.enums.GT_Values.V[this.mTier], null, new ItemStack[]{GT_Utility.copyAmount(64L, new Object[]{aStack}), getInputAt(1)}) != null) {
+                if (GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.findRecipe(getBaseMetaTileEntity(), true, gregtech.api.enums.GT_Values.V[mTier], null, new ItemStack[]{GT_Utility.copyAmount(64L, new Object[]{aStack}), getInputAt(1)}) != null) {
                     return true;
                 }
                 if (ItemList.Schematic_1by1.isStackEqual(getInputAt(1)) && GT_ModHandler.getRecipeOutput(new ItemStack[]{aStack}) != null)

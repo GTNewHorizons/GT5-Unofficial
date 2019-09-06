@@ -8,6 +8,7 @@ import static gregtech.api.enums.GT_Values.GT;
 public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntity {
     /**
      * Value between [0 - 9] to describe the Tier of this Machine.
+     * PLZ [0-15] works - READ! GT_Values class.
      */
     public final byte mTier;
 

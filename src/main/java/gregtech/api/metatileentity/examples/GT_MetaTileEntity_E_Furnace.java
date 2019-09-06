@@ -35,11 +35,11 @@ public class GT_MetaTileEntity_E_Furnace extends GT_MetaTileEntity_BasicMachine 
     @Override
     public int checkRecipe() {
         if (null != (mOutputItems[0] = GT_ModHandler.getSmeltingOutput(getInputAt(0), true, getOutputAt(0)))) {
-            mEUt = 4 * (1 << (mTier - 1)) * (1 << (mTier - 1));
-            mMaxProgresstime = 128 / (1 << (mTier - 1));
-            return 2;
+            calculateOverclockedNess(4,128);
+            if(mMaxProgresstime==Integer.MAX_VALUE-1 && mEUt==Integer.MAX_VALUE-1) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+            return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
-        return 0;
+        return DID_NOT_FIND_RECIPE;
     }
 
     @Override

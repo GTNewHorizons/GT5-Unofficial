@@ -96,6 +96,8 @@ public class ProcessingCell
                     GT_Values.RA.addVacuumFreezerRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), gregtech.api.util.GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), (int) Math.max(aMaterial.getMass() * 2L, 1L));
                 }
                 break;
+		default:
+			break;
         }
     }
 }

@@ -71,7 +71,7 @@ public class GT_Tool_WireCutter
 
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         String tTool = aBlock.getHarvestTool(aMetaData);
-        return (tTool != null) && (tTool.equals("cutter"));
+        return aBlock.getHarvestLevel(aMetaData) != -1 && ( tTool == null || tTool.isEmpty() || (tTool.equals("cutter")));
     }
 
     public ItemStack getBrokenItem(ItemStack aStack) {

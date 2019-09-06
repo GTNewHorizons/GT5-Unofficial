@@ -35,8 +35,10 @@ public class GT_MetaTileEntity_Printer
                 for (int j = tList.size() - 1; i < j; i++) {
                     if (GT_Utility.areStacksEqual(getInputAt(0), (ItemStack) tList.get(i))) {
                         this.mOutputItems[0] = GT_Utility.copyAmount(1L, new Object[]{tList.get(i + 1)});
-                        this.mEUt = (1 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
-                        this.mMaxProgresstime = (32 / (1 << this.mTier - 1));
+                        calculateOverclockedNess(1,32);
+                        //In case recipe is too OP for that machine
+                        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         getInputAt(0).stackSize -= 1;
                         return 2;
                     }

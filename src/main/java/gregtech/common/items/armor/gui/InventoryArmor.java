@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.Random;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public class InventoryArmor implements IInventory {
 
@@ -206,7 +206,7 @@ public class InventoryArmor implements IInventory {
 		}
 		NBTTagCompound nbt = parent.getTagCompound();
 		if (override || !nbt.hasKey("UID")) {
-			nbt.setInteger("UID", new Random().nextInt());
+			nbt.setInteger("UID", XSTR_INSTANCE.nextInt());
 		}
 	}
 

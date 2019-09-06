@@ -39,6 +39,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
      * Creates the Item using these Parameters.
      *
      * @param aUnlocalized         The Unlocalized Name of this Item.
+     * @param aGeneratedPrefixList The OreDict Prefixes you want to have generated.
      */
     public GT_MetaBase_Item(String aUnlocalized) {
         super(aUnlocalized, "Generated Item", null, false);
@@ -192,19 +193,19 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         String tKey = getUnlocalizedName(aStack) + ".tooltip";
         String[] tStrings = GT_LanguageManager.getTranslation(tKey).split("/n ");
         for (String tString : tStrings)
-        	if (GT_Utility.isStringValid(tString) && !tKey.equals(tString)) aList.add(tString);
+            if (GT_Utility.isStringValid(tString) && !tKey.equals(tString)) aList.add(tString);
 
         Long[]
                 tStats = getElectricStats(aStack);
         if (tStats != null) {
             if (tStats[3] > 0) {
-                aList.add(EnumChatFormatting.AQUA + String.format(trans("009", "Contains %s EU   Tier: %s"), GT_Utility.formatNumbers(tStats[3]), "" + (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
+            	aList.add(EnumChatFormatting.AQUA + String.format(trans("009", "Contains %s EU   Tier: %s"), GT_Utility.formatNumbers(tStats[3]), "" + (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
                 long tCharge = getRealCharge(aStack);
                 if (tStats[3] == -2 && tCharge <= 0) {
-                    aList.add(EnumChatFormatting.AQUA + trans("010", "Empty. You should recycle it properly.") + EnumChatFormatting.GRAY);
+                	aList.add(EnumChatFormatting.AQUA + trans("010", "Empty. You should recycle it properly.") + EnumChatFormatting.GRAY);
                 } else {
-                    aList.add(String.valueOf(EnumChatFormatting.AQUA) + String.format(trans("011", "%s / %s EU - Voltage: %s"), GT_Utility.formatNumbers(tCharge), GT_Utility.formatNumbers(Math.abs(tStats[0])), "" + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]) + EnumChatFormatting.GRAY);
+                	aList.add(String.valueOf(EnumChatFormatting.AQUA) + String.format(trans("011", "%s / %s EU - Voltage: %s"), GT_Utility.formatNumbers(tCharge), GT_Utility.formatNumbers(Math.abs(tStats[0])), "" + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]) + EnumChatFormatting.GRAY);
                 }
             }
         }
@@ -256,8 +257,10 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         Long[] tStats = getElectricStats(aStack);
         if (tStats == null || tStats[2] > aTier || !(tStats[3] == -1 || tStats[3] == -3 || (tStats[3] < 0 && aCharge == Integer.MAX_VALUE)) || aStack.stackSize != 1)
             return 0;
+        //REALLY?? THIS IS THE CULPRIT THAT CHARGES ITEMS AT INSTANT!!!
+        //long tChargeBefore = getRealCharge(aStack), tNewCharge = aCharge == Integer.MAX_VALUE ? Long.MAX_VALUE : Math.min(Math.abs(tStats[0]), tChargeBefore + (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
         long tTransfer = aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge);
-        long tChargeBefore = getRealCharge(aStack), tNewCharge = aCharge == Integer.MAX_VALUE ? Long.MAX_VALUE : Math.min(Math.abs(tStats[0]), Long.MAX_VALUE - tTransfer >= tChargeBefore ? tChargeBefore + tTransfer : Long.MAX_VALUE);
+        long tChargeBefore = getRealCharge(aStack), tNewCharge = Math.min(Math.abs(tStats[0]), Long.MAX_VALUE - tTransfer >= tChargeBefore ? tChargeBefore + tTransfer : Long.MAX_VALUE);
         if (!aSimulate) setCharge(aStack, tNewCharge);
         return tNewCharge - tChargeBefore;
     }

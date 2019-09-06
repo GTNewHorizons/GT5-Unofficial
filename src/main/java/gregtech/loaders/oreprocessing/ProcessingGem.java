@@ -7,8 +7,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
-public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistrator {//TODO COMPARE WITH GEM??? generators
     public ProcessingGem() {
         OrePrefixes.gem.add(this);
         OrePrefixes.gemChipped.add(this);
@@ -71,7 +72,10 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     case "CertusQuartz":
                         GT_Values.RA.addElectrolyzerRecipe(aStack, 0, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 1), null, null, null, null, null, 2000, 30);
                 }
-
+                for(ItemStack is: OreDictionary.getOres("craftingLens"+aMaterial.mColor.mName.replace(" ",""))) {//Engraver Recipe adder
+                    is.stackSize=0;
+                    GT_Values.RA.addLaserEngraverRecipe(GT_Utility.copyAmount(3L, new Object[]{aStack}), is, GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1L), 1200, 480);
+                }
                 break;
             case gemChipped:
                 if (aFuelPower)
@@ -84,6 +88,10 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         if (aSpecialRecipeReq)
                             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemChipped.get(aMaterial)});
                     }
+                }
+                for(ItemStack is: OreDictionary.getOres("craftingLens"+aMaterial.mColor.mName.replace(" ",""))){//Engraver Recipe adder
+                    is.stackSize=0;
+                    GT_Values.RA.addLaserEngraverRecipe(GT_Utility.copyAmount(3L, new Object[]{aStack}), is, GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1L),600,30);
                 }
                 break;
             case gemExquisite:
@@ -109,6 +117,10 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
                 }
                 GT_Values.RA.addForgeHammerRecipe(aStack, GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, 2L), 64, 16);
+                for(ItemStack is: OreDictionary.getOres("craftingLens"+aMaterial.mColor.mName.replace(" ",""))){//Engraver Recipe adder
+                    is.stackSize=0;
+                    GT_Values.RA.addLaserEngraverRecipe(GT_Utility.copyAmount(3L, new Object[]{aStack}), is, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L),600,120);
+                }
                 break;
             case gemFlawless:
                 if (aFuelPower)
@@ -123,7 +135,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
                 }
                 GT_Values.RA.addForgeHammerRecipe(aStack, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 2L), 64, 16);
+                for(ItemStack is: OreDictionary.getOres("craftingLens"+aMaterial.mColor.mName.replace(" ",""))){//Engraver Recipe adder
+                    is.stackSize=0;
+                    GT_Values.RA.addLaserEngraverRecipe(GT_Utility.copyAmount(3L, new Object[]{aStack}), is, GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1L),2400,2000);
+                }
                 break;
+		default:
+			break;
         }
     }
 }

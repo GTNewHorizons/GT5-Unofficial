@@ -27,6 +27,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -38,10 +39,11 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -54,7 +56,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     protected long mStoredEnergy = 0, mStoredSteam = 0;
     protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
     protected boolean mReleaseEnergy = false;
-    protected int[] mAverageEUInput = new int[11], mAverageEUOutput = new int[11];
+    protected int[] mAverageEUInput = new int[]{0, 0, 0, 0, 0}, mAverageEUOutput = new int[]{0, 0, 0, 0, 0};
     private boolean[] mActiveEUInputs = new boolean[]{false, false, false, false, false, false}, mActiveEUOutputs = new boolean[]{false, false, false, false, false, false};
     private byte[] mSidedRedstone = new byte[]{15, 15, 15, 15, 15, 15};
     private int[] mCoverSides = new int[]{0, 0, 0, 0, 0, 0}, mCoverData = new int[]{0, 0, 0, 0, 0, 0}, mTimeStatistics = new int[GregTech_API.TICKS_FOR_LAG_AVERAGING];
@@ -62,10 +64,13 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     private byte mColor = 0, oColor = 0, mStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0, oTexturePage=0, oLightValueClient = -1, oLightValue = -1, mLightValue = 0, mOtherUpgrades = 0, mFacing = 0, oFacing = 0, mWorkData = 0;
     private int mDisplayErrorCode = 0, oX = 0, oY = 0, oZ = 0, mTimeStatisticsIndex = 0, mLagWarningCount = 0;
     private short mID = 0;
-    private long mTickTimer = 0, oOutput = 0, mAcceptedAmperes = Long.MAX_VALUE;
+    public long mTickTimer = 0;
+    private long oOutput = 0, mAcceptedAmperes = Long.MAX_VALUE;
+    public long mLastSoundTick = 0;
+    private long mLastCheckTick = 0;
     private String mOwnerName = "";
     private NBTTagCompound mRecipeStuff = new NBTTagCompound();
-    
+
     private static final Field ENTITY_ITEM_HEALTH_FIELD;
     static
     {
@@ -94,7 +99,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         try {
             super.writeToNBT(aNBT);
         } catch (Throwable e) {
-            GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
+            GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);
         }
         try {
@@ -122,7 +127,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             aNBT.setTag("GT.CraftingComponents", mRecipeStuff);
             aNBT.setInteger("nbtVersion", GT_Mod.TOTAL_VERSION);
         } catch (Throwable e) {
-            GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
+            GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);
         }
         try {
@@ -142,12 +147,12 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                 try {
                     mMetaTileEntity.saveNBTData(aNBT);
                 } catch (Throwable e) {
-                    GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
+                    GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
                     e.printStackTrace(GT_Log.err);
                 }
             }
         } catch (Throwable e) {
-            GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
+            GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);
         }
     }
@@ -190,7 +195,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             mSidedRedstone = aNBT.getByteArray("mRedstoneSided");
             mRecipeStuff = aNBT.getCompoundTag("GT.CraftingComponents");
             int nbtVersion = aNBT.getInteger("nbtVersion");
-            
+
             if (mCoverData.length != 6) mCoverData = new int[]{0, 0, 0, 0, 0, 0};
             if (mCoverSides.length != 6) mCoverSides = new int[]{0, 0, 0, 0, 0, 0};
             if (mSidedRedstone.length != 6)
@@ -214,7 +219,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                 try {
                     mMetaTileEntity.loadNBTData(aNBT);
                 } catch (Throwable e) {
-                    GT_Log.err.println("Encountered Exception while loading MetaTileEntity, the Server should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
+                    GT_Log.err.println("Encountered Exception while loading MetaTileEntity, the Server should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
                     e.printStackTrace(GT_Log.err);
                 }
             }
@@ -275,7 +280,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         }
 
         mRunningThroughTick = true;
-        long tTime = System.currentTimeMillis();
+        long tTime = System.nanoTime();
         int tCode = 0;
         boolean aSideServer = isServerSide();
         boolean aSideClient = isClientSide();
@@ -373,6 +378,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                             oRedstone = mRedstone;
                             issueBlockUpdate();
                         }
+                        if(mTickTimer == 10) joinEnet();
 
                         if (xCoord != oX || yCoord != oY || zCoord != oZ) {
                             oX = xCoord;
@@ -412,6 +418,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                                 }
                             }
 
+
                             if (mMetaTileEntity.isEnetOutput() && oOutput > 0) {
                                 long tOutputVoltage = Math.max(oOutput, oOutput + (1 << GT_Utility.getTier(oOutput))), tUsableAmperage = Math.min(getOutputAmperage(), (getStoredEU() - mMetaTileEntity.getMinimumStoredEU()) / tOutputVoltage);
                                 if (tUsableAmperage > 0) {
@@ -439,16 +446,29 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                                             || (getCoverIDAtSide((byte) 5) == 0 && worldObj.getPrecipitationHeight(xCoord + 1, zCoord) - 1 < yCoord)) {
                                         if (GregTech_API.sMachineRainExplosions && worldObj.isRaining() && getBiome().rainfall > 0) {
                                             if (getRandomNumber(10) == 0) {
-                                                try{GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");}catch(Exception e){}
+                                                try{
+                                                    GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
+                                                }catch(Exception e){
+
+                                                }
+                                                GT_Log.exp.println("Machine at: "+ this.getXCoord()+" | "+ this.getYCoord()+" | "+ this.getZCoord()+" DIMID: " +this.worldObj.provider.dimensionId +" explosion due to rain!");
                                                 doEnergyExplosion();
-                                            } else setOnFire();
+                                            } else {
+                                                GT_Log.exp.println("Machine at: "+ this.getXCoord()+" | "+ this.getYCoord()+" | "+ this.getZCoord()+" DIMID: " +this.worldObj.provider.dimensionId +"  set to Fire due to rain!");
+                                                setOnFire();
+                                            }
                                         }
                                         if (!hasValidMetaTileEntity()) {
                                             mRunningThroughTick = false;
                                             return;
                                         }
                                         if (GregTech_API.sMachineThunderExplosions && worldObj.isThundering() && getBiome().rainfall > 0 && getRandomNumber(3) == 0) {
-                                        	try{GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");}catch(Exception e){}
+                                        	try{
+                                        	    GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
+                                        	}catch(Exception e){
+
+                                            }
+                                            GT_Log.exp.println("Machine at: "+ this.getXCoord()+" | "+ this.getYCoord()+" | "+ this.getZCoord()+" DIMID: " +this.worldObj.provider.dimensionId + " explosion due to Thunderstorm!");
                                             doEnergyExplosion();
                                         }
                                     }
@@ -569,11 +589,11 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         }
 
         if (aSideServer && hasValidMetaTileEntity()) {
-            tTime = System.currentTimeMillis() - tTime;
+            tTime = System.nanoTime() - tTime;
             if (mTimeStatistics.length > 0)
                 mTimeStatistics[mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length] = (int) tTime;
-            if (tTime > 0 && tTime > GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING && mTickTimer > 1000 && getMetaTileEntity().doTickProfilingMessageDuringThisTick() && mLagWarningCount++ < 10)
-                System.out.println("WARNING: Possible Lag Source at [" + xCoord + ", " + yCoord + ", " + zCoord + "] in Dimension " + worldObj.provider.dimensionId + " with " + tTime + "ms caused by an instance of " + getMetaTileEntity().getClass());
+            if (tTime > 0 && tTime > (GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING*1000000) && mTickTimer > 1000 && getMetaTileEntity().doTickProfilingMessageDuringThisTick() && mLagWarningCount++ < 10)
+                GT_FML_LOGGER.warn("WARNING: Possible Lag Source at [" + xCoord + ", " + yCoord + ", " + zCoord + "] in Dimension " + worldObj.provider.dimensionId + " with " + tTime + "ns caused by an instance of " + getMetaTileEntity().getClass());
         }
 
         mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
@@ -640,7 +660,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             try {
                 mMetaTileEntity.receiveClientEvent((byte) aEventID, (byte) aValue);
             } catch (Throwable e) {
-                GT_Log.err.println("Encountered Exception while receiving Data from the Server, the Client should've been crashed by now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
+                GT_Log.err.println("Encountered Exception while receiving Data from the Server, the Client should've been crashed by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
                 e.printStackTrace(GT_Log.err);
             }
         }
@@ -697,26 +717,39 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel) {
         ArrayList<String> tList = new ArrayList<String>();
         if (aLogLevel > 2) {
-            tList.add("Meta-ID: " + mID + (canAccessData() ? " valid" : " invalid") + (mMetaTileEntity == null ? " MetaTileEntity == null!" : " "));
+            tList.add("Meta-ID: " +EnumChatFormatting.BLUE+ mID +EnumChatFormatting.RESET + (canAccessData() ? EnumChatFormatting.GREEN+" valid"+EnumChatFormatting.RESET : EnumChatFormatting.RED+" invalid"+EnumChatFormatting.RESET) + (mMetaTileEntity == null ? EnumChatFormatting.RED+" MetaTileEntity == null!"+EnumChatFormatting.RESET : " "));
         }
         if (aLogLevel > 1) {
             if (mTimeStatistics.length > 0) {
                 double tAverageTime = 0;
-                for (int tTime : mTimeStatistics) tAverageTime += tTime;
-                tList.add("This particular TileEntity has caused an average CPU-load of ~" + (tAverageTime / mTimeStatistics.length) + "ms over the last " + mTimeStatistics.length + " ticks.");
+                double tWorstTime = 0;
+                for (int tTime : mTimeStatistics) {
+                    tAverageTime += tTime;
+                    if (tTime > tWorstTime) {
+                        tWorstTime = tTime;
+                    }
+                    // Uncomment this line to print out tick-by-tick times.
+                    //tList.add("tTime " + tTime);
+                }
+                tList.add("Average CPU load of ~" + (tAverageTime / mTimeStatistics.length) + "ns over " + mTimeStatistics.length + " ticks with worst time of " + tWorstTime + "ns.");
+                tList.add("Recorded " + mMetaTileEntity.mSoundRequests + " sound requests in " + (mTickTimer - mLastCheckTick) + " ticks." );
+                mLastCheckTick = mTickTimer;
+                mMetaTileEntity.mSoundRequests = 0;
             }
             if (mLagWarningCount > 0) {
-                tList.add("This TileEntity has also caused " + (mLagWarningCount >= 10 ? "more than 10" : mLagWarningCount) + " Lag Spike Warnings (anything taking longer than " + GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING + "ms) on the Server.");
+                tList.add("Caused " + (mLagWarningCount >= 10 ? "more than 10" : mLagWarningCount) + " Lag Spike Warnings (anything taking longer than " + GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING + "ms) on the Server.");
             }
-            tList.add("Is" + (mMetaTileEntity.isAccessAllowed(aPlayer) ? " " : " not ") + "accessible for you");
+            tList.add("Is" + (mMetaTileEntity.isAccessAllowed(aPlayer) ? " " : EnumChatFormatting.RED+" not "+EnumChatFormatting.RESET) + "accessible for you");
         }
         if (aLogLevel > 0) {
             if (getSteamCapacity() > 0 && hasSteamEngineUpgrade())
                 tList.add(getStoredSteam() + " of " + getSteamCapacity() + " Steam");
-            tList.add("Machine is " + (mActive ? "active" : "inactive"));
+            tList.add("Machine is " + (mActive ? EnumChatFormatting.GREEN+"active"+EnumChatFormatting.RESET : EnumChatFormatting.RED+"inactive"+EnumChatFormatting.RESET));
             if (!mHasEnoughEnergy)
-                tList.add("ATTENTION: This Device consumes Energy at a higher Rate than you input. You could insert more to speed up the process.");
+                tList.add(EnumChatFormatting.RED+"ATTENTION: This Device needs more power."+EnumChatFormatting.RESET);
         }
+        if(joinedIc2Enet)
+            tList.add("Joined IC2 ENet");
         return mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList);
     }
 
@@ -787,6 +820,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             mFacing = aFacing;
             mMetaTileEntity.onFacingChange();
             onMachineBlockUpdate();
+            doEnetUpdate();
         }
     }
 
@@ -846,6 +880,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public void invalidate() {
         tileEntityInvalid = false;
+        leaveEnet();
         if (canAccessData()) {
             mMetaTileEntity.onRemoval();
             mMetaTileEntity.setBaseMetaTileEntity(null);
@@ -1169,6 +1204,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     public void doEnergyExplosion() {
         if (getUniversalEnergyCapacity() > 0 && getUniversalEnergyStored() >= getUniversalEnergyCapacity() / 5) {
+            GT_Log.exp.println("Energy Explosion, injected "+getUniversalEnergyStored()+"EU >= "+Double.toString((getUniversalEnergyCapacity() / 5D))+"Capacity of the Machine!");
+
             doExplosion(oOutput * (getUniversalEnergyStored() >= getUniversalEnergyCapacity() ? 4 : getUniversalEnergyStored() >= getUniversalEnergyCapacity() / 2 ? 2 : 1));
             GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "electricproblems");
         }
@@ -1210,14 +1247,13 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     
     public void dropItems(ItemStack tItem){
     	if(tItem==null)return;
-        Random tRandom = new Random();
-        EntityItem tItemEntity = new EntityItem(this.worldObj, this.xCoord + tRandom.nextFloat() * 0.8F + 0.1F, this.yCoord + tRandom.nextFloat() * 0.8F + 0.1F, this.zCoord + tRandom.nextFloat() * 0.8F + 0.1F, new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
+        EntityItem tItemEntity = new EntityItem(this.worldObj, this.xCoord + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F, this.yCoord + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F, this.zCoord + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F, new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
         if (tItem.hasTagCompound()) {
             tItemEntity.getEntityItem().setTagCompound((NBTTagCompound) tItem.getTagCompound().copy());
         }
-        tItemEntity.motionX = (tRandom.nextGaussian() * 0.0500000007450581D);
-        tItemEntity.motionY = (tRandom.nextGaussian() * 0.0500000007450581D + 0.2000000029802322D);
-        tItemEntity.motionZ = (tRandom.nextGaussian() * 0.0500000007450581D);
+        tItemEntity.motionX = (XSTR_INSTANCE.nextGaussian() * 0.0500000007450581D);
+        tItemEntity.motionY = (XSTR_INSTANCE.nextGaussian() * 0.0500000007450581D + 0.2000000029802322D);
+        tItemEntity.motionZ = (XSTR_INSTANCE.nextGaussian() * 0.0500000007450581D);
         tItemEntity.hurtResistantTime = 999999;
         tItemEntity.lifespan = 60000;
         try {
@@ -1304,11 +1340,13 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList)) {
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             if (mWorks) disableWorking();
-                            else enableWorking();{
-                            	String tChat = trans("090","Machine Processing: ") + (isAllowedToWork() ? trans("088","Enabled") : trans("087","Disabled"));
-                            	if(getMetaTileEntity() !=null && getMetaTileEntity().hasAlternativeModeText())
-                            		tChat = getMetaTileEntity().getAlternativeModeText();
-                            GT_Utility.sendChatToPlayer(aPlayer, tChat);}
+                            else enableWorking();
+                            {
+                                String tChat = trans("090", "Machine Processing: ") + (isAllowedToWork() ? trans("088", "Enabled") : trans("087", "Disabled"));
+                                if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText())
+                                    tChat = getMetaTileEntity().getAlternativeModeText();
+                                GT_Utility.sendChatToPlayer(aPlayer, tChat);
+                            }
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(101), 1.0F, -1, xCoord, yCoord, zCoord);
                         }
                         return true;
@@ -1323,7 +1361,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                             mStrongRedstone ^= (1 << tSide);
                             GT_Utility.sendChatToPlayer(aPlayer, trans("091","Redstone Output at Side ") + tSide + trans("092"," set to: ") + ((mStrongRedstone & (1 << tSide)) != 0 ? trans("093","Strong") : trans("094","Weak")));
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 3.0F, -1, xCoord, yCoord, zCoord);
-                        } 
+                        }
+                        doEnetUpdate();
                         return true;
                     }
                     
@@ -1333,6 +1372,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                             //logic handled internally
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
                         }
+                        doEnetUpdate();
                         return true;
                     }
 
@@ -1393,7 +1433,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         try {
             if (hasValidMetaTileEntity()) return mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ);
         } catch (Throwable e) {
-            GT_Log.err.println("Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
+            GT_Log.err.println("Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);
         }
 
@@ -1405,7 +1445,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         try {
             if (aPlayer != null && hasValidMetaTileEntity()) mMetaTileEntity.onLeftclick(this, aPlayer);
         } catch (Throwable e) {
-            GT_Log.err.println("Encountered Exception while leftclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
+            GT_Log.err.println("Encountered Exception while leftclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);
         }
     }
@@ -1640,21 +1680,15 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public long getAverageElectricInput() {
         int rEU = 0;
-        for (int i = 0; i < mAverageEUInput.length; i++) {
-            if (i != mAverageEUInputIndex)
-                rEU += mAverageEUInput[i];
-        }
-        return rEU / (mAverageEUInput.length - 1);
+        for (int tEU : mAverageEUInput) rEU += tEU;
+        return rEU / mAverageEUInput.length;
     }
 
     @Override
     public long getAverageElectricOutput() {
         int rEU = 0;
-        for (int i = 0; i < mAverageEUOutput.length; i++) {
-            if (i != mAverageEUOutputIndex)
-                rEU += mAverageEUOutput[i];
-        }
-        return rEU / (mAverageEUOutput.length - 1);
+        for (int tEU : mAverageEUOutput) rEU += tEU;
+        return rEU / mAverageEUOutput.length;
     }
 
     @Override
@@ -1722,6 +1756,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         if (!canAccessData() || !mMetaTileEntity.isElectric() || !inputEnergyFrom(aSide) || aAmperage <= 0 || aVoltage <= 0 || getStoredEU() >= getEUCapacity() || mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes)
             return 0;
         if (aVoltage > getInputVoltage()) {
+            GT_Log.exp.println("Energy Explosion, injected "+aVoltage+"EU/t in a "+getInputVoltage()+"EU/t Machine!");
             doExplosion(aVoltage);
             return 0;
         }
@@ -2034,56 +2069,69 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
         mMetaTileEntity.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
     }
-    
-    /**
-     * Shifts the machine Inventory index according to the change in Input/Output Slots.
-     * This is NOT done automatically. If you want to change slot count for a machine this method needs to be adapted.
-     * Currently this method only works for GT_MetaTileEntity_BasicMachine
-     * @param slotIndex The original Inventory index
-     * @param nbtVersion The GregTech version in which the original Inventory Index was saved.
-     * @return The corrected Inventory index
-     */
-    private int shiftInventoryIndex(int slotIndex, int nbtVersion){
-    	int oldInputSize, newInputSize, oldOutputSize, newOutputSize;
-    	int chemistryUpdateVersion = GT_Mod.calculateTotalGTVersion(509, 31);
-    	if (mID >= 211 && mID <= 218) {//Assembler
-    		if (nbtVersion < chemistryUpdateVersion) {
-    			oldInputSize = 2;
-    			oldOutputSize = 1;
-    		} else {
-    			return slotIndex;
-    		}
-    		newInputSize = 6;
-    		newOutputSize = 1;
-    	} else if (mID >= 421 && mID <= 428){//Chemical Reactor
-    		if (nbtVersion < chemistryUpdateVersion) {
-    			oldInputSize = 2;
-    			oldOutputSize = 1;
-    		} else {
-    			return slotIndex;
-    		}
-    		newInputSize = 2;
-    		newOutputSize = 2;
-    	} else if (mID >= 531 && mID <= 538) {//Distillery
-    		if (nbtVersion < chemistryUpdateVersion) {
-    			oldInputSize = 1;
-    			oldOutputSize = 0;
-    		} else {
-    			return slotIndex;
-    		}
-    		newInputSize = 1;
-    		newOutputSize = 1;
-    	} else {
-        	return slotIndex;    		
-    	}
-    	int indexShift = 0;
-    	if (slotIndex >= GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT + oldInputSize) {
-    		indexShift += newInputSize - oldInputSize;
-    	}    	
-    	if (slotIndex >= GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT + oldInputSize + oldOutputSize) {
-    		indexShift += newOutputSize - oldOutputSize;
-    	}
-    	return slotIndex + indexShift;
-    }
 
+     /**
+      * Shifts the machine Inventory index according to the change in Input/Output Slots.
+      * This is NOT done automatically. If you want to change slot count for a machine this method needs to be adapted.
+      * Currently this method only works for GT_MetaTileEntity_BasicMachine
+      * @param slotIndex The original Inventory index
+      * @param nbtVersion The GregTech version in which the original Inventory Index was saved.
+      * @return The corrected Inventory index
+      */
+     private int shiftInventoryIndex(int slotIndex, int nbtVersion){
+         int oldInputSize, newInputSize, oldOutputSize, newOutputSize;
+         int chemistryUpdateVersion = GT_Mod.calculateTotalGTVersion(509, 31);
+         if (mID >= 211 && mID <= 218) {//Assembler
+             if (nbtVersion < chemistryUpdateVersion) {
+                 oldInputSize = 2;
+                 oldOutputSize = 1;
+             } else {
+                 return slotIndex;
+             }
+             newInputSize = 6;
+             newOutputSize = 1;
+
+
+         } else if (mID >= 421 && mID <= 428){//Chemical Reactor
+             if (nbtVersion < chemistryUpdateVersion) {
+                 oldInputSize = 2;
+                 oldOutputSize = 1;
+             } else {
+                 return slotIndex;
+             }
+             newInputSize = 2;
+             newOutputSize = 2;
+
+         } else if (mID >= 531 && mID <= 538) {//Distillery
+             if (nbtVersion < chemistryUpdateVersion) {
+                 oldInputSize = 1;
+                 oldOutputSize = 0;
+             } else {
+                 return slotIndex;
+             }
+             newInputSize = 1;
+             newOutputSize = 1;
+         } else if (mID >= 581 && mID <=588){//Mixer
+             if (nbtVersion < chemistryUpdateVersion) {
+                 oldInputSize = 4;
+                 oldOutputSize = 1;
+             }else{
+                 return slotIndex;
+             }
+             newInputSize = 6;
+             newOutputSize = 1;
+
+         } else {
+             return slotIndex;
+         }
+
+         int indexShift = 0;
+         if (slotIndex >= GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT + oldInputSize) {indexShift += newInputSize - oldInputSize;
+                	}
+         if (slotIndex >= GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT + oldInputSize + oldOutputSize) {
+             indexShift += newOutputSize - oldOutputSize;
+         }
+         return slotIndex + indexShift;
+     }
 }
+

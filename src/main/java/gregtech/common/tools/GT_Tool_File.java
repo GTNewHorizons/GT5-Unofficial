@@ -75,7 +75,7 @@ public class GT_Tool_File
 
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         String tTool = aBlock.getHarvestTool(aMetaData);
-        return ((tTool != null) && tTool.equals("file"));
+        return aBlock.getHarvestLevel(aMetaData) != -1 && (tTool == null || tTool.isEmpty() || tTool.equals("file"));
     }
 
     public ItemStack getBrokenItem(ItemStack aStack) {

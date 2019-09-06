@@ -81,7 +81,7 @@ public class GT_Tool_Axe
 
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         String tTool = aBlock.getHarvestTool(aMetaData);
-        return ((tTool == null) && aBlock.getMaterial().isToolNotRequired()) || (tTool != null && tTool.equals("axe")) || (aBlock.getMaterial() == Material.wood);
+        return aBlock.getHarvestLevel(aMetaData) != -1 &&  (tTool == null || tTool.isEmpty() || (tTool.equals("axe"))) || (aBlock.getMaterial() == Material.wood);
     }
 
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {

@@ -203,6 +203,11 @@ public class GregTech_API {
     public static boolean mTranslocator = false;
     public static boolean mTConstruct = false;
     public static boolean mGalacticraft = false;
+    
+    /**
+     * Option to not use MACHINE_METAL mixing into colors
+     */
+    public static boolean  sUseMachineMetal = false;
 
     public static boolean mUseOnlyGoodSolderingMaterials = false;
 
@@ -300,7 +305,7 @@ public class GregTech_API {
      * You should call @causeMachineUpdate in @Block.breakBlock and in @Block.onBlockAdded of your registered Block.
      * You don't need to register TileEntities which implement @IMachineBlockUpdateable
      *
-     * @param aID   the ID of your Block
+     * @param aBlock   the Block
      * @param aMeta the Metadata of the Blocks as Bitmask! -1 or ~0 for all Metavalues
      */
     public static boolean registerMachineBlock(Block aBlock, int aMeta) {
@@ -319,7 +324,7 @@ public class GregTech_API {
         if (GregTech_API.sThaumcraftCompat != null)
             GregTech_API.sThaumcraftCompat.registerPortholeBlacklistedBlock(aBlock);
         int rMeta = 0;
-        for (byte i = 0; i < 16 && i < aMeta.length; i++) if (aMeta[i]) rMeta |= B[i];
+        for (byte i = 0; i < aMeta.length && i < 16; i++) if (aMeta[i]) rMeta |= B[i];
         sMachineIDs.put(aBlock, rMeta);
         return true;
     }

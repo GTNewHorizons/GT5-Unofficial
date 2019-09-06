@@ -16,6 +16,8 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.*;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
+
 public class ArmorData {
 
 	public int type; // 0 = helmet; 1 = chestplate; 2 = leggings; 3 = boots;
@@ -385,7 +387,8 @@ public class ArmorData {
 	
 	public void change(Map aMap, StatType aType, float aChange){
 		float tChange = 0;
-		if(aMap==null)System.out.println("changeMapnull");
+		if(aMap==null)
+			GT_FML_LOGGER.info("changeMapnull");
 		if(aMap.containsKey(aType)){
 			Object value = aMap.get(aType);
 			tChange = value != null ? (float) aMap.get(aType) : 0.0f;

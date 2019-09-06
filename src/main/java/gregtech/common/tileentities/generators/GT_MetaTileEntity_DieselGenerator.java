@@ -10,6 +10,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -73,6 +74,15 @@ public class GT_MetaTileEntity_DieselGenerator
             throw new ArithmeticException("Integer LOOPBACK!");
         }
         return (int)rValue;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if(aTick%100==0 && mFluid!=null && mFluid.amount>this.getCapacity()){
+            GT_Log.err.println("Dupe Abuse: "+aBaseMetaTileEntity.getOwnerName()+" Coords: "+aBaseMetaTileEntity.getXCoord()+" "+aBaseMetaTileEntity.getYCoord()+" "+aBaseMetaTileEntity.getZCoord());
+            aBaseMetaTileEntity.setToFire();
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     public ITexture[] getFront(byte aColor) {

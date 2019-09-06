@@ -115,7 +115,7 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
     	String aName = super.getItemStackDisplayName(aStack);
-    	int aDamage = getDamage(aStack);
+    	int aDamage = aStack.getItemDamage();
     	if (aDamage < 32000 && aDamage >= 0)
     		return Materials.getLocalizedNameForItem(aName, aDamage % 1000);
     	return aName;

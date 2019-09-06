@@ -95,7 +95,7 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
     /**
      * Sets initial Values from NBT
      *
-     * @param tNBT is the NBTTag of readFromNBT
+     * @param aNBT is the NBTTag of readFromNBT
      * @param aID  is the MetaTileEntityID
      */
     public void setInitialValuesAsNBT(NBTTagCompound aNBT, short aID);

@@ -15,7 +15,7 @@ public class GT_UO_Fluid {
 	public int Chance = 0;
 	public int DecreasePerOperationAmount = 5;
 
-	public GT_UO_Fluid(ConfigCategory aConfigCategory) {
+	public GT_UO_Fluid(ConfigCategory aConfigCategory) {//TODO CONFIGURE
 		if (aConfigCategory.containsKey("Registry"))
 		{
 			aConfigCategory.get("Registry").comment = "Fluid registry name";
@@ -41,7 +41,7 @@ public class GT_UO_Fluid {
 			aConfigCategory.get("DecreasePerOperationAmount").comment = "Decrease per operation (actual fluid gained works like (Litre)VeinData/5000)";
 			DecreasePerOperationAmount = aConfigCategory.get("DecreasePerOperationAmount").getInt(5);
 		}
-		//System.out.println("GT UO "+aConfigCategory.getName()+" Fluid:"+Registry+" Max:"+MaxAmount+" Min:"+MinAmount+" Chance:"+Chance);
+		//GT_FML_LOGGER.info("GT UO "+aConfigCategory.getName()+" Fluid:"+Registry+" Max:"+MaxAmount+" Min:"+MinAmount+" Chance:"+Chance);
 	}
 	
 	public Fluid getFluid(){

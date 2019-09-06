@@ -25,6 +25,7 @@ public class GT_Container_ChestBuffer
         addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 27, 8, 63, false, true, 1));
         addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 27, 26, 63, false, true, 1));
         addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 27, 44, 63, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 27, 62, 63, false, true, 1));
     }
 
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
@@ -60,6 +61,15 @@ public class GT_Container_ChestBuffer
                     GT_Utility.sendChatToPlayer(aPlayer, trans("120","Invert Redstone"));
                 } else {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("121","Don't invert Redstone"));
+                }
+                return null;
+            }
+            if (aSlotIndex == 30) {
+                ((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bStockingMode = (!((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bStockingMode);
+                if (((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bStockingMode) {
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("217","Stocking mode. Keeps this many items in destination input slots."));
+                } else {
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("218", "Transfer size mode. Add exactly this many items in destination input slots as long as there is room."));
                 }
                 return null;
             }

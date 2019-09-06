@@ -17,7 +17,7 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
     public int mRange = 16;
 
     public GT_MetaTileEntity_MonsterRepellent(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Repels nasty Creatures. Range: " + (4 + (12 * aTier)) + " unpowered / " + (16 + (48 * aTier)) + " powered");
+        super(aID, aName, aNameRegional, aTier, 0, "Repels nasty Creatures. Range: " + (4 + (12 * aTier)) + " unpowered / " + (16 + (48 * aTier)) + " powered. Costs " + (1L << (aTier * 2))+ " EU/t" );
     }
 
     public GT_MetaTileEntity_MonsterRepellent(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
@@ -44,7 +44,7 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
             if ((aTimer % 600 == 0) && !GT_SpawnEventHandler.mobReps.contains(tCoords)) {
                 GT_SpawnEventHandler.mobReps.add(tCoords);
             }
-            if (aBaseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU()) && aBaseMetaTileEntity.decreaseStoredEnergyUnits(1 << (this.mTier * 2), false)) {
+            if (aBaseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU()) && aBaseMetaTileEntity.decreaseStoredEnergyUnits(1L << (this.mTier * 2), false)) {
                 mRange = 16 + (48 * mTier);
             } else {
                 mRange = 4 + (12 * mTier);
@@ -91,12 +91,12 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
 
     @Override
     public long getMinimumStoredEU() {
-        return 512;
+        return 512L;
     }
 
     @Override
     public long maxEUStore() {
-        return 512 + V[mTier] * 50;
+        return 512L + V[mTier] * 50;
     }
 
     @Override

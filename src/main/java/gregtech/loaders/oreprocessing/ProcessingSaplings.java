@@ -15,7 +15,7 @@ public class ProcessingSaplings implements gregtech.api.interfaces.IOreRecipeReg
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L), null, 0, false);
+        GT_Values.RA.addPulveriserRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}),  new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L)}, new int[]{10000}, 100, 2);
         GT_ModHandler.addCompressionRecipe(GT_Utility.copyAmount(8L, new Object[]{aStack}), ItemList.IC2_Plantball.get(1L, new Object[0]));
         GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Wood, 1L), 16, 8);
     }

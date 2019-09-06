@@ -8,6 +8,7 @@ import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.objects.ObjMap;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
@@ -16,6 +17,8 @@ import net.minecraft.item.ItemStack;
 import java.util.*;
 
 import static gregtech.api.enums.GT_Values.*;
+
+import com.google.common.base.Objects;
 
 public enum OrePrefixes {
 	@Deprecated pulp("Pulps", "", "", false, false, false, false, false, false, false, false, false, false, B[0] | B[1] | B[2] | B[3], -1, 64, -1),
@@ -138,7 +141,7 @@ public enum OrePrefixes {
     compressedDirt("9^X Compressed Dirt", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
     compressedGravel("9^X Compressed Gravel", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
     compressedSand("9^X Compressed Sand", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    compressed("Compressed Materials", "Compressed ", "", true, true, false, false, false, false, true, false, false, false, 0, M * 2, 64, -1), // Compressed Material, worth 1 Unit. Introduced by Galacticraft
+    compressed("Compressed Materials", "Compressed ", "", true, true, false, false, false, false, true, false, false, false, 0, M * 3, 64, -1), // Compressed Material, worth 1 Unit. Introduced by Galacticraft
     glass("Glasses", "", "", false, false, true, false, true, false, false, false, false, false, 0, -1, 64, -1),
     paneGlass("Glass Panes", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1),
     blockGlass("Glass Blocks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1),
@@ -806,6 +809,7 @@ public enum OrePrefixes {
         for (OrePrefixes tPrefix : values())
             if (aOre.startsWith(tPrefix.toString())) {
                 if (tPrefix == oreNether && aOre.equals("oreNetherQuartz")) return ore;
+                if (tPrefix == oreNether && aOre.equals("oreNetherStar")) return ore;
                 if (tPrefix == oreBasalt && aOre.equals("oreBasalticMineralSand")) return ore;
                 return tPrefix;
             }
@@ -858,15 +862,49 @@ public enum OrePrefixes {
 
     public boolean add(ItemStack aStack) {
         if (aStack == null) return false;
-        if (!contains(aStack)) mPrefixedItems.add(aStack);
+        if (!contains(aStack)) {
+            mPrefixedItems.add(aStack);
+            // It's now in there... so update the cache
+            getSet(this.toString().toUpperCase()).put(Objects.hashCode(aStack.getItem(), aStack.getItemDamage()), true);
+        }
         while (mPrefixedItems.contains(null)) mPrefixedItems.remove(null);
         return true;
     }
+    
+    private static final LinkedHashMap<String, ObjMap<Integer, Boolean>>mCachedResults = new LinkedHashMap<String, ObjMap<Integer, Boolean>>();
+
+    private ObjMap<Integer, Boolean> getSet(final String prefix) {
+        ObjMap<Integer, Boolean> foundSet = mCachedResults.get(prefix);
+        if (foundSet == null){
+            foundSet = new ObjMap<Integer, Boolean>(512, 0.5f);
+            mCachedResults.put(prefix, foundSet);
+        }
+
+        return foundSet;
+    }
 
     public boolean contains(ItemStack aStack) {
-        if (aStack == null) return false;
-        for (ItemStack tStack : mPrefixedItems)
-            if (GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())) return true;
+    	if (aStack == null) {
+            return false;
+        }
+
+        final ObjMap<Integer, Boolean> aCurrentSet = getSet(this.toString().toUpperCase());
+        final Boolean result = aCurrentSet.get(Objects.hashCode(aStack.getItem(), aStack.getItemDamage()));
+
+        if (result != null) {
+            return result;
+        }
+
+        return false;
+    }
+
+    public boolean containsUnCached(ItemStack aStack) {
+        // In case someone needs this
+        for (ItemStack tStack : mPrefixedItems){
+            if (GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())){
+                return true;
+            }
+        }
         return false;
     }
 

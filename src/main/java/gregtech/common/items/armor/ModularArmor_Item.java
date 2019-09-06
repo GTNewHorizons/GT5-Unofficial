@@ -37,7 +37,8 @@ import thaumcraft.api.nodes.IRevealer;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
+
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 @Optional.InterfaceList(value = { @Optional.Interface(iface = "thaumcraft.api.IGoggles", modid = "Thaumcraft", striprefs = true),
 		@Optional.Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = "Thaumcraft", striprefs = true) })
@@ -156,8 +157,8 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IGogg
 		}
 		stack.damageItem(damage, entity);
 		ContainerModularArmor tmp = new ContainerBasicArmor((EntityPlayer) entity, new InventoryArmor(ModularArmor_Item.class, stack));
-		if (stack.getItemDamage() > stack.getMaxDamage() / 2 && new Random().nextInt(100) < 5) {
-			tmp.getSlot(new Random().nextInt(tmp.getSlotCount())).decrStackSize(1);
+		if (stack.getItemDamage() > stack.getMaxDamage() / 2 && XSTR_INSTANCE.nextInt(100) < 5) {
+			tmp.getSlot(XSTR_INSTANCE.nextInt(tmp.getSlotCount())).decrStackSize(1);
 			tmp.mInvArmor.onGuiSaved((EntityPlayer) entity);
 			
 				/*public void eject(ItemStack drop)

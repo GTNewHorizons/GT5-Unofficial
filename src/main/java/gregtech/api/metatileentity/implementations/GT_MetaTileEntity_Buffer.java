@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import static gregtech.api.enums.GT_Values.V;
 
 public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredMachineBlock {
-    public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false;
+    public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bStockingMode = true;
     public int mSuccess = 0, mTargetStackSize = 0;
 
     public GT_MetaTileEntity_Buffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
@@ -20,7 +20,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     public GT_MetaTileEntity_Buffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String[] aDescription) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
+                super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
     public GT_MetaTileEntity_Buffer(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
@@ -145,12 +145,12 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     @Override
     public long getMinimumStoredEU() {
-        return 512;
+        return 512L;
     }
 
     @Override
     public long maxEUStore() {
-        return 512 + V[mTier] * 50;
+        return 512L + V[mTier] * 50L;
     }
 
     @Override
@@ -160,7 +160,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     @Override
     public long maxEUOutput() {
-        return bOutput ? V[mTier] : 0;
+        return bOutput ? V[mTier] : 0L;
     }
 
     @Override
@@ -192,6 +192,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         aNBT.setBoolean("bInvert", bInvert);
         aNBT.setBoolean("bOutput", bOutput);
         aNBT.setBoolean("bRedstoneIfFull", bRedstoneIfFull);
+        aNBT.setBoolean("bStockingMode", bStockingMode);
         aNBT.setInteger("mTargetStackSize", mTargetStackSize);
     }
 
@@ -200,6 +201,9 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         bInvert = aNBT.getBoolean("bInvert");
         bOutput = aNBT.getBoolean("bOutput");
         bRedstoneIfFull = aNBT.getBoolean("bRedstoneIfFull");
+        if (aNBT.hasKey("bStockingMode")) { // Adding new key to existing NBT, need to protect if it is not there.
+            bStockingMode = aNBT.getBoolean("bStockingMode");
+        }
         mTargetStackSize = aNBT.getInteger("mTargetStackSize");
     }
 
@@ -253,10 +257,18 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        int tCost = GT_Utility.moveOneItemStack(aBaseMetaTileEntity, aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()), aBaseMetaTileEntity.getBackFacing(), aBaseMetaTileEntity.getFrontFacing(), null, false, mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize, mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize, (byte) 64, (byte) 1);
-        if (tCost > 0 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
-            mSuccess = 50;
-            aBaseMetaTileEntity.decreaseStoredEnergyUnits(Math.abs(tCost), true);
+        if( bStockingMode ) {
+            int tCost = GT_Utility.moveOneItemStack(aBaseMetaTileEntity, aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()), aBaseMetaTileEntity.getBackFacing(), aBaseMetaTileEntity.getFrontFacing(), null, false, mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize, mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize, (byte) 64, (byte) 1);
+            if (tCost > 0 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
+                mSuccess = 50;
+                aBaseMetaTileEntity.decreaseStoredEnergyUnits(Math.abs(tCost), true);
+            }
+        } else {
+            int tCost = GT_Utility.moveOneItemStack(aBaseMetaTileEntity, aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()), aBaseMetaTileEntity.getBackFacing(), aBaseMetaTileEntity.getFrontFacing(), null, false, (byte) 64, (byte) 1, mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize, mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize);
+            if (tCost > 0 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
+                mSuccess = 50;
+                aBaseMetaTileEntity.decreaseStoredEnergyUnits(Math.abs(tCost), true);
+            }
         }
     }
 

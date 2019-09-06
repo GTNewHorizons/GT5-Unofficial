@@ -89,7 +89,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
 
     @Override
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
-        switch (tryLowerPipe(true)) {
+        switch (tryLowerPipeState(true)) {
             case 0: workState = STATE_DOWNWARD; setElectricityStats(); return true;
             case 3: workState = STATE_UPWARD; return true;
         }
