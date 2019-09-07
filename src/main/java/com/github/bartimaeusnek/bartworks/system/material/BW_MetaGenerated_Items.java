@@ -24,6 +24,7 @@ package com.github.bartimaeusnek.bartworks.system.material;
 
 import com.github.bartimaeusnek.bartworks.API.IRadMaterial;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.util.Pair;
@@ -76,9 +77,9 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         for (int i = 0; i < this.aNumToGen; i++) {
             ItemStack tStack = new ItemStack(this, 1, i);
             Werkstoff w = werkstoffHashMap.get((short) i);
-            if (w == null || ((w.getGenerationFeatures().blacklist & orePrefixes.mMaterialGenerationBits) != 0) )
+            if (w == null || ((w.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) != 0) )
                 continue;
-            if ((w.getGenerationFeatures().toGenerate & orePrefixes.mMaterialGenerationBits) == 0 && orePrefixes.mMaterialGenerationBits != 0)
+            if ((w.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) == 0 && Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes) != 0)
                 continue;
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", this.getDefaultLocalization(w));
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", w.getToolTip());
@@ -153,12 +154,12 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < this.aNumToGen; i++) {
             Werkstoff werkstoff = werkstoffHashMap.get((short) i);
-            if (werkstoff != null && ((werkstoff.getGenerationFeatures().toGenerate & this.orePrefixes.mMaterialGenerationBits) != 0) && ((werkstoff.getGenerationFeatures().blacklist & this.orePrefixes.mMaterialGenerationBits) == 0)) {
+            if (werkstoff != null && ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) != 0) && ((werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) == 0)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 aList.add(tStack);
             }
         }
-        super.getSubItems(var1, aCreativeTab, aList);
+        //super.getSubItems(var1, aCreativeTab, aList);
     }
 
     @Override

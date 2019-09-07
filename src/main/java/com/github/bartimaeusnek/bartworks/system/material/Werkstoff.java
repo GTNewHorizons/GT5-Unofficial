@@ -58,6 +58,15 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     private final Werkstoff.GenerationFeatures generationFeatures;
     private final short mID;
     private final TextureSet texSet;
+    private Materials bridgeMaterial;
+
+    public Materials getBridgeMaterial() {
+        return this.bridgeMaterial;
+    }
+
+    public void setBridgeMaterial(Materials bridgeMaterial) {
+        this.bridgeMaterial = bridgeMaterial;
+    }
 
     public static void init(){
         Werkstoff.default_null_Werkstoff = new Werkstoff(new short[3], "_NULL", "Default null Werkstoff", Werkstoff.DEFAULT_NULL_STATS, Werkstoff.Types.UNDEFINED, Werkstoff.DEFAULT_NULL_GENERATION_FEATURES, -1, TextureSet.SET_NONE);
@@ -354,7 +363,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         molten 1000000
         crafting metal 10000000 (sticks, plates)
         meta crafting metal 100000000 (gears, screws, bolts, springs)
-        multiple ingotWorth stuff 1000000000 (double, triple, quadrupe, ingot/plates)
+        multiple ingotWorth stuff 1000000000 (double, triple, quadruple, ingot/plates)
          */
         public short toGenerate = 0b0001001;
         public static final HashMap<OrePrefixes,Integer> prefixLogic = new HashMap<>();
@@ -363,30 +372,30 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             for (OrePrefixes p : OrePrefixes.values()){
                 Werkstoff.GenerationFeatures.prefixLogic.put(p,0);
             }
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dust,1);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustTiny,1);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustSmall,1);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingot,10);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotHot,10);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.nugget,10);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gem,100);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemFlawed,100);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemExquisite,100);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemChipped,100);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemFlawless,100);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ore,1000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustImpure,1000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustPure,1000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushed,1000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushedPurified,1000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushedCentrifuged,1000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.cell,10000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.cellMolten,1000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.cellMolten,1000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plate,10000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.stick,10000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.rod,10000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.stickLong,10000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dust,0b1);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustTiny,0b1);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustSmall,0b1);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingot,0b10);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotHot,0b10);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.nugget,0b10);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gem,0b100);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemFlawed,0b100);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemExquisite,0b100);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemChipped,0b100);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemFlawless,0b100);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ore,0b1000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustImpure,0b1000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustPure,0b1000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushed,0b1000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushedPurified,0b1000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushedCentrifuged,0b1000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.cell,0b10000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.cellMolten,0b1000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.cellMolten,0b1000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plate,0b10000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.stick,0b10000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.rod,0b10000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.stickLong,0b10000000);
         }
 
         //public byte toGenerateSecondary = 0b0000000;
@@ -503,6 +512,13 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         public Werkstoff.GenerationFeatures addGems() {
             this.toGenerate = (byte) (this.toGenerate | 0x4);
             return this;
+        }
+        public Werkstoff.GenerationFeatures addSimpleMetalWorkingItems() {
+            this.toGenerate = (byte) (this.toGenerate | 0b10000000);
+            return this;
+        }
+        public boolean hasSimpleMetalWorkingItems() {
+            return (this.toGenerate & 0b10000000) != 0;
         }
 
     }

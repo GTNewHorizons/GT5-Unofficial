@@ -33,7 +33,6 @@ import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -49,6 +48,7 @@ import gregtech.api.objects.GT_Fluid;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
+import gregtech.common.GT_Proxy;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputOreDict;
@@ -1168,11 +1168,11 @@ public class WerkstoffLoader implements Runnable {
             TextureSet.SET_QUARTZ
     );
     public static final Werkstoff LuVTierMaterial = new Werkstoff(
-            new short[]{0xff, 0xee, 0xee},
+            Materials.Chrome.getRGBA(),
             "Rhodium-Plated Palladium",
             new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(4500),
             Werkstoff.Types.COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().onlyDust().addMetalItems().addMixerRecipes(),
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems().addMixerRecipes().addSimpleMetalWorkingItems(),
             88,
             TextureSet.SET_METALLIC,
             new Pair<>(Materials.Palladium,3),
@@ -1257,6 +1257,8 @@ public class WerkstoffLoader implements Runnable {
                 this.addCellRecipes(werkstoff);
                 DebugLog.log("Loading Meltdown Recipes"+" " +(System.nanoTime()-timepreone));
                 this.addMoltenRecipes(werkstoff);
+                DebugLog.log("Loading Simple MetalWorking Recipes"+" " +(System.nanoTime()-timepreone));
+                this.addSimpleMetalRecipes(werkstoff);
                 if (Loader.isModLoaded("Thaumcraft")) {
                     DebugLog.log("Loading Aspects"+" " +(System.nanoTime()-timepreone));
                     ThaumcraftHandler.AspectAdder.addAspectToAll(werkstoff);
@@ -1358,10 +1360,8 @@ public class WerkstoffLoader implements Runnable {
             WerkstoffLoader.items.put(ingotHot, new BW_MetaGenerated_Items(ingotHot));    //1750
             WerkstoffLoader.items.put(nugget, new BW_MetaGenerated_Items(nugget));
 
-//            WerkstoffLoader.items.put(plate, new BW_MetaGenerated_Items(plate));
-//            WerkstoffLoader.items.put(rod, new BW_MetaGenerated_Items(rod));
-//            WerkstoffLoader.items.put(stickLong, new BW_MetaGenerated_Items(stickLong));
-//
+
+
 //            WerkstoffLoader.items.put(gearGt, new BW_MetaGenerated_Items(gearGt));
 //            WerkstoffLoader.items.put(gearGtSmall, new BW_MetaGenerated_Items(gearGtSmall));
 //            WerkstoffLoader.items.put(bolt, new BW_MetaGenerated_Items(bolt));
@@ -1408,6 +1408,13 @@ public class WerkstoffLoader implements Runnable {
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000000) != 0) {
             WerkstoffLoader.items.put(cellMolten, new BW_MetaGenerated_Items(cellMolten));
         }
+        if ((WerkstoffLoader.toGenerateGlobal & 0b10000000) != 0) {
+            WerkstoffLoader.items.put(plate, new BW_MetaGenerated_Items(plate));
+            WerkstoffLoader.items.put(stick, new BW_MetaGenerated_Items(stick));
+            WerkstoffLoader.items.put(stickLong, new BW_MetaGenerated_Items(stickLong));
+        }
+
+
     }
 
 
@@ -1439,9 +1446,10 @@ public class WerkstoffLoader implements Runnable {
             }
             if (werkstoff.getGenerationFeatures().hasMolten()) {
                 werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1).getFluid();
-
             }
+            werkstoffBridgeMaterial.mName = werkstoff.getDefaultName();
             toRem.add(werkstoffBridgeMaterial);
+            werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
         }
         try {
             Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
@@ -1553,6 +1561,31 @@ public class WerkstoffLoader implements Runnable {
                 GT_Values.RA.addLaserEngraverRecipe(werkstoff.get(gem, 3), is, werkstoff.get(gemFlawless, 1), 1200, 480);
                 GT_Values.RA.addLaserEngraverRecipe(werkstoff.get(gemFlawless, 3), is, werkstoff.get(gemExquisite, 1), 2400, 2000);
             }
+        }
+    }
+
+    private void addSimpleMetalRecipes(Werkstoff werkstoff) {
+        if ((werkstoff.getGenerationFeatures().toGenerate & 0b10000000) != 0) {
+            if (werkstoff.getGenerationFeatures().hasGems()) {
+                GT_Values.RA.addLatheRecipe(werkstoff.get(gem), werkstoff.get(stick), werkstoff.get(dustSmall), (int) Math.max(werkstoff.getStats().getMass() * 5L, 1L), 16);
+                GT_ModHandler.addCraftingRecipe(werkstoff.get(stick, 2), GT_Proxy.tBits, new Object[]{"s", "X", 'X', werkstoff.get(stickLong)});
+                GT_ModHandler.addCraftingRecipe(werkstoff.get(stick), GT_Proxy.tBits, new Object[]{"f ", " X", 'X', werkstoff.get(gem)});
+                GT_Values.RA.addForgeHammerRecipe(werkstoff.get(stick, 2), werkstoff.get(stickLong), (int) Math.max(werkstoff.getStats().getMass(), 1L), 16);
+                return;
+            }
+
+            GT_ModHandler.addCraftingRecipe(werkstoff.get(stick, 2), GT_Proxy.tBits, new Object[]{"s", "X", 'X', werkstoff.get(stickLong)});
+            GT_ModHandler.addCraftingRecipe(werkstoff.get(stick), GT_Proxy.tBits, new Object[]{"f ", " X", 'X', werkstoff.get(ingot)});
+
+            GT_Recipe.GT_Recipe_Map.sBenderRecipes.add(new BWRecipes.DynamicGTRecipe(true,new ItemStack[]{werkstoff.get(ingot),GT_Utility.getIntegratedCircuit(1)},new ItemStack[]{werkstoff.get(plate)},null,null,null,null, (int) Math.max(werkstoff.getStats().getMass(), 1L), 24,0));
+            GT_Values.RA.addForgeHammerRecipe(werkstoff.get(ingot,3), werkstoff.get(plate,2), (int) Math.max(werkstoff.getStats().getMass(), 1L), 16);
+
+            GT_Values.RA.addLatheRecipe(werkstoff.get(ingot), werkstoff.get(stick), werkstoff.get(dustSmall), (int) Math.max(werkstoff.getStats().getMass() * 5L, 1L), 16);
+
+            GT_Values.RA.addForgeHammerRecipe(werkstoff.get(stick, 2), werkstoff.get(stickLong), (int) Math.max(werkstoff.getStats().getMass(), 1L), 16);
+
+            GT_Values.RA.addExtruderRecipe(werkstoff.get(ingot),ItemList.Shape_Extruder_Plate.get(0),werkstoff.get(plate),(int) Math.max(werkstoff.getStats().getMass() * 2L, 1L), 45);
+            GT_Values.RA.addExtruderRecipe(werkstoff.get(ingot),ItemList.Shape_Extruder_Rod.get(0),werkstoff.get(stick,2),(int) Math.max(werkstoff.getStats().getMass() * 2L, 1L), 45);
         }
     }
 
@@ -1918,9 +1951,11 @@ public class WerkstoffLoader implements Runnable {
 
         if ((werkstoff.getGenerationFeatures().toGenerate & 0b10) != 0) {
             GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(ingot),null,werkstoff.getMolten(144),0,werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
-            //GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(stickLong),null,werkstoff.getMolten(144),0,werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
-            //GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(plate),null,werkstoff.getMolten(144),0,werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
-            //GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(stick),null,werkstoff.getMolten(72),0,werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
+            if ((werkstoff.getGenerationFeatures().toGenerate & 0b10000000) != 0) {
+                GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(stickLong), null, werkstoff.getMolten(144), 0, werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
+                GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(plate), null, werkstoff.getMolten(144), 0, werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
+                GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(stick), null, werkstoff.getMolten(72), 0, werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
+            }
             GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(nugget),null,werkstoff.getMolten(16),0,werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
 
             GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0), werkstoff.getMolten(144), werkstoff.get(ingot), werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);

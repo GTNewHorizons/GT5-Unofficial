@@ -27,10 +27,13 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEnti
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ManualTrafo;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_THTR;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_Windmill;
+import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
+import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -293,7 +296,7 @@ public class RecipeLoader implements Runnable {
             );
 
             Materials[] cables = {Materials.Lead, Materials.Tin, Materials.AnnealedCopper, Materials.Gold, Materials.Aluminium, Materials.Tungsten, Materials.VanadiumGallium, Materials.Naquadah, Materials.NaquadahAlloy, Materials.Superconductor};
-            Materials[] hulls = {Materials.WroughtIron, Materials.Steel, Materials.Aluminium, Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, Materials.Chrome, Materials.Iridium, Materials.Osmium, Materials.Naquadah};
+            ISubTagContainer[] hulls = {Materials.WroughtIron, Materials.Steel, Materials.Aluminium, Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, WerkstoffLoader.LuVTierMaterial, Materials.Iridium, Materials.Osmium, Materials.Naquadah};
             ItemStack[] bats = {ItemList.Battery_Hull_LV.get(1L), ItemList.Battery_Hull_MV.get(1L), ItemList.Battery_Hull_HV.get(1L)};
             ItemStack[] chreac = {ItemList.Machine_MV_ChemicalReactor.get(1L), ItemList.Machine_HV_ChemicalReactor.get(1L), ItemList.Machine_EV_ChemicalReactor.get(1L)};
 
@@ -318,7 +321,7 @@ public class RecipeLoader implements Runnable {
             for (int i = 0; i < GT_Values.VN.length; i++) {
                 try {
                     Materials cable = cables[i];
-                    Materials hull = hulls[i];
+                    ItemStack hull = hulls[i] instanceof Materials ? GT_OreDictUnificator.get(OrePrefixes.plate, hulls[i], 1L) : ((Werkstoff) hulls[i]).get(OrePrefixes.plate);
                     ItemStack machinehull = ItemList.MACHINE_HULLS[i].get(1L);
 
                     GT_ModHandler.addCraftingRecipe(
@@ -329,7 +332,7 @@ public class RecipeLoader implements Runnable {
                                     "WCW",
                                     "PWP",
                                     'W', GT_OreDictUnificator.get(OrePrefixes.wireGt16, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             });
                     GT_ModHandler.addCraftingRecipe(
@@ -341,7 +344,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt12, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -354,7 +357,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt12, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -367,7 +370,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt08, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -380,7 +383,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt08, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -393,7 +396,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt04, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -406,7 +409,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt04, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -419,7 +422,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt02, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -432,7 +435,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt02, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -446,7 +449,7 @@ public class RecipeLoader implements Runnable {
                                     'H', ItemList.Circuit_Parts_Coil.get(1L),
                                     'D', ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.wireGt16, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -460,7 +463,7 @@ public class RecipeLoader implements Runnable {
                                     'H', ItemList.Circuit_Parts_Coil.get(1L),
                                     'D', ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.wireGt16, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );

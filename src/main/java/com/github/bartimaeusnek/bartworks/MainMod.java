@@ -150,7 +150,6 @@ public final class MainMod {
             MinecraftForge.EVENT_BUS.register(serverEventHandler);
 //            FMLCommonHandler.instance().bus().register(serverEventHandler);
         }
-        new LoaderRegistry().run();
         if (ConfigHandler.BioLab)
             new BioLabLoader().run();
         if (ConfigHandler.newStuff) {
@@ -159,6 +158,7 @@ public final class MainMod {
             else
                 INSTANCE.runInit();
         }
+        new LoaderRegistry().run();
     }
 
     @Mod.EventHandler
@@ -179,10 +179,10 @@ public final class MainMod {
                 INSTANCE.run();
             GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor","Electric Implosions?");
             GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor.desc","Basically a giant Hammer that presses Stuff - No more TNT!");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.DEHP","Heat from below!");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.DEHP.desc","Get ALL the thermal energy!");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.CircuitAssemblyLine","Cheaper Circuits?");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.CircuitAssemblyLine.desc","Well, yes, but actually no...");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.dehp","Heat from below!");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.dehp.desc","Get ALL the thermal energy!");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.circuitassemblyline","Cheaper Circuits?");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.circuitassemblyline.desc","Well, yes, but actually no...");
         }
     }
     @Mod.EventHandler
@@ -251,24 +251,30 @@ public final class MainMod {
                                             if (GT_Utility.areStacksEqual(recipe.mInputs[i], toReplace)) {
                                                 if (removal)
                                                     toRem.add(recipe);
-                                                else
-                                                    recipe.mInputs[i] = replacement;
+                                                else {
+                                                    int amount = recipe.mInputs[i].stackSize;
+                                                    recipe.mInputs[i] = replacement.splitStack(amount);
+                                                }
                                             }
                                         }
                                         for (int i = 0; i < recipe.mOutputs.length; i++) {
                                             if (GT_Utility.areStacksEqual(recipe.mOutputs[i], toReplace)) {
                                                 if (removal)
                                                     toRem.add(recipe);
-                                                else
-                                                    recipe.mOutputs[i] = replacement;
+                                                else {
+                                                    int amount = recipe.mOutputs[i].stackSize;
+                                                    recipe.mOutputs[i] = replacement.splitStack(amount);
+                                                }
                                             }
                                         }
                                         if (recipe.mSpecialItems instanceof ItemStack) {
                                             if (GT_Utility.areStacksEqual((ItemStack) recipe.mSpecialItems, toReplace)) {
                                                 if (removal)
                                                     toRem.add(recipe);
-                                                else
-                                                    recipe.mSpecialItems = replacement;
+                                                else {
+                                                    int amount = ((ItemStack) recipe.mSpecialItems).stackSize;
+                                                    recipe.mSpecialItems = replacement.splitStack(amount);
+                                                }
                                             }
                                         }
                                     }
