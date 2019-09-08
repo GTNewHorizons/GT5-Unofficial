@@ -28,6 +28,8 @@ import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import cpw.mods.fml.common.Loader;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
@@ -40,10 +42,15 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 import sun.reflect.FieldInfo;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -124,139 +131,127 @@ public class AdditionalRecipes implements Runnable {
                                     Materials.SolderingAlloy.getMolten((i + 1) * 144)
                             }, null, (i + 1) * 1500, BW_Util.getMachineVoltageFromTier(i + 1), CLEANROOM));
         }
-        AdditionalRecipes.replaceLuVHull();
+        GregTech_API.sAfterGTPostload.add(new AdditionalRecipes.LuVHullReplacer());
         AdditionalRecipes.oldGThelperMethod();
     }
 
-    private static void replaceLuVHull(){
-        Object toRemove = null;
-        for (Object obj : CraftingManager.getInstance().getRecipeList()) {
-            if (!(obj instanceof GT_Shaped_Recipe))
-                continue;
-            if (BW_Util.areStacksEqualOrNull(((GT_Shaped_Recipe) obj).getRecipeOutput(), ItemList.Casing_LuV.get(1))) {
-                toRemove = obj;
-                break;
+    public static class LuVHullReplacer implements Runnable {
+
+        public void run() {
+            List<IRecipe> bufferedRecipeList = null;
+            try {
+                bufferedRecipeList = (List<IRecipe>) FieldUtils.getDeclaredField(GT_ModHandler.class, "sBufferRecipeList", true).get(null);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
-        }
-        CraftingManager.getInstance().getRecipeList().remove(toRemove);
-        toRemove = null;
-        List<IRecipe> bufferedRecipeList = null;
-        try {
-            bufferedRecipeList = (List<IRecipe>) FieldUtils.getDeclaredField(GT_ModHandler.class, "sBufferRecipeList", true).get(null);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        assert bufferedRecipeList != null;
-        for (Object obj : bufferedRecipeList) {
-            if (!(obj instanceof GT_Shaped_Recipe))
-                continue;
-            if (BW_Util.areStacksEqualOrNull(((GT_Shaped_Recipe) obj).getRecipeOutput(), ItemList.Casing_LuV.get(1))) {
-                toRemove = obj;
-                break;
+            assert bufferedRecipeList != null;
+
+            HashSet<ItemStack> LuVMachines = new HashSet<>();
+            OrePrefixes[] LuVMaterialsGenerated = {dust, ingot, plate, stick, stickLong, rotor, plateDouble, plateDense};
+            for (ItemList item : ItemList.values()) {
+                if (item.toString().contains("LuV") && item.hasBeenSet())
+                    LuVMachines.add(item.get(1));
             }
-        }
-        bufferedRecipeList.remove(toRemove);
-        try {
-            Map<GT_ItemStack, ItemData> map = (Map<GT_ItemStack, ItemData>) FieldUtils.getDeclaredField(GT_OreDictUnificator.class, "sItemStack2DataMap", true).get(null);
-            ItemData data = map.get(new GT_ItemStack(ItemList.Casing_LuV.get(1)));
-            data.mMaterial.mMaterial = WerkstoffLoader.LuVTierMaterial.getBridgeMaterial();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        GT_ModHandler.addCraftingRecipe(ItemList.Casing_LuV.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES, new Object[]{"PPP", "PwP", "PPP", 'P', WerkstoffLoader.LuVTierMaterial.get(plate)});
-        for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings){
-            for (GT_Recipe recipe : map.mRecipeList){
-
-                if (AdditionalRecipes.doStacksCointainAndReplace(recipe.mInputs,ItemList.Casing_LuV.get(1),false))
-                    AdditionalRecipes.doStacksCointainAndReplace(recipe.mInputs,GT_OreDictUnificator.get(plate,Materials.Chrome,1),true,WerkstoffLoader.LuVTierMaterial.get(plate));
-                if (AdditionalRecipes.doStacksCointainAndReplace(recipe.mOutputs,ItemList.Casing_LuV.get(1),false))
-                    AdditionalRecipes.doStacksCointainAndReplace(recipe.mInputs,GT_OreDictUnificator.get(plate,Materials.Chrome,1),true,WerkstoffLoader.LuVTierMaterial.get(plate));
-
-                if (AdditionalRecipes.doStacksCointainAndReplace(recipe.mInputs,ItemList.Hull_LuV.get(1),false))
-                    AdditionalRecipes.doStacksCointainAndReplace(recipe.mInputs,GT_OreDictUnificator.get(plate,Materials.Chrome,1),true,WerkstoffLoader.LuVTierMaterial.get(plate));
-                if (AdditionalRecipes.doStacksCointainAndReplace(recipe.mOutputs,ItemList.Hull_LuV.get(1),false))
-                    AdditionalRecipes.doStacksCointainAndReplace(recipe.mInputs,GT_OreDictUnificator.get(plate,Materials.Chrome,1),true,WerkstoffLoader.LuVTierMaterial.get(plate));
-
-                if (AdditionalRecipes.doStacksCointainAndReplace(recipe.mInputs,ItemList.Casing_LuV.get(1),false))
-                    AdditionalRecipes.doStacksCointainAndReplace(recipe.mFluidInputs,Materials.Chrome.getMolten(1),true,WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
-                if (AdditionalRecipes.doStacksCointainAndReplace(recipe.mOutputs,ItemList.Casing_LuV.get(1),false))
-                    AdditionalRecipes.doStacksCointainAndReplace(recipe.mFluidInputs,Materials.Chrome.getMolten(1),true,WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
-                if (AdditionalRecipes.doStacksCointainAndReplace(recipe.mInputs,ItemList.Casing_LuV.get(1),false))
-                    AdditionalRecipes.doStacksCointainAndReplace(recipe.mFluidOutputs,Materials.Chrome.getMolten(1),true,WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
-                if (AdditionalRecipes.doStacksCointainAndReplace(recipe.mOutputs,ItemList.Casing_LuV.get(1),false))
-                    AdditionalRecipes.doStacksCointainAndReplace(recipe.mFluidOutputs,Materials.Chrome.getMolten(1),true,WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
-
-                if (AdditionalRecipes.doStacksCointainAndReplace(recipe.mInputs,ItemList.Hull_LuV.get(1),false))
-                    AdditionalRecipes.doStacksCointainAndReplace(recipe.mFluidInputs,Materials.Chrome.getMolten(1),true,WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
-                if (AdditionalRecipes.doStacksCointainAndReplace(recipe.mOutputs,ItemList.Hull_LuV.get(1),false))
-                    AdditionalRecipes.doStacksCointainAndReplace(recipe.mFluidInputs,Materials.Chrome.getMolten(1),true,WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
-                if (AdditionalRecipes.doStacksCointainAndReplace(recipe.mInputs,ItemList.Hull_LuV.get(1),false))
-                    AdditionalRecipes.doStacksCointainAndReplace(recipe.mFluidOutputs,Materials.Chrome.getMolten(1),true,WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
-                if (AdditionalRecipes.doStacksCointainAndReplace(recipe.mOutputs,ItemList.Hull_LuV.get(1),false))
-                    AdditionalRecipes.doStacksCointainAndReplace(recipe.mFluidOutputs,Materials.Chrome.getMolten(1),true,WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
-
-            }
-        }
-
-        for (Object obj : CraftingManager.getInstance().getRecipeList()) {
-            if (!(obj instanceof GT_Shaped_Recipe))
-                continue;
-            if (BW_Util.areStacksEqualOrNull(((GT_Shaped_Recipe) obj).getRecipeOutput(), ItemList.Hull_LuV.get(1))) {
-                toRemove = obj;//AdditionalRecipes.doStacksCointainAndReplace(((GT_Shaped_Recipe) obj).getInput(),GT_OreDictUnificator.get(plate,Materials.Chrome,1),true,WerkstoffLoader.LuVTierMaterial.get(plate));
-                break;
-            }
-        }
-        CraftingManager.getInstance().getRecipeList().remove(toRemove);
-        for (Object obj : bufferedRecipeList) {
-            if (!(obj instanceof GT_Shaped_Recipe))
-                continue;
-            if (BW_Util.areStacksEqualOrNull(((GT_Shaped_Recipe) obj).getRecipeOutput(), ItemList.Hull_LuV.get(1))) {
-                toRemove = obj;//AdditionalRecipes.doStacksCointainAndReplace(((GT_Shaped_Recipe) obj).getInput(),GT_OreDictUnificator.get(plate,Materials.Chrome,1),true,WerkstoffLoader.LuVTierMaterial.get(plate));
-                break;
-            }
-       }
-        bufferedRecipeList.remove(toRemove);
-        try {
-            Map<GT_ItemStack, ItemData> map = (Map<GT_ItemStack, ItemData>) FieldUtils.getDeclaredField(GT_OreDictUnificator.class, "sItemStack2DataMap", true).get(null);
-            ItemData data = map.get(new GT_ItemStack(ItemList.Hull_LuV.get(1)));
-            data.mMaterial.mMaterial = WerkstoffLoader.LuVTierMaterial.getBridgeMaterial();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        GT_ModHandler.addCraftingRecipe(ItemList.Hull_LuV.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES, new Object[]{"KPK", "CHC", 'P', WerkstoffLoader.LuVTierMaterial.get(plate), 'K',Materials.Polytetrafluoroethylene.getPlates(1), 'C', GT_OreDictUnificator.get(cableGt01, Materials.VanadiumGallium,1L), 'H',ItemList.Casing_LuV});
-    }
-
-    private static boolean doStacksCointainAndReplace(FluidStack[] stacks, FluidStack stack, boolean replace, Fluid... replacement){
-        boolean replaced = false;
-        for (int i = 0; i < stacks.length; i++) {
-            if (GT_Utility.areFluidsEqual(stack, stacks[i]))
-                if (!replace)
-                    return true;
-                else {
-                    int amount = stacks[i].amount;
-                    stacks[i] = new FluidStack(replacement[0],amount);
-                    replaced = true;
+            if (Loader.isModLoaded("dreamcraft")) {
+                try {
+                    Class customItemListClass = Class.forName("com.dreammaster.gthandler.CustomItemList");
+                    Method hasnotBeenSet = MethodUtils.getAccessibleMethod(customItemListClass, "hasBeenSet");
+                    Method get = MethodUtils.getAccessibleMethod(customItemListClass, "get", long.class, Object[].class);
+                    for (Enum customItemList : (Enum[]) FieldUtils.getField(customItemListClass, "$VALUES", true).get(null)) {
+                        if (customItemList.toString().contains("LuV") && (boolean) hasnotBeenSet.invoke(customItemList))
+                            LuVMachines.add((ItemStack) get.invoke(customItemList, 1, new Object[0]));
+                    }
+                } catch (IllegalAccessException | ClassNotFoundException | InvocationTargetException e) {
+                    e.printStackTrace();
                 }
-        }
-        return replaced;
-    }
-    private static boolean doStacksCointainAndReplace(Object[] stacks, ItemStack stack, boolean replace, ItemStack... replacement){
-        boolean replaced = false;
-        for (int i = 0; i < stacks.length; i++) {
-            if (!GT_Utility.isStackValid(stacks[i])){
-                continue;
             }
-            else if (GT_Utility.areStacksEqual(stack, (ItemStack) stacks[i]))
-                if (!replace)
-                    return true;
-                else {
-                    stacks[i] = replacement[0];
-                    replaced = true;
+            GT_ModHandler.addCraftingRecipe(ItemList.Casing_LuV.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES, new Object[]{"PPP", "PwP", "PPP", 'P', WerkstoffLoader.LuVTierMaterial.get(plate)});
+            for (ItemStack stack : LuVMachines) {
+                for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings) {
+                    for (GT_Recipe recipe : map.mRecipeList) {
+                        for (OrePrefixes prefixes : LuVMaterialsGenerated) {
+                            if (AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(recipe.mInputs, stack, false)) {
+                                AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(recipe.mInputs, GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
+                                AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(recipe.mOutputs, GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
+                            }
+                            if (AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(recipe.mOutputs, stack, false)) {
+                                AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(recipe.mInputs, GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
+                                AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(recipe.mOutputs, GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
+                            }
+                        }
+                        if (AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(recipe.mInputs, stack, false)) {
+                            AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(recipe.mFluidInputs, Materials.Chrome.getMolten(1), true, WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
+                            AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(recipe.mFluidOutputs, Materials.Chrome.getMolten(1), true, WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
+                        }
+                        if (AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(recipe.mOutputs, stack, false)) {
+                            AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(recipe.mFluidInputs, Materials.Chrome.getMolten(1), true, WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
+                            AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(recipe.mFluidOutputs, Materials.Chrome.getMolten(1), true, WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
+                        }
+                    }
                 }
+                for (OrePrefixes prefixes : LuVMaterialsGenerated) {
+                    for (Object obj : CraftingManager.getInstance().getRecipeList()) {
+                        if (!(obj instanceof GT_Shaped_Recipe))
+                            continue;
+                        if (GT_Utility.areStacksEqual(((GT_Shaped_Recipe) obj).getRecipeOutput(), stack, true)) {
+                            AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(((GT_Shaped_Recipe) obj).getInput(), GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
+                        }
+                    }
+                    for (Object obj : bufferedRecipeList) {
+                        if (!(obj instanceof GT_Shaped_Recipe))
+                            continue;
+                        if (GT_Utility.areStacksEqual(((GT_Shaped_Recipe) obj).getRecipeOutput(), stack, true)) {
+                            AdditionalRecipes.LuVHullReplacer.doStacksCointainAndReplace(((GT_Shaped_Recipe) obj).getInput(), GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
+                        }
+                    }
+                }
+            }
         }
-        return replaced;
-    }
 
+        private static boolean doStacksCointainAndReplace(FluidStack[] stacks, FluidStack stack, boolean replace, Fluid... replacement) {
+            boolean replaced = false;
+            for (int i = 0; i < stacks.length; i++) {
+                if (GT_Utility.areFluidsEqual(stack, stacks[i]))
+                    if (!replace)
+                        return true;
+                    else {
+                        int amount = stacks[i].amount;
+                        stacks[i] = new FluidStack(replacement[0], amount);
+                        replaced = true;
+                    }
+            }
+            return replaced;
+        }
+
+        private static boolean doStacksCointainAndReplace(Object[] stacks, ItemStack stack, boolean replace, ItemStack... replacement) {
+            boolean replaced = false;
+            for (int i = 0; i < stacks.length; i++) {
+                if (!GT_Utility.isStackValid(stacks[i])) {
+                    if (stacks[i] instanceof ArrayList && ((ArrayList)stacks[i]).size() > 0) {
+                        if (GT_Utility.areStacksEqual(stack, (ItemStack) ((ArrayList)stacks[i]).get(0), true))
+                            if (!replace)
+                                return true;
+                            else {
+                                int amount = ((ItemStack) ((ArrayList)stacks[i]).get(0)).stackSize;
+                                stacks[i] = new ArrayList<>();
+                                ((ArrayList)stacks[i]).add(replacement[0].splitStack(amount));
+                                replaced = true;
+                            }
+
+                    } else
+                        continue;
+                } else if (GT_Utility.areStacksEqual(stack, (ItemStack) stacks[i], true))
+                    if (!replace)
+                        return true;
+                    else {
+                        int amount = ((ItemStack) stacks[i]).stackSize;
+                        stacks[i] = replacement[0].splitStack(amount);
+                        replaced = true;
+                    }
+            }
+            return replaced;
+        }
+    }
    private static void oldGThelperMethod(){
        //manual override for older GT
        Werkstoff werkstoff = WerkstoffLoader.Oganesson;

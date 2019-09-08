@@ -520,7 +520,14 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         public boolean hasSimpleMetalWorkingItems() {
             return (this.toGenerate & 0b10000000) != 0;
         }
-
+        public Werkstoff.GenerationFeatures addCraftingMetalWorkingItems() {
+            this.toGenerate = (byte) (this.toGenerate | 0b100000000);
+            return this;
+        }
+        public Werkstoff.GenerationFeatures addMultipleIngotMetalWorkingItems() {
+            this.toGenerate = (byte) (this.toGenerate | 0b10000000);
+            return this;
+        }
     }
 
     public static class Stats {

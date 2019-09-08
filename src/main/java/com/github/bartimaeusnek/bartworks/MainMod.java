@@ -42,6 +42,7 @@ import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.Circ
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitPartLoader;
 import com.github.bartimaeusnek.bartworks.system.material.ThreadedLoader;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.AdditionalRecipes;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.DownTierLoader;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.PlatinumSludgeOverHaul;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
@@ -202,6 +203,7 @@ public final class MainMod {
             MainMod.editRecipes(toChange, noGas);
         }
         PlatinumSludgeOverHaul.replacePureElements();
+        //new AdditionalRecipes.LuVHullReplacer();
         new CircuitImprintLoader().run();
         if (classicMode)
             new DownTierLoader().run();
