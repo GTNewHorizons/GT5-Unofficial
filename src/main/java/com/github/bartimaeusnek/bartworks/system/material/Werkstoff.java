@@ -31,6 +31,7 @@ import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.nio.ByteBuffer;
@@ -40,6 +41,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
     public static final LinkedHashMap<Short, Werkstoff> werkstoffHashMap = new LinkedHashMap<>();
+    public static final LinkedHashMap<String, Werkstoff> werkstoffNameHashMap = new LinkedHashMap<>();
+
     private static final HashSet<Short> idHashSet = new HashSet<>();
 
     private static final Werkstoff.Stats DEFAULT_NULL_STATS = new Werkstoff.Stats();
@@ -168,6 +171,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
         Werkstoff.werkstoffHashSet.add(this);
         Werkstoff.werkstoffHashMap.put(this.mID, this);
+        Werkstoff.werkstoffNameHashMap.put(this.defaultName,this);
     }
 
 
@@ -395,7 +399,25 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plate,0b10000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.stick,0b10000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.rod,0b10000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.stickLong,0b10000000);
+
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gearGt,0b100000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gearGtSmall,0b100000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.bolt,0b100000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.screw,0b100000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ring,0b100000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.spring,0b100000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.springSmall,0b100000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.rotor,0b100000000);
+
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateDouble,0b1000000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateTriple,0b1000000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateQuadruple,0b1000000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateQuintuple,0b1000000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateDense,0b1000000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotDouble,0b1000000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotTriple,0b1000000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotQuadruple,0b1000000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotQuintuple,0b1000000000);
         }
 
         //public byte toGenerateSecondary = 0b0000000;

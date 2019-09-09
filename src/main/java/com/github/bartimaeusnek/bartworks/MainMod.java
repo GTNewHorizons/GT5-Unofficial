@@ -42,6 +42,7 @@ import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.Circ
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitPartLoader;
 import com.github.bartimaeusnek.bartworks.system.material.ThreadedLoader;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.AdditionalRecipes;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.DownTierLoader;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.PlatinumSludgeOverHaul;
@@ -197,13 +198,12 @@ public final class MainMod {
         MainMod.addElectricImplosionCompressorRecipes();
         MainMod.unificationEnforcer();
 
+        PlatinumSludgeOverHaul.replacePureElements();
         if (!extraGasRecipes) {
             ArrayListMultimap<SubTag, GT_Recipe> toChange = MainMod.getRecipesToChange(NOBLE_GAS, ANAEROBE_GAS);
             HashSet<ItemStack> noGas = MainMod.getNoGasItems(toChange);
             MainMod.editRecipes(toChange, noGas);
         }
-        PlatinumSludgeOverHaul.replacePureElements();
-        //new AdditionalRecipes.LuVHullReplacer();
         new CircuitImprintLoader().run();
         if (classicMode)
             new DownTierLoader().run();

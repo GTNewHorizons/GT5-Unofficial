@@ -28,7 +28,7 @@ public final class WerkstoffAPI {
 
     public Werkstoff getWerkstoff(String aName) throws NoSuchFieldException, IllegalAccessException, ClassNotFoundException {
         Class w = Class.forName("com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader");
-        return (Werkstoff) w.getField(aName).get(w);
+        return (Werkstoff) w.getField(aName).get(null);
     }
 
 }
