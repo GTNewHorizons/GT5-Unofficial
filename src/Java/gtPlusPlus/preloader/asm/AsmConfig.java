@@ -19,6 +19,7 @@ public class AsmConfig {
 	public static boolean enableCofhPatch;
 	public static boolean enableGcFuelChanges;
 	public static boolean enableRcFlowFix;
+	public static boolean enableRcItemDupeFix;
 	public static boolean enableTcAspectSafety;
 	
 	public static boolean disableAllLogging;
@@ -97,6 +98,13 @@ public class AsmConfig {
 			prop.comment = "Quadruples max RC IO rates on tanks";
 			prop.setLanguageKey("gtpp.enableRcFlowFix").setRequiresMcRestart(true);
 			enableRcFlowFix = prop.getBoolean(true);
+			propOrder.add(prop.getName());
+			
+			//Railcraft Dupe Fix			
+			prop = config.get("general", "enableRcItemDupeFix", true);
+			prop.comment = "Fixes possible negative itemstacks";
+			prop.setLanguageKey("gtpp.enableRcItemDupeFix").setRequiresMcRestart(true);
+			enableRcItemDupeFix = prop.getBoolean(true);
 			propOrder.add(prop.getName());
 			
 			

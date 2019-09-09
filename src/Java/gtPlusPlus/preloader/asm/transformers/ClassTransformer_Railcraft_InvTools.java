@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
@@ -28,8 +27,9 @@ public class ClassTransformer_Railcraft_InvTools {
 	private final boolean isValid;
 	private final ClassReader reader;
 	private final ClassWriter writer;	
-	
-	
+	private boolean obfuscated = true;
+
+
 	public static ItemStack depleteItem(ItemStack stack) {
 		if (stack == null) {
 			return GT_Values.NI;
@@ -47,19 +47,15 @@ public class ClassTransformer_Railcraft_InvTools {
 			}
 		}
 	}
-	
-	public static ItemStack depleteItem1(ItemStack stack) {
-		return gtPlusPlus.preloader.asm.transformers.ClassTransformer_Railcraft_InvTools.depleteItem(stack);
-	}
 
 	public ClassTransformer_Railcraft_InvTools(byte[] basicClass, boolean obfuscated2) {
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;	
 
-		boolean obfuscated = false;
+		boolean devEnv = false;
 		boolean a1 = false;
 		boolean a2 = false;
-		
+
 		//Find Non-Obf method
 		try {
 			Method aGetStackInSlot = IInventory.class.getDeclaredMethod("getStackInSlot", int.class);
@@ -67,7 +63,7 @@ public class ClassTransformer_Railcraft_InvTools {
 				a1 = true;
 			}
 		} catch (NoSuchMethodException | SecurityException e) {}
-		
+
 		//Find Obf method
 		try {
 			Method aGetStackInSlotObf = IInventory.class.getDeclaredMethod("func_70301_a", int.class);
@@ -75,24 +71,35 @@ public class ClassTransformer_Railcraft_InvTools {
 				a2 = true;
 			}
 		} catch (NoSuchMethodException | SecurityException e) {}
-		
-		
+
+
 		if (a1) {
-			obfuscated = false;
+			devEnv = false;
 		}
 		else if (a2) {
-			obfuscated = true;
+			devEnv = true;
 		}
 		else {
 			//Fallback
-			obfuscated = false;
+			devEnv = false;
 		}	
-		FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO, "Are we patching obfuscated methods? "+obfuscated);	
+
+		if (obfuscated && devEnv) {
+			
+		}
+		else {
+			
 		
+		}
+
+
+
+		FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO, "Are we patching obfuscated method? "+obfuscated);	
+
 		aTempReader = new ClassReader(basicClass);
 		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);	
 		aTempReader.accept(new AddFieldAdapter(aTempWriter), 0);
-		
+
 		injectMethod("depleteItem", aTempWriter, obfuscated);
 
 		if (aTempReader != null && aTempWriter != null) {
@@ -174,17 +181,6 @@ public class ClassTransformer_Railcraft_InvTools {
 			this.cv = cv;
 		}
 
-		@Override
-		public FieldVisitor visitField(
-				int access, String name, String desc, String signature, Object value) {
-			if (name.equals("PROCESS_VOLUME") && desc.equals("I")) {
-				FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO, "Removing "+"PROCESS_VOLUME"+".");	       
-				return null;
-			}
-			return cv.visitField(access, name, desc, signature, value); 
-		}
-
-
 		private final String[] aMethodsToStrip = new String[] {"depleteItem"};
 
 
@@ -204,6 +200,17 @@ public class ClassTransformer_Railcraft_InvTools {
 				methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);				
 			}
 			else {
+				if (desc.equals("(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;")) {
+					obfuscated = false;
+				}
+				else if (desc.equals("(Ladd;)Ladd;")) {
+					obfuscated = true;
+				}
+				else {
+					obfuscated = false;
+				}
+				FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO,
+						"Method desc " + desc + ", using "+(obfuscated ? "obfuscated method handler" : "deobfuscated method handler"));
 				methodVisitor = null;
 			}
 

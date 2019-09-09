@@ -97,7 +97,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			return new ClassTransformer_Railcraft_FluidHelper(basicClass, obfuscated).getWriter().toByteArray();
 		}
 		//Fix Weird glitch involving negative itemstacks.
-		if (transformedName.equals("mods.railcraft.common.util.inventory.InvTools")) {	
+		if (transformedName.equals("mods.railcraft.common.util.inventory.InvTools") && mConfig.enableRcItemDupeFix) {	
 			FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_Railcraft_InvTools(basicClass, obfuscated).getWriter().toByteArray();
 		}
