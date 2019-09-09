@@ -65,6 +65,12 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		boolean obfuscated = checkObfuscated();
 		boolean probablyShouldBeFalse = false;
 
+		// Fix LWJGL index array out of bounds on keybinding IDs
+		if (transformedName.equals("org.lwjgl.input.Keyboard") && mConfig.enabledLwjglKeybindingFix) {	
+			FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_LWJGL_Keyboard(basicClass).getWriter().toByteArray();
+		}		
+		
 		//Enable mapping of Tickets and loaded chunks. - Forge
 		if (transformedName.equals("net.minecraftforge.common.ForgeChunkManager") && mConfig.enableChunkDebugging) {	
 			FMLRelaunchLog.log("[GT++ ASM] Chunkloading Patch", Level.INFO, "Transforming %s", transformedName);

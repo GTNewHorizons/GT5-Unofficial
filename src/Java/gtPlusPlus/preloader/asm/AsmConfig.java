@@ -21,6 +21,7 @@ public class AsmConfig {
 	public static boolean enableRcFlowFix;
 	public static boolean enableRcItemDupeFix;
 	public static boolean enableTcAspectSafety;
+	public static boolean enabledLwjglKeybindingFix;
 	
 	public static boolean disableAllLogging;
 
@@ -77,6 +78,12 @@ public class AsmConfig {
 			prop.setLanguageKey("gtpp.enableTiConFluidLighting").setRequiresMcRestart(true);
 			enableTiConFluidLighting = prop.getBoolean(true);
 			propOrder.add(prop.getName());
+
+			prop = config.get("general", "enabledLwjglKeybindingFix", true);
+			prop.comment = "Prevents the game crashing from having invalid keybinds. https://github.com/alkcorp/GTplusplus/issues/544";
+			prop.setLanguageKey("gtpp.enabledLwjglKeybindingFix").setRequiresMcRestart(true);
+			enabledLwjglKeybindingFix = prop.getBoolean(true);
+			propOrder.add(prop.getName());			
 			
 			prop = config.get("general", "enableGtTooltipFix", true);
 			prop.comment = "Enable/Disable Custom GT Tooltips";
