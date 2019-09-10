@@ -57,6 +57,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_CleanStainlessSteel.get(1L), bits, new Object[]{"PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'F', OrePrefixes.frameGt.get(Materials.StainlessSteel)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_RobustTungstenSteel.get(1L), bits, new Object[]{"PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.TungstenSteel), 'F', OrePrefixes.frameGt.get(Materials.TungstenSteel)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_MiningOsmiridium.get(1L), bits, new Object[]{"PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Osmiridium), 'F', OrePrefixes.frameGt.get(Materials.Osmiridium)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Casing_NaquadahAlloy.get(1L), bits, new Object[]{"PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.NaquadahAlloy), 'F', OrePrefixes.frameGt.get(Materials.NaquadahAlloy)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Turbine.get(1L), bits, new Object[]{"PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Magnalium), 'F', OrePrefixes.frameGt.get(Materials.BlueSteel)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Turbine1.get(1L), bits, new Object[]{"PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'F', ItemList.Casing_Turbine});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Turbine2.get(1L), bits, new Object[]{"PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Titanium), 'F', ItemList.Casing_Turbine});
@@ -1299,6 +1300,8 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
                 'P', OrePrefixes.pipeLarge.get(Materials.Polytetrafluoroethylene),
                 'M', ItemList.Electric_Motor_HV,
                 'B', ItemList.Hull_HV});
+        
+        
     }
 
     private static void run4() {

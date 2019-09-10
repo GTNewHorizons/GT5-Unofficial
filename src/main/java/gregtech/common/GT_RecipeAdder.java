@@ -1354,6 +1354,20 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput}, null, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, aCleanroom ? -200 : 0);
         return true;
     }
+    
+    public boolean addFusionCraftingRecipe(ItemStack[] aInputs, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput, int aDuration, int aEUt, int aLevel) {
+        if ((aInputs == null) || (aOutput == null) || aInputs.length>6 || aInputs.length<1) {
+            return false;
+        }
+        if ((aDuration = GregTech_API.sRecipeFile.get("fusioncrafting", aOutput, aDuration)) <= 0) {
+            return false;
+        }
+        GT_Recipe.GT_Recipe_Map.sFusionCraftingRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput}, null, null,
+                new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, aLevel);
+        return true;
+    }
+    
+    
     private boolean areItemsAndFluidsBothNull(ItemStack[] items, FluidStack[] fluids){
         boolean itemsNull = true;
         if (items != null) {

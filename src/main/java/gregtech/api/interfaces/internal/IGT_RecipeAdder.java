@@ -710,4 +710,19 @@ public interface IGT_RecipeAdder {
      * @return true if the Sound got added, otherwise false.
      */
     public boolean addSonictronSound(ItemStack aItemStack, String aSoundName);
+    
+
+    /**
+     * Adds a Fusion Crafting Recipe
+     *
+     * @param aInputs   must be 1-6 ItemStacks
+     * @param aFluidInput 0-1 fluids
+     * @param aOutput  must be != null
+     * @param aDuration must be > 0
+     * @param aEUt      should be > 0
+     * @param aLevel    should be > 0 is the minimum Tier needed for this Recipe
+     */
+    public boolean addFusionCraftingRecipe(ItemStack[] aInputs, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput, int aDuration, int aEUt, int aLevel);
+    
+
 }
