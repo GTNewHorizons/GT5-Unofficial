@@ -33,7 +33,6 @@ import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
 import com.google.common.collect.HashBiMap;
@@ -1454,17 +1453,16 @@ public class WerkstoffLoader implements Runnable {
         HashSet<Materials> toRem = new HashSet<>();
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             Materials werkstoffBridgeMaterial = new Materials(-1,werkstoff.getTexSet(),0,0,0,false,werkstoff.getDefaultName().replaceAll(" ",""),werkstoff.getDefaultName());
-            GT_OreDictUnificator.addAssociation(ore,werkstoffBridgeMaterial,new ItemStack(WerkstoffLoader.BWOres,1,werkstoff.getmID()),true);
+            GT_OreDictUnificator.addAssociation(ore,werkstoffBridgeMaterial,new ItemStack(WerkstoffLoader.BWOres,1,werkstoff.getmID()),false);
             for (OrePrefixes prefixes : values()) {
                 if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) != 0 && werkstoff.get(prefixes) != null && werkstoff.get(prefixes).getItem() != null)
-                    GT_OreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, werkstoff.get(prefixes), true);
+                    GT_OreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, werkstoff.get(prefixes), false);
             }
             if (werkstoff.getGenerationFeatures().hasCells()) {
                 werkstoffBridgeMaterial.setHasCorrespondingFluid(true);
                 werkstoffBridgeMaterial.setHasCorrespondingGas(true);
                 werkstoffBridgeMaterial.mFluid = werkstoff.getFluidOrGas(1).getFluid();
                 werkstoffBridgeMaterial.mGas = werkstoff.getFluidOrGas(1).getFluid();
-
             }
             if (werkstoff.getGenerationFeatures().hasMolten()) {
                 werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1).getFluid();
@@ -1839,7 +1837,7 @@ public class WerkstoffLoader implements Runnable {
                 if (!ElementSet)
                     return;
 
-                GT_OreDictUnificator.addAssociation(dust,werkstoffBridgeMaterial, werkstoff.get(dust),true);
+                GT_OreDictUnificator.addAssociation(dust,werkstoffBridgeMaterial, werkstoff.get(dust),false);
                 try {
                     Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
                     f.setAccessible(true);
@@ -2045,7 +2043,7 @@ public class WerkstoffLoader implements Runnable {
             if (!ElementSet)
                 return;
             
-            GT_OreDictUnificator.addAssociation(cell,werkstoffBridgeMaterial, werkstoff.get(cell),true);
+            GT_OreDictUnificator.addAssociation(cell,werkstoffBridgeMaterial, werkstoff.get(cell),false);
             try {
                 Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
                 f.setAccessible(true);

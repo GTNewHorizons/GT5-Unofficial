@@ -42,8 +42,6 @@ import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.Circ
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitPartLoader;
 import com.github.bartimaeusnek.bartworks.system.material.ThreadedLoader;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.AdditionalRecipes;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.DownTierLoader;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.PlatinumSludgeOverHaul;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
@@ -60,10 +58,7 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
+import gregtech.api.enums.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import net.minecraft.creativetab.CreativeTabs;
@@ -237,6 +232,7 @@ public final class MainMod {
                     GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.add(new BWRecipes.DynamicGTRecipe(false,null,null,null,null,new FluidStack[]{wrongNamedFluid},new FluidStack[]{werkstoff.getFluidOrGas(1)},1,1,0));
                 }
                 MainMod.runMoltenUnificationEnfocement(werkstoff);
+                MainMod.runUnficationDeleter(werkstoff);
                 for (OrePrefixes prefixes : OrePrefixes.values()) {
                     if (OreDictionary.getOres(prefixes + werkstoff.getDefaultName()).size() > 1) {
                         for (int j = 0; j < OreDictionary.getOres(prefixes + werkstoff.getDefaultName()).size(); j++) {
@@ -342,6 +338,23 @@ public final class MainMod {
                 e.printStackTrace();
             }
         }
+    }
+
+    private static void runUnficationDeleter(Werkstoff werkstoff) {
+        if (werkstoff.getType() == Werkstoff.Types.ELEMENT) {
+            werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getToolTip());
+            Element.get(werkstoff.getToolTip()).mLinkedMaterials = new ArrayList<>();
+            Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
+        }
+
+        for (OrePrefixes prefixes : OrePrefixes.values())
+            if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) != 0 && ((werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) == 0)) {
+                GT_OreDictUnificator.set(prefixes,werkstoff.getBridgeMaterial(),werkstoff.get(prefixes),true,true);
+                for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getDefaultName().replace(" ", ""))) {
+                    GT_OreDictUnificator.addAssociation(prefixes,werkstoff.getBridgeMaterial(),stack,false);
+                    GT_OreDictUnificator.getAssociation(stack).mUnificationTarget = werkstoff.get(prefixes);
+                }
+            }
     }
 
     private static ArrayListMultimap<SubTag,GT_Recipe> getRecipesToChange(SubTag... GasTags){
@@ -455,7 +468,7 @@ public final class MainMod {
 
     private static void addElectricImplosionCompressorRecipes() {
         if (eicMap == null) {
-            eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet<GT_Recipe>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
+            eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet<>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
             for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList) {
                 if (recipe == null || recipe.mInputs == null)
                     continue;
