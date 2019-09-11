@@ -1679,12 +1679,23 @@ GT_MetaTileEntity_MultiBlockBase {
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
 			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input){				
 				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;	
-				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = aMap;	
-				log("Remapped Input Hatch to "+aMap.mNEIName);
+				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = aMap;				
+				if (aMap != null && aMap.mNEIName != null) {
+					log("Remapped Input Hatch to "+aMap.mNEIName+".");					
+				}
+				else {
+					log("Cleared Input Hatch.");					
+				}				
 			}
 			else {	
 				((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = null;	
-				((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = aMap;				
+				((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = aMap;					
+				if (aMap != null && aMap.mNEIName != null) {
+					log("Remapped Input Bus to "+aMap.mNEIName+".");					
+				}
+				else {
+					log("Cleared Input Bus.");					
+				}							
 			}
 			return true;
 		}
