@@ -38,6 +38,7 @@ import com.github.bartimaeusnek.bartworks.common.loaders.LoaderRegistry;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
 import com.github.bartimaeusnek.bartworks.server.EventHandler.ServerEventHandler;
 import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
+import com.github.bartimaeusnek.bartworks.system.log.STFUGTPPLOG;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitPartLoader;
 import com.github.bartimaeusnek.bartworks.system.material.ThreadedLoader;
@@ -69,12 +70,15 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor.eicMap;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
@@ -108,6 +112,16 @@ public final class MainMod {
 
         if (!(API_REFERENCE.VERSION.equals(MainMod.APIVERSION))) {
             MainMod.LOGGER.error("Something has loaded an old API. Please contact the Mod authors to update!");
+        }
+
+        if (Loader.isModLoaded("miscutils") && ConfigHandler.GTppLogDisabler) {
+            try {
+                Field loggerField = FieldUtils.getField(Class.forName("gtPlusPlus.api.objects.Logger"),"modLogger",true);
+                FieldUtils.removeFinalModifier(loggerField,true);
+                loggerField.set(null,(Logger)new STFUGTPPLOG());
+            } catch (IllegalAccessException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
 
         //fixing BorosilicateGlass... -_-'
@@ -194,6 +208,7 @@ public final class MainMod {
         MainMod.unificationEnforcer();
 
         PlatinumSludgeOverHaul.replacePureElements();
+
         if (!extraGasRecipes) {
             ArrayListMultimap<SubTag, GT_Recipe> toChange = MainMod.getRecipesToChange(NOBLE_GAS, ANAEROBE_GAS);
             HashSet<ItemStack> noGas = MainMod.getNoGasItems(toChange);
@@ -289,7 +304,7 @@ public final class MainMod {
     private static void runMoltenUnificationEnfocement(Werkstoff werkstoff){
         if (werkstoff.getGenerationFeatures().enforceUnification && werkstoff.getGenerationFeatures().hasMolten()) {
             try {
-                FluidContainerRegistry.FluidContainerData data = new FluidContainerRegistry.FluidContainerData(new FluidStack(molten.get(werkstoff), 144), werkstoff.get(cellMolten), Materials.Empty.getCells(1));
+                FluidContainerRegistry.FluidContainerData data = new FluidContainerRegistry.FluidContainerData(new FluidStack(Objects.requireNonNull(molten.get(werkstoff)), 144), werkstoff.get(cellMolten), Materials.Empty.getCells(1));
                 Field f = GT_Utility.class.getDeclaredField("sFilledContainerToData");
                 f.setAccessible(true);
                 Map<GT_ItemStack, FluidContainerRegistry.FluidContainerData> sFilledContainerToData = (Map<GT_ItemStack, FluidContainerRegistry.FluidContainerData>) f.get(null);
@@ -402,7 +417,7 @@ public final class MainMod {
     }
 
     private static void editRecipes(ArrayListMultimap<SubTag,GT_Recipe> base, HashSet<ItemStack> noGas) {
-        if (GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeFluidNameMap.contains(fluids.get(Oganesson).getName()))
+        if (GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeFluidNameMap.contains(Objects.requireNonNull(fluids.get(Oganesson)).getName()))
             return;
         HashSet<GT_Recipe> toAdd = new HashSet<>();
         for (SubTag GasTag : base.keySet()) {
@@ -415,7 +430,7 @@ public final class MainMod {
                             if (!werkstoff.contains(GasTag))
                                 continue;
                             int time = (int) ((double) recipe.mDuration / 200D * (200D + (werkstoff.getStats().getProtons() >= mat.getProtons() ? (double) mat.getProtons() - (double) werkstoff.getStats().getProtons() : (double) mat.getProtons()*2.75D - (double) werkstoff.getStats().getProtons())));
-                            toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{new FluidStack(fluids.get(werkstoff), recipe.mFluidInputs[0].amount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
+                            toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{new FluidStack(Objects.requireNonNull(fluids.get(werkstoff)), recipe.mFluidInputs[0].amount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
                         }
                         for (Materials materials : Materials.values()) {
                             if (!materials.contains(GasTag))
@@ -462,22 +477,13 @@ public final class MainMod {
             }
         }
         toAdd.removeAll(duplicates);
-        for (GT_Recipe recipe : toAdd)
-            GT_Recipe.GT_Recipe_Map.sBlastRecipes.add(recipe);
+        toAdd.forEach(GT_Recipe.GT_Recipe_Map.sBlastRecipes::add);
     }
 
     private static void addElectricImplosionCompressorRecipes() {
         if (eicMap == null) {
             eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet<>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
-            for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList) {
-                if (recipe == null || recipe.mInputs == null)
-                    continue;
-                HashSet<ItemStack> inputs = new HashSet<>();
-                for (ItemStack is : recipe.mInputs)
-                    if (!MainMod.checkForExplosives(is))
-                        inputs.add(is);
-                eicMap.addRecipe(true, inputs.toArray(new ItemStack[0]), recipe.mOutputs, null, null, null, recipe.mDuration, BW_Util.getMachineVoltageFromTier(10), 0);
-            }
+            GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.stream().filter(e -> e.mInputs != null).forEach(recipe -> eicMap.addRecipe(true, Arrays.stream(recipe.mInputs).filter(e -> !MainMod.checkForExplosives(e)).distinct().toArray(ItemStack[]::new), recipe.mOutputs, null, null, null, recipe.mDuration, BW_Util.getMachineVoltageFromTier(10), 0));
         }
     }
 

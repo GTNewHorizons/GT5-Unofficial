@@ -28,7 +28,9 @@ import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.util.StatCollector;
 
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
 import static com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy.uo_dimensionList;
+import static gregtech.api.enums.Materials.*;
 
 public class BW_WorldGenRoss128ba extends BW_OreLayer  {
 
@@ -42,7 +44,9 @@ public class BW_WorldGenRoss128ba extends BW_OreLayer  {
     }
 
     public static void init_OresRoss128ba() {
-        //none
+        new BW_WorldGenRoss128b("ore.mix.ross128ba.tib", true, 30, 60, 6, 1, 16, Tiberium, Naquadah, NaquadahEnriched, NaquadahEnriched);
+        new BW_WorldGenRoss128b("ore.mix.ross128.Tungstate", true, 5, 40, 10, 4, 14, Ferberite, Huebnerit, Loellingit, Scheelite);
+
     }
 
     public static void init_undergroundFluidsRoss128ba() {

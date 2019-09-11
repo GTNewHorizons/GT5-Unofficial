@@ -48,6 +48,7 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_Fluid;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.ItemData;
 import gregtech.api.util.*;
 import gregtech.common.GT_Proxy;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
@@ -106,7 +107,8 @@ public class WerkstoffLoader implements Runnable {
             WerkstoffLoader.smallGearShape = Enum.valueOf(ItemList.class, "Shape_Extruder_Small_Gear");
             WerkstoffLoader.ringMold = Enum.valueOf(ItemList.class, "Shape_Mold_Ring");
             WerkstoffLoader.boltMold = Enum.valueOf(ItemList.class, "Shape_Mold_Bolt");
-        }catch (NullPointerException | IllegalArgumentException e){}
+        } catch (NullPointerException | IllegalArgumentException e){}
+        Element t = EnumHelper.addEnum(Element.class,"Tr",new Class[]{long.class, long.class, long.class, long.class, String.class, String.class, boolean.class}, new Object[]{123L, 203L, 0L, -1L, (String) null, "Tiberium", false});
     }
     //TODO: FREE ID RANGE: 19-32766
 
@@ -945,7 +947,7 @@ public class WerkstoffLoader implements Runnable {
             new Werkstoff.GenerationFeatures().disable().onlyDust().addCells(),
             66,
             TextureSet.SET_DULL,
-            new Pair<>(Ruthenium,1),
+            new Pair<>(WerkstoffLoader.Ruthenium,1),
             new Pair<>(Materials.Oxygen,4)
             //No Byproducts
     );
@@ -958,7 +960,7 @@ public class WerkstoffLoader implements Runnable {
             new Werkstoff.GenerationFeatures().disable().addCells(),
             67,
             TextureSet.SET_FLUID,
-            new Pair<>(Ruthenium,1),
+            new Pair<>(WerkstoffLoader.Ruthenium,1),
             new Pair<>(Materials.Oxygen,4),
             new Pair<>(Materials.Chlorine,2),
             new Pair<>(Materials.Sodium,2),
@@ -1193,7 +1195,27 @@ public class WerkstoffLoader implements Runnable {
             new Pair<>(Materials.Palladium,3),
             new Pair<>(WerkstoffLoader.Rhodium,1)
     );
-
+    public static final Werkstoff Tiberium = new Werkstoff(
+            new short[]{0x22,0xEE,0x22},
+            "Tiberium",
+            "Tr",
+            new Werkstoff.Stats().setProtons(123).setMass(326),
+            Werkstoff.Types.ELEMENT,
+            new Werkstoff.GenerationFeatures().onlyDust().addGems(),
+            89,
+            TextureSet.SET_DIAMOND
+    );
+    public static final Werkstoff LuVFineWireMaterial = new Werkstoff(
+            new short[]{0xA4,0xA4,0xA4},
+            "Ruridit",
+            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(4500),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems().addMixerRecipes().addSimpleMetalWorkingItems().addCraftingMetalWorkingItems().addMultipleIngotMetalWorkingItems(),
+            90,
+            TextureSet.SET_METALLIC,
+            new Pair<>(WerkstoffLoader.Ruthenium,2),
+            new Pair<>(Materials.Iridium,1)
+    );
 
     public static HashMap<OrePrefixes, BW_MetaGenerated_Items> items = new HashMap<>();
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();
@@ -1423,6 +1445,7 @@ public class WerkstoffLoader implements Runnable {
             WerkstoffLoader.items.put(spring, new BW_MetaGenerated_Items(spring));
             WerkstoffLoader.items.put(springSmall, new BW_MetaGenerated_Items(springSmall));
             WerkstoffLoader.items.put(rotor, new BW_MetaGenerated_Items(rotor));
+            WerkstoffLoader.items.put(wireFine, new BW_MetaGenerated_Items(wireFine));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000000000) != 0) {
             WerkstoffLoader.items.put(plateDouble, new BW_MetaGenerated_Items(plateDouble));
@@ -1438,8 +1461,6 @@ public class WerkstoffLoader implements Runnable {
 
     }
 
-
-
     public void gameRegistryHandler(){
         if (FMLCommonHandler.instance().getSide().isClient())
             RenderingRegistry.registerBlockHandler(BW_Renderer_Block_Ores.INSTANCE);
@@ -1452,24 +1473,59 @@ public class WerkstoffLoader implements Runnable {
     public static void runGTItemDataRegistrator(){
         HashSet<Materials> toRem = new HashSet<>();
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
-            Materials werkstoffBridgeMaterial = new Materials(-1,werkstoff.getTexSet(),0,0,0,false,werkstoff.getDefaultName().replaceAll(" ",""),werkstoff.getDefaultName());
-            GT_OreDictUnificator.addAssociation(ore,werkstoffBridgeMaterial,new ItemStack(WerkstoffLoader.BWOres,1,werkstoff.getmID()),false);
+            Materials werkstoffBridgeMaterial = new Materials(-1, werkstoff.getTexSet(), 0, 0, 0, false, werkstoff.getDefaultName().replaceAll(" ", ""), werkstoff.getDefaultName());
             for (OrePrefixes prefixes : values()) {
-                if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) != 0 && werkstoff.get(prefixes) != null && werkstoff.get(prefixes).getItem() != null)
-                    GT_OreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, werkstoff.get(prefixes), false);
+                if (!(prefixes == cell && werkstoff.getType().equals(Werkstoff.Types.ELEMENT))) {
+                    if (prefixes == dust && werkstoff.getType().equals(Werkstoff.Types.ELEMENT)) {
+                        if (werkstoff.getType().equals(Werkstoff.Types.ELEMENT)) {
+                            boolean ElementSet = false;
+                            for (Element e : Element.values()) {
+                                if (e.toString().equals(werkstoff.getToolTip())) {
+                                    if (e.mLinkedMaterials.size() > 0)
+                                        break;
+                                    werkstoffBridgeMaterial = new Materials(-1, werkstoff.getTexSet(), 0, 0, 0, true, werkstoff.getDefaultName().replaceAll(" ", ""), werkstoff.getDefaultName());
+                                    werkstoffBridgeMaterial.mElement = e;
+                                    e.mLinkedMaterials = new ArrayList<>();
+                                    e.mLinkedMaterials.add(werkstoffBridgeMaterial);
+                                    GT_OreDictUnificator.addAssociation(dust, werkstoffBridgeMaterial, werkstoff.get(dust), false);
+                                    GT_OreDictUnificator.set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
+                                    ElementSet = true;
+                                    break;
+                                }
+                            }
+                            if (!ElementSet)
+                                continue;
+                            try {
+                                Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
+                                f.setAccessible(true);
+                                Map<String, Materials> MATERIALS_MAP = (Map<String, Materials>) f.get(null);
+                                MATERIALS_MAP.remove(werkstoffBridgeMaterial.mName);
+                            } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
+                                e.printStackTrace();
+                            }
+                            ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
+                            Behaviour_DataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
+                            Behaviour_DataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
+                            GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(prefixes)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass() * 8192L), 30, 0));
+                            GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.addFakeRecipe(false, new BWRecipes.DynamicGTRecipe(false, null, new ItemStack[]{werkstoff.get(prefixes)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L), 30, 0));
+                        }
+                    } else if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) != 0 && (werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) == 0 && werkstoff.get(prefixes) != null && werkstoff.get(prefixes).getItem() != null)
+                        GT_OreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, werkstoff.get(prefixes), false);
+
+                    if (werkstoff.getGenerationFeatures().hasCells()) {
+                        werkstoffBridgeMaterial.setHasCorrespondingFluid(true);
+                        werkstoffBridgeMaterial.setHasCorrespondingGas(true);
+                        werkstoffBridgeMaterial.mFluid = werkstoff.getFluidOrGas(1).getFluid();
+                        werkstoffBridgeMaterial.mGas = werkstoff.getFluidOrGas(1).getFluid();
+                    }
+                    if (werkstoff.getGenerationFeatures().hasMolten()) {
+                        werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1).getFluid();
+                    }
+                    werkstoffBridgeMaterial.mName = werkstoff.getDefaultName();
+                    toRem.add(werkstoffBridgeMaterial);
+                    werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
+                }
             }
-            if (werkstoff.getGenerationFeatures().hasCells()) {
-                werkstoffBridgeMaterial.setHasCorrespondingFluid(true);
-                werkstoffBridgeMaterial.setHasCorrespondingGas(true);
-                werkstoffBridgeMaterial.mFluid = werkstoff.getFluidOrGas(1).getFluid();
-                werkstoffBridgeMaterial.mGas = werkstoff.getFluidOrGas(1).getFluid();
-            }
-            if (werkstoff.getGenerationFeatures().hasMolten()) {
-                werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1).getFluid();
-            }
-            werkstoffBridgeMaterial.mName = werkstoff.getDefaultName();
-            toRem.add(werkstoffBridgeMaterial);
-            werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
         }
         try {
             Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
@@ -1638,6 +1694,11 @@ public class WerkstoffLoader implements Runnable {
             //Gear
             GT_ModHandler.addCraftingRecipe(werkstoff.get(gearGt), GT_Proxy.tBits, new Object[]{"SPS", "PwP", "SPS", 'P', werkstoff.get(plate), 'S', werkstoff.get(stick)});
             GT_Values.RA.addExtruderRecipe(werkstoff.get(ingot,4), ItemList.Shape_Extruder_Gear.get(0L), werkstoff.get(gearGt), (int) Math.max(werkstoff.getStats().getMass() * 5L, 1), 8 * tVoltageMultiplier);
+
+            //wireFine
+            GT_Values.RA.addExtruderRecipe(werkstoff.get(ingot), ItemList.Shape_Extruder_Wire.get(0L), werkstoff.get(wireFine,8), (int) Math.max(werkstoff.getStats().getMass() * 1.5F, 1F), 8 * tVoltageMultiplier);
+            GT_Values.RA.addWiremillRecipe(werkstoff.get(ingot), werkstoff.get(wireFine,8), (int) Math.max(werkstoff.getStats().getMass(), 1), 8 * tVoltageMultiplier);
+            GT_Values.RA.addWiremillRecipe(werkstoff.get(stick), werkstoff.get(wireFine,4), (int) Math.max(werkstoff.getStats().getMass() * 0.5F, 1F), 8 * tVoltageMultiplier);
 
             //smallGear
             if (WerkstoffLoader.smallGearShape != null)
@@ -1818,39 +1879,6 @@ public class WerkstoffLoader implements Runnable {
             if ((werkstoff.getGenerationFeatures().toGenerate & 0b10) != 0){
                 GT_ModHandler.addPulverisationRecipe(werkstoff.get(ingot),werkstoff.get(dust));
                 GT_ModHandler.addPulverisationRecipe(werkstoff.get(nugget),werkstoff.get(dustTiny));
-            }
-
-            if (werkstoff.getType().equals(Werkstoff.Types.ELEMENT)) {
-                Materials werkstoffBridgeMaterial = null;
-                boolean ElementSet = false;
-                for (Element e :  Element.values()){
-                    if (e.toString().equals(werkstoff.getToolTip())){
-                        if (e.mLinkedMaterials.size() > 0)
-                            break;
-                        werkstoffBridgeMaterial = new Materials(-1,werkstoff.getTexSet(),0,0,0,false,werkstoff.getDefaultName().replaceAll(" ",""),werkstoff.getDefaultName());
-                        werkstoffBridgeMaterial.mElement = e;
-                        e.mLinkedMaterials.add(werkstoffBridgeMaterial);
-                        ElementSet = true;
-                        break;
-                    }
-                }
-                if (!ElementSet)
-                    return;
-
-                GT_OreDictUnificator.addAssociation(dust,werkstoffBridgeMaterial, werkstoff.get(dust),false);
-                try {
-                    Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
-                    f.setAccessible(true);
-                    Map<String, Materials> MATERIALS_MAP = (Map<String, Materials>) f.get(null);
-                    MATERIALS_MAP.remove(werkstoffBridgeMaterial.mName);
-                } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
-                    e.printStackTrace();
-                }
-                ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
-                Behaviour_DataOrb.setDataTitle(scannerOutput,"Elemental-Scan");
-                Behaviour_DataOrb.setDataName(scannerOutput,werkstoff.getToolTip());
-                GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false,new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(dust)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass()* 8192L),30,0));
-                GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.addFakeRecipe(false,new BWRecipes.DynamicGTRecipe(false, null,new ItemStack[]{werkstoff.get(dust)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L),30,0));
             }
         }
     }
@@ -2042,7 +2070,7 @@ public class WerkstoffLoader implements Runnable {
             }
             if (!ElementSet)
                 return;
-            
+
             GT_OreDictUnificator.addAssociation(cell,werkstoffBridgeMaterial, werkstoff.get(cell),false);
             try {
                 Field f = Materials.class.getDeclaredField("MATERIALS_MAP");

@@ -64,6 +64,7 @@ public class ConfigHandler {
 
     //One-Side-Only
     public static boolean debugLog;
+    public static boolean GTppLogDisabler;
     public static boolean tooltips = true;
     public static boolean[] enabledPatches;
 
@@ -92,6 +93,7 @@ public class ConfigHandler {
             ConfigHandler.IDOffset = 12600;
             ConfigHandler.c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + ConfigHandler.IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").set(12600);
         }
+        ConfigHandler.GTppLogDisabler = ConfigHandler.c.get("System", "Disable GT++ Logging", false, "Enables or Disables GT++ Logging.").getBoolean(false);
         ConfigHandler.debugLog = ConfigHandler.c.get("System", "Enable Debug Log", false, "Enables or Disables the debug log.").getBoolean(false);
         ConfigHandler.experimentalThreadedLoader = ConfigHandler.c.get("System", "Enable Experimental Threaded Material Loader", false, "Enables or Disables the Experimental Threaded Material Loader.").getBoolean(false);
 

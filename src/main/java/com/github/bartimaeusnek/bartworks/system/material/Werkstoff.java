@@ -38,7 +38,7 @@ import java.util.*;
 
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
-    static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
+    public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
     public static final LinkedHashMap<Short, Werkstoff> werkstoffHashMap = new LinkedHashMap<>();
     public static final LinkedHashMap<String, Werkstoff> werkstoffNameHashMap = new LinkedHashMap<>();
 
@@ -164,10 +164,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
         this.texSet = texSet;
 
-        if (this.getGenerationFeatures().enforceUnification) {
-            for (OrePrefixes prefix : OrePrefixes.values())
-                BWUnificationEnforcer.addUnificationTarget(prefix+this.getDefaultName());
-        }
         Werkstoff.werkstoffHashSet.add(this);
         Werkstoff.werkstoffHashMap.put(this.mID, this);
         Werkstoff.werkstoffNameHashMap.put(this.defaultName,this);
@@ -378,23 +374,28 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dust,0b1);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustTiny,0b1);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustSmall,0b1);
+
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingot,0b10);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotHot,0b10);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.nugget,0b10);
+
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gem,0b100);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemFlawed,0b100);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemExquisite,0b100);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemChipped,0b100);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemFlawless,0b100);
+
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ore,0b1000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustImpure,0b1000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustPure,0b1000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushed,0b1000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushedPurified,0b1000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushedCentrifuged,0b1000);
+
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.cell,0b10000);
+
             Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.cellMolten,0b1000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.cellMolten,0b1000000);
+
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plate,0b10000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.stick,0b10000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.rod,0b10000000);
@@ -407,6 +408,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.spring,0b100000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.springSmall,0b100000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.rotor,0b100000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.wireFine,0b100000000);
 
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateDouble,0b1000000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateTriple,0b1000000000);
