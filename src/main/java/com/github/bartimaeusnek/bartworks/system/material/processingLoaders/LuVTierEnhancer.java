@@ -118,6 +118,7 @@ public class LuVTierEnhancer implements Runnable {
                 }
             }
         }
+        new AfterLuVTierEnhacement().run();
     }
 
     private static void replaceAsslineRecipes(){

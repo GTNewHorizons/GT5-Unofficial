@@ -194,6 +194,7 @@ public final class MainMod {
             GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.dehp.desc","Get ALL the thermal energy!");
             GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.circuitassemblyline","Cheaper Circuits?");
             GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.circuitassemblyline.desc","Well, yes, but actually no...");
+            GT_LanguageManager.addStringLocalization("metaitem.01.tooltip.nqgen","Can be used as Enriched Naquadah Fuel Substitute");
         }
     }
     @Mod.EventHandler
@@ -357,9 +358,11 @@ public final class MainMod {
 
     private static void runUnficationDeleter(Werkstoff werkstoff) {
         if (werkstoff.getType() == Werkstoff.Types.ELEMENT) {
-            werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getToolTip());
-            Element.get(werkstoff.getToolTip()).mLinkedMaterials = new ArrayList<>();
-            Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
+            if (werkstoff.getBridgeMaterial() != null) {
+                werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getToolTip());
+                Element.get(werkstoff.getToolTip()).mLinkedMaterials = new ArrayList<>();
+                Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
+            }
         }
 
         for (OrePrefixes prefixes : OrePrefixes.values())
@@ -483,7 +486,7 @@ public final class MainMod {
     private static void addElectricImplosionCompressorRecipes() {
         if (eicMap == null) {
             eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet<>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
-            GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.stream().filter(e -> e.mInputs != null).forEach(recipe -> eicMap.addRecipe(true, Arrays.stream(recipe.mInputs).filter(e -> !MainMod.checkForExplosives(e)).distinct().toArray(ItemStack[]::new), recipe.mOutputs, null, null, null, recipe.mDuration, BW_Util.getMachineVoltageFromTier(10), 0));
+            GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.stream().filter(e -> e.mInputs != null).forEach(recipe -> eicMap.addRecipe(true, Arrays.stream(recipe.mInputs).filter(e -> !MainMod.checkForExplosives(e)).distinct().toArray(ItemStack[]::new), recipe.mOutputs, null, null, null, 1, BW_Util.getMachineVoltageFromTier(10), 0));
         }
     }
 

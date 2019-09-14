@@ -131,6 +131,10 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         }
         if (this.orePrefixes == OrePrefixes.crushed)
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.purify.2"));
+
+        if (aStack != null && aStack.getItem() instanceof BW_MetaGenerated_Items && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
+            aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.nqgen"));
+
         aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 

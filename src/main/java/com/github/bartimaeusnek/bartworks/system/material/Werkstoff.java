@@ -48,9 +48,9 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     private static final Werkstoff.GenerationFeatures DEFAULT_NULL_GENERATION_FEATURES = new Werkstoff.GenerationFeatures().disable();
     public static Werkstoff default_null_Werkstoff;
 
-    private final List<ISubTagContainer> mOreByProducts = new ArrayList<ISubTagContainer>();
-    private final LinkedHashSet<Pair<ISubTagContainer, Integer>> contents = new LinkedHashSet<>();
-    HashSet<SubTag> subtags = new HashSet<>();
+    private final List<ISubTagContainer> mOreByProducts = new ArrayList<>();
+    private final LinkedHashSet<Pair<ISubTagContainer, Integer>> CONTENTS = new LinkedHashSet<>();
+    private final HashSet<SubTag> SUBTAGS = new HashSet<>();
     private byte[] rgb = new byte[3];
     private final String defaultName;
     private String toolTip;
@@ -112,7 +112,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.mID = (short) mID;
         this.generationFeatures = generationFeatures;
         this.setRgb(BW_ColorUtil.correctCorlorArray(rgba));
-        this.contents.addAll(Arrays.asList(contents));
+        this.CONTENTS.addAll(Arrays.asList(contents));
         this.toolTip = "";
         if (toolTip.isEmpty()) {
             for (Pair<ISubTagContainer, Integer> p : contents) {
@@ -125,7 +125,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                             this.toolTip += ((Materials) p.getKey()).mChemicalFormula + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
                     }
                     if (p.getKey() instanceof Werkstoff) {
-                        if (((Werkstoff) p.getKey()).contents.size() > 1 && p.getValue() > 1)
+                        if (((Werkstoff) p.getKey()).CONTENTS.size() > 1 && p.getValue() > 1)
 //                    if (((Werkstoff) p.getKey()).toolTip != null && Character.isDigit(((Werkstoff) p.getKey()).toolTip.toCharArray()[((Werkstoff) p.getKey()).toolTip.length()-1]))
                             this.toolTip += "(" + ((Werkstoff) p.getKey()).toolTip + ")" + (BW_Util.subscriptNumber(p.getValue()));
                         else
@@ -203,7 +203,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public boolean containsStuff(ISubTagContainer stuff){
-        for (Pair<ISubTagContainer, Integer> pair : this.contents){
+        for (Pair<ISubTagContainer, Integer> pair : this.CONTENTS){
             if (pair.getKey().equals(stuff))
                 return true;
         }
@@ -215,8 +215,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         switch (this.type) {
             case COMPOUND:
             case BIOLOGICAL: {
-                for (int i = 0; i < this.contents.toArray().length; i++) {
-                    ret += ((Pair<ISubTagContainer, Integer>) this.contents.toArray()[i]).getValue();
+                for (int i = 0; i < this.CONTENTS.toArray().length; i++) {
+                    ret += ((Pair<ISubTagContainer, Integer>) this.CONTENTS.toArray()[i]).getValue();
                 }
                 break;
             }
@@ -224,7 +224,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 ret = 1;
                 break;
         }
-        return new Pair<>(ret, this.contents);
+        return new Pair<>(ret, this.CONTENTS);
     }
 
     public int getNoOfByProducts() {
@@ -296,22 +296,22 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     @Override
     public boolean contains(SubTag subTag) {
-        if (!subTag.equals(WerkstoffLoader.NOBLE_GAS) && !subTag.equals(WerkstoffLoader.ANAEROBE_GAS))
-            for (Pair<ISubTagContainer, Integer> p : this.contents)
+        if (!subTag.equals(WerkstoffLoader.NOBLE_GAS) && !subTag.equals(WerkstoffLoader.ANAEROBE_GAS) && !subTag.equals(WerkstoffLoader.NO_BLAST))
+            for (Pair<ISubTagContainer, Integer> p : this.CONTENTS)
                 if (p.getKey().contains(subTag))
                     return true;
-        return this.subtags.contains(subTag);
+        return this.SUBTAGS.contains(subTag);
     }
 
     @Override
     public ISubTagContainer add(SubTag... subTags) {
-        this.subtags.addAll(Arrays.asList(subTags));
+        this.SUBTAGS.addAll(Arrays.asList(subTags));
         return this;
     }
 
     @Override
     public boolean remove(SubTag subTag) {
-        return this.subtags.remove(subTag);
+        return this.SUBTAGS.remove(subTag);
     }
 
     public void getAndAddToCollection(OrePrefixes prefixes,int amount,Collection<ItemStack> stacks){
@@ -384,6 +384,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemExquisite,0b100);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemChipped,0b100);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemFlawless,0b100);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.lens,0b100);
 
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ore,0b1000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustImpure,0b1000);
@@ -548,7 +549,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return this;
         }
         public Werkstoff.GenerationFeatures addMultipleIngotMetalWorkingItems() {
-            this.toGenerate = (byte) (this.toGenerate | 0b10000000);
+            this.toGenerate = (byte) (this.toGenerate | 0b1000000000);
             return this;
         }
     }

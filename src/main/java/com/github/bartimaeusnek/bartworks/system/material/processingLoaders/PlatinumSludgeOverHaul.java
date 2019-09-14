@@ -51,11 +51,8 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
 import static gregtech.api.enums.OrePrefixes.*;
@@ -175,7 +172,7 @@ public class PlatinumSludgeOverHaul {
         GT_Values.RA.addChemicalRecipe(IridiumChloride.get(dust), Materials.Calcium.getDust(3), null, CalciumChloride.getFluidOrGas(3000), PGSDResidue2.get(dust), Materials.Iridium.getDust(1), 300, 1920);
 
         //Rh
-        GT_Values.RA.addChemicalRecipe(RHSulfate.get(cell, 11), GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(10000), Materials.Potassium.getMolten(1999), RHSulfateSolution.get(cell, 11), LeachResidue.get(dustTiny, 10), 300, 30);
+        GT_Values.RA.addChemicalRecipe(RHSulfate.get(cell, 11), GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(10000), Materials.Potassium.getMolten(2000), RHSulfateSolution.get(cell, 11), LeachResidue.get(dustTiny, 10), 300, 30);
 
         GT_Values.RA.addChemicalRecipe(Materials.Zinc.getDust(1), null, RHSulfateSolution.getFluidOrGas(1000), null, ZincSulfate.get(dust), CrudeRhMetall.get(dust), 300);
         GT_Values.RA.addBlastRecipe(CrudeRhMetall.get(dust), Materials.Salt.getDust(1), Materials.Chlorine.getGas(1000), null, RHSalt.get(dust, 3), null, 300, 120, 600);
@@ -246,16 +243,29 @@ public class PlatinumSludgeOverHaul {
                 for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
                     if (map.equals(GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes))
                         continue maploop;
-                    if (GT_Utility.areFluidsEqual(Ruthenium.getMolten(1), recipe.mFluidOutputs[i]))
-                        toDel.add(recipe);
-                    else if (GT_Utility.areFluidsEqual(Rhodium.getMolten(1), recipe.mFluidOutputs[i]))
-                        toDel.add(recipe);
-                    else if (GT_Utility.areFluidsEqual(Materials.Iridium.getMolten(1), recipe.mFluidOutputs[i]))
-                        recipe.mFluidOutputs[i] = Materials.Water.getFluid(1000);
-                    else if (GT_Utility.areFluidsEqual(Materials.Platinum.getMolten(1), recipe.mFluidOutputs[i]))
-                        recipe.mFluidOutputs[i] = Materials.Water.getFluid(1000);
-                    else if (GT_Utility.areFluidsEqual(Materials.Osmium.getMolten(1), recipe.mFluidOutputs[i]))
-                        recipe.mFluidOutputs[i] = Materials.Water.getFluid(1000);
+                    else if (map.equals(GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes) || map.equals(GT_Recipe.GT_Recipe_Map.sChemicalRecipes)) {
+                        if (GT_Utility.areFluidsEqual(Ruthenium.getMolten(1), recipe.mFluidOutputs[i]))
+                            toDel.add(recipe);
+                        else if (GT_Utility.areFluidsEqual(Rhodium.getMolten(1), recipe.mFluidOutputs[i]))
+                            toDel.add(recipe);
+                        else if (GT_Utility.areFluidsEqual(Materials.Iridium.getMolten(1), recipe.mFluidOutputs[i]))
+                            recipe.mFluidOutputs[i] = Materials.Water.getFluid(1000);
+                        else if (GT_Utility.areFluidsEqual(Materials.Platinum.getMolten(1), recipe.mFluidOutputs[i]))
+                            recipe.mFluidOutputs[i] = Materials.Water.getFluid(1000);
+                        else if (GT_Utility.areFluidsEqual(Materials.Osmium.getMolten(1), recipe.mFluidOutputs[i]))
+                            recipe.mFluidOutputs[i] = Materials.Water.getFluid(1000);
+                    } else {
+                        if (GT_Utility.areFluidsEqual(Ruthenium.getMolten(1), recipe.mFluidOutputs[i]))
+                            toDel.add(recipe);
+                        else if (GT_Utility.areFluidsEqual(Rhodium.getMolten(1), recipe.mFluidOutputs[i]))
+                            toDel.add(recipe);
+                        else if (GT_Utility.areFluidsEqual(Materials.Iridium.getMolten(1), recipe.mFluidOutputs[i]))
+                            toDel.add(recipe);
+                        else if (GT_Utility.areFluidsEqual(Materials.Platinum.getMolten(1), recipe.mFluidOutputs[i]))
+                            toDel.add(recipe);
+                        else if (GT_Utility.areFluidsEqual(Materials.Osmium.getMolten(1), recipe.mFluidOutputs[i]))
+                            toDel.add(recipe);
+                    }
                 }
                 for (int i = 0; i < recipe.mOutputs.length; i++) {
                     if (!GT_Utility.isStackValid(recipe.mOutputs[i]))

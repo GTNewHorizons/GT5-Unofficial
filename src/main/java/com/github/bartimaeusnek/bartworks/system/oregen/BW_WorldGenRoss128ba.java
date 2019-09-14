@@ -44,8 +44,9 @@ public class BW_WorldGenRoss128ba extends BW_OreLayer  {
     }
 
     public static void init_OresRoss128ba() {
-        new BW_WorldGenRoss128b("ore.mix.ross128ba.tib", true, 30, 60, 6, 1, 16, Tiberium, Naquadah, NaquadahEnriched, NaquadahEnriched);
-        new BW_WorldGenRoss128b("ore.mix.ross128.Tungstate", true, 5, 40, 10, 4, 14, Ferberite, Huebnerit, Loellingit, Scheelite);
+        new BW_WorldGenRoss128ba("ore.mix.ross128ba.tib", true, 30, 60, 6, 1, 16, Tiberium, Tiberium, NaquadahEnriched, NaquadahEnriched);
+        new BW_WorldGenRoss128ba("ore.mix.ross128.Tungstate", true, 5, 40, 10, 4, 14, Ferberite, Huebnerit, Loellingit, Scheelite);
+        new BW_WorldGenRoss128ba("ore.mix.ross128ba.bart", true, 30, 60, 1, 1, 3, BArTiMaEuSNeK, BArTiMaEuSNeK, BArTiMaEuSNeK, BArTiMaEuSNeK);
 
     }
 

@@ -23,30 +23,21 @@
 package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
 
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_Meta_Items;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.*;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.commons.lang3.reflect.MethodUtils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.CLEANROOM;
@@ -89,6 +80,9 @@ public class AdditionalRecipes implements Runnable {
         GT_Values.RA.addAutoclaveRecipe(WerkstoffLoader.MagnetoResonaticDust.get(dust), WerkstoffLoader.Neon.getFluidOrGas(1000), WerkstoffLoader.MagnetoResonaticDust.get(gemChipped, 9), 9000, 4500, BW_Util.getMachineVoltageFromTier(5));
         GT_Values.RA.addAutoclaveRecipe(WerkstoffLoader.MagnetoResonaticDust.get(dust), WerkstoffLoader.Krypton.getFluidOrGas(1000), WerkstoffLoader.MagnetoResonaticDust.get(gem), 10000, 4500, BW_Util.getMachineVoltageFromTier(5));
 
+        //Milk
+        //GT_Values.RA.addFusionReactorRecipe(WerkstoffLoader.Californium.getMolten(16), Materials.Milk.getFluid(12000), WerkstoffLoader.Oganesson.getFluidOrGas(16), 500, 49152, 600000000);
+        GT_Values.RA.addCentrifugeRecipe(GT_Utility.getIntegratedCircuit(1),null,Materials.Milk.getFluid(10000),Materials.Water.getFluid(8832),Materials.Sugar.getDustSmall(21),Materials.Calcium.getDustTiny(1),Materials.Magnesium.getDustTiny(1),Materials.Potassium.getDustTiny(1),Materials.Sodium.getDustTiny(4),Materials.Phosphor.getDustTiny(1),new int[]{10000,10000,1000,10000,1000,1000},50,120);
 
         for (int i = 0; i <= 6; i++) {
             GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
@@ -126,39 +120,59 @@ public class AdditionalRecipes implements Runnable {
                                     Materials.SolderingAlloy.getMolten((i + 1) * 144)
                             }, null, (i + 1) * 1500, BW_Util.getMachineVoltageFromTier(i + 1), CLEANROOM));
         }
+        GT_Recipe.GT_Recipe_Map.sSmallNaquadahReactorFuels.addRecipe(true, new ItemStack[]{WerkstoffLoader.Tiberium.get(bolt)}, new ItemStack[]{}, null, null, null, 0, 0, 12500);
+        GT_Recipe.GT_Recipe_Map.sLargeNaquadahReactorFuels.addRecipe(true, new ItemStack[]{WerkstoffLoader.Tiberium.get(stick)}, new ItemStack[]{}, null, null, null, 0, 0, 62500);
+
+        try{
+            Class map = GT_Recipe.GT_Recipe_Map.class;
+            GT_Recipe.GT_Recipe_Map sHugeNaquadahReactorFuels = (GT_Recipe.GT_Recipe_Map) FieldUtils.getField(map,"sHugeNaquadahReactorFuels").get(null);
+            GT_Recipe.GT_Recipe_Map sExtremeNaquadahReactorFuels = (GT_Recipe.GT_Recipe_Map) FieldUtils.getField(map,"sExtremeNaquadahReactorFuels").get(null);
+            GT_Recipe.GT_Recipe_Map sUltraHugeNaquadahReactorFuels = (GT_Recipe.GT_Recipe_Map) FieldUtils.getField(map,"sUltraHugeNaquadahReactorFuels").get(null);
+            sHugeNaquadahReactorFuels.addRecipe(true, new ItemStack[]{WerkstoffLoader.Tiberium.get(stickLong)}, new ItemStack[]{}, null, null, null, 0, 0, 125000);
+            sExtremeNaquadahReactorFuels.addRecipe(true, new ItemStack[]{WerkstoffLoader.Tiberium.get(stick)}, new ItemStack[]{}, null, null, null, 0, 0, 31250);
+            sUltraHugeNaquadahReactorFuels.addRecipe(true, new ItemStack[]{WerkstoffLoader.Tiberium.get(stickLong)}, new ItemStack[]{}, null, null, null, 0, 0, 125000);
+        }catch (NullPointerException | IllegalAccessException e){}
+
+        new LoadItemContainers().run();
+
+        GT_Values.RA.addCannerRecipe(ItemList.Large_Fluid_Cell_TungstenSteel.get(1L), WerkstoffLoader.Tiberium.get(dust,3), BW_NonMeta_MaterialItems.TiberiumCell_1.get(1L), null, 30, 16);
+        GT_Values.RA.addAssemblerRecipe(BW_NonMeta_MaterialItems.TiberiumCell_1.get(2L), GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L), BW_NonMeta_MaterialItems.TiberiumCell_2.get(1L), 100, 400);
+        GT_Values.RA.addAssemblerRecipe(BW_NonMeta_MaterialItems.TiberiumCell_1.get(4L), GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L), BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L), 150, 400);
+        GT_Values.RA.addAssemblerRecipe(BW_NonMeta_MaterialItems.TiberiumCell_2.get(2L), GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L), BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L), 100, 400);
+
         GregTech_API.sAfterGTPostload.add(new LuVTierEnhancer());
         AdditionalRecipes.oldGThelperMethod();
     }
-   private static void oldGThelperMethod(){
-       //manual override for older GT
-       Werkstoff werkstoff = WerkstoffLoader.Oganesson;
-       Materials werkstoffBridgeMaterial = null;
-       boolean aElementSet = false;
-       for (Element e :  Element.values()){
-           if (e.toString().equals("Uuo")){
-               werkstoffBridgeMaterial = new Materials(-1,werkstoff.getTexSet(),0,0,0,false,werkstoff.getDefaultName(),werkstoff.getDefaultName());
-               werkstoffBridgeMaterial.mElement = e;
-               e.mLinkedMaterials.add(werkstoffBridgeMaterial);
-               aElementSet = true;
-               break;
-           }
-       }
-       if (!aElementSet)
-           return;
+    private static void oldGThelperMethod() {
+        //manual override for older GT
+        Werkstoff werkstoff = WerkstoffLoader.Oganesson;
+        Materials werkstoffBridgeMaterial = null;
+        boolean aElementSet = false;
+        for (Element e : Element.values()) {
+            if (e.toString().equals("Uuo")) {
+                werkstoffBridgeMaterial = new Materials(-1, werkstoff.getTexSet(), 0, 0, 0, false, werkstoff.getDefaultName(), werkstoff.getDefaultName());
+                werkstoffBridgeMaterial.mElement = e;
+                e.mLinkedMaterials.add(werkstoffBridgeMaterial);
+                aElementSet = true;
+                break;
+            }
+        }
+        if (!aElementSet)
+            return;
 
-       GT_OreDictUnificator.addAssociation(cell,werkstoffBridgeMaterial, werkstoff.get(cell),false);
-       try {
-           Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
-           f.setAccessible(true);
-           Map<String, Materials> MATERIALS_MAP = (Map<String, Materials>) f.get(null);
-           MATERIALS_MAP.remove(werkstoffBridgeMaterial.mName);
-       } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
-           e.printStackTrace();
-       }
-       ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
-       Behaviour_DataOrb.setDataTitle(scannerOutput,"Elemental-Scan");
-       Behaviour_DataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
-       GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false,new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(cell)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass()* 8192L),30,0));
-       GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.addFakeRecipe(false,new BWRecipes.DynamicGTRecipe(false,new ItemStack[]{Materials.Empty.getCells(1)} ,new ItemStack[]{werkstoff.get(cell)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L),30,0));
-   }
+        GT_OreDictUnificator.addAssociation(cell, werkstoffBridgeMaterial, werkstoff.get(cell), false);
+        try {
+            Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
+            f.setAccessible(true);
+            Map<String, Materials> MATERIALS_MAP = (Map<String, Materials>) f.get(null);
+            MATERIALS_MAP.remove(werkstoffBridgeMaterial.mName);
+        } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
+            e.printStackTrace();
+        }
+        ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
+        Behaviour_DataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
+        Behaviour_DataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
+        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{werkstoff.get(cell)}, new ItemStack[]{scannerOutput}, ItemList.Tool_DataOrb.get(1L), null, null, null, (int) (werkstoffBridgeMaterial.getMass() * 8192L), 30, 0));
+        GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.addFakeRecipe(false, new BWRecipes.DynamicGTRecipe(false, new ItemStack[]{Materials.Empty.getCells(1)}, new ItemStack[]{werkstoff.get(cell)}, scannerOutput, null, new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int) (werkstoffBridgeMaterial.getMass() * 512L), 30, 0));
+    }
 }
