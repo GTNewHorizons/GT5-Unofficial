@@ -337,7 +337,7 @@ gt.blockmachines.multimachine.tm.microwave.hint.0=1 - Classic Hatches or Clean S
 gt.blockmachines.multimachine.tm.microwave.hint.1=Also acts like a hopper so give it an Output Bus
 gt.blockmachines.multimachine.tm.microwave.desc.0=High Frequency Oven
 gt.blockmachines.multimachine.tm.microwave.desc.1=From live to done in seconds!
-gt.blockmachines.multimachine.tm.microwave.desc.3=I said nuke the... I meant microwave supper!
+gt.blockmachines.multimachine.tm.microwave.desc.2=I said nuke the... I meant microwave supper!
 gt.blockmachines.multimachine.tm.microwave.cfgi.0=Power setting
 gt.blockmachines.multimachine.tm.microwave.cfgi.1=Timer setting
 gt.blockmachines.multimachine.tm.microwave.cfgo.0=Timer value
@@ -483,7 +483,6 @@ gt.blockmachines.multimachine.em.wormhole.hint.1=2 - Elemental Hatches or Molecu
 gt.blockmachines.multimachine.em.wormhole.desc.0=It is not full of worms.
 gt.blockmachines.multimachine.em.wormhole.desc.1=It is full of anti-worms!!!
 
-#GET INFODATA IS FUCKED!
 gt.blockmachines.multimachine.em.decay.name=Decay Generator
 gt.blockmachines.multimachine.em.decay.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.decay.hint.1=2 - Elemental Hatches or Molecular Casing
