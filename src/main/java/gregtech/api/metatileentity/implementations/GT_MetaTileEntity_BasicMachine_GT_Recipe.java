@@ -115,12 +115,12 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 7:
                         case 8:
                             if (Loader.isModLoaded("bartworks")) {
-                                aRecipe[i] = GT_ModHandler.getModItem("bartworks","BW_GlasBlocks",1,(this.mTier -3));
+                                aRecipe[i] = "blockGlass"+VN[aTier];
                                 break;
                             }
                         default:
                             if (Loader.isModLoaded("bartworks")) {
-                                aRecipe[i] = GT_ModHandler.getModItem("bartworks","BW_GlasBlocks",1,5);
+                                aRecipe[i] = "blockGlass"+VN[8];
                                 break;
                             } else {
                                 aRecipe[i] = Ic2Items.reinforcedGlass;
