@@ -1435,8 +1435,14 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_NaK_1.getWildcard(1L, new Object[0]), ItemList.Reactor_Coolant_NaK_1.get(1L, new Object[0]), 600);
         GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_NaK_3.getWildcard(1L, new Object[0]), ItemList.Reactor_Coolant_NaK_3.get(1L, new Object[0]), 1800);
         GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_NaK_6.getWildcard(1L, new Object[0]), ItemList.Reactor_Coolant_NaK_6.get(1L, new Object[0]), 3600);
-		GT_Values.RA.addVacuumFreezerRecipe(ItemList.neutroniumHeatCapacitor.getWildcard(1L), ItemList.neutroniumHeatCapacitor.get(1L), 10000000);
-		GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1L), 50);
+	    
+		//New CoolantCell 180-360-540
+	    GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_Le_1.getWildcard(1L, new Object[0]), ItemList.Reactor_Coolant_Le_1.get(1L, new Object[0]), 600);
+        GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_Le_2.getWildcard(1L, new Object[0]), ItemList.Reactor_Coolant_Le_2.get(1L, new Object[0]), 1800);
+        GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_Le_3.getWildcard(1L, new Object[0]), ItemList.Reactor_Coolant_Le_3.get(1L, new Object[0]), 3600);
+		
+	    GT_Values.RA.addVacuumFreezerRecipe(ItemList.neutroniumHeatCapacitor.getWildcard(1L), ItemList.neutroniumHeatCapacitor.get(1L), 10000000);
+	    GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1L), 50);
         GT_Values.RA.addVacuumFreezerRecipe(GT_ModHandler.getIC2Item("airCell", 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidAir, 1L), 240, 480);
        
         GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L), ItemList.TE_Hardened_Glass.get(2L, new Object[0]), 200, 16);
