@@ -348,7 +348,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
 
         // Only consume input if can store EU and push output
         if ((getBaseMetaTileEntity().getStoredEU() + tEU) < getBaseMetaTileEntity().getEUCapacity()
-                    && getBaseMetaTileEntity().addStackToSlot(getOutputSlot(), tStack)) {
+                && getBaseMetaTileEntity().addStackToSlot(getOutputSlot(), tStack)) {
             decrStackSize(getInputSlot(), 1);
         } else {
             tEU = 0;
@@ -365,11 +365,11 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         if (!hasEgg()) return 0;
         if (!sAllowMultipleEggs) {
             if (sActiveSiphon != null
-                        && sActiveSiphon != this
-                        && sActiveSiphon.getBaseMetaTileEntity() != null
-                        && !sActiveSiphon.getBaseMetaTileEntity().isInvalidTileEntity()
-                        && sActiveSiphon.isChunkLoaded()
-                        && sActiveSiphon.hasEgg()) {
+                    && sActiveSiphon != this
+                    && sActiveSiphon.getBaseMetaTileEntity() != null
+                    && !sActiveSiphon.getBaseMetaTileEntity().isInvalidTileEntity()
+                    && sActiveSiphon.isChunkLoaded()
+                    && sActiveSiphon.hasEgg()) {
                 getBaseMetaTileEntity().doExplosion(Integer.MAX_VALUE);
             } else {
                 setActiveSiphon(this);
@@ -425,7 +425,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             Aspect aspect = mAvailableEssentiaAspects.get(i);
             long tAspectEU = (sAspectsEnergy.get(aspect) * getEfficiency()) / 100;
             if (tAspectEU <= tEUtoGen
-                        && AspectSourceHelper.drainEssentia((TileEntity) getBaseMetaTileEntity(), aspect, ForgeDirection.UNKNOWN, mMagicalEnergyBB.getRange())) {
+                    && AspectSourceHelper.drainEssentia((TileEntity) getBaseMetaTileEntity(), aspect, ForgeDirection.UNKNOWN, mMagicalEnergyBB.getRange())) {
                 tEUtoGen -= tAspectEU;
                 tEU += tAspectEU;
             }
@@ -574,12 +574,12 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             mAvailableAspects.clear();
             for (int rX = -tRange; rX <= tRange; rX++) {
                 for (int rZ = -tRange; rZ <= tRange; rZ++) {
-                	// rY < rYMax is not a bug. See: thaumcraft.common.lib.events.EssentiaHandler.getSources()
-                	for (int rY = rYMin; rY < rYMax; rY++) {
+                    // rY < rYMax is not a bug. See: thaumcraft.common.lib.events.EssentiaHandler.getSources()
+                    for (int rY = rYMin; rY < rYMax; rY++) {
                         TileEntity tTile = tBaseMetaTileEntity.getTileEntityOffset(rX, rY, rZ);
                         if (tTile instanceof IAspectContainer) {
-                        	AspectList tAspectList = ((IAspectContainer) tTile).getAspects();
-                        	if (tAspectList == null || tAspectList.aspects.isEmpty()) continue;
+                            AspectList tAspectList = ((IAspectContainer) tTile).getAspects();
+                            if (tAspectList == null || tAspectList.aspects.isEmpty()) continue;
                             Set<Aspect> tAspects = tAspectList.aspects.keySet();
                             mAvailableAspects.addAll(tAspects);
                         }

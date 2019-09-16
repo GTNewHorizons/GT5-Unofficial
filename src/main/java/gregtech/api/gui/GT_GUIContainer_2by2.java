@@ -13,10 +13,10 @@ public class GT_GUIContainer_2by2 extends GT_GUIContainerMetaTile_Machine {
         super(new GT_Container_2by2(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "2by2.png");
         mName = aName;
     }
-    
+
     public GT_GUIContainer_2by2(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aBackground) {
         super(new GT_Container_2by2(aInventoryPlayer, aTileEntity), RES_PATH_GUI + aBackground + "2by2.png");
-        mName = aName;
+                mName = aName;
     }
 
     @Override

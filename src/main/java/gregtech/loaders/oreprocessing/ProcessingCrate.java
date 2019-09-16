@@ -39,6 +39,8 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_Values.RA.addUnboxingRecipe(GT_OreDictUnificator.get(OrePrefixes.crateGtPlate, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 16L), ItemList.Crate_Empty.get(1L, new Object[0]), 800, 1);
                 if (aSpecialRecipeReq2) GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 16L), GT_Proxy.tBits, new Object[]{"Xc", Character.valueOf('X'), OrePrefixes.crateGtPlate.get(aMaterial)});
                 break;
+		default:
+			break;
         }
     }
 }

@@ -17,7 +17,13 @@ import java.util.Collection;
 
 public class GT_CapeRenderer
         extends RenderPlayer {
-    private final ResourceLocation[] mCapes = {new ResourceLocation("gregtech:textures/BrainTechCape.png"), new ResourceLocation("gregtech:textures/GregTechCape.png"), new ResourceLocation("gregtech:textures/MrBrainCape.png"), new ResourceLocation("gregtech:textures/GregoriusCape.png")};
+        private final ResourceLocation[] mCapes = { new ResourceLocation("gregtech:textures/BrainTechCape.png"),
+            new ResourceLocation("gregtech:textures/GregTechCape.png"),
+            new ResourceLocation("gregtech:textures/MrBrainCape.png"),
+            new ResourceLocation("gregtech:textures/GregoriusCape.png"),
+            new ResourceLocation("gregtech:textures/DonorCape.png"),
+            new ResourceLocation("gregtech:textures/DevCape.png"),
+            new ResourceLocation("gregtech:textures/TecCape.png")};
     private final Collection<String> mCapeList;
 
     public GT_CapeRenderer(Collection<String> aCapeList) {
@@ -52,6 +58,16 @@ public class GT_CapeRenderer
             if (aPlayer.getDisplayName().equalsIgnoreCase("GregoriusT")) {
                 tResource = this.mCapes[3];
             }
+            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase()+":capedonor")) {
+                tResource = this.mCapes[4];
+            }
+            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase()+":capedev")) {
+                tResource = this.mCapes[5];
+            }
+            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase()+":capetec")) {
+                tResource = this.mCapes[6];
+            }
+
             if ((tResource != null) && (!aPlayer.getHideCape())) {
                 bindTexture(tResource);
                 GL11.glPushMatrix();

@@ -62,7 +62,6 @@ public class Behaviour_Prospecting
 		    	(aBlock == GregTech_API.sBlockOresUb1)  || 
 		    	(aBlock == GregTech_API.sBlockOresUb2)  ||  
 		    	(aBlock == GregTech_API.sBlockOresUb3)  || 
-		    	//(aBlock == GregTech_API.sBlockOresGC)  ||
 		    	(aBlock == GregTech_API.sBlockOres1)){
 	            if (GT_ModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {
               GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(Integer.valueOf(1)), 1.0F, -1.0F, aX, aY, aZ);

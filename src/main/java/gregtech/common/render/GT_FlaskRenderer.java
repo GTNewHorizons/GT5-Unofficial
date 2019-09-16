@@ -15,22 +15,22 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
- @SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+@SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
 public final class GT_FlaskRenderer implements net.minecraftforge.client.IItemRenderer {
     public GT_FlaskRenderer() {
         MinecraftForgeClient.registerItemRenderer(ItemList.VOLUMETRIC_FLASK.getItem(), this);
     }
 
-     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return type != ItemRenderType.FIRST_PERSON_MAP;
     }
 
- 
-     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
+
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
         return type == ItemRenderType.ENTITY;
     }
 
-     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GT_VolumetricFlask cell = (GT_VolumetricFlask) item.getItem();
         IIcon icon = item.getIconIndex();
         GL11.glEnable(3042);
@@ -47,7 +47,7 @@ public final class GT_FlaskRenderer implements net.minecraftforge.client.IItemRe
             GL11.glTranslated(-1.0D, -1.0D, 0.0D);
         }
 
-         FluidStack fs = cell.getFluid(item);
+        FluidStack fs = cell.getFluid(item);
         if (fs != null) {
             IIcon iconWindow = cell.iconWindow;
             IIcon fluidicon = fs.getFluid().getIcon(fs);
@@ -61,7 +61,7 @@ public final class GT_FlaskRenderer implements net.minecraftforge.client.IItemRe
                 DrawUtil.renderIcon(iconWindow, 1.0D, -0.0615D, 0.0F, 0.0F, -1.0F);
             }
 
-             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+            Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
             GL11.glBlendFunc(770, 771);
             GL11.glDepthFunc(514);
             GL11.glColor3ub((byte) (fluidColor >> 16), (byte) (fluidColor >> 8), (byte) fluidColor);
@@ -72,11 +72,11 @@ public final class GT_FlaskRenderer implements net.minecraftforge.client.IItemRe
                 DrawUtil.renderIcon(fluidicon, 1.0D, -0.0615D, 0.0F, 0.0F, -1.0F);
             }
 
-             GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);
+            GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);
             GL11.glDepthFunc(515);
         }
 
-         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
+        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
         GL11.glBlendFunc(770, 771);
         if (type.equals(ItemRenderType.INVENTORY)) {
             DrawUtil.renderIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);

@@ -26,6 +26,8 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -480,6 +482,19 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
+    }
+
+    @Override
+    public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel, ArrayList<String> aList) {
+        aList.addAll(Arrays.asList("Primary pumping fluid:   " + (this.mPrimaryPumpedBlock != null ? this.mPrimaryPumpedBlock.getLocalizedName() : "None"),
+                                   "Secondary pumping fluid: " + (this.mSecondaryPumpedBlock != null ? this.mSecondaryPumpedBlock.getLocalizedName() : "None"),
+                                   "Pumps below: " + mPumpCountBelow,
+                                   "Queue size: " + mPumpList.size(),
+                                   "Pump head at Y: " + getYOfPumpHead(),
+                                   "Pump timer: " + mPumpTimer,
+                                   "Meta Entity Timer: " + getBaseMetaTileEntity().getTimer()));
+        return aList;
+
     }
 
 

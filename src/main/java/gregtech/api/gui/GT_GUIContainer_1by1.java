@@ -13,7 +13,7 @@ public class GT_GUIContainer_1by1 extends GT_GUIContainerMetaTile_Machine {
         super(new GT_Container_1by1(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "1by1.png");
         mName = aName;
     }
-    
+
     public GT_GUIContainer_1by1(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aBackground) {
         super(new GT_Container_1by1(aInventoryPlayer, aTileEntity), RES_PATH_GUI + aBackground + "1by1.png");
         mName = aName;

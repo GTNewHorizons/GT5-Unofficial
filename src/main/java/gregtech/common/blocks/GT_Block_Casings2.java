@@ -57,7 +57,7 @@ public class GT_Block_Casings2
         
         //Special handler for Pyrolyse Oven Casing
         Textures.BlockIcons.CASING_BLOCKS[22] = new GT_CopiedBlockTexture(Block.getBlockFromItem(ItemList.Casing_ULV.get(1).getItem()), 6, 0,Dyes.MACHINE_METAL.mRGBa);
-    }
+}
 
     public IIcon getIcon(int aSide, int aMeta) {
         switch (aMeta) {

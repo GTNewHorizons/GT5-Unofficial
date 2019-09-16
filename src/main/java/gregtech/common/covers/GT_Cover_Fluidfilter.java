@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.*;
 import static gregtech.api.enums.GT_Values.E;
 
-
 public class GT_Cover_Fluidfilter extends GT_CoverBehavior {
 
     // Uses the lower 3 bits of the cover variable, so we have 8 options to work with (0-7)
@@ -26,15 +25,16 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehavior {
         int aFilterFluid = aCoverVariable >>> 3;
         final Fluid fluid = FluidRegistry.getFluid(aFilterFluid);
         if(fluid == null) return E;
-
+        
         final FluidStack sFluid = new FluidStack(fluid, 1000);
         return(String.format("Filtering Fluid: %s  Mode: %s", sFluid.getLocalizedName(), getFilterMode(aFilterMode)));
     }
-            
+
+
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return aCoverVariable;
     }
-    
+
     public String getFilterMode(int aFilterMode) {
         switch(aFilterMode) {
             case FILTER_INPUT_DENY_OUTPUT: return(trans("043", "Filter input, Deny output"));
@@ -48,24 +48,25 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehavior {
             default: return("UNKNOWN");
         }
 
-     }
+    }
 
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int aFilterMode = aCoverVariable & 7;
-        aCoverVariable ^=aFilterMode;
+        aCoverVariable ^= aFilterMode;
         aFilterMode = (aFilterMode + (aPlayer.isSneaking()? -1 : 1)) % 8;
         if (aFilterMode < 0) {
             aFilterMode = 7;
         }
-        
+
         GT_Utility.sendChatToPlayer(aPlayer, getFilterMode(aFilterMode));
-        
+
         aCoverVariable|=aFilterMode;
+
         return aCoverVariable;
     }
-    
+
     public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-       //System.out.println("rightclick");
+        //GT_FML_LOGGER.info("rightclick");
         if (
                 ((aX > 0.375D) && (aX < 0.625D)) ||
                 ((aSide > 3) && ((aY > 0.375D) && (aY < 0.625D))) ||
@@ -77,19 +78,19 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehavior {
             if (tStack == null) return true;
 
             FluidStack tFluid = FluidContainerRegistry.getFluidForFilledItem(tStack);
-            if(tFluid!=null){
+            if (tFluid != null) {
                 int aFluid = tFluid.getFluidID();
                 aCoverVariable = (aCoverVariable & 7) | (aFluid << 3);
                 aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
-                FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid),1000);
+                FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
                 GT_Utility.sendChatToPlayer(aPlayer, trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
-            }else if(tStack.getItem() instanceof IFluidContainerItem){
-                IFluidContainerItem tContainer = (IFluidContainerItem)tStack.getItem();
-                if(tContainer.getFluid(tStack) != null) {
+            } else if (tStack.getItem() instanceof IFluidContainerItem) {
+                IFluidContainerItem tContainer = (IFluidContainerItem) tStack.getItem();
+                if (tContainer.getFluid(tStack) != null) {
                     int aFluid = tContainer.getFluid(tStack).getFluidID();
                     aCoverVariable = (aCoverVariable & 7) | (aFluid << 3);
                     aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
-                    FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid),1000);
+                    FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
                     GT_Utility.sendChatToPlayer(aPlayer, trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
                 }
             }

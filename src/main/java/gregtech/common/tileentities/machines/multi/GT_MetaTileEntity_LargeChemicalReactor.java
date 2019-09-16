@@ -50,7 +50,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_Mu
 				"1x Input Bus/Hatch (Any inert casing)",
 				"1x Output Bus/Hatch (Any inert casing)",
 				"1x Maintenance Hatch (Any inert casing)",
-				"1x Energy Hatch (Any inert casing)" };
+				"1x Energy Hatch (Any inert casing)"};
 	}
 
 	@Override
@@ -64,11 +64,11 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_Mu
 		}
 		return new ITexture[] { Textures.BlockIcons.casingTexturePages[1][48] };
 	}
-
+	
 	@Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeChemicalReactor.png");
-	}
+    }
 
 	@Override
 	public boolean isCorrectMachinePart(ItemStack aStack) {
@@ -134,7 +134,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_Mu
 					maxProgresstime = 2;
 					EUt = recipe.mEUt * recipe.mDuration / 2;
 				}
-
+				
 				this.mEUt = -EUt;
 				this.mMaxProgresstime = maxProgresstime;
 				this.mOutputItems = recipe.mOutputs;
@@ -182,15 +182,15 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_Mu
 						hasHeatingCoil = true;
 						continue;
 					}
-					if (!addInputToMachineList(tileEntity, CASING_INDEX) && !addOutputToMachineList(tileEntity, CASING_INDEX)
-							&& !addMaintenanceToMachineList(tileEntity, CASING_INDEX)
-							&& !addEnergyInputToMachineList(tileEntity, CASING_INDEX)) {
-						if (block == GregTech_API.sBlockCasings8 && aBaseMetaTileEntity.getMetaIDOffset(x, y, z) == 0) {
-							casingAmount++;
-						} else {
-							return false;
+						if (!addInputToMachineList(tileEntity, CASING_INDEX) && !addOutputToMachineList(tileEntity, CASING_INDEX)
+								&& !addMaintenanceToMachineList(tileEntity, CASING_INDEX)
+								&& !addEnergyInputToMachineList(tileEntity, CASING_INDEX)) {
+							if (block == GregTech_API.sBlockCasings8 && aBaseMetaTileEntity.getMetaIDOffset(x, y, z) == 0) {
+								casingAmount++;
+							} else {
+								return false;
+							}
 						}
-					}
 
 				}
 			}

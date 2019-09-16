@@ -2,10 +2,6 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.*;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -29,25 +25,25 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 if (aMaterial.mBlastFurnaceTemp <= 1000 && aMaterial.mDirectSmelting.mBlastFurnaceTemp <= 1000)
                     GT_ModHandler.addRCBlastFurnaceRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), aMaterial.mBlastFurnaceTemp * 2);
             } else {
-            	OrePrefixes outputPrefix;
-            	int outputSize;
+                OrePrefixes outputPrefix;
+                int outputSize;
                 switch (aPrefix) {
                     case crushed:
                     case crushedPurified:
                     case crushedCentrifuged:
-                    	if (aMaterial.mDirectSmelting == aMaterial) {
-                    		outputSize = 10;
-                        	outputPrefix = OrePrefixes.nugget;
-                    	} else {
-                    		if (GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
-                    			outputSize = 6;
-                    			outputPrefix = OrePrefixes.nugget;
-                    		} else {
-                    			outputSize = 1;
-                    			outputPrefix = OrePrefixes.ingot;                    			
-                    		}
-                    	}
-                    	break;
+                        if (aMaterial.mDirectSmelting == aMaterial) {
+                            outputSize = 10;
+                            outputPrefix = OrePrefixes.nugget;
+                        } else {
+                            if (GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
+                                outputSize = 6;
+                                outputPrefix = OrePrefixes.nugget;
+                            } else {
+                                outputSize = 1;
+                                outputPrefix = OrePrefixes.ingot;
+                            }
+                        }
+                        break;
                     case dust:
             			int outputAmount = GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
                     	if (aMaterial.mDirectSmelting != aMaterial) {
@@ -59,30 +55,31 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     	    	GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), Materials.SiliconDioxide.getDust(2), 2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Ferrosilite.getDust(outputAmount),          2400);
                     		} else if (aMaterial == Materials.Tetrahedrite) {
                     	    	GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), GT_Values.NI,                        2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Antimony.getNuggets(3 * outputAmount),      2400);
-                    		} else if (aMaterial == Materials.Galena) {
-                    			GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), GT_Values.NI,                        2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Silver.getNuggets(6 * outputAmount),        2400);
-                    		}
+                            } else if (aMaterial == Materials.Galena) {
+                                GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), GT_Values.NI,                        2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Silver.getNuggets(3 * outputAmount),        2400);
+
+                            }
                     	}
                     case dustImpure:
                     case dustPure:
                     case dustRefined:
-                    	if (aMaterial.mDirectSmelting == aMaterial) {
-                    		outputPrefix = OrePrefixes.ingot;
-                    		outputSize = 1;
-                    	} else {
-                    		if (GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
-                    			outputSize = 6;
-                    			outputPrefix = OrePrefixes.nugget;
-                    		} else {
-                    			outputSize = 1;
-                    			outputPrefix = OrePrefixes.ingot;                    			
-                    		}
-                    	}
+                        if (aMaterial.mDirectSmelting == aMaterial) {
+                            outputPrefix = OrePrefixes.ingot;
+                            outputSize = 1;
+                        } else {
+                            if (GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
+                            outputSize = 6;
+                                outputPrefix = OrePrefixes.nugget;
+                            } else {
+                                outputSize = 1;
+                                outputPrefix = OrePrefixes.ingot;
+                            }
+                        }
                         break;
-                    default:
-                		outputPrefix = OrePrefixes.ingot;
-                		outputSize = 1;
-                		break;
+                        default:
+                            outputPrefix = OrePrefixes.ingot;
+                            outputSize = 1;
+                            break;
                 }
                 ItemStack tStack = GT_OreDictUnificator.get(outputPrefix, aMaterial.mDirectSmelting, outputSize);
                 if (tStack == null)

@@ -35,8 +35,6 @@ import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.opengl.GL11;
 
@@ -76,15 +74,18 @@ public class GT_Client extends GT_Proxy
     private final List mMoltenNegG;
     private final List mMoltenNegB;
     private final List mMoltenNegA = Arrays.asList(new Object[0]);
+    private long mAnimationTick;
     /**This is the place to def the value used below**/
     private long afterSomeTime;
-    private long mAnimationTick;
     private boolean mAnimationDirection;
-    
+    private boolean isFirstClientPlayerTick;
+    private String mMessage;
     public GT_Client() {
     	mCapeRenderer = new GT_CapeRenderer(mCapeList);
         mAnimationTick = 0L;
         mAnimationDirection = false;
+        isFirstClientPlayerTick = true;
+        mMessage = "";
         mPosR = Arrays.asList(new Materials[]{
                 /**Materials.ChargedCertusQuartz, **/Materials.Enderium, Materials.Vinteum, Materials.Uranium235, Materials.InfusedGold, Materials.Plutonium241, Materials.NaquadahEnriched, Materials.Naquadria, Materials.InfusedOrder, Materials.Force,
                 Materials.Pyrotheum, Materials.Sunnarium, Materials.Glowstone, Materials.Thaumium, Materials.InfusedVis, Materials.InfusedAir, Materials.InfusedFire, Materials.FierySteel, Materials.Firestone
@@ -215,44 +216,45 @@ public class GT_Client extends GT_Proxy
         GL11.glEnd();
         GL11.glPopMatrix();
     }
-    
-    @SubscribeEvent
-    public void manipulateDensity(EntityViewRenderEvent.FogDensity event) {
-    	if(GT_Pollution.mPlayerPollution > (GT_Mod.gregtechproxy.mPollutionSmogLimit)){    	
-        event.density = (0.15f*(Math.min(GT_Pollution.mPlayerPollution/((float)GT_Mod.gregtechproxy.mPollutionSourRainLimit),1.0f)))+0.1f;
-        event.setCanceled(true);
-    	}
-    }
 
-    @SubscribeEvent
-    public void manipulateColor(EntityViewRenderEvent.FogColors event) {
-    	if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit){
-        event.red = 140f/255f;
-        event.green = 80f/255f;
-        event.blue = 40f/255f;
-    	}
-    }
-    
-    @SubscribeEvent
-    public void manipulateGrassColor(BiomeEvent.GetGrassColor event) {
-    	if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit){
-        event.newColor = 0xD2691E;
-    	}
-    }
+    //TODO less bad
+    //@SubscribeEvent
+    //public void manipulateDensity(EntityViewRenderEvent.FogDensity event) {
+    //	if(GT_Pollution.mPlayerPollution > (GT_Mod.gregtechproxy.mPollutionSmogLimit)){
+    //    event.density = (0.15f*(Math.min(GT_Pollution.mPlayerPollution/((float)GT_Mod.gregtechproxy.mPollutionSourRainLimit),1.0f)))+0.1f;
+    //    event.setCanceled(true);
+    //	}
+    //}
 
-    @SubscribeEvent
-    public void manipulateWaterColor(BiomeEvent.GetWaterColor event) {
-    	if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit){
-        event.newColor = 0x556B2F;
-    	}
-    }
+    //@SubscribeEvent
+    //public void manipulateColor(EntityViewRenderEvent.FogColors event) {
+    //    if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit){
+    //        event.red = 140f/255f;
+    //        event.green = 80f/255f;
+    //        event.blue = 40f/255f;
+    //	}
+    //}
 
-    @SubscribeEvent
-    public void manipulateFoliageColor(BiomeEvent.GetFoliageColor event) {
-    	if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit){
-        event.newColor = 0xCD853F;
-    	}
-    }
+    //@SubscribeEvent
+    //public void manipulateGrassColor(BiomeEvent.GetGrassColor event) {
+    //	if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit){
+    //        event.newColor = 0xD2691E;
+    //	}
+    //}
+
+    //@SubscribeEvent
+    //public void manipulateWaterColor(BiomeEvent.GetWaterColor event) {
+    //	if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit){
+    //        event.newColor = 0x556B2F;
+    //	}
+    //}
+
+    //@SubscribeEvent
+    //public void manipulateFoliageColor(BiomeEvent.GetFoliageColor event) {
+    //	if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit){
+    //        event.newColor = 0xCD853F;
+    //	}
+    //}
 
     public boolean isServerSide() {
         return true;
@@ -337,7 +339,7 @@ public class GT_Client extends GT_Proxy
 
     public void run() {
         try {
-            GT_Log.out.println("Skip: GT_Mod: Downloading Cape List.");
+            GT_Log.out.println("GT_Mod: Downloading Cape List.");
             @SuppressWarnings("resource")
             Scanner tScanner = new Scanner(new URL("http://gregtech.overminddl1.com/com/gregoriust/gregtech/supporterlist.txt").openStream());
             while (tScanner.hasNextLine()) {
@@ -348,8 +350,28 @@ public class GT_Client extends GT_Proxy
             }
         } catch (Throwable e) {
         }
+        try {
+            GT_Log.out.println("GT New Horizons: Downloading Cape List.");
+                 @SuppressWarnings("resource")
+                 Scanner tScanner = new Scanner(new URL("https://raw.githubusercontent.com/GTNewHorizons/CustomGTCapeHook-Cape-List/master/capes.txt").openStream());
+                 while (tScanner.hasNextLine()) {
+                     String tName = tScanner.nextLine();
+                     if (tName.contains(":")) {
+                     int splitLocation = tName.indexOf(":");
+                     String username = tName.substring(0, splitLocation);
+                     if (!this.mCapeList.contains(username.toLowerCase()) && !this.mCapeList.contains(tName.toLowerCase())) {
+                     this.mCapeList.add(tName.toLowerCase());
+                 }
+                 } else {
+                     if (!this.mCapeList.contains(tName.toLowerCase())) {
+                     this.mCapeList.add(tName.toLowerCase());
+                     }
+                 }
+              }
+                 } catch (Throwable e) {
+            }
         /**try {
-            GT_Log.out.println("Skip: GT_Mod: Downloading News.");
+            GT_Log.out.println("GT_Mod: Downloading News.");
             @SuppressWarnings("resource")
             Scanner tScanner = new Scanner(new URL("http://files.minecraftforge.net/maven/com/gregoriust/gregtech/message.txt").openStream());
             while (tScanner.hasNextLine()) {
@@ -372,7 +394,7 @@ public class GT_Client extends GT_Proxy
                 afterSomeTime=0;
                 StatFileWriter sfw= Minecraft.getMinecraft().thePlayer.getStatFileWriter();
                 try {
-                    for(GT_Recipe recipe: GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList){
+                    for(GT_Recipe recipe:GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList){
                         recipe.mHidden=!sfw.hasAchievementUnlocked(GT_Mod.achievements.getAchievement(recipe.getOutput(0).getUnlocalizedName()));
                     }
                 }catch (Exception e){}
@@ -433,8 +455,8 @@ public class GT_Client extends GT_Proxy
                 }
                 if (aTileEntity instanceof BaseTileEntity && (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWireCutterList) || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSolderingToolList))) {
                 	drawGrid(aEvent);
-                	return;
-            	}
+                    return;
+                }
             } catch (Throwable e) {
                 if (GT_Values.D1) {
                     e.printStackTrace(GT_Log.err);

@@ -19,7 +19,7 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_TieredMach
     public int mItemCount = 0;
     public ItemStack mItemStack = null;
     public GT_MetaTileEntity_QuantumChest(int aID, String aName, String aNameRegional, int aTier) {
-    	super(aID, aName, aNameRegional, aTier, 3, "This Chest stores " + CommonSizeCompute(aTier) + " Blocks");
+        super(aID, aName, aNameRegional, aTier, 3, "This Chest stores " + CommonSizeCompute(aTier) + " Blocks");
     }
 
     public GT_MetaTileEntity_QuantumChest(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

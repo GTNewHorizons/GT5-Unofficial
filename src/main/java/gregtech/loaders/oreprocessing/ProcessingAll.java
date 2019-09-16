@@ -4,7 +4,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingAll implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingAll implements gregtech.api.interfaces.IOreRecipeRegistrator {//TODO ACTUALLY COMPARE ALL THE PROCESSING CLASSES
     public ProcessingAll() {
         for (OrePrefixes tPrefix : OrePrefixes.values()) tPrefix.add(this);
     }

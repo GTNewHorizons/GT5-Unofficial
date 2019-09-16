@@ -21,9 +21,9 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 
 public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBase {
-	private ForgeDirection orientation;
-	private int controllerX, controllerZ;
-	
+    private ForgeDirection orientation;
+    private int controllerX, controllerZ;
+
     public GT_MetaTileEntity_OilCracker(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -67,7 +67,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sCrakingRecipes.findRecipe(
-        		getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluidInputs ,new ItemStack[]{mInventory[1]});
+                getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluidInputs ,new ItemStack[]{mInventory[1]});
         if (tRecipe != null && tRecipe.isRecipeInputEqual(true, tFluidInputs, new ItemStack[]{mInventory[1]})) {
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
@@ -89,9 +89,9 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-    	this.orientation = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing());
-    	this.controllerX = aBaseMetaTileEntity.getXCoord();
-    	this.controllerZ = aBaseMetaTileEntity.getZCoord();
+        this.orientation = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing());
+        this.controllerX = aBaseMetaTileEntity.getXCoord();
+        this.controllerZ = aBaseMetaTileEntity.getZCoord();
         int xDir = this.orientation.offsetX;
         int zDir = this.orientation.offsetZ;
         int amount = 0;
@@ -262,7 +262,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
                         continue;
                     }
                     if (aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) == GregTech_API.sBlockCasings1 &&
-                        aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos) == 12)
+                            aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos) == 12)
                     {
                         aBaseMetaTileEntity.getWorld().setBlock(xPos, yPos, zPos, GregTech_API.sBlockCasings5, 0, 3);
                     }
@@ -270,33 +270,33 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
             }
         }
     }
-    
+
     @Override
     public ArrayList<FluidStack> getStoredFluids() {
         ArrayList<FluidStack> rList = new ArrayList<FluidStack>();
         for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
             tHatch.mRecipeMap = getRecipeMap();
             if (isValidMetaTileEntity(tHatch) && tHatch.getFillableStack() != null) {
-            	FluidStack tStack = tHatch.getFillableStack();
-            	if (tStack.isFluidEqual(GT_ModHandler.getSteam(1000)) || tStack.isFluidEqual(Materials.Hydrogen.getGas(1000))) {
-            		if (isHatchInMiddleRing(tHatch)) {
-                        rList.add(tStack);            			
-            		}
-            	} else {
-            		if (!isHatchInMiddleRing(tHatch)) {
-            			rList.add(tStack);
-            		}
-            	}
+                FluidStack tStack = tHatch.getFillableStack();
+                if (tStack.isFluidEqual(GT_ModHandler.getSteam(1000)) || tStack.isFluidEqual(Materials.Hydrogen.getGas(1000))) {
+                    if (isHatchInMiddleRing(tHatch)) {
+                        rList.add(tStack);
+                    }
+                } else {
+                    if (!isHatchInMiddleRing(tHatch)) {
+                        rList.add(tStack);
+                    }
+                }
             }
         }
         return rList;
     }
 
     private boolean isHatchInMiddleRing(GT_MetaTileEntity_Hatch_Input inputHatch){
-    	if (orientation == ForgeDirection.NORTH || orientation == ForgeDirection.SOUTH) {
-    		return inputHatch.getBaseMetaTileEntity().getXCoord() == this.controllerX;
-    	} else {
-    		return inputHatch.getBaseMetaTileEntity().getZCoord() == this.controllerZ;
-    	}
+        if (orientation == ForgeDirection.NORTH || orientation == ForgeDirection.SOUTH) {
+            return inputHatch.getBaseMetaTileEntity().getXCoord() == this.controllerX;
+        } else {
+            return inputHatch.getBaseMetaTileEntity().getZCoord() == this.controllerZ;
+        }
     }
 }

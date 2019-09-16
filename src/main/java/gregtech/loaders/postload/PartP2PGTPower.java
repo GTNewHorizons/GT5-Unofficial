@@ -1,7 +1,5 @@
 package gregtech.loaders.postload;
 
-import java.lang.reflect.Field;
-
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.ticking.IGridTickable;
 import appeng.api.networking.ticking.TickRateModulation;
@@ -15,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.lang.reflect.Field;
 
 public class PartP2PGTPower extends PartP2PIC2Power implements IGridTickable {
     public PartP2PGTPower(ItemStack is) {

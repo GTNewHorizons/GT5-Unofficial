@@ -23,10 +23,10 @@ public class GT_MetaTileEntity_LargeBoiler_Bronze
     	return "Bronze";
     }
 
-	@Override
-	public String getCasingBlockType() {
-		return "Plated Bricks";
-	}
+    @Override
+    public String getCasingBlockType() {
+        return "Plated Bricks";
+    }
 
     public Block getCasingBlock() {
         return GregTech_API.sBlockCasings1;

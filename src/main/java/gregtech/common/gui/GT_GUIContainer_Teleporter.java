@@ -21,6 +21,7 @@ public class GT_GUIContainer_Teleporter
             this.fontRendererObj.drawString("Z: " + GT_Utility.parseNumberToString(((GT_Container_Teleporter) this.mContainer).mTargetZ), 46, 32, 16448255);
             if (((GT_Container_Teleporter) this.mContainer).mEgg > 0) {
                 this.fontRendererObj.drawString("Dim: " + GT_Utility.parseNumberToString(((GT_Container_Teleporter) this.mContainer).mTargetD), 46, 40, 16448255);
+                this.fontRendererObj.drawString("Dim Valid: " + (GT_Utility.isRealDimension(((GT_Container_Teleporter) this.mContainer).mTargetD) ? "Yes":"No"), 46, 48, 16448255);
             }
         }
     }

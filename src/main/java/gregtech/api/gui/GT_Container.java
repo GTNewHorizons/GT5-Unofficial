@@ -267,7 +267,7 @@ public class GT_Container extends Container {
 
         mTileEntity.markDirty();
 
-      //null checks and checks if the item can be stacked (maxStackSize > 1)
+        //null checks and checks if the item can be stacked (maxStackSize > 1)
         if (getSlotCount() > 0 && slotObject != null && slotObject.getHasStack() && !(slotObject instanceof GT_Slot_Holo)) {
             ItemStack stackInSlot = slotObject.getStack();
             stack = GT_Utility.copy(stackInSlot);

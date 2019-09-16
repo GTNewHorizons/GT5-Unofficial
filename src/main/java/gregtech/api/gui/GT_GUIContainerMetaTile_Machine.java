@@ -1,9 +1,9 @@
 package gregtech.api.gui;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemDye;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -28,11 +28,11 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer {
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
         super.drawGuiContainerBackgroundLayer(par1, par2, par3);
         if (GregTech_API.sColoredGUI && mContainer != null && mContainer.mTileEntity != null) {
-            int tColor = mContainer.mTileEntity.getColorization() & 15;
-            if (tColor < ItemDye.field_150922_c.length) {
-                tColor = ItemDye.field_150922_c[tColor];
-                GL11.glColor4f(((tColor >> 16) & 255) / 255.0F, ((tColor >> 8) & 255) / 255.0F, (tColor & 255) / 255.0F, 1.0F);
-            } else GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        } else GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            byte colorByte=mContainer.mTileEntity.getColorization();
+            Dyes color;
+            if(colorByte != -1) color= Dyes.get(colorByte);
+            else color=Dyes.MACHINE_METAL;
+            GL11.glColor3ub((byte)color.mRGBa[0], (byte)color.mRGBa[1], (byte)color.mRGBa[2]);
+        } else GL11.glColor3ub((byte)255,(byte)255,(byte)255);
     }
 }

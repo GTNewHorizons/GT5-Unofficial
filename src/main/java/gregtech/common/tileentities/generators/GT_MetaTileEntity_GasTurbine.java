@@ -17,7 +17,6 @@ public class GT_MetaTileEntity_GasTurbine
 
     public int mEfficiency;
 
-
     public GT_MetaTileEntity_GasTurbine(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[]{
                 "Requires flammable Gasses",
