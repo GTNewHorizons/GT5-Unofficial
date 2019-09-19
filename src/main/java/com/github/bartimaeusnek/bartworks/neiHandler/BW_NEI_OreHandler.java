@@ -30,18 +30,17 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_OreLayer;
-import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import cpw.mods.fml.common.event.FMLInterModComms;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 public class BW_NEI_OreHandler extends TemplateRecipeHandler {
 
@@ -60,7 +59,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(0,40,40,10),"quickanddirtyneihandler"));
+        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(0,40,40,120),"quickanddirtyneihandler"));
     }
 
     @Override
@@ -71,93 +70,27 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equalsIgnoreCase("quickanddirtyneihandler")) {
-            for (int i = 0; i < Werkstoff.werkstoffHashMap.values().size(); i++) {
-                Werkstoff w = Werkstoff.werkstoffHashMap.get((short)i);
-                if (w == null || w == Werkstoff.default_null_Werkstoff)
-                    continue;
-                if (w.getGenerationFeatures().hasOres()) {
-                    ItemStack result = w.get(OrePrefixes.ore);
-                    TemplateRecipeHandler.CachedRecipe tmp = new TemplateRecipeHandler.CachedRecipe() {
-
-                        PositionedStack stack = new PositionedStack(result, 0, 0);
-
-                        @Override
-                        public PositionedStack getResult() {
-                            return this.stack;
-                        }
-
-                        @Override
-                        public List<PositionedStack> getOtherStacks() {
-                            ArrayList<PositionedStack> ret = new ArrayList<>();
-                            for (int i = 0; i < BW_OreLayer.sList.size(); i++) {
-                                if (BW_OreLayer.sList.get(i) instanceof BW_WorldGenRoss128b) {
-                                    int baseMeta = result.getItemDamage();
-                                    BW_WorldGenRoss128b worldGen = ((BW_WorldGenRoss128b) BW_OreLayer.sList.get(i));
-                                    if (worldGen.mPrimaryMeta == baseMeta || worldGen.mSecondaryMeta == baseMeta || worldGen.mBetweenMeta == baseMeta || worldGen.mSporadicMeta == baseMeta) {
-                                        ItemStack other;
-                                        other = result.copy().setStackDisplayName(result.getDisplayName().replaceAll("Ore", "Vein"));
-                                        this.stack = new PositionedStack(other, 83, 0);
-                                        if (((worldGen.bwOres & 0b1000) != 0)) {
-                                            other = result.copy();
-                                            other.setItemDamage(worldGen.mPrimaryMeta);
-                                            ret.add(new PositionedStack(other, 0, 12));
-                                        } else {
-                                            other = new ItemStack(GregTech_API.sBlockOres1);
-                                            other.setItemDamage(worldGen.mPrimaryMeta);
-                                            ret.add(new PositionedStack(other, 0, 12));
-                                        }
-                                        if (((worldGen.bwOres & 0b0100) != 0)) {
-                                            other = result.copy();
-                                            other.setItemDamage(worldGen.mSecondaryMeta);
-                                            ret.add(new PositionedStack(other, 20, 12));
-                                        } else {
-                                            other = new ItemStack(GregTech_API.sBlockOres1);
-                                            other.setItemDamage(worldGen.mSecondaryMeta);
-                                            ret.add(new PositionedStack(other, 20, 12));
-                                        }
-                                        if (((worldGen.bwOres & 0b0010) != 0)) {
-                                            other = result.copy();
-                                            other.setItemDamage(worldGen.mBetweenMeta);
-                                            ret.add(new PositionedStack(other, 40, 12));
-                                        } else {
-                                            other = new ItemStack(GregTech_API.sBlockOres1);
-                                            other.setItemDamage(worldGen.mBetweenMeta);
-                                            ret.add(new PositionedStack(other, 40, 12));
-                                        }
-                                        if (((worldGen.bwOres & 0b0001) != 0)) {
-                                            other = result.copy();
-                                            other.setItemDamage(worldGen.mSporadicMeta);
-                                            ret.add(new PositionedStack(other, 60, 12));
-                                        } else {
-                                            other = new ItemStack(GregTech_API.sBlockOres1);
-                                            other.setItemDamage(worldGen.mSporadicMeta);
-                                            ret.add(new PositionedStack(other, 60, 12));
-                                        }
-                                        break;
-                                    }
-                                }
-                            }
-                            return ret;
-                        }
-                    };
-                    boolean add = true;
-                    for (TemplateRecipeHandler.CachedRecipe recipe: this.arecipes) {
-                        if (recipe == null || recipe.getOtherStacks() == null || recipe.getOtherStacks().get(0) == null || recipe.getOtherStacks().get(0).item == null)
-                            continue;
-                        if (GT_Utility.areStacksEqual(recipe.getOtherStacks().get(0).item,tmp.getOtherStacks().get(0).item))
-                            add = false;
-                    }
-                    if (add)
-                        this.arecipes.add(tmp);
-                }
-            }
-        } else super.loadCraftingRecipes(outputId, results);
+            HashSet<ItemStack> result = new HashSet<>();
+            Werkstoff.werkstoffHashSet.stream().filter(w -> w.getGenerationFeatures().hasOres()).forEach(w -> result.add(w.get(OrePrefixes.ore)));
+            result.forEach(this::loadCraftingRecipes);
+            HashSet<TemplateRecipeHandler.CachedRecipe> hashSet = new HashSet<>(this.arecipes);
+            this.arecipes.clear();
+            this.arecipes.addAll(hashSet);
+        }
+        if (outputId.equals("item")) {
+            this.loadCraftingRecipes((ItemStack)results[0]);
+            HashSet<TemplateRecipeHandler.CachedRecipe> hashSet = new HashSet<>(this.arecipes);
+            this.arecipes.clear();
+            this.arecipes.addAll(hashSet);
+        }
     }
 
     @Override
     public void drawExtras(int recipe) {
-    if ((recipe < this.arecipes.size()) && (this.arecipes.get(recipe).getOtherStacks().size() >= 4) ) {
-        GuiDraw.drawString(ChatColorHelper.BOLD + "DIM:" + ChatColorHelper.RESET + " Ross128", 0, 40, 0, false);
+    if ((recipe < this.arecipes.size()) && (this.arecipes.get(recipe) instanceof CachedOreRecipe) ) {
+        CachedOreRecipe cachedOreRecipe = (CachedOreRecipe) this.arecipes.get(recipe);
+
+        GuiDraw.drawString(ChatColorHelper.BOLD + "DIM: " + ChatColorHelper.RESET + cachedOreRecipe.worldGen.getDimName(), 0, 40, 0, false);
         GuiDraw.drawString(ChatColorHelper.BOLD + "Primary:", 0, 50, 0, false);
         GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(0).item.getDisplayName(), 0, 60, 0, false);
         GuiDraw.drawString(ChatColorHelper.BOLD + "Secondary:", 0, 70, 0, false);
@@ -173,70 +106,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
     @Override
     public void loadCraftingRecipes(ItemStack result) {
         if (Block.getBlockFromItem(result.getItem()) instanceof BW_MetaGenerated_Ores) {
-            TemplateRecipeHandler.CachedRecipe tmp = new TemplateRecipeHandler.CachedRecipe() {
-
-                PositionedStack stack = new PositionedStack(result, 0, 0);
-
-                @Override
-                public PositionedStack getResult() {
-                    return this.stack;
-                }
-
-                @Override
-                public List<PositionedStack> getOtherStacks() {
-                    ArrayList<PositionedStack> ret = new ArrayList<>();
-                    for (int i = 0; i < BW_OreLayer.sList.size(); i++) {
-                        if (BW_OreLayer.sList.get(i) instanceof BW_WorldGenRoss128b) {
-                            int baseMeta = result.getItemDamage();
-                            BW_WorldGenRoss128b worldGen = ((BW_WorldGenRoss128b) BW_OreLayer.sList.get(i));
-                            if (worldGen.mPrimaryMeta == baseMeta || worldGen.mSecondaryMeta == baseMeta || worldGen.mBetweenMeta == baseMeta || worldGen.mSporadicMeta == baseMeta) {
-                                ItemStack other;
-                                other = result.copy().setStackDisplayName(result.getDisplayName().replaceAll("Ore", "Vein"));
-                                this.stack = new PositionedStack(other, 83, 0);
-                                if (((worldGen.bwOres & 0b1000) != 0)) {
-                                    other = result.copy();
-                                    other.setItemDamage(worldGen.mPrimaryMeta);
-                                    ret.add(new PositionedStack(other, 0, 12));
-                                } else {
-                                    other = new ItemStack(GregTech_API.sBlockOres1);
-                                    other.setItemDamage(worldGen.mPrimaryMeta);
-                                    ret.add(new PositionedStack(other, 0, 12));
-                                }
-                                if (((worldGen.bwOres & 0b0100) != 0)) {
-                                    other = result.copy();
-                                    other.setItemDamage(worldGen.mSecondaryMeta);
-                                    ret.add(new PositionedStack(other, 20, 12));
-                                } else {
-                                    other = new ItemStack(GregTech_API.sBlockOres1);
-                                    other.setItemDamage(worldGen.mSecondaryMeta);
-                                    ret.add(new PositionedStack(other, 20, 12));
-                                }
-                                if (((worldGen.bwOres & 0b0010) != 0)) {
-                                    other = result.copy();
-                                    other.setItemDamage(worldGen.mBetweenMeta);
-                                    ret.add(new PositionedStack(other, 40, 12));
-                                } else {
-                                    other = new ItemStack(GregTech_API.sBlockOres1);
-                                    other.setItemDamage(worldGen.mBetweenMeta);
-                                    ret.add(new PositionedStack(other, 40, 12));
-                                }
-                                if (((worldGen.bwOres & 0b0001) != 0)) {
-                                    other = result.copy();
-                                    other.setItemDamage(worldGen.mSporadicMeta);
-                                    ret.add(new PositionedStack(other, 60, 12));
-                                } else {
-                                    other = new ItemStack(GregTech_API.sBlockOres1);
-                                    other.setItemDamage(worldGen.mSporadicMeta);
-                                    ret.add(new PositionedStack(other, 60, 12));
-                                }
-                                break;
-                            }
-                        }
-                    }
-                    return ret;
-                }
-            };
-            this.arecipes.add(tmp);
+            BW_OreLayer.NEIMAP.get((short) result.getItemDamage()).forEach(l -> this.arecipes.add(new CachedOreRecipe(l, result)));
         }
     }
 
@@ -248,5 +118,45 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
     @Override
     public String getRecipeName() {
         return "BartWorks Ores";
+    }
+
+    class CachedOreRecipe extends TemplateRecipeHandler.CachedRecipe{
+
+        public CachedOreRecipe(BW_OreLayer worldGen, ItemStack result) {
+            this.worldGen = worldGen;
+            this.stack = new PositionedStack(result, 0, 0);
+        }
+
+        BW_OreLayer worldGen;
+        PositionedStack stack ;
+
+            @Override
+            public PositionedStack getResult() {
+                return this.stack;
+            }
+
+            @Override
+            public List<PositionedStack> getOtherStacks() {
+                List<PositionedStack> ret = new ArrayList<>();
+                int x = 0;
+                for (int i = 0; i < 4; i++) {
+                    x += 20;
+                    ret.add(new PositionedStack(worldGen.getStacks().get(i), x, 12));
+                }
+                return ret;
+            }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof CachedOreRecipe)) return false;
+            CachedOreRecipe that = (CachedOreRecipe) o;
+            return Objects.equals(worldGen, that.worldGen);
+        }
+
+        @Override
+        public int hashCode() {
+            return worldGen.hashCode();
+        }
     }
 }

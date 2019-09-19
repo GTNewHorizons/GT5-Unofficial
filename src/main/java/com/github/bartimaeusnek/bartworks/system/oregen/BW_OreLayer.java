@@ -26,6 +26,9 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGeneratedOreTE;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
+import com.google.common.collect.ArrayListMultimap;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -33,11 +36,13 @@ import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -47,12 +52,15 @@ import java.util.Random;
  */
 public abstract class BW_OreLayer extends GT_Worldgen {
     public static final List<BW_OreLayer> sList = new ArrayList<>();
+    public static final ArrayListMultimap<Short,BW_OreLayer> NEIMAP = ArrayListMultimap.create();
     private static final boolean logOregenRoss128 = false;
     public static int sWeight;
     public byte bwOres;
     public int mMinY, mWeight, mDensity, mSize, mMaxY, mPrimaryMeta, mSecondaryMeta, mBetweenMeta, mSporadicMeta;
 
     public abstract Block getDefaultBlockToReplace();
+    public abstract int[] getDefaultDamageToReplace();
+    public abstract String getDimName();
 
     public BW_OreLayer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize, ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled) {
         super(aName, BW_OreLayer.sList, aDefault);
@@ -98,11 +106,24 @@ public abstract class BW_OreLayer extends GT_Worldgen {
         this.mSecondaryMeta = aSecondary;
         this.mBetweenMeta = aBetween;
         this.mSporadicMeta = aSporadic;
+        NEIMAP.put((short) this.mPrimaryMeta,this);
+        NEIMAP.put((short) this.mSecondaryMeta,this);
+        NEIMAP.put((short) this.mBetweenMeta,this);
+        NEIMAP.put((short) this.mSporadicMeta,this);
+    }
 
+    public List<ItemStack> getStacks(){
+        ArrayList<ItemStack> ret = new ArrayList<>();
+        ret.add((this.bwOres & 0b1000) != 0 ? new ItemStack(WerkstoffLoader.BWOres,1,this.mPrimaryMeta) : new ItemStack ( GregTech_API.sBlockOres1,1,this.mPrimaryMeta));
+        ret.add((this.bwOres & 0b0100) != 0 ? new ItemStack(WerkstoffLoader.BWOres,1,this.mSecondaryMeta) : new ItemStack ( GregTech_API.sBlockOres1,1,this.mSecondaryMeta));
+        ret.add((this.bwOres & 0b0010) != 0 ? new ItemStack(WerkstoffLoader.BWOres,1,this.mBetweenMeta) : new ItemStack ( GregTech_API.sBlockOres1,1,this.mBetweenMeta));
+        ret.add((this.bwOres & 0b0001) != 0 ? new ItemStack(WerkstoffLoader.BWOres,1,this.mSporadicMeta) : new ItemStack ( GregTech_API.sBlockOres1,1,this.mSporadicMeta));
+        return ret;
     }
 
     @Override
     public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) { {
+
             int tMinY = this.mMinY + aRandom.nextInt(this.mMaxY - this.mMinY - 5);
             int cX = aChunkX - aRandom.nextInt(this.mSize);
             int eX = aChunkX + 16 + aRandom.nextInt(this.mSize);
@@ -156,7 +177,7 @@ public abstract class BW_OreLayer extends GT_Worldgen {
             return true;
 
         if ((aMetaData == this.mSporadicMeta && (this.bwOres & 0b0001) != 0) || (aMetaData == this.mBetweenMeta && (this.bwOres & 0b0010) != 0) || (aMetaData == this.mPrimaryMeta && (this.bwOres & 0b1000) != 0) || (aMetaData == this.mSecondaryMeta && (this.bwOres & 0b0100) != 0)) {
-            return BW_MetaGenerated_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, this.getDefaultBlockToReplace());
+            return BW_MetaGenerated_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, this.getDefaultBlockToReplace(),this.getDefaultDamageToReplace());
         }
 
         return this.setGTOreBlockSpace(aWorld, aX, aY, aZ, aMetaData, this.getDefaultBlockToReplace());
@@ -183,5 +204,29 @@ public abstract class BW_OreLayer extends GT_Worldgen {
             }
         }else
             return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BW_OreLayer)) return false;
+
+        BW_OreLayer that = (BW_OreLayer) o;
+
+        if (bwOres != that.bwOres) return false;
+        if (mMinY != that.mMinY) return false;
+        if (mWeight != that.mWeight) return false;
+        if (mDensity != that.mDensity) return false;
+        if (mSize != that.mSize) return false;
+        if (mMaxY != that.mMaxY) return false;
+        if (mPrimaryMeta != that.mPrimaryMeta) return false;
+        if (mSecondaryMeta != that.mSecondaryMeta) return false;
+        if (mBetweenMeta != that.mBetweenMeta) return false;
+        return mSporadicMeta == that.mSporadicMeta;
+    }
+
+    @Override
+    public int hashCode() {
+        return MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(37).put(bwOres).putInt(mMinY).putInt(mWeight).putInt(mDensity).putInt(mSize).putInt(mMaxY).putInt(mPrimaryMeta).putInt(mSecondaryMeta).putInt(mBetweenMeta).putInt(mSporadicMeta).array(),0,37,31);
     }
 }

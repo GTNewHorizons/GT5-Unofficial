@@ -48,7 +48,6 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_Fluid;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.ItemData;
 import gregtech.api.util.*;
 import gregtech.common.GT_Proxy;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
@@ -111,7 +110,8 @@ public class WerkstoffLoader implements Runnable {
         } catch (NullPointerException | IllegalArgumentException e){}
         Element t = EnumHelper.addEnum(Element.class,"Tr",new Class[]{long.class, long.class, long.class, long.class, String.class, String.class, boolean.class}, new Object[]{123L, 203L, 0L, -1L, (String) null, "Tiberium", false});
     }
-    //TODO: FREE ID RANGE: 19-32766
+
+    //TODO: FREE ID RANGE: 91-32766
 
     public static final Werkstoff Bismutite = new Werkstoff(
             new short[]{255, 233, 0, 0},
@@ -1202,7 +1202,7 @@ public class WerkstoffLoader implements Runnable {
             "Tr",
             new Werkstoff.Stats().setProtons(123).setMass(326).setBlastFurnace(true).setMeltingPoint(1800).setRadioactive(true).setToxic(true),
             Werkstoff.Types.ELEMENT,
-            new Werkstoff.GenerationFeatures().onlyDust().addGems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems(),
+            new Werkstoff.GenerationFeatures().addGems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems(),
             89,
             TextureSet.SET_DIAMOND
     );
@@ -1217,6 +1217,31 @@ public class WerkstoffLoader implements Runnable {
             new Pair<>(WerkstoffLoader.Ruthenium,2),
             new Pair<>(Materials.Iridium,1)
     );
+    public static final Werkstoff Fluorspar = new Werkstoff(
+            new short[]{185,69,251},
+            "Fluorspar",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().addGems(),
+            91,
+            TextureSet.SET_GEM_VERTICAL,
+            new Pair<>(Materials.Calcium,1),
+            new Pair<>(Materials.Fluorine,2)
+    );
+//    public static final Werkstoff Baryte = new Werkstoff(
+//            new short[]{0xB9,0x45,0xFB},
+//            "Baryte",
+//            new Werkstoff.Stats().setElektrolysis(true),
+//            Werkstoff.Types.COMPOUND,
+//            new Werkstoff.GenerationFeatures().addGems(),
+//            92,
+//            TextureSet.SET_GEM_VERTICAL,
+//            new Pair<>(Materials.Barium,1),
+//            new Pair<>(Materials.Sulfur,1),
+//            new Pair<>(Materials.Oxygen,3)
+//    );
+
+
 
     public static HashMap<OrePrefixes, BW_MetaGenerated_Items> items = new HashMap<>();
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();
@@ -1476,7 +1501,7 @@ public class WerkstoffLoader implements Runnable {
     public static void runGTItemDataRegistrator(){
         HashSet<Materials> toRem = new HashSet<>();
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
-            Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial() : new Materials(-1, werkstoff.getTexSet(), 0, 0, 0, false, werkstoff.getDefaultName().replaceAll(" ", ""), werkstoff.getDefaultName());
+            Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial() : Materials.get(werkstoff.getDefaultName()) != Materials._NULL ? Materials.get(werkstoff.getDefaultName()) : new Materials(-1, werkstoff.getTexSet(), 0, 0, 0, false, werkstoff.getDefaultName().replaceAll(" ", ""), werkstoff.getDefaultName());
             for (OrePrefixes prefixes : values()) {
                 if (!(prefixes == cell && werkstoff.getType().equals(Werkstoff.Types.ELEMENT))) {
                     if (prefixes == dust && werkstoff.getType().equals(Werkstoff.Types.ELEMENT)) {
@@ -1486,7 +1511,7 @@ public class WerkstoffLoader implements Runnable {
                                 if (e.toString().equals(werkstoff.getToolTip())) {
                                     if (e.mLinkedMaterials.size() > 0)
                                         break;
-                                    werkstoffBridgeMaterial = new Materials(-1, werkstoff.getTexSet(), 0, 0, 0, true, werkstoff.getDefaultName().replaceAll(" ", ""), werkstoff.getDefaultName());
+                                    werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial() : Materials.get(werkstoff.getDefaultName()) != Materials._NULL ? Materials.get(werkstoff.getDefaultName()) : new Materials(-1, werkstoff.getTexSet(), 0, 0, 0, false, werkstoff.getDefaultName().replaceAll(" ", ""), werkstoff.getDefaultName());
                                     werkstoffBridgeMaterial.mElement = e;
                                     e.mLinkedMaterials = new ArrayList<>();
                                     e.mLinkedMaterials.add(werkstoffBridgeMaterial);
@@ -1837,6 +1862,7 @@ public class WerkstoffLoader implements Runnable {
                     if (cells > 0)
                         stOutputs.add(Materials.Empty.getCells(cells));
                     GT_Recipe.GT_Recipe_Map.sChemicalRecipes.add(new BWRecipes.DynamicGTRecipe(true, stOutputs.toArray(new ItemStack[0]),new ItemStack[]{input},null,null,new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null},null,(int) Math.max(1L, Math.abs(werkstoff.getStats().protons * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 30,0));
+                    GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.addRecipe(true, stOutputs.toArray(new ItemStack[0]),new ItemStack[]{input},null,null,new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null},null,(int) Math.max(1L, Math.abs(werkstoff.getStats().protons * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 30,0);
                 }
                 if (werkstoff.getGenerationFeatures().hasMixerRecipes()) {
                     if (cells > 0)

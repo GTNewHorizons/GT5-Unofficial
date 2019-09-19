@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128ba;
 
 import com.github.bartimaeusnek.bartworks.util.NoiseUtil.BartsNoise;
+import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b.ChunkProviderRoss128b;
 import gregtech.api.objects.XSTR;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -30,10 +31,12 @@ import micdoodle8.mods.galacticraft.core.world.gen.BiomeGenBaseMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.MapGenCavesMoon;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkProvider;
 
 import java.util.Arrays;
 
@@ -64,6 +67,14 @@ public class ChunkProviderRoss128ba extends ChunkProviderMoon {
         Chunk Chunk = new Chunk(this.worldObj, ids, meta, cx, cz);
         Chunk.generateSkylightMap();
         return Chunk;
+    }
+
+    @Override
+    public void populate(IChunkProvider par1IChunkProvider, int par2, int par3) {
+        super.populate(par1IChunkProvider, par2, par3);
+        BlockFalling.fallInstantly = true;
+        ChunkProviderRoss128b.BWOreGen.generate(this.rand, par2, par3, this.worldObj, this, this);
+        BlockFalling.fallInstantly = false;
     }
 
     private int getIndex(int x, int y, int z) {

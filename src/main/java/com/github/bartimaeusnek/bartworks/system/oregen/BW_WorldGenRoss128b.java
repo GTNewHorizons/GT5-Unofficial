@@ -40,11 +40,21 @@ public class BW_WorldGenRoss128b extends BW_OreLayer {
         return Blocks.stone;
     }
 
+    @Override
+    public int[] getDefaultDamageToReplace() {
+        return new int[]{0};
+    }
+
+    @Override
+    public String getDimName() {
+        return StatCollector.translateToLocal("planet.Ross128b");
+    }
+
     public BW_WorldGenRoss128b(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize, ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled) {
         super(aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, top, bottom, between, sprinkled);
     }
 
-    public static void init_OresRoss128() {
+    public static void initOres() {
         new BW_WorldGenRoss128b("ore.mix.ross128.Thorianit", true, 30, 60, 17, 1, 16, Thorianit, Uraninite, Lepidolite, Spodumene);
         new BW_WorldGenRoss128b("ore.mix.ross128.carbon", true, 5, 25, 5, 4, 12, Graphite, Diamond, Coal, Graphite);
         new BW_WorldGenRoss128b("ore.mix.ross128.bismuth", true, 5, 80, 30, 1, 16, Bismuthinit, Stibnite, Bismuth, Bismutite);
@@ -57,7 +67,7 @@ public class BW_WorldGenRoss128b extends BW_OreLayer {
         new BW_WorldGenRoss128b("ore.mix.ross128.RedZircon", true, 10, 80, 40, 3, 24, Fayalit, FuchsitAL, RedZircon, FuchsitCR);
     }
 
-    public static void init_undergroundFluidsRoss128() {
+    public static void initundergroundFluids() {
         String ross128b = StatCollector.translateToLocal("planet.Ross128b");
         uo_dimensionList.SetConfigValues(ross128b, ross128b, "veryheavyoil", "liquid_extra_heavy_oil", 0, 625, 40, 5);
         uo_dimensionList.SetConfigValues(ross128b, ross128b, "lava", FluidRegistry.getFluidName(FluidRegistry.LAVA), 0, 32767, 5, 5);
@@ -66,7 +76,7 @@ public class BW_WorldGenRoss128b extends BW_OreLayer {
 
     @Override
     public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
-        return aWorld.provider.dimensionId == ConfigHandler.ross128BID;
+        return aDimensionType == ConfigHandler.ross128BID;
     }
 
 }

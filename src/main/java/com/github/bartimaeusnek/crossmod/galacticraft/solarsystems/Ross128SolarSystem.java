@@ -71,15 +71,13 @@ public class Ross128SolarSystem {
         Ross128SolarSystem.Ross128ba.setDimensionInfo(ConfigHandler.ross128BAID, WorldProviderRoss128Ba.class);
         Ross128SolarSystem.Ross128ba.setTierRequired(Loader.isModLoaded("galaxyspace") ? Math.min(ConfigHandler.ross128btier + 1, 8) : 3);
 
-        //Ross128SolarSystem.Ross128ba.setUnreachable();
-
         GalaxyRegistry.registerSolarSystem(Ross128SolarSystem.Ross128System);
         GalaxyRegistry.registerPlanet(Ross128SolarSystem.Ross128b);
-//        GalaxyRegistry.registerMoon(Ross128SolarSystem.Ross128ba);
+        GalaxyRegistry.registerMoon(Ross128SolarSystem.Ross128ba);
         GalacticraftRegistry.registerRocketGui(WorldProviderRoss128b.class, new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/overworldRocketGui.png"));
-//        GalacticraftRegistry.registerRocketGui(WorldProviderRoss128Ba.class, new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/moonRocketGui.png"));
+        GalacticraftRegistry.registerRocketGui(WorldProviderRoss128Ba.class, new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/moonRocketGui.png"));
         GalacticraftRegistry.registerTeleportType(WorldProviderRoss128b.class, new UniversalTeleportType());
-//        GalacticraftRegistry.registerTeleportType(WorldProviderRoss128Ba.class, new UniversalTeleportType());
+        GalacticraftRegistry.registerTeleportType(WorldProviderRoss128Ba.class, new UniversalTeleportType());
     }
 
 }

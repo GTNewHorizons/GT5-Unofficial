@@ -33,6 +33,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -78,9 +79,11 @@ public class BW_MetaGeneratedOreTE extends TileEntity implements ITexturedTileEn
         return rList;
     }
 
-    public void sendPacket(){
+    @Override
+    public Packet getDescriptionPacket() {
         if (!this.worldObj.isRemote)
             BW_Network_instance.sendPacketToAllPlayersInRange(this.worldObj, new OrePacket(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData), this.xCoord, this.zCoord);
+        return null;
     }
 
     @Override

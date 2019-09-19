@@ -101,17 +101,19 @@ public class BW_WordGenerator implements IWorldGenerator {
                     for (int i = 0; (i < 256) && (temp); i++) {
                         tRandomWeight = random.nextInt(BW_OreLayer.sWeight);
                         for (BW_OreLayer tWorldGen : BW_OreLayer.sList) {
+                            if (!tWorldGen.isGenerationAllowed(this.mWorld, this.mDimensionType, this.mDimensionType))
+                                continue;
                             tRandomWeight -= tWorldGen.mWeight;
                             if (tRandomWeight <= 0) {
                                 try {
                                     boolean placed;
                                     int attempts = 0;
-                                    do{
+                                    do {
                                         placed = tWorldGen.executeWorldgen(this.mWorld, random, "", this.mDimensionType, xCenter, zCenter, this.mChunkGenerator, this.mChunkProvider);
                                         ++attempts;
                                     }
                                     while ((!placed) && attempts < 25);
-                                        temp = false;
+                                    temp = false;
                                     break;
                                 } catch (Throwable e) {
                                     e.printStackTrace(GT_Log.err);

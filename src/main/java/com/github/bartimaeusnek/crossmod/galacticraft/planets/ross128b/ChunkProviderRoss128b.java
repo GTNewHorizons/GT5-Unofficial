@@ -53,7 +53,7 @@ import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.Ev
 public class ChunkProviderRoss128b extends ChunkProviderGenerate {
     XSTR rand = new XSTR();
     private BiomeGenBase[] biomesForGeneration;
-    private final BW_WordGenerator BWOreGen = new BW_WordGenerator();
+    public static final BW_WordGenerator BWOreGen = new BW_WordGenerator();
     private final World worldObj;
     private final MapGenBase caveGenerator = new MapGenCaves();
     private final MapGenBase ravineGenerator = new MapGenRavine();
@@ -159,7 +159,7 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             }
         }
 
-        this.BWOreGen.generate(this.rand, p_73153_2_, p_73153_3_, this.worldObj, this, this);
+        BWOreGen.generate(this.rand, p_73153_2_, p_73153_3_, this.worldObj, this, this);
         MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false));
 
         BlockFalling.fallInstantly = false;

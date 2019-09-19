@@ -505,6 +505,9 @@ public class PlatinumSludgeOverHaul {
     }
 
     private static boolean isInBlackList(ItemStack stack) {
+        if (stack == null)
+            return true;
+
         if (stack.getItem() instanceof BW_MetaGenerated_Items)
             return true;
 

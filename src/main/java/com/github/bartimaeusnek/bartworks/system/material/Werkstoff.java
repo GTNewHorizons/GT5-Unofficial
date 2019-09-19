@@ -86,6 +86,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
+        this.mOreByProducts.clear();
         this.mOreByProducts.addAll(oreByProduct);
     }
 
@@ -95,6 +96,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public Werkstoff(short[] rgba, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, toolTip, stats, type, generationFeatures, mID, texSet, contents);
+        this.mOreByProducts.clear();
         this.mOreByProducts.addAll(oreByProduct);
     }
 
@@ -163,6 +165,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             this.stats = stats.setMass(tmpmass);
         }
         this.texSet = texSet;
+
+        if (this.mOreByProducts.isEmpty()) {
+            this.mOreByProducts.add(this);
+            this.mOreByProducts.add(this);
+            this.mOreByProducts.add(this);
+        }
 
         Werkstoff.werkstoffHashSet.add(this);
         Werkstoff.werkstoffHashMap.put(this.mID, this);
@@ -323,10 +331,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public FluidStack getFluidOrGas(int fluidAmount) {
-        return new FluidStack(WerkstoffLoader.fluids.get(this),fluidAmount);
+        return new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(this)),fluidAmount);
     }
     public FluidStack getMolten(int fluidAmount) {
-        return new FluidStack(WerkstoffLoader.molten.get(this),fluidAmount);
+        return new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(this)),fluidAmount);
     }
 
 

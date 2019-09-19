@@ -31,7 +31,9 @@ import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -139,6 +141,8 @@ public class AdditionalRecipes implements Runnable {
         GT_Values.RA.addAssemblerRecipe(BW_NonMeta_MaterialItems.TiberiumCell_1.get(2L), GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L), BW_NonMeta_MaterialItems.TiberiumCell_2.get(1L), 100, 400);
         GT_Values.RA.addAssemblerRecipe(BW_NonMeta_MaterialItems.TiberiumCell_1.get(4L), GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L), BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L), 150, 400);
         GT_Values.RA.addAssemblerRecipe(BW_NonMeta_MaterialItems.TiberiumCell_2.get(2L), GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L), BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L), 100, 400);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.NaquadahCell_1.get(32L), GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel,64L), GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel,64L), GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel,64L)},null, BW_NonMeta_MaterialItems.TheCoreCell.get(1L), 100, BW_Util.getMachineVoltageFromTier(6));
 
         GregTech_API.sAfterGTPostload.add(new LuVTierEnhancer());
         AdditionalRecipes.oldGThelperMethod();

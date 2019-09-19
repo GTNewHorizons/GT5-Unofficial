@@ -33,6 +33,7 @@ hs_err_pid*
 /eclipse
 /build
 /out
+/run
 /.gradle
 /venv
 /libs

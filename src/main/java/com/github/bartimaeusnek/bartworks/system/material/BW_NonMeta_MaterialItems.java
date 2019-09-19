@@ -34,8 +34,8 @@ import static gregtech.api.enums.GT_Values.W;
 
 public enum BW_NonMeta_MaterialItems implements IItemContainer {
     Depleted_Tiberium_1,Depleted_Tiberium_2,Depleted_Tiberium_4,
-    TiberiumCell_1,TiberiumCell_2,TiberiumCell_4
-    ;
+    TiberiumCell_1,TiberiumCell_2,TiberiumCell_4,
+    TheCoreCell,Depleted_TheCoreCell;
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
 
