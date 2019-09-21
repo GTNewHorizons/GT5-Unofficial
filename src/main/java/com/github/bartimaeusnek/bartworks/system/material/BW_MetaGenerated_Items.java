@@ -23,14 +23,18 @@
 package com.github.bartimaeusnek.bartworks.system.material;
 
 import com.github.bartimaeusnek.bartworks.API.IRadMaterial;
+import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.util.Pair;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_LanguageManager;
@@ -53,6 +57,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.werkstoffHashMap;
@@ -68,6 +73,11 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     };
     protected final OrePrefixes orePrefixes;
     private final short aNumToGen = (short) werkstoffHashMap.size();
+
+    public BW_MetaGenerated_Items(OrePrefixes orePrefixes, Object unused){
+        super("bwMetaGeneratedGTEnhancement" + orePrefixes.name(), (short) 32766, (short) 0);
+        this.orePrefixes = orePrefixes;
+    }
 
     public BW_MetaGenerated_Items(OrePrefixes orePrefixes) {
         super("bwMetaGenerated" + orePrefixes.name(), (short) 32766, (short) 0);
@@ -148,13 +158,23 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     }
 
     @Override
-    public final IIconContainer getIconContainer(int aMetaData) {
-        return werkstoffHashMap.get((short) aMetaData) == null ? null : this.orePrefixes.mTextureIndex == -1 ? null : werkstoffHashMap.get((short) aMetaData).getTexSet().mTextures[this.orePrefixes.mTextureIndex];
+    public IIconContainer getIconContainer(int aMetaData) {
+        if (werkstoffHashMap.get((short) aMetaData) == null)
+            return null;
+        if (this.orePrefixes.mTextureIndex == -1)
+            return getIconContainerBartWorks(aMetaData);
+        return werkstoffHashMap.get((short) aMetaData).getTexSet().mTextures[this.orePrefixes.mTextureIndex];
+    }
+
+    protected IIconContainer getIconContainerBartWorks(int aMetaData) {
+        if (FMLCommonHandler.instance().getSide().isClient())
+            return PrefixTextureLinker.texMap.get(this.orePrefixes).get(werkstoffHashMap.get((short) aMetaData).getTexSet());
+        return null;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+    public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < this.aNumToGen; i++) {
             Werkstoff werkstoff = werkstoffHashMap.get((short) i);
             if (werkstoff != null && ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) != 0) && ((werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) == 0)) {
@@ -207,7 +227,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
 
     @Override
     public int getItemStackLimit(ItemStack aStack) {
-        return 64;
+        return this.orePrefixes.mDefaultStackSize;
     }
 
     @Override
@@ -235,6 +255,6 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
 
     @Override
     public int getCapacity(ItemStack aStack) {
-        return this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma ? 1000 : this.orePrefixes == WerkstoffLoader.cellMolten ? 144 : 0;
+        return this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma ? 1000 : this.orePrefixes == WerkstoffLoader.cellMolten || this.orePrefixes == WerkstoffLoader.capsuleMolten ? 144 : 0;
     }
 }

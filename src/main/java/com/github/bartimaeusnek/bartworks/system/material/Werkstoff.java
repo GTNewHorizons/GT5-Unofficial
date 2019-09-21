@@ -36,6 +36,8 @@ import net.minecraftforge.fluids.FluidStack;
 import java.nio.ByteBuffer;
 import java.util.*;
 
+import static gregtech.api.enums.OrePrefixes.capsule;
+
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
@@ -402,7 +404,9 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushedCentrifuged,0b1000);
 
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.cell,0b10000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.capsule,0b10000);
 
+            Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.capsuleMolten,0b1000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.cellMolten,0b1000000);
 
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plate,0b10000000);

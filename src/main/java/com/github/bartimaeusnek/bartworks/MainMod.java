@@ -30,6 +30,7 @@ import com.github.bartimaeusnek.bartworks.client.ClientEventHandler.TooltipEvent
 import com.github.bartimaeusnek.bartworks.client.creativetabs.BioTab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.GT2Tab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.bartworksTab;
+import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
@@ -48,6 +49,7 @@ import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.Plat
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.google.common.collect.ArrayListMultimap;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -58,6 +60,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.objects.GT_ItemStack;
@@ -89,6 +92,7 @@ import static gregtech.api.enums.GT_Values.VN;
                 + "after:berriespp; "
                 + "after:GalacticraftMars; "
                 + "after:GalacticraftCore; "
+                + "after:Forestry; "
     )
 public final class MainMod {
     public static final String NAME = "BartWorks";
@@ -122,9 +126,6 @@ public final class MainMod {
             }
         }
 
-        //fixing BorosilicateGlass... -_-'
-        Materials.BorosilicateGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
-
         if (Loader.isModLoaded("dreamcraft")) {
             ConfigHandler.GTNH = true;
         }
@@ -147,6 +148,8 @@ public final class MainMod {
             INSTANCE.init();
             Werkstoff.init();
             GregTech_API.sAfterGTPostload.add(new CircuitPartLoader());
+            if (FMLCommonHandler.instance().getSide().isClient())
+                new PrefixTextureLinker();
         }
     }
 
@@ -219,7 +222,7 @@ public final class MainMod {
     }
 
     private static void unificationEnforcer() {
-        for (Werkstoff werkstoff : Werkstoff.werkstoffHashMap.values()) {
+        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             if (werkstoff.getGenerationFeatures().enforceUnification) {
                 if (werkstoff.contains(NOBLE_GAS)){
                         String name = werkstoff.getFluidOrGas(1).getFluid().getName();
@@ -310,6 +313,9 @@ public final class MainMod {
                 HashSet torem = new HashSet<>();
                 ItemStack toReplace = null;
                 for (Map.Entry<GT_ItemStack, FluidContainerRegistry.FluidContainerData> entry : sFilledContainerToData.entrySet()) {
+                    final String MODID = GameRegistry.findUniqueIdentifierFor(data.filledContainer.getItem()).modId;
+                    if (MODID.equals(MainMod.MOD_ID) || MODID.equals(BartWorksCrossmod.MOD_ID))
+                        continue;
                     if (entry.getValue().fluid.equals(data.fluid) && !entry.getValue().filledContainer.equals(data.filledContainer)) {
                         toReplace = entry.getValue().filledContainer;
                         torem.add(entry);

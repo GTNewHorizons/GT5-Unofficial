@@ -62,11 +62,11 @@ public class AfterLuVTierEnhacement implements Runnable {
                 new int[]{10_000,5_000,5_000,2_500,10_000,10_000},1000,2000);
         GT_Values.RA.addCentrifugeRecipe(BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1), null,null,null,
                 ItemList.Depleted_Naquadah_4.get(8),
+                WerkstoffLoader.Zirconium.get(dust,64),
+                WerkstoffLoader.Zirconium.get(dust,64),
                 null,
                 null,
                 null,
-                null,
-                null,
-                null,2000,8000);
+                new int[]{10_000,5_000,5_000},2000,8000);
     }
 }

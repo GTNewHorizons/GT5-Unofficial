@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.bartworks.client.renderer.BW_Renderer_Block_Ores
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_CircuitsLoader;
+import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.GTMetaItemEnhancer;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.AdditionalRecipes;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
@@ -83,12 +84,12 @@ public class WerkstoffLoader implements Runnable {
     public static final SubTag NOBLE_GAS_SMELTING = SubTag.getNewSubTag("NobleGasSmelting");
     public static final SubTag NO_BLAST = SubTag.getNewSubTag("NoBlast");
     public static OrePrefixes cellMolten;
+    public static OrePrefixes capsuleMolten;
     public static ItemList rotorMold;
     public static ItemList rotorShape;
     public static ItemList smallGearShape;
     public static ItemList ringMold;
     public static ItemList boltMold;
-
 
     static {
         for (OrePrefixes prefix : OrePrefixes.values()){
@@ -108,7 +109,14 @@ public class WerkstoffLoader implements Runnable {
             WerkstoffLoader.ringMold = Enum.valueOf(ItemList.class, "Shape_Mold_Ring");
             WerkstoffLoader.boltMold = Enum.valueOf(ItemList.class, "Shape_Mold_Bolt");
         } catch (NullPointerException | IllegalArgumentException e){}
+        //add tiberium
         Element t = EnumHelper.addEnum(Element.class,"Tr",new Class[]{long.class, long.class, long.class, long.class, String.class, String.class, boolean.class}, new Object[]{123L, 203L, 0L, -1L, (String) null, "Tiberium", false});
+        //add molten & regular capsuls
+        if (Loader.isModLoaded("Forestry")) {
+            capsuleMolten = EnumHelper.addEnum(OrePrefixes.class, "capsuleMolten", new Class[]{String.class, String.class, String.class, boolean.class, boolean.class, boolean.class, boolean.class, boolean.class, boolean.class, boolean.class, boolean.class, boolean.class, boolean.class, int.class, long.class, int.class, int.class}, new Object[]{"Capsule of Molten stuff", "Molten ", " Capsule", true, true, true, true, false, false, false, true, false, false, 0b1000000, 3628800L, 64, -1});
+            capsule.mMaterialGenerationBits = 0b100000;
+            capsule.mDefaultStackSize = 64;
+        }
     }
 
     //TODO: FREE ID RANGE: 91-32766
@@ -1272,6 +1280,8 @@ public class WerkstoffLoader implements Runnable {
         }
         if (orePrefixes == ore)
             return new ItemStack(WerkstoffLoader.BWOres, amount, werkstoff.getmID());
+        if (WerkstoffLoader.items.get(orePrefixes) == null)
+            new Exception("NO SUCH ITEM!"+orePrefixes+werkstoff.getDefaultName()).printStackTrace();
         return new ItemStack(WerkstoffLoader.items.get(orePrefixes), amount, werkstoff.getmID()).copy();
     }
 
@@ -1358,6 +1368,7 @@ public class WerkstoffLoader implements Runnable {
         WerkstoffLoader.Calcium.add(WerkstoffLoader.ANAEROBE_SMELTING);
 
         WerkstoffLoader.LuVTierMaterial.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
+        WerkstoffLoader.LuVFineWireMaterial.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
 
         WerkstoffLoader.MagnetoResonaticDust.add(WerkstoffLoader.NO_BLAST);
 
@@ -1451,13 +1462,16 @@ public class WerkstoffLoader implements Runnable {
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000) != 0) {
             WerkstoffLoader.items.put(cell, new BW_MetaGenerated_Items(cell));
             //WerkstoffLoader.items.put(bottle, new BW_MetaGenerated_Items(bottle));
-            //WerkstoffLoader.items.put(capsule, new BW_MetaGenerated_Items(capsule));
+            if (Loader.isModLoaded("Forestry"))
+                WerkstoffLoader.items.put(capsule, new BW_MetaGenerated_Items(capsule));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b100000) != 0) {
             WerkstoffLoader.items.put(cellPlasma, new BW_MetaGenerated_Items(cellPlasma));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000000) != 0) {
             WerkstoffLoader.items.put(WerkstoffLoader.cellMolten, new BW_MetaGenerated_Items(WerkstoffLoader.cellMolten));
+            if (Loader.isModLoaded("Forestry"))
+                WerkstoffLoader.items.put(capsuleMolten, new BW_MetaGenerated_Items(capsuleMolten));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000000) != 0) {
             WerkstoffLoader.items.put(plate, new BW_MetaGenerated_Items(plate));
@@ -1486,19 +1500,19 @@ public class WerkstoffLoader implements Runnable {
             WerkstoffLoader.items.put(ingotQuadruple, new BW_MetaGenerated_Items(ingotQuadruple));
             WerkstoffLoader.items.put(ingotQuintuple, new BW_MetaGenerated_Items(ingotQuintuple));
         }
-
+        WerkstoffLoader.runGTItemDataRegistrator();
     }
 
-    public void gameRegistryHandler(){
+    void gameRegistryHandler(){
         if (FMLCommonHandler.instance().getSide().isClient())
             RenderingRegistry.registerBlockHandler(BW_Renderer_Block_Ores.INSTANCE);
         GameRegistry.registerTileEntity(BW_MetaGeneratedOreTE.class, "bw.blockoresTE");
         WerkstoffLoader.BWOres = new BW_MetaGenerated_Ores(Material.rock, BW_MetaGeneratedOreTE.class, "bw.blockores");
         GameRegistry.registerBlock(WerkstoffLoader.BWOres, BW_MetaGeneratedOre_Item.class, "bw.blockores.01");
-        WerkstoffLoader.runGTItemDataRegistrator();
+        new GTMetaItemEnhancer();
     }
 
-    public static void runGTItemDataRegistrator(){
+    private static void runGTItemDataRegistrator() {
         HashSet<Materials> toRem = new HashSet<>();
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial() : Materials.get(werkstoff.getDefaultName()) != Materials._NULL ? Materials.get(werkstoff.getDefaultName()) : new Materials(-1, werkstoff.getTexSet(), 0, 0, 0, false, werkstoff.getDefaultName().replaceAll(" ", ""), werkstoff.getDefaultName());
@@ -1555,8 +1569,9 @@ public class WerkstoffLoader implements Runnable {
                     werkstoffBridgeMaterial.mName = werkstoff.getDefaultName();
                     toRem.add(werkstoffBridgeMaterial);
                     werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
-                    if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) != 0 && (werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) == 0 && werkstoff.get(prefixes) != null && werkstoff.get(prefixes).getItem() != null)
-                        GT_OreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, werkstoff.get(prefixes), false);
+                    if (WerkstoffLoader.items.get(prefixes) != null)
+                        if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) != 0 && (werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) == 0 && werkstoff.get(prefixes) != null && werkstoff.get(prefixes).getItem() != null)
+                            GT_OreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, werkstoff.get(prefixes), false);
                 }
             }
         }
@@ -2090,6 +2105,13 @@ public class WerkstoffLoader implements Runnable {
         GT_Values.RA.addFluidCannerRecipe(Materials.Empty.getCells(1), werkstoff.get(cell), new FluidStack(fluids.get(werkstoff),1000), GT_Values.NF);
         GT_Values.RA.addFluidCannerRecipe(werkstoff.get(cell), Materials.Empty.getCells(1), GT_Values.NF, new FluidStack(fluids.get(werkstoff),1000));
 
+        if (Loader.isModLoaded("Forestry")) {
+            FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(new FluidStack(WerkstoffLoader.fluids.get(werkstoff), 1000), werkstoff.get(capsule), GT_ModHandler.getModItem("Forestry", "waxCapsule", 1), true);
+            GT_Utility.addFluidContainerData(emptyData);
+            FluidContainerRegistry.registerFluidContainer(emptyData);
+            GT_Values.RA.addFluidCannerRecipe(werkstoff.get(capsule), GT_Values.NI, GT_Values.NF, new FluidStack(fluids.get(werkstoff), 1000));
+        }
+
         if ((werkstoff.getGenerationFeatures().toGenerate & 0b1) != 0){
             GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(dust),null,werkstoff.getFluidOrGas(1000),0,werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
             GT_Values.RA.addFluidSolidifierRecipe(GT_Utility.getIntegratedCircuit(1), werkstoff.getFluidOrGas(1000), werkstoff.get(dust), werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
@@ -2131,11 +2153,18 @@ public class WerkstoffLoader implements Runnable {
             return;
 
         //Tank "Recipe"
-        FluidContainerRegistry.FluidContainerData data = new FluidContainerRegistry.FluidContainerData(new FluidStack(WerkstoffLoader.molten.get(werkstoff), 144),werkstoff.get(cellMolten),Materials.Empty.getCells(1));
+        final FluidContainerRegistry.FluidContainerData data = new FluidContainerRegistry.FluidContainerData(new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144),werkstoff.get(cellMolten),Materials.Empty.getCells(1));
         FluidContainerRegistry.registerFluidContainer(werkstoff.getMolten(144),werkstoff.get(cell),Materials.Empty.getCells(1));
         GT_Utility.addFluidContainerData(data);
-        GT_Values.RA.addFluidCannerRecipe(Materials.Empty.getCells(1), werkstoff.get(cellMolten), new FluidStack(molten.get(werkstoff),144), GT_Values.NF);
-        GT_Values.RA.addFluidCannerRecipe(werkstoff.get(cellMolten), Materials.Empty.getCells(1), GT_Values.NF, new FluidStack(molten.get(werkstoff),144));
+        GT_Values.RA.addFluidCannerRecipe(Materials.Empty.getCells(1), werkstoff.get(cellMolten), new FluidStack(Objects.requireNonNull(molten.get(werkstoff)),144), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(werkstoff.get(cellMolten), Materials.Empty.getCells(1), GT_Values.NF, new FluidStack(Objects.requireNonNull(molten.get(werkstoff)),144));
+
+        if (Loader.isModLoaded("Forestry")) {
+            final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144), werkstoff.get(capsuleMolten), GT_ModHandler.getModItem("Forestry", "refractoryEmpty", 1));
+            FluidContainerRegistry.registerFluidContainer(werkstoff.getMolten(144), werkstoff.get(capsuleMolten), GT_ModHandler.getModItem("Forestry", "refractoryEmpty", 1));
+            GT_Utility.addFluidContainerData(emptyData);
+            GT_Values.RA.addFluidCannerRecipe(werkstoff.get(capsuleMolten), GT_Values.NI, GT_Values.NF, new FluidStack(Objects.requireNonNull(molten.get(werkstoff)), 144));
+        }
 
         if ((werkstoff.getGenerationFeatures().toGenerate & 0b10) != 0) {
             GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(ingot),null,werkstoff.getMolten(144),0,werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);

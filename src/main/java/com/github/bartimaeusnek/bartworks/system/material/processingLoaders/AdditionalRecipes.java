@@ -142,7 +142,14 @@ public class AdditionalRecipes implements Runnable {
         GT_Values.RA.addAssemblerRecipe(BW_NonMeta_MaterialItems.TiberiumCell_1.get(4L), GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L), BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L), 150, 400);
         GT_Values.RA.addAssemblerRecipe(BW_NonMeta_MaterialItems.TiberiumCell_2.get(2L), GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L), BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L), 100, 400);
 
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.NaquadahCell_1.get(32L), GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel,64L), GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel,64L), GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel,64L)},null, BW_NonMeta_MaterialItems.TheCoreCell.get(1L), 100, BW_Util.getMachineVoltageFromTier(6));
+        GT_Values.RA.addAssemblerRecipe(
+                    new ItemStack[]{ItemList.NaquadahCell_1.get(32L),
+                    GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel,64L),
+                    GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel,64L),
+                    GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel,64L),
+                    WerkstoffLoader.Tiberium.get(dust,64),
+                    WerkstoffLoader.Tiberium.get(dust,64)
+                },null, BW_NonMeta_MaterialItems.TheCoreCell.get(1L), 100, BW_Util.getMachineVoltageFromTier(6));
 
         GregTech_API.sAfterGTPostload.add(new LuVTierEnhancer());
         AdditionalRecipes.oldGThelperMethod();

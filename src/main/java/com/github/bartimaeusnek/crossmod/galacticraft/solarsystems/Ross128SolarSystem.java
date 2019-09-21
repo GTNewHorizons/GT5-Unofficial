@@ -69,7 +69,7 @@ public class Ross128SolarSystem {
         Ross128SolarSystem.Ross128ba.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(10f, 15f)).setRelativeOrbitTime(1 / 0.01F);
         Ross128SolarSystem.Ross128ba.setBodyIcon(new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/MapObjs/Ross128ba.png"));
         Ross128SolarSystem.Ross128ba.setDimensionInfo(ConfigHandler.ross128BAID, WorldProviderRoss128Ba.class);
-        Ross128SolarSystem.Ross128ba.setTierRequired(Loader.isModLoaded("galaxyspace") ? Math.min(ConfigHandler.ross128btier + 1, 8) : 3);
+        Ross128SolarSystem.Ross128ba.setTierRequired(Loader.isModLoaded("GalaxySpace") ? Math.min(ConfigHandler.ross128btier + 2, 8) : 3);
 
         GalaxyRegistry.registerSolarSystem(Ross128SolarSystem.Ross128System);
         GalaxyRegistry.registerPlanet(Ross128SolarSystem.Ross128b);

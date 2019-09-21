@@ -28,6 +28,8 @@ import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.SubTag;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -45,6 +47,8 @@ public class BeforeGTPreload implements Runnable {
     public void run() {
         if (didrun)
             return;
+        //fixing BorosilicateGlass... -_-'
+        Materials.BorosilicateGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
 
         Field activeContainer = FieldUtils.getDeclaredField(LoadController.class, "activeContainer", true);
         ModContainer bartworks = null;

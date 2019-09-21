@@ -520,14 +520,14 @@ public class PlatinumSludgeOverHaul {
         if (Block.getBlockFromItem(stack.getItem()) instanceof GT_Generic_Block && !(Block.getBlockFromItem(stack.getItem()) instanceof GT_Block_Ores_Abstract))
             return true;
 
+        if (GT_Utility.areStacksEqual(ItemList.Depleted_Naquadah_1.get(1),stack,true) || GT_Utility.areStacksEqual(ItemList.Depleted_Naquadah_2.get(1),stack,true) || GT_Utility.areStacksEqual(ItemList.Depleted_Naquadah_4.get(1),stack,true))
+            return true;
+
         if (stack.getItem() instanceof GT_Generic_Item) {
             if (!BW_Util.checkStackAndPrefix(stack))
                 return false;
             return (!Arrays.asList(PlatinumSludgeOverHaul.OPBLACKLIST).contains(GT_OreDictUnificator.getAssociation(stack).mPrefix)) || Arrays.asList(PlatinumSludgeOverHaul.BLACKLIST).contains(GT_OreDictUnificator.getAssociation(stack).mMaterial.mMaterial);
         }
-
-        if (GT_Utility.areStacksEqual(ItemList.Depleted_Naquadah_1.get(1),stack,true) || GT_Utility.areStacksEqual(ItemList.Depleted_Naquadah_2.get(1),stack,true) || GT_Utility.areStacksEqual(ItemList.Depleted_Naquadah_4.get(1),stack,true))
-            return true;
 
         if (Loader.isModLoaded("miscutils")) {
             try {

@@ -131,7 +131,8 @@ public class LuVTierEnhancer implements Runnable {
                     continue;
                 ItemData ass = GT_OreDictUnificator.getAssociation(stack);
                 if (ass.mMaterial.mMaterial.equals(Materials.Osmiridium))
-                    recipe_assemblyLine.mInputs[i] = WerkstoffLoader.LuVFineWireMaterial.get(ass.mPrefix,stack.stackSize);
+                    if (WerkstoffLoader.items.get(ass.mPrefix) != null)
+                        recipe_assemblyLine.mInputs[i] = WerkstoffLoader.LuVFineWireMaterial.get(ass.mPrefix,stack.stackSize);
             }
         }
         for (GT_Recipe recipe_assemblyLine : GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList){
@@ -145,7 +146,8 @@ public class LuVTierEnhancer implements Runnable {
                     continue;
                 ItemData ass = GT_OreDictUnificator.getAssociation(stack);
                 if (ass.mMaterial.mMaterial.equals(Materials.Osmiridium))
-                    recipe_assemblyLine.mInputs[i] = WerkstoffLoader.LuVFineWireMaterial.get(ass.mPrefix,stack.stackSize);
+                    if (WerkstoffLoader.items.get(ass.mPrefix) != null)
+                        recipe_assemblyLine.mInputs[i] = WerkstoffLoader.LuVFineWireMaterial.get(ass.mPrefix, stack.stackSize);
             }
         }
         for (GT_Recipe recipe_assemblyLine : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList){
@@ -157,7 +159,8 @@ public class LuVTierEnhancer implements Runnable {
                     continue;
                 ItemData ass = GT_OreDictUnificator.getAssociation(stack);
                 if (ass.mMaterial.mMaterial.equals(Materials.Osmiridium))
-                    recipe_assemblyLine.mInputs[i] = WerkstoffLoader.LuVFineWireMaterial.get(ass.mPrefix,stack.stackSize);
+                    if (WerkstoffLoader.items.get(ass.mPrefix) != null)
+                        recipe_assemblyLine.mInputs[i] = WerkstoffLoader.LuVFineWireMaterial.get(ass.mPrefix,stack.stackSize);
             }
         }
     }
