@@ -107,7 +107,7 @@ public final class MISC_MATERIALS {
 			"Carbon Dioxide",
 			MaterialState.PURE_LIQUID, //State
 			null, //Material Colour
-			-56, //Melting Point in C
+			-1, //Melting Point in C
 			-1, //Boiling Point in C
 			-1, //Protons
 			-1,

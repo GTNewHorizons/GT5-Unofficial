@@ -50,7 +50,6 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
 		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
-		mUsingPollutionOutputs = PollutionUtils.setPollutionFluids();
 	}
 
 	public GregtechMetaTileEntity_Adv_EBF(String aName) {
@@ -59,7 +58,6 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
 		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
-		mUsingPollutionOutputs = PollutionUtils.setPollutionFluids();
 	}
 
 	@Override
@@ -216,6 +214,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		int targetHeight;
 		FluidStack tLiquid = aLiquid.copy();
 		boolean isOutputPollution = false;
+		mUsingPollutionOutputs = PollutionUtils.setPollutionFluids();
 		if (mUsingPollutionOutputs) {
 			for (FluidStack pollutionFluidStack : PollutionUtils.mPollutionFluidStacks) {
 				if (tLiquid.isFluidEqual(pollutionFluidStack)) {

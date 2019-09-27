@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
 
 import gtPlusPlus.api.objects.Logger;
@@ -589,6 +590,28 @@ public class FluidUtils {
 			return aFStack6;
 		}		
 		return null;
+	}
+	
+	public static FluidStack getWildcardFluidStack(Materials aMaterial, int amount) {
+		FluidStack aFStack1 = aMaterial.getFluid(amount);
+		FluidStack aFStack2 = aMaterial.getGas(amount);
+		FluidStack aFStack3 = aMaterial.getMolten(amount);
+		FluidStack aFStack4 = aMaterial.getSolid(amount);
+		if (aFStack1 != null) {
+			return aFStack1;
+		}
+		else if (aFStack2 != null) {
+			return aFStack2;
+		}
+		else if (aFStack3 != null) {
+			return aFStack3;
+		}
+		else if (aFStack4 != null) {
+			return aFStack4;
+		}	
+		else {
+			return null;			
+		}
 	}
 
 

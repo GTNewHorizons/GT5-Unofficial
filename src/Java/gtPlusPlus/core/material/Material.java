@@ -477,28 +477,26 @@ public class Material {
 				if (aTest != null){
 					this.vMoltenFluid = aTest.getFluid();
 				}
-				else if (isValid == null || isValid == Materials._NULL){
-					queueFluidGeneration();
-				}
 				else {
-					if (isValid.mFluid != null){
-						this.vMoltenFluid = isValid.mFluid;
-					}
-					else if (isValid.mGas != null){
-						this.vMoltenFluid = isValid.mGas;
-					}
-					else {
+					if (isValid == null || isValid == Materials._NULL){
 						queueFluidGeneration();
 					}
+					else {		
+						FluidStack aTest2 = FluidUtils.getWildcardFluidStack(localizedName, 1);	
+						if (aTest2 != null){
+							this.vMoltenFluid = aTest2.getFluid();
+						}
+						else {
+							queueFluidGeneration();
+						}
+					}
 				}
-
 				this.vPlasma = this.generatePlasma();
 			}
 			else {
 				this.vMoltenFluid = null;
 				this.vPlasma = null;
 			}
-
 			String ratio = "";
 			if (this.vSmallestRatio != null) {
 				for (int hu=0;hu<this.vSmallestRatio.length;hu++){
