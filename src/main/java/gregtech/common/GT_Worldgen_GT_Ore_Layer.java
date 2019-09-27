@@ -46,10 +46,9 @@ public class GT_Worldgen_GT_Ore_Layer
     public static final int ORE_PLACED=4;
     public static final int NO_OVERLAP_AIR_BLOCK=5;
 
-    //public final boolean mMoon;
-    //public final boolean mMars;
-    //public final boolean mAsteroid;
+    public final boolean mMoon = false, mMars = false, mAsteroid = false;
     public final String aTextWorldgen = "worldgen.";
+
 
     @Deprecated
     public GT_Worldgen_GT_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize, boolean aOverworld, boolean aNether, boolean aEnd, boolean GC_UNUSED1, boolean GC_UNUSED2, boolean GC_UNUSED3, int aPrimary, int aSecondary, int aBetween, int aSporadic) {
@@ -195,10 +194,10 @@ public class GT_Worldgen_GT_Ore_Layer
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, Blocks.netherrack) ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, Blocks.end_stone) ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockGranites) ||
-                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockStones) ||
+                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockStones)  ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb1) ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb2) ||
-                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb3) ) {
+                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb3)) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -217,10 +216,10 @@ public class GT_Worldgen_GT_Ore_Layer
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, Blocks.netherrack) ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, Blocks.end_stone) ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockGranites) ||
-                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockStones) ||
+                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockStones)  ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb1) ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb2) ||
-                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb3) ) {
+                tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockOresUb3)) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {

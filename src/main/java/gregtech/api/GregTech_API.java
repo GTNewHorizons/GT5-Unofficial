@@ -225,9 +225,8 @@ public class GregTech_API {
         sItemStackMappings.add(sCovers);
         sItemStackMappings.add(sCoverBehaviors);
 
-        /*sDimensionalList.add(-1);
-        sDimensionalList.add(0);
-        sDimensionalList.add(1);*/
+        //sDimensionalList.add(56);
+        //sDimensionalList.add(55);
 
         sSoundList.put(0, "random.break");
         sSoundList.put(1, "random.anvil_use");
