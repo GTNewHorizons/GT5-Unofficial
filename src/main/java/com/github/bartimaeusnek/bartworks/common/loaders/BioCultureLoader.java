@@ -54,6 +54,12 @@ public class BioCultureLoader implements Runnable {
         BioCultureLoader.rottenFleshBacteria = BioCulture.createAndRegisterBioCulture(new Color(110, 40, 25), "Escherichia cadaver", BioPlasmid.convertDataToPlasmid(BioCultureLoader.BIO_DATA_BETA_LACMATASE), BioDNA.convertDataToDNA(BioCultureLoader.BIO_DATA_BETA_LACMATASE), false);
         BioCultureLoader.eColi = BioCulture.createAndRegisterBioCulture(new Color(149, 132, 75), "Escherichia koli", BioPlasmid.convertDataToPlasmid(BioCultureLoader.eColiData), BioDNA.convertDataToDNA(BioCultureLoader.eColiData), true);
         BioCultureLoader.anaerobicOil = BioCulture.createAndRegisterBioCulture(new Color(0, 0, 0), "Pseudomonas Veronii", BioPlasmid.convertDataToPlasmid(BioCultureLoader.BIO_DNA_ANAEROBIC_OIL), BioDNA.convertDataToDNA(BioCultureLoader.BIO_DATA_ANAEROBIC_OIL), true);
+        BioCultureLoader.CommonYeast.setLocalisedName("Common Yeast");
+        BioCultureLoader.WhineYeast.setLocalisedName("Whine Yeast");
+        BioCultureLoader.BeerYeast.setLocalisedName("Beer Yeast");
+        BioCultureLoader.rottenFleshBacteria.setLocalisedName("Rotten Flesh Bacteria");
+        BioCultureLoader.eColi.setLocalisedName("eColi Bacteria");
+        BioCultureLoader.anaerobicOil.setLocalisedName("Anaerobic Oil Bacteria");
     }
 
 }

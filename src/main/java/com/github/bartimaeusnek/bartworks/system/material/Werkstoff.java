@@ -26,6 +26,7 @@ import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
 import com.github.bartimaeusnek.bartworks.util.Pair;
+import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -33,10 +34,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.util.*;
-
-import static gregtech.api.enums.OrePrefixes.capsule;
 
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
@@ -76,8 +76,14 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         Werkstoff.default_null_Werkstoff = new Werkstoff(new short[3], "_NULL", "Default null Werkstoff", Werkstoff.DEFAULT_NULL_STATS, Werkstoff.Types.UNDEFINED, Werkstoff.DEFAULT_NULL_GENERATION_FEATURES, -1, TextureSet.SET_NONE);
     }
 
+    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type,int meltingpoint, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, Pair<ISubTagContainer, Integer>... contents) {
+        this(rgba, defaultName, Werkstoff.Types.getDefaultStatForType(type).setMeltingPoint(meltingpoint), type, generationFeatures, mID, texSet, contents);
+    }
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, Werkstoff.Types.getDefaultStatForType(type), type, generationFeatures, mID, texSet, contents);
+    }
+    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingpoint, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+        this(rgba, defaultName, Werkstoff.Types.getDefaultStatForType(type).setMeltingPoint(meltingpoint), type, generationFeatures, mID, texSet, oreByProduct, contents);
     }
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, Werkstoff.Types.getDefaultStatForType(type), type, generationFeatures, mID, texSet, oreByProduct, contents);
@@ -144,6 +150,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             }
         } else
             this.toolTip = toolTip;
+
+//        if (this.toolTip.length() > 25)
+//            this.toolTip = "The formula is to long...";
+
         if (this.stats.protons == 0) {
             long tmpprotons = 0;
             for (Pair<ISubTagContainer, Integer> p : contents) {
@@ -166,6 +176,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             }
             this.stats = stats.setMass(tmpmass);
         }
+
+        if (this.stats.meltingPoint == 0)
+            this.stats.meltingPoint = 1123;
+
         this.texSet = texSet;
 
         if (this.mOreByProducts.isEmpty()) {
@@ -204,6 +218,19 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return ret;
     }
 
+    public List<TC_Aspects.TC_AspectStack> getGTWrappedTCAspects() {
+        List<TC_Aspects.TC_AspectStack> ret = new ArrayList<>();
+        try {
+            Pair<Object, Integer>[] aspectArray = getTCAspects();
+            TC_Aspects.TC_AspectStack stack = null;
+            for (Pair<Object, Integer> objectIntegerPair : aspectArray) {
+                stack = new TC_Aspects.TC_AspectStack(TC_Aspects.valueOf(((String) ThaumcraftHandler.AspectAdder.getName.invoke(objectIntegerPair.getKey())).toUpperCase(Locale.US)) , objectIntegerPair.getValue());
+                stack.addToAspectList(ret);
+            }
+        }catch( InvocationTargetException | IllegalAccessException ignored){}
+        return ret;
+    }
+
     public Pair<Object,Integer>[] getTCAspects(){
         return this.getTCAspects(1);
     }
@@ -224,6 +251,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         int ret = 0;
         switch (this.type) {
             case COMPOUND:
+            case MIXTURE:
             case BIOLOGICAL: {
                 for (int i = 0; i < this.CONTENTS.toArray().length; i++) {
                     ret += ((Pair<ISubTagContainer, Integer>) this.CONTENTS.toArray()[i]).getValue();
@@ -273,6 +301,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public String getDefaultName() {
         return this.defaultName;
+    }
+
+    public String getVarName() {
+        return this.defaultName.replaceAll(" ","");
     }
 
     public String getToolTip() {
@@ -344,6 +376,21 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return WerkstoffLoader.getCorrespondingItemStack(prefixes, this, amount);
     }
 
+    public byte getToolQuality() {
+        return (byte) ( (15f * (((float)this.getStats().getProtons() / 188f) + (float) this.getStats().getMeltingPoint() / 10801f)) / (float) this.getContents().getKey() );
+    }
+
+    public float getToolSpeed() {
+        return this.stats.speedOverride > 0f ? this.stats.speedOverride : Math.max(1f,
+                2f*((float) -this.getStats().getMass() + 0.1f * (float) this.getStats().getMeltingPoint() + (float) this.getStats().getProtons()) * 0.1f / (float) this.getContents().getKey() * 0.1f * (float) this.getToolQuality()
+        );
+    }
+
+    public int getDurability() {
+        return this.stats.durOverride > 0 ? this.stats.durOverride : (int) (this.stats.durMod * ((0.01f * (float) this.getStats().getMeltingPoint() * (float) this.getStats().getMass()) / (float) this.getContents().getKey()));
+    }
+
+
     public enum Types {
         MATERIAL, COMPOUND, MIXTURE, BIOLOGICAL, ELEMENT, ISOTOPE, UNDEFINED;
 
@@ -412,6 +459,9 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plate,0b10000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.stick,0b10000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.rod,0b10000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.toolHeadHammer,0b10000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.toolHeadWrench,0b10000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.toolHeadSaw,0b10000000);
 
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gearGt,0b100000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gearGtSmall,0b100000000);
@@ -598,11 +648,48 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return this;
         }
 
+        public int getDurOverride() {
+            return durOverride;
+        }
+
+        public void setDurOverride(int durOverride) {
+            this.durOverride = durOverride;
+        }
+
+        public float getSpeedOverride() {
+            return speedOverride;
+        }
+
+        public void setSpeedOverride(float speedOverride) {
+            this.speedOverride = speedOverride;
+        }
+
+        public float getTierOverride() {
+            return tierOverride;
+        }
+
+        public void setTierOverride(float tierOverride) {
+            this.tierOverride = tierOverride;
+        }
+
         int meltingPoint;
         long protons;
         long neutrons;
         long electrons;
         long mass;
+        int durOverride;
+        float speedOverride;
+        float tierOverride;
+        float durMod = 1f;
+
+        public float getDurMod() {
+            return durMod;
+        }
+
+        public void setDurMod(float durMod) {
+            this.durMod = durMod;
+        }
+
         private Pair<Object,Integer>[] mTC_Aspects;
         //logic gate shit
         byte quality = ~0b1111111;

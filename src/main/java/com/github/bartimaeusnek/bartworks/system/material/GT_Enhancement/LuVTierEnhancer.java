@@ -20,9 +20,10 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
+package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.AfterLuVTierEnhacement;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.ItemList;
@@ -132,7 +133,7 @@ public class LuVTierEnhancer implements Runnable {
                 ItemData ass = GT_OreDictUnificator.getAssociation(stack);
                 if (ass.mMaterial.mMaterial.equals(Materials.Osmiridium))
                     if (WerkstoffLoader.items.get(ass.mPrefix) != null)
-                        recipe_assemblyLine.mInputs[i] = WerkstoffLoader.LuVFineWireMaterial.get(ass.mPrefix,stack.stackSize);
+                        recipe_assemblyLine.mInputs[i] = WerkstoffLoader.Ruridit.get(ass.mPrefix,stack.stackSize);
             }
         }
         for (GT_Recipe recipe_assemblyLine : GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList){
@@ -147,7 +148,7 @@ public class LuVTierEnhancer implements Runnable {
                 ItemData ass = GT_OreDictUnificator.getAssociation(stack);
                 if (ass.mMaterial.mMaterial.equals(Materials.Osmiridium))
                     if (WerkstoffLoader.items.get(ass.mPrefix) != null)
-                        recipe_assemblyLine.mInputs[i] = WerkstoffLoader.LuVFineWireMaterial.get(ass.mPrefix, stack.stackSize);
+                        recipe_assemblyLine.mInputs[i] = WerkstoffLoader.Ruridit.get(ass.mPrefix, stack.stackSize);
             }
         }
         for (GT_Recipe recipe_assemblyLine : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList){
@@ -160,7 +161,7 @@ public class LuVTierEnhancer implements Runnable {
                 ItemData ass = GT_OreDictUnificator.getAssociation(stack);
                 if (ass.mMaterial.mMaterial.equals(Materials.Osmiridium))
                     if (WerkstoffLoader.items.get(ass.mPrefix) != null)
-                        recipe_assemblyLine.mInputs[i] = WerkstoffLoader.LuVFineWireMaterial.get(ass.mPrefix,stack.stackSize);
+                        recipe_assemblyLine.mInputs[i] = WerkstoffLoader.Ruridit.get(ass.mPrefix,stack.stackSize);
             }
         }
     }

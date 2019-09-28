@@ -203,10 +203,10 @@ public class BW_ColorUtil {
     }
 
     public static short[] correctCorlorArray(short[] rgba){
-        if (rgba.length>4) {
+        if (rgba.length > 4) {
             rgba = Arrays.copyOfRange(rgba, 0,4);
         }
-        if (rgba.length<4) {
+        if (rgba.length < 4) {
             short[] tmp = Arrays.copyOf(rgba, 4);
             Arrays.fill(tmp,rgba.length,4, (short) 0);
             rgba = tmp;

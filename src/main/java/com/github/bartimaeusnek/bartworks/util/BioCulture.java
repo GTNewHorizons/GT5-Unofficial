@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.util;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
@@ -39,6 +40,14 @@ public class BioCulture extends BioData implements IColorModulationContainer {
 
     public static final ArrayList<BioCulture> BIO_CULTURE_ARRAY_LIST = new ArrayList<BioCulture>();
     public static final BioCulture NULLCULTURE = BioCulture.createAndRegisterBioCulture(Color.BLUE, "", BioPlasmid.NULLPLASMID, BioDNA.NULLDNA, false); //fallback NULL culture, also Blue =)
+
+    public String getLocalisedName() {
+        return GT_LanguageManager.getTranslation(this.getName());
+    }
+
+    public void setLocalisedName(String localisedName) {
+        GT_LanguageManager.addStringLocalization(this.getName(),localisedName);
+    }
 
     Color color;
     BioPlasmid plasmid;
@@ -111,6 +120,8 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     public static BioCulture getBioCulture(String Name) {
+        if (Name == null || Name.isEmpty())
+            return null;
         for (BioCulture b : BIO_CULTURE_ARRAY_LIST)
             if (b.name.equals(Name))
                 return b;

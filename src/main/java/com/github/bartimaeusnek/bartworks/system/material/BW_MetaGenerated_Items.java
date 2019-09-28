@@ -33,8 +33,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_LanguageManager;
@@ -57,7 +55,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
 import java.util.List;
 
 import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.werkstoffHashMap;

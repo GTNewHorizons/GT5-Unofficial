@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
+package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Items;
@@ -80,8 +80,8 @@ public class PlatinumSludgeOverHaul {
         GT_Values.RA.addMixerRecipe(Materials.SulfuricAcid.getCells(3), GT_Utility.getIntegratedCircuit(1), null, null, Materials.Water.getFluid(1000), Materials.DilutedSulfuricAcid.getFluid(4000), Materials.Empty.getCells(3), 30, 30);
         //FormicAcid
         GT_Values.RA.addChemicalRecipe(Materials.CarbonMonoxide.getCells(1), Materials.SodiumHydroxide.getDust(1), null, null, Sodiumformate.get(cell), null, 15);
-        GT_Values.RA.addChemicalRecipe(Sodiumformate.get(cell, 2), GT_Utility.getIntegratedCircuit(1), Materials.SulfuricAcid.getFluid(1000), null, FormicAcid.get(cell, 2), Sodiumsulfate.get(dust), 15);
-        GT_Values.RA.addChemicalRecipe(Materials.SulfuricAcid.getCells(1), GT_Utility.getIntegratedCircuit(1), Sodiumformate.getFluidOrGas(2000), FormicAcid.getFluidOrGas(2000), Materials.Empty.getCells(1), Sodiumsulfate.get(dust), 15);
+        GT_Values.RA.addChemicalRecipe(Sodiumformate.get(cell, 2), GT_Utility.getIntegratedCircuit(1), Materials.SulfuricAcid.getFluid(1000), null, FormicAcid.get(cell, 2), Sodiumsulfate.get(dust, 7), 15);
+        GT_Values.RA.addChemicalRecipe(Materials.SulfuricAcid.getCells(1), GT_Utility.getIntegratedCircuit(1), Sodiumformate.getFluidOrGas(2000), FormicAcid.getFluidOrGas(2000), Materials.Empty.getCells(1), Sodiumsulfate.get(dust, 7), 15);
         //AquaRegia
         GT_Values.RA.addMixerRecipe(Materials.DilutedSulfuricAcid.getCells(1), Materials.NitricAcid.getCells(1), GT_Utility.getIntegratedCircuit(1), null, null, null, AquaRegia.get(cell, 2), 30, 30);
         GT_Values.RA.addMixerRecipe(Materials.DilutedSulfuricAcid.getCells(1), Materials.NitricAcid.getCells(1), GT_Utility.getIntegratedCircuit(2), null, null, AquaRegia.getFluidOrGas(2000), Materials.Empty.getCells(2), 30, 30);
@@ -522,6 +522,28 @@ public class PlatinumSludgeOverHaul {
 
         if (GT_Utility.areStacksEqual(ItemList.Depleted_Naquadah_1.get(1),stack,true) || GT_Utility.areStacksEqual(ItemList.Depleted_Naquadah_2.get(1),stack,true) || GT_Utility.areStacksEqual(ItemList.Depleted_Naquadah_4.get(1),stack,true))
             return true;
+
+
+        if (GT_Utility.areStacksEqual(ItemList.Tool_Lighter_Platinum_Empty.get(1),stack,true) || GT_Utility.areStacksEqual(ItemList.Tool_Lighter_Platinum_Used.get(1),stack,true) || GT_Utility.areStacksEqual(ItemList.Tool_Lighter_Platinum_Full.get(1),stack,true))
+            return true;
+
+        if (GT_Utility.areStacksEqual(ItemList.Emitter_EV.get(1),stack,true))
+            return true;
+
+        try {
+            ItemList gtnhItemListItems = ItemList.valueOf("Large_Fluid_Cell_TungstenSteel");
+            if (GT_Utility.areStacksEqual(gtnhItemListItems.get(1), stack, true))
+                return true;
+            gtnhItemListItems = ItemList.valueOf("Depleted_MNq_1");
+            if (GT_Utility.areStacksEqual(gtnhItemListItems.get(1), stack, true))
+                return true;
+            gtnhItemListItems = ItemList.valueOf("Depleted_MNq_2");
+            if (GT_Utility.areStacksEqual(gtnhItemListItems.get(1), stack, true))
+                return true;
+            gtnhItemListItems = ItemList.valueOf("Depleted_MNq_4");
+            if (GT_Utility.areStacksEqual(gtnhItemListItems.get(1), stack, true))
+                return true;
+        } catch (IllegalArgumentException ignored) {}
 
         if (stack.getItem() instanceof GT_Generic_Item) {
             if (!BW_Util.checkStackAndPrefix(stack))

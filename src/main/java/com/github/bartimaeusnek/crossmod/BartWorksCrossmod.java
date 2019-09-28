@@ -26,7 +26,6 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.commands.ChangeConfig;
 import com.github.bartimaeusnek.bartworks.common.commands.SummonRuin;
 import com.github.bartimaeusnek.crossmod.GTpp.loader.RadioHatchCompat;
-import com.github.bartimaeusnek.crossmod.ae2.ItemSingleItemStorageCell;
 import com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy;
 import com.github.bartimaeusnek.crossmod.thaumcraft.CustomAspects;
 import cpw.mods.fml.common.Loader;

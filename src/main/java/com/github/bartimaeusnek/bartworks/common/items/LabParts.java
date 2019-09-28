@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.common.items;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.BioCulture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
@@ -101,19 +102,20 @@ public class LabParts extends SimpleSubItemClass {
             return;
         }
 
+        BioCulture culture = BioCulture.getBioCulture(itemStack.getTagCompound().getString("Name"));
 
         switch (itemStack.getItemDamage()) {
             case 0:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.5.name") + " " + itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.5.name") + " " + itemStack.getTagCompound().getString("Name") + (culture != null ? " ("+culture.getLocalisedName()+")" : ""));
                 if (!itemStack.getTagCompound().getBoolean("Breedable")) {
                     list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));
                 }
                 break;
             case 1:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.7.name") + " " + itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.7.name") + " " + itemStack.getTagCompound().getString("Name") + (culture != null ? " ("+culture.getLocalisedName()+")" : ""));
                 break;
             case 2:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.8.name") + " " + itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.8.name") + " " + itemStack.getTagCompound().getString("Name") + (culture != null ? " ("+culture.getLocalisedName()+")" : ""));
                 break;
             default:
                 break;

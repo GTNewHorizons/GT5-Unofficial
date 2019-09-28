@@ -148,7 +148,7 @@ public class ThaumcraftHandler {
 
         public static void addAspectToAll(Werkstoff werkstoff){
             for (OrePrefixes element : OrePrefixes.values()) {
-                if ((werkstoff.getGenerationFeatures().toGenerate & element.mMaterialGenerationBits) != 0 && (werkstoff.getGenerationFeatures().blacklist & element.mMaterialGenerationBits) == 0) {
+                if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(element)) != 0 && (werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(element)) == 0) {
                     if (element.mMaterialAmount >= 3628800L || element == OrePrefixes.ore) {
                         DebugLog.log("OrePrefix: "+element.name() + " mMaterialAmount: " + element.mMaterialAmount/3628800L);
                         if (WerkstoffLoader.items.get(element) != null)

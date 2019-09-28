@@ -45,7 +45,7 @@ import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.Circ
 import com.github.bartimaeusnek.bartworks.system.material.ThreadedLoader;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.DownTierLoader;
-import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.PlatinumSludgeOverHaul;
+import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.PlatinumSludgeOverHaul;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;

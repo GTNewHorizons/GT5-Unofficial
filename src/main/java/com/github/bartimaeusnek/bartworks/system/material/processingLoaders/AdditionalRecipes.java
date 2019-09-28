@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_Meta_Items;
+import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.LuVTierEnhancer;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
