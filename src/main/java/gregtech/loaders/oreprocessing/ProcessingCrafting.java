@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import com.spartakcore.gthandler.CustomItemList;
+
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -96,6 +98,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_ULPIC.get(2, new Object[0]), 600, 30,false);
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer2.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_ULPIC.get(8, new Object[0]), 600, 120,false);
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer9.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_SoC2.get(1, new Object[0]), 3000, 1920,true);
+                GT_Values.RA.addLaserEngraverRecipe(ItemList.IC2_LapotronCrystal.getWildcard(1L, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), CustomItemList.QuantumCrystal.get(1L), 256, 480,true);
                 break;
             case "craftingLensWhite":
                 GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 19), 2000, 1920);
