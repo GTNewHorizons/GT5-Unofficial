@@ -110,7 +110,7 @@ public class AdditionalRecipes implements Runnable {
                     new BWRecipes.DynamicGTRecipe(false,
                             new ItemStack[]{
                                     BW_Meta_Items.getNEWCIRCUITS().getStack(3),
-                                    WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, (2)),
+                                    WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, (1)),
                                     BW_Meta_Items.getNEWCIRCUITS().getStack(i + 3),
                                     ItemList.Circuit_Parts_DiodeSMD.get((i + 6) * 4),
                                     ItemList.Circuit_Parts_CapacitorSMD.get((i + 6) * 4),

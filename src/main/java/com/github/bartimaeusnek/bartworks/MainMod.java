@@ -219,6 +219,22 @@ public final class MainMod {
         new CircuitImprintLoader().run();
         if (classicMode)
             new DownTierLoader().run();
+        fixEnergyRequirements();
+    }
+
+    private static void fixEnergyRequirements() {
+        maploop:
+        for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings){
+            for (GT_Recipe recipe : map.mRecipeList){
+                if (recipe.mFakeRecipe)
+                    continue maploop;
+                for (int i = 0; i < 10; i++) {
+                    if (recipe.mEUt == BW_Util.getTierVoltage(i)){
+                        recipe.mEUt = BW_Util.getMachineVoltageFromTier(i);
+                    }
+                }
+            }
+        }
     }
 
     private static void unificationEnforcer() {

@@ -113,6 +113,8 @@ public class CircuitImprintLoader implements Runnable {
             int[] oreIDs = OreDictionary.getOreIDs(is);
             if(oreIDs == null || oreIDs.length < 1 || !OreDictionary.getOreName(oreIDs[0]).contains("circuit")) {
                 is.stackSize = 64;
+                if (is.stackSize > is.getItem().getItemStackLimit() || is.stackSize > is.getMaxStackSize())
+                    is.stackSize = is.getMaxStackSize();
             }
         }
         newRecipe.mFluidInputs[0].amount *= 4;
@@ -143,6 +145,8 @@ public class CircuitImprintLoader implements Runnable {
                     else {
                         in[i] = original.mInputs[i].copy();
                         in[i].stackSize *= 16;
+                        if (in[i].stackSize > in[i].getItem().getItemStackLimit() || in[i].stackSize > in[i].getMaxStackSize())
+                            in[i].stackSize = in[i].getMaxStackSize();
                     }
 //                  if (in[i].stackSize > 64)
 //                      return null;
