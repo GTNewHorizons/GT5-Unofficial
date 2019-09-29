@@ -4807,7 +4807,7 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Vanadiumtriindinid, 1L), ItemList.Circuit_Chip_HPIC.get(2L), ItemList.IV_Coil.get(2L), ItemList.Reactor_Coolant_NaK_3.get(1L), ItemList.Electric_Pump_IV.get(1L)}, GT_Values.NF, ItemList.Hatch_Dynamo_IV.get(1L, new Object[0]), 200, 7680);
         
         //All Hatches
-        if(Loader.isModLoaded("IronChest")){
+        /*if(Loader.isModLoaded("IronChest")){
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_HV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Brass, 1L), ItemList.Conveyor_Module_HV.get(1L), GT_ModHandler.getModItem("IronChest", "BlockIronChest", 1L, 0), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_Bus_HV.get(1L, new Object[0]), 200, 480);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_EV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Electrum, 1L), ItemList.Conveyor_Module_EV.get(1L), GT_ModHandler.getModItem("IronChest", "BlockIronChest", 1L, 4), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_Bus_EV.get(1L, new Object[0]), 200, 1920);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.PolyvinylChloride, 1L), ItemList.Conveyor_Module_IV.get(1L), GT_ModHandler.getModItem("IronChest", "BlockIronChest", 1L, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_Bus_IV.get(1L, new Object[0]), 200, 7680);
@@ -4834,11 +4834,11 @@ if(Loader.isModLoaded("Railcraft")){
         }
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.ElectrumFlux, 1L), ItemList.Conveyor_Module_UV.get(1L), ItemList.Super_Tank_LV.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_Bus_UV.get(1L, new Object[0]), 200, 500000);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Americium, 1L), ItemList.Conveyor_Module_UHV.get(1L),  ItemList.Super_Tank_MV.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_Bus_MAX.get(1L, new Object[0]), 200, 2000000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UEV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Diamericiumtitanium, 1L), ItemList.Conveyor_Module_UEV.get(1L),  ItemList.Super_Tank_HV.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_Bus_UEV.get(1L, new Object[0]), 200, 8000000);
+        //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UEV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Diamericiumtitanium, 1L), ItemList.Conveyor_Module_UEV.get(1L),  ItemList.Super_Tank_HV.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_Bus_UEV.get(1L, new Object[0]), 200, 8000000);
         
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.ElectrumFlux, 1L), ItemList.Conveyor_Module_UV.get(1L),  ItemList.Super_Tank_LV.get(1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Hatch_Output_Bus_UV.get(1L, new Object[0]), 200, 500000);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Americium, 1L), ItemList.Conveyor_Module_UHV.get(1L),  ItemList.Super_Tank_MV.get(1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Hatch_Output_Bus_MAX.get(1L, new Object[0]), 200, 2000000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UEV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Diamericiumtitanium, 1L), ItemList.Conveyor_Module_UEV.get(1L),  ItemList.Super_Tank_HV.get(1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Hatch_Output_Bus_UEV.get(1L, new Object[0]), 200, 8000000);
+        //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UEV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Diamericiumtitanium, 1L), ItemList.Conveyor_Module_UEV.get(1L),  ItemList.Super_Tank_HV.get(1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Hatch_Output_Bus_UEV.get(1L, new Object[0]), 200, 8000000);
         
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_HV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1L), ItemList.Electric_Pump_HV.get(1L),  ItemList.Large_Fluid_Cell_StainlessSteel.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_HV.get(1L, new Object[0]), 200, 480);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_EV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L), ItemList.Electric_Pump_EV.get(1L), ItemList.Large_Fluid_Cell_Titanium.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_EV.get(1L, new Object[0]), 200, 1920);
@@ -4847,7 +4847,7 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 1L), ItemList.Electric_Pump_ZPM.get(1L), ItemList.Large_Fluid_Cell_Iridium.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_ZPM.get(1L, new Object[0]), 200, 122880);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Duranium, 1L), ItemList.Electric_Pump_UV.get(1L),  ItemList.Super_Tank_LV.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_UV.get(1L, new Object[0]), 200, 500000);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Infuscolium, 1L), ItemList.Electric_Pump_UHV.get(1L),  ItemList.Super_Tank_MV.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_MAX.get(1L, new Object[0]), 200, 2000000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UEV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 1L), ItemList.Electric_Pump_UEV.get(1L),  ItemList.Super_Tank_HV.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_UEV.get(1L, new Object[0]), 200, 8000000);
+        //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UEV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 1L), ItemList.Electric_Pump_UEV.get(1L),  ItemList.Super_Tank_HV.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Hatch_Input_UEV.get(1L, new Object[0]), 200, 8000000);
         
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_HV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1L), ItemList.Electric_Pump_HV.get(1L), ItemList.Large_Fluid_Cell_StainlessSteel.get(1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Hatch_Output_HV.get(1L, new Object[0]), 200, 480);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_EV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L), ItemList.Electric_Pump_EV.get(1L), ItemList.Large_Fluid_Cell_Titanium.get(1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Hatch_Output_EV.get(1L, new Object[0]), 200, 1920);
@@ -4856,8 +4856,8 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_ZPM.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 1L), ItemList.Electric_Pump_ZPM.get(1L), ItemList.Large_Fluid_Cell_Iridium.get(1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Hatch_Output_ZPM.get(1L, new Object[0]), 200, 122880);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Duranium, 1L), ItemList.Electric_Pump_UV.get(1L), ItemList.Super_Tank_LV.get(1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Hatch_Output_UV.get(1L, new Object[0]), 200, 500000);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MAX.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Infuscolium, 1L), ItemList.Electric_Pump_UHV.get(1L), ItemList.Super_Tank_MV.get(1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Hatch_Output_MAX.get(1L, new Object[0]), 200, 2000000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UEV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 1L), ItemList.Electric_Pump_UEV.get(1L), ItemList.Super_Tank_HV.get(1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Hatch_Output_UEV.get(1L, new Object[0]), 200, 8000000);
-        
+        //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_UEV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 1L), ItemList.Electric_Pump_UEV.get(1L), ItemList.Super_Tank_HV.get(1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Hatch_Output_UEV.get(1L, new Object[0]), 200, 8000000);
+        */
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_HV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L), ItemList.Electric_Motor_HV.get(1L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.Hatch_Muffler_HV.get(1L, new Object[0]), 200, 480);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_EV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 1L), ItemList.Electric_Motor_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Titanium, 1L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.Hatch_Muffler_EV.get(1L, new Object[0]), 200, 1920);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 1L), ItemList.Electric_Motor_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.Hatch_Muffler_IV.get(1L, new Object[0]), 200, 7680);
@@ -5585,6 +5585,83 @@ if(Loader.isModLoaded("Railcraft")){
             ItemList.Field_Generator_UEV.get(1, new Object[]{}), 1000, 800000);
             
         }
-		
+		addBusAndHatchRecipes();
     }
+       
+       /**
+        * Adds new recipes for hatches and busses
+        */
+       public static void addBusAndHatchRecipes(){
+           Materials[] glues = {
+                   Materials.Glue,
+                   Materials.Plastic,
+                   Materials.Polytetrafluoroethylene,
+                   Materials.Polybenzimidazole
+           };
+
+           ItemStack[] chests = {
+                   new ItemStack(Blocks.chest),
+                   new ItemStack(Blocks.chest),
+                   Loader.isModLoaded("IronChest") ? GT_ModHandler.getModItem("IronChest","BlockIronChest",1,3) : new ItemStack(Blocks.chest),
+                   Loader.isModLoaded("IronChest") ? GT_ModHandler.getModItem("IronChest","BlockIronChest",1) : new ItemStack(Blocks.chest),
+                   Loader.isModLoaded("IronChest") ? GT_ModHandler.getModItem("IronChest","BlockIronChest",1,4) : new ItemStack(Blocks.chest),
+                   Loader.isModLoaded("IronChest") ? GT_ModHandler.getModItem("IronChest","BlockIronChest",1,1) : new ItemStack(Blocks.chest),
+                   Loader.isModLoaded("IronChest") ? GT_ModHandler.getModItem("IronChest","BlockIronChest",1,2) : new ItemStack(Blocks.chest),
+                   Loader.isModLoaded("IronChest") ? GT_ModHandler.getModItem("IronChest","BlockIronChest",1,5) : new ItemStack(Blocks.chest),
+                   Loader.isModLoaded("IronChest") ? GT_ModHandler.getModItem("IronChest","BlockIronChest",1,6) : GT_ModHandler.getModItem("gregtech","gt.blockmachines",1,145),
+                   Loader.isModLoaded("avaritiaddons") ? GT_ModHandler.getModItem("avaritiaddons","CompressedChest",1) : GT_ModHandler.getModItem("gregtech","gt.blockmachines",1,146)
+           };
+           ItemStack[] tanks = {
+                   GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Empty,1L),
+                   Loader.isModLoaded("BuildCraft|Factory") ? GT_ModHandler.getModItem("BuildCraft|Factory","tankBlock",1) : ItemList.Large_Fluid_Cell_Steel.get(1L),
+                   Loader.isModLoaded("irontank") ? GT_ModHandler.getModItem("irontank","copperTank",1) : ItemList.Large_Fluid_Cell_Aluminium.get(1L),
+                   Loader.isModLoaded("irontank") ? GT_ModHandler.getModItem("irontank","ironTank",1) : ItemList.Large_Fluid_Cell_StainlessSteel.get(1L),
+                   Loader.isModLoaded("irontank") ? GT_ModHandler.getModItem("irontank","silverTank",1) : ItemList.Large_Fluid_Cell_Titanium.get(1L),
+                   Loader.isModLoaded("irontank") ? GT_ModHandler.getModItem("irontank","goldTank",1) : ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
+                   Loader.isModLoaded("irontank") ? GT_ModHandler.getModItem("irontank","diamondTank",1) : ItemList.Large_Fluid_Cell_Chrome.get(1L),
+                   Loader.isModLoaded("irontank") ? GT_ModHandler.getModItem("irontank","obsidianTank",1) : ItemList.Large_Fluid_Cell_Iridium.get(1L),
+                   GT_ModHandler.getModItem("gregtech","gt.blockmachines",1,140),
+                   GT_ModHandler.getModItem("gregtech","gt.blockmachines",1,141)
+           };
+
+           ItemStack[][] aInputs = new ItemStack[10][3];
+           ItemStack[][] aInputs2 = new ItemStack[10][3];
+           ItemStack[][] flInputs = new ItemStack[10][3];
+           ItemStack[][] flInputs2 = new ItemStack[10][3];
+
+           for (int i = 0; i < 10; i++) {
+               aInputs[i]= new ItemStack[]{ItemList.MACHINE_HULLS[i].get(1), chests[i].copy(), GT_Utility.getIntegratedCircuit(1)};
+               aInputs2[i]= new ItemStack[]{ItemList.MACHINE_HULLS[i].get(1), chests[i].copy(), GT_Utility.getIntegratedCircuit(2)};
+               flInputs[i]= new ItemStack[]{ItemList.MACHINE_HULLS[i].get(1), tanks[i].copy(), GT_Utility.getIntegratedCircuit(1)};
+               flInputs2[i]= new ItemStack[]{ItemList.MACHINE_HULLS[i].get(1), tanks[i].copy(), GT_Utility.getIntegratedCircuit(2)};
+           }
+
+           for (int aTier = 0; aTier < 10; aTier++) {
+               
+               if (aTier<2) {
+                   GT_Values.RA.addAssemblerRecipe(aInputs[aTier], glues[0].getFluid((long)(144 * Math.pow((aTier + 4), aTier))), ItemList.HATCHES_INPUT_BUS[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                   GT_Values.RA.addAssemblerRecipe(aInputs2[aTier], glues[0].getFluid((long)(144 * Math.pow((aTier+4), aTier))), ItemList.HATCHES_OUTPUT_BUS[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                   GT_Values.RA.addAssemblerRecipe(flInputs[aTier], glues[0].getFluid((long)(144 * Math.pow((aTier+4), aTier))), ItemList.HATCHES_INPUT[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                   GT_Values.RA.addAssemblerRecipe(flInputs2[aTier], glues[0].getFluid((long)(144 * Math.pow((aTier+4), aTier))), ItemList.HATCHES_OUTPUT[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+               }
+               if (aTier<4) {
+                   GT_Values.RA.addAssemblerRecipe(aInputs[aTier], aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L * aTier), ItemList.HATCHES_INPUT_BUS[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                   GT_Values.RA.addAssemblerRecipe(aInputs2[aTier], aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L*aTier), ItemList.HATCHES_OUTPUT_BUS[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                   GT_Values.RA.addAssemblerRecipe(flInputs[aTier], aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L * aTier), ItemList.HATCHES_INPUT[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                   GT_Values.RA.addAssemblerRecipe(flInputs2[aTier], aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L*aTier), ItemList.HATCHES_OUTPUT[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+
+               }
+               if (aTier<7) {
+                   GT_Values.RA.addAssemblerRecipe(aInputs[aTier], glues[2].getMolten((long) (18 * Math.pow(2, (aTier + 1)))), ItemList.HATCHES_INPUT_BUS[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                   GT_Values.RA.addAssemblerRecipe(aInputs2[aTier], glues[2].getMolten((long) (18 * Math.pow(2,(aTier + 1)))), ItemList.HATCHES_OUTPUT_BUS[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                   GT_Values.RA.addAssemblerRecipe(flInputs[aTier], glues[2].getMolten((long) (18 * Math.pow(2, (aTier + 1)))), ItemList.HATCHES_INPUT[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                   GT_Values.RA.addAssemblerRecipe(flInputs2[aTier], glues[2].getMolten((long) (18 * Math.pow(2,(aTier + 1)))), ItemList.HATCHES_OUTPUT[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+
+               }
+               GT_Values.RA.addAssemblerRecipe(aInputs[aTier], glues[3].getMolten((long) (2.25 * Math.pow(2,(aTier+1)))), ItemList.HATCHES_INPUT_BUS[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+               GT_Values.RA.addAssemblerRecipe(aInputs2[aTier], glues[3].getMolten((long) (2.25 * Math.pow(2,(aTier+1)))), ItemList.HATCHES_OUTPUT_BUS[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+               GT_Values.RA.addAssemblerRecipe(flInputs[aTier], glues[3].getMolten((long) (2.25 * Math.pow(2,(aTier+1)))), ItemList.HATCHES_INPUT[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+               GT_Values.RA.addAssemblerRecipe(flInputs2[aTier], glues[3].getMolten((long) (2.25 * Math.pow(2,(aTier+1)))), ItemList.HATCHES_OUTPUT[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+           }
+       }
 }
