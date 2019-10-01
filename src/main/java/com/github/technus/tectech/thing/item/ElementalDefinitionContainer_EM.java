@@ -19,6 +19,7 @@ import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -30,6 +31,7 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         setMaxStackSize(1);
         setUnlocalizedName("em.definitionContainer");
         setTextureName(MODID + ":itemDefinitionContainer");
+        setCreativeTab(creativeTabTecTech);
     }
 
     //return previous thing
@@ -146,6 +148,6 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
 
     @Override
     public FontRenderer getFontRenderer(ItemStack stack) {
-        return (FontRenderer) (Object) TecTechFontRender.INSTANCE;
+        return TecTechFontRender.INSTANCE;
     }
 }

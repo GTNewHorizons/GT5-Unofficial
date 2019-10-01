@@ -61,6 +61,7 @@ public final class MainLoader {
     }
 
     public static void preLoad(){
+        creativeTabTecTech =new CreativeTabTecTech("TecTech");
 
         //set expanded texture arrays for tiers
         try {
@@ -120,7 +121,7 @@ public final class MainLoader {
     }
 
     public static void postLoad() {
-        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 6);
+        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 5);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
         if(Loader.isModLoaded(Reference.DREAMCRAFT)){
@@ -146,12 +147,7 @@ public final class MainLoader {
 
         progressBarPostLoad.step("Recipes");
         new RecipeLoader().run();
-
         TecTech.LOGGER.info("Recipe Init Done");
-
-        progressBarPostLoad.step("Creative Tab");
-        creativeTabTecTech =new CreativeTabTecTech("TecTech");
-        TecTech.LOGGER.info("CreativeTab initiation complete");
 
         progressBarPostLoad.step("Register Extra Hazmat Suits");
         registerExtraHazmats();

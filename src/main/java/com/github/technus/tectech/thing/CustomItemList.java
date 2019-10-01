@@ -92,6 +92,8 @@ public enum CustomItemList implements IItemContainer {
     Machine_Multi_BHG,
     hint_0, hint_1, hint_2, hint_3, hint_4, hint_5, hint_6, hint_7, hint_8, hint_9, hint_10, hint_11, hint_general, hint_air, hint_noAir, hint_error,
 
+    eM_avr_HV, eM_avr_EV, eM_avr_IV, eM_avr_LuV, eM_avr_ZPM, eM_avr_UV, eM_avr_UHV, eM_avr_UEV, eM_avr_UIV, eM_avr_UMV,
+
     scanContainer, parametrizerMemory, teslaCapacitor, teslaCover, teslaComponent, teslaStaff,
 
     Machine_TeslaCoil_1by1_LV, Machine_TeslaCoil_1by1_MV, Machine_TeslaCoil_1by1_HV, Machine_TeslaCoil_1by1_EV, Machine_TeslaCoil_1by1_IV,

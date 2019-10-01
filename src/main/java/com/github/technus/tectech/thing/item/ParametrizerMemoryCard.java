@@ -25,6 +25,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 import static com.github.technus.tectech.thing.CustomItemList.parametrizerMemory;
 
 /**
@@ -39,6 +40,7 @@ public final class ParametrizerMemoryCard extends Item {
         setHasSubtypes(true);
         setUnlocalizedName("em.parametrizerMemoryCard");
         setTextureName(MODID + ":itemParametrizerMemoryCardUnlocked");
+        setCreativeTab(creativeTabTecTech);
     }
 
     @Override

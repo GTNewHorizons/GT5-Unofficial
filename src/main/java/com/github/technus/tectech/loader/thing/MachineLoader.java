@@ -90,6 +90,42 @@ public class MachineLoader implements Runnable {
         eM_muffler_UXV.set(new GT_MetaTileEntity_Hatch_OverflowElemental(
                 15025, "hatch.emmuffler.tier.13", "UXV Overflow Output Hatch", 13, 125e12f).getStackForm(1L));
 
+        
+        // ===================================================================================================
+        // Microcontrollers
+        // ===================================================================================================
+        
+        eM_avr_HV.set(new GT_MetaTileEntity_MicroController(
+                15030, "machine.avr.tier.08", "HV AVR Micro-controller", 3).getStackForm(1L));
+        
+        eM_avr_EV.set(new GT_MetaTileEntity_MicroController(
+                15031, "machine.avr.tier.08", "EV AVR Micro-controller", 4).getStackForm(1L));
+        
+        eM_avr_IV.set(new GT_MetaTileEntity_MicroController(
+                15032, "machine.avr.tier.08", "IV AVR Micro-controller", 5).getStackForm(1L));
+        
+        eM_avr_LuV.set(new GT_MetaTileEntity_MicroController(
+                15033, "machine.avr.tier.08", "LuV AVR Micro-controller", 6).getStackForm(1L));
+        
+        eM_avr_ZPM.set(new GT_MetaTileEntity_MicroController(
+                15034, "machine.avr.tier.08", "ZPM AVR Micro-controller", 7).getStackForm(1L));
+
+        eM_avr_UV.set(new GT_MetaTileEntity_MicroController(
+                15035, "machine.avr.tier.08", "UV AVR Micro-controller", 8).getStackForm(1L));
+
+        eM_avr_UHV.set(new GT_MetaTileEntity_MicroController(
+                15036, "machine.avr.tier.09", "UHV AVR Micro-controller", 9).getStackForm(1L));
+
+        eM_avr_UEV.set(new GT_MetaTileEntity_MicroController(
+                15037, "machine.avr.tier.10", "UEV AVR Micro-controller", 10).getStackForm(1L));
+
+        eM_avr_UIV.set(new GT_MetaTileEntity_MicroController(
+                15038, "machine.avr.tier.11", "UIV AVR Micro-controller", 11).getStackForm(1L));
+
+        eM_avr_UMV.set(new GT_MetaTileEntity_MicroController(
+                15039, "machine.avr.tier.12", "UMV AVR Micro-controller", 12).getStackForm(1L));
+        
+
         // ===================================================================================================
         // Multi AMP Power INPUTS
         // ===================================================================================================

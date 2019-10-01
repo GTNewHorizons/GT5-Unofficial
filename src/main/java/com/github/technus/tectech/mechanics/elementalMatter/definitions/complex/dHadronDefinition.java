@@ -12,12 +12,16 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElem
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.*;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition;
+import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition.getNbtTagCompound;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
@@ -34,6 +38,8 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     private static final byte nbtType = (byte) 'h';
     //Helpers
+    public static final Map<dHadronDefinition,String> SYMBOL_MAP =new HashMap<>();
+    public static final Map<dHadronDefinition,String> NAME_MAP =new HashMap<>();
     public static dHadronDefinition hadron_p, hadron_n, hadron_p_, hadron_n_;
     public static cElementalDefinitionStack hadron_p1, hadron_n1, hadron_p2, hadron_n2, hadron_p3, hadron_n3, hadron_p5;
     private static float protonMass = 0F;
@@ -137,8 +143,13 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     public String getName() {
         StringBuilder name= new StringBuilder(getSimpleName());
         name.append(':');
-        for (cElementalDefinitionStack quark : quarkStacks.values()) {
-            name.append(' ').append(quark.definition.getSymbol()).append(quark.amount);
+        String sym= NAME_MAP.get(this);
+        if(sym!=null){
+            name.append(' ').append(sym);
+        }else {
+            for (cElementalDefinitionStack quark : quarkStacks.values()) {
+                name.append(' ').append(quark.definition.getSymbol()).append(quark.amount);
+            }
         }
         return name.toString();
     }
@@ -162,24 +173,34 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     @Override
     public String getSymbol() {
-        StringBuilder symbol = new StringBuilder(8);
-        for (cElementalDefinitionStack quark : quarkStacks.values()) {
-            for (int i = 0; i < quark.amount; i++) {
-                symbol.append(quark.definition.getSymbol());
+        String sym=SYMBOL_MAP.get(this);
+        if(sym!=null){
+            return sym;
+        }else {
+            StringBuilder symbol = new StringBuilder(8);
+            for (cElementalDefinitionStack quark : quarkStacks.values()) {
+                for (int i = 0; i < quark.amount; i++) {
+                    symbol.append(quark.definition.getSymbol());
+                }
             }
+            return symbol.toString();
         }
-        return symbol.toString();
     }
 
     @Override
     public String getShortSymbol() {
-        StringBuilder symbol = new StringBuilder(8);
-        for (cElementalDefinitionStack quark : quarkStacks.values()) {
-            for (int i = 0; i < quark.amount; i++) {
-                symbol.append(quark.definition.getShortSymbol());
+        String sym=SYMBOL_MAP.get(this);
+        if(sym!=null){
+            return sym;
+        }else {
+            StringBuilder symbol = new StringBuilder(8);
+            for (cElementalDefinitionStack quark : quarkStacks.values()) {
+                for (int i = 0; i < quark.amount; i++) {
+                    symbol.append(quark.definition.getShortSymbol());
+                }
             }
+            return symbol.toString();
         }
-        return symbol.toString();
     }
 
     @Override
@@ -391,12 +412,24 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
             protonMass = hadron_p.mass;
             //redefine the proton with proper lifetime (the lifetime is based on mass comparison)
             hadron_p = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(2), eQuarkDefinition.quark_d.getStackForm(1)));
+            SYMBOL_MAP.put(hadron_p,"p");
+            NAME_MAP.put(hadron_p,"Proton");
+            DebugElementalInstanceContainer_EM.STACKS_REGISTERED.add(hadron_p);
             hadron_p_ = (dHadronDefinition) hadron_p.getAnti();
+            SYMBOL_MAP.put(hadron_p_,"~p");
+            NAME_MAP.put(hadron_p_,"Anti Proton");
+            DebugElementalInstanceContainer_EM.STACKS_REGISTERED.add(hadron_p_);
             hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(1), eQuarkDefinition.quark_d.getStackForm(2)));
             neutronMass = hadron_n.mass;
             //redefine the neutron with proper lifetime (the lifetime is based on mass comparison)
             hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(1), eQuarkDefinition.quark_d.getStackForm(2)));
+            SYMBOL_MAP.put(hadron_n, "n");
+            NAME_MAP.put(hadron_n, "Neutron");
+            DebugElementalInstanceContainer_EM.STACKS_REGISTERED.add(hadron_n);
             hadron_n_ = (dHadronDefinition) hadron_n.getAnti();
+            SYMBOL_MAP.put(hadron_n_,"~n");
+            NAME_MAP.put(hadron_n_,"Anti Neutron");
+            DebugElementalInstanceContainer_EM.STACKS_REGISTERED.add(hadron_n_);
         } catch (tElementalException e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();

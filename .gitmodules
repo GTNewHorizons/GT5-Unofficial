@@ -1,0 +1,3 @@
+[submodule "AVRcore"]
+	path = AVRcore
+	url = https://github.com/Technus/AVRcore

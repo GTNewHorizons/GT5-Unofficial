@@ -24,6 +24,7 @@ import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 import static gregtech.api.GregTech_API.sBlockCasings1;
 
 /**
@@ -37,6 +38,7 @@ public final class ConstructableTriggerItem extends Item {
     private ConstructableTriggerItem() {
         setUnlocalizedName("em.constructable");
         setTextureName(MODID + ":itemConstructable");
+        setCreativeTab(creativeTabTecTech);
     }
 
     @Override

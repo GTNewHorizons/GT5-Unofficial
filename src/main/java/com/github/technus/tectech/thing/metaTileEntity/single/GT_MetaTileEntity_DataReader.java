@@ -39,7 +39,7 @@ import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
  */
 public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine {
     private static final HashMap<Util.ItemStack_NoNBT,ArrayList<IDataRender>> RENDER_REGISTRY =new HashMap<>();
-    private static GT_RenderedTexture READER_ONLINE, READER_OFFLINE;
+    public static GT_RenderedTexture READER_ONLINE, READER_OFFLINE;
 
     public GT_MetaTileEntity_DataReader(int aID, String aName, String aNameRegional, int aTier) {
         super(aID,aName,aNameRegional,aTier,1,"Reads Data Sticks and Orbs",1,1,"dataReader.png","");

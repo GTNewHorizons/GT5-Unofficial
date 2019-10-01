@@ -29,12 +29,13 @@ import java.util.TreeSet;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 
 /**
  * Created by Tec on 15.03.2017.
  */
 public final class DebugElementalInstanceContainer_EM extends Item implements IElementalItem {
-    public static final TreeSet<iElementalDefinition> stacksRegistered=new TreeSet<>();
+    public static final TreeSet<iElementalDefinition> STACKS_REGISTERED =new TreeSet<>();
 
     public static DebugElementalInstanceContainer_EM INSTANCE;
 
@@ -42,6 +43,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         setMaxStackSize(1);
         setUnlocalizedName("em.debugContainer");
         setTextureName(MODID + ":itemDebugContainer");
+        setCreativeTab(creativeTabTecTech);
     }
 
     @Override
@@ -135,7 +137,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         ItemStack that = new ItemStack(this, 1);
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
-        for(iElementalDefinition defintion:stacksRegistered){
+        for(iElementalDefinition defintion: STACKS_REGISTERED){
             list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+1),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,1))));
             list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+144),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,144))));
             list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+1000),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,1000))));
@@ -159,6 +161,6 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
 
     @Override
     public FontRenderer getFontRenderer(ItemStack stack) {
-        return (FontRenderer) (Object) TecTechFontRender.INSTANCE;
+        return TecTechFontRender.INSTANCE;
     }
 }
