@@ -17,7 +17,7 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_ParamText extends GT_GUIContainerMetaTile_Machine {
     private GuiTextField value0tb;
-    private GuiTextField valie1tb;
+    private GuiTextField value1tb;
 
     public GT_GUIContainer_ParamText(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(new GT_Container_ParamText(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "ParametrizerText.png");
@@ -28,8 +28,8 @@ public class GT_GUIContainer_ParamText extends GT_GUIContainerMetaTile_Machine {
         super.initGui();
         value0tb = new GuiTextField(TecTechFontRender.INSTANCE, (this.width - 176) / 2 + 12 + 14, (this.height - 166) / 2 + 26, 156 - 18, 12);
         value0tb.setMaxStringLength(80);
-        valie1tb = new GuiTextField(TecTechFontRender.INSTANCE, (this.width - 176) / 2 + 12 + 14, (this.height - 166) / 2 + 41, 156 - 18, 12);
-        valie1tb.setMaxStringLength(80);
+        value1tb = new GuiTextField(TecTechFontRender.INSTANCE, (this.width - 176) / 2 + 12 + 14, (this.height - 166) / 2 + 41, 156 - 18, 12);
+        value1tb.setMaxStringLength(80);
         updateValues();
     }
 
@@ -37,15 +37,15 @@ public class GT_GUIContainer_ParamText extends GT_GUIContainerMetaTile_Machine {
     public void onGuiClosed() {
         super.onGuiClosed();
         value0tb.setFocused(false);
-        valie1tb.setFocused(false);
+        value1tb.setFocused(false);
         updateValues();
     }
 
     @Override
     protected void keyTyped(char p_73869_1_, int p_73869_2_) {
         value0tb.textboxKeyTyped(p_73869_1_, p_73869_2_);
-        valie1tb.textboxKeyTyped(p_73869_1_, p_73869_2_);
-        if ((p_73869_2_ != 1 && p_73869_2_ != this.mc.gameSettings.keyBindInventory.getKeyCode()) || (!value0tb.isFocused() && !valie1tb.isFocused())) {
+        value1tb.textboxKeyTyped(p_73869_1_, p_73869_2_);
+        if ((p_73869_2_ != 1 && p_73869_2_ != this.mc.gameSettings.keyBindInventory.getKeyCode()) || (!value0tb.isFocused() && !value1tb.isFocused())) {
             super.keyTyped(p_73869_1_, p_73869_2_);
         }
         updateValues();
@@ -55,21 +55,21 @@ public class GT_GUIContainer_ParamText extends GT_GUIContainerMetaTile_Machine {
     public void updateScreen() {
         super.updateScreen();
         value0tb.updateCursorCounter();
-        valie1tb.updateCursorCounter();
+        value1tb.updateCursorCounter();
     }
 
     @Override
     public void drawScreen(int par1, int par2, float par3) {
         super.drawScreen(par1, par2, par3);
         value0tb.drawTextBox();
-        valie1tb.drawTextBox();
+        value1tb.drawTextBox();
     }
 
     @Override
     protected void mouseClicked(int p_73864_1_, int p_73864_2_, int p_73864_3_) {
         super.mouseClicked(p_73864_1_, p_73864_2_, p_73864_3_);
         value0tb.mouseClicked(p_73864_1_, p_73864_2_, p_73864_3_);
-        valie1tb.mouseClicked(p_73864_1_, p_73864_2_, p_73864_3_);
+        value1tb.mouseClicked(p_73864_1_, p_73864_2_, p_73864_3_);
         updateValues();
     }
 
@@ -80,8 +80,8 @@ public class GT_GUIContainer_ParamText extends GT_GUIContainerMetaTile_Machine {
             Locale locale = Locale.getDefault();
             TecTechFontRender.INSTANCE.drawSplitString("\u24EA\u2b06", 10, 29, 16, 0x00bbff);
             TecTechFontRender.INSTANCE.drawSplitString("\u2460\u2b06", 10, 44, 16, 0x0077ff);
-            TecTechFontRender.INSTANCE.drawSplitString("\u24EA\u2b07" + String.format(locale, "%+.5E", (((GT_Container_ParamText) mContainer).input0f)), 10, 56, 167, 0x22ddff);
-            TecTechFontRender.INSTANCE.drawSplitString("\u2460\u2b07" + String.format(locale, "%+.5E", (((GT_Container_ParamText) mContainer).input1f)), 10, 65, 167, 0x00ffff);
+            TecTechFontRender.INSTANCE.drawSplitString("\u24EA\u2b07" + String.format(locale, "%+.5E", (((GT_Container_ParamText) mContainer).input0d)), 10, 56, 167, 0x22ddff);
+            TecTechFontRender.INSTANCE.drawSplitString("\u2460\u2b07" + String.format(locale, "%+.5E", (((GT_Container_ParamText) mContainer).input1d)), 10, 65, 167, 0x00ffff);
         } else {
             TecTechFontRender.INSTANCE.drawSplitString("Parameters tXt", 46, 7, 167, 0xffffff);
         }
@@ -116,7 +116,7 @@ public class GT_GUIContainer_ParamText extends GT_GUIContainerMetaTile_Machine {
                 }
                 if (!Objects.equals(((GT_MetaTileEntity_Hatch_ParamText) ((GT_Container_ParamText) mContainer).mTileEntity.getMetaTileEntity()).value0s, value0tb.getText())) {
                     ((GT_Container_ParamText) mContainer).value0s = value0tb.getText();
-                    ((GT_Container_ParamText) mContainer).value0f = val;
+                    ((GT_Container_ParamText) mContainer).value0d = val;
                     ((GT_MetaTileEntity_Hatch_ParamText) ((GT_Container_ParamText) mContainer).mTileEntity.getMetaTileEntity()).value0s = value0tb.getText();
 
                     NetworkDispatcher.INSTANCE.sendToServer(new TextParametersMessage.ParametersTextUpdate(
@@ -129,8 +129,8 @@ public class GT_GUIContainer_ParamText extends GT_GUIContainerMetaTile_Machine {
     }
 
     private void updateIn1() {
-        if (!valie1tb.isFocused()) {
-            String str = valie1tb.getText().toLowerCase();
+        if (!value1tb.isFocused()) {
+            String str = value1tb.getText().toLowerCase();
             double val;
             try {
                 if (str.contains("b")) {
@@ -142,16 +142,16 @@ public class GT_GUIContainer_ParamText extends GT_GUIContainerMetaTile_Machine {
                 } else {
                     val = Util.stringToDouble(str);
                 }
-                if (!Objects.equals(((GT_MetaTileEntity_Hatch_ParamText) ((GT_Container_ParamText) mContainer).mTileEntity.getMetaTileEntity()).value1s, valie1tb.getText())) {
-                    ((GT_Container_ParamText) mContainer).value1s = valie1tb.getText();
-                    ((GT_Container_ParamText) mContainer).value1f = val;
-                    ((GT_MetaTileEntity_Hatch_ParamText) ((GT_Container_ParamText) mContainer).mTileEntity.getMetaTileEntity()).value1s = valie1tb.getText();
+                if (!Objects.equals(((GT_MetaTileEntity_Hatch_ParamText) ((GT_Container_ParamText) mContainer).mTileEntity.getMetaTileEntity()).value1s, value1tb.getText())) {
+                    ((GT_Container_ParamText) mContainer).value1s = value1tb.getText();
+                    ((GT_Container_ParamText) mContainer).value1d = val;
+                    ((GT_MetaTileEntity_Hatch_ParamText) ((GT_Container_ParamText) mContainer).mTileEntity.getMetaTileEntity()).value1s = value1tb.getText();
 
                     NetworkDispatcher.INSTANCE.sendToServer(new TextParametersMessage.ParametersTextUpdate(
                             (GT_MetaTileEntity_Hatch_ParamText) ((GT_Container_ParamText) mContainer).mTileEntity.getMetaTileEntity()));
                 }
             } catch (Exception e) {
-                valie1tb.setText(((GT_MetaTileEntity_Hatch_ParamText) ((GT_Container_ParamText) mContainer).mTileEntity.getMetaTileEntity()).value1s);
+                value1tb.setText(((GT_MetaTileEntity_Hatch_ParamText) ((GT_Container_ParamText) mContainer).mTileEntity.getMetaTileEntity()).value1s);
             }
         }
     }
@@ -163,6 +163,6 @@ public class GT_GUIContainer_ParamText extends GT_GUIContainerMetaTile_Machine {
 
     public void setTextIn1(String in1) {
         ((GT_Container_ParamText) mContainer).value1s = in1;
-        this.valie1tb.setText(in1);
+        this.value1tb.setText(in1);
     }
 }

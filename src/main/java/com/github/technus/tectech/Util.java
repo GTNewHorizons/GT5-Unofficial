@@ -1452,6 +1452,7 @@ public final class Util {
         return previousValue;
     }
 
+    @Deprecated
     public static double receiveDouble(double previousValue, int startIndex, int index, int value){
         return Double.longBitsToDouble(receiveLong(Double.doubleToLongBits(previousValue),startIndex,index,value));
     }
@@ -1497,6 +1498,7 @@ public final class Util {
         crafter.sendProgressBarUpdate(container, startIndex,   (int)((value & 0xFFFF000000000000L)>>>48));
     }
 
+    @Deprecated
     public static float receiveFloat(float previousValue, int startIndex, int index, int value){
         return Float.intBitsToFloat(receiveInteger(Float.floatToIntBits(previousValue),startIndex,index,value));
     }
