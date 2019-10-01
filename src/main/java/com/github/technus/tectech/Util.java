@@ -37,7 +37,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -454,7 +453,6 @@ public final class Util {
     */
     //endregion
 
-
     //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
     //This only checks for REGULAR BLOCKS!
     public static boolean StructureCheckerExtreme(
@@ -497,8 +495,7 @@ public final class Util {
                     if (block < ' ') {//Control chars allow skipping
                         b -= block;
                         break;
-                    } else if (block > '@') //characters allow to skip check A-1 skip, B-2 skips etc.
-                    {
+                    } else if (block > '@') {//characters allow to skip check A-1 skip, B-2 skips etc.
                         a += block - '@';
                     }//else if (block < '+')//used to mark THINGS
                     //    a++;

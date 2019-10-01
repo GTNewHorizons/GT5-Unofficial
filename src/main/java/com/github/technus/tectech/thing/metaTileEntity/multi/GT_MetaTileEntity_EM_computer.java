@@ -108,6 +108,15 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
+    protected void parametersInstantiation_EM() {
+        Parameters.Group hatch_0 = parametrization.getGroup(0);
+        overclock = hatch_0.makeInParameter(0, 1, OC_NAME, OC_STATUS);
+        overvolt = hatch_0.makeInParameter(1, 1, OV_NAME, OV_STATUS);
+        maxCurrentTemp = hatch_0.makeOutParameter(0, 0, MAX_TEMP_NAME, MAX_TEMP_STATUS);
+        availableData = hatch_0.makeOutParameter(1, 0, COMPUTE_NAME, COMPUTE_STATUS);
+    }
+
+    @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
@@ -278,15 +287,6 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0 = parametrization.getGroup(0);
-        overclock = hatch_0.makeInParameter(0, 1, OC_NAME, OC_STATUS);
-        overvolt = hatch_0.makeInParameter(1, 1, OV_NAME, OV_STATUS);
-        maxCurrentTemp = hatch_0.makeOutParameter(0, 0, MAX_TEMP_NAME, MAX_TEMP_STATUS);
-        availableData = hatch_0.makeOutParameter(1, 0, COMPUTE_NAME, COMPUTE_STATUS);
-    }
-
-    @Override
     protected void extraExplosions_EM() {
         for (MetaTileEntity tTileEntity : eRacks) {
             tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
@@ -341,7 +341,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         StructureBuilderExtreme(cap, blockType, blockMeta, 1, 2, -1, igt, this, hintsOnly);
 
         byte offset = -2;
-        for (int rackSlices = stackSize > 12 ? 12 : stackSize; rackSlices > 0; rackSlices--) {
+        for (int rackSlices = Math.min(stackSize, 12); rackSlices > 0; rackSlices--) {
             StructureBuilderExtreme(slice, blockType, blockMeta, 1, 2, offset--, igt, this, hintsOnly);
         }
 
