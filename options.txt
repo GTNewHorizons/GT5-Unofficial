@@ -14,7 +14,7 @@ fboEnable:true
 difficulty:2
 fancyGraphics:true
 ao:2
-clouds:true
+clouds:false
 resourcePacks:[]
 lastServer:
 lang:en_US
@@ -90,12 +90,12 @@ key_Boost Key:0
 key_Mode Switch Key:0
 key_Side Inventory Key:0
 key_Hub Expand Key:0
-soundCategory_master:0.0
-soundCategory_music:1.0
-soundCategory_record:1.0
-soundCategory_weather:1.0
-soundCategory_block:1.0
-soundCategory_hostile:1.0
-soundCategory_neutral:1.0
-soundCategory_player:1.0
-soundCategory_ambient:1.0
+soundCategory_master:0.25496688
+soundCategory_music:0.0
+soundCategory_record:0.0
+soundCategory_weather:0.0
+soundCategory_block:0.40140846
+soundCategory_hostile:0.0
+soundCategory_neutral:0.0
+soundCategory_player:0.28169015
+soundCategory_ambient:0.18309858

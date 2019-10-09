@@ -24,6 +24,8 @@ public class Block_TFFTStorageFieldBlockT3 extends Block {
 		super.setBlockName(blockName);
 		super.setCreativeTab(CreativeTabs.tabMisc);
 		super.setBlockTextureName(KekzCore.MODID + ":" + "TFFTStorageFieldBlock3");
+		super.setHardness(5.0f);
+		super.setResistance(6.0f);
 		GameRegistry.registerBlock(getInstance(), blockName);
 	} 
 }

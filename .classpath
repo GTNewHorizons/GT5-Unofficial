@@ -3,11 +3,12 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Forge"/>
-	<classpathentry kind="lib" path="E:/Development/KekzTech/libs/CodeChickenCore-1.7.10-1.0.7.47-dev.jar"/>
+	<classpathentry kind="lib" path="/home/kekzdealer/eclipse-workspace/KekzTech/libs/CodeChickenCore-1.7.10-1.0.7.47-dev.jar"/>
 	<classpathentry kind="lib" path="libs/CodeChickenLib-1.7.10-1.1.3.140-dev.jar"/>
 	<classpathentry kind="lib" path="libs/gregtech-5.09.32-dev.jar" sourcepath="libs/gregtech-5.09.32-dev-src.zip"/>
 	<classpathentry kind="lib" path="libs/industrialcraft-2-2.2.828a-experimental-deobf.jar"/>
 	<classpathentry kind="lib" path="libs/NotEnoughItems-1.7.10-1.0.5.120-dev.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Forge"/>
+	<classpathentry kind="lib" path="libs/joml-1.9.18.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

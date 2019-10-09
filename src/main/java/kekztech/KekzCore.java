@@ -39,13 +39,13 @@ public class KekzCore {
 	public static final String MODID = "kekztech";
 	public static final String VERSION = "0.1a";
 	
+	@Mod.Instance("kekztech")
+	public static KekzCore instance;
+
 	private GTMTE_SOFuelCellMK1 sofc1;
 	private GTMTE_SOFuelCellMK2 sofc2;
 	private GTMTE_ModularNuclearReactor mdr;
 	private GTMTE_FluidMultiStorage fms;
-		
-	@Mod.Instance("kekztech")
-	public static KekzCore instance;
 	
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -65,11 +65,11 @@ public class KekzCore {
 	
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event	) {
+		// Multiblock controllers
 		sofc1 = new GTMTE_SOFuelCellMK1(5000, "multimachine.fuelcellmk1", "Solid-Oxide Fuel Cell Mk I");
 		sofc2 = new GTMTE_SOFuelCellMK2(5001, "multimachine.fuelcellmk2", "Solid-Oxide Fuel Cell Mk II");
 		mdr = new GTMTE_ModularNuclearReactor(5002, "multimachine.nuclearreactor", "Nuclear Reactor");
 		fms = new GTMTE_FluidMultiStorage(5003, "multimachine.tf_fluidtank", "T.F.F.T");
-		
 	}
 	
 	@Mod.EventHandler
@@ -329,27 +329,5 @@ public class KekzCore {
 		
 		System.out.println("...done");
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

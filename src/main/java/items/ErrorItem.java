@@ -8,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class ErrorItem extends Item {
 	
@@ -38,6 +39,12 @@ public class ErrorItem extends Item {
 		list.add("Placeholder item in case something went wrong");
 		list.add("If this item shows up in GTNH, you may report it to:");
 		list.add("https://github.com/kekzdealer/KekzTech");
+	}
+	
+	@Override
+	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
+		player.swingItem();
+		return item;
 	}
 	
 }
