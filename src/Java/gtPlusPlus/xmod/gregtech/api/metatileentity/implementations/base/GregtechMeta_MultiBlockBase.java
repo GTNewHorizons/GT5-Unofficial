@@ -329,7 +329,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}*/
 
 		String aRequiresMuffler = "1x Muffler Hatch";
-		String aRequiresCoreModule = "1x Core Module";
+		//String aRequiresCoreModule = "1x Core Module";
 		String aRequiresMaint = "1x Maintanence Hatch";
 
 		String[] x = getTooltip();
@@ -396,8 +396,11 @@ GT_MetaTileEntity_MultiBlockBase {
 		String[] aToolTip = new String[(a2 + a3)];
 		aToolTip = ArrayUtils.addAll(aToolTip, x);
 		aToolTip = ArrayUtils.addAll(aToolTip, z);
-		aCachedToolTip = aToolTip;
-		return aToolTip;
+		
+		if (aCachedToolTip == null || aCachedToolTip.length <= 0) {
+			aCachedToolTip = aToolTip;			
+		}		
+		return aCachedToolTip;
 	}
 
 	public abstract String[] getTooltip();
