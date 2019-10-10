@@ -750,10 +750,10 @@ public class RECIPES_GREGTECH {
 
 	private static void fluidcannerRecipes() {
 		// Sulfuric Acid
-		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle),
+		CORE.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle),
 				ItemUtils.getSimpleStack(ModItems.itemSulfuricPotion), FluidUtils.getFluidStack("sulfuricacid", 250),
 				null);
-		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemSulfuricPotion),
+		CORE.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemSulfuricPotion),
 				ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("sulfuricacid", 250));
 
 
@@ -763,21 +763,20 @@ public class RECIPES_GREGTECH {
 		// Try use Internal GT Fluid first
 		if (Utils.getGregtechVersionAsInt() >= 50929) {
 			// Hydrofluoric Acid
-			GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle),
+			CORE.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle),
 					ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
 					FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 250), null);
-			addedGtExtraction = GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
+			addedGtExtraction = CORE.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
 					ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 250));
 		}
 		//Add a Fill recipe for GT++ Acid
-		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle),
+		CORE.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle),
 				ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
 				FluidUtils.getFluidStack("hydrofluoricacid", 125), null);
 		//Add an empty recipe, but only if we didn't for the standard GT HF. Prevents Fluid transformation exploits.
-		if (!addedGtExtraction)
-			GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
-					ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("hydrofluoricacid", 125));
-
+		if (!addedGtExtraction) {
+			CORE.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),	ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("hydrofluoricacid", 125));
+		}
 
 	}
 
@@ -1589,18 +1588,18 @@ public class RECIPES_GREGTECH {
 
 	private static void fluidExtractorRecipes() {		
 		//FLiBe fuel
-		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLi2BeF4", 1), null,
+		CORE.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLi2BeF4", 1), null,
 				FluidUtils.getFluidStack("li2bef4", 144), 10000, 100, 500);
 		//LFTR Fuel 1
-		GT_Values.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ZrF4U235.getDust(1), null,
+		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ZrF4U235.getDust(1), null,
 				NUCLIDE.LiFBeF2ZrF4U235.getFluid(144), 10000, 250, 1000);
-		GT_Values.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ZrF4UF4.getDust(1), null,
+		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ZrF4UF4.getDust(1), null,
 				NUCLIDE.LiFBeF2ZrF4UF4.getFluid(144), 10000, 150, 2000);
-		GT_Values.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ThF4UF4.getDust(1), null,
+		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ThF4UF4.getDust(1), null,
 				NUCLIDE.LiFBeF2ThF4UF4.getFluid(144), 10000, 200, 1500);
 
 		//ZIRCONIUM_TETRAFLUORIDE
-		GT_Values.RA.addFluidExtractionRecipe(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1), null,
+		CORE.RA.addFluidExtractionRecipe(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1), null,
 				FluidUtils.getFluidStack(ModItems.fluidZrF4, 144), 10000, 200, 512+256);
 
 

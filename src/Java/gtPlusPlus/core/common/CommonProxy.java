@@ -277,7 +277,28 @@ public class CommonProxy {
 			EntityUtils.registerDropsForMob(aBrutishZombie, ItemUtils.getItemStackOfAmountFromOreDict("ingotRedAlloy", 1), 3, 200);		
 		}
 		
-		
+		//GalaxySpace Support
+		if (ReflectionUtils.doesClassExist("galaxyspace.SolarSystem.moons.europa.entities.EntityEvolvedColdBlaze")) {
+			Class<?> aColdBlaze = ReflectionUtils.getClass("galaxyspace.SolarSystem.moons.europa.entities.EntityEvolvedColdBlaze");			
+			ItemStack aSmallBlizz, aTinyBlizz, aSmallCryo, aTinyCryo;			
+			aSmallBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallBlizz", 1);
+			aTinyBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBlizz", 1);			
+			aSmallCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallCryotheum", 1);
+			aTinyCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCryotheum", 1);			
+			EntityUtils.registerDropsForMob(aColdBlaze, ItemUtils.getItemStackOfAmountFromOreDict("stickBlizz", 1), 2, 500);			
+			if (aSmallBlizz != null) {
+				EntityUtils.registerDropsForMob(aColdBlaze, aSmallBlizz, 2, 750);				
+			}
+			if (aTinyBlizz != null) {
+				EntityUtils.registerDropsForMob(aColdBlaze, aTinyBlizz, 4, 1500);			
+			}
+			if (aSmallCryo != null) {
+				EntityUtils.registerDropsForMob(aColdBlaze, aSmallCryo, 1, 50);				
+			}
+			if (aTinyCryo != null) {
+				EntityUtils.registerDropsForMob(aColdBlaze, aTinyCryo, 2, 100);			
+			}
+		}		
 		
 	}
 	

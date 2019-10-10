@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.chemistry;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import forestry.plugins.PluginCore;
@@ -14,6 +15,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -334,13 +336,24 @@ public class AgriculturalChem extends ItemPackage {
 		 * Forestry Support
 		 */
 		if (LoadedMods.Forestry) {
-
-			Item aForestryFert = PluginCore.items.fertilizerCompound;
-
-			CORE.RA.addDehydratorRecipe(
-					new ItemStack[] { CI.getNumberedCircuit(11), ItemUtils.getSimpleStack(aDustOrganicFert, 4) }, null,
-					null, new ItemStack[] { ItemUtils.getSimpleStack(aForestryFert, 3), aManureByprod, aManureByprod },
-					new int[] { 10000, 2000, 2000 }, 20 * 20, 240);
+			Field aItemField = ReflectionUtils.getField(ReflectionUtils.getClass("forestry.plugins.PluginCore"), "items");
+			try {
+				Object aItemRegInstance = aItemField != null ? aItemField.get(aItemField) : null;
+				if (aItemRegInstance != null) {
+					Field aFertField = ReflectionUtils.getField(aItemRegInstance.getClass(), "fertilizerCompound");	
+					Object aItemInstance = aFertField.get(aItemRegInstance);
+					if (aItemInstance instanceof Item) {
+						Item aForestryFert = (Item) aItemInstance;
+						CORE.RA.addDehydratorRecipe(
+								new ItemStack[] { CI.getNumberedCircuit(11), ItemUtils.getSimpleStack(aDustOrganicFert, 4) }, null,
+								null, new ItemStack[] { ItemUtils.getSimpleStack(aForestryFert, 3), aManureByprod, aManureByprod },
+								new int[] { 10000, 2000, 2000 }, 20 * 20, 240);
+					}
+				}
+			}
+			catch (IllegalArgumentException | IllegalAccessException e) {
+				
+			}		
 		}
 
 		/**

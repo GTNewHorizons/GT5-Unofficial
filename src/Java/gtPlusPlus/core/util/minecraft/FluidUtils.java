@@ -13,9 +13,11 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.FluidGT6;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.cell.BaseItemPlasmaCell;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import net.minecraftforge.fluids.*;
@@ -309,7 +311,7 @@ public class FluidUtils {
 			rFluid.setTemperature((int) (aTemperatureK));
 		}
 		if ((aFullContainer != null) && (aEmptyContainer != null) && !FluidContainerRegistry.registerFluidContainer(new FluidStack(rFluid, aFluidAmount), aFullContainer, aEmptyContainer)) {
-			MaterialGenerator.addFluidCannerRecipe(aFullContainer, container(aFullContainer, false), null, new FluidStack(rFluid, aFluidAmount));
+			CORE.RA.addFluidCannerRecipe(CI.emptyCells(1), aFullContainer, null, new FluidStack(rFluid, aFluidAmount));
 		}
 		else {
 			//Utils.LOG_INFO("Failed creating recipes to fill/empty cells of "+aName+".");
@@ -461,7 +463,7 @@ public class FluidUtils {
 					aGenerateCell);
 
 			if (dustStack != null){
-				MaterialGenerator.addFluidExtractionRecipe(
+				CORE.RA.addFluidExtractionRecipe(
 						dustStack, //Input
 						null, //Input 2
 						FluidUtils.getFluidStack(gtFluid, amountPerItem), //Fluid Output
@@ -471,7 +473,7 @@ public class FluidUtils {
 						);
 			}
 			if (dustStack2 != null){
-				MaterialGenerator.addFluidExtractionRecipe(
+				CORE.RA.addFluidExtractionRecipe(
 						dustStack2, //Input
 						null, //Input 2
 						FluidUtils.getFluidStack(gtFluid, amountPerItem), //Fluid Output

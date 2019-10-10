@@ -991,14 +991,16 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     }
 
     @Override
-    public void addFluidExtractionRecipe(ItemStack input, Object input2, FluidStack output, int aTime, int aEu,	int aSpecial) {
-        MaterialGenerator.addFluidExtractionRecipe(input, input2, output, aSpecial, aTime, aEu);
-
+    public boolean addFluidExtractionRecipe(ItemStack input, ItemStack input2, FluidStack output, int aTime, int aEu,	int aSpecial) {
+    	Method aExtractionMethod = ReflectionUtils.getMethod(MaterialGenerator.class, "addFluidExtractionRecipe", new Class[] {ItemStack.class, ItemStack.class, FluidStack.class, int.class, int.class});
+    	return ReflectionUtils.invoke(null, aExtractionMethod, new Object[] {input, input2, output, aSpecial, aTime, aEu});
     }
 
-
-
-
+    @Override
+    public boolean addFluidCannerRecipe(ItemStack aFullContainer, ItemStack container, FluidStack rFluidIn, FluidStack rFluidOut) {
+    	Method aExtractionMethod = ReflectionUtils.getMethod(MaterialGenerator.class, "addFluidCannerRecipe", new Class[] {ItemStack.class, ItemStack.class, FluidStack.class});
+    	return ReflectionUtils.invoke(null, aExtractionMethod, new Object[] {aFullContainer, container, rFluidIn, rFluidOut});
+    }
 
     /**
      * Adds a Fusion reactor Recipe

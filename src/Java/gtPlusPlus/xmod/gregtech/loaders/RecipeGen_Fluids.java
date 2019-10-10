@@ -48,7 +48,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 
 				// Ingot
 				if (ItemUtils.checkForInvalidItems(material.getIngot(1)))
-					if (GT_Values.RA.addFluidExtractionRecipe(material.getIngot(1), // Input
+					if (CORE.RA.addFluidExtractionRecipe(material.getIngot(1), // Input
 							null, // Input 2
 							material.getFluid(144), // Fluid Output
 							0, // Chance
@@ -64,7 +64,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 
 				// Plate
 				if (ItemUtils.checkForInvalidItems(material.getPlate(1)))
-					if (GT_Values.RA.addFluidExtractionRecipe(material.getPlate(1), // Input
+					if (CORE.RA.addFluidExtractionRecipe(material.getPlate(1), // Input
 							null, // Input 2
 							material.getFluid(144), // Fluid Output
 							0, // Chance
@@ -80,7 +80,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 
 				// Double Plate
 				if (ItemUtils.checkForInvalidItems(material.getPlateDouble(1)))
-					if (GT_Values.RA.addFluidExtractionRecipe(material.getPlateDouble(1), // Input
+					if (CORE.RA.addFluidExtractionRecipe(material.getPlateDouble(1), // Input
 							null, // Input 2
 							material.getFluid(288), // Fluid Output
 							0, // Chance
@@ -96,7 +96,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 
 				// Nugget
 				if (ItemUtils.checkForInvalidItems(material.getNugget(1)))
-					if (GT_Values.RA.addFluidExtractionRecipe(material.getNugget(1), // Input
+					if (CORE.RA.addFluidExtractionRecipe(material.getNugget(1), // Input
 							null, // Input 2
 							material.getFluid(16), // Fluid Output
 							0, // Chance
@@ -112,7 +112,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 
 				// Block
 				if (ItemUtils.checkForInvalidItems(material.getBlock(1)))
-					if (GT_Values.RA.addFluidExtractionRecipe(material.getBlock(1), // Input
+					if (CORE.RA.addFluidExtractionRecipe(material.getBlock(1), // Input
 							null, // Input 2
 							material.getFluid(144 * 9), // Fluid Output
 							0, // Chance

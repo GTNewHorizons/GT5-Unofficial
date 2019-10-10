@@ -13,6 +13,8 @@ import gtPlusPlus.core.util.Utils;
 
 public class MathUtils {
 
+	final static Random rand = CORE.RANDOM;
+
 	/**
 	 * Returns a psuedo-random number between min and max, inclusive.
 	 * The difference between min and max can be at most
@@ -23,9 +25,6 @@ public class MathUtils {
 	 * @return Integer between min and max, inclusive.
 	 * @see java.util.Random#nextInt(int)
 	 */
-
-	final static Random rand = CORE.RANDOM;
-
 	public static int randInt(final int min, final int max) {
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive

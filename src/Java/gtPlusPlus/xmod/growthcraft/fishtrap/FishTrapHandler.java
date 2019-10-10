@@ -222,10 +222,10 @@ public class FishTrapHandler {
 	private static void addGregtechFluidRecipe(final ItemStack input){
 		if (LoadedMods.Gregtech){
 			if (CORE.GTNH) {
-				MaterialGenerator.addFluidExtractionRecipe(input, null, FluidUtils.getFluidStack("fishoil", 50), 10000, 16, 4);
+				CORE.RA.addFluidExtractionRecipe(input, null, FluidUtils.getFluidStack("fishoil", 50), 10000, 16, 4);
 			}
 			else {
-				MaterialGenerator.addFluidExtractionRecipe(input, null, FluidUtils.getFluidStack("fishoil", 4), 0, 16, 4); //4eu/t  total eu used = 64 so time = 64/4
+				CORE.RA.addFluidExtractionRecipe(input, null, FluidUtils.getFluidStack("fishoil", 4), 0, 16, 4); //4eu/t  total eu used = 64 so time = 64/4
 			}
 		}
 	}

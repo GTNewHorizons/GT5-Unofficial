@@ -216,8 +216,10 @@ public interface IGregtech_RecipeAdder {
 
 	public boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aDust, ItemStack aOutput);
 
-	public void addFluidExtractionRecipe(ItemStack input, Object input2, FluidStack output, int aTime, int aEu, int aSpecial);
-	 
+	public boolean addFluidExtractionRecipe(ItemStack input, ItemStack input2, FluidStack output, int aTime, int aEu, int aSpecial);
+	
+	public boolean addFluidCannerRecipe(ItemStack aContainer, ItemStack aFullContainer, FluidStack rFluidIn, FluidStack rFluidOut);
+	
 	/**
      * Adds a Fusion reactor Recipe
      *
@@ -262,4 +264,5 @@ public interface IGregtech_RecipeAdder {
 
 	public boolean addUvLaserRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int time, long eu);
 	public boolean addIrLaserRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int time, long eu);
+
 }

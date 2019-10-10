@@ -8,8 +8,8 @@ import java.util.List;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import crazypants.enderio.machine.enchanter.GuiEnchanter;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.gui.machine.GUI_DecayablesChest;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.item.materials.DustDecayable;
@@ -32,7 +32,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 	}
 
 	public Class<? extends GuiContainer> getGuiClass() {
-		return GuiEnchanter.class;
+		return GUI_DecayablesChest.class;
 	}
 
 	public String getOverlayIdentifier() {
