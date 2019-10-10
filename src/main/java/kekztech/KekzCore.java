@@ -2,6 +2,7 @@ package kekztech;
 
 import blocks.Block_GDCUnit;
 import blocks.Block_TFFTCasing;
+import blocks.Block_TFFTMultiHatch;
 import blocks.Block_TFFTStorageFieldBlockT1;
 import blocks.Block_TFFTStorageFieldBlockT2;
 import blocks.Block_TFFTStorageFieldBlockT3;
@@ -11,6 +12,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -27,6 +29,7 @@ import tileentities.GTMTE_FluidMultiStorage;
 import tileentities.GTMTE_ModularNuclearReactor;
 import tileentities.GTMTE_SOFuelCellMK1;
 import tileentities.GTMTE_SOFuelCellMK2;
+import tileentities.TE_TFFTMultiHatch;
 import util.Util;
 
 @Mod(modid = KekzCore.MODID, name = KekzCore.NAME, version = KekzCore.VERSION, 
@@ -61,6 +64,9 @@ public class KekzCore {
 		Block_TFFTStorageFieldBlockT2.getInstance().registerBlock();
 		Block_TFFTStorageFieldBlockT3.getInstance().registerBlock();
 		Block_TFFTStorageFieldBlockT4.getInstance().registerBlock();
+		
+		Block_TFFTMultiHatch.getInstance().registerBlock();
+		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");
 	}
 	
 	@Mod.EventHandler

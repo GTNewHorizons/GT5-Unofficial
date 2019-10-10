@@ -2261,6 +2261,7 @@ languagefile {
     S:TileEntity_DESCRIPTION_4456_Index_0=Just something you can put a Cover or CFoam on.
     S:TileEntity_DESCRIPTION_4459_Index_0=Just something you can put a Cover or CFoam on.
     S:TileEntity_DESCRIPTION_445_Index_0=Put Lava and Water adjacent
+    S:TileEntity_DESCRIPTION_4460_Index_0=Just something you can put a Cover or CFoam on.
     S:TileEntity_DESCRIPTION_4466_Index_0=Just something you can put a Cover or CFoam on.
     S:TileEntity_DESCRIPTION_4467_Index_0=Just something you can put a Cover or CFoam on.
     S:TileEntity_DESCRIPTION_4468_Index_0=Just something you can put a Cover or CFoam on.
@@ -4667,6 +4668,7 @@ languagefile {
     S:gt.blockmachines.gt_frame_copper.name=Copper Frame Box
     S:gt.blockmachines.gt_frame_cupronickel.name=Cupronickel Frame Box
     S:gt.blockmachines.gt_frame_damascussteel.name=Damascus Steel Frame Box
+    S:gt.blockmachines.gt_frame_darksteel.name=Dark Steel Frame Box
     S:gt.blockmachines.gt_frame_duranium.name=Duranium Frame Box
     S:gt.blockmachines.gt_frame_electrum.name=Electrum Frame Box
     S:gt.blockmachines.gt_frame_epoxid.name=Epoxy Resin Frame Box
@@ -5432,6 +5434,7 @@ languagefile {
     S:gt.blockores.1359.name=Niobium Nitride Ore
     S:gt.blockores.1360.name=Niobium-Titanium Ore
     S:gt.blockores.1363.name=Tin Alloy Ore
+    S:gt.blockores.1364.name=Dark Steel Ore
     S:gt.blockores.1370.name=Tungstencarbide Ore
     S:gt.blockores.1371.name=Vanadiumsteel Ore
     S:gt.blockores.1372.name=HSS-G Ore
@@ -5626,6 +5629,7 @@ languagefile {
     S:gt.blockores.1636.name=Polystyrene Ore
     S:gt.blockores.16360.name=Small Niobium-Titanium Ore
     S:gt.blockores.16363.name=Small Tin Alloy Ore
+    S:gt.blockores.16364.name=Small Dark Steel Ore
     S:gt.blockores.1637.name=Styrene Ore
     S:gt.blockores.16370.name=Small Tungstencarbide Ore
     S:gt.blockores.16371.name=Small Vanadiumsteel Ore
@@ -6146,6 +6150,7 @@ languagefile {
     S:gt.blockores.1736.name=Sulfuric Naphtha Ore
     S:gt.blockores.17360.name=Small Niobium-Titanium Ore
     S:gt.blockores.17363.name=Small Tin Alloy Ore
+    S:gt.blockores.17364.name=Small Dark Steel Ore
     S:gt.blockores.1737.name=Sulfuric Light Fuel Ore
     S:gt.blockores.17370.name=Small Tungstencarbide Ore
     S:gt.blockores.17371.name=Small Vanadiumsteel Ore
@@ -6613,6 +6618,7 @@ languagefile {
     S:gt.blockores.1836.name=Saltpeter Ore
     S:gt.blockores.18360.name=Small Niobium-Titanium Ore
     S:gt.blockores.18363.name=Small Tin Alloy Ore
+    S:gt.blockores.18364.name=Small Dark Steel Ore
     S:gt.blockores.1837.name=Silicon Dioxide Ore
     S:gt.blockores.18370.name=Small Tungstencarbide Ore
     S:gt.blockores.18371.name=Small Vanadiumsteel Ore
@@ -7124,6 +7130,7 @@ languagefile {
     S:gt.blockores.1936.name=Granitic Mineral Sand
     S:gt.blockores.19360.name=Small Niobium-Titanium Ore
     S:gt.blockores.19363.name=Small Tin Alloy Ore
+    S:gt.blockores.19364.name=Small Dark Steel Ore
     S:gt.blockores.1937.name=Cassiterite Sand
     S:gt.blockores.19370.name=Small Tungstencarbide Ore
     S:gt.blockores.19371.name=Small Vanadiumsteel Ore
@@ -7599,6 +7606,7 @@ languagefile {
     S:gt.blockores.2036.name=Zinc Ore
     S:gt.blockores.20360.name=Small Niobium-Titanium Ore
     S:gt.blockores.20363.name=Small Tin Alloy Ore
+    S:gt.blockores.20364.name=Small Dark Steel Ore
     S:gt.blockores.2037.name=Gallium Ore
     S:gt.blockores.20370.name=Small Tungstencarbide Ore
     S:gt.blockores.20371.name=Small Vanadiumsteel Ore
@@ -8060,6 +8068,7 @@ languagefile {
     S:gt.blockores.21359.name=Small Niobium Nitride Ore
     S:gt.blockores.21360.name=Small Niobium-Titanium Ore
     S:gt.blockores.21363.name=Small Tin Alloy Ore
+    S:gt.blockores.21364.name=Small Dark Steel Ore
     S:gt.blockores.21370.name=Small Tungstencarbide Ore
     S:gt.blockores.21371.name=Small Vanadiumsteel Ore
     S:gt.blockores.21372.name=Small HSS-G Ore
@@ -8487,6 +8496,7 @@ languagefile {
     S:gt.blockores.22359.name=Small Niobium Nitride Ore
     S:gt.blockores.22360.name=Small Niobium-Titanium Ore
     S:gt.blockores.22363.name=Small Tin Alloy Ore
+    S:gt.blockores.22364.name=Small Dark Steel Ore
     S:gt.blockores.22370.name=Small Tungstencarbide Ore
     S:gt.blockores.22371.name=Small Vanadiumsteel Ore
     S:gt.blockores.22372.name=Small HSS-G Ore
@@ -8849,6 +8859,7 @@ languagefile {
     S:gt.blockores.2359.name=Niobium Nitride Ore
     S:gt.blockores.2360.name=Niobium-Titanium Ore
     S:gt.blockores.2363.name=Tin Alloy Ore
+    S:gt.blockores.2364.name=Dark Steel Ore
     S:gt.blockores.2370.name=Tungstencarbide Ore
     S:gt.blockores.2371.name=Vanadiumsteel Ore
     S:gt.blockores.2372.name=HSS-G Ore
@@ -9314,6 +9325,7 @@ languagefile {
     S:gt.blockores.3359.name=Niobium Nitride Ore
     S:gt.blockores.3360.name=Niobium-Titanium Ore
     S:gt.blockores.3363.name=Tin Alloy Ore
+    S:gt.blockores.3364.name=Dark Steel Ore
     S:gt.blockores.3370.name=Tungstencarbide Ore
     S:gt.blockores.3371.name=Vanadiumsteel Ore
     S:gt.blockores.3372.name=HSS-G Ore
@@ -9420,6 +9432,7 @@ languagefile {
     S:gt.blockores.3637.name=Styrene Ore
     S:gt.blockores.3638.name=Isoprene Ore
     S:gt.blockores.3639.name=Tetranitromethane Ore
+    S:gt.blockores.364.name=Dark Steel Ore
     S:gt.blockores.3640.name=Diluted Sulfuric Acid Ore
     S:gt.blockores.3641.name=Ethenone Ore
     S:gt.blockores.3642.name=Ethane Ore
@@ -9771,6 +9784,7 @@ languagefile {
     S:gt.blockores.4359.name=Niobium Nitride Ore
     S:gt.blockores.4360.name=Niobium-Titanium Ore
     S:gt.blockores.4363.name=Tin Alloy Ore
+    S:gt.blockores.4364.name=Dark Steel Ore
     S:gt.blockores.4370.name=Tungstencarbide Ore
     S:gt.blockores.4371.name=Vanadiumsteel Ore
     S:gt.blockores.4372.name=HSS-G Ore
@@ -10244,6 +10258,7 @@ languagefile {
     S:gt.blockores.536.name=Charcoal Ore
     S:gt.blockores.5360.name=Niobium-Titanium Ore
     S:gt.blockores.5363.name=Tin Alloy Ore
+    S:gt.blockores.5364.name=Dark Steel Ore
     S:gt.blockores.537.name=Jade Ore
     S:gt.blockores.5370.name=Tungstencarbide Ore
     S:gt.blockores.5371.name=Vanadiumsteel Ore
@@ -10711,6 +10726,7 @@ languagefile {
     S:gt.blockores.636.name=Polystyrene Ore
     S:gt.blockores.6360.name=Niobium-Titanium Ore
     S:gt.blockores.6363.name=Tin Alloy Ore
+    S:gt.blockores.6364.name=Dark Steel Ore
     S:gt.blockores.637.name=Styrene Ore
     S:gt.blockores.6370.name=Tungstencarbide Ore
     S:gt.blockores.6371.name=Vanadiumsteel Ore
@@ -11604,6 +11620,8 @@ languagefile {
     S:gt.metaitem.01.11360.tooltip=NbTi
     S:gt.metaitem.01.11363.name=Tin Alloy Ingot
     S:gt.metaitem.01.11363.tooltip=SnFe
+    S:gt.metaitem.01.11364.name=Dark Steel Ingot
+    S:gt.metaitem.01.11364.tooltip=
     S:gt.metaitem.01.11370.name=Tungstencarbide Ingot
     S:gt.metaitem.01.11370.tooltip=WC
     S:gt.metaitem.01.11371.name=Vanadiumsteel Ingot
@@ -11790,6 +11808,8 @@ languagefile {
     S:gt.metaitem.01.1360.tooltip=NbTi
     S:gt.metaitem.01.1363.name=Small Pile of Tin Alloy Dust
     S:gt.metaitem.01.1363.tooltip=SnFe
+    S:gt.metaitem.01.1364.name=Small Pile of Dark Steel Dust
+    S:gt.metaitem.01.1364.tooltip=
     S:gt.metaitem.01.1370.name=Small Pile of Tungstencarbide Dust
     S:gt.metaitem.01.1370.tooltip=WC
     S:gt.metaitem.01.1371.name=Small Pile of Vanadiumsteel Dust
@@ -12098,6 +12118,8 @@ languagefile {
     S:gt.metaitem.01.17360.tooltip=NbTi
     S:gt.metaitem.01.17363.name=Tin Alloy Plate
     S:gt.metaitem.01.17363.tooltip=SnFe
+    S:gt.metaitem.01.17364.name=Dark Steel Plate
+    S:gt.metaitem.01.17364.tooltip=
     S:gt.metaitem.01.17370.name=Tungstencarbide Plate
     S:gt.metaitem.01.17370.tooltip=WC
     S:gt.metaitem.01.17371.name=Vanadiumsteel Plate
@@ -12390,6 +12412,8 @@ languagefile {
     S:gt.metaitem.01.1836.tooltip=KNO3
     S:gt.metaitem.01.18363.name=Double Tin Alloy Plate
     S:gt.metaitem.01.18363.tooltip=SnFe
+    S:gt.metaitem.01.18364.name=Double Dark Steel Plate
+    S:gt.metaitem.01.18364.tooltip=
     S:gt.metaitem.01.1837.name=Small Pile of Silicon Dioxide Dust
     S:gt.metaitem.01.1837.tooltip=SiO2
     S:gt.metaitem.01.18370.name=Double Tungstencarbide Plate
@@ -12928,6 +12952,8 @@ languagefile {
     S:gt.metaitem.01.23357.tooltip=V3Ga
     S:gt.metaitem.01.23363.name=Tin Alloy Rod
     S:gt.metaitem.01.23363.tooltip=SnFe
+    S:gt.metaitem.01.23364.name=Dark Steel Rod
+    S:gt.metaitem.01.23364.tooltip=
     S:gt.metaitem.01.23370.name=Tungstencarbide Rod
     S:gt.metaitem.01.23370.tooltip=WC
     S:gt.metaitem.01.23371.name=Vanadiumsteel Rod
@@ -13028,6 +13054,8 @@ languagefile {
     S:gt.metaitem.01.23635.tooltip=C8H8(C4H6)3
     S:gt.metaitem.01.23636.name=Polystyrene Rod
     S:gt.metaitem.01.23636.tooltip=C8H8
+    S:gt.metaitem.01.2364.name=Dark Steel Dust
+    S:gt.metaitem.01.2364.tooltip=
     S:gt.metaitem.01.23649.name=Polyvinyl Chloride Rod
     S:gt.metaitem.01.23649.tooltip=C2H3Cl
     S:gt.metaitem.01.2370.name=Tungstencarbide Dust
@@ -13358,6 +13386,8 @@ languagefile {
     S:gt.metaitem.01.2636.tooltip=C8H8
     S:gt.metaitem.01.26363.name=Tin Alloy Bolt
     S:gt.metaitem.01.26363.tooltip=SnFe
+    S:gt.metaitem.01.26364.name=Dark Steel Bolt
+    S:gt.metaitem.01.26364.tooltip=
     S:gt.metaitem.01.26370.name=Tungstencarbide Bolt
     S:gt.metaitem.01.26370.tooltip=WC
     S:gt.metaitem.01.26371.name=Vanadiumsteel Bolt
@@ -13566,6 +13596,8 @@ languagefile {
     S:gt.metaitem.01.27356.tooltip=Nd
     S:gt.metaitem.01.27363.name=Tin Alloy Screw
     S:gt.metaitem.01.27363.tooltip=SnFe
+    S:gt.metaitem.01.27364.name=Dark Steel Screw
+    S:gt.metaitem.01.27364.tooltip=
     S:gt.metaitem.01.27370.name=Tungstencarbide Screw
     S:gt.metaitem.01.27370.tooltip=WC
     S:gt.metaitem.01.27371.name=Vanadiumsteel Screw
@@ -15136,6 +15168,8 @@ languagefile {
     S:gt.metaitem.01.334.tooltip=NiAuAgCu3(Fe50C)3
     S:gt.metaitem.01.335.name=Tiny Pile of Damascus Steel Dust
     S:gt.metaitem.01.335.tooltip=Fe50C
+    S:gt.metaitem.01.3364.name=Impure Pile of Dark Steel Dust
+    S:gt.metaitem.01.3364.tooltip=
     S:gt.metaitem.01.34.name=Tiny Pile of Nickel Dust
     S:gt.metaitem.01.34.tooltip=Ni
     S:gt.metaitem.01.343.name=Tiny Pile of Cobalt Brass Dust
@@ -15228,6 +15262,8 @@ languagefile {
     S:gt.metaitem.01.3607.tooltip=Ca2Nb2O7
     S:gt.metaitem.01.363.name=Tiny Pile of Tin Alloy Dust
     S:gt.metaitem.01.363.tooltip=SnFe
+    S:gt.metaitem.01.364.name=Tiny Pile of Dark Steel Dust
+    S:gt.metaitem.01.364.tooltip=
     S:gt.metaitem.01.37.name=Tiny Pile of Gallium Dust
     S:gt.metaitem.01.37.tooltip=Ga
     S:gt.metaitem.01.370.name=Tiny Pile of Tungstencarbide Dust
@@ -15426,6 +15462,8 @@ languagefile {
     S:gt.metaitem.01.4326.tooltip=Nq+
     S:gt.metaitem.01.4327.name=Purified Pile of Naquadria Dust
     S:gt.metaitem.01.4327.tooltip=NqX
+    S:gt.metaitem.01.4364.name=Purified Pile of Dark Steel Dust
+    S:gt.metaitem.01.4364.tooltip=
     S:gt.metaitem.01.45.name=Tiny Pile of Yttrium Dust
     S:gt.metaitem.01.45.tooltip=Y
     S:gt.metaitem.01.4500.name=Purified Pile of Diamond Dust
@@ -15726,6 +15764,8 @@ languagefile {
     S:gt.metaitem.01.535.tooltip=C
     S:gt.metaitem.01.536.name=Tiny Pile of Charcoal Dust
     S:gt.metaitem.01.536.tooltip=C
+    S:gt.metaitem.01.5364.name=Crushed Dark Steel Ore
+    S:gt.metaitem.01.5364.tooltip=
     S:gt.metaitem.01.537.name=Tiny Pile of Jade Dust
     S:gt.metaitem.01.537.tooltip=
     S:gt.metaitem.01.538.name=Tiny Pile of Lignite Coal Dust
@@ -16010,6 +16050,8 @@ languagefile {
     S:gt.metaitem.01.635.tooltip=C8H8(C4H6)3
     S:gt.metaitem.01.636.name=Tiny Pile of Polystyrene Pulp
     S:gt.metaitem.01.636.tooltip=C8H8
+    S:gt.metaitem.01.6364.name=Purified Dark Steel Ore
+    S:gt.metaitem.01.6364.tooltip=
     S:gt.metaitem.01.649.name=Tiny Pile of Polyvinyl Chloride Pulp
     S:gt.metaitem.01.649.tooltip=C2H3Cl
     S:gt.metaitem.01.65.name=Tiny Pile of Cerium Dust
@@ -16246,6 +16288,8 @@ languagefile {
     S:gt.metaitem.01.7326.tooltip=Nq+
     S:gt.metaitem.01.7327.name=Centrifuged Naquadria Ore
     S:gt.metaitem.01.7327.tooltip=NqX
+    S:gt.metaitem.01.7364.name=Centrifuged Dark Steel Ore
+    S:gt.metaitem.01.7364.tooltip=
     S:gt.metaitem.01.7500.name=Centrifuged Diamond Ore
     S:gt.metaitem.01.7500.tooltip=C
     S:gt.metaitem.01.7501.name=Centrifuged Emerald Ore
@@ -16890,6 +16934,8 @@ languagefile {
     S:gt.metaitem.01.9360.tooltip=NbTi
     S:gt.metaitem.01.9363.name=Tin Alloy Nugget
     S:gt.metaitem.01.9363.tooltip=SnFe
+    S:gt.metaitem.01.9364.name=Dark Steel Nugget
+    S:gt.metaitem.01.9364.tooltip=
     S:gt.metaitem.01.937.name=Tiny Pile of Cassiterite Sand
     S:gt.metaitem.01.937.tooltip=SnO2
     S:gt.metaitem.01.9370.name=Tungstencarbide Nugget
@@ -17117,6 +17163,8 @@ languagefile {
     S:gt.metaitem.02.10356.tooltip=Nd
     S:gt.metaitem.02.10363.name=Tin Alloy Wrench Tip
     S:gt.metaitem.02.10363.tooltip=SnFe
+    S:gt.metaitem.02.10364.name=Dark Steel Wrench Tip
+    S:gt.metaitem.02.10364.tooltip=
     S:gt.metaitem.02.10370.name=Tungstencarbide Wrench Tip
     S:gt.metaitem.02.10370.tooltip=WC
     S:gt.metaitem.02.10371.name=Vanadiumsteel Wrench Tip
@@ -17301,6 +17349,8 @@ languagefile {
     S:gt.metaitem.02.11356.tooltip=Nd
     S:gt.metaitem.02.11363.name=Tin Alloy Universal Spade Head
     S:gt.metaitem.02.11363.tooltip=SnFe
+    S:gt.metaitem.02.11364.name=Dark Steel Universal Spade Head
+    S:gt.metaitem.02.11364.tooltip=
     S:gt.metaitem.02.11370.name=Tungstencarbide Universal Spade Head
     S:gt.metaitem.02.11370.tooltip=WC
     S:gt.metaitem.02.11371.name=Vanadiumsteel Universal Spade Head
@@ -17507,6 +17557,8 @@ languagefile {
     S:gt.metaitem.02.12356.tooltip=Nd
     S:gt.metaitem.02.12363.name=Tin Alloy Sense Blade
     S:gt.metaitem.02.12363.tooltip=SnFe
+    S:gt.metaitem.02.12364.name=Dark Steel Sense Blade
+    S:gt.metaitem.02.12364.tooltip=
     S:gt.metaitem.02.12370.name=Tungstencarbide Sense Blade
     S:gt.metaitem.02.12370.tooltip=WC
     S:gt.metaitem.02.12371.name=Vanadiumsteel Sense Blade
@@ -17763,6 +17815,8 @@ languagefile {
     S:gt.metaitem.02.13356.tooltip=Nd
     S:gt.metaitem.02.13363.name=Tin Alloy Plow Head
     S:gt.metaitem.02.13363.tooltip=SnFe
+    S:gt.metaitem.02.13364.name=Dark Steel Plow Head
+    S:gt.metaitem.02.13364.tooltip=
     S:gt.metaitem.02.13370.name=Tungstencarbide Plow Head
     S:gt.metaitem.02.13370.tooltip=WC
     S:gt.metaitem.02.13371.name=Vanadiumsteel Plow Head
@@ -17847,6 +17901,8 @@ languagefile {
     S:gt.metaitem.02.13635.tooltip=C8H8(C4H6)3
     S:gt.metaitem.02.13636.name=Polystyrene Plow Head
     S:gt.metaitem.02.13636.tooltip=C8H8
+    S:gt.metaitem.02.1364.name=Dark Steel Pickaxe Head
+    S:gt.metaitem.02.1364.tooltip=
     S:gt.metaitem.02.13649.name=Polyvinyl Chloride Plow Head
     S:gt.metaitem.02.13649.tooltip=C2H3Cl
     S:gt.metaitem.02.1370.name=Tungstencarbide Pickaxe Head
@@ -18041,6 +18097,8 @@ languagefile {
     S:gt.metaitem.02.15356.tooltip=Nd
     S:gt.metaitem.02.15363.name=Tin Alloy Buzzsaw Blade
     S:gt.metaitem.02.15363.tooltip=SnFe
+    S:gt.metaitem.02.15364.name=Dark Steel Buzzsaw Blade
+    S:gt.metaitem.02.15364.tooltip=
     S:gt.metaitem.02.15370.name=Tungstencarbide Buzzsaw Blade
     S:gt.metaitem.02.15370.tooltip=WC
     S:gt.metaitem.02.15371.name=Vanadiumsteel Buzzsaw Blade
@@ -18199,6 +18257,8 @@ languagefile {
     S:gt.metaitem.02.1636.tooltip=C8H8
     S:gt.metaitem.02.16363.name=Tin Alloy Turbine Blade
     S:gt.metaitem.02.16363.tooltip=SnFe
+    S:gt.metaitem.02.16364.name=Dark Steel Turbine Blade
+    S:gt.metaitem.02.16364.tooltip=
     S:gt.metaitem.02.16370.name=Tungstencarbide Turbine Blade
     S:gt.metaitem.02.16370.tooltip=WC
     S:gt.metaitem.02.16371.name=Vanadiumsteel Turbine Blade
@@ -18491,6 +18551,8 @@ languagefile {
     S:gt.metaitem.02.22356.tooltip=Nd
     S:gt.metaitem.02.22363.name=Long Tin Alloy Rod
     S:gt.metaitem.02.22363.tooltip=SnFe
+    S:gt.metaitem.02.22364.name=Long Dark Steel Rod
+    S:gt.metaitem.02.22364.tooltip=
     S:gt.metaitem.02.22370.name=Long Tungstencarbide Rod
     S:gt.metaitem.02.22370.tooltip=WC
     S:gt.metaitem.02.22371.name=Long Vanadiumsteel Rod
@@ -18635,6 +18697,8 @@ languagefile {
     S:gt.metaitem.02.2356.tooltip=Nd
     S:gt.metaitem.02.2363.name=Tin Alloy Shovel Head
     S:gt.metaitem.02.2363.tooltip=SnFe
+    S:gt.metaitem.02.2364.name=Dark Steel Shovel Head
+    S:gt.metaitem.02.2364.tooltip=
     S:gt.metaitem.02.2370.name=Tungstencarbide Shovel Head
     S:gt.metaitem.02.2370.tooltip=WC
     S:gt.metaitem.02.2371.name=Vanadiumsteel Shovel Head
@@ -19439,6 +19503,8 @@ languagefile {
     S:gt.metaitem.02.3356.tooltip=Nd
     S:gt.metaitem.02.3363.name=Tin Alloy Axe Head
     S:gt.metaitem.02.3363.tooltip=SnFe
+    S:gt.metaitem.02.3364.name=Dark Steel Axe Head
+    S:gt.metaitem.02.3364.tooltip=
     S:gt.metaitem.02.3370.name=Tungstencarbide Axe Head
     S:gt.metaitem.02.3370.tooltip=WC
     S:gt.metaitem.02.3371.name=Vanadiumsteel Axe Head
@@ -19525,6 +19591,8 @@ languagefile {
     S:gt.metaitem.02.3635.tooltip=C8H8(C4H6)3
     S:gt.metaitem.02.3636.name=Polystyrene Axe Head
     S:gt.metaitem.02.3636.tooltip=C8H8
+    S:gt.metaitem.02.364.name=Dark Steel Sword Blade
+    S:gt.metaitem.02.364.tooltip=
     S:gt.metaitem.02.3649.name=Polyvinyl Chloride Axe Head
     S:gt.metaitem.02.3649.tooltip=C2H3Cl
     S:gt.metaitem.02.370.name=Tungstencarbide Sword Blade
@@ -19681,6 +19749,8 @@ languagefile {
     S:gt.metaitem.02.4356.tooltip=Nd
     S:gt.metaitem.02.4363.name=Tin Alloy Hoe Head
     S:gt.metaitem.02.4363.tooltip=SnFe
+    S:gt.metaitem.02.4364.name=Dark Steel Hoe Head
+    S:gt.metaitem.02.4364.tooltip=
     S:gt.metaitem.02.4370.name=Tungstencarbide Hoe Head
     S:gt.metaitem.02.4370.tooltip=WC
     S:gt.metaitem.02.4371.name=Vanadiumsteel Hoe Head
@@ -19931,6 +20001,8 @@ languagefile {
     S:gt.metaitem.02.5356.tooltip=Nd
     S:gt.metaitem.02.5363.name=Tin Alloy Hammer Head
     S:gt.metaitem.02.5363.tooltip=SnFe
+    S:gt.metaitem.02.5364.name=Dark Steel Hammer Head
+    S:gt.metaitem.02.5364.tooltip=
     S:gt.metaitem.02.5370.name=Tungstencarbide Hammer Head
     S:gt.metaitem.02.5370.tooltip=WC
     S:gt.metaitem.02.5371.name=Vanadiumsteel Hammer Head
@@ -20147,6 +20219,8 @@ languagefile {
     S:gt.metaitem.02.636.tooltip=C8H8
     S:gt.metaitem.02.6363.name=Tin Alloy File Head
     S:gt.metaitem.02.6363.tooltip=SnFe
+    S:gt.metaitem.02.6364.name=Dark Steel File Head
+    S:gt.metaitem.02.6364.tooltip=
     S:gt.metaitem.02.6370.name=Tungstencarbide File Head
     S:gt.metaitem.02.6370.tooltip=WC
     S:gt.metaitem.02.6371.name=Vanadiumsteel File Head
@@ -20299,6 +20373,8 @@ languagefile {
     S:gt.metaitem.02.7356.tooltip=Nd
     S:gt.metaitem.02.7363.name=Tin Alloy Saw Blade
     S:gt.metaitem.02.7363.tooltip=SnFe
+    S:gt.metaitem.02.7364.name=Dark Steel Saw Blade
+    S:gt.metaitem.02.7364.tooltip=
     S:gt.metaitem.02.7370.name=Tungstencarbide Saw Blade
     S:gt.metaitem.02.7370.tooltip=WC
     S:gt.metaitem.02.7371.name=Vanadiumsteel Saw Blade
@@ -20461,6 +20537,8 @@ languagefile {
     S:gt.metaitem.02.8356.tooltip=Nd
     S:gt.metaitem.02.8363.name=Tin Alloy Drill Tip
     S:gt.metaitem.02.8363.tooltip=SnFe
+    S:gt.metaitem.02.8364.name=Dark Steel Drill Tip
+    S:gt.metaitem.02.8364.tooltip=
     S:gt.metaitem.02.8370.name=Tungstencarbide Drill Tip
     S:gt.metaitem.02.8370.tooltip=WC
     S:gt.metaitem.02.8371.name=Vanadiumsteel Drill Tip
@@ -20631,6 +20709,8 @@ languagefile {
     S:gt.metaitem.02.9356.tooltip=Nd
     S:gt.metaitem.02.9363.name=Tin Alloy Chainsaw Tip
     S:gt.metaitem.02.9363.tooltip=SnFe
+    S:gt.metaitem.02.9364.name=Dark Steel Chainsaw Tip
+    S:gt.metaitem.02.9364.tooltip=
     S:gt.metaitem.02.9370.name=Tungstencarbide Chainsaw Tip
     S:gt.metaitem.02.9370.tooltip=WC
     S:gt.metaitem.02.9371.name=Vanadiumsteel Chainsaw Tip
