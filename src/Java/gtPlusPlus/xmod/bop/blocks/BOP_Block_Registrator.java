@@ -48,7 +48,7 @@ public class BOP_Block_Registrator {
 	public static final void recipes() {		
 		//Rainforest Oak
 		addLogRecipes(ItemUtils.getSimpleStack(log_Rainforest));
-		addSaplingRecipes(ItemUtils.getSimpleStack(log_Rainforest));
+		addSaplingRecipes(ItemUtils.getSimpleStack(sapling_Rainforest));
 
 	}
 

@@ -167,6 +167,12 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			return new ClassTransformer_GT_BaseMetaTileEntity(basicClass).getWriter().toByteArray();
 		}
 		
+		//Fix log handling on the charcoal pit
+		if (transformedName.equals("gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Charcoal_Pit")) {	
+			FMLRelaunchLog.log("[GT++ ASM] GT Charcoal Pit Fix", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_CharcoalPit(basicClass, obfuscated).getWriter().toByteArray();
+		}
+		
 		
 		
 		

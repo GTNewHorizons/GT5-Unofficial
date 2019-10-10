@@ -49,12 +49,15 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 		GT_HashSet<GT_ItemStack> aWireCutterList = new GT_HashSet<GT_ItemStack>();
 		//Does not exist prior to 5.09.32, use an empty field if we can't find the existing one.
 		if (ReflectionUtils.doesFieldExist(GregTech_API.class, "sWireCutterList")) {
-			Field sWireCutterList = ReflectionUtils.getField(GregTech_API.class, "");
+			Field sWireCutterList = ReflectionUtils.getField(GregTech_API.class, "sWireCutterList");
 			try {
-				Object val = sWireCutterList.get(null);
-				if (val != null && val instanceof GT_HashSet) {
-					aWireCutterList = (GT_HashSet<GT_ItemStack>) val;
+				if (sWireCutterList != null) {
+					Object val = sWireCutterList.get(null);
+					if (val != null && val instanceof GT_HashSet) {
+						aWireCutterList = (GT_HashSet<GT_ItemStack>) val;
+					}
 				}
+				
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {
 				// Not found, so it's GT 5.09.31 or earlier.
