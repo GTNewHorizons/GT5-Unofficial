@@ -15,7 +15,6 @@ import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.cell.BaseItemPlasmaCell;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
@@ -206,7 +205,7 @@ public class FluidUtils {
 		ItemStack temp = null;
 		//Generate a Cell if we need to
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellPlasma"+aMaterial.getUnlocalizedName(), 1) == null){
-			final Item temp2 = new BaseItemPlasmaCell(aMaterial);
+			new BaseItemPlasmaCell(aMaterial);
 			temp = aMaterial.getPlasmaCell(1);
 		}
 		else {

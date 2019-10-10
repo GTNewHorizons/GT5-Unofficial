@@ -2232,9 +2232,9 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	private final void tryTickWaitTimerDown() {		
-		if (mStartUpCheck > 10) {
+		/*if (mStartUpCheck > 10) {
 			mStartUpCheck = 10;			
-		}		
+		}*/		
 	}
 
 

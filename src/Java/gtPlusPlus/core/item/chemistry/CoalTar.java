@@ -335,7 +335,6 @@ public class CoalTar extends ItemPackage {
 
 	@Override
 	public String errorMessage() {
-		// TODO Auto-generated method stub
 		return "Bad Coal Science!";
 	}
 
@@ -383,7 +382,6 @@ public class CoalTar extends ItemPackage {
 
 	@Override
 	public void blocks() {
-		// TODO Auto-generated method stub
 		
 	}
 

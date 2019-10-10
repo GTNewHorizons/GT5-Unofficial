@@ -11,6 +11,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
@@ -96,17 +97,36 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity {
 	}
 
 	public ArrayList<ItemStack> getDrops() {
-		ItemStack rStack = new ItemStack(Meta_GT_Proxy.sBlockMachines, 1, this.getMetaTileID());		
-		NBTTagCompound aSuperNBT = super.getDrops().get(0).getTagCompound();		
-		NBTTagCompound tNBT = aSuperNBT;
-		if (this.hasValidMetaTileEntity()) {
-			this.mMetaTileEntity.setItemNBT(tNBT);
-		}
-		if (!tNBT.hasNoTags()) {
-			rStack.setTagCompound(tNBT);
-		}
+		ArrayList<ItemStack> aDrops = new ArrayList<ItemStack>();
+		ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, this.getMetaTileID());
+		// Currently not using my custom block.
+		// ItemStack rStack = new ItemStack(Meta_GT_Proxy.sBlockMachines, 1,
+		// this.getMetaTileID());
+		boolean fail = true;
 
-		return new ArrayList<ItemStack>(Arrays.asList(new ItemStack[] { rStack }));
+		ArrayList<ItemStack> aSuperDrops = super.getDrops();
+		if (aSuperDrops != null && !aSuperDrops.isEmpty()) {
+			ItemStack aSuperStack = super.getDrops().get(0);
+			if (aSuperStack != null && aSuperStack.hasTagCompound()) {
+				NBTTagCompound aSuperNBT = aSuperStack.getTagCompound();
+				if (aSuperNBT != null && !aSuperNBT.hasNoTags()) {
+					NBTTagCompound tNBT = (NBTTagCompound) aSuperNBT.copy();
+					if (tNBT != null && !tNBT.hasNoTags()) {
+						if (this.hasValidMetaTileEntity()) {
+							this.mMetaTileEntity.setItemNBT(tNBT);
+							rStack.setTagCompound(tNBT);
+							fail = false;
+			                aDrops.add(rStack);
+						}
+					}
+				}
+
+			}
+		}
+		if (fail) {
+                aDrops.add(rStack);
+		}
+		return aDrops;
 	}
 
 	public boolean isTeleporterCompatible(Direction aSide) {

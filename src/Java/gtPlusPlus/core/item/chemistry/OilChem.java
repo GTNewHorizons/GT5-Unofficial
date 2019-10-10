@@ -177,7 +177,6 @@ public class OilChem extends ItemPackage {
 
 	@Override
 	public String errorMessage() {
-		// TODO Auto-generated method stub
 		return "Failed to generate recipes for AgroChem.";
 	}
 

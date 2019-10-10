@@ -3,7 +3,6 @@ package gtPlusPlus.core.item.chemistry;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import forestry.plugins.PluginCore;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
@@ -393,7 +392,6 @@ public class AgriculturalChem extends ItemPackage {
 
 	@Override
 	public String errorMessage() {
-		// TODO Auto-generated method stub
 		return "Failed to generate recipes for AgroChem.";
 	}
 
