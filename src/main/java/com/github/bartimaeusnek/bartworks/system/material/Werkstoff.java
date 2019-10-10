@@ -208,7 +208,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 if (p.getKey() instanceof Werkstoff)
                     set.addAll(Arrays.asList(((Werkstoff) p.getKey()).getTCAspects()));
             }
-            tc_aspectStacks.forEach(tc_aspectStack -> set.add(new Pair<Object, Integer>(tc_aspectStack.mAspect.mAspect, (int) tc_aspectStack.mAmount)));
+            tc_aspectStacks.forEach(tc_aspectStack -> set.add(new Pair<>(tc_aspectStack.mAspect.mAspect, (int) tc_aspectStack.mAmount)));
             this.stats.mTC_Aspects = set.toArray(new Pair[0]);
         }
         Pair<Object,Integer>[] ret = this.stats.mTC_Aspects.clone();
@@ -219,15 +219,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public List<TC_Aspects.TC_AspectStack> getGTWrappedTCAspects() {
-        List<TC_Aspects.TC_AspectStack> ret = new ArrayList<>();
-        try {
-            Pair<Object, Integer>[] aspectArray = getTCAspects();
-            TC_Aspects.TC_AspectStack stack = null;
-            for (Pair<Object, Integer> objectIntegerPair : aspectArray) {
-                stack = new TC_Aspects.TC_AspectStack(TC_Aspects.valueOf(((String) ThaumcraftHandler.AspectAdder.getName.invoke(objectIntegerPair.getKey())).toUpperCase(Locale.US)) , objectIntegerPair.getValue());
-                stack.addToAspectList(ret);
-            }
-        }catch( InvocationTargetException | IllegalAccessException ignored){}
+        final List<TC_Aspects.TC_AspectStack> ret = new ArrayList<>();
+            Arrays.stream(getTCAspects()).forEach(objectIntegerPair -> {
+                try {
+                    new TC_Aspects.TC_AspectStack(TC_Aspects.valueOf(((String) ThaumcraftHandler.AspectAdder.getName.invoke(objectIntegerPair.getKey())).toUpperCase(Locale.US)), objectIntegerPair.getValue()).addToAspectList(ret);
+                } catch (IllegalAccessException | InvocationTargetException ignored) {}
+            });
         return ret;
     }
 
@@ -452,6 +449,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.cell,0b10000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.capsule,0b10000);
+           // Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.bottle,0b10000);
 
             Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.capsuleMolten,0b1000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.cellMolten,0b1000000);
@@ -761,6 +759,16 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             else
                 this.quality = (byte) (this.quality & 0b1111101);
             return this;
+        }
+
+        byte enchantmentlvl = 3;
+
+        public byte getEnchantmentlvl() {
+            return enchantmentlvl;
+        }
+
+        public void setEnchantmentlvl(byte enchantmentlvl) {
+            this.enchantmentlvl = enchantmentlvl;
         }
 
         public boolean isRadioactive() {

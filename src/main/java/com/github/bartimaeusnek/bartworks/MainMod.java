@@ -240,17 +240,18 @@ public final class MainMod {
     private static void unificationEnforcer() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             if (werkstoff.getGenerationFeatures().enforceUnification) {
-                if (werkstoff.contains(NOBLE_GAS)){
-                        String name = werkstoff.getFluidOrGas(1).getFluid().getName();
-                        String wrongname ="molten."+name;
-                        FluidStack wrongNamedFluid = FluidRegistry.getFluidStack(wrongname,1);
+                if (werkstoff.contains(NOBLE_GAS)) {
+                    String name = werkstoff.getFluidOrGas(1).getFluid().getName();
+                    String wrongname = "molten." + name;
+                    FluidStack wrongNamedFluid = FluidRegistry.getFluidStack(wrongname, 1);
+                    if (wrongNamedFluid != null) {
                         for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings) {
                             for (GT_Recipe recipe : map.mRecipeList) {
                                 for (int i = 0; i < recipe.mFluidInputs.length; i++) {
                                     if (GT_Utility.areFluidsEqual(recipe.mFluidInputs[i], wrongNamedFluid)) {
                                         Collection<GT_Recipe> col = map.mRecipeFluidMap.get(wrongNamedFluid.getFluid());
                                         map.mRecipeFluidMap.remove(wrongNamedFluid.getFluid());
-                                        map.mRecipeFluidMap.put(werkstoff.getFluidOrGas(1).getFluid(),col);
+                                        map.mRecipeFluidMap.put(werkstoff.getFluidOrGas(1).getFluid(), col);
                                         recipe.mFluidInputs[i] = werkstoff.getFluidOrGas(recipe.mFluidInputs[i].amount);
                                         map.mRecipeFluidNameMap.add(werkstoff.getFluidOrGas(1).getFluid().getName());
                                     }
@@ -262,7 +263,8 @@ public final class MainMod {
                                 }
                             }
                         }
-                    GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.add(new BWRecipes.DynamicGTRecipe(false,null,null,null,null,new FluidStack[]{wrongNamedFluid},new FluidStack[]{werkstoff.getFluidOrGas(1)},1,1,0));
+                        GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.add(new BWRecipes.DynamicGTRecipe(false, null, null, null, null, new FluidStack[]{wrongNamedFluid}, new FluidStack[]{werkstoff.getFluidOrGas(1)}, 1, 1, 0));
+                    }
                 }
                 MainMod.runMoltenUnificationEnfocement(werkstoff);
                 MainMod.runUnficationDeleter(werkstoff);

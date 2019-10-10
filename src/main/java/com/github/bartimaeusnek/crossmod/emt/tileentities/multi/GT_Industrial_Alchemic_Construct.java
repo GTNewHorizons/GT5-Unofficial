@@ -47,7 +47,7 @@ import static gregtech.api.enums.GT_Values.V;
 
 public class GT_Industrial_Alchemic_Construct extends GT_MetaTileEntity_MultiBlockBase {
 
-    List<Object> mEssentiaHatches = new ArrayList<>();
+    private List<Object> mEssentiaHatches = new ArrayList<>();
 
     public boolean addInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity.getClass().isInstance(EMTHandler.aEssentiaInputHatch))
@@ -75,7 +75,7 @@ public class GT_Industrial_Alchemic_Construct extends GT_MetaTileEntity_MultiBlo
         super(aID, aName, aNameRegional);
     }
 
-    public GT_Industrial_Alchemic_Construct(String aName) {
+    private GT_Industrial_Alchemic_Construct(String aName) {
         super(aName);
     }
 

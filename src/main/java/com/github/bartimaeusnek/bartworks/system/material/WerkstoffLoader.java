@@ -44,6 +44,7 @@ import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_Fluid;
@@ -123,6 +124,7 @@ public class WerkstoffLoader implements Runnable {
             capsule.mMaterialGenerationBits = 0b100000;
             capsule.mDefaultStackSize = 64;
         }
+        bottle.mDefaultStackSize = 1;
     }
 
     //TODO: FREE ID RANGE: 91-32766
@@ -1545,7 +1547,7 @@ public class WerkstoffLoader implements Runnable {
     }
 
     private static void runGTItemDataRegistrator() {
-        HashSet<Materials> toRem = new HashSet<>();
+       // HashSet<Materials> toRem = new HashSet<>();
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             //int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, String aConfigSection, boolean aCustomOre, String aCustomID
             Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial() : Materials.get(werkstoff.getVarName()) != Materials._NULL ? Materials.get(werkstoff.getVarName()) :
@@ -1608,10 +1610,15 @@ public class WerkstoffLoader implements Runnable {
                         f.set(werkstoffBridgeMaterial, werkstoff.getDefaultName());
                     } catch (NoSuchFieldException | IllegalAccessException ignored){}
                     werkstoffBridgeMaterial.mChemicalFormula = werkstoff.getToolTip();
-                    werkstoffBridgeMaterial.mAspects=werkstoff.getGTWrappedTCAspects();
+                    if (Loader.isModLoaded("Thaumcraft"))
+                        werkstoffBridgeMaterial.mAspects=werkstoff.getGTWrappedTCAspects();
                     werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
                     werkstoffBridgeMaterial.mHandleMaterial = werkstoff.contains(SubTag.BURNING) ? Materials.Blaze : werkstoff.contains(SubTag.MAGICAL) ? Materials.Thaumium : werkstoffBridgeMaterial.mDurability > 5120 ? Materials.TungstenSteel : werkstoffBridgeMaterial.mDurability > 1280 ? Materials.Steel : Materials.Wood;
-                    toRem.add(werkstoffBridgeMaterial);
+                    //toRem.add(werkstoffBridgeMaterial);
+                    if (werkstoff.getStats().isRadioactive()){
+                        werkstoffBridgeMaterial.setEnchantmentForArmors(Enchantment_Radioactivity.INSTANCE,werkstoff.getStats().getEnchantmentlvl());
+                        werkstoffBridgeMaterial.setEnchantmentForTools(Enchantment_Radioactivity.INSTANCE,werkstoff.getStats().getEnchantmentlvl());
+                    }
                     werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
                     if (WerkstoffLoader.items.get(prefixes) != null)
                         if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) != 0 && (werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) == 0 && werkstoff.get(prefixes) != null && werkstoff.get(prefixes).getItem() != null)

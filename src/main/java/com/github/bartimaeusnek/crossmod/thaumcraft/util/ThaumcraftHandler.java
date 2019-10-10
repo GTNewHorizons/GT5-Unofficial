@@ -150,13 +150,13 @@ public class ThaumcraftHandler {
             for (OrePrefixes element : OrePrefixes.values()) {
                 if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(element)) != 0 && (werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(element)) == 0) {
                     if (element.mMaterialAmount >= 3628800L || element == OrePrefixes.ore) {
-                        DebugLog.log("OrePrefix: "+element.name() + " mMaterialAmount: " + element.mMaterialAmount/3628800L);
+                        DebugLog.log("OrePrefix: " + element.name() + " mMaterialAmount: " + element.mMaterialAmount/3628800L);
                         if (WerkstoffLoader.items.get(element) != null)
                             ThaumcraftHandler.AspectAdder.addAspectViaBW(werkstoff.get(element), werkstoff.getTCAspects(element == OrePrefixes.ore ? 1 : (int) (element.mMaterialAmount / 3628800L)));
                     }
                     else if (element.mMaterialAmount >= 0L) {
                         if (WerkstoffLoader.items.get(element) != null)
-                            ThaumcraftHandler.AspectAdder.addAspectViaBW(werkstoff.get(element), new Pair<Object, Integer>(TC_Aspects.PERDITIO.mAspect, 1));
+                            ThaumcraftHandler.AspectAdder.addAspectViaBW(werkstoff.get(element), new Pair<>(TC_Aspects.PERDITIO.mAspect, 1));
                     }
                 }
             }

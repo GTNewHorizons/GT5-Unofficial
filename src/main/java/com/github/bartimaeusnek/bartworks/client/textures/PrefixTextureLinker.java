@@ -23,6 +23,8 @@ public class PrefixTextureLinker implements Runnable {
     public void run() {
 
         for (OrePrefixes prefixes : OrePrefixes.values()) {
+            if (prefixes == OrePrefixes.rod)
+                continue;
             HashMap curr = new HashMap<>();
             if (prefixes.mTextureIndex == -1 && Werkstoff.GenerationFeatures.prefixLogic.get(prefixes) != 0) {
                 Arrays.stream(TextureSet.class.getFields()).filter(field -> field.getName().contains("SET")).forEach(SET -> {

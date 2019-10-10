@@ -254,6 +254,7 @@ public class RecipeLoader implements Runnable {
 
             GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 64, 1000), GT_Utility.getIntegratedCircuit(17), Materials.SolderingAlloy.getMolten(9216), ItemRegistry.megaMachines[0], 72000, BW_Util.getMachineVoltageFromTier(3));
             GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 64, 1002), GT_Utility.getIntegratedCircuit(17), Materials.SolderingAlloy.getMolten(9216), ItemRegistry.megaMachines[1], 72000, BW_Util.getMachineVoltageFromTier(3));
+            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 64, 1126), GT_Utility.getIntegratedCircuit(17), Materials.SolderingAlloy.getMolten(9216), ItemRegistry.megaMachines[2], 72000, BW_Util.getMachineVoltageFromTier(3));
 
             GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0), Materials.Nickel.getMolten(5184), new ItemStack(ItemRegistry.bw_glasses[0], 1, 1), 800, BW_Util.getMachineVoltageFromTier(3));
             GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, 1), Materials.Tungsten.getMolten(1296), new ItemStack(ItemRegistry.bw_glasses[0], 1, 2), 800, BW_Util.getMachineVoltageFromTier(4));

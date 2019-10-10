@@ -28,7 +28,7 @@ import static com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.
 
 public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
-    boolean hasList;
+    private boolean hasList;
 
     public BWGTMetaItems(OrePrefixes orePrefixes, List noSubIDMaterials) {
         super(orePrefixes,null);
@@ -36,7 +36,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
         for (int i = 0; i < Materials.values().length; i++) {
             ItemStack tStack = new ItemStack(this, 1, i);
             Materials w = Materials.values()[i];
-            if (!((w.getMolten(1) != null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) != null || w.getGas(1) != null) && orePrefixes == OrePrefixes.capsule)))
+            if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                 continue;
             for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
                 if (w.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
@@ -54,7 +54,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
             for (int i = 0; i < noSubIDMaterials.size(); i++) {
                 ItemStack tStack = new ItemStack(this, 1, i+1001);
                 Materials w = (Materials) noSubIDMaterials.get(i);
-                if (!((w.getMolten(1) != null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) != null || w.getGas(1) != null) && orePrefixes == OrePrefixes.capsule)))
+                if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                     continue;
                 for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
                     if (w.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
@@ -100,16 +100,19 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
             Materials w = Materials.values()[i];
             if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) == 0 && Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes) != 0)
                 continue;
-            if ((w.getMolten(1) != null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) != null || w.getGas(1) != null) && orePrefixes == OrePrefixes.capsule))
-                aList.add(new ItemStack(this, 1, i));
-        }
-        for (int i = 0; i < NoMetaValue.size(); i++) {
-            Materials w = NoMetaValue.get(i);
-            if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) == 0 && Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes) != 0)
+            else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                 continue;
-            if (hasList && ((w.getMolten(1) != null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) != null || w.getGas(1) != null) && orePrefixes == OrePrefixes.capsule)))
-                aList.add(new ItemStack(this, 1, i+1001));
+            aList.add(new ItemStack(this, 1, i));
         }
+        if (hasList)
+            for (int i = 0; i < NoMetaValue.size(); i++) {
+                Materials w = NoMetaValue.get(i);
+                if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) == 0 && Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes) != 0)
+                    continue;
+                else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
+                    continue;
+                aList.add(new ItemStack(this, 1, i + 1001));
+            }
     }
 
     @Override

@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.ASM;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
 import java.util.Arrays;
@@ -38,7 +39,8 @@ public class BWCoreTransformer implements IClassTransformer {
             "REMVOING CREATURES FROM LAST MILLENIUM (EXU)",
             "PATCHING GLOBAL RENDERER FOR USE WITH MY GALACTIC DIMS",
             "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
-            "PLACING MY GLASS-BLOCK RUNNABLE INTO THE GT_API"
+            "PLACING MY GLASS-BLOCK RUNNABLE INTO THE GT_API",
+            "DUCTTAPING RWG WORLDEN FAILS"
            // "ADD EXECTION HANDLEING TO FIND OREIDS/OREDICT"
     };
     public static final String[] CLASSESBEEINGTRANSFORMED = {
@@ -46,7 +48,8 @@ public class BWCoreTransformer implements IClassTransformer {
             "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime",
             "net.minecraft.client.renderer.RenderGlobal",
             "thaumcraft.common.tiles.TileWandPedestal",
-            "gregtech.GT_Mod"
+            "gregtech.GT_Mod",
+            "rwg.world.ChunkGeneratorRealistic"
            // "net.minecraftforge.oredict.OreDictionary"
     };
     static boolean obfs;
@@ -92,6 +95,7 @@ public class BWCoreTransformer implements IClassTransformer {
             ClassNode classNode = new ClassNode();
             classReader.accept(classNode, ClassReader.SKIP_FRAMES);
             List<MethodNode> methods = classNode.methods;
+            scase:
             switch (id) {
                 case 0: {
                     BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
@@ -140,10 +144,9 @@ public class BWCoreTransformer implements IClassTransformer {
                             toPatch.maxStack = 1;
                             toPatch.maxLocals = 5;
                             methods.set(i, toPatch);
-                            break;
+                            break scase;
                         }
                     }
-                    break;
                 }
                 case 2: {
                     String name_deObfs = "renderSky";
@@ -201,10 +204,9 @@ public class BWCoreTransformer implements IClassTransformer {
                                 }
                             }
                             toPatch.instructions = nu;
-                            break;
+                            break scase;
                         }
                     }
-                    break;
                 }
                 case 3: {
                     BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
@@ -217,10 +219,9 @@ public class BWCoreTransformer implements IClassTransformer {
                         if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs, name_Obfs, name_src) && ASMUtils.isCorrectMethod(methods.get(i), dsc_universal, dsc_universal)) {
                             BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
                             methods.set(i, BWCoreTransformer.transformThaumcraftWandPedestal(methods.get(i)));
-                            break;
+                            break scase;
                         }
                     }
-                    break;
                 }
                 case 4 : {
                     BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
@@ -244,13 +245,48 @@ public class BWCoreTransformer implements IClassTransformer {
                                 nu.add(toPatch.instructions.get(j));
                             }
                             toPatch.instructions = nu;
-                            break;
+                            break scase;
+                        }
+                    }
+                }
+                case 5: {
+                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
+                    String name_deObfs = "getNewNoise";
+                    for (int i = 0; i < methods.size(); i++) {
+                        MethodNode toPatch = methods.get(i);
+
+                        if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs)) {
+                            BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
+                            LabelNode[] LabelNodes = {new LabelNode(), new LabelNode()};
+                            InsnList nu = new InsnList();
+                            // if (x < -28675) x %= -28675;
+                            nu.add(new VarInsnNode(ILOAD, 2));
+                            nu.add(new IntInsnNode(SIPUSH, -28675));
+                            nu.add(new JumpInsnNode(IF_ICMPGE, LabelNodes[0]));
+                            nu.add(new VarInsnNode(ILOAD, 2));
+                            nu.add(new LdcInsnNode(-28675));
+                            nu.add(new InsnNode(IREM));
+                            nu.add(new VarInsnNode(ISTORE, 2));
+                            nu.add(LabelNodes[0]);
+                            // if (y < -28675) y %= -28675;
+                            nu.add(new VarInsnNode(ILOAD, 3));
+                            nu.add(new IntInsnNode(SIPUSH, -28675));
+                            nu.add(new JumpInsnNode(IF_ICMPGE, LabelNodes[1]));
+                            nu.add(new VarInsnNode(ILOAD, 3));
+                            nu.add(new LdcInsnNode(-28675));
+                            nu.add(new InsnNode(IREM));
+                            nu.add(new VarInsnNode(ISTORE, 3));
+                            nu.add(LabelNodes[1]);
+
+                            for (int j = 1; j < methods.get(i).instructions.size(); j++) {
+                                nu.add(methods.get(i).instructions.get(j));
+                            }
+
+                            methods.get(i).instructions = nu;
+                            break scase;
                         }
                     }
 
-                    break;
-                }
-                case 5: {
 //                    String name_deObfs = "getOreIDs";
 //                    String dsc_deObfs = "(Lnet/minecraft/item/ItemStack;)[I";
 //                    String dsc_Obfs = "(Ladd;)[I";
