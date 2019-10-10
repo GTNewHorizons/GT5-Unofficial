@@ -1,10 +1,15 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
+import java.lang.reflect.Field;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.objects.GT_HashSet;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.common.tools.GT_Tool_WireCutter;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechToolDictNames;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_AngelGrinder;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_Choocher;
@@ -41,6 +46,20 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 						new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
 						new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) });
 
+		GT_HashSet<GT_ItemStack> aWireCutterList = new GT_HashSet<GT_ItemStack>();
+		//Does not exist prior to 5.09.32, use an empty field if we can't find the existing one.
+		if (ReflectionUtils.doesFieldExist(GregTech_API.class, "sWireCutterList")) {
+			Field sWireCutterList = ReflectionUtils.getField(GregTech_API.class, "");
+			try {
+				Object val = sWireCutterList.get(null);
+				if (val != null && val instanceof GT_HashSet) {
+					aWireCutterList = (GT_HashSet<GT_ItemStack>) val;
+				}
+			}
+			catch (IllegalArgumentException | IllegalAccessException e) {
+				// Not found, so it's GT 5.09.31 or earlier.
+			}
+		}
 
 		// Electric Wire Cutter
 		GregTech_API.registerTool(
@@ -49,7 +68,7 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 						new Object[] { GregtechToolDictNames.craftingToolElectricSnips, ToolDictNames.craftingToolWireCutter,
 								new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 4L),
 								new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L),
-								new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L) }), GregTech_API.sWireCutterList);
+								new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L) }), aWireCutterList);
 
 
 		// Electric Lighter
