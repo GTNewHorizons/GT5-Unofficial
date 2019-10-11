@@ -36,4 +36,9 @@ hs_err_pid*
 /run
 /.gradle
 /venv
-/libs
+/libs/*
+!/libs/TecTech-1.7.10-3.7.3-deobf.jar
+!/libs/CodeChickenCore-1.7.10-1.0.4.35-dev.jar
+!/libs/CodeChickenLib-1.7.10-1.1.1.99-dev.jar
+!/libs/NotEnoughItems-1.7.10-1.0.4.95-dev.jar
+!/libs/gregtech-5.09.32-dev.jar
