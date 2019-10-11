@@ -17,6 +17,7 @@ import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
 import gtPlusPlus.core.tileentities.machines.TileEntityPooCollector;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
+import gtPlusPlus.core.tileentities.machines.TileEntityRoundRobinator;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
@@ -44,6 +45,7 @@ public class ModTileEntities {
 		GameRegistry.registerTileEntity(TileEntitySuperJukebox.class, "TileEntitySuperJukebox");
 		GameRegistry.registerTileEntity(TileEntitySuperLight.class, "TileEntitySuperLight");
 		GameRegistry.registerTileEntity(TileEntityPestKiller.class, "TileEntityPestKiller");
+		GameRegistry.registerTileEntity(TileEntityRoundRobinator.class, "TileEntityRoundRobinator");
 
 		
 		//Mod TEs
