@@ -31,6 +31,7 @@ import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -281,7 +282,6 @@ public class RecipeLoader implements Runnable {
                 GT_Values.RA.addPulveriserRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, i), new ItemStack[]{Materials.BorosilicateGlass.getDust(9)}, null, 400, BW_Util.getMachineVoltageFromTier(1));
                 GT_Values.RA.addChemicalBathRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, i), Materials.Chlorine.getGas(50), new ItemStack(ItemRegistry.bw_glasses[0], 1, 0), null, null, null, 64, 2);
             }
-
 
             GT_ModHandler.addCraftingRecipe(
                     new ItemStack(ItemRegistry.WINDMETER),
@@ -758,6 +758,7 @@ public class RecipeLoader implements Runnable {
                     }
             );
 
+            if (!Loader.isModLoaded("tectech"))
             GT_Values.RA.addAssemblylineRecipe(
                     ItemList.Machine_Multi_ImplosionCompressor.get(1L),24000,
                     new ItemStack[]{

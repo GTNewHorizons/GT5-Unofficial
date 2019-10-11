@@ -27,6 +27,7 @@ import com.github.bartimaeusnek.bartworks.common.commands.ChangeConfig;
 import com.github.bartimaeusnek.bartworks.common.commands.SummonRuin;
 import com.github.bartimaeusnek.crossmod.GTpp.loader.RadioHatchCompat;
 import com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy;
+import com.github.bartimaeusnek.crossmod.tectech.TecTechResearchLoader;
 import com.github.bartimaeusnek.crossmod.thaumcraft.CustomAspects;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -51,6 +52,7 @@ import java.io.StringReader;
                 + "after:Micdoodlecore; "
                 + "after:miscutils;"
                 + "after:EMT;"
+                + "after:tectech;"
 )
 public class BartWorksCrossmod {
     public static final String NAME = "BartWorks Mod Additions";
@@ -83,6 +85,8 @@ public class BartWorksCrossmod {
             GalacticraftProxy.postInit(init);
         if (Loader.isModLoaded("miscutils"))
             new RadioHatchCompat().run();
+        if (Loader.isModLoaded("tectech"))
+            TecTechResearchLoader.runResearches();
     }
 
 //    @Mod.EventHandler
