@@ -54,6 +54,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI13 = 12; // Decayables Chest
 	public static final int GUI14 = 13; // Super Jukebox
 	public static final int GUI15 = 14; // Pest Killer
+	public static final int GUI16 = 15; // Round-Robinator
 
 	public static void init() {
 
@@ -102,6 +103,8 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_SuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
 			} else if (ID == GUI15) {
 				return new Container_PestKiller(player.inventory, (TileEntityPestKiller) te);
+			}  else if (ID == GUI16) {
+				return new Container_RoundRobinator(player.inventory, (TileEntityRoundRobinator) te);
 			} 
 		}
 
@@ -162,7 +165,9 @@ public class GuiHandler implements IGuiHandler {
 				return new GUI_SuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
 			} else if (ID == GUI15) {
 				return new GUI_PestKiller(player.inventory, (TileEntityPestKiller) te);
-			}
+			}  else if (ID == GUI16) {
+				return new GUI_RoundRobinator(player.inventory, (TileEntityRoundRobinator) te);
+			} 
 		}
 
 		if (ID == GUI9) {

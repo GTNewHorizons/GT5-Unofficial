@@ -21,6 +21,7 @@ import gtPlusPlus.core.block.machine.Machine_ModularityTable;
 import gtPlusPlus.core.block.machine.Machine_PestKiller;
 import gtPlusPlus.core.block.machine.Machine_PooCollector;
 import gtPlusPlus.core.block.machine.Machine_ProjectTable;
+import gtPlusPlus.core.block.machine.Machine_RoundRobinator;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox;
 import gtPlusPlus.core.block.machine.Machine_TradeTable;
 import gtPlusPlus.core.block.machine.Machine_Workbench;
@@ -34,6 +35,7 @@ import net.minecraftforge.fluids.Fluid;
 
 public final class ModBlocks {
 
+	public static Block blockRoundRobinator;
 	public static Block blockCircuitProgrammer;
 	public static Block blockFakeMiningPipe;
 	public static Block blockFakeMiningHead;
@@ -147,6 +149,8 @@ public final class ModBlocks {
 		blockPooCollector = new Machine_PooCollector();
 		
 		blockPestKiller = new Machine_PestKiller();
+		
+		blockRoundRobinator = new Machine_RoundRobinator();
 
 		new BlockGenericRedstoneDetector();
 		new BlockGenericRedstoneTest();
