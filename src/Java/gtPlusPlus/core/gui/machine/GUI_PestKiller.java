@@ -57,12 +57,10 @@ public class GUI_PestKiller extends GuiContainer {
 		Color startGrad = new Color(50, 50, 50);
 		Color endGrad = new Color(20, 20, 20);
 		Container_PestKiller aCont = (Container_PestKiller) this.inventorySlots;
-		TileEntityPestKiller aTileKiller = aCont.tile_entity;
 		
 		double aPercentage = 0;
 		double aDivisor = (100/16);		
-		int aFrameHeight = 16;
-		
+		int aFrameHeight = 16;		
 		
 		boolean didRender = false;
 		if (aCont != null) {

@@ -51,7 +51,6 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 					if (CORE.RA.addFluidExtractionRecipe(material.getIngot(1), // Input
 							null, // Input 2
 							material.getFluid(144), // Fluid Output
-							0, // Chance
 							1 * 20, // Duration
 							material.vVoltageMultiplier // Eu Tick
 					)) {
@@ -67,7 +66,6 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 					if (CORE.RA.addFluidExtractionRecipe(material.getPlate(1), // Input
 							null, // Input 2
 							material.getFluid(144), // Fluid Output
-							0, // Chance
 							1 * 20, // Duration
 							material.vVoltageMultiplier // Eu Tick
 					)) {
@@ -83,7 +81,6 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 					if (CORE.RA.addFluidExtractionRecipe(material.getPlateDouble(1), // Input
 							null, // Input 2
 							material.getFluid(288), // Fluid Output
-							0, // Chance
 							1 * 20, // Duration
 							material.vVoltageMultiplier // Eu Tick
 					)) {
@@ -99,7 +96,6 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 					if (CORE.RA.addFluidExtractionRecipe(material.getNugget(1), // Input
 							null, // Input 2
 							material.getFluid(16), // Fluid Output
-							0, // Chance
 							16, // Duration
 							material.vVoltageMultiplier // Eu Tick
 					)) {
@@ -115,7 +111,6 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 					if (CORE.RA.addFluidExtractionRecipe(material.getBlock(1), // Input
 							null, // Input 2
 							material.getFluid(144 * 9), // Fluid Output
-							0, // Chance
 							288, // Duration
 							material.vVoltageMultiplier // Eu Tick
 					)) {

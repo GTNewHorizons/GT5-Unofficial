@@ -105,7 +105,6 @@ public class GTplusplus implements ActionListener {
 	//Mod Instance
 	@Mod.Instance(CORE.MODID)
 	public static GTplusplus instance;
-	public static Meta_GT_Proxy instanceGtProxy;
 
 	//Material Loader
 	public static GT_Material_Loader mGregMatLoader;
@@ -181,8 +180,7 @@ public class GTplusplus implements ActionListener {
 		mChunkLoading.preInit(event);
 		proxy.preInit(event);
 		Logger.INFO("Setting up our own GT_Proxy.");
-		instanceGtProxy = Meta_GT_Proxy.instance;
-		instanceGtProxy.preInit();
+		Meta_GT_Proxy.preInit();
 		Core_Manager.preInit();
 	}
 
@@ -194,7 +192,7 @@ public class GTplusplus implements ActionListener {
 		proxy.init(event);
 		HazmatUtils.init();
 		proxy.registerNetworkStuff();
-		instanceGtProxy.init();
+		Meta_GT_Proxy.init();
 		Core_Manager.init();
 
 		//Used by foreign players to generate .lang files for translation.
@@ -211,7 +209,7 @@ public class GTplusplus implements ActionListener {
 		mChunkLoading.postInit(event);
 		proxy.postInit(event);
 		BookHandler.runLater();
-		instanceGtProxy.postInit();
+		Meta_GT_Proxy.postInit();
 		Core_Manager.postInit();
 		//SprinklerHandler.registerModFerts();
 

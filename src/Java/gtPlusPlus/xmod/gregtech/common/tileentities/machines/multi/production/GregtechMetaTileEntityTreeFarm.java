@@ -34,6 +34,10 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	public static int CASING_TEXTURE_ID;
 	public static String mCasingName = "Advanced Cryogenic Casing";
 	public static TreeGenerator mTreeData;
+	
+	static {
+		mTreeData = new TreeGenerator();	
+	}
 
 	public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -75,10 +79,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				}
 			}			
 		}*/	
-
-		if (mTreeData == null) {
-			mTreeData = new TreeGenerator();			
-		}
 
 
 

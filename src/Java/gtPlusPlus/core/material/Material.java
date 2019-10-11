@@ -237,7 +237,7 @@ public class Material {
 					int hashSize = MathUtils.howManyPlaces(aValueForGen);
 
 					String a = String.valueOf(aValueForGen);
-					String b = null;
+					String b = "";
 					
 					if (hashSize < 9) {
 						int aSecondHash = this.materialState.hashCode();
@@ -379,9 +379,6 @@ public class Material {
 						aDataSet.put(m.getStackMaterial().vRadiationLevel);
 					}
 					byte aAverage = MathUtils.getByteAverage(aDataSet);
-					if (aAverage > Byte.MAX_VALUE || aAverage < Byte.MIN_VALUE) {
-						aAverage = 0;
-					}
 					if (aAverage > 0) {
 						Logger.MATERIALS(this.getLocalizedName()+" is radioactive due to trace elements. Level: "+aAverage+".");
 						this.isRadioactive = true;
@@ -529,11 +526,6 @@ public class Material {
 			Logger.MATERIALS("Stack Trace for "+materialName);
 			t.printStackTrace();
 		}
-	}
-
-	public Material(String string, MaterialState solid, TextureSet setShiny, int i, short[] s, int j, int k, int l,
-			int m, boolean b, String string2, int n) {
-		// TODO Auto-generated constructor stub
 	}
 
 	public final TextureSet getTextureSet() {
@@ -868,10 +860,9 @@ public class Material {
 			ItemStack a1 = getOre(1);
 			Item a2 = a1.getItem();
 			Block a3 = Block.getBlockFromItem(a2);
-
-			//Logger.DEBUG_MATERIALS("[Invalid Ore] Is a1 valid? "+(a1 != null));
-			//Logger.DEBUG_MATERIALS("[Invalid Ore] Is a2 valid? "+(a2 != null));
-			//Logger.DEBUG_MATERIALS("[Invalid Ore] Is a3 valid? "+(a3 != null));
+			if (a3 != null) {
+				return a3;
+			}
 
 			Block x = Block.getBlockFromItem(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ore"+Utils.sanitizeString(this.unlocalizedName), stacksize).getItem());
 			if (x != null){

@@ -138,7 +138,7 @@ public class PollutionUtils {
 		if (te == null) {
 			return false;
 		}
-		return nullifyPollution(te);
+		return nullifyPollution((IHasWorldObjectAndCoords) te);
 	}
 
 	public static boolean nullifyPollution(IHasWorldObjectAndCoords aTileOfSomeSort) {

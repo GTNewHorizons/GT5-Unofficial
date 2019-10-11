@@ -25,6 +25,7 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.EnumUtils;
 import gtPlusPlus.core.util.data.StringUtils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -207,9 +208,9 @@ public class MaterialUtils {
 		return true;
 	}
 
-	public static int getTierOfMaterial(final int aMeltingPoint){
+	public static int getTierOfMaterial(final double aMeltingPoint){
 		
-		return aMeltingPoint < 1000 ? 0 : (Math.round(aMeltingPoint/1000));
+		return aMeltingPoint < 1000 ? 0 : (MathUtils.roundToClosestInt(aMeltingPoint/1000f));
 		
 		
 		/*if ((aMeltingPoint >= 0) && (aMeltingPoint <= 1000)){

@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.world;
 import java.util.Collection;
 import java.util.Random;
 
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
@@ -20,7 +21,7 @@ public class GTPP_Worldgen_Ore_Normal extends GTPP_Worldgen_Ore {
             for (int i = 0; i < mAmount; i++) {
                 int tX = aChunkX + aRandom.nextInt(16), tY = mMinY + aRandom.nextInt(mMaxY - mMinY), tZ = aChunkZ + aRandom.nextInt(16);
                 if (mAllowToGenerateinVoid || aWorld.getBlock(tX, tY, tZ).isAir(aWorld, tX, tY, tZ)) {
-                    float math_pi = 3.141593F;float var1b = mSize / 8.0F;
+                    float math_pi = CORE.PI;float var1b = mSize / 8.0F;
                     float var6 = aRandom.nextFloat() * math_pi;
                     float var3b = MathHelper.sin(var6) * var1b; float var4b = MathHelper.cos(var6) * var1b;
                     float var8b = -2*var3b;float var9b = -2*var4b;

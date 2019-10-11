@@ -19,7 +19,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.data.ArrayUtils;
@@ -991,15 +990,24 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     }
 
     @Override
-    public boolean addFluidExtractionRecipe(ItemStack input, ItemStack input2, FluidStack output, int aTime, int aEu,	int aSpecial) {
-    	Method aExtractionMethod = ReflectionUtils.getMethod(MaterialGenerator.class, "addFluidExtractionRecipe", new Class[] {ItemStack.class, ItemStack.class, FluidStack.class, int.class, int.class});
-    	return ReflectionUtils.invoke(null, aExtractionMethod, new Object[] {input, input2, output, aSpecial, aTime, aEu});
+    public boolean addFluidExtractionRecipe(ItemStack input, ItemStack input2, FluidStack output, int aTime, int aEu) {
+    	return MaterialGenerator.addFluidExtractionRecipe(input, input2, output, aTime, aEu);
+    }
+
+    @Override
+    public boolean addFluidCannerRecipe(ItemStack aFullContainer, ItemStack container, FluidStack rFluidIn) {
+    	return MaterialGenerator.addFluidCannerRecipe(container, aFullContainer, rFluidIn, null);
     }
 
     @Override
     public boolean addFluidCannerRecipe(ItemStack aFullContainer, ItemStack container, FluidStack rFluidIn, FluidStack rFluidOut) {
-    	Method aExtractionMethod = ReflectionUtils.getMethod(MaterialGenerator.class, "addFluidCannerRecipe", new Class[] {ItemStack.class, ItemStack.class, FluidStack.class});
-    	return ReflectionUtils.invoke(null, aExtractionMethod, new Object[] {aFullContainer, container, rFluidIn, rFluidOut});
+    	return MaterialGenerator.addFluidCannerRecipe(container, aFullContainer, rFluidIn, rFluidOut);
+    }
+    
+
+    @Override
+    public boolean addFluidCannerRecipe(ItemStack aFullContainer, ItemStack container, FluidStack rFluidIn, FluidStack rFluidOut, int aTime, int aEu) {
+    	return MaterialGenerator.addFluidCannerRecipe(container, aFullContainer, rFluidIn, rFluidOut, aTime, aEu);
     }
 
     /**

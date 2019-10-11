@@ -297,7 +297,7 @@ public class TreeFarmHelper {
 					return true;
 				}
 				else if (aStack.getUnlocalizedName().toLowerCase().contains("mu-metaitem")) {
-					String[] aData = aStack.getUnlocalizedName().toLowerCase().split(".");
+					String[] aData = aStack.getUnlocalizedName().toLowerCase().split("//.");
 					if (aData != null && aData.length > 0) {
 						for (String s : aData) {
 							if (s.contains("32120")) {

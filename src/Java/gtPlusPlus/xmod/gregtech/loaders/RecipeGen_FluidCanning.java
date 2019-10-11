@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import java.util.HashSet;
 import java.util.Set;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
@@ -26,8 +27,23 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 	private final GT_Recipe recipe;
 	private final boolean isValid;
 
-	// Alternative Constructor
+	public boolean valid() {
+		return isValid;
+	}
+	public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluid) {
+		this(aExtracting, aEmpty, aFull, aFluid, null, null, null);
+	}
+
+	public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluidIn, FluidStack aFluidOut) {
+		this(aExtracting, aEmpty, aFull, aFluidIn, aFluidOut, null, null);
+	}
+
 	public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluid, Integer aDuration, Integer aEUt) {
+		this(aExtracting, aEmpty, aFull, aFluid, null, aDuration, aEUt);
+	}
+
+	// Alternative Constructor
+	public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluidIn, FluidStack aFluidOut, Integer aDuration, Integer aEUt) {
 		ItemStack aInput;
 		ItemStack aOutput;
 		FluidStack aFluidInput;
@@ -35,7 +51,7 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 
 		// Safety check on the duration
 		if (aDuration == null || aDuration <= 0) {
-			aDuration = (aFluid != null) ? (aFluid.amount / 62) : (1000 / 62);
+			aDuration = (aFluidIn != null) ? (aFluidIn.amount / 62) : ((aFluidOut != null) ? (aFluidOut.amount / 62) : 10);
 		}
 
 		// Safety check on the EU
@@ -53,13 +69,13 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 			aInput = aFull;
 			aOutput = aEmpty;
 			aFluidInput = null;
-			aFluidOutput = aFluid;			
+			aFluidOutput = aFluidIn;			
 		}
 		else {
 			aInput = aEmpty;
-			aOutput = aFull;
-			aFluidInput = aFluid;
-			aFluidOutput = null;			
+			aOutput = aFull;		
+			aFluidInput = aFluidIn;
+			aFluidOutput = aFluidOut != null ? aFluidOut : GT_Values.NF;			
 		}
 
 		//Check validity
@@ -69,16 +85,16 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 				new ItemStack[] { aInput },
 				new ItemStack[] { aOutput },
 				null,
-				new int[] {},
+				new int[] {10000},
 				new FluidStack[] { aFluidInput },
 				new FluidStack[] { aFluidOutput },
 				aDuration,
-				1,
+				aEUt,
 				0);
 
 
 		// Not Valid
-		if ((aExtracting && (aInput == null || aOutput == null ||aFluidOutput == null)) || (!aExtracting && (aInput == null || aOutput == null || aFluidInput == null))) {
+		if ((aExtracting && (aInput == null || aOutput == null ||(aFluidInput == null && aFluidOutput == null))) || (!aExtracting && (aInput == null || aOutput == null || (aFluidInput == null && aFluidOutput == null)))) {
 			isValid = false;
 			disableOptional = aExtracting;
 			recipe = null;
@@ -102,77 +118,54 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 	}
 
 	private void generateRecipes() {
-		if (isValid && recipe != null) {			
-			//Used to store Fluid extraction state
+		if (isValid && recipe != null) {
 			if (this.disableOptional) {
-				addFluidExtractionRecipe(
-						recipe.mInputs.length >= 1 ? recipe.mInputs[0] : null, //Input
-								recipe.mInputs.length == 2 ? recipe.mInputs[1] : null, //Input 2
-										recipe.mFluidOutputs.length == 1 ? recipe.mFluidOutputs[0] : null, //Fluid Output
-												recipe.mDuration, //Duration
-												recipe.mEUt //Eu Tick
-						);	
+				addFluidExtractionRecipe(recipe);	
 			}
 			else {
-				addFluidCannerRecipe(
-						recipe.mInputs.length == 1 ? recipe.mInputs[0] : null, //Input
-								recipe.mOutputs.length == 1 ? recipe.mOutputs[0] : null, //Input 2
-										recipe.mFluidInputs.length == 1 ? recipe.mFluidInputs[0] : null //Fluid Input
-						);
-
+				addFluidCannerRecipe(recipe);
 			}
-
 		}		
 	}
 
-	private final boolean addFluidExtractionRecipe(final ItemStack aInput, final ItemStack aRemains, FluidStack aOutput, int aDuration, final int aEUt) {
-		if (aInput == null || aOutput == null) {
-			return false;
+	private final boolean addFluidExtractionRecipe(GT_Recipe aRecipe) {
+		if (aRecipe != null) {		
+			if ((aRecipe.mDuration = GregTech_API.sRecipeFile.get("fluidextractor", aRecipe.mInputs[0], aRecipe.mDuration)) <= 0) {
+				return false;
+			} else {
+				GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(aRecipe);
+				return true;
+			}
 		}
-		if (aOutput.isFluidEqual(Materials.PhasedGold.getMolten(1L))) {
-			aOutput = Materials.VibrantAlloy.getMolten(aOutput.amount);
-		}
-		if (aOutput.isFluidEqual(Materials.PhasedIron.getMolten(1L))) {
-			aOutput = Materials.PulsatingIron.getMolten(aOutput.amount);
-		}
-		//Logger.INFO(buildLogString());
-		boolean result = GT_Values.RA.addFluidExtractionRecipe(aInput, aRemains, aOutput, 10000, aDuration, aEUt);
-		//Logger.INFO(buildLogString());
-		//dumpStack();
-		return result;
+		return false;
 	}
 
-	public final boolean addFluidCannerRecipe(final ItemStack aInput, final ItemStack aOutput, FluidStack aFluidInput) {
-		if (aInput == null || aOutput == null || aFluidInput == null) {
-			return false;
+	private final boolean addFluidCannerRecipe(GT_Recipe recipe2) {
+		if (recipe2 != null) {		
+			if ((recipe2.mDuration = GregTech_API.sRecipeFile.get("fluidcanner", recipe2.mOutputs[0], recipe2.mDuration)) <= 0) {
+				return false;
+			} else {
+				GT_Recipe_Map.sFluidCannerRecipes.addRecipe(recipe2);
+				return true;
+			}
 		}
-		if (aFluidInput.isFluidEqual(Materials.PhasedGold.getMolten(1L))) {
-			aFluidInput = Materials.VibrantAlloy.getMolten(aFluidInput.amount);
-		}
-		if (aFluidInput.isFluidEqual(Materials.PhasedIron.getMolten(1L))) {
-			aFluidInput = Materials.PulsatingIron.getMolten(aFluidInput.amount);
-		}
-		//Logger.INFO(buildLogString());
-		boolean result = GT_Values.RA.addFluidCannerRecipe(aInput, aOutput, aFluidInput, GT_Values.NF);
-		//Logger.INFO(buildLogString());
-		//dumpStack();
-		return result;
-	}	
-	
+		return false;
+	}
+
 	private void dumpStack() {
 		int parents = 2;
 		for (int i=0;i<6;i++) {
 			Logger.INFO((disableOptional ? "EXTRACTING" : "CANNING")+" DEBUG | "+(i == 0 ? "Called from: " : "Parent: ")+ReflectionUtils.getMethodName(i+parents));			
 		}
-		
+
 	}
-	
+
 	private String buildLogString() {
 		int solidSize = getMapSize(GT_Recipe_Map.sCannerRecipes);
 		int fluidSize = getMapSize(GT_Recipe_Map.sFluidCannerRecipes);		
 		return (disableOptional ? "EXTRACTING" : "CANNING")+" DEBUG | Solids: "+solidSize+" | Liquids: "+fluidSize+" | ";
 	}
-	
+
 	private final int getMapSize(GT_Recipe_Map aMap) {
 		return aMap.mRecipeList.size();
 	}

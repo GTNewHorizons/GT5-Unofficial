@@ -219,9 +219,10 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 
 		Logger.MATERIALS("material.getCrushed(1): "+(material.getCrushed(1) != null));
 		Logger.MATERIALS("material.getCrushedPurified(1): "+(material.getCrushedPurified(1) != null));
-		Logger.MATERIALS("bonusA.getTinyDust(1): "+(tinyDustA != null)+" | Material: "+(bonusA != null) + " | Material name: "+(bonusA != null ? bonusA.getLocalizedName() : "invalid material"));
-		Logger.MATERIALS("bonusB.getTinyDust(1): "+(tinyDustB != null)+" | Material: "+(bonusB != null) + " | Material name: "+(bonusB != null ? bonusB.getLocalizedName() : "invalid material"));
 
+		Logger.MATERIALS("material.getTinyDust(1): "+(ItemUtils.getItemName(bonusA.getCrushed(1))));
+		Logger.MATERIALS("material.getTinyDust(1): "+(ItemUtils.getItemName(bonusB.getCrushed(1))));
+		
 		try {
 			//.08 compat
 			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushed(1), 200, material.getCrushedCentrifuged(1), tinyDustB, dustStone)){

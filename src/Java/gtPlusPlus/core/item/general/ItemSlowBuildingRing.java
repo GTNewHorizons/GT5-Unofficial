@@ -111,11 +111,8 @@ public class ItemSlowBuildingRing extends Item implements IBauble{
 	private static void doEffect(final EntityLivingBase arg1){
 		try {		
 			// Get World
-			World aWorld = arg1.worldObj;		
-			if (arg1.worldObj.isRemote){
-				return;
-			}
-			if (aWorld != null) {				
+			World aWorld = arg1.worldObj;
+			if (aWorld != null && !aWorld.isRemote) {				
 				EntityPlayer aPlayer;
 				if (arg1 instanceof EntityPlayer) {
 					aPlayer = (EntityPlayer) arg1;

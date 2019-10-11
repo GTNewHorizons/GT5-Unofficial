@@ -32,7 +32,6 @@ import gtPlusPlus.api.objects.minecraft.FormattedTooltipString;
 import gtPlusPlus.core.handler.AchievementHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -51,19 +50,16 @@ import net.minecraftforge.fluids.FluidStack;
 public class Meta_GT_Proxy {
 
 	static {
-		instance = new Meta_GT_Proxy();
 		Logger.INFO("GT_PROXY - initialized.");
 	}
-	
-	public static final Meta_GT_Proxy instance;
 	
 	public static List<Runnable> GT_BlockIconload = new ArrayList<>();
 	public static List<Runnable> GT_ItemIconload = new ArrayList<>();
 	
 	public static AutoMap<Integer> GT_ValidHeatingCoilMetas = new AutoMap<Integer>();
 
-	private static Class sBaseMetaTileEntityClass;
-	private static Class sBaseMetaTileEntityClass2;
+	private static Class<BaseCustomTileEntity> sBaseMetaTileEntityClass;
+	private static Class<BaseCustomPower_MTE> sBaseMetaTileEntityClass2;
 	
 	public static AchievementHandler mAssemblyAchievements;
 	
@@ -79,7 +75,7 @@ public class Meta_GT_Proxy {
 	
 	public static Block sBlockMachines;
 	
-	public void preInit() {
+	public static void preInit() {
 		
 		//New GT++ Block, yay! (Progress)
 		//sBlockMachines = new GTPP_Block_Machines();
@@ -110,12 +106,12 @@ public class Meta_GT_Proxy {
         CoverManager.generateCustomCovers();
 	}
 	
-	public void init() {
+	public static void init() {
 		scheduleCoverMapCleaner();
 		setValidHeatingCoilMetas();	
 	}
 	
-	public void postInit() {
+	public static void postInit() {
 		mAssemblyAchievements = new AchievementHandler();			
 	}
 	
@@ -317,7 +313,7 @@ public class Meta_GT_Proxy {
 	
 	
 	
-	public void setValidHeatingCoilMetas() {
+	public static void setValidHeatingCoilMetas() {
 		for (int i = 0; i <= 6; i++ ) {
 			GT_ValidHeatingCoilMetas.put(i);			
 		}
@@ -342,7 +338,7 @@ public class Meta_GT_Proxy {
 	}
 	
 
-	public void scheduleCoverMapCleaner(){
+	public static void scheduleCoverMapCleaner(){
 	    TimerTask repeatedTask = new TimerTask() {
 	        public void run() {
 	            cleanupOverFlowCoverCache();
@@ -360,6 +356,7 @@ public class Meta_GT_Proxy {
 		long aCurrentTime = System.currentTimeMillis()/1000;
 		for (Object o : cache.values()) {
 			if (o != null && o instanceof HashMap) {
+				@SuppressWarnings("unchecked")
 				HashMap<String, Object> m = (HashMap<String, Object>) o;
 				if (m != null) {
 					String s = (String) m.get("aCoverKey");
@@ -390,7 +387,7 @@ public class Meta_GT_Proxy {
 		return StaticFields59.getFieldFromGregtechProxy(fieldName);
 	}
 	
-	public void setCustomGregtechTooltip(String aNbtTagName, FormattedTooltipString aData) {
+	public static void setCustomGregtechTooltip(String aNbtTagName, FormattedTooltipString aData) {
 		mCustomGregtechMetaTooltips.put(aNbtTagName, aData);
 	}
 	

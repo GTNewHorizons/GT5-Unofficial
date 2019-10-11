@@ -21,6 +21,10 @@ public class HandlerTooltip_GC {
 	private static Class<?> oMainClass;
 	private static Class<?> oFuelLoaderClass;
 	private static HashMap <Integer, String> mFuelNames;
+	
+	static {
+		mFuelNames = new LinkedHashMap<Integer, String>();
+	}
 
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent event) {
@@ -38,7 +42,7 @@ public class HandlerTooltip_GC {
 							oFuelLoaderClass = GCFuelLoader;
 						}
 
-						Field aField = ReflectionUtils.getField(GCBlocks, "fuelLoader");
+						Field aField = ReflectionUtils.getField(oMainClass, "fuelLoader");
 						if (aField != null) {
 							Block aBlock = (Block) aField.get(null);
 							if (aBlock != null) {
@@ -49,10 +53,12 @@ public class HandlerTooltip_GC {
 					}
 				} catch (Throwable t) {
 				}
-			}			
+			}	
+			if (mFuelNames == null) {
+				mFuelNames = new LinkedHashMap<Integer, String>();				
+			}
 			
-			if (mFuelNames == null || mFuelNames.isEmpty()) {
-				mFuelNames = new LinkedHashMap<Integer, String>();
+			if (mFuelNames.isEmpty()) {
 				for (int aMapKey : RocketFuels.mValidRocketFuels.keySet()) {
 					Fluid aFuel = RocketFuels.mValidRocketFuels.get(aMapKey);
 					if (aFuel != null) {

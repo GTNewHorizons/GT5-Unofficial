@@ -694,7 +694,9 @@ public class ItemUtils {
 
 	public static String[] getArrayStackNamesAsArray(final ItemStack[] aStack) {
 		final String[] itemNames = aStack == null ? new String[] {} : new String[aStack.length];
-		Logger.INFO(""+aStack.length);
+		if (aStack != null){ 
+			Logger.INFO(""+aStack.length);
+		}
 
 		if (aStack == null || aStack.length < 1) {
 			return itemNames;

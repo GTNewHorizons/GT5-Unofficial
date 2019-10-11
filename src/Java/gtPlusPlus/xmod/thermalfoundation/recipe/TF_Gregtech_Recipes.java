@@ -34,7 +34,7 @@ public class TF_Gregtech_Recipes {
 
 		//Gelid Cryotheum
 		Logger.INFO("Adding Recipes for Gelid Cryotheum");
-		CORE.RA.addFluidExtractionRecipe(dust_Cryotheum, GT_Values.NI, getFluidStack("cryotheum", 250), 10000, 200, 240);
+		CORE.RA.addFluidExtractionRecipe(dust_Cryotheum, GT_Values.NI, getFluidStack("cryotheum", 250), 200, 240);
 		GT_Values.RA.addChemicalBathRecipe((GT_OreDictUnificator.get(OrePrefixes.ore, Materials.Cinnabar, 1L)), getFluidStack("cryotheum", 144), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cinnabar, 3L), GT_Values.NI, GT_Values.NI, null, 400, 30);
 
 		//Blizz Powder
@@ -48,10 +48,10 @@ public class TF_Gregtech_Recipes {
 
 		//Blazing Pyrotheum
 		Logger.INFO("Adding Recipes for Blazing Pyrotheum");
-		CORE.RA.addFluidExtractionRecipe(dust_Pyrotheum, GT_Values.NI, getFluidStack("pyrotheum", 250), 10000, 200, 240);
+		CORE.RA.addFluidExtractionRecipe(dust_Pyrotheum, GT_Values.NI, getFluidStack("pyrotheum", 250), 200, 240);
 		
 		//Ender Fluid
-		CORE.RA.addFluidExtractionRecipe(ItemUtils.getSimpleStack(Items.ender_pearl), GT_Values.NI, getFluidStack("ender", 250), 10000, 100, 30);
+		CORE.RA.addFluidExtractionRecipe(ItemUtils.getSimpleStack(Items.ender_pearl), GT_Values.NI, getFluidStack("ender", 250), 100, 30);
 		
 
 		ItemStack dustCoal = ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 1);

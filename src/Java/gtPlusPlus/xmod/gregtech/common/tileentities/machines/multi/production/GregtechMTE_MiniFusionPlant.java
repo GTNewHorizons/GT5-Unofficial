@@ -207,7 +207,7 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 			FluidStack[] arg5 = (FluidStack[]) tFluidList.toArray(new FluidStack[tFluidList.size()]);
 			GT_Recipe arg6 = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe,
 					false, this.getMaxInputVoltage(), arg5, new ItemStack[0]);
-			if (arg6 == null && !this.mRunningOnLoad || this.maxEUStore() < (long) arg6.mSpecialValue) {
+			if (arg6 == null && !this.mRunningOnLoad || (arg6 != null && this.maxEUStore() < (long) arg6.mSpecialValue)) {
 				//Logger.INFO("Bad Step "+aStep++);
 				//this.turnCasingActive(false);
 				this.mLastRecipe = null;
@@ -215,7 +215,7 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 			}
 			//Logger.INFO("Step "+aStep++);
 
-			if (this.mRunningOnLoad || arg6.isRecipeInputEqual(true, arg5, new ItemStack[0])) {
+			if (this.mRunningOnLoad || (arg6 != null && arg6.isRecipeInputEqual(true, arg5, new ItemStack[0]))) {
 				//Logger.INFO("Step "+aStep++);
 				this.mLastRecipe = arg6;
 				this.mEUt = this.mLastRecipe.mEUt * 1;

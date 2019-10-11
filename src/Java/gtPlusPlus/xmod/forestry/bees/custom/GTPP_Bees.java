@@ -111,7 +111,6 @@ public class GTPP_Bees {
     			input, 
     			null, 
     			output, 
-    			0, 
     			30, 
     			8);
     }

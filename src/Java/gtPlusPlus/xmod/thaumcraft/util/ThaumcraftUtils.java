@@ -38,8 +38,18 @@ import net.minecraft.world.World;
 public class ThaumcraftUtils {
 
 
-	private static Class mClass_Aspect;
+	private static Class<?> mClass_Aspect;
 	private static Field mField_Aspects;
+	
+	static {
+		mClass_Aspect = ReflectionUtils.getClass("thaumcraft.api.aspects.Aspect");
+		if (mClass_Aspect != null) {
+			Field aTagF = ReflectionUtils.getField(mClass_Aspect, "tag");
+			if (aTagF != null) {
+				mField_Aspects = aTagF;
+			}				
+		}
+	}
 
 	public static boolean addAspectToItem(ItemStack item, TC_Aspect_Wrapper aspect, int amount) {
 		return addAspectToItem(item, new TC_Aspect_Wrapper[] {aspect}, new Integer[] {amount});
@@ -212,10 +222,10 @@ public class ThaumcraftUtils {
 	}
 	
 
-	private static final Class mClass_ThaumcraftApi;
-	private static final Class mClass_ThaumcraftApiHelper;
-	private static final Class mClass_AspectList;
-	private static final Class mClass_ResearchManager;
+	private static final Class<?> mClass_ThaumcraftApi;
+	private static final Class<?> mClass_ThaumcraftApiHelper;
+	private static final Class<?> mClass_AspectList;
+	private static final Class<?> mClass_ResearchManager;
 	private static final Method mMethod_registerObjectTag1;
 	private static final Method mMethod_registerObjectTag2;
 	private static final Method mMethod_registerComplexObjectTag;
@@ -336,12 +346,11 @@ public class ThaumcraftUtils {
 
 	
 	public static String getTagFromAspectObject(Object aAspect) {
-		try {
-			Field aTagF = ReflectionUtils.getField(mClass_Aspect, "tag");		
-			if (aTagF == null) {
+		try {								
+			if (mClass_Aspect == null || mField_Aspects == null) {
 				return null;
-			}		
-			String aTafB = (String) aTagF.get(aAspect);
+			}			
+			String aTafB = (String) mField_Aspects.get(aAspect);
 			if (aTafB == null) {
 				return null;
 			}

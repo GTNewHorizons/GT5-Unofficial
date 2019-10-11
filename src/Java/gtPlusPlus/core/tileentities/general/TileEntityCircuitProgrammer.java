@@ -101,8 +101,8 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
 				}				
 				if (doAdd) {				
 					ItemStack aOutput = CI.getNumberedCircuit(e);
-					aOutput.stackSize = aSize;				
 					if (aOutput != null) {
+						aOutput.stackSize = aSize;
 						this.setInventorySlotContents(e, aInputStack);
 						this.setInventorySlotContents(25, aOutput);
 						return true;

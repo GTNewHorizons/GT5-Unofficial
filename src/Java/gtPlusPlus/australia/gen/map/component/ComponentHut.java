@@ -79,11 +79,11 @@ public class ComponentHut extends AustraliaComponent {
 			placeDoorAtCurrentPosition(
 					world, this.boundingBox, random, 0, 1, 3, getMetadataWithOffset(Blocks.wooden_door, 1));
 		}
-		else if (dir == 0) {
+		else if (dir == 1) {
 			placeDoorAtCurrentPosition(
 					world, this.boundingBox, random, 3, 1, 6, getMetadataWithOffset(Blocks.wooden_door, 1));
 		}
-		else if (dir == 0) {
+		else if (dir == 2) {
 			placeDoorAtCurrentPosition(
 					world, this.boundingBox, random, 6, 1, 3, getMetadataWithOffset(Blocks.wooden_door, 1));
 		}

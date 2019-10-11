@@ -8,7 +8,6 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.common.tools.GT_Tool_WireCutter;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechToolDictNames;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_AngelGrinder;
@@ -25,10 +24,18 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 	public static final short ANGLE_GRINDER = 7834;
 	public static final short ELECTRIC_SNIPS = 7934;
 	public static GT_MetaGenerated_Tool INSTANCE;
+	
+	static {
+		INSTANCE = new MetaGeneratedGregtechTools();
+	}
+	
+	public static GT_MetaGenerated_Tool getInstance() {
+		return INSTANCE;
+	}
+	
 
-	public MetaGeneratedGregtechTools() {
+	private MetaGeneratedGregtechTools() {
 		super("plusplus.metatool.01");
-		INSTANCE = this;
 		// Skookum Choocher
 		GregTech_API.registerTool(this.addTool(SKOOKUM_CHOOCHER, "Skookum Choocher",
 				"Can Really Chooch. Does a Skookum job at Hammering and Wrenching stuff.", new TOOL_Gregtech_Choocher(),

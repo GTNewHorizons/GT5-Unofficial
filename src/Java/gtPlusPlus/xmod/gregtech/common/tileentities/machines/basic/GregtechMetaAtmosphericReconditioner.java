@@ -710,8 +710,17 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 		catch (Throwable t) {
 			aTooltipSuper.put("Maximum pollution removed per second: "+mPollutionReduction);
 		}
-		aTooltipSuper.put("Air Sides: "+mAirSides);		
-		return aTooltipSuper.toArray();
+		aTooltipSuper.put("Air Sides: "+mAirSides);	
+		
+		String[] mBuiltOutput = new String[aTooltipSuper.size()];
+		int aIndex = 0;
+		for (String i : aTooltipSuper) {
+			mBuiltOutput[aIndex++] = i;
+		}
+		
+		
+		
+		return mBuiltOutput;
 	}
 
 	@Override

@@ -102,7 +102,7 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 		String[] s2 = new String[]{
 				"Fluid Input for Multiblocks",
 				"Capacity: " + getCapacity()+"L",
-				"Accepted Fluid: " + mTempMod + mLockedStack.getLocalizedName()
+				"Accepted Fluid: " + mTempMod + mLockedStack != null ? mLockedStack.getLocalizedName() : "Empty"
 				};		
 		return s2;
 	}

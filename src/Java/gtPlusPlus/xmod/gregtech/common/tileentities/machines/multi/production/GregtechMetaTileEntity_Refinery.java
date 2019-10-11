@@ -22,8 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase {
-
-	public GT_Recipe mLastRecipe;
 	
 	public GregtechMetaTileEntity_Refinery(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);

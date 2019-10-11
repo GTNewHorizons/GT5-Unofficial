@@ -59,10 +59,17 @@ public class MaterialGenerator {
 	@SuppressWarnings("unused")
 	private static volatile Block tempBlock;
 	
+
+	public static boolean addFluidExtractionRecipe(ItemStack aEmpty, ItemStack aRemains, FluidStack aFluid) {
+		return addFluidExtractionRecipe(aEmpty, aRemains, aFluid, null, null);
+	}
+	
 	/**
 	 * Called Reflectively from CORE.RA.addFluidExtractionRecipe
+	 * @param aSpecial 
+	 * @return 
 	 */
-	private static void addFluidExtractionRecipe(ItemStack aEmpty, ItemStack aRemains, FluidStack aFluid, int aDuration, int aEU) {
+	public static boolean addFluidExtractionRecipe(ItemStack aEmpty, ItemStack aRemains, FluidStack aFluid, Integer aDuration, Integer aEU) {
 		/*GT_Recipe r = new Recipe_GT(
 				true,
 				new ItemStack[] {aEmpty,  aRemains != null ? aRemains : null},
@@ -73,13 +80,22 @@ public class MaterialGenerator {
 				new FluidStack[] {c},
 				a2, a3, a1);*/
 		//new RecipeGen_FluidCanning(r, true);
-		new RecipeGen_FluidCanning(true, aEmpty, aRemains, aFluid, aDuration, aEU);
+		RecipeGen_FluidCanning g = new RecipeGen_FluidCanning(true, aEmpty, aRemains, aFluid, aDuration, aEU);
+		if (g != null && g.valid()) {
+			return true;
+		}
+		return false;
 	}
 
+
+	public static boolean addFluidCannerRecipe(ItemStack aEmpty, ItemStack aFullContainer, FluidStack aFluidIn, FluidStack rFluidOut) {	
+		return addFluidCannerRecipe(aEmpty, aFullContainer, aFluidIn, rFluidOut, null, null);
+	}
 	/**
 	 * Called Reflectively from CORE.RA.addFluidCannerRecipe
+	 * @return 
 	 */
-	private static void addFluidCannerRecipe(ItemStack aFullContainer, ItemStack aEmpty, FluidStack aFluid) {		
+	public static boolean addFluidCannerRecipe(ItemStack aEmpty, ItemStack aFullContainer, FluidStack aFluidIn, FluidStack rFluidOut, Integer aTime, Integer aEu) {		
 		/*GT_Recipe r = new Recipe_GT(
 				true,
 				new ItemStack[] {aEmpty},
@@ -90,7 +106,11 @@ public class MaterialGenerator {
 				new FluidStack[] {rFluidOut},
 				0, 0, 0);*/
 		//new RecipeGen_FluidCanning(r, false);
-		new RecipeGen_FluidCanning(false, aEmpty, aFullContainer, aFluid, null, null);
+		RecipeGen_FluidCanning g = new RecipeGen_FluidCanning(false, aEmpty, aFullContainer, aFluidIn, null, null, 0);
+		if (g != null && g.valid()) {
+			return true;
+		}
+		return false;
 	}
 	
 	public static void generate(final Material matInfo){

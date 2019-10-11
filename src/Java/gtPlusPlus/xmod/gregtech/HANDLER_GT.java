@@ -59,6 +59,7 @@ public class HANDLER_GT {
 	public static final List<WorldGen_GT> sWorldgenListEverglades = new ArrayList<WorldGen_GT>();
 	public static final List<WorldGen_GT_Australia> sWorldgenListAustralia = new ArrayList<WorldGen_GT_Australia>();
 	public static final List<GTPP_Worldgen> sCustomWorldgenList = new ArrayList<GTPP_Worldgen>();
+	public static GT_MetaGenerated_Tool sMetaGeneratedToolInstance;
 
 	public static void preInit(){
 
@@ -88,7 +89,7 @@ public class HANDLER_GT {
 
 		//Only loads if the config option is true (default: true)
 		if (CORE.ConfigSwitches.enableSkookumChoochers){
-			new MetaGeneratedGregtechTools();
+			sMetaGeneratedToolInstance= MetaGeneratedGregtechTools.getInstance();
 		}
 
 		if (ConfigSwitches.enableOldGTcircuits && !CORE.GTNH){

@@ -71,6 +71,9 @@ public class ItemControlCore extends Item {
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack tItem) {
+		if (tItem == null) {
+			return "Control Core";
+		}
 		String aReturnValue = super.getItemStackDisplayName(tItem);
 		if (tItem != null) {
 			try {

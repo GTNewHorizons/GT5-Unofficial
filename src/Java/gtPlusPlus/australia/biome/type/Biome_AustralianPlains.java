@@ -16,7 +16,6 @@ import net.minecraftforge.common.BiomeManager;
 
 public class Biome_AustralianPlains extends BiomeGenPlains
 {
-    protected boolean field_150628_aC;
 
     public Biome_AustralianPlains(int p_i1986_1_)
     {

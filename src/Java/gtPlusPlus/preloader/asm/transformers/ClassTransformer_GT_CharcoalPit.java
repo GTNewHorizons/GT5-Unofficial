@@ -17,6 +17,7 @@ import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.api.enums.OrePrefixes;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -30,13 +31,19 @@ public class ClassTransformer_GT_CharcoalPit {
 	private final ClassWriter writer;
 
 	public static boolean isWoodLog(Block log) {
-		String tTool = log.getHarvestTool(0);
-		boolean isLog1 = OrePrefixes.log.contains(new ItemStack(log, 1)) && tTool != null && tTool.equals("axe")	&& log.getMaterial() == Material.wood;
+		//Logger.INFO("checking for log");
+		boolean isLog1 = OrePrefixes.log.contains(new ItemStack(log, 1));
+		if (isLog1) {
+			//Logger.INFO("Found 1");
+			return true;
+		}
 		ArrayList<ItemStack> oredict = OreDictionary.getOres("logWood");
 		if (oredict.contains(ItemUtils.getSimpleStack(log))) {
+			//Logger.INFO("found 2");
 			return true;
-		}		
-		return isLog1;
+		}	
+		//Logger.INFO("Did not find. "+(log != null ? ""+log.getLocalizedName() : "Null or invalid block?"));	
+		return false;
 	}
 	
 	public ClassTransformer_GT_CharcoalPit(byte[] basicClass, boolean obfuscated) {
@@ -79,7 +86,7 @@ public class ClassTransformer_GT_CharcoalPit {
 			aBlockClassName = "aji";
 		}		
 		if (aMethodName.equals("isWoodLog")) {
-			mv = cw.visitMethod(ACC_PUBLIC, "woodLog", "(L"+aBlockClassName+";)Z", null, null);
+			mv = cw.visitMethod(ACC_PUBLIC, "isWoodLog", "(L"+aBlockClassName+";)Z", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
 			mv.visitLabel(l0);

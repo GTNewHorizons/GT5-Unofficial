@@ -70,7 +70,7 @@ public class EntityBaseVillager extends EntityVillager {
 	@Override
 	public void readEntityFromNBT(NBTTagCompound aNBT) {
 		if (aNBT.hasKey("aCustomName")) {
-			if (this.getCustomNameTag() != aNBT.getString("aCustomName")) {
+			if (!this.getCustomNameTag().equals(aNBT.getString("aCustomName"))) {
 				this.setCustomNameTag(aNBT.getString("aCustomName"));
 			}
 		}
@@ -202,9 +202,10 @@ public class EntityBaseVillager extends EntityVillager {
 
 	protected MerchantRecipeList getBuyingList() {
 		Field v82191;
-		MerchantRecipeList o;
+		MerchantRecipeList o = null;
 		v82191 = ReflectionUtils.getField(getClass(), "buyingList");
 		try {
+			if (v82191 != null)
 			o = (MerchantRecipeList) v82191.get(this);
 			Logger.WARNING("Is BuyingList Valid? " + (v82191 != null));
 			return v82191 != null ? o : null;

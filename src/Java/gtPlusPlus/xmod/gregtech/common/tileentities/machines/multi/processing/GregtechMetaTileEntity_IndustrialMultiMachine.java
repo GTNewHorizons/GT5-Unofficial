@@ -609,8 +609,13 @@ extends GregtechMeta_MultiBlockBase {
 		}
 
 		// -- Try not to fail after this point - inputs have already been consumed! --
-		ItemStack[] mBuiltOutput = this.mReplicatorOutputMap.toArray();
-
+		ItemStack[] mBuiltOutput = new ItemStack[this.mReplicatorOutputMap.size()];
+		int aIndex = 0;
+		for (ItemStack i : this.mReplicatorOutputMap) {
+			mBuiltOutput[aIndex++] = i;
+		}
+		
+		
 		// Convert speed bonus to duration multiplier
 		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
 		aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);

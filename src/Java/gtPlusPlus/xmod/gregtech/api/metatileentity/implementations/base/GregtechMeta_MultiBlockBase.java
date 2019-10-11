@@ -86,6 +86,18 @@ GT_MetaTileEntity_MultiBlockBase {
 		Logger.MACHINE_INFO("Found .08 findRecipe method? "+(a08 != null));
 		Logger.MACHINE_INFO("Found .09 findRecipe method? "+(a09 != null));
 
+		if (CORE.DEBUG) {
+			aLogger = ReflectionUtils.getMethod(Logger.class, "INFO", String.class);				
+		}
+		else {
+			aLogger = ReflectionUtils.getMethod(Logger.class, "MACHINE_INFO", String.class);				
+		}
+		
+		try {
+			calculatePollutionReduction = GT_MetaTileEntity_Hatch_Muffler.class.getDeclaredMethod("calculatePollutionReduction", int.class);
+		} catch (NoSuchMethodException | SecurityException e) {}
+		
+		
 		//gregtech.api.util.GT_Recipe.GT_Recipe_Map.findRecipe(IHasWorldObjectAndCoords, GT_Recipe, boolean, long, FluidStack[], ItemStack, ItemStack...)
 
 	}
@@ -523,20 +535,27 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	public void log(String s) {
 
-		boolean isDebugLogging = CORE.DEBUG;	
-		boolean reset = true;
+		boolean isDebugLogging = CORE.DEBUG;
+		boolean reset = false;
 
-		if (aLogger == null || reset) {
+		if (reset) {
 			if (isDebugLogging) {
-				aLogger = ReflectionUtils.getMethod(Logger.class, "INFO", String.class);				
+				aLogger = ReflectionUtils.getMethod(
+						Logger.class, "INFO", String.class
+				);
 			}
 			else {
-				aLogger = ReflectionUtils.getMethod(Logger.class, "MACHINE_INFO", String.class);				
+				aLogger = ReflectionUtils.getMethod(
+						Logger.class, "MACHINE_INFO", String.class
+				);
 			}
 		}
 		try {
 			aLogger.invoke(null, s);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
+		}
+		catch (IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+		}
 
 	}
 
@@ -1435,13 +1454,15 @@ GT_MetaTileEntity_MultiBlockBase {
 			boolean aExists = false;
 			for (E m : aList) {
 				IGregTechTileEntity b = ((IMetaTileEntity) m).getBaseMetaTileEntity();
-				BlockPos aPos = new BlockPos(b);
-				if (b != null && aPos != null) {
-					if (aCurPos.equals(aPos)) {
-						if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
-							log("Found Duplicate "+b.getInventoryName()+" at " + aPos.getLocationString());
+				if (b != null) {
+					BlockPos aPos = new BlockPos(b);
+					if (aPos != null) {
+						if (aCurPos.equals(aPos)) {
+							if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
+								log("Found Duplicate "+b.getInventoryName()+" at " + aPos.getLocationString());
+							}
+							return false;
 						}
-						return false;
 					}
 				}
 			}
@@ -1867,20 +1888,16 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 	}
 
-	private static Method calculatePollutionReduction;
+	private static Method calculatePollutionReduction = null;
 	public int calculatePollutionReductionForHatch(GT_MetaTileEntity_Hatch_Muffler i , int g) {		
-		if (calculatePollutionReduction == null) {
+		if (calculatePollutionReduction != null) {
 			try {
-				calculatePollutionReduction = i.getClass().getDeclaredMethod("calculatePollutionReduction", int.class);
-			} catch (NoSuchMethodException | SecurityException e) {
-				calculatePollutionReduction = null;
+				return (int) calculatePollutionReduction.invoke(i, g);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				
 			}
-		}		
-		try {
-			return (int) calculatePollutionReduction.invoke(i, g);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			return 0;
 		}
+		return 0;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.world;
 import java.util.Collection;
 import java.util.Random;
 
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.util.MathHelper;
@@ -21,7 +22,7 @@ public class GTPP_Worldgen_Boulder extends GTPP_Worldgen_Ore {
                 int tX = aChunkX + aRandom.nextInt(16), tY = mMinY + aRandom.nextInt(mMaxY - mMinY), tZ = aChunkZ + aRandom.nextInt(16);
                 Block tBlock = aWorld.getBlock(tX, tY - 7, tZ);
                 if (tBlock != null && tBlock.isOpaqueCube() && aWorld.getBlock(tX, tY - 6, tZ).isAir(aWorld, tX, tY - 6, tZ)) {
-                    float math_pi = 3.141593F;
+                    float math_pi = CORE.PI;
                     float var6 = aRandom.nextFloat() * math_pi;
                     float var1b = mSize / 8.0F;
                     float var3b = MathHelper.sin(var6) * var1b; float var4b = MathHelper.cos(var6) * var1b;
