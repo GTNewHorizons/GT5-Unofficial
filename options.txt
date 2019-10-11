@@ -90,6 +90,15 @@ key_Boost Key:0
 key_Mode Switch Key:0
 key_Side Inventory Key:0
 key_Hub Expand Key:0
+key_Glider Toggle:34
+key_Sound Locator:38
+key_Night Vision:25
+key_Goggles of Revealing:19
+key_Step Assist:0
+key_Speed:0
+key_Jump:0
+key_Yeta Wrench Mode:21
+key_Toggle Electromagnet:0
 soundCategory_master:0.25496688
 soundCategory_music:0.0
 soundCategory_record:0.0

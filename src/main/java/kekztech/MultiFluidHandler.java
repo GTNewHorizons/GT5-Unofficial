@@ -12,9 +12,13 @@ public class MultiFluidHandler {
 	public static final int MAX_DISTINCT_FLUIDS = 25;
 	
 	private final List<FluidStack> fluids = new ArrayList<>(MAX_DISTINCT_FLUIDS);
-	private final int capacityPerFluid;
+	private int capacityPerFluid;
 	
 	private boolean locked = true;
+	
+	public MultiFluidHandler() {
+		
+	}
 	
 	public MultiFluidHandler(int capacityPerFluid) {
 		this.capacityPerFluid = capacityPerFluid;
@@ -52,13 +56,33 @@ public class MultiFluidHandler {
 				? fluids.get(slot) : null;
 	}
 	
-	public NBTTagCompound getAsNBTTag(NBTTagCompound nbt) {
+	public NBTTagCompound saveNBTData(NBTTagCompound nbt) {
+		System.out.println("Saving a multi hatch!");
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
+		
+		nbt.setInteger("capacityPerFluid", getCapacity());
 		int c = 0;
 		for(FluidStack f : fluids) {
 			nbt.setTag("" + c, f.writeToNBT(new NBTTagCompound()));
+			c++;
 		}
 		return nbt;
+	}
+	
+	public void loadNBTData(NBTTagCompound nbt) {
+		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
+		
+		capacityPerFluid = nbt.getInteger("capacityPerFluid");
+		
+		fluids.clear();
+		final NBTTagCompound fluidsTag = (NBTTagCompound) nbt.getTag("fluids");
+		for(int i = 0; i < MultiFluidHandler.MAX_DISTINCT_FLUIDS; i++) {
+			final NBTTagCompound fnbt = (NBTTagCompound) fluidsTag.getTag("" + i);
+			if(fnbt == null) {
+				break;
+			}
+			fluids.add(FluidStack.loadFluidStackFromNBT(fnbt));
+		}
 	}
 	
 	public ArrayList<String> getInfoData() {

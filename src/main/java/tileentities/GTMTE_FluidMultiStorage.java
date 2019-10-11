@@ -143,7 +143,6 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 			}
 		}
 		
-		// TODO output seems to ignore circuit
 		// Push out fluids
 		if(guiSlotItem != null && guiSlotItem.getUnlocalizedName().equals("gt.integrated_circuit")) {
 			final int config = guiSlotItem.getItemDamage();
@@ -251,37 +250,116 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 	 */
 	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-		try {
-			// Figure out the vector for the direction the back face of the controller is facing
-			final Vector3ic forgeDirection = new Vector3i(
-					ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
-					ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
-					ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
-					);
-			int minCasingAmount = 20; 
-			boolean formationChecklist = true; // if this is still true at the end, machine is good to go :)
-			float runningCostAcc = 0;
-			double fluidCapacityAcc = 0;
+		// Figure out the vector for the direction the back face of the controller is facing
+		final Vector3ic forgeDirection = new Vector3i(
+				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
+				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
+				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
+				);
+		int minCasingAmount = 20; 
+		boolean formationChecklist = true; // if this is still true at the end, machine is good to go :)
+		float runningCostAcc = 0;
+		double fluidCapacityAcc = 0;
+		
+		multiHatches.clear();
+		
+		// Front slice
+		for(int X = -2; X <= 2; X++) {
+			for(int Y = -2; Y <= 2; Y++) {
+				if(X == 0 && Y == 0) {
+					continue; // is controller
+				}
 				
-			// Front slice
-			for(int X = -2; X <= 2; X++) {
-				for(int Y = -2; Y <= 2; Y++) {
-					if(X == 0 && Y == 0) {
-						continue; // is controller
+				// Get next TE
+				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
+				IGregTechTileEntity currentTE = 
+						thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+				
+				// Fluid hatches should touch the storage field. 
+				// Maintenance/Energy hatch can go anywhere
+				if(X > -2 && X < 2 && Y > -2 && Y < 2) {
+					if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+							&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+							&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
+							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+						
+						// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
+						// Also check for multi hatch
+						if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
+							// Seems to be valid casing. Decrement counter.
+							minCasingAmount--;
+						} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == MULTI_HATCH) {
+							final TE_TFFTMultiHatch mh = 
+									(TE_TFFTMultiHatch) thisController.getWorld().getTileEntity(
+											thisController.getXCoord() + offset.x(), 
+											thisController.getYCoord() + offset.y(),
+											thisController.getZCoord() + offset.z());
+							multiHatches.add(mh);
+						}
+						else {
+							formationChecklist = false;
+						}
+					}
+				} else {
+					if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+						
+						// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
+						if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
+							// Seems to be valid casing. Decrement counter.
+							minCasingAmount--;
+						} else {
+							formationChecklist = false;
+						}
+					}
+				}
+			}
+		}
+		
+		// Middle three slices
+		for(int X = -2; X <= 2; X++) {
+			for(int Y = -2; Y <= 2; Y++) {
+				for(int Z = -1; Z >= -7; Z--) {
+					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
+					if(X > -2 && X < 2 && Y > -2 && Y < 2) {
+						if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
+								.equals(STORAGE_FIELD1.getUnlocalizedName())) {
+							runningCostAcc += 0.5f;
+							fluidCapacityAcc += 500000.0f;
+						} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
+								.equals(STORAGE_FIELD2.getUnlocalizedName())) {
+							runningCostAcc += 1.0f;
+							fluidCapacityAcc += 4000000.0f;
+						} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
+								.equals(STORAGE_FIELD3.getUnlocalizedName())) {
+							runningCostAcc += 2.0f;
+							fluidCapacityAcc += 16000000.0f;
+						} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
+								.equals(STORAGE_FIELD4.getUnlocalizedName())) {
+							runningCostAcc += 4.0f;
+							fluidCapacityAcc += 64000000.0f;
+						} else {
+							formationChecklist = false;
+						}
+						continue;
 					}
 					
 					// Get next TE
-					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
 					IGregTechTileEntity currentTE = 
-							thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+							thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());// x, y ,z
 					
-					// Fluid hatches should touch the storage field. 
-					// Maintenance/Energy hatch can go anywhere
-					if(X > -2 && X < 2 && Y > -2 && Y < 2) {
-						if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-								&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-								&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
-								&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+					// Corner allows only glass or casings
+					if(X == -2 && Y == -2 || X == 2 && Y == 2 || X == -2 && Y == 2 || X == 2 && Y == -2) {
+						if(!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameAE2)
+								|| thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameStained)
+								|| thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)) {							
+							formationChecklist = false; // do nothing yet
+						}
+					} else {
+						// Tries to add TE as either of those kinds of hatches.
+						// The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
+						if (   !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+							&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 							
 							// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
 							// Also check for multi hatch
@@ -295,19 +373,9 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 												thisController.getYCoord() + offset.y(),
 												thisController.getZCoord() + offset.z());
 								multiHatches.add(mh);
-							}
-							else {
-								formationChecklist = false;
-							}
-						}
-					} else {
-						if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-								&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-							
-							// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-							if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
-								// Seems to be valid casing. Decrement counter.
-								minCasingAmount--;
+							} else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameAE2)
+								|| thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameStained)) {
+								// do nothing lol
 							} else {
 								formationChecklist = false;
 							}
@@ -315,160 +383,86 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 					}
 				}
 			}
-			
-			// Middle three slices
-			for(int X = -2; X <= 2; X++) {
-				for(int Y = -2; Y <= 2; Y++) {
-					for(int Z = -1; Z >= -7; Z--) {
-						final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-						if(X > -2 && X < 2 && Y > -2 && Y < 2) {
-							if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
-									.equals(STORAGE_FIELD1.getUnlocalizedName())) {
-								runningCostAcc += 0.5f;
-								fluidCapacityAcc += 500000.0f;
-							} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
-									.equals(STORAGE_FIELD2.getUnlocalizedName())) {
-								runningCostAcc += 1.0f;
-								fluidCapacityAcc += 4000000.0f;
-							} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
-									.equals(STORAGE_FIELD3.getUnlocalizedName())) {
-								runningCostAcc += 2.0f;
-								fluidCapacityAcc += 16000000.0f;
-							} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
-									.equals(STORAGE_FIELD4.getUnlocalizedName())) {
-								runningCostAcc += 4.0f;
-								fluidCapacityAcc += 64000000.0f;
-							} else {
-								formationChecklist = false;
-							}
-							continue;
-						}
-						
-						// Get next TE
-						IGregTechTileEntity currentTE = 
-								thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());// x, y ,z
-						
-						// Corner allows only glass or casings
-						if(X == -2 && Y == -2 || X == 2 && Y == 2 || X == -2 && Y == 2 || X == 2 && Y == -2) {
-							if(!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameAE2)
-									|| thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameStained)
-									|| thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)) {							
-								formationChecklist = false; // do nothing yet
-							}
-						} else {
-							// Tries to add TE as either of those kinds of hatches.
-							// The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
-							if (   !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-								&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-								
-								// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-								// Also check for multi hatch
-								if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
-									// Seems to be valid casing. Decrement counter.
-									minCasingAmount--;
-								} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == MULTI_HATCH) {
-									final TE_TFFTMultiHatch mh = 
-											(TE_TFFTMultiHatch) thisController.getWorld().getTileEntity(
-													thisController.getXCoord() + offset.x(), 
-													thisController.getYCoord() + offset.y(),
-													thisController.getZCoord() + offset.z());
-									multiHatches.add(mh);
-								} else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameAE2)
-									|| thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameStained)) {
-									// do nothing lol
-								} else {
-									formationChecklist = false;
-								}
-							}
-						}
-					}
-				}
-			}
-			
-			// Back slice
-			for(int X = -2; X <= 2; X++) {
-				for(int Y = -2; Y <= 2; Y++) {
-					// Get next TE
-					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -8);
-					IGregTechTileEntity currentTE = 
-							thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-					
-					// Fluid hatches should touch the storage field. 
-					// Maintenance/Energy hatch can go anywhere
-					if(X > -2 && X < 2 && Y > -2 && Y < 2) {
-						if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-								&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-								&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
-								&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-							
-							// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-							if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
-								// Seems to be valid casing. Decrement counter.
-								minCasingAmount--;
-							} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == MULTI_HATCH) {
-								final TE_TFFTMultiHatch mh = 
-										(TE_TFFTMultiHatch) thisController.getWorld().getTileEntity(
-												thisController.getXCoord() + offset.x(), 
-												thisController.getYCoord() + offset.y(),
-												thisController.getZCoord() + offset.z());
-								multiHatches.add(mh);
-							} else {
-								formationChecklist = false;
-							}
-						}
-					} else {
-						if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-								&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-							
-							// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-							if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
-								// Seems to be valid casing. Decrement counter.
-								minCasingAmount--;
-							} else {
-								formationChecklist = false;
-							}
-						}
-					}
-				}
-			}
-			
-			if(this.mEnergyHatches.size() < 1) {
-				System.out.println("At least one energy hatch is required!");
-				formationChecklist = false;
-			}
-			
-			if(this.mMaintenanceHatches.size() < 1) {
-				System.out.println("You need a maintenance hatch to do maintenance.");
-				formationChecklist = false;
-			}
-			
-			if(minCasingAmount > 0) {
-				formationChecklist = false;
-			}
-			
-			if(formationChecklist) {
-				runningCost = (int) Math.round(-runningCostAcc);
-				// Update MultiFluidHandler in case storage cells have been changed
-				// TODO update multihatch refs
-				final int capacityPerFluid = (int) Math.round(fluidCapacityAcc / 25.0f);
-				if(mfh == null) {
-					mfh = new MultiFluidHandler(capacityPerFluid);
-				} else {
-					if(mfh.getCapacity() != capacityPerFluid) {
-						mfh = new MultiFluidHandler(capacityPerFluid, mfh.getFluids());
-					}
-				}
-				for(TE_TFFTMultiHatch mh : multiHatches) {
-					mh.setMultiFluidHandler(mfh);
-				}
-			}
-			
-			return formationChecklist;
-		} catch (Exception ex) {
-			System.err.println("CAUGHT CHECKMACHINE EXCEPTION");
-			ex.printStackTrace();
 		}
-		return false;
+		
+		// Back slice
+		for(int X = -2; X <= 2; X++) {
+			for(int Y = -2; Y <= 2; Y++) {
+				// Get next TE
+				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -8);
+				IGregTechTileEntity currentTE = 
+						thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+				
+				// Fluid hatches should touch the storage field. 
+				// Maintenance/Energy hatch can go anywhere
+				if(X > -2 && X < 2 && Y > -2 && Y < 2) {
+					if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+							&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+							&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
+							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+						
+						// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
+						if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
+							// Seems to be valid casing. Decrement counter.
+							minCasingAmount--;
+						} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == MULTI_HATCH) {
+							final TE_TFFTMultiHatch mh = 
+									(TE_TFFTMultiHatch) thisController.getWorld().getTileEntity(
+											thisController.getXCoord() + offset.x(), 
+											thisController.getYCoord() + offset.y(),
+											thisController.getZCoord() + offset.z());
+							multiHatches.add(mh);
+						} else {
+							formationChecklist = false;
+						}
+					}
+				} else {
+					if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+						
+						// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
+						if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
+							// Seems to be valid casing. Decrement counter.
+							minCasingAmount--;
+						} else {
+							formationChecklist = false;
+						}
+					}
+				}
+			}
+		}
+		
+		if(this.mEnergyHatches.size() < 1) {
+			System.out.println("At least one energy hatch is required!");
+			formationChecklist = false;
+		}
+		
+		if(this.mMaintenanceHatches.size() < 1) {
+			System.out.println("You need a maintenance hatch to do maintenance.");
+			formationChecklist = false;
+		}
+		
+		if(minCasingAmount > 0) {
+			formationChecklist = false;
+		}
+		
+		if(formationChecklist) {
+			runningCost = (int) Math.round(-runningCostAcc);
+			// Update MultiFluidHandler in case storage cells have been changed
+			final int capacityPerFluid = (int) Math.round(fluidCapacityAcc / 25.0f);
+			if(mfh == null) {
+				mfh = new MultiFluidHandler(capacityPerFluid);
+			} else {
+				if(mfh.getCapacity() != capacityPerFluid) {
+					mfh = new MultiFluidHandler(capacityPerFluid, mfh.getFluids());
+				}
+			}
+			for(TE_TFFTMultiHatch mh : multiHatches) {
+				mh.setMultiFluidHandler(mfh);
+			}
+		}
+		
+		return formationChecklist;
 	}
 	
 	@Override
@@ -501,12 +495,14 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 	
 	@Override
 	public void saveNBTData(NBTTagCompound nbt) {
+		System.out.println("Saving TFFT!");
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 		
-		nbt.setInteger("capacityPerFluid", mfh.getCapacity());
 		nbt.setInteger("runningCost", runningCost);
 		nbt.setBoolean("doVoidExcess", doVoidExcess);
-		mfh.getAsNBTTag(nbt);
+
+		nbt.setInteger("capacityPerFluid", mfh.getCapacity());
+		nbt.setTag("fluids", mfh.saveNBTData(new NBTTagCompound()));
 		
 		super.saveNBTData(nbt);
 	}
@@ -518,17 +514,11 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		runningCost = nbt.getInteger("runningCost");
 		doVoidExcess = nbt.getBoolean("doVoidExcess");
 		
-		final ArrayList<FluidStack> fluidList = new ArrayList<>();
-		for(int i = 0; i < 25; i++) {
-			final NBTTagCompound fnbt = (NBTTagCompound) nbt.getTag("" + i);
-			if(fnbt == null) {
-				break;
-			}
-			fluidList.add(FluidStack.loadFluidStackFromNBT(fnbt));
+		mfh = new MultiFluidHandler();
+		mfh.loadNBTData(nbt);
+		for(TE_TFFTMultiHatch mh : multiHatches) {
+			mh.setMultiFluidHandler(mfh);
 		}
-		
-		mfh = new MultiFluidHandler(nbt.getInteger("capacityPerFluid"), fluidList);
-		
 		super.loadNBTData(nbt);
 	}
 	

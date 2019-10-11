@@ -20,7 +20,7 @@ public class Block_TFFTCasing extends Block {
 	}
 	
 	public void registerBlock() {
-		final String blockName = "kekztech_tfftcasing_block";
+		final String blockName = "kekztech_tfftcasingblock_block";
 		super.setBlockName(blockName);
 		super.setCreativeTab(CreativeTabs.tabMisc);
 		super.setBlockTextureName(KekzCore.MODID + ":" + "TFFTCasing");
