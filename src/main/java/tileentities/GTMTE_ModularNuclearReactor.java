@@ -1,8 +1,8 @@
 package tileentities;
 
+import container.GUIContainer_ModularNuclearReactor;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -65,11 +65,10 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 	
 	// TODO: Opening UI crashes server. Controller isn't craftable right now.
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
-				"MultiblockDisplay.png");
-		// In case someone ignores the warning...
-		/*return new GUIContainer_ModularNuclearReactor(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
+		/*return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
 				"MultiblockDisplay.png");*/
+		// In case someone ignores the warning...
+		return new GUIContainer_ModularNuclearReactor(aBaseMetaTileEntity, aPlayerInventory.player);
 	}
 
 	@Override

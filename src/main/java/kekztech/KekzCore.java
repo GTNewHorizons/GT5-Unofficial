@@ -39,8 +39,9 @@ import util.Util;
  *
  */
 @Mod(modid = KekzCore.MODID, name = KekzCore.NAME, version = KekzCore.VERSION, 
-		dependencies = "required-after:IC2; "
-			+ "required-after:gregtech"
+		dependencies =
+			"required-after:IC2; "
+			+ "required-after:gregtech;"
 		)
 public class KekzCore {
 	
@@ -71,8 +72,8 @@ public class KekzCore {
 		Block_TFFTStorageFieldBlockT2.getInstance().registerBlock();
 		Block_TFFTStorageFieldBlockT3.getInstance().registerBlock();
 		Block_TFFTStorageFieldBlockT4.getInstance().registerBlock();
-		
 		Block_TFFTMultiHatch.getInstance().registerBlock();
+		// Register TileEntities
 		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");
 	}
 	
@@ -217,7 +218,7 @@ public class KekzCore {
 				GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.StainlessSteel, 25),
 				GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RoseGold, 64),
 				GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Thorium, 12),
-				ItemList.Field_Generator_HV.get(1L, (Object[]) null),
+				ItemList.Field_Generator_HV.get(1L, (Object[]) null)
 			};
 		GT_Values.RA.addAssemblerRecipe(
 				tfftmultihatch, 

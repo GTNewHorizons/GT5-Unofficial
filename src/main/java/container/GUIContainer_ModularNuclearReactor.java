@@ -2,52 +2,42 @@ package container;
 
 import org.lwjgl.opengl.GL11;
 
-import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import kekztech.KekzCore;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
-public class GUIContainer_ModularNuclearReactor extends GT_GUIContainerMetaTile_Machine {
+public class GUIContainer_ModularNuclearReactor extends GuiContainer {
 	
-	private final String resourceName;
-	private final ResourceLocation texture;
-	
-	public GUIContainer_ModularNuclearReactor(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
-			String aName, String aTextureFile) {
-		
-		super(new Container_ModularNuclearReactor(aInventoryPlayer, aTileEntity), aTextureFile);
-		
-		this.resourceName = aTextureFile;
-		this.texture = new ResourceLocation(KekzCore.MODID, "textures/gui/" + resourceName);
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public void initGui() {
-		super.initGui();
-		
-		// The parameters of GuiButton are (id, x, y, width, height, text)
-		super.buttonList.add(new GuiButton(1, 100, 200, 100, 20, "Hello"));
-	}
-	
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
-		
-		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		
-		final int x = (super.width - super.xSize);
-		final int y = (super.height - super.ySize);
-		
-		super.drawTexturedModalRect(x, y, 0, 0, super.xSize, super.ySize);
-	}
-	
-	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		
-	}
+	private ResourceLocation texture = new ResourceLocation(KekzCore.MODID, "textures/gui/ReaktorGUI_background.png");
+	 
+    private InventoryPlayer inventory;
+    private IGregTechTileEntity te;
+ 
+    public GUIContainer_ModularNuclearReactor(IGregTechTileEntity te, EntityPlayer player)
+    {
+        super(new Container_ModularNuclearReactor(te, player));
+        inventory = player.inventory;
+        this.te = te;
+    }
+ 
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
+    {
+        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+ 
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        
+        drawTexturedModalRect(100, 100, 0, 0, 300, 200);
+    }
+ 
+    @Override
+    protected void drawGuiContainerForegroundLayer(int par1, int par2)
+    {
+       
+    }
 
 }
