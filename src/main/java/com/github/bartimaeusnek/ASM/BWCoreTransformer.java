@@ -40,8 +40,8 @@ public class BWCoreTransformer implements IClassTransformer {
             "PATCHING GLOBAL RENDERER FOR USE WITH MY GALACTIC DIMS",
             "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
             "PLACING MY GLASS-BLOCK RUNNABLE INTO THE GT_API",
-            "DUCTTAPING RWG WORLDEN FAILS"
-           // "ADD EXECTION HANDLEING TO FIND OREIDS/OREDICT"
+            "DUCTTAPING RWG WORLDEN FAILS",
+            "REMOVING 12% BONUS OUTPUTS FROM GT++ SIFTER"
     };
     public static final String[] CLASSESBEEINGTRANSFORMED = {
             "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
@@ -49,8 +49,8 @@ public class BWCoreTransformer implements IClassTransformer {
             "net.minecraft.client.renderer.RenderGlobal",
             "thaumcraft.common.tiles.TileWandPedestal",
             "gregtech.GT_Mod",
-            "rwg.world.ChunkGeneratorRealistic"
-           // "net.minecraftforge.oredict.OreDictionary"
+            "rwg.world.ChunkGeneratorRealistic",
+            "gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialSifter"
     };
     static boolean obfs;
 
@@ -286,146 +286,11 @@ public class BWCoreTransformer implements IClassTransformer {
                             break scase;
                         }
                     }
-
-//                    String name_deObfs = "getOreIDs";
-//                    String dsc_deObfs = "(Lnet/minecraft/item/ItemStack;)[I";
-//                    String dsc_Obfs = "(Ladd;)[I";
-//
-//                    for (int i = 0; i < methods.size(); i++) {
-//                        if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs) && ASMUtils.isCorrectMethod(methods.get(i), dsc_deObfs, dsc_Obfs)) {
-//                            MethodNode toPatch = methods.get(i);
-//                            LabelNode[] LabelNodes = {new LabelNode(), new LabelNode(), new LabelNode(),new LabelNode(),new LabelNode(),new LabelNode(),new LabelNode()};
-//                            InsnList nu = new InsnList();
-//                            nu.add(new VarInsnNode(ALOAD, 0));
-//                            nu.add(new JumpInsnNode(IFNULL, LabelNodes[0])); //L1
-//                            nu.add(new VarInsnNode(ALOAD, 0));
-//                            nu.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/item/ItemStack", "getItem", "()Lnet/minecraft/item/Item;", false));
-//                            nu.add(new JumpInsnNode(IFNONNULL, LabelNodes[1])); //L2
-//                            nu.add(LabelNodes[0]); //L1
-//                            nu.add(new TypeInsnNode(NEW, "java/lang/IllegalArgumentException"));
-//                            nu.add(new InsnNode(DUP));
-//                            nu.add(new TypeInsnNode(LDC,"Stack can not be invalid!"));
-//                            nu.add(new MethodInsnNode(INVOKEVIRTUAL,"java/lang/IllegalArgumentException","<init>","(Ljava/lang/String;)V",false));
-//                            nu.add(new InsnNode(ATHROW));
-//                            nu.add(LabelNodes[1]); //L2
-//                            nu.add(new TypeInsnNode(NEW, "java/util/HashSet"));
-//                            nu.add(new InsnNode(DUP));
-//                            nu.add(new MethodInsnNode(INVOKEVIRTUAL,"java/util/HashSet","<init>","()V",false));
-//                            nu.add(new VarInsnNode(ASTORE, 1));
-//                            nu.add(new VarInsnNode(ALOAD, 0));
-//                            nu.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/item/ItemStack", "getItem", "()Lnet/minecraft/item/Item;", false));
-//                            nu.add(new FieldInsnNode(GETFIELD,"net/minecraft/item/Item","delegate","Lcpw/mods/fml/common/registry/RegistryDelegate;"));
-//                            nu.add(new MethodInsnNode(INVOKEINTERFACE, "cpw/mods/fml/common/registry/RegistryDelegate", "name", "()Ljava/lang/String;", true));
-//                            nu.add(new VarInsnNode(ASTORE, 2));
-//                            nu.add(new VarInsnNode(ALOAD, 2));
-//                            nu.add(new JumpInsnNode(IFNONNULL, LabelNodes[2])); //L5
-//                            nu.add(new FieldInsnNode(GETSTATIC,"org/apache/logging/log4j/Level","DEBUG","Lorg/apache/logging/log4j/Level;"));
-//                            nu.add(new TypeInsnNode(LDC,"Attempted to find the oreIDs for an unregistered object (%s). This won't work very well."));
-//                            nu.add(new InsnNode(ICONST_1));
-//                            nu.add(new TypeInsnNode(ANEWARRAY,"java/lang/Object"));
-//                            nu.add(new InsnNode(DUP));
-//                            nu.add(new InsnNode(ICONST_0));
-//                            nu.add(new VarInsnNode(ALOAD, 0));
-//                            nu.add(new InsnNode(AASTORE));
-//                            nu.add(new MethodInsnNode(INVOKESTATIC, "cpw/mods/fml/common/FMLLog", "log", "(Lorg/apache/logging/log4j/Level;Ljava/lang/String;[Ljava/lang/Object;)V", false));
-//                            nu.add(new TypeInsnNode(NEW, "java/io/StringWriter"));
-//                            nu.add(new InsnNode(DUP));
-//                            nu.add(new MethodInsnNode(INVOKESPECIAL, "java/io/StringWriter", "<init>", "()V", false));
-//                            nu.add(new VarInsnNode(ASTORE, 4));
-//                            nu.add(new TypeInsnNode(NEW, "java/io/PrintWriter"));
-//                            nu.add(new InsnNode(DUP));
-//                            nu.add(new VarInsnNode(ALOAD, 4));
-//                            nu.add(new MethodInsnNode(INVOKESPECIAL, "java/io/PrintWriter", "<init>", "(Ljava/io/Writer;)V", false));
-//                            nu.add(new VarInsnNode(ASTORE, 5));
-//                            nu.add(new TypeInsnNode(NEW, "java/lang/Exception"));
-//                            nu.add(new InsnNode(DUP));
-//                            nu.add(new TypeInsnNode(LDC,"FINDME!"));
-//                            nu.add(new MethodInsnNode(INVOKESPECIAL, "java/lang/Exception", "<init>", "(Ljava/lang/String;)V", false));
-//                            nu.add(new VarInsnNode(ALOAD, 5));
-//                            nu.add(new MethodInsnNode(INVOKEVIRTUAL, "java/lang/Exception", "printStackTrace", "(Ljava/io/PrintWriter;)V", false));
-//                            nu.add(new FieldInsnNode(GETSTATIC,"org/apache/logging/log4j/Level","DEBUG","Lorg/apache/logging/log4j/Level;"));
-//                            nu.add(new VarInsnNode(ALOAD, 5));
-//                            nu.add(new MethodInsnNode(INVOKEVIRTUAL, "java/lang/Object", "toString", "()Ljava/lang/String;", false));
-//                            nu.add(new InsnNode(ICONST_0));
-//                            nu.add(new TypeInsnNode(ANEWARRAY,"java/lang/Object"));
-//                            nu.add(new MethodInsnNode(INVOKESTATIC, "cpw/mods/fml/common/FMLLog", "log", "(Lorg/apache/logging/log4j/Level;Ljava/lang/String;[Ljava/lang/Object;)V", false));
-//                            nu.add(new InsnNode(ICONST_0));
-//                            nu.add(new IntInsnNode(NEWARRAY,T_INT));
-//                            nu.add(new InsnNode(ARETURN));
-//                            nu.add(LabelNodes[2]); //L5
-//                            nu.add(new MethodInsnNode(INVOKESTATIC, "cpw/mods/fml/common/registry/GameData", "getItemRegistry", "()Lcpw/mods/fml/common/registry/FMLControlledNamespacedRegistry;", false));
-//                            nu.add(new VarInsnNode(ALOAD, 2));
-//                            nu.add(new MethodInsnNode(INVOKEVIRTUAL, "cpw/mods/fml/common/registry/FMLControlledNamespacedRegistry", "getId", "(Ljava/lang/String;)I", false));
-//                            nu.add(new VarInsnNode(ISTORE, 3));
-//                            nu.add(new FieldInsnNode(GETSTATIC,"net/minecraftforge/oredict/OreDictionary","stackToId","Ljava/util/Map;"));
-//                            nu.add(new VarInsnNode(ILOAD, 3));
-//                            nu.add(new MethodInsnNode(INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;", false));
-//                            nu.add(new MethodInsnNode(INVOKEINTERFACE, "java/util/Map", "get", "(Ljava/lang/Object;)Ljava/lang/Object;", false));
-//                            nu.add(new TypeInsnNode(CHECKCAST,"java/util/List"));
-//                            nu.add(new VarInsnNode(ASTORE, 4));
-//                            nu.add(new VarInsnNode(ALOAD, 4));
-//                            nu.add(new JumpInsnNode(IFNULL, LabelNodes[3])); //L14
-//                            nu.add(new VarInsnNode(ALOAD, 1));
-//                            nu.add(new VarInsnNode(ALOAD, 4));
-//                            nu.add(new MethodInsnNode(INVOKEINTERFACE, "java/util/Set", "addAll", "(Ljava/util/Collection;)Z", true));
-//                            nu.add(new InsnNode(POP));
-//                            nu.add(LabelNodes[3]); //L14
-//                            nu.add(new FieldInsnNode(GETSTATIC,"net/minecraftforge/oredict/OreDictionary","stackToId","Ljava/util/Map;"));
-//                            nu.add(new VarInsnNode(ILOAD, 3));
-//                            nu.add(new VarInsnNode(ALOAD, 0));
-//                            nu.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/item/ItemStack", "getItemDamage", "()I", false));
-//                            nu.add(new InsnNode(ICONST_1));
-//                            nu.add(new InsnNode(IADD));
-//                            nu.add(new VarInsnNode(BIPUSH, 16));
-//                            nu.add(new InsnNode(ISHL));
-//                            nu.add(new InsnNode(IOR));
-//                            nu.add(new MethodInsnNode(INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;", false));
-//                            nu.add(new MethodInsnNode(INVOKEINTERFACE, "java/util/Map", "get", "(Ljava/lang/Object;)Ljava/lang/Object;", true));
-//                            nu.add(new TypeInsnNode(CHECKCAST,"java/util/List"));
-//                            nu.add(new VarInsnNode(ASTORE, 4));
-//                            nu.add(new VarInsnNode(ALOAD, 4));
-//                            nu.add(new JumpInsnNode(IFNULL, LabelNodes[4])); //L16
-//                            nu.add(new VarInsnNode(ALOAD, 1));
-//                            nu.add(new VarInsnNode(ALOAD, 4));
-//                            nu.add(new MethodInsnNode(INVOKEINTERFACE, "java/util/Set", "addAll", "(Ljava/util/Collection;)Z", true));
-//                            nu.add(new InsnNode(POP));
-//                            nu.add(LabelNodes[4]); //L16
-//                            nu.add(new VarInsnNode(ALOAD, 1));
-//                            nu.add(new VarInsnNode(ALOAD, 1));
-//                            nu.add(new MethodInsnNode(INVOKEINTERFACE, "java/util/Set", "size", "()I", true));
-//                            nu.add(new TypeInsnNode(ANEWARRAY,"java/lang/Integer"));
-//                            nu.add(new MethodInsnNode(INVOKEINTERFACE, "java/util/Set", "toArray", "([Ljava/lang/Object;)[Ljava/lang/Object;", true));
-//                            nu.add(new TypeInsnNode(CHECKCAST,"[java/util/Integer"));
-//                            nu.add(new VarInsnNode(ASTORE, 5));
-//                            nu.add(new VarInsnNode(ALOAD, 5));
-//                            nu.add(new InsnNode(ARRAYLENGTH));
-//                            nu.add(new IntInsnNode(NEWARRAY,T_INT));
-//                            nu.add(new VarInsnNode(ASTORE, 6));
-//                            nu.add(new InsnNode(ICONST_0));
-//                            nu.add(new VarInsnNode(ISTORE, 7));
-//                            nu.add(LabelNodes[6]); //L19
-//                            nu.add(new VarInsnNode(ILOAD, 7));
-//                            nu.add(new VarInsnNode(ALOAD, 5));
-//                            nu.add(new InsnNode(ARRAYLENGTH));
-//                            nu.add(new JumpInsnNode(IF_ICMPGE, LabelNodes[5])); //L20
-//                            nu.add(new VarInsnNode(ALOAD, 6));
-//                            nu.add(new VarInsnNode(ILOAD, 7));
-//                            nu.add(new VarInsnNode(ALOAD, 5));
-//                            nu.add(new VarInsnNode(ILOAD, 7));
-//                            nu.add(new InsnNode(AALOAD));
-//                            nu.add(new MethodInsnNode(INVOKEVIRTUAL, "java/lang/Integer", "intValue", "()I", false));
-//                            nu.add(new InsnNode(IASTORE));
-//                            nu.add(new IincInsnNode(7,1));
-//                            nu.add(new JumpInsnNode(GOTO, LabelNodes[6])); //L19
-//                            nu.add(LabelNodes[5]); //L20
-//                            nu.add(new VarInsnNode(ALOAD, 6));
-//                            nu.add(new InsnNode(ARETURN));
-//                            toPatch.instructions = nu;
-//                            toPatch.maxStack = 6;
-//                            toPatch.maxLocals = 8;
-//                            methods.set(i, toPatch);
-//                            break;
-//                        }
+                }
+                case 6: {
+                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
+                    ((IntInsnNode) methods.get(11).instructions.get(10)).operand = 10000;
+                    break scase;
                 }
                 default: {
                     BWCore.BWCORE_LOG.info("Could not find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
@@ -452,6 +317,4 @@ public class BWCoreTransformer implements IClassTransformer {
         }
         return basicClass;
     }
-
-
 }
