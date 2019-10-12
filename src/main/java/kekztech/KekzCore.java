@@ -178,7 +178,7 @@ public class KekzCore {
 				GT_Utility.getIntegratedCircuit(6),
 				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
 				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.PulsatingIron, 4),
-				GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.StainlessSteel, 1),
+				GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1),
 				ItemList.Electric_Pump_HV.get(1L, (Object[]) null)
 			};
 		GT_Values.RA.addAssemblerRecipe(
