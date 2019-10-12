@@ -20,7 +20,7 @@ I will Happily take the form of code criticism or suggestions in the form of PRs
 [Modpack Permissions - Click here](https://github.com/alkcorp/GTplusplus/issues/24#issuecomment-252458551)   
 
 ## License  
-Copyright 2016-2018  
+Copyright 2016-2019  
 All rights reserved.  
 Distribution of the software in any form is only allowed with explicit, prior permission from the owner.  
   
