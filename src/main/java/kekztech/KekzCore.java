@@ -47,7 +47,7 @@ public class KekzCore {
 	
 	public static final String NAME = "KekzTech";
 	public static final String MODID = "kekztech";
-	public static final String VERSION = "0.2";
+	public static final String VERSION = "0.2.1";
 	
 	@Mod.Instance("kekztech")
 	public static KekzCore instance;
@@ -167,7 +167,7 @@ public class KekzCore {
 			GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1),
 			GT_OreDictUnificator.get(OrePrefixes.plate, Materials.PulsatingIron, 1),
 			GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 1),
-			ItemList.Electric_Pump_MV.get(1L, (Object[]) null)
+			ItemList.Electric_Pump_LV.get(1L, (Object[]) null)
 		};
 		GT_Values.RA.addAssemblerRecipe(
 				tfftstoragefield1, 
@@ -179,7 +179,7 @@ public class KekzCore {
 				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2),
 				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.PulsatingIron, 4),
 				GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1),
-				ItemList.Electric_Pump_HV.get(1L, (Object[]) null)
+				ItemList.Electric_Pump_MV.get(1L, (Object[]) null)
 			};
 		GT_Values.RA.addAssemblerRecipe(
 				tfftstoragefield2, 
@@ -192,7 +192,7 @@ public class KekzCore {
 				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 2),
 				GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1),
 				ItemList.Field_Generator_MV.get(1L, (Object[]) null),
-				ItemList.Electric_Pump_EV.get(1L, (Object[]) null)
+				ItemList.Electric_Pump_HV.get(2L, (Object[]) null)
 			};
 		GT_Values.RA.addAssemblerRecipe(
 				tfftstoragefield3, 
@@ -205,7 +205,7 @@ public class KekzCore {
 				GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.NiobiumTitanium, 1),
 				GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.TungstenSteel, 1),
 				ItemList.Field_Generator_HV.get(1L, (Object[]) null),
-				ItemList.Electric_Pump_IV.get(1L, (Object[]) null)
+				ItemList.Electric_Pump_EV.get(1L, (Object[]) null)
 			};
 		GT_Values.RA.addAssemblerRecipe(
 				tfftstoragefield4, 

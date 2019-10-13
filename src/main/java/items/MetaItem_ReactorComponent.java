@@ -90,7 +90,7 @@ public class MetaItem_ReactorComponent extends Item {
 			list.add("Property = 1");
 		} else {
 			list.add("Part for the Modular Nuclear Reactor");
-			list.add("Hold " + EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + "to display properties");
+			list.add("Hold " + EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to display properties");
 		}
 	}
 	

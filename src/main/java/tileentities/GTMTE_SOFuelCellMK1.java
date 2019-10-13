@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.lwjgl.input.Keyboard;
+
 import blocks.Block_YSZUnit;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -17,6 +19,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import kekztech.MultiBlockTooltipBuilder;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -53,22 +56,27 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] { 
-				"Oxidizes gas fuels to generate electricity without polluting the environment",
-				"Consumes 29,480EU worth of fuel with up to 97% efficiency each second",
-				"Steam production requires the SOFC to heat up completely first",
-				"Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_TICK + "L/t Steam",
-				"Additionally requires " + OXYGEN_PER_TICK + "L/t Oxygen gas",
-				"------------------------------------------",
-				"Dimensions: 3x3x5 (WxHxL)",
-				"Structure:",
-				"   Controller: Front center",
-				"   Dynamo Hatch: Back center",
-				"   3x YSZ Ceramic Electrolyte Unit: Center 1x1x3",
-				"   12x Clean Stainless Steel Machine Casing (at least)",
-				"   6x Reinforced Glass: Touching the Electrolyte Units on the horizontal sides",
-				"   Maintenance Hatch, I/O Hatches: Instead of any casing"
-				};	
+		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+		b.addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
+				.addInfo("Consumes 29,480EU worth of fuel with up to 97% efficiency each second")
+				.addInfo("Steam production requires the SOFC to heat up completely first")
+				.addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_TICK + "L/t Steam")
+				.addInfo("Additionally requires " + OXYGEN_PER_TICK + "L/t Oxygen gas")
+				.addSeparator()
+				.beginStructureBlock(3, 3, 5)
+				.addController("Front Center")
+				.addDynamoHatch("Back Center")
+				.addOtherStructurePart("YSZ Ceramic Electrolyte Unit", "3x, Center 1x1x3")
+				.addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
+				.addCasingInfo("Clean Stainless Steel Casing", 12)
+				.addMaintenanceHatch("Instead of any casing")
+				.addIOHatches("Instead of any casing")
+				.signAndFinalize("Kekzdealer");
+		if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			return b.getInformation();
+		} else {
+			return b.getStructureInformation();
+		}
 	}
 	
 	@Override
