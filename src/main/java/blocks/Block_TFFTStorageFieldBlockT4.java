@@ -1,6 +1,7 @@
 package blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import itemBlocks.IB_TFFTStorageFieldBlockT4;
 import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -26,6 +27,6 @@ public class Block_TFFTStorageFieldBlockT4 extends Block {
 		super.setBlockTextureName(KekzCore.MODID + ":" + "TFFTStorageFieldBlock4");
 		super.setHardness(5.0f);
 		super.setResistance(6.0f);
-		GameRegistry.registerBlock(getInstance(), blockName);
+		GameRegistry.registerBlock(getInstance(), IB_TFFTStorageFieldBlockT4.class, blockName);
 	} 
 }

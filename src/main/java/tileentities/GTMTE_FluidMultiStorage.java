@@ -3,6 +3,9 @@ package tileentities;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+
+import org.lwjgl.input.Keyboard;
+
 import blocks.Block_TFFTCasing;
 import blocks.Block_TFFTMultiHatch;
 import blocks.Block_TFFTStorageFieldBlockT1;
@@ -18,6 +21,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import kekztech.MultiBlockTooltipBuilder;
 import kekztech.MultiFluidHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -64,29 +68,28 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {
-				"High-Tech fluid tank that can hold up to 25 different fluids",
-				"Has 1/25th of the total capacity as capacity for each fluid",
-				"Rightclicking the controller with a screwdriver will turn on excess voiding",
-				"Fluid storage amount and running cost depends on the storage field blocks used",
-				"Tier I:   500,000L per block, 0.5EU/t",
-				"Tier II:  4,000,000L per block, 1EU/t",
-				"Tier III: 16,000,000L per block, 2EU/t",
-				"Tier IV:  64,000,000L per block, 4EU/t",
-				"------------------------------------------",
-				"Note on hatch locking:",
-				"Use an Integrated Circuit in the GUI slot to limit which fluid is output",
-				"The index of a stored fluid can be obtained through the Tricorder.",
-				"------------------------------------------",
-				"Dimensions: 5x9x5 (WxHxL)",
-				"Structure:",
-				"   Controller: Top center",
-				"   Energy Hatch: Any top or bottom casing",
-				"   Inner 3x7x3 tube are Storage Field Blocks",
-				"   Outer 5x7x5 glass shell is AE2 Quartz Glass or Vanilla Stained Glass",
-				"   Maintenance Hatch: Any top or bottom casing",
-				"   I/O Hatches: Instead of any casing or glass, have to touch storage field"
-		};
+		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+		b.addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
+				.addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
+				.addInfo("Rightclicking the controller with a screwdriver will turn on excess voiding.")
+				.addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
+				.addSeparator()
+				.addInfo("Note on hatch locking:")
+				.addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
+				.addInfo("The index of a stored fluid can be obtained through the Tricorder.")
+				.addSeparator()
+				.beginStructureBlock(5, 9, 5)
+				.addController("Top Center")
+				.addEnergyHatch("Any top or bottom casing")
+				.addOtherStructurePart("Inner 3x7x3 tube", "Storage Field Blocks")
+				.addOtherStructurePart("Outer 5x7x5 glass shell", "AE2 Quartz Glass of Vanilla Stained Glass")
+				.addIOHatches("Instead of any casing or glass, have to touch storage field")
+				.signAndFinalize("Kekzdealer");
+		if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			return b.getInformation();
+		} else {
+			return b.getStructureInformation();
+		}
 	}
 
 	@Override
@@ -158,7 +161,6 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 					possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
 				}
 			}
-			System.out.println("Output Capacity: " + possibleOutput);
 			// Output as much as possible
 			final FluidStack tempStack = storedFluid.copy();
 			tempStack.amount = possibleOutput;

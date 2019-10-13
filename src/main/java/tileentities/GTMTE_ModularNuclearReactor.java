@@ -57,18 +57,6 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 		} else {
 			return b.getStructureInformation();
 		}
-		/*return new String[] { 
-				"DO NOT CHEAT IN THIS MACHINE",
-				"I'm not quite finished yet",
-				"------------------------------------------",
-				"Dimensions: 5x5x5 (WxHxL)",
-				"Structure:",
-				"   Controller: Front center",
-				"   80x Radiation Proof Machine Casing (at least)",
-				"   Dynamo Hatch: ONLY in EU-mode, at least one",
-				"   Input Bus, Output Bus: Optional but required for automation",
-				"   Input Hatch, Output Hatch: ONLY in Coolant-Mode, at least one each"
-				};*/
 	}
 
 	@Override
