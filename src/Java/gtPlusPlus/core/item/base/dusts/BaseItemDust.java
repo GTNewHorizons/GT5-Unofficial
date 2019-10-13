@@ -87,8 +87,7 @@ public class BaseItemDust extends BaseItemComponent {
 			else if (amount == 10) {
 				doesThings[0] = false;
 				doesThings[1] = true;
-				doesThings[2] = false;
-				
+				doesThings[2] = false;				
 			}
 			else if (amount == 100) {
 				doesThings[0] = false;

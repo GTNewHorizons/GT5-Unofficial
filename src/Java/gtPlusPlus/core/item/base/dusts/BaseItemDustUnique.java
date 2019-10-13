@@ -118,7 +118,7 @@ public class BaseItemDustUnique extends Item{
 
 	private String getCorrectTexture(final String pileSize){
 		if (!CORE.ConfigSwitches.useGregtechTextures){
-			if ((pileSize == "dust") || (pileSize == "Dust")){
+			if ((pileSize.equals("dust")) || (pileSize.equals("Dust"))){
 				this.setTextureName(CORE.MODID + ":" + "dust");}
 			else{
 				this.setTextureName(CORE.MODID + ":" + "dust"+pileSize);

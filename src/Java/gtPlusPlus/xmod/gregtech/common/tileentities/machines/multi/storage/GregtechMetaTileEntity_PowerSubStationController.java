@@ -21,6 +21,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_PowerSubStation;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_PowerSubStation;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
@@ -120,7 +121,9 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		checkMachineProblem(problem);
 	}
 	private void checkMachineProblem(String msg) {
-		Logger.INFO("Power Sub-Station problem: " + msg);
+		if (!AsmConfig.disableAllLogging) {
+			Logger.INFO("Power Sub-Station problem: " + msg);			
+		}
 	}
 
 	public static int getCellTier(Block aBlock, int aMeta) {

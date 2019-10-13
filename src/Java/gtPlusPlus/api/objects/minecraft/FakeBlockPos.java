@@ -12,7 +12,7 @@ import net.minecraftforge.common.DimensionManager;
 public class FakeBlockPos extends BlockPos {
 
 	private static final long serialVersionUID = -6442245826092414593L;
-	private Block aBlockAtPos;
+	private transient Block aBlockAtPos;
 	private int aBlockMetaAtPos = 0;
 	
 	public static FakeBlockPos generateBlockPos(String sUUID) {

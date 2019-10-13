@@ -3026,3 +3026,12 @@ item.dustPureRareEarthIII.name=Purified Rare Earth (III) Dust
 item.itemDustRareEarthIII.name=Rare Earth (III) Dust
 item.itemDustTinyRareEarthIII.name=Tiny Pile of Rare Earth (III) Dust
 item.itemDustSmallRareEarthIII.name=Small Pile of Rare Earth (III) Dust
+
+
+
+//Added 13/10/19
+tile.blockRoundRobinator.0.name=Round Robinator I
+tile.blockRoundRobinator.1.name=Round Robinator II
+tile.blockRoundRobinator.2.name=Round Robinator III
+tile.blockRoundRobinator.3.name=Round Robinator IV
+tile.blockRoundRobinator.4.name=Round Robinator V

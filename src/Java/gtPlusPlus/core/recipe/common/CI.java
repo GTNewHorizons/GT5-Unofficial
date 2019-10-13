@@ -547,7 +547,7 @@ public class CI {
 	
 	private static final Material[] aMaterial_Main = new Material[] {
 			ALLOY.POTIN,
-			ALLOY.ZIRCONIUM_CARBIDE,				
+			ALLOY.TUMBAGA,				
 			ALLOY.EGLIN_STEEL,				
 			ALLOY.INCONEL_792,				
 			ALLOY.TUNGSTEN_TITANIUM_CARBIDE,				
@@ -561,7 +561,7 @@ public class CI {
 	};		
 	
 	private static final Material[] aMaterial_Secondary = new Material[] {
-			ALLOY.TUMBAGA,
+			ALLOY.STEEL,
 			ALLOY.SILICON_CARBIDE,
 			ALLOY.TUNGSTEN_CARBIDE,				
 			ALLOY.INCONEL_690,				
@@ -576,7 +576,7 @@ public class CI {
 	};	
 	
 	private static final Material[] aMaterial_Tertiary = new Material[] {
-			ALLOY.STEEL,
+			ELEMENT.getInstance().LEAD,
 			ELEMENT.getInstance().ALUMINIUM,
 			ALLOY.STAINLESS_STEEL,
 			ELEMENT.getInstance().TUNGSTEN,

@@ -115,6 +115,13 @@ public class XSTR extends Random implements Cloneable {
 	 */
 	@Override
 	public XSTR clone() {
+		try {
+			super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return new XSTR(this.getSeed());
 	}
 

@@ -29,7 +29,7 @@ public class FireProtectionBauble extends BaseBauble {
 	private static Field isImmuneToFire;
 	
 	static {
-		isImmuneToFire = ReflectionUtils.getField(Entity.class, DevHelper.IsObfuscatedEnvironment() ? "func_70045_F" : "isImmuneToFire");
+		isImmuneToFire = ReflectionUtils.getField(Entity.class, DevHelper.isObfuscatedEnvironment() ? "func_70045_F" : "isImmuneToFire");
 	}
 	
 	public static boolean fireImmune(Entity aEntity) {

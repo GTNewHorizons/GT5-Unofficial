@@ -1,39 +1,52 @@
 package gtPlusPlus.core.container;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import java.util.Iterator;
+
+import org.apache.commons.lang3.ArrayUtils;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.Inventory_RoundRobinator;
-import gtPlusPlus.core.slots.SlotIntegratedCircuit;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.machines.TileEntityRoundRobinator;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class Container_RoundRobinator extends Container {
 
-	protected TileEntityRoundRobinator tile_entity;
+	public TileEntityRoundRobinator tile_entity;
 	public final Inventory_RoundRobinator inventoryChest;
 
 	private final World worldObj;
 	private final int posX;
 	private final int posY;
 	private final int posZ;
+	
+	private final boolean[] mActiveData = new boolean[] {false, false, false, false};
 
-	public static final int SLOT_OUTPUT = 25;
-
-	public static int StorageSlotNumber = 26; // Number of slots in storage area
-	public static int InventorySlotNumber = 36; // Inventory Slots (Inventory
+	public static int mStorageSlotNumber = 4; // Number of slots in storage area
+	public static int mInventorySlotNumber = 36; // Inventory Slots (Inventory
 												// and Hotbar)
-	public static int FullSlotNumber = InventorySlotNumber + StorageSlotNumber; // All
+	public static int mFullSlotNumber = mInventorySlotNumber + mStorageSlotNumber; // All
 																				// slots
 
 	public Container_RoundRobinator(final InventoryPlayer inventory, final TileEntityRoundRobinator te) {
 		this.tile_entity = te;
 		this.inventoryChest = te.getInventory();
+		boolean [] aTemp = te.getActiveSides();
+		if (aTemp != null && aTemp.length == 4) {
+			for (int i=0;i<4;i++) {
+				mActiveData[i] = aTemp[i];
+			}
+		}
 
 		int var6;
 		int var7;
@@ -54,44 +67,20 @@ public class Container_RoundRobinator extends Container {
 		}*/
 		
 		
-		int xStart = 8;
-		int yStart = 5;
+		int xStart = 134;
+		int yStart = 32;
 
 		try {
 		//0
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart, yStart));
-		//1-10
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+18, yStart));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+36, yStart));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+54, yStart));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+72, yStart));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+90, yStart));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+108, yStart));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+18, yStart+18));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+36, yStart+18));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+54, yStart+18));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+72, yStart+18));
-		//11-20
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+90, yStart+18));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+108, yStart+18));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+18, yStart+36));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+36, yStart+36));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+54, yStart+36));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+72, yStart+36));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+90, yStart+36));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+108, yStart+36));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+18, yStart+54));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+36, yStart+54));
-		//21-24
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+54, yStart+54));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+72, yStart+54));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+90, yStart+54));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+108, yStart+54));
+		this.addSlotToContainer(new SlotNoInput(this.inventoryChest, o++, xStart, yStart));
+		this.addSlotToContainer(new SlotNoInput(this.inventoryChest, o++, xStart+18, yStart));
+		this.addSlotToContainer(new SlotNoInput(this.inventoryChest, o++, xStart, yStart+17));
+		this.addSlotToContainer(new SlotNoInput(this.inventoryChest, o++, xStart+18, yStart+17));		
 		Logger.INFO("2");
 		
 		//Add Output
-		this.addSlotToContainer(new SlotNoInput(this.inventoryChest, SLOT_OUTPUT, xStart+(8*18), yStart+54));
-		o++;
+		//this.addSlotToContainer(new SlotNoInput(this.inventoryChest, SLOT_OUTPUT, xStart+(8*18), yStart+54));
+		//o++;
 		Logger.INFO("3");
 
 		
@@ -112,6 +101,7 @@ public class Container_RoundRobinator extends Container {
 		Logger.INFO("4");
 		}
 		catch (Throwable t) {}
+		this.detectAndSendChanges();
 
 	}
 
@@ -121,10 +111,14 @@ public class Container_RoundRobinator extends Container {
 
 		if (!aPlayer.worldObj.isRemote) {
 			if ((aSlotIndex == 999) || (aSlotIndex == -999)) {
-				// Utils.LOG_WARNING("??? - "+aSlotIndex);
+			}
+			else if (aSlotIndex < 4) {
+				this.tile_entity.toggleSide(aSlotIndex+2);				
+				Logger.INFO("Toggling side: "+(aSlotIndex+2)+" | Active: "+this.tile_entity.getSideActive(aSlotIndex+2)+" | Data:"+this.tile_entity.getDataString());
 			}
 		}
-		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+		return GT_Values.NI;
+		//return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	}
 
 	@Override
@@ -140,51 +134,136 @@ public class Container_RoundRobinator extends Container {
 
 		return par1EntityPlayer.getDistanceSq(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D) <= 64D;
 	}
+	
 
-	@Override
-	public ItemStack transferStackInSlot(final EntityPlayer par1EntityPlayer, final int par2) {
-		ItemStack var3 = null;
-		final Slot var4 = (Slot) this.inventorySlots.get(par2);
 
-		if ((var4 != null) && var4.getHasStack()) {
-			final ItemStack var5 = var4.getStack();
-			var3 = var5.copy();
-
-			/*
-			 * if (par2 == 0) { if (!this.mergeItemStack(var5,
-			 * InOutputSlotNumber, FullSlotNumber, true)) { return null; }
-			 * 
-			 * var4.onSlotChange(var5, var3); } else if (par2 >=
-			 * InOutputSlotNumber && par2 < InventoryOutSlotNumber) { if
-			 * (!this.mergeItemStack(var5, InventoryOutSlotNumber,
-			 * FullSlotNumber, false)) { return null; } } else if (par2 >=
-			 * InventoryOutSlotNumber && par2 < FullSlotNumber) { if
-			 * (!this.mergeItemStack(var5, InOutputSlotNumber,
-			 * InventoryOutSlotNumber, false)) { return null; } } else if
-			 * (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber,
-			 * false)) { return null; }
-			 */
-
-			if (var5.stackSize == 0) {
-				var4.putStack((ItemStack) null);
-			} else {
-				var4.onSlotChanged();
-			}
-
-			if (var5.stackSize == var3.stackSize) {
-				return null;
-			}
-
-			var4.onPickupFromSlot(par1EntityPlayer, var5);
+	public final void addCraftingToCrafters(ICrafting par1ICrafting) {
+		try {
+			super.addCraftingToCrafters(par1ICrafting);
+		} catch (Throwable var3) {
+			
 		}
-
-		return var3;
 	}
 
-	// Can merge Slot
-	@Override
-	public boolean func_94530_a(final ItemStack p_94530_1_, final Slot p_94530_2_) {
-		return super.func_94530_a(p_94530_1_, p_94530_2_);
+	public final void removeCraftingFromCrafters(ICrafting par1ICrafting) {
+		try {
+			super.removeCraftingFromCrafters(par1ICrafting);
+		} catch (Throwable var3) {
+		}
+	}
+
+	public final void detectAndSendChanges() {
+		try {
+			super.detectAndSendChanges();
+			detectAndSendChangesEx();
+		} catch (Throwable var2) {
+		}
+	}
+
+	public final void updateProgressBar(int par1, int par2) {
+		try {
+			super.updateProgressBar(par1, par2);
+			updateProgressBarEx(par1, par2);
+		} catch (Throwable var4) {
+		}
+	}
+	
+
+	public int mSide_1 = 0;
+	public int mSide_2 = 0;
+	public int mSide_3 = 0;
+	public int mSide_4 = 0;	
+	public int mTier = 1;
+	public int mTickRate = 50;
+	
+	private int oSide_1 = 0;
+	private int oSide_2 = 0;
+	private int oSide_3 = 0;
+	private int oSide_4 = 0;	
+	private int oTier = 1;
+	private int oTickRate = 50;
+	
+	private int mTimer = 0;
+	
+	
+
+	public void detectAndSendChangesEx() {
+		super.detectAndSendChanges();
+		if (!this.tile_entity.getWorldObj().isRemote) {
+			boolean [] aTemp = tile_entity.getActiveSides();
+			for (int i=0;i<4;i++) {
+				mActiveData[i] = aTemp[i];
+			}			
+			this.mSide_1 = aTemp[0] ? 1 : 0;
+			this.mSide_2 = aTemp[1] ? 1 : 0;
+			this.mSide_3 = aTemp[2] ? 1 : 0;
+			this.mSide_4 = aTemp[3] ? 1 : 0;
+			this.mTier = this.tile_entity.getTier();
+			this.mTickRate = this.tile_entity.getTickRate();
+
+			String InventoryContents = ArrayUtils.toString(aTemp, "null");
+			//Logger.INFO("Test: "+InventoryContents);
+			++this.mTimer;
+			Iterator var2 = this.crafters.iterator();
+
+			while (true) {
+				ICrafting var1;
+				do {
+					if (!var2.hasNext()) {
+						this.oSide_1 = this.mSide_1;
+						this.oSide_2 = this.mSide_2;
+						this.oSide_3 = this.mSide_3;
+						this.oSide_4 = this.mSide_4;
+						this.oTier = this.mTier;
+						this.oTickRate = this.mTickRate;
+						return;
+					}
+					var1 = (ICrafting) var2.next();
+					if (this.mTimer % 500 == 10 || this.oSide_1 != this.mSide_1) {
+						var1.sendProgressBarUpdate(this, 2, this.mSide_1);
+					}
+					if (this.mTimer % 500 == 10 || this.oSide_2 != this.mSide_2) {
+						var1.sendProgressBarUpdate(this, 4, this.mSide_2);
+					}
+					if (this.mTimer % 500 == 10 || this.oSide_3 != this.mSide_3) {
+						var1.sendProgressBarUpdate(this, 6, this.mSide_3);
+					}
+					if (this.mTimer % 500 == 10 || this.oSide_4 != this.mSide_4) {
+						var1.sendProgressBarUpdate(this, 8, this.mSide_4);
+					}
+					if (this.mTimer % 500 == 10 || this.oTier != this.mTier) {
+						var1.sendProgressBarUpdate(this, 10, this.mTier);
+					}
+					if (this.mTimer % 500 == 10 || this.oTickRate != this.mTickRate) {
+						var1.sendProgressBarUpdate(this, 12, this.mTickRate);
+					}
+				} while (this.mTimer % 500 != 10);
+
+			}
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void updateProgressBarEx(int par1, int par2) {
+		super.updateProgressBar(par1, par2);
+		switch (par1) {
+			case 2 :
+				this.mSide_1 = par2;
+				break;
+			case 4 :
+				this.mSide_2 = par2;
+				break;
+			case 6 :
+				this.mSide_3 = par2;			
+			case 8 :
+				this.mSide_4 = par2;		
+			case 10 :
+				this.mTier = par2;		
+			case 12 :
+				this.mTickRate = par2;
+				break;
+		}
+
 	}
 
 }

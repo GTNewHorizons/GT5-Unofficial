@@ -1,6 +1,5 @@
 package gtPlusPlus.core.inventories;
 
-import gtPlusPlus.core.recipe.common.CI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -9,10 +8,10 @@ import net.minecraft.nbt.NBTTagList;
 
 public class Inventory_RoundRobinator implements IInventory{
 
-	private final String name = "Circuit Programmer";
+	private final String name = "Round Robinator";
 
 	/** Defining your inventory size this way is handy */
-	public static final int INV_SIZE = 26;
+	public static final int INV_SIZE = 4;
 
 	/** Inventory's size must be same as number of slots you add to the Container class */
 	private ItemStack[] inventory = new ItemStack[INV_SIZE];
@@ -167,7 +166,7 @@ public class Inventory_RoundRobinator implements IInventory{
 	 */
 	@Override
 	public boolean isItemValidForSlot(final int slot, final ItemStack itemstack) {
-		return (itemstack.getItem() == CI.getNumberedCircuit(0).getItem());
+		return true;
 	}
 
 }

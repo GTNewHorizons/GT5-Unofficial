@@ -44,11 +44,7 @@ public class ItemBlockBasicTile extends ItemBlock {
 			list.add("Kills Forestry Butterflies, Bats and other pests");
 			list.add("Use either Formaldehyde or Hydrogen cyanide");
 			list.add("Be weary of your neighbours");
-		} else if (this.mID == 7) { // Round-Robinator
-			list.add("Attempts to output items evenly on all four horizontal planes");
-			list.add("Each tier operates at a factor of one operation every (20/tier)ticks");
-			list.add("Top and bottom do not pull, so you must push item in");
-			list.add("Sides can be disabled with a screwdriver");
+		} else if (this.mID == 7) {
 		} else {
 			list.add("Bad Tooltip ID - " + mID);
 

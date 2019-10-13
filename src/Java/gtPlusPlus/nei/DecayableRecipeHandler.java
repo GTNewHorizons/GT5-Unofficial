@@ -220,7 +220,8 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 
 		@Override
 		public int compareTo(CachedRecipe o) {
-			if (o instanceof DecayableRecipeNEI) {
+			boolean b = DecayableRecipeNEI.class.isInstance(o);
+			if (b) {
 				DecayableRecipeNEI p = (DecayableRecipeNEI) o;
 				if (p.time > this.time) {
 					return 1;
@@ -232,5 +233,30 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 			}
 			return 0;
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj != null) {
+				if (DecayableRecipeNEI.class.isInstance(obj)) {
+					DecayableRecipeNEI p = (DecayableRecipeNEI) obj;
+					if (p != null) {
+						// Time check first to keep it simple and not unbox the Recipes.
+						if (p.time == this.time) {
+							ItemStack aInput = p.input.item;
+							ItemStack aOutput = p.output.item;
+							if (GT_Utility.areStacksEqual(aInput, this.input.item, true)) {
+								if (GT_Utility.areStacksEqual(aOutput, this.output.item, true)) {
+									return true;
+								}
+							}
+						}
+					}
+					
+				}
+			}
+			return false;
+		}
+		
+		
 	}
 }

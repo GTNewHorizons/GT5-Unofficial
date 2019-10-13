@@ -230,6 +230,7 @@ public class RECIPES_Machines {
 		fakeMachineCasingCovers();
 		ztonesCoverRecipes();
 		superBuses();
+		roundRobinators();
 	}
 
 	private static void initModItems(){
@@ -2249,6 +2250,48 @@ public class RECIPES_Machines {
 		}
 
 
+	}
+
+	private static void roundRobinators() {
+
+		RecipeUtils.addShapedGregtechRecipe(
+				ItemUtils.getSimpleStack(Blocks.hopper), "circuitPrimitive", ItemUtils.getSimpleStack(Blocks.hopper), 
+				CI.craftingToolWrench, CI.machineCasing_ULV, CI.craftingToolScrewdriver, 
+				ItemUtils.getSimpleStack(Blocks.hopper), "circuitPrimitive", ItemUtils.getSimpleStack(Blocks.hopper),
+				ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 0, 1));		
+		
+		ItemStack[] aRobinators = new ItemStack[] {
+				ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 0, 1),
+				ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 1, 1),
+				ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 2, 1),
+				ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 3, 1),
+				ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 4, 1),
+		};
+
+		int aCostMultiplier = GTNH ? 2 : 1;	
+
+		for (int i = 0; i < 5; i++) {			
+			if (i == 0) {
+				continue;
+			}			
+			int aTier = i+1;
+			ItemStack[] aInputs = new ItemStack[] {
+					aRobinators[i-1],
+					CI.getTieredMachineHull(aTier, 1 * aCostMultiplier),
+					CI.getConveyor(aTier, 2 * aCostMultiplier),
+					CI.getElectricMotor(aTier, 2 * aCostMultiplier),
+					CI.getTieredComponent(OrePrefixes.plate, aTier, 4 * aCostMultiplier),
+					CI.getTieredComponent(OrePrefixes.circuit, i, 2 * aCostMultiplier),
+			};		
+			
+			CORE.RA.addSixSlotAssemblingRecipe(				
+					aInputs,					
+					CI.getAlternativeTieredFluid(aTier, (144 * 2 * i)), //Input Fluid					
+					aRobinators[i],					
+					45 * 10 * 1 * (i+1), 
+					MaterialUtils.getVoltageForTier(i));	
+
+		}
 	}
 
 }

@@ -1,14 +1,25 @@
 package gtPlusPlus.core.block.machine;
 
+import java.util.List;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gtPlusPlus.api.interfaces.ITileTooltip;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockRoundRobinator;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.tileentities.machines.TileEntityRoundRobinator;
+import gtPlusPlus.core.util.minecraft.InventoryUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,24 +30,12 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.handler.GuiHandler;
-import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.machines.TileEntityRoundRobinator;
-import gtPlusPlus.core.util.minecraft.InventoryUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-
 public class Machine_RoundRobinator extends BlockContainer implements ITileTooltip
 {
 	@SideOnly(Side.CLIENT)
-	private IIcon textureTop;
+	private IIcon[] textureTop = new IIcon[5];
 	@SideOnly(Side.CLIENT)
-	private IIcon textureBottom;
-	@SideOnly(Side.CLIENT)
-	private IIcon textureFront;
+	private IIcon[] textureFront = new IIcon[5];
 
 	/**
 	 * Determines which tooltip is displayed within the itemblock.
@@ -55,8 +54,8 @@ public class Machine_RoundRobinator extends BlockContainer implements ITileToolt
 		this.setResistance(1f);
 		this.setBlockName("blockRoundRobinator");
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
-		GameRegistry.registerBlock(this, ItemBlockBasicTile.class, "blockRoundRobinator");
-		LanguageRegistry.addName(this, "Round-Robinator");
+		GameRegistry.registerBlock(this, ItemBlockRoundRobinator.class, "blockRoundRobinator");
+		//LanguageRegistry.addName(this, "Round-Robinator");
 
 	}
 
@@ -65,19 +64,23 @@ public class Machine_RoundRobinator extends BlockContainer implements ITileToolt
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(final int p_149691_1_, final int p_149691_2_)
-	{
-		return p_149691_1_ == 1 ? this.textureTop : (p_149691_1_ == 0 ? this.textureBottom : (this.textureFront));
+	public IIcon getIcon(final int aSide, final int aMeta) {
+		if (aSide < 2) {
+			return this.textureTop[aMeta];
+		}
+		else {
+			return this.textureFront[aMeta];
+		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(final IIconRegister p_149651_1_)
-	{
-		this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "metro/" + "TEXTURE_TECH_PANEL_B");
-		this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "metro/" + "TEXTURE_TECH_PANEL_B");
-		this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_G");
-		this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I");
+	public void registerBlockIcons(final IIconRegister p_149651_1_){
+		this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "RoundRobinator_Side");
+		for (int i=0;i<5;i++) {
+			this.textureTop[i] = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/RoundRobinator/" + "RoundRobinator_Top_"+i);
+			this.textureFront[i] = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/RoundRobinator/" + "RoundRobinator_Side_"+i);			
+		}		
 	}
 
 	/**
@@ -109,16 +112,14 @@ public class Machine_RoundRobinator extends BlockContainer implements ITileToolt
 			if (!mDidScrewDriver) {
 				final TileEntity te = world.getTileEntity(x, y, z);
 				if ((te != null) && (te instanceof TileEntityRoundRobinator)){
-					player.openGui(GTplusplus.instance, GuiHandler.GUI16, world, x, y, z);
-					return true;
+					return ((TileEntityRoundRobinator) te).onRightClick((byte) side, player, x, y, z);
 				}
+				return false;
 			}
 			else {
 				return true;
-			}
-		
+			}		
 		}
-		return false;
 	}
 
 	@Override
@@ -149,14 +150,25 @@ public class Machine_RoundRobinator extends BlockContainer implements ITileToolt
 
 	@Override
 	public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack stack) {
-		if (stack.hasDisplayName()) {
-			((TileEntityRoundRobinator) world.getTileEntity(x,y,z)).setCustomName(stack.getDisplayName());
-		}
+		super.onBlockPlacedBy(world, x, y, z, entity, stack);
 	}
 
 	@Override
 	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
 		return false;
+	}
+
+	@Override
+	public void getSubBlocks(Item aItem, CreativeTabs p_149666_2_, List aList) {		
+		//super.getSubBlocks(aItem, p_149666_2_, aList);
+		for (int i=0;i<5;i++) {
+			aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));
+		}		
+	}
+
+	@Override
+	public IIcon getIcon(IBlockAccess aBlockAccess, int x, int y, int z, int aSide) {		
+		return super.getIcon(aBlockAccess, x, y, z, aSide);
 	}
 
 }

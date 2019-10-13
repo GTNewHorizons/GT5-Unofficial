@@ -212,11 +212,12 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
 
 	@Override
 	public boolean retainAll(Collection<?> c) {
-		AutoMap<?> aTempAllocation = new AutoMap();
+		AutoMap<?> aTempAllocation = new AutoMap<Object>();
 		boolean aTrue = false;
 		aTempAllocation = this;
-		aTempAllocation.removeAll(c);		
-		aTrue = this.removeAll(aTempAllocation);
+		aTempAllocation.removeAll(c);	
+		aTempAllocation.clear();
+		aTrue = aTempAllocation.isEmpty();
 		aTempAllocation.clear();
 		return aTrue;
 	}

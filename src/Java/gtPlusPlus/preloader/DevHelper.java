@@ -32,7 +32,7 @@ public class DevHelper {
 
 
 
-	public static boolean IsObfuscatedEnvironment() {
+	public static boolean isObfuscatedEnvironment() {
 		// Are we in a 'decompiled' environment?
 		boolean deobfuscatedEnvironment = false;
 		byte[] bs;
