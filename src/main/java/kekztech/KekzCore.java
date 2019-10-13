@@ -216,8 +216,7 @@ public class KekzCore {
 				GT_Utility.getIntegratedCircuit(6),
 				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
 				GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 25),
-				GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RoseGold, 64),
-				GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Thorium, 12),
+				ItemList.Electric_Motor_EV.get(1L, (Object[]) null),
 				ItemList.Field_Generator_HV.get(1L, (Object[]) null)
 			};
 		GT_Values.RA.addAssemblerRecipe(
