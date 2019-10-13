@@ -497,7 +497,6 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 	
 	@Override
 	public void saveNBTData(NBTTagCompound nbt) {
-		System.out.println("Saving TFFT!");
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 		
 		nbt.setInteger("runningCost", runningCost);

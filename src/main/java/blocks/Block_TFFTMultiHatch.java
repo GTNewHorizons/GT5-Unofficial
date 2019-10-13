@@ -1,6 +1,7 @@
 package blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import itemBlocks.IB_TFFTMultiHatch;
 import kekztech.KekzCore;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -28,7 +29,7 @@ public class Block_TFFTMultiHatch extends BlockContainer {
 		super.setBlockTextureName(KekzCore.MODID + ":" + "TFFTMultiHatch");
 		super.setHardness(5.0f);
 		super.setResistance(6.0f);
-		GameRegistry.registerBlock(getInstance(), blockName);
+		GameRegistry.registerBlock(getInstance(), IB_TFFTMultiHatch.class, blockName);
 	}
 
 	@Override

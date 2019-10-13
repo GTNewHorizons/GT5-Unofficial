@@ -57,7 +57,6 @@ public class MultiFluidHandler {
 	}
 	
 	public NBTTagCompound saveNBTData(NBTTagCompound nbt) {
-		System.out.println("Saving a multi hatch!");
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 		
 		nbt.setInteger("capacityPerFluid", getCapacity());

@@ -215,7 +215,7 @@ public class KekzCore {
 		final ItemStack[] tfftmultihatch = {
 				GT_Utility.getIntegratedCircuit(6),
 				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
-				GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.StainlessSteel, 25),
+				GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 25),
 				GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RoseGold, 64),
 				GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Thorium, 12),
 				ItemList.Field_Generator_HV.get(1L, (Object[]) null)
