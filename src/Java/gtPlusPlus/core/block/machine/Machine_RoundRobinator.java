@@ -3,7 +3,6 @@ package gtPlusPlus.core.block.machine;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -124,7 +123,7 @@ public class Machine_RoundRobinator extends BlockContainer implements ITileToolt
 
 	@Override
 	public int getRenderBlockPass() {
-		return 1;
+		return 0;
 	}
 
 	@Override

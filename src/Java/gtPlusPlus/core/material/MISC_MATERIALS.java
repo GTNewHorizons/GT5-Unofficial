@@ -142,7 +142,7 @@ public final class MISC_MATERIALS {
 					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Galena), 1),
 					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Chalcopyrite), 1),
 					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Cobaltite), 1),
-					new MaterialStack(ELEMENT.STANDALONE.BLACK_METAL, 1)
+					new MaterialStack(ELEMENT.STANDALONE.GRANITE, 1)
 			});
 
 	public static final Material RARE_EARTH_MID = new Material(
@@ -162,8 +162,8 @@ public final class MISC_MATERIALS {
 					new MaterialStack(ORES.CROCROITE, 1),					
 					new MaterialStack(ORES.NICHROMITE, 1),					
 					new MaterialStack(ORES.ZIRCON, 1),
+					new MaterialStack(ELEMENT.STANDALONE.GRANITE, 1),
 					new MaterialStack(ELEMENT.STANDALONE.BLACK_METAL, 1),
-					new MaterialStack(ELEMENT.STANDALONE.WHITE_METAL, 1),
 					new MaterialStack(ELEMENT.STANDALONE.RUNITE, 1)			
 			});
 

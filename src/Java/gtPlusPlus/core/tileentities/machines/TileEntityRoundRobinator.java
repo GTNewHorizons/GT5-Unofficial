@@ -118,14 +118,16 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
 				
 				if (tickCount % getTickRate() == 0) {
 					if (hasInventoryContents()) {
-						Logger.INFO("Trying to move items. "+aTickRate);
+						Logger.WARNING("Trying to move items. "+aTickRate);
 						this.tryProcessItems();							
 					}	
 				}
 				this.tickCount++;
 			}
 		}
-		catch (final Throwable t){}
+		catch (final Throwable t){
+			t.printStackTrace();
+		}
 	}
 
 	public boolean anyPlayerInRange() {
@@ -270,6 +272,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
 			return true;
 		}
 		catch (Throwable t) {
+			t.printStackTrace();
 			return false;
 		}		
 	}
@@ -333,6 +336,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
 			}	
 		}
 		catch (Throwable t) {
+			t.printStackTrace();
 		}
 	}
 
@@ -362,6 +366,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
 			}	
 		}
 		catch (Throwable t) {
+			t.printStackTrace();
 			return false;
 		}
 	}
@@ -476,7 +481,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
 		if (this.worldObj != null && !this.worldObj.isRemote) {
 			boolean didSomething = false;
 			if (!this.isEmpty()) {
-				Logger.INFO("Has Items, Trying to push to all active directions.");
+				Logger.WARNING("Has Items, Trying to push to all active directions.");
 				didSomething = this.tryPushItemsIntoNeighbours();
 			}			
 			if (didSomething) {
@@ -512,28 +517,28 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
 
 		for (int u = 2; u < 6; u++) {
 			if (!this.getSideActive(u)) {
-				Logger.INFO("Not pushing on side "+u);
+				Logger.WARNING("Not pushing on side "+u);
 				continue;
 			}			
 			
-			Logger.INFO("Pushing on side "+u);
+			Logger.WARNING("Pushing on side "+u);
 			IInventory iinventory = this.getInventoryFromFacing(u);
 
 			if (iinventory == null) {
-				Logger.INFO("No inventory found.");
+				Logger.WARNING("No inventory found.");
 				continue;
 			}
 			else {			
 
 				int i = Facing.oppositeSide[u];
-				Logger.INFO("Using Opposite direction: "+i);
+				Logger.WARNING("Using Opposite direction: "+i);
 
 				if (this.isInventoryFull(iinventory, i)) {
-					Logger.INFO("Target is full, skipping.");
+					Logger.WARNING("Target is full, skipping.");
 					continue;
 				}
 				else {
-					Logger.INFO("Target has space, let's move a single item.");
+					Logger.WARNING("Target has space, let's move a single item.");
 					for (int j = 0; j < this.getSizeInventory(); ++j) {
 						if (this.getStackInSlot(j) != null) {
 							ItemStack itemstack = this.getStackInSlot(j).copy();

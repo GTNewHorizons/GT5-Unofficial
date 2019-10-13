@@ -105,7 +105,9 @@ public class GUI_RoundRobinator extends GuiContainer {
 					mDrawItemStack.invoke(this, new Object[]{aRedGlass, x, y, ""});
 				}
 			}
-			catch (Throwable t) {}
+			catch (Throwable t) {
+				t.printStackTrace();
+			}
 		}
 	}
 

@@ -54,19 +54,8 @@ public class Container_RoundRobinator extends Container {
 		this.posX = te.xCoord;
 		this.posY = te.yCoord;
 		this.posZ = te.zCoord;
-		Logger.INFO("1");
 
 		int o = 0;
-
-		// Storage Side
-		/*for (var6 = 0; var6 < 3; var6++) {
-			for (var7 = 0; var7 < 5; var7++) {
-				this.addSlotToContainer(new SlotIntegratedCircuit(o, this.inventoryChest, o, 44 + (var7 * 18), 15 + (var6 * 18)));
-				o++;
-			}
-		}*/
-		
-		
 		int xStart = 134;
 		int yStart = 32;
 
@@ -76,14 +65,6 @@ public class Container_RoundRobinator extends Container {
 		this.addSlotToContainer(new SlotNoInput(this.inventoryChest, o++, xStart+18, yStart));
 		this.addSlotToContainer(new SlotNoInput(this.inventoryChest, o++, xStart, yStart+17));
 		this.addSlotToContainer(new SlotNoInput(this.inventoryChest, o++, xStart+18, yStart+17));		
-		Logger.INFO("2");
-		
-		//Add Output
-		//this.addSlotToContainer(new SlotNoInput(this.inventoryChest, SLOT_OUTPUT, xStart+(8*18), yStart+54));
-		//o++;
-		Logger.INFO("3");
-
-		
 		
 		// Player Inventory
 		for (var6 = 0; var6 < 3; ++var6) {
@@ -95,12 +76,10 @@ public class Container_RoundRobinator extends Container {
 		for (var6 = 0; var6 < 9; ++var6) {
 			this.addSlotToContainer(new Slot(inventory, var6, 8 + (var6 * 18), 142));
 		}
-		
-		
-		
-		Logger.INFO("4");
 		}
-		catch (Throwable t) {}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
 		this.detectAndSendChanges();
 
 	}
@@ -110,11 +89,9 @@ public class Container_RoundRobinator extends Container {
 			final EntityPlayer aPlayer) {
 
 		if (!aPlayer.worldObj.isRemote) {
-			if ((aSlotIndex == 999) || (aSlotIndex == -999)) {
-			}
-			else if (aSlotIndex < 4) {
+			if (aSlotIndex < 4) {
 				this.tile_entity.toggleSide(aSlotIndex+2);				
-				Logger.INFO("Toggling side: "+(aSlotIndex+2)+" | Active: "+this.tile_entity.getSideActive(aSlotIndex+2)+" | Data:"+this.tile_entity.getDataString());
+				//Logger.INFO("Toggling side: "+(aSlotIndex+2)+" | Active: "+this.tile_entity.getSideActive(aSlotIndex+2)+" | Data:"+this.tile_entity.getDataString());
 			}
 		}
 		return GT_Values.NI;
@@ -141,7 +118,7 @@ public class Container_RoundRobinator extends Container {
 		try {
 			super.addCraftingToCrafters(par1ICrafting);
 		} catch (Throwable var3) {
-			
+			var3.printStackTrace();			
 		}
 	}
 
@@ -149,6 +126,7 @@ public class Container_RoundRobinator extends Container {
 		try {
 			super.removeCraftingFromCrafters(par1ICrafting);
 		} catch (Throwable var3) {
+			var3.printStackTrace();		
 		}
 	}
 
@@ -157,6 +135,7 @@ public class Container_RoundRobinator extends Container {
 			super.detectAndSendChanges();
 			detectAndSendChangesEx();
 		} catch (Throwable var2) {
+			var2.printStackTrace();		
 		}
 	}
 
@@ -165,6 +144,7 @@ public class Container_RoundRobinator extends Container {
 			super.updateProgressBar(par1, par2);
 			updateProgressBarEx(par1, par2);
 		} catch (Throwable var4) {
+			var4.printStackTrace();		
 		}
 	}
 	
@@ -200,9 +180,6 @@ public class Container_RoundRobinator extends Container {
 			this.mSide_4 = aTemp[3] ? 1 : 0;
 			this.mTier = this.tile_entity.getTier();
 			this.mTickRate = this.tile_entity.getTickRate();
-
-			String InventoryContents = ArrayUtils.toString(aTemp, "null");
-			//Logger.INFO("Test: "+InventoryContents);
 			++this.mTimer;
 			Iterator var2 = this.crafters.iterator();
 
