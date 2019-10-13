@@ -179,16 +179,35 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         return this.plasmid;
     }
 
-    public void setPlasmid(BioPlasmid plasmid) {
+    public BioCulture setPlasmid(BioPlasmid plasmid) {
+        return checkForExisting(new BioCulture(this.color, this.name, this.ID, plasmid, this.dDNA, this.rarity, this.bBreedable));
+    }
+
+    private BioCulture checkForExisting(BioCulture culture) {
+        if (culture == null)
+            return null;
+        for (BioCulture bc : BioCulture.BIO_CULTURE_ARRAY_LIST)
+            if (culture.getdDNA().equals(bc.getdDNA()) && culture.getPlasmid().equals(bc.getPlasmid()))
+                return bc;
+        return culture;
+    }
+
+    public BioCulture setPlasmidUnsafe(BioPlasmid plasmid) {
         this.plasmid = plasmid;
+        return this;
     }
 
     public BioDNA getdDNA() {
         return this.dDNA;
     }
 
-    public void setdDNA(BioDNA dDNA) {
+    public BioCulture setdDNA(BioDNA dDNA) {
+        return checkForExisting(new BioCulture(this.color, this.name, this.ID, this.plasmid, dDNA, this.rarity, this.bBreedable));
+    }
+
+    public BioCulture setdDNAUnsafe(BioDNA dDNA) {
         this.dDNA = dDNA;
+        return this;
     }
 
     @Override

@@ -2,19 +2,12 @@ package com.github.bartimaeusnek.crossmod.tectech;
 
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
-import com.github.technus.tectech.thing.CustomItemList;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.HashSet;
 
 public class TecTechResearchLoader  {
 

@@ -225,6 +225,10 @@ public class BW_Util {
         return (aStack1 == null && aStack2 == null) || GT_Utility.areStacksEqual(aStack1, aStack2);
     }
 
+    public static boolean areStacksEqualOrEachNull(ItemStack aStack1, ItemStack aStack2) {
+        return aStack1 == null || aStack2 == null || GT_Utility.areStacksEqual(aStack1, aStack2);
+    }
+
     public static byte getByteFromRarity(EnumRarity rarity) {
         if (rarity.equals(EnumRarity.uncommon))
             return 1;
