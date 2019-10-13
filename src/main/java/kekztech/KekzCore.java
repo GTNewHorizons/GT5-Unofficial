@@ -164,7 +164,7 @@ public class KekzCore {
 				200, 256);
 		final ItemStack[] tfftstoragefield1 = {
 			GT_Utility.getIntegratedCircuit(6),
-			GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 4),
+			GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1),
 			GT_OreDictUnificator.get(OrePrefixes.plate, Materials.PulsatingIron, 1),
 			GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 1),
 			ItemList.Electric_Pump_MV.get(1L, (Object[]) null)
@@ -176,9 +176,9 @@ public class KekzCore {
 				200, 256);
 		final ItemStack[] tfftstoragefield2 = {
 				GT_Utility.getIntegratedCircuit(6),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2),
 				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.PulsatingIron, 4),
-				GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1),
+				GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1),
 				ItemList.Electric_Pump_HV.get(1L, (Object[]) null)
 			};
 		GT_Values.RA.addAssemblerRecipe(

@@ -1,5 +1,7 @@
 package tileentities;
 
+import org.lwjgl.input.Keyboard;
+
 import container.GUIContainer_ModularNuclearReactor;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
@@ -8,6 +10,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import kekztech.MultiBlockTooltipBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -38,7 +41,23 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 
 	@Override
 	public String[] getDescription() {
-		return new String[] { 
+		final MultiBlockTooltipBuilder b =  new MultiBlockTooltipBuilder();
+		b.addInfo("DO NOT CHEAT IN THIS MACHINE")
+				.addInfo("I'm not quite finished yet")
+				.addSeparator()
+				.beginStructureBlock(5, 5, 5)
+				.addController("Front Center")
+				.addCasingInfo("Radiation Proof Machine Casing", 80)
+				.addDynamoHatch("ONLY in EU-mode, at least one")
+				.addOtherStructurePart("Input Bus, Output Bus", "Optional but required for automation")
+				.addOtherStructurePart("Input Hatch, Output Hatch", "ONLY in Coolant-Mode, at least one each")
+				.signAndFinalize("Kekzdealer");
+		if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			return b.getInformation();
+		} else {
+			return b.getStructureInformation();
+		}
+		/*return new String[] { 
 				"DO NOT CHEAT IN THIS MACHINE",
 				"I'm not quite finished yet",
 				"------------------------------------------",
@@ -49,7 +68,7 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 				"   Dynamo Hatch: ONLY in EU-mode, at least one",
 				"   Input Bus, Output Bus: Optional but required for automation",
 				"   Input Hatch, Output Hatch: ONLY in Coolant-Mode, at least one each"
-				};	
+				};*/
 	}
 
 	@Override

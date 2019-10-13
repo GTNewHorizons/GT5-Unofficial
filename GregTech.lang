@@ -953,6 +953,8 @@ languagefile {
     S:TileEntity_DESCRIPTION_13102_Index_9=   Dynamo Hatch back center
     S:TileEntity_DESCRIPTION_13103_Index_0=DO NOT CHEAT IN THIS MACHINE
     S:TileEntity_DESCRIPTION_13103_Index_1=I'm not quite finished yet
+    S:TileEntity_DESCRIPTION_13103_Index_10=Hold §l[LSHIFT]§rto display structure guidelines
+    S:TileEntity_DESCRIPTION_13103_Index_11=Created by Kekzdealer
     S:TileEntity_DESCRIPTION_13103_Index_2=------------------------------------------
     S:TileEntity_DESCRIPTION_13103_Index_3=Dimensions: 5x5x5 (WxHxL)
     S:TileEntity_DESCRIPTION_13103_Index_4=Structure:

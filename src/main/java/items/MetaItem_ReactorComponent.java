@@ -2,6 +2,8 @@ package items;
 
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import kekztech.KekzCore;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import reactor.items.CoolantCell;
 import reactor.items.FuelRod;
@@ -83,7 +86,12 @@ public class MetaItem_ReactorComponent extends Item {
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
-		list.add("Part for the Modular Nuclear Reactor");
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			list.add("Property = 1");
+		} else {
+			list.add("Part for the Modular Nuclear Reactor");
+			list.add("Hold " + EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + "to display properties");
+		}
 	}
 	
 	@Override

@@ -31,7 +31,7 @@ public class GUIContainer_ModularNuclearReactor extends GuiContainer {
  
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         
-        drawTexturedModalRect(100, 100, 0, 0, 300, 200);
+        drawTexturedModalRect(100, 100, 0, 0, 260, 230);
     }
  
     @Override
