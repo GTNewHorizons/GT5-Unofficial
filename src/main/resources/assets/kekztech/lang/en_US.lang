@@ -82,3 +82,7 @@ tile.kekztech_tfftstoragefieldblock2_block.name=T.F.F.T Storage Field Block (Tie
 tile.kekztech_tfftstoragefieldblock3_block.name=T.F.F.T Storage Field Block (Tier III)
 tile.kekztech_tfftstoragefieldblock4_block.name=T.F.F.T Storage Field Block (Tier IV)
 tile.kekztech_tfftmultihatch_block.name=T.F.F.T Multi-Fluid I/O Hatch
+
+tile.kekztech_controlrod_block.name=Nuclear Reactor Control Rod
+tile.kekztech_reactorchamberoff_block.name=Nuclear Reactor Chamber (OFF)
+tile.kekztech_reactorchamberon_block.name=Nuclear Reactor Chamber (ON)

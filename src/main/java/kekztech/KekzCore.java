@@ -1,6 +1,9 @@
 package kekztech;
 
+import blocks.Block_ControlRod;
 import blocks.Block_GDCUnit;
+import blocks.Block_ReactorChamber_OFF;
+import blocks.Block_ReactorChamber_ON;
 import blocks.Block_TFFTCasing;
 import blocks.Block_TFFTMultiHatch;
 import blocks.Block_TFFTStorageFieldBlockT1;
@@ -73,6 +76,9 @@ public class KekzCore {
 		Block_TFFTStorageFieldBlockT3.getInstance().registerBlock();
 		Block_TFFTStorageFieldBlockT4.getInstance().registerBlock();
 		Block_TFFTMultiHatch.getInstance().registerBlock();
+		Block_ReactorChamber_OFF.getInstance().registerBlock();
+		Block_ReactorChamber_ON.getInstance().registerBlock();
+		Block_ControlRod.getInstance().registerBlock();
 		// Register TileEntities
 		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");
 	}
@@ -224,6 +230,31 @@ public class KekzCore {
 				FluidRegistry.getFluidStack("molten.epoxid", 576),
 				new ItemStack(Block_TFFTMultiHatch.getInstance(), 1), 
 				6000, 480);
+		
+		// Reactor structure blocks
+		final ItemStack[] controlrod = {
+				GT_Utility.getIntegratedCircuit(6),
+				GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Lead, 1),
+				GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 4),
+				GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64)
+			};
+		GT_Values.RA.addAssemblerRecipe(
+				controlrod, 
+				null,
+				new ItemStack(Block_ControlRod.getInstance(), 1), 
+				800, 480);
+		final ItemStack[] reactorchamber = {
+				GT_Utility.getIntegratedCircuit(6),
+				GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Lead, 1),
+				GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Lead, 9),
+				GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TungstenSteel, 18),
+				GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel, 2),
+			};
+		GT_Values.RA.addAssemblerRecipe(
+				reactorchamber, 
+				FluidRegistry.getFluidStack("wet.concrete", 144),
+				new ItemStack(Block_ReactorChamber_OFF.getInstance(), 1), 
+				1600, 480);
 		
 		// Ceramic plates
 		GT_Values.RA.addAlloySmelterRecipe(

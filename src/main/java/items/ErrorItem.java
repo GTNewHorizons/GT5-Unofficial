@@ -35,7 +35,7 @@ public class ErrorItem extends Item {
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
-		list.add("REMINDER: KekzTech recipes are only confirmed to work in GTNH!");
+		list.add("REMINDER: KekzTech recipes are only tested to work in GTNH!");
 		list.add("Placeholder item in case something went wrong");
 		list.add("If this item shows up in GTNH, you may report it to:");
 		list.add("https://github.com/kekzdealer/KekzTech");

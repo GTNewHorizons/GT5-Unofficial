@@ -1,10 +1,17 @@
 package tileentities;
 
+import org.joml.Vector2i;
+import org.joml.Vector2ic;
+import org.joml.Vector3i;
+import org.joml.Vector3ic;
 import org.lwjgl.input.Keyboard;
 
-import container.GUIContainer_ModularNuclearReactor;
+import blocks.Block_ControlRod;
+import blocks.Block_ReactorChamber_OFF;
+import blocks.Block_ReactorChamber_ON;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -18,9 +25,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBase {
 	
-	final Block CASING = GregTech_API.sBlockCasings3;
-	final int CASING_META = 12;
-	final int CASING_TEXTURE_ID = 44;
+	private final Block CASING = GregTech_API.sBlockCasings3;
+	private final int CASING_META = 12;
+	private final int CASING_TEXTURE_ID = 44;
+	
+	private final Block CHAMBER_OFF = Block_ReactorChamber_OFF.getInstance();
+	private final Block CHAMBER_ON = Block_ReactorChamber_ON.getInstance();
+	private final Block CONTROL_ROD = Block_ControlRod.getInstance();
 	
 	private boolean euMode = true;
 	
@@ -72,10 +83,10 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 	
 	// TODO: Opening UI crashes server. Controller isn't craftable right now.
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		/*return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
-				"MultiblockDisplay.png");*/
+		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
+				"MultiblockDisplay.png");
 		// In case someone ignores the warning...
-		return new GUIContainer_ModularNuclearReactor(aBaseMetaTileEntity, aPlayerInventory.player);
+		//return new GUIContainer_ModularNuclearReactor(aBaseMetaTileEntity, aPlayerInventory.player);
 	}
 
 	@Override
@@ -87,90 +98,119 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 	public boolean checkRecipe(ItemStack stack) {
 		return false;
 	}
+	
+	@Override
+	public void onPostTick(IGregTechTileEntity thisController, long aTick) {
+		super.onPostTick(thisController, aTick);
+		
+		if(super.getBaseMetaTileEntity().isActive()) {
+			// Switch to ON blocks
+		} else {
+			// Switch to OFF blocks
+		}
+	}
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {		
-		
-		final byte SIDE_LENGTH = 5;
-		final byte MAX_OFFSET = (byte) Math.floor(SIDE_LENGTH / 2);
-		final int XDIR_BACKFACE = ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX * MAX_OFFSET;
-		final int ZDIR_BACKFACE = ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ * MAX_OFFSET;
-
-		int minCasingAmount = 92; 
+		// Figure out the vector for the direction the back face of the controller is facing
+		final Vector2ic forgeDirection = new Vector2i(
+				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
+				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
+				);
+		int minCasingAmount = 100;
 		boolean checklist = true; // if this is still true at the end, machine is good to go :)
 		
-		for (int leftToRight = -MAX_OFFSET; leftToRight <= MAX_OFFSET; leftToRight++) {
-			
-			for (int frontToBack = -MAX_OFFSET; frontToBack <= MAX_OFFSET; frontToBack++) {
-				
-				for (int thisY = -MAX_OFFSET; thisY <= MAX_OFFSET; thisY++) {
-					
-					// Center 3x3x3 air cube
-					if((leftToRight > -2 && leftToRight < 2) && (frontToBack > -2 && frontToBack < 2) && (thisY > -2 && thisY < 2)) {
-						if(!thisController.getAirOffset(XDIR_BACKFACE + leftToRight, thisY, ZDIR_BACKFACE + frontToBack)) {
+		// Determine the ground level center of the structure
+		final Vector3ic center = new Vector3i(
+				thisController.getXCoord(),
+				thisController.getYCoord(),
+				thisController.getZCoord())
+				.add(forgeDirection.x() * 3, 0, forgeDirection.y() * 3);
+		// Scan for outer tube
+		//	- Scan sides
+		for(int x = -3; x <= 3; x++) {
+			for(int z = -3; z <= 3; z++) {
+				// Only scan the three wide even sides, skip rest
+				if((Math.abs(x) <= 1 && Math.abs(z) == 3) || (Math.abs(z) <= 1 && Math.abs(x) == 3)) {
+					for(int h = 0; h < 6; h++) {
+						final Vector3ic pos = new Vector3i(center.x() + x, center.y() + h, center.z() + z);
+						if(h == 0 && pos.x() == thisController.getXCoord() && pos.y() == thisController.getYCoord() && pos.z() == thisController.getZCoord()) {
+							// Ignore controller
+							continue;
+						} else if (thisController.getBlock(pos.x(), pos.y(), pos.z()) == CASING
+								&& thisController.getMetaID(pos.x(), pos.y(), pos.z()) == CASING_META) {
+							minCasingAmount--;
+						} else {
 							checklist = false;
-						}
-					} else if (!(XDIR_BACKFACE + leftToRight == 0 && ZDIR_BACKFACE + frontToBack == 0 && thisY == 0)) { // Make sure this isn't the controller
-						// Get next TE
-						final int THIS_X = XDIR_BACKFACE + leftToRight;
-						final int THIS_Z = ZDIR_BACKFACE + frontToBack;
-						IGregTechTileEntity currentTE = 
-								thisController.getIGregTechTileEntityOffset(THIS_X, thisY, THIS_Z);// x, y ,z
-						
-						// Tries to add TE as either of those kinds of hatches.
-						// The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
-						if (   !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID) 
-							&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addDynamoToMachineList(currentTE, CASING_TEXTURE_ID)) {
-							
-							// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-							if ((thisController.getBlockOffset(THIS_X, thisY, THIS_Z) == CASING) && (thisController.getMetaIDOffset(THIS_X, thisY, THIS_Z) == CASING_META)) {
-								// Seems to be valid casing. Decrement counter.
-								minCasingAmount--;
-							} else {
-								checklist = false;
-							}
 						}
 					}
 				}
 			}
 		}
+		// 	- Scan corners of tube
+		for(int x = -2; x <= 2; x++) {
+			for(int z = -2; z <= 2; z++) {
+				// Only scan the four corners, skip rest
+				if(Math.abs(x) + Math.abs(z) == 4) {
+					for(int h = 0; h < 6; h++) {
+						final Vector3ic pos = new Vector3i(center.x() + x, center.y() + h, center.z() + z);
+						if(h == 0 && pos.x() == thisController.getXCoord() && pos.y() == thisController.getYCoord() && pos.z() == thisController.getZCoord()) {
+							// Ignore controller
+							continue;
+						} else if (thisController.getBlock(pos.x(), pos.y(), pos.z()) == CASING
+								&& thisController.getMetaID(pos.x(), pos.y(), pos.z()) == CASING_META) {
+							minCasingAmount--;
+						} else {
+							checklist = false;
+						}
+					}
+				}
+			}
+		}
+		// Scan ground layer
+		for(int x = -2; x <= 2; x++) {
+			for(int z = -2; z <= 2; z++) {
+				if(!(thisController.getBlock(center.x() + x, center.y(), center.z() + z) == CASING 
+						&& thisController.getMetaID(center.x() + x, center.y(), center.z() + z) == CASING_META)) {
+					checklist = false;
+				} else {
+					minCasingAmount--;
+				}
+			}
+		}
+		// Scan reactor chambers
+		for(int x = -2; x <= 2; x++) {
+			for(int z = -2; z <= 2; z++) {
+				// Skip if diagonal, don't skip center
+				if(Math.abs(x) == Math.abs(z) && !(x == 0 && z == 0)) {
+					continue;
+				}
+				if(!(thisController.getBlock(center.x() + x, center.y() + 1, center.z() + z) == CHAMBER_OFF
+						|| thisController.getBlock(center.x() + x, center.y() + 1, center.z() + z) == CHAMBER_ON)) {
+					checklist = false;
+				}
+			}
+		}
+		// Scan control rods
+		for(int h = 1; h < 5; h++) {
+			for(int x = -1; x <= 1; x++) {
+				for(int z = -1; z <= 1; z++) {
+					// Only check diagonal
+					if(x == 0 || z == 0) {
+						continue;
+					}
+					if(!(thisController.getBlock(center.x() + x, center.y() + h, center.z() + z) == CONTROL_ROD)) {
+						checklist = false;
+					}
+				}
+			}			
+		}
+		
+		
+		
 		
 		if(minCasingAmount > 0) {
 			checklist = false;
-		}
-		
-		if(euMode) {
-			if(this.mDynamoHatches.size() == 0) {
-				System.out.println("Dynamo hatches are required in EU mode!");
-				checklist = false;
-			}
-			if(this.mInputHatches.size() > 0) {
-				System.out.println("Input hatches are only allowed in coolant mode!");
-				checklist = false;
-			}
-			if(this.mOutputHatches.size() > 0) {
-				System.out.println("Output hatches are only allowed in coolant mode!");
-				checklist = false;
-			}
-		} else {
-			if(this.mDynamoHatches.size() > 0) {
-				System.out.println("Dynamo hatches are only allowed in EU mode!");
-				checklist = false;
-			}
-			if(this.mInputHatches.size() == 0) {
-				System.out.println("Coolant input hatches are required in coolant mode!");
-				checklist = false;
-			}
-			if(this.mOutputHatches.size() == 0) {
-				System.out.println("Hot coolant output hatches are required in coolant mode!");
-				checklist = false;
-			}
-		}
-		
-		if(this.mMaintenanceHatches.size() < 1) {
-			System.out.println("You need a maintenance hatch to do maintenance.");
 		}
 		
 		return checklist;

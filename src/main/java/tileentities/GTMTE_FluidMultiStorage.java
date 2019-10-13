@@ -201,7 +201,6 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		if(mfh != null) {
 			mfh.setLock(!super.getBaseMetaTileEntity().isActive());
 		}
-		
 	}
 	
 	public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {

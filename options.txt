@@ -1,7 +1,7 @@
 invertYMouse:false
 mouseSensitivity:0.5
 fov:0.125
-gamma:1.0
+gamma:0.18309858
 saturation:0.0
 renderDistance:6
 guiScale:3
@@ -11,7 +11,7 @@ anaglyph3d:false
 advancedOpengl:false
 maxFps:60
 fboEnable:true
-difficulty:2
+difficulty:0
 fancyGraphics:true
 ao:2
 clouds:false
