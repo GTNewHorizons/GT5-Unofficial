@@ -2,6 +2,7 @@ package gtPlusPlus.plugin.agrichem;
 
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.plugin.agrichem.fluids.FluidLoader;
+import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
 import gtPlusPlus.plugin.manager.Core_Manager;
 
 public class Core_Agrichem implements IPlugin {
@@ -17,6 +18,7 @@ public class Core_Agrichem implements IPlugin {
 	@Override
 	public boolean preInit() {		
 		FluidLoader.generate();
+		new ItemAlgaeBase();
 		return true;
 	}
 
