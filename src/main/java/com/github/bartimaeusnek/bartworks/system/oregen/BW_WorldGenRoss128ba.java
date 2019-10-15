@@ -70,8 +70,8 @@ public class BW_WorldGenRoss128ba extends BW_OreLayer  {
 
     public static void init_undergroundFluids() {
         String ross128b = StatCollector.translateToLocal("moon.Ross128ba");
-        uo_dimensionList.SetConfigValues(ross128b, ross128b, SaltWater.getFluid(1).getFluid().getName(), SaltWater.getFluid(1).getFluid().getName(), 0, 625, 40, 5);
-        uo_dimensionList.SetConfigValues(ross128b, ross128b, Helium_3.getGas(1).getFluid().getName(), Helium_3.getGas(1).getFluid().getName(), 0, 625, 60, 5);
+        uo_dimensionList.SetConfigValues(ross128b, ross128b, SaltWater.getFluid(1).getFluid().getName(), SaltWater.getFluid(1).getFluid().getName(), 0, 1250, 40, 5);
+        uo_dimensionList.SetConfigValues(ross128b, ross128b, Helium_3.getGas(1).getFluid().getName(), Helium_3.getGas(1).getFluid().getName(), 0, 1250, 60, 5);
     }
 
     @Override

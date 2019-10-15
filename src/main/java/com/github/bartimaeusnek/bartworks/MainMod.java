@@ -81,6 +81,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 
+import static com.github.bartimaeusnek.bartworks.common.loaders.BioRecipeLoader.runOnServerStarted;
 import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor.eicMap;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
 import static gregtech.api.enums.GT_Values.VN;
@@ -220,6 +221,7 @@ public final class MainMod {
         if (classicMode)
             new DownTierLoader().run();
         fixEnergyRequirements();
+        runOnServerStarted();
     }
 
     private static void fixEnergyRequirements() {

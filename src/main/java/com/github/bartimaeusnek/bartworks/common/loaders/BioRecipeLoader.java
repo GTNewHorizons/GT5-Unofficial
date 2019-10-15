@@ -35,6 +35,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -379,5 +380,13 @@ public class BioRecipeLoader extends RecipeLoader {
         GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(10),new FluidStack(FluidLoader.fulvicAcid,1000),new FluidStack(FluidLoader.heatedfulvicAcid,1000),90, BW_Util.getMachineVoltageFromTier(2));
         GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(10),null,new FluidStack(FluidLoader.heatedfulvicAcid,1000),new FluidStack(FluidLoader.Kerogen,1000),null,75, BW_Util.getMachineVoltageFromTier(2));
         GT_Values.RA.addPyrolyseRecipe(Materials.Wood.getDust(10),new FluidStack(FluidLoader.Kerogen,1000),10,null,Materials.Oil.getFluid(1000),105, BW_Util.getMachineVoltageFromTier(3));
+    }
+
+    public static void runOnServerStarted(){
+        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sFermentingRecipes.mRecipeList){
+            FluidStack[] flInput = new FluidStack[]{new FluidStack(recipe.mFluidInputs[0], recipe.mFluidInputs[0].amount*100)};
+            FluidStack[] flOutput = new FluidStack[]{new FluidStack(recipe.mFluidOutputs[0], recipe.mFluidOutputs[0].amount)};
+            BWRecipes.instance.addBacterialVatRecipe(new ItemStack[]{null},BioCultureLoader.generalPurposeFermentingBacteria,flInput,flOutput,recipe.mDuration > 10 ? recipe.mDuration/10 : recipe.mDuration,recipe.mEUt,GT_Utility.getTier(recipe.mEUt));
+        }
     }
 }

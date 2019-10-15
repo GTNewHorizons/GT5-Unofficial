@@ -38,7 +38,7 @@ import java.util.Objects;
 
 public class BioCulture extends BioData implements IColorModulationContainer {
 
-    public static final ArrayList<BioCulture> BIO_CULTURE_ARRAY_LIST = new ArrayList<BioCulture>();
+    public static final ArrayList<BioCulture> BIO_CULTURE_ARRAY_LIST = new ArrayList<>();
     public static final BioCulture NULLCULTURE = BioCulture.createAndRegisterBioCulture(Color.BLUE, "", BioPlasmid.NULLPLASMID, BioDNA.NULLDNA, false); //fallback NULL culture, also Blue =)
 
     public String getLocalisedName() {

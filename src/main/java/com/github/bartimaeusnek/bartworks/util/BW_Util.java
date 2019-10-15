@@ -300,8 +300,8 @@ public class BW_Util {
                 xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
             }
 
-            if (xEUt > maxInputVoltage){
-                //downclock one notch, we have overshot.
+            while (xEUt > maxInputVoltage){
+                //downclock one notch until we are good again, we have overshot.
                 xEUt >>=2;
                 base.mMaxProgresstime <<= 1;
             }
