@@ -39,6 +39,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Emitter_ULV,
 	Sensor_ULV,
 
+	//Recipe Circuit
+	Circuit_BioRecipeSelector,
+	
 	//Circuits
 	Old_Circuit_Primitive, Old_Circuit_Basic, Old_Circuit_Good,
 	Old_Circuit_Advanced, Old_Circuit_Data, Old_Circuit_Elite,
@@ -611,7 +614,6 @@ public enum GregtechItemList implements GregtechItemContainer {
 	private ItemStack mStack;
 	private boolean mHasNotBeenSet = true;
 
-	public static Fluid sOilExtraHeavy, sOilHeavy, sOilMedium, sOilLight, sNaturalGas;
 
 	@Override
 	public GregtechItemList set(final Item aItem) {

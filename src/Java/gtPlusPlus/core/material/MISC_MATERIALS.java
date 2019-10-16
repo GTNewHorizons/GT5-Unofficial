@@ -103,6 +103,21 @@ public final class MISC_MATERIALS {
 					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1)
 			});
 
+	public static final Material CARBON_MONOXIDE = new Material(
+			"Carbon Monoxide",
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().CARBON, 1),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1)
+			});
+
 	public static final Material CARBON_DIOXIDE = new Material(
 			"Carbon Dioxide",
 			MaterialState.PURE_LIQUID, //State

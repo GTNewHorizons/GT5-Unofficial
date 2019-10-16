@@ -248,10 +248,20 @@ public class PollutionUtils {
 				else {
 					MaterialGenerator.generate(MISC_MATERIALS.CARBON_DIOXIDE, false, false);
 				}
+				
 				if (CM != null) {
 					Logger.INFO("[PollutionCompat] Found carbon monoxide fluid, registering it.");
 					PollutionUtils.mPollutionFluidStacks.put(CM);
+					ItemStack cellCD = ItemUtils.getItemStackOfAmountFromOreDict("cellCarbonMonoxide", 1);
+					if (ItemUtils.checkForInvalidItems(cellCD)) {
+						Logger.INFO("[PollutionCompat] Found carbon dioxide cell, registering component.");
+						MISC_MATERIALS.CARBON_MONOXIDE.registerComponentForMaterial(OrePrefixes.cell, cellCD);
+					}
 				}
+				else {
+					MaterialGenerator.generate(MISC_MATERIALS.CARBON_MONOXIDE, false, false);
+				}
+				
 				if (SD != null) {
 					Logger.INFO("[PollutionCompat] Found sulfur dioxide fluid, registering it.");
 					PollutionUtils.mPollutionFluidStacks.put(SD);

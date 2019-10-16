@@ -3038,6 +3038,14 @@ tile.blockRoundRobinator.4.name=Round Robinator V
 
 
 //Added 16/10/19
+
+item.BioRecipeSelector.name=Programmed Circuit
+item.FermentationBase.name=Cell of Fermentation Base
+item.ureamix.name=Cell of Urea Mix
+item.liquidresin.name=Cell of Liquid Resin
+item.propionicacid.name=Propionic Acid Cell
+item.aceticacid.name=Acetic Acid Cell
+
 item.BasicAgrichemItem.0.name=Algae Biomass
 item.BasicAgrichemItem.1.name=Green Algae Biomass
 item.BasicAgrichemItem.2.name=Brown Algae Biomass
@@ -3059,5 +3067,4 @@ item.BasicAgrichemItem.17.name=Aluminium Pellet
 item.BasicAgrichemItem.18.name=Sodium Aluminate
 item.BasicAgrichemItem.19.name=Sodium Hydroxide
 item.BasicAgrichemItem.20.name=Sodium Carbonate
-item.BasicAgrichemItem.21.name=Carlcium Carbonate
-item.BasicAgrichemItem.22.name=Lithium Chloride
+item.BasicAgrichemItem.21.name=Lithium Chloride

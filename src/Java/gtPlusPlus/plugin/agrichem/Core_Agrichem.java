@@ -4,10 +4,13 @@ import java.util.List;
 
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.plugin.agrichem.fluids.FluidLoader;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
+import gtPlusPlus.plugin.agrichem.item.algae.ItemBioChip;
 import gtPlusPlus.plugin.manager.Core_Manager;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -17,6 +20,7 @@ public class Core_Agrichem implements IPlugin {
 	final static Core_Agrichem mInstance;
 	
 	public static Item mAlgae;
+	public static Item mBioCircuit;
 	public static Item mAgrichemItem1;
 	
 	/*
@@ -75,15 +79,22 @@ public class Core_Agrichem implements IPlugin {
 	}
 
 	@Override
-	public boolean preInit() {		
+	public boolean preInit() {
+		mInstance.log("Generating Fluids");		
 		FluidLoader.generate();
+		AgrichemFluids.init();
+		mInstance.log("Generating Items");
 		mAlgae = new ItemAlgaeBase();
 		mAgrichemItem1 = new ItemAgrichemBase();
+		mBioCircuit = new ItemBioChip();
+		mInstance.log("Setting Bio Circuit");
+		GregtechItemList.Circuit_BioRecipeSelector.set(mBioCircuit);
 		return true;
 	}
 
 	@Override
 	public boolean init() {
+		mInstance.log("Setting Items");
 		mAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 0, 1);
 		mGreenAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 1, 1);
 		mBrownAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 2, 1);
@@ -130,6 +141,7 @@ public class Core_Agrichem implements IPlugin {
 		mSodiumCarbonate = ItemUtils.simpleMetaStack(mAgrichemItem1, 20, 1);
 		mLithiumChloride = ItemUtils.simpleMetaStack(mAgrichemItem1, 21, 1);
 
+		mInstance.log("OreDicting Items");
 		ItemUtils.addItemToOreDictionary(mGreenAlgaeBiosmass, "biomassGreenAlgae");
 		ItemUtils.addItemToOreDictionary(mBrownAlgaeBiosmass, "biomassBrownAlgae");
 		ItemUtils.addItemToOreDictionary(mGoldenBrownAlgaeBiosmass, "biomassGoldenBrownAlgae");
@@ -156,13 +168,14 @@ public class Core_Agrichem implements IPlugin {
 			ItemUtils.addItemToOreDictionary(mSodiumHydroxide, "dustSodiumHydroxide");			
 		}
 		ItemUtils.addItemToOreDictionary(mSodiumCarbonate, "dustSodiumCarbonate");
-		ItemUtils.addItemToOreDictionary(mLithiumChloride, "dustLithiumChloride");
-		
+		ItemUtils.addItemToOreDictionary(mLithiumChloride, "dustLithiumChloride");		
 		return true;
 	}
 
 	@Override
 	public boolean postInit() {
+		mInstance.log("Generating Recipes");
+		BioRecipes.init();
 		return true;
 	}
 

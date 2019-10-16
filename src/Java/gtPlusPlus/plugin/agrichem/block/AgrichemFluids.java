@@ -1,5 +1,9 @@
 package gtPlusPlus.plugin.agrichem.block;
 
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+
 public class AgrichemFluids {
 
 	/*
@@ -22,5 +26,47 @@ public class AgrichemFluids {
 	 * Ethylbenzene - fluid.ethylbenzene
 	 * Styrene - styrene
 	 */
+
+	public static Fluid mAceticAcid;
+	public static Fluid mPropionicAcid;
+	public static Fluid mFermentationBase;
+	public static Fluid mUrea;
+	public static Fluid mLiquidResin;
+	
+	
+	public static void init() {
+		if (!FluidRegistry.isFluidRegistered("aceticacid")) {
+			mAceticAcid = FluidUtils.generateFluidNoPrefix("aceticacid", "Acetic Acid", 200, new short[] { 97, 168, 96, 100 }, true);			
+		}
+		else {
+			mAceticAcid = FluidRegistry.getFluid("aceticacid");
+		}
+		if (!FluidRegistry.isFluidRegistered("propionicacid")) {
+			mPropionicAcid = FluidUtils.generateFluidNoPrefix("propionicacid", "Propionic Acid", 200,	new short[] { 198, 209, 148, 100 }, true);			
+		}
+		else {
+			mPropionicAcid = FluidRegistry.getFluid("propionicacid");
+		}
+		if (!FluidRegistry.isFluidRegistered("fermentation.base")) {
+			mFermentationBase = FluidUtils.generateFluidNoPrefix("fermentation.base", "Fermentation Base", 200,	new short[] { 107, 100, 63, 100 }, true);			
+		}
+		else {
+			mFermentationBase = FluidRegistry.getFluid("fermentation.base");
+		}
+		if (!FluidRegistry.isFluidRegistered("ureamix")) {
+			mUrea = FluidUtils.generateFluidNoPrefix("ureamix", "Urea Mix", 200,	new short[] { 71, 55, 12, 100 }, true);			
+		}
+		else {
+			mUrea = FluidRegistry.getFluid("ureamix");
+		}
+		if (!FluidRegistry.isFluidRegistered("liquidresin")) {
+			mLiquidResin = FluidUtils.generateFluidNoPrefix("liquidresin", "Liquid Resin", 200,	new short[] { 59, 58, 56, 100 }, true);			
+		}
+		else {
+			mLiquidResin = FluidRegistry.getFluid("liquidresin");
+		}
+	}
+	
+	
 	
 }
