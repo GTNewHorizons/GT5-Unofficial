@@ -3035,3 +3035,29 @@ tile.blockRoundRobinator.1.name=Round Robinator II
 tile.blockRoundRobinator.2.name=Round Robinator III
 tile.blockRoundRobinator.3.name=Round Robinator IV
 tile.blockRoundRobinator.4.name=Round Robinator V
+
+
+//Added 16/10/19
+item.BasicAgrichemItem.0.name=Algae Biomass
+item.BasicAgrichemItem.1.name=Green Algae Biomass
+item.BasicAgrichemItem.2.name=Brown Algae Biomass
+item.BasicAgrichemItem.3.name=Golden-Brown Algae Biomass
+item.BasicAgrichemItem.4.name=Red Algae Biomass
+item.BasicAgrichemItem.5.name=Cellulose Fiber
+item.BasicAgrichemItem.6.name=Golden-Brown Cellulose Fiber
+item.BasicAgrichemItem.7.name=Red Cellulose Fiber
+item.BasicAgrichemItem.8.name=Compost
+item.BasicAgrichemItem.9.name=Wood Pellet
+item.BasicAgrichemItem.10.name=Wood Brick
+item.BasicAgrichemItem.11.name=Cellulose Pulp
+item.BasicAgrichemItem.12.name=Raw Bio Resin
+item.BasicAgrichemItem.13.name=Catalyst Carrier
+item.BasicAgrichemItem.14.name=Green Metal Catalyst
+item.BasicAgrichemItem.15.name=Alginic Acid
+item.BasicAgrichemItem.16.name=Alumina
+item.BasicAgrichemItem.17.name=Aluminium Pellet
+item.BasicAgrichemItem.18.name=Sodium Aluminate
+item.BasicAgrichemItem.19.name=Sodium Hydroxide
+item.BasicAgrichemItem.20.name=Sodium Carbonate
+item.BasicAgrichemItem.21.name=Carlcium Carbonate
+item.BasicAgrichemItem.22.name=Lithium Chloride
