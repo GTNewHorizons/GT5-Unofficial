@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemAgrichemBase extends Item {
 
@@ -94,10 +95,48 @@ public class ItemAgrichemBase extends Item {
 		return false;
 	}
 
+	private static boolean mHasCheckedForSodiumHydroxide = false;
+	private static boolean mShowSodiumHydroxide = true;
+	
+	private static boolean checkSodiumHydroxide() {
+		if (mHasCheckedForSodiumHydroxide) {
+			return mShowSodiumHydroxide;
+		}
+		else {
+			if (OreDictionary.doesOreNameExist("dustSodiumHydroxide_GT5U")
+					|| OreDictionary.doesOreNameExist("dustSodiumHydroxide")) {
+				List<ItemStack> aTest = OreDictionary.getOres(
+						"dustSodiumHydroxide", false
+				);
+				if (aTest.isEmpty()) {
+					aTest = OreDictionary.getOres(
+							"dustSodiumHydroxide_GT5U", false
+					);
+					if (!aTest.isEmpty()) {
+						mShowSodiumHydroxide = false;
+					}
+				}
+				else {
+					mShowSodiumHydroxide = false;
+				}
+			}
+		}		
+		mHasCheckedForSodiumHydroxide = true;
+		return mShowSodiumHydroxide;
+	}
+
 	@Override
 	public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
 		for (int i=0;i<base.length;i++) {
-			aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));
+			if (i == 19) {
+				// Only show if it doesn't exist.
+				if (checkSodiumHydroxide()) {
+					aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));					
+				}
+			}
+			else {
+				aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));				
+			}
 		}
 	}
 
