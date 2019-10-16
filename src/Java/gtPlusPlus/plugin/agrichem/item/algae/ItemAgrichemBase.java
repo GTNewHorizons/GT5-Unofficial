@@ -46,9 +46,9 @@ public class ItemAgrichemBase extends Item {
 	
 	public ItemAgrichemBase() {
 		this.setHasSubtypes(true);
-		this.setMaxDamage(127);
 		this.setNoRepair();
 		this.setMaxStackSize(64);
+		this.setMaxDamage(0);
 		this.setUnlocalizedName("BasicAgrichemItem");
 		GameRegistry.registerItem(this, this.getUnlocalizedName());
 	}
@@ -138,7 +138,7 @@ public class ItemAgrichemBase extends Item {
 
 	@Override
 	public void registerIcons(final IIconRegister u) {
-		for (int i=0;i<23;i++) {
+		for (int i=0;i<this.base.length;i++) {
 			this.base[i] = u.registerIcon(CORE.MODID + ":" + "bioscience/MetaItem1/"+i);				
 		}
 	}
@@ -162,8 +162,11 @@ public class ItemAgrichemBase extends Item {
 	public IIcon getIcon(ItemStack stack, int pass) {
 		return this.base[stack.getItemDamage()];	
 	}
-	
-	
+
+	@Override
+    public String getUnlocalizedName(ItemStack stack) {
+		return super.getUnlocalizedName() + "." + stack.getItemDamage();
+    }
 	
 
 }
