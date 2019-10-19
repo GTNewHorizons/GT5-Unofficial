@@ -45,6 +45,10 @@ public class GT_Loader_MetaTileEntities implements Runnable {
     private final static String aTextPlate = "PPP"; private final static String aTextPlateWrench = "PwP"; private final static String aTextPlateMotor = "PMP"; private final static String aTextCableHull = "CMC";
     private final static String aTextWireHull = "WMW"; private final static String aTextWireChest = "WTW"; private final static String aTextWireCoil = "WCW"; private final static String aTextMotorWire = "EWE";
     private final static String aTextWirePump = "WPW";
+    public final static String imagination=EnumChatFormatting.RESET + "You just need " + EnumChatFormatting.DARK_PURPLE + "I" + EnumChatFormatting.LIGHT_PURPLE + "m" + EnumChatFormatting.DARK_RED + "a" + EnumChatFormatting.RED + "g" + EnumChatFormatting.YELLOW + "i" + EnumChatFormatting.GREEN + "n" + EnumChatFormatting.AQUA + "a" + EnumChatFormatting.DARK_AQUA + "t" + EnumChatFormatting.BLUE + "i" + EnumChatFormatting.DARK_BLUE + "o" + EnumChatFormatting.DARK_PURPLE + "n" + EnumChatFormatting.RESET + " to use this.";
+    private final static long bits = GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED;
+    private final static long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | bits;
+	
     private final static boolean aBoolConst_0 = false;
 	private final static Boolean isNEILoaded = Loader.isModLoaded("NotEnoughItems");
 	
@@ -54,9 +58,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 	public static String plateCinobiteA243= "plateCinobiteA243";
 	
     private static void run1() {
-    	long bits = GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED;
-    	long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED;
-        GT_ModHandler.addCraftingRecipe(ItemList.Casing_ULV.get(1L, new Object[0]), bits, new Object[]{aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.WroughtIron)});
+    	GT_ModHandler.addCraftingRecipe(ItemList.Casing_ULV.get(1L, new Object[0]), bits, new Object[]{aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.WroughtIron)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_LV.get(1L, new Object[0]), bits, new Object[]{aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.Steel)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_MV.get(1L, new Object[0]), bits, new Object[]{aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.Aluminium)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_HV.get(1L, new Object[0]), bits, new Object[]{aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.StainlessSteel)});
@@ -1356,13 +1358,12 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_LuV.get(1L, new Object[0]), bitsd, new Object[]{"UCU", "FMF", aTextWireCoil, 'M', ItemList.Hull_LuV, 'F', ItemList.Field_Generator_IV, 'C', OrePrefixes.circuit.get(Materials.Master), 'W', OrePrefixes.wireGt04.get(Materials.SuperconductorLuV), 'U', OrePrefixes.stick.get(Materials.Europium)});
         GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_ZPMV.get(1L, new Object[0]), bitsd, new Object[]{"UCU", "FMF", aTextWireCoil, 'M', ItemList.Hull_ZPM, 'F', ItemList.Field_Generator_LuV, 'C', OrePrefixes.circuit.get(Materials.Ultimate), 'W', OrePrefixes.wireGt04.get(Materials.SuperconductorZPM), 'U', OrePrefixes.stick.get(Materials.Americium)});
 
-        ItemList.Processing_Array_T1.set(new GT_MetaTileEntity_ProcessingArray(1199, "multimachine.processingarray.tier.04", "Processing Array Mk 1").getStackForm(1L));
+		ItemList.Processing_Array_T1.set(new GT_MetaTileEntity_ProcessingArray(1199, "multimachine.processingarray.tier.04", "Processing Array Mk 1").getStackForm(1L));
         GT_ModHandler.addCraftingRecipe(ItemList.Processing_Array_T1.get(1L, new Object[0]), bitsd, new Object[]{"CTC", "FMF", "CBC", 'M', ItemList.Hull_EV, 'B', OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.Elite), 'F', ItemList.Robot_Arm_EV, 'T', ItemList.Energy_LapotronicOrb});
         ItemList.Processing_Array_T2.set(new GT_MetaTileEntity_ProcessingArray2(12073, "multimachine.processingarray.tier.06", "Processing Array Mk 2").getStackForm(1L));
         GT_ModHandler.addCraftingRecipe(ItemList.Processing_Array_T2.get(1L, new Object[0]), bitsd, new Object[]{"CTC", "FMF", "CBC", 'M', ItemList.Processing_Array_T1, 'B', OrePrefixes.pipeLarge.get(Materials.TungstenSteel), 'C', OrePrefixes.circuit.get(Materials.Ultimate), 'F', ItemList.Robot_Arm_LuV, 'T', ItemList.Energy_LapotronicOrb2});
         ItemList.Processing_Array_T3.set(new GT_MetaTileEntity_ProcessingArray3(12074, "multimachine.processingarray.tier.08", "Processing Array Mk 3").getStackForm(1L));
         GT_ModHandler.addCraftingRecipe(ItemList.Processing_Array_T3.get(1L, new Object[0]), bitsd, new Object[]{"CTC", "FMF", "CBC", 'M', ItemList.Processing_Array_T2, 'B', OrePrefixes.pipeLarge.get(Materials.NiobiumTitanium), 'C', OrePrefixes.circuit.get(Materials.Infinite), 'F', ItemList.Robot_Arm_UV, 'T', ItemList.Energy_Module});
-        
         
         ItemList.Distillation_Tower.set(new GT_MetaTileEntity_DistillationTower(1126, "multimachine.distillationtower", "Distillation Tower").getStackForm(1L));
         GT_ModHandler.addCraftingRecipe(ItemList.Distillation_Tower.get(1L, new Object[0]), bitsd, new Object[]{"CBC", "FMF", "CBC", 'M', ItemList.Hull_EV, 'B', OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.Data), 'F', ItemList.Electric_Pump_EV});
