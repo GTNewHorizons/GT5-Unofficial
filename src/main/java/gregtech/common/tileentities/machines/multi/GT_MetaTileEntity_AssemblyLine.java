@@ -86,7 +86,7 @@ public class GT_MetaTileEntity_AssemblyLine
             if(GT_Values.D1)
                 GT_FML_LOGGER.info("Stick accepted, " + tDataStickList.size() + " Data Sticks found");
 
-        ItemStack tStack[] = new ItemStack[15];
+        ItemStack[] tStack = new ItemStack[15];
         FluidStack[] tFluids = new FluidStack[4];
         boolean findRecipe = false;
         nextDS:for (ItemStack tDataStick : tDataStickList){
@@ -144,7 +144,7 @@ public class GT_MetaTileEntity_AssemblyLine
                     continue nextDS;
                 }
                 FluidStack fluidInHatch = mInputHatches.get(i).mFluid;
-                if (fluidInHatch == null || !GT_Utility.areFluidsEqual(fluidInHatch, tFluids[i], true) || fluidInHatch.amount < tFluids[i].amount) {
+                if (!GT_Utility.areFluidsEqual(fluidInHatch, tFluids[i], true) || fluidInHatch.amount < tFluids[i].amount) {
                     if(GT_Values.D1)
                         GT_FML_LOGGER.info(i+" not accepted");
                     continue nextDS;
@@ -171,11 +171,17 @@ public class GT_MetaTileEntity_AssemblyLine
                 continue;
             mEUt = tTag.getInteger("eu");
 
+            if (Math.abs(this.mEUt) > this.getMaxInputVoltage()) {
+                if(GT_Values.D1)
+                    GT_FML_LOGGER.info("Found avaiable recipe, but Voltage too low!");
+                return false;
+            }
             if(GT_Values.D1)GT_FML_LOGGER.info("Find avaiable recipe");
                 findRecipe = true;
             break;
         }
-        if (!findRecipe) return false;
+        if (!findRecipe)
+            return false;
 
         if(GT_Values.D1)GT_FML_LOGGER.info("All checked start consuming inputs");
         for (int i = 0; i < 15; i++) {
