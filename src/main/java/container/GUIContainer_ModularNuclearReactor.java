@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIContainer_ModularNuclearReactor extends GuiContainer {
 	
-	private ResourceLocation texture = new ResourceLocation(KekzCore.MODID, "textures/gui/ReaktorGUI_background.png");
+	private ResourceLocation texture = new ResourceLocation(KekzCore.MODID, "textures/gui/MultiblockDisplay_REACTOR.png");
 	 
     private InventoryPlayer inventory;
     private IGregTechTileEntity te;
@@ -31,7 +31,9 @@ public class GUIContainer_ModularNuclearReactor extends GuiContainer {
  
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         
-        drawTexturedModalRect(100, 100, 0, 0, 260, 230);
+        final int x = (super.width - super.xSize) / 2;
+		final int y = (super.height - super.ySize) / 2;
+		super.drawTexturedModalRect(x, y, 0, 0, super.xSize, super.ySize);
     }
  
     @Override

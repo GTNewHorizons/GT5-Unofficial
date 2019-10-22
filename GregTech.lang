@@ -955,6 +955,10 @@ languagefile {
     S:TileEntity_DESCRIPTION_13103_Index_1=I'm not quite finished yet
     S:TileEntity_DESCRIPTION_13103_Index_10=Hold §l[LSHIFT]§rto display structure guidelines
     S:TileEntity_DESCRIPTION_13103_Index_11=Created by Kekzdealer
+    S:TileEntity_DESCRIPTION_13103_Index_12=  Consult controller GUI on how to arrange the outer casings.
+    S:TileEntity_DESCRIPTION_13103_Index_13=-----------------------------------------
+    S:TileEntity_DESCRIPTION_13103_Index_14=Hold §l[LSHIFT]§r§7 to display structure guidelines
+    S:TileEntity_DESCRIPTION_13103_Index_15=Created by Kekzdealer
     S:TileEntity_DESCRIPTION_13103_Index_2=------------------------------------------
     S:TileEntity_DESCRIPTION_13103_Index_3=Dimensions: 5x5x5 (WxHxL)
     S:TileEntity_DESCRIPTION_13103_Index_4=Structure:

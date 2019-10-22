@@ -1,14 +1,12 @@
 package tileentities;
 
-import org.joml.Vector2i;
-import org.joml.Vector2ic;
 import org.joml.Vector3i;
-import org.joml.Vector3ic;
 import org.lwjgl.input.Keyboard;
 
 import blocks.Block_ControlRod;
 import blocks.Block_ReactorChamber_OFF;
 import blocks.Block_ReactorChamber_ON;
+import container.GUIContainer_ModularNuclearReactor;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -53,12 +51,25 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 	@Override
 	public String[] getDescription() {
 		final MultiBlockTooltipBuilder b =  new MultiBlockTooltipBuilder();
-		b.addInfo("DO NOT CHEAT IN THIS MACHINE")
-				.addInfo("I'm not quite finished yet")
+		b.addInfo("Can be built, BUT DOES NOT WORK")
+				.addInfo("Converts fissile material and outputs power or heat")
 				.addSeparator()
-				.beginStructureBlock(5, 5, 5)
-				.addController("Front Center")
-				.addCasingInfo("Radiation Proof Machine Casing", 80)
+				.addInfo("EU-MODE:")
+				.addInfo("   Directly outputs electricity depending on inserted fuel rods")
+				.addSeparator()
+				.addInfo("COOLANT-MODE:")
+				.addInfo("   Requires coolant to be pumped into the reactor.")
+				.addInfo("   Coolant is heated and should be drained and converted to electricity by other means.")
+				.addSeparator()
+				.addInfo("NOTES:")
+				.addInfo("  Does NOT use Industrialcraft 2 reactor components!")
+				.addInfo("  Consult controller GUI on how to arrange the outer casings.")
+				.addSeparator()
+				.beginStructureBlock(7, 6, 7)
+				.addController("Front bottom Center")
+				.addCasingInfo("Radiation Proof Machine Casing", 100)
+				.addOtherStructurePart("Control Rods", "Four pillars, four blocks high each. Diagonal to the inner edges of the shell")
+				.addOtherStructurePart("Nuclear Reactor Chamber", "17 of them to fill out the rest of the floor inside the shell")
 				.addDynamoHatch("ONLY in EU-mode, at least one")
 				.addOtherStructurePart("Input Bus, Output Bus", "Optional but required for automation")
 				.addOtherStructurePart("Input Hatch, Output Hatch", "ONLY in Coolant-Mode, at least one each")
@@ -83,10 +94,9 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 	
 	// TODO: Opening UI crashes server. Controller isn't craftable right now.
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
-				"MultiblockDisplay.png");
-		// In case someone ignores the warning...
-		//return new GUIContainer_ModularNuclearReactor(aBaseMetaTileEntity, aPlayerInventory.player);
+		/*return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
+				"MultiblockDisplay.png");*/
+		return new GUIContainer_ModularNuclearReactor(aBaseMetaTileEntity, aPlayerInventory.player);
 	}
 
 	@Override
@@ -113,19 +123,17 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {		
 		// Figure out the vector for the direction the back face of the controller is facing
-		final Vector2ic forgeDirection = new Vector2i(
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
-				);
+		final int dirX = ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX;
+		final int dirZ = ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ;
 		int minCasingAmount = 100;
 		boolean checklist = true; // if this is still true at the end, machine is good to go :)
 		
 		// Determine the ground level center of the structure
-		final Vector3ic center = new Vector3i(
+		final Vector3i center = new Vector3i(
 				thisController.getXCoord(),
 				thisController.getYCoord(),
 				thisController.getZCoord())
-				.add(forgeDirection.x() * 3, 0, forgeDirection.y() * 3);
+				.add(dirX * 3, 0, dirZ * 3);
 		// Scan for outer tube
 		//	- Scan sides
 		for(int x = -3; x <= 3; x++) {
@@ -133,7 +141,7 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 				// Only scan the three wide even sides, skip rest
 				if((Math.abs(x) <= 1 && Math.abs(z) == 3) || (Math.abs(z) <= 1 && Math.abs(x) == 3)) {
 					for(int h = 0; h < 6; h++) {
-						final Vector3ic pos = new Vector3i(center.x() + x, center.y() + h, center.z() + z);
+						final Vector3i pos = new Vector3i(center.x() + x, center.y() + h, center.z() + z);
 						if(h == 0 && pos.x() == thisController.getXCoord() && pos.y() == thisController.getYCoord() && pos.z() == thisController.getZCoord()) {
 							// Ignore controller
 							continue;
@@ -153,7 +161,7 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 				// Only scan the four corners, skip rest
 				if(Math.abs(x) + Math.abs(z) == 4) {
 					for(int h = 0; h < 6; h++) {
-						final Vector3ic pos = new Vector3i(center.x() + x, center.y() + h, center.z() + z);
+						final Vector3i pos = new Vector3i(center.x() + x, center.y() + h, center.z() + z);
 						if(h == 0 && pos.x() == thisController.getXCoord() && pos.y() == thisController.getYCoord() && pos.z() == thisController.getZCoord()) {
 							// Ignore controller
 							continue;
