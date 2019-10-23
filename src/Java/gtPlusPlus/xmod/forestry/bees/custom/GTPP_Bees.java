@@ -109,7 +109,6 @@ public class GTPP_Bees {
     private void addExtractorRecipe(ItemStack input, FluidStack output){
     	CORE.RA.addFluidExtractionRecipe(
     			input, 
-    			null, 
     			output, 
     			30, 
     			8);

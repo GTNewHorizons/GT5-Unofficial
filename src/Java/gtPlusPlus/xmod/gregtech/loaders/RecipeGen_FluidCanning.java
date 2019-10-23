@@ -31,7 +31,7 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 		return isValid;
 	}
 	public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluid) {
-		this(aExtracting, aEmpty, aFull, aFluid, null, null, null);
+		this(aExtracting, aEmpty, aFull, aFluid, GT_Values.NF, null, null);
 	}
 
 	public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluidIn, FluidStack aFluidOut) {
@@ -39,7 +39,7 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 	}
 
 	public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluid, Integer aDuration, Integer aEUt) {
-		this(aExtracting, aEmpty, aFull, aFluid, null, aDuration, aEUt);
+		this(aExtracting, aEmpty, aFull, aFluid, GT_Values.NF, aDuration, aEUt);
 	}
 
 	// Alternative Constructor
@@ -68,7 +68,7 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 		if (aExtracting) {
 			aInput = aFull;
 			aOutput = aEmpty;
-			aFluidInput = null;
+			aFluidInput = GT_Values.NF;
 			aFluidOutput = aFluidIn;			
 		}
 		else {
@@ -93,23 +93,34 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 				0);
 
 
-		// Not Valid
-		if ((aExtracting && (aInput == null || aOutput == null ||(aFluidInput == null && aFluidOutput == null))) || (!aExtracting && (aInput == null || aOutput == null || (aFluidInput == null && aFluidOutput == null)))) {
-			isValid = false;
-			disableOptional = aExtracting;
-			recipe = null;
+		// Check Valid		
+		boolean aTempValidityCheck = false;
+		if (aExtracting) {
+			if (aInput != null && aFluidOutput != null) {
+				aTempValidityCheck = true;
+			}
 		}
 		else {
+			if (aInput != null && aOutput != null && (aFluidInput != null || aFluidOutput != null)) {
+				aTempValidityCheck = true;				
+			}
+		}		
+
+
+		if (aTempValidityCheck) {
 			// Valid Recipe
 			recipe = aRecipe;
 			mRecipeGenMap.add(this);
 			disableOptional = aExtracting;
-			isValid = true;
+			isValid = true;			
 		}
-
-
-
-
+		else {
+			isValid = false;
+			disableOptional = aExtracting;
+			aRecipe.mEnabled = false;
+			aRecipe.mHidden = true;
+			recipe = null;
+		}
 	}
 
 	@Override
@@ -129,25 +140,23 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 	}
 
 	private final boolean addFluidExtractionRecipe(GT_Recipe aRecipe) {
-		if (aRecipe != null) {		
-			if ((aRecipe.mDuration = GregTech_API.sRecipeFile.get("fluidextractor", aRecipe.mInputs[0], aRecipe.mDuration)) <= 0) {
-				return false;
-			} else {
-				GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(aRecipe);
-				return true;
-			}
+		if (aRecipe != null) {			
+			int aCount1 = GT_Recipe_Map.sFluidExtractionRecipes.mRecipeList.size();
+			int aCount2 = aCount1;
+			GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(aRecipe);
+			aCount1 = GT_Recipe_Map.sFluidExtractionRecipes.mRecipeList.size();
+			return aCount1 > aCount2;
 		}
 		return false;
 	}
 
 	private final boolean addFluidCannerRecipe(GT_Recipe recipe2) {
-		if (recipe2 != null) {		
-			if ((recipe2.mDuration = GregTech_API.sRecipeFile.get("fluidcanner", recipe2.mOutputs[0], recipe2.mDuration)) <= 0) {
-				return false;
-			} else {
-				GT_Recipe_Map.sFluidCannerRecipes.addRecipe(recipe2);
-				return true;
-			}
+		if (recipe2 != null) {
+			int aCount1 = GT_Recipe_Map.sFluidCannerRecipes.mRecipeList.size();
+			int aCount2 = aCount1;
+			GT_Recipe_Map.sFluidCannerRecipes.addRecipe(recipe2);
+			aCount1 = GT_Recipe_Map.sFluidCannerRecipes.mRecipeList.size();
+			return aCount1 > aCount2;
 		}
 		return false;
 	}

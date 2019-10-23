@@ -1588,18 +1588,18 @@ public class RECIPES_GREGTECH {
 
 	private static void fluidExtractorRecipes() {		
 		//FLiBe fuel
-		CORE.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLi2BeF4", 1), null,
+		CORE.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLi2BeF4", 1),
 				FluidUtils.getFluidStack("li2bef4", 144), 100, 500);
 		//LFTR Fuel 1
-		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ZrF4U235.getDust(1), null,
+		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ZrF4U235.getDust(1),
 				NUCLIDE.LiFBeF2ZrF4U235.getFluid(144), 250, 1000);
-		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ZrF4UF4.getDust(1), null,
+		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ZrF4UF4.getDust(1),
 				NUCLIDE.LiFBeF2ZrF4UF4.getFluid(144), 150, 2000);
-		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ThF4UF4.getDust(1), null,
+		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ThF4UF4.getDust(1),
 				NUCLIDE.LiFBeF2ThF4UF4.getFluid(144), 200, 1500);
 
 		//ZIRCONIUM_TETRAFLUORIDE
-		CORE.RA.addFluidExtractionRecipe(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1), null,
+		CORE.RA.addFluidExtractionRecipe(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1),
 				FluidUtils.getFluidStack(ModItems.fluidZrF4, 144), 200, 512+256);
 
 

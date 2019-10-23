@@ -463,8 +463,7 @@ public class FluidUtils {
 
 			if (dustStack != null){
 				CORE.RA.addFluidExtractionRecipe(
-						dustStack, //Input
-						null, //Input 2
+						dustStack, //Input 2
 						FluidUtils.getFluidStack(gtFluid, amountPerItem), //Fluid Output
 						1*20, //Duration
 						16 //Eu Tick
@@ -472,8 +471,7 @@ public class FluidUtils {
 			}
 			if (dustStack2 != null){
 				CORE.RA.addFluidExtractionRecipe(
-						dustStack2, //Input
-						null, //Input 2
+						dustStack2, //Input 2
 						FluidUtils.getFluidStack(gtFluid, amountPerItem), //Fluid Output
 						1*20, //Duration
 						16 //Eu Tick

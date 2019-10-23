@@ -1055,10 +1055,10 @@ public final class ModItems {
 			GT_OreDictUnificator.registerOre("platePhasedIron", ItemUtils.getSimpleStack(itemPlatePulsatingIron));
 			GT_OreDictUnificator.registerOre("blockVibrantAlloy", ItemUtils.getItemStackOfAmountFromOreDict("blockPhasedGold", 1));			
 
-			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getPlate(1), null, MaterialEIO.REDSTONE_ALLOY.getFluid(144), 16, 4*9);
-			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getIngot(1), null, MaterialEIO.REDSTONE_ALLOY.getFluid(144), 16, 4*9);
-			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getNugget(1), null, MaterialEIO.REDSTONE_ALLOY.getFluid(16), 16, 4);
-			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getBlock(1), null, MaterialEIO.REDSTONE_ALLOY.getFluid(1294), 16, 4*9*9);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getPlate(1), MaterialEIO.REDSTONE_ALLOY.getFluid(144), 16, 4*9);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getIngot(1), MaterialEIO.REDSTONE_ALLOY.getFluid(144), 16, 4*9);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getNugget(1), MaterialEIO.REDSTONE_ALLOY.getFluid(16), 16, 4);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getBlock(1), MaterialEIO.REDSTONE_ALLOY.getFluid(1294), 16, 4*9*9);
 			
 		}
 		else {

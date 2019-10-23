@@ -32,6 +32,9 @@ public class AgrichemFluids {
 	public static Fluid mFermentationBase;
 	public static Fluid mUrea;
 	public static Fluid mLiquidResin;
+	public static Fluid mAcetone;
+	public static Fluid mButanol;
+	
 	
 	
 	public static void init() {
@@ -64,6 +67,19 @@ public class AgrichemFluids {
 		}
 		else {
 			mLiquidResin = FluidRegistry.getFluid("liquidresin");
+		}
+		
+		if (!FluidRegistry.isFluidRegistered("acetone")) {
+			mAcetone = FluidUtils.generateFluidNoPrefix("acetone", "Acetone", 200,	new short[] { 59, 58, 56, 100 }, true);			
+		}
+		else {
+			mAcetone = FluidRegistry.getFluid("acetone");
+		}
+		if (!FluidRegistry.isFluidRegistered("butanol")) {
+			mButanol = FluidUtils.generateFluidNoPrefix("butanol", "Butanol", 200,	new short[] { 159, 58, 56, 100 }, true);			
+		}
+		else {
+			mButanol = FluidRegistry.getFluid("butanol");
 		}
 	}
 	

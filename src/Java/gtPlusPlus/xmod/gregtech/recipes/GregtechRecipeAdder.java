@@ -990,6 +990,11 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     }
 
     @Override
+    public boolean addFluidExtractionRecipe(ItemStack input, FluidStack output, int aTime, int aEu) {
+    	return MaterialGenerator.addFluidExtractionRecipe(GT_Values.NI, input, output, aTime, aEu);
+    }
+
+    @Override
     public boolean addFluidExtractionRecipe(ItemStack input, ItemStack input2, FluidStack output, int aTime, int aEu) {
     	return MaterialGenerator.addFluidExtractionRecipe(input, input2, output, aTime, aEu);
     }
@@ -1157,6 +1162,49 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	}
 
 
+	@Override
+	public boolean addFluidReactorRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int time, long eu, int aTier) {
+		
+		Recipe_GT aSpecialRecipe = new Recipe_GT(
+    			false,
+    			aInputs,
+    			aOutputs,
+    			null,
+    			new int[] {},
+    			aInputFluids,
+    			aFluidOutputs,
+    			time,
+    			(int) eu,
+    			aTier);   
+		
+		int aSize = Recipe_GT.Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.mRecipeList.size();
+		int aSize2 = aSize;
+		Recipe_GT.Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.add(aSpecialRecipe);
+		aSize = Recipe_GT.Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.mRecipeList.size();
+		return aSize > aSize2;
+	}
+
+	@Override
+	public boolean addBlastRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int time, long eu, int aHeat) {
+		Recipe_GT aSpecialRecipe = new Recipe_GT(
+    			false,
+    			aInputs,
+    			aOutputs,
+    			null,
+    			new int[] {},
+    			aInputFluids,
+    			aFluidOutputs,
+    			time,
+    			(int) eu,
+    			aHeat);		
+		
+		int aSize = GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeList.size();
+		int aSize2 = aSize;
+		GT_Recipe.GT_Recipe_Map.sBlastRecipes.add(aSpecialRecipe);
+		aSize = GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeList.size();
+		return aSize > aSize2;
+		
+	}
 
 
 

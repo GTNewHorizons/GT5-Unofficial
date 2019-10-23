@@ -350,8 +350,13 @@ public class TexturesGtBlock {
 	private static final CustomIcon Internal_Overlay_Machine_Controller_Advanced_Active = new CustomIcon("iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_ACTIVE");
 	public static final CustomIcon Overlay_Machine_Controller_Advanced_Active = Internal_Overlay_Machine_Controller_Advanced_Active;
 	
-	
-	
+	//Fluid Reactor Overlays
+	public static final CustomIcon Overlay_FluidReactor_Front = new CustomIcon("TileEntities/FluidReactor/OVERLAY_FRONT");
+	public static final CustomIcon Overlay_FluidReactor_Side = new CustomIcon("TileEntities/FluidReactor/OVERLAY_SIDE");
+	public static final CustomIcon Overlay_FluidReactor_Top = new CustomIcon("TileEntities/FluidReactor/OVERLAY_TOP");
+	public static final CustomIcon Overlay_FluidReactor_Front_Active = new CustomIcon("TileEntities/FluidReactor/OVERLAY_FRONT_ACTIVE");
+	public static final CustomIcon Overlay_FluidReactor_Side_Active = new CustomIcon("TileEntities/FluidReactor/OVERLAY_SIDE_ACTIVE");
+	public static final CustomIcon Overlay_FluidReactor_Top_Active = new CustomIcon("TileEntities/FluidReactor/OVERLAY_TOP_ACTIVE");	
 	
 	//Crafting Overlays
 	private static final CustomIcon Internal_Overlay_Crafting_Bronze = new CustomIcon("TileEntities/bronze_top_crafting");
