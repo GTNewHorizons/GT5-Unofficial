@@ -575,8 +575,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                 aAmpsToInject = (int) (leftToInject / aVoltage);
                 aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
                 long powerGain;
-                for (int i = 0; i < Math.min(aDynamo.maxAmperesOut(), aAmpsToInject > 0 ? aAmpsToInject : 1); i++) {
-                    powerGain = aAmpsToInject > 0 ? aVoltage : aRemainder;
+                 for (int i = 0; i < Math.min(aDynamo.maxAmperesOut(), aAmpsToInject + 1); i++) {
+                    if (i == Math.min(aDynamo.maxAmperesOut(), aAmpsToInject)){
+                        powerGain = aRemainder;
+                    }else{
+                        powerGain =  aVoltage;
+                    }
                     aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(powerGain, false);
                     injected += powerGain;
                 }
