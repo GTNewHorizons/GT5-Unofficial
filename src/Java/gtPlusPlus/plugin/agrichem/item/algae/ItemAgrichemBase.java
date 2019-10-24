@@ -5,6 +5,7 @@ import java.util.List;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.OreDictUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -103,8 +104,8 @@ public class ItemAgrichemBase extends Item {
 			return mShowSodiumHydroxide;
 		}
 		else {
-			if (OreDictionary.doesOreNameExist("dustSodiumHydroxide_GT5U")
-					|| OreDictionary.doesOreNameExist("dustSodiumHydroxide")) {
+			if (OreDictUtils.containsValidEntries("dustSodiumHydroxide_GT5U")
+					|| OreDictUtils.containsValidEntries("dustSodiumHydroxide")) {
 				List<ItemStack> aTest = OreDictionary.getOres(
 						"dustSodiumHydroxide", false
 				);

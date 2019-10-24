@@ -1220,7 +1220,7 @@ public class ItemUtils {
 	}
 
 	public static boolean doesOreDictHaveEntryFor(String string) {		
-		return OreDictionary.doesOreNameExist(string);
+		return OreDictUtils.containsValidEntries(string);
 	}
 
 	public static void hideItemFromNEI(ItemStack aItemToHide) {

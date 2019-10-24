@@ -20,6 +20,7 @@ import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.OreDictUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
@@ -168,12 +169,16 @@ public class BioRecipes {
 		recipeCompost();
 		recipeMethane();
 		recipeBenzene();
-		recipeStyrene();
-		
+		recipeStyrene();		
 		registerFuels();
 	}
 
 	private static void registerFuels() {
+		
+		// Burnables
+		ItemUtils.registerFuel(ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1), 800);
+		ItemUtils.registerFuel(ItemUtils.getSimpleStack(AgriculturalChem.mWoodBrick, 1), 4800);
+		
 		// Gas Fuels
 		//GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1), null, 96, 1);
 		
@@ -307,6 +312,26 @@ public class BioRecipes {
 		GT_ModHandler.addPulverisationRecipe(
 				ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 5),
 				ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 1));
+		
+		// Plastic		
+		CORE.RA.addFluidReactorRecipe(
+				new ItemStack[] {
+						getBioChip(16),
+						ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 64),
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack(BioRecipes.mAceticAcid, 500),
+						FluidUtils.getFluidStack(BioRecipes.mPropionicAcid, 500),
+				},
+				new ItemStack[] {
+						
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack(BioRecipes.mLiquidPlastic, (144)),						
+				},
+				120 * 20,
+				240,
+				2);
 
 
 	}
@@ -524,16 +549,36 @@ public class BioRecipes {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 75),						
 				},
-				60 * 20,
+				90 * 20,
+				30,
+				1);
+		
+		CORE.RA.addFluidReactorRecipe(
+				new ItemStack[] {
+						getBioChip(5),
+						ItemUtils.getSimpleStack(Items.reeds, 32),
+						ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 4)
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack(BioRecipes.mThermalWater, 2000),
+				},
+				new ItemStack[] {
+						
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 150),						
+				},
+				120 * 20,
 				30,
 				1);
 		
 		// Sugar Beet
-		if (OreDictionary.doesOreNameExist("cropSugarbeet")) {
+		if (OreDictUtils.containsValidEntries("cropSugarbeet")) {
+			
 			CORE.RA.addFluidReactorRecipe(
 					new ItemStack[] {
 							getBioChip(4),
-							ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 8)
+							ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 8),
 					},
 					new FluidStack[] {
 							FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000),
@@ -545,6 +590,25 @@ public class BioRecipes {
 							FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 75),						
 					},
 					60 * 20,
+					30,
+					1);
+			
+			CORE.RA.addFluidReactorRecipe(
+					new ItemStack[] {
+							getBioChip(5),
+							ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 16),
+							ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 4)
+					},
+					new FluidStack[] {
+							FluidUtils.getFluidStack(BioRecipes.mThermalWater, 2000),
+					},
+					new ItemStack[] {
+							
+					},
+					new FluidStack[] {
+							FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 150),						
+					},
+					90 * 20,
 					30,
 					1);
 		}
@@ -657,7 +721,7 @@ public class BioRecipes {
 						ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 5)
 				},
 				new FluidStack[] {
-						
+						FluidUtils.getFluidStack(BioRecipes.mHydrogen, 5000),						
 				},
 				60 * 20,
 				60,
@@ -666,31 +730,50 @@ public class BioRecipes {
 
 	private static void recipeSodiumCarbonate() {
 
-		if (OreDictionary.doesOreNameExist("fuelCoke")) {
-			
-			GT_Values.RA.addBlastRecipe(
-					ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 4),
-					ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 4),
-					GT_Values.NF,
-					GT_Values.NF,
-					ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 24),
-					null,
-					20 * 120,
+		if (OreDictUtils.containsValidEntries("fuelCoke")) {			
+			CORE.RA.addFluidReactorRecipe(
+					new ItemStack[] {
+							getBioChip(18),
+							ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 3),
+							ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 3),
+							ItemUtils.getSimpleStack(AgriculturalChem.mAluminiumPellet, 6)
+					},
+					new FluidStack[] {
+							FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000),
+					},
+					new ItemStack[] {
+							ItemUtils.getSimpleStack(AgriculturalChem.mSodiumAluminate, 18)
+					},
+					new FluidStack[] {
+							FluidUtils.getFluidStack(BioRecipes.mHydrogen, 200),
+							FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 1600),
+					},
+					120 * 20,
 					120,
-					1600);
+					900);
 			
 		}	
 
-		GT_Values.RA.addBlastRecipe(
-				ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 24),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 4),
-				GT_Values.NF,
-				GT_Values.NF,
-				ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 24),
-				null,
-				20 * 120,
+		CORE.RA.addFluidReactorRecipe(
+				new ItemStack[] {
+						getBioChip(18),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 6),
+						ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 4),
+						ItemUtils.getSimpleStack(AgriculturalChem.mAluminiumPellet, 6)
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000),
+				},
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(AgriculturalChem.mSodiumAluminate, 16)
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack(BioRecipes.mHydrogen, 100),
+						FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 1750),
+				},
+				180 * 20,
 				120,
-				1600);
+				900);
 		
 	}
 
@@ -736,6 +819,39 @@ public class BioRecipes {
 
 	private static void recipeLithiumChloride() {
 
+		if (OreDictUtils.containsValidEntries("dustRockSalt")) {
+			GT_Values.RA.addElectrolyzerRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("dustRockSalt", 8), 
+					ItemUtils.getSimpleStack(AgriculturalChem.mLithiumChloride, 10),
+					FluidUtils.getFluidStack(BioRecipes.mAir, 4000),
+					FluidUtils.getFluidStack(BioRecipes.mChlorine, 500),					
+					ItemUtils.getItemStackOfAmountFromOreDict("dustLithium", 2), 
+					ItemUtils.getItemStackOfAmountFromOreDict("dustSmallLithium", 3), 
+					ItemUtils.getItemStackOfAmountFromOreDict("dustSmallLithium", 3), 
+					ItemUtils.getItemStackOfAmountFromOreDict("dustTinyLithium", 5), 
+					ItemUtils.getItemStackOfAmountFromOreDict("dustPotassium", 2), 
+					ItemUtils.getItemStackOfAmountFromOreDict("dustSmallPotassium", 5),					
+					new int[] {7500, 8000, 8500, 9000, 7500, 8500}, 					
+					60 * 30, 
+					60);
+		}
+		if (OreDictUtils.containsValidEntries("dustPotash")) {
+			GT_Values.RA.addElectrolyzerRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("dustPotash", 10), 
+					ItemUtils.getSimpleStack(AgriculturalChem.mLithiumChloride, 16),
+					FluidUtils.getFluidStack(BioRecipes.mThermalWater, 2000),
+					FluidUtils.getFluidStack(BioRecipes.mChlorine, 250),					
+					ItemUtils.getItemStackOfAmountFromOreDict("dustLithium", 3), 
+					ItemUtils.getItemStackOfAmountFromOreDict("dustSmallLithium", 5), 
+					ItemUtils.getItemStackOfAmountFromOreDict("dustSmallLithium", 5), 
+					ItemUtils.getItemStackOfAmountFromOreDict("dustTinyLithium", 7), 
+					ItemUtils.getItemStackOfAmountFromOreDict("dustAsh", 2), 
+					ItemUtils.getItemStackOfAmountFromOreDict("dustAsh", 2),					
+					new int[] {7500, 8000, 8500, 9000, 9000, 9000}, 					
+					45 * 30, 
+					90);
+		}
+		
 	}
 
 	private static void recipeAlginicAcid() {
@@ -768,7 +884,7 @@ public class BioRecipes {
 						
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mSulfuricAcid, 5),						
+						FluidUtils.getFluidStack(BioRecipes.mSulfuricAcid, 50),						
 				},
 				60 * 20,
 				60,
@@ -787,10 +903,10 @@ public class BioRecipes {
 						
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mSulfuricAcid, 15),						
+						FluidUtils.getFluidStack(BioRecipes.mSulfuricAcid, 250),						
 				},
 				60 * 20,
-				60,
+				120,
 				2);
 		
 	}
@@ -906,7 +1022,8 @@ public class BioRecipes {
 			CORE.RA.addFluidReactorRecipe(
 					new ItemStack[] {
 							getBioChip(11),
-							ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 16)
+							ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 16),
+							ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 8)
 					},
 					new FluidStack[] {
 							FluidUtils.getFluidStack(BioRecipes.mUrea, 500),
@@ -926,7 +1043,8 @@ public class BioRecipes {
 		CORE.RA.addFluidReactorRecipe(
 				new ItemStack[] {
 						getBioChip(12),
-						ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 16)
+						ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 16),
+						ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 8)
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mUrea, 500),

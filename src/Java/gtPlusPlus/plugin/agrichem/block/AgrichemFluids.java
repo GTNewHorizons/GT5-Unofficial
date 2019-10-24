@@ -57,7 +57,7 @@ public class AgrichemFluids {
 			mFermentationBase = FluidRegistry.getFluid("fermentation.base");
 		}
 		if (!FluidRegistry.isFluidRegistered("ureamix")) {
-			mUrea = FluidUtils.generateFluidNoPrefix("ureamix", "Urea Mix", 200,	new short[] { 71, 55, 12, 100 }, true);			
+			mUrea = FluidUtils.generateFluidNoPrefix("ureamix", "Urea Mix", 200, new short[] { 71, 55, 12, 100 }, true);			
 		}
 		else {
 			mUrea = FluidRegistry.getFluid("ureamix");
