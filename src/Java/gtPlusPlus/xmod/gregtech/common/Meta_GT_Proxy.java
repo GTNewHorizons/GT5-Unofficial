@@ -13,10 +13,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -33,11 +35,15 @@ import gtPlusPlus.core.handler.AchievementHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.BaseCustomTileEntity;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.BaseCustomPower_MTE;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,6 +51,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class Meta_GT_Proxy {
@@ -52,74 +60,111 @@ public class Meta_GT_Proxy {
 	static {
 		Logger.INFO("GT_PROXY - initialized.");
 	}
-	
+
 	public static List<Runnable> GT_BlockIconload = new ArrayList<>();
 	public static List<Runnable> GT_ItemIconload = new ArrayList<>();
-	
+
 	public static AutoMap<Integer> GT_ValidHeatingCoilMetas = new AutoMap<Integer>();
 
 	private static Class<BaseCustomTileEntity> sBaseMetaTileEntityClass;
 	private static Class<BaseCustomPower_MTE> sBaseMetaTileEntityClass2;
-	
+
 	public static AchievementHandler mAssemblyAchievements;
-	
+
 	public static final Map<String, FormattedTooltipString> mCustomGregtechMetaTooltips = new LinkedHashMap<String, FormattedTooltipString>();
-	
+
 
 	@SideOnly(Side.CLIENT)
 	public static IIconRegister sBlockIcons, sItemIcons;
 
 	public Meta_GT_Proxy() {
-		
+
 	}
-	
+
 	public static Block sBlockMachines;
-	
+
 	public static void preInit() {
-		
+
 		//New GT++ Block, yay! (Progress)
 		//sBlockMachines = new GTPP_Block_Machines();
-		
-        GT_Log.out.println("GT++ Mod: Register TileEntities.");
-        BaseMetaTileEntity tBaseMetaTileEntity = constructBaseMetaTileEntity();
-        BaseMetaTileEntity tBaseMetaTileEntity2 = constructBaseMetaTileEntityCustomPower();
+		fixIC2FluidNames();		
 
-        GT_Log.out.println("GT++ Mod: Testing BaseMetaTileEntity.");
-        if (tBaseMetaTileEntity == null || tBaseMetaTileEntity2 == null) {
-            GT_Log.out.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
-            throw new RuntimeException("");
-        }
-		
-        //Gotta set it here so that we don't try call gregtech too early.        
-        //Must set on the correct side
-        
-        if (ReflectionUtils.doesFieldExist(GT_Proxy.class, "gt6Pipe")) {
-        	StaticFields59.mGT6StylePipes = (boolean) StaticFields59.getFieldFromGregtechProxy("gt6Pipe");        	
-        }
-        else {
-        	StaticFields59.mGT6StylePipes = false;        	
-        }       
-        
-        GT_Log.out.println("GT++ Mod: Registering the BaseMetaTileEntity.");
-        GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity_GTPP");
-        GameRegistry.registerTileEntity(tBaseMetaTileEntity2.getClass(), "BaseMetaTileEntity_GTPP2");
-        CoverManager.generateCustomCovers();
+		GT_Log.out.println("GT++ Mod: Register TileEntities.");
+		BaseMetaTileEntity tBaseMetaTileEntity = constructBaseMetaTileEntity();
+		BaseMetaTileEntity tBaseMetaTileEntity2 = constructBaseMetaTileEntityCustomPower();
+
+		GT_Log.out.println("GT++ Mod: Testing BaseMetaTileEntity.");
+		if (tBaseMetaTileEntity == null || tBaseMetaTileEntity2 == null) {
+			GT_Log.out.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+			throw new RuntimeException("");
+		}
+
+		//Gotta set it here so that we don't try call gregtech too early.        
+		//Must set on the correct side
+
+		if (ReflectionUtils.doesFieldExist(GT_Proxy.class, "gt6Pipe")) {
+			StaticFields59.mGT6StylePipes = (boolean) StaticFields59.getFieldFromGregtechProxy("gt6Pipe");        	
+		}
+		else {
+			StaticFields59.mGT6StylePipes = false;        	
+		}       
+
+		GT_Log.out.println("GT++ Mod: Registering the BaseMetaTileEntity.");
+		GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity_GTPP");
+		GameRegistry.registerTileEntity(tBaseMetaTileEntity2.getClass(), "BaseMetaTileEntity_GTPP2");
+		CoverManager.generateCustomCovers();
 	}
-	
+
 	public static void init() {
 		scheduleCoverMapCleaner();
 		setValidHeatingCoilMetas();	
+		PollutionUtils.setPollutionFluids();
+		fixIC2FluidNames();		
 	}
-	
+
 	public static void postInit() {
-		mAssemblyAchievements = new AchievementHandler();			
+		mAssemblyAchievements = new AchievementHandler();	
+		fixIC2FluidNames();				
 	}
-	
+
+	@SuppressWarnings("deprecation")
+	public static void fixIC2FluidNames() {
+		//Fix IC2 Hot Water name
+		try {
+		String aNewHeatedWaterName = "Heated Water";
+		Logger.INFO("Renaming [IC2 Hotspring Water] --> ["+aNewHeatedWaterName+"].");LanguageRegistry.instance().addStringLocalization("fluidHotWater", "Heated Water");
+		LanguageRegistry.instance().addStringLocalization("fluidHotWater", aNewHeatedWaterName);
+		LanguageRegistry.instance().addStringLocalization("ic2.fluidHotWater", aNewHeatedWaterName);
+		GT_LanguageManager.addStringLocalization("fluidHotWater", aNewHeatedWaterName);
+		GT_LanguageManager.addStringLocalization("ic2.fluidHotWater", aNewHeatedWaterName);
+
+		Block b = BlocksItems.getFluidBlock(InternalName.fluidHotWater);
+		if (b != null) {
+			LanguageRegistry.addName(ItemUtils.getSimpleStack(b), aNewHeatedWaterName);
+			LanguageRegistry.instance().addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);
+			GT_LanguageManager.addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);
+		}
+		Fluid f = BlocksItems.getFluid(InternalName.fluidHotWater);
+		if (f != null) {
+			LanguageRegistry.instance().addStringLocalization(f.getUnlocalizedName(), aNewHeatedWaterName);
+			GT_LanguageManager.addStringLocalization(f.getUnlocalizedName(), aNewHeatedWaterName);
+			int aDam = FluidRegistry.getFluidID(f);
+			ItemStack s = ItemList.Display_Fluid.getWithDamage(1, aDam);
+			if (s != null) {
+				LanguageRegistry.addName(s, aNewHeatedWaterName);
+			}			
+		}
+		}
+		catch (Throwable t) {
+			
+		}
+	}
+
 	public static boolean generatePlasmaRecipesForAdvVacFreezer() {
-		
+
 		AutoMap<Recipe_GT> aFreezerMapRebaked = new AutoMap<Recipe_GT>();
 		AutoMap<Recipe_GT> aRemovedRecipes = new AutoMap<Recipe_GT>();
-		
+
 		//Find recipes containing Plasma and map them
 		for (Recipe_GT y : Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList) {			
 			if (y.mFluidInputs.length > 0) {
@@ -132,20 +177,20 @@ public class Meta_GT_Proxy {
 				aFreezerMapRebaked.put(y);
 			}			
 		}
-		
+
 		AutoMap<Recipe_GT> aNewRecipes = new AutoMap<Recipe_GT>();
 		int aAtomicMass = 0;
 		int aAtomicTier = 0;
-		
+
 		final FluidStack NULL_PLASMA = Materials._NULL.getPlasma(1);
-		
+
 		for (String s : ELEMENT.NAMES) {
-			
+
 			aAtomicMass++;
 			aAtomicTier = (aAtomicMass/30)+1;
 			FluidStack aMoltenFluid = null;
 			FluidStack aPlasma = null;
-			
+
 			//Try Get Material via Gregtech
 			Materials aGregMaterial = MaterialUtils.getMaterial(s);
 			if (aGregMaterial != null) {
@@ -161,7 +206,7 @@ public class Meta_GT_Proxy {
 				}
 				aPlasma = aGregMaterial.getPlasma(100);
 			}
-			
+
 			//Just wildcard values
 			if (aMoltenFluid == null || aPlasma == null) {
 				if (aMoltenFluid == null) {
@@ -171,7 +216,7 @@ public class Meta_GT_Proxy {
 					aPlasma = FluidUtils.getFluidStack("plasma."+s.toLowerCase(), 1);
 				}
 			}
-			
+
 			//Skip this material
 			if (aMoltenFluid == null || aPlasma == null || aPlasma.isFluidEqual(NULL_PLASMA)) {
 				Logger.INFO("Could not generate Advanced Vacuum Freezer recipe. Cooling "+s+" plasma. Molten Form Exists? "+(aMoltenFluid != null)+" | Plasma Exists? "+(aPlasma != null));
@@ -186,49 +231,49 @@ public class Meta_GT_Proxy {
 						null, 
 						new int[] {10000},
 						new FluidStack[] {
-							aPlasma,
-							FluidUtils.getFluidStack("cryotheum", aTotalTickTime)
-						}, 
+								aPlasma,
+								FluidUtils.getFluidStack("cryotheum", aTotalTickTime)
+				}, 
 						new FluidStack[] {
-							aMoltenFluid
-						}, 
+								aMoltenFluid
+				}, 
 						aTotalTickTime, 
 						(int) GT_Values.V[4+aAtomicTier],
 						aAtomicMass);
-				
+
 				//Add it to the map if it's valid
 				if (aTempRecipe != null) {
 					aNewRecipes.put(aTempRecipe);					
 				}				
 			}	
-			
+
 		}
-		
+
 
 		//Add the new recipes to the map we will rebake over the original
 		for (Recipe_GT w : aNewRecipes) {
 			aFreezerMapRebaked.put(w);
 		}
-		
+
 		//Best not touch the original map if we don't have a valid map to override it with.
 		if (aFreezerMapRebaked.size() > 0) {
-			
+
 			int aOriginalCount = Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList.size();
-			
+
 			//Empty the original map
 			Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList.clear();
-			
+
 			//Rebake the real map
 			for (Recipe_GT w : aFreezerMapRebaked) {
 				Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList.add(w);
 			}
-			
+
 			return Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList.size() >= aOriginalCount;
 		}			
-		
+
 		return false;
 	}
-	
+
 	public static TileEntity constructCustomGregtechMetaTileEntityByMeta(int aMeta) {
 		if (aMeta == 12) {
 			return Meta_GT_Proxy.constructBaseMetaTileEntityCustomPower();
@@ -237,7 +282,7 @@ public class Meta_GT_Proxy {
 			return Meta_GT_Proxy.constructBaseMetaTileEntity();
 		}
 	}
-	
+
 	public static BaseCustomTileEntity constructBaseMetaTileEntity() {
 		if (sBaseMetaTileEntityClass == null) {
 			try {
@@ -264,7 +309,7 @@ public class Meta_GT_Proxy {
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | SecurityException e) {
 				GT_Log.err
-						.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+				.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
 				e.printStackTrace(GT_Log.err);
 				throw new RuntimeException(e);
 			}
@@ -299,20 +344,20 @@ public class Meta_GT_Proxy {
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | SecurityException e) {
 				GT_Log.err
-						.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+				.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
 				e.printStackTrace(GT_Log.err);
 				throw new RuntimeException(e);
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
 	public static void setValidHeatingCoilMetas() {
 		for (int i = 0; i <= 6; i++ ) {
 			GT_ValidHeatingCoilMetas.put(i);			
@@ -336,20 +381,20 @@ public class Meta_GT_Proxy {
 			return false;
 		}
 	}
-	
+
 
 	public static void scheduleCoverMapCleaner(){
-	    TimerTask repeatedTask = new TimerTask() {
-	        public void run() {
-	            cleanupOverFlowCoverCache();
-	        }
-	    };
-	    Timer timer = new Timer("CoverCleanupManager");	     
-	    long delay  = 120000L;
-	    long period = 300000L;
-	    timer.scheduleAtFixedRate(repeatedTask, delay, period);
+		TimerTask repeatedTask = new TimerTask() {
+			public void run() {
+				cleanupOverFlowCoverCache();
+			}
+		};
+		Timer timer = new Timer("CoverCleanupManager");	     
+		long delay  = 120000L;
+		long period = 300000L;
+		timer.scheduleAtFixedRate(repeatedTask, delay, period);
 	}
-	
+
 	public static int cleanupOverFlowCoverCache() {
 		ObjMap<String, ?> cache = mOverflowCache;
 		int aRemoved = 0;
@@ -376,8 +421,8 @@ public class Meta_GT_Proxy {
 		}
 		return aRemoved;
 	}
-	
-	
+
+
 	static GT_Proxy[] mProxies = new GT_Proxy[2];
 
 	/**
@@ -386,47 +431,47 @@ public class Meta_GT_Proxy {
 	public static Object getFieldFromGregtechProxy(boolean client, String fieldName) {
 		return StaticFields59.getFieldFromGregtechProxy(fieldName);
 	}
-	
+
 	public static void setCustomGregtechTooltip(String aNbtTagName, FormattedTooltipString aData) {
 		mCustomGregtechMetaTooltips.put(aNbtTagName, aData);
 	}
-	
-    public static void conStructGtTileBlockTooltip(ItemStack aStack, EntityPlayer aPlayer, List<Object> aList, boolean par4) {
-        try {
-            int tDamage = aStack.getItemDamage();
-            if ((tDamage <= 0) || (tDamage >= GregTech_API.METATILEENTITIES.length)) {
-                return;
-            }
 
-            if (GregTech_API.METATILEENTITIES[tDamage] != null) {
-                IGregTechTileEntity tTileEntity = GregTech_API.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
-                if (tTileEntity.getDescription() != null) {
-                    int i = 0;
-                    for (String tDescription : tTileEntity.getDescription()) {
-                        if (GT_Utility.isStringValid(tDescription)) {
-                        	if(tDescription.contains("%%%")){
-                        		String[] tString = tDescription.split("%%%");
-                        		if(tString.length>=2){
-                                                StringBuffer tBuffer = new StringBuffer();
-                        			Object tRep[] = new String[tString.length / 2];
-                        			for (int j = 0; j < tString.length; j++)
-                        				if (j % 2 == 0) tBuffer.append(tString[j]);
-                        				else {tBuffer.append(" %s"); tRep[j / 2] = tString[j];}
-                                                aList.add(String.format(GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Index_" + i++, tBuffer.toString(), !GregTech_API.sPostloadFinished), tRep));
-                        		}
-                        	}else{String tTranslated = GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Index_" + i++, tDescription, !GregTech_API.sPostloadFinished );
-                            aList.add(tTranslated.equals("") ? tDescription : tTranslated);}
-                        }else i++;
-                    }
-                }
-                
+	public static void conStructGtTileBlockTooltip(ItemStack aStack, EntityPlayer aPlayer, List<Object> aList, boolean par4) {
+		try {
+			int tDamage = aStack.getItemDamage();
+			if ((tDamage <= 0) || (tDamage >= GregTech_API.METATILEENTITIES.length)) {
+				return;
+			}
+
+			if (GregTech_API.METATILEENTITIES[tDamage] != null) {
+				IGregTechTileEntity tTileEntity = GregTech_API.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
+				if (tTileEntity.getDescription() != null) {
+					int i = 0;
+					for (String tDescription : tTileEntity.getDescription()) {
+						if (GT_Utility.isStringValid(tDescription)) {
+							if(tDescription.contains("%%%")){
+								String[] tString = tDescription.split("%%%");
+								if(tString.length>=2){
+									StringBuffer tBuffer = new StringBuffer();
+									Object tRep[] = new String[tString.length / 2];
+									for (int j = 0; j < tString.length; j++)
+										if (j % 2 == 0) tBuffer.append(tString[j]);
+										else {tBuffer.append(" %s"); tRep[j / 2] = tString[j];}
+									aList.add(String.format(GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Index_" + i++, tBuffer.toString(), !GregTech_API.sPostloadFinished), tRep));
+								}
+							}else{String tTranslated = GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Index_" + i++, tDescription, !GregTech_API.sPostloadFinished );
+							aList.add(tTranslated.equals("") ? tDescription : tTranslated);}
+						}else i++;
+					}
+				}
+
 
 
 				if (tTileEntity.getEUCapacity() > 0L) {				
 
 					final long tVoltage = tTileEntity.getInputVoltage();
 					byte tTier = (byte) ((byte) Math.max(1, GT_Utility.getTier(tVoltage)));
-					
+
 					//Custom handling
 					if (tDamage < 30500 && tDamage >= 30400) {						
 						int aOffset = tDamage - 30400;
@@ -439,13 +484,13 @@ public class Meta_GT_Proxy {
 							aList.add(GT_LanguageManager.addStringLocalization("TileEntity_Breaker_Loss", "Breaker Loss: "+EnumChatFormatting.RED+""+(GT_Values.V[Math.max(tTier-1, 0)]/10)+EnumChatFormatting.GRAY+" EU/t", !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);
 						}
 
-						
+
 						aList.add(GT_LanguageManager.addStringLocalization("TileEntity_Special_Power_1", EnumChatFormatting.RED+"Special Power Handling, please read manual", !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);
 						//aList.add(GT_LanguageManager.addStringLocalization("TileEntity_BreakerBox_2", EnumChatFormatting.RED+"Special Power Handling, please read manual", !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);
 						//aList.add(GT_LanguageManager.addStringLocalization("TileEntity_BreakerBox_3", EnumChatFormatting.RED+"Special Power Handling, please read manual", !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);
 					}					
-					
-					
+
+
 					if (tTileEntity.getInputVoltage() > 0L) {	
 						String inA = "0";
 						if (tTileEntity.getInputAmperage() >= 1L) {
@@ -473,20 +518,20 @@ public class Meta_GT_Proxy {
 						+ EnumChatFormatting.GRAY + outA;						
 						aList.add(a1);
 					}
-					
+
 
 					if (tTileEntity.getOutputVoltage() > 0L) {						
 						aList.add(GT_LanguageManager.addStringLocalization("TileEntity_Lossess_EU", "Transmission Loss: "+EnumChatFormatting.DARK_BLUE+""+(tDamage < 30500 && tDamage >= 30400 ? 0 : 1), !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);				
 					}
-					
+
 					if (tTileEntity.getEUCapacity() > 0) {
 						aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE2",
 								"Internal Capacity: ", !GregTech_API.sPostloadFinished) + EnumChatFormatting.BLUE
 								+ tTileEntity.getEUCapacity() + EnumChatFormatting.GRAY + " EU");
 					}
 				}               
-                
-                /*if (tTileEntity.getEUCapacity() > 0L) {
+
+				/*if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
                         aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_IN", "Voltage IN: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.GREEN + tTileEntity.getInputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getInputVoltage())] + ")" + EnumChatFormatting.GRAY);
                     }
@@ -498,42 +543,42 @@ public class Meta_GT_Proxy {
                     }
                     aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.BLUE + tTileEntity.getEUCapacity() + EnumChatFormatting.GRAY);
                 }*/
-				
-            }
-            NBTTagCompound aNBT = aStack.getTagCompound();
-            if (aNBT != null) {
-                if (aNBT.getBoolean("mMuffler")) {
-                    aList.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_MUFFLER", "has Muffler Upgrade", !GregTech_API.sPostloadFinished ));
-                }
-                if (aNBT.getBoolean("mSteamConverter")) {
-                    aList.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMCONVERTER", "has Steam Upgrade", !GregTech_API.sPostloadFinished ));
-                }
-                int tAmount = 0;
-                if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
-                    aList.add(tAmount + " " + GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMTANKS", "Steam Tank Upgrades", !GregTech_API.sPostloadFinished ));
-                }
-                
-                FluidStack afluid = net.minecraftforge.fluids.FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));
-                if (afluid != null) {
-                    int tFluidAmount = afluid.amount;
-                    if (tFluidAmount > 0) {
-                        aList.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_FLUIDTANK", "Tank Fluid: "+tFluidAmount+"L "+afluid.getLocalizedName()+"", !GregTech_API.sPostloadFinished ));
-                    }                	
-                }
-                
-            }
-            
-            //Add Custom Here
-            
-            //Add Custom Tooltips
-            for (String s : mCustomGregtechMetaTooltips.keySet()) {
-            	if (aNBT.hasKey(s)) {                		
-            		String aTip = mCustomGregtechMetaTooltips.get(s).getTooltip(aNBT.getString(s));
-            		aList.add(aTip);
-            	}                	
-            }
 
-            //Add GT++ Stuff
+			}
+			NBTTagCompound aNBT = aStack.getTagCompound();
+			if (aNBT != null) {
+				if (aNBT.getBoolean("mMuffler")) {
+					aList.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_MUFFLER", "has Muffler Upgrade", !GregTech_API.sPostloadFinished ));
+				}
+				if (aNBT.getBoolean("mSteamConverter")) {
+					aList.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMCONVERTER", "has Steam Upgrade", !GregTech_API.sPostloadFinished ));
+				}
+				int tAmount = 0;
+				if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
+					aList.add(tAmount + " " + GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMTANKS", "Steam Tank Upgrades", !GregTech_API.sPostloadFinished ));
+				}
+
+				FluidStack afluid = net.minecraftforge.fluids.FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));
+				if (afluid != null) {
+					int tFluidAmount = afluid.amount;
+					if (tFluidAmount > 0) {
+						aList.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_FLUIDTANK", "Tank Fluid: "+tFluidAmount+"L "+afluid.getLocalizedName()+"", !GregTech_API.sPostloadFinished ));
+					}                	
+				}
+
+			}
+
+			//Add Custom Here
+
+			//Add Custom Tooltips
+			for (String s : mCustomGregtechMetaTooltips.keySet()) {
+				if (aNBT.hasKey(s)) {                		
+					String aTip = mCustomGregtechMetaTooltips.get(s).getTooltip(aNBT.getString(s));
+					aList.add(aTip);
+				}                	
+			}
+
+			//Add GT++ Stuff
 
 			if (tDamage >= 30400 && tDamage < 30500) {
 				aList.add(EnumChatFormatting.UNDERLINE+"Special GT++ Machine");
@@ -541,11 +586,11 @@ public class Meta_GT_Proxy {
 			if ((tDamage >= 750 && tDamage < 1000) || (tDamage >= 30000 && tDamage < 31000)) {
 				aList.add(CORE.GT_Tooltip);				
 			}
-            
-            
-        } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
-        }
-    }
+
+
+		} catch (Throwable e) {
+			e.printStackTrace(GT_Log.err);
+		}
+	}
 
 }

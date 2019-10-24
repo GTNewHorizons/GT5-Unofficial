@@ -11,6 +11,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.slots.SlotChemicalPlantInput;
 import gtPlusPlus.core.slots.SlotNoInput;
+import gtPlusPlus.core.slots.SlotNoInputLogging;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntity_ChemicalReactor;
 import net.minecraft.entity.player.EntityPlayer;
@@ -93,6 +94,7 @@ public class Container_FluidReactor extends GT_Container_BasicMachine {
 				}
 			}	
 		}
+		//Logger.INFO("Clicked slot "+aSlotIndex);
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);			
 	}
 

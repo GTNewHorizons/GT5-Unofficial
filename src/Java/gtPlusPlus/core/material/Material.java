@@ -1094,96 +1094,41 @@ public class Material {
 		if (this.materialState == MaterialState.ORE){
 			return null;
 		}
+		
+		Fluid aGTBaseFluid = null;
 
-		final Materials isValid = Materials.get(this.getLocalizedName());
-		//Logger.MATERIALS("Is "+this.getLocalizedName()+" a Gregtech material? "+(isValid != null && isValid != Materials._NULL)+" | Found "+isValid.mDefaultLocalName);
-		if (isValid != Materials._NULL){
-			for (Materials m : invalidMaterials.values()){
-				if (isValid == m){
-					Logger.MATERIALS("Trying to generate a fluid for blacklisted material: "+m.mDefaultLocalName);
-					FluidStack a1 = m.getFluid(1);
-					FluidStack a2 = m.getGas(1);
-					FluidStack a3 = m.getMolten(1);
-					FluidStack a4 = m.getSolid(1);
-					FluidStack a5 = m.getPlasma(1);
-					if (a1 != null){
-						Logger.MATERIALS("Using a pre-defined Fluid from GT. Fluid.");
-						return a1.getFluid();
-					}
-					if (a2 != null){
-						Logger.MATERIALS("Using a pre-defined Fluid from GT. Gas.");
-						return a2.getFluid();
-					}
-					if (a3 != null){
-						Logger.MATERIALS("Using a pre-defined Fluid from GT. Molten.");
-						return a3.getFluid();
-					}
-					if (a4 != null){
-						Logger.MATERIALS("Using a pre-defined Fluid from GT. Solid.");
-						return a4.getFluid();
-					}
-					if (a5 != null){
-						Logger.MATERIALS("Using a pre-defined Fluid from GT. Plasma.");
-						return a5.getFluid();
-					}
-					Logger.MATERIALS("Using null.");
-					return null;
-				}
-			}
-		}
+		// Clean up Internal Fluid Generation
+		final Materials n1 = MaterialUtils.getMaterial(this.getLocalizedName(), Utils.sanitizeString(this.getLocalizedName()));
+		final Materials n2 = MaterialUtils.getMaterial(this.getUnlocalizedName(), Utils.sanitizeString(this.getUnlocalizedName()));
 
-		if (this.materialState == MaterialState.SOLID){
-			if (isValid.mFluid != null){
-				Logger.MATERIALS("Using a pre-defined Fluid from GT. mFluid.");
-				return isValid.mFluid;
-			}
-			else if (isValid.mStandardMoltenFluid != null){
-				Logger.MATERIALS("Using a pre-defined Fluid from GT. mStandardMoltenFluid.");
-				return isValid.mStandardMoltenFluid;
-			}
-		}
-		else if (this.materialState == MaterialState.GAS){
-			if (isValid.mGas != null){
-				Logger.MATERIALS("Using a pre-defined Fluid from GT. mGas.");
-				return isValid.mGas;
-			}
-		}
-		else if (this.materialState == MaterialState.LIQUID || this.materialState == MaterialState.PURE_LIQUID){
-			if (isValid.mFluid != null){
-				Logger.MATERIALS("Using a pre-defined Fluid from GT. mFluid.");
-				return isValid.mFluid;
-			}
-			else if (isValid.mGas != null){
-				Logger.MATERIALS("Using a pre-defined Fluid from GT. mGas.");
-				return isValid.mGas;
-			}
-			else if (isValid.mStandardMoltenFluid != null){
-				Logger.MATERIALS("Using a pre-defined Fluid from GT. mStandardMoltenFluid.");
-				return isValid.mStandardMoltenFluid;
-			}
-		}
+		FluidStack f1 = FluidUtils.getWildcardFluidStack(n1, 1);
+		FluidStack f2 = FluidUtils.getWildcardFluidStack(n2, 1);
+		FluidStack f3 = FluidUtils.getWildcardFluidStack(Utils.sanitizeString(this.getUnlocalizedName(), new char[] {'-', '_'}), 1);
+		FluidStack f4 = FluidUtils.getWildcardFluidStack(Utils.sanitizeString(this.getLocalizedName(), new char[] {'-', '_'}), 1);
 
-		FluidStack aTest1 = FluidUtils.getFluidStack("molten."+Utils.sanitizeString(this.getLocalizedName()), 1);
-		FluidStack aTest2 = FluidUtils.getFluidStack("fluid."+Utils.sanitizeString(this.getLocalizedName()), 1);
-		FluidStack aTest3 = FluidUtils.getFluidStack(Utils.sanitizeString(this.getLocalizedName()), 1);
-
-		if (aTest1 != null) {
-			Logger.MATERIALS("Found FluidRegistry entry for "+"molten."+Utils.sanitizeString(this.getLocalizedName()));
-			return aTest1.getFluid();
+		if (f1 != null) {
+			aGTBaseFluid = f1.getFluid();
 		}
-		if (aTest2 != null) {
-			Logger.MATERIALS("Found FluidRegistry entry for "+"fluid."+Utils.sanitizeString(this.getLocalizedName()));
-			return aTest2.getFluid();
+		else if (f2 != null) {
+			aGTBaseFluid = f2.getFluid();
 		}
-		if (aTest3 != null) {
-			Logger.MATERIALS("Found FluidRegistry entry for "+Utils.sanitizeString(this.getLocalizedName()));
-			return aTest3.getFluid();
+		else if (f3 != null) {
+			aGTBaseFluid = f3.getFluid();
 		}
+		else if (f4 != null) {
+			aGTBaseFluid = f4.getFluid();
+		}
+		
 
 		ItemStack aFullCell = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1);
+		ItemStack aFullCell2 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getLocalizedName(), 1);
+		ItemStack aFullCell3 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+Utils.sanitizeString(this.getUnlocalizedName(), new char[] {'-', '_'}), 1);
+		ItemStack aFullCell4 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+Utils.sanitizeString(this.getLocalizedName(), new char[] {'-', '_'}), 1);
+		
 		Logger.MATERIALS("Generating our own fluid.");
-		//Generate a Cell if we need to
-		if (aFullCell == null){
+		//Generate a Cell if we need to, but first validate all four searches are invalid
+		
+		if (!ItemUtils.checkForInvalidItems(new ItemStack[] {aFullCell, aFullCell2, aFullCell3, aFullCell4})){
 			if (this.vGenerateCells){
 				Item g = new BaseItemCell(this);
 				aFullCell = ItemUtils.getSimpleStack(g);
@@ -1193,7 +1138,29 @@ public class Material {
 				Logger.MATERIALS("Did not generate a cell for "+this.getUnlocalizedName());
 			}
 		}
+		else {
+			// One cell we searched for was valid, let's register it.
+			if (aFullCell != null) {
+				this.registerComponentForMaterial(ComponentTypes.CELL, aFullCell);
+			}
+			else if (aFullCell2 != null) {
+				this.registerComponentForMaterial(ComponentTypes.CELL, aFullCell2);					
+			}
+			else if (aFullCell3 != null) {
+				this.registerComponentForMaterial(ComponentTypes.CELL, aFullCell3);					
+			}
+			else if (aFullCell4 != null) {
+				this.registerComponentForMaterial(ComponentTypes.CELL, aFullCell4);					
+			}
+		}
 
+		// We found a GT fluid, let's use it.
+		// Good chance we registered the cell from this material too.
+		if (aGTBaseFluid != null) {
+			return aGTBaseFluid;
+		}
+		
+		// This fluid does not exist at all, time to generate it.
 		if (this.materialState == MaterialState.SOLID){
 			return FluidUtils.addGTFluid(
 					this.getUnlocalizedName(),

@@ -219,12 +219,19 @@ public class AgriculturalChem extends ItemPackage {
 		ItemUtils.addItemToOreDictionary(mAluminiumPellet, "pelletAluminium");
 
 		ItemUtils.addItemToOreDictionary(mSodiumAluminate, "dustSodiumAluminate");
-		if (mSodiumHydroxide.getItem() instanceof ItemAgrichemBase) {
-			ItemUtils.addItemToOreDictionary(mSodiumHydroxide, "dustSodiumHydroxide");			
-		}
+		ItemUtils.addItemToOreDictionary(mSodiumHydroxide, "dustSodiumHydroxide");	
 		ItemUtils.addItemToOreDictionary(mSodiumCarbonate, "dustSodiumCarbonate");
 		ItemUtils.addItemToOreDictionary(mLithiumChloride, "dustLithiumChloride");	
 		
+		//Handle GT NaOH dusts
+		List<ItemStack> NaOHSmall = OreDictionary.getOres("dustSmallSodiumHydroxide_GT5U", false);
+		if (!NaOHSmall.isEmpty()) {
+			ItemUtils.addItemToOreDictionary(NaOHSmall.get(0), "dustSmallSodiumHydroxide");				
+		}
+		List<ItemStack> NaOHTiny = OreDictionary.getOres("dustTinySodiumHydroxide_GT5U", false);
+		if (!NaOHTiny.isEmpty()) {
+			ItemUtils.addItemToOreDictionary(NaOHTiny.get(0), "dustTinySodiumHydroxide");				
+		}
 		
 		
 	}
@@ -300,19 +307,19 @@ public class AgriculturalChem extends ItemPackage {
 
 	}
 
-	public final static AutoMap<ItemStack> mMeats = new AutoMap<ItemStack>();
-	public final static AutoMap<ItemStack> mFish = new AutoMap<ItemStack>();
-	public final static AutoMap<ItemStack> mFruits = new AutoMap<ItemStack>();
-	public final static AutoMap<ItemStack> mVege = new AutoMap<ItemStack>();
-	public final static AutoMap<ItemStack> mNuts = new AutoMap<ItemStack>();
-	public final static AutoMap<ItemStack> mSeeds = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mMeats = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mFish = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mFruits = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mVege = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mNuts = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mSeeds = new AutoMap<ItemStack>();
 	private final static AutoMap<ItemStack> mPeat = new AutoMap<ItemStack>();
 	private final static AutoMap<ItemStack> mBones = new AutoMap<ItemStack>();
 	private final static AutoMap<ItemStack> mBoneMeal = new AutoMap<ItemStack>();
 
-	public final static AutoMap<ItemStack> mList_Master_Meats = new AutoMap<ItemStack>();
-	public final static AutoMap<ItemStack> mList_Master_FruitVege = new AutoMap<ItemStack>();
-	public final static AutoMap<ItemStack> mList_Master_Seeds = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mList_Master_Meats = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mList_Master_FruitVege = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mList_Master_Seeds = new AutoMap<ItemStack>();
 	private final static AutoMap<ItemStack> mList_Master_Bones = new AutoMap<ItemStack>();
 
 	private static void processAllOreDict() {

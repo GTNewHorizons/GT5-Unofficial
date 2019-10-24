@@ -36,6 +36,7 @@ import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
+import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
@@ -134,6 +135,7 @@ public class HANDLER_GT {
 		}		
 		RecipesToRemove.go();
 		convertPyroToCokeOven();
+		Meta_GT_Proxy.fixIC2FluidNames();
 	}
 
 	private static void convertPyroToCokeOven() {

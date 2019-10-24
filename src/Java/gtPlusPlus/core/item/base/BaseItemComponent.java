@@ -169,7 +169,7 @@ public class BaseItemComponent extends Item{
 
 			if (this.componentMaterial == null){
 				if (this.materialName != null){
-					list.add(Utils.sanitizeStringKeepBrackets(materialName));					
+					//list.add(Utils.sanitizeStringKeepBrackets(materialName));					
 				}				
 			}			
 			

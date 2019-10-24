@@ -292,7 +292,7 @@ public class RocketFuels extends ItemPackage {
 
 		GT_Values.RA.addCentrifugeRecipe(
 				CI.getNumberedCircuit(23),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellRP1Fuel", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellRP1", 1),
 				FluidUtils.getFluidStack(Liquid_Oxygen, 4000), 
 				FluidUtils.getFluidStack(RP1_Plus_Liquid_Oxygen, 200), 
 				CI.emptyCells(1),
@@ -679,7 +679,7 @@ public class RocketFuels extends ItemPackage {
 		CoalTar.Coal_Oil = Kerosene;
 
 		//RP! Focket Fuel
-		RP1 = FluidUtils.generateFluidNonMolten("RP1Fuel", "RP-1 Rocket Fuel", 500, new short[]{210, 50, 50, 100}, null, null);
+		RP1 = FluidUtils.generateFluidNonMolten("RP1Fuel", "RP-1", 500, new short[]{210, 50, 50, 100}, null, null);
 
 		//Create Nitrogen Tetroxide
 		Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("NitrogenTetroxide", "Nitrogen Tetroxide", -11, new short[]{170, 170, 0, 100}, null, null);
@@ -753,7 +753,7 @@ public class RocketFuels extends ItemPackage {
 		Formaldehyde = FluidUtils.generateFluidNonMolten("Formaldehyde", "Formaldehyde", -92, new short[]{150, 75, 150, 100}, null, null);
 
 		Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("RocketFuelMixA", "H8N4C2O4 Rocket Fuel", -185, new short[]{50, 220, 50, 100}, null, null);
-		RP1_Plus_Liquid_Oxygen = FluidUtils.generateFluidNonMolten("RocketFuelMixB", "Rp-1 Fuel Mixture", -250, new short[]{250, 50, 50, 100}, null, null);
+		RP1_Plus_Liquid_Oxygen = FluidUtils.generateFluidNonMolten("RocketFuelMixB", "Rp-1 Rocket Fuel", -250, new short[]{250, 50, 50, 100}, null, null);
 		Monomethylhydrazine_Plus_Nitric_Acid = FluidUtils.generateFluidNonMolten("RocketFuelMixC", "CN3H7O3 Rocket Fuel", -300, new short[]{125, 75, 180, 100}, null, null);
 		Dense_Hydrazine_Mix = FluidUtils.generateFluidNonMolten("RocketFuelMixD", "Dense Hydrazine Fuel Mixture", -250, new short[]{175, 80, 120, 100}, null, null);
 

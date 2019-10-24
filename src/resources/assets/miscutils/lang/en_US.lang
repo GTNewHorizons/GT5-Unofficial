@@ -3045,7 +3045,6 @@ item.ureamix.name=Cell of Urea Mix
 item.liquidresin.name=Cell of Liquid Resin
 item.propionicacid.name=Propionic Acid Cell
 item.aceticacid.name=Acetic Acid Cell
-
 item.BasicAgrichemItem.0.name=Algae Biomass
 item.BasicAgrichemItem.1.name=Green Algae Biomass
 item.BasicAgrichemItem.2.name=Brown Algae Biomass
@@ -3068,3 +3067,11 @@ item.BasicAgrichemItem.18.name=Sodium Aluminate
 item.BasicAgrichemItem.19.name=Sodium Hydroxide
 item.BasicAgrichemItem.20.name=Sodium Carbonate
 item.BasicAgrichemItem.21.name=Lithium Chloride
+
+//Added 24/10/19
+item.butanol.name=Butanol Cell
+
+//Try Fix IC2 Garbage vv
+fluidHotWater=Heated Water
+fluidHotWater.name=Heated Water
+//Try Fix IC2 Garbage ^^
