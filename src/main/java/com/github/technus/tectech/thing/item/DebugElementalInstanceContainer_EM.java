@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.Util;
+import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalInstanceContainer;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
@@ -10,6 +10,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalExcep
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.gui.FontRenderer;
@@ -29,6 +30,7 @@ import java.util.TreeSet;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static cpw.mods.fml.relauncher.Side.CLIENT;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -158,7 +160,8 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
     }
 
     @Override
+    @SideOnly(CLIENT)
     public FontRenderer getFontRenderer(ItemStack stack) {
-        return (FontRenderer) (Object) TecTechFontRender.INSTANCE;
+        return TecTechFontRender.INSTANCE;
     }
 }
