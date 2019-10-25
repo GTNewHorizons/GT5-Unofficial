@@ -7,6 +7,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefin
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +21,7 @@ import java.util.List;
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static cpw.mods.fml.relauncher.Side.CLIENT;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -147,6 +149,7 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
     }
 
     @Override
+    @SideOnly(CLIENT)
     public FontRenderer getFontRenderer(ItemStack stack) {
         return TecTechFontRender.INSTANCE;
     }
