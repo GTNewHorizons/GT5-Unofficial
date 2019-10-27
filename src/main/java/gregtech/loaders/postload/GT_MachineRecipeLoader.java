@@ -1585,8 +1585,11 @@ if(Loader.isModLoaded("Railcraft")){
         }
         if (GT_Mod.gregtechproxy.mGTPlusPlusHard) {
         	GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("plateHastelloyC276", 8), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_IV.get(1L, new Object[0]), 50, 16);
-            GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("plateHastelloyN", 8), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_LuV.get(1L, new Object[0]), 50, 16);
-            GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("plateLafiumCompound", 8), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_ZPM.get(1L, new Object[0]), 50, 16);
+        	if (Loader.isModLoaded("bartworks")){
+            }else {
+        	GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("plateHastelloyN", 8), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_LuV.get(1L, new Object[0]), 50, 16);
+            }
+        	GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("plateLafiumCompound", 8), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_ZPM.get(1L, new Object[0]), 50, 16);
             GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("plateCinobiteA243", 8), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_UV.get(1L, new Object[0]), 50, 16);
         }else {
         	GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_IV.get(1L, new Object[0]), 50, 16);
@@ -4668,6 +4671,9 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addWireAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.EuropiumoxideMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.UEV_Coil.get(1L), 200, 8000000, false);
         GT_Values.RA.addWireAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.EuropiumoxideMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.BlackPlutonium, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.UIV_Coil.get(1L), 200, 30000000, false);
         
+        //Array
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate,Materials.HSSG,4L),GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium,2L), ItemList.Casing_RobustTungstenSteel.get(1L,new Object[0])},GT_Values.NF,ItemList.Casing_Array.get(1L,new Object[0]),50,1920);
+
         //Digital Transformers
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("gregtech","gt.blockmachines", 1L, 12154), ItemList.Cover_Screen.get(1L), GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Titanium, 2L), ItemList.EV_Coil.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Machine_DigitalTransformer_EV.get(1L, new Object[0]), 200, 1920);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("gregtech","gt.blockmachines", 1L, 12155), ItemList.Cover_Screen.get(1L), GT_OreDictUnificator.get(OrePrefixes.spring, Materials.TungstenSteel, 2L), ItemList.IV_Coil.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Machine_DigitalTransformer_IV.get(1L, new Object[0]), 200, 7680);
