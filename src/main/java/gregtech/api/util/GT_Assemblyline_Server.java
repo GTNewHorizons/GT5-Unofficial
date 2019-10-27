@@ -1,105 +1,142 @@
 package gregtech.api.util;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
-
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
 public class GT_Assemblyline_Server {
-	
-	
-	public static LinkedHashMap<String,String> lServerNames = new LinkedHashMap<String,String>();
-	private static LinkedHashMap<String,String> internal2= new LinkedHashMap<String,String>(),internal3 = new LinkedHashMap<String,String>(),internal4= new LinkedHashMap<String,String>();
-	private static HashMap<String, Property> internal = new HashMap<String, Property>();
-	
-	public static void fillMap(FMLPreInitializationEvent aEvent) {
-		
-		String s = new String(aEvent.getModConfigurationDirectory().getAbsolutePath());
-		s = s.substring(0, aEvent.getModConfigurationDirectory().getAbsolutePath().length()-6);
-		s = s + "GregTech.lang";
-		File f = new File(s);
-		s = "";
-		Configuration conf = new Configuration(f);
-		
-		ConfigCategory cat = conf.getCategory("languagefile");
-		internal.putAll(cat.getValues());
-		for (Map.Entry<String, Property> entry : internal.entrySet())
-		{
-				s=entry.getValue().getString().replaceAll("%", "");
+    public static LinkedHashMap<String, String> lServerNames = new LinkedHashMap();
+    private static LinkedHashMap<String, String> internal2 = new LinkedHashMap();
+    private static LinkedHashMap<String, String> internal3 = new LinkedHashMap();
+    private static LinkedHashMap<String, String> internal4 = new LinkedHashMap();
+    private static LinkedHashMap<String, String> internal_meta = new LinkedHashMap();
+    private static HashMap<String, Property> internal = new HashMap();
 
-			if (entry.getKey().contains("metaitem") && s.contains("material"))
-				internal2.put(entry.getKey(), s);
-			else if (entry.getKey().contains("blockmachines") && s.contains("material"))
-				internal3.put(entry.getKey(), s);
-			else if ((entry.getKey().contains("blockores")||(entry.getKey().contains("blockmetal")||entry.getKey().contains("blockgem"))) && s.contains("material"))
-				internal4.put(entry.getKey(), s);
-			else
-				lServerNames.put(entry.getKey(), s);
-		}
-		for (Map.Entry<String, String> entry : internal2.entrySet()) {
-			if (entry.getKey().contains("name")) {
-				int i = Integer.parseInt(entry.getKey().substring("gt.metaitem.01.".length(), entry.getKey().length()-".name".length()));
-				i=i%1000;
-				if (GregTech_API.sGeneratedMaterials[i] != null)
-					lServerNames.put(entry.getKey(), entry.getValue().replace("material",GregTech_API.sGeneratedMaterials[i].toString()));
-				else
-					lServerNames.put(entry.getKey(), null);
-			}
-		}
-		for (Map.Entry<String, String> entry : internal3.entrySet()) {
-			if (entry.getKey().contains("cable"))
-				lServerNames.put(entry.getKey(), entry.getValue().replace("material", entry.getKey().substring("gt.blockmachines.cable.".length(), entry.getKey().length()-".01.name".length())));	
-			else if (entry.getKey().contains("gt_frame_"))
-				lServerNames.put(entry.getKey(), entry.getValue().replace("material", entry.getKey().substring("gt.blockmachines.gt_frame_".length(), entry.getKey().length()-".name".length())));	
-			else if(entry.getKey().contains("gt_pipe_")) {
-					if(
-					!entry.getKey().contains("_huge")	&&
-					!entry.getKey().contains("_large")	&&
-					!entry.getKey().contains("_nonuple")&&
-					!entry.getKey().contains("_quadruple")&&
-					!entry.getKey().contains("_small")&&
-					!entry.getKey().contains("_tiny")
-					)
-						lServerNames.put(entry.getKey(), entry.getValue().replace("material", entry.getKey().substring("gt.blockmachines.gt_pipe_".length(), entry.getKey().length()-".name".length())));
-					else if (entry.getKey().contains("_huge")||entry.getKey().contains("_tiny"))
-						lServerNames.put(entry.getKey(), entry.getValue().replace("material", entry.getKey().substring("gt.blockmachines.gt_pipe_".length(), entry.getKey().length()-"_tiny.name".length())));	
-					else if (entry.getKey().contains("_large")||entry.getKey().contains("_small"))
-						lServerNames.put(entry.getKey(), entry.getValue().replace("material", entry.getKey().substring("gt.blockmachines.gt_pipe_".length(), entry.getKey().length()-"_large.name".length())));
-					else if (entry.getKey().contains("_nonuple"))
-						lServerNames.put(entry.getKey(), entry.getValue().replace("material", entry.getKey().substring("gt.blockmachines.gt_pipe_".length(), entry.getKey().length()-"_nonuple.name".length())));
-					else if (entry.getKey().contains("_quadruple"))
-						lServerNames.put(entry.getKey(), entry.getValue().replace("material", entry.getKey().substring("gt.blockmachines.gt_pipe_".length(), entry.getKey().length()-"_quadruple.name".length())));
-			}
-			else if (entry.getKey().contains("wire"))
-				lServerNames.put(entry.getKey(), entry.getValue().replace("material", entry.getKey().substring("gt.blockmachines.wire.".length(), entry.getKey().length()-".01.name".length())));	
-			else
-				lServerNames.put(entry.getKey(), entry.getValue());
-		}
-		for (Map.Entry<String, String> entry : internal4.entrySet()) {
-			if (entry.getKey().contains("blockores")) {
-				int i = Integer.parseInt(entry.getKey().substring("gt.blockores.".length(), entry.getKey().length()-".name".length()));
-				i=i%1000;
-				if (GregTech_API.sGeneratedMaterials[i] != null)
-					lServerNames.put(entry.getKey(), entry.getValue().replace("material",GregTech_API.sGeneratedMaterials[i].toString()));
-				else
-					lServerNames.put(entry.getKey(), null);
-			}
-			else if(entry.getKey().contains("blockmetal")) {
-				Materials[] mMats = null;
-				String t = entry.getKey().substring("gt.blockmetal".length());
-					t=t.substring(0,1);
-				int i = Integer.parseInt(t);
-				switch (i) {
+    public GT_Assemblyline_Server() {
+    }
+
+    public static void fillMap(FMLPreInitializationEvent aEvent) {
+        System.out.println("SONCE FIX ENABLED");
+        String s = new String(aEvent.getModConfigurationDirectory().getAbsolutePath());
+        s = s.substring(0, aEvent.getModConfigurationDirectory().getAbsolutePath().length() - 6);
+        s = s + "GregTech.lang";
+        File f = new File(s);
+        s = "";
+        Configuration conf = new Configuration(f);
+        ConfigCategory cat = conf.getCategory("languagefile");
+        internal.putAll(cat.getValues());
+        Iterator var5 = internal.entrySet().iterator();
+
+        while(true) {
+            Entry entry;
+            while(var5.hasNext()) {
+                entry = (Entry)var5.next();
+                s = ((Property)entry.getValue()).getString().replaceAll("%", "");
+                if (((String)entry.getKey()).contains("metaitem") && s.contains("material")) {
+                    internal2.put((String)entry.getKey(), s);
+                } else if (((String)entry.getKey()).contains("metaitem.01")) {
+                    internal_meta.put((String)entry.getKey(), s);
+                } else if (((String)entry.getKey()).contains("blockmachines") && s.contains("material")) {
+                    internal3.put((String)entry.getKey(), s);
+                } else if ((((String)entry.getKey()).contains("blockores") || ((String)entry.getKey()).contains("blockmetal") || ((String)entry.getKey()).contains("blockgem")) && s.contains("material")) {
+                    internal4.put((String)entry.getKey(), s);
+                } else {
+                    lServerNames.put((String)entry.getKey(), s);
+                }
+            }
+
+            var5 = internal_meta.entrySet().iterator();
+
+            int i;
+            while(var5.hasNext()) {
+                entry = (Entry)var5.next();
+                if (((String)entry.getKey()).contains("name")) {
+                    try {
+                        i = Integer.parseInt(((String)entry.getKey()).substring("gt.metaitem.01.".length(), ((String)entry.getKey()).length() - ".name".length()));
+                        lServerNames.put((String)entry.getKey(),(String) entry.getValue());
+                    } catch (Exception var14) {
+                        ;
+                    }
+                }
+            }
+
+            var5 = internal2.entrySet().iterator();
+
+            while(var5.hasNext()) {
+                entry = (Entry)var5.next();
+                if (((String)entry.getKey()).contains("name")) {
+                    i = Integer.parseInt(((String)entry.getKey()).substring("gt.metaitem.01.".length(), ((String)entry.getKey()).length() - ".name".length()));
+                    i %= 1000;
+
+                    try {
+                        lServerNames.put((String)entry.getKey(), ((String)entry.getValue()).replace("material", GregTech_API.sGeneratedMaterials[i].toString()));
+                    } catch (Exception var13) {
+                        ;
+                    }
+                }
+            }
+
+            var5 = internal3.entrySet().iterator();
+
+            while(true) {
+                while(var5.hasNext()) {
+                    entry = (Entry)var5.next();
+                    if (((String)entry.getKey()).contains("cable")) {
+                        lServerNames.put((String)entry.getKey(), ((String)entry.getValue()).replace("material", ((String)entry.getKey()).substring("gt.blockmachines.cable.".length(), ((String)entry.getKey()).length() - ".01.name".length())));
+                    } else if (((String)entry.getKey()).contains("gt_frame_")) {
+                        lServerNames.put((String)entry.getKey(), ((String)entry.getValue()).replace("material", ((String)entry.getKey()).substring("gt.blockmachines.gt_frame_".length(), ((String)entry.getKey()).length() - ".name".length())));
+                    } else if (((String)entry.getKey()).contains("gt_pipe_")) {
+                        if (!((String)entry.getKey()).contains("_huge") && !((String)entry.getKey()).contains("_large") && !((String)entry.getKey()).contains("_nonuple") && !((String)entry.getKey()).contains("_quadruple") && !((String)entry.getKey()).contains("_small") && !((String)entry.getKey()).contains("_tiny")) {
+                            lServerNames.put((String)entry.getKey(), ((String)entry.getValue()).replace("material", ((String)entry.getKey()).substring("gt.blockmachines.gt_pipe_".length(), ((String)entry.getKey()).length() - ".name".length())));
+                        } else if (!((String)entry.getKey()).contains("_huge") && !((String)entry.getKey()).contains("_tiny")) {
+                            if (!((String)entry.getKey()).contains("_large") && !((String)entry.getKey()).contains("_small")) {
+                                if (((String)entry.getKey()).contains("_nonuple")) {
+                                    lServerNames.put((String)entry.getKey(), ((String)entry.getValue()).replace("material", ((String)entry.getKey()).substring("gt.blockmachines.gt_pipe_".length(), ((String)entry.getKey()).length() - "_nonuple.name".length())));
+                                } else if (((String)entry.getKey()).contains("_quadruple")) {
+                                    lServerNames.put((String)entry.getKey(), ((String)entry.getValue()).replace("material", ((String)entry.getKey()).substring("gt.blockmachines.gt_pipe_".length(), ((String)entry.getKey()).length() - "_quadruple.name".length())));
+                                }
+                            } else {
+                                lServerNames.put((String)entry.getKey(), ((String)entry.getValue()).replace("material", ((String)entry.getKey()).substring("gt.blockmachines.gt_pipe_".length(), ((String)entry.getKey()).length() - "_large.name".length())));
+                            }
+                        } else {
+                            lServerNames.put((String)entry.getKey(), ((String)entry.getValue()).replace("material", ((String)entry.getKey()).substring("gt.blockmachines.gt_pipe_".length(), ((String)entry.getKey()).length() - "_tiny.name".length())));
+                        }
+                    } else if (((String)entry.getKey()).contains("wire")) {
+                        lServerNames.put((String)entry.getKey(), ((String)entry.getValue()).replace("material", ((String)entry.getKey()).substring("gt.blockmachines.wire.".length(), ((String)entry.getKey()).length() - ".01.name".length())));
+                    } else {
+                        lServerNames.put((String)entry.getKey(), (String)entry.getValue());
+                    }
+                }
+
+                var5 = internal4.entrySet().iterator();
+
+                while(var5.hasNext()) {
+                    entry = (Entry)var5.next();
+                    if (((String)entry.getKey()).contains("blockores")) {
+                        try {
+                            i = Integer.parseInt(((String)entry.getKey()).substring("gt.blockores.".length(), ((String)entry.getKey()).length() - ".name".length()));
+                            i %= 1000;
+                            lServerNames.put((String)entry.getKey(), ((String)entry.getValue()).replace("material", GregTech_API.sGeneratedMaterials[i].toString()));
+                        } catch (Exception var11) {
+                            ;
+                        }
+                    } else {
+                        String t;
+                        Materials[] mMats;
+                        if (((String)entry.getKey()).contains("blockmetal")) {
+                            mMats = null;
+                            t = ((String)entry.getKey()).substring("gt.blockmetal".length());
+                            t = t.substring(0, 1);
+                            i = Integer.parseInt(t);
+                            switch(i) {
 				case 1:
 					mMats=new Materials[]{
 			                Materials.Adamantium,
@@ -259,19 +296,21 @@ public class GT_Assemblyline_Server {
 			                Materials.Blaze,
 			                Materials.Ichorium
 					};
-					break;
 				}
-				t = entry.getKey().substring("gt.blockmetal1.".length(), entry.getKey().length()-".name".length());
-				i = Integer.parseInt(t);
-				lServerNames.put(entry.getKey(),"Block of "+mMats[i].toString());
-				mMats = null;
-			}
-			else if(entry.getKey().contains("blockgem")) {
-				Materials[] mMats = null;
-				String t = entry.getKey().substring("gt.blockgem".length());
-					t=t.substring(0,1);
-				int i = Integer.parseInt(t);
-				switch (i) {
+				t = ((String)entry.getKey()).substring("gt.blockmetal1.".length(), ((String)entry.getKey()).length() - ".name".length());
+                            i = Integer.parseInt(t);
+
+                            try {
+                                lServerNames.put((String)entry.getKey(), "Block of " + mMats[i].toString());
+                            } catch (ArrayIndexOutOfBoundsException var12) {
+                                mMats = null;
+                            }
+                        } else if (((String)entry.getKey()).contains("blockgem")) {
+                            mMats = null;
+                            t = ((String)entry.getKey()).substring("gt.blockgem".length());
+                            t = t.substring(0, 1);
+                            i = Integer.parseInt(t);
+                            switch(i) {
 				case 1:
 					mMats=new Materials[]{
 							  Materials.InfusedAir,
@@ -321,19 +360,21 @@ public class GT_Assemblyline_Server {
 			                  Materials.Charcoal,
 			                  Materials.Blaze
 					};
-					break;
 				}
-				t = entry.getKey().substring("gt.blockgem1.".length(), entry.getKey().length()-".name".length());
-				i = Integer.parseInt(t);
-				lServerNames.put(entry.getKey(),"Block of "+mMats[i].toString());
-				mMats = null;
-			}
-		}
-		
-		internal = null;
-		internal2 = null;
-		internal3 = null;
-		internal4 = null;
-	}
-		
+				t = ((String)entry.getKey()).substring("gt.blockgem1.".length(), ((String)entry.getKey()).length() - ".name".length());
+                            i = Integer.parseInt(t);
+                            lServerNames.put((String)entry.getKey(), "Block of " + mMats[i].toString());
+                            mMats = null;
+                        }
+                    }
+                }
+
+                internal = null;
+                internal2 = null;
+                internal3 = null;
+                internal4 = null;
+                return;
+            }
+        }
+    }
 }
