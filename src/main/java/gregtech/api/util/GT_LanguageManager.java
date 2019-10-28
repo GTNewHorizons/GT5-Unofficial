@@ -261,9 +261,9 @@ public class GT_LanguageManager {
     	addStringLocalization("Interaction_DESCRIPTION_Index_152", "Total: ");
     	addStringLocalization("Interaction_DESCRIPTION_Index_153", "Usage: ");
     	addStringLocalization("Interaction_DESCRIPTION_Index_154", "Voltage: ");
-    	addStringLocalization("Interaction_DESCRIPTION_Index_155", "Amperage: ");
+    	addStringLocalization("Interaction_DESCRIPTION_Index_155", "Current: ");
     	addStringLocalization("Interaction_DESCRIPTION_Index_156", "Voltage: unspecified");
-    	addStringLocalization("Interaction_DESCRIPTION_Index_157", "Amperage: unspecified");
+    	addStringLocalization("Interaction_DESCRIPTION_Index_157", "Current: unspecified");
     	addStringLocalization("Interaction_DESCRIPTION_Index_158", "Time: ");
     	addStringLocalization("Interaction_DESCRIPTION_Index_159", "Needs Low Gravity");
     	addStringLocalization("Interaction_DESCRIPTION_Index_160", "Needs Cleanroom");    	
