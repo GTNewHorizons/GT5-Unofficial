@@ -35,15 +35,16 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -71,6 +72,20 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
             fdsc[dsc.length] = StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
         }
         return fdsc;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setByte("glasTier",glasTier);
+        aNBT.setByte("circuitMode",circuitMode);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.circuitMode = aNBT.getByte("circuitMode");
+        this.glasTier = aNBT.getByte("glasTier");
     }
 
     public boolean drainEnergyInput(long aEU) {
@@ -110,16 +125,47 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
 //        return glasTier != 8 && rVoltage > BW_Util.getTierVoltage(glasTier) ? BW_Util.getTierVoltage(glasTier) : rVoltage ;
 //    }
 
+
+    private byte circuitMode = 0;
+
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aPlayer.isSneaking()) {
+            --circuitMode;
+            if (circuitMode < 0)
+                circuitMode = 24;
+        } else {
+            ++circuitMode;
+            if (circuitMode > 24)
+                circuitMode = 0;
+        }
+
+        GT_Utility.sendChatToPlayer(aPlayer,circuitMode > 0 ? "MEBF will prioritise circuit: "+circuitMode : "Circuit prioritisation disabled.");
+    }
+
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
+
         ItemStack[] tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
+
         FluidStack[] tFluids = this.getStoredFluids().toArray(new FluidStack[0]);
         long tVoltage = this.getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
-        if (tRecipe == null)
-            return false;
+        GT_Recipe tRecipe = null;
+        if (circuitMode > 0 && Arrays.stream(tInputs).anyMatch(e -> GT_Utility.areStacksEqual(e,GT_Utility.getIntegratedCircuit(circuitMode),true))){
+            List<ItemStack> modInputs = Arrays.stream(tInputs).filter(Objects::nonNull).filter(e -> !e.getItem().equals(GT_Utility.getIntegratedCircuit(circuitMode).getItem())).collect(Collectors.toList());
+            modInputs.add(GT_Utility.getIntegratedCircuit(circuitMode));
+            tInputs = modInputs.toArray(new ItemStack[0]);
+        }
+        tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+        if (tRecipe == null) {
+            if (circuitMode == 0)
+                return false;
+            tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
+            tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+            if (tRecipe == null)
+                return false;
+        }
 
         ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
         ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();

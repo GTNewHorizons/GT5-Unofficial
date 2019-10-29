@@ -49,11 +49,12 @@ import net.minecraft.item.crafting.*;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
 import static gregtech.api.enums.OrePrefixes.*;
@@ -108,7 +109,7 @@ public class PlatinumSludgeOverHaul {
         GT_Values.RA.addBlastRecipe(PTMetallicPowder.get(dust, 3), GT_Utility.getIntegratedCircuit(1), null, null, Materials.Platinum.getNuggets(2), null, 600, 120, Materials.Platinum.mMeltingPoint);
 
         GT_Values.RA.addChemicalRecipe(PTMetallicPowder.get(dust), GT_Utility.getIntegratedCircuit(1), AquaRegia.getFluidOrGas(1000), PTConcentrate.getFluidOrGas(1000), PTResidue.get(dustTiny), 250);
-        GT_Values.RA.addCentrifugeRecipe(PTConcentrate.get(cell,2),null, AmmoniumChloride.getFluidOrGas(200), PDAmmonia.getFluidOrGas(200), PTSaltCrude.get(dustTiny, 18), PTRawPowder.get(dustTiny,2), Materials.NitrogenDioxide.getCells(1), Materials.DilutedSulfuricAcid.getCells(1), null, null, null, 1200, 30);
+        GT_Values.RA.addCentrifugeRecipe(PTConcentrate.get(cell,2),null, AmmoniumChloride.getFluidOrGas(200), PDAmmonia.getFluidOrGas(200), PTSaltCrude.get(dustTiny, 16), PTRawPowder.get(dustTiny,2), Materials.NitrogenDioxide.getCells(1), Materials.DilutedSulfuricAcid.getCells(1), null, null, null, 1200, 30);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{}, new FluidStack[]{PTConcentrate.getFluidOrGas(2000), AmmoniumChloride.getFluidOrGas(200)}, new FluidStack[]{PDAmmonia.getFluidOrGas(200), Materials.NitrogenDioxide.getGas(1000),Materials.DilutedSulfuricAcid.getFluid(1000)}, new ItemStack[]{PTSaltCrude.get(dustTiny, 16), PTRawPowder.get(dustTiny,2)}, 1200, 30);
         GT_Values.RA.addSifterRecipe(PTSaltCrude.get(dust), new ItemStack[]{
                 PTSaltRefined.get(dust),
@@ -413,7 +414,32 @@ public class PlatinumSludgeOverHaul {
             in = FieldUtils.getField(recipe.getClass(), inputItemName, true);
         if (in == null)
             return;
-        FieldUtils.removeFinalModifier(in,true);
+
+        //directly copied from the apache commons collection, cause GTNH had problems with that particular function for some reason?
+        //this part here is NOT MIT LICENSED BUT LICSENSED UNDER THE Apache License, Version 2.0!
+        try {
+            if (Modifier.isFinal(in.getModifiers())) {
+                // Do all JREs implement Field with a private ivar called "modifiers"?
+                Field modifiersField = Field.class.getDeclaredField("modifiers");
+                boolean doForceAccess = !modifiersField.isAccessible();
+                if (doForceAccess) {
+                    modifiersField.setAccessible(true);
+                }
+                try {
+                    modifiersField.setInt(in, in.getModifiers() & ~Modifier.FINAL);
+                } finally {
+                    if (doForceAccess) {
+                        modifiersField.setAccessible(false);
+                    }
+                }
+            }
+        } catch (NoSuchFieldException ignored) {
+            // The field class contains always a modifiers field
+        } catch (IllegalAccessException ignored) {
+            // The modifiers field is made accessible
+        }
+        // END OF APACHE COMMONS COLLECTION COPY
+
         Object input = null;
         try {
             input = in.get(obj);
@@ -518,33 +544,14 @@ public class PlatinumSludgeOverHaul {
         if (GameRegistry.findUniqueIdentifierFor(stack.getItem()).modId.equals(BartWorksCrossmod.MOD_ID))
             return true;
 
+        if (GameRegistry.findUniqueIdentifierFor(stack.getItem()).modId.equals("dreamcraft"))
+            return true;
+
         if (Block.getBlockFromItem(stack.getItem()) instanceof GT_Generic_Block && !(Block.getBlockFromItem(stack.getItem()) instanceof GT_Block_Ores_Abstract))
             return true;
 
-        if (GT_Utility.areStacksEqual(ItemList.Depleted_Naquadah_1.get(1),stack,true) || GT_Utility.areStacksEqual(ItemList.Depleted_Naquadah_2.get(1),stack,true) || GT_Utility.areStacksEqual(ItemList.Depleted_Naquadah_4.get(1),stack,true))
+        if (Arrays.stream(ItemList.values()).filter(ItemList::hasBeenSet).anyMatch(e -> !BW_Util.checkStackAndPrefix(stack) && GT_Utility.areStacksEqual(e.get(1), stack, true)))
             return true;
-
-
-        if (GT_Utility.areStacksEqual(ItemList.Tool_Lighter_Platinum_Empty.get(1),stack,true) || GT_Utility.areStacksEqual(ItemList.Tool_Lighter_Platinum_Used.get(1),stack,true) || GT_Utility.areStacksEqual(ItemList.Tool_Lighter_Platinum_Full.get(1),stack,true))
-            return true;
-
-        if (GT_Utility.areStacksEqual(ItemList.Emitter_EV.get(1),stack,true))
-            return true;
-
-        try {
-            ItemList gtnhItemListItems = ItemList.valueOf("Large_Fluid_Cell_TungstenSteel");
-            if (GT_Utility.areStacksEqual(gtnhItemListItems.get(1), stack, true))
-                return true;
-            gtnhItemListItems = ItemList.valueOf("Depleted_MNq_1");
-            if (GT_Utility.areStacksEqual(gtnhItemListItems.get(1), stack, true))
-                return true;
-            gtnhItemListItems = ItemList.valueOf("Depleted_MNq_2");
-            if (GT_Utility.areStacksEqual(gtnhItemListItems.get(1), stack, true))
-                return true;
-            gtnhItemListItems = ItemList.valueOf("Depleted_MNq_4");
-            if (GT_Utility.areStacksEqual(gtnhItemListItems.get(1), stack, true))
-                return true;
-        } catch (IllegalArgumentException ignored) {}
 
         if (stack.getItem() instanceof GT_Generic_Item) {
             if (!BW_Util.checkStackAndPrefix(stack))

@@ -22,12 +22,10 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
-import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.items.LabParts;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.common.net.RendererPacket;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import com.github.bartimaeusnek.bartworks.util.*;
@@ -43,8 +41,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -57,8 +53,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -318,8 +312,8 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
                             }
                         } else {
                             if (x == -2 && z == -2 && y == 1)
-                                this.mGlassTier = this.calculateGlassTier(aBaseMetaTileEntity.getBlockOffset(xDir + -2, y, zDir + z), aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z));
-                            if (0 == this.mGlassTier || this.mGlassTier != this.calculateGlassTier(aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z), aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z))) {
+                                this.mGlassTier = BW_Util.calculateGlassTier(aBaseMetaTileEntity.getBlockOffset(xDir + -2, y, zDir + z), aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z));
+                            if (0 == this.mGlassTier || this.mGlassTier != BW_Util.calculateGlassTier(aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z), aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z))) {
                                 return false;
                             }
                         }
@@ -334,27 +328,6 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
                             return this.mEnergyHatches.size() > 0;
 
         return false;
-    }
-
-    private byte calculateGlassTier(@Nonnull Block block, @Nonnegative Byte meta) {
-
-        if (block.equals(ItemRegistry.bw_glasses[0]))
-            return meta == 12 ? 5 : meta > 1 && meta < 6 ? (byte) (meta + 3) : 4;
-
-        if (block.getUnlocalizedName().equals("blockAlloyGlass"))
-            return 4;
-
-        if (block.equals(Blocks.glass))
-            return 3;
-
-        for (BioVatLogicAdder.BlockMetaPair B : BioVatLogicAdder.BioVatGlass.getGlassMap().keySet())
-            if (B.getBlock().equals(block) && B.getaByte().equals(meta))
-                return BioVatLogicAdder.BioVatGlass.getGlassMap().get(B);
-
-        if (block.getMaterial().equals(Material.glass))
-            return 3;
-
-        return 0;
     }
 
     @Override

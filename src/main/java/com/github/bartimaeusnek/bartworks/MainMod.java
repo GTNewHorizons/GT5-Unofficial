@@ -220,8 +220,9 @@ public final class MainMod {
         new CircuitImprintLoader().run();
         if (classicMode)
             new DownTierLoader().run();
-        fixEnergyRequirements();
         runOnServerStarted();
+        fixEnergyRequirements();
+//        removeDuplicateRecipes();
     }
 
     private static void fixEnergyRequirements() {
@@ -230,7 +231,7 @@ public final class MainMod {
             for (GT_Recipe recipe : map.mRecipeList){
                 if (recipe.mFakeRecipe)
                     continue maploop;
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < VN.length; i++) {
                     if (recipe.mEUt == BW_Util.getTierVoltage(i)){
                         recipe.mEUt = BW_Util.getMachineVoltageFromTier(i);
                     }
@@ -517,5 +518,22 @@ public final class MainMod {
     private static boolean checkForExplosives(ItemStack input) {
         return (GT_Utility.areStacksEqual(input, new ItemStack(Blocks.tnt)) || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L)) || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("dynamite", 1L)) || GT_Utility.areStacksEqual(input, ItemList.Block_Powderbarrel.get(1L)));
     }
+
+//    private static void removeDuplicateRecipes(){
+//        GT_Recipe.GT_Recipe_Map.sMappings.forEach(
+//                gt_recipe_map -> {
+//                    HashSet<Integer> mappings = new HashSet<>();
+//                    HashSet<GT_Recipe> dupes = new HashSet<>();
+//                    gt_recipe_map.mRecipeList.forEach(
+//                            recipe -> {
+//                               if (mappings.contains(BW_Util.getRecipeHash(recipe)))
+//                                   dupes.add(recipe);
+//                               mappings.add(BW_Util.getRecipeHash(recipe));
+//                            }
+//                    );
+//                    gt_recipe_map.mRecipeList.removeAll(dupes);
+//                }
+//        );
+//    }
 
 }

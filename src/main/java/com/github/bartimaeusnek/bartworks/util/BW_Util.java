@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.util;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
@@ -34,17 +35,17 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnegative;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import javax.annotation.Nonnull;
+import java.util.*;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -212,6 +213,27 @@ public class BW_Util {
     public static boolean checkStackAndPrefix(ItemStack itemStack) {
         return itemStack != null && GT_OreDictUnificator.getAssociation(itemStack) != null && GT_OreDictUnificator.getAssociation(itemStack).mPrefix != null && GT_OreDictUnificator.getAssociation(itemStack).mMaterial != null && GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
     }
+
+//    public static int getRecipeHash(GT_Recipe recipe) {
+//        int mInputItemsRawHash = Arrays.stream(recipe.mInputs).filter(Objects::nonNull).mapToInt(e ->
+//                Objects.hash(Item.getIdFromItem(e.getItem()),e.getItemDamage(), e.getTagCompound())
+//        ).hashCode();
+//        int mInputFluidRawHash = Arrays.stream(recipe.mFluidInputs).filter(Objects::nonNull).mapToInt(e ->
+//                Objects.hash(e.getFluidID(),e.amount,e.tag)
+//        ).hashCode();
+//        int mOutputItemRawHash = Arrays.stream(recipe.mOutputs).filter(Objects::nonNull).mapToInt(e ->
+//                Objects.hash(Item.getIdFromItem(e.getItem()),e.getItemDamage(), e.getTagCompound())
+//        ).hashCode();
+//        int mOutputFluidRawHash = Arrays.stream(recipe.mFluidOutputs).filter(Objects::nonNull).mapToInt(e ->
+//                Objects.hash(e.getFluidID(),e.amount,e.tag)
+//        ).hashCode();
+//        int mChancesRawHash = Arrays.hashCode(recipe.mChances);
+//        int others = Objects.hash(recipe.mEUt,recipe.mSpecialValue,recipe.mDuration);
+//        int specialItem = Objects.hash(recipe.mSpecialItems instanceof ItemStack ?
+//                ((ItemStack) (recipe.mSpecialItems)).getItem() : recipe.mSpecialItems instanceof Item ? recipe.mSpecialItems : 0 ,
+//                recipe.mSpecialItems instanceof ItemStack ? ((ItemStack) (recipe.mSpecialItems)).getItemDamage() : 0);
+//        return Objects.hash(mInputItemsRawHash,mInputFluidRawHash,mOutputItemRawHash,mOutputFluidRawHash,mChancesRawHash,others,specialItem);
+//    }
 
     public static int getMachineVoltageFromTier(int tier) {
         return (int) (30 * Math.pow(4, (tier - 1)));
@@ -481,5 +503,26 @@ public class BW_Util {
             case "circuitBio": return 10;
             default: return -1;
         }
+    }
+
+    public static byte calculateGlassTier(@Nonnull Block block, @Nonnegative byte meta) {
+
+        if (block.equals(ItemRegistry.bw_glasses[0]))
+            return meta == 12 ? 5 : meta > 1 && meta < 6 ? (byte) (meta + 3) : 4;
+
+        if (block.getUnlocalizedName().equals("blockAlloyGlass"))
+            return 4;
+
+        if (block.equals(Blocks.glass))
+            return 3;
+
+        for (BioVatLogicAdder.BlockMetaPair B : BioVatLogicAdder.BioVatGlass.getGlassMap().keySet())
+            if (B.getBlock().equals(block) && B.getaByte().equals(meta))
+                return BioVatLogicAdder.BioVatGlass.getGlassMap().get(B);
+
+        if (block.getMaterial().equals(Material.glass))
+            return 3;
+
+        return 0;
     }
 }
