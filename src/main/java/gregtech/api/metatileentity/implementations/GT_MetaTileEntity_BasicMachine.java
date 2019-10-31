@@ -809,7 +809,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 DimensionManager.getProvider(dimId).getClass().getName().endsWith("Space") ||
                 DimensionManager.getProvider(dimId).getClass().getName().endsWith("Asteroids") ||
                 DimensionManager.getProvider(dimId).getClass().getName().endsWith("SS") ||
-                DimensionManager.getProvider(dimId).getClass().getName().contains("SpaceStation");
+                DimensionManager.getProvider(dimId).getClass().getName().contains("SpaceStation") ||
+                DimensionManager.getProvider(dimId).getClass().getName().contains("Moon");
     }
 
 
