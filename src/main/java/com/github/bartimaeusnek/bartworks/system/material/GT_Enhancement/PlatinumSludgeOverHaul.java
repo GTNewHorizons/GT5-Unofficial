@@ -544,7 +544,7 @@ public class PlatinumSludgeOverHaul {
         if (GameRegistry.findUniqueIdentifierFor(stack.getItem()).modId.equals(BartWorksCrossmod.MOD_ID))
             return true;
 
-        if (GameRegistry.findUniqueIdentifierFor(stack.getItem()).modId.equals("dreamcraft"))
+        if (GameRegistry.findUniqueIdentifierFor(stack.getItem()).modId.equals("dreamcraft") && !stack.getUnlocalizedName().contains("dust") && !stack.getUnlocalizedName().contains("Dust") )
             return true;
 
         if (Block.getBlockFromItem(stack.getItem()) instanceof GT_Generic_Block && !(Block.getBlockFromItem(stack.getItem()) instanceof GT_Block_Ores_Abstract))

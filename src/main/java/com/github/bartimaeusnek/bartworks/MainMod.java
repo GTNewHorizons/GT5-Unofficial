@@ -199,6 +199,9 @@ public final class MainMod {
             GT_LanguageManager.addStringLocalization("metaitem.01.tooltip.nqgen","Can be used as Enriched Naquadah Fuel Substitute");
         }
     }
+
+    private static boolean recipesAdded;
+
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
         MainMod.runOnPlayerJoined(ConfigHandler.classicMode, ConfigHandler.disableExtraGassesForEBF);
@@ -206,23 +209,26 @@ public final class MainMod {
 
     public static void runOnPlayerJoined(boolean classicMode, boolean extraGasRecipes){
         OreDictHandler.adaptCacheForWorld();
-        removeIC2Recipes();
-        MainMod.addElectricImplosionCompressorRecipes();
-        MainMod.unificationEnforcer();
+        if (!recipesAdded) {
+            removeIC2Recipes();
+            MainMod.addElectricImplosionCompressorRecipes();
+            MainMod.unificationEnforcer();
 
-        PlatinumSludgeOverHaul.replacePureElements();
+            PlatinumSludgeOverHaul.replacePureElements();
 
-        if (!extraGasRecipes) {
-            ArrayListMultimap<SubTag, GT_Recipe> toChange = MainMod.getRecipesToChange(NOBLE_GAS, ANAEROBE_GAS);
-            HashSet<ItemStack> noGas = MainMod.getNoGasItems(toChange);
-            MainMod.editRecipes(toChange, noGas);
-        }
-        new CircuitImprintLoader().run();
-        if (classicMode)
-            new DownTierLoader().run();
-        runOnServerStarted();
-        fixEnergyRequirements();
+            if (!extraGasRecipes) {
+                ArrayListMultimap<SubTag, GT_Recipe> toChange = MainMod.getRecipesToChange(NOBLE_GAS, ANAEROBE_GAS);
+                HashSet<ItemStack> noGas = MainMod.getNoGasItems(toChange);
+                MainMod.editRecipes(toChange, noGas);
+            }
+            new CircuitImprintLoader().run();
+            if (classicMode)
+                new DownTierLoader().run();
+            runOnServerStarted();
+            fixEnergyRequirements();
 //        removeDuplicateRecipes();
+            recipesAdded = true;
+        }
     }
 
     private static void fixEnergyRequirements() {
@@ -231,7 +237,7 @@ public final class MainMod {
             for (GT_Recipe recipe : map.mRecipeList){
                 if (recipe.mFakeRecipe)
                     continue maploop;
-                for (int i = 0; i < VN.length; i++) {
+                for (int i = 0; i < (VN.length-1); i++) {
                     if (recipe.mEUt == BW_Util.getTierVoltage(i)){
                         recipe.mEUt = BW_Util.getMachineVoltageFromTier(i);
                     }

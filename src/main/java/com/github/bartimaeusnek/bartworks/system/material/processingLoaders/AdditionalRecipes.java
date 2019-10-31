@@ -50,6 +50,7 @@ public class AdditionalRecipes implements Runnable {
 
     @Override
     public void run() {
+       ((BWRecipes.BW_Recipe_Map_LiquidFuel)BWRecipes.instance.getMappingsFor((byte) 2)).addLiquidFuel(WerkstoffLoader.FormicAcid.getBridgeMaterial(),40);
         //Thorium/Yttrium Glas
         GT_Values.RA.addBlastRecipe(WerkstoffLoader.YttriumOxide.get(dustSmall, 2), WerkstoffLoader.Thorianit.get(dustSmall, 2), Materials.Glass.getMolten(144), null, new ItemStack(ItemRegistry.bw_glasses[0], 1, 12), null, 800, BW_Util.getMachineVoltageFromTier(5), 3663);
         //Thorianit recipes

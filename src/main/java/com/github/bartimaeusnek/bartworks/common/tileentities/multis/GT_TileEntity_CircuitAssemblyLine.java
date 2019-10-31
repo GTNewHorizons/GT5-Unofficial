@@ -103,11 +103,17 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
     }
 
     @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        if (!this.type.equals(new NBTTagCompound()))
+            aNBT.setTag("Type", this.type);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         if (!this.type.equals(new NBTTagCompound()))
             aNBT.setTag("Type", this.type);
         super.saveNBTData(aNBT);
-
     }
 
     private final Collection<GT_Recipe> GT_RECIPE_COLLECTION = new HashSet<>();
@@ -173,38 +179,63 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
         int yBase = aBaseMetaTileEntity.getYCoord();
         int zBase = aBaseMetaTileEntity.getZCoord() + zDir;
 
-        boolean rl = xDir == 0;
+        boolean sided = xDir == 0;
 
-        if (rl)
+        if (sided)
             ++zBase;
         else
             ++xBase;
 
         int length = 0;
+        boolean backwards = false;
+
+
         while (true) {
-            IGregTechTileEntity igtte = aBaseMetaTileEntity.getIGregTechTileEntity(rl ? xBase + length : xBase - 1, yBase - 2, rl ? zBase - 1 : zBase + length);
-            if (igtte == null)
-                return false;
+            IGregTechTileEntity igtte = aBaseMetaTileEntity.getIGregTechTileEntity(sided ? xBase + length : xBase - 1, yBase - 2, sided ? zBase - 1 : zBase + length);
+            if (igtte == null){
+                backwards = true;
+                length = 0;
+                break;
+            }
 
             if (igtte.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OutputBus)
                 break;
 
             ++length;
 
-            if (length > 7)
-                return false;
-        }
+            if (length > 7){
+                backwards = true;
+                length = 0;
+                break;
+            }
 
-        if (rl)
+        }
+        if (backwards)
+            while (true) {
+                IGregTechTileEntity igtte = aBaseMetaTileEntity.getIGregTechTileEntity(sided ? xBase + length : xBase - 1, yBase - 2, sided ? zBase - 1 : zBase + length);
+                if (igtte == null)
+                    return false;
+
+                if (igtte.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OutputBus)
+                    break;
+
+                --length;
+
+                if (length < -7){
+                    return false;
+                }
+
+            }
+
+        if (sided)
             zBase -= 2;
         else
             xBase -= 2;
 
-
-        for (int x = 0; x <= (rl ? length : 2); x++) {
+        for (int x = (backwards && sided ? length : 0); x <= (backwards && sided ? 0 : (sided ? length : 2)); x++) {
             for (int y = -2; y <= 0; y++) {
-                for (int z = 0; z <= (rl ? 2 : length); z++) {
-                    if (x == 0 && y == 0 && z == 0)
+                for (int z = (backwards && !sided ? length : 0); z <= (backwards && !sided ? 0 : (sided ? 2 : length)); z++) {
+                    if (xBase + x == this.getBaseMetaTileEntity().getXCoord() && yBase + y == this.getBaseMetaTileEntity().getYCoord() && zBase + z == this.getBaseMetaTileEntity().getZCoord())
                         continue;
 
                     IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntity(xBase + x, yBase + y, zBase + z);
@@ -213,16 +244,16 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
 
                     switch (y) {
                         case -2: {
-                            switch (rl ? z : x) {
+                            switch (sided ? z : x) {
                                 case 0:
                                 case 2: {
                                     if (!this.addMaintenanceToMachineList(tTileEntity, 16) && !this.addInputToMachineList(tTileEntity, 16))
-                                        if (block != GregTech_API.sBlockCasings2 && meta != 0)
+                                        if (block != GregTech_API.sBlockCasings2 || meta != 0)
                                             return false;
                                     break;
                                 }
                                 case 1: {
-                                    if (!this.addInputToMachineList(tTileEntity, 16) && !((rl ? x : z) == length && this.addOutputToMachineList(tTileEntity, 16)))
+                                    if (!this.addInputToMachineList(tTileEntity, 16) && !((sided ? x : z) == length && this.addOutputToMachineList(tTileEntity, 16)))
                                         return false;
                                     break;
                                 }
@@ -232,7 +263,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
                             break;
                         }
                         case -1: {
-                            switch (rl ? z : x) {
+                            switch (sided ? z : x) {
                                 case 0:
                                 case 2: {
                                     if (BW_Util.calculateGlassTier(block, meta) < 4)
