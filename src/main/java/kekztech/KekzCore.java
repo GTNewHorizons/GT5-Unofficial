@@ -11,6 +11,7 @@ import blocks.Block_TFFTStorageFieldBlockT2;
 import blocks.Block_TFFTStorageFieldBlockT3;
 import blocks.Block_TFFTStorageFieldBlockT4;
 import blocks.Block_YSZUnit;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -43,14 +44,15 @@ import util.Util;
  */
 @Mod(modid = KekzCore.MODID, name = KekzCore.NAME, version = KekzCore.VERSION, 
 		dependencies =
-			"required-after:IC2; "
+			  "required-after:IC2; "
 			+ "required-after:gregtech;"
+			+ "after:bartworks"
 		)
 public class KekzCore {
 	
 	public static final String NAME = "KekzTech";
 	public static final String MODID = "kekztech";
-	public static final String VERSION = "0.2.1";
+	public static final String VERSION = "0.2.2";
 	
 	@Mod.Instance("kekztech")
 	public static KekzCore instance;
@@ -67,6 +69,7 @@ public class KekzCore {
 		ErrorItem.getInstance().registerItem();
 		MetaItem_ReactorComponent.getInstance().registerItem();
 		MetaItem_CraftingComponent.getInstance().registerItem();
+		Items.registerOreDictNames();
 		// Blocks
 		Block_YSZUnit.getInstance().registerBlock();
 		Block_GDCUnit.getInstance().registerBlock();
@@ -98,13 +101,13 @@ public class KekzCore {
 		
 		final MetaItem_CraftingComponent craftingItem = MetaItem_CraftingComponent.getInstance();
 		final MetaItem_ReactorComponent reactorItem = MetaItem_ReactorComponent.getInstance();
-		
+
 		// Multiblock Controllers
 		final Object[] mk1_recipe = {
 				"CCC", "PHP", "FBL",
 				'C', OrePrefixes.circuit.get(Materials.Advanced),
-				'P', ItemList.Electric_Pump_HV.get(1L, (Object[]) null),
-				'H', ItemList.Hull_HV.get(1L, (Object[]) null),
+				'P', ItemList.Electric_Pump_HV.get(1L),
+				'H', ItemList.Hull_HV.get(1L),
 				'F', GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.StainlessSteel, 1),
 				'B', GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Gold, 1),
 				'L', GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1)
@@ -113,8 +116,8 @@ public class KekzCore {
 		final Object[] mk2_recipe = {
 				"CCC", "PHP", "FBL",
 				'C', OrePrefixes.circuit.get(Materials.Master),
-				'P', ItemList.Electric_Pump_IV.get(1L, (Object[]) null),
-				'H', ItemList.Hull_IV.get(1L, (Object[]) null),
+				'P', ItemList.Electric_Pump_IV.get(1L),
+				'H', ItemList.Hull_IV.get(1L),
 				'F', GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1),
 				'B', Util.getStackofAmountFromOreDict("wireGt04SuperconductorEV", 1),
 				'L', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1)
@@ -123,8 +126,8 @@ public class KekzCore {
 		final Object[] tfft_recipe = {
 				"HFH", "PVP", "CFC",
 				'H', OrePrefixes.pipeMedium.get(Materials.StainlessSteel),
-				'F', ItemList.Field_Generator_MV.get(1L, (Object[]) null),
-				'P', ItemList.Electric_Pump_HV.get(1L, (Object[]) null),
+				'F', ItemList.Field_Generator_MV.get(1L),
+				'P', ItemList.Electric_Pump_HV.get(1L),
 				'V', OrePrefixes.rotor.get(Materials.VibrantAlloy),
 				'C', OrePrefixes.circuit.get(Materials.Data)
 		};
@@ -136,7 +139,7 @@ public class KekzCore {
 				craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicPlate.getMetaID(), 4),
 				GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Yttrium, 1),
 				GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1),
-				ItemList.Electric_Motor_HV.get(1L, (Object[]) null),
+				ItemList.Electric_Motor_HV.get(1L),
 		};
 		GT_Values.RA.addAssemblerRecipe(
 				yszUnit, 
@@ -148,7 +151,7 @@ public class KekzCore {
 				craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicPlate.getMetaID(), 8),
 				GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
 				GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Desh, new ItemStack(ErrorItem.getInstance(), 1), 1),
-				ItemList.Electric_Motor_IV.get(1L, (Object[]) null),
+				ItemList.Electric_Motor_IV.get(1L),
 		};
 		GT_Values.RA.addAssemblerRecipe(
 				gdcUnit, 
@@ -173,7 +176,7 @@ public class KekzCore {
 			GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1),
 			GT_OreDictUnificator.get(OrePrefixes.plate, Materials.PulsatingIron, 1),
 			GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 1),
-			ItemList.Electric_Pump_LV.get(1L, (Object[]) null)
+			ItemList.Electric_Pump_LV.get(1L)
 		};
 		GT_Values.RA.addAssemblerRecipe(
 				tfftstoragefield1, 
@@ -185,7 +188,7 @@ public class KekzCore {
 				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2),
 				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.PulsatingIron, 4),
 				GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1),
-				ItemList.Electric_Pump_MV.get(1L, (Object[]) null)
+				ItemList.Electric_Pump_MV.get(1L)
 			};
 		GT_Values.RA.addAssemblerRecipe(
 				tfftstoragefield2, 
@@ -197,8 +200,8 @@ public class KekzCore {
 				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4),
 				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 2),
 				GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1),
-				ItemList.Field_Generator_MV.get(1L, (Object[]) null),
-				ItemList.Electric_Pump_HV.get(2L, (Object[]) null)
+				ItemList.Field_Generator_MV.get(1L),
+				ItemList.Electric_Pump_HV.get(2L)
 			};
 		GT_Values.RA.addAssemblerRecipe(
 				tfftstoragefield3, 
@@ -210,8 +213,8 @@ public class KekzCore {
 				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4),
 				GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.NiobiumTitanium, 1),
 				GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.TungstenSteel, 1),
-				ItemList.Field_Generator_HV.get(1L, (Object[]) null),
-				ItemList.Electric_Pump_EV.get(1L, (Object[]) null)
+				ItemList.Field_Generator_HV.get(1L),
+				ItemList.Electric_Pump_EV.get(1L)
 			};
 		GT_Values.RA.addAssemblerRecipe(
 				tfftstoragefield4, 
@@ -222,7 +225,7 @@ public class KekzCore {
 				GT_Utility.getIntegratedCircuit(6),
 				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
 				GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 25),
-				ItemList.Field_Generator_HV.get(1L, (Object[]) null)
+				ItemList.Field_Generator_HV.get(1L)
 			};
 		GT_Values.RA.addAssemblerRecipe(
 				tfftmultihatch, 
@@ -257,13 +260,13 @@ public class KekzCore {
 		
 		// Ceramic plates
 		GT_Values.RA.addAlloySmelterRecipe(
-				craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 10), 
-				ItemList.Shape_Mold_Plate.get(1, (Object[]) null),
+				craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), Loader.isModLoaded("bartworks") ? 3 : 10), 
+				ItemList.Shape_Mold_Plate.get(1),
 				craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicPlate.getMetaID(), 1), 
 				400, 480);
 		GT_Values.RA.addFormingPressRecipe(
 				craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10), 
-				ItemList.Shape_Mold_Plate.get(1, (Object[]) null),
+				ItemList.Shape_Mold_Plate.get(1),
 				craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicPlate.getMetaID(), 1), 
 				800, 480);
 		
@@ -286,28 +289,30 @@ public class KekzCore {
 				null,
 				craftingItem.getStackOfAmountFromDamage(Items.IsotopicallyPureDiamondDust.getMetaID(), 1),
 				null, 1200, 480);
-		GT_Values.RA.addChemicalRecipe(
-				Materials.Yttrium.getDust(1), GT_Utility.getIntegratedCircuit(6), Materials.Oxygen.getGas(3000),
-				null, craftingItem.getStackOfAmountFromDamage(Items.YttriaDust.getMetaID(), 1), null, 
-				400, 30);
-		GT_Values.RA.addChemicalRecipe(
-				Util.getStackofAmountFromOreDict("dustZirconium", 1), GT_Utility.getIntegratedCircuit(6), Materials.Oxygen.getGas(2000),
-				null, craftingItem.getStackOfAmountFromDamage(Items.ZirconiaDust.getMetaID(), 1), null, 
-				400, 30);
+		if (!Loader.isModLoaded("bartworks")) {
+			GT_Values.RA.addChemicalRecipe(
+					Materials.Yttrium.getDust(1), GT_Utility.getIntegratedCircuit(6), Materials.Oxygen.getGas(3000),
+					null, craftingItem.getStackOfAmountFromDamage(Items.YttriaDust.getMetaID(), 1), null,
+					400, 30);
+			GT_Values.RA.addChemicalRecipe(
+					Util.getStackofAmountFromOreDict("dustZirconium", 1), GT_Utility.getIntegratedCircuit(6), Materials.Oxygen.getGas(2000),
+					null, craftingItem.getStackOfAmountFromDamage(Items.ZirconiaDust.getMetaID(), 1), null,
+					400, 30);
+		}
 		GT_Values.RA.addChemicalRecipe(
 				Materials.Cerium.getDust(2), GT_Utility.getIntegratedCircuit(6), Materials.Oxygen.getGas(3000),
 				null, craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 2), null, 
 				400, 30);
 		GT_Values.RA.addMixerRecipe(
-				craftingItem.getStackOfAmountFromDamage(Items.YttriaDust.getMetaID(), 1), 
-				craftingItem.getStackOfAmountFromDamage(Items.ZirconiaDust.getMetaID(), 5), 
-				GT_Utility.getIntegratedCircuit(6), null, null, null, 
+				Items.YttriaDust.getOreDictedItemStack(1),
+				Items.ZirconiaDust.getOreDictedItemStack(5),
+				GT_Utility.getIntegratedCircuit(6), null, null, null,
 				craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 6), 
 				400, 96);
 		GT_Values.RA.addMixerRecipe(
 				GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
-				craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 9), 
-				GT_Utility.getIntegratedCircuit(6), null, null, null, 
+				craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 9),
+				GT_Utility.getIntegratedCircuit(6), null, null, null,
 				craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10), 
 				400, 1920);
 		
@@ -342,7 +347,7 @@ public class KekzCore {
 		// Heat Vents
 		final ItemStack[] t1HeatVent = {
 				craftingItem.getStackOfAmountFromDamage(Items.CopperHeatPipe.getMetaID(), 2),
-				ItemList.Electric_Motor_MV.get(1L, (Object[]) null),
+				ItemList.Electric_Motor_MV.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Steel, new ItemStack(ErrorItem.getInstance(), 1), 1),
 				GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, new ItemStack(ErrorItem.getInstance(), 1), 2),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, new ItemStack(ErrorItem.getInstance(), 1), 8),
@@ -356,7 +361,7 @@ public class KekzCore {
 				200, 120);
 		final ItemStack[] t2HeatVent = {
 				craftingItem.getStackOfAmountFromDamage(Items.SilverHeatPipe.getMetaID(), 2),
-				ItemList.Electric_Motor_HV.get(1L, (Object[]) null),
+				ItemList.Electric_Motor_HV.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Aluminium, new ItemStack(ErrorItem.getInstance(), 1), 1),
 				GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, new ItemStack(ErrorItem.getInstance(), 1), 2),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Aluminium, new ItemStack(ErrorItem.getInstance(), 1), 8),
@@ -370,7 +375,7 @@ public class KekzCore {
 				400, 480);
 		final ItemStack[] t3HeatVent = {
 				craftingItem.getStackOfAmountFromDamage(Items.BoronArsenideHeatPipe.getMetaID(), 2),
-				ItemList.Electric_Motor_IV.get(1L, (Object[]) null),
+				ItemList.Electric_Motor_IV.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, new ItemStack(ErrorItem.getInstance(), 1), 1),
 				GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenSteel, new ItemStack(ErrorItem.getInstance(), 1), 2),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tungsten, new ItemStack(ErrorItem.getInstance(), 1), 8),

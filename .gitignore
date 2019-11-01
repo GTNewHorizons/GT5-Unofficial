@@ -27,4 +27,14 @@ hs_err_pid*
 /crash-reports/
 /saves/
 /logs/
+/.gradle
+/.gradle/*
+.gradle
+eclipse/
+eclipse/*
+out/
+out/*
+*.iml
+*.ipr
+*.iws
 
