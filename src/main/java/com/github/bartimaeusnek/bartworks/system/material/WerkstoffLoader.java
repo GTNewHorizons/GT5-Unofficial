@@ -168,7 +168,7 @@ public class WerkstoffLoader implements Runnable {
             "Cubic Zirconia",
             Werkstoff.Types.COMPOUND,
             3273,
-            new Werkstoff.GenerationFeatures().onlyDust().addGems(),
+            new Werkstoff.GenerationFeatures().onlyDust().addGems().enforceUnification(),
             4,
             TextureSet.SET_DIAMOND,
             Arrays.asList(WerkstoffLoader.Zirconium),
@@ -196,7 +196,7 @@ public class WerkstoffLoader implements Runnable {
             new short[]{255,255,255,0},
             "Yttrium Oxide",
             Werkstoff.Types.COMPOUND,
-            new Werkstoff.GenerationFeatures().onlyDust(), //No autoadd here to gate this material by hand
+            new Werkstoff.GenerationFeatures().onlyDust().enforceUnification(), //No autoadd here to gate this material by hand
             6,
             TextureSet.SET_DULL,
             new Pair<>(Materials.Yttrium, 2),

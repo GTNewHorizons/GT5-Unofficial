@@ -278,9 +278,9 @@ public final class MainMod {
                 MainMod.runMoltenUnificationEnfocement(werkstoff);
                 MainMod.runUnficationDeleter(werkstoff);
                 for (OrePrefixes prefixes : OrePrefixes.values()) {
-                    if (OreDictionary.getOres(prefixes + werkstoff.getDefaultName()).size() > 1) {
-                        for (int j = 0; j < OreDictionary.getOres(prefixes + werkstoff.getDefaultName()).size(); j++) {
-                            ItemStack toReplace = OreDictionary.getOres(prefixes + werkstoff.getDefaultName()).get(j);
+                    if (OreDictionary.getOres(prefixes + werkstoff.getVarName()).size() > 1) {
+                        for (int j = 0; j < OreDictionary.getOres(prefixes + werkstoff.getVarName()).size(); j++) {
+                            ItemStack toReplace = OreDictionary.getOres(prefixes + werkstoff.getVarName()).get(j);
                             ItemStack replacement = werkstoff.get(prefixes);
                             if (GT_Utility.areStacksEqual(toReplace,replacement) || replacement == null || replacement.getItem() == null)
                                 continue;
@@ -399,7 +399,7 @@ public final class MainMod {
         for (OrePrefixes prefixes : OrePrefixes.values())
             if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) != 0 && ((werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) == 0)) {
                 GT_OreDictUnificator.set(prefixes,werkstoff.getBridgeMaterial(),werkstoff.get(prefixes),true,true);
-                for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getDefaultName().replace(" ", ""))) {
+                for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
                     GT_OreDictUnificator.addAssociation(prefixes,werkstoff.getBridgeMaterial(),stack,false);
                     GT_OreDictUnificator.getAssociation(stack).mUnificationTarget = werkstoff.get(prefixes);
                 }
