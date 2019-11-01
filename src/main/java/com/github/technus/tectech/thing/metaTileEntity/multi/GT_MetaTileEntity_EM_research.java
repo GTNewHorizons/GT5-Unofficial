@@ -273,7 +273,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         if (!eHolders.isEmpty() && eHolders.get(0).mInventory[0] != null) {
             holdItem = eHolders.get(0).mInventory[0].copy();
             if (ItemList.Tool_DataStick.isStackEqual(itemStack, false, true)) {
-                for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+                for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : TT_recipe.GT_Recipe_MapTT.sAssemblylineRecipes) {
                     if (GT_Utility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
                         tRecipe = assRecipe;
                         //if found
@@ -459,7 +459,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 tRecipe = null;
                 if (holdItem != null) {
                     if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                        for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+                        for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : TT_recipe.GT_Recipe_MapTT.sAssemblylineRecipes) {
                             if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
                                 this.tRecipe = tRecipe;
                                 break;
