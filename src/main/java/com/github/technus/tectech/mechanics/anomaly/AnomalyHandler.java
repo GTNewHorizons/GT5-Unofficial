@@ -33,13 +33,17 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     public static final double SWAP_THRESHOLD = dAtomDefinition.getSomethingHeavy().getMass() * 10000D;
     public static final int COUNT_DIV=32;
     public static final double PER_PARTICLE=SWAP_THRESHOLD/COUNT_DIV;
-    public static final String INTENSITY = "intensity",SPACE_CANCER="space_cancer", SPACE_CHARGE ="space_charge";
+    public static final String INTENSITY = "intensity";
+    public static final String SPACE_CANCER="space_cancer";
+    public static final String SPACE_CHARGE ="space_charge";
+    public static final double GRAVITY_EFFECTIVENESS =1;
+    public static final String SPACE_MASS ="space_mass";
     public static final int MEAN_DELAY =50;
     private static final float CHARGE_EFFECTIVENESS = 10;
     private static final float CHARGE_EXPLOSIVENESS = 5;
 
     private boolean fixMe=false;
-    private final ArrayList<EntityPlayer> playersWithCharge = new ArrayList<>();
+    private final List<EntityPlayer> playersWithCharge = new ArrayList<>();
     private final ArrayList<Chunk> worldDataArrayList = new ArrayList<>(512);
 
     @Override
@@ -94,16 +98,16 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
         if (playersWithCharge.size() > 0) {
             outer:
             for (EntityPlayer other : playersWithCharge) {
-                float fieldOther = TecTech.playerPersistence.getDataOrSetToNewTag(other).getFloat(SPACE_CHARGE);
+                float chargeOther = TecTech.playerPersistence.getDataOrSetToNewTag(other).getFloat(SPACE_CHARGE);
                 for (EntityPlayer player : playersWithCharge) {
                     if (other == player) {
                         continue outer;
                     }
-                    float field = TecTech.playerPersistence.getDataOrSetToNewTag(player).getFloat(SPACE_CHARGE);
-                    float difference = Math.abs(field - fieldOther);
+                    float charge = TecTech.playerPersistence.getDataOrSetToNewTag(player).getFloat(SPACE_CHARGE);
+                    float difference = Math.abs(charge - chargeOther);
                     if (difference != 0) {
                         if (player.getDistanceSqToEntity(other) < 1) {
-                            float avg = (fieldOther + field) / 2;
+                            float avg = (chargeOther + charge) / 2;
                             addAnomaly(other.worldObj.provider.dimensionId, new ChunkCoordIntPair(other.chunkCoordX, other.chunkCoordZ), Math.min(SWAP_THRESHOLD, PER_PARTICLE * difference));
                             other.worldObj.createExplosion(other, other.posX, other.posY, other.posZ, Math.min(CHARGE_EXPLOSIVENESS * difference, 25), true);
                             player.worldObj.createExplosion(player, player.posX, player.posY, player.posZ, Math.min(CHARGE_EXPLOSIVENESS * difference, 25), true);
@@ -287,12 +291,39 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                                         double dY = player.posY - otherPlayer.posY;
                                         double dZ = player.posZ - otherPlayer.posZ;
                                         player.addVelocity(effect * dX, effect * dY, effect * dZ);
-                                        otherPlayer.addVelocity(-effect * dX, -effect * dY, -effect * dZ);
+                                        effect=-effect;
+                                        otherPlayer.addVelocity(effect * dX, effect * dY, effect * dZ);
                                     }
                                 }
                             }
                         }
                     }
+                }
+
+                float mass=TecTech.playerPersistence.getDataOrSetToNewTag(player).getFloat(SPACE_MASS);
+                if(mass!=0) {
+                    for (Object o : player.worldObj.playerEntities) {
+                        if (o instanceof EntityPlayer && !((EntityPlayer) o).capabilities.isCreativeMode) {
+                            EntityPlayer otherPlayer=(EntityPlayer)o;
+                            float massOther = TecTech.playerPersistence.getDataOrSetToNewTag(otherPlayer).getFloat(SPACE_MASS);
+                            if (massOther != 0 && player != o) {
+                                float reaction = massOther * mass;
+                                if (reaction !=0) {
+                                    double distanceSq = otherPlayer.getDistanceSqToEntity(player);
+                                    if (distanceSq >= 1) {
+                                        double effect = GRAVITY_EFFECTIVENESS * reaction / (distanceSq * distanceSq * distanceSq);
+                                        double dX = player.posX - otherPlayer.posX;
+                                        double dY = player.posY - otherPlayer.posY;
+                                        double dZ = player.posZ - otherPlayer.posZ;
+                                        otherPlayer.addVelocity(effect * dX, effect * dY, effect * dZ);
+                                        effect=-effect;
+                                        player.addVelocity(effect * dX, effect * dY, effect * dZ);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                 }
             }
             if (fixMe){
