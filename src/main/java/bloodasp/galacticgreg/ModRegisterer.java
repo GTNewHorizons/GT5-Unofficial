@@ -25,7 +25,7 @@ public class ModRegisterer
 	 * @param pDef
 	 * @return
 	 */
-	private List<ModDBMDef> singleToList(ModDBMDef pDef)
+	private static List<ModDBMDef> singleToList(ModDBMDef pDef)
 	{
 		List<ModDBMDef> tLst = new ArrayList<ModDBMDef>();
 		tLst.add(pDef);
@@ -119,14 +119,14 @@ public class ModRegisterer
 	 * Mod GalactiCraft
 	 * Just another setup based on existing classes, due the fact that we're working with GalactiCraft
 	 */
-	private ModContainer Setup_GalactiCraftCore()
+	public static ModContainer Setup_GalactiCraftCore()
 	{
 		ModContainer modGCraftCore = new ModContainer("GalacticraftCore");
-		ModDBMDef DBMMoon = new ModDBMDef(GCBlocks.blockMoon, 4);
+		ModDBMDef DBMMoon = new ModDBMDef("tile.moonBlock", 4);
 
-		ModDimensionDef tMoonDim = new ModDimensionDef("Moon", ChunkProviderMoon.class, DimensionType.Planet, singleToList(DBMMoon));
+		ModDimensionDef tMoonDim = new ModDimensionDef("Moon", "micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon", Enums.DimensionType.Planet, singleToList(DBMMoon));
 		modGCraftCore.addDimensionDef(tMoonDim);
-		
+
 		return modGCraftCore;
 	}
 	

@@ -1,12 +1,18 @@
 package bloodasp.galacticgreg;
 
+import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_Layer_Space;
+import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_SmallOre_Space;
+import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGeneratedOreTE;
+import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_SmallOres;
 import gregtech.api.util.GT_Log;
 
 import java.util.Random;
 
+import gregtech.api.world.GT_Worldgen;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.WeightedRandomChestContent;
@@ -360,7 +366,6 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 	 * @param eX
 	 * @param eY
 	 * @param eZ
-	 * @param tDoGenerateRegularBlock
 	 * @return
 	 */
 	private boolean doGenerateSpecialBlocks(ModDimensionDef pDimensionDef, Random pRandom, World pWorld, AsteroidConfig tAConf, int eX, int eY, int eZ, TargetBlockPosition pBlockPosition)
@@ -429,38 +434,53 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 				int tRandomWeight;
 				boolean continueSearch = true;
 				int tFoundOreMeta = -1;
+				BW_Worldgen_Ore_SmallOre_Space bwOreGen = null;
 				// First find a small ore...
 				for (int i = 0; (i < 256) && (continueSearch); i++)
 				{
 					tRandomWeight = pRandom.nextInt(GT_Worldgen_GT_Ore_Layer_Space.sWeight);
-					for (GT_Worldgen_GT_Ore_SmallPieces_Space tWorldGen : GalacticGreg.smallOreWorldgenList)
+					for (GT_Worldgen tWorldGen : GalacticGreg.smallOreWorldgenList)
 					{
-						// That is enabled for *this* dim...
-						if (!tWorldGen.isEnabledForDim(pDimDef))
-							continue;
-						
-						// And in the correct y-level, of ObeyLimits is true...
-						if (pAConf.ObeyHeightLimits && !tWorldGen.isAllowedForHeight(pY))
-							continue;
-						
-						// Care about weight
-						tRandomWeight -= tWorldGen.mAmount;
-						if (tRandomWeight <= 0)
-						{
-							// And return found ore meta
-							tFoundOreMeta = tWorldGen.mMeta;
-							continueSearch = false;
+						if (tWorldGen instanceof BW_Worldgen_Ore_SmallOre_Space) {
+							tRandomWeight = ((BW_Worldgen_Ore_SmallOre_Space) tWorldGen).mDensity;
+							if (tRandomWeight <= 0) {
+								tFoundOreMeta = ((BW_Worldgen_Ore_SmallOre_Space) tWorldGen).mPrimaryMeta;
+								continueSearch = false;
+								bwOreGen = ((BW_Worldgen_Ore_SmallOre_Space) tWorldGen);
+							}
+						}
+						else if (tWorldGen instanceof GT_Worldgen_GT_Ore_SmallPieces_Space) {
+							// That is enabled for *this* dim...
+							if (!((GT_Worldgen_GT_Ore_SmallPieces_Space)tWorldGen).isEnabledForDim(pDimDef))
+								continue;
+
+							// And in the correct y-level, of ObeyLimits is true...
+							if (pAConf.ObeyHeightLimits && !((GT_Worldgen_GT_Ore_SmallPieces_Space)tWorldGen).isAllowedForHeight(pY))
+								continue;
+
+							// Care about weight
+							tRandomWeight -= ((GT_Worldgen_GT_Ore_SmallPieces_Space)tWorldGen).mAmount;
+							if (tRandomWeight <= 0) {
+								// And return found ore meta
+								tFoundOreMeta = ((GT_Worldgen_GT_Ore_SmallPieces_Space)tWorldGen).mMeta;
+								continueSearch = false;
+							}
 						}
 					}
 				}
 				if (tFoundOreMeta > -1)
 				{
-					// Make the oreID a small ore with correct type
-					int tCustomOffset = (GTOreTypes.SmallOres.getOffset() + pTargetBlockOffset);
-					
-					// Set the smallOre block
-					GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(pDimDef, pWorld, pX, pY, pZ, tFoundOreMeta, true, tCustomOffset);
-					tFlag = false;
+					if (bwOreGen == null) {
+						// Make the oreID a small ore with correct type
+						int tCustomOffset = (GTOreTypes.SmallOres.getOffset() + pTargetBlockOffset);
+
+						// Set the smallOre block
+						GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(pDimDef, pWorld, pX, pY, pZ, tFoundOreMeta, true, tCustomOffset);
+						tFlag = false;
+					}
+					else {
+						bwOreGen.setOreBlock(pWorld, pX, pY, pZ,tFoundOreMeta,true);
+					}
 				}
 			}
 		}
@@ -492,21 +512,20 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 				for (int i = 0; (i < 256) && (temp); i++)
 				{
 					tRandomWeight = pRandom.nextInt(GT_Worldgen_GT_Ore_Layer_Space.sWeight);
-					for (GT_Worldgen_GT_Ore_Layer_Space tWorldGen : GalacticGreg.oreVeinWorldgenList)
-					{
-						tRandomWeight -= tWorldGen.mWeight;
-						if (tRandomWeight <= 0)
-						{
-							try
-							{
-								if (tWorldGen.executeWorldgen(pWorld, pRandom, pBiome, Integer.MIN_VALUE, pX, pZ, pChunkGenerator, pChunkProvider))
-								{
+					for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList) {
+						if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space)
+							tRandomWeight -= ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWeight;
+						else if (tWorldGen instanceof BW_Worldgen_Ore_Layer_Space)
+							tRandomWeight -= ((BW_Worldgen_Ore_Layer_Space) tWorldGen).mWeight;
+						if (tRandomWeight <= 0) {
+							try {
+								if (tWorldGen.executeWorldgen(pWorld, pRandom, pBiome, Integer.MIN_VALUE, pX, pZ, pChunkGenerator, pChunkProvider)) {
 									temp = false;
 								}
 							} catch (Throwable e) {
 								e.printStackTrace(GT_Log.err);
 							}
-                            break;
+							break;
 						}
 					}
 				}
@@ -517,7 +536,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 			for (int tX = pX - 16; i < 3; tX += 16) {
 				int j = 0;
 				for (int tZ = pZ - 16; j < 3; tZ += 16) {
-					for (GT_Worldgen_GT_Ore_SmallPieces_Space tWorldGen : GalacticGreg.smallOreWorldgenList) {
+					for (GT_Worldgen tWorldGen : GalacticGreg.smallOreWorldgenList) {
 						try {
 							tWorldGen.executeWorldgen(pWorld, pRandom, "", Integer.MIN_VALUE, tX, tZ, pChunkGenerator, pChunkProvider);
 						} catch (Throwable e) {

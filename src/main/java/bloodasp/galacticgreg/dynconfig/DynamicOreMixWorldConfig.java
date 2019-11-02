@@ -43,7 +43,13 @@ public class DynamicOreMixWorldConfig {
 		_mDynWorldConfigMap = new HashMap<String, Boolean>();
 		_mConfigName = String.format("worldgen.%s", _mWorldGenName);
 	}
-	
+
+	public DynamicOreMixWorldConfig(String pWorldGenName, boolean bw){
+		_mWorldGenName = pWorldGenName;
+		_mDynWorldConfigMap = new HashMap<String, Boolean>();
+		_mConfigName = String.format("worldgen.gagregbartworks.%s", _mWorldGenName);
+	}
+
 	/**
 	 * Check if this OreGen is enabled for a given Dimension, represented by pMDD
 	 * @param pMDD The dimension in question

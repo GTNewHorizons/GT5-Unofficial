@@ -5,13 +5,11 @@ eclipse/
 .settings/
 gradlew.bat - Verknüpfung.lnk
 gradle/
-gradlew.bat
 .project
 out/
 build.bat
 *.txt
-GalacticGregU.iml
-GalacticGregU.ipr
-GalacticGregU.iws
+*.iml
+*.ipr
+*.iws
 *.bat
-gradlew

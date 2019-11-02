@@ -7,6 +7,8 @@ import java.util.Random;
 import bloodasp.galacticgreg.auxiliary.GalacticGregConfig;
 import bloodasp.galacticgreg.auxiliary.LogHelper;
 import bloodasp.galacticgreg.auxiliary.ProfilingStorage;
+import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_Layer_Space;
+import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_SmallOre_Space;
 import bloodasp.galacticgreg.command.AEStorageCommand;
 import bloodasp.galacticgreg.command.ProfilingCommand;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
@@ -14,14 +16,17 @@ import bloodasp.galacticgreg.schematics.SpaceSchematicHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import gregtech.api.GregTech_API;
+import gregtech.api.world.GT_Worldgen;
 
 @Mod(modid = GalacticGreg.MODID, version = GalacticGreg.VERSION, dependencies = "required-after:GalacticraftCore; required-after:gregtech@5.09.32.30;", acceptableRemoteVersions="*")
 public class GalacticGreg {
-	public static final List<GT_Worldgen_GT_Ore_SmallPieces_Space> smallOreWorldgenList = new ArrayList();
-	public static final List<GT_Worldgen_GT_Ore_Layer_Space> oreVeinWorldgenList = new ArrayList();
+	public static final List<GT_Worldgen> smallOreWorldgenList = new ArrayList();
+	public static final List<GT_Worldgen> oreVeinWorldgenList = new ArrayList();
 
 	public static final String NICE_MODID = "GalacticGreg";
 	public static final String MODID = "galacticgreg";
@@ -53,7 +58,12 @@ public class GalacticGreg {
 
 		Logger.trace("Leaving PRELOAD");
 	}
-	
+
+	@EventHandler
+	public void onLoad(FMLInitializationEvent event){
+		GalacticGregRegistry.registerModContainer(ModRegisterer.Setup_GalactiCraftCore());
+	}
+
 	/**
 	 * Postload phase. Mods can add their custom definition to our api in their own PreLoad or Init-phase
 	 * Once GalacticGregRegistry.InitRegistry() is called, no changes are accepted.
@@ -68,7 +78,16 @@ public class GalacticGreg {
 			throw new RuntimeException("GalacticGreg registry has been finalized from a 3rd-party mod, this is forbidden!");
 	
 		//new WorldGenGaGT().run(); DO NOT UNCOMMENT, was moved to gregtech.loaders.postload.GT_Worldgenloader
-		
+
+		if (Loader.isModLoaded("bartworks")) {
+			for (int f = 0, j = GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks", "AmountOfCustomLargeVeinSlots", 0); f < j; f++) {
+				new BW_Worldgen_Ore_Layer_Space("mix.custom." + (f < 10 ? "0" : "") + f, GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + "mix.custom." + (f < 10 ? "0" : "") + f, "Enabled", false));
+			}
+
+			for (int f = 0, j = GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks", "AmountOfCustomSmallSlots", 0); f < j; f++) {
+				new BW_Worldgen_Ore_SmallOre_Space("small.custom." + (f < 10 ? "0" : "") + f, GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + "small.custom." + (f < 10 ? "0" : "") + f, "Enabled", false));
+			}
+		}
 		GalacticConfig.serverPostInit();
 		
 		Logger.trace("Leaving POSTLOAD");
