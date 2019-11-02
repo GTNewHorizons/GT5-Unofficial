@@ -737,7 +737,7 @@ public class WerkstoffLoader implements Runnable {
             "",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            new Werkstoff.GenerationFeatures(),
             47,
             TextureSet.SET_METALLIC
             //No Byproducts
@@ -808,7 +808,7 @@ public class WerkstoffLoader implements Runnable {
             "",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            new Werkstoff.GenerationFeatures(),
             53,
             TextureSet.SET_METALLIC
             //No Byproducts
@@ -896,7 +896,7 @@ public class WerkstoffLoader implements Runnable {
             "Leach Residue",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            new Werkstoff.GenerationFeatures(),
             60,
             TextureSet.SET_ROUGH
             //No Byproducts
@@ -1007,7 +1007,7 @@ public class WerkstoffLoader implements Runnable {
             "???",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            new Werkstoff.GenerationFeatures(),
             69,
             TextureSet.SET_ROUGH
             //No Byproducts
@@ -1018,7 +1018,7 @@ public class WerkstoffLoader implements Runnable {
             "???",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            new Werkstoff.GenerationFeatures(),
             70,
             TextureSet.SET_ROUGH
             //No Byproducts
@@ -1119,7 +1119,7 @@ public class WerkstoffLoader implements Runnable {
             "Crude Rhodium Metal",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            new Werkstoff.GenerationFeatures(),
             79,
             TextureSet.SET_DULL
     );
@@ -1265,6 +1265,7 @@ public class WerkstoffLoader implements Runnable {
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();
     public static HashBiMap<Werkstoff, Fluid> molten = HashBiMap.create();
     public static Block BWOres;
+    public static Block BWSmallOres;
     public boolean registered;
 
     public static Werkstoff getWerkstoff(String Name){
@@ -1290,6 +1291,8 @@ public class WerkstoffLoader implements Runnable {
         }
         if (orePrefixes == ore)
             return new ItemStack(WerkstoffLoader.BWOres, amount, werkstoff.getmID());
+        if (orePrefixes == oreSmall)
+            return new ItemStack(WerkstoffLoader.BWSmallOres, amount, werkstoff.getmID());
         if (WerkstoffLoader.items.get(orePrefixes) == null)
             new Exception("NO SUCH ITEM!"+orePrefixes+werkstoff.getDefaultName()).printStackTrace();
         return new ItemStack(WerkstoffLoader.items.get(orePrefixes), amount, werkstoff.getmID()).copy();
@@ -1542,7 +1545,9 @@ public class WerkstoffLoader implements Runnable {
             RenderingRegistry.registerBlockHandler(BW_Renderer_Block_Ores.INSTANCE);
         GameRegistry.registerTileEntity(BW_MetaGeneratedOreTE.class, "bw.blockoresTE");
         WerkstoffLoader.BWOres = new BW_MetaGenerated_Ores(Material.rock, BW_MetaGeneratedOreTE.class, "bw.blockores");
+        WerkstoffLoader.BWSmallOres = new BW_MetaGenerated_SmallOres(Material.rock, BW_MetaGeneratedSmallOreTE.class, "bw.blockoresSmall");
         GameRegistry.registerBlock(WerkstoffLoader.BWOres, BW_MetaGeneratedOre_Item.class, "bw.blockores.01");
+        GameRegistry.registerBlock(WerkstoffLoader.BWSmallOres, BW_MetaGeneratedOre_Item.class, "bw.blockores.02");
         new GTMetaItemEnhancer();
     }
 

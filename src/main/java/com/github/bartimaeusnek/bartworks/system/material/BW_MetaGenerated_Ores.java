@@ -56,13 +56,16 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
         this.setResistance(5.0F);
         this.setBlockTextureName("stone");
         this.setCreativeTab(metaTab);
-        for (Werkstoff w : Werkstoff.werkstoffHashSet) {
-            if (w != null) {
-                if ((w.getGenerationFeatures().toGenerate & 0b1000) == 0 || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
-                    continue;
-                GT_ModHandler.addValuableOre(this, w.getmID(), 1);
-                GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + "." + w.getmID() + ".name", w.getDefaultName() + OrePrefixes.ore.mLocalizedMaterialPost);
-            }
+        for (Werkstoff w : Werkstoff.werkstoffHashSet)
+            doRegistrationStuff(w);
+    }
+
+    protected void doRegistrationStuff(Werkstoff w){
+        if (w != null) {
+            if ((w.getGenerationFeatures().toGenerate & 0b1000) == 0 || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
+                return;
+            GT_ModHandler.addValuableOre(this, w.getmID(), 1);
+            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + "." + w.getmID() + ".name", w.getDefaultName() + OrePrefixes.ore.mLocalizedMaterialPost);
         }
     }
 

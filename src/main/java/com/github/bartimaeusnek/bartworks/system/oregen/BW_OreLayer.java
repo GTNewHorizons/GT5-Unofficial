@@ -23,10 +23,7 @@
 package com.github.bartimaeusnek.bartworks.system.oregen;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGeneratedOreTE;
-import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import com.github.bartimaeusnek.bartworks.system.material.*;
 import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
 import com.google.common.collect.ArrayListMultimap;
 import gregtech.api.GregTech_API;
@@ -177,7 +174,7 @@ public abstract class BW_OreLayer extends GT_Worldgen {
             return true;
 
         if ((aMetaData == this.mSporadicMeta && (this.bwOres & 0b0001) != 0) || (aMetaData == this.mBetweenMeta && (this.bwOres & 0b0010) != 0) || (aMetaData == this.mPrimaryMeta && (this.bwOres & 0b1000) != 0) || (aMetaData == this.mSecondaryMeta && (this.bwOres & 0b0100) != 0)) {
-            return BW_MetaGenerated_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, this.getDefaultBlockToReplace(),this.getDefaultDamageToReplace());
+            return isSmallOre ? BW_MetaGenerated_SmallOres.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, this.getDefaultBlockToReplace(),this.getDefaultDamageToReplace()) : BW_MetaGenerated_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, this.getDefaultBlockToReplace(),this.getDefaultDamageToReplace());
         }
 
         return this.setGTOreBlockSpace(aWorld, aX, aY, aZ, aMetaData, this.getDefaultBlockToReplace());

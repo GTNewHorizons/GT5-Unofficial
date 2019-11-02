@@ -42,6 +42,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Block_Ores;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
