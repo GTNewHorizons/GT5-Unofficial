@@ -31,7 +31,7 @@ group= "bloodasp.galactigreg" // http://maven.apache.org/guides/mini/guide-namin
 archivesBaseName = "GalacticGreg"
 
 minecraft {
-    version = "${config.forge.version}-${config.minecraft.version}"
+    version = "1.7.10-10.13.4.1614-1.7.10"
     runDir = "eclipse"
     
     replaceIn "src/main/java/bloodasp/galacticgreg/GalacticGreg.java"

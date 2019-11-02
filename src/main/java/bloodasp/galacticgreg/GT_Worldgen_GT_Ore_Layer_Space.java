@@ -1,5 +1,7 @@
 package bloodasp.galacticgreg;
 
+import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_Layer_Space;
+import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_SmallOre_Space;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
@@ -54,7 +56,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 		GalacticGreg.Logger.trace("Initialized new OreLayer: %s", pName);
 
 		if (mEnabled)
-			sWeight += this.mWeight;
+			GT_Worldgen_GT_Ore_Layer_Space.sWeight += this.mWeight;
 
 	}
 
@@ -105,8 +107,8 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 			tVal = _mBufferedVeinCountList.get(pDimensionDef.getDimIdentifier());
 		else
 		{
-			for (GT_Worldgen_GT_Ore_Layer_Space tWorldGen : GalacticGreg.oreVeinWorldgenList)
-				if (tWorldGen.isEnabledForDim(pDimensionDef))
+			for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
+				if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef))
 					tVal++;
 			
 			_mBufferedVeinCountList.put(pDimensionDef.getDimIdentifier(), tVal);
@@ -131,9 +133,11 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 		else
 		{
 			tReturn = new ArrayList<String>();
-			for (GT_Worldgen_GT_Ore_Layer_Space tWorldGen : GalacticGreg.oreVeinWorldgenList)
-				if (tWorldGen.isEnabledForDim(pDimensionDef))
+			for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
+				if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef))
 					tReturn.add(tWorldGen.mWorldGenName);
+				else if (tWorldGen instanceof BW_Worldgen_Ore_Layer_Space && ((BW_Worldgen_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef))
+                    tReturn.add(tWorldGen.mWorldGenName);
 			
 			_mBufferedVeinList.put(pDimensionDef.getDimIdentifier(), tReturn);
 		}
@@ -144,9 +148,9 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 	private static short getMaxWeightForDim(ModDimensionDef pDimensionDef)
 	{
 		short tVal = 0;
-		for (GT_Worldgen_GT_Ore_Layer_Space tWorldGen : GalacticGreg.oreVeinWorldgenList)
-			if (tWorldGen.isEnabledForDim(pDimensionDef) && tVal < tWorldGen.mWeight)
-				tVal = tWorldGen.mWeight;
+		for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
+			if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef) && tVal < ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWeight)
+				tVal = ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWeight;
 
 		return tVal;
 	}
@@ -176,19 +180,19 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 			// No lambda in Java 1.6 and 1.7 :(
 			//GT_Worldgen_GT_Ore_Layer_Space tGen = GalacticGreg.oreVeinWorldgenList.stream().filter(p -> p.mWorldGenName == tVeinName).findFirst();
 			
-			GT_Worldgen_GT_Ore_Layer_Space tGen = null;
-			for (GT_Worldgen_GT_Ore_Layer_Space tWorldGen : GalacticGreg.oreVeinWorldgenList)
-				if (tWorldGen.mWorldGenName.equals(tVeinName))
+			GT_Worldgen tGen = null;
+			for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
+				if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWorldGenName.equals(tVeinName))
 					tGen = tWorldGen;
 			
 			if (tGen != null)
 			{
 				//GT_Worldgen_GT_Ore_Layer_Space tGen = GalacticGreg.oreVeinWorldgenList.get(tRndMix);
 				GalacticGreg.Logger.trace("Using Oremix %s for asteroid", tGen.mWorldGenName);
-				primaryMeta = tGen.mPrimaryMeta;
-				secondaryMeta = tGen.mSecondaryMeta;
-				betweenMeta = tGen.mBetweenMeta;
-				sporadicMeta = tGen.mSporadicMeta;
+				primaryMeta = ((GT_Worldgen_GT_Ore_Layer_Space) tGen).mPrimaryMeta;
+				secondaryMeta = ((GT_Worldgen_GT_Ore_Layer_Space) tGen).mSecondaryMeta;
+				betweenMeta = ((GT_Worldgen_GT_Ore_Layer_Space) tGen).mBetweenMeta;
+				sporadicMeta = ((GT_Worldgen_GT_Ore_Layer_Space) tGen).mSporadicMeta;
 			}
 		}
 		else
@@ -201,20 +205,23 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 				for (int i = 0; (i < 256) && (temp); i++)
 				{
 					tRandomWeight = pRandom.nextInt(GT_Worldgen_GT_Ore_Layer_Space.sWeight);
-					for (GT_Worldgen_GT_Ore_Layer_Space tWorldGen : GalacticGreg.oreVeinWorldgenList)
+					for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
 					{
+						if (!(tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space))
+							continue;
+
 						tRandomWeight -= ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWeight;
 						if (tRandomWeight <= 0)
 						{
 							try
 							{
-								if (tWorldGen.isEnabledForDim(pDimensionDef))
+								if (((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef))
 								{
 									GalacticGreg.Logger.trace("Using Oremix %s for asteroid", tWorldGen.mWorldGenName);
-									primaryMeta = tWorldGen.mPrimaryMeta;
-									secondaryMeta = tWorldGen.mSecondaryMeta;
-									betweenMeta = tWorldGen.mBetweenMeta;
-									sporadicMeta = tWorldGen.mSporadicMeta;
+									primaryMeta = ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mPrimaryMeta;
+									secondaryMeta = ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mSecondaryMeta;
+									betweenMeta = ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mBetweenMeta;
+									sporadicMeta = ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mSporadicMeta;
 
 									temp = false;
 									break;
