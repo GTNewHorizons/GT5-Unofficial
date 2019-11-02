@@ -18,6 +18,7 @@ import net.minecraft.world.IBlockAccess;
 import java.util.List;
 
 import static com.github.technus.tectech.TecTech.tectechTexturePage1;
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 
 /**
  * Created by danie_000 on 03.10.2016.
@@ -30,6 +31,8 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
 
     public GT_Block_CasingsTT() {
         super(GT_Item_CasingsTT.class, "gt.blockcasingsTT", GT_Material_Casings.INSTANCE);
+        setCreativeTab(creativeTabTecTech);
+
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[texturePage][b] = new GT_CopiedBlockTexture(this, 6, b);
             /*IMPORTANT for block recoloring**/
@@ -56,7 +59,6 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Ultimate Containment Field Generator");
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Debug Sides");//NOT REGISTER AS TEXTURE FOR HATCHES!
-
 
         CustomItemList.eM_Power.set(new ItemStack(this, 1, 0));
 

@@ -16,6 +16,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'org.ajoberstar.grgit' version '3.1.1'
+}
+
 import de.undercouch.gradle.tasks.download.Download
 apply plugin: 'forge'
 apply plugin: 'signing'
@@ -24,6 +28,15 @@ allprojects {
     apply plugin: 'java'
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+            srcDir 'AVRcore/src'
+        }
+    }
 }
 
 file "build.properties" withReader {
@@ -94,6 +107,18 @@ task getGregTech(type: Download) {
         exclude "gregtech-${config.gregtech.version}-dev.jar"
     }
 }
+
+task submodulesUpdate(type: Exec) {
+    description 'Updates (and inits) git submodules'
+    commandLine 'git', 'submodule', 'update', '--init', '--recursive','--remote'
+    group 'Build Setup'
+}
+
+tasks.setupCIWorkspace.dependsOn submodulesUpdate
+tasks.setupDevWorkspace.dependsOn submodulesUpdate
+tasks.setupDecompWorkspace.dependsOn submodulesUpdate
+tasks.compileJava.dependsOn submodulesUpdate
+tasks.sourceMainJava.dependsOn submodulesUpdate
 
 tasks.setupCIWorkspace.dependsOn getGregTech
 tasks.setupDevWorkspace.dependsOn getGregTech

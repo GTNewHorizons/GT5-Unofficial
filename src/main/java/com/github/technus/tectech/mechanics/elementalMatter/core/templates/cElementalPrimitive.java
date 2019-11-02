@@ -18,7 +18,7 @@ import java.util.Map;
 import static com.github.technus.tectech.Util.areBitsSet;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.null__;
-import static com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM.stacksRegistered;
+import static com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM.STACKS_REGISTERED;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 
 /**
@@ -68,7 +68,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         if (bindsBO.put(ID, this) != null) {
             Minecraft.getMinecraft().crashed(new CrashReport("Primitive definition", new tElementalException("Duplicate ID")));
         }
-        stacksRegistered.add(this);
+        STACKS_REGISTERED.add(this);
     }
 
     //

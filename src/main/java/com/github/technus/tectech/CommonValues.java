@@ -18,6 +18,10 @@ public final class CommonValues {
             EnumChatFormatting.BLUE + "Tec" +
                     EnumChatFormatting.DARK_BLUE + "Tech" +
                     EnumChatFormatting.BLUE + ": Theta Movement";
+    public static final String COSMIC_MARK =
+            EnumChatFormatting.BLUE + "Tec" +
+                    EnumChatFormatting.DARK_BLUE + "Tech" +
+                    EnumChatFormatting.BLUE + ": Cosmic";//TODO get a better name than cosmic for *UNDEFINED* thing
 
     public static final byte DECAY_AT = 0;// hatches compute decays
     public static final byte MULTI_PURGE_1_AT = 2;// multiblocks clean their hatches 1

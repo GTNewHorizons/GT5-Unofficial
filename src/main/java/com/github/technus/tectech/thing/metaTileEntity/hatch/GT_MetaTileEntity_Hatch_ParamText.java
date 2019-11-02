@@ -1,19 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.Util;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_ParamText;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_ParamText;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -25,32 +18,16 @@ import net.minecraftforge.fluids.FluidStack;
 /**
  * Created by danie_000 on 15.12.2016.
  */
-public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch {
-    public int param = -1;
+public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_Param {
     public String value0s="";
     public String value1s="";
-    public double value0D = 0;
-    public double value1D = 0;
-    public double input0D = 0;
-    public double input1D = 0;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
 
     public GT_MetaTileEntity_Hatch_ParamText(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "For parametrization of Multiblocks");
-        Util.setTier(aTier,this);
+        super(aID,aName,aNameRegional,aTier);
     }
 
     public GT_MetaTileEntity_Hatch_ParamText(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        super.registerIcons(aBlockIconRegister);
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/PARAM");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/PARAM_ACTIVE");
+        super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
@@ -64,16 +41,6 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch {
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_ParamText(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(ScreenON)};
-    }
-
-    @Override
-    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(ScreenOFF)};
     }
 
     //@Override
@@ -131,23 +98,14 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setDouble("eValue0D", value0D);
-        aNBT.setDouble("eValue1D", value1D);
-        aNBT.setDouble("eInput0D", input0D);
-        aNBT.setDouble("eInput1D", input1D);
-        aNBT.setInteger("eParam", param);
         aNBT.setString("eIeValue0S", value0s);
         aNBT.setString("eIeValue1S", value1s);
+        aNBT.removeTag("ePointer");
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        value0D = aNBT.getDouble("eValue0D");
-        value1D = aNBT.getDouble("eValue1D");
-        input0D = aNBT.getDouble("eInput0D");
-        input1D = aNBT.getDouble("eInput1D");
-        param = aNBT.getInteger("eParam");
         value0s = aNBT.getString("eIeValue0S");
         if (value0s==null){
             value0s="";

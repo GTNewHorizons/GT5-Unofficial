@@ -17,10 +17,14 @@ import net.minecraft.item.ItemStack;
 public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
     public int pointer=0;
     public int param = 0;
-    public double value1f = 0;
-    public double value0f = 0;
-    public double input0f = 0;
-    public double input1f = 0;
+    public double value1d = 0;
+    public double value0d = 0;
+    public double input0d = 0;
+    public double input1d = 0;
+    public long value0l = 0;
+    public long value1l = 0;
+    public long input0l = 0;
+    public long input1l = 0;
 
     public GT_Container_ParamAdv(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -219,19 +223,19 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
             return;
         }
         param = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).param;
-        value0f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).value0D;
-        value1f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).value1D;
-        input0f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).input0D;
-        input1f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).input1D;
+        value0d = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).value0D;
+        value1d = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).value1D;
+        input0d = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).input0D;
+        input1d = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).input1D;
         pointer = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).pointer;
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;
             Util.sendInteger(param,this,var1,100);
-            Util.sendDouble(value0f,this,var1,102);
-            Util.sendDouble(value1f,this,var1, 106);
-            Util.sendDouble(input0f,this,var1, 110);
-            Util.sendDouble(input1f,this,var1, 114);
+            Util.sendDouble(value0d,this,var1,102);
+            Util.sendDouble(value1d,this,var1, 106);
+            Util.sendDouble(input0d,this,var1, 110);
+            Util.sendDouble(input1d,this,var1, 114);
             Util.sendInteger(pointer,this,var1,118);
         }
     }
@@ -249,25 +253,25 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
             case 103:
             case 104:
             case 105:
-                value0f=Util.receiveDouble(value0f,102,par1,par2);
+                value0d =Double.longBitsToDouble(value0l=Util.receiveLong(value0l,102,par1,par2));
                 return;
             case 106:
             case 107:
             case 108:
             case 109:
-                value1f=Util.receiveDouble(value1f,106,par1,par2);
+                value1d =Double.longBitsToDouble(value1l=Util.receiveLong(value1l,106,par1,par2));
                 return;
             case 110:
             case 111:
             case 112:
             case 113:
-                input0f=Util.receiveDouble(input0f,110,par1,par2);
+                input0d =Double.longBitsToDouble(input0l=Util.receiveLong(input0l,110,par1,par2));
                 return;
             case 114:
             case 115:
             case 116:
             case 117:
-                input1f=Util.receiveDouble(input1f,114,par1,par2);
+                input1d =Double.longBitsToDouble(input1l=Util.receiveLong(input1l,114,par1,par2));
                 return;
             case 118:
             case 119:

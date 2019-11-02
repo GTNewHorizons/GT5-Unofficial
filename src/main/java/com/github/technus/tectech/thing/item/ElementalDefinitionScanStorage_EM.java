@@ -25,6 +25,8 @@ import net.minecraft.world.World;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static cpw.mods.fml.relauncher.Side.CLIENT;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -37,6 +39,7 @@ public final class ElementalDefinitionScanStorage_EM extends Item implements IEl
         setMaxStackSize(1);
         setUnlocalizedName("em.definitionScanStorage");
         setTextureName(MODID + ":itemDefinitionScanStorage");
+        setCreativeTab(creativeTabTecTech);
     }
 
     //return previous thing
@@ -149,7 +152,8 @@ public final class ElementalDefinitionScanStorage_EM extends Item implements IEl
     }
 
     @Override
+    @SideOnly(CLIENT)
     public FontRenderer getFontRenderer(ItemStack stack) {
-        return (FontRenderer) (Object) TecTechFontRender.INSTANCE;
+        return TecTechFontRender.INSTANCE;
     }
 }

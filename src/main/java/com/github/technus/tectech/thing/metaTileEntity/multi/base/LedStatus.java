@@ -57,7 +57,7 @@ public enum LedStatus {
             if(val==value) return STATUS_WRONG;
         }
         if(Double.isNaN(value)) return STATUS_WRONG;
-        return STATUS_UNDEFINED;
+        return STATUS_OK;
     }
 
     public static LedStatus fromLimitsExclusiveOuterBoundary(double value, double min,double low, double high,double max, double... excludedNumbers){

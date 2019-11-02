@@ -33,27 +33,30 @@ import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    //region variables
     private final ArrayList<GT_MetaTileEntity_Hatch_OutputDataItems> eStacksDataOutputs = new ArrayList<>();
     private final ArrayList<GT_MetaTileEntity_Hatch_DataAccess> eDataAccessHatches = new ArrayList<>();
+    //endregion
 
-    //region Structure
+    //region structure
     private static final String[][] shape = new String[][]{
-            {"0   0","0 . 0","0   0",},
-            {"0!!!0","01110","0!!!0",},
-            {"0!!!0","0!!!0","0!!!0",},
+            {"0   0", "0 . 0", "0   0",},
+            {"0!!!0", "01110", "0!!!0",},
+            {"0!!!0", "0!!!0", "0!!!0",},
     };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT,sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{2,1};
-    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList,this::addDataBankHatchToMachineList};
-    private static final short[] casingTextures = new short[]{textureOffset,textureOffset+1};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT,sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0,1};
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
+    private static final byte[] blockMeta = new byte[]{2, 1};
+    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList, this::addDataBankHatchToMachineList};
+    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 1};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{0, 1};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA+"Hint Details:",
-            "1 - Classic Hatches or high power casing",
-            "2 - Data Access/Data Bank Master Hatches or computer casing",
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.databank.hint.0"),//1 - Classic Hatches or high power casing
+            translateToLocal("gt.blockmachines.multimachine.em.databank.hint.1"),//2 - Data Access/Data Bank Master Hatches or computer casing
     };
     //endregion
 
@@ -65,25 +68,61 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
         super(aName);
     }
 
-    public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_hi_freq");
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound(){
-        return activitySound;
-    }
-
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_dataBank(mName);
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][1], new TT_RenderedTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        eDataAccessHatches.clear();
+        eStacksDataOutputs.clear();
+        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 1, 0);
+    }
+
+    @Override
+    public boolean checkRecipe_EM(ItemStack itemStack) {
+        if (eDataAccessHatches.size() > 0 && eStacksDataOutputs.size() > 0) {
+            mEUt = -(int) V[4];
+            eAmpereFlow = 1 + eStacksDataOutputs.size() * eDataAccessHatches.size();
+            mMaxProgresstime = 20;
+            mEfficiencyIncrease = 10000;
+            return true;
         }
-        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][1]};
+        return false;
+    }
+
+    @Override
+    public void outputAfterRecipe_EM() {
+        ArrayList<ItemStack> stacks = new ArrayList<>();
+        for (GT_MetaTileEntity_Hatch_DataAccess dataAccess : eDataAccessHatches) {
+            int count = dataAccess.getSizeInventory();
+            for (int i = 0; i < count; i++) {
+                ItemStack stack = dataAccess.getStackInSlot(i);
+                if (stack != null) {
+                    stacks.add(stack);
+                }
+            }
+        }
+        if (stacks.size() > 0) {
+            ItemStack[] arr = stacks.toArray(nullItem);
+            for (GT_MetaTileEntity_Hatch_OutputDataItems hatch : eStacksDataOutputs) {
+                hatch.q = new InventoryDataPacket(arr);
+            }
+        } else {
+            for (GT_MetaTileEntity_Hatch_OutputDataItems hatch : eStacksDataOutputs) {
+                hatch.q = null;
+            }
+        }
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[]{
+                CommonValues.TEC_MARK_EM,
+                translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0"),//Remote assembly data delivery
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1")//Apply directly to the forehead
+        };
     }
 
     @Override
@@ -97,68 +136,21 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        eDataAccessHatches.clear();
-        eStacksDataOutputs.clear();
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 1, 0);
-    }
-
-    @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta,2, 1, 0, getBaseMetaTileEntity(),this,hintsOnly);
-    }
-
-    @Override
-    public String[] getStructureDescription(int stackSize) {
-        return description;
-    }
-
-    @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
-        if (eDataAccessHatches.size() > 0 && eStacksDataOutputs.size() > 0) {
-            mEUt = -(int)V[4];
-            eAmpereFlow = 1 + eStacksDataOutputs.size()*eDataAccessHatches.size();
-            mMaxProgresstime = 20;
-            mEfficiencyIncrease = 10000;
-            return true;
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][1], new TT_RenderedTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
         }
-        return false;
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][1]};
     }
+
+    public final static ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_hi_freq");
 
     @Override
-    public void outputAfterRecipe_EM() {
-        ArrayList<ItemStack> stacks=new ArrayList<>();
-        for(GT_MetaTileEntity_Hatch_DataAccess dataAccess:eDataAccessHatches){
-            int count=dataAccess.getSizeInventory();
-            for(int i=0;i<count;i++){
-                ItemStack stack=dataAccess.getStackInSlot(i);
-                if(stack!=null){
-                    stacks.add(stack);
-                }
-            }
-        }
-        if(stacks.size()>0){
-            ItemStack[] arr=stacks.toArray(nullItem);
-            for(GT_MetaTileEntity_Hatch_OutputDataItems hatch:eStacksDataOutputs){
-                hatch.q=new InventoryDataPacket(arr);
-            }
-        }else{
-            for(GT_MetaTileEntity_Hatch_OutputDataItems hatch:eStacksDataOutputs){
-                hatch.q=null;
-            }
-        }
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound() {
+        return activitySound;
     }
 
-    @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                "Remote assembly data delivery",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Apply directly to the forehead"
-        };
-    }
-
-    //NEW METHOD
     public final boolean addDataBankHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
@@ -170,10 +162,20 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputDataItems) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eStacksDataOutputs.add((GT_MetaTileEntity_Hatch_OutputDataItems) aMetaTileEntity);
-        }else if(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess && !(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputDataItems)){
+        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess && !(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputDataItems)) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDataAccessHatches.add((GT_MetaTileEntity_Hatch_DataAccess) aMetaTileEntity);
         }
         return false;
+    }
+
+    @Override
+    public void construct(int stackSize, boolean hintsOnly) {
+        StructureBuilderExtreme(shape, blockType, blockMeta, 2, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 }

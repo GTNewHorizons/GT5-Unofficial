@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
 
 /**
@@ -21,6 +22,8 @@ public class GT_Block_CasingsNH
 
     public GT_Block_CasingsNH() {
         super(GT_Item_CasingsNH.class, "gt.blockcasingsNH", GT_Material_Casings.INSTANCE);
+        setCreativeTab(creativeTabTecTech);
+
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[8][b+64] = new GT_CopiedBlockTexture(this, 6, b);
             /*IMPORTANT for block recoloring*/

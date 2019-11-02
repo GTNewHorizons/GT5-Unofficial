@@ -55,7 +55,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected static Textures.BlockIcons.CustomIcon ScreenON;
 
     //Sound resource - same as with screen but override getActivitySound
-    public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_lo_freq");
+    public final static ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_lo_freq");
     @SideOnly(Side.CLIENT)
     private SoundLoop activitySoundLoop;
     //endregion
@@ -117,16 +117,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //region READ ONLY unless u really need to change it
 
     //max amperes machine can take in after computing it to the lowest tier (exchange packets to min tier count)
-    protected long eMaxAmpereFlow = 0,eMaxAmpereGen=0;
+    protected long eMaxAmpereFlow = 0, eMaxAmpereGen = 0;
 
     //What is the max and minimal tier of eu hatches installed
-    private long maxEUinputMin = 0, maxEUinputMax = 0,maxEUoutputMin = 0, maxEUoutputMax = 0;
+    private long maxEUinputMin = 0, maxEUinputMax = 0, maxEUoutputMin = 0, maxEUoutputMax = 0;
 
     //read only unless you are making computation generator - read computer class
     protected long eAvailableData = 0; // data being available
 
     //just some info - private so hidden
-    private boolean explodedThisTick=false;
+    private boolean explodedThisTick = false;
 
     //front rotation val
     private byte frontRotation = 0;
@@ -135,37 +135,37 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     protected GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        parametrization=new Parameters(this);
+        parametrization = new Parameters(this);
         parametersInstantiation_EM();
-        parametrization.setToDefaults(true,true);
+        parametrization.setToDefaults(true, true);
     }
 
     protected GT_MetaTileEntity_MultiblockBase_EM(String aName) {
         super(aName);
-        parametrization=new Parameters(this);
+        parametrization = new Parameters(this);
         parametersInstantiation_EM();
-        parametrization.setToDefaults(true,true);
+        parametrization.setToDefaults(true, true);
     }
 
     //region SUPER STRUCT
 
     @Override
-    public boolean isFrontRotationValid(byte frontRotation, byte frontFacing){
+    public boolean isFrontRotationValid(byte frontRotation, byte frontFacing) {
         return true;
     }
 
-    public boolean isFacingValid_EM(byte aFacing){
+    public boolean isFacingValid_EM(byte aFacing) {
         return true;
     }
 
     @Override
     public void rotateAroundFrontPlane(boolean direction) {
-        if(direction){
+        if (direction) {
             frontRotation++;
-            if(frontRotation>3) frontRotation=0;
-        }else {
+            if (frontRotation > 3) frontRotation = 0;
+        } else {
             frontRotation--;
-            if(frontRotation<0) frontRotation=3;
+            if (frontRotation < 0) frontRotation = 3;
         }
         if (isFrontRotationValid(frontRotation, getBaseMetaTileEntity().getFrontFacing())) {
             updateRotationOnClients();
@@ -176,6 +176,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * Gets AABB based on abc and not xyz, without offsetting to controller position!!!
+     *
      * @param minA
      * @param minB
      * @param minC
@@ -184,291 +185,292 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      * @param maxC
      * @return
      */
-    public final AxisAlignedBB getBoundingBox(double minA,double minB,double minC,double maxA,double maxB,double maxC){
-        double[] offSetsMin= getTranslatedOffsets(minA,minB,minC);
-        double[] offSetsMax= getTranslatedOffsets(maxA,maxB,maxC);
-        for (int i=0;i<3;i++){
-            if(offSetsMax[i]<offSetsMin[i]){
-                double temp=offSetsMax[i];
-                offSetsMax[i]=offSetsMin[i];
-                offSetsMin[i]=temp;
+    public final AxisAlignedBB getBoundingBox(double minA, double minB, double minC, double maxA, double maxB, double maxC) {
+        double[] offSetsMin = getTranslatedOffsets(minA, minB, minC);
+        double[] offSetsMax = getTranslatedOffsets(maxA, maxB, maxC);
+        for (int i = 0; i < 3; i++) {
+            if (offSetsMax[i] < offSetsMin[i]) {
+                double temp = offSetsMax[i];
+                offSetsMax[i] = offSetsMin[i];
+                offSetsMin[i] = temp;
             }
         }
         return AxisAlignedBB.getBoundingBox(
-                offSetsMin[0],offSetsMin[1],offSetsMin[2],
-                offSetsMax[0],offSetsMax[1],offSetsMax[2]
+                offSetsMin[0], offSetsMin[1], offSetsMin[2],
+                offSetsMax[0], offSetsMax[1], offSetsMax[2]
         );
     }
 
     /**
      * Translates relative axis coordinates abc to absolute axis coordinates xyz
      * abc from the CONTROLLER!
+     *
      * @param a
      * @param b
      * @param c
      * @return
      */
-    public final double[] getTranslatedOffsets(double a, double b, double c){
-        double[] result=new double[3];
-        switch (getBaseMetaTileEntity().getFrontFacing() +(frontRotation<<3)){
+    public final double[] getTranslatedOffsets(double a, double b, double c) {
+        double[] result = new double[3];
+        switch (getBaseMetaTileEntity().getFrontFacing() + (frontRotation << 3)) {
             case 4:
-                result[0]=  c;
-                result[2]=  a;
-                result[1]=- b;
+                result[0] = c;
+                result[2] = a;
+                result[1] = -b;
                 break;
             case 12:
-                result[0]=  c;
-                result[1]=- a;
-                result[2]=- b;
+                result[0] = c;
+                result[1] = -a;
+                result[2] = -b;
                 break;
             case 20:
-                result[0]=  c;
-                result[2]=- a;
-                result[1]=  b;
+                result[0] = c;
+                result[2] = -a;
+                result[1] = b;
                 break;
             case 28:
-                result[0]=  c;
-                result[1]=  a;
-                result[2]=  b;
+                result[0] = c;
+                result[1] = a;
+                result[2] = b;
                 break;
 
             case 3:
-                result[0]=  a;
-                result[2]=- c;
-                result[1]=- b;
+                result[0] = a;
+                result[2] = -c;
+                result[1] = -b;
                 break;
             case 11:
-                result[1]=- a;
-                result[2]=- c;
-                result[0]=- b;
+                result[1] = -a;
+                result[2] = -c;
+                result[0] = -b;
                 break;
             case 19:
-                result[0]=- a;
-                result[2]=- c;
-                result[1]=  b;
+                result[0] = -a;
+                result[2] = -c;
+                result[1] = b;
                 break;
             case 27:
-                result[1]=  a;
-                result[2]=- c;
-                result[0]=  b;
+                result[1] = a;
+                result[2] = -c;
+                result[0] = b;
                 break;
 
             case 5:
-                result[0]=- c;
-                result[2]=- a;
-                result[1]=- b;
+                result[0] = -c;
+                result[2] = -a;
+                result[1] = -b;
                 break;
             case 13:
-                result[0]=- c;
-                result[1]=- a;
-                result[2]=  b;
+                result[0] = -c;
+                result[1] = -a;
+                result[2] = b;
                 break;
             case 21:
-                result[0]=- c;
-                result[2]=  a;
-                result[1]=  b;
+                result[0] = -c;
+                result[2] = a;
+                result[1] = b;
                 break;
             case 29:
-                result[0]=- c;
-                result[1]=  a;
-                result[2]=- b;
+                result[0] = -c;
+                result[1] = a;
+                result[2] = -b;
                 break;
 
             case 2:
-                result[0]=- a;
-                result[2]=  c;
-                result[1]=- b;
+                result[0] = -a;
+                result[2] = c;
+                result[1] = -b;
                 break;
             case 10:
-                result[1]=- a;
-                result[2]=  c;
-                result[0]=  b;
+                result[1] = -a;
+                result[2] = c;
+                result[0] = b;
                 break;
             case 18:
-                result[0]=  a;
-                result[2]=  c;
-                result[1]=  b;
+                result[0] = a;
+                result[2] = c;
+                result[1] = b;
                 break;
             case 26:
-                result[1]=  a;
-                result[2]=  c;
-                result[0]=- b;
+                result[1] = a;
+                result[2] = c;
+                result[0] = -b;
                 break;
             //Things get odd if the block faces up or down...
             case 1:
-                result[0]=  a;
-                result[2]=  b;
-                result[1]=- c;
+                result[0] = a;
+                result[2] = b;
+                result[1] = -c;
                 break;//similar to 3
             case 9:
-                result[2]=  a;
-                result[0]=- b;
-                result[1]=- c;
+                result[2] = a;
+                result[0] = -b;
+                result[1] = -c;
                 break;//similar to 3
             case 17:
-                result[0]=- a;
-                result[2]=- b;
-                result[1]=- c;
+                result[0] = -a;
+                result[2] = -b;
+                result[1] = -c;
                 break;//similar to 3
             case 25:
-                result[2]=- a;
-                result[0]=  b;
-                result[1]=- c;
+                result[2] = -a;
+                result[0] = b;
+                result[1] = -c;
                 break;//similar to 3
 
             case 0:
-                result[0]=- a;
-                result[2]=  b;
-                result[1]=  c;
+                result[0] = -a;
+                result[2] = b;
+                result[1] = c;
                 break;//similar to 2
             case 8:
-                result[2]=  a;
-                result[0]=  b;
-                result[1]=  c;
+                result[2] = a;
+                result[0] = b;
+                result[1] = c;
                 break;
             case 16:
-                result[0]=  a;
-                result[2]=- b;
-                result[1]=  c;
+                result[0] = a;
+                result[2] = -b;
+                result[1] = c;
                 break;
             case 24:
-                result[2]=- a;
-                result[0]=- b;
-                result[0]=- b;
-                result[1]=+ c;
+                result[2] = -a;
+                result[0] = -b;
+                result[0] = -b;
+                result[1] = +c;
                 break;
         }
         return result;
     }
 
-    public final int[] getTranslatedOffsets(int a, int b, int c){
-        int[] result=new int[3];
-        switch (getBaseMetaTileEntity().getFrontFacing() +(frontRotation<<3)){
+    public final int[] getTranslatedOffsets(int a, int b, int c) {
+        int[] result = new int[3];
+        switch (getBaseMetaTileEntity().getFrontFacing() + (frontRotation << 3)) {
             case 4:
-                result[0]=  c;
-                result[2]=  a;
-                result[1]=- b;
+                result[0] = c;
+                result[2] = a;
+                result[1] = -b;
                 break;
             case 12:
-                result[0]=  c;
-                result[1]=- a;
-                result[2]=- b;
+                result[0] = c;
+                result[1] = -a;
+                result[2] = -b;
                 break;
             case 20:
-                result[0]=  c;
-                result[2]=- a;
-                result[1]=  b;
+                result[0] = c;
+                result[2] = -a;
+                result[1] = b;
                 break;
             case 28:
-                result[0]=  c;
-                result[1]=  a;
-                result[2]=  b;
+                result[0] = c;
+                result[1] = a;
+                result[2] = b;
                 break;
 
             case 3:
-                result[0]=  a;
-                result[2]=- c;
-                result[1]=- b;
+                result[0] = a;
+                result[2] = -c;
+                result[1] = -b;
                 break;
             case 11:
-                result[1]=- a;
-                result[2]=- c;
-                result[0]=- b;
+                result[1] = -a;
+                result[2] = -c;
+                result[0] = -b;
                 break;
             case 19:
-                result[0]=- a;
-                result[2]=- c;
-                result[1]=  b;
+                result[0] = -a;
+                result[2] = -c;
+                result[1] = b;
                 break;
             case 27:
-                result[1]=  a;
-                result[2]=- c;
-                result[0]=  b;
+                result[1] = a;
+                result[2] = -c;
+                result[0] = b;
                 break;
 
             case 5:
-                result[0]=- c;
-                result[2]=- a;
-                result[1]=- b;
+                result[0] = -c;
+                result[2] = -a;
+                result[1] = -b;
                 break;
             case 13:
-                result[0]=- c;
-                result[1]=- a;
-                result[2]=  b;
+                result[0] = -c;
+                result[1] = -a;
+                result[2] = b;
                 break;
             case 21:
-                result[0]=- c;
-                result[2]=  a;
-                result[1]=  b;
+                result[0] = -c;
+                result[2] = a;
+                result[1] = b;
                 break;
             case 29:
-                result[0]=- c;
-                result[1]=  a;
-                result[2]=- b;
+                result[0] = -c;
+                result[1] = a;
+                result[2] = -b;
                 break;
 
             case 2:
-                result[0]=- a;
-                result[2]=  c;
-                result[1]=- b;
+                result[0] = -a;
+                result[2] = c;
+                result[1] = -b;
                 break;
             case 10:
-                result[1]=- a;
-                result[2]=  c;
-                result[0]=  b;
+                result[1] = -a;
+                result[2] = c;
+                result[0] = b;
                 break;
             case 18:
-                result[0]=  a;
-                result[2]=  c;
-                result[1]=  b;
+                result[0] = a;
+                result[2] = c;
+                result[1] = b;
                 break;
             case 26:
-                result[1]=  a;
-                result[2]=  c;
-                result[0]=- b;
+                result[1] = a;
+                result[2] = c;
+                result[0] = -b;
                 break;
             //Things get odd if the block faces up or down...
             case 1:
-                result[0]=  a;
-                result[2]=  b;
-                result[1]=- c;
+                result[0] = a;
+                result[2] = b;
+                result[1] = -c;
                 break;//similar to 3
             case 9:
-                result[2]=  a;
-                result[0]=- b;
-                result[1]=- c;
+                result[2] = a;
+                result[0] = -b;
+                result[1] = -c;
                 break;//similar to 3
             case 17:
-                result[0]=- a;
-                result[2]=- b;
-                result[1]=- c;
+                result[0] = -a;
+                result[2] = -b;
+                result[1] = -c;
                 break;//similar to 3
             case 25:
-                result[2]=- a;
-                result[0]=  b;
-                result[1]=- c;
+                result[2] = -a;
+                result[0] = b;
+                result[1] = -c;
                 break;//similar to 3
 
             case 0:
-                result[0]=- a;
-                result[2]=  b;
-                result[1]=  c;
+                result[0] = -a;
+                result[2] = b;
+                result[1] = c;
                 break;//similar to 2
             case 8:
-                result[2]=  a;
-                result[0]=  b;
-                result[1]=  c;
+                result[2] = a;
+                result[0] = b;
+                result[1] = c;
                 break;
             case 16:
-                result[0]=  a;
-                result[2]=- b;
-                result[1]=  c;
+                result[0] = a;
+                result[2] = -b;
+                result[1] = c;
                 break;
             case 24:
-                result[2]=- a;
-                result[0]=- b;
-                result[0]=- b;
-                result[1]=+ c;
+                result[2] = -a;
+                result[0] = -b;
+                result[0] = -b;
+                result[1] = +c;
                 break;
         }
         return result;
@@ -505,8 +507,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * Check structure here, also add hatches
+     *
      * @param iGregTechTileEntity - the tile entity
-     * @param itemStack - what is in the controller input slot
+     * @param itemStack           - what is in the controller input slot
      * @return is structure valid
      */
     protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
@@ -515,12 +518,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * Checks Recipes (when all machine is complete and can work)
-     *
+     * <p>
      * can get/set Parameters here also
      *
      * @param itemStack item in the controller
      * @return is recipe is valid
-     * */
+     */
     public boolean checkRecipe_EM(ItemStack itemStack) {
         return false;
     }
@@ -528,22 +531,24 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     /**
      * Put EM stuff from outputEM into EM output hatches here
      * or do other stuff - it is basically on recipe succeded
-     *
+     * <p>
      * based on "machine state" do output,
      * this must move to outputEM to EM output hatches
      * and can also modify output items/fluids/EM, remaining EM is NOT overflowed.
      * (Well it can be overflowed if machine didn't finished, soft-hammered/disabled/not enough EU)
      * Setting available data processing
      */
-    public void outputAfterRecipe_EM() {}
+    public void outputAfterRecipe_EM() {
+    }
 
     /**
      * to add fluids into hatches
+     *
      * @param mOutputFluids
      */
     @Override
     protected void addFluidOutputs(FluidStack[] mOutputFluids) {
-        int min=mOutputFluids.length>mOutputHatches.size()?mOutputHatches.size():mOutputFluids.length;
+        int min = mOutputFluids.length > mOutputHatches.size() ? mOutputHatches.size() : mOutputFluids.length;
         for (int i = 0; i < min; ++i) {
             if (mOutputHatches.get(i) != null && mOutputFluids[i] != null && GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(mOutputHatches.get(i))) {
                 mOutputHatches.get(i).fill(mOutputFluids[i], true);
@@ -555,48 +560,46 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //region tooltip and scanner result
 
     /**
-     *
      * @param hatchNo
      * @param paramID
      * @return
      */
-    public ArrayList<String> getFullLedDescriptionIn(int hatchNo, int paramID){
-        ArrayList<String> list=new ArrayList<>();
-        list.add(EnumChatFormatting.WHITE+"ID: " +
-                EnumChatFormatting.AQUA+hatchNo +
-                EnumChatFormatting.YELLOW+ ":" +
-                EnumChatFormatting.AQUA+paramID +
-                EnumChatFormatting.YELLOW+ ":"+
-                EnumChatFormatting.AQUA+"I  "+parametrization.getStatusIn(hatchNo, paramID).name.get());
-        list.add(EnumChatFormatting.WHITE+"Value: "+
-                EnumChatFormatting.AQUA+ Util.doubleToString(parametrization.getIn(hatchNo,paramID)));
-        try{
+    public ArrayList<String> getFullLedDescriptionIn(int hatchNo, int paramID) {
+        ArrayList<String> list = new ArrayList<>();
+        list.add(EnumChatFormatting.WHITE + "ID: " +
+                EnumChatFormatting.AQUA + hatchNo +
+                EnumChatFormatting.YELLOW + ":" +
+                EnumChatFormatting.AQUA + paramID +
+                EnumChatFormatting.YELLOW + ":" +
+                EnumChatFormatting.AQUA + "I  " + parametrization.getStatusIn(hatchNo, paramID).name.get());
+        list.add(EnumChatFormatting.WHITE + "Value: " +
+                EnumChatFormatting.AQUA + Util.doubleToString(parametrization.getIn(hatchNo, paramID)));
+        try {
             list.add(parametrization.groups[hatchNo].parameterIn[paramID].getBrief());
-        }catch (NullPointerException|IndexOutOfBoundsException e){
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
             list.add("Unused");
         }
         return list;
     }
 
     /**
-     *
      * @param hatchNo
      * @param paramID
      * @return
      */
-    public ArrayList<String> getFullLedDescriptionOut(int hatchNo, int paramID){
-        ArrayList<String> list=new ArrayList<>();
-        list.add(EnumChatFormatting.WHITE+"ID: " +
-                EnumChatFormatting.AQUA+hatchNo +
-                EnumChatFormatting.YELLOW+ ":" +
-                EnumChatFormatting.AQUA+paramID +
-                EnumChatFormatting.YELLOW+ ":"+
-                EnumChatFormatting.AQUA+"O "+parametrization.getStatusOut(hatchNo, paramID).name.get());
-        list.add(EnumChatFormatting.WHITE+"Value: "+
-                EnumChatFormatting.AQUA+Util.doubleToString(parametrization.getOut(hatchNo,paramID)));
-        try{
+    public ArrayList<String> getFullLedDescriptionOut(int hatchNo, int paramID) {
+        ArrayList<String> list = new ArrayList<>();
+        list.add(EnumChatFormatting.WHITE + "ID: " +
+                EnumChatFormatting.AQUA + hatchNo +
+                EnumChatFormatting.YELLOW + ":" +
+                EnumChatFormatting.AQUA + paramID +
+                EnumChatFormatting.YELLOW + ":" +
+                EnumChatFormatting.AQUA + "O " + parametrization.getStatusOut(hatchNo, paramID).name.get());
+        list.add(EnumChatFormatting.WHITE + "Value: " +
+                EnumChatFormatting.AQUA + Util.doubleToString(parametrization.getOut(hatchNo, paramID)));
+        try {
             list.add(parametrization.groups[hatchNo].parameterOut[paramID].getBrief());
-        }catch (NullPointerException|IndexOutOfBoundsException e){
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
             list.add("Unused");
         }
         return list;
@@ -604,6 +607,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * TOOLTIP
+     *
      * @return strings in tooltip
      */
     @Override
@@ -616,6 +620,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * scanner gives it
+     *
      * @return
      */
     @Override
@@ -642,7 +647,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 "Energy Hatches:",
                 EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
                         EnumChatFormatting.YELLOW + maxEnergy + EnumChatFormatting.RESET + " EU",
-                (mEUt*eAmpereFlow <= 0 ? "Probably uses: " : "Probably makes: ") +
+                (mEUt * eAmpereFlow <= 0 ? "Probably uses: " : "Probably makes: ") +
                         EnumChatFormatting.RED + Math.abs(mEUt) + EnumChatFormatting.RESET + " EU/t at " +
                         EnumChatFormatting.RED + eAmpereFlow + EnumChatFormatting.RESET + " A",
                 "Tier Rating: " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET +
@@ -657,6 +662,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * should it work with scanner? HELL YES
+     *
      * @return
      */
     @Override
@@ -670,6 +676,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * Server side container
+     *
      * @param aID
      * @param aPlayerInventory
      * @param aBaseMetaTileEntity
@@ -682,6 +689,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * Client side gui
+     *
      * @param aID
      * @param aPlayerInventory
      * @param aBaseMetaTileEntity
@@ -695,6 +703,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * add more textures
+     *
      * @param aBlockIconRegister
      */
     @Override
@@ -707,6 +716,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * actually use textures
+     *
      * @param aBaseMetaTileEntity
      * @param aSide
      * @param aFacing
@@ -725,26 +735,28 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * should return your activity sound
+     *
      * @return
      */
     @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound(){
+    protected ResourceLocation getActivitySound() {
         return activitySound;
     }
 
     /**
      * plays the sounds auto magically
+     *
      * @param activitySound
      */
     @SideOnly(Side.CLIENT)
-    protected void soundMagic(ResourceLocation activitySound){
-        if(getBaseMetaTileEntity().isActive()){
-            if(activitySoundLoop==null){
-                activitySoundLoop =new SoundLoop(activitySound,getBaseMetaTileEntity(),false,true);
+    protected void soundMagic(ResourceLocation activitySound) {
+        if (getBaseMetaTileEntity().isActive()) {
+            if (activitySoundLoop == null) {
+                activitySoundLoop = new SoundLoop(activitySound, getBaseMetaTileEntity(), false, true);
                 Minecraft.getMinecraft().getSoundHandler().playSound(activitySoundLoop);
             }
-        }else {
-            if(activitySoundLoop!=null) {
+        } else {
+            if (activitySoundLoop != null) {
                 activitySoundLoop = null;
             }
         }
@@ -756,6 +768,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * is the thing inside controller a valid item to make the machine work
+     *
      * @param itemStack
      * @return
      */
@@ -766,6 +779,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * how much damage to apply to thing in controller - not sure how it does it
+     *
      * @param itemStack
      * @return
      */
@@ -802,7 +816,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 }
             }
             cleanOutputEM_EM();
-            if (ePowerPass && getEUVar()>V[3] || eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM()) {
+            if (ePowerPass && getEUVar() > V[3] || eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM()) {
                 explodeMultiblock();
             }
         } catch (Exception e) {
@@ -815,14 +829,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     /**
      * prevents spontaneous explosions when the chunks unloading would cause them
      * should cover 3 chunks radius
+     *
      * @return
      */
-    protected boolean areChunksAroundLoaded_EM(){
-        if(GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(this) && getBaseMetaTileEntity().isServerSide()){
-            IGregTechTileEntity base=getBaseMetaTileEntity();
-            return base.getWorld().doChunksNearChunkExist(base.getXCoord(),base.getYCoord(),base.getZCoord(),3);
+    protected boolean areChunksAroundLoaded_EM() {
+        if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(this) && getBaseMetaTileEntity().isServerSide()) {
+            IGregTechTileEntity base = getBaseMetaTileEntity();
+            return base.getWorld().doChunksNearChunkExist(base.getXCoord(), base.getYCoord(), base.getZCoord(), 3);
             //todo check if it is actually checking if chunks are loaded
-        }else {
+        } else {
             return false;
         }
     }
@@ -830,29 +845,30 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     /**
      * instantiate parameters in CONSTRUCTOR! CALLED ONCE on creation, don't call it in your classes
      */
-    protected void parametersInstantiation_EM(){}
+    protected void parametersInstantiation_EM() {
+    }
 
     /**
      * It is automatically called OFTEN
      * update status of parameters in guis (and "machine state" if u wish)
      * Called before check recipe, before outputting, and every second the machine is complete
-     *
+     * <p>
      * good place to update parameter statuses, default implementation handles it well
      *
      * @param machineBusy is machine doing SHIT
      */
     protected void parametersStatusesWrite_EM(boolean machineBusy) {//todo unimplement?
-        if(!machineBusy){
+        if (!machineBusy) {
             for (Parameters.Group.ParameterIn parameterIn : parametrization.parameterInArrayList) {
                 if (parameterIn != null) {
                     parameterIn.updateStatus();
                 }
             }
-        }else{
-            for (Parameters.Group hatch:parametrization.groups){
-                if(hatch!=null && hatch.updateWhileRunning){
-                    for (Parameters.Group.ParameterIn in:hatch.parameterIn) {
-                        if(in!=null){
+        } else {
+            for (Parameters.Group hatch : parametrization.groups) {
+                if (hatch != null && hatch.updateWhileRunning) {
+                    for (Parameters.Group.ParameterIn in : hatch.parameterIn) {
+                        if (in != null) {
                             in.updateStatus();
                         }
                     }
@@ -868,17 +884,21 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * For extra types of hatches initiation, LOOK HOW IT IS CALLED! in onPostTick
+     *
      * @param mMachine was the machine considered complete at that point in onPostTick
      */
-    protected void hatchInit_EM(boolean mMachine) {}
+    protected void hatchInit_EM(boolean mMachine) {
+    }
 
     /**
      * called when the multiblock is exploding - if u want to add more EXPLOSIONS, for ex. new types of hatches also have to explode
      */
-    protected void extraExplosions_EM() {}//For that extra hatches explosions, and maybe some MOORE EXPLOSIONS
+    protected void extraExplosions_EM() {
+    }//For that extra hatches explosions, and maybe some MOORE EXPLOSIONS
 
     /**
      * Get Available data, Override only on data outputters should return mAvailableData that is set in check recipe
+     *
      * @return available data
      */
     protected long getAvailableData_EM() {
@@ -886,8 +906,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
         for (GT_MetaTileEntity_Hatch_InputData in : eInputData) {
             if (in.q != null) {
-                Long value=in.q.contentIfNotInTrace(pos);
-                if(value!=null) {
+                Long value = in.q.contentIfNotInTrace(pos);
+                if (value != null) {
                     result += value;
                 }
             }
@@ -906,6 +926,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * get pollution per tick
+     *
      * @param itemStack what is in controller
      * @return how much pollution is produced
      */
@@ -916,6 +937,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * EM pollution per tick
+     *
      * @param itemStack - item in controller
      * @return how much excess matter is there
      */
@@ -926,15 +948,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     /**
      * triggered if machine is not allowed to work after completing a recipe, override to make it not shutdown for instance (like turbines).
      * bu just replacing it with blank - active transformer is doing it
-     *
+     * <p>
      * CALLED DIRECTLY when soft hammered to offline state - usually should stop the machine unless some other mechanics should do it
      */
-    protected void notAllowedToWork_stopMachine_EM(){
+    protected void notAllowedToWork_stopMachine_EM() {
         stopMachine();
     }
 
     /**
      * store data
+     *
      * @param aNBT
      */
     @Override
@@ -952,7 +975,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         aNBT.setByte("eCertainM", eCertainMode);
         aNBT.setByte("eCertainS", eCertainStatus);
         aNBT.setByte("eMinRepair", minRepairStatus);
-        aNBT.setByte("eRotation",frontRotation);
+        aNBT.setByte("eRotation", frontRotation);
         aNBT.setBoolean("eParam", eParameters);
         aNBT.setBoolean("ePass", ePowerPass);
         aNBT.setBoolean("eVoid", eSafeVoid);
@@ -1024,6 +1047,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * load data
+     *
      * @param aNBT
      */
     @Override
@@ -1069,7 +1093,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         int outputLen = aNBT.getInteger("eOutputStackCount");
         if (outputLen > 0) {
             outputEM = new cElementalInstanceStackMap[outputLen];
-            NBTTagCompound compound=aNBT.getCompoundTag("outputEM");
+            NBTTagCompound compound = aNBT.getCompoundTag("outputEM");
             for (int i = 0; i < outputEM.length; i++) {
                 if (compound.hasKey(Integer.toString(i))) {
                     try {
@@ -1086,20 +1110,20 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             outputEM = null;
         }
 
-        if(aNBT.hasKey("eParamsIn") && aNBT.hasKey("eParamsOut") && aNBT.hasKey("eParamsB")){
+        if (aNBT.hasKey("eParamsIn") && aNBT.hasKey("eParamsOut") && aNBT.hasKey("eParamsB")) {
             NBTTagCompound paramI = aNBT.getCompoundTag("eParamsIn");
             NBTTagCompound paramO = aNBT.getCompoundTag("eParamsOut");
             NBTTagCompound paramB = aNBT.getCompoundTag("eParamsB");
             for (int i = 0; i < 10; i++) {
-                if(paramB.getBoolean(Integer.toString(i))){
+                if (paramB.getBoolean(Integer.toString(i))) {
                     parametrization.iParamsIn[i] = Float.intBitsToFloat(paramI.getInteger(Integer.toString(i)));
-                    parametrization.iParamsOut[i] =Float.intBitsToFloat(paramO.getInteger(Integer.toString(i)));
-                }else {
+                    parametrization.iParamsOut[i] = Float.intBitsToFloat(paramO.getInteger(Integer.toString(i)));
+                } else {
                     parametrization.iParamsIn[i] = paramI.getInteger(Integer.toString(i));
                     parametrization.iParamsOut[i] = paramO.getInteger(Integer.toString(i));
                 }
             }
-        }else{
+        } else {
             NBTTagCompound paramI = aNBT.getCompoundTag("eParamsInD");
             for (int i = 0; i < parametrization.iParamsIn.length; i++) {
                 parametrization.iParamsIn[i] = paramI.getDouble(Integer.toString(i));
@@ -1123,6 +1147,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * if u want to use gt recipe maps...
+     *
      * @return
      */
     @Override
@@ -1170,7 +1195,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      * After recipe check failed
      * helper method so i don't have to set that params to nothing at all times
      */
-    protected void afterRecipeCheckFailed(){
+    protected void afterRecipeCheckFailed() {
         cleanOrExplode();
 
         for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData) {
@@ -1214,6 +1239,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * cyclic check even when not working, called LESS frequently
+     *
      * @return
      */
     private boolean cyclicUpdate() {
@@ -1226,6 +1252,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * mining level...
+     *
      * @return
      */
     @Override
@@ -1245,15 +1272,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public final void forceSetRotationDoRender(byte rotation) {
         frontRotation = rotation;
-        IGregTechTileEntity base=getBaseMetaTileEntity();
-        if(base.isClientSide()) {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base.isClientSide()) {
             base.issueTextureUpdate();
         }
     }
 
-    protected final void updateRotationOnClients(){
-        if(getBaseMetaTileEntity().isServerSide()){
-            IGregTechTileEntity base=getBaseMetaTileEntity();
+    protected final void updateRotationOnClients() {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            IGregTechTileEntity base = getBaseMetaTileEntity();
             NetworkDispatcher.INSTANCE.sendToAllAround(new RotationMessage.RotationData(this),
                     base.getWorld().provider.dimensionId,
                     base.getXCoord(),
@@ -1273,6 +1300,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * internal check machine
+     *
      * @param iGregTechTileEntity
      * @param itemStack
      * @return
@@ -1284,13 +1312,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * internal check recipe
+     *
      * @param itemStack
      * @return
      */
     @Override
     public final boolean checkRecipe(ItemStack itemStack) {//do recipe checks, based on "machine content and state"
         hatchesStatusUpdate_EM();
-        boolean result= checkRecipe_EM(itemStack);//if had no - set default params
+        boolean result = checkRecipe_EM(itemStack);//if had no - set default params
         hatchesStatusUpdate_EM();
         return result;
     }
@@ -1299,17 +1328,17 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      * callback for updating parameters and new hatches
      */
     protected void hatchesStatusUpdate_EM() {
-        if(getBaseMetaTileEntity().isClientSide()){
+        if (getBaseMetaTileEntity().isClientSide()) {
             return;
         }
-        boolean busy=mMaxProgresstime>0;
+        boolean busy = mMaxProgresstime > 0;
         if (busy) {//write from buffer to hatches only
             for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
                 if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch) || hatch.param < 0) {
                     continue;
                 }
                 int hatchId = hatch.param;
-                if(parametrization.groups[hatchId]!=null && parametrization.groups[hatchId].updateWhileRunning){
+                if (parametrization.groups[hatchId] != null && parametrization.groups[hatchId].updateWhileRunning) {
                     parametrization.iParamsIn[hatchId] = hatch.value0D;
                     parametrization.iParamsIn[hatchId + 10] = hatch.value1D;
                 }
@@ -1343,12 +1372,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //region TICKING functions
 
-    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity){}
+    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
+    }
 
     @Override
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
-        if(getBaseMetaTileEntity().isClientSide()){
+        if (getBaseMetaTileEntity().isClientSide()) {
             NetworkDispatcher.INSTANCE.sendToServer(new RotationMessage.RotationQuery(this));
         }
         onFirstTick_EM(aBaseMetaTileEntity);
@@ -1356,18 +1386,19 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * called every tick the machines is active
+     *
      * @param aStack
      * @return
      */
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (eRequiredData > eAvailableData) {
-            if(energyFlowOnRunningTick(aStack,false)) {
+            if (energyFlowOnRunningTick(aStack, false)) {
                 stopMachine();
             }
             return false;
         }
-        return energyFlowOnRunningTick(aStack,true);
+        return energyFlowOnRunningTick(aStack, true);
     }
 
     /**
@@ -1376,7 +1407,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            explodedThisTick=false;
+            explodedThisTick = false;
             if (mEfficiency < 0) {
                 mEfficiency = 0;
             }
@@ -1568,7 +1599,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                             hatch.getBaseMetaTileEntity().setActive(true);
                         }
                     }
-                    for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches){
+                    for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
                         if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch)) {
                             hatch.getBaseMetaTileEntity().setActive(true);
                         }
@@ -1649,7 +1680,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                             }
                             for (GT_MetaTileEntity_Hatch_OutputElemental out : eOutputHatches) {
                                 for (cElementalInstanceStack instance : out.getContainerHandler().values()) {
-                                    long qty = (long)Math.floor(remaining / instance.definition.getMass());
+                                    long qty = (long) Math.floor(remaining / instance.definition.getMass());
                                     if (qty > 0) {
                                         qty = Math.min(qty, instance.amount);
                                         if (voider.addOverflowMatter(instance.definition.getMass() * qty)) {
@@ -1692,12 +1723,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     }
                                 }
                             }
-                            if (ePowerPass && getEUVar()>getMinimumStoredEU()) {
+                            if (ePowerPass && getEUVar() > getMinimumStoredEU()) {
                                 for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
                                     if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                                         euVar = tHatch.maxEUOutput();
                                         if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
-                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.min(euVar >> 7,1), false)) {
+                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.min(euVar >> 7, 1), false)) {
                                             tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
                                         }
                                     }
@@ -1706,7 +1737,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                                         euVar = tHatch.maxEUOutput() * tHatch.Amperes;
                                         if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
-                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.min(euVar >> 7,tHatch.Amperes), false)) {
+                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.min(euVar >> 7, tHatch.Amperes), false)) {
                                             tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
                                         }
                                     }
@@ -1757,7 +1788,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     if (aBaseMetaTileEntity.isAllowedToWork()) {
                                         if (checkRecipe(mInventory[1])) {
                                             mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - (getIdealStatus() - getRepairStatus()) * 1000));
-                                        }else {
+                                        } else {
                                             afterRecipeCheckFailed();
                                         }
                                         updateSlots();
@@ -1772,7 +1803,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
                                 if (checkRecipe(mInventory[1])) {
                                     mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - (getIdealStatus() - getRepairStatus()) * 1000));
-                                }else {
+                                } else {
                                     afterRecipeCheckFailed();
                                 }
                                 updateSlots();
@@ -1792,7 +1823,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
                 aMuffler.getBaseMetaTileEntity().setActive(active);
             }
-        }else{
+        } else {
             soundMagic(getActivitySound());
         }
     }
@@ -1826,7 +1857,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (allowProduction && euFlow > 0) {
             addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
-            if (!drainEnergyInput_EM(mEUt,(long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency), eAmpereFlow)) {
+            if (!drainEnergyInput_EM(mEUt, (long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency), eAmpereFlow)) {
                 stopMachine();
                 return false;
             }
@@ -1849,7 +1880,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public long maxEUStore() {
-        return Math.max(maxEUinputMin * (eMaxAmpereFlow << 3),maxEUoutputMin*(eMaxAmpereGen << 3));
+        return Math.max(maxEUinputMin * (eMaxAmpereFlow << 3), maxEUoutputMin * (eMaxAmpereGen << 3));
     }
 
     @Override
@@ -1897,16 +1928,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     /**
-     *
      * @param EU
      * @param Amperes
      * @return if was able to put inside the hatches
      */
     private boolean addEnergyOutput_EM(long EU, long Amperes) {
-        if(EU<0) {
+        if (EU < 0) {
             EU = -EU;
         }
-        if(Amperes<0) {
+        if (Amperes < 0) {
             Amperes = -Amperes;
         }
         long euVar = EU * Amperes;
@@ -1945,7 +1975,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 }
             }
         }
-        setEUVar(Math.min(getEUVar() + euVar,maxEUStore()));
+        setEUVar(Math.min(getEUVar() + euVar, maxEUStore()));
         return false;
     }
 
@@ -1969,19 +1999,19 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     private boolean drainEnergyInput_EM(long EUtTierVoltage, long EUtEffective, long Amperes) {
-        if(EUtTierVoltage<0) {
+        if (EUtTierVoltage < 0) {
             EUtTierVoltage = -EUtTierVoltage;
         }
-        if(EUtEffective<0) {
+        if (EUtEffective < 0) {
             EUtEffective = -EUtEffective;
         }
-        if(Amperes<0) {
+        if (Amperes < 0) {
             Amperes = -Amperes;
         }
         long EUuse = EUtEffective * Amperes;
         if (EUuse > getEUVar() || //not enough power
                 EUtTierVoltage > maxEUinputMax || //TIER IS BASED ON BEST HATCH! not total EUtEffective input
-                (EUtTierVoltage*Amperes - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1! //if not too much A
+                (EUtTierVoltage * Amperes - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1! //if not too much A
             if (DEBUG_MODE) {
                 TecTech.LOGGER.debug("L1 " + EUuse + ' ' + getEUVar() + ' ' + (EUuse > getEUVar()));
                 TecTech.LOGGER.debug("L2 " + EUtEffective + ' ' + maxEUinputMax + ' ' + (EUtEffective > maxEUinputMax));
@@ -2036,7 +2066,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     //new Method
-    public final long getMaxInputEnergy(){
+    public final long getMaxInputEnergy() {
         long energy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
@@ -2061,7 +2091,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return getTier(maxEUinputMin);
     }
 
-    public final long getMaxAmpereFlowAtMinTierOfEnergyHatches(){
+    public final long getMaxAmpereFlowAtMinTierOfEnergyHatches() {
         return eAmpereFlow;
     }
 
@@ -2069,21 +2099,21 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //region convenience copies input and output EM
     //new Method
-    public final cElementalInstanceStackMap getInputsClone_EM(){
-        cElementalInstanceStackMap in=new cElementalInstanceStackMap();
-        for(GT_MetaTileEntity_Hatch_ElementalContainer hatch:eInputHatches){
+    public final cElementalInstanceStackMap getInputsClone_EM() {
+        cElementalInstanceStackMap in = new cElementalInstanceStackMap();
+        for (GT_MetaTileEntity_Hatch_ElementalContainer hatch : eInputHatches) {
             in.putUnifyAll(hatch.getContainerHandler());
         }
-        return in.hasStacks()?in:null;
+        return in.hasStacks() ? in : null;
     }
 
     //new Method
-    public final cElementalInstanceStackMap getOutputsClone_EM(){
-        cElementalInstanceStackMap out=new cElementalInstanceStackMap();
-        for(GT_MetaTileEntity_Hatch_ElementalContainer hatch:eOutputHatches){
+    public final cElementalInstanceStackMap getOutputsClone_EM() {
+        cElementalInstanceStackMap out = new cElementalInstanceStackMap();
+        for (GT_MetaTileEntity_Hatch_ElementalContainer hatch : eOutputHatches) {
             out.putUnifyAll(hatch.getContainerHandler());
         }
-        return out.hasStacks()?out:null;
+        return out.hasStacks() ? out : null;
     }
     //endregion
 
@@ -2124,18 +2154,18 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public void cleanMassEM_EM(float mass) {
         if (mass > 0) {
             if (eMufflerHatches.size() < 1) {
-                TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(),mass);
+                TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(), mass);
                 explodeMultiblock();
                 return;
             }
             mass /= eMufflerHatches.size();
-            boolean shouldExplode=false;
+            boolean shouldExplode = false;
             for (GT_MetaTileEntity_Hatch_OverflowElemental dump : eMufflerHatches) {
                 if (dump.addOverflowMatter(mass)) {
-                    shouldExplode=true;
+                    shouldExplode = true;
                 }
             }
-            if(shouldExplode){
+            if (shouldExplode) {
                 explodeMultiblock();
             }
         }
@@ -2165,10 +2195,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public final void explodeMultiblock() {
-        if(explodedThisTick) {
+        if (explodedThisTick) {
             return;
         }
-        explodedThisTick=true;
+        explodedThisTick = true;
         if (!TecTech.configTecTech.BOOM_ENABLE) {
             TecTech.proxy.broadcast("Multi Explode BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
             StackTraceElement[] ste = Thread.currentThread().getStackTrace();
@@ -2728,4 +2758,5 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
         return false;
     }
+    //endregion
 }

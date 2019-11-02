@@ -23,6 +23,7 @@ SetupDevWorkspaces.bat
 *.db
 *.log
 .idea/
+\.directory
 asm/
 config/
 saves/

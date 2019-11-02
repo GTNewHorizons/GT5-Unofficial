@@ -16,6 +16,8 @@ import net.minecraft.world.IBlockAccess;
 
 import java.util.List;
 
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+
 /**
  * Created by danie_000 on 03.10.2016.
  */
@@ -24,6 +26,7 @@ public class GT_Block_HintTT extends GT_Block_Casings_Abstract {
 
     public GT_Block_HintTT() {
         super(GT_Item_HintTT.class, "gt.blockhintTT", GT_Material_Casings.INSTANCE);
+        setCreativeTab(creativeTabTecTech);
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Hint 1 dot");//id is -1
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Hint 2 dots");

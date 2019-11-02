@@ -9,6 +9,7 @@ import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -167,6 +168,7 @@ public class TT_recipe extends GT_Recipe {
     public static class GT_Recipe_MapTT extends GT_Recipe.GT_Recipe_Map {
         public static GT_Recipe_MapTT sResearchableFakeRecipes =new GT_Recipe_MapTT(new HashSet<>(32), "gt.recipe.researchStation", "Research station", null, "gregtech:textures/gui/multimachines/ResearchFake", 1, 1,1,0,1,"", 1, "", true, false);//nei to false - using custom handler
         public static GT_Recipe_MapTT sScannableFakeRecipes = new GT_Recipe_MapTT(new HashSet<>(32),"gt.recipe.em_scanner","EM Scanner Research", null,"gregtech:textures/gui/multimachines/ResearchFake",1,1,1,0,1,"",1,"",true,false);
+        public static ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes=new ArrayList<>();
 
         public GT_Recipe_MapTT(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
             super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);

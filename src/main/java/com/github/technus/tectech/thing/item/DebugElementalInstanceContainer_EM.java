@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.Util;
+import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalInstanceContainer;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
@@ -10,6 +10,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalExcep
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.gui.FontRenderer;
@@ -29,12 +30,14 @@ import java.util.TreeSet;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static cpw.mods.fml.relauncher.Side.CLIENT;
 
 /**
  * Created by Tec on 15.03.2017.
  */
 public final class DebugElementalInstanceContainer_EM extends Item implements IElementalItem {
-    public static final TreeSet<iElementalDefinition> stacksRegistered=new TreeSet<>();
+    public static final TreeSet<iElementalDefinition> STACKS_REGISTERED =new TreeSet<>();
 
     public static DebugElementalInstanceContainer_EM INSTANCE;
 
@@ -42,6 +45,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         setMaxStackSize(1);
         setUnlocalizedName("em.debugContainer");
         setTextureName(MODID + ":itemDebugContainer");
+        setCreativeTab(creativeTabTecTech);
     }
 
     @Override
@@ -135,7 +139,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         ItemStack that = new ItemStack(this, 1);
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
-        for(iElementalDefinition defintion:stacksRegistered){
+        for(iElementalDefinition defintion: STACKS_REGISTERED){
             list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+1),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,1))));
             list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+144),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,144))));
             list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+1000),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,1000))));
@@ -158,7 +162,8 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
     }
 
     @Override
+    @SideOnly(CLIENT)
     public FontRenderer getFontRenderer(ItemStack stack) {
-        return (FontRenderer) (Object) TecTechFontRender.INSTANCE;
+        return TecTechFontRender.INSTANCE;
     }
 }

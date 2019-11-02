@@ -90,6 +90,42 @@ public class MachineLoader implements Runnable {
         eM_muffler_UXV.set(new GT_MetaTileEntity_Hatch_OverflowElemental(
                 15025, "hatch.emmuffler.tier.13", "UXV Overflow Output Hatch", 13, 125e12f).getStackForm(1L));
 
+        
+        // ===================================================================================================
+        // Microcontrollers
+        // ===================================================================================================
+        
+        eM_avr_HV.set(new GT_MetaTileEntity_MicroController(
+                15030, "machine.avr.tier.08", "HV AVR Micro-controller", 3).getStackForm(1L));
+        
+        eM_avr_EV.set(new GT_MetaTileEntity_MicroController(
+                15031, "machine.avr.tier.08", "EV AVR Micro-controller", 4).getStackForm(1L));
+        
+        eM_avr_IV.set(new GT_MetaTileEntity_MicroController(
+                15032, "machine.avr.tier.08", "IV AVR Micro-controller", 5).getStackForm(1L));
+        
+        eM_avr_LuV.set(new GT_MetaTileEntity_MicroController(
+                15033, "machine.avr.tier.08", "LuV AVR Micro-controller", 6).getStackForm(1L));
+        
+        eM_avr_ZPM.set(new GT_MetaTileEntity_MicroController(
+                15034, "machine.avr.tier.08", "ZPM AVR Micro-controller", 7).getStackForm(1L));
+
+        eM_avr_UV.set(new GT_MetaTileEntity_MicroController(
+                15035, "machine.avr.tier.08", "UV AVR Micro-controller", 8).getStackForm(1L));
+
+        eM_avr_UHV.set(new GT_MetaTileEntity_MicroController(
+                15036, "machine.avr.tier.09", "UHV AVR Micro-controller", 9).getStackForm(1L));
+
+        eM_avr_UEV.set(new GT_MetaTileEntity_MicroController(
+                15037, "machine.avr.tier.10", "UEV AVR Micro-controller", 10).getStackForm(1L));
+
+        eM_avr_UIV.set(new GT_MetaTileEntity_MicroController(
+                15038, "machine.avr.tier.11", "UIV AVR Micro-controller", 11).getStackForm(1L));
+
+        eM_avr_UMV.set(new GT_MetaTileEntity_MicroController(
+                15039, "machine.avr.tier.12", "UMV AVR Micro-controller", 12).getStackForm(1L));
+        
+
         // ===================================================================================================
         // Multi AMP Power INPUTS
         // ===================================================================================================
@@ -156,7 +192,6 @@ public class MachineLoader implements Runnable {
                 15118, "hatch.energymulti16.tier.13", "UXV 16A Energy Hatch", 13, 16).getStackForm(1L));
         eM_energyMulti64_UXV.set(new GT_MetaTileEntity_Hatch_EnergyMulti(
                 15128, "hatch.energymulti64.tier.13", "UXV 64A Energy Hatch", 13, 64).getStackForm(1L));
-
 
         // ===================================================================================================
         // Multi AMP Laser INPUTS
@@ -297,12 +332,11 @@ public class MachineLoader implements Runnable {
         eM_energyTunnel7_UXV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
                 15198, "hatch.energytunnel7.tier.13", "UXV 1048576/t Laser Target Hatch", 13, 1048576).getStackForm(1L));
         eM_energyTunnel9001.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15199, "hatch.energytunnel.tier.14", "Legendary Laser Target Hatch", 14, (int)V[14]).getStackForm(1L));
+                15199, "hatch.energytunnel.tier.14", "Legendary Laser Target Hatch", 14, (int) V[14]).getStackForm(1L));
 
         // ===================================================================================================
         // Multi AMP Power OUTPUTS
         // ===================================================================================================
-
 
         eM_dynamoMulti4_IV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(
                 15200, "hatch.dynamomulti04.tier.05", "IV 4A Dynamo Hatch", 5, 4).getStackForm(1L));
@@ -506,19 +540,19 @@ public class MachineLoader implements Runnable {
         eM_dynamoTunnel7_UXV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
                 15298, "hatch.dynamotunnel7.tier.13", "UXV 1048576/t Laser Source Hatch", 13, 1048576).getStackForm(1L));
         eM_dynamoTunnel9001.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15299, "hatch.dynamotunnel.tier.14", "Legendary Laser Source Hatch", 14, (int)V[14]).getStackForm(1L));
-        
+                15299, "hatch.dynamotunnel.tier.14", "Legendary Laser Source Hatch", 14, (int) V[14]).getStackForm(1L));
+
         // ===================================================================================================
         // MULTIBLOCKS
         // ===================================================================================================
 
         Machine_Multi_Transformer.set(new GT_MetaTileEntity_EM_transformer(15300, "multimachine.em.transformer", "Active Transformer").getStackForm(1L));
+        Machine_Multi_Microwave.set(new GT_MetaTileEntity_TM_microwave(15312, "multimachine.tm.microwave", "Microwave Grinder").getStackForm(1L));
+        Machine_Multi_TeslaCoil.set(new GT_MetaTileEntity_TM_teslaCoil(15314, "multimachine.tm.teslaCoil", "Tesla Tower").getStackForm(1L));
 
         Machine_Multi_Switch.set(new GT_MetaTileEntity_EM_switch(15310, "multimachine.em.switch", "Network Switch With QoS").getStackForm(1L));
         Machine_Multi_Computer.set(new GT_MetaTileEntity_EM_computer(15311, "multimachine.em.computer", "Quantum Computer").getStackForm(1L));
-        Machine_Multi_Microwave.set(new GT_MetaTileEntity_TM_microwave(15312, "multimachine.tm.microwave", "Microwave Grinder").getStackForm(1L));
         Machine_Multi_DataBank.set(new GT_MetaTileEntity_EM_dataBank(15313, "multimachine.em.databank", "Data Bank").getStackForm(1L));
-        Machine_Multi_teslaCoil.set(new GT_MetaTileEntity_TM_teslaCoil(15314, "multimachine.tm.teslaCoil", "Tesla Coil").getStackForm(1L));
 
         Machine_Multi_EMjunction.set(new GT_MetaTileEntity_EM_junction(15320, "multimachine.em.junction", "Matter Junction").getStackForm(1L));
         Machine_Multi_MatterToEM.set(new GT_MetaTileEntity_EM_quantizer(15321, "multimachine.em.mattertoem", "Matter Quantizer").getStackForm(1L));
@@ -566,7 +600,7 @@ public class MachineLoader implements Runnable {
         rack_Hatch.set(new GT_MetaTileEntity_Hatch_Rack(15450, "hatch.rack.tier.08", "Computer Rack", 8, "4 Slot Rack").getStackForm(1L));
         holder_Hatch.set(new GT_MetaTileEntity_Hatch_Holder(15451, "hatch.holder.tier.09", "Object Holder", 8, "For Research Station").getStackForm(1L));
 
-        capacitor_Hatch.set(new GT_MetaTileEntity_Hatch_Capacitor(15452, "hatch.capacitor.tier.05", "Capacitor Hatch", 5, "For Tesla Coil").getStackForm(1L));
+        capacitor_Hatch.set(new GT_MetaTileEntity_Hatch_Capacitor(15452, "hatch.capacitor.tier.03", "Capacitor Hatch", 3, "For Tesla Tower").getStackForm(1L));
 
         // ===================================================================================================
         // Pipes
@@ -583,6 +617,10 @@ public class MachineLoader implements Runnable {
         Machine_OwnerDetector.set(new GT_MetaTileEntity_OwnerDetector(15480, "machine.tt.ownerdetector", "Owner detector", 3).getStackForm(1L));
         Machine_DataReader.set(new GT_MetaTileEntity_DataReader(15481, "machine.tt.datareader", "Data Reader", 5).getStackForm(1L));
 
+        // ===================================================================================================
+        // Buck Converters
+        // ===================================================================================================
+
         Machine_BuckConverter_IV.set(new GT_MetaTileEntity_BuckConverter(15485, "machine.tt.buck.05", "Insane Buck Converter", 5).getStackForm(1L));
         Machine_BuckConverter_LuV.set(new GT_MetaTileEntity_BuckConverter(15486, "machine.tt.buck.06", "Ludicrous Buck Converter", 6).getStackForm(1L));
         Machine_BuckConverter_ZPM.set(new GT_MetaTileEntity_BuckConverter(15487, "machine.tt.buck.07", "ZPM Voltage Buck Converter", 7).getStackForm(1L));
@@ -594,10 +632,38 @@ public class MachineLoader implements Runnable {
         Machine_BuckConverter_UXV.set(new GT_MetaTileEntity_BuckConverter(15493, "machine.tt.buck.13", "Extended Mega Ultimate Buck Converter", 13).getStackForm(1L));
 
         // ===================================================================================================
+        // Tesla Transceiver
+        // ===================================================================================================
+
+        Machine_TeslaCoil_1by1_LV.set(new GT_MetaTileEntity_TeslaCoil(16000, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1, 1).getStackForm(1L));
+        Machine_TeslaCoil_1by1_MV.set(new GT_MetaTileEntity_TeslaCoil(16001, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 1).getStackForm(1L));
+        Machine_TeslaCoil_1by1_HV.set(new GT_MetaTileEntity_TeslaCoil(16002, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 1).getStackForm(1L));
+        Machine_TeslaCoil_1by1_EV.set(new GT_MetaTileEntity_TeslaCoil(16003, "machine.tt.tesla.04", "Ultimate Power Tesla Transceiver", 4, 1).getStackForm(1L));
+        Machine_TeslaCoil_1by1_IV.set(new GT_MetaTileEntity_TeslaCoil(16004, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 1).getStackForm(1L));
+
+        Machine_TeslaCoil_2by2_LV.set(new GT_MetaTileEntity_TeslaCoil(16005, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1, 4).getStackForm(1L));
+        Machine_TeslaCoil_2by2_MV.set(new GT_MetaTileEntity_TeslaCoil(16006, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 4).getStackForm(1L));
+        Machine_TeslaCoil_2by2_HV.set(new GT_MetaTileEntity_TeslaCoil(16007, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 4).getStackForm(1L));
+        Machine_TeslaCoil_2by2_EV.set(new GT_MetaTileEntity_TeslaCoil(16008, "machine.tt.tesla.04", "Ultimate Power Tesla Transceiver", 4, 4).getStackForm(1L));
+        Machine_TeslaCoil_2by2_IV.set(new GT_MetaTileEntity_TeslaCoil(16009, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 4).getStackForm(1L));
+
+        Machine_TeslaCoil_3by3_LV.set(new GT_MetaTileEntity_TeslaCoil(16010, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1, 9).getStackForm(1L));
+        Machine_TeslaCoil_3by3_MV.set(new GT_MetaTileEntity_TeslaCoil(16011, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 9).getStackForm(1L));
+        Machine_TeslaCoil_3by3_HV.set(new GT_MetaTileEntity_TeslaCoil(16012, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 9).getStackForm(1L));
+        Machine_TeslaCoil_3by3_EV.set(new GT_MetaTileEntity_TeslaCoil(16013, "machine.tt.tesla.04", "Ultimate Power Tesla Transceiver", 4, 9).getStackForm(1L));
+        Machine_TeslaCoil_3by3_IV.set(new GT_MetaTileEntity_TeslaCoil(16014, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 9).getStackForm(1L));
+
+        Machine_TeslaCoil_4by4_LV.set(new GT_MetaTileEntity_TeslaCoil(16015, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1, 16).getStackForm(1L));
+        Machine_TeslaCoil_4by4_MV.set(new GT_MetaTileEntity_TeslaCoil(16016, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 16).getStackForm(1L));
+        Machine_TeslaCoil_4by4_HV.set(new GT_MetaTileEntity_TeslaCoil(16017, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 16).getStackForm(1L));
+        Machine_TeslaCoil_4by4_EV.set(new GT_MetaTileEntity_TeslaCoil(16018, "machine.tt.tesla.04", "Ultimate Power Tesla Transceiver", 4, 16).getStackForm(1L));
+        Machine_TeslaCoil_4by4_IV.set(new GT_MetaTileEntity_TeslaCoil(16019, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 16).getStackForm(1L));
+
+        // ===================================================================================================
         // Debug Stuff
         // ===================================================================================================
-        Machine_DebugPollutor.set(new GT_MetaTileEntity_DebugPollutor(15495,"debug.tt.pollutor","Debug Pollution Generator",15).getStackForm(1));
-        hatch_CreativeData.set(new GT_MetaTileEntity_Hatch_CreativeData(15496,"debug.tt.data","Debug Data Hatch",15).getStackForm(1));
+        Machine_DebugPollutor.set(new GT_MetaTileEntity_DebugPollutor(15495, "debug.tt.pollutor", "Debug Pollution Generator", 15).getStackForm(1));
+        hatch_CreativeData.set(new GT_MetaTileEntity_Hatch_CreativeData(15496, "debug.tt.data", "Debug Data Hatch", 15).getStackForm(1));
         hatch_CreativeMaintenance.set(new GT_MetaTileEntity_Hatch_CreativeMaintenance(15497, "debug.tt.maintenance", "Debug Maintenance Hatch", 15).getStackForm(1L));
         Machine_DebugGenny.set(new GT_MetaTileEntity_DebugPowerGenerator(15498, "debug.tt.genny", "Debug Power Generator", 15).getStackForm(1L));
         Machine_DebugWriter.set(new GT_MetaTileEntity_DebugStructureWriter(15499, "debug.tt.writer", "Debug Structure Writer", 15).getStackForm(1L));
@@ -608,7 +674,10 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
 
         GT_MetaTileEntity_Hatch_Rack.run();
+
         GT_MetaTileEntity_DataReader.run();
+
+        GT_MetaTileEntity_Hatch_Capacitor.run();
 
         if (!Loader.isModLoaded(Reference.DREAMCRAFT)) {
             new NoDreamCraftMachineLoader().run();
