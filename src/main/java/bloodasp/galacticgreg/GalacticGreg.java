@@ -59,10 +59,10 @@ public class GalacticGreg {
 		Logger.trace("Leaving PRELOAD");
 	}
 
-	@EventHandler
-	public void onLoad(FMLInitializationEvent event){
-		GalacticGregRegistry.registerModContainer(ModRegisterer.Setup_GalactiCraftCore());
-	}
+//	@EventHandler
+//	public void onLoad(FMLInitializationEvent event){
+//		GalacticGregRegistry.registerModContainer(ModRegisterer.Setup_GalactiCraftCore());
+//	}
 
 	/**
 	 * Postload phase. Mods can add their custom definition to our api in their own PreLoad or Init-phase
