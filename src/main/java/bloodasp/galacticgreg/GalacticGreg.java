@@ -64,6 +64,8 @@ public class GalacticGreg {
 //		GalacticGregRegistry.registerModContainer(ModRegisterer.Setup_GalactiCraftCore());
 //	}
 
+	public static final ArrayList<Runnable> ADDITIONALVEINREGISTER = new ArrayList<Runnable>();
+
 	/**
 	 * Postload phase. Mods can add their custom definition to our api in their own PreLoad or Init-phase
 	 * Once GalacticGregRegistry.InitRegistry() is called, no changes are accepted.
@@ -88,8 +90,19 @@ public class GalacticGreg {
 				new BW_Worldgen_Ore_SmallOre_Space("small.custom." + (f < 10 ? "0" : "") + f, GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + "small.custom." + (f < 10 ? "0" : "") + f, "Enabled", false));
 			}
 		}
+
+		for (Runnable r : ADDITIONALVEINREGISTER){
+			try{
+				r.run();
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+
 		GalacticConfig.serverPostInit();
-		
+
+
+
 		Logger.trace("Leaving POSTLOAD");
 	}
 	
