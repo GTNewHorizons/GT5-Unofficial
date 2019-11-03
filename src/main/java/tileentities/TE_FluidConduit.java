@@ -40,6 +40,18 @@ public class TE_FluidConduit extends TileEntity implements IConduit, IFluidHandl
 	}
 
 	@Override
+	public boolean testForInputFilter(Object o) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean testForOutputFilter(Object o) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 		// TODO Auto-generated method stub
 		return 0;
