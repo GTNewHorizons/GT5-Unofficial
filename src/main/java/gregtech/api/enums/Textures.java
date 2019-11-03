@@ -739,6 +739,8 @@ public class Textures {
                 for (byte j = 0; j < MACHINE_CASINGS[i].length; j++)
                     MACHINE_CASINGS[i][j] = new GT_SidedTexture(MACHINECASINGS_BOTTOM[i], MACHINECASINGS_TOP[i], MACHINECASINGS_SIDE[i], Dyes.getModulation(j - 1, Dyes.MACHINE_METAL.mRGBa));
             casingTexturePages[0]=CASING_BLOCKS;
+            if(casingTexturePages[8]==null)
+                casingTexturePages[8]=new ITexture[128];
         }
 
         protected IIcon mIcon;
