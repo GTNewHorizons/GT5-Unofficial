@@ -13,6 +13,7 @@ import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_OreLayer;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
@@ -29,6 +30,64 @@ public class BW_Worldgen_Ore_Layer_Space extends BW_OreLayer {
 
     private DynamicOreMixWorldConfig _mDynWorldConfig;
 
+    /**
+     * Code-only Constructor
+     * Will work with NEI
+     * @param aName veinname, should start with mix.
+     * @param pDefault enabled?
+     * @param pMinY
+     * @param pMaxY
+     * @param pWeight
+     * @param pDensity
+     * @param pSize 5-32 at max
+     * @param primaryBW either a werkstoff or a materials
+     * @param secondaryBW either a werkstoff or a materials
+     * @param betweenBW either a werkstoff or a materials
+     * @param sporadicBW either a werkstoff or a materials
+     */
+    public BW_Worldgen_Ore_Layer_Space(String aName, boolean pDefault, int pMinY, int pMaxY, int pWeight, int pDensity, int pSize, ISubTagContainer primaryBW,ISubTagContainer secondaryBW,ISubTagContainer betweenBW,ISubTagContainer sporadicBW) {
+        super(aName, pDefault, 0, 0, 0, 0, 0, primaryBW, secondaryBW, betweenBW, sporadicBW);
+        mMinY = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "MinHeight", pMinY));
+        mMaxY = ((short) Math.max(this.mMinY + 5, GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "MaxHeight", pMaxY)));
+        mWeight = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "RandomWeight", pWeight));
+        mDensity = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "Density", pDensity));
+        mSize = ((short) Math.max(1, GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "Size", pSize)));
+//        short pPrimary = primaryBW instanceof Materials ? (short)((Materials)primaryBW).mMetaItemSubID : (primaryBW instanceof Werkstoff ? ((Werkstoff)primaryBW).getmID() : 0);
+//        short pSecondary = secondaryBW instanceof Materials ? (short)((Materials)secondaryBW).mMetaItemSubID : (secondaryBW instanceof Werkstoff ? ((Werkstoff)secondaryBW).getmID() : 0);
+//        short pBetween = betweenBW instanceof Materials ? (short)((Materials)betweenBW).mMetaItemSubID : (betweenBW instanceof Werkstoff ? ((Werkstoff)betweenBW).getmID() : 0);
+//        short pSporadic = sporadicBW instanceof Materials ? (short)((Materials)sporadicBW).mMetaItemSubID : (sporadicBW instanceof Werkstoff ? ((Werkstoff)sporadicBW).getmID() : 0);
+//        mPrimaryMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "OrePrimaryLayer", pPrimary));
+//        mSecondaryMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "OreSecondaryLayer", pSecondary));
+//        mBetweenMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "OreSporadiclyInbetween", pBetween));
+//        mSporadicMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "OreSporaticlyAround", pSporadic));
+//        bwOres = ((byte) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "BWGTlogic", bwOres));
+        if (mEnabled) {
+            sWeight += this.mWeight;
+            oreVeinWorldgenList.add(this);
+        }
+        _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName,true);
+        _mDynWorldConfig.InitDynamicConfig();
+    }
+
+    /**
+     * Script Friendly Constructor,
+     * WONT WORK WITH NEI
+     * @param aName
+     * @param pDefault
+     * @param pMinY
+     * @param pMaxY
+     * @param pWeight
+     * @param pDensity
+     * @param pSize
+     * @param pPrimary
+     * @param pSecondary
+     * @param pBetween
+     * @param pSporadic
+     * @param primaryBW
+     * @param secondaryBW
+     * @param betweenBW
+     * @param sporadicBW
+     */
     public BW_Worldgen_Ore_Layer_Space(String aName, boolean pDefault, int pMinY, int pMaxY, int pWeight, int pDensity, int pSize, int pPrimary, int pSecondary, int pBetween, int pSporadic, boolean primaryBW, boolean secondaryBW, boolean betweenBW, boolean sporadicBW) {
         super(aName, pDefault, 0, 0, 0, 0, 0, primaryBW ? Werkstoff.default_null_Werkstoff : Materials._NULL, secondaryBW ? Werkstoff.default_null_Werkstoff : Materials._NULL, betweenBW ? Werkstoff.default_null_Werkstoff : Materials._NULL, sporadicBW ? Werkstoff.default_null_Werkstoff : Materials._NULL);
         mMinY = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "MinHeight", pMinY));
@@ -47,9 +106,14 @@ public class BW_Worldgen_Ore_Layer_Space extends BW_OreLayer {
         }
         _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName,true);
         _mDynWorldConfig.InitDynamicConfig();
-
     }
 
+    /**
+     * Script Friendly Constructor,
+     * WONT WORK WITH NEI
+     * @param aName
+     * @param enabled
+     */
     public BW_Worldgen_Ore_Layer_Space(String aName, boolean enabled){
         this(aName,enabled,0,0,0,0,0,0,0,0,0,true,true,true,true);
     }
