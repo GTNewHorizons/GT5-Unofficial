@@ -104,7 +104,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 }
 
                 if (aRecipe[i] == X.GLASS) {
-                	if (Loader.isModLoaded("bartworks")){
+                	if (GT_Mod.gregtechproxy.mBartHard) {
                         if (mTier>=8)
                            aRecipe[i] = "blockGlass"+VN[8];
                         else if (mTier < 3)
@@ -960,7 +960,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
     @Override
     public void startProcess() {
-    	BaseMetaTileEntity myMetaTileEntity = ((BaseMetaTileEntity)getBaseMetaTileEntity());
+		BaseMetaTileEntity myMetaTileEntity = ((BaseMetaTileEntity)getBaseMetaTileEntity());
         // Added to throttle sounds. To reduce lag, this is on the server side so BlockUpdate packets aren't sent.
         if (myMetaTileEntity.mTickTimer > (myMetaTileEntity.mLastSoundTick+ticksBetweenSounds)) {
             if (GT_Utility.isStringValid(mSound)) sendLoopStart((byte) 1);
@@ -968,6 +968,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
         }
     }
+
 
     @Override
     public FluidStack getFillableStack() {

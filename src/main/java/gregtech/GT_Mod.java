@@ -342,6 +342,7 @@ public class GT_Mod implements IGT_Mod {
         gregtechproxy.mLowGravProcessing = Loader.isModLoaded(GT_Values.MOD_ID_GC_CORE) && tMainConfig.get("general", "LowGravProcessing", true).getBoolean(true);
         gregtechproxy.mLowGravProcessingCircuits = Loader.isModLoaded(GT_Values.MOD_ID_GC_CORE) && tMainConfig.get("general", "LowGravProcessingCircuits", false).getBoolean(false);
         gregtechproxy.mGTPlusPlusHard = Loader.isModLoaded("miscutils") && tMainConfig.get("general", "GTPlusPlusHard", false).getBoolean(false);
+        gregtechproxy.mBartHard = Loader.isModLoaded("bartworks") && tMainConfig.get("general", "BartHard", false).getBoolean(false);
         
         Calendar now = Calendar.getInstance();
         gregtechproxy.mAprilFool = GregTech_API.sSpecialFile.get(ConfigCategories.general, "AprilFool", now.get(Calendar.MONTH) == Calendar.APRIL && now.get(Calendar.DAY_OF_MONTH) == 1);

@@ -204,6 +204,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mLowGravProcessing = false;
     public boolean mLowGravProcessingCircuits = false;
     public boolean mGTPlusPlusHard = false;
+    public boolean mBartHard = false;
     public boolean mAprilFool = false;
     public boolean mCropNeedBlock = true;
     public boolean mDisableOldChemicalRecipes = false;
