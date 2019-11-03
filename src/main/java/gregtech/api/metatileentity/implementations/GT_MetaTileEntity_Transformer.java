@@ -1,16 +1,23 @@
 package gregtech.api.metatileentity.implementations;
 
+import appeng.api.parts.IPartHost;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyStorage;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.power.IPowerContainer;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Proxy;
+import ic2.api.energy.tile.IEnergySource;
+import ic2.api.reactor.IReactor;
+import ic2.api.reactor.IReactorChamber;
+import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -140,20 +147,33 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && GregTech_API.mInputRF) {
+        if (aBaseMetaTileEntity.isServerSide()/* && GregTech_API.mInputRF*/) {
             aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork());
             for (byte i = 0; i < 6 && aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity(); i++)
                 if (aBaseMetaTileEntity.inputEnergyFrom(i)) {
                     TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(i);
-                    if (tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)), 1, true) == 1) {
+                    if (tTileEntity instanceof IReactorChamber) {
+                        tTileEntity = (TileEntity) ((IReactorChamber) tTileEntity).getReactor();
+                    }
+                    if(tTileEntity instanceof IReactor && !GT_Mod.gregtechproxy.reactorsDone.add((IReactor) tTileEntity)){
+                        continue;
+                    }
+                    if (tTileEntity instanceof IEnergySource && !(tTileEntity instanceof IPartHost) && ((IEnergySource) tTileEntity).emitsEnergyTo((TileEntity) aBaseMetaTileEntity, ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)))) {
+                        long tEU = Math.min(maxEUInput(), (long) ((IEnergySource) tTileEntity).getOfferedEnergy());
+                        ((IEnergySource) tTileEntity).drawEnergy(tEU);
+                        aBaseMetaTileEntity.injectEnergyUnits((byte) 6, tEU, 1);
+                    } else if (GregTech_API.mInputRF && tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)), 1, true) == 1) {
+                    //if (tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)), 1, true) == 1) {
                         long tEU = (long) ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)), GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false);
                         tEU = tEU * GregTech_API.mRFtoEU / 100;
                         aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
-                    } else if (tTileEntity instanceof IEnergyStorage && ((IEnergyStorage) tTileEntity).extractEnergy(1, true) == 1) {
+                    } else if (GregTech_API.mInputRF && tTileEntity instanceof IEnergyStorage && ((IEnergyStorage) tTileEntity).extractEnergy(1, true) == 1) {
+                        //} else if (tTileEntity instanceof IEnergyStorage && ((IEnergyStorage) tTileEntity).extractEnergy(1, true) == 1) {
                         long tEU = (long) ((IEnergyStorage) tTileEntity).extractEnergy(GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false);
                         tEU = tEU * GregTech_API.mRFtoEU / 100;
                         aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
-                    } else if (GregTech_API.meIOLoaded && tTileEntity instanceof IPowerContainer && ((IPowerContainer) tTileEntity).getEnergyStored() > 0) {
+                    } else if (GregTech_API.mInputRF && GregTech_API.meIOLoaded && tTileEntity instanceof IPowerContainer && ((IPowerContainer) tTileEntity).getEnergyStored() > 0) {
+                        //} else if (GregTech_API.meIOLoaded && tTileEntity instanceof IPowerContainer && ((IPowerContainer) tTileEntity).getEnergyStored() > 0) {
                         int storedRF = ((IPowerContainer) tTileEntity).getEnergyStored();
                         int  extractRF = GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU);
                         long tEU = 0;
@@ -217,8 +237,8 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
                         trans("149","A");
     }
 
-    @Override
+    /*@Override
     public boolean shouldJoinIc2Enet() {
         return true;
-    }
+    }*/
 }

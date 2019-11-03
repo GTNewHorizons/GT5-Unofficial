@@ -36,17 +36,13 @@ public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAnd
      * Sided Energy Input
      */
     public boolean inputEnergyFrom(byte aSide);
-    default public boolean inputEnergyFrom(byte aSide, boolean waitForActive) {
-        return inputEnergyFrom(aSide);
-    }
+    public boolean inputEnergyFrom(byte aSide, boolean waitForActive);
 
     /**
      * Sided Energy Output
      */
     public boolean outputsEnergyTo(byte aSide);
-    default public boolean outputsEnergyTo(byte aSide, boolean waitForActive) {
-        return outputsEnergyTo(aSide);
-    }
+    public boolean outputsEnergyTo(byte aSide, boolean waitForActive);
 
     /**
      * Utility for the Network

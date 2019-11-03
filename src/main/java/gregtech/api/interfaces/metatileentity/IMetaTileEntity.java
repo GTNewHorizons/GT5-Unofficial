@@ -407,5 +407,5 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     
     String getAlternativeModeText();
 
-    boolean shouldJoinIc2Enet();
+    //boolean shouldJoinIc2Enet();
 }

@@ -83,7 +83,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
      * }
      */
     public MetaPipeEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
-    	this(aID, aBasicName, aRegionalName, aInvSlotCount, true);
+        this(aID, aBasicName, aRegionalName, aInvSlotCount, true);
     }
 
     public MetaPipeEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount, boolean aAddInfo) {
@@ -100,15 +100,14 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         GT_LanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
         mInventory = new ItemStack[aInvSlotCount];
 
-        if (aAddInfo && GT.isClientSide()) {
-        	addInfo(aID);
+        if (aAddInfo) {
+            addInfo(aID);
         }
     }
 
     protected final void addInfo(int aID) {
-    	if(!GT.isClientSide()) return;
-    	
-        ItemStack tStack = new ItemStack(GregTech_API.sBlockMachines, 1, aID);
+    	if (GT.isServerSide()) return;
+    	ItemStack tStack = new ItemStack(GregTech_API.sBlockMachines, 1, aID);
         tStack.getItem().addInformation(tStack, null, new ArrayList<String>(), true);
     }
 
@@ -182,8 +181,8 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         if(isConnectedAtSide(aSide)){
         	tCovered = true;
         }
-        //GT_FML_LOGGER.info("Cover: "+mBaseMetaTileEntity.getCoverIDAtSide(aSide));
-        //toDo: filter cover ids that actually protect against temperature (rubber/plastic maybe?, more like asbestos)
+        //System.out.println("Cover: "+mBaseMetaTileEntity.getCoverIDAtSide(aSide));
+        //toDo: filter cover ids that actually protect against temperature (rubber/plastic maybe?)
         return tCovered;
     }
 
@@ -670,31 +669,13 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        float tStrength =
-            aExplosionPower < V[0] ? 1.0F :
-            aExplosionPower < V[1] ? 2.0F :
-            aExplosionPower < V[2] ? 3.0F :
-            aExplosionPower < V[3] ? 4.0F :
-            aExplosionPower < V[4] ? 5.0F :
-            aExplosionPower < V[4] * 2 ? 6.0F :
-            aExplosionPower < V[5] ? 7.0F :
-            aExplosionPower < V[6] ? 8.0F :
-            aExplosionPower < V[7] ? 9.0F :
-            aExplosionPower < V[8] ? 10.0F :
-            aExplosionPower < V[8] * 2 ? 11.0F :
-            aExplosionPower < V[9] ? 12.0F :
-            aExplosionPower < V[10] ? 13.0F :
-            aExplosionPower < V[11] ? 14.0F :
-            aExplosionPower < V[12] ? 15.0F :
-            aExplosionPower < V[12] * 2 ? 16.0F :
-            aExplosionPower < V[13] ? 17.0F :
-            aExplosionPower < V[14] ? 18.0F :
-            aExplosionPower < V[15] ? 19.0F : 20.0F;
+        float tStrength = aExplosionPower < V[0] ? 1.0F : aExplosionPower < V[1] ? 2.0F : aExplosionPower < V[2] ? 3.0F : aExplosionPower < V[3] ? 4.0F : aExplosionPower < V[4] ? 5.0F : aExplosionPower < V[4] * 2 ? 6.0F : aExplosionPower < V[5] ? 7.0F : aExplosionPower < V[6] ? 8.0F : aExplosionPower < V[7] ? 9.0F : 10.0F;
         int tX = getBaseMetaTileEntity().getXCoord(), tY = getBaseMetaTileEntity().getYCoord(), tZ = getBaseMetaTileEntity().getZCoord();
         World tWorld = getBaseMetaTileEntity().getWorld();
         tWorld.setBlock(tX, tY, tZ, Blocks.air);
-        if (GregTech_API.sMachineExplosions)
+        if (GregTech_API.sMachineExplosions) {
             tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
+        }
     }
 
     @Override
@@ -724,7 +705,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     @Override
-    public boolean allowGeneralRedstoneOutput(){
+    public boolean allowGeneralRedstoneOutput() {
         return false;
     }
 
@@ -756,6 +737,17 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         return true;
     }
 
+    public boolean letsInOrOut(byte side){
+        final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
+        final int coverId = baseMetaTile.getCoverIDAtSide(side),
+                coverData = baseMetaTile.getCoverDataAtSide(side);
+        final GT_CoverBehavior coverBehavior = baseMetaTile.getCoverBehaviorAtSide(side);
+        boolean letsIn = letsIn(coverBehavior, side, coverId, coverData, baseMetaTile);
+        boolean letsOut = letsOut(coverBehavior, side, coverId, coverData, baseMetaTile);
+        boolean alwaysLookConnected = coverBehavior.alwaysLookConnected(side, coverId, coverData, baseMetaTile);
+        return letsIn || letsOut || alwaysLookConnected;
+    }
+
 	@Override
 	public int connect(byte aSide) {
 		if (aSide >= 6) return 0;
@@ -764,22 +756,14 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 		final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
 		if (baseMetaTile == null || !baseMetaTile.isServerSide()) return 0;
 
-        final GT_CoverBehavior coverBehavior = baseMetaTile.getCoverBehaviorAtSide(aSide);
-        final int coverId = baseMetaTile.getCoverIDAtSide(aSide),
-                  coverData = baseMetaTile.getCoverDataAtSide(aSide);
-
-        boolean alwaysLookConnected = coverBehavior.alwaysLookConnected(aSide, coverId, coverData, baseMetaTile);
-        boolean letsIn = letsIn(coverBehavior, aSide, coverId, coverData, baseMetaTile);
-        boolean letsOut = letsOut(coverBehavior, aSide, coverId, coverData, baseMetaTile);
-
         // Careful - tTileEntity might be null, and that's ok -- so handle it
         TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(aSide);
         if (!connectableColor(tTileEntity)) return 0;
 
-        if ((alwaysLookConnected || letsIn || letsOut))  {
+        if (letsInOrOut(aSide))  {
             // Are we trying to connect to a pipe? let's do it!
             IMetaTileEntity tPipe = tTileEntity instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() : null;
-            if (getClass().isInstance(tPipe) || (tPipe != null && tPipe.getClass().isInstance(this))) {
+            if (tPipe != null && (getClass().isInstance(tPipe) || (tPipe.getClass().isInstance(this))) && ((MetaPipeEntity) tPipe).letsInOrOut(tSide)) {
                 connectAtSide(aSide);
                 if (!((MetaPipeEntity) tPipe).isConnectedAtSide(tSide)) {
                     // Make sure pipes all get together -- connect back to us if we're connecting to a pipe
@@ -837,7 +821,4 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
 	public boolean canConnect(byte aSide, TileEntity tTileEntity) { return false; }
 	public boolean getGT6StyleConnection() { return false; }
-
-    public boolean shouldJoinIc2Enet() { return false; }
-
 }
