@@ -805,7 +805,7 @@ public class WerkstoffLoader implements Runnable {
     public static final Werkstoff PDMetallicPowder = new Werkstoff(
             Materials.Palladium.getRGBA(),
             "Palladium Metallic Powder",
-            "",
+            "??Pd??",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures(),
@@ -829,7 +829,6 @@ public class WerkstoffLoader implements Runnable {
     public static final Werkstoff PDSalt = new Werkstoff(
             Materials.Palladium.getRGBA(),
             "Palladium Salt",
-            "",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
@@ -894,6 +893,7 @@ public class WerkstoffLoader implements Runnable {
     public static final Werkstoff LeachResidue = new Werkstoff(
             new short[]{0x64, 0x46, 0x29},
             "Leach Residue",
+            "??IrOsRhRu??",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures(),
@@ -1004,7 +1004,7 @@ public class WerkstoffLoader implements Runnable {
     public static final Werkstoff IrOsLeachResidue = new Werkstoff(
             new short[]{0x64, 0x46, 0x29},
             "Rarest Metal Residue",
-            "???",
+            "??OsIr??",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures(),
@@ -1015,7 +1015,7 @@ public class WerkstoffLoader implements Runnable {
     public static final Werkstoff IrLeachResidue = new Werkstoff(
             new short[]{0x84, 0x66, 0x49},
             "Iridium Metal Residue",
-            "???",
+            "??Ir??",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures(),
@@ -1117,6 +1117,7 @@ public class WerkstoffLoader implements Runnable {
     public static final Werkstoff CrudeRhMetall = new Werkstoff(
             new short[]{0x66, 0x66, 0x66},
             "Crude Rhodium Metal",
+            "??Rh??",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures(),
@@ -1259,6 +1260,43 @@ public class WerkstoffLoader implements Runnable {
             new Pair<>(WerkstoffLoader.Ruridit,3),
             new Pair<>(WerkstoffLoader.MagnetoResonaticDust,2),
             new Pair<>(Materials.Plutonium,1)
+    );
+    public static final Werkstoff Atheneite = new Werkstoff(
+            new short[]{175,175,175},
+            "Atheneite",
+            subscriptNumbers("(Pd,Hg)3As"),
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures(),
+            93,
+            TextureSet.SET_SHINY,
+            new Pair<>(WerkstoffLoader.PDMetallicPowder,3),
+            new Pair<>(Materials.Mercury,3),
+            new Pair<>(Materials.Arsenic,1)
+    );
+    public static final Werkstoff Temagamite = new Werkstoff(
+            new short[]{245,245,245},
+            "Temagamite",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures(),
+            94,
+            TextureSet.SET_ROUGH,
+            new Pair<>(WerkstoffLoader.PDMetallicPowder,3),
+            new Pair<>(Materials.Mercury,1),
+            new Pair<>(Materials.Tellurium,1)
+    );
+    public static final Werkstoff Terlinguaite = new Werkstoff(
+            new short[]{245,245,245},
+            "Terlinguaite",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures(),
+            95,
+            TextureSet.SET_GEM_HORIZONTAL,
+            new Pair<>(Materials.Mercury,2),
+            new Pair<>(Materials.Chlorine,1),
+            new Pair<>(Materials.Oxygen,1)
     );
 
     public static HashMap<OrePrefixes, BW_MetaGenerated_Items> items = new HashMap<>();
@@ -1544,6 +1582,7 @@ public class WerkstoffLoader implements Runnable {
         if (FMLCommonHandler.instance().getSide().isClient())
             RenderingRegistry.registerBlockHandler(BW_Renderer_Block_Ores.INSTANCE);
         GameRegistry.registerTileEntity(BW_MetaGeneratedOreTE.class, "bw.blockoresTE");
+        GameRegistry.registerTileEntity(BW_MetaGeneratedSmallOreTE.class, "bw.blockoresSmallTE");
         WerkstoffLoader.BWOres = new BW_MetaGenerated_Ores(Material.rock, BW_MetaGeneratedOreTE.class, "bw.blockores");
         WerkstoffLoader.BWSmallOres = new BW_MetaGenerated_SmallOres(Material.rock, BW_MetaGeneratedSmallOreTE.class, "bw.blockoresSmall");
         GameRegistry.registerBlock(WerkstoffLoader.BWOres, BW_MetaGeneratedOre_Item.class, "bw.blockores.01");

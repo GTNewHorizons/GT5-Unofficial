@@ -22,7 +22,7 @@ public class BW_MetaGenerated_SmallOres extends BW_MetaGenerated_Ores {
             if ((w.getGenerationFeatures().toGenerate & 0b1000) == 0 || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
                 return;
             GT_ModHandler.addValuableOre(this, w.getmID(), 1);
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + "." + w.getmID() + ".name", OrePrefixes.oreSmall.mLocalizedMaterialPre + w.getDefaultName() + OrePrefixes.oreSmall.mLocalizedMaterialPost);
+            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + "." + w.getmID() + ".name", "Small " + w.getDefaultName() + OrePrefixes.oreSmall.mLocalizedMaterialPost);
         }
     }
 
