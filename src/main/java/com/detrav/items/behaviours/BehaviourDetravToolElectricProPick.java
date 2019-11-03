@@ -115,6 +115,8 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                                         short meta = GTppHelper.getGTppMeta(tBlock);
                                         packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, meta);
                                     } else if (Loader.isModLoaded("bartworks") && BartWorksHelper.isOre(tBlock)) {
+                                        if (data != 1 && BartWorksHelper.isSmallOre(tBlock))
+                                            continue;
                                         packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, BartWorksHelper.getMetaFromBlock(c, x, y, z, tBlock));
                                     } else if (data == 1) {
                                         ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));

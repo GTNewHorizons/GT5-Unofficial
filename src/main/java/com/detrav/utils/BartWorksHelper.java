@@ -1,6 +1,7 @@
 package com.detrav.utils;
 
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
+import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_SmallOres;
 import net.minecraft.block.Block;
 import net.minecraft.world.chunk.Chunk;
 
@@ -8,6 +9,10 @@ public class BartWorksHelper {
 
     public static boolean isOre(Block tBlock){
         return tBlock instanceof BW_MetaGenerated_Ores;
+    }
+
+    public static boolean isSmallOre(Block tBlock){
+        return tBlock instanceof BW_MetaGenerated_SmallOres;
     }
 
     public static short getMetaFromBlock(Chunk c, int x, int y, int z, Block tBlock){

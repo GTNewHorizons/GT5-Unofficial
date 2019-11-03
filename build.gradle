@@ -26,6 +26,13 @@ file "build.properties" withReader {
     ext.config = new ConfigSlurper().parse prop
 }
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileJava.options.encoding = 'UTF-8'
+
 version = "${config.detravscanner.version}"
 group= "com.detrav.detravscannermod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "GT Scanner Mod"
@@ -84,9 +91,9 @@ repositories {
 }
 
 dependencies {
-    provided ("appeng:appliedenergistics2:${config.ae2.version}:dev") {
-        exclude module: '*'
-    }
+//    provided ("appeng:appliedenergistics2:${config.ae2.version}:dev") {
+//        exclude module: '*'
+//    }
     provided "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
 	provided "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
     provided "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"

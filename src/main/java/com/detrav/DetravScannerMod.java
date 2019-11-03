@@ -1,6 +1,7 @@
 package com.detrav;
 
 import com.detrav.net.DetravProPickPacket00;
+import com.detrav.utils.FluidColors;
 import org.apache.logging.log4j.LogManager;
 
 import com.detrav.net.DetravNetwork;
@@ -37,8 +38,7 @@ public class DetravScannerMod
     @Mod.Instance(DetravScannerMod.MODID)
     public static DetravScannerMod instance;
 
-    public  DetravScannerMod()
-    {
+    public DetravScannerMod() {
         GregTech_API.sAfterGTPreload.add(new Detrav_AfterGTPreload_Loader());
         new DetravNetwork();
     }
@@ -56,17 +56,9 @@ public class DetravScannerMod
         proxy.onPreInit();
     }
 
-        @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-		// some example code
-        //System.out.println("DIRT BLOCK >> "+Blocks.dirt.getUnlocalizedName());
-        NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy );
-    }
-
     @EventHandler
-    public void onLoad(FMLInitializationEvent aEvent)
-    {
+    public void init(FMLInitializationEvent event) {
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
         proxy.onLoad();
     }
 
@@ -75,8 +67,7 @@ public class DetravScannerMod
         proxy.onPostLoad();
         if (Loader.isModLoaded("miscutils"))
         	GTppHelper.generate_OreIDs();
-
-        DetravProPickPacket00.reFillFluidColors();
+        FluidColors.makeColors();
     }
 
 }

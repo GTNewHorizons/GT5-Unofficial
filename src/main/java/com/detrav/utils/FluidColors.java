@@ -1,85 +1,84 @@
 package com.detrav.utils;
 
+import com.detrav.net.DetravProPickPacket00;
+import cpw.mods.fml.common.ProgressManager;
 import gregtech.api.enums.Materials;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.SplittableRandom;
+import java.util.Arrays;
+import java.util.Objects;
+
+import static com.detrav.net.DetravProPickPacket00.fluidColors;
 
 public class FluidColors {
 
-    public static final HashMap<Integer, Integer> COLORS = new HashMap<Integer, Integer>(); //contains all FluidIDs and their color counterpath
-    public static final ArrayList<Integer> USEDC = new ArrayList<Integer>(); //contains all used Colors
+    public static void makeColors(){
 
+        reFillFluidColors();
 
-    public static synchronized void setup_colors_from_fluid_registry(){ //should populate COLORS with all the fluids from the Fluid registry and an unique color
-        if (FluidRegistry.getMaxID()>0){
-            for (int i = 0; i < FluidRegistry.getMaxID(); i++) {
-                if(!USEDC.contains(FluidRegistry.getFluid(i).getColor())) {
-                    USEDC.add(FluidRegistry.getFluid(i).getColor());
-                    COLORS.put(i,FluidRegistry.getFluid(i).getColor());
-                }else{
-                    int nuclor=getnucolor();
-                        USEDC.add(nuclor);
-                        COLORS.put(i,nuclor);
+        //ProgressManager.ProgressBar progressBar = ProgressManager.push("Making Fluid Colors", (int) (Materials.values().length + FluidRegistry.getRegisteredFluids().values().stream().filter(Objects::nonNull).count()));
+        Arrays.stream(Materials.values()).forEach(
+                mat -> {
+                    //progressBar.step(mat.mDefaultLocalName);
+                    if ( mat.getSolid(0) != null)
+                        fluidColors.putIfAbsent(mat.getSolid(0).getFluidID(), mat.mRGBa);
+                    if ( mat.getGas(0) != null)
+                        fluidColors.putIfAbsent(mat.getGas(0).getFluidID(), mat.mRGBa);
+                    if ( mat.getFluid(0) != null)
+                        fluidColors.putIfAbsent(mat.getFluid(0).getFluidID(), mat.mRGBa);
+                    if ( mat.getMolten(0) != null)
+                        fluidColors.putIfAbsent(mat.getMolten(0).getFluidID(), mat.mRGBa);
                 }
-
+        );
+        FluidRegistry.getRegisteredFluids().values().stream().filter(Objects::nonNull).forEach(fluid -> {
+               // progressBar.step(fluid.getName());
+                fluidColors.putIfAbsent(fluid.getID(), convertColorInt(fluid.getColor()));
             }
-        }
+        );
+       // ProgressManager.pop(progressBar);
     }
 
-    public static synchronized void setup_gt_colors(){ //should populate COLORS with all the fluids from the Materials and an unique color
-        for (Materials M : Materials.getAll()){
-            final int LCOLOR = M.getRGBA()[0]<<24 | M.getRGBA()[1]<<16 | M.getRGBA()[2]<<8 | M.getRGBA()[3];
+    private static void reFillFluidColors(){
+        try {
+            // Should probably be put somewhere else, but I suck at Java
+            fluidColors.put(Materials.NatruralGas.mGas.getID(), new short[]{0x00, 0xff, 0xff});
+            fluidColors.put(Materials.OilLight.mFluid.getID(), new short[]{0xff, 0xff, 0x00});
+            fluidColors.put(Materials.OilMedium.mFluid.getID(), new short[]{0x00, 0xFF, 0x00});
+            fluidColors.put(Materials.OilHeavy.mFluid.getID(), new short[]{0xFF, 0x00, 0xFF});
+            fluidColors.put(Materials.Oil.mFluid.getID(), new short[]{0x00, 0x00, 0x00});
+            fluidColors.put(Materials.Helium_3.mGas.getID(), new short[]{0x80, 0x20, 0xe0});
+            fluidColors.put(Materials.SaltWater.mFluid.getID(), new short[]{0x80, 0xff, 0x80});
+            fluidColors.put(Materials.Naquadah.getMolten(0).getFluid().getID(), new short[]{0x20, 0x20, 0x20});
+            fluidColors.put(Materials.NaquadahEnriched.getMolten(0).getFluid().getID(), new short[]{0x60, 0x60, 0x60});
+            fluidColors.put(Materials.Lead.getMolten(0).getFluid().getID(), new short[]{0xd0, 0xd0, 0xd0});
+            fluidColors.put(Materials.Chlorobenzene.mFluid.getID(), new short[]{0x40, 0x80, 0x40});
+            fluidColors.put(FluidRegistry.getFluid("liquid_extra_heavy_oil").getID(), new short[]{0x00, 0x00, 0x50});
+            fluidColors.put(Materials.Oxygen.mGas.getID(), new short[]{0x40, 0x40, 0xA0});
+            fluidColors.put(Materials.Nitrogen.mGas.getID(), new short[]{0x00, 0x80, 0xd0});
+            fluidColors.put(Materials.Methane.mGas.getID(), new short[]{0x80, 0x20, 0x20});
+            fluidColors.put(Materials.Ethane.mGas.getID(), new short[]{0x40, 0x80, 0x20});
+            fluidColors.put(Materials.Ethylene.mGas.getID(), new short[]{0xd0, 0xd0, 0xd0});
+            fluidColors.put(FluidRegistry.LAVA.getID(), new short[]{0xFF, 0x00, 0x00});
 
-            if (     M.mHasGas ||       //if Material has a Gas
-                    (M.mFluid != null && !M.mFluid.equals(Materials._NULL.mFluid)) || //or a fluid
-                    (M.getMolten(0).getFluid() != null && !M.getMolten(0).equals(Materials._NULL.mFluid))) //or can be molten add it here
-                    if (!addnucolor(M,LCOLOR)){
-                        boolean nosucess;
-                        do {
-                            nosucess=!addnucolor(M,getnucolor());
-                        }while (nosucess);
-                    }
-        }
+            //possible nulls
+            fluidColors.put(Materials.LiquidAir.mFluid.getID(), new short[]{0x40, 0x80, 0x40});
+        }catch (Exception ignored){}
+/*
+                   Set set = fluidColors.entrySet();
+                   Iterator iterator = set.iterator();
+                   System.out.println( "DETRAV SCANNER DEBUG" );
+                   while(iterator.hasNext()) {
+                       Map.Entry mentry = (Map.Entry) iterator.next();
+                       System.out.println( "key is: "+ (Integer)mentry.getKey() + " & Value is: " +
+                                           ((short[])mentry.getValue())[0] + " " +
+                                           ((short[])mentry.getValue())[1] + " " +
+                                           ((short[])mentry.getValue())[2] );
+                   }
+*/
     }
 
-    /**
-     *
-     * @return a new and unique color
-     */
-    private static synchronized int getnucolor(){ //gets a new unique color
-        int nucolor = makenu();
-        return !USEDC.contains(nucolor) ? nucolor : getnucolor(); //if the color already is in the list, recall this method and get a new random color.
+    private static short[] convertColorInt(int color){
+        return new short[]{(short) (color << 16 &0xff), (short) (color << 8 &0xff), (short) (color &0xff)};
     }
 
-    /**
-     *
-     * @return a new random color
-     */
-    private static synchronized int makenu() {
-        return  new SplittableRandom().nextInt(0,256)<<24 & 0xFF  | //r
-                new SplittableRandom().nextInt(0,256)<<16 & 0xFF  | //g
-                new SplittableRandom().nextInt(0,256)<<8  & 0xFF  | //b
-                new SplittableRandom().nextInt(0,256)     & 0xFF;   //a
-    }
-
-    /**
-     *  Should add a new and unique Color linked to a Material
-     * @return if the color was added
-     */
-    private static synchronized boolean addnucolor(Materials M, int color){
-        if (!USEDC.contains(color)){
-            USEDC.add(color);
-            if(M.mHasGas)
-                COLORS.put(M.mGas.getID(), color);
-            else if (M.mFluid != null && !M.mFluid.equals(Materials._NULL.mFluid))
-                COLORS.put(M.mFluid.getID(), color);
-            else if (M.getMolten(0).getFluid() != null && !M.getMolten(0).equals(Materials._NULL.mFluid))
-                COLORS.put(M.getMolten(0).getFluid().getID(), color);
-            return true;
-        }
-        return false;
-    }
 }

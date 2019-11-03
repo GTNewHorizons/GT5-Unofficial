@@ -221,7 +221,9 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                             if (!name.isEmpty())
                                 addOreToHashMap(name, aPlayer);
                         } else if (Loader.isModLoaded("bartworks") && BartWorksHelper.isOre(tBlock)){
-                                addOreToHashMap(GT_LanguageManager.getTranslation("bw.blockores.01." + ((BartWorksHelper.getMetaFromBlock(aChunk,x,y,z,tBlock))*-1) + ".name"), aPlayer);
+                            if (data != 1 && BartWorksHelper.isSmallOre(tBlock))
+                                continue;
+                                addOreToHashMap(GT_LanguageManager.getTranslation((BartWorksHelper.isSmallOre(tBlock) ? "bw.blockores.02." : "bw.blockores.01.") + ((BartWorksHelper.getMetaFromBlock(aChunk,x,y,z,tBlock))*-1) + ".name"), aPlayer);
                         } else if (data == 1) {
                             tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                             if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
