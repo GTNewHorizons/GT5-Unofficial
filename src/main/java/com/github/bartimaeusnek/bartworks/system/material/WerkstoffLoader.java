@@ -1277,6 +1277,7 @@ public class WerkstoffLoader implements Runnable {
     public static final Werkstoff Temagamite = new Werkstoff(
             new short[]{245,245,245},
             "Temagamite",
+            subscriptNumbers("Pd3HgTe"),
             new Werkstoff.Stats().setElektrolysis(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures(),
@@ -1970,7 +1971,7 @@ public class WerkstoffLoader implements Runnable {
             if (werkstoff.getStats().isElektrolysis() || werkstoff.getStats().isCentrifuge() || werkstoff.getGenerationFeatures().hasChemicalRecipes()) {
                 for (Pair<ISubTagContainer, Integer> container : werkstoff.getContents().getValue().toArray(new Pair[0])) {
                     if (container.getKey() instanceof Materials) {
-                        if (((Materials) container.getKey()).hasCorrespondingGas() || ((Materials) container.getKey()).hasCorrespondingFluid() || ((Materials) container.getKey()).mIconSet == TextureSet.SET_FLUID) {
+                        if (((Materials) container.getKey()).getGas(0) != null || ((Materials) container.getKey()).getFluid(0) != null || ((Materials) container.getKey()).mIconSet == TextureSet.SET_FLUID) {
                             FluidStack tmpFl = ((Materials) container.getKey()).getGas(1000 * container.getValue());
                             if (tmpFl == null || tmpFl.getFluid() == null) {
                                 tmpFl = ((Materials) container.getKey()).getFluid(1000 * container.getValue());
@@ -1987,8 +1988,26 @@ public class WerkstoffLoader implements Runnable {
                                 cells += container.getValue();
                             }
                         } else {
-                            if (((Materials) container.getKey()).getDust(container.getValue()) == null )
-                                continue;
+                            if (((Materials) container.getKey()).getDust(container.getValue()) == null ) {
+                                if (((Materials) container.getKey()).getCells(container.getValue()) != null && (((Materials) container.getKey()).getMolten(0) != null || ((Materials) container.getKey()).getSolid(0) != null)) {
+                                    FluidStack tmpFl = ((Materials) container.getKey()).getMolten(1000 * container.getValue());
+                                    if (tmpFl == null || tmpFl.getFluid() == null) {
+                                        tmpFl = ((Materials) container.getKey()).getSolid(1000 * container.getValue());
+                                    }
+                                    flOutputs.add(tmpFl);
+                                    if (flOutputs.size() > 1) {
+                                        if (!tracker.containsKey(container.getKey())) {
+                                            stOutputs.add(((Materials) container.getKey()).getCells(container.getValue()));
+                                            tracker.put(container.getKey(), new Pair<>(container.getValue(), stOutputs.size() - 1));
+                                        } else {
+                                            stOutputs.add(((Materials) container.getKey()).getCells(tracker.get(container.getKey()).getKey() + container.getValue()));
+                                            stOutputs.remove(tracker.get(container.getKey()).getValue() + 1);
+                                        }
+                                        cells += container.getValue();
+                                    }
+                                } else
+                                    continue;
+                            }
                             if (!tracker.containsKey(container.getKey())) {
                                 stOutputs.add(((Materials) container.getKey()).getDust(container.getValue()));
                                 tracker.put(container.getKey(), new Pair<>(container.getValue(), stOutputs.size() - 1));
