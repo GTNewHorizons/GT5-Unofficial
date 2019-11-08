@@ -9,15 +9,15 @@ import java.util.UUID;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class ConduitNetworkController implements Comparable<ConduitNetworkController> {
+public class ItemDistributionNetworkController implements Comparable<ItemDistributionNetworkController> {
 	
-	private static final HashSet<ConduitNetworkController> instances = new HashSet<>();
+	private static final HashSet<ItemDistributionNetworkController> instances = new HashSet<>();
 	
 	private final UUID uuid = UUID.randomUUID();
 	private final LinkedList<IConduit> conduits = new LinkedList<>();
 	private final HashMap<String, IConduit> sources = new HashMap<>(); // k = resource name, v = source conduit
 	
-	public ConduitNetworkController() {
+	public ItemDistributionNetworkController() {
 		
 	}
 	
@@ -29,7 +29,7 @@ public class ConduitNetworkController implements Comparable<ConduitNetworkContro
 	 */
 	public static void placeConduit(IConduit conduit) {
 		
-		conduit.setNetwork(new ConduitNetworkController());
+		conduit.setNetwork(new ItemDistributionNetworkController());
 		conduit.getNetwork().addConduit(conduit);
 		
 		final TileEntity te = (TileEntity) conduit;
@@ -38,7 +38,7 @@ public class ConduitNetworkController implements Comparable<ConduitNetworkContro
 		final int z = te.zCoord;
 		
 		// Search for adjacent Networks on all six sides
-		final HashSet<ConduitNetworkController> networks = new HashSet<>();
+		final HashSet<ItemDistributionNetworkController> networks = new HashSet<>();
 		final World world = te.getWorldObj();
 		final TileEntity te1x = world.getTileEntity(x + 1, y, z);
 		final TileEntity te0x = world.getTileEntity(x - 1, y, z);
@@ -75,13 +75,13 @@ public class ConduitNetworkController implements Comparable<ConduitNetworkContro
 			return;
 		}
 		// Sort networks by descending size
-		final LinkedList<ConduitNetworkController> networkList = new LinkedList<>();
+		final LinkedList<ItemDistributionNetworkController> networkList = new LinkedList<>();
 		networkList.addAll(networks);
 		Collections.sort(networkList, Collections.reverseOrder());
 		// Larger networks consume smaller networks to reduce copying around data
 		while(networkList.size() > 1) {
-			final ConduitNetworkController l = networkList.get(networkList.size() - 2);
-			final ConduitNetworkController r = networkList.getLast();
+			final ItemDistributionNetworkController l = networkList.get(networkList.size() - 2);
+			final ItemDistributionNetworkController r = networkList.getLast();
 			l.appendNetwork(r);
 			networkList.removeLast();
 		}
@@ -104,8 +104,8 @@ public class ConduitNetworkController implements Comparable<ConduitNetworkContro
 	
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof ConduitNetworkController) {
-			final ConduitNetworkController network = (ConduitNetworkController) o;
+		if(o instanceof ItemDistributionNetworkController) {
+			final ItemDistributionNetworkController network = (ItemDistributionNetworkController) o;
 			return uuid.equals(network.getUUID());
 		} else {
 			return false;
@@ -113,7 +113,7 @@ public class ConduitNetworkController implements Comparable<ConduitNetworkContro
 	}
 	
 	@Override
-	public int compareTo(ConduitNetworkController o) {
+	public int compareTo(ItemDistributionNetworkController o) {
 		return (int) Math.signum(o.getSize() - this.getSize());
 	}
 	
@@ -141,7 +141,7 @@ public class ConduitNetworkController implements Comparable<ConduitNetworkContro
 	 * @param network
 	 * 			Network to merge with this one.
 	 */
-	private void appendNetwork(ConduitNetworkController network) {
+	private void appendNetwork(ItemDistributionNetworkController network) {
 		
 	}
 	

@@ -86,3 +86,6 @@ tile.kekztech_tfftmultihatch_block.name=T.F.F.T Multi-Fluid I/O Hatch
 tile.kekztech_controlrod_block.name=Nuclear Reactor Control Rod
 tile.kekztech_reactorchamberoff_block.name=Nuclear Reactor Chamber (OFF)
 tile.kekztech_reactorchamberon_block.name=Nuclear Reactor Chamber (ON)
+
+tile.kekztech_itemdistributioncable_block.name=Item Distribution Cable
+tile.kekztech_itemdistributionnode_block.name=Item Distribution Node

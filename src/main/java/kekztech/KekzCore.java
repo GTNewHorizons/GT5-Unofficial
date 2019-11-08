@@ -221,17 +221,14 @@ public class KekzCore {
 				FluidRegistry.getFluidStack("molten.epoxid", 1152),
 				new ItemStack(Block_TFFTStorageFieldBlockT4.getInstance(), 1), 
 				400, 4098);
-		final ItemStack[] tfftmultihatch = {
-				GT_Utility.getIntegratedCircuit(6),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
-				GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 25),
-				ItemList.Field_Generator_HV.get(1L)
-			};
-		GT_Values.RA.addAssemblerRecipe(
-				tfftmultihatch, 
-				FluidRegistry.getFluidStack("molten.epoxid", 576),
-				new ItemStack(Block_TFFTMultiHatch.getInstance(), 1), 
-				6000, 480);
+		final Object[] multi_hatch = {
+				"PRP", "UFU", "PRP",
+				'P', GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NiobiumTitanium, 1),
+				'R', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1),
+				'U', ItemList.Electric_Pump_IV.get(1L),
+				'F', ItemList.Field_Generator_HV.get(1L)
+		};		
+		GT_ModHandler.addCraftingRecipe(new ItemStack(Block_TFFTMultiHatch.getInstance()), multi_hatch);
 		
 		// Reactor structure blocks
 		final ItemStack[] controlrod = {
