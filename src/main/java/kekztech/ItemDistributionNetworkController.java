@@ -1,7 +1,6 @@
 package kekztech;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -34,7 +33,7 @@ public class ItemDistributionNetworkController implements Comparable<ItemDistrib
 		
 		conduit.setNetwork(new ItemDistributionNetworkController());
 		conduit.getNetwork().addConduit(conduit);
-		
+		/*
 		final TileEntity te = (TileEntity) conduit;
 		final int x = te.xCoord;
 		final int y = te.yCoord;
@@ -87,7 +86,7 @@ public class ItemDistributionNetworkController implements Comparable<ItemDistrib
 			final ItemDistributionNetworkController r = networkList.getLast();
 			l.appendNetwork(r);
 			networkList.removeLast();
-		}
+		}*/
 		
 	}
 	
@@ -176,6 +175,7 @@ public class ItemDistributionNetworkController implements Comparable<ItemDistrib
 	 */
 	private void addConduit(IConduit conduit) {
 		conduits.add(conduit);
+		conduit.setNetwork(this);
 	}
 	
 	/**
@@ -185,11 +185,9 @@ public class ItemDistributionNetworkController implements Comparable<ItemDistrib
 	 * 			Network to merge with this one.
 	 */
 	private void appendNetwork(ItemDistributionNetworkController network) {
-		
+		for(IConduit conduit : network.conduits) {
+			this.addConduit(conduit);
+		}
 	}
 	
-	private void updateSource() {
-		
-	}
-
 }

@@ -1,9 +1,5 @@
 package reactor.items;
 
-import items.MetaItem_ReactorComponent;
-import kekztech.GTRecipe;
-import kekztech.Items;
-
 public class NeutronReflector {
 	
 	public static String TYPE = "NeutronReflector";
@@ -14,13 +10,6 @@ public class NeutronReflector {
 	
 	public static int[] DURABILITY = {
 			512000, 2147483647
-	};
-	
-	public static GTRecipe[] RECIPE = {
-			new GTRecipe().setDuration(1200).setEUPerTick(480)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.T1NeutronReflector.getMetaID())),
-			new GTRecipe().setDuration(4800).setEUPerTick(7680)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.T2NeutronReflector.getMetaID()))
 	};
 	
 }

@@ -1,9 +1,5 @@
 package reactor.items;
 
-import items.MetaItem_ReactorComponent;
-import kekztech.GTRecipe;
-import kekztech.Items;
-
 public class FuelRod {
 
 	public static final int METAOFFSET = 17;
@@ -77,38 +73,6 @@ public class FuelRod {
 			50, 50, 50, 10, 10, 10,
 			50, 50, 50, 100, 100, 100,
 			10, 10, 10
-	};
-	
-	public static final GTRecipe[] RECIPE = {
-			// Uranium Fuel Rod
-			new GTRecipe().setDuration(600).setEUPerTick(480)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.UraniumFuelRod.getMetaID())),
-			new GTRecipe().setDuration(800).setEUPerTick(480)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.UraniumDualFuelRod.getMetaID())),
-			new GTRecipe().setDuration(1000).setEUPerTick(480)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.UraniumQuadFuelRod.getMetaID())),
-			// Thorium Fuel Rod
-			new GTRecipe().setDuration(600).setEUPerTick(480)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.ThoriumFuelRod.getMetaID())),
-			new GTRecipe().setDuration(800).setEUPerTick(480)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.ThoriumDualFuelRod.getMetaID())),
-			new GTRecipe().setDuration(1000).setEUPerTick(480)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.ThoriumQuadFuelRod.getMetaID())),
-			// MOX Fuel Rod
-			new GTRecipe().setDuration(600).setEUPerTick(1920)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.MOXFuelRod.getMetaID())),
-			new GTRecipe().setDuration(800).setEUPerTick(1920)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.MOXDualFuelRod.getMetaID())),
-			new GTRecipe().setDuration(1000).setEUPerTick(1920)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.MOXQuadFuelRod.getMetaID())),
-			// Naquadah Fuel Rod
-			new GTRecipe().setDuration(600).setEUPerTick(7680)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.NaquadahFuelRod.getMetaID())),
-			new GTRecipe().setDuration(800).setEUPerTick(7680)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.NaquadahDualFuelRod.getMetaID())),
-			new GTRecipe().setDuration(1000).setEUPerTick(7680)
-					.addOutputItem(MetaItem_ReactorComponent.getInstance().getStackFromDamage(Items.NaquadahQuadFuelRod.getMetaID())),
-			// Thorium MOX Fuel Rod
 	};
 	
 }
