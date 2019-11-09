@@ -5,7 +5,10 @@ import kekztech.ItemDistributionNetworkController;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.Constants;
 
 public class TE_ItemDistributionNode extends TileEntity implements IConduit, IInventory {
 	
@@ -31,38 +34,58 @@ private ItemDistributionNetworkController network;
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		// TODO Auto-generated method stub
-		return null;
+		return network.getStackInSlot(slot);
 	}
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		// TODO Auto-generated method stub
+		
+		if(network.getStackInSlot(slot) != null) {
+			if(network.getStackInSlot(slot).stackSize == amount) {
+				final ItemStack itemStack = network.getStackInSlot(slot);
+				network.setStackInSlot(slot, null);
+				super.markDirty();
+				return itemStack;
+			} else {
+				final ItemStack itemStack = network.getStackInSlot(slot).splitStack(amount);
+				if(network.getStackInSlot(slot).stackSize == 0) {
+					network.setStackInSlot(slot, null);
+				}
+				super.markDirty();
+				return itemStack;
+			}
+		}
+		
 		return null;
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
-		// TODO Auto-generated method stub
+		if(network.getStackInSlot(slot) != null) {
+			final ItemStack itemStack = network.getStackInSlot(slot);
+			network.setStackInSlot(slot, null);
+			return itemStack;
+		}
 		return null;
 	}
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack itemStack) {
-		// TODO Auto-generated method stub
-		
+		if(itemStack.stackSize > getInventoryStackLimit()) {
+			itemStack.stackSize = getInventoryStackLimit();
+		}
+		network.setStackInSlot(slot, itemStack);
+		super.markDirty();
 	}
 
 	@Override
 	public String getInventoryName() {
-		// TODO Auto-generated method stub
-		return null;
+		return network.getUUID().toString();
 	}
 
 	@Override
 	public boolean hasCustomInventoryName() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -88,9 +111,8 @@ private ItemDistributionNetworkController network;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
+		return network.isInputSlot(slot) && network.getStackInSlot(slot).isItemEqual(itemStack);
 	}
 
 }

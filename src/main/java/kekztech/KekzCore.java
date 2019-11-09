@@ -2,6 +2,8 @@ package kekztech;
 
 import blocks.Block_ControlRod;
 import blocks.Block_GDCUnit;
+import blocks.Block_ItemDistributionCable;
+import blocks.Block_ItemDistributionNode;
 import blocks.Block_ReactorChamber_OFF;
 import blocks.Block_ReactorChamber_ON;
 import blocks.Block_TFFTCasing;
@@ -16,6 +18,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -33,6 +36,8 @@ import tileentities.GTMTE_FluidMultiStorage;
 import tileentities.GTMTE_ModularNuclearReactor;
 import tileentities.GTMTE_SOFuelCellMK1;
 import tileentities.GTMTE_SOFuelCellMK2;
+import tileentities.TE_ItemDistributionCable;
+import tileentities.TE_ItemDistributionNode;
 import tileentities.TE_TFFTMultiHatch;
 import util.Util;
 
@@ -82,8 +87,14 @@ public class KekzCore {
 		Block_ReactorChamber_OFF.getInstance().registerBlock();
 		Block_ReactorChamber_ON.getInstance().registerBlock();
 		Block_ControlRod.getInstance().registerBlock();
+		Block_ItemDistributionCable.getInstance().registerBlock();
+		Block_ItemDistributionNode.getInstance().registerBlock();
 		// Register TileEntities
 		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");
+		GameRegistry.registerTileEntity(TE_ItemDistributionCable.class, "kekztech_itemdistributioncable_tile");
+		GameRegistry.registerTileEntity(TE_ItemDistributionNode.class, "kekztech_itemdistributionnode_tile");
+		// Register a GUI?
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 	}
 	
 	@Mod.EventHandler

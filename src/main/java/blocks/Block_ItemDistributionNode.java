@@ -6,6 +6,7 @@ import kekztech.KekzCore;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import tileentities.TE_ItemDistributionNode;
@@ -30,6 +31,20 @@ public class Block_ItemDistributionNode extends BlockContainer {
 		super.setHardness(3.0f);
 		super.setResistance(2.0f);
 		GameRegistry.registerBlock(getInstance(), IB_ItemDistributionNode.class, blockName);
+	}
+	
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float lx, float ly, float lz) {
+		if(world.isRemote) {
+			return true;
+		}
+		
+		final TileEntity te = world.getTileEntity(x, y, z);
+		if(te != null && te instanceof TE_ItemDistributionNode) {
+			player.openGui(KekzCore.instance, 0, world, x, y, z);
+			return true;
+		}
+		return false;
 	}
 	
 	@Override

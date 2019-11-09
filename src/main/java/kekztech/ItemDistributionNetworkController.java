@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.UUID;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -15,7 +16,9 @@ public class ItemDistributionNetworkController implements Comparable<ItemDistrib
 	
 	private final UUID uuid = UUID.randomUUID();
 	private final LinkedList<IConduit> conduits = new LinkedList<>();
-	private final HashMap<String, IConduit> sources = new HashMap<>(); // k = resource name, v = source conduit
+	private final boolean[] slotDirections = new boolean[15];
+	private final ItemStack[] networkedItemStacks = new ItemStack[15];
+	//private final HashMap<String, IConduit> sources = new HashMap<>(); // k = resource name, v = source conduit
 	
 	public ItemDistributionNetworkController() {
 		
@@ -123,6 +126,46 @@ public class ItemDistributionNetworkController implements Comparable<ItemDistrib
 	
 	public int getSize() {
 		return conduits.size();
+	}
+	
+	/**
+	 * Find out if this slot is designated as input and can accept an item into the network.
+	 * 
+	 * Slots are numbered left to right, then top to bottom and start at zero.
+	 * For example, the second slot in the second row, would have a slot number of five.
+	 * 
+	 * @param slot:
+	 * 			Slot number.
+	 * @return whether this slot can accept input or not.
+	 */
+	public boolean isInputSlot(int slot) {
+		if(slot >= slotDirections.length) {
+			return false;
+		}
+		return slotDirections[slot];
+	}
+	
+	/**
+	 * Return the ItemStack that is contained in the given slot number.
+	 * 
+	 * Slots are numbered left to right, then top to bottom and start at zero.
+	 * For example, the second slot in the second row, would have a slot number of five.
+	 * 
+	 * @param slot:
+	 * 			Slot number.
+	 * @return ItemStack at given slot number.
+	 */
+	public ItemStack getStackInSlot(int slot) {
+		if(slot >= networkedItemStacks.length) {
+			return null;
+		}
+		return networkedItemStacks[slot];
+	}
+	
+	public void setStackInSlot(int slot, ItemStack itemStack) {
+		if(slot < networkedItemStacks.length && isInputSlot(slot)) {
+			networkedItemStacks[slot] = itemStack;
+		}
 	}
 	
 	/**
