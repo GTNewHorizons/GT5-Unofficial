@@ -2161,7 +2161,7 @@ if(Loader.isModLoaded("Railcraft")){
         		GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 2L),
         		GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 8L),
                 new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ring, (Materials.StyreneButadieneRubber), 8L), GT_OreDictUnificator.get(OrePrefixes.ring, (Materials.Silicone), 8L)},
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.NaquadahAlloy, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Osmiridium, 2L),
         		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Naquadah, 2L)}, new FluidStack[]{
         		Materials.SolderingAlloy.getMolten(288),
         		Materials.Lubricant.getFluid(750)}, ItemList.Electric_Pump_ZPM.get(1), 600, 24000);
@@ -2172,7 +2172,7 @@ if(Loader.isModLoaded("Railcraft")){
         		GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 2L),
         		GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tritanium, 8L),
                 new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ring, (Materials.StyreneButadieneRubber), 16L), GT_OreDictUnificator.get(OrePrefixes.ring, (Materials.Silicone), 16L)},
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Americium, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.NaquadahAlloy, 2L),
         		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 2L)}, new FluidStack[]{
         		Materials.SolderingAlloy.getMolten(1296),
         		Materials.Lubricant.getFluid(2000),
@@ -2232,8 +2232,8 @@ if(Loader.isModLoaded("Railcraft")){
         		GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Osmiridium, 4L),
         		GT_OreDictUnificator.get(OrePrefixes.round, Materials.Osmiridium, 32L),
         		GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Osmiridium, 4L),
-        		GT_OreDictUnificator.get(OrePrefixes.gear, Materials.NaquadahAlloy, 1L),
-        		GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.NaquadahAlloy, 2L),
+        		GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Osmiridium, 1L),
+        		GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Osmiridium, 2L),
         		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Naquadah, 4L)}, new FluidStack[]{
         		Materials.SolderingAlloy.getMolten(288),
         		Materials.Lubricant.getFluid(750)}, ItemList.Electric_Piston_ZPM.get(1), 600, 24000);
@@ -2244,8 +2244,8 @@ if(Loader.isModLoaded("Railcraft")){
         		GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Tritanium, 4L),
         		GT_OreDictUnificator.get(OrePrefixes.round, Materials.Tritanium, 32L),
         		GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Tritanium, 4L),
-        		GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Americium, 1L),
-        		GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Americium, 2L),
+        		GT_OreDictUnificator.get(OrePrefixes.gear, Materials.NaquadahAlloy, 1L),
+        		GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.NaquadahAlloy, 2L),
         		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 4L)}, new FluidStack[]{
         		Materials.SolderingAlloy.getMolten(1296),
         		Materials.Lubricant.getFluid(2000),
@@ -2282,8 +2282,8 @@ if(Loader.isModLoaded("Railcraft")){
 
         GT_Values.RA.addAssemblylineRecipe(ItemList.Robot_Arm_ZPM.get(1, new Object(){}),288000,new Object[]{
         		GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Tritanium, 4L),
-        		GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Tritanium, 1L),
-        		GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Tritanium, 3L),
+        		GT_OreDictUnificator.get(OrePrefixes.gear, Materials.NaquadahAlloy, 1L),
+        		GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.NaquadahAlloy, 3L),
         		ItemList.Electric_Motor_UV.get(2, new Object(){}),
         		ItemList.Electric_Piston_UV.get(1, new Object(){}),
                 new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 2},
