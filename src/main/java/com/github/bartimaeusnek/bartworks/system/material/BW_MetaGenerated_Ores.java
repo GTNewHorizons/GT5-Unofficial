@@ -147,9 +147,9 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
     public ArrayList<ItemStack> getDrops(World aWorld, int aX, int aY, int aZ, int aMeta, int aFortune) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((tTileEntity instanceof BW_MetaGeneratedOreTE)) {
-            return ((BW_MetaGeneratedOreTE) tTileEntity).getDrops(WerkstoffLoader.BWOres);
+            return ((BW_MetaGeneratedOreTE) tTileEntity).getDrops(WerkstoffLoader.BWOres,aFortune);
         }
-        return BW_MetaGenerated_Ores.mTemporaryTileEntity.get() == null ? new ArrayList() : BW_MetaGenerated_Ores.mTemporaryTileEntity.get().getDrops(WerkstoffLoader.BWOres);
+        return BW_MetaGenerated_Ores.mTemporaryTileEntity.get() == null ? new ArrayList() : BW_MetaGenerated_Ores.mTemporaryTileEntity.get().getDrops(WerkstoffLoader.BWOres,aFortune);
     }
 
     public int getHarvestLevel(int metadata) {

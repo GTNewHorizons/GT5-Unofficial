@@ -27,9 +27,11 @@ import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Recipe;
@@ -39,6 +41,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -79,6 +82,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         super.saveNBTData(aNBT);
         aNBT.setByte("glasTier",glasTier);
         aNBT.setByte("circuitMode",circuitMode);
+        aNBT.setLong("lEUt",lEUt);
     }
 
     @Override
@@ -86,8 +90,59 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         super.loadNBTData(aNBT);
         this.circuitMode = aNBT.getByte("circuitMode");
         this.glasTier = aNBT.getByte("glasTier");
+        this.lEUt = aNBT.getLong("lEUt");
     }
 
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (this.lEUt > 0) {
+            this.addEnergyOutput((long)this.lEUt * (long)this.mEfficiency / 10000L);
+            return true;
+        } else if (this.lEUt < 0 && !this.drainEnergyInput((long)(-this.lEUt) * 10000L / (long)Math.max(1000, this.mEfficiency))) {
+            this.stopMachine();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    @Override
+    public void stopMachine() {
+        this.mOutputItems = null;
+        this.mEUt = 0;
+        this.lEUt = 0;
+        this.mEfficiency = 0;
+        this.mProgresstime = 0;
+        this.mMaxProgresstime = 0;
+        this.mEfficiencyIncrease = 0;
+        this.getBaseMetaTileEntity().disableWorking();
+    }
+
+    public String[] getInfoData() {
+        int mPollutionReduction = 0;
+
+        for (GT_MetaTileEntity_Hatch_Muffler e : this.mMufflerHatches) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(e)) {
+                mPollutionReduction = Math.max(e.calculatePollutionReduction(this.mPollution), mPollutionReduction);
+            }
+        }
+
+        long storedEnergy = 0L;
+        long maxEnergy = 0L;
+
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+
+        return new String[]{StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN + Integer.toString(this.mProgresstime / 20) + EnumChatFormatting.RESET + " s / " + EnumChatFormatting.YELLOW + Integer.toString(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s", StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " + EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET + " EU", StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED + Long.toString(-this.lEUt) + EnumChatFormatting.RESET + " EU/t", StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW + Long.toString(this.getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*2A) " + StatCollector.translateToLocal("GT5U.machines.tier") + ": " + EnumChatFormatting.YELLOW + GT_Values.VN[GT_Utility.getTier(this.getMaxInputVoltage())] + EnumChatFormatting.RESET, StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " + EnumChatFormatting.RED + (this.getIdealStatus() - this.getRepairStatus()) + EnumChatFormatting.RESET + " " + StatCollector.translateToLocal("GT5U.multiblock.efficiency") + ": " + EnumChatFormatting.YELLOW + Float.toString((float)this.mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %", StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN + mPollutionReduction + EnumChatFormatting.RESET + " %"};
+    }
+
+    private long lEUt = 0;
+    
     public boolean drainEnergyInput(long aEU) {
         if (aEU <= 0)
             return true;
@@ -197,23 +252,23 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
 
             byte overclockCount = 0;
             long actualEUT = (long) (tRecipe.mEUt) * processed;
-            if (actualEUT > Integer.MAX_VALUE) {
-                byte divider = 0;
-                while (actualEUT > Integer.MAX_VALUE) {
-                    actualEUT = actualEUT / 2;
-                    divider++;
-                }
-                overclockCount = this.calculateOverclockednessEBF((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), nominalV);
-            } else
+//            if (actualEUT > Integer.MAX_VALUE) {
+//                byte divider = 0;
+//                while (actualEUT > Integer.MAX_VALUE) {
+//                    actualEUT = actualEUT / 2;
+//                    divider++;
+//                }
+//                overclockCount = this.calculateOverclockednessEBF((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), nominalV);
+//            } else
                 overclockCount = this.calculateOverclockednessEBF(actualEUT, tRecipe.mDuration, nominalV);
             //In case recipe is too OP for that machine
-            if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
+            if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.lEUt == Integer.MAX_VALUE - 1)
                 return false;
-            if (this.mEUt > 0) {
-                this.mEUt = (-this.mEUt);
+            if (this.lEUt > 0) {
+                this.lEUt = (-this.lEUt);
             }
             if (tHeatCapacityDivTiers > 0) {
-                this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
+                this.lEUt = (int) (this.lEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
                 this.mMaxProgresstime >>= Math.min(tHeatCapacityDivTiers / 2, overclockCount); //extra free overclocking if possible
                 if (this.mMaxProgresstime < 1)
                     this.mMaxProgresstime = 1;//no eu efficiency correction
@@ -245,10 +300,10 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
             long xMaxProgresstime = ((long) aDuration) << 1;
             if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
                 //make impossible if too long
-                this.mEUt = Integer.MAX_VALUE - 1;
+                this.lEUt = Integer.MAX_VALUE - 1;
                 this.mMaxProgresstime = Integer.MAX_VALUE - 1;
             } else {
-                this.mEUt = (int) (aEUt >> 2);
+                this.lEUt = (int) (aEUt >> 2);
                 this.mMaxProgresstime = (int) xMaxProgresstime;
             }
             //return 0;
@@ -273,12 +328,12 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                 timesOverclocked--;
             }
             if (xEUt > Integer.MAX_VALUE - 1) {
-                this.mEUt = Integer.MAX_VALUE - 1;
+                this.lEUt = Integer.MAX_VALUE - 1;
                 this.mMaxProgresstime = Integer.MAX_VALUE - 1;
             } else {
-                this.mEUt = (int) xEUt;
-                if (this.mEUt == 0)
-                    this.mEUt = 1;
+                this.lEUt = (int) xEUt;
+                if (this.lEUt == 0)
+                    this.lEUt = 1;
                 if (this.mMaxProgresstime <= 0)
                     this.mMaxProgresstime = 1;//set time to 1 tick
             }

@@ -69,7 +69,7 @@ public class BW_MetaGeneratedOreTE extends TileEntity implements ITexturedTileEn
         aNBT.setShort("m", this.mMetaData);
     }
 
-    public ArrayList<ItemStack> getDrops(Block aDroppedOre) {
+    public ArrayList<ItemStack> getDrops(Block aDroppedOre, int aFortune) {
         ArrayList<ItemStack> rList = new ArrayList<ItemStack>();
         if (this.mMetaData < 0) {
             rList.add(new ItemStack(Blocks.cobblestone, 1, 0));

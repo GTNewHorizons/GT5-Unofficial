@@ -1,6 +1,5 @@
 package com.github.bartimaeusnek.bartworks.system.material;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -9,7 +8,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -19,8 +17,7 @@ import java.util.Random;
 
 public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
 
-    @Override
-    public ArrayList<ItemStack> getDrops(Block aDroppedOre) {
+    public ArrayList<ItemStack> getDrops(Block aDroppedOre, int aFortune) {
         ArrayList<ItemStack> rList = new ArrayList<>();
         Materials aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData).getBridgeMaterial();
 
@@ -71,9 +68,14 @@ public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
                 }
             }
             if (tSelector.size() > 0) {
-                rList.add(GT_Utility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
+                int i = 0;
+
+                for(int j = Math.max(1, (aFortune > 0 ? tRandom.nextInt(1 + aFortune) : 0)); i < j; ++i) {
+                    rList.add(GT_Utility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
+                }
+
             }
-            if (tRandom.nextInt(3) > 1) {
+            if (tRandom.nextInt(3 + aFortune) > 1) {
                 rList.add(GT_OreDictUnificator.get(tRandom.nextInt(3) > 0 ? OrePrefixes.dustImpure : OrePrefixes.dust, Materials.Stone, 1L));
             }
         }

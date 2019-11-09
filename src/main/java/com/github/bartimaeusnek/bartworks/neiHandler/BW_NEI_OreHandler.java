@@ -28,6 +28,7 @@ import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
+import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_SmallOres;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_OreLayer;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
@@ -93,20 +94,29 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
         GuiDraw.drawString(ChatColorHelper.BOLD + "DIM: " + ChatColorHelper.RESET + cachedOreRecipe.worldGen.getDimName(), 0, 40, 0, false);
         GuiDraw.drawString(ChatColorHelper.BOLD + "Primary:", 0, 50, 0, false);
         GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(0).item.getDisplayName(), 0, 60, 0, false);
-        GuiDraw.drawString(ChatColorHelper.BOLD + "Secondary:", 0, 70, 0, false);
-        GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(1).item.getDisplayName(), 0, 80, 0, false);
-        GuiDraw.drawString(ChatColorHelper.BOLD + "InBetween:", 0, 90, 0, false);
-        GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(2).item.getDisplayName(), 0, 100, 0, false);
-        GuiDraw.drawString(ChatColorHelper.BOLD + "Sporadic:", 0, 110, 0, false);
-        GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(3).item.getDisplayName(), 0, 120, 0, false);
+
+
+
+        if (!cachedOreRecipe.small) {
+            GuiDraw.drawString(ChatColorHelper.BOLD + "Secondary:", 0, 70, 0, false);
+            GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(1).item.getDisplayName(), 0, 80, 0, false);
+            GuiDraw.drawString(ChatColorHelper.BOLD + "InBetween:", 0, 90, 0, false);
+            GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(2).item.getDisplayName(), 0, 100, 0, false);
+            GuiDraw.drawString(ChatColorHelper.BOLD + "Sporadic:", 0, 110, 0, false);
+            GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(3).item.getDisplayName(), 0, 120, 0, false);
+        } else {
+            GuiDraw.drawString(ChatColorHelper.BOLD + "Amount per Chunk:",0,70,0,false);
+            GuiDraw.drawString(((CachedOreRecipe) this.arecipes.get(recipe)).worldGen.mDensity+"",0,80,0, false);
+        }
     }
         super.drawExtras(recipe);
     }
 
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        if (Block.getBlockFromItem(result.getItem()) instanceof BW_MetaGenerated_Ores) {
-            BW_OreLayer.NEIMAP.get((short) result.getItemDamage()).forEach(l -> this.arecipes.add(new CachedOreRecipe(l, result)));
+        Block ore = Block.getBlockFromItem(result.getItem());
+        if (ore instanceof BW_MetaGenerated_Ores) {
+            BW_OreLayer.NEIMAP.get((short) result.getItemDamage()).forEach(l -> this.arecipes.add(new CachedOreRecipe(l, result, ore instanceof BW_MetaGenerated_SmallOres)));
         }
     }
 
@@ -122,11 +132,12 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
 
     class CachedOreRecipe extends TemplateRecipeHandler.CachedRecipe{
 
-        public CachedOreRecipe(BW_OreLayer worldGen, ItemStack result) {
+        public CachedOreRecipe(BW_OreLayer worldGen, ItemStack result, boolean smallOres) {
             this.worldGen = worldGen;
             this.stack = new PositionedStack(result, 0, 0);
+            this.small=smallOres;
         }
-
+        boolean small;
         BW_OreLayer worldGen;
         PositionedStack stack ;
 
@@ -139,7 +150,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
             public List<PositionedStack> getOtherStacks() {
                 List<PositionedStack> ret = new ArrayList<>();
                 int x = 0;
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < (small ? 1 : 4); i++) {
                     x += 20;
                     ret.add(new PositionedStack(worldGen.getStacks().get(i), x, 12));
                 }
