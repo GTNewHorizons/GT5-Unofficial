@@ -329,6 +329,18 @@ public interface IGT_RecipeAdder {
     public boolean addWireAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt, boolean aCleanroom);
     
     /**
+     * Adds a Component Assembler Recipe
+     *
+     * @param aInputs   must be 1-6 ItemStacks
+     * @param aFluidInput 0-1 fluids
+     * @param aOutput  must be != null
+     * @param aDuration must be > 0
+     * @param aEUt      should be > 0
+     */
+    
+    public boolean addComponentAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt);
+    
+    /**
      * Adds a Assemblyline Recipe
      *
      * @param aInputs   must be != null, 4-16 inputs

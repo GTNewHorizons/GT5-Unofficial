@@ -224,6 +224,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean costlyCableConnection = false;
     public boolean mMoreComplicatedChemicalRecipes = false;
     public boolean mHardRadonRecipe = true;
+    public boolean mComponentAssembler = false;
     public final HashSet<IReactor> reactorsDone=new HashSet<>();
     
     public GT_Proxy() {
