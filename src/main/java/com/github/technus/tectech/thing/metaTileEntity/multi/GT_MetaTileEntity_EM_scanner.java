@@ -494,7 +494,6 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         } else {
             return true;
         }
-        System.out.println(clientLocale);
         return true;
     }
 

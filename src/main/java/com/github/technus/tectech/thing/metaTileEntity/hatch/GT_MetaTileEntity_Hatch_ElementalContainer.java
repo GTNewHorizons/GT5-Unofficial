@@ -229,7 +229,6 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         } else {
             return true;
         }
-        System.out.println(clientLocale);
         return true;
     }
 

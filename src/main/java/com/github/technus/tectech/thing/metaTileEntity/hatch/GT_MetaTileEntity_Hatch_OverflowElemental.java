@@ -204,7 +204,6 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         } else {
             return true;
         }
-        System.out.println(clientLocale);
         return true;
     }
 

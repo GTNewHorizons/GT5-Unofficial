@@ -239,7 +239,6 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         } else {
             return true;
         }
-        System.out.println(clientLocale);
         return true;
     }
 

@@ -539,7 +539,6 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         } else {
             return true;
         }
-        System.out.println(clientLocale);
         return true;
     }
 
