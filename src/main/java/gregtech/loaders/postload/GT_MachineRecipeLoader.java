@@ -31,8 +31,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-
 public class GT_MachineRecipeLoader implements Runnable {
     private final MaterialStack[][] mAlloySmelterList = {
     		{new MaterialStack(Materials.Tetrahedrite, 3L), new MaterialStack(Materials.Tin, 1L), new MaterialStack(Materials.Bronze, 3L)}, 
@@ -1573,20 +1571,6 @@ if(Loader.isModLoaded("Railcraft")){
         if (Loader.isModLoaded("DraconicEvolution")){
         	GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_UMV.get(1L, new Object[0]), 50, 16);	
         }
-        if (GT_Mod.gregtechproxy.mGTPlusPlusHard) {
-        	GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("plateHastelloyC276", 8), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_IV.get(1L, new Object[0]), 50, 16);
-        	if (Loader.isModLoaded("bartworks")){
-            }else {
-        	GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("plateHastelloyN", 8), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_LuV.get(1L, new Object[0]), 50, 16);
-            }
-        	GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("plateLafiumCompound", 8), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_ZPM.get(1L, new Object[0]), 50, 16);
-            GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("plateCinobiteA243", 8), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_UV.get(1L, new Object[0]), 50, 16);
-        }else {
-        	GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_IV.get(1L, new Object[0]), 50, 16);
-            GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_LuV.get(1L, new Object[0]), 50, 16);
-            GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_ZPM.get(1L, new Object[0]), 50, 16);
-            GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_UV.get(1L, new Object[0]), 50, 16);
-        }
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Invar, 6L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Invar, 1L), ItemList.Casing_HeatProof.get(2L, new Object[0]), 50, 16);
         GT_Values.RA.addWireAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Cupronickel, 8L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Bronze, 8L)}, Materials.Tin.getMolten(144L), ItemList.Casing_Coil_Cupronickel.get(1L), 200, 30, false);
         GT_Values.RA.addWireAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Kanthal, 8L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8L)}, Materials.Copper.getMolten(144L), ItemList.Casing_Coil_Kanthal.get(1L), 300, 120, false);
@@ -2424,9 +2408,9 @@ if(Loader.isModLoaded("Railcraft")){
                 new FluidStack[]{
         		Materials.SolderingAlloy.getMolten(2304),
         		Materials.Naquadria.getMolten(1296)},
-        		ItemList.Field_Generator_UV.get(1, new Object[]{}), 600, 100000);
-				
-			if(Loader.isModLoaded("GraviSuite")){
+        		ItemList.Field_Generator_UV.get(1, new Object[]{}), 600, 100000);  
+            
+        if(Loader.isModLoaded("GraviSuite")){
                 GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, GT_Values.W));
                 GT_Values.RA.addAssemblylineRecipe(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, GT_Values.W), 144000, new Object[]{
                 		GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, 1),
