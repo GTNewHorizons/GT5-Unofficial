@@ -42,7 +42,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     public static GT_RenderedTexture READER_ONLINE, READER_OFFLINE;
 
     public GT_MetaTileEntity_DataReader(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID,aName,aNameRegional,aTier,1,"Reads Data Sticks and Orbs",1,1,"dataReader.png","");
+        super(aID,aName,aNameRegional,aTier,1,"",1,1,"dataReader.png","");
         Util.setTier(aTier,this);
     }
 
@@ -134,7 +134,8 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK_GENERAL, mDescription,
+                CommonValues.TEC_MARK_GENERAL,
+                "Reads Data Sticks and Orbs",
                 EnumChatFormatting.BLUE + "Power it up and",
                 EnumChatFormatting.BLUE + "Put the data storage in"
         };

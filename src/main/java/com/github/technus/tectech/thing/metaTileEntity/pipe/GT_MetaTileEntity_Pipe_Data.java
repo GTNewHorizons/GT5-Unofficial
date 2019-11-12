@@ -26,6 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 26.02.2017.
@@ -98,10 +99,10 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Advanced data transmission",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Don't stare at the beam!",
-                EnumChatFormatting.AQUA + "Must be painted to work",
-                EnumChatFormatting.AQUA + "Do not cross or split"
+                translateToLocal("gt.blockmachines.pipe.datastream.desc.0"),//Advanced data transmission
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.pipe.datastream.desc.1"),//Don't stare at the beam!
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.2"),//Must be painted to work
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.3")//Do not cross or split
         };
     }
 

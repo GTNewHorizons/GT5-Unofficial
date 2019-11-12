@@ -18,6 +18,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 /**
  * Created by Tec on 03.04.2017.
  */
@@ -25,8 +27,8 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
     private static Textures.BlockIcons.CustomIcon EM_H;
     private static Textures.BlockIcons.CustomIcon EM_H_ACTIVE;
 
-    public GT_MetaTileEntity_Hatch_Holder(int aID, String aName, String aNameRegional, int aTier, String descr) {
-        super(aID, aName, aNameRegional, aTier, 1, descr);
+    public GT_MetaTileEntity_Hatch_Holder(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, 1, "");
         Util.setTier(aTier,this);
     }
 
@@ -94,7 +96,7 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Holder(aPlayerInventory, aBaseMetaTileEntity, "Holder Hatch");
+        return new GT_GUIContainer_Holder(aPlayerInventory, aBaseMetaTileEntity, translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"));//Object Holder
     }
 
     @Override
@@ -120,10 +122,8 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                mDescription,
-                EnumChatFormatting.AQUA + "Advanced Holding Mechanism!"
+                translateToLocal("gt.blockmachines.hatch.holder.desc.0"),//For Research Station
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.holder.desc.1")//Advanced Holding Mechanism!
         };
     }
 }
-
-

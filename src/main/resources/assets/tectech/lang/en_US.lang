@@ -331,6 +331,48 @@ gt.blockmachines.emout.tier.12.name=UMV Elemental Output Hatch
 gt.blockmachines.emout.tier.13.name=UXV Elemental Output Hatch
 gt.blockmachines.emout.desc=Elemental Output for Multiblocks
 
+#TODO change tier.05 to tier.04
+gt.blockmachines.hatch.param.tier.05.name=Parametrizer
+gt.blockmachines.hatch.param.tier.07.name=Parametrizer X
+gt.blockmachines.hatch.param.tier.10.name=Parametrizer tXt
+gt.blockmachines.hatch.param.desc.0=For parametrization of Multiblocks
+gt.blockmachines.hatch.param.desc.1=E=mine*craft
+
+gt.blockmachines.hatch.certain.tier.07.name=Uncertainty Resolver
+gt.blockmachines.hatch.certain.tier.10.name=Uncertainty Resolver X
+gt.blockmachines.hatch.certain.desc.0=Feeling certain, or not?
+gt.blockmachines.hatch.certain.desc.1=Schrödinger equation in a box
+
+gt.blockmachines.hatch.datain.tier.07.name=Optical Slave Connector
+gt.blockmachines.hatch.datain.desc.0=Quantum Data Input for Multiblocks
+gt.blockmachines.hatch.datain.desc.1=High speed fibre optics connector.
+gt.blockmachines.hatch.datain.desc.2=Must be painted to work
+
+gt.blockmachines.hatch.dataout.tier.07.name=Optical Master Connector
+gt.blockmachines.hatch.dataout.desc.0=Quantum Data Output for Multiblocks
+gt.blockmachines.hatch.dataout.desc.1=High speed fibre optics connector.
+gt.blockmachines.hatch.dataout.desc.2=Must be painted to work
+
+gt.blockmachines.hatch.datainass.tier.07.name=Assembly line Slave Connector
+gt.blockmachines.hatch.datainass.desc.0=ItemStack Data Input for Multiblocks
+gt.blockmachines.hatch.datainass.desc.1=High speed fibre optics connector.
+gt.blockmachines.hatch.datainass.desc.2=Must be painted to work
+
+gt.blockmachines.hatch.dataoutass.tier.07.name=Data Bank Master Connector
+gt.blockmachines.hatch.dataoutass.desc.0=ItemStack Data Output for Multiblocks
+gt.blockmachines.hatch.dataoutass.desc.1=High speed fibre optics connector.
+gt.blockmachines.hatch.dataoutass.desc.2=Must be painted to work
+
+gt.blockmachines.hatch.rack.tier.08.name=Computer Rack
+gt.blockmachines.hatch.rack.desc.0=4 Slot Rack
+gt.blockmachines.hatch.rack.desc.1=Holds Computer Components
+gt.blockmachines.hatch.holder.tier.09.name=Object Holder
+gt.blockmachines.hatch.holder.desc.0=For Research Station
+gt.blockmachines.hatch.holder.desc.1=Advanced Holding Mechanism!
+gt.blockmachines.hatch.capacitor.tier.03.name=Capacitor Hatch
+gt.blockmachines.hatch.capacitor.desc.0=For Tesla Tower
+gt.blockmachines.hatch.capacitor.desc.1=Stores 'nergy! (for a while)
+
 #Casings
 gt.blockcasingsNH.10.name=UEV Machine Casing
 gt.blockcasingsNH.11.name=UIV Machine Casing
@@ -543,6 +585,29 @@ gt.blockmachines.multimachine.em.blackholegenerator.hint.1=2 - Elemental Hatches
 gt.blockmachines.multimachine.em.blackholegenerator.desc.0=Singularity based power generation.
 gt.blockmachines.multimachine.em.blackholegenerator.desc.1=Super unstable!!!
 
+#Pipes
+gt.blockmachines.pipe.elementalmatter.name=Quantum "Tunnel"
+gt.blockmachines.pipe.elementalmatter.desc.0=Quantum tunneling device.
+gt.blockmachines.pipe.elementalmatter.desc.1=Not a portal!!!
+gt.blockmachines.pipe.elementalmatter.desc.2=Must be painted to work
+gt.blockmachines.pipe.elementalmatter.desc.3=Do not cross, split or turn
+
+gt.blockmachines.pipe.energystream.name=Laser Vacuum Pipe
+gt.blockmachines.pipe.energystream.desc.0=Laser tunneling device.
+gt.blockmachines.pipe.energystream.desc.1=Bright Vacuum!!!
+gt.blockmachines.pipe.energystream.desc.2=Must be painted to work
+gt.blockmachines.pipe.energystream.desc.3=Do not split or turn
+
+gt.blockmachines.pipe.datastream.name=Optical Fiber Cable
+gt.blockmachines.pipe.datastream.desc.0=Advanced data transmission
+gt.blockmachines.pipe.datastream.desc.1=Don't stare at the beam!
+gt.blockmachines.pipe.datastream.desc.2=Must be painted to work
+gt.blockmachines.pipe.datastream.desc.3=Do not cross or split
+
+#Single blocks
+gt.blockmachines.machine.tt.ownerdetector.name=Owner detector
+gt.blockmachines.machine.tt.datareader.name=Data Reader
+
 #Keywords and phrases
 #Example: ID:3
 tt.keyword.ID=ID
@@ -575,6 +640,12 @@ tt.keyword.Efficiency=Efficiency
 tt.keyword.PowerPass=PowerPass
 #Button that vents EM
 tt.keyword.SafeVoid=SafeVoid
+tt.keyword.Parametrizer=Parametrizer
+tt.keyword.Value=Value
+tt.keyword.Input=Input
+tt.keyword.Status=Status
+tt.keyword.Content=Content
+tt.keyword.PacketHistory=PacketHistory
 
 tt.keyphrase.LIFE_TIME=LIFE TIME
 tt.keyphrase.CARRIES_COLOR=CARRIES COLOR
@@ -593,6 +664,10 @@ tt.keyphrase.Tier_Rating=Tier Rating
 tt.keyphrase.Amp_Rating=Amp Rating
 tt.keyphrase.Computation_Available=Computation Available
 tt.keyphrase.Computation_Remaining=Computation Remaining
+tt.keyphrase.Content_Stack_Count=Content: Stack Count
+tt.keyphrase.Base_computation=Base computation
+tt.keyphrase.After_overclocking=After overclocking
+tt.keyphrase.Heat_Accumulated=Heat Accumulated
 
 #OpenTurrets compatibility
 tile.turretHeadEM.name=Elemental Matter Turret

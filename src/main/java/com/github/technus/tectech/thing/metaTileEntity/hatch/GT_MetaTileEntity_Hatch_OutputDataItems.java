@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.mechanics.dataTransport.InventoryDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
@@ -13,10 +14,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_Hatch_OutputDataItems extends GT_MetaTileEntity_Hatch_DataConnector<InventoryDataPacket> {
     public GT_MetaTileEntity_Hatch_OutputDataItems(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "ItemStack Data Output for Multiblocks");
+        super(aID, aName, aNameRegional, aTier, "");
         Util.setTier(aTier,this);
     }
 
@@ -44,6 +48,7 @@ public class GT_MetaTileEntity_Hatch_OutputDataItems extends GT_MetaTileEntity_H
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         } else {
+            super.onRightclick(aBaseMetaTileEntity, aPlayer);
             aBaseMetaTileEntity.openGUI(aPlayer);
             return true;
         }
@@ -135,5 +140,15 @@ public class GT_MetaTileEntity_Hatch_OutputDataItems extends GT_MetaTileEntity_H
             return (IConnectsToDataPipe) meta;
         }
         return null;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[]{
+                CommonValues.TEC_MARK_EM,
+                translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),//ItemStack Data Output for Multiblocks
+                translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),//High speed fibre optics connector.
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2")//Must be painted to work
+        };
     }
 }

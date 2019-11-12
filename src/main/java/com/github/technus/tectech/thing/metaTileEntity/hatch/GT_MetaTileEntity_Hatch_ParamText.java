@@ -14,6 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.reflect.FieldUtils;
+
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 /**
  * Created by danie_000 on 15.12.2016.
@@ -21,6 +25,8 @@ import net.minecraftforge.fluids.FluidStack;
 public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_Param {
     public String value0s="";
     public String value1s="";
+
+    private String clientLocale = "en_US";
 
     public GT_MetaTileEntity_Hatch_ParamText(int aID, String aName, String aNameRegional, int aTier) {
         super(aID,aName,aNameRegional,aTier);
@@ -70,13 +76,13 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
     @Override
     public String[] getInfoData() {
         return new String[]{
-                "Parametrizer ID: " + EnumChatFormatting.GREEN + param,
-                "Value 0S: " + EnumChatFormatting.DARK_AQUA + value0s,
-                "Value 1S: " + EnumChatFormatting.DARK_BLUE + value1s,
-                "Value 0D: " + EnumChatFormatting.AQUA + value0D,
-                "Value 1D: " + EnumChatFormatting.BLUE + value1D,
-                "Input 0D: " + EnumChatFormatting.GOLD   + input0D,
-                "Input 1D: " + EnumChatFormatting.YELLOW + input1D,
+                translateToLocalFormatted("tt.keyword.Parametrizer", clientLocale)+ " " + translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.GREEN + param,
+                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 0S: " + EnumChatFormatting.DARK_AQUA + value0s,
+                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 1S: " + EnumChatFormatting.DARK_BLUE + value1s,
+                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 0D: " + EnumChatFormatting.AQUA + value0D,
+                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 1D: " + EnumChatFormatting.BLUE + value1D,
+                translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 0D: " + EnumChatFormatting.GOLD   + input0D,
+                translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 1D: " + EnumChatFormatting.YELLOW + input1D,
         };
     }
 
@@ -146,6 +152,12 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
+        try {
+            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+            clientLocale = (String) FieldUtils.readField(player, "translator", true);
+        } catch (Exception e) {
+            clientLocale = "en_US";
+        }
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }
@@ -154,8 +166,8 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
-                mDescription,
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "E=mine*craft\u00b2"
+                translateToLocal("gt.blockmachines.hatch.param.desc.0"),//For parametrization of Multiblocks
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.hatch.param.desc.1") +"\u00b2"//E=mine*craft
         };
     }
 }

@@ -29,6 +29,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import static com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM.EMCandyActive;
 import static com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM.EMcandy;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements IConnectsToEnergyTunnel,IActivePipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
@@ -95,10 +96,10 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Laser tunneling device.",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Bright Vacuum!!!",
-                EnumChatFormatting.AQUA + "Must be painted to work",
-                EnumChatFormatting.AQUA + "Do not split or turn"
+                translateToLocal("gt.blockmachines.pipe.energystream.desc.0"),//Laser tunneling device.
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"),//Bright Vacuum!!!
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"),//Must be painted to work
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.3")//Do not split or turn
         };
     }
 

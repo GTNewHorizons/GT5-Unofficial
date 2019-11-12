@@ -16,6 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import static com.github.technus.tectech.CommonValues.V;
+import static com.github.technus.tectech.CommonValues.VOLTAGE_NAMES;
 import static com.github.technus.tectech.thing.CustomItemList.*;
 
 /**
@@ -585,9 +586,9 @@ public class MachineLoader implements Runnable {
         // Hatches
         // ===================================================================================================
 
-        Parametrizer_Hatch.set(new GT_MetaTileEntity_Hatch_Param(15420, "hatch.param.tier.05", "Parametrizer", 5).getStackForm(1L));
+        Parametrizer_Hatch.set(new GT_MetaTileEntity_Hatch_Param(15420, "hatch.param.tier.05", "Parametrizer", 5).getStackForm(1L));//TODO refactor aName to hatch.param.tier.04 and aTier to 4, check recipe for NH
         ParametrizerX_Hatch.set(new GT_MetaTileEntity_Hatch_Param(15421, "hatch.param.tier.07", "Parametrizer X", 7).getStackForm(1L));
-        ParametrizerTXT_Hatch.set(new GT_MetaTileEntity_Hatch_ParamText(15422, "hatch.param.tier.10", "Parametrizer tXt", 10).getStackForm(1L));
+        ParametrizerTXT_Hatch.set(new GT_MetaTileEntity_Hatch_ParamText(15422, "hatch.param.tier.10", "Parametrizer tXt", 10).getStackForm(1L));//TODO check recipe for NH
 
         Uncertainty_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15430, "hatch.certain.tier.07", "Uncertainty Resolver", 7).getStackForm(1L));
         UncertaintyX_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15431, "hatch.certain.tier.10", "Uncertainty Resolver X", 10).getStackForm(1L));
@@ -597,10 +598,10 @@ public class MachineLoader implements Runnable {
         dataInAss_Hatch.set(new GT_MetaTileEntity_Hatch_InputDataItems(15442, "hatch.datainass.tier.07", "Assembly line Slave Connector", 7).getStackForm(1L));
         dataOutAss_Hatch.set(new GT_MetaTileEntity_Hatch_OutputDataItems(15443, "hatch.dataoutass.tier.07", "Data Bank Master Connector", 7).getStackForm(1L));
 
-        rack_Hatch.set(new GT_MetaTileEntity_Hatch_Rack(15450, "hatch.rack.tier.08", "Computer Rack", 8, "4 Slot Rack").getStackForm(1L));
-        holder_Hatch.set(new GT_MetaTileEntity_Hatch_Holder(15451, "hatch.holder.tier.09", "Object Holder", 8, "For Research Station").getStackForm(1L));
+        rack_Hatch.set(new GT_MetaTileEntity_Hatch_Rack(15450, "hatch.rack.tier.08", "Computer Rack", 8).getStackForm(1L));
+        holder_Hatch.set(new GT_MetaTileEntity_Hatch_Holder(15451, "hatch.holder.tier.09", "Object Holder", 8).getStackForm(1L));
 
-        capacitor_Hatch.set(new GT_MetaTileEntity_Hatch_Capacitor(15452, "hatch.capacitor.tier.03", "Capacitor Hatch", 3, "For Tesla Tower").getStackForm(1L));
+        capacitor_Hatch.set(new GT_MetaTileEntity_Hatch_Capacitor(15452, "hatch.capacitor.tier.03", "Capacitor Hatch", 3).getStackForm(1L));
 
         // ===================================================================================================
         // Pipes

@@ -16,11 +16,16 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.reflect.FieldUtils;
+
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 /**
  * Created by danie_000 on 15.12.2016.
@@ -31,8 +36,10 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     public short[] matrix = new short[]{500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500};
     public byte selection = -1, mode = 0, status = -128;//all 8 bits set
 
+    private String clientLocale = "en_US";
+
     public GT_MetaTileEntity_Hatch_Uncertainty(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Feeling certain, or not?");
+        super(aID, aName, aNameRegional, aTier, 0, "");
         Util.setTier(aTier,this);
         regenerate();
     }
@@ -100,7 +107,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     @Override
     public String[] getInfoData() {
         return new String[]{
-                "Status: " + EnumChatFormatting.GOLD + status
+                translateToLocalFormatted("tt.keyword.Status", clientLocale) + ": " + EnumChatFormatting.GOLD + status
         };
     }
 
@@ -174,6 +181,12 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
+        try {
+            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+            clientLocale = (String) FieldUtils.readField(player, "translator", true);
+        } catch (Exception e) {
+            clientLocale = "en_US";
+        }
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }
@@ -182,8 +195,8 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                mDescription,
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Schrödinger equation in a box"
+                translateToLocal("gt.blockmachines.hatch.certain.desc.0"),//Feeling certain, or not?
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.hatch.certain.desc.1")//Schrödinger equation in a box
         };
     }
 

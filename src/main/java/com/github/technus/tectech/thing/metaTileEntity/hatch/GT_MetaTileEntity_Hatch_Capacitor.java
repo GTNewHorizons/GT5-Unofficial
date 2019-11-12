@@ -26,6 +26,7 @@ import java.util.Map;
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.getUniqueIdentifier;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 03.04.2017.
@@ -35,8 +36,8 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
     private static Textures.BlockIcons.CustomIcon TM_H_ACTIVE;
     private static Map<String, GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> componentBinds = new HashMap<>();
 
-    public GT_MetaTileEntity_Hatch_Capacitor(int aID, String aName, String aNameRegional, int aTier, String descr) {
-        super(aID, aName, aNameRegional, aTier, 16, descr);
+    public GT_MetaTileEntity_Hatch_Capacitor(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, 16, "");
         Util.setTier(aTier,this);
     }
 
@@ -109,7 +110,7 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Capacitor(aPlayerInventory, aBaseMetaTileEntity, "Capacitor Hatch");
+        return new GT_GUIContainer_Capacitor(aPlayerInventory, aBaseMetaTileEntity, "Capacitor Hatch");//Capacitor Hatch
     }
 
     @Override
@@ -130,8 +131,8 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
     public String[] getDescription() {
         return new String[]{
                 CommonValues.BASS_MARK,
-                mDescription,
-                EnumChatFormatting.AQUA + "Stores 'nergy! (for a while)"
+                translateToLocal("gt.blockmachines.hatch.capacitor.desc.0"),//For Tesla Tower
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.capacitor.desc.1")//Stores 'nergy! (for a while)
         };
     }
 

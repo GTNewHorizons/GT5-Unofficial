@@ -30,7 +30,7 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
     private boolean interdimensional=true;
 
     public GT_MetaTileEntity_OwnerDetector(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Screwdrive to change mode");
+        super(aID, aName, aNameRegional, aTier, 0, "");
         Util.setTier(aTier,this);
     }
 
@@ -143,7 +143,8 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK_GENERAL, mDescription,
+                CommonValues.TEC_MARK_GENERAL,
+                "Screwdrive to change mode",
                 EnumChatFormatting.BLUE + "Looks for his pa",
                 EnumChatFormatting.BLUE + "Emits signal when happy"
         };

@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 26.02.2017.
@@ -99,10 +100,10 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Quantum tunneling device.",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Not a portal!!!",
-                EnumChatFormatting.AQUA + "Must be painted to work",
-                EnumChatFormatting.AQUA + "Do not cross,split or turn"
+                translateToLocal("gt.blockmachines.pipe.elementalmatter.desc.0"),//Quantum tunneling device.
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.pipe.elementalmatter.desc.1"),//Not a portal!!!
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.elementalmatter.desc.2"),//Must be painted to work
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.elementalmatter.desc.3")//Do not cross, split or turn
         };
     }
 

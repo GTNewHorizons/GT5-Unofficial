@@ -18,10 +18,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +31,8 @@ import java.util.Map;
 import static com.github.technus.tectech.CommonValues.MULTI_CHECK_AT;
 import static com.github.technus.tectech.Util.getUniqueIdentifier;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 /**
  * Created by Tec on 03.04.2017.
@@ -40,8 +44,10 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
     private float overClock = 1, overVolt = 1;
     private static Map<String, RackComponent> componentBinds = new HashMap<>();
 
-    public GT_MetaTileEntity_Hatch_Rack(int aID, String aName, String aNameRegional, int aTier, String descr) {
-        super(aID, aName, aNameRegional, aTier, 4, descr);
+    private String clientLocale = "en_US";
+
+    public GT_MetaTileEntity_Hatch_Rack(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, 4, "");
         Util.setTier(aTier,this);
     }
 
@@ -131,13 +137,19 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Rack(aPlayerInventory, aBaseMetaTileEntity, "Computer Rack");
+        return new GT_GUIContainer_Rack(aPlayerInventory, aBaseMetaTileEntity, translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"));//Computer Rack
     }
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
+        }
+        try {
+            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+            clientLocale = (String) FieldUtils.readField(player, "translator", true);
+        } catch (Exception e) {
+            clientLocale = "en_US";
         }
         //if(aBaseMetaTileEntity.isActive())
         //    aPlayer.addChatComponentMessage(new ChatComponentText("It is still active..."));
@@ -249,8 +261,8 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                mDescription,
-                EnumChatFormatting.AQUA + "Holds Computer Components"
+                translateToLocal("gt.blockmachines.hatch.rack.desc.0"),//4 Slot Rack
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.rack.desc.1")//Holds Computer Components
         };
     }
 
@@ -262,9 +274,10 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
     @Override
     public String[] getInfoData() {
         return new String[]{
-                "Base computation: " + EnumChatFormatting.AQUA + getComputationPower(1, 0, false),
-                "After overclocking: " + EnumChatFormatting.AQUA + getComputationPower(overClock, 0, false),
-                "Heat Accumulated: " + EnumChatFormatting.RED + (heat + 99) / 100 + EnumChatFormatting.RESET + " %"};
+                translateToLocalFormatted("tt.keyphrase.Base_computation", clientLocale) + ": " + EnumChatFormatting.AQUA + getComputationPower(1, 0, false),
+                translateToLocalFormatted("tt.keyphrase.After_overclocking", clientLocale) + ": " + EnumChatFormatting.AQUA + getComputationPower(overClock, 0, false),
+                translateToLocalFormatted("tt.keyphrase.Heat_Accumulated", clientLocale) + ": " + EnumChatFormatting.RED + (heat + 99) / 100 + EnumChatFormatting.RESET + " %"
+        };
         //heat==0? --> ((heat+9)/10) = 0
         //Heat==1-10? -->  1
     }
