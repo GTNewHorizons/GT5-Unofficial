@@ -16,12 +16,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 public class EuMeterGT extends Item {
     public static EuMeterGT INSTANCE;
@@ -40,15 +43,23 @@ public class EuMeterGT extends Item {
             return aPlayer instanceof EntityPlayerMP;
         }
         if (aPlayer instanceof EntityPlayerMP && !aPlayer.isSneaking() && tTileEntity instanceof IGregTechTileEntity) {
+            String clientLocale = "en_US";
+            try {
+                EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+                clientLocale = (String) FieldUtils.readField(player, "translator", true);
+            } catch (Exception e) {
+                clientLocale = "en_US";
+            }
+
             if (tTileEntity instanceof BaseMetaTileEntity) {
                 GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.AQUA + "----- X:" + aX + " Y:" + aY + " Z:" + aZ + " D:" + aWorld.provider.dimensionId + " S:" + aSide + " -----");
-                GT_Utility.sendChatToPlayer(aPlayer, "Stored energy: " + EnumChatFormatting.YELLOW + (((BaseMetaTileEntity) tTileEntity).getUniversalEnergyStored()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.GREEN + (((BaseMetaTileEntity) tTileEntity).getUniversalEnergyCapacity()));
-                GT_Utility.sendChatToPlayer(aPlayer, "Stored EU: " + EnumChatFormatting.YELLOW + (((BaseMetaTileEntity) tTileEntity).getStoredEU()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.GREEN + (((BaseMetaTileEntity) tTileEntity).getEUCapacity()));
-                GT_Utility.sendChatToPlayer(aPlayer, "Average I/O: " + EnumChatFormatting.YELLOW + (((BaseMetaTileEntity) tTileEntity).getAverageElectricInput()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.YELLOW + (((BaseMetaTileEntity) tTileEntity).getAverageElectricOutput()));
-                GT_Utility.sendChatToPlayer(aPlayer, "Voltage I/O (max): " + EnumChatFormatting.GOLD + (((BaseMetaTileEntity) tTileEntity).getInputVoltage()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.GOLD + (((BaseMetaTileEntity) tTileEntity).getOutputVoltage()));
-                GT_Utility.sendChatToPlayer(aPlayer, "Voltage I/O max: " + EnumChatFormatting.RED + (((BaseMetaTileEntity) tTileEntity).getMaxSafeInput()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.RED + (((BaseMetaTileEntity) tTileEntity).getMaxEnergyOutput()));
-                GT_Utility.sendChatToPlayer(aPlayer, "Amperage I/O (max): " + EnumChatFormatting.GOLD + (((BaseMetaTileEntity) tTileEntity).getInputAmperage()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.GOLD + (((BaseMetaTileEntity) tTileEntity).getOutputAmperage()));
-                GT_Utility.sendChatToPlayer(aPlayer, "Side capabilities: " + (((BaseMetaTileEntity) tTileEntity).inputEnergyFrom((byte) aSide) ? "input " : "") + (((BaseMetaTileEntity) tTileEntity).outputsEnergyTo((byte) aSide) ? "output " : ""));
+                GT_Utility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.keyphrase.Stored_energy", clientLocale) + ": " + EnumChatFormatting.YELLOW + (((BaseMetaTileEntity) tTileEntity).getUniversalEnergyStored()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.GREEN + (((BaseMetaTileEntity) tTileEntity).getUniversalEnergyCapacity()));
+                GT_Utility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.keyphrase.Stored_EU", clientLocale) + ": " + EnumChatFormatting.YELLOW + (((BaseMetaTileEntity) tTileEntity).getStoredEU()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.GREEN + (((BaseMetaTileEntity) tTileEntity).getEUCapacity()));
+                GT_Utility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.keyphrase.Average_IO", clientLocale) + ": " + EnumChatFormatting.YELLOW + (((BaseMetaTileEntity) tTileEntity).getAverageElectricInput()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.YELLOW + (((BaseMetaTileEntity) tTileEntity).getAverageElectricOutput()));
+                GT_Utility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.keyphrase.Average_IO_(max)", clientLocale) + ": " + EnumChatFormatting.GOLD + (((BaseMetaTileEntity) tTileEntity).getInputVoltage()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.GOLD + (((BaseMetaTileEntity) tTileEntity).getOutputVoltage()));
+                GT_Utility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.keyphrase.Average_IO_max", clientLocale) + ": " + EnumChatFormatting.RED + (((BaseMetaTileEntity) tTileEntity).getMaxSafeInput()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.RED + (((BaseMetaTileEntity) tTileEntity).getMaxEnergyOutput()));
+                GT_Utility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.keyphrase.Amperage_IO_(max)", clientLocale) + ": " + EnumChatFormatting.GOLD + (((BaseMetaTileEntity) tTileEntity).getInputAmperage()) + EnumChatFormatting.RESET + '/' + EnumChatFormatting.GOLD + (((BaseMetaTileEntity) tTileEntity).getOutputAmperage()));
+                GT_Utility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.keyphrase.Side_capabilities", clientLocale) + ": " + (((BaseMetaTileEntity) tTileEntity).inputEnergyFrom((byte) aSide) ? translateToLocalFormatted("tt.keyword.input", clientLocale) + " " : "") + (((BaseMetaTileEntity) tTileEntity).outputsEnergyTo((byte) aSide) ? translateToLocalFormatted("tt.keyword.output", clientLocale) : ""));
                 return true;
             } else if (tTileEntity instanceof BaseMetaPipeEntity) {
                 if (((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
@@ -70,8 +81,8 @@ public class EuMeterGT extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.TEC_MARK_GENERAL);
-        aList.add("Measures basic EU related stuff");
-        aList.add(EnumChatFormatting.BLUE + "Just right click on blocks.");
+        aList.add(translateToLocal("item.em.EuMeterGT.desc.0"));//Measures basic EU related stuff
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.EuMeterGT.desc.1"));//Just right click on blocks.
     }
 
     public static void run() {

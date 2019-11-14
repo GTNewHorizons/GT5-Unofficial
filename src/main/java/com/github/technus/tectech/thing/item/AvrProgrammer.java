@@ -29,6 +29,7 @@ import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 @Optional.InterfaceList(
         {@Optional.Interface(iface="dan200.computercraft.api.media.IMedia",modid = "ComputerCraft"),
@@ -111,13 +112,13 @@ public class AvrProgrammer extends Item implements IMedia {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
-        if(aStack.stackTagCompound.hasKey("avr")) {
-            NBTTagCompound avr=aStack.stackTagCompound.getCompoundTag("avr");
-            aList.add("Current PC: " +avr.getInteger("programCounter"));
-            aList.add("Awoken: " +avr.getBoolean("awoken"));
-            aList.add("Active: " +avr.getBoolean("active"));
-            aList.add("Debug: " +avr.getBoolean("debugRun"));
-            aList.add("Delay: " +avr.getBoolean("delay"));
+        if (aStack.stackTagCompound.hasKey("avr")) {
+            NBTTagCompound avr = aStack.stackTagCompound.getCompoundTag("avr");
+            aList.add(translateToLocal("item.em.programmer.desc.0") + ": " + avr.getInteger("programCounter"));//Current PC
+            aList.add(translateToLocal("item.em.programmer.desc.1") + ": " + avr.getBoolean("awoken"));//Awoken
+            aList.add(translateToLocal("item.em.programmer.desc.2") + ": " + avr.getBoolean("active"));//Active
+            aList.add(translateToLocal("item.em.programmer.desc.3") + ": " + avr.getBoolean("debugRun"));//Debug
+            aList.add(translateToLocal("item.em.programmer.desc.4") + ": " + avr.getBoolean("delay"));//Delay
         }
     }
 

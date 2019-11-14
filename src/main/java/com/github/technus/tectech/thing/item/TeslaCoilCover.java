@@ -16,6 +16,7 @@ import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.thing.CustomItemList.teslaCover;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 
 public final class TeslaCoilCover extends Item {
@@ -33,17 +34,17 @@ public final class TeslaCoilCover extends Item {
         aList.add(CommonValues.BASS_MARK);
         switch (aStack.getItemDamage()) {
             case 0:
-                aList.add("Tesla-Enables Machines!");
+                aList.add(translateToLocal("item.tm.teslaCover.desc.0"));//Tesla-Enables Machines!
                 break;
             case 1:
-                aList.add("Tesla-Enables Machines! (BUT LOUDER!!)");
+                aList.add(translateToLocal("item.tm.teslaCover.desc.1"));//Tesla-Enables Machines! (BUT LOUDER!!)
                 break;
             default:
-                aList.add("Yeet this broken item into some spicy water!");
+                aList.add(translateToLocal("item.tm.teslaCover.desc.2"));//Yeet this broken item into some spicy water!
                 break;
         }
-        aList.add(EnumChatFormatting.BLUE + "Use on top of a machine to enable Tesla capabilities");
-        aList.add(EnumChatFormatting.BLUE + "Who the hell uses cables anyway?");
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.teslaCover.desc.3"));//Use on top of a machine to enable Tesla capabilities
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.teslaCover.desc.4"));//Who the hell uses cables anyway?
     }
 
     @Override

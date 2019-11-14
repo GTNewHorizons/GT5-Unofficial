@@ -32,6 +32,7 @@ import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -118,14 +119,14 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT != null && tNBT.hasKey("info")) {
-                aList.add("Contains:");
+                aList.add(translateToLocal("item.em.debugContainer.desc.0") + ": ");//Contains
                 Collections.addAll(aList, Util.infoFromNBT(tNBT.getCompoundTag("info")));
             } else {
-                aList.add("Container for elemental matter");
-                aList.add(EnumChatFormatting.BLUE + "Right click on elemental hatches");
+                aList.add(translateToLocal("item.em.debugContainer.desc.1"));//Container for elemental matter
+                aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.debugContainer.desc.2"));//Right click on elemental hatches
             }
         } catch (Exception e) {
-            aList.add("---Unexpected Termination---");
+            aList.add(translateToLocal("item.em.debugContainer.desc.3"));//---Unexpected Termination---
         }
     }
 

@@ -27,6 +27,7 @@ import java.util.List;
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -73,18 +74,18 @@ public final class ElementalDefinitionScanStorage_EM extends Item implements IEl
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.TEC_MARK_EM);
         try {
-            if  (aStack.stackTagCompound != null &&  aStack.stackTagCompound.hasKey("elementalInfo")) {
-                aList.add(EnumChatFormatting.BLUE+"Contains scan result");
-                aList.add("Use to read");
+            if (aStack.stackTagCompound != null && aStack.stackTagCompound.hasKey("elementalInfo")) {
+                aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.definitionScanStorage.desc.0"));//Contains scan result
+                aList.add(translateToLocal("item.em.definitionScanStorage.desc.1"));//Use to read
                 //if(DEBUG_MODE) {
                 //    aList.add("DEBUG MODE INFO - U CHEATER");
                 //    Collections.addAll(aList, Util.infoFromNBT(aStack.stackTagCompound.getCompoundTag("elementalInfo")));
                 //}
             } else {
-                aList.add("Storage for matter scan data");
+                aList.add(translateToLocal("item.em.definitionScanStorage.desc.2"));//Storage for matter scan data
             }
         } catch (Exception e) {
-            aList.add("---Unexpected Termination---");
+            aList.add(translateToLocal("item.em.definitionScanStorage.desc.3"));//---Unexpected Termination---
         }
     }
 

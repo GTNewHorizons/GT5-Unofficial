@@ -33,6 +33,7 @@ import java.util.Map;
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -135,9 +136,9 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
-                "Reads Data Sticks and Orbs",
-                EnumChatFormatting.BLUE + "Power it up and",
-                EnumChatFormatting.BLUE + "Put the data storage in"
+                translateToLocal("gt.blockmachines.machine.tt.datareader.desc.0"),//Reads Data Sticks and Orbs
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.datareader.desc.1"),//Power it up and
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.datareader.desc.2")//Put the data storage in
         };
     }
 

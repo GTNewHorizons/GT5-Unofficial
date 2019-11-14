@@ -16,6 +16,7 @@ import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.thing.CustomItemList.teslaComponent;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 
 public final class TeslaCoilComponent extends Item {
@@ -31,7 +32,7 @@ public final class TeslaCoilComponent extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.BASS_MARK);
-        aList.add(EnumChatFormatting.BLUE + "Tesla bois need these!");
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.itemTeslaComponent.desc"));//Tesla bois need these!
     }
 
     @Override

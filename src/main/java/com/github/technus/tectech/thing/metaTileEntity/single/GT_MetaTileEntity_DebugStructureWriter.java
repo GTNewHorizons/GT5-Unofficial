@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureWriter;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -32,7 +33,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     public String[] result = new String[]{"Undefined"};
 
     public GT_MetaTileEntity_DebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Scans Blocks Around");
+        super(aID, aName, aNameRegional, aTier, 0, "");
         Util.setTier(aTier,this);
     }
 
@@ -150,9 +151,10 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK_GENERAL, mDescription,
-                EnumChatFormatting.BLUE + "Prints Multiblock NonTE structure check code",
-                EnumChatFormatting.BLUE + "ABC axises aligned to machine front"
+                CommonValues.TEC_MARK_GENERAL,
+                translateToLocal("gt.blockmachines.debug.tt.writer.desc.0"),//Scans Blocks Around
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.1"),//Prints Multiblock NonTE structure check code
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.2")//ABC axises aligned to machine front
         };
     }
 

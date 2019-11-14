@@ -173,7 +173,7 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Item shouldn't be seen, report to Tec",
+                "Text description shouldn't be seen, report to Tec",
                 "High speed fibre optics connector.",
                 EnumChatFormatting.AQUA + "Must be painted to work"
         };

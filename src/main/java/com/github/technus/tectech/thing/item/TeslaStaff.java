@@ -14,6 +14,7 @@ import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.thing.CustomItemList.teslaStaff;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 
 public final class TeslaStaff extends Item {
@@ -27,7 +28,7 @@ public final class TeslaStaff extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.BASS_MARK);
-        aList.add("Power of the gods, at the whim of a mortal!");
+        aList.add(translateToLocal("item.tm.teslaStaff.desc"));
     }
 
     @Override

@@ -23,13 +23,14 @@ import net.minecraft.util.EnumChatFormatting;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMachineBlock {
     private static GT_RenderedTexture BUCK,BUCK_ACTIVE;
     public int EUT=0,AMP=0;
 
     public GT_MetaTileEntity_BuckConverter(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Electronic voltage regulator");
+        super(aID, aName, aNameRegional, aTier, 0, "");
         Util.setTier(aTier,this);
     }
 
@@ -133,9 +134,10 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK_GENERAL, mDescription,
-                EnumChatFormatting.BLUE + "Adjustable step down transformer",
-                EnumChatFormatting.BLUE + "Switching power supply..."
+                CommonValues.TEC_MARK_GENERAL,
+                translateToLocal("gt.blockmachines.machine.tt.buck.desc.0"),//Electronic voltage regulator
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.1"),//Adjustable step down transformer
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.2")//Switching power supply...
         };
     }
 

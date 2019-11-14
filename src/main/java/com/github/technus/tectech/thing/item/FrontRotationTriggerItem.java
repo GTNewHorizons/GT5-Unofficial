@@ -18,6 +18,7 @@ import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -56,9 +57,9 @@ public final class FrontRotationTriggerItem extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.TEC_MARK_GENERAL);
-        aList.add("Triggers Front Rotation Interface");
-        aList.add(EnumChatFormatting.BLUE + "Rotates only the front panel,");
-        aList.add(EnumChatFormatting.BLUE + "which allows structure rotation.");
+        aList.add(translateToLocal("item.em.frontRotate.desc.0"));//Triggers Front Rotation Interface
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.frontRotate.desc.1"));//Rotates only the front panel,
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.frontRotate.desc.2"));//which allows structure rotation.
     }
 
     public static void run() {

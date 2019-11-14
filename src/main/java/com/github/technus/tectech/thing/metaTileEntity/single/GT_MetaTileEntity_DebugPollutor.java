@@ -23,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -33,7 +34,7 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
     public float anomaly=0;
 
     public GT_MetaTileEntity_DebugPollutor(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Shit genny broke!");
+        super(aID, aName, aNameRegional, aTier, 0, "");
         Util.setTier(aTier,this);
     }
 
@@ -144,9 +145,10 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK_GENERAL, mDescription,
-                EnumChatFormatting.BLUE + "Infinite Producer/Consumer",
-                EnumChatFormatting.BLUE + "Since i wanted one..."
+                CommonValues.TEC_MARK_GENERAL,
+                translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.0"),//Shit genny broke!
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.1"),//Infinite Producer/Consumer
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.1")//Since i wanted one...
         };
     }
 

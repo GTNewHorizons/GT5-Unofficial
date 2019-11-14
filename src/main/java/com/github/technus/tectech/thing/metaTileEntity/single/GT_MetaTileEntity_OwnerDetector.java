@@ -14,12 +14,17 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.luaj.vm2.ast.Str;
 
 import static com.github.technus.tectech.CommonValues.RECIPE_AT;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -126,8 +131,15 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        interdimensional^=true;
-        GT_Utility.sendChatToPlayer(aPlayer,interdimensional?"Running interdimensional scan":"Running local dimension scan");
+        String clientLocale;
+        try {
+            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+            clientLocale = (String) FieldUtils.readField(player, "translator", true);
+        } catch (Exception e) {
+            clientLocale = "en_US";
+        }
+        interdimensional ^= true;
+        GT_Utility.sendChatToPlayer(aPlayer, interdimensional ? translateToLocalFormatted("tt.keyphrase.Running_interdimensional_scan", clientLocale) : translateToLocalFormatted("tt.keyphrase.Running_local_dimension_scan", clientLocale));
     }
 
     @Override
@@ -144,9 +156,9 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
-                "Screwdrive to change mode",
-                EnumChatFormatting.BLUE + "Looks for his pa",
-                EnumChatFormatting.BLUE + "Emits signal when happy"
+                translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"),//Screwdrive to change mode
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.1"),//Looks for his pa
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2")//Emits signal when happy
         };
     }
 

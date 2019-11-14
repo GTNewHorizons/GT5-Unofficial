@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
@@ -10,15 +11,17 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.CommonValues.MOVE_AT;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 27.10.2016.
  */
 public class GT_MetaTileEntity_Hatch_CreativeData extends GT_MetaTileEntity_Hatch_DataConnector<QuantumDataPacket> {
     public GT_MetaTileEntity_Hatch_CreativeData(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Quantum Data Output");
+        super(aID, aName, aNameRegional, aTier, "");
         Util.setTier(aTier,this);
     }
 
@@ -113,5 +116,16 @@ public class GT_MetaTileEntity_Hatch_CreativeData extends GT_MetaTileEntity_Hatc
                 }
             }
         }
+    }
+
+
+    @Override
+    public String[] getDescription() {
+        return new String[]{
+                CommonValues.TEC_MARK_EM,
+                translateToLocal("gt.blockmachines.debug.tt.data.desc.0"),//Quantum Data Output
+                translateToLocal("gt.blockmachines.debug.tt.data.desc.1"),//High speed fibre optics connector.
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.data.desc.2")//Must be painted to work
+        };
     }
 }

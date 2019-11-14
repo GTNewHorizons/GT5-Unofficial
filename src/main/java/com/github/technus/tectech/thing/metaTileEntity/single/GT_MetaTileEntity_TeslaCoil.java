@@ -17,8 +17,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,6 +32,8 @@ import static com.github.technus.tectech.Util.entriesSortedByValues;
 import static com.github.technus.tectech.Util.map;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.TESLA_TRANSCEIVER_TOP_BA;
 import static java.lang.Math.round;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer {
@@ -66,8 +70,10 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private float overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
     private boolean overdriveToggle = false;
 
+    private String clientLocale = "en_US";
+
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
-        super(aID, aName, aNameRegional, aTier, "Tesla Coil Transceiver", aSlotCount);
+        super(aID, aName, aNameRegional, aTier, "", aSlotCount);
         Util.setTier(aTier, this);
     }
 
@@ -77,24 +83,24 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     @Override
     public String[] getDescription() {
-        String[] jargon = new String[3];
-        jargon[0] = CommonValues.BASS_MARK;
-        jargon[1] = "Your Tesla I/O machine of choice";
-        jargon[2] = EnumChatFormatting.AQUA + "Lightning stoves for the rich";
+        String[] jargon = new String[]{
+                CommonValues.BASS_MARK,
+                translateToLocal("gt.blockmachines.machine.tt.tesla.desc.0"),//Your Tesla I/O machine of choice
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.machine.tt.tesla.desc.1")//Lightning stoves for the rich
+        };
         String[] sDesc = super.getDescription();
-        sDesc = Arrays.copyOfRange(sDesc, 1, sDesc.length);
-        String[] desc = ArrayUtils.addAll(jargon, sDesc);
-        return desc;
+        sDesc = Arrays.copyOfRange(sDesc, 1, sDesc.length);//Removes first element from array
+        return ArrayUtils.addAll(jargon, sDesc);
     }
 
     @Override
     public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (overdriveToggle) {
             overdriveToggle = false;
-            PlayerChatHelper.SendInfo(aPlayer, "Overdrive disengaged");
+            PlayerChatHelper.SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_disengaged", clientLocale));
         } else {
             overdriveToggle = true;
-            PlayerChatHelper.SendInfo(aPlayer, "Overdrive engaged");
+            PlayerChatHelper.SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_engaged", clientLocale));
         }
         return true;
     }
@@ -108,7 +114,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                 histSettingHigh = histSettingLow + 1;
             }
             histHigh = (float) histSettingHigh / histSteps;
-            PlayerChatHelper.SendInfo(aPlayer, "Hysteresis high set to " + round(histHigh * 100F) + "%");
+            PlayerChatHelper.SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Hysteresis_high_set_to", clientLocale) + " " + round(histHigh * 100F) + "%");
         } else {
             if (histSettingLow > histLowLimit) {
                 histSettingLow--;
@@ -116,7 +122,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                 histSettingLow = histSettingHigh - 1;
             }
             histLow = (float) histSettingLow / histSteps;
-            PlayerChatHelper.SendInfo(aPlayer, "Hysteresis low set to " + round(histLow * 100F) + "%");
+            PlayerChatHelper.SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Hysteresis_low_set_to", clientLocale) + " " + round(histLow * 100F) + "%");
         }
     }
 
@@ -131,7 +137,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                 transferRadius++;
             }
         }
-        PlayerChatHelper.SendInfo(aPlayer, "Tesla radius set to " + transferRadius + "m");
+        PlayerChatHelper.SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Tesla_radius_set_to", clientLocale) + " " + transferRadius + "m");
         return false;
     }
 
@@ -158,7 +164,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         }
 
         //And after this cheeky-ness, toss the string XD
-        return powerPassToggle ? "Sending power!" : "Receiving power!";
+        return powerPassToggle ? translateToLocalFormatted("tt.keyphrase.Sending_power", clientLocale) + "!" : translateToLocalFormatted("tt.keyphrase.Receiving_power", clientLocale) + "!";
     }
 
     @Override
@@ -336,4 +342,20 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         }
         sparkList.clear();
     }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
+        try {
+            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+            clientLocale = (String) FieldUtils.readField(player, "translator", true);
+        } catch (Exception e) {
+            clientLocale = "en_US";
+        }
+        aBaseMetaTileEntity.openGUI(aPlayer);
+        return true;
+    }
+
 }

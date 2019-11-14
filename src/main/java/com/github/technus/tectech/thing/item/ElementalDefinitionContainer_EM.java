@@ -22,6 +22,7 @@ import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -111,13 +112,13 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT != null && tNBT.hasKey("info")) {
-                aList.add("Should Contain:");
+                aList.add(translateToLocal("item.em.definitionContainer.desc.0") + ": ");//Should Contain
                 Collections.addAll(aList, Util.infoFromNBT(tNBT.getCompoundTag("info")));
             } else {
-                aList.add("Recipe Hint");
+                aList.add(translateToLocal("item.em.definitionContainer.desc.1"));//Recipe Hint
             }
         } catch (Exception e) {
-            aList.add("---Unexpected Termination---");
+            aList.add(translateToLocal("item.em.definitionContainer.desc.2"));//---Unexpected Termination---
         }
     }
 

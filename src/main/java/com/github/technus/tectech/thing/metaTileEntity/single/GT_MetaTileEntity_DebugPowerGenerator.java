@@ -22,6 +22,7 @@ import net.minecraft.util.EnumChatFormatting;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -32,7 +33,7 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     public boolean producing=true;
 
     public GT_MetaTileEntity_DebugPowerGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Power from nothing");
+        super(aID, aName, aNameRegional, aTier, 0, "");
         Util.setTier(aTier,this);
     }
 
@@ -136,9 +137,10 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK_GENERAL, mDescription,
-                EnumChatFormatting.BLUE + "Infinite Producer/Consumer",
-                EnumChatFormatting.BLUE + "Since i wanted one..."
+                CommonValues.TEC_MARK_GENERAL,
+                translateToLocal("gt.blockmachines.debug.tt.genny.desc.0"),//Power from nothing
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.1"),//Infinite Producer/Consumer
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.2")//Since i wanted one...
         };
     }
 

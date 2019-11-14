@@ -17,6 +17,7 @@ import java.util.List;
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.thing.CustomItemList.teslaCapacitor;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 
 public final class TeslaCoilCapacitor extends Item {
@@ -33,12 +34,12 @@ public final class TeslaCoilCapacitor extends Item {
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.BASS_MARK);
         if (aStack.getItemDamage() >= 0 && aStack.getItemDamage() <= 4) {
-            aList.add("Stores " + V[aStack.getItemDamage() + 1] * 512 + " EU in a tesla tower at " + V[aStack.getItemDamage() + 1] + " EU/t");
+            aList.add(translateToLocal("item.tm.teslaCoilCapacitor.desc.0") + " " + V[aStack.getItemDamage() + 1] * 512 + " " + translateToLocal("item.tm.teslaCoilCapacitor.desc.1") +" " + V[aStack.getItemDamage() + 1] + " EU/t");//Stores 16384 EU in a tesla tower at 32 EU/t
         } else {
-            aList.add("Yeet this broken item into some spicy water!");
+            aList.add(translateToLocal("item.tm.teslaCoilCapacitor.desc.2"));//Yeet this broken item into some spicy water!
         }
-        aList.add(EnumChatFormatting.BLUE + "Insert into a Capacitor hatch of a Tesla Tower");
-        aList.add(EnumChatFormatting.BLUE + "Capacitors are the same thing as batteries, right?");
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.teslaCoilCapacitor.desc.3"));//Insert into a Capacitor hatch of a Tesla Tower
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.teslaCoilCapacitor.desc.4"));//Capacitors are the same thing as batteries, right?
     }
 
     @Override

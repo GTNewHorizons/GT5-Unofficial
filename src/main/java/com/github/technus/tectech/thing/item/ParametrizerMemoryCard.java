@@ -27,6 +27,7 @@ import java.util.List;
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 import static com.github.technus.tectech.thing.CustomItemList.parametrizerMemory;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -131,14 +132,14 @@ public final class ParametrizerMemoryCard extends Item {
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         NBTTagCompound tNBT = aStack.getTagCompound();
         aList.add(CommonValues.BASS_MARK);
-        aList.add("Stores Parameters");
+        aList.add(translateToLocal("item.em.parametrizerMemoryCard.desc.0"));//Stores Parameters
 
         if (aStack.getItemDamage() == 1) {
-            aList.add(EnumChatFormatting.BLUE + "Use on Parametrizer/Controller to configure it");
+            aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.1"));//Use on Parametrizer/Controller to configure it
         } else {
-            aList.add(EnumChatFormatting.BLUE + "Use on Parametrizer to store parameters");
+            aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.2"));//Use on Parametrizer to store parameters
         }
-        aList.add(EnumChatFormatting.BLUE + "Sneak right click to lock/unlock");
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.3"));//Sneak right click to lock/unlock
 
         double temp;
         if(tNBT!=null && tNBT.hasKey("param")) {

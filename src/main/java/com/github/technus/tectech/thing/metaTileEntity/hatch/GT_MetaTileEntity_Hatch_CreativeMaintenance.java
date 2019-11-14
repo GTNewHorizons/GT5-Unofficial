@@ -10,6 +10,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 public class GT_MetaTileEntity_Hatch_CreativeMaintenance extends GT_MetaTileEntity_Hatch_Maintenance {
     public GT_MetaTileEntity_Hatch_CreativeMaintenance(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -24,9 +26,9 @@ public class GT_MetaTileEntity_Hatch_CreativeMaintenance extends GT_MetaTileEnti
     public String[] getDescription() {
         return new String[]{
                 CommonValues.BASS_MARK,
-                mDescription,
-                "Does fix everything but itself.",
-                EnumChatFormatting.AQUA + "Fixing is for plebs!"
+                translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.0"),//For maintaining Multiblocks
+                translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.1"),//Does fix everything but itself.
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.2")//Fixing is for plebs!
         };
     }
 
