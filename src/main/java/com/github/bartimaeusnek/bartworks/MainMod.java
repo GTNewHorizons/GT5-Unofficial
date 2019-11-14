@@ -54,10 +54,7 @@ import com.google.common.collect.ArrayListMultimap;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -206,26 +203,27 @@ public final class MainMod {
     public void onServerStarted(FMLServerStartedEvent event) {
         MainMod.runOnPlayerJoined(ConfigHandler.classicMode, ConfigHandler.disableExtraGassesForEBF);
     }
+    @Mod.EventHandler
+    public void onModLoadingComplete(FMLLoadCompleteEvent event) {
+        removeIC2Recipes();
+        MainMod.addElectricImplosionCompressorRecipes();
+        PlatinumSludgeOverHaul.replacePureElements();
+        new CircuitImprintLoader().run();
+        runOnServerStarted();
+        fixEnergyRequirements();
+        MainMod.unificationEnforcer();
+    }
 
     public static void runOnPlayerJoined(boolean classicMode, boolean extraGasRecipes){
         OreDictHandler.adaptCacheForWorld();
         if (!recipesAdded) {
-            removeIC2Recipes();
-            MainMod.addElectricImplosionCompressorRecipes();
-            MainMod.unificationEnforcer();
-
-            PlatinumSludgeOverHaul.replacePureElements();
-
             if (!extraGasRecipes) {
                 ArrayListMultimap<SubTag, GT_Recipe> toChange = MainMod.getRecipesToChange(NOBLE_GAS, ANAEROBE_GAS);
                 HashSet<ItemStack> noGas = MainMod.getNoGasItems(toChange);
                 MainMod.editRecipes(toChange, noGas);
             }
-            new CircuitImprintLoader().run();
             if (classicMode)
                 new DownTierLoader().run();
-            runOnServerStarted();
-            fixEnergyRequirements();
 //        removeDuplicateRecipes();
             recipesAdded = true;
         }
