@@ -35,7 +35,6 @@ import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.*;
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsBA0;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
@@ -442,16 +441,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void onRemoval() {
-        try {
-            for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
-                cap.getBaseMetaTileEntity().setActive(false);
-            }
-        } catch (Exception e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
-            }
-        }
         super.onRemoval();
+        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
+            cap.getBaseMetaTileEntity().setActive(false);
+        }
     }
 
     @Override
