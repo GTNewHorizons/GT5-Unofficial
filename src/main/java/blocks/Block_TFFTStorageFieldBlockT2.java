@@ -20,6 +20,10 @@ public class Block_TFFTStorageFieldBlockT2 extends Block {
 		return instance;
 	}
 	
+	public static int getCapacity() {
+		return 4000000;
+	}
+	
 	public void registerBlock() {
 		final String blockName = "kekztech_tfftstoragefieldblock2_block";
 		super.setBlockName(blockName);

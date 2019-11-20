@@ -12,6 +12,7 @@ import blocks.Block_TFFTStorageFieldBlockT1;
 import blocks.Block_TFFTStorageFieldBlockT2;
 import blocks.Block_TFFTStorageFieldBlockT3;
 import blocks.Block_TFFTStorageFieldBlockT4;
+import blocks.Block_TFFTStorageFieldBlockT5;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -40,10 +41,11 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 	private final String glassNameAE2 = "tile.appliedenergistics2.BlockQuartzGlass";
 	private final String glassNameStained = "tile.stainedGlass";
 	private final Block CASING = Block_TFFTCasing.getInstance();
-	private final Block STORAGE_FIELD1 = Block_TFFTStorageFieldBlockT1.getInstance();
-	private final Block STORAGE_FIELD2 = Block_TFFTStorageFieldBlockT2.getInstance();
-	private final Block STORAGE_FIELD3 = Block_TFFTStorageFieldBlockT3.getInstance();
-	private final Block STORAGE_FIELD4 = Block_TFFTStorageFieldBlockT4.getInstance();
+	private final Block_TFFTStorageFieldBlockT1 STORAGE_FIELD1 = Block_TFFTStorageFieldBlockT1.getInstance();
+	private final Block_TFFTStorageFieldBlockT2 STORAGE_FIELD2 = Block_TFFTStorageFieldBlockT2.getInstance();
+	private final Block_TFFTStorageFieldBlockT3 STORAGE_FIELD3 = Block_TFFTStorageFieldBlockT3.getInstance();
+	private final Block_TFFTStorageFieldBlockT4 STORAGE_FIELD4 = Block_TFFTStorageFieldBlockT4.getInstance();
+	private final Block_TFFTStorageFieldBlockT5 STORAGE_FIELD5 = Block_TFFTStorageFieldBlockT5.getInstance();
 	private final Block MULTI_HATCH = Block_TFFTMultiHatch.getInstance();
 	private final int CASING_TEXTURE_ID = 176;
 	
@@ -83,7 +85,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 				.addEnergyHatch("Any top or bottom casing")
 				.addOtherStructurePart("Inner 3x7x3 tube", "Storage Field Blocks")
 				.addOtherStructurePart("Outer 5x7x5 glass shell", "AE2 Quartz Glass of Vanilla Stained Glass")
-				.addIOHatches("Instead of any casing or glass, have to touch storage field")
+				.addIOHatches("Instead of any casing or glass, have to touch storage field. True for the Multi-Hatch as well.")
 				.signAndFinalize("Kekzdealer");
 		if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return b.getInformation();
@@ -249,6 +251,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 	 * 						References the item stack that can be placed in that GUI slot
 	 * 						in the top right.
 	 */
+	@SuppressWarnings("static-access")
 	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
 		// Figure out the vector for the direction the back face of the controller is facing
@@ -326,19 +329,23 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 						if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
 								.equals(STORAGE_FIELD1.getUnlocalizedName())) {
 							runningCostAcc += 0.5f;
-							fluidCapacityAcc += 500000.0f;
+							fluidCapacityAcc += (float) STORAGE_FIELD1.getCapacity();
 						} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
 								.equals(STORAGE_FIELD2.getUnlocalizedName())) {
 							runningCostAcc += 1.0f;
-							fluidCapacityAcc += 4000000.0f;
+							fluidCapacityAcc += (float) STORAGE_FIELD2.getCapacity();
 						} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
 								.equals(STORAGE_FIELD3.getUnlocalizedName())) {
 							runningCostAcc += 2.0f;
-							fluidCapacityAcc += 16000000.0f;
+							fluidCapacityAcc += (float) STORAGE_FIELD3.getCapacity();
 						} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
 								.equals(STORAGE_FIELD4.getUnlocalizedName())) {
 							runningCostAcc += 4.0f;
-							fluidCapacityAcc += 64000000.0f;
+							fluidCapacityAcc += (float) STORAGE_FIELD4.getCapacity();
+						} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
+								.equals(STORAGE_FIELD4.getUnlocalizedName())) {
+							runningCostAcc += 8.0f;
+							fluidCapacityAcc += (float) STORAGE_FIELD5.getCapacity();
 						} else {
 							formationChecklist = false;
 						}
