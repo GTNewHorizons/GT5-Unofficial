@@ -87,9 +87,9 @@ import java.util.*;
 
 public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     private static final EnumSet<OreGenEvent.GenerateMinable.EventType> PREVENTED_ORES = EnumSet.of(OreGenEvent.GenerateMinable.EventType.COAL,
-            new OreGenEvent.GenerateMinable.EventType[]{OreGenEvent.GenerateMinable.EventType.IRON, OreGenEvent.GenerateMinable.EventType.GOLD,
+            /*new OreGenEvent.GenerateMinable.EventType[]{*/OreGenEvent.GenerateMinable.EventType.IRON, OreGenEvent.GenerateMinable.EventType.GOLD,
                     OreGenEvent.GenerateMinable.EventType.DIAMOND, OreGenEvent.GenerateMinable.EventType.REDSTONE, OreGenEvent.GenerateMinable.EventType.LAPIS,
-                    OreGenEvent.GenerateMinable.EventType.QUARTZ});
+                    OreGenEvent.GenerateMinable.EventType.QUARTZ/*}*/);
     public final HashSet<ItemStack> mRegisteredOres = new HashSet<ItemStack>(10000);
     public final ArrayList<String> mSoundNames = new ArrayList<String>();
     public final ArrayList<ItemStack> mSoundItems = new ArrayList<ItemStack>();
@@ -375,10 +375,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         ItemList.IC2_ReBattery.set(GT_ModHandler.getIC2Item("reBattery", 1L));
         ItemList.IC2_AdvBattery.set(GT_ModHandler.getIC2Item("advBattery", 1L));
         ItemList.IC2_EnergyCrystal.set(GT_ModHandler.getIC2Item("energyCrystal", 1L));
-        ItemList.IC2_LapotronCrystal.set(GT_ModHandler.getIC2Item("lapotronCrystal", 1L));
-
-        ItemList.IC2_LapotronCrystal.set(GT_ModHandler.getIC2Item("lapotronCrystal", 1L));
-        ItemList.IC2_LapotronCrystal.set(GT_ModHandler.getIC2Item("lapotronCrystal", 1L));
         ItemList.IC2_LapotronCrystal.set(GT_ModHandler.getIC2Item("lapotronCrystal", 1L));
 
         ItemList.Tool_Sword_Bronze.set(GT_ModHandler.getIC2Item("bronzeSword", 1L));
