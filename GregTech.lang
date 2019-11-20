@@ -988,6 +988,17 @@ languagefile {
     S:TileEntity_DESCRIPTION_13104_Index_7=Tier IV:  64,000,000L per block, 4EU/t
     S:TileEntity_DESCRIPTION_13104_Index_8=------------------------------------------
     S:TileEntity_DESCRIPTION_13104_Index_9=Note on hatch locking:
+    S:TileEntity_DESCRIPTION_13105_Index_0=High-Tech item storage!
+    S:TileEntity_DESCRIPTION_13105_Index_1=Variable length: Slices 2-4 can be repeated as long as the total length does not exceed 16 blocks.
+    S:TileEntity_DESCRIPTION_13105_Index_10=Created by Kekzdealer
+    S:TileEntity_DESCRIPTION_13105_Index_2=Each slices offers storage for 128 item types
+    S:TileEntity_DESCRIPTION_13105_Index_3=Storage capacity per item depends on the controller configuration.
+    S:TileEntity_DESCRIPTION_13105_Index_4=Insert an Integrated Circuit into the controller with your desired configuration.
+    S:TileEntity_DESCRIPTION_13105_Index_5=The base configuration (0) is 1024 items per type. For each higher level, the capacity quadruples.
+    S:TileEntity_DESCRIPTION_13105_Index_6=Each slice also adds 1EU/t of power consumption and doubles with rising configuration values.
+    S:TileEntity_DESCRIPTION_13105_Index_7=Valid config values are from zero to eight.
+    S:TileEntity_DESCRIPTION_13105_Index_8=-----------------------------------------
+    S:TileEntity_DESCRIPTION_13105_Index_9=Hold §l[LSHIFT]§r§7 to display structure guidelines
     S:TileEntity_DESCRIPTION_1310_Index_0=Max Voltage:  %s
     S:TileEntity_DESCRIPTION_1310_Index_1=Max Amperage:  %s
     S:TileEntity_DESCRIPTION_1310_Index_2=Loss/Meter/Ampere:  %s EU-Volt
@@ -5038,6 +5049,7 @@ languagefile {
     S:gt.blockmachines.multimachine.fuelcellmk2.name=Solid-Oxide Fuel Cell MK2
     S:gt.blockmachines.multimachine.heatexchanger.name=Large Heat Exchanger
     S:gt.blockmachines.multimachine.implosioncompressor.name=Implosion Compressor
+    S:gt.blockmachines.multimachine.itemserver.name=Item Server
     S:gt.blockmachines.multimachine.largegasturbine.name=Large Gas Turbine
     S:gt.blockmachines.multimachine.largehpturbine.name=Large HP Steam Turbine
     S:gt.blockmachines.multimachine.largeplasmaturbine.name=Large Plasma Generator

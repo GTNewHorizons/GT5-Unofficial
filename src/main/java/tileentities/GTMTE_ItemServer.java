@@ -1,10 +1,13 @@
 package tileentities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.lwjgl.input.Keyboard;
 
 import blocks.Block_ItemServerDrive;
+import blocks.Block_ItemServerIOPort;
+import blocks.Block_ItemServerRackCasing;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -13,6 +16,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import kekztech.MultiFluidHandler;
+import kekztech.MultiItemHandler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,9 +33,13 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 	private static final int BASE_ITEM_TYPES_PER_SLICE = 128;
 	
 	private final Block_ItemServerDrive DRIVE = Block_ItemServerDrive.getInstance();
+	private final Block_ItemServerRackCasing CASING = Block_ItemServerRackCasing.getInstance();
+	private final Block_ItemServerIOPort IO_PORT = Block_ItemServerIOPort.getInstance();
 	private final String ALU_FRAME_BOX_NAME = "gt.blockmachines.gt_frame_aluminium";
 	private final int CASING_TEXTURE_ID = 176;
 	
+	private MultiItemHandler mih;
+	private HashSet<TE_ItemServerIOPort> ioPorts = new HashSet<>(); 
 	private int sliceCount = 0;
 	
 	public GTMTE_ItemServer(int aID, String aName, String aNameRegional) {
@@ -52,7 +60,7 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
 		b.addInfo("High-Tech item storage!")
 				.addInfo("Variable length: Slices 2-4 can be repeated as long as the total length does not exceed 16 blocks.")
-				.addInfo("Each slices offers storage for 128 item types")
+				.addInfo("Each slice offers storage for 128 item types")
 				.addInfo("Storage capacity per item depends on the controller configuration.")
 				.addInfo("Insert an Integrated Circuit into the controller with your desired configuration.")
 				.addInfo("The base configuration (0) is 1024 items per type. For each higher level, the capacity quadruples.")
@@ -63,7 +71,7 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 				.addController("Front Bottom Center")
 				.addEnergyHatch("Any casing")
 				.addOtherStructurePart("Front slice", "3x5x1 Item Server Rack Casing")
-				.addOtherStructurePart("2nd and 3rd slice, center", "1x4x1 Tungstensteel Frame Box")
+				.addOtherStructurePart("2nd and 3rd slice, center", "1x4x1 Aluminium Frame Box")
 				.addOtherStructurePart("2nd and 3rd slice, top", "3x1x1 Item Server Rack Casing")
 				.addOtherStructurePart("2nd and 3rd slice, sides", "2x 1x4x1 Item Server Drive")
 				.addOtherStructurePart("Back slice", "3x5x1 Item Server Rack Casing")
