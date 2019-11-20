@@ -2,6 +2,7 @@ package kekztech;
 
 import blocks.Block_ControlRod;
 import blocks.Block_GDCUnit;
+import blocks.Block_ItemServerDrive;
 import blocks.Block_ReactorChamber_OFF;
 import blocks.Block_ReactorChamber_ON;
 import blocks.Block_TFFTCasing;
@@ -31,6 +32,7 @@ import items.MetaItem_ReactorComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import tileentities.GTMTE_FluidMultiStorage;
+import tileentities.GTMTE_ItemServer;
 import tileentities.GTMTE_ModularNuclearReactor;
 import tileentities.GTMTE_SOFuelCellMK1;
 import tileentities.GTMTE_SOFuelCellMK2;
@@ -65,6 +67,7 @@ public class KekzCore {
 	@SuppressWarnings("unused")
 	private GTMTE_ModularNuclearReactor mdr;
 	private GTMTE_FluidMultiStorage fms;
+	private GTMTE_ItemServer is;
 	
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -85,6 +88,7 @@ public class KekzCore {
 		Block_ReactorChamber_OFF.getInstance().registerBlock();
 		Block_ReactorChamber_ON.getInstance().registerBlock();
 		Block_ControlRod.getInstance().registerBlock();
+		Block_ItemServerDrive.getInstance().registerBlock();
 		// TODO: Disabled for new release
 		//Block_ItemDistributionCable.getInstance().registerBlock();
 		//Block_ItemDistributionNode.getInstance().registerBlock();
@@ -103,6 +107,7 @@ public class KekzCore {
 		sofc2 = new GTMTE_SOFuelCellMK2(13102, "multimachine.fuelcellmk2", "Solid-Oxide Fuel Cell Mk II");
 		mdr = new GTMTE_ModularNuclearReactor(13103, "multimachine.nuclearreactor", "Nuclear Reactor");
 		fms = new GTMTE_FluidMultiStorage(13104, "multimachine.tf_fluidtank", "T.F.F.T");
+		is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");
 	}
 	
 	@Mod.EventHandler

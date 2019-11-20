@@ -89,3 +89,4 @@ tile.kekztech_reactorchamberon_block.name=Nuclear Reactor Chamber (ON)
 
 tile.kekztech_itemdistributioncable_block.name=Item Distribution Cable
 tile.kekztech_itemdistributionnode_block.name=Item Distribution Node
+tile.kekztech_itemserverdrive_block.name=Item Server Drive
