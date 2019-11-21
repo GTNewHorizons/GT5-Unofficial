@@ -151,6 +151,17 @@ public class KekzCore {
 				'C', OrePrefixes.circuit.get(Materials.Data)
 		};
 		GT_ModHandler.addCraftingRecipe(fms.getStackForm(1), tfft_recipe);
+		final Object[] is_recipe = {
+				"FRF", "CGC", "PZP",
+				'F', GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1),
+				'R', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1),
+				'C', ItemList.Conveyor_Module_LuV.get(1L),
+				'G', ItemList.Field_Generator_EV.get(1L),
+				'P', GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 1),
+				'Z', GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1)
+		};
+		GT_ModHandler.addCraftingRecipe(is.getStackForm(1), is_recipe);
+		
 		
 		// Ceramic Electrolyte Units
 		final ItemStack[] yszUnit = {
@@ -177,6 +188,50 @@ public class KekzCore {
 				Materials.Hydrogen.getGas(16000), 
 				new ItemStack(Block_GDCUnit.getInstance(), 1), 
 				2400, 1920);
+		
+		// Item Server Structure blocks
+		final Object[] is_rack_recipe = {
+				"BRB", "CFC", "BRB",
+				'B', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlueSteel, 1),
+				'R', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Aluminium, 1),
+				'C', GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Platinum, 1),
+				'F', GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1),
+		};
+		GT_ModHandler.addCraftingRecipe(new ItemStack(Block_ItemServerRackCasing.getInstance()), is_rack_recipe);
+		final ItemStack[] is_ioport = {
+				GT_Utility.getIntegratedCircuit(6),
+				new ItemStack(Block_ItemServerRackCasing.getInstance()),
+				GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Platinum, 16),
+				GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Platinum, 2),
+				ItemList.Field_Generator_HV.get(1L),
+				ItemList.Robot_Arm_EV.get(4L)
+			};
+			GT_Values.RA.addAssemblerRecipe(
+					is_ioport, 
+					FluidRegistry.getFluidStack("molten.polytetrafluoroethylene", 144),
+					new ItemStack(Block_ItemServerIOPort.getInstance(), 1), 
+					200, 7680);
+		final Object[] is_blade = {
+				"CRC", "CMC", "HPH",
+				'C', GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1),
+				'R', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Aluminium, 1),
+				'P', GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.Platinum, 1),
+				'M', ItemList.Electric_Motor_EV.get(1L),
+				'H', craftingItem.getStackFromDamage(Items.BoronArsenideHeatPipe.getMetaID()),
+		};
+		GT_ModHandler.addCraftingRecipe(craftingItem.getStackOfAmountFromDamage(Items.ItemServerBlade.getMetaID(), 8), is_blade);
+		final ItemStack[] is_drive = {
+				GT_Utility.getIntegratedCircuit(6),
+				craftingItem.getStackOfAmountFromDamage(Items.ItemServerBlade.getMetaID(), 8),
+				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlueSteel, 4),
+				GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
+				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Aluminium, 16)
+			};
+			GT_Values.RA.addAssemblerRecipe(
+					is_drive, 
+					FluidRegistry.getFluidStack("molten.polyethylene", 1152),
+					new ItemStack(Block_ItemServerDrive.getInstance(), 1), 
+					200, 7680);
 		
 		// T.F.F.T Structure blocks
 		final ItemStack[] tfftcasing = {
@@ -359,50 +414,6 @@ public class KekzCore {
 				craftingItem.getStackOfAmountFromDamage(Items.IsotopicallyPureDiamondCrystal.getMetaID(), 4),  
 				craftingItem.getStackFromDamage(Items.DiamondHeatPipe.getMetaID()),
 				null, 1200, 7680);
-		
-		// Heat Vents
-		final ItemStack[] t1HeatVent = {
-				craftingItem.getStackOfAmountFromDamage(Items.CopperHeatPipe.getMetaID(), 2),
-				ItemList.Electric_Motor_MV.get(1L),
-				GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Steel, new ItemStack(ErrorItem.getInstance(), 1), 1),
-				GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, new ItemStack(ErrorItem.getInstance(), 1), 2),
-				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, new ItemStack(ErrorItem.getInstance(), 1), 8),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 1),
-				GT_Utility.getIntegratedCircuit(6)
-		};
-		GT_Values.RA.addAssemblerRecipe(
-				t1HeatVent, 
-				FluidRegistry.getFluidStack("molten.copper", 144),
-				reactorItem.getStackFromDamage(Items.T1HeatVent.getMetaID()),
-				200, 120);
-		final ItemStack[] t2HeatVent = {
-				craftingItem.getStackOfAmountFromDamage(Items.SilverHeatPipe.getMetaID(), 2),
-				ItemList.Electric_Motor_HV.get(1L),
-				GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Aluminium, new ItemStack(ErrorItem.getInstance(), 1), 1),
-				GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, new ItemStack(ErrorItem.getInstance(), 1), 2),
-				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Aluminium, new ItemStack(ErrorItem.getInstance(), 1), 8),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1),
-				GT_Utility.getIntegratedCircuit(6)
-		};
-		GT_Values.RA.addAssemblerRecipe(
-				t2HeatVent, 
-				FluidRegistry.getFluidStack("molten.silver", 144),
-				reactorItem.getStackFromDamage(Items.T2HeatVent.getMetaID()),
-				400, 480);
-		final ItemStack[] t3HeatVent = {
-				craftingItem.getStackOfAmountFromDamage(Items.BoronArsenideHeatPipe.getMetaID(), 2),
-				ItemList.Electric_Motor_IV.get(1L),
-				GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, new ItemStack(ErrorItem.getInstance(), 1), 1),
-				GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenSteel, new ItemStack(ErrorItem.getInstance(), 1), 2),
-				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tungsten, new ItemStack(ErrorItem.getInstance(), 1), 8),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1),
-				GT_Utility.getIntegratedCircuit(6)
-		};
-		GT_Values.RA.addAssemblerRecipe(
-				t3HeatVent, 
-				FluidRegistry.getFluidStack("molten.gallium", 576),
-				reactorItem.getStackFromDamage(Items.T3HeatVent.getMetaID()),
-				800, 7680);
 		
 		System.out.println("...done");
 	}

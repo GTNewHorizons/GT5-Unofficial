@@ -1,6 +1,5 @@
 package kekztech;
 
-import cpw.mods.fml.common.Loader;
 import items.MetaItem_CraftingComponent;
 import items.MetaItem_ReactorComponent;
 import net.minecraft.item.ItemStack;
@@ -41,6 +40,7 @@ public enum Items {
 	YSZCeramicDust(9,1), GDCCeramicDust(10,1),
 	YttriaDust(11,1), ZirconiaDust(12,1), CeriaDust(13,1),
 	YSZCeramicPlate(14,1), GDCCeramicPlate(15,1),
+	ItemServerBlade(16,1),
 	// Error Item
 	Error(0,1);
 	
