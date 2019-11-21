@@ -15,7 +15,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import kekztech.MultiFluidHandler;
 import kekztech.MultiItemHandler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -115,7 +114,18 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 		this.mEUt = (int) (BASE_SLICE_ENERGY_COST * sliceCount * Math.pow(2, config));
 		super.mMaxProgresstime = 10;
 		
+		mih.setPerTypeCapacity((int) (BASE_PER_ITEM_CAPACITY * Math.pow(4, config)));
+		
 		return true;
+	}
+	
+	@Override
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPostTick(aBaseMetaTileEntity, aTick);
+		
+		if(mih != null) {
+			mih.setLock(!super.getBaseMetaTileEntity().isActive());
+		}
 	}
 	
 	public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
@@ -178,7 +188,12 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 					if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
 						// yay
 					} else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IO_PORT) {
-						// TODO: register IO port
+						final TE_ItemServerIOPort port = 
+								(TE_ItemServerIOPort) thisController.getWorld().getTileEntity(
+										thisController.getXCoord() + offset.x(), 
+										thisController.getYCoord() + offset.y(),
+										thisController.getZCoord() + offset.z());
+						ioPorts.add(port);
 					} else {
 						formationChecklist = false;
 					}
@@ -215,6 +230,14 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 		
 		if(formationChecklist) {
 			slicesFound = sliceCount;
+			
+			if(mih == null) {
+				mih = new MultiItemHandler();
+				mih.setItemTypeCapacity(slicesFound * BASE_ITEM_TYPES_PER_SLICE);
+			}
+			for(TE_ItemServerIOPort port : ioPorts) {
+				port.setMultiItemHandler(mih);
+			}
 		}
 		
 		return formationChecklist;
@@ -251,7 +274,12 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 								if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
 									// yay
 								} else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IO_PORT) {
-									// TODO register port
+									final TE_ItemServerIOPort port = 
+											(TE_ItemServerIOPort) thisController.getWorld().getTileEntity(
+													thisController.getXCoord() + offset.x(), 
+													thisController.getYCoord() + offset.y(),
+													thisController.getZCoord() + offset.z());
+									ioPorts.add(port);
 								} else {
 									formationChecklist = false;
 								}
@@ -298,7 +326,12 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 								if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
 									// yay
 								} else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IO_PORT) {
-									// TODO: register IO port
+									final TE_ItemServerIOPort port = 
+											(TE_ItemServerIOPort) thisController.getWorld().getTileEntity(
+													thisController.getXCoord() + offset.x(), 
+													thisController.getYCoord() + offset.y(),
+													thisController.getZCoord() + offset.z());
+									ioPorts.add(port);
 								} else {
 									formationChecklist = false;
 								}

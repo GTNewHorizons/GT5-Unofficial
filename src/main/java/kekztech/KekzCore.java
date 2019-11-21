@@ -119,7 +119,6 @@ public class KekzCore {
 		System.out.println("Registering KekzTech recipes...");
 		
 		final MetaItem_CraftingComponent craftingItem = MetaItem_CraftingComponent.getInstance();
-		final MetaItem_ReactorComponent reactorItem = MetaItem_ReactorComponent.getInstance();
 
 		// Multiblock Controllers
 		final Object[] mk1_recipe = {
@@ -393,9 +392,9 @@ public class KekzCore {
 				Materials.CarbonDioxide.getGas(16000), 
 				craftingItem.getStackOfAmountFromDamage(Items.IsotopicallyPureDiamondCrystal.getMetaID(), 1), 10000, 2400, 7680);
 		GT_Values.RA.addAutoclaveRecipe(
-				craftingItem.getStackOfAmountFromDamage(Items.IsotopicallyPureDiamondDust.getMetaID(), 4), 
-				Materials.CarbonDioxide.getGas(16000), 
-				craftingItem.getStackOfAmountFromDamage(Items.IsotopicallyPureDiamondCrystal.getMetaID(), 1), 10000, 2400, 1920);
+				craftingItem.getStackOfAmountFromDamage(Items.BoronArsenideDust.getMetaID(), 4), 
+				Materials.Nitrogen.getGas(4000), 
+				craftingItem.getStackOfAmountFromDamage(Items.BoronArsenideCrystal.getMetaID(), 1), 10000, 2400, 1920);
 		
 		// Heat Pipes
 		GT_Values.RA.addLatheRecipe(
