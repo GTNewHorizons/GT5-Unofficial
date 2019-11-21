@@ -264,31 +264,31 @@ public interface IGT_RecipeAdder {
      *
      * @param aInput1   must be != null
      * @param aOutput1  must be != null
+     * @param aInput2 	must be != null
      * @param aDuration must be > 0
      * @param aEUt      should be > 0
      */
     public boolean addAssemblerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt);
 
     /**
+     +     * Adds an Assembler Recipe
+     +     *
+     +     * @param aInputs   must be != null
+     +     * @param aOutput1  must be != null
+     +     * @param aDuration must be > 0
+     +     * @param aEUt      should be > 0
+     +     */
+    public boolean addAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt);
+
+    /**
      * Adds an Assembler Recipe
      *
      * @param aInput1   must be != null
-     * @param aInput2 	must be != null
      * @param aOutput1  must be != null
      * @param aDuration must be > 0
      * @param aEUt      should be > 0
      */
     public boolean addAssemblerRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt);
-
-    /**
-     * Adds an Assembler Recipe
-     *
-     * @param aInputs   must be != null
-     * @param aOutput1  must be != null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     */
-    public boolean addAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt);
 
     public boolean addAssemblerRecipe(ItemStack aInput1, Object aOreDict, int aAmount, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt);
 
@@ -301,7 +301,7 @@ public interface IGT_RecipeAdder {
     public boolean addAssemblerSpaceRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt, boolean aCleanroom);
     
     /**
-     * Adds a Circuit Assembler Recipe
+     * Adds an Circuit Assembler Recipe
      *
      * @param aInputs   must be 1-6 ItemStacks
      * @param aFluidInput 0-1 fluids
@@ -310,7 +310,7 @@ public interface IGT_RecipeAdder {
      * @param aEUt      should be > 0
      */
     public boolean addCircuitAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt);
-    
+
     public boolean addCircuitAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt, boolean aCleanroom);
     
     public boolean addCircuitAssemblerSpaceRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt, boolean aCleanroom);
@@ -603,6 +603,7 @@ public interface IGT_RecipeAdder {
      */
     public boolean addFluidCannerRecipe(ItemStack aInput, ItemStack aOutput, FluidStack aFluidInput, FluidStack aFluidOutput);
 
+    public boolean addFluidCannerRecipe(ItemStack aInput, ItemStack aOutput, FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration,int aEUt);
     /**
      * Adds a Recipe for the Chemical Bath
      */
@@ -763,17 +764,4 @@ public interface IGT_RecipeAdder {
      * @return true if the Sound got added, otherwise false.
      */
     public boolean addSonictronSound(ItemStack aItemStack, String aSoundName);
-
-    /**
-     * Returns whether the recipes added are currently being marked as deprecated.
-     * Currently only affects Chemical Reactor Recipes.
-     */
-	public boolean isAddingDeprecatedRecipes();
-
-	/**
-	 * Sets whether the recipes added from this point on should be marked as deprecated or not.
-     * Currently only affects Chemical Reactor Recipes.
-	 */
-	public void setIsAddingDeprecatedRecipes(boolean isAddingDeprecatedRecipes);
-
 }

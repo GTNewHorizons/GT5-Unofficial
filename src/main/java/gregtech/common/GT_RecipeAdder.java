@@ -30,10 +30,9 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
-public class GT_RecipeAdder
-        implements IGT_RecipeAdder {
+public class GT_RecipeAdder implements IGT_RecipeAdder {
 	
-	private boolean isAddingDeprecatedRecipes = false;
+	//private boolean isAddingDeprecatedRecipes = false;
 	
 	@Deprecated
     public boolean addFusionReactorRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt, int aStartEU) {
@@ -217,12 +216,12 @@ public class GT_RecipeAdder
     @Override
     public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, ItemStack aBasicMaterialCell, Fluid aPolymer){
     	//Oxygen/Titaniumtetrafluoride -> +50% Output each
-        addChemicalRecipe(ItemList.Cell_Air.get(1, new Object[0]), GT_Utility.getIntegratedCircuit(1), new GT_FluidStack(aBasicMaterial, 288), new GT_FluidStack(aPolymer, 288),  Materials.Empty.getCells(1), 320);
+    	addChemicalRecipe(ItemList.Cell_Air.get(1, new Object[0]), GT_Utility.getIntegratedCircuit(1), new GT_FluidStack(aBasicMaterial, 144), new GT_FluidStack(aPolymer, 144),  Materials.Empty.getCells(1), 160);
         addChemicalRecipe(Materials.Oxygen.getCells(1),            GT_Utility.getIntegratedCircuit(1), new GT_FluidStack(aBasicMaterial, 144), new GT_FluidStack(aPolymer, 216),  Materials.Empty.getCells(1), 160);
         addChemicalRecipe(aBasicMaterialCell,                      GT_Utility.getIntegratedCircuit(1), Materials.Air.getGas(14000),            new GT_FluidStack(aPolymer, 1000), Materials.Empty.getCells(1), 1120);
         addChemicalRecipe(aBasicMaterialCell,  	                   GT_Utility.getIntegratedCircuit(1), Materials.Oxygen.getGas(7000),          new GT_FluidStack(aPolymer, 1500), Materials.Empty.getCells(1), 1120);
         addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(2)}, 
-        		new FluidStack[]{new GT_FluidStack(aBasicMaterial, 2160), Materials.Air.getGas(15000),   Materials.Titaniumtetrachloride.getFluid(100)}, 
+        		new FluidStack[]{new GT_FluidStack(aBasicMaterial, 2160), Materials.Air.getGas(7500),   Materials.Titaniumtetrachloride.getFluid(100)}, 
         		new FluidStack[]{new GT_FluidStack(aPolymer, 3240)}, null, 800, 30);
         addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(2)}, 
         		new FluidStack[]{new GT_FluidStack(aBasicMaterial, 2160), Materials.Oxygen.getGas(7500), Materials.Titaniumtetrachloride.getFluid(100)}, 
@@ -313,11 +312,12 @@ public class GT_RecipeAdder
         return true;
     }
 
+    @Deprecated
     public boolean addCNCRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
         if ((aInput1 == null) || (aOutput1 == null)) {
             return false;
         }
-        if ((GregTech_API.sRecipeFile.get("cnc", aOutput1, aDuration)) <= 0) {
+        if ((aDuration = GregTech_API.sRecipeFile.get("cnc", aOutput1, aDuration)) <= 0) {
             return false;
         }
         return true;
@@ -474,7 +474,7 @@ public class GT_RecipeAdder
 
         for (int i = 0; i < aInputs.length; ++i) {
             if (!GT_Utility.isStackValid(aInputs[i])) {
-                //GT_FML_LOGGER.debug("GT_RecipeAdder: Invalid input for (" + aOutput1.toString() + ")");
+                GT_FML_LOGGER.debug("GT_RecipeAdder: Invalid input for (" + aOutput1.toString() + ")");
                 continue;
             }
             for (int oreID : OreDictionary.getOreIDs(aInputs[i])) {
@@ -498,7 +498,7 @@ public class GT_RecipeAdder
 
         return ret;
     }
-    
+
     public boolean addAssemblerRecipeNonOD(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt, boolean aCleanroom) {
         if (areItemsAndFluidsBothNull(aInputs, new FluidStack[]{aFluidInput})) {
             return false;
@@ -750,6 +750,7 @@ public class GT_RecipeAdder
         return true;
     }
 
+    @Deprecated
     public boolean addGrinderRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4) {
         return false;
     }
@@ -893,30 +894,30 @@ public class GT_RecipeAdder
         if (tScale <= 0) tScale = 1;
         if (tScale > 1){
         	//trying to find whether there is a better factor
-        	for (int i = tScale; i <= 5; i++) {
-        		if (aInput.amount % i == 0 && aDuration % i == 0) {
-        			tScale = i;
-        			break;
-        		}
-        	}
-        	for (int i = tScale; i <= 5; i++) {
-        		if (aInput.amount % i == 0 && aDuration % i == 0 && aOutput.amount % i == 0) {
-        			tScale = i;
-        			break;
-        		}
-        	}
-        	aInput = new FluidStack(aInput.getFluid(), (aInput.amount + tScale - 1) / tScale);
-        	aOutput = new FluidStack(aOutput.getFluid(), aOutput.amount / tScale);
-        	if (aSolidOutput != null) {
-        		ItemData tData = GT_OreDictUnificator.getItemData(aSolidOutput);
-        		if (tData != null && (tData.mPrefix == OrePrefixes.dust || OrePrefixes.dust.mFamiliarPrefixes.contains(tData.mPrefix)))
-        			aSolidOutput = GT_OreDictUnificator.getDust(tData.mMaterial.mMaterial, tData.mMaterial.mAmount * aSolidOutput.stackSize / tScale);
-        		else {
-        			if (aSolidOutput.stackSize / tScale == 0) aSolidOutput = GT_Values.NI;
-            		else aSolidOutput = new ItemStack(aSolidOutput.getItem(), aSolidOutput.stackSize / tScale);
-        		}
-        	}
-        	aDuration = (aDuration + tScale - 1) / tScale;
+            for (int i = tScale; i <= 5; i++) {
+                if (aInput.amount % i == 0 && aDuration % i == 0) {
+                    tScale = i;
+                    break;
+                }
+            }
+            for (int i = tScale; i <= 5; i++) {
+                if (aInput.amount % i == 0 && aDuration % i == 0 && aOutput.amount % i == 0) {
+                    tScale = i;
+                    break;
+                }
+            }
+            aInput = new FluidStack(aInput.getFluid(), (aInput.amount + tScale - 1) / tScale);
+            aOutput = new FluidStack(aOutput.getFluid(), aOutput.amount / tScale);
+            if (aSolidOutput != null) {
+                ItemData tData = GT_OreDictUnificator.getItemData(aSolidOutput);
+                if (tData != null && (tData.mPrefix == OrePrefixes.dust || OrePrefixes.dust.mFamiliarPrefixes.contains(tData.mPrefix)))
+                    aSolidOutput = GT_OreDictUnificator.getDust(tData.mMaterial.mMaterial, tData.mMaterial.mAmount * aSolidOutput.stackSize / tScale);
+                else {
+                    if (aSolidOutput.stackSize / tScale == 0) aSolidOutput = GT_Values.NI;
+                    else aSolidOutput = new ItemStack(aSolidOutput.getItem(), aSolidOutput.stackSize / tScale);
+                }
+            }
+            aDuration = (aDuration + tScale - 1) / tScale;
         }
         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistilleryRecipes.addRecipe(true, new ItemStack[]{aCircuit}, new ItemStack[]{aSolidOutput}, null, new FluidStack[]{aInput}, new FluidStack[]{aOutput}, aDuration, aEUt, 0);
         if ((aHidden) && (tRecipe != null)) {
@@ -1400,7 +1401,8 @@ public class GT_RecipeAdder
             				ItemStack uStack = GT_Utility.copyAmount(tAmount, tStack); 
             				if (GT_Utility.isStackValid(uStack)) {
             					uList.add(uStack);
-            					if (tInputs[i] == null) tInputs[i] = uStack;
+            					if (tInputs[i] == null) 
+            						tInputs[i] = uStack;
             				}
             			}
             			tAlts[i] = uList.toArray(new ItemStack[uList.size()]);
@@ -1568,7 +1570,19 @@ public class GT_RecipeAdder
         return true;
     }
     
-    @Override
+    public boolean addComponentAssemblerRecipe(ItemStack[] aInputs, Object aOreDict, int aAmount, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt){
+        for(ItemStack tStack : GT_OreDictUnificator.getOres(aOreDict)){
+            if(GT_Utility.isStackValid(tStack)) {
+                ItemStack[] extendedInputs = new ItemStack[aInputs.length + 1];
+                System.arraycopy(aInputs, 0, extendedInputs, 0, aInputs.length);
+                extendedInputs[aInputs.length] = GT_Utility.copyAmount(aAmount, tStack);
+                addAssemblerRecipe(extendedInputs, aFluidInput, aOutput1, aDuration, aEUt);
+            }
+        }
+        return true;
+    }
+    
+    /*
     public boolean addComponentAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt) {
 
         if (areItemsAndFluidsBothNull(aInputs, new FluidStack[]{aFluidInput})) {
@@ -1633,38 +1647,99 @@ public class GT_RecipeAdder
 
         GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput1}, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, 0);
         return true;
+    }*/
+    
+    
+    /*public boolean addComponentAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt) {
+        return addComponentAssemblerRecipe(aInputs, aFluidInput, aOutput,aDuration,aEUt, false);
+    }*/
+    @Override
+    public boolean addComponentAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt) {
+
+        if (this.areItemsAndFluidsBothNull(aInputs, new FluidStack[]{aFluidInput})) {
+            return false;
+        }
+
+        if ((aDuration = GregTech_API.sRecipeFile.get("componentassembler", aOutput, aDuration)) <= 0) {
+            return false;
+        }
+
+        if (!GT_Utility.isStackValid(aOutput)) {
+            return false;
+        }
+
+        boolean ret = false;
+
+        for (int oreID : OreDictionary.getOreIDs(aOutput)) {
+            if (OreDictionary.getOreName(oreID).contains("circuit")){
+                return this.addComponentAssemblerRecipeNonOredicted(aInputs, aFluidInput, aOutput, aDuration, aEUt);
+            }
+        }
+
+        for (int i = 0; i < aInputs.length; ++i) {
+            for (int oreID : OreDictionary.getOreIDs(aInputs[i])) {
+                String odName = OreDictionary.getOreName(oreID);
+                if (odName.contains("circuit")) {
+                    for (ItemStack tStack : GT_OreDictUnificator.getOres(odName)) {
+                        if (!GT_Utility.isStackValid(tStack))
+                            continue;
+                        aInputs[i] = new ItemStack(tStack.getItem(),aInputs[i].stackSize,tStack.getItemDamage());
+                        GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput}, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, 0);
+                        ret = true;
+                    }
+                }
+            }
+        }
+
+        if (!ret) {
+            GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput}, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, 0);
+            ret = true;
+        }
+
+        return ret;
+    }
+    
+    public boolean addComponentAssemblerRecipeNonOredicted(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt) {
+        if ((aInputs == null) || (aOutput == null) || aInputs.length>6 || aInputs.length<1) {
+            return false;
+        }
+        if ((aDuration = GregTech_API.sRecipeFile.get("componentassembler", aOutput, aDuration)) <= 0) {
+            return false;
+        }
+        GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput}, null, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, 0);
+        return true;
     }
     
 
-	private boolean areItemsAndFluidsBothNull(ItemStack[] items, FluidStack[] fluids){
-    	boolean itemsNull = true;
-    	if (items != null) {
-    		for (ItemStack itemStack : items) {
-    			if (itemStack != null) {
-    				itemsNull = false;
-    				break;
-    			}
-    		}
-    	}
-    	boolean fluidsNull = true;
-    	if (fluids != null) {
-    		for (FluidStack fluidStack : fluids) {
-    			if (fluidStack != null) {
-    				fluidsNull = false;
-    				break;
-    			}
-    		}
-    	}
-    	return itemsNull && fluidsNull;
+    private boolean areItemsAndFluidsBothNull(ItemStack[] items, FluidStack[] fluids){
+        boolean itemsNull = true;
+        if (items != null) {
+            for (ItemStack itemStack : items) {
+                if (itemStack != null) {
+                    itemsNull = false;
+                    break;
+                }
+            }
+        }
+        boolean fluidsNull = true;
+        if (fluids != null) {
+            for (FluidStack fluidStack : fluids) {
+                if (fluidStack != null) {
+                    fluidsNull = false;
+                    break;
+                }
+            }
+        }
+        return itemsNull && fluidsNull;
 
 	}
 
-	public boolean isAddingDeprecatedRecipes() {
+	/*public boolean isAddingDeprecatedRecipes() {
 		return isAddingDeprecatedRecipes;
 	}
 
 	public void setIsAddingDeprecatedRecipes(boolean isAddingDeprecatedRecipes) {
 		this.isAddingDeprecatedRecipes = isAddingDeprecatedRecipes;
-	}
+	}*/
 
 }
