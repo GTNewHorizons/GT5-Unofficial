@@ -1307,6 +1307,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
     
+    public boolean addFarmRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int[] aChances, int aDuration, int aEUt) {
+    	GT_Recipe.GT_Recipe_Map.sFarmRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6}, null, aChances, aFluidInputs, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+        return true;
+    }
+    
     @Override
     public boolean addPyrolyseRecipe(ItemStack aInput, FluidStack aFluidInput, int intCircuit, ItemStack aOutput, FluidStack aFluidOutput, int aDuration, int aEUt) {
         if (aInput == null) {

@@ -578,8 +578,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sFlotationUnitRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(1000), "gt.recipe.flotationunit", "Flotation Unit", null, RES_PATH_GUI + "basicmachines/Default", 1, 6, 0, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sTesseractRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(1000), "gt.recipe.tesseract", "Tesseract", null, RES_PATH_GUI + "basicmachines/Tesseract", 1, 6, 0, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sTinyWormHoleRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(1000), "gt.recipe.tinywormhole", "Tiny Wormhole", null, RES_PATH_GUI + "basicmachines/Tesseract", 1, 6, 0, 0, 1, E, 1, E, true, true);
-        //public static final GT_Recipe_Map sTreeFarmRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(1000), "gt.recipe.trerefarm", "Tree Farm Factory", null, RES_PATH_GUI + "basicmachines/Default", 2, 6, 0, 0, 1, E, 1, E, true, true);
-		public static final GT_Recipe_Map sMultiblockChemicalRecipes = new GT_Recipe_Map_LargeChemicalReactor();
+        public static final GT_Recipe_Map sFarmRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(1000), "gt.recipe.farm", "Tree Farm Factory", null, RES_PATH_GUI + "basicmachines/Default", 6, 6, 0, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sMultiblockChemicalRecipes = new GT_Recipe_Map_LargeChemicalReactor();
         public static final GT_Recipe_Map sDistillationRecipes = new GT_Recipe_Map_DistillationTower();
         public static final GT_Recipe_Map sCrakingRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(70), "gt.recipe.craker", "Oil Cracker", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 1, 2, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sPyrolyseRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(150), "gt.recipe.pyro", "Pyrolyse Oven", null, RES_PATH_GUI + "basicmachines/Default", 2, 1, 1, 0, 1, E, 1, E, true, true);
