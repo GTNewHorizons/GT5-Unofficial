@@ -1014,7 +1014,7 @@ public class GT_ModHandler {
                 Character chr = (Character) aRecipe[idx];
                 Object in = aRecipe[idx + 1];
                 if (in instanceof ItemStack) {
-                    tItemStackMap.put(chr, GT_Utility.copy((ItemStack) in));
+                    tItemStackMap.put(chr, GT_Utility.copy(in));
                     tItemDataMap.put(chr, GT_OreDictUnificator.getItemData((ItemStack) in));
                 } else if (in instanceof ItemData) {
                     String tString = in.toString();
@@ -1450,7 +1450,7 @@ public class GT_ModHandler {
      * If you have multiple Mods, which add Bronze Armor for example
      */
     public static ArrayList<ItemStack> getRecipeOutputs(List<IRecipe> aList, boolean aDeleteFromList, ItemStack... aRecipe) {
-        ArrayList<ItemStack> rList = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> rList = new ArrayList<>();
         if (aRecipe == null) return rList;
         boolean temp = false;
         for (byte i = 0; i < aRecipe.length; i++) {
@@ -1466,24 +1466,61 @@ public class GT_ModHandler {
                 return false;
             }
         }, 3, 3);
-        for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
-        for (int i = 0; i < aList.size(); i++) {
+        for (int i = 0; i < 9 && i < aRecipe.length; i++)
+            aCrafting.setInventorySlotContents(i, aRecipe[i]);
+        if (!aDeleteFromList) {
+            aList.forEach(
+                    tRecipe -> {
+                        boolean tmp = false;
+                        try {
+                            tmp = tRecipe.matches(aCrafting, DW);
+                        } catch (Throwable e) {
+                            e.printStackTrace(GT_Log.err);
+                        }
+                        if (tmp) {
+                            ItemStack tOutput = tRecipe.getCraftingResult(aCrafting);
+                            if (tOutput.stackSize != 1)
+                                return;
+                            if (tOutput.getMaxDamage() <= 0)
+                                return;
+                            if (tOutput.getMaxStackSize() != 1)
+                                return;
+                            if (tRecipe instanceof ShapelessRecipes)
+                                return;
+                            if (tRecipe instanceof ShapelessOreRecipe)
+                                return;
+                            if (tRecipe instanceof IGT_CraftingRecipe)
+                                return;
+                            rList.add(GT_Utility.copy(tOutput));
+                        }
+                    }
+            );
+        } else for (int i = 0; i < aList.size(); i++) {
             temp = false;
+
             try {
                 temp = aList.get(i).matches(aCrafting, DW);
             } catch (Throwable e) {
                 e.printStackTrace(GT_Log.err);
             }
             if (temp) {
-                ItemStack tOutput = aList.get(i).getCraftingResult(aCrafting);
+                IRecipe tRecipe = aList.get(i);
+                ItemStack tOutput = tRecipe.getCraftingResult(aCrafting);
+
                 if (tOutput == null || tOutput.stackSize <= 0) {
                     // Seriously, who would ever do that shit?
                     if (!GregTech_API.sPostloadFinished)
                         throw new GT_ItsNotMyFaultException("Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
-                } else {
-                    rList.add(GT_Utility.copy(tOutput));
-                    if (aDeleteFromList) aList.remove(i--);
+                    continue;
                 }
+                if (tOutput.stackSize != 1) continue;
+                if (tOutput.getMaxDamage() <= 0) continue;
+                if (tOutput.getMaxStackSize() != 1) continue;
+                if (tRecipe instanceof ShapelessRecipes) continue;
+                if (tRecipe instanceof ShapelessOreRecipe) continue;
+                if (tRecipe instanceof IGT_CraftingRecipe) continue;
+                rList.add(GT_Utility.copy(tOutput));
+                aList.remove(i--);
             }
         }
         return rList;
@@ -1538,7 +1575,7 @@ public class GT_ModHandler {
             for (Entry<IRecipeInput, RecipeOutput> tEntry : aRecipeList.entrySet()) {
                 if (tEntry.getKey().matches(aInput)) {
                     if (tEntry.getKey().getAmount() <= aInput.stackSize) {
-                        ItemStack[] tList = (ItemStack[]) tEntry.getValue().items.toArray(new ItemStack[tEntry.getValue().items.size()]);
+                        ItemStack[] tList = tEntry.getValue().items.toArray(new ItemStack[tEntry.getValue().items.size()]);
                         if (tList.length == 0) break;
                         ItemStack[] rList = new ItemStack[aOutputSlots.length];
                         rRecipeMetaData.setTag("return", tEntry.getValue().metadata);
