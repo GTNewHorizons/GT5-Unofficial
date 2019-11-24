@@ -40,6 +40,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -1392,7 +1393,7 @@ public class GT_ModHandler {
      * If you have multiple Mods, which add Bronze Armor for example
      * This also removes old Recipes from the List.
      */
-    public static ArrayList<ItemStack> getVanillyToolRecipeOutputs(ItemStack... aRecipe) {
+    public static List<ItemStack> getVanillyToolRecipeOutputs(ItemStack... aRecipe) {
         if (!GregTech_API.sPostloadStarted || GregTech_API.sPostloadFinished)
             sSingleNonBlockDamagableRecipeList.clear();
         if (sSingleNonBlockDamagableRecipeList.isEmpty()) {
@@ -1431,7 +1432,7 @@ public class GT_ModHandler {
             }
             GT_Log.out.println("GT_Mod: Created a List of Tool Recipes containing " + sSingleNonBlockDamagableRecipeList.size() + " Recipes for recycling." + (sSingleNonBlockDamagableRecipeList.size() > 1024 ? " Scanning all these Recipes is the reason for the startup Lag you receive right now." : E));
         }
-        ArrayList<ItemStack> rList = getRecipeOutputs(sSingleNonBlockDamagableRecipeList, true, aRecipe);
+        List<ItemStack> rList = getRecipeOutputs(sSingleNonBlockDamagableRecipeList, true, aRecipe);
         if (!GregTech_API.sPostloadStarted || GregTech_API.sPostloadFinished)
             sSingleNonBlockDamagableRecipeList.clear();
         return rList;
@@ -1441,7 +1442,7 @@ public class GT_ModHandler {
      * Gives you a list of the Outputs from a Crafting Recipe
      * If you have multiple Mods, which add Bronze Armor for example
      */
-    public static ArrayList<ItemStack> getRecipeOutputs(ItemStack... aRecipe) {
+    public static List<ItemStack> getRecipeOutputs(ItemStack... aRecipe) {
         return getRecipeOutputs(CraftingManager.getInstance().getRecipeList(), false, aRecipe);
     }
 
@@ -1449,8 +1450,8 @@ public class GT_ModHandler {
      * Gives you a list of the Outputs from a Crafting Recipe
      * If you have multiple Mods, which add Bronze Armor for example
      */
-    public static ArrayList<ItemStack> getRecipeOutputs(List<IRecipe> aList, boolean aDeleteFromList, ItemStack... aRecipe) {
-        ArrayList<ItemStack> rList = new ArrayList<>();
+    public static List<ItemStack> getRecipeOutputs(List<IRecipe> aList, boolean aDeleteFromList, ItemStack... aRecipe) {
+        List<ItemStack> rList = new ArrayList<>();
         if (aRecipe == null) return rList;
         boolean temp = false;
         for (byte i = 0; i < aRecipe.length; i++) {
@@ -1469,32 +1470,20 @@ public class GT_ModHandler {
         for (int i = 0; i < 9 && i < aRecipe.length; i++)
             aCrafting.setInventorySlotContents(i, aRecipe[i]);
         if (!aDeleteFromList) {
-            aList.forEach(
+            HashSet<ItemStack> stacks = new HashSet<>();
+            aList.stream().filter(
                     tRecipe -> {
-                        boolean tmp = false;
+                        if (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe || tRecipe instanceof IGT_CraftingRecipe)
+                            return false;
                         try {
-                            tmp = tRecipe.matches(aCrafting, DW);
+                            return tRecipe.matches(aCrafting, DW);
                         } catch (Throwable e) {
                             e.printStackTrace(GT_Log.err);
-                        }
-                        if (tmp) {
-                            ItemStack tOutput = tRecipe.getCraftingResult(aCrafting);
-                            if (tOutput.stackSize != 1)
-                                return;
-                            if (tOutput.getMaxDamage() <= 0)
-                                return;
-                            if (tOutput.getMaxStackSize() != 1)
-                                return;
-                            if (tRecipe instanceof ShapelessRecipes)
-                                return;
-                            if (tRecipe instanceof ShapelessOreRecipe)
-                                return;
-                            if (tRecipe instanceof IGT_CraftingRecipe)
-                                return;
-                            rList.add(GT_Utility.copy(tOutput));
+                            return false;
                         }
                     }
-            );
+            ).forEach(tRecipe -> stacks.add(tRecipe.getCraftingResult(aCrafting)));
+            rList = stacks.stream().filter(tOutput -> tOutput.stackSize == 1 && tOutput.getMaxDamage() > 0 && tOutput.getMaxStackSize() == 1).collect(Collectors.toList());
         } else for (int i = 0; i < aList.size(); i++) {
             temp = false;
 
