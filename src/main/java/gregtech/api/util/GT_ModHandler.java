@@ -1446,21 +1446,45 @@ public class GT_ModHandler {
         return getRecipeOutputs(CraftingManager.getInstance().getRecipeList(), false, aRecipe);
     }
 
+    private static List<IRecipe> bufferedRecipes = null;
+
+    /**
+     * Gives you a list of the Outputs from a Crafting Recipe
+     * If you have multiple Mods, which add Bronze Armor for example
+     * Buffers a List which only has armor-alike crafting in it
+     */
+    public static List<ItemStack> getRecipeOutputsBuffered(ItemStack... aRecipe) {
+
+        if (bufferedRecipes == null)
+            bufferedRecipes = (List<IRecipe>) CraftingManager.getInstance().getRecipeList().stream().filter(
+                    tRecipe -> !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe) && !(tRecipe instanceof IGT_CraftingRecipe)
+            ).filter(tRecipe ->
+            {
+                try {
+                    ItemStack tOutput = ((IRecipe) tRecipe).getRecipeOutput();
+                    if (tOutput.stackSize == 1 && tOutput.getMaxDamage() > 0 && tOutput.getMaxStackSize() == 1) {
+                        return true;
+                    }
+                } catch (Exception ignored) {
+                }
+                return false;
+            }).collect(Collectors.toList());
+        return getRecipeOutputs(bufferedRecipes, false, aRecipe);
+    }
+
     /**
      * Gives you a list of the Outputs from a Crafting Recipe
      * If you have multiple Mods, which add Bronze Armor for example
      */
     public static List<ItemStack> getRecipeOutputs(List<IRecipe> aList, boolean aDeleteFromList, ItemStack... aRecipe) {
         List<ItemStack> rList = new ArrayList<>();
-        if (aRecipe == null) return rList;
-        boolean temp = false;
-        for (byte i = 0; i < aRecipe.length; i++) {
-            if (aRecipe[i] != null) {
-                temp = true;
-                break;
+        if (aRecipe == null)
+            return rList;
+        for (ItemStack stack : aRecipe) {
+            if (stack == null) {
+                return rList;
             }
         }
-        if (!temp) return rList;
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
             @Override
             public boolean canInteractWith(EntityPlayer var1) {
@@ -1485,7 +1509,7 @@ public class GT_ModHandler {
             ).forEach(tRecipe -> stacks.add(tRecipe.getCraftingResult(aCrafting)));
             rList = stacks.stream().filter(tOutput -> tOutput.stackSize == 1 && tOutput.getMaxDamage() > 0 && tOutput.getMaxStackSize() == 1).collect(Collectors.toList());
         } else for (int i = 0; i < aList.size(); i++) {
-            temp = false;
+            boolean temp = false;
 
             try {
                 temp = aList.get(i).matches(aCrafting, DW);

@@ -332,7 +332,7 @@ public class GT_RecipeRegistrator {
                     if (tMat == sMt1) tAmount1++;
                 }
                 if (aItemData != null && aItemData.hasValidPrefixMaterialData())
-                    for (ItemStack tCrafted : GT_ModHandler.getRecipeOutputs(tRecipe)) {
+                    for (ItemStack tCrafted : GT_ModHandler.getRecipeOutputsBuffered(tRecipe)) {
                         GT_OreDictUnificator.addItemData(tCrafted, new ItemData(aItemData.mMaterial.mMaterial, aItemData.mMaterial.mAmount * tAmount1));
 //                        GT_Log.out.println("###################################################################################");
 //                        GT_Log.out.println("registerUsagesForMaterials used aPlate: "+aPlate);
