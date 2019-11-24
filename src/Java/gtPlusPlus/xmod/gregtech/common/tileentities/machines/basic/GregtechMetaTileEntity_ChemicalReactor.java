@@ -5,6 +5,7 @@ import static gregtech.api.enums.GT_Values.E;
 import java.util.HashSet;
 import java.util.List;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
@@ -22,6 +23,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.slots.SlotChemicalPlantInput;
 import gtPlusPlus.xmod.gregtech.api.gui.fluidreactor.Container_FluidReactor;
 import gtPlusPlus.xmod.gregtech.api.gui.fluidreactor.GUI_FluidReactor;
+import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -142,7 +144,7 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
 
 	@Override
 	public int getCapacity() {
-		return 8000 * Math.max(1, this.mTier);
+		return 32000 * Math.max(1, this.mTier) / 4;
 	}
 
 	@Override
@@ -255,7 +257,7 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		// Re-implement basic machine logic from the ground up.
+		// Re-implement basic machine logic from the ground up.=
 		
 		if (aBaseMetaTileEntity.isServerSide()) {
 			this.mCharge = aBaseMetaTileEntity.getStoredEU() / 2L > aBaseMetaTileEntity.getEUCapacity() / 3L;

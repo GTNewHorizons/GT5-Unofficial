@@ -634,12 +634,22 @@ public class CI {
 	}
 
 	public static FluidStack getTieredFluid(int aTier, int aAmount, int aType) {
-		ItemStack aCell = getTieredComponent(OrePrefixes.liquid, aTier, 1);
+		// Weird Legacy handling
+		/*ItemStack aCell = getTieredComponent(OrePrefixes.liquid, aTier, 1);
 		FluidStack a = GT_Utility.getFluidForFilledItem(aCell, true);
 		if (a == null) {
 			a = aMaster[aType][aTier].getFluid(aAmount);
-		}
-		a.amount = aAmount;
+		}*/		
+		
+		// Modern Handling
+		FluidStack a = aMaster[aType][aTier].getFluid(aAmount);			
+		if (a == null) {
+			ItemStack aCell = getTieredComponent(OrePrefixes.liquid, aTier, 1);
+			if (aCell != null) {
+				a = GT_Utility.getFluidForFilledItem(aCell, true);
+				a.amount = aAmount;
+			}
+		}		
 		return a;
 	}
 	

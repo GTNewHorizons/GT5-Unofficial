@@ -101,32 +101,32 @@ public class CONTAINER_MultiMachine extends GT_ContainerMetaTile_Machine {
 			//crafters = ReflectionUtils.getField(getClass(), "crafters");
 		}
 		if (timer != null && crafters != null && mControllerSet) {
-			Logger.INFO("Trying to update clientside GUI data");
+			//Logger.INFO("Trying to update clientside GUI data");
 			try {
-				Logger.INFO("0");		
+				//Logger.INFO("0");		
 				int aTimer = (int) ReflectionUtils.getFieldValue(timer, this);				
 				
 				//List crafters1List = (List) crafters1;
 				List<ICrafting> crafters2 = new ArrayList<ICrafting>();
-				Logger.INFO("1");		
+				//Logger.INFO("1");		
 				for (Object o : crafters) {
 					if (o instanceof ICrafting) {
 						crafters2.add((ICrafting) o);
 					}
 				}
-				Logger.INFO("2");		
+				//Logger.INFO("2");		
 				if (!crafters2.isEmpty()) {
-					Logger.INFO("3");		
+					//Logger.INFO("3");		
 					handleInitialFieldSetting();
 
 					try {
-						Logger.INFO("4");		
+						//Logger.INFO("4");		
 						for (final ICrafting var3 : crafters2) {
 							handleCraftingEvent(aTimer, var3);
 						}
-						Logger.INFO("5");		
+						//Logger.INFO("5");		
 						handleInternalFieldSetting();
-						Logger.INFO("6");		
+						//Logger.INFO("6");		
 					} catch (Throwable t) {
 
 					}

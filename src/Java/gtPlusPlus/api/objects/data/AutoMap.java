@@ -70,6 +70,20 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
 			}
 		}		
 	}
+	
+	/**
+	 * Generates an AutoMap from a Array.
+	 * @param aArray - Data to be inserted into the AutoMap.
+	 */
+	public AutoMap(V[] aArray) {
+		mInternalMap = new LinkedHashMap<Integer, V>();
+		mInternalNameMap = new LinkedHashMap<String, Integer>();	
+		if (aArray != null && aArray.length > 0) {
+			for (V obj : aArray) {
+				add(obj);
+			}
+		}		
+	}
 
 	@Override
 	public Iterator<V> iterator() {		
