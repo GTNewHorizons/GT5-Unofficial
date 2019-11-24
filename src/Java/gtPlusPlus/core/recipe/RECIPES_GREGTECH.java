@@ -276,6 +276,35 @@ public class RECIPES_GREGTECH {
 				20 * 60 * 1 * (GTNH ? 2 : 1),
 				(int) GT_Values.V[5]);
 
+		// Turbine Automation Port
+		CORE.RA.addAssemblylineRecipe(
+				ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_8_TURBINE_AUTOMATION, 1), 
+				20 * 60 * 60 * 24,
+				new ItemStack[] {
+						CI.getTieredMachineHull(8, 4),
+						CI.getConveyor(8, GTNH ? 24 : 12),
+						CI.getElectricMotor(7, GTNH ? 32 : 16),
+						CI.getElectricPiston(7, GTNH ? 16 : 4),
+						CI.getEnergyCore(6, GTNH ? 8 : 2),
+						CI.getPlate(8, GTNH ? 24 : 12),
+						CI.getTieredComponent(OrePrefixes.screw, 8, GTNH ? 48 : 24),
+						CI.getTieredComponent(OrePrefixes.bolt, 7, GTNH ? 32 : 16),
+						CI.getTieredComponent(OrePrefixes.rod, 6, GTNH ? 12 : 6),
+						CI.getTieredComponent(OrePrefixes.circuit, 7, GTNH ? 20 : 10),
+						CI.getTieredComponent(OrePrefixes.rotor, 6, GTNH ? 16 : 8),
+				}, 
+				new FluidStack[] {
+						CI.getTieredFluid(8, 144 * 32),
+						CI.getAlternativeTieredFluid(7, 144 * 16),
+						CI.getTertiaryTieredFluid(7, 144 * 16),
+						ALLOY.BABBIT_ALLOY.getFluid(128 * 144),
+						ALLOY.ZERON_100.getFluid(144 * 64)
+
+				},
+				GregtechItemList.Hatch_Input_TurbineHousing.get(4), 
+				20 * 60 * 60 * (GTNH ? 2 : 1),
+				(int) GT_Values.V[8]);
+
 
 		/*
 		 * Contianment casings
@@ -360,88 +389,116 @@ public class RECIPES_GREGTECH {
 		}
 
 
-		//Nano Healer
-		CORE.RA.addAssemblylineRecipe(
-				ItemUtils.simpleMetaStack(Items.golden_apple, 1, 1), 
-				20 * 60 * 10,
-				new ItemStack[] {
-						ItemUtils.getSimpleStack(aGemCasings[2], GTNH ? 4 : 2),
-						CI.getTieredComponent(OrePrefixes.plate, 8, GTNH ? 32 : 16),
-						CI.getTieredComponent(OrePrefixes.circuit, 7, GTNH ? 16 : 4),
-						CI.getTieredComponent(OrePrefixes.cableGt02, 7, GTNH ? 16 : 8),
-						CI.getTieredComponent(OrePrefixes.gearGt, 6, GTNH ? 6 : 3),
-						CI.getTieredComponent(OrePrefixes.screw, 7, GTNH ? 16 : 8),
-						CI.getTieredComponent(OrePrefixes.bolt, 5, GTNH ? 24 : 12),
-						CI.getTieredComponent(OrePrefixes.frameGt, 4, GTNH ? 12 : 6),
-						aCoilWire[3]
-				}, 
-				new FluidStack[] {
-						CI.getTieredFluid(7, 144 * 18 * (GTNH ? 16 : 8)),
-						CI.getTertiaryTieredFluid(7, 144 * 18 * (GTNH ? 16 : 8)),
-						CI.getAlternativeTieredFluid(6, 144 * 18 * (GTNH ? 16 : 8)),
-						CI.getAlternativeTieredFluid(7, 144 * 18 * (GTNH ? 16 : 8)),
-
-				},
-				ItemUtils.getItemStackFromFQRN("miscutils:personalHealingDevice", 1), 
-				20 * 60 * 30 * (GTNH ? 2 : 1),
-				(int) GT_Values.V[7]);
-
-
-
-		//Charge Pack LuV-UV
-
-		ItemStack[] aChargeResearch = new ItemStack[] {
-				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore7", 1),
-				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_1, 1),
-				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_2, 1),
-				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_3, 1),
-		};
-
-		ItemStack[] aChargeOutputs = new ItemStack[] {
-				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_1, 1),
-				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_2, 1),
-				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_3, 1),
-				ItemUtils.getSimpleStack(ModItems.itemChargePack_High_4, 1),			
-		};
-
-		ItemStack[] aBufferCoreInputs = new ItemStack[] {
-				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore7", GTNH ? 8 : 4),
-				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore8", GTNH ? 8 : 4),
-				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore9", GTNH ? 8 : 4),
-				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore10", GTNH ? 8 : 4),
-		};
-
-		int aCurrSlot = 0;
-		for (int h = 6; h < 10; h++) {
+		if (LoadedMods.Baubles) {
+			//Nano Healer
 			CORE.RA.addAssemblylineRecipe(
-					aChargeResearch[aCurrSlot], 
-					20 * 60 * 10 * (aCurrSlot + 1),
+					ItemUtils.simpleMetaStack(Items.golden_apple, 1, 1), 
+					20 * 60 * 10,
 					new ItemStack[] {
-							ItemUtils.getSimpleStack(
-									aGemBatteries[aCurrSlot], GTNH ? 4 : 2),
-							aBufferCoreInputs[aCurrSlot],
-							aCoilWire[aCurrSlot],
-							CI.getTieredComponent(OrePrefixes.plate, h, GTNH ? 16 : 8),
-							CI.getTieredComponent(OrePrefixes.plate, h-1, GTNH ? 32 : 16),
-							CI.getTieredComponent(OrePrefixes.circuit, h, GTNH ? 16 : 4),
-							CI.getTieredComponent(OrePrefixes.circuit, h-1, GTNH ? 32 : 8),
-							CI.getTieredComponent(OrePrefixes.cableGt12, h-1, GTNH ? 32 : 16),
-							CI.getTieredComponent(OrePrefixes.screw, h, GTNH ? 16 : 8),
-							CI.getTieredComponent(OrePrefixes.bolt, h-2, GTNH ? 32 : 16),
-							CI.getElectricMotor(h, GTNH ? 8 : 4),
-							CI.getFieldGenerator(h-1, 2),
-							CI.getRobotArm(h-2, GTNH ? 4 : 2),
+							ItemUtils.getSimpleStack(aGemCasings[2], GTNH ? 4 : 2),
+							CI.getTieredComponent(OrePrefixes.plate, 8, GTNH ? 32 : 16),
+							CI.getTieredComponent(OrePrefixes.circuit, 7, GTNH ? 16 : 4),
+							CI.getTieredComponent(OrePrefixes.cableGt02, 7, GTNH ? 16 : 8),
+							CI.getTieredComponent(OrePrefixes.gearGt, 6, GTNH ? 6 : 3),
+							CI.getTieredComponent(OrePrefixes.screw, 7, GTNH ? 16 : 8),
+							CI.getTieredComponent(OrePrefixes.bolt, 5, GTNH ? 24 : 12),
+							CI.getTieredComponent(OrePrefixes.frameGt, 4, GTNH ? 12 : 6),
+							aCoilWire[3]
 					}, 
 					new FluidStack[] {
-							CI.getTieredFluid(h, 144 * 18 * (GTNH ? 8 : 4)),
-							CI.getTertiaryTieredFluid(h-1, 144 * 18 * (GTNH ? 8 : 4)),
-							CI.getAlternativeTieredFluid(h-1, 144 * 18 * (GTNH ? 8 : 4)),
-							CI.getAlternativeTieredFluid(h-2, 144 * 18 * (GTNH ? 8 : 4)),							
+							CI.getTieredFluid(7, 144 * 18 * (GTNH ? 16 : 8)),
+							CI.getTertiaryTieredFluid(7, 144 * 18 * (GTNH ? 16 : 8)),
+							CI.getAlternativeTieredFluid(6, 144 * 18 * (GTNH ? 16 : 8)),
+							CI.getAlternativeTieredFluid(7, 144 * 18 * (GTNH ? 16 : 8)),
+
 					},
-					aChargeOutputs[aCurrSlot], 
-					20 * 60 * 30 * (GTNH ? 2 : 1) * (aCurrSlot+1),
-					(int) GT_Values.V[h]);
-			aCurrSlot++;
+					ItemUtils.getItemStackFromFQRN("miscutils:personalHealingDevice", 1), 
+					20 * 60 * 30 * (GTNH ? 2 : 1),
+					(int) GT_Values.V[7]);
+
+
+
+			//Charge Pack LuV-UV
+
+			ItemStack[] aChargeResearch = new ItemStack[] {
+					ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore7", 1),
+					ItemUtils.getSimpleStack(ModItems.itemChargePack_High_1, 1),
+					ItemUtils.getSimpleStack(ModItems.itemChargePack_High_2, 1),
+					ItemUtils.getSimpleStack(ModItems.itemChargePack_High_3, 1),
+			};
+
+			ItemStack[] aChargeOutputs = new ItemStack[] {
+					ItemUtils.getSimpleStack(ModItems.itemChargePack_High_1, 1),
+					ItemUtils.getSimpleStack(ModItems.itemChargePack_High_2, 1),
+					ItemUtils.getSimpleStack(ModItems.itemChargePack_High_3, 1),
+					ItemUtils.getSimpleStack(ModItems.itemChargePack_High_4, 1),			
+			};
+
+			ItemStack[] aBufferCoreInputs = new ItemStack[] {
+					ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore7", GTNH ? 8 : 4),
+					ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore8", GTNH ? 8 : 4),
+					ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore9", GTNH ? 8 : 4),
+					ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore10", GTNH ? 8 : 4),
+			};
+
+			int aCurrSlot = 0;
+			for (int h = 6; h < 10; h++) {
+				CORE.RA.addAssemblylineRecipe(
+						aChargeResearch[aCurrSlot], 
+						20 * 60 * 10 * (aCurrSlot + 1),
+						new ItemStack[] {
+								ItemUtils.getSimpleStack(
+										aGemBatteries[aCurrSlot], GTNH ? 4 : 2),
+								aBufferCoreInputs[aCurrSlot],
+								aCoilWire[aCurrSlot],
+								CI.getTieredComponent(OrePrefixes.plate, h, GTNH ? 16 : 8),
+								CI.getTieredComponent(OrePrefixes.plate, h-1, GTNH ? 32 : 16),
+								CI.getTieredComponent(OrePrefixes.circuit, h, GTNH ? 16 : 4),
+								CI.getTieredComponent(OrePrefixes.circuit, h-1, GTNH ? 32 : 8),
+								CI.getTieredComponent(OrePrefixes.cableGt12, h-1, GTNH ? 32 : 16),
+								CI.getTieredComponent(OrePrefixes.screw, h, GTNH ? 16 : 8),
+								CI.getTieredComponent(OrePrefixes.bolt, h-2, GTNH ? 32 : 16),
+								CI.getElectricMotor(h, GTNH ? 8 : 4),
+								CI.getFieldGenerator(h-1, 2),
+								CI.getRobotArm(h-2, GTNH ? 4 : 2),
+						}, 
+						new FluidStack[] {
+								CI.getTieredFluid(h, 144 * 18 * (GTNH ? 8 : 4)),
+								CI.getTertiaryTieredFluid(h-1, 144 * 18 * (GTNH ? 8 : 4)),
+								CI.getAlternativeTieredFluid(h-1, 144 * 18 * (GTNH ? 8 : 4)),
+								CI.getAlternativeTieredFluid(h-2, 144 * 18 * (GTNH ? 8 : 4)),							
+						},
+						aChargeOutputs[aCurrSlot], 
+						20 * 60 * 30 * (GTNH ? 2 : 1) * (aCurrSlot+1),
+						(int) GT_Values.V[h]);
+				aCurrSlot++;
+			}
+
+			//Cloaking device
+			CORE.RA.addAssemblylineRecipe(
+					ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_9_CLOAKING, 1), 
+					20 * 60 * 10,
+					new ItemStack[] {
+							ItemUtils.getSimpleStack(aGemCasings[3], GTNH ? 4 : 2),
+							CI.getTieredComponent(OrePrefixes.plate, 8, GTNH ? 32 : 16),
+							CI.getTieredComponent(OrePrefixes.circuit, 7, GTNH ? 16 : 4),
+							CI.getTieredComponent(OrePrefixes.cableGt04, 8, GTNH ? 16 : 8),
+							CI.getTieredComponent(OrePrefixes.gearGt, 7, GTNH ? 6 : 3),
+							CI.getTieredComponent(OrePrefixes.screw, 8, GTNH ? 16 : 8),
+							CI.getTieredComponent(OrePrefixes.bolt, 7, GTNH ? 24 : 12),
+							CI.getTieredComponent(OrePrefixes.frameGt, 5, GTNH ? 12 : 6),
+							aCoilWire[3]
+					}, 
+					new FluidStack[] {
+							CI.getTieredFluid(8, 144 * 18 * (GTNH ? 16 : 8)),
+							CI.getTertiaryTieredFluid(8, 144 * 18 * (GTNH ? 16 : 8)),
+							CI.getAlternativeTieredFluid(7, 144 * 18 * (GTNH ? 16 : 8)),
+							CI.getAlternativeTieredFluid(8, 144 * 18 * (GTNH ? 16 : 8)),
+
+					},
+					ItemUtils.getItemStackFromFQRN("miscutils:personalCloakingDevice", 1), 
+					20 * 60 * 30 * (GTNH ? 2 : 1),
+					(int) GT_Values.V[8]);
 		}
 
 
@@ -1491,6 +1548,53 @@ public class RECIPES_GREGTECH {
 				GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Invar, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 4L), GregtechItemList.Fluid_Cell_144L.get(1L, new Object[0]), 75, 32);
 			}
 		}
+		
+
+		if (LoadedMods.Baubles) {
+			
+
+
+			// Turbine Housing Research Page
+			CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+					ItemUtils.getGregtechCircuit(17),
+					ItemUtils.getItemStackOfAmountFromOreDict("plateRefinedTrinium", GTNH ? 64 : 32),
+					CI.getSensor(6, GTNH ? 6 : 3),
+					CI.getBolt(7, GTNH ? 64 : 32),
+					ItemUtils.getItemStackOfAmountFromOreDict("wireFinePlatinum", GTNH ? 64 : 32),
+					ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(7), GTNH ? 12 : 6)			
+			},
+					CI.getAlternativeTieredFluid(7, 144 * 32),
+					ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_8_TURBINE_AUTOMATION, 1),
+					20 * 60 * 5,
+					(int) GT_Values.V[6]);
+
+			// Cloaking Device Research Page
+			CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+					ItemUtils.getGregtechCircuit(17),
+					ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR, 4),
+					CI.getFieldGenerator(6, GTNH ? 16 : 8),
+					ItemUtils.getItemStackOfAmountFromOreDict("wireFinePalladium", GTNH ? 32 : 16),
+					ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), GTNH ? 12 : 6)			
+			},
+					CI.getAlternativeTieredFluid(7, 144 * 32),
+					ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_9_CLOAKING, 1),
+					20 * 60 * 10,
+					(int) GT_Values.V[7]);
+			
+			
+			// Supreme Pizza Gloves
+			CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+					ItemUtils.getGregtechCircuit(17),
+					ItemUtils.getSimpleStack(ModItems.itemRope, 16),
+					ItemUtils.getItemStackOfAmountFromOreDict("gearGtSmallWroughtIron", GTNH ? 8 : 4),
+					ItemUtils.getItemStackOfAmountFromOreDict("wireFineTin", GTNH ? 32 : 16),
+					ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(1), GTNH ? 2 : 1)			
+			},
+					FluidUtils.getFluidStack("molten.rubber", 2000),
+					ItemUtils.getSimpleStack(ModItems.itemPersonalFireProofDevice),
+					20 * 60 * 5,
+					30);
+		}
 
 
 
@@ -1641,7 +1745,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void centrifugeRecipes() {
-		
+
 		//Try use all woods found, fix/add methane extraction.
 		ArrayList<ItemStack> aLogData = OreDictionary.getOres("logWood");
 		ArrayList<ItemStack> aRubberLogs = OreDictionary.getOres("logRubber");

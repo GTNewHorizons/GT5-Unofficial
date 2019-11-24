@@ -1573,7 +1573,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		boolean result = false;
 		if (this.mInventory[1] == null) {
 			this.mInventory[1] = aNewGuiSlotContents != null ? aNewGuiSlotContents.copy() : null;
-			aNewGuiSlotContents = null;
+			this.depleteInput(aNewGuiSlotContents);
 			this.updateSlots();
 			result = true;
 		}	

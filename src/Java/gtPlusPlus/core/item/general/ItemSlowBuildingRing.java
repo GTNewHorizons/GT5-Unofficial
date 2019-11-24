@@ -2,10 +2,15 @@ package gtPlusPlus.core.item.general;
 
 import java.util.List;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
-
-import net.minecraft.client.Minecraft;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.handler.events.CustomMovementHandler;
+import gtPlusPlus.core.handler.events.SneakManager;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,14 +18,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.handler.events.CustomMovementHandler;
-import gtPlusPlus.core.handler.events.SneakManager;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 @Optional.InterfaceList(value = {@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"), @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles")})
 public class ItemSlowBuildingRing extends Item implements IBauble{
@@ -84,7 +81,17 @@ public class ItemSlowBuildingRing extends Item implements IBauble{
 
 	@Override //TODO
 	public void onEquipped(final ItemStack arg0, final EntityLivingBase arg1) {
-		doEffect(arg1);
+		try {
+			EntityPlayer aPlayer;
+			if (arg1 instanceof EntityPlayer) {
+				aPlayer = (EntityPlayer) arg1;
+				SneakManager s = SneakManager.get(aPlayer);				
+				s.putRingOn();
+			}
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 
 	@Override //TODO
@@ -94,8 +101,7 @@ public class ItemSlowBuildingRing extends Item implements IBauble{
 			if (arg1 instanceof EntityPlayer) {
 				aPlayer = (EntityPlayer) arg1;
 				SneakManager s = SneakManager.get(aPlayer);				
-				s.setSprintingStateON();
-				s.setCrouchingStateOFF();
+				s.takeRingOff();
 			}
 		}
 		catch (Throwable t) {
@@ -122,9 +128,7 @@ public class ItemSlowBuildingRing extends Item implements IBauble{
 					}						
 					if (aPlayer.isSprinting()) {
 						aPlayer.setSprinting(false);						
-					}
-					s.setSprintingStateOFF();
-					s.setCrouchingStateON();				
+					}				
 				}				
 			}
 		}

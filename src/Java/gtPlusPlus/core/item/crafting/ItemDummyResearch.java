@@ -26,7 +26,9 @@ public class ItemDummyResearch extends ItemGenericToken {
 		RESEARCH_4_BASIC_PHYSICS("Basic Physics", "Fundamental laws of motion"),
 		RESEARCH_5_ADV_PHYSICS("Advanced Physics", "Advanced knowledge!"),
 		RESEARCH_6_BASIC_METALLURGY("Basic Metallurgy", "Information about material smelting"),
-		RESEARCH_7_ADV_METALLURGY("Advanced Metallurgy", "Advanced Material Sciences!");	
+		RESEARCH_7_ADV_METALLURGY("Advanced Metallurgy", "Advanced Material Sciences!"),
+		RESEARCH_8_TURBINE_AUTOMATION("Turbine Automation", "You really don't want to share this with anyone!"), 
+		RESEARCH_9_CLOAKING("Cloaking Technologies", "Sneaking around like a mouse");	
 		
 		
 		

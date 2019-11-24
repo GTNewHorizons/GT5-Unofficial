@@ -706,6 +706,17 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
                     if (ttTest != null) {
                         T = ttTest;
                     }
+                    else {
+                    	Method[] aDump = TTRecipeAdder.getDeclaredMethods();
+                    	for (Method m : aDump) {
+                    		if (m != null) {
+                    			Logger.INFO("Found "+m.getName()+" | "+m.getModifiers()+" | "+ArrayUtils.toString(m.getParameters(), "EMPTY")+"");
+                    			if (m.getName().toLowerCase().equals("addresearchableassemblylinerecipe")){
+                        			Logger.INFO("Types: "+ArrayUtils.toString(m.getParameterTypes()));                    				
+                    			}
+                    		}
+                    	}
+                    }
                 }
             }
             else {
@@ -787,7 +798,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
                                 Logger.INFO("Failed to generate TecTech recipe for "+ItemUtils.getItemName(aResearchItem)+", please report this to Alkalus.");
                             }
                             catch (Throwable t) {
-
+                            	t.printStackTrace();
                             }
                         }
                         return (boolean) mAssemblyLine.invoke(GT_Values.RA, aResearchItem, aResearchTime, aInputs,
