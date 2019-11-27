@@ -1458,7 +1458,8 @@ public class GT_ModHandler {
         if (bufferedRecipes == null)
             bufferedRecipes = (List<IRecipe>) CraftingManager.getInstance().getRecipeList().stream().filter(
                     tRecipe -> !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe) && !(tRecipe instanceof IGT_CraftingRecipe)
-            ).filter(tRecipe ->
+            )
+                    .filter(tRecipe ->
             {
                 try {
                     ItemStack tOutput = ((IRecipe) tRecipe).getRecipeOutput();
@@ -1468,7 +1469,8 @@ public class GT_ModHandler {
                 } catch (Exception ignored) {
                 }
                 return false;
-            }).collect(Collectors.toList());
+            })
+                    .collect(Collectors.toList());
         return getRecipeOutputs(bufferedRecipes, false, aRecipe);
     }
 
@@ -1478,13 +1480,8 @@ public class GT_ModHandler {
      */
     public static List<ItemStack> getRecipeOutputs(List<IRecipe> aList, boolean aDeleteFromList, ItemStack... aRecipe) {
         List<ItemStack> rList = new ArrayList<>();
-        if (aRecipe == null)
+        if (aRecipe == null || Arrays.stream(aRecipe).noneMatch(Objects::nonNull))
             return rList;
-        for (ItemStack stack : aRecipe) {
-            if (stack == null) {
-                return rList;
-            }
-        }
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
             @Override
             public boolean canInteractWith(EntityPlayer var1) {

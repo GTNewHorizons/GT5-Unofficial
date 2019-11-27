@@ -347,6 +347,7 @@ public class GT_Mod implements IGT_Mod {
         gregtechproxy.mUndergroundOil.getConfig(tMainConfig, "undergroundfluid");
         gregtechproxy.mEnableCleanroom = tMainConfig.get("general", "EnableCleanroom", true).getBoolean(true);
         gregtechproxy.mLowGravProcessing = Loader.isModLoaded(GT_Values.MOD_ID_GC_CORE) && tMainConfig.get("general", "LowGravProcessing", true).getBoolean(true);
+        gregtechproxy.mUseGreatlyShrukenReplacementList = tMainConfig.get("general", "GTNH Optimised Material Loading", true).getBoolean(true);
         Calendar now = Calendar.getInstance();
         gregtechproxy.mAprilFool = GregTech_API.sSpecialFile.get(ConfigCategories.general, "AprilFool", now.get(Calendar.MONTH) == Calendar.APRIL && now.get(Calendar.DAY_OF_MONTH) == 1);
         gregtechproxy.mCropNeedBlock = tMainConfig.get("general", "CropNeedBlockBelow", true).getBoolean(true);
@@ -756,12 +757,13 @@ public class GT_Mod implements IGT_Mod {
         GT_Log.out.println("GT_Mod: Vanilla Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sVanillaRecipeList_warntOutput.toString());
         GT_Log.out.println("GT_Mod: Single Non Block Damagable Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
         //GT_Log.out.println("GT_Mod: sRodMaterialList cycles: " + GT_RecipeRegistrator.sRodMaterialList_cycles);
-        Set<Materials> replaceVanillaItemsSet = Arrays.stream(Materials.values()).filter(GT_RecipeRegistrator::hasVanillaRecipes).collect(Collectors.toSet());
+        Set<Materials> replaceVanillaItemsSet = gregtechproxy.mUseGreatlyShrukenReplacementList ? Arrays.stream(Materials.values()).filter(GT_RecipeRegistrator::hasVanillaRecipes).collect(Collectors.toSet()) : new HashSet<>(Arrays.asList(Materials.values()));
         GT_FML_LOGGER.info("Replacing Vanilla Materials in recipes, please wait.");
+
         ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", replaceVanillaItemsSet.size());
         for (Materials m : replaceVanillaItemsSet) {
             progressBar.step(m.mDefaultLocalName);
-            GT_FML_LOGGER.info("Replacing Vanilla Recipes for: " + m.mDefaultLocalName);
+            //GT_FML_LOGGER.info("Replacing Vanilla Recipes for: " + m.mDefaultLocalName);
             String platename = OrePrefixes.plate.get(m).toString();
             boolean noSmash = !m.contains(SubTag.NO_SMASHING);
             if ((m.mTypes & 2) != 0)
