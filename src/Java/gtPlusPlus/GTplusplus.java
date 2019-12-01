@@ -369,20 +369,20 @@ public class GTplusplus implements ActionListener {
 		mOriginalCount[2] = GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList.size();
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList) {
 			if (x != null && RecipeUtils.doesGregtechRecipeHaveEqualCells(x)) {	
-				int mTime = (x.mDuration/2);
-				int len = x.mFluidInputs.length;
-				FluidStack[] y = new FluidStack[len + 1];
-				int slot = y.length - 1;				
-				int mr3 = 0;
-				for (FluidStack f : x.mFluidInputs) {
-					if (f != null) {
-						y[mr3] = f;
-					}
-					mr3++;
-				}
-				y[slot] = FluidUtils.getFluidStack("cryotheum", mTime);				
+				// int mTime = (x.mDuration/2);
+				// int len = x.mFluidInputs.length;
+				// FluidStack[] y = new FluidStack[len + 1];
+				// int slot = y.length - 1;				
+				// int mr3 = 0;
+				// for (FluidStack f : x.mFluidInputs) {
+				// 	if (f != null) {
+				// 		y[mr3] = f;
+				// 	}
+				// 	mr3++;
+				// }
+				//y[slot] = FluidUtils.getFluidStack("cryotheum", mTime);				
 				if (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs)) {
-					if (CORE.RA.addAdvancedFreezerRecipe(x.mInputs, y, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue)) {
+					if (CORE.RA.addAdvancedFreezerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue)) {
 						mValidCount[2]++;
 					}
 				}
