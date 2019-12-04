@@ -5,7 +5,7 @@ eclipse/
 .project
 bin/
 out/
-libs/
+libs/gregtech*
 CREDITS-fml.txt
 LICENSE-fml.txt
 MinecraftForge-Credits.txt
@@ -23,6 +23,7 @@ SetupDevWorkspaces.bat
 *.db
 *.log
 .idea/
+\.directory
 asm/
 config/
 saves/

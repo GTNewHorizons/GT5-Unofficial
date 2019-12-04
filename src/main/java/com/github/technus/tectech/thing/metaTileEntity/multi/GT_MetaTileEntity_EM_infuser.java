@@ -27,12 +27,13 @@ import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.GregTech_API.mEUtoRF;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-    //region Structure
+    //region structure
     private static final String[][] shape = new String[][]{
             {"   ", "000", "1.1", "000", "   ",},
             {"   ", "010", "111", "010", "   ",},
@@ -45,30 +46,63 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA+"Hint Details:",
-            "1 - Classic Hatches or High Power Casing",
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.infuser.hint"),//1 - Classic Hatches or High Power Casing
     };
     //endregion
 
     public GT_MetaTileEntity_EM_infuser(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         minRepairStatus = (byte) getIdealStatus();
-        eDismantleBoom=true;
+        eDismantleBoom = true;
     }
 
     public GT_MetaTileEntity_EM_infuser(String aName) {
         super(aName);
         minRepairStatus = (byte) getIdealStatus();
-        eDismantleBoom=true;
+        eDismantleBoom = true;
     }
 
+    private long doChargeItemStack(IElectricItem item, ItemStack stack) {
+        try {
+            double euDiff = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
+            if (euDiff > 0) {
+                setEUVar(getEUVar() - (getEUVar() >> 5));
+            }
+            long remove = (long) Math.ceil(
+                    ElectricItem.manager.charge(stack,
+                            Math.min(euDiff, getEUVar())
+                            , item.getTier(stack), true, false));
+            setEUVar(getEUVar() - remove);
+            if (getEUVar() < 0) {
+                setEUVar(0);
+            }
+            return remove;
+        } catch (Exception e) {
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
 
-    public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_whooum");
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound(){
-        return activitySound;
+    private long doChargeItemStackRF(IEnergyContainerItem item, ItemStack stack) {
+        try {
+            long RF = Math.min(item.getMaxEnergyStored(stack) - item.getEnergyStored(stack), getEUVar() * mEUtoRF / 100L);
+            //if(RF>0)this.setEUVar(this.getEUVar()-this.getEUVar()>>10);
+            RF = item.receiveEnergy(stack, RF > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) RF, false);
+            RF = RF * 100L / mEUtoRF;
+            setEUVar(getEUVar() - RF);
+            if (getEUVar() < 0) {
+                setEUVar(0);
+            }
+            return RF;
+        } catch (Exception e) {
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -77,28 +111,8 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity,true,false,true);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",true,false,true);
-    }
-
-    @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, 0);
-    }
-
-    @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta,1, 2, 0, getBaseMetaTileEntity(),this,hintsOnly);
-    }
-
-    @Override
-    public String[] getStructureDescription(int stackSize) {
-        return description;
     }
 
     @Override
@@ -142,52 +156,38 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
-                "Power Transfer Extreme!",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Insanely fast charging!",
-                EnumChatFormatting.BLUE + "Doesn't work while broken!",
-                EnumChatFormatting.BLUE + "Power loss is a thing."
+                translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.0"),//Power Transfer Extreme!
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.1"),
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.2"),
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.3")
         };
     }
 
-    private long doChargeItemStack(IElectricItem item, ItemStack stack) {
-        try {
-            double euDiff = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
-            if (euDiff > 0) {
-                setEUVar(getEUVar() - (getEUVar() >> 5));
-            }
-            long remove = (long) Math.ceil(
-                    ElectricItem.manager.charge(stack,
-                            Math.min(euDiff, getEUVar())
-                            , item.getTier(stack), true, false));
-            setEUVar(getEUVar() - remove);
-            if (getEUVar() < 0) {
-                setEUVar(0);
-            }
-            return remove;
-        } catch (Exception e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
-            }
-        }
-        return 0;
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, true, false, true);
     }
 
-    private long doChargeItemStackRF(IEnergyContainerItem item, ItemStack stack) {
-        try {
-            long RF = Math.min(item.getMaxEnergyStored(stack) - item.getEnergyStored(stack), getEUVar() * mEUtoRF / 100L);
-            //if(RF>0)this.setEUVar(this.getEUVar()-this.getEUVar()>>10);
-            RF = item.receiveEnergy(stack, RF > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) RF, false);
-            RF = RF * 100L / mEUtoRF;
-            setEUVar(getEUVar() - RF);
-            if (getEUVar() < 0) {
-                setEUVar(0);
-            }
-            return RF;
-        } catch (Exception e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
-            }
-        }
-        return 0;
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", true, false, true);
+    }
+
+    public final static ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_whooum");
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound() {
+        return activitySound;
+    }
+
+    @Override
+    public void construct(int stackSize, boolean hintsOnly) {
+        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 2, 0, getBaseMetaTileEntity(), this, hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 }

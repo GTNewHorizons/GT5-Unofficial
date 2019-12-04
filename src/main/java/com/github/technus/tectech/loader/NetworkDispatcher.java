@@ -5,6 +5,7 @@ import com.github.technus.tectech.thing.metaTileEntity.pipe.PipeActivityMessage;
 import com.github.technus.tectech.thing.metaTileEntity.RotationMessage;
 import com.github.technus.tectech.mechanics.data.ChunkDataMessage;
 import com.github.technus.tectech.mechanics.data.PlayerDataMessage;
+import com.github.technus.tectech.mechanics.data.RendererMessage;
 
 import static com.github.technus.tectech.Reference.MODID;
 
@@ -30,6 +31,8 @@ public class NetworkDispatcher extends eu.usrv.yamcore.network.PacketDispatcher 
 
         registerMessage(PlayerDataMessage.ServerHandler.class, PlayerDataMessage.PlayerDataQuery.class);
         registerMessage(PlayerDataMessage.ClientHandler.class, PlayerDataMessage.PlayerDataData.class);
+
+        registerMessage(RendererMessage.ClientHandler.class, RendererMessage.RendererData.class);
 
         registerMessage(TextParametersMessage.ServerHandler.class, TextParametersMessage.ParametersTextQuery.class);
         registerMessage(TextParametersMessage.ServerUpdateHandler.class, TextParametersMessage.ParametersTextUpdate.class);

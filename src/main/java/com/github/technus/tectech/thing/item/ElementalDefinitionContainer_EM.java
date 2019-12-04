@@ -20,6 +20,7 @@ import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
 
 /**
@@ -32,6 +33,7 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         setMaxStackSize(1);
         setUnlocalizedName("em.definitionContainer");
         setTextureName(MODID + ":itemDefinitionContainer");
+        setCreativeTab(creativeTabTecTech);
     }
 
     //return previous thing

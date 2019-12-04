@@ -15,8 +15,9 @@ import net.minecraft.item.ItemStack;
 
 public class GT_Container_DebugPollutor
         extends GT_ContainerMetaTile_Machine {
-    public int pollution =0;
-    public float anomaly =0;
+    public int pollution;
+    public float anomaly;
+    private int anomalyInt;
 
     public GT_Container_DebugPollutor(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -124,6 +125,7 @@ public class GT_Container_DebugPollutor
         GT_MetaTileEntity_DebugPollutor dpg = (GT_MetaTileEntity_DebugPollutor) mTileEntity.getMetaTileEntity();
         pollution =dpg.pollution;
         anomaly =dpg.anomaly;
+        anomalyInt=Float.floatToIntBits(anomaly);
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;
@@ -143,7 +145,7 @@ public class GT_Container_DebugPollutor
                 break;
             case 102:
             case 103:
-                anomaly = Util.receiveFloat(anomaly,102,par1,par2);
+                anomaly = Float.intBitsToFloat(anomalyInt=Util.receiveInteger(anomalyInt,102,par1,par2));
                 break;
         }
     }

@@ -15,7 +15,9 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
     public LedStatus[] eParamsInStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNDEFINED);
     public LedStatus[] eParamsOutStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNDEFINED);
     public double[] eParamsIn = new double[20];//number I from parametrizers
+    public long[] eParamsInl = new long[20];
     public double[] eParamsOut = new double[20];//number O to parametrizers
+    public long[] eParamsOutl = new long[20];
     public byte eCertainMode = 5, eCertainStatus = 127;
     public boolean ePowerPass = false, eSafeVoid = false, allowedToWork = false;
     public final boolean ePowerPassButton, eSafeVoidButton, allowedToWorkButton;
@@ -151,10 +153,10 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             allowedToWork = (par2 & 4) == 4;
         } else if(par1>=128 && par1<208){
             int pos=(par1-128)>>2;
-            eParamsOut[pos]=Util.receiveDouble(eParamsOut[pos],par1&0xFFFFFFFC,par1,par2);
+            eParamsOut[pos]=Double.longBitsToDouble(eParamsOutl[pos]=Util.receiveLong(eParamsOutl[pos],par1&0xFFFFFFFC,par1,par2));
         }else if(par1>=208 && par1<288){
             int pos=(par1-208)>>2;
-            eParamsIn[pos]=Util.receiveDouble(eParamsIn[pos],par1&0xFFFFFFFC,par1,par2);
+            eParamsIn[pos]=Double.longBitsToDouble(eParamsInl[pos]=Util.receiveLong(eParamsInl[pos],par1&0xFFFFFFFC,par1,par2));
         }
     }
 

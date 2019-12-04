@@ -160,6 +160,10 @@ public final class Util {
         return result.toString();
     }
 
+    public static float map(float x, float in_min, float in_max, float out_min, float out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
     //region junk
     /*
     //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
@@ -449,7 +453,6 @@ public final class Util {
     */
     //endregion
 
-
     //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
     //This only checks for REGULAR BLOCKS!
     public static boolean StructureCheckerExtreme(
@@ -492,8 +495,7 @@ public final class Util {
                     if (block < ' ') {//Control chars allow skipping
                         b -= block;
                         break;
-                    } else if (block > '@') //characters allow to skip check A-1 skip, B-2 skips etc.
-                    {
+                    } else if (block > '@') {//characters allow to skip check A-1 skip, B-2 skips etc.
                         a += block - '@';
                     }//else if (block < '+')//used to mark THINGS
                     //    a++;
@@ -1450,6 +1452,7 @@ public final class Util {
         return previousValue;
     }
 
+    @Deprecated
     public static double receiveDouble(double previousValue, int startIndex, int index, int value){
         return Double.longBitsToDouble(receiveLong(Double.doubleToLongBits(previousValue),startIndex,index,value));
     }
@@ -1495,6 +1498,7 @@ public final class Util {
         crafter.sendProgressBarUpdate(container, startIndex,   (int)((value & 0xFFFF000000000000L)>>>48));
     }
 
+    @Deprecated
     public static float receiveFloat(float previousValue, int startIndex, int index, int value){
         return Float.intBitsToFloat(receiveInteger(Float.floatToIntBits(previousValue),startIndex,index,value));
     }

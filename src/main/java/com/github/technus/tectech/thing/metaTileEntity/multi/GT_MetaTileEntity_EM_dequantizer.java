@@ -31,13 +31,13 @@ import static com.github.technus.tectech.mechanics.elementalMatter.definitions.c
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-
-    //region Structure
+    //region structure
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
             {"   ", " . ", "   ",},
@@ -55,10 +55,10 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4, 4};
     private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA + "Hint Details:",
-            "1 - Classic Hatches or High Power Casing",
-            "2 - Elemental Input Hatch",
-            "3 - Elemental Overflow Hatches or Molecular Casing",
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.emtomatter.hint.0"),//1 - Classic Hatches or High Power Casing"
+            translateToLocal("gt.blockmachines.multimachine.em.emtomatter.hint.1"),//2 - Elemental Input Hatch
+            translateToLocal("gt.blockmachines.multimachine.em.emtomatter.hint.2"),//3 - Elemental Overflow Hatches or Molecular Casing
     };
     //endregion
 
@@ -68,71 +68,6 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
 
     public GT_MetaTileEntity_EM_dequantizer(String aName) {
         super(aName);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound(){
-        return GT_MetaTileEntity_EM_quantizer.activitySound;
-    }
-
-    @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_dequantizer(mName);
-    }
-
-    @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
-    }
-
-    @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(),this, hintsOnly);
-    }
-
-    @Override
-    public String[] getStructureDescription(int stackSize) {
-        return description;
-    }
-
-    @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
-        for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
-            cElementalInstanceStackMap map = in.getContainerHandler();
-            for (cElementalInstanceStack stack : map.values()) {
-                iExchangeInfo info = stack.getDefinition().someAmountIntoFluidStack();
-                if (info != null) {
-                    if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
-                        mOutputFluids = new FluidStack[]{(FluidStack) info.output()};
-                        startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
-                        return true;
-                    }
-                }
-
-                info = stack.getDefinition().someAmountIntoItemsStack();
-                if (info != null) {
-                    if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
-                        mOutputItems = new ItemStack[]{(ItemStack) info.output()};
-                        startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
-                        return true;
-                    }
-                }
-
-                info = stack.getDefinition().someAmountIntoOredictStack();
-                if (info != null) {
-                    if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
-                        ArrayList<ItemStack> items = OreDictionary.getOres(((aOredictDequantizationInfo) info).out);
-                        if (items != null && !items.isEmpty()) {
-                            mOutputItems = new ItemStack[]{items.get(0)};
-                            startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     private void startRecipe(iHasElementalDefinition from, long energy) {
@@ -149,11 +84,76 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_EM_dequantizer(mName);
+    }
+
+    @Override
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+    }
+
+    @Override
+    public boolean checkRecipe_EM(ItemStack itemStack) {
+        for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
+            cElementalInstanceStackMap map = in.getContainerHandler();
+            for (cElementalInstanceStack stack : map.values()) {
+                iExchangeInfo info = stack.getDefinition().someAmountIntoFluidStack();
+                if (info != null) {
+                    if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
+                        mOutputFluids = new FluidStack[]{(FluidStack) info.output()};
+                        startRecipe((iHasElementalDefinition) info.input(), stack.getEnergy());
+                        return true;
+                    }
+                }
+
+                info = stack.getDefinition().someAmountIntoItemsStack();
+                if (info != null) {
+                    if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
+                        mOutputItems = new ItemStack[]{(ItemStack) info.output()};
+                        startRecipe((iHasElementalDefinition) info.input(), stack.getEnergy());
+                        return true;
+                    }
+                }
+
+                info = stack.getDefinition().someAmountIntoOredictStack();
+                if (info != null) {
+                    if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
+                        ArrayList<ItemStack> items = OreDictionary.getOres(((aOredictDequantizationInfo) info).out);
+                        if (items != null && !items.isEmpty()) {
+                            mOutputItems = new ItemStack[]{items.get(0)};
+                            startRecipe((iHasElementalDefinition) info.input(), stack.getEnergy());
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Transform quantum form back to...",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "regular one, but why?"
+                translateToLocal("gt.blockmachines.multimachine.em.emtomatter.desc.0"),//Transform quantum form back to...
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.emtomatter.desc.1")//regular one, but why?
         };
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound() {
+        return GT_MetaTileEntity_EM_quantizer.activitySound;
+    }
+
+    @Override
+    public void construct(int stackSize, boolean hintsOnly) {
+        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 }

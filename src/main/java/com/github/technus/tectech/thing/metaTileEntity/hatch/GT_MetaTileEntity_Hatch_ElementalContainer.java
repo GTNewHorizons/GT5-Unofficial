@@ -16,15 +16,19 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 /**
  * Created by danie_000 on 11.12.2016.
@@ -33,6 +37,8 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     private static Textures.BlockIcons.CustomIcon EM_T_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     private static Textures.BlockIcons.CustomIcon EM_T_CONN;
+
+    private String clientLocale = "en_US";
 
     protected cElementalInstanceStackMap content = new cElementalInstanceStackMap();
     //float lifeTimeMult=1f;
@@ -43,7 +49,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     protected GT_MetaTileEntity_Hatch_ElementalContainer(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
-        Util.setTier(aTier,this);
+        Util.setTier(aTier, this);
     }
 
     protected GT_MetaTileEntity_Hatch_ElementalContainer(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -104,7 +110,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
             byte Tick = (byte) (aTick % 20);
             if (DECAY_AT == Tick) {
                 purgeOverflow();
-                content.tickContentByOneSecond(1,postEnergize);//Hatches don't life time mult things
+                content.tickContentByOneSecond(1, postEnergize);//Hatches don't life time mult things
                 purgeOverflow();
             } else if (OVERFLOW_AT == Tick) {
                 if (overflowMatter <= 0) {
@@ -124,8 +130,8 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                                 if (TecTech.configTecTech.BOOM_ENABLE) {
                                     tGTTileEntity.doExplosion(V[14]);
                                 } else {
-                                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity,overflowMatter*32D);
-                                    TecTech.proxy.broadcast("Container1 BOOM! " +aBaseMetaTileEntity.getXCoord() + ' ' + aBaseMetaTileEntity.getYCoord() + ' ' + aBaseMetaTileEntity.getZCoord());
+                                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowMatter * 32D);
+                                    TecTech.proxy.broadcast("Container1 " + translateToLocal("tt.keyword.BOOM") + " " + aBaseMetaTileEntity.getXCoord() + ' ' + aBaseMetaTileEntity.getYCoord() + ' ' + aBaseMetaTileEntity.getZCoord());
                                 }
                             }
                             deathDelay = 3;//needed in some cases like repetitive failures. Should be 4 since there is -- at end but meh...
@@ -135,10 +141,10 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                         if (TecTech.configTecTech.BOOM_ENABLE) {
                             aBaseMetaTileEntity.doExplosion(V[14]);
                         } else {
-                            TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity,overflowMatter*32D);
-                            deathDelay=3;
-                            overflowMatter=0;
-                            TecTech.proxy.broadcast("Container0 BOOM! " + aBaseMetaTileEntity.getXCoord() + ' ' + aBaseMetaTileEntity.getYCoord() + ' ' + aBaseMetaTileEntity.getZCoord());
+                            TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowMatter * 32D);
+                            deathDelay = 3;
+                            overflowMatter = 0;
+                            TecTech.proxy.broadcast("Container0 " + translateToLocal("tt.keyword.BOOM") + " " + aBaseMetaTileEntity.getXCoord() + ' ' + aBaseMetaTileEntity.getYCoord() + ' ' + aBaseMetaTileEntity.getZCoord());
                         }
                     }
                     deathDelay--;
@@ -160,10 +166,6 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         return content;
     }
 
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        return true;
-    }
 
     @Override
     public boolean isFacingValid(byte aFacing) {
@@ -214,39 +216,57 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        super.onRightclick(aBaseMetaTileEntity, aPlayer);
+
+        if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
+            try {
+                EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+                clientLocale = (String) FieldUtils.readField(player, "translator", true);
+            } catch (Exception e) {
+                clientLocale = "en_US";
+            }
+        } else {
+            return true;
+        }
+        System.out.println(clientLocale);
+        return true;
+    }
+
+    @Override
     public boolean isGivingInformation() {
         return true;
     }
 
     @Override
     public String[] getInfoData() {
-        if(TecTech.configTecTech.EASY_SCAN) {
+        if (TecTech.configTecTech.EASY_SCAN) {
             if (id > 0) {
                 if (content == null || content.size() == 0) {
-                    return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "No Stacks"};
+                    return new String[]{translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id, translateToLocalFormatted("tt.keyphrase.No_Stacks", clientLocale)};
                 } else {
                     String[] lines = content.getElementalInfo();
                     String[] output = new String[lines.length + 1];
-                    output[0] = "ID: " + EnumChatFormatting.AQUA + id;
+                    output[0] = translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id;
                     System.arraycopy(lines, 0, output, 1, lines.length);
                     return output;
                 }
             }
             if (content == null || content.size() == 0) {
-                return new String[]{"No Stacks"};
+                return new String[]{translateToLocalFormatted("tt.keyphrase.No_Stacks", clientLocale)};
             }
             return content.getElementalInfo();
         } else {
-            if(id>0){
+            if (id > 0) {
                 if (content == null || content.size() == 0) {
-                    return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "No Stacks"};
+                    return new String[]{translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id, translateToLocalFormatted("tt.keyphrase.No_Stacks", clientLocale)};
                 }
-                return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "Contains EM"};
+                return new String[]{translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id, translateToLocalFormatted("tt.keyphrase.Contains_EM", clientLocale)};
             }
             if (content == null || content.size() == 0) {
-                return new String[]{"No Stacks"};
+                return new String[]{translateToLocalFormatted("tt.keyphrase.No_Stacks", clientLocale)};
             }
-            return new String[]{"Contains EM"};
+            return new String[]{translateToLocalFormatted("tt.keyphrase.Contains_EM", clientLocale)};
         }
     }
 
@@ -259,26 +279,26 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         return new String[]{
                 TEC_MARK_EM,
                 mDescription,
-                "Max stacks amount: " + EnumChatFormatting.AQUA + getMaxStacksCount(),
-                "Stack capacity: " + EnumChatFormatting.AQUA + getMaxStackSize(),
-                "Place Overflow Hatch behind,on top or below",
-                "to provide overflow protection while this block",
-                "is not attached to multi block.",
-                "Transport range can be extended in straight",
-                "line up to 15 blocks with quantum tunnels.",
-                EnumChatFormatting.AQUA + "Must be painted to work"
+                translateToLocal("tt.base.emhatch.desc.0") + " " + EnumChatFormatting.AQUA + getMaxStacksCount(),//Max stacks amount:
+                translateToLocal("tt.base.emhatch.desc.1") + " " + EnumChatFormatting.AQUA + getMaxStackSize(),//Stack capacity:
+                translateToLocal("tt.base.emhatch.desc.2"),//Place Overflow Hatch behind,on top or below
+                translateToLocal("tt.base.emhatch.desc.3"),//to provide overflow protection while this block
+                translateToLocal("tt.base.emhatch.desc.4"),//is not attached to multi block.
+                translateToLocal("tt.base.emhatch.desc.5"),//Transport range can be extended in straight
+                translateToLocal("tt.base.emhatch.desc.6"),//line up to 15 blocks with quantum tunnels.
+                EnumChatFormatting.AQUA + translateToLocal("tt.base.emhatch.desc.7")//Must be painted to work
         };
     }
 
     @Override
     public void onRemoval() {
         if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) {
-            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(),(overflowMatter+content.getMass())*16D);
-            IGregTechTileEntity base=getBaseMetaTileEntity();
+            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(), (overflowMatter + content.getMass()) * 16D);
+            IGregTechTileEntity base = getBaseMetaTileEntity();
             if (TecTech.configTecTech.BOOM_ENABLE) {
                 base.doExplosion(V[15]);
             } else {
-                TecTech.proxy.broadcast("BOOM! " +base.getXCoord() + ' ' + base.getYCoord() + ' ' + base.getZCoord());
+                TecTech.proxy.broadcast(translateToLocal("tt.keyword.BOOM") + " " + base.getXCoord() + ' ' + base.getYCoord() + ' ' + base.getZCoord());
             }
         }
     }

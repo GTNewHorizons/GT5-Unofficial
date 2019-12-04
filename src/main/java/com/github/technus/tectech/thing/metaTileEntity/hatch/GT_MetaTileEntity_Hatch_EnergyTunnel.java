@@ -14,14 +14,15 @@ import net.minecraft.util.EnumChatFormatting;
 import static com.github.technus.tectech.CommonValues.TRANSFER_AT;
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 16.12.2016.
  */
 public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatch_EnergyMulti implements IConnectsToEnergyTunnel {
     public GT_MetaTileEntity_Hatch_EnergyTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(aID, aName, aNameRegional, aTier, 0, "Energy injecting terminal for Multiblocks",aAmp);
-        Util.setTier(aTier,this);
+        super(aID, aName, aNameRegional, aTier, 0, translateToLocal("gt.blockmachines.hatch.energytunnel.desc.0"), aAmp);//Energy injecting terminal for Multiblocks
+        Util.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_EnergyTunnel(String aName, int aTier, int aAmp, String aDescription, ITexture[][][] aTextures) {
@@ -113,7 +114,7 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
                 mDescription,
-                "Throughput: "+ EnumChatFormatting.YELLOW +(Amperes*maxEUInput())+EnumChatFormatting.RESET+" EU/t"
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": " + EnumChatFormatting.YELLOW + (Amperes * maxEUInput()) + EnumChatFormatting.RESET + " EU/t"//Throughput
         };
     }
 
@@ -127,9 +128,9 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
         if (aBaseMetaTileEntity.isServerSide()) {
             byte Tick = (byte) (aTick % 20);
             if (TRANSFER_AT == Tick) {
-                if(aBaseMetaTileEntity.getStoredEU()>0){
-                    setEUVar(aBaseMetaTileEntity.getStoredEU()-Amperes);
-                    if(aBaseMetaTileEntity.getStoredEU()<0){
+                if (aBaseMetaTileEntity.getStoredEU() > 0) {
+                    setEUVar(aBaseMetaTileEntity.getStoredEU() - Amperes);
+                    if (aBaseMetaTileEntity.getStoredEU() < 0) {
                         setEUVar(0);
                     }
                 }

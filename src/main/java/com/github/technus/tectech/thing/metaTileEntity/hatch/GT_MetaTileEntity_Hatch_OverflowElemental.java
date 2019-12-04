@@ -15,6 +15,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -23,6 +24,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.Locale;
 
@@ -31,6 +33,8 @@ import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 /**
  * Created by danie_000 on 12.12.2016.
@@ -44,12 +48,14 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     public final float overflowMax;
     private final float overflowDisperse;
 
+    private String clientLocale = "en_US";
+
     public GT_MetaTileEntity_Hatch_OverflowElemental(int aID, String aName, String aNameRegional, int aTier, float max) {
-        super(aID, aName, aNameRegional, aTier, 0, "Disposes excess elemental Matter");
+        super(aID, aName, aNameRegional, aTier, 0, translateToLocal("gt.blockmachines.hatch.emmuffler.desc.0"));//Disposes excess elemental Matter
         overflowMatter = max / 2;
         overflowMax = max;
         overflowDisperse = overflowMax / (float) (30 - aTier);
-        Util.setTier(aTier,this);
+        Util.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_OverflowElemental(String aName, int aTier, float max, String aDescription, ITexture[][][] aTextures) {
@@ -84,9 +90,9 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         return new String[]{
                 CommonValues.TEC_MARK_EM,
                 mDescription,
-                "Mass capacity: " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c\u00b2",
-                "Disposal Speed: " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c\u00b2)/s",
-                "DO NOT OBSTRUCT THE OUTPUT!"
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c\u00b2",
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c\u00b2)/s",
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.3")
         };
     }
 
@@ -142,10 +148,10 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == DISPERSE_AT) {
             if (aBaseMetaTileEntity.isActive()) {
                 if (overflowMatter > overflowDisperse) {
-                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity,overflowDisperse);
+                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowDisperse);
                     overflowMatter -= overflowDisperse;
                 } else {
-                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity,overflowMatter);
+                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowMatter);
                     overflowMatter = 0;
                     aBaseMetaTileEntity.setActive(false);
                     aBaseMetaTileEntity.setLightValue((byte) 0);
@@ -166,22 +172,40 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         //DOES NOT CHECK FOR TOO MUCH, it is done only while putting stuff in (OPTIMIZATION!!!)
     }
 
-    private void vapePollution(IGregTechTileEntity mte){
-        float xPos=mte.getXCoord()+0.5f;
-        float yPos=mte.getYCoord()+0.5f;
-        float zPos=mte.getZCoord()+0.5f;
+    private void vapePollution(IGregTechTileEntity mte) {
+        float xPos = mte.getXCoord() + 0.5f;
+        float yPos = mte.getYCoord() + 0.5f;
+        float zPos = mte.getZCoord() + 0.5f;
 
         int xDirShift = ForgeDirection.getOrientation(mte.getFrontFacing()).offsetX;
         int yDirShift = ForgeDirection.getOrientation(mte.getFrontFacing()).offsetY;
         int zDirShift = ForgeDirection.getOrientation(mte.getFrontFacing()).offsetZ;
 
-        AxisAlignedBB aabb=AxisAlignedBB.getBoundingBox(xPos-.5+xDirShift,yPos-.5+yDirShift,zPos-.5+zDirShift,xPos+.5+xDirShift,yPos+1.5+yDirShift,zPos+.5+zDirShift);
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(xPos - .5 + xDirShift, yPos - .5 + yDirShift, zPos - .5 + zDirShift, xPos + .5 + xDirShift, yPos + 1.5 + yDirShift, zPos + .5 + zDirShift);
         for (Object entity : mte.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, aabb)) {
-            float damagingFactor = (float)Math.log(overflowDisperse);
-            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.confusion.id,1,(int)(damagingFactor*20)));
-            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.wither.id,2,(int)(damagingFactor*15)));
+            float damagingFactor = (float) Math.log(overflowDisperse);
+            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.confusion.id, 1, (int) (damagingFactor * 20)));
+            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.wither.id, 2, (int) (damagingFactor * 15)));
             ((EntityLivingBase) entity).attackEntityFrom(elementalPollution, damagingFactor);
         }
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        super.onRightclick(aBaseMetaTileEntity, aPlayer);
+
+        if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
+            try {
+                EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+                clientLocale = (String) FieldUtils.readField(player, "translator", true);
+            } catch (Exception e) {
+                clientLocale = "en_US";
+            }
+        } else {
+            return true;
+        }
+        System.out.println(clientLocale);
+        return true;
     }
 
     @Override
@@ -192,28 +216,28 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     @Override
     public String[] getInfoData() {
         return new String[]{
-                "Contained mass:",
+                translateToLocalFormatted("tt.keyphrase.Contained_mass", clientLocale) + ":",
                 EnumChatFormatting.RED + Double.toString(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
                 EnumChatFormatting.GREEN + Double.toString(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
-                "Mass Disposal speed: " + EnumChatFormatting.BLUE + overflowDisperse + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
+                translateToLocalFormatted("tt.keyphrase.Mass_Disposal_speed", clientLocale) + ": " + EnumChatFormatting.BLUE + overflowDisperse + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
         };
     }
 
     @Override
     public void onRemoval() {
         if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) {
-            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(),overflowMatter*8D);
+            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(), overflowMatter * 8D);
             if (TecTech.configTecTech.BOOM_ENABLE) {
                 getBaseMetaTileEntity().doExplosion(V[15]);
             } else {
-                TecTech.proxy.broadcast("Muffler BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
+                TecTech.proxy.broadcast(translateToLocalFormatted("tt.keyphrase.Muffler_BOOM", clientLocale) + " " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
             }
         }
     }
 
     //Return - Should Explode
-    public boolean addOverflowMatter(float matter){
-        overflowMatter+=matter;
+    public boolean addOverflowMatter(float matter) {
+        overflowMatter += matter;
         return overflowMatter > overflowMax;
     }
 

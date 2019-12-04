@@ -13,6 +13,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -32,6 +33,7 @@ public final class QuantumGlassBlock extends BlockBase {
         setLightOpacity(0);
         setStepSound(Block.soundTypeMetal);
         setBlockTextureName(MODID + ":blockQuantumGlass");
+        setCreativeTab(creativeTabTecTech);
     }
 
     @Override
