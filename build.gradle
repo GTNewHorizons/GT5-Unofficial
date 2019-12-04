@@ -64,7 +64,7 @@ configurations {
 }
 
 repositories {
-	maven {	//Computercraft
+	maven {	//Computercraft, NEI, chicken core and lib
 		name = "GregTech maven"
 		url = "https://gregtech.overminddl1.com/"
 	}
@@ -75,10 +75,6 @@ repositories {
     maven { //IC2
         name = "IC2 maven"
         url = "http://maven.ic2.player.to/"
-    }
-	maven { //NEI, chicken core and lib
-        name = "Chickenbones maven"
-        url = "http://chickenbones.net/maven/"
     }
 	maven { // Baubles and Thaumcraft
         name 'MC Mod Dev maven'
