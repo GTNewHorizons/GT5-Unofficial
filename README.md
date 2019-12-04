@@ -8,7 +8,7 @@ https://github.com/Technus/TecTech/wiki
 http://jenkins.usrv.eu:8080/job/Tec%20Tech/
 
 # Runtime Dependencies?
-https://github.com/Technus/TecTech/blob/master/src/main/java/com/github/technus/tectech/TecTech.java#L37
+https://github.com/Technus/TecTech/blob/master/src/main/java/com/github/technus/tectech/TecTech.java#L33
 - Required After
 
 
