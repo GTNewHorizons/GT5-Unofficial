@@ -139,8 +139,12 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private void makeStick2() {
         String s = tRecipe.mOutput.getDisplayName();
         if (getBaseMetaTileEntity().isServerSide()) {
-            s = lServerNames.get(tRecipe.mOutput.getDisplayName());
-            if (s == null) {
+            if(lServerNames != null) {
+                s = lServerNames.get(tRecipe.mOutput.getDisplayName());
+                if (s == null) {
+                    s = tRecipe.mOutput.getDisplayName();
+                }
+            }else{
                 s = tRecipe.mOutput.getDisplayName();
             }
         }
