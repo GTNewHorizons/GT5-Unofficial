@@ -58,6 +58,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.werkstoffHashMap;
+import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.werkstoffHashSet;
 
 public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRadMaterial {
 
@@ -69,7 +70,6 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         }
     };
     protected final OrePrefixes orePrefixes;
-    private final short aNumToGen = (short) werkstoffHashMap.size();
 
     public BW_MetaGenerated_Items(OrePrefixes orePrefixes, Object unused){
         super("bwMetaGeneratedGTEnhancement" + orePrefixes.name(), (short) 32766, (short) 0);
@@ -80,10 +80,9 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         super("bwMetaGenerated" + orePrefixes.name(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
         this.setCreativeTab(BW_MetaGenerated_Items.metaTab);
-        for (int i = 0; i < this.aNumToGen; i++) {
-            ItemStack tStack = new ItemStack(this, 1, i);
-            Werkstoff w = werkstoffHashMap.get((short) i);
-            if (w == null || ((w.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) != 0) )
+        for (Werkstoff w : werkstoffHashSet) {
+            ItemStack tStack = new ItemStack(this, 1, w.getmID());
+            if (((w.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) != 0) )
                 continue;
             if ((w.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) == 0 && Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes) != 0)
                 continue;
@@ -172,10 +171,9 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
-        for (int i = 0; i < this.aNumToGen; i++) {
-            Werkstoff werkstoff = werkstoffHashMap.get((short) i);
+        for (Werkstoff werkstoff : werkstoffHashSet) {
             if (werkstoff != null && ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) != 0) && ((werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) == 0)) {
-                ItemStack tStack = new ItemStack(this, 1, i);
+                ItemStack tStack = new ItemStack(this, 1, werkstoff.getmID());
                 aList.add(tStack);
             }
         }
