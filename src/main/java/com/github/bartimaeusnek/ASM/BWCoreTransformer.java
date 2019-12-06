@@ -40,7 +40,7 @@ public class BWCoreTransformer implements IClassTransformer {
             "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
             "PLACING MY GLASS-BLOCK RUNNABLE INTO THE GT_API",
             "DUCTTAPING RWG WORLDEN FAILS",
-            "REMOVING 12% BONUS OUTPUTS FROM GT++ SIFTER"
+           // "REMOVING 12% BONUS OUTPUTS FROM GT++ SIFTER"
     };
     public static final String[] CLASSESBEEINGTRANSFORMED = {
             "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
@@ -49,7 +49,7 @@ public class BWCoreTransformer implements IClassTransformer {
             "thaumcraft.common.tiles.TileWandPedestal",
             "gregtech.GT_Mod",
             "rwg.world.ChunkGeneratorRealistic",
-            "gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialSifter"
+           // "gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialSifter"
     };
     static boolean obfs;
 
@@ -286,11 +286,11 @@ public class BWCoreTransformer implements IClassTransformer {
                         }
                     }
                 }
-                case 6: {
-                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
-                    ((IntInsnNode) methods.get(11).instructions.get(10)).operand = 10000;
-                    break scase;
-                }
+//                case 6: {
+//                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
+//                    ((IntInsnNode) methods.get(11).instructions.get(10)).operand = 10000;
+//                    break scase;
+//                }
                 default: {
                     BWCore.BWCORE_LOG.info("Could not find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
                     return basicClass;

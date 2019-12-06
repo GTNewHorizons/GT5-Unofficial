@@ -25,15 +25,22 @@ package com.github.bartimaeusnek.bartworks.server.EventHandler;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.net.OreDictCachePacket;
 import com.github.bartimaeusnek.bartworks.common.net.ServerJoinedPackage;
+import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ServerEventHandler {
 
+    //MinecraftForge.EVENT_BUS
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
         if (event == null || !(event.entity instanceof EntityPlayerMP) || !FMLCommonHandler.instance().getSide().isServer())
@@ -42,23 +49,35 @@ public class ServerEventHandler {
         MainMod.BW_Network_instance.sendToPlayer(new ServerJoinedPackage(null),(EntityPlayerMP) event.entity);
     }
 
-//    @SubscribeEvent(priority = EventPriority.HIGHEST)
-//    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
-//        if (!BWUnificationEnforcer.isEnabled() || event == null || !(event.player instanceof EntityPlayerMP) || !FMLCommonHandler.instance().getSide().isServer())
-//            return;
-//
-//        for (int i = 0; i < event.player.inventory.mainInventory.length; i++) {
-//           ItemStack stack = event.player.inventory.mainInventory[i];
-//           for (int id : OreDictionary.getOreIDs(stack))
-//               if (BWUnificationEnforcer.getUnificationTargets().contains(OreDictionary.getOreName(id))){
-//                   ArrayList<ItemStack> stacks = OreDictionary.getOres(OreDictionary.getOreName(id));
-//                   for (int j = 0; j < stacks.size(); j++) {
-//                       GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(stacks.get(j).getItem());
-//                       if (UI.modId.equals(MainMod.MOD_ID)){
-//                           event.player.inventory.mainInventory[i] = stacks.get(j).copy().splitStack(stack.stackSize);
-//                       }
-//                   }
-//           }
-//       }
-//    }
+    //FMLCommonHandler.instance().bus()
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
+        if (event == null || !(event.player instanceof EntityPlayerMP))
+            return;
+
+        boolean replace = false;
+        ItemStack toReplace = null;
+        for (int i = 0; i < event.player.inventory.mainInventory.length; i++) {
+           ItemStack stack = event.player.inventory.mainInventory[i];
+           if (stack == null)
+               continue;
+           int[] oreIDs = OreDictionary.getOreIDs(stack);
+           if (oreIDs.length > 0){
+               for (int oreID : oreIDs) {
+                   String oreDictName = OreDictionary.getOreName(oreID);
+                   for (Werkstoff e : Werkstoff.werkstoffHashSet) {
+                       replace = e.getGenerationFeatures().enforceUnification;
+                       if (replace && oreDictName.contains(e.getVarName())) {
+                           String prefix = oreDictName.replace(e.getVarName(), "");
+                           toReplace = GT_OreDictUnificator.get(OrePrefixes.getPrefix(prefix),e.getVarName(),stack.stackSize);
+                       }
+                   }
+               }
+           }
+           if (replace) {
+               event.player.inventory.setInventorySlotContents(i, toReplace);
+               replace = false;
+           }
+       }
+    }
 }

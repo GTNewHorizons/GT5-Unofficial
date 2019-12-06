@@ -31,6 +31,8 @@ import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_SmallOres;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_OreLayer;
+import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b;
+import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128ba;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.OrePrefixes;
@@ -74,6 +76,10 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
             HashSet<ItemStack> result = new HashSet<>();
             Werkstoff.werkstoffHashSet.stream().filter(w -> w.getGenerationFeatures().hasOres()).forEach(w -> result.add(w.get(OrePrefixes.ore)));
             result.forEach(this::loadCraftingRecipes);
+            result.clear();
+            Werkstoff.werkstoffHashSet.stream().filter(w -> w.getGenerationFeatures().hasOres()).forEach(w -> result.add(w.get(OrePrefixes.oreSmall)));
+            result.forEach(this::loadCraftingRecipes);
+            result.clear();
             HashSet<TemplateRecipeHandler.CachedRecipe> hashSet = new HashSet<>(this.arecipes);
             this.arecipes.clear();
             this.arecipes.addAll(hashSet);
@@ -95,8 +101,6 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
         GuiDraw.drawString(ChatColorHelper.BOLD + "Primary:", 0, 50, 0, false);
         GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(0).item.getDisplayName(), 0, 60, 0, false);
 
-
-
         if (!cachedOreRecipe.small) {
             GuiDraw.drawString(ChatColorHelper.BOLD + "Secondary:", 0, 70, 0, false);
             GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(1).item.getDisplayName(), 0, 80, 0, false);
@@ -116,7 +120,13 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
     public void loadCraftingRecipes(ItemStack result) {
         Block ore = Block.getBlockFromItem(result.getItem());
         if (ore instanceof BW_MetaGenerated_Ores) {
-            BW_OreLayer.NEIMAP.get((short) result.getItemDamage()).forEach(l -> this.arecipes.add(new CachedOreRecipe(l, result, ore instanceof BW_MetaGenerated_SmallOres)));
+            BW_OreLayer.NEIMAP.get(
+                    (short) result.getItemDamage())
+                    .stream()
+                    .filter(l -> !(ore instanceof BW_MetaGenerated_SmallOres)     ||
+                                 !(l.getClass().equals(BW_WorldGenRoss128b.class) ||
+                                 l.getClass().equals(BW_WorldGenRoss128ba.class)))
+                    .forEach(l -> this.arecipes.add(new CachedOreRecipe(l, result, ore instanceof BW_MetaGenerated_SmallOres)));
         }
     }
 
@@ -135,11 +145,11 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
         public CachedOreRecipe(BW_OreLayer worldGen, ItemStack result, boolean smallOres) {
             this.worldGen = worldGen;
             this.stack = new PositionedStack(result, 0, 0);
-            this.small=smallOres;
+            this.small = smallOres;
         }
         boolean small;
         BW_OreLayer worldGen;
-        PositionedStack stack ;
+        PositionedStack stack;
 
             @Override
             public PositionedStack getResult() {

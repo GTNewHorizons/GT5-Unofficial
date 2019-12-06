@@ -155,10 +155,10 @@ public final class MainMod {
     public void init(FMLInitializationEvent init) {
         if (FMLCommonHandler.instance().getSide().isClient() && ConfigHandler.tooltips)
             MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
+        ServerEventHandler serverEventHandler = new ServerEventHandler();
         if (FMLCommonHandler.instance().getSide().isServer()) {
-            ServerEventHandler serverEventHandler = new ServerEventHandler();
             MinecraftForge.EVENT_BUS.register(serverEventHandler);
-//            FMLCommonHandler.instance().bus().register(serverEventHandler);
+            FMLCommonHandler.instance().bus().register(serverEventHandler);
         }
         if (ConfigHandler.BioLab)
             new BioLabLoader().run();

@@ -182,10 +182,19 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
         this.texSet = texSet;
 
-        if (this.mOreByProducts.isEmpty()) {
-            this.mOreByProducts.add(this);
-            this.mOreByProducts.add(this);
-            this.mOreByProducts.add(this);
+        switch(this.mOreByProducts.size()) {
+            case 0 :
+                this.mOreByProducts.add(this);
+                this.mOreByProducts.add(this);
+                this.mOreByProducts.add(this);
+                break;
+            case 1:
+                this.mOreByProducts.add(this);
+                this.mOreByProducts.add(this);
+                break;
+            case 2:
+                this.mOreByProducts.add(this);
+                break;
         }
 
         Werkstoff.werkstoffHashSet.add(this);
@@ -368,7 +377,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(this)),fluidAmount);
     }
 
-
     public ItemStack get(OrePrefixes prefixes, int amount) {
         return WerkstoffLoader.getCorrespondingItemStack(prefixes, this, amount);
     }
@@ -386,7 +394,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     public int getDurability() {
         return this.stats.durOverride > 0 ? this.stats.durOverride : (int) (this.stats.durMod * ((0.01f * (float) this.getStats().getMeltingPoint() * (float) this.getStats().getMass()) / (float) this.getContents().getKey()));
     }
-
 
     public enum Types {
         MATERIAL, COMPOUND, MIXTURE, BIOLOGICAL, ELEMENT, ISOTOPE, UNDEFINED;
@@ -697,7 +704,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return this;
         }
 
-        public Werkstoff.Stats setmTC_AspectsVarArg(Pair<Object, Integer>... mTC_Aspects) {
+        @SafeVarargs
+        public final Werkstoff.Stats setmTC_AspectsVarArg(Pair<Object, Integer>... mTC_Aspects) {
             this.mTC_Aspects = mTC_Aspects;
             return this;
         }

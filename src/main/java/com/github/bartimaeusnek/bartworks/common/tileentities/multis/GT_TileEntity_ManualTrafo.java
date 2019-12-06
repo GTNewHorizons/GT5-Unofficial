@@ -49,7 +49,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
     private static final byte MULTI_UPSTEP = 2;
     private static final byte MULTI_DOWNSTEP = 3;
     private byte mode;
-    private final byte texid = 2;
+    private byte texid = 2;
     private long mCoilWicks;
     private boolean upstep = true;
 
@@ -93,9 +93,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
             return this.onRunningTickTabbedMode();
         }
 
-        boolean ret = this.drainEnergyInput(this.getInputTier() * 2 * this.mEnergyHatches.size()) && this.addEnergyOutput(this.getInputTier() * 2 * this.mEnergyHatches.size() * (long) this.mEfficiency / this.getMaxEfficiency(null));
-
-        return ret;
+        return this.drainEnergyInput(this.getInputTier() * 2 * this.mEnergyHatches.size()) && this.addEnergyOutput(this.getInputTier() * 2 * this.mEnergyHatches.size() * (long) this.mEfficiency / this.getMaxEfficiency(null));
     }
 
     public boolean onRunningTickTabbedMode() {
@@ -109,7 +107,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
                     continue;
 
                 long vtp = E.getEUVar() + (vtt);
-                long avt = vtp < E.maxEUStore() ? vtp : E.maxEUStore();
+                long avt = Math.min(vtp, E.maxEUStore());
                 E.setEUVar(avt);
                 I.setEUVar(I.getEUVar() - vtt);
                 ret = true;
@@ -142,7 +140,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
         this.upstep = (this.mode == 0 || this.mode == 2);
         this.mProgresstime = 0;
         this.mMaxProgresstime = 1;
-        this.mEfficiency = this.mEfficiency > 100 ? this.mEfficiency : 100;
+        this.mEfficiency = Math.max(this.mEfficiency, 100);
         return this.upstep ? this.getOutputTier() - this.getInputTier() == this.mCoilWicks : this.getInputTier() - this.getOutputTier() == this.mCoilWicks;
     }
 
@@ -168,7 +166,6 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
                                 ++this.mCoilWicks;
                                 if (this.mCoilWicks % 8 == 0) {
                                     ++y;
-                                    continue;
                                 }
                             } else
                                 break;
@@ -253,7 +250,6 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
                                 ++this.mCoilWicks;
                                 if (this.mCoilWicks % 8 == 0) {
                                     ++y;
-                                    continue;
                                 }
                             } else
                                 break;

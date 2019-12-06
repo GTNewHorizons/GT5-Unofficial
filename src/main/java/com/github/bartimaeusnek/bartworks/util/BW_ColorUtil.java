@@ -25,7 +25,7 @@ package com.github.bartimaeusnek.bartworks.util;
 import gregtech.api.enums.Dyes;
 
 import java.util.Arrays;
-
+@SuppressWarnings("unused")
 public class BW_ColorUtil {
     private BW_ColorUtil(){}
 

@@ -24,6 +24,7 @@ package com.github.bartimaeusnek.bartworks.util;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
@@ -38,17 +39,19 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static gregtech.api.enums.GT_Values.V;
-
+@SuppressWarnings("unused")
 public class BW_Util {
 
     public static final int STANDART = 0;
@@ -201,9 +204,7 @@ public class BW_Util {
     }
 
     public static int calculateSv(Materials materials) {
-        Iterator it = BioVatLogicAdder.RadioHatch.getMaSv().iterator();
-        while (it.hasNext()) {
-            BioVatLogicAdder.MaterialSvPair pair = (BioVatLogicAdder.MaterialSvPair) it.next();
+        for (BioVatLogicAdder.MaterialSvPair pair : BioVatLogicAdder.RadioHatch.getMaSv()) {
             if (pair.getMaterials().equals(materials))
                 return pair.getSievert();
         }
@@ -344,10 +345,8 @@ public class BW_Util {
     public static long getnominalVoltage(GT_MetaTileEntity_MultiBlockBase base) {
         long rVoltage = 0L;
         long rAmperage = 0L;
-        Iterator var3 = base.mEnergyHatches.iterator();
 
-        while (var3.hasNext()) {
-            GT_MetaTileEntity_Hatch_Energy tHatch = (GT_MetaTileEntity_Hatch_Energy) var3.next();
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : base.mEnergyHatches) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 if (rVoltage == 0 || rVoltage > tHatch.getBaseMetaTileEntity().getInputVoltage())
                     rVoltage = tHatch.getBaseMetaTileEntity().getInputVoltage();
@@ -373,6 +372,10 @@ public class BW_Util {
         return tmp.toArray(new ItemStack[0]);
     }
 
+
+    public static Element createNewElement(String variableName, long aProtons, long aNeutrons, long aAdditionalMass, long aHalfLifeSeconds, String aDecayTo, String aName, boolean aIsIsotope){
+        return EnumHelper.addEnum(Element.class,variableName,new Class[]{long.class, long.class, long.class, long.class, String.class, String.class, boolean.class}, new Object[]{aProtons, aNeutrons, aAdditionalMass, aHalfLifeSeconds, aDecayTo, aName, aIsIsotope});
+    }
 
     public static EnumRarity getRarityFromByte(byte b) {
         switch (b) {

@@ -64,7 +64,7 @@ public class BWCore extends DummyModContainer {
         shouldTransform[3] = Loader.isModLoaded("Thaumcraft") && ConfigHandler.enabledPatches[3];
         shouldTransform[4] = true;
         shouldTransform[5] = Loader.isModLoaded("RWG") && ConfigHandler.enabledPatches[5];
-        shouldTransform[6] = true;
+        //shouldTransform[6] = true;
         BWCore.BWCORE_LOG.info("Extra Utilities found and ASM Patch enabled? " + shouldTransform[0]);
         BWCore.BWCORE_LOG.info("Thaumcraft found and ASM Patch enabled? " + shouldTransform[3]);
         BWCore.BWCORE_LOG.info("RWG found and ASM Patch enabled? " + shouldTransform[5]);
