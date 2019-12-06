@@ -163,10 +163,9 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
-        for (int i = 0; i < Werkstoff.werkstoffHashSet.size(); i++) {
-            Werkstoff tMaterial = Werkstoff.werkstoffHashMap.get((short) i);
+        for (Werkstoff tMaterial : Werkstoff.werkstoffHashSet) {
             if ((tMaterial != null) && ((tMaterial.getGenerationFeatures().toGenerate & 0x8) != 0) && ((tMaterial.getGenerationFeatures().blacklist & 0x8) == 0)) {
-                aList.add(new ItemStack(aItem, 1, i));
+                aList.add(new ItemStack(aItem, 1, tMaterial.getmID()));
             }
         }
     }

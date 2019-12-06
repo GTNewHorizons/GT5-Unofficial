@@ -47,11 +47,11 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
         mMaterial = aMaterial;
 
         GT_OreDictUnificator.registerOre(OrePrefixes.frameGt, aMaterial, getStackForm(1));
-        GT_ModHandler.addCraftingRecipe(getStackForm(2), RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"SSS", "SwS", "SSS", 'S', OrePrefixes.stick.get(mMaterial)});
-        RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 4), ItemList.Circuit_Integrated.getWithDamage(0, 4), getStackForm(1), 64, 8);
+        GT_ModHandler.addCraftingRecipe(getStackForm(2), RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"SSS", "SwS", "SSS", 'S', mMaterial.get(OrePrefixes.stick)});
+        RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.getVarName(), 4), ItemList.Circuit_Integrated.getWithDamage(0, 4), getStackForm(1), 64, 8);
     }
 
-    public BW_MetaGeneratedFrames(String aName, Werkstoff aMaterial) {
+    private BW_MetaGeneratedFrames(String aName, Werkstoff aMaterial) {
         super(aName, 0);
         mMaterial = aMaterial;
     }
