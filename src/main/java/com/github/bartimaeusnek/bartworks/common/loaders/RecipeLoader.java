@@ -483,7 +483,7 @@ public class RecipeLoader implements Runnable {
             );
 
             GT_ModHandler.addCraftingRecipe(
-                    new GT_TileEntity_ManualTrafo(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + 1, "bw.manualtrafo", StatCollector.translateToLocal("tile.manutrafo.name")).getStackForm(1L),
+                    /*Loader.isModLoaded("tectech") ? new TT_TileEntity_ManualTrafo(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + 1, "bw.manualtrafo", StatCollector.translateToLocal("tile.manutrafo.name")).getStackForm(1L) :*/ new GT_TileEntity_ManualTrafo(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + 1, "bw.manualtrafo", StatCollector.translateToLocal("tile.manutrafo.name")).getStackForm(1L),
                     RecipeLoader.BITSD,
                     new Object[]{
                             "SCS",

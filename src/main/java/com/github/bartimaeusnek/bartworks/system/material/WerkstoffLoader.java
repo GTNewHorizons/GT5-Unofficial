@@ -1971,7 +1971,7 @@ public class WerkstoffLoader implements Runnable {
             HashMap<ISubTagContainer, Pair<Integer, Integer>> tracker = new HashMap<>();
             int cells = 0;
 
-            if (werkstoff.getStats().isElektrolysis() || werkstoff.getStats().isCentrifuge() || werkstoff.getGenerationFeatures().hasChemicalRecipes()) {
+            if (werkstoff.getGenerationFeatures().hasMixerRecipes() || werkstoff.getStats().isElektrolysis() || werkstoff.getStats().isCentrifuge() || werkstoff.getGenerationFeatures().hasChemicalRecipes()) {
                 for (Pair<ISubTagContainer, Integer> container : werkstoff.getContents().getValue().toArray(new Pair[0])) {
                     if (container.getKey() instanceof Materials) {
                         if (((Materials) container.getKey()).getGas(0) != null || ((Materials) container.getKey()).getFluid(0) != null || ((Materials) container.getKey()).mIconSet == TextureSet.SET_FLUID) {
@@ -2052,19 +2052,19 @@ public class WerkstoffLoader implements Runnable {
                 ItemStack input = werkstoff.get(dust);
                 input.stackSize = werkstoff.getContents().getKey();
                 if (werkstoff.getStats().isElektrolysis())
-                    GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.add(new BWRecipes.DynamicGTRecipe(true, new ItemStack[]{input, cells > 0 ? Materials.Empty.getCells(cells) : null}, stOutputs.toArray(new ItemStack[0]), null, null, new FluidStack[]{null}, new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null}, (int) Math.max(1L, Math.abs(werkstoff.getStats().protons * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 30, 0));
+                    GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.add(new BWRecipes.DynamicGTRecipe(true, new ItemStack[]{input, cells > 0 ? Materials.Empty.getCells(cells) : null}, stOutputs.toArray(new ItemStack[0]), null, null, new FluidStack[]{null}, new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null}, (int) Math.max(1L, Math.abs(werkstoff.getStats().protons / werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 30, 0));
                 if (werkstoff.getStats().isCentrifuge())
-                    GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.add(new BWRecipes.DynamicGTRecipe(true, new ItemStack[]{input, cells > 0 ? Materials.Empty.getCells(cells) : null}, stOutputs.toArray(new ItemStack[0]), null, null, new FluidStack[]{null}, new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null}, (int) Math.max(1L, Math.abs(werkstoff.getStats().mass * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 5, 0));
+                    GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.add(new BWRecipes.DynamicGTRecipe(true, new ItemStack[]{input, cells > 0 ? Materials.Empty.getCells(cells) : null}, stOutputs.toArray(new ItemStack[0]), null, null, new FluidStack[]{null}, new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null}, (int) Math.max(1L, Math.abs(werkstoff.getStats().mass / werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 5, 0));
                 if (werkstoff.getGenerationFeatures().hasChemicalRecipes()) {
                     if (cells > 0)
                         stOutputs.add(Materials.Empty.getCells(cells));
-                    GT_Recipe.GT_Recipe_Map.sChemicalRecipes.add(new BWRecipes.DynamicGTRecipe(true, stOutputs.toArray(new ItemStack[0]),new ItemStack[]{input},null,null,new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null},null,(int) Math.max(1L, Math.abs(werkstoff.getStats().protons * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 30,0));
-                    GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.addRecipe(true, stOutputs.toArray(new ItemStack[0]),new ItemStack[]{input},null,null,new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null},null,(int) Math.max(1L, Math.abs(werkstoff.getStats().protons * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 30,0);
+                    GT_Recipe.GT_Recipe_Map.sChemicalRecipes.add(new BWRecipes.DynamicGTRecipe(true, stOutputs.toArray(new ItemStack[0]),new ItemStack[]{input},null,null,new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null},null,(int) Math.max(1L, Math.abs(werkstoff.getStats().protons / werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 30,0));
+                    GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.addRecipe(true, stOutputs.toArray(new ItemStack[0]),new ItemStack[]{input},null,null,new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null},null,(int) Math.max(1L, Math.abs(werkstoff.getStats().protons / werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 30,0);
                 }
                 if (werkstoff.getGenerationFeatures().hasMixerRecipes()) {
                     if (cells > 0)
                         stOutputs.add(Materials.Empty.getCells(cells));
-                    GT_Recipe.GT_Recipe_Map.sMixerRecipes.add(new BWRecipes.DynamicGTRecipe(true, stOutputs.toArray(new ItemStack[0]),new ItemStack[]{input},null,null,new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null},null,(int) Math.max(1L, Math.abs(werkstoff.getStats().mass * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 5,0));
+                    GT_Recipe.GT_Recipe_Map.sMixerRecipes.add(new BWRecipes.DynamicGTRecipe(true, stOutputs.toArray(new ItemStack[0]),new ItemStack[]{input},null,null,new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null},null,(int) Math.max(1L, Math.abs(werkstoff.getStats().mass / werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 5,0));
                 }
             }
 
@@ -2295,8 +2295,8 @@ public class WerkstoffLoader implements Runnable {
         }
 
         if ((werkstoff.getGenerationFeatures().toGenerate & 0b1) != 0){
-            GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(dust),null,werkstoff.getFluidOrGas(1000),0,werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
-            GT_Values.RA.addFluidSolidifierRecipe(GT_Utility.getIntegratedCircuit(1), werkstoff.getFluidOrGas(1000), werkstoff.get(dust), werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
+            GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(dust),null,werkstoff.getFluidOrGas(1000),0,(int) werkstoff.getStats().mass,werkstoff.getStats().getMass() > 128 ? 64 : 30);
+            GT_Values.RA.addFluidSolidifierRecipe(GT_Utility.getIntegratedCircuit(1), werkstoff.getFluidOrGas(1000), werkstoff.get(dust), (int) werkstoff.getStats().mass,werkstoff.getStats().getMass() > 128 ? 64 : 30);
         }
 
         if (werkstoff.getType().equals(Werkstoff.Types.ELEMENT)) {
@@ -2349,21 +2349,21 @@ public class WerkstoffLoader implements Runnable {
         }
 
         if ((werkstoff.getGenerationFeatures().toGenerate & 0b10) != 0) {
-            GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(ingot),null,werkstoff.getMolten(144),0,werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
+            GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(ingot),null,werkstoff.getMolten(144),0,(int) werkstoff.getStats().mass, werkstoff.getStats().getMass() > 128 ? 64 : 30);
             if ((werkstoff.getGenerationFeatures().toGenerate & 0b10000000) != 0) {
-                GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(stickLong), null, werkstoff.getMolten(144), 0, werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
-                GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(plate), null, werkstoff.getMolten(144), 0, werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
-                GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(stick), null, werkstoff.getMolten(72), 0, werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
+                GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(stickLong), null, werkstoff.getMolten(144), 0, (int) werkstoff.getStats().mass, werkstoff.getStats().getMass() > 128 ? 64 : 30);
+                GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(plate), null, werkstoff.getMolten(144), 0, (int) werkstoff.getStats().mass, werkstoff.getStats().getMass() > 128 ? 64 : 30);
+                GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(stick), null, werkstoff.getMolten(72), 0, (int) werkstoff.getStats().mass, werkstoff.getStats().getMass() > 128 ? 64 : 30);
             }
-            GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(nugget),null,werkstoff.getMolten(16),0,werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
+            GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(nugget),null,werkstoff.getMolten(16),0,(int) werkstoff.getStats().mass, werkstoff.getStats().getMass() > 128 ? 64 : 30);
 
-            GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0), werkstoff.getMolten(144), werkstoff.get(ingot), werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
-            //GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Block.get(0), werkstoff.getMolten(144), werkstoff.get(block), werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
-            GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Nugget.get(0), werkstoff.getMolten(16), werkstoff.get(nugget), werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
+            GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0), werkstoff.getMolten(144), werkstoff.get(ingot), (int) werkstoff.getStats().mass, werkstoff.getStats().getMass() > 128 ? 64 : 30);
+            //GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Block.get(0), werkstoff.getMolten(144), werkstoff.get(block), (int) werkstoff.getStats().mass, werkstoff.getStats().getMass() > 128 ? 64 : 30);
+            GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Nugget.get(0), werkstoff.getMolten(16), werkstoff.get(nugget), (int) werkstoff.getStats().mass, werkstoff.getStats().getMass() > 128 ? 64 : 30);
         } else if ((werkstoff.getGenerationFeatures().toGenerate & 0b1) != 0 && (werkstoff.getGenerationFeatures().toGenerate & 0b10) == 0){
-            GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(dust),null,werkstoff.getMolten(144),0,werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
-            GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(dustSmall),null,werkstoff.getMolten(36),0,werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
-            GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(dustTiny),null,werkstoff.getMolten(16),0,werkstoff.getStats().getMass() > 128 ? 64 : 30, (int) werkstoff.getStats().mass);
+            GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(dust),null,werkstoff.getMolten(144),0,(int) werkstoff.getStats().mass, werkstoff.getStats().getMass() > 128 ? 64 : 30);
+            GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(dustSmall),null,werkstoff.getMolten(36),0,(int) werkstoff.getStats().mass, werkstoff.getStats().getMass() > 128 ? 64 : 30);
+            GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(dustTiny),null,werkstoff.getMolten(16),0,(int) werkstoff.getStats().mass, werkstoff.getStats().getMass() > 128 ? 64 : 30);
        }
     }
 }
