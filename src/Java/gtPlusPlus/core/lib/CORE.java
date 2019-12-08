@@ -5,10 +5,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.mojang.authlib.GameProfile;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTech_API;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.util.sys.GeoUtils;
 import gtPlusPlus.core.util.sys.NetworkUtils;
 import gtPlusPlus.preloader.CORE_Preloader;
@@ -52,7 +55,7 @@ public class CORE {
 
 	public static final String name = "GT++";
 	public static final String MODID = "miscutils";
-	public static final String VERSION = "1.7.03.01";
+	public static final String VERSION = "1.7.03.45";
 	public static String MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
 	public static String USER_COUNTRY = GeoUtils.determineUsersCountry();
 	public static boolean isModUpToDate = Utils.isModUpToDate();
@@ -76,7 +79,7 @@ public class CORE {
 	public static int turbineCutoffBase = 75000;
 
 	//GT++ Fake Player Profile
-	public static GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("gtplusplus.core".getBytes()), "[GT++]");
+	public static final GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("gtplusplus.core".getBytes()), "[GT++]");
 	public static final WeakHashMap<World, EntityPlayerMP> fakePlayerCache = new WeakHashMap<World, EntityPlayerMP>();
 	//Tooltips;
 	public static final String GT_Tooltip = "Added by: " + EnumChatFormatting.DARK_GREEN+"Alkalus "+EnumChatFormatting.GRAY+"- "+EnumChatFormatting.RED+"[GT++]";
@@ -88,6 +91,7 @@ public class CORE {
 	//Because I want to be lazy. Beyond Reality Classic Var.
 	public static boolean BRC = false;
 
+	public static final String SEPERATOR = "/";
 
 
 	/**
@@ -286,7 +290,20 @@ public class CORE {
 	}
 
 	public static final void crash() {
-		System.exit(0);		
+		Logger.ERROR("==========================================================");
+		Logger.ERROR("[GT++ CRASH]");
+		Logger.ERROR("==========================================================");
+		Logger.ERROR("Oooops...");
+		Logger.ERROR("This should only happy in a development environment or when something really bad happens.");
+		Logger.ERROR("==========================================================");
+		Logger.ERROR("Called from: "+ReflectionUtils.getMethodName(0));
+		Logger.ERROR(ReflectionUtils.getMethodName(1));
+		Logger.ERROR(ReflectionUtils.getMethodName(2));
+		Logger.ERROR(ReflectionUtils.getMethodName(3));
+		Logger.ERROR(ReflectionUtils.getMethodName(4));
+		Logger.ERROR(ReflectionUtils.getMethodName(5));
+		Logger.ERROR(ReflectionUtils.getMethodName(6));		
+		FMLCommonHandler.instance().exitJava(0, true);
 	}
 	
 	public static final void gc() {

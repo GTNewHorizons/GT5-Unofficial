@@ -47,6 +47,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -1082,6 +1083,14 @@ public class ItemUtils {
 		return newArray2;
 
 
+	}
+	
+	public static String getFluidName(FluidStack aFluid) {
+		return aFluid != null ? aFluid.getFluid().getLocalizedName(aFluid) : "NULL";
+	}
+	
+	public static String getFluidName(Fluid aFluid) {
+		return aFluid != null ? aFluid.getLocalizedName() : "NULL";
 	}
 
 	public static String getItemName(ItemStack aStack) {

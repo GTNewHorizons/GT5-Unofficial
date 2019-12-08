@@ -118,5 +118,10 @@ public class RotorIridium extends RotorBase{
 		this.setCustomDamage(stack, this.getCustomDamage(stack) + damage);
 		return true;
 	}
+
+	@Override
+	public boolean showDurabilityBar(ItemStack stack) {
+		return false;
+	}
 }
 

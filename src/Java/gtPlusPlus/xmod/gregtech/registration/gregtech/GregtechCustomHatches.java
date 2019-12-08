@@ -11,6 +11,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler_Adv;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Naquadah;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_TurbineProvider;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Input;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Output;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
@@ -61,6 +62,19 @@ public class GregtechCustomHatches {
 				"hatch.naquadah.input.tier.00", // unlocal name
 				"Naquadah Reactor Input hatch" // Local name
 				).getStackForm(1L));
+
+
+		GregtechItemList.Hatch_Input_TurbineHousing.set(new GT_MetaTileEntity_Hatch_TurbineProvider(31025, // ID
+				"hatch.turbine.input.tier.00", // unlocal name
+				"Turbine Housing", // Local name
+				8
+				).getStackForm(1L));
+		
+		
+		
+		
+		
+		
 
 	}
 

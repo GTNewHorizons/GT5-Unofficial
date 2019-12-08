@@ -1063,7 +1063,20 @@ public class RECIPES_Machines {
 						RECIPE_ThermalBoilerCasing);
 
 				//Lava Filter Recipe
-				GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:itemPartCarbonMesh", "RawCarbonMesh", 0, 16), CI.getNumberedCircuit(18), ItemUtils.getSimpleStack(ModItems.itemLavaFilter), 80*20, 16);
+				CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+						CI.getNumberedCircuit(18),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", GTNH ? 64 : 32),
+						ItemUtils.getItemStackOfAmountFromOreDict("wireFineSteel", GTNH ? 64 : 32),
+						ItemUtils.getItemStackOfAmountFromOreDict("ringTumbaga", GTNH ? 32 : 16),
+						ItemUtils.getItemStackOfAmountFromOreDict("foilCopper", GTNH ? 8 : 4),
+						ItemUtils.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:itemPartCarbonMesh", "RawCarbonMesh", 0, 64),
+
+				},
+						CI.getTieredFluid(3, 144), 
+						ItemUtils.getSimpleStack(ModItems.itemLavaFilter, GTNH ? 8 : 16), 
+						1600,
+						240
+						);
 			}
 
 			if (CORE.ConfigSwitches.enableMultiblock_LiquidFluorideThoriumReactor){
@@ -2201,10 +2214,10 @@ public class RECIPES_Machines {
 				ItemList.Hatch_Input_Bus_ZPM.get(1),
 				ItemList.Hatch_Input_Bus_UV.get(1),
 				ItemList.Hatch_Input_Bus_MAX.get(1),
-				GregtechItemList.Hatch_SuperBus_Input_ULV.get(1),
 				GregtechItemList.Hatch_SuperBus_Input_LV.get(1),
 				GregtechItemList.Hatch_SuperBus_Input_MV.get(1),
 				GregtechItemList.Hatch_SuperBus_Input_HV.get(1),
+				GregtechItemList.Hatch_SuperBus_Input_EV.get(1),
 		};
 
 		ItemStack[] mOutputHatch = new ItemStack[] {
@@ -2214,20 +2227,66 @@ public class RECIPES_Machines {
 				ItemList.Hatch_Output_Bus_ZPM.get(1),
 				ItemList.Hatch_Output_Bus_UV.get(1),
 				ItemList.Hatch_Output_Bus_MAX.get(1),
-				GregtechItemList.Hatch_SuperBus_Output_ULV.get(1),
 				GregtechItemList.Hatch_SuperBus_Output_LV.get(1),
 				GregtechItemList.Hatch_SuperBus_Output_MV.get(1),
 				GregtechItemList.Hatch_SuperBus_Output_HV.get(1),
+				GregtechItemList.Hatch_SuperBus_Output_EV.get(1),
 		};
 
-		//Input Buses
-		for (int i = 0; i < 10; i++) {
-			CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
-					CI.getNumberedCircuit(16),
+		// Special Case recipes for ULV buses
+		{
+
+			int i = 0;
+			ItemStack[] aInputs1 = new ItemStack[] {
+					CI.getNumberedCircuit(17),
 					mInputHatch[i],
 					CI.getElectricMotor(i, GTNH ? 8 : 2),
 					CI.getConveyor(i, GTNH ? 10 : 5),
+					CI.getBolt(i, GTNH ? 32 : 16),
+					CI.getTieredComponent(OrePrefixes.circuit, i, GTNH ? 4 : 2)                   
+			};
+			Logger.INFO("[FIND] "+ItemUtils.getArrayStackNames(aInputs1));
+			ItemStack[] aOutputs1 = new ItemStack[] {
+					CI.getNumberedCircuit(18),
+					mOutputHatch[i],
+					CI.getElectricPiston(i, GTNH ? 8 : 2),
+					CI.getConveyor(i, GTNH ? 10 : 5),
 					CI.getGear(i, GTNH ? 6 : 3),
+					CI.getTieredComponent(OrePrefixes.circuit, i, GTNH ? 4 : 2)                   
+			};
+			Logger.INFO("[FIND] "+ItemUtils.getArrayStackNames(aOutputs1));
+
+			FluidStack a1 = CI.getAlternativeTieredFluid(i, 144 * 8);
+			FluidStack a2 = CI.getTertiaryTieredFluid(i, 144 * 8);
+
+
+			Logger.INFO("[FIND] Input Bus Fluid: "+ItemUtils.getFluidName(a1));
+			Logger.INFO("[FIND] Output Bus Fluid: "+ItemUtils.getFluidName(a2));
+
+
+			CORE.RA.addSixSlotAssemblingRecipe(aInputs1,
+					a1,
+					mSuperBusesInput[i].get(1),
+					20 * 30 * 2 * i,
+					(int) GT_Values.V[i]);
+
+			CORE.RA.addSixSlotAssemblingRecipe(aOutputs1,
+					a2,
+					mSuperBusesOutput[i].get(1),
+					20 * 30 * 2 * i,
+					(int) GT_Values.V[i]);
+
+
+		}
+
+		//Input Buses
+		for (int i = 1; i < 10; i++) {
+			CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+					CI.getNumberedCircuit(17),
+					mInputHatch[i],
+					CI.getElectricMotor(i, GTNH ? 8 : 2),
+					CI.getConveyor(i, GTNH ? 10 : 5),
+					CI.getBolt(i, GTNH ? 32 : 16),
 					CI.getTieredComponent(OrePrefixes.circuit, i, GTNH ? 4 : 2)                   
 			},
 					CI.getAlternativeTieredFluid(i, 144 * 8),
@@ -2235,7 +2294,7 @@ public class RECIPES_Machines {
 					(int) GT_Values.V[i]);
 		}
 		//Output Buses
-		for (int i = 0; i < 10; i++) {
+		for (int i = 1; i < 10; i++) {
 			CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
 					CI.getNumberedCircuit(18),
 					mOutputHatch[i],
@@ -2259,7 +2318,7 @@ public class RECIPES_Machines {
 				CI.craftingToolWrench, CI.machineCasing_ULV, CI.craftingToolScrewdriver, 
 				ItemUtils.getSimpleStack(Blocks.hopper), "circuitPrimitive", ItemUtils.getSimpleStack(Blocks.hopper),
 				ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 0, 1));		
-		
+
 		ItemStack[] aRobinators = new ItemStack[] {
 				ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 0, 1),
 				ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 1, 1),
@@ -2272,6 +2331,17 @@ public class RECIPES_Machines {
 
 		for (int i = 0; i < 5; i++) {			
 			if (i == 0) {
+				CORE.RA.addSixSlotAssemblingRecipe(				
+						new ItemStack[] {
+								CI.getNumberedCircuit(17),
+								CI.getTieredMachineCasing(0),
+								ItemUtils.getSimpleStack(Blocks.hopper, 4),
+								CI.getTieredComponent(OrePrefixes.circuit, 0, 2)
+						},					
+						GT_Values.NF, //Input Fluid					
+						aRobinators[i],					
+						45 * 10 * 1, 
+						8);
 				continue;
 			}			
 			int aTier = i+1;
@@ -2283,10 +2353,10 @@ public class RECIPES_Machines {
 					CI.getTieredComponent(OrePrefixes.plate, aTier, 4 * aCostMultiplier),
 					CI.getTieredComponent(OrePrefixes.circuit, i, 2 * aCostMultiplier),
 			};		
-			
+
 			CORE.RA.addSixSlotAssemblingRecipe(				
 					aInputs,					
-					CI.getAlternativeTieredFluid(aTier, (144 * 2 * i)), //Input Fluid					
+					GT_Values.NF, //Input Fluid					
 					aRobinators[i],					
 					45 * 10 * 1 * (i+1), 
 					MaterialUtils.getVoltageForTier(i));	

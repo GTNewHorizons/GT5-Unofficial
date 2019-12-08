@@ -37,10 +37,11 @@ public class SneakManager {
 	public boolean		canSprint		= true;
 	public boolean		isSneaking		= true;
 	public boolean		optionDoubleTap			= true;
-	public boolean		wasSprintDisabled		= false;
+	public boolean		wasSprintDisabled		= false;	
+	public boolean		mIsWearingRing			= false;
 
-	private static State Sprinting = State.ON;
-	private static State Crouching = State.OFF;
+	private State Sprinting = State.ON;
+	private State Crouching = State.OFF;
 	
 	public SneakManager(EntityPlayer aPlayer) {
 		owner = aPlayer;
@@ -78,22 +79,38 @@ public class SneakManager {
 		return State.ON;
 	}
 
-	public State setCrouchingStateON(){
+	private State setCrouchingStateON(){
 		return Crouching = State.ON;
 	}
 
-	public State setCrouchingStateOFF(){
+	private State setCrouchingStateOFF(){
 		return Crouching = State.OFF;
 	}
 
-	public State setSprintingStateON(){
+	private State setSprintingStateON(){
 		return Sprinting = State.ON;
 	}
 
-	public State setSprintingStateOFF(){
+	private State setSprintingStateOFF(){
 		return Sprinting = State.OFF;
 	}
-
+	
+	public void putRingOn() {
+		mIsWearingRing = true;
+		setSprintingStateOFF();
+		setCrouchingStateON();
+	}
+	
+	public void takeRingOff() {
+		mIsWearingRing = false;
+		setSprintingStateON();
+		setCrouchingStateOFF();
+	}
+	
+	public boolean isWearingRing() {
+		return mIsWearingRing;
+	}	
+	
 	public static enum State {
 		ON(true),
 		OFF(false);

@@ -86,15 +86,15 @@ public class RECIPES_SeleniumProcessing {
     
     public static void processCopperRecipes() {
         
-        //Copper
+        //Copper 
         CORE.RA.addDehydratorRecipe(
                 new ItemStack[]{
-                    ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Copper, 1), // Item Input
+                    ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Copper, 1), // Item Input
                 },
                 FluidUtils.getHotWater(1000), // Fluid
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(20), // Fluid
                 new ItemStack[] {
-                        ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Copper, 1),
+                        ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Copper, 1),
                         MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
                         MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
                         MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1),
@@ -121,12 +121,12 @@ public class RECIPES_SeleniumProcessing {
         //Tetra
         CORE.RA.addDehydratorRecipe(
                 new ItemStack[]{
-                    ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Tetrahedrite, 1), // Item Input
+                    ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Tetrahedrite, 1), // Item Input
                 },
                 FluidUtils.getHotWater(1000), // Fluid
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(10), // Fluid
                 new ItemStack[] {
-                        ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Tetrahedrite, 1),
+                        ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Tetrahedrite, 1),
                         MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
                         MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
                         MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1),
@@ -153,12 +153,12 @@ public class RECIPES_SeleniumProcessing {
         //Chalco
         CORE.RA.addDehydratorRecipe(
                 new ItemStack[]{
-                    ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Chalcopyrite, 1), // Item Input
+                    ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 1), // Item Input
                 },
                 FluidUtils.getHotWater(1000), // Fluid
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(10), // Fluid
                 new ItemStack[] {
-                        ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 1),
+                        ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Chalcopyrite, 1),
                         MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
                         MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
                         MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1),
@@ -185,12 +185,12 @@ public class RECIPES_SeleniumProcessing {
         //Malachite
         CORE.RA.addDehydratorRecipe(
                 new ItemStack[]{
-                    ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Malachite, 1), // Item Input
+                    ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Malachite, 1), // Item Input
                 },
                 FluidUtils.getHotWater(1000), // Fluid
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(10), // Fluid
                 new ItemStack[] {
-                        ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Malachite, 1),
+                        ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Malachite, 1),
                         MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
                         MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
                         MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1),

@@ -42,6 +42,11 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.data.ConcurrentHashSet;
+import gtPlusPlus.api.objects.data.ConcurrentSet;
+import gtPlusPlus.api.objects.data.FlexiblePair;
+import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -49,6 +54,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine_NoPlayerInventory;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
@@ -59,6 +65,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.objects.MultiblockRequirements;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -92,12 +99,12 @@ GT_MetaTileEntity_MultiBlockBase {
 		else {
 			aLogger = ReflectionUtils.getMethod(Logger.class, "MACHINE_INFO", String.class);				
 		}
-		
+
 		try {
 			calculatePollutionReduction = GT_MetaTileEntity_Hatch_Muffler.class.getDeclaredMethod("calculatePollutionReduction", int.class);
 		} catch (NoSuchMethodException | SecurityException e) {}
-		
-		
+
+
 		//gregtech.api.util.GT_Recipe.GT_Recipe_Map.findRecipe(IHasWorldObjectAndCoords, GT_Recipe, boolean, long, FluidStack[], ItemStack, ItemStack...)
 
 	}
@@ -135,7 +142,7 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	public abstract boolean hasSlotInGUI();
-	
+
 	public long getTotalRuntimeInTicks() {
 		return this.mTotalRunTime;
 	}
@@ -276,7 +283,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 
 	}
-	
+
 	public int getPollutionReductionForAllMufflers() {
 		int mPollutionReduction=0;
 		for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
@@ -286,7 +293,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		return mPollutionReduction;
 	}
-	
+
 	public long getStoredEnergyInAllEnergyHatches() {
 		long storedEnergy=0;
 		for(GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
@@ -296,7 +303,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		return storedEnergy;
 	}
-	
+
 	public long getMaxEnergyStorageOfAllEnergyHatches() {
 		long maxEnergy=0;
 		for(GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
@@ -408,7 +415,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		String[] aToolTip = new String[(a2 + a3)];
 		aToolTip = ArrayUtils.addAll(aToolTip, x);
 		aToolTip = ArrayUtils.addAll(aToolTip, z);
-		
+
 		if (aCachedToolTip == null || aCachedToolTip.length <= 0) {
 			aCachedToolTip = aToolTip;			
 		}		
@@ -465,66 +472,300 @@ GT_MetaTileEntity_MultiBlockBase {
 	public String getSound() { return ""; }
 
 	public boolean canBufferOutputs(final GT_Recipe aRecipe, int aParallelRecipes) {
-		if (aRecipe.mOutputs.length > 16) {
-			// Gendustry custom comb with a billion centrifuge outputs? Do it anyway.
-			return true;
-		}
 
-		// Count slots available in output buses
-		ArrayList<ItemStack> tBusStacks = new ArrayList<>();
+		Logger.INFO("Determining if we have space to buffer outputs. Parallel: "+aParallelRecipes);
 
-		int tEmptySlots = 0;
-		for (final GT_MetaTileEntity_Hatch_OutputBus tBus : this.mOutputBusses) {
-			if (!isValidMetaTileEntity(tBus)) {
-				continue;
+		// Null recipe or a recipe with lots of outputs? 
+		// E.G. Gendustry custom comb with a billion centrifuge outputs? 
+		// Do it anyway.
+		if (aRecipe == null || aRecipe.mOutputs.length > 16) {
+			return aRecipe == null ? false : true;
+		}		
+
+		// Do we even need to check for item outputs?
+		boolean aDoesOutputItems = aRecipe.mOutputs.length > 0;
+		// Do we even need to check for fluid outputs?
+		boolean aDoesOutputFluids = aRecipe.mFluidOutputs.length > 0;
+
+
+
+		/* ========================================
+		 * Item Management
+		 * ========================================
+		 */
+
+		if (aDoesOutputItems) {
+			Logger.INFO("We have items to output.");
+
+			// How many slots are free across all the output buses?
+			int aInputBusSlotsFree = 0;		
+
+			/*
+			 * Create Variables for Item Output 
+			 */
+
+			AutoMap<FlexiblePair<ItemStack, Integer>> aItemMap = new AutoMap<FlexiblePair<ItemStack, Integer>>();
+			AutoMap<ItemStack> aOutputs = new AutoMap<ItemStack>(aRecipe.mOutputs);
+
+			for (final GT_MetaTileEntity_Hatch_OutputBus tBus : this.mOutputBusses) {
+				if (!isValidMetaTileEntity(tBus)) {
+					continue;
+				}
+				final IInventory tBusInv = tBus.getBaseMetaTileEntity();
+				for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
+					if (tBus.getStackInSlot(i) == null) {
+						aInputBusSlotsFree++;
+					}
+					else {
+						ItemStack aT = tBus.getStackInSlot(i);
+						int aSize = aT.stackSize;
+						aT = aT.copy();
+						aT.stackSize = 0;
+						aItemMap.put(new FlexiblePair<ItemStack, Integer>(aT, aSize));
+					}
+				}		
 			}
-			final IInventory tBusInv = tBus.getBaseMetaTileEntity();
-			for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-				if (tBus.getStackInSlot(i) == null) {
-					tEmptySlots++;
+
+			// Count the slots we need, later we can check if any are able to merge with existing stacks
+			int aRecipeSlotsRequired = 0;		
+
+			// A map to hold the items we will be 'inputting' into the output buses. These itemstacks are actually the recipe outputs.
+			ConcurrentSet<FlexiblePair<ItemStack, Integer>> aInputMap = new ConcurrentHashSet<FlexiblePair<ItemStack, Integer>>();
+
+			// Iterate over the outputs, calculating require stack spacing they will require.
+			for (int i=0;i<aOutputs.size();i++) {
+				ItemStack aY = aOutputs.get(i);
+				if (aY == null) {
+					continue;
 				}
 				else {
-					tBusStacks.add(tBus.getStackInSlot(i));
-				}
+					int aStackSize = aY.stackSize * aParallelRecipes;
+					if (aStackSize > 64) {
+						int aSlotsNeedsForThisStack = (int) Math.ceil((double) ((float) aStackSize / 64f)); 
+						// Should round up and add as many stacks as required nicely.
+						aRecipeSlotsRequired += aSlotsNeedsForThisStack;					
+						for (int o=0;o<aRecipeSlotsRequired;o++) {
+							int aStackToRemove = (aStackSize -= 64) > 64 ? 64 : aStackSize;		
+							aY = aY.copy();
+							aY.stackSize = 0;
+							aInputMap.add(new FlexiblePair<ItemStack, Integer>(aY, aStackToRemove));
+						}					
+					}
+					else {
+						// Only requires one slot
+						aRecipeSlotsRequired++;
+						aY = aY.copy();
+						aY.stackSize = 0;
+						aInputMap.add(new FlexiblePair<ItemStack, Integer>(aY, aStackSize));
+					}	
+				}			
 			}
+
+			// We have items to add to the output buses. See if any are not full stacks and see if we can make them full.
+			if (aInputMap.size() > 0) {
+				// Iterate over the current stored items in the Output busses, if any match and are not full, we can try account for merging.
+				busItems: for (FlexiblePair<ItemStack, Integer> y : aItemMap) {
+					// Iterate over the 'inputs', we can safely remove these as we go.
+					outputItems: for (FlexiblePair<ItemStack, Integer> u : aInputMap) {
+						// Create local vars for readability.
+						ItemStack aOutputBusStack = y.getKey();
+						ItemStack aOutputStack = u.getKey();
+						// Stacks match, including NBT.
+						if (GT_Utility.areStacksEqual(aOutputBusStack, aOutputStack, false)) {							
+							// Stack Matches, but it's full, continue.
+							if (aOutputBusStack.stackSize >= 64) {
+								// This stack is full, no point checking it.
+								continue busItems;
+							}
+							else {
+								// We can merge these two stacks without any hassle.
+								if ((aOutputBusStack.stackSize + aOutputStack.stackSize) <= 64) {							
+									// Update the stack size in the bus storage map.
+									y.setValue(aOutputBusStack.stackSize + aOutputStack.stackSize);							
+									// Remove the 'input' stack from the recipe outputs, so we don't try count it again.
+									aInputMap.remove(u);
+									continue outputItems;
+								}
+								// Stack merging is too much, so we fill this stack, leave the remainder.
+								else {
+									int aRemainder = (aOutputBusStack.stackSize + aOutputStack.stackSize) - 64;									
+									// Update the stack size in the bus storage map.
+									y.setValue(64);									
+									// Create a new object to iterate over later, with the remainder data;
+									FlexiblePair<ItemStack, Integer> t = new FlexiblePair<ItemStack, Integer>(u.getKey(), aRemainder);									
+									// Remove the 'input' stack from the recipe outputs, so we don't try count it again.
+									aInputMap.remove(u);
+									// Add the remainder stack.
+									aInputMap.add(t);
+									continue outputItems;									
+								}
+							}							
+						}
+						else {
+							continue outputItems;
+						}
+					}
+				}		
+			}
+
+			// We have stacks that did not merge, do we have space for them?
+			if (aInputMap.size() > 0) {			
+				if (aInputMap.size() > aInputBusSlotsFree) {
+					// We do not have enough free slots in total to accommodate the remaining managed stacks.
+					Logger.INFO("Failed to find enough space for all item outputs. Free: "+aInputBusSlotsFree+", Required: "+aInputMap.size());
+					return false;
+				}			
+			}			
+
+			/*
+			 * End Item Management
+			 */
+
 		}
 
-		int slotsNeeded = aRecipe.mOutputs.length;
-		for (final ItemStack tRecipeOutput: aRecipe.mOutputs) {
-			if (tRecipeOutput == null) continue;
-			int amount = tRecipeOutput.stackSize * aParallelRecipes;
-			for (final ItemStack tBusStack : tBusStacks) {
-				if (GT_Utility.areStacksEqual(tBusStack, tRecipeOutput)) {
-					if (tBusStack.stackSize + amount <= tBusStack.getMaxStackSize()) {
-						slotsNeeded--;
-						break;
-					}
-				}
-			}
-		}
-		// Enough open slots?
-		if (tEmptySlots < slotsNeeded) return false;
 
-		// For each output fluid, make sure an output hatch can accept it.
-		for (FluidStack tRecipeFluid: aRecipe.mFluidOutputs) {
-			if (tRecipeFluid == null) continue;
-			boolean tCanBufferFluid = false;
-			int tRecipeAmount = tRecipeFluid.amount;
-			for (final GT_MetaTileEntity_Hatch_Output tHatch : this.mOutputHatches) {
-				FluidStack tHatchFluid = tHatch.getFluid();
-				if (tHatchFluid == null) {
-					if(tHatch.getCapacity() > tRecipeAmount) {
-						tCanBufferFluid = true;
-						break;
-					}
+
+
+
+		/* ========================================
+		 * Fluid Management
+		 * ========================================
+		 */
+
+
+
+		if (aDoesOutputFluids) {
+			Logger.INFO("We have Fluids to output.");
+			// How many slots are free across all the output buses?
+			int aFluidHatches = 0;
+			int aEmptyFluidHatches = 0;
+			int aFullFluidHatches = 0;
+			// Create Map for Fluid Output 
+			ConcurrentHashSet<Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer>> aOutputHatches = new ConcurrentHashSet<Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer>>();
+			for (final GT_MetaTileEntity_Hatch_Output tBus : this.mOutputHatches) {
+				if (!isValidMetaTileEntity(tBus)) {
+					continue;
 				}
-				else if (tHatchFluid.isFluidEqual(tRecipeFluid) && tHatch.getCapacity() - tHatchFluid.amount > tRecipeAmount) {
-					tCanBufferFluid = true;
-					break;
+				aFluidHatches++;			
+				// Map the Hatch with the space left for easy checking later.
+				if (tBus.getFluid() == null) {
+					aOutputHatches.add(new Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer>(tBus, null, tBus.getCapacity()));
+				}
+				else {				
+					int aSpaceLeft = tBus.getCapacity() - tBus.getFluidAmount();				
+					aOutputHatches.add(new Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer>(tBus, tBus.getFluid(), aSpaceLeft));				
 				}
 			}
-			if (!tCanBufferFluid) return false;
+			// Create a map of all the fluids we would like to output, we can iterate over this and see how many we can merge into existing hatch stacks.
+			ConcurrentHashSet<FluidStack> aOutputFluids = new ConcurrentHashSet<FluidStack>();
+			// Ugly ass boxing
+			aOutputFluids.addAll(new AutoMap<FluidStack>(aRecipe.mFluidOutputs));
+			// Iterate the Hatches, updating their 'stored' data.
+			aHatchIterator: for (Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer> aHatchData : aOutputHatches) {
+				// The Hatch Itself
+				GT_MetaTileEntity_Hatch_Output aHatch = aHatchData.getValue_1();
+				// Fluid in the Hatch
+				FluidStack aHatchStack = aHatchData.getValue_2();
+				// Space left in Hatch
+				int aSpaceLeftInHatch = aHatch.getCapacity() - aHatch.getFluidAmount();				
+				// Hatch is full,
+				if (aSpaceLeftInHatch <= 0) {
+					aFullFluidHatches++;
+					aOutputHatches.remove(aHatchData);
+					continue aHatchIterator;
+				}
+				// Hatch has space
+				else {					
+					// Check if any fluids match
+					aFluidMatch: for (FluidStack aOutputStack : aOutputFluids) {
+						if (GT_Utility.areFluidsEqual(aHatchStack, aOutputStack)) {
+							int aFluidToPutIntoHatch = aOutputStack.amount;
+							// Not Enough space to insert all of the fluid.
+							// We fill this hatch and add a smaller Fluidstack back to the iterator.
+							if (aSpaceLeftInHatch < aFluidToPutIntoHatch) {								
+								// Copy existing Hatch Stack
+								FluidStack aNewHatchStack = aHatchStack.copy();
+								aNewHatchStack.amount = 0;
+								// Copy existing Hatch Stack again
+								FluidStack aNewOutputStack = aHatchStack.copy();
+								aNewOutputStack.amount = 0;								
+								// How much fluid do we have left after we fill the hatch?
+								int aFluidLeftAfterInsert = aFluidToPutIntoHatch - aSpaceLeftInHatch;								
+								// Set new stacks to appropriate values
+								aNewHatchStack.amount = aHatch.getCapacity();
+								aNewOutputStack.amount = aFluidLeftAfterInsert;								
+								// Remove fluid from output list, merge success
+								aOutputFluids.remove(aOutputStack);								
+								// Remove hatch from hatch list, data is now invalid.
+								aOutputHatches.remove(aHatchData);								
+								// Add remaining Fluid to Output list
+								aOutputFluids.add(aNewOutputStack);								
+								// Re-add hatch to hatch list, with new data.
+								Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer> aNewHatchData = new Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer>(aHatch, aNewHatchStack, aNewHatchStack.amount);
+								aOutputHatches.add(aNewHatchData);								
+								continue aHatchIterator;								
+							}
+							// We can fill this hatch perfectly (rare case), may as well add it directly to the full list.
+							else if (aSpaceLeftInHatch == aFluidToPutIntoHatch) {
+								// Copy Old Stack
+								FluidStack aNewHatchStack = aHatchStack.copy();
+								// Add in amount from output stack
+								aNewHatchStack.amount += aOutputStack.amount;
+								// Remove fluid from output list, merge success
+								aOutputFluids.remove(aOutputStack);
+								// Remove hatch from hatch list, data is now invalid.
+								aOutputHatches.remove(aHatchData);
+								// Re-add hatch to hatch list, with new data.
+								Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer> aNewHatchData = new Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer>(aHatch, aNewHatchStack, aNewHatchStack.amount);
+								aOutputHatches.add(aNewHatchData);
+								continue aHatchIterator;
+							}
+							// We have more space than we need to merge, so we remove the stack from the output list and update the hatch list.
+							else {		
+								// Copy Old Stack
+								FluidStack aNewHatchStack = aHatchStack.copy();
+								// Add in amount from output stack
+								aNewHatchStack.amount += aOutputStack.amount;
+								// Remove fluid from output list, merge success
+								aOutputFluids.remove(aOutputStack);
+								// Remove hatch from hatch list, data is now invalid.
+								aOutputHatches.remove(aHatchData);
+								// Re-add hatch to hatch list, with new data.
+								Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer> aNewHatchData = new Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer>(aHatch, aNewHatchStack, aNewHatchStack.amount);
+								aOutputHatches.add(aNewHatchData);
+								// Check next fluid
+								continue aFluidMatch;
+							}
+
+						}
+						else {
+							continue aFluidMatch;
+						}
+					}					
+				}
+			}
+
+			for (Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer> aFreeHatchCheck : aOutputHatches) {
+				// Free Hatch
+				if (aFreeHatchCheck.getValue_2() == null || aFreeHatchCheck.getValue_3() == 0 || aFreeHatchCheck.getValue_1().getFluid() == null) {
+					aEmptyFluidHatches++;
+				}
+			}
+
+			// We have Fluid Stacks we did not merge. Do we have space?
+			if (aOutputFluids.size() > 0) {
+				// Not enough space to add fluids.
+				if (aOutputFluids.size() < aEmptyFluidHatches) {
+					Logger.INFO("Failed to find enough space for all fluid outputs.");
+					return false;
+				}
+			}
+
+			/*
+			 * End Fluid Management
+			 */			
 		}
+
 		return true;
 	}
 
@@ -534,20 +775,17 @@ GT_MetaTileEntity_MultiBlockBase {
 	public static Method aLogger = null;
 
 	public void log(String s) {
-
-		boolean isDebugLogging = CORE.DEBUG;
-		boolean reset = false;
-
-		if (reset) {
-			if (isDebugLogging) {
+		boolean reset = true;
+		if (reset || aLogger == null) {
+			if (!AsmConfig.disableAllLogging) {
 				aLogger = ReflectionUtils.getMethod(
 						Logger.class, "INFO", String.class
-				);
+						);
 			}
 			else {
 				aLogger = ReflectionUtils.getMethod(
 						Logger.class, "MACHINE_INFO", String.class
-				);
+						);
 			}
 		}
 		try {
@@ -555,6 +793,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		catch (IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -739,8 +978,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
-		// Based on the Processing Array. A bit overkill, but very flexible.	
-
+		// Based on the Processing Array. A bit overkill, but very flexible.		
 
 		// Reset outputs and progress stats
 		this.mEUt = 0;
@@ -798,6 +1036,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 
 		// -- Try not to fail after this point - inputs have already been consumed! --
+
 
 
 		// Convert speed bonus to duration multiplier
@@ -1315,7 +1554,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		boolean result = false;
 		if (this.mInventory[1] == null) {
 			this.mInventory[1] = aNewGuiSlotContents != null ? aNewGuiSlotContents.copy() : null;
-			aNewGuiSlotContents = null;
+			this.depleteInput(aNewGuiSlotContents);
 			this.updateSlots();
 			result = true;
 		}	
@@ -1383,36 +1622,36 @@ GT_MetaTileEntity_MultiBlockBase {
 	public boolean causeMaintenanceIssue() {
 		boolean b = false;
 		switch (this.getBaseMetaTileEntity().getRandomNumber(6)) {
-		case 0 : {
-			this.mWrench = false;
-			b = true;
-			break;
-		}
-		case 1 : {
-			this.mScrewdriver = false;
-			b = true;
-			break;
-		}
-		case 2 : {
-			this.mSoftHammer = false;
-			b = true;
-			break;
-		}
-		case 3 : {
-			this.mHardHammer = false;
-			b = true;
-			break;
-		}
-		case 4 : {
-			this.mSolderingTool = false;
-			b = true;
-			break;
-		}
-		case 5 : {
-			this.mCrowbar = false;
-			b = true;
-			break;
-		}
+			case 0 : {
+				this.mWrench = false;
+				b = true;
+				break;
+			}
+			case 1 : {
+				this.mScrewdriver = false;
+				b = true;
+				break;
+			}
+			case 2 : {
+				this.mSoftHammer = false;
+				b = true;
+				break;
+			}
+			case 3 : {
+				this.mHardHammer = false;
+				b = true;
+				break;
+			}
+			case 4 : {
+				this.mSolderingTool = false;
+				b = true;
+				break;
+			}
+			case 5 : {
+				this.mCrowbar = false;
+				b = true;
+				break;
+			}
 		}
 		return b;
 	}
@@ -1849,7 +2088,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	@SuppressWarnings("rawtypes")
 	public boolean isThisHatchMultiDynamo(Object aMetaTileEntity){
-		Class mDynamoClass;
+		Class<?> mDynamoClass;
 		mDynamoClass = ReflectionUtils.getClass("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti");
 		if (mDynamoClass != null){
 			if (mDynamoClass.isInstance(aMetaTileEntity)){
@@ -1894,7 +2133,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			try {
 				return (int) calculatePollutionReduction.invoke(i, g);
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				
+
 			}
 		}
 		return 0;

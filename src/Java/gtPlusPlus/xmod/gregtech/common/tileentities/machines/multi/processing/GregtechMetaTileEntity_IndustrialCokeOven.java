@@ -55,7 +55,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Input Bus",
 				"1x Output Bus",
 				"1x Energy Hatch"
-				};
+		};
 	}
 
 	@Override
@@ -101,7 +101,7 @@ extends GregtechMeta_MultiBlockBase {
 	public boolean checkRecipe(final ItemStack aStack) {
 		return checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), 0);
 	}
-	
+
 	@Override
 	public int getMaxParallelRecipes() {
 		return this.mLevel * 12;
@@ -118,19 +118,21 @@ extends GregtechMeta_MultiBlockBase {
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
 		this.mLevel = 0;
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
+			Logger.INFO("No air? "+xDir+", 1, "+zDir);
 			return false;
 		}
 
 		final byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 1, zDir);
 		switch (tUsedMeta) {
-		case 2:
-			this.mLevel = 1;
-			break;
-		case 3:
-			this.mLevel = 2;
-			break;
-		default:
-			return false;
+			case 2:
+				this.mLevel = 1;
+				break;
+			case 3:
+				this.mLevel = 2;
+				break;
+			default:
+				Logger.INFO("Bad Heating Coils.");
+				return false;
 		}
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
@@ -140,7 +142,7 @@ extends GregtechMeta_MultiBlockBase {
 						Logger.INFO("Heating Coils missing.");
 						return false;
 					}
-					
+
 					if (!isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(1), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j), ModBlocks.blockCasingsMisc, 1)) {
 						Logger.INFO("Casings missing from top layer of coke oven.");
 						return false;
@@ -158,7 +160,7 @@ extends GregtechMeta_MultiBlockBase {
 					}
 				}
 			}
-		}
+		}	
 		return true;
 	}
 

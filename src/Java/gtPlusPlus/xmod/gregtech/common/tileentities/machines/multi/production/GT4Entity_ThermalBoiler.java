@@ -292,7 +292,19 @@ extends GregtechMeta_MultiBlockBase
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		if (aBaseMetaTileEntity.isServerSide()){
-			//Utils.LOG_INFO("tick: "+aTick);
+			// Reload Lava Filter
+			if (this.getGUIItemStack() == null) {
+				if (this.mInputBusses.size() > 0) {
+					for (GT_MetaTileEntity_Hatch_InputBus aBus : this.mInputBusses) {
+						for (ItemStack aStack : aBus.mInventory) {
+							if (aStack.getItem() instanceof ItemLavaFilter) {
+								this.setGUIItemStack(aStack);								
+							}
+						}						
+					}
+				}
+			}			
+			
 			if (this.mEUt > 0){
 				if (aTick % 600L == 0L){
 					damageFilter();

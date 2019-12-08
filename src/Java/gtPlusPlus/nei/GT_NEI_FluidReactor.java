@@ -65,7 +65,7 @@ extends TemplateRecipeHandler {
 
 	@Override
 	public void loadCraftingRecipes(final String outputId, final Object... results) {
-		if (outputId.equals(this.getOverlayIdentifier())) {
+		if (outputId.equals(this.mRecipeMap.mNEIName)) {
 			for (final GT_Recipe tRecipe : this.mRecipeMap.mRecipeList) {
 				if (!tRecipe.mHidden) {
 					this.arecipes.add(new CachedDefaultRecipe(tRecipe));
@@ -146,7 +146,8 @@ extends TemplateRecipeHandler {
 
 	@Override
 	public String getOverlayIdentifier() {
-		return this.mRecipeMap.mNEIName;
+		//return this.mRecipeMap.mNEIName;
+		return "Penis";
 	}
 
 	@Override
@@ -163,7 +164,8 @@ extends TemplateRecipeHandler {
 
 	@Override
 	public String getRecipeName() {
-		return GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
+		//return GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
+		return "            Chem Plant";
 	}
 
 	@Override
@@ -201,24 +203,24 @@ extends TemplateRecipeHandler {
 
 	@Override
 	public void drawExtras(final int aRecipeIndex) {
-		final int tEUt = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
+		final long tEUt = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
 		final int tDuration = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
 		if (tEUt != 0) {
-			drawText(10, 73, "Total: " + (tDuration * tEUt) + " EU", -16777216);
-			drawText(10, 83, "Usage: " + tEUt + " EU/t", -16777216);
+			drawText(10, 73, "Total: " + (long) (tDuration * tEUt) + " EU", -16777216);
+			//drawText(10, 83, "Usage: " + tEUt + " EU/t", -16777216);
 			if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
-				drawText(10, 93, "Voltage: " + (tEUt / this.mRecipeMap.mAmperage) + " EU", -16777216);
-				drawText(10, 103, "Amperage: " + this.mRecipeMap.mAmperage, -16777216);
+				drawText(10, 83, "Voltage: " + (tEUt / this.mRecipeMap.mAmperage) + " EU/t", -16777216);
+				drawText(10, 93, "Amperage: " + this.mRecipeMap.mAmperage, -16777216);
 			} else {
 				drawText(10, 93, "Voltage: unspecified", -16777216);
 				drawText(10, 103, "Amperage: unspecified", -16777216);
 			}
 		}
 		if (tDuration > 0) {
-			drawText(10, 113, "Time: " + (tDuration < 20 ? "< 1" : Integer.valueOf(tDuration / 20)) + " secs", -16777216);
+			drawText(10, 103, "Time: " + (tDuration < 20 ? "< 1" : Integer.valueOf(tDuration / 20)) + " secs", -16777216);
 		}
 		if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
-			drawText(10, 123, this.mRecipeMap.mNEISpecialValuePre + (((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, -16777216);
+			drawText(10, 113, this.mRecipeMap.mNEISpecialValuePre + (((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, -16777216);
 		}
 	}
 

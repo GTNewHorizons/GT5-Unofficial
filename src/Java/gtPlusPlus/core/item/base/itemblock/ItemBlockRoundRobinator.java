@@ -16,8 +16,6 @@ public class ItemBlockRoundRobinator extends ItemBlockWithMetadata
 	public ItemBlockRoundRobinator(final Block aBlock){
 		super(aBlock, aBlock);
 		this.mBlock = aBlock;
-		this.setMaxDamage(4);
-		this.setHasSubtypes(true);
 	}
 	
 
@@ -40,7 +38,7 @@ public class ItemBlockRoundRobinator extends ItemBlockWithMetadata
 		else if (stack.getItemDamage() == 4) {
 			list.add("1 Item per enabled side every tick");			
 		}		
-		list.add("Top and bottom do not pull, so you must push item in");
+		list.add("Top and bottom do not pull, so you must push items in");
 		list.add("Sides can also be disabled with a screwdriver");	
 		list.add("Shift+RMB with empty hand to view inventory contents");	
 		super.addInformation(stack, aPlayer, list, bool);		
@@ -62,7 +60,7 @@ public class ItemBlockRoundRobinator extends ItemBlockWithMetadata
 	@Override
 	public int getMetadata(final int p_77647_1_)
 	{
-		return super.getMetadata(p_77647_1_);
+		return p_77647_1_;
 	}
 
 	@Override
