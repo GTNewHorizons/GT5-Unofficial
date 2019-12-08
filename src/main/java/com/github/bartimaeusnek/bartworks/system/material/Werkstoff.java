@@ -38,6 +38,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.util.*;
 
+@SuppressWarnings("ALL")
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
@@ -382,17 +383,17 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public byte getToolQuality() {
-        return (byte) ( (15f * (((float)this.getStats().getProtons() / 188f) + (float) this.getStats().getMeltingPoint() / 10801f)) / (float) this.getContents().getKey() );
+        return this.stats.getQualityOverride() > 0 ? this.stats.getQualityOverride() : (byte) ( (15f * (((float)this.getStats().getProtons() / 188f) + (float) this.getStats().getMeltingPoint() / 10801f)) / (float) this.getContents().getKey() );
     }
 
     public float getToolSpeed() {
-        return this.stats.speedOverride > 0f ? this.stats.speedOverride : Math.max(1f,
+        return this.stats.getSpeedOverride() > 0f ? this.stats.getSpeedOverride() : Math.max(1f,
                 2f*((float) -this.getStats().getMass() + 0.1f * (float) this.getStats().getMeltingPoint() + (float) this.getStats().getProtons()) * 0.1f / (float) this.getContents().getKey() * 0.1f * (float) this.getToolQuality()
         );
     }
 
     public int getDurability() {
-        return this.stats.durOverride > 0 ? this.stats.durOverride : (int) (this.stats.durMod * ((0.01f * (float) this.getStats().getMeltingPoint() * (float) this.getStats().getMass()) / (float) this.getContents().getKey()));
+        return this.stats.getDurOverride() > 0 ? this.stats.getDurOverride() : (int) (this.stats.durMod * ((0.01f * (float) this.getStats().getMeltingPoint() * (float) this.getStats().getMass()) / (float) this.getContents().getKey()));
     }
 
     public enum Types {
@@ -669,22 +670,25 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             this.speedOverride = speedOverride;
         }
 
-        public float getTierOverride() {
-            return tierOverride;
+        public byte getQualityOverride() {
+            return qualityOverride;
         }
 
-        public void setTierOverride(float tierOverride) {
-            this.tierOverride = tierOverride;
+        public void setQualityOverride(byte qualityOverride) {
+            this.qualityOverride = qualityOverride;
         }
+
+        byte qualityOverride;
+        int durOverride;
+        float speedOverride;
 
         int meltingPoint;
+
         long protons;
         long neutrons;
         long electrons;
         long mass;
-        int durOverride;
-        float speedOverride;
-        float tierOverride;
+
         float durMod = 1f;
 
         public float getDurMod() {
@@ -775,8 +779,9 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return enchantmentlvl;
         }
 
-        public void setEnchantmentlvl(byte enchantmentlvl) {
+        public Werkstoff.Stats setEnchantmentlvl(byte enchantmentlvl) {
             this.enchantmentlvl = enchantmentlvl;
+            return this;
         }
 
         public boolean isRadioactive() {

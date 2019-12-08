@@ -162,7 +162,7 @@ public class WerkstoffLoader implements Runnable {
             "Zr",
             new Werkstoff.Stats().setProtons(40).setMeltingPoint(2130),
             Werkstoff.Types.ELEMENT,
-            new Werkstoff.GenerationFeatures().onlyDust(),
+            new Werkstoff.GenerationFeatures().onlyDust().enforceUnification(),
             3,
             TextureSet.SET_METALLIC
             //No Byproducts
@@ -1659,7 +1659,7 @@ public class WerkstoffLoader implements Runnable {
                     } catch (NoSuchFieldException | IllegalAccessException ignored){}
                     werkstoffBridgeMaterial.mChemicalFormula = werkstoff.getToolTip();
                     if (Loader.isModLoaded("Thaumcraft"))
-                        werkstoffBridgeMaterial.mAspects=werkstoff.getGTWrappedTCAspects();
+                        werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
                     werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
                     werkstoffBridgeMaterial.mHandleMaterial = werkstoff.contains(SubTag.BURNING) ? Materials.Blaze : werkstoff.contains(SubTag.MAGICAL) ? Materials.Thaumium : werkstoffBridgeMaterial.mDurability > 5120 ? Materials.TungstenSteel : werkstoffBridgeMaterial.mDurability > 1280 ? Materials.Steel : Materials.Wood;
                     //toRem.add(werkstoffBridgeMaterial);
