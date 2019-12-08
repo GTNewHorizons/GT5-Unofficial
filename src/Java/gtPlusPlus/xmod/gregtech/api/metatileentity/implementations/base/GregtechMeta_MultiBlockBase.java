@@ -474,7 +474,7 @@ GT_MetaTileEntity_MultiBlockBase {
 	public boolean canBufferOutputs(final GT_Recipe aRecipe, int aParallelRecipes) {
 
 		Logger.INFO("Determining if we have space to buffer outputs.");
-		
+
 		// Null recipe or a recipe with lots of outputs? 
 		// E.G. Gendustry custom comb with a billion centrifuge outputs? 
 		// Do it anyway.
@@ -736,7 +736,7 @@ GT_MetaTileEntity_MultiBlockBase {
 								// Check next fluid
 								continue aFluidMatch;
 							}
-							
+
 						}
 						else {
 							continue aFluidMatch;
@@ -744,14 +744,14 @@ GT_MetaTileEntity_MultiBlockBase {
 					}					
 				}
 			}
-			
+
 			for (Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer> aFreeHatchCheck : aOutputHatches) {
 				// Free Hatch
 				if (aFreeHatchCheck.getValue_2() == null || aFreeHatchCheck.getValue_3() == 0 || aFreeHatchCheck.getValue_1().getFluid() == null) {
 					aEmptyFluidHatches++;
 				}
 			}
-			
+
 			// We have Fluid Stacks we did not merge. Do we have space?
 			if (aOutputFluids.size() > 0) {
 				// Not enough space to add fluids.
@@ -760,7 +760,7 @@ GT_MetaTileEntity_MultiBlockBase {
 					return false;
 				}
 			}
-			
+
 			/*
 			 * End Fluid Management
 			 */			
@@ -978,41 +978,22 @@ GT_MetaTileEntity_MultiBlockBase {
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
-		// Based on the Processing Array. A bit overkill, but very flexible.	
-
-		
+		// Based on the Processing Array. A bit overkill, but very flexible.		
 
 		// Reset outputs and progress stats
 		this.mEUt = 0;
 		this.mMaxProgresstime = 0;
 		this.mOutputItems = new ItemStack[]{};
 		this.mOutputFluids = new FluidStack[]{};
-		
-		
-		
-		// Get input Voltage
-		long tVoltage = getMaxInputVoltage();
-		
-		// Get total Amps available to this multiblock
-		long tAmpsIn = 0;
-		for (GT_MetaTileEntity_Hatch_Energy aHatch : this.mEnergyHatches) {
-			tAmpsIn += aHatch.maxAmperesIn();
-		}
-		
-		// How much voltage can actually go in
-		long tEffectiveVoltage = tVoltage * tAmpsIn;
 
-		byte tTierInputVoltage = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tEffectiveVoltage));
+		long tVoltage = getMaxInputVoltage();
+		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 		log("Running checkRecipeGeneric(0)");
 
-		log("Amps: "+tAmpsIn);
-		log("Input Voltage: "+tVoltage+", Tier: "+tTierInputVoltage);
-		log("Effective Voltage: "+tEffectiveVoltage+", Effective Tier: "+tTier);	
 
 		GT_Recipe tRecipe = findRecipe(
 				getBaseMetaTileEntity(), mLastRecipe, false,
-				gregtech.api.enums.GT_Values.V[tTierInputVoltage], aFluidInputs, aItemInputs);
+				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 
 		log("Running checkRecipeGeneric(1)");
 		// Remember last recipe - an optimization for findRecipe()
@@ -1024,8 +1005,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 
 		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
-			log("BAD RETURN - 2"); // TODO
-			Logger.INFO("No Output Space.");
+			log("BAD RETURN - 2");
 			return false;
 		}
 
@@ -1041,12 +1021,12 @@ GT_MetaTileEntity_MultiBlockBase {
 		log("tVoltage: "+tVoltage);
 		log("tRecipeEUt: "+tRecipeEUt);
 		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEffectiveVoltage - tRecipeEUt); parallelRecipes++) {
+		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
 			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
 				log("Broke at "+parallelRecipes+".");
 				break;
 			}
-			log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+". Can use "+tEffectiveVoltage);
+			log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
 			tTotalEUt += tRecipeEUt;
 		}
 
@@ -1056,6 +1036,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 
 		// -- Try not to fail after this point - inputs have already been consumed! --
+
 
 
 		// Convert speed bonus to duration multiplier
@@ -1071,10 +1052,10 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		// Overclock
 		if (this.mEUt <= 16) {
-			this.mEUt = (this.mEUt * (1 << tTierInputVoltage - 1) * (1 << tTierInputVoltage - 1));
-			this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTierInputVoltage - 1));
+			this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+			this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
 		} else {
-			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTierInputVoltage - 1)]) {
+			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
 				this.mEUt *= 4;
 				this.mMaxProgresstime /= 2;
 			}

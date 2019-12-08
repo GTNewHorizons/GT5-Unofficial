@@ -212,7 +212,9 @@ achievement.decay.technetium99.desc=Cyclotron Product
 
 
 
-
+//24/11/19
+achievement.gt.blockmachines.hatch.turbine.input.tier.00=Turbine Housing
+achievement.gt.blockmachines.hatch.turbine.input.tier.00.desc=[AL] Pickup this item to see the recipe in NEI
 
 
 

@@ -2331,6 +2331,17 @@ public class RECIPES_Machines {
 
 		for (int i = 0; i < 5; i++) {			
 			if (i == 0) {
+				CORE.RA.addSixSlotAssemblingRecipe(				
+						new ItemStack[] {
+								CI.getNumberedCircuit(17),
+								CI.getTieredMachineCasing(0),
+								ItemUtils.getSimpleStack(Blocks.hopper, 4),
+								CI.getTieredComponent(OrePrefixes.circuit, 0, 2)
+						},					
+						GT_Values.NF, //Input Fluid					
+						aRobinators[i],					
+						45 * 10 * 1, 
+						8);
 				continue;
 			}			
 			int aTier = i+1;
@@ -2345,7 +2356,7 @@ public class RECIPES_Machines {
 
 			CORE.RA.addSixSlotAssemblingRecipe(				
 					aInputs,					
-					CI.getAlternativeTieredFluid(aTier, (144 * 2 * i)), //Input Fluid					
+					GT_Values.NF, //Input Fluid					
 					aRobinators[i],					
 					45 * 10 * 1 * (i+1), 
 					MaterialUtils.getVoltageForTier(i));	

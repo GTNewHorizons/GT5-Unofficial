@@ -228,6 +228,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Fish Pond
 	Industrial_FishingPond,
 	Casing_FishPond,  
+	
+	//Algae
+	AlgaeFarm_Controller,
 
 
 	//GT4 autoCrafter

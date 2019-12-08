@@ -1584,10 +1584,10 @@ public class RECIPES_GREGTECH {
 			
 			// Supreme Pizza Gloves
 			CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
-					ItemUtils.getGregtechCircuit(17),
-					ItemUtils.getSimpleStack(ModItems.itemRope, 16),
+					ItemUtils.getGregtechCircuit(19),
+					ItemUtils.getSimpleStack(ModItems.itemRope, GTNH ? 32 : 16),
 					ItemUtils.getItemStackOfAmountFromOreDict("gearGtSmallWroughtIron", GTNH ? 8 : 4),
-					ItemUtils.getItemStackOfAmountFromOreDict("wireFineTin", GTNH ? 32 : 16),
+					ItemUtils.getItemStackOfAmountFromOreDict("wireFineCopper", GTNH ? 32 : 16),
 					ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(1), GTNH ? 2 : 1)			
 			},
 					FluidUtils.getFluidStack("molten.rubber", 2000),
