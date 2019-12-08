@@ -473,7 +473,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	public boolean canBufferOutputs(final GT_Recipe aRecipe, int aParallelRecipes) {
 
-		Logger.INFO("Determining if we have space to buffer outputs.");
+		Logger.INFO("Determining if we have space to buffer outputs. Parallel: "+aParallelRecipes);
 
 		// Null recipe or a recipe with lots of outputs? 
 		// E.G. Gendustry custom comb with a billion centrifuge outputs? 
@@ -542,7 +542,7 @@ GT_MetaTileEntity_MultiBlockBase {
 					int aStackSize = aY.stackSize * aParallelRecipes;
 					if (aStackSize > 64) {
 						int aSlotsNeedsForThisStack = (int) Math.ceil((double) ((float) aStackSize / 64f)); 
-						// Sould round up and add as many stacks as required nicely.
+						// Should round up and add as many stacks as required nicely.
 						aRecipeSlotsRequired += aSlotsNeedsForThisStack;					
 						for (int o=0;o<aRecipeSlotsRequired;o++) {
 							int aStackToRemove = (aStackSize -= 64) > 64 ? 64 : aStackSize;		
@@ -612,7 +612,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			if (aInputMap.size() > 0) {			
 				if (aInputMap.size() > aInputBusSlotsFree) {
 					// We do not have enough free slots in total to accommodate the remaining managed stacks.
-					Logger.INFO("Failed to find enough space for all item outputs.");
+					Logger.INFO("Failed to find enough space for all item outputs. Free: "+aInputBusSlotsFree+", Required: "+aInputMap.size());
 					return false;
 				}			
 			}			
