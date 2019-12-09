@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,7 +57,7 @@ public class WorldProviderRoss128b extends AbstractWorldProviderSpace {
         float blue = 0.0F;
         red *= angle * 0.94F + 0.06F;
         green *= angle * 0.94F + 0.06F;
-        return Vec3.createVectorHelper((double) red, (double) green, (double) blue);
+        return Vec3.createVectorHelper(red, green, blue);
     }
 
 

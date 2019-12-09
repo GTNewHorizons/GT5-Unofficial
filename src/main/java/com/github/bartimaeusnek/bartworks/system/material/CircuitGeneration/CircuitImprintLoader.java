@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -107,6 +107,7 @@ public class CircuitImprintLoader implements Runnable {
         this.makeCircuitImprints();
     }
 
+    @SuppressWarnings("deprecation")
     public static GT_Recipe makeMoreExpensive(GT_Recipe original){
         GT_Recipe newRecipe = original.copy();
         for (ItemStack is : newRecipe.mInputs){
@@ -122,6 +123,7 @@ public class CircuitImprintLoader implements Runnable {
         return newRecipe;
     }
 
+    @SuppressWarnings("deprecation")
     public static GT_Recipe reBuildRecipe(GT_Recipe original){
        ItemStack out = original.copy().getOutput(0);
        out.stackSize *= 16;

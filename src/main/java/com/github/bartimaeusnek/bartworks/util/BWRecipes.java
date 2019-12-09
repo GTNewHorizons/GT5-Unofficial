@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -65,7 +65,7 @@ public class BWRecipes {
     public static final byte CIRCUITASSEMBLYLINE = 3;
 
     private final GT_Recipe.GT_Recipe_Map sBiolab = new GT_Recipe.GT_Recipe_Map(
-            new HashSet<GT_Recipe>(150),
+            new HashSet<>(150),
             "bw.recipe.biolab",
             StatCollector.translateToLocal("tile.biolab.name"),
             null,
@@ -74,7 +74,7 @@ public class BWRecipes {
             "", 1, "", true, false //special handler
     );
     private final BacteriaVatRecipeMap sBacteriaVat = new BacteriaVatRecipeMap(
-            new HashSet<GT_Recipe>(50),
+            new HashSet<>(50),
             "bw.recipe.BacteriaVat",
             StatCollector.translateToLocal("tile.biovat.name"),
             null,
@@ -83,7 +83,7 @@ public class BWRecipes {
             " Sievert: ", 1, " Sv", true, false //special handler
     );
     private final BW_Recipe_Map_LiquidFuel sAcidGenFuels = new BW_Recipe_Map_LiquidFuel(
-            new HashSet<GT_Recipe>(10),
+            new HashSet<>(10),
             "bw.fuels.acidgens",
             StatCollector.translateToLocal("tile.acidgenerator.name"),
             null,
@@ -92,7 +92,7 @@ public class BWRecipes {
             "EU generated: ", 1000, "", false, true
     );
     private final BWRecipes.SpecialObjectSensitiveMap sCircuitAssemblyLineMap = new SpecialObjectSensitiveMap(
-            new HashSet<GT_Recipe>(60),
+            new HashSet<>(60),
             "bw.recipe.cal",
             "Circuit Assembly Line",
             null,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,12 +57,14 @@ public class SimpleSubItemClass extends Item {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
         super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
         aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_) {
         for (int i = 0; i < this.tex.length; i++) {
             p_150895_3_.add(new ItemStack(p_150895_1_, 1, i));

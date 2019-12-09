@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,7 @@ import java.util.List;
 
 import static gregtech.api.enums.OrePrefixes.*;
 
+@SuppressWarnings("ALL")
 public class LuVTierEnhancer implements Runnable {
 
     public void run() {

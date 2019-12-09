@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,10 +50,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 
 public class BW_Meta_Items {
@@ -73,6 +70,7 @@ public class BW_Meta_Items {
         GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes.add(new BWRecipes.DynamicGTRecipe(false,new ItemStack[]{BW_Meta_Items.NEWCIRCUITS.getStack(2)},new ItemStack[]{BW_Meta_Items.NEWCIRCUITS.getStack(3)},null,new int[]{7500},new FluidStack[]{Materials.SolderingAlloy.getMolten(576)},null,300, BW_Util.getMachineVoltageFromTier(4), BW_Util.CLEANROOM));
     }
 
+    @SuppressWarnings("deprecation")
     public void addNewCircuit(int aTier, int aID, String aName){
 
         String additionalOreDictData = "";
@@ -132,6 +130,7 @@ public class BW_Meta_Items {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
             if (aCreativeTab == this.getCreativeTab())
                 for (NBTTagCompound tag : CircuitImprintLoader.recipeTagMap.keySet()){
@@ -153,7 +152,7 @@ public class BW_Meta_Items {
 
             for (short i = CircuitImprintLoader.reverseIDs; i < Short.MAX_VALUE; i++) {
                 if (this.mEnabledItems.get(i)) {
-                    BW_Util.set2DCoordTo1DArray(i,0,2,CircuitImprintLoader.circuitIIconRefs.get(i).get(1).getIconIndex(),this.mIconList);
+                    BW_Util.set2DCoordTo1DArray(i,0,2, Objects.requireNonNull(CircuitImprintLoader.circuitIIconRefs.get(i)).get(1).getIconIndex(),this.mIconList);
                     BW_Util.set2DCoordTo1DArray(i,1,2,aIconRegister.registerIcon(MainMod.MOD_ID+":WrapOverlay"),this.mIconList);
                     //aIconRegister.registerIcon("gregtech:" + (GT_Config.troll ? "troll" : this.getUnlocalizedName() + "/" + i));
                 }
@@ -162,6 +161,7 @@ public class BW_Meta_Items {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
             if (aStack.getItemDamage() == 0 )
                 if (aStack.getTagCompound() != null && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
@@ -210,6 +210,7 @@ public class BW_Meta_Items {
             return null;
         }
 
+        @SuppressWarnings({"unchecked","rawtypes"})
         public final ItemStack addItem(int aID, String aEnglish, String aToolTip, Object... aRandomData) {
             if (aToolTip == null) {
                 aToolTip = "";
@@ -242,7 +243,8 @@ public class BW_Meta_Items {
                         boolean tUseOreDict = true;
 
                         if (tRandomData instanceof IItemBehaviour) {
-                            this.addItemBehavior(aID, (IItemBehaviour) tRandomData);
+                            this.addItemBehavior(aID,
+                                    (IItemBehaviour) tRandomData);
                             tUseOreDict = false;
                         }
 
@@ -275,6 +277,7 @@ public class BW_Meta_Items {
         }
 
         @SideOnly(Side.CLIENT)
+        @SuppressWarnings("unchecked")
         public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
             int j = this.mEnabledItems.length();
 
@@ -289,6 +292,7 @@ public class BW_Meta_Items {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
             super.addAdditionalToolTips(aList, aStack, aPlayer);
             aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");

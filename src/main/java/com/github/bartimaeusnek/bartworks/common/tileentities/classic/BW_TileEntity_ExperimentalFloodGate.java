@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -71,7 +71,7 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
     private synchronized void setUpHashSet() {
         this.check = new BW_TileEntity_ExperimentalFloodGate.recursiveBelowCheck();
         Thread t = new Thread(this.check);
-        t.run();
+        t.start();
         while (t.isAlive()) {
             try {
                 this.wait();
@@ -89,7 +89,7 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
 
     private class recursiveBelowCheck implements Runnable {
 
-        private final List<Coords> hashset = new ArrayList<Coords>();
+        private final List<Coords> hashset = new ArrayList<>();
         int called = -1;
 
         public int getCalled() {
@@ -138,7 +138,7 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
 
             if (iterations >= 5000)
                 return -1;
-            int tail = 0;
+            int tail;
             int ret = 0;
             iterations++;
             int wID = w.provider.dimensionId;

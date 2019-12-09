@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -155,9 +155,8 @@ public class BWCoreTransformer implements IClassTransformer {
                     String field_deObfs = "locationSunPng";
                     String field_src = "field_110928_i";
                     BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
-                    for (int i = 0; i < methods.size(); i++) {
-                        MethodNode toPatch = methods.get(i);
-                        if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs, name_Obfs, name_src) && ASMUtils.isCorrectMethod(methods.get(i), dsc_universal)) {
+                    for (MethodNode toPatch : methods) {
+                        if (ASMUtils.isCorrectMethod(toPatch, name_deObfs, name_Obfs, name_src) && ASMUtils.isCorrectMethod(toPatch, dsc_universal)) {
                             BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
                             InsnList nu = new InsnList();
                             LabelNode[] LabelNodes = {new LabelNode(), new LabelNode()};
@@ -225,9 +224,8 @@ public class BWCoreTransformer implements IClassTransformer {
                 case 4 : {
                     BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
                     String name_deObfs = "<clinit>";
-                    for (int i = 0; i < methods.size(); i++) {
-                        MethodNode toPatch = methods.get(i);
-                        if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs) && (methods.get(i).access & ACC_STATIC) != 0) {
+                    for (MethodNode toPatch : methods) {
+                        if (ASMUtils.isCorrectMethod(toPatch, name_deObfs) && (toPatch.access & ACC_STATIC) != 0) {
                             BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
                             InsnList nu = new InsnList();
                             LabelNode[] LabelNodes = {new LabelNode(), new LabelNode()};
@@ -251,10 +249,8 @@ public class BWCoreTransformer implements IClassTransformer {
                 case 5: {
                     BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
                     String name_deObfs = "getNewNoise";
-                    for (int i = 0; i < methods.size(); i++) {
-                        MethodNode toPatch = methods.get(i);
-
-                        if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs)) {
+                    for (MethodNode toPatch : methods) {
+                        if (ASMUtils.isCorrectMethod(toPatch, name_deObfs)) {
                             BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
                             LabelNode[] LabelNodes = {new LabelNode(), new LabelNode()};
                             InsnList nu = new InsnList();
@@ -277,11 +273,11 @@ public class BWCoreTransformer implements IClassTransformer {
                             nu.add(new VarInsnNode(ISTORE, 3));
                             nu.add(LabelNodes[1]);
 
-                            for (int j = 1; j < methods.get(i).instructions.size(); j++) {
-                                nu.add(methods.get(i).instructions.get(j));
+                            for (int j = 1; j < toPatch.instructions.size(); j++) {
+                                nu.add(toPatch.instructions.get(j));
                             }
 
-                            methods.get(i).instructions = nu;
+                            toPatch.instructions = nu;
                             break scase;
                         }
                     }

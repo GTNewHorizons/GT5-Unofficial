@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -98,11 +98,8 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
             }
         } else {
             tSpecial = 0;
-            String[] var6 = recipeDesc;
-            int var7 = recipeDesc.length;
 
-            for (int var8 = 0; var8 < var7; ++var8) {
-                String descLine = var6[var8];
+            for (String descLine : recipeDesc) {
                 GT_NEI_DefaultHandler.drawText(10, 73 + 10 * tSpecial, descLine, -16777216);
                 ++tSpecial;
             }

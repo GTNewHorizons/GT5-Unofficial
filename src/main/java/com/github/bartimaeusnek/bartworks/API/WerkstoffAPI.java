@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 
 public final class WerkstoffAPI {
 
+    @SuppressWarnings("rawtypes")
     public Werkstoff getWerkstoff(String aName) throws NoSuchFieldException, IllegalAccessException, ClassNotFoundException {
         Class w = Class.forName("com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader");
         return (Werkstoff) w.getField(aName).get(null);

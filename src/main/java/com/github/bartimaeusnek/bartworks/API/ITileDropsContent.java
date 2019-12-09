@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,6 @@ import net.minecraft.inventory.ISidedInventory;
 public interface ITileDropsContent extends ISidedInventory {
     default int[] getDropSlots(){
         return new int[] {0};
-    };
+    }
 
 }

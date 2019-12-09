@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,8 +34,12 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
+@SuppressWarnings("unused")
 public final class BWAtmosphereManager {
 
     private static final Map<Integer,Integer[]> COEFFICIENT_MAP = new HashMap<>();
@@ -61,7 +65,6 @@ public final class BWAtmosphereManager {
     }
 
     public static void removeGasFromWorld(int worldID, ISubTagContainer gas){
-        HashSet toRemSet = new HashSet();
         for (Pair<ISubTagContainer,Integer> pair : BWAtmosphereManager.gasConcentration.get(worldID)){
             if (pair.getKey().equals(gas)){
                 BWAtmosphereManager.gasConcentration.get(worldID).remove(pair);
@@ -71,7 +74,7 @@ public final class BWAtmosphereManager {
     }
 
     public static void addGasToWorld(int worldID, ISubTagContainer gas, int amount){
-        Pair<ISubTagContainer,Integer> toadd = new Pair<ISubTagContainer,Integer>(gas,amount);
+        Pair<ISubTagContainer,Integer> toadd = new Pair<>(gas,amount);
         BWAtmosphereManager.gasConcentration.put(worldID,toadd);
     }
 
@@ -79,6 +82,7 @@ public final class BWAtmosphereManager {
         BWAtmosphereManager.gasConcentration.put(worldID,toPut);
     }
 
+    @SafeVarargs
     public static void addGasToWorld(int worldID, Pair<ISubTagContainer,Integer>... toPut){
         for (Pair<ISubTagContainer,Integer> toadd : toPut)
             BWAtmosphereManager.gasConcentration.put(worldID,toadd);

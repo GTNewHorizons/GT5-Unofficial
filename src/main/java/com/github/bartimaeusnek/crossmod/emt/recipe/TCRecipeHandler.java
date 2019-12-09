@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,7 @@ import java.util.HashSet;
 
 import static com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler.AspectAdder;
 
+@SuppressWarnings("ALL")
 public class TCRecipeHandler {
     public static final GT_Recipe.GT_Recipe_Map alchemicalConstructHandler = new TCRecipeHandler.TCRecipeMap(new HashSet<>(15000),
             "bwcm.recipe.alchemicalConstruct",

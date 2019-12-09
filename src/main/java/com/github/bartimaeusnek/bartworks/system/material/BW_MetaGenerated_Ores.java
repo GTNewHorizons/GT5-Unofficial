@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,7 @@ import static com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerate
 
 public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
 
-    public static ThreadLocal<BW_MetaGeneratedOreTE> mTemporaryTileEntity = new ThreadLocal();
+    public static ThreadLocal<BW_MetaGeneratedOreTE> mTemporaryTileEntity = new ThreadLocal<>();
 
     public BW_MetaGenerated_Ores(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_, tileEntity, blockName);
@@ -149,7 +149,7 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
         if ((tTileEntity instanceof BW_MetaGeneratedOreTE)) {
             return ((BW_MetaGeneratedOreTE) tTileEntity).getDrops(WerkstoffLoader.BWOres,aFortune);
         }
-        return BW_MetaGenerated_Ores.mTemporaryTileEntity.get() == null ? new ArrayList() : BW_MetaGenerated_Ores.mTemporaryTileEntity.get().getDrops(WerkstoffLoader.BWOres,aFortune);
+        return BW_MetaGenerated_Ores.mTemporaryTileEntity.get() == null ? new ArrayList<>() : BW_MetaGenerated_Ores.mTemporaryTileEntity.get().getDrops(WerkstoffLoader.BWOres,aFortune);
     }
 
     public int getHarvestLevel(int metadata) {
@@ -162,6 +162,7 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
         for (Werkstoff tMaterial : Werkstoff.werkstoffHashSet) {
             if ((tMaterial != null) && ((tMaterial.getGenerationFeatures().toGenerate & 0x8) != 0) && ((tMaterial.getGenerationFeatures().blacklist & 0x8) == 0)) {
@@ -181,7 +182,7 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
 //        if ((FMLCommonHandler.instance().getEffectiveSide().isServer() || this.checkForAir(aWorld,aX,aY,aZ)) && aWorld.getTileEntity(aX, aY, aZ) instanceof BW_MetaGeneratedOreTE)
 //            ((BW_MetaGeneratedOreTE)aWorld.getTileEntity(aX, aY, aZ)).sendPacket();
 //    }
-
+    @SuppressWarnings("unused")
     private boolean checkForAir(IBlockAccess aWorld, int aX, int aY, int aZ){
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {

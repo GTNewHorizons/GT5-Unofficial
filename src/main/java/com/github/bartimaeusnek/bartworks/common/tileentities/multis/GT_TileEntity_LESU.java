@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,6 +52,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
@@ -157,14 +158,10 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     public String[] getDescription() {
         ArrayList<String> e = new ArrayList<>();
         String[] dsc = StatCollector.translateToLocal("tooltip.tile.lesu.0.name").split(";");
-        for (int i = 0; i < dsc.length; i++) {
-            e.add(dsc[i]);
-        }
+        Collections.addAll(e, dsc);
         e.add(StatCollector.translateToLocal("tooltip.tile.lesu.1.name") + " " + ConfigHandler.energyPerCell + "EU");
         dsc = StatCollector.translateToLocal("tooltip.tile.lesu.2.name").split(";");
-        for (int i = 0; i < dsc.length; i++) {
-            e.add(dsc[i]);
-        }
+        Collections.addAll(e, dsc);
         e.add(ChatColorHelper.RED + StatCollector.translateToLocal("tooltip.tile.lesu.3.name"));
         e.add(StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks");
         return e.toArray(new String[0]);
@@ -214,6 +211,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
 
     @Override
+    @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 
         ITexture[] ret = new ITexture[0];

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -69,7 +69,6 @@ public class GT_MetaTileEntity_EnergyDistributor extends GT_MetaTileEntity_Trans
         return 512L + (GT_Values.V[this.mTier] * 320L);
     }
 
-    @SuppressWarnings("deprecation")
     public String[] getDescription() {
         return new String[]{StatCollector.translateToLocal("tooltip.tile.energydistributor.0.name"), StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " " + ChatColorHelper.YELLOW + this.maxAmperesIn(), StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " " + ChatColorHelper.YELLOW + this.maxAmperesOut(), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
     }

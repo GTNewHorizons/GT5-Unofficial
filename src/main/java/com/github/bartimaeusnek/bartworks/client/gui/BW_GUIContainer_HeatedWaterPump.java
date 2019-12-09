@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,7 +49,7 @@ public class BW_GUIContainer_HeatedWaterPump extends GuiContainer {
 
         if (this.container.fuel > 0) {
             this.mc.getTextureManager().bindTexture(BW_GUIContainer_HeatedWaterPump.furnaceGuiTextures);
-            int ik = this.container.maxfuel > 200 ? this.container.maxfuel : 200;
+            int ik = Math.max(this.container.maxfuel, 200);
             int i1 = ((this.container.fuel * 13) / ik);
             this.drawTexturedModalRect(k + 56, l + 36 + 12 - i1, 176, 13 - i1, 14, i1 + 1);
         }

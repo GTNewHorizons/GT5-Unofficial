@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,6 +48,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class BioRecipeLoader extends RecipeLoader {
 
     @Override
+    @SuppressWarnings("deprecation")
     public void run() {
 
         //DNAExtractionModule

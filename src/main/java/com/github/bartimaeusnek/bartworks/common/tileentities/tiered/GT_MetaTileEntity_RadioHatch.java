@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -76,7 +76,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
     }
 
     public static long calcDecayTicks(int x) {
-        long ret = 0;
+        long ret;
         if (x == 43)
             ret = 5000;
         else if (x == 61)
@@ -107,7 +107,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
     }
 
     public void setCoverage(short coverage) {
-        byte nu = 0;
+        byte nu;
         if (coverage > 100)
             nu = 100;
         else if (coverage < 0)
@@ -245,7 +245,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
             }
 
             //check material for general validity
-            if (lStack != null && GT_OreDictUnificator.getAssociation(lStack) != null && GT_OreDictUnificator.getAssociation(lStack).mMaterial != null && GT_OreDictUnificator.getAssociation(lStack).mMaterial.mMaterial != null) {
+            if (GT_OreDictUnificator.getAssociation(lStack) != null && GT_OreDictUnificator.getAssociation(lStack).mMaterial != null && GT_OreDictUnificator.getAssociation(lStack).mMaterial.mMaterial != null) {
                 //check orePrefix for general validity
                 if (GT_OreDictUnificator.getAssociation(lStack).mPrefix != null) {
                     OrePrefixes orePrefixes = GT_OreDictUnificator.getAssociation(lStack).mPrefix;

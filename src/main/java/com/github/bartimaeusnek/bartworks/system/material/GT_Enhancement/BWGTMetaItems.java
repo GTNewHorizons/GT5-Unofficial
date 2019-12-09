@@ -1,3 +1,25 @@
+/*
+ * Copyright (c) 2018-2019 bartimaeusnek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 
 import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
@@ -30,7 +52,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
     private boolean hasList;
 
-    public BWGTMetaItems(OrePrefixes orePrefixes, List noSubIDMaterials) {
+    public BWGTMetaItems(OrePrefixes orePrefixes, List<Materials> noSubIDMaterials) {
         super(orePrefixes,null);
         materialloop:
         for (int i = 0; i < Materials.values().length; i++) {
@@ -53,7 +75,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
             materialloop:
             for (int i = 0; i < noSubIDMaterials.size(); i++) {
                 ItemStack tStack = new ItemStack(this, 1, i+1001);
-                Materials w = (Materials) noSubIDMaterials.get(i);
+                Materials w = noSubIDMaterials.get(i);
                 if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                     continue;
                 for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
@@ -95,6 +117,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
     @Override
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
     public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < Materials.values().length; i++) {
             Materials w = Materials.values()[i];

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-
+@SuppressWarnings({"unchecked","rawtypes","unused"})
 public class RadioHatchCompat implements Runnable {
 
     private static Class intf;
@@ -225,7 +225,7 @@ public class RadioHatchCompat implements Runnable {
                     if (RadioHatchCompat.isRadioactive.getBoolean(materialObj))
                         ret += ((int) RadioHatchCompat.radlevel.getByte(m) + RadioHatchCompat.GTPPRadAdapter.clampToZero(RadioHatchCompat.protons.getLong(materialObj)));
                     else
-                        ret += ((int) RadioHatchCompat.radlevel.getByte(m));
+                        ret += RadioHatchCompat.radlevel.getByte(m);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }

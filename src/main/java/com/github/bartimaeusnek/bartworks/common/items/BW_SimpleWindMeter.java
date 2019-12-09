@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,6 +54,7 @@ public class BW_SimpleWindMeter extends Item {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean p_77624_4_) {
         super.addInformation(itemStack, entityPlayer, list, p_77624_4_);
         list.add(StatCollector.translateToLocal("tooltip.windmeter.0.name"));

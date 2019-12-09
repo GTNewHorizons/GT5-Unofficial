@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +70,7 @@ public class BW_MetaGeneratedOreTE extends TileEntity implements ITexturedTileEn
     }
 
     public ArrayList<ItemStack> getDrops(Block aDroppedOre, int aFortune) {
-        ArrayList<ItemStack> rList = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> rList = new ArrayList<>();
         if (this.mMetaData < 0) {
             rList.add(new ItemStack(Blocks.cobblestone, 1, 0));
             return rList;

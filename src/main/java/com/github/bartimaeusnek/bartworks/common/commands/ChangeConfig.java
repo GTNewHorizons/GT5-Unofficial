@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,6 +41,7 @@ public class ChangeConfig extends CommandBase {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
         try{
             Field f = ConfigHandler.class.getField(p_71515_2_[0]);
@@ -53,7 +54,7 @@ public class ChangeConfig extends CommandBase {
                     p_71515_1_.addChatMessage(new ChatComponentText("you need to enter a number!"));
                     return;
                 }
-                f.setInt(null, Integer.parseInt(p_71515_2_[1]));
+                f.setInt(null, l);
             }
             else if (c.equals(long.class)) {
                 long l;
@@ -72,7 +73,6 @@ public class ChangeConfig extends CommandBase {
                     f.setBoolean(null,false);
                 else {
                     p_71515_1_.addChatMessage(new ChatComponentText("booleans need to be set to true or false"));
-                    return;
                 }
             }
         }catch (Exception e){

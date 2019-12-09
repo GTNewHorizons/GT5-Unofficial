@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,6 +45,7 @@ import java.util.Map;
 
 import static gregtech.api.enums.GT_Values.V;
 
+@SuppressWarnings("ALL")
 public class GT_Industrial_Alchemic_Construct extends GT_MetaTileEntity_MultiBlockBase {
 
     private List<Object> mEssentiaHatches = new ArrayList<>();

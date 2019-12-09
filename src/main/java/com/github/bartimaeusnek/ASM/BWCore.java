@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,6 +42,7 @@ import java.util.List;
 
 import static com.github.bartimaeusnek.ASM.BWCoreTransformer.shouldTransform;
 
+@SuppressWarnings("ALL")
 public class BWCore extends DummyModContainer {
 
     public static final String BWCORE_NAME = "BartWorks ASM Core";

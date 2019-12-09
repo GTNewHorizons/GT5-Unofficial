@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -68,6 +68,7 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
         this.itemIcon = iconRegister.registerIcon(MainMod.MOD_ID + ":" + this.itemTex);
     }
 
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
         info.add(StatCollector.translateToLocalFormatted("ic2.itemrotor.wind.info", this.DiaMinMax[1], this.DiaMinMax[2]));
         IKineticRotor.GearboxType type = null;

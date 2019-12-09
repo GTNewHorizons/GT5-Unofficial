@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -74,6 +74,7 @@ public class LabParts extends SimpleSubItemClass {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean b) {
         if (itemStack == null)
             return;
@@ -124,13 +125,11 @@ public class LabParts extends SimpleSubItemClass {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
-        for (ItemStack stack : getAllPetriDishes())
-            list.add(stack);
-        for (ItemStack stack : getAllDNASampleFlasks())
-            list.add(stack);
-        for (ItemStack stack : getAllPlasmidCells())
-            list.add(stack);
+        list.addAll(getAllPetriDishes());
+        list.addAll(getAllDNASampleFlasks());
+        list.addAll(getAllPlasmidCells());
         super.getSubItems(item, creativeTabs, list);
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,9 +32,9 @@ import java.io.OutputStream;
 public class ASMUtils {
 
     public static String matchAny(String toCompare, String... args) {
-        for (int i = 0; i < args.length; i++) {
-            if (toCompare.equalsIgnoreCase(args[i]))
-                return args[i];
+        for (String arg : args) {
+            if (toCompare.equalsIgnoreCase(arg))
+                return arg;
         }
         return "";
     }
@@ -43,8 +43,8 @@ public class ASMUtils {
      * Call this Method twice, one time for the Descriptor and one time for the Name.
      */
     public static boolean isCorrectMethod(MethodNode methodNode, String... args) {
-        for (int i = 0; i < args.length; i++) {
-            if (methodNode.name.equalsIgnoreCase(args[i]) || methodNode.desc.equalsIgnoreCase(args[i]))
+        for (String arg : args) {
+            if (methodNode.name.equalsIgnoreCase(arg) || methodNode.desc.equalsIgnoreCase(arg))
                 return true;
         }
         return false;

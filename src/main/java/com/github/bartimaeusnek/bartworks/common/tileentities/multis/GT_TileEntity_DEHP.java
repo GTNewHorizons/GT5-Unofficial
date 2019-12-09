@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -61,6 +61,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public void onConfigLoad(GT_Config aConfig) {
         try {
             Class c = TileEntityNuclearReactorElectric.class;
@@ -158,7 +159,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             try {
                 Field workState = this.getClass().getField("workState");
                 workState.setInt(this, 0);
-            } catch (NoSuchFieldError | NoSuchFieldException | IllegalAccessException e) {
+            } catch (NoSuchFieldError | NoSuchFieldException | IllegalAccessException ignored) {
             }
             return true;
         }
@@ -182,7 +183,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             try {
                 Field workState = this.getClass().getSuperclass().getDeclaredField("workState");
                 workState.setInt(this, 2);
-            } catch (NoSuchFieldError | NoSuchFieldException | IllegalAccessException e) {
+            } catch (NoSuchFieldError | NoSuchFieldException | IllegalAccessException ignored) {
             }
             return true;
         }

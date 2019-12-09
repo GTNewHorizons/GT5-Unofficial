@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -108,6 +108,7 @@ public final class MainMod {
     public static BW_Network BW_Network_instance = new BW_Network();
 
     @Mod.EventHandler
+    @SuppressWarnings("ALL")
     public void preInit(FMLPreInitializationEvent preinit) {
 
         if (!(API_REFERENCE.VERSION.equals(MainMod.APIVERSION))) {
@@ -328,6 +329,7 @@ public final class MainMod {
         }
     }
 
+    @SuppressWarnings("ALL")
     private static void runMoltenUnificationEnfocement(Werkstoff werkstoff){
         if (werkstoff.getGenerationFeatures().enforceUnification && werkstoff.getGenerationFeatures().hasMolten()) {
             try {
@@ -512,6 +514,7 @@ public final class MainMod {
         toAdd.forEach(GT_Recipe.GT_Recipe_Map.sBlastRecipes::add);
     }
 
+    @SuppressWarnings("ALL")
     private static void addElectricImplosionCompressorRecipes() {
         if (eicMap == null) {
             eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet<>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);

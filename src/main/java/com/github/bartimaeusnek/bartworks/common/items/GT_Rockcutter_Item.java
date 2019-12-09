@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +51,7 @@ import java.util.List;
 import java.util.Set;
 
 public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
-    private static Set mineableBlocks = Sets.newHashSet(Blocks.stone, Blocks.cobblestone, Blocks.sand, Blocks.clay);
+    private static Set<Block> mineableBlocks = Sets.newHashSet(Blocks.stone, Blocks.cobblestone, Blocks.sand, Blocks.clay);
     private final int mCharge;
     private final int mTransfer;
     public int mTier;
@@ -63,7 +63,7 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
         super(2 * aTier, Item.ToolMaterial.EMERALD, GT_Rockcutter_Item.mineableBlocks);
         this.mTier = aTier;
         this.multi = (int) Math.pow(10, (this.mTier - 1));
-        GT_Rockcutter_Item.mineableBlocks = new HashSet();
+        GT_Rockcutter_Item.mineableBlocks = new HashSet<>();
         this.maxStackSize = 1;
         this.mCharge = 10000 * this.multi;
         this.mTransfer = (int) GT_Values.V[this.mTier];
@@ -73,7 +73,7 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
         this.setNoRepair();
         this.setUnlocalizedName("GT_Rockcutter_Item_" + GT_Values.VN[this.mTier]);
     }
-
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         aList.add(StatCollector.translateToLocal("tooltip.bw.tier.name") + " " + GT_Values.VN[this.mTier]);
         aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
@@ -110,6 +110,7 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
     }
 
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List itemList) {
         ItemStack itemStack = new ItemStack(this, 1);
         if (this.getChargedItem(itemStack) == this) {

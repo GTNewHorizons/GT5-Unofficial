@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -96,9 +96,9 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.lEUt > 0) {
-            this.addEnergyOutput((long)this.lEUt * (long)this.mEfficiency / 10000L);
+            this.addEnergyOutput(this.lEUt * (long)this.mEfficiency / 10000L);
             return true;
-        } else if (this.lEUt < 0 && !this.drainEnergyInput((long)(-this.lEUt) * 10000L / (long)Math.max(1000, this.mEfficiency))) {
+        } else if (this.lEUt < 0 && !this.drainEnergyInput((-this.lEUt) * 10000L / (long)Math.max(1000, this.mEfficiency))) {
             this.stopMachine();
             return false;
         } else {
@@ -138,7 +138,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
             }
         }
 
-        return new String[]{StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN + Integer.toString(this.mProgresstime / 20) + EnumChatFormatting.RESET + " s / " + EnumChatFormatting.YELLOW + Integer.toString(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s", StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " + EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET + " EU", StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED + Long.toString(-this.lEUt) + EnumChatFormatting.RESET + " EU/t", StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW + Long.toString(this.getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*2A) " + StatCollector.translateToLocal("GT5U.machines.tier") + ": " + EnumChatFormatting.YELLOW + GT_Values.VN[GT_Utility.getTier(this.getMaxInputVoltage())] + EnumChatFormatting.RESET, StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " + EnumChatFormatting.RED + (this.getIdealStatus() - this.getRepairStatus()) + EnumChatFormatting.RESET + " " + StatCollector.translateToLocal("GT5U.multiblock.efficiency") + ": " + EnumChatFormatting.YELLOW + Float.toString((float)this.mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %", StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN + mPollutionReduction + EnumChatFormatting.RESET + " %"};
+        return new String[]{StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN + this.mProgresstime / 20 + EnumChatFormatting.RESET + " s / " + EnumChatFormatting.YELLOW + this.mMaxProgresstime / 20 + EnumChatFormatting.RESET + " s", StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN + storedEnergy + EnumChatFormatting.RESET + " EU / " + EnumChatFormatting.YELLOW + maxEnergy + EnumChatFormatting.RESET + " EU", StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED + -this.lEUt + EnumChatFormatting.RESET + " EU/t", StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW + this.getMaxInputVoltage() + EnumChatFormatting.RESET + " EU/t(*2A) " + StatCollector.translateToLocal("GT5U.machines.tier") + ": " + EnumChatFormatting.YELLOW + GT_Values.VN[GT_Utility.getTier(this.getMaxInputVoltage())] + EnumChatFormatting.RESET, StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " + EnumChatFormatting.RED + (this.getIdealStatus() - this.getRepairStatus()) + EnumChatFormatting.RESET + " " + StatCollector.translateToLocal("GT5U.multiblock.efficiency") + ": " + EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F + EnumChatFormatting.RESET + " %", StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN + mPollutionReduction + EnumChatFormatting.RESET + " %"};
     }
 
     private long lEUt = 0;
@@ -206,7 +206,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         FluidStack[] tFluids = this.getStoredFluids().toArray(new FluidStack[0]);
         long tVoltage = this.getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        GT_Recipe tRecipe = null;
+        GT_Recipe tRecipe;
         if (circuitMode > 0 && Arrays.stream(tInputs).anyMatch(e -> GT_Utility.areStacksEqual(e,GT_Utility.getIntegratedCircuit(circuitMode),true))){
             List<ItemStack> modInputs = Arrays.stream(tInputs).filter(Objects::nonNull).filter(e -> !e.getItem().equals(GT_Utility.getIntegratedCircuit(circuitMode).getItem())).collect(Collectors.toList());
             modInputs.add(GT_Utility.getIntegratedCircuit(circuitMode));
@@ -222,8 +222,8 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                 return false;
         }
 
-        ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
-        ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
+        ArrayList<ItemStack> outputItems = new ArrayList<>();
+        ArrayList<FluidStack> outputFluids = new ArrayList<>();
 
         boolean found_Recipe = false;
         int processed = 0;
@@ -250,7 +250,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
 
-            byte overclockCount = 0;
+            byte overclockCount;
             long actualEUT = (long) (tRecipe.mEUt) * processed;
 //            if (actualEUT > Integer.MAX_VALUE) {
 //                byte divider = 0;
@@ -344,13 +344,13 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         this.mHeatingCapacity = 0;
-        HashSet<Boolean> ret = new HashSet<Boolean>();
-        ret.add(BW_Util.check_layer(iGregTechTileEntity, 7, -2, -1, GregTech_API.sBlockCasings1, 11, 7, false,false,true,GregTech_API.sBlockCasings1,11,true,11));
-        ret.add(BW_Util.check_layer(iGregTechTileEntity, 7, 17, 18, GregTech_API.sBlockCasings1, 11, 7, false, null, -1, 11));
-        ret.add(BW_Util.check_layer(iGregTechTileEntity, 6, -1, 17, GregTech_API.sBlockCasings5, -1, 7, false, false, true, Blocks.air, -1, false, 11));
+        boolean ret;
+        ret = BW_Util.check_layer(iGregTechTileEntity, 7, -2, -1, GregTech_API.sBlockCasings1, 11, 7, false,false,true,GregTech_API.sBlockCasings1,11,true,11);
+        ret &= BW_Util.check_layer(iGregTechTileEntity, 7, 17, 18, GregTech_API.sBlockCasings1, 11, 7, false, null, -1, 11);
+        ret &= BW_Util.check_layer(iGregTechTileEntity, 6, -1, 17, GregTech_API.sBlockCasings5, -1, 7, false, false, true, Blocks.air, -1, false, 11);
         for (int y = -1; y < 17; y++) {
-            ret.add(BW_Util.check_layer(iGregTechTileEntity, 7, y, y + 1, ItemRegistry.bw_glasses[0], -1, 7, y == 0, false, false, null, -1, false, 11));
-            if (!this.getCoilHeat(iGregTechTileEntity, 7, y, 6))
+            ret &= BW_Util.check_layer(iGregTechTileEntity, 7, y, y + 1, ItemRegistry.bw_glasses[0], -1, 7, y == 0, false, false, null, -1, false, 11);
+            if (!this.getCoilHeat(iGregTechTileEntity, y))
                 return false;
             List<Byte> metasFromLayer = BW_Util.getMetasFromLayer(iGregTechTileEntity, 7, y, y + 1, 7, y == 0, false, false);
             for (Byte meta : metasFromLayer) {
@@ -381,16 +381,16 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                     return false;
             }
 
-        return !ret.contains(Boolean.FALSE) && !this.mMaintenanceHatches.isEmpty() && !this.mOutputBusses.isEmpty() && !this.mInputBusses.isEmpty();
+        return ret && !this.mMaintenanceHatches.isEmpty() && !this.mOutputBusses.isEmpty() && !this.mInputBusses.isEmpty();
     }
 
-    private boolean getCoilHeat(IGregTechTileEntity iGregTechTileEntity, int offset, int y, int radius) {
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * offset;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * offset;
+    private boolean getCoilHeat(IGregTechTileEntity iGregTechTileEntity, int y) {
+        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 7;
+        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 7;
         int internalH = 0;
-        for (int x = -radius; x <= radius; x++) {
-            for (int z = -radius; z <= radius; z++) {
-                if (Math.abs(x) < radius && Math.abs(z) != radius)
+        for (int x = -6; x <= 6; x++) {
+            for (int z = -6; z <= 6; z++) {
+                if (Math.abs(x) < 6 && Math.abs(z) != 6)
                     continue;
                 byte tUsedMeta = iGregTechTileEntity.getMetaIDOffset(xDir + x, y, zDir + z);
                 switch (tUsedMeta) {

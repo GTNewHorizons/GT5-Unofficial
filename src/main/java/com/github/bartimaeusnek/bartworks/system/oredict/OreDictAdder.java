@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,7 @@ public class OreDictAdder {
             OreDictAdder.toAddMap.put(element.getKey(),element.getValue());
     }
 
+    @SafeVarargs
     public static synchronized void addToMap(Pair<String, ItemStack>... elements){
         for (Pair<String, ItemStack> p : elements)
             OreDictAdder.toAddMap.put(p.getKey(),p.getValue());

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,11 +31,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank, IFluidHandler, ITileWithGUI {
 
-    final ArrayList<FluidStack> INTERNALTANKS = new ArrayList<FluidStack>();
+    final ArrayList<FluidStack> INTERNALTANKS = new ArrayList<>();
 
     int selectedTank;
 
@@ -61,13 +60,15 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
 
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        HashSet<Boolean> ret = new HashSet<Boolean>();
+       boolean ret = false;
         for (FluidStack stack : this.INTERNALTANKS) {
-            ret.add(GT_Utility.areFluidsEqual(stack, new FluidStack(fluid, 0)));
-            if (ret.contains(Boolean.TRUE))
+            ret = GT_Utility.areFluidsEqual(stack, new FluidStack(fluid, 0));
+            if (ret) {
                 this.selectedTank = this.INTERNALTANKS.indexOf(stack);
+                break;
+            }
         }
-        return ret.contains(Boolean.TRUE);
+        return ret;
     }
 
     @Override
@@ -94,12 +95,12 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
 
         NBTTagList lInternalTank = new NBTTagList();
 
-        for (int i = 0; i < this.INTERNALTANKS.size(); i++) {
-            if (this.INTERNALTANKS.get(i) != null) {
+        for (FluidStack internaltank : this.INTERNALTANKS) {
+            if (internaltank != null) {
                 NBTTagCompound entry = new NBTTagCompound();
-                entry.setString("FluidName", this.INTERNALTANKS.get(i).getFluid().getName());
-                entry.setInteger("Ammount", this.INTERNALTANKS.get(i).amount);
-                entry.setTag("FluidTag", this.INTERNALTANKS.get(i).tag);
+                entry.setString("FluidName", internaltank.getFluid().getName());
+                entry.setInteger("Ammount", internaltank.amount);
+                entry.setTag("FluidTag", internaltank.tag);
                 lInternalTank.appendTag(entry);
             }
         }

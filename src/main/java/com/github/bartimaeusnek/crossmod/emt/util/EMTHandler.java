@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,16 @@
 
 package com.github.bartimaeusnek.crossmod.emt.util;
 
-import java.lang.reflect.Field;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 
+import java.lang.reflect.Field;
+@SuppressWarnings("unchecked")
 public class EMTHandler {
-    public static Class aEssentiaInputHatch;
+    public static Class<? extends GT_MetaTileEntity_Hatch_Input> aEssentiaInputHatch;
     public static Field aAspectField;
     static {
         try {
-            aEssentiaInputHatch = Class.forName("emt.gthandler.common.implementations.EssentiaHatch");
+            aEssentiaInputHatch = (Class<? extends GT_MetaTileEntity_Hatch_Input>) Class.forName("emt.gthandler.common.implementations.EssentiaHatch");
             aAspectField = aEssentiaInputHatch.getDeclaredField("current");
             aAspectField.setAccessible(true);
         } catch (ClassNotFoundException | NoSuchFieldException e) {

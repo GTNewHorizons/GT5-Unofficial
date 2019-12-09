@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -68,6 +68,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new GT_MetaTileEntity_BioLab(this.mName, this.mTier, this.mAmperage, this.mDescription, this.mTextures, this.mNEIName);
     }
@@ -247,6 +248,8 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         this.mFluid.amount -= 8000;
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
                             BioCulture out = BioCulture.getBioCulture(BioDNA.convertDataToDNA(cultureDNABioData));
+                            if (out == null)
+                                return GT_MetaTileEntity_BasicMachine.DID_NOT_FIND_RECIPE;
                             out = out.setPlasmid(BioPlasmid.convertDataToPlasmid(cultureDNABioData));
                             this.mOutputItems[0] = BioItemList.getPetriDish(out);
                         }
@@ -264,7 +267,6 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public String[] getDescription() {
         return new String[]{StatCollector.translateToLocal("tooltip.tile.biolab.0.name"), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
     }

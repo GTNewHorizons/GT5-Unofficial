@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Ores;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -55,7 +54,6 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
 import static gregtech.api.enums.OrePrefixes.*;
@@ -208,6 +206,7 @@ public class PlatinumSludgeOverHaul {
         return false;
     }
 
+    @SuppressWarnings({"unchecked","rawtypes"})
     public static void replacePureElements() {
         //furnace
         for (Object entry : FurnaceRecipes.smelting().getSmeltingList().entrySet()) {
@@ -237,7 +236,7 @@ public class PlatinumSludgeOverHaul {
         for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings) {
             if (map == GT_Recipe.GT_Recipe_Map.sFusionRecipes || map == GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes || map == GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes)
                 continue;
-            HashSet<GT_Recipe> toDel = new HashSet<GT_Recipe>();
+            HashSet<GT_Recipe> toDel = new HashSet<>();
             recipeloop:
             for (GT_Recipe recipe : map.mRecipeList) {
                 if (recipe.mFakeRecipe)
@@ -368,7 +367,7 @@ public class PlatinumSludgeOverHaul {
     }
 
     private static void replaceHVCircuitMaterials(){
-        GT_Values.RA.addMixerRecipe(Materials.Redstone.getDust(1),Materials.Electrum.getDust(1),GT_Utility.getIntegratedCircuit(1),null,null,null,Materials.Nikolite.getDust(8),1800,120);
+        GT_Values.RA.addMixerRecipe(Materials.Redstone.getDust(1),Materials.Electrum.getDust(1),GT_Utility.getIntegratedCircuit(1),null,null,null,Materials.Electrotine.getDust(8),1800,120);
         for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList){
             if (recipe.mEUt > 512)
                 continue;
@@ -441,14 +440,13 @@ public class PlatinumSludgeOverHaul {
         }
         // END OF APACHE COMMONS COLLECTION COPY
 
-        Object input = null;
+        Object input;
         try {
             input = in.get(obj);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
             return;
         }
-        assert input != null;
 
         if (out != null && GT_Utility.areStacksEqual(otpt, Materials.Platinum.getDust(1), true)) {
             if (PlatinumSludgeOverHaul.checkRecipe(input,Materials.Platinum))
@@ -485,6 +483,7 @@ public class PlatinumSludgeOverHaul {
         }
     }
 
+    @SuppressWarnings({"rawtypes","unchecked"})
     private static boolean checkRecipe(Object input,Materials mat){
         if (input instanceof List || input instanceof Object[]) {
             Set lists = new HashSet(), stacks= new HashSet();

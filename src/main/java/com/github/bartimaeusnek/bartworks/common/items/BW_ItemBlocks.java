@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class BW_ItemBlocks extends ItemBlock {
@@ -66,13 +67,12 @@ public class BW_ItemBlocks extends ItemBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         if (this.field_150939_a instanceof BW_GlasBlocks)
             aList.add(StatCollector.translateToLocal("tooltip.glas.0.name") + " " + BW_ColorUtil.getColorForTier(BW_Util.getTierFromGlasMeta(aStack.getItemDamage())) + GT_Values.VN[BW_Util.getTierFromGlasMeta(aStack.getItemDamage())]);
         if (this.field_150939_a instanceof ITileAddsInformation) {
-            for (int i = 0; i < ((ITileAddsInformation) this.field_150939_a).getInfoData().length; i++) {
-                aList.add(((ITileAddsInformation) this.field_150939_a).getInfoData()[i]);
-            }
+            aList.addAll(Arrays.asList(((ITileAddsInformation) this.field_150939_a).getInfoData()));
         }
         aList.add(this.mNoMobsToolTip);
         if (!(this.field_150939_a instanceof ITileEntityProvider))

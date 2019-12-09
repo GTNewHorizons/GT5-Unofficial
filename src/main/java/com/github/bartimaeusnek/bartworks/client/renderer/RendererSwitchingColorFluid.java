@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -170,27 +170,27 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
                 dInterpolatedV4 = dInterpolatedV;
             } else {
                 float xFlow = MathHelper.sin(flowDir) * 0.25f, zFlow = MathHelper.cos(flowDir) * 0.25f;
-                dInterpolatedU = iconStill.getInterpolatedU((double) (8.0f + (-zFlow - xFlow) * 16.0f));
-                dInterpolatedV = iconStill.getInterpolatedV((double) (8.0f + (-zFlow + xFlow) * 16.0f));
-                dInterpolatedU2 = iconStill.getInterpolatedU((double) (8.0f + (-zFlow + xFlow) * 16.0f));
-                dInterpolatedV2 = iconStill.getInterpolatedV((double) (8.0f + (zFlow + xFlow) * 16.0f));
-                dInterpolatedU3 = iconStill.getInterpolatedU((double) (8.0f + (zFlow + xFlow) * 16.0f));
-                dInterpolatedV3 = iconStill.getInterpolatedV((double) (8.0f + (zFlow - xFlow) * 16.0f));
-                dInterpolatedU4 = iconStill.getInterpolatedU((double) (8.0f + (zFlow - xFlow) * 16.0f));
-                dInterpolatedV4 = iconStill.getInterpolatedV((double) (8.0f + (-zFlow - xFlow) * 16.0f));
+                dInterpolatedU = iconStill.getInterpolatedU(8.0f + (-zFlow - xFlow) * 16.0f);
+                dInterpolatedV = iconStill.getInterpolatedV(8.0f + (-zFlow + xFlow) * 16.0f);
+                dInterpolatedU2 = iconStill.getInterpolatedU(8.0f + (-zFlow + xFlow) * 16.0f);
+                dInterpolatedV2 = iconStill.getInterpolatedV(8.0f + (zFlow + xFlow) * 16.0f);
+                dInterpolatedU3 = iconStill.getInterpolatedU(8.0f + (zFlow + xFlow) * 16.0f);
+                dInterpolatedV3 = iconStill.getInterpolatedV(8.0f + (zFlow - xFlow) * 16.0f);
+                dInterpolatedU4 = iconStill.getInterpolatedU(8.0f + (zFlow - xFlow) * 16.0f);
+                dInterpolatedV4 = iconStill.getInterpolatedV(8.0f + (-zFlow - xFlow) * 16.0f);
             }
 
             tessellator.setBrightness(block.getMixedBrightnessForBlock(iBlockAccess, x, y, z));
             tessellator.setColorOpaque_F(RendererSwitchingColorFluid.LIGHT_Y_POS * red, RendererSwitchingColorFluid.LIGHT_Y_POS * green, RendererSwitchingColorFluid.LIGHT_Y_POS * blue);
 
-            tessellator.addVertexWithUV((double) x, y + heightNW, (double) z, dInterpolatedU, dInterpolatedV);
-            tessellator.addVertexWithUV((double) x, y + heightSW, (double) (z + 1), dInterpolatedU2, dInterpolatedV2);
-            tessellator.addVertexWithUV((double) (x + 1), y + heightSE, (double) (z + 1), dInterpolatedU3, dInterpolatedV3);
-            tessellator.addVertexWithUV((double) (x + 1), y + heightNE, (double) z, dInterpolatedU4, dInterpolatedV4);
-            tessellator.addVertexWithUV((double) x, y + heightNW, (double) z, dInterpolatedU, dInterpolatedV);
-            tessellator.addVertexWithUV((double) (x + 1), y + heightNE, (double) z, dInterpolatedU4, dInterpolatedV4);
-            tessellator.addVertexWithUV((double) (x + 1), y + heightSE, (double) (z + 1), dInterpolatedU3, dInterpolatedV3);
-            tessellator.addVertexWithUV((double) x, y + heightSW, (double) (z + 1), dInterpolatedU2, dInterpolatedV2);
+            tessellator.addVertexWithUV(x, y + heightNW, z, dInterpolatedU, dInterpolatedV);
+            tessellator.addVertexWithUV(x, y + heightSW, z + 1, dInterpolatedU2, dInterpolatedV2);
+            tessellator.addVertexWithUV(x + 1, y + heightSE, z + 1, dInterpolatedU3, dInterpolatedV3);
+            tessellator.addVertexWithUV(x + 1, y + heightNE, z, dInterpolatedU4, dInterpolatedV4);
+            tessellator.addVertexWithUV(x, y + heightNW, z, dInterpolatedU, dInterpolatedV);
+            tessellator.addVertexWithUV(x + 1, y + heightNE, z, dInterpolatedU4, dInterpolatedV4);
+            tessellator.addVertexWithUV(x + 1, y + heightSE, z + 1, dInterpolatedU3, dInterpolatedV3);
+            tessellator.addVertexWithUV(x, y + heightSW, z + 1, dInterpolatedU2, dInterpolatedV2);
 
         }
 
@@ -198,7 +198,7 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
             rendered = true;
             tessellator.setBrightness(block.getMixedBrightnessForBlock(iBlockAccess, x, y - 1, z));
             tessellator.setColorOpaque_F(RendererSwitchingColorFluid.LIGHT_Y_NEG * red, RendererSwitchingColorFluid.LIGHT_Y_NEG * green, RendererSwitchingColorFluid.LIGHT_Y_NEG * blue);
-            renderer.renderFaceYNeg(block, (double) x, y + RendererSwitchingColorFluid.RENDER_OFFSET, (double) z, this.getNullCheckedIiconOrFallbackTexture());
+            renderer.renderFaceYNeg(block, x, y + RendererSwitchingColorFluid.RENDER_OFFSET, z, this.getNullCheckedIiconOrFallbackTexture());
         }
 
         for (int side = 0; side < 4; ++side) {
@@ -269,14 +269,14 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
                 }
                 tessellator.setColorOpaque_F(RendererSwitchingColorFluid.LIGHT_Y_POS * sideLighting * red, RendererSwitchingColorFluid.LIGHT_Y_POS * sideLighting * green, RendererSwitchingColorFluid.LIGHT_Y_POS * sideLighting * blue);
 
-                tessellator.addVertexWithUV(dXcoord1, y + dHeight1, dZcoord1, (double) u1Flow, (double) v1Flow);
-                tessellator.addVertexWithUV(dXcoord2, y + dHeight2, dZcoord2, (double) u2Flow, (double) v2Flow);
-                tessellator.addVertexWithUV(dXcoord2, (double) y, dZcoord2, (double) u2Flow, (double) v3Flow);
-                tessellator.addVertexWithUV(dXcoord1, (double) y, dZcoord1, (double) u1Flow, (double) v3Flow);
-                tessellator.addVertexWithUV(dXcoord1, y + dHeight1, dZcoord1, (double) u1Flow, (double) v1Flow);
-                tessellator.addVertexWithUV(dXcoord1, (double) y, dZcoord1, (double) u1Flow, (double) v3Flow);
-                tessellator.addVertexWithUV(dXcoord2, (double) y, dZcoord2, (double) u2Flow, (double) v3Flow);
-                tessellator.addVertexWithUV(dXcoord2, y + dHeight2, dZcoord2, (double) u2Flow, (double) v2Flow);
+                tessellator.addVertexWithUV(dXcoord1, y + dHeight1, dZcoord1, u1Flow, v1Flow);
+                tessellator.addVertexWithUV(dXcoord2, y + dHeight2, dZcoord2, u2Flow, v2Flow);
+                tessellator.addVertexWithUV(dXcoord2, y, dZcoord2, u2Flow, v3Flow);
+                tessellator.addVertexWithUV(dXcoord1, y, dZcoord1, u1Flow, v3Flow);
+                tessellator.addVertexWithUV(dXcoord1, y + dHeight1, dZcoord1, u1Flow, v1Flow);
+                tessellator.addVertexWithUV(dXcoord1, y, dZcoord1, u1Flow, v3Flow);
+                tessellator.addVertexWithUV(dXcoord2, y, dZcoord2, u2Flow, v3Flow);
+                tessellator.addVertexWithUV(dXcoord2, y + dHeight2, dZcoord2, u2Flow, v2Flow);
             }
         }
         renderer.renderMinY = 0.0;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,6 +46,7 @@ public class GT_Container_RadioHatch extends GT_Container_1by1 {
         super(aInventoryPlayer, aTileEntity);
     }
 
+    @SuppressWarnings("rawtypes")
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         if (!this.mTileEntity.isClientSide() && this.mTileEntity.getMetaTileEntity() != null) {

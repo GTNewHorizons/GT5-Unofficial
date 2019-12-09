@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -88,6 +88,7 @@ public class BW_Container_HeatedWaterPump extends Container {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         if (this.TILE.getWorldObj().isRemote)

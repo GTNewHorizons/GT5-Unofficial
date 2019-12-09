@@ -1,3 +1,25 @@
+/*
+ * Copyright (c) 2018-2019 bartimaeusnek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.github.bartimaeusnek.crossmod.tectech;
 
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ManualTrafo;
@@ -11,9 +33,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import java.util.ArrayList;
 import java.util.Iterator;
 
+@SuppressWarnings({"unused"})
 public class TT_TileEntity_ManualTrafo extends GT_TileEntity_ManualTrafo {
 
-    ArrayList<GT_MetaTileEntity_Hatch_EnergyMulti> mTTEnerys = new ArrayList<>();
+    ArrayList<GT_MetaTileEntity_Hatch_EnergyMulti> mTTEnergyHatches = new ArrayList<>();
     ArrayList<GT_MetaTileEntity_Hatch_DynamoMulti> mTTDynamos = new ArrayList<>();
     public TT_TileEntity_ManualTrafo(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -43,11 +66,11 @@ public class TT_TileEntity_ManualTrafo extends GT_TileEntity_ManualTrafo {
         long totalOutput = 0L;
         long aFirstVoltageFound = -1L;
         boolean aFoundMixedDynamos = false;
-        Iterator var10 = this.mDynamoHatches.iterator();
+        Iterator<GT_MetaTileEntity_Hatch_Dynamo> var10 = this.mDynamoHatches.iterator();
 
         long aVoltage;
         while(var10.hasNext()) {
-            GT_MetaTileEntity_Hatch_Dynamo aDynamo = (GT_MetaTileEntity_Hatch_Dynamo)var10.next();
+            GT_MetaTileEntity_Hatch_Dynamo aDynamo = var10.next();
             if (aDynamo == null) {
                 return false;
             }
@@ -69,7 +92,7 @@ public class TT_TileEntity_ManualTrafo extends GT_TileEntity_ManualTrafo {
             this.explodeMultiblock();
             return false;
         } else {
-            Iterator var17 = this.mDynamoHatches.iterator();
+            Iterator<GT_MetaTileEntity_Hatch_Dynamo> var17 = this.mDynamoHatches.iterator();
 
             while(true) {
                 GT_MetaTileEntity_Hatch_Dynamo aDynamo;
@@ -78,14 +101,14 @@ public class TT_TileEntity_ManualTrafo extends GT_TileEntity_ManualTrafo {
                         return injected > 0;
                     }
 
-                    aDynamo = (GT_MetaTileEntity_Hatch_Dynamo)var17.next();
+                    aDynamo = var17.next();
                 } while(!isValidMetaTileEntity(aDynamo));
 
                 long leftToInject = aEU - (long)injected;
                 aVoltage = aDynamo.maxEUOutput();
                 int aAmpsToInject = (int)(leftToInject / aVoltage);
                 int aRemainder = (int)(leftToInject - (long)aAmpsToInject * aVoltage);
-                int ampsOnCurrentHatch = (int)Math.min(aDynamo.maxAmperesOut(), (long)aAmpsToInject);
+                int ampsOnCurrentHatch = (int)Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
 
                 for(int i = 0; i < ampsOnCurrentHatch; ++i) {
                     aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aVoltage, false);
@@ -93,7 +116,7 @@ public class TT_TileEntity_ManualTrafo extends GT_TileEntity_ManualTrafo {
 
                 injected = (int)((long)injected + aVoltage * (long)ampsOnCurrentHatch);
                 if (aRemainder > 0 && (long)ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
-                    aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits((long)aRemainder, false);
+                    aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aRemainder, false);
                     injected += aRemainder;
                 }
             }
@@ -103,11 +126,9 @@ public class TT_TileEntity_ManualTrafo extends GT_TileEntity_ManualTrafo {
 
 
     public boolean drainEnergyInput(long aEU) {
-        if (aEU <= 0L) {
-            return true;
-        } else {
+        if (aEU > 0L) {
             {
-                Iterator var3 = this.mTTEnerys.iterator();
+                Iterator<GT_MetaTileEntity_Hatch_EnergyMulti> var3 = this.mTTEnergyHatches.iterator();
 
                 GT_MetaTileEntity_Hatch_EnergyMulti tHatch;
                 do {
@@ -115,11 +136,11 @@ public class TT_TileEntity_ManualTrafo extends GT_TileEntity_ManualTrafo {
                         return false;
                     }
 
-                    tHatch = (GT_MetaTileEntity_Hatch_EnergyMulti)var3.next();
-                } while(!isValidMetaTileEntity(tHatch) || !tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false));
+                    tHatch = var3.next();
+                } while (!isValidMetaTileEntity(tHatch) || !tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false));
             }
             {
-                Iterator var3 = this.mEnergyHatches.iterator();
+                Iterator<GT_MetaTileEntity_Hatch_Energy> var3 = this.mEnergyHatches.iterator();
 
                 GT_MetaTileEntity_Hatch_Energy tHatch;
                 do {
@@ -127,11 +148,11 @@ public class TT_TileEntity_ManualTrafo extends GT_TileEntity_ManualTrafo {
                         return false;
                     }
 
-                    tHatch = (GT_MetaTileEntity_Hatch_Energy)var3.next();
-                } while(!isValidMetaTileEntity(tHatch) || !tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false));
+                    tHatch = var3.next();
+                } while (!isValidMetaTileEntity(tHatch) || !tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false));
             }
 
-            return true;
         }
+        return true;
     }
 }

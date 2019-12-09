@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,7 +49,7 @@ public class GT_TileEntity_CrackingDistillTower extends GT_MetaTileEntity_Distil
             return false;
         else {
             FluidStack[] array = new FluidStack[0];
-            ArrayList<FluidStack> fluidInputs = new ArrayList<FluidStack>();
+            ArrayList<FluidStack> fluidInputs = new ArrayList<>();
             for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
                 if (hatch != null) {
                     fluidInputs.add(hatch.getFluid());

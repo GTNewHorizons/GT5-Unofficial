@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,7 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 import static net.minecraftforge.common.ChestGenHooks.PYRAMID_JUNGLE_CHEST;
-
+@SuppressWarnings({"ALL"})
 public abstract class MapGenRuins extends WorldGenerator {
 
     protected Pair<Block,Integer>[][] ToBuildWith = new Pair[4][0];

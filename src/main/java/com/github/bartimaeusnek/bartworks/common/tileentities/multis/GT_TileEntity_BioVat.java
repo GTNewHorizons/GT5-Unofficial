@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -56,7 +56,6 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 
 public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -65,7 +64,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
     private static final byte MCASING_INDEX = 49;
     private static final byte TIMERDIVIDER = 20;
 
-    private final HashSet<EntityPlayerMP> playerMPHashSet = new HashSet<EntityPlayerMP>();
+    private final HashSet<EntityPlayerMP> playerMPHashSet = new HashSet<>();
     private final ArrayList<GT_MetaTileEntity_RadioHatch> mRadHatches = new ArrayList<>();
     private int height = 1;
     private GT_Recipe mLastRecipe;
@@ -145,7 +144,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
 
     private int calcMod(double x) {
         int ret = (int) Math.ceil(ConfigHandler.bioVatMaxParallelBonus*(-(((2D*x/(double)this.getOutputCapacity())-1D)*(2D*x/(double)this.getOutputCapacity()-1D))+1D));
-        return ret <= 0 ? 1 : ret > 100 ? 100 : ret;//(int) Math.ceil((-0.00000025D * x * (x - this.getOutputCapacity())));
+        return ret <= 0 ? 1 : Math.min(ret, 100);//(int) Math.ceil((-0.00000025D * x * (x - this.getOutputCapacity())));
     }
 
     @Override
@@ -171,7 +170,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
                 }
             }
         }
-        ItemStack[] tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
+        ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
 
         ArrayList<FluidStack> tFluidList = this.getStoredFluids();
         int tFluidList_sS = tFluidList.size();
@@ -190,7 +189,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
             }
         }
 
-        FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+        FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
 
         if (tFluidList.size() > 0) {
 
@@ -256,18 +255,16 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     public ArrayList<FluidStack> getStoredFluidOutputs() {
-        ArrayList<FluidStack> rList = new ArrayList();
-        Iterator var2 = this.mOutputHatches.iterator();
+        ArrayList<FluidStack> rList = new ArrayList<>();
 
-        while (var2.hasNext()) {
-            GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) var2.next();
+        for (GT_MetaTileEntity_Hatch_Output tHatch : this.mOutputHatches) {
             if (tHatch.getFluid() != null)
                 rList.add(tHatch.getFluid());
         }
         return rList;
     }
 
-    private boolean addRadiationInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+    private boolean addRadiationInputToMachineList(IGregTechTileEntity aTileEntity) {
         if (aTileEntity == null) {
             return false;
         } else {
@@ -275,7 +272,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
             if (aMetaTileEntity == null) {
                 return false;
             } else if (aMetaTileEntity instanceof GT_MetaTileEntity_RadioHatch) {
-                ((GT_MetaTileEntity_RadioHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                ((GT_MetaTileEntity_RadioHatch) aMetaTileEntity).updateTexture(GT_TileEntity_BioVat.MCASING_INDEX);
                 return this.mRadHatches.add((GT_MetaTileEntity_RadioHatch) aMetaTileEntity);
             } else {
                 return false;
@@ -298,7 +295,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
                         //controller
                         if (y == 0 && xDir + x == 0 && zDir + z == 0)
                             continue;
-                        if (!(this.addOutputToMachineList(tileEntity, GT_TileEntity_BioVat.MCASING_INDEX) || this.addRadiationInputToMachineList(tileEntity, GT_TileEntity_BioVat.MCASING_INDEX) || this.addInputToMachineList(tileEntity, GT_TileEntity_BioVat.MCASING_INDEX) || this.addMaintenanceToMachineList(tileEntity, GT_TileEntity_BioVat.MCASING_INDEX) || this.addEnergyInputToMachineList(tileEntity, GT_TileEntity_BioVat.MCASING_INDEX))) {
+                        if (!(this.addOutputToMachineList(tileEntity, GT_TileEntity_BioVat.MCASING_INDEX) || this.addRadiationInputToMachineList(tileEntity) || this.addInputToMachineList(tileEntity, GT_TileEntity_BioVat.MCASING_INDEX) || this.addMaintenanceToMachineList(tileEntity, GT_TileEntity_BioVat.MCASING_INDEX) || this.addEnergyInputToMachineList(tileEntity, GT_TileEntity_BioVat.MCASING_INDEX))) {
                             if (BW_Util.addBlockToMachine(x, y, z, 2, aBaseMetaTileEntity, GregTech_API.sBlockCasings4, 1)) {
                                 ++blockcounter;
                                 continue;
@@ -400,10 +397,8 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
     private void check_Chunk() {
         World aWorld = this.getBaseMetaTileEntity().getWorld();
         if (!aWorld.isRemote) {
-            Iterator var5 = aWorld.playerEntities.iterator();
 
-            while (var5.hasNext()) {
-                Object tObject = var5.next();
+            for (Object tObject : aWorld.playerEntities) {
                 if (!(tObject instanceof EntityPlayerMP)) {
                     break;
                 }
@@ -474,7 +469,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
                         for (int x = -1; x < 2; x++) {
                             for (int y = 1; y < this.height; y++) {
                                 for (int z = -1; z < 2; z++) {
-                                    if (aStack == null || (aStack != null && aStack.getItem() instanceof LabParts && aStack.getItemDamage() == 0)) {
+                                    if (aStack == null || aStack.getItem() instanceof LabParts && aStack.getItemDamage() == 0) {
                                         if (this.mCulture == null || aStack == null || aStack.getTagCompound() == null || this.mCulture.getID() != aStack.getTagCompound().getInteger("ID")) {
                                             lCulture = aStack == null || aStack.getTagCompound() == null ? null : BioCulture.getBioCulture(aStack.getTagCompound().getString("Name"));
                                             this.sendPackagesOrRenewRenderer(x, y, z, lCulture);

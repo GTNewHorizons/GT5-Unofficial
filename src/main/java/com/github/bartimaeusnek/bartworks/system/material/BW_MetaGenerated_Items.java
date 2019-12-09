@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -95,6 +95,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         }
     }
 
+
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure || this.orePrefixes == OrePrefixes.crushed) {
             int aDamage = aItemEntity.getEntityItem().getItemDamage();
@@ -104,17 +105,15 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
                     int tX = MathHelper.floor_double(aItemEntity.posX);
                     int tY = MathHelper.floor_double(aItemEntity.posY);
                     int tZ = MathHelper.floor_double(aItemEntity.posZ);
+                    Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
+                    byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((this.orePrefixes == OrePrefixes.dustImpure) || (this.orePrefixes == OrePrefixes.dustPure)) {
-                        Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                        byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                         if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
                             aItemEntity.setEntityItemStack(WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
                             aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                             return true;
                         }
-                    } else if (this.orePrefixes == OrePrefixes.crushed) {
-                        Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                        byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
+                    } else {
                         if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
                             aItemEntity.setEntityItemStack(WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
                             aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
@@ -128,6 +127,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
 //        String tooltip = GT_LanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".tooltip");
 //        if (!tooltip.isEmpty())
@@ -170,6 +170,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
 
     @Override
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
     public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
         for (Werkstoff werkstoff : werkstoffHashSet) {
             if (werkstoff != null && ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) != 0) && ((werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) == 0)) {
