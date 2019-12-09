@@ -49,6 +49,7 @@ import static gregtech.api.enums.OrePrefixes.*;
 public class AdditionalRecipes implements Runnable {
 
     @Override
+    @SuppressWarnings("deprecation")
     public void run() {
        ((BWRecipes.BW_Recipe_Map_LiquidFuel)BWRecipes.instance.getMappingsFor((byte) 2)).addLiquidFuel(WerkstoffLoader.FormicAcid.getBridgeMaterial(),40);
         //Thorium/Yttrium Glas
@@ -86,7 +87,7 @@ public class AdditionalRecipes implements Runnable {
 
         //Milk
         //GT_Values.RA.addFusionReactorRecipe(WerkstoffLoader.Californium.getMolten(16), Materials.Milk.getFluid(12000), WerkstoffLoader.Oganesson.getFluidOrGas(16), 500, 49152, 600000000);
-        GT_Values.RA.addCentrifugeRecipe(GT_Utility.getIntegratedCircuit(1),null,Materials.Milk.getFluid(10000),Materials.Water.getFluid(8832),Materials.Sugar.getDustSmall(21),Materials.Calcium.getDustTiny(1),Materials.Magnesium.getDustTiny(1),Materials.Potassium.getDustTiny(1),Materials.Sodium.getDustTiny(4),Materials.Phosphorus.getDustTiny(1),new int[]{10000,10000,1000,10000,1000,1000},50,120);
+        GT_Values.RA.addCentrifugeRecipe(GT_Utility.getIntegratedCircuit(1),null,Materials.Milk.getFluid(10000),Materials.Water.getFluid(8832),Materials.Sugar.getDustSmall(21),Materials.Calcium.getDustTiny(1),Materials.Magnesium.getDustTiny(1),Materials.Potassium.getDustTiny(1),Materials.Sodium.getDustTiny(4),Materials.Phosphor.getDustTiny(1),new int[]{10000,10000,1000,10000,1000,1000},50,120);
 
         for (int i = 0; i <= 6; i++) {
             GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(

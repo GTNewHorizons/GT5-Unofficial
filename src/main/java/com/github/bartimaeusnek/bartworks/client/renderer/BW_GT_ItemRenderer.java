@@ -76,10 +76,8 @@ public class BW_GT_ItemRenderer implements IItemRenderer {
                     if (RenderItem.renderInFrame) {
                         GL11.glScalef(0.85F, 0.85F, 0.85F);
                         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-                        GL11.glTranslated(-0.5D, -0.42D, 0.0D);
-                    } else {
-                        GL11.glTranslated(-0.5D, -0.42D, 0.0D);
                     }
+                    GL11.glTranslated(-0.5D, -0.42D, 0.0D);
                 }
 
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);

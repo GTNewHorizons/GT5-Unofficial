@@ -366,8 +366,9 @@ public class PlatinumSludgeOverHaul {
         PlatinumSludgeOverHaul.runHelperrecipes();
     }
 
+    @SuppressWarnings("deprecation")
     private static void replaceHVCircuitMaterials(){
-        GT_Values.RA.addMixerRecipe(Materials.Redstone.getDust(1),Materials.Electrum.getDust(1),GT_Utility.getIntegratedCircuit(1),null,null,null,Materials.Electrotine.getDust(8),1800,120);
+        GT_Values.RA.addMixerRecipe(Materials.Redstone.getDust(1),Materials.Electrum.getDust(1),GT_Utility.getIntegratedCircuit(1),null,null,null,Materials.Nikolite.getDust(8),1800,120);
         for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList){
             if (recipe.mEUt > 512)
                 continue;
