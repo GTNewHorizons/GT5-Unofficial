@@ -51,6 +51,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     private static final Werkstoff.GenerationFeatures DEFAULT_NULL_GENERATION_FEATURES = new Werkstoff.GenerationFeatures().disable();
     public static Werkstoff default_null_Werkstoff;
 
+    private final HashSet<String> ADDITIONAL_OREDICT = new HashSet<>();
     private final List<ISubTagContainer> mOreByProducts = new ArrayList<>();
     private final LinkedHashSet<Pair<ISubTagContainer, Integer>> CONTENTS = new LinkedHashSet<>();
     private final HashSet<SubTag> SUBTAGS = new HashSet<>();
@@ -203,6 +204,15 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         Werkstoff.werkstoffNameHashMap.put(this.defaultName,this);
     }
 
+
+    public Werkstoff addAdditionalOreDict(String s){
+        ADDITIONAL_OREDICT.add(s);
+        return this;
+    }
+
+    public HashSet<String> getADDITIONAL_OREDICT() {
+        return ADDITIONAL_OREDICT;
+    }
 
     public void setTCAspects(Pair<Object,Integer>... pAspectsArr){
         this.stats.mTC_Aspects=pAspectsArr;

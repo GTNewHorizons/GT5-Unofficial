@@ -212,7 +212,7 @@ public final class MainMod {
         new CircuitImprintLoader().run();
         runOnServerStarted();
         fixEnergyRequirements();
-        MainMod.unificationEnforcer();
+        MainMod.unificationRecipeEnforcer();
     }
 
     public static void runOnPlayerJoined(boolean classicMode, boolean extraGasRecipes){
@@ -245,7 +245,7 @@ public final class MainMod {
         }
     }
 
-    private static void unificationEnforcer() {
+    private static void unificationRecipeEnforcer() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             if (werkstoff.getGenerationFeatures().enforceUnification) {
                 if (werkstoff.contains(NOBLE_GAS)) {

@@ -36,6 +36,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 @SuppressWarnings({"rawtypes","unchecked","unused"})
 public class ThaumcraftHandler {
@@ -148,15 +149,15 @@ public class ThaumcraftHandler {
         }
 
         public static void addAspectToAll(Werkstoff werkstoff){
-            for (OrePrefixes element : OrePrefixes.values()) {
+            for (OrePrefixes element : WerkstoffLoader.ENABLED_ORE_PREFIXES) {
                 if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(element)) != 0 && (werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(element)) == 0) {
                     if (element.mMaterialAmount >= 3628800L || element == OrePrefixes.ore) {
                         DebugLog.log("OrePrefix: " + element.name() + " mMaterialAmount: " + element.mMaterialAmount/3628800L);
-                        if (WerkstoffLoader.items.get(element) != null)
+                        if (Objects.nonNull(WerkstoffLoader.items.get(element)))
                             ThaumcraftHandler.AspectAdder.addAspectViaBW(werkstoff.get(element), werkstoff.getTCAspects(element == OrePrefixes.ore ? 1 : (int) (element.mMaterialAmount / 3628800L)));
                     }
                     else if (element.mMaterialAmount >= 0L) {
-                        if (WerkstoffLoader.items.get(element) != null)
+                        if (Objects.nonNull(WerkstoffLoader.items.get(element)))
                             ThaumcraftHandler.AspectAdder.addAspectViaBW(werkstoff.get(element), new Pair<>(TC_Aspects.PERDITIO.mAspect, 1));
                     }
                 }

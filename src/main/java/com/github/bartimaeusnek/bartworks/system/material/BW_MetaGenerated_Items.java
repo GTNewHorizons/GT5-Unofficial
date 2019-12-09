@@ -89,9 +89,9 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", this.getDefaultLocalization(w));
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", w.getToolTip());
             if (ConfigHandler.experimentalThreadedLoader)
-                OreDictAdder.addToMap(new Pair<>(this.orePrefixes.name() + w.getDefaultName().replaceAll(" ",""), tStack));
+                OreDictAdder.addToMap(new Pair<>(this.orePrefixes.name() + w.getVarName(), tStack));
             else
-                GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.getDefaultName().replaceAll(" ",""), tStack);
+                GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.getVarName(), tStack);
         }
     }
 
