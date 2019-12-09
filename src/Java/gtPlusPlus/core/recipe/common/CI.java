@@ -1239,4 +1239,8 @@ public class CI {
 
 	}
 
+	public static ItemStack getNumberedBioCircuit(int i) {
+		return GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(i, 0L);
+	}
+
 }

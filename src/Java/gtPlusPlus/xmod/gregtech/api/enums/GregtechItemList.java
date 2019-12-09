@@ -231,7 +231,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	//Algae
 	AlgaeFarm_Controller,
-
+	
+	//Chemical Plant
+	ChemicalPlant_Controller,
 
 	//GT4 autoCrafter
 	GT4_Multi_Crafter, 

@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -40,14 +41,16 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
+import gtPlusPlus.api.helpers.GregtechPlusPlus_API.Multiblock_API;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.ConcurrentHashSet;
 import gtPlusPlus.api.objects.data.ConcurrentSet;
 import gtPlusPlus.api.objects.data.FlexiblePair;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.api.objects.minecraft.multi.NoOutputBonusMultiBehaviour;
+import gtPlusPlus.api.objects.minecraft.multi.SpecialMultiBehaviour;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
@@ -65,7 +68,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.objects.MultiblockRequirements;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -78,13 +80,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
-public abstract class GregtechMeta_MultiBlockBase
-extends
-GT_MetaTileEntity_MultiBlockBase {
-
+public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_MultiBlockBase {
 
 	public static final boolean DEBUG_DISABLE_CORES_TEMPORARILY = true;
-
 
 	static {
 
@@ -105,7 +103,9 @@ GT_MetaTileEntity_MultiBlockBase {
 		} catch (NoSuchMethodException | SecurityException e) {}
 
 
-		//gregtech.api.util.GT_Recipe.GT_Recipe_Map.findRecipe(IHasWorldObjectAndCoords, GT_Recipe, boolean, long, FluidStack[], ItemStack, ItemStack...)
+		// Register the No-Bonus Special Behaviour.
+		new NoOutputBonusMultiBehaviour();
+		
 
 	}
 
@@ -124,6 +124,10 @@ GT_MetaTileEntity_MultiBlockBase {
 	public ArrayList<GT_MetaTileEntity_Hatch_InputBattery> mChargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_InputBattery>();
 	public ArrayList<GT_MetaTileEntity_Hatch_OutputBattery> mDischargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_OutputBattery>();
 
+	// Custom Behaviour Map
+	HashMap<String, SpecialMultiBehaviour> mCustomBehviours;
+	
+	
 	public GregtechMeta_MultiBlockBase(final int aID, final String aName,
 			final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -989,12 +993,11 @@ GT_MetaTileEntity_MultiBlockBase {
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 		log("Running checkRecipeGeneric(0)");
-
-
+		
 		GT_Recipe tRecipe = findRecipe(
 				getBaseMetaTileEntity(), mLastRecipe, false,
-				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
-
+				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);		
+		
 		log("Running checkRecipeGeneric(1)");
 		// Remember last recipe - an optimization for findRecipe()
 		this.mLastRecipe = tRecipe;
@@ -1003,6 +1006,50 @@ GT_MetaTileEntity_MultiBlockBase {
 			log("BAD RETURN - 1");
 			return false;
 		}
+		
+
+		/*
+		 *  Check for Special Behaviours
+		 */
+		
+		// First populate the map if we need to.
+		if (mCustomBehviours.isEmpty()) {
+			mCustomBehviours = Multiblock_API.getSpecialBehaviourItemMap();			
+		}
+		
+		// We have a special slot object in the recipe
+		if (tRecipe.mSpecialItems != null) {
+			// The special slot is an item
+			if (tRecipe.mSpecialItems instanceof ItemStack) {
+				// Make an Itemstack instance of this.
+				ItemStack aSpecialStack = (ItemStack) tRecipe.mSpecialItems;	
+				// Check if this item is in an input bus.			
+				boolean aDidFindMatch = false;
+				for (ItemStack aInputItemsToCheck : aItemInputs) {
+					// If we find a matching stack, continue.		
+					if (GT_Utility.areStacksEqual(aSpecialStack, aInputItemsToCheck, false)) {
+						// Iterate all special behaviour items, to see if we need to utilise one.
+						aDidFindMatch = true;
+						break;
+					}					
+				}	
+				// Try prevent needless iteration loops if we don't have the required inputs at all.
+				if (aDidFindMatch) {
+					// Iterate all special behaviour items, to see if we need to utilise one.
+					for (SpecialMultiBehaviour aBehaviours : mCustomBehviours.values()) {	
+						// Found a match, let's adjust this recipe now.
+						if (aBehaviours.isTriggerItem(aSpecialStack)) {						
+							// Adjust this recipe to suit special item
+							aMaxParallelRecipes = aBehaviours.getMaxParallelRecipes();
+							aEUPercent = aBehaviours.getEUPercent();
+							aSpeedBonusPercent = aBehaviours.getSpeedBonusPercent();
+							aOutputChanceRoll = aBehaviours.getOutputChanceRoll();
+							break;						
+						}					
+					}
+				}							
+			}			
+		}		
 
 		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
 			log("BAD RETURN - 2");
