@@ -1133,7 +1133,10 @@ public class DreamCraftRecipeLoader implements Runnable {
             //Batteries
             TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Energy_Cluster.get(1L), 12000, 16, 100000, 3, new Object[]{
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 64L),
-                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 4L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
                     ItemList.Energy_Cluster.get(8L),
                     ItemList.Field_Generator_UV.get(2),
                     ItemList.Circuit_Wafer_HPIC.get(64),
@@ -1148,7 +1151,10 @@ public class DreamCraftRecipeLoader implements Runnable {
             TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.ZPM2.get(1L), 24000, 64, 200000, 6, new Object[]{
                     GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 32L),
                     GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 32L),
-                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 4L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
                     ItemList.ZPM2.get(8),
                     ItemList.Field_Generator_UHV.get(4),
                     ItemList.Circuit_Wafer_UHPIC.get(64),
