@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 public class NoOutputBonusMultiBehaviour extends SpecialMultiBehaviour {
 
 	public NoOutputBonusMultiBehaviour() {
-		
+		// Used by other mods which may wish to not obtain bonus outputs on their Sifting or Maceration recipes.
 	}
 	
 	@Override

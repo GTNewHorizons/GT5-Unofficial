@@ -49,7 +49,6 @@ import gtPlusPlus.api.objects.data.ConcurrentSet;
 import gtPlusPlus.api.objects.data.FlexiblePair;
 import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.api.objects.minecraft.multi.NoOutputBonusMultiBehaviour;
 import gtPlusPlus.api.objects.minecraft.multi.SpecialMultiBehaviour;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
