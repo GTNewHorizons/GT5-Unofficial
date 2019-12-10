@@ -2,25 +2,24 @@ package container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import tileentities.TE_ItemDistributionNode;
+import net.minecraft.tileentity.TileEntity;
 
-public class Container_ItemDistributionNode extends Container {
+public class Container_ItemProxyEndpoint extends Container {
 	
-	private final TE_ItemDistributionNode te;
+	private final IInventory teInventory;
 	
 	private int slotID = 0;
 	
-	public Container_ItemDistributionNode(TE_ItemDistributionNode te, EntityPlayer player) {
-		this.te = te;
+	public Container_ItemProxyEndpoint(TileEntity te, EntityPlayer player) {
+		this.teInventory = (IInventory) te;
 		
-		// Networked Storage
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				super.addSlotToContainer(new Slot(te, slotID++, 18 * j + 20, 19 * i + 20));
-			}
-		}
+		// Source Slot
+		addSlotToContainer(new Slot(teInventory, slotID++, 80, 35));
+		// Config slot
+		addSlotToContainer(new Slot(teInventory, slotID++, 100, 35));
 		
 		//Inventory
         for (int i = 0; i < 3; i++) {
@@ -62,7 +61,8 @@ public class Container_ItemDistributionNode extends Container {
 	
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return te.isUseableByPlayer(player);
+		return teInventory.isUseableByPlayer(player);
 	}
 
 }
+

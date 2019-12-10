@@ -8,20 +8,21 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import tileentities.TE_ItemDistributionNode;
 
-public class Gui_ItemDistributionNode extends GuiContainer {
+public class Gui_ItemProxyEndpoint extends GuiContainer {
 	
-	private final ResourceLocation texture = new ResourceLocation(KekzCore.MODID, "textures/gui/ItemDistributionNode.png");
+	private final ResourceLocation texture = new ResourceLocation(KekzCore.MODID, "textures/gui/ItemTech1by1.png");
 	
 	private final InventoryPlayer inventory;
-	private final TE_ItemDistributionNode te;
+	private final IInventory te;
 	
-	public Gui_ItemDistributionNode(TE_ItemDistributionNode te, EntityPlayer player) {
-		super(new Container_ItemDistributionNode(te, player));
+	public Gui_ItemProxyEndpoint(TileEntity te, EntityPlayer player) {
+		super(new Container_ItemProxyEndpoint(te, player));
 		inventory = player.inventory;
-		this.te = te;
+		this.te = (IInventory) te;
 		
 	}
 

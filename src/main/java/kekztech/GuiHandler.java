@@ -1,21 +1,26 @@
 package kekztech;
 
-import container.Container_ItemDistributionNode;
-import container.Gui_ItemDistributionNode;
+import container.Container_ItemProxyEndpoint;
+import container.Container_ItemProxySource;
+import container.Gui_ItemProxyEndpoint;
+import container.Gui_ItemProxySource;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import tileentities.TE_ItemDistributionNode;
 
 public class GuiHandler implements IGuiHandler {
-
+	
+	public static final int ITEM_PROXY_SOURCE = 0;
+	public static final int ITEM_PROXY_ENDPOINT = 1;
+	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if(te != null) {
-			if(ID == 0) {
-				return new Container_ItemDistributionNode((TE_ItemDistributionNode) te, player);
+			switch(ID) {
+			case ITEM_PROXY_SOURCE: return new Container_ItemProxySource(te, player);
+			case ITEM_PROXY_ENDPOINT: return new Container_ItemProxyEndpoint(te, player);
 			}
 		}
 		return null;
@@ -25,8 +30,9 @@ public class GuiHandler implements IGuiHandler {
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if(te != null) {
-			if(ID == 0) {
-				return new Gui_ItemDistributionNode((TE_ItemDistributionNode) te, player);
+			switch(ID) {
+			case ITEM_PROXY_SOURCE: return new Gui_ItemProxySource(te, player);
+			case ITEM_PROXY_ENDPOINT: return new Gui_ItemProxyEndpoint(te, player);
 			}
 		}
 		return null;

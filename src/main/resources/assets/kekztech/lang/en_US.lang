@@ -88,8 +88,9 @@ tile.kekztech_controlrod_block.name=Nuclear Reactor Control Rod
 tile.kekztech_reactorchamberoff_block.name=Nuclear Reactor Chamber (OFF)
 tile.kekztech_reactorchamberon_block.name=Nuclear Reactor Chamber (ON)
 
-tile.kekztech_itemdistributioncable_block.name=Item Distribution Cable
-tile.kekztech_itemdistributionnode_block.name=Item Distribution Node
+tile.kekztech_itemproxycable_block.name=Item Proxy Network Cable
+tile.kekztech_itemproxysource_block.name=Item Proxy Network Source
+tile.kekztech_itemproxyendpoint_block.name=Item Proxy Network Endpoint
 tile.kekztech_itemserverdrive_block.name=Item Server Drive
 tile.kekztech_itemserverrackcasing_block.name=Item Server Rack Casing
 tile.kekztech_itemserverioport_block.name=Item Server I/O Port

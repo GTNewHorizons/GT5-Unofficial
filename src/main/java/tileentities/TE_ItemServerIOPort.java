@@ -47,15 +47,23 @@ public class TE_ItemServerIOPort extends TileEntity implements IInventory {
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack itemStack) {
+		System.out.println("Set slot, MIH: " + mih);
 		if(mih != null) {
 			if(itemStack == null || !itemStack.isItemEqual(mih.getStackInSlot(slot))) {
 				return;
 			} else {
-				final int change = itemStack.stackSize - mih.getStackInSlot(slot).stackSize;
-				if(change < 0) {
-					mih.reduceStackInSlot(slot, change);
+				if(mih.getStackInSlot(slot) == null) {
+					System.out.println("Set slot: Allocate new");
+					mih.insertStackInSlot(slot, itemStack);
 				} else {
-					mih.increaseStackInSlot(slot, change);
+					final int change = itemStack.stackSize - mih.getStackInSlot(slot).stackSize;
+					if(change < 0) {
+						System.out.println("Set slot: reduce");
+						mih.reduceStackInSlot(slot, change);
+					} else {
+						System.out.println("Set slot: increase");
+						mih.increaseStackInSlot(slot, change);
+					}					
 				}
 				super.markDirty();
 			}			
@@ -79,7 +87,7 @@ public class TE_ItemServerIOPort extends TileEntity implements IInventory {
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		return false;
+		return true;
 	}
 
 	@Override

@@ -1,40 +1,45 @@
 package blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import itemBlocks.IB_ItemDistributionCable;
+import itemBlocks.IB_ItemProxyCable;
 import kekztech.KekzCore;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import tileentities.TE_ItemDistributionCable;
+import tileentities.TE_ItemProxyCable;
 
-public class Block_ItemDistributionCable extends BlockContainer {
+public class Block_ItemProxyCable extends BlockContainer {
 	
-	private static Block_ItemDistributionCable instance = new Block_ItemDistributionCable();
+	private static Block_ItemProxyCable instance = new Block_ItemProxyCable();
 	
-	private Block_ItemDistributionCable() {
+	private Block_ItemProxyCable() {
 		super(Material.glass);
 	}
 	
-	public static Block_ItemDistributionCable getInstance() {
+	public static Block_ItemProxyCable getInstance() {
 		return instance;
 	}
 	
 	public void registerBlock() {
-		final String blockName = "kekztech_itemdistributioncable_block";
+		final String blockName = "kekztech_itemproxycable_block";
 		super.setBlockName(blockName);
 		super.setCreativeTab(CreativeTabs.tabMisc);
-		super.setBlockTextureName(KekzCore.MODID + ":" + "ItemDistributionCable");
+		super.setBlockTextureName(KekzCore.MODID + ":" + "TFFTCasing");
 		super.setHardness(3.0f);
 		super.setResistance(2.0f);
-		GameRegistry.registerBlock(getInstance(), IB_ItemDistributionCable.class, blockName);
+		GameRegistry.registerBlock(getInstance(), IB_ItemProxyCable.class, blockName);
+	}
+	
+	@Override
+	public boolean isOpaqueCube() {
+		return false;
 	}
 	
 	@Override
 	public TileEntity createNewTileEntity(World world, int p_149915_2_) {
-		return new TE_ItemDistributionCable();
+		return new TE_ItemProxyCable();
 	}
 
 }

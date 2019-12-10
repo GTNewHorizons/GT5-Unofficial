@@ -7,9 +7,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class IB_ItemDistributionCable extends ItemBlock {
+public class IB_ItemProxyCable extends ItemBlock {
 
-	public IB_ItemDistributionCable(Block block) {
+	public IB_ItemProxyCable(Block block) {
 		super(block);
 	}
 	

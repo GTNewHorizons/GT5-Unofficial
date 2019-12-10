@@ -2,6 +2,9 @@ package kekztech;
 
 import blocks.Block_ControlRod;
 import blocks.Block_GDCUnit;
+import blocks.Block_ItemProxyCable;
+import blocks.Block_ItemProxyEndpoint;
+import blocks.Block_ItemProxySource;
 import blocks.Block_ItemServerDrive;
 import blocks.Block_ItemServerIOPort;
 import blocks.Block_ItemServerRackCasing;
@@ -14,6 +17,7 @@ import blocks.Block_TFFTStorageFieldBlockT2;
 import blocks.Block_TFFTStorageFieldBlockT3;
 import blocks.Block_TFFTStorageFieldBlockT4;
 import blocks.Block_YSZUnit;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -29,17 +33,21 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import items.ErrorItem;
+import items.Item_Configurator;
 import items.MetaItem_CraftingComponent;
 import items.MetaItem_ReactorComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
+import render.ConduitRenderer;
 import tileentities.GTMTE_FluidMultiStorage;
 import tileentities.GTMTE_ItemServer;
 import tileentities.GTMTE_ModularNuclearReactor;
 import tileentities.GTMTE_SOFuelCellMK1;
 import tileentities.GTMTE_SOFuelCellMK2;
-import tileentities.TE_ItemDistributionCable;
-import tileentities.TE_ItemDistributionNode;
+import tileentities.TE_ItemProxyCable;
+import tileentities.TE_ItemProxyEndpoint;
+import tileentities.TE_ItemProxySource;
+import tileentities.TE_ItemServerIOPort;
 import tileentities.TE_TFFTMultiHatch;
 import util.Util;
 
@@ -77,6 +85,7 @@ public class KekzCore {
 		ErrorItem.getInstance().registerItem();
 		MetaItem_ReactorComponent.getInstance().registerItem();
 		MetaItem_CraftingComponent.getInstance().registerItem();
+		Item_Configurator.getInstance().registerItem();
 		Items.registerOreDictNames();
 		// Blocks
 		Block_YSZUnit.getInstance().registerBlock();
@@ -93,14 +102,17 @@ public class KekzCore {
 		Block_ItemServerDrive.getInstance().registerBlock();
 		Block_ItemServerRackCasing.getInstance().registerBlock();
 		Block_ItemServerIOPort.getInstance().registerBlock();
-		// TODO: Disabled for new release
-		//Block_ItemDistributionCable.getInstance().registerBlock();
-		//Block_ItemDistributionNode.getInstance().registerBlock();
+		Block_ItemProxyCable.getInstance().registerBlock();
+		Block_ItemProxySource.getInstance().registerBlock();
+		Block_ItemProxyEndpoint.getInstance().registerBlock();
 		// Register TileEntities
 		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");
-		GameRegistry.registerTileEntity(TE_ItemDistributionCable.class, "kekztech_itemdistributioncable_tile");
-		GameRegistry.registerTileEntity(TE_ItemDistributionNode.class, "kekztech_itemdistributionnode_tile");
-		// Register a GUI?
+		GameRegistry.registerTileEntity(TE_ItemServerIOPort.class, "kekztech_itemserverioport_tile");
+		GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
+		GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
+		GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
+		
+		// Register guis
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 	}
 	
@@ -111,7 +123,9 @@ public class KekzCore {
 		sofc2 = new GTMTE_SOFuelCellMK2(13102, "multimachine.fuelcellmk2", "Solid-Oxide Fuel Cell Mk II");
 		mdr = new GTMTE_ModularNuclearReactor(13103, "multimachine.nuclearreactor", "Nuclear Reactor");
 		fms = new GTMTE_FluidMultiStorage(13104, "multimachine.tf_fluidtank", "T.F.F.T");
-		is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");
+		is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");	
+		// Register renderer
+		ConduitRenderer.getInstance().registerRenderer();
 	}
 	
 	@Mod.EventHandler
