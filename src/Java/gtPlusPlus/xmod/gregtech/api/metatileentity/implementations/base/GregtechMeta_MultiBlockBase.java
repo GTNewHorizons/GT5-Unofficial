@@ -100,12 +100,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 
 		try {
 			calculatePollutionReduction = GT_MetaTileEntity_Hatch_Muffler.class.getDeclaredMethod("calculatePollutionReduction", int.class);
-		} catch (NoSuchMethodException | SecurityException e) {}
-
-
-		// Register the No-Bonus Special Behaviour.
-		new NoOutputBonusMultiBehaviour();
-		
+		} catch (NoSuchMethodException | SecurityException e) {}		
 
 	}
 

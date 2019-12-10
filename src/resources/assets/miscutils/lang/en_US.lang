@@ -3039,7 +3039,7 @@ tile.blockRoundRobinator.4.name=Round Robinator V
 
 //Added 16/10/19
 
-item.BioRecipeSelector.name=Programmed Circuit
+item.BioRecipeSelector.name=Programmed Bio Circuit
 item.FermentationBase.name=Cell of Fermentation Base
 item.ureamix.name=Cell of Urea Mix
 item.liquidresin.name=Cell of Liquid Resin

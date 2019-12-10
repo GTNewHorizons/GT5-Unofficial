@@ -564,10 +564,15 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 		return tRecipe;
 	}
 
-	private static WeightedCollection<ItemStack> generateWeightedCollection(){
+	private static ItemStack[] getOutputForTier(int aTier){
+		ItemStack[] aOutputs = new ItemStack[16];
+		
+		
+		
+		
 		WeightedCollection<ItemStack> aCollection = new WeightedCollection<ItemStack>();
 
-		return aCollection;
+		return aOutputs;
 	}
 
 

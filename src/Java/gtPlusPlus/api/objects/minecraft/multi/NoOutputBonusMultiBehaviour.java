@@ -1,13 +1,12 @@
 package gtPlusPlus.api.objects.minecraft.multi;
 
-import gtPlusPlus.api.helpers.GregtechPlusPlus_API.Multiblock_API;
 import gtPlusPlus.core.recipe.common.CI;
 import net.minecraft.item.ItemStack;
 
 public class NoOutputBonusMultiBehaviour extends SpecialMultiBehaviour {
 
 	public NoOutputBonusMultiBehaviour() {
-		Multiblock_API.registerSpecialMultiBehaviour(this);
+		
 	}
 	
 	@Override

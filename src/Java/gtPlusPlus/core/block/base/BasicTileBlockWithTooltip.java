@@ -33,13 +33,13 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 	 * Each mapped object holds the data for the six sides.
 	 */
 	@SideOnly(Side.CLIENT)
-	private AutoMap<CubicObject<SafeTexture>> mSidedTextureArray = new AutoMap<CubicObject<SafeTexture>>();
+	private AutoMap<CubicObject<SafeTexture>> mSidedTextureArray;
 
 	/**
 	 * Holds the data for the six sides, each side holds an array of data for each respective meta.
 	 */
 	@SideOnly(Side.CLIENT)
-	private AutoMap<CubicObject<String>> mSidedTexturePathArray = new AutoMap<CubicObject<String>>();
+	private AutoMap<CubicObject<String>> mSidedTexturePathArray;
 
 	/**
 	 * Does this block have any meta at all?
@@ -157,7 +157,13 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 	@SideOnly(Side.CLIENT)
 	private final void handleTextures() {
 
-		Logger.INFO("[TeTexture] Building Texture Maps for "+getTileEntityName()+".");
+		Logger.INFO("[TeTexture] Building Texture Maps for "+getTileEntityName()+".");		
+
+		// Init on the Client side only, to prevent Field initialisers existing in the Server side bytecode.
+		mSidedTextureArray = new AutoMap<CubicObject<SafeTexture>>();
+		mSidedTexturePathArray = new AutoMap<CubicObject<String>>();
+		
+		
 		//Store them in forge order
 		//DOWN, UP, NORTH, SOUTH, WEST, EAST	
 

@@ -3,7 +3,9 @@ package gtPlusPlus.xmod.gregtech.api.util;
 import java.util.HashMap;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 public class SpecialBehaviourTooltipHandler {
@@ -18,9 +20,13 @@ public class SpecialBehaviourTooltipHandler {
 	public void onItemTooltip(ItemTooltipEvent event){		
 		if (event != null) {
 			if (event.itemStack != null) {				
-				String s = mTooltipCache.get(event.itemStack);
-				if (s != null && s.length() > 0) {
-					event.toolTip.add(s);					
+				for (ItemStack aKey : mTooltipCache.keySet()) {					
+					if (GT_Utility.areStacksEqual(aKey, event.itemStack, false)) {
+						String s = mTooltipCache.get(aKey);
+						if (s != null && s.length() > 0) {
+							event.toolTip.add(EnumChatFormatting.RED+s);					
+						}
+					}					
 				}				
 			}
 		}		

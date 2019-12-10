@@ -2,6 +2,7 @@ package gtPlusPlus.api.helpers;
 
 import java.util.HashMap;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.WeightedCollection;
 import gtPlusPlus.api.objects.minecraft.multi.SpecialMultiBehaviour;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -26,10 +27,12 @@ public class GregtechPlusPlus_API {
 		 */
 		public static boolean registerSpecialMultiBehaviour(SpecialMultiBehaviour aBehaviour) {
 			if (aBehaviour.getTriggerItem() == null || aBehaviour.getTriggerItemTooltip() == null || aBehaviour.getTriggerItemTooltip().length() <= 0) {
+				Logger.INFO("Failed to attach custom multiblock logic to "+ItemUtils.getItemName(aBehaviour.getTriggerItem()));
 				return false;
 			}
 			mSpecialBehaviourItemMap.put("UniqueKey_"+aBehaviour.hashCode(), aBehaviour);
-			SpecialBehaviourTooltipHandler.addTooltipForItem(aBehaviour.getTriggerItem(), aBehaviour.getTriggerItemTooltip());			
+			SpecialBehaviourTooltipHandler.addTooltipForItem(aBehaviour.getTriggerItem(), aBehaviour.getTriggerItemTooltip());	
+			Logger.INFO("Attached custom multiblock logic to "+ItemUtils.getItemName(aBehaviour.getTriggerItem()));		
 			return true;
 		}		
 
