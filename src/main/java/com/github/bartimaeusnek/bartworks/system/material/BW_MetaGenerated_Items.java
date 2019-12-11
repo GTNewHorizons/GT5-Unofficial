@@ -68,7 +68,9 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         public Item getTabIconItem() {
             return new ItemStack(Blocks.iron_ore).getItem();
         }
+
     };
+
     protected final OrePrefixes orePrefixes;
 
     public BW_MetaGenerated_Items(OrePrefixes orePrefixes, Object unused){

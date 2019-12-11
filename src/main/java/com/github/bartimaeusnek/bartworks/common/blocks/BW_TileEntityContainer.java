@@ -53,7 +53,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class BW_TileEntityContainer extends BlockContainer implements ITileAddsInformation {
 
-    Class<? extends TileEntity> tileEntity;
+    protected Class<? extends TileEntity> tileEntity;
 
     public BW_TileEntityContainer(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_);

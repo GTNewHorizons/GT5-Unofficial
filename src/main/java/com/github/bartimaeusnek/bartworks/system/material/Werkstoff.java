@@ -406,6 +406,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return this.stats.getDurOverride() > 0 ? this.stats.getDurOverride() : (int) (this.stats.durMod * ((0.01f * (float) this.getStats().getMeltingPoint() * (float) this.getStats().getMass()) / (float) this.getContents().getKey()));
     }
 
+    public boolean hasItemType(OrePrefixes prefixes){
+        return (this.getGenerationFeatures().toGenerate & GenerationFeatures.prefixLogic.get(prefixes)) != 0;
+    }
+
     public enum Types {
         MATERIAL, COMPOUND, MIXTURE, BIOLOGICAL, ELEMENT, ISOTOPE, UNDEFINED;
 
@@ -440,9 +444,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         public static final HashMap<OrePrefixes,Integer> prefixLogic = new HashMap<>();
 
         static {
-            for (OrePrefixes p : OrePrefixes.values()){
-                Werkstoff.GenerationFeatures.prefixLogic.put(p,0);
-            }
+            Arrays.stream(OrePrefixes.values()).forEach( e -> prefixLogic.put(e,0));
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dust,0b1);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustTiny,0b1);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustSmall,0b1);

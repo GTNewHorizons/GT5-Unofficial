@@ -35,9 +35,9 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BW_MetaGeneratedOre_Item extends BW_ItemBlocks {
+public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
 
-    public BW_MetaGeneratedOre_Item(Block par1) {
+    public BW_MetaGeneratedBlock_Item(Block par1) {
         super(par1);
     }
 
@@ -70,7 +70,7 @@ public class BW_MetaGeneratedOre_Item extends BW_ItemBlocks {
             if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tDamage, 3)) {
                 return false;
             }
-            BW_MetaGeneratedOreTE tTileEntity = (BW_MetaGeneratedOreTE) aWorld.getTileEntity(aX, aY, aZ);
+            BW_MetaGenerated_Block_TE tTileEntity = (BW_MetaGenerated_Block_TE) aWorld.getTileEntity(aX, aY, aZ);
             tTileEntity.mMetaData = tDamage;
         } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3)) {
             return false;

@@ -39,7 +39,7 @@ import java.util.Random;
 
 public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
 
-    public ArrayList<ItemStack> getDrops(Block aDroppedOre, int aFortune) {
+    public ArrayList<ItemStack> getDrops(int aFortune) {
         ArrayList<ItemStack> rList = new ArrayList<>();
         Materials aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData).getBridgeMaterial();
 
@@ -112,5 +112,10 @@ public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
             return new ITexture[]{new GT_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet};
         }
         return new ITexture[]{new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_RenderedTexture(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.oreSmall.mTextureIndex])};
+    }
+
+    @Override
+    protected Block GetProperBlock() {
+        return WerkstoffLoader.BWSmallOres;
     }
 }

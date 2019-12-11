@@ -29,20 +29,20 @@ import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
-public class BW_MetaGeneratedOreTE extends BW_MetaGenerated_Block_TE {
+public class BW_MetaGenerated_WerkstoffBlock_TE extends BW_MetaGenerated_Block_TE {
 
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide) {
         Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
         if ((aMaterial != null)) {
-            GT_RenderedTexture aIconSet = new GT_RenderedTexture(aMaterial.getTexSet().mTextures[OrePrefixes.ore.mTextureIndex], aMaterial.getRGBA());
-            return new ITexture[]{new GT_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet};
+            GT_RenderedTexture aIconSet = new GT_RenderedTexture(aMaterial.getTexSet().mTextures[OrePrefixes.block.mTextureIndex], aMaterial.getRGBA());
+            return new ITexture[]{new GT_CopiedBlockTexture(Blocks.iron_block, 0, 0), aIconSet};
         }
-        return new ITexture[]{new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_RenderedTexture(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])};
+        return new ITexture[]{new GT_CopiedBlockTexture(Blocks.iron_block, 0, 0), new GT_RenderedTexture(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex])};
     }
 
     @Override
     protected Block GetProperBlock() {
-        return WerkstoffLoader.BWOres;
+        return WerkstoffLoader.BWBlocks;
     }
 }
