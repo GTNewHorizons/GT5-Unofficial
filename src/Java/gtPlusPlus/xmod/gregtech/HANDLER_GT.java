@@ -48,6 +48,7 @@ import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricButcherKnife;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricLighter;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricSnips;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingToolHeadChoocher;
+import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_AlgaeFarm;
 import gtPlusPlus.xmod.gregtech.recipes.RecipesToRemove;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechNitroDieselFix;
@@ -141,6 +142,7 @@ public class HANDLER_GT {
 		RecipesToRemove.go();
 		convertPyroToCokeOven();
 		Meta_GT_Proxy.fixIC2FluidNames();
+		RecipeLoader_AlgaeFarm.generateRecipes();
 	}
 
 	private static void convertPyroToCokeOven() {

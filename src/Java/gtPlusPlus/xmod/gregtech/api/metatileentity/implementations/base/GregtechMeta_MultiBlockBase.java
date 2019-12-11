@@ -469,15 +469,30 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 
 	public String getSound() { return ""; }
 
+
 	public boolean canBufferOutputs(final GT_Recipe aRecipe, int aParallelRecipes) {
+		return canBufferOutputs(aRecipe, aParallelRecipes, true);
+	}
+	
+	public boolean canBufferOutputs(final GT_Recipe aRecipe, int aParallelRecipes, boolean aAllow16SlotWithoutCheck) {
 
 		Logger.INFO("Determining if we have space to buffer outputs. Parallel: "+aParallelRecipes);
 
 		// Null recipe or a recipe with lots of outputs? 
 		// E.G. Gendustry custom comb with a billion centrifuge outputs? 
-		// Do it anyway.
+		// Do it anyway, provided the multi allows it. Default behaviour is aAllow16SlotWithoutCheck = true.
 		if (aRecipe == null || aRecipe.mOutputs.length > 16) {
-			return aRecipe == null ? false : true;
+			if (aRecipe == null) {
+				return false;
+			}
+			else if (aRecipe.mOutputs.length > 16) {
+				if (aAllow16SlotWithoutCheck) {
+					return true;					
+				}
+				else {
+					// Do nothing, we want to check this recipe properly.					
+				}
+			}			
 		}		
 
 		// Do we even need to check for item outputs?

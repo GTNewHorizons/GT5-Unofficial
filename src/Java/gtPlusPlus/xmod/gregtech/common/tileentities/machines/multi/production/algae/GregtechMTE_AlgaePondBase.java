@@ -3,13 +3,13 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.a
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -18,17 +18,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.data.WeightedCollection;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_AlgaeFarm;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import net.minecraft.block.Block;
@@ -116,7 +113,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getMaxParallelRecipes() {
-		return (this.mLevel+1) * 5;
+		return 2;
 	}
 
 	@Override
@@ -161,13 +158,9 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 			return false;
 		}
 		else {
-			mLevel = aCasingMeta;
+			mLevel = this.getCasingTierOnClientSide();
 		}
-
-
-		/*
-		 * if (!(aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir))) { return false; }
-		 */
+		int aID = TAE.getIndexFromPage(1, 15);
 		int tAmount = 0;
 		check : for (int i = mOffsetX_Lower; i <= mOffsetX_Upper; ++i) {
 			for (int j = mOffsetZ_Lower; j <= mOffsetZ_Upper; ++j) {
@@ -175,8 +168,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 					if ((h != 0) || ((((xDir + i != 0) || (zDir + j != 0))) && (((i != 0) || (j != 0))))) {
 						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h,	zDir + j);
 
-						Logger.INFO("X: " + i + " | Z: " + j+" | Tier: "+mLevel);
-						if (h == -1 && tTileEntity != null && addToMachineList(tTileEntity, mLevel)) {
+						Logger.INFO("X: " + i + " | Z: " + j+" | Tier: "+aID);
+						if (h == -1 && tTileEntity != null && addToMachineList(tTileEntity, aID)) {
 							continue;
 						}
 						else if (h != -1 && tTileEntity != null) {
@@ -231,14 +224,15 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 		}
 		if ((tAmount >= 64)) {
 			Logger.INFO("Made structure.");
+			this.getBaseMetaTileEntity().getWorld().markBlockForUpdate(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord());
 		} else {
 			Logger.INFO("Did not make structure.");
 		}
 		return (tAmount >= 64);
 	}
 
-	public boolean checkForWater() {
-
+	public boolean checkForWater() {		
+		
 		// Get Facing direction
 		IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
 		int mDirectionX = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
@@ -341,7 +335,12 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 	@Override
 	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPreTick(aBaseMetaTileEntity, aTick);
-		this.fixAllMaintenanceIssue();
+		this.fixAllMaintenanceIssue();		
+		// Silly Client Syncing
+		if (aBaseMetaTileEntity.isClientSide()) {
+			this.mLevel = getCasingTierOnClientSide();
+		}
+		
 	}
 
 	@Override
@@ -357,20 +356,10 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 		if (this.mLevel < 0) {
 			Logger.INFO("Bad Tier.");
 			return false;
-		}		
-
-		if (mRecipeCache.isEmpty()) {
-			Logger.INFO("Generating Recipes.");
-			generateRecipes();
 		}
 
-		if (mRecipeCache.isEmpty() || !checkForWater()) {
-			if (mRecipeCache.isEmpty()) {
-				Logger.INFO("No Recipes.");				
-			}
-			if (!checkForWater()) {
-				Logger.INFO("Not enough Water.");				
-			}			
+		if (!checkForWater()) {
+			Logger.INFO("Not enough Water.");
 			return false;
 		}		
 
@@ -382,7 +371,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 
 		Logger.INFO("Running checkRecipeGeneric(0)");			
 
-		GT_Recipe tRecipe = getTieredRecipeFromCache(this.mLevel, isUsingCompost(aItemInputs));
+		GT_Recipe tRecipe = RecipeLoader_AlgaeFarm.getTieredRecipeFromCache(this.mLevel, isUsingCompost(aItemInputs));
 
 		this.mLastRecipe = tRecipe;
 
@@ -390,7 +379,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 			return false;
 		}
 
-		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
+		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes, false)) {
 			return false;
 		}
 
@@ -486,139 +475,29 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 		}
 		return false;
 	}
-
-	private GT_Recipe generateBaseRecipe(boolean aUsingCompost, int aTier) {
-
-		// Type Safety
-		if (this.mLevel < 0 || aTier < 0 || this.mLevel != aTier) {
-			return null;
+	
+	@SideOnly(Side.CLIENT)
+	private final int getCasingTierOnClientSide() {
+		if (this == null || this.getBaseMetaTileEntity().getWorld() == null) {
+			return 0;
 		}
-
-		final int[] aInvertedNumbers = new int[] {
-				9, 8, 7, 6, 5, 4, 3, 2, 1, 0	
-		};
-
-		WeightedCollection<Float> aOutputTimeMulti = new WeightedCollection<Float>();
-		for (int i=100;i> 0;i--) {
-			float aValue = 0;
-			if (i < 10) {
-				aValue = 3f;
+		try {
+			Block aInitStructureCheck;
+			int aInitStructureCheckMeta;
+			IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+			aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(0, -1, 0);
+			aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(0, -1, 0);			
+			if (aInitStructureCheck == GregTech_API.sBlockCasings1) {
+				return aInitStructureCheckMeta;
 			}
-			else if (i < 20) {
-				aValue = 2f;
-			}
-			else {
-				aValue = 1f;				
-			}
-			aOutputTimeMulti.put(i, aValue);			
+			return 0;
 		}
-
-		final int[] aDurations = new int[] {
-				432000,					
-				378000,				
-				216000, 
-				162000,				
-				108000,
-				81000,				
-				54000,
-				40500,				
-				27000,
-				20250,
-				13500, 
-				6750, 
-				3375,
-				1686,
-				843, 
-				421
-		};
-
-		ItemStack[] aInputs = new ItemStack[] {};	
-
-		if (aUsingCompost) {
-			// Make it use 4 compost per tier if we have some available
-			ItemStack aCompost = ItemUtils.getSimpleStack(AgriculturalChem.mCompost, aTier * 4);
-			aInputs = new ItemStack[] {aCompost};
-			// Boost Tier by one if using compost so it gets a speed boost
-			aTier++;
+		catch (Throwable t) {
+			t.printStackTrace();
+			return 0;
 		}
-
-		// We set these elsewhere
-		ItemStack[] aOutputs = new ItemStack[] {
-				
-		};	
-
-		GT_Recipe tRecipe = new Recipe_GT(
-				false, 
-				aInputs,
-				aOutputs,
-				(Object) null, 
-				new int[] {}, 
-				new FluidStack[] {GT_Values.NF},
-				new FluidStack[] {GT_Values.NF},
-				(int) (aDurations[aTier] * aOutputTimeMulti.get()), // Time
-				0,
-				0);
-		
-		tRecipe.mSpecialValue = tRecipe.hashCode();
-
-		return tRecipe;
 	}
-
-	private static ItemStack[] getOutputForTier(int aTier){
-		ItemStack[] aOutputs = new ItemStack[16];
-		
-		
-		
-		
-		WeightedCollection<ItemStack> aCollection = new WeightedCollection<ItemStack>();
-
-		return aOutputs;
-	}
-
-
-
-
-	private static final HashMap<Integer, AutoMap<GT_Recipe>> mRecipeCache = new HashMap<Integer, AutoMap<GT_Recipe>>();
-	private static final HashMap<Integer, AutoMap<GT_Recipe>> mRecipeCompostCache = new HashMap<Integer, AutoMap<GT_Recipe>>();
-
-	private final void generateRecipes() {
-		for (int i=0;i<10;i++) {
-			getTieredRecipeFromCache(i, false);
-		}
-		for (int i=0;i<10;i++) {
-			getTieredRecipeFromCache(i, true);
-		}
-	}	
-
-	public GT_Recipe getTieredRecipeFromCache(int aTier, boolean aCompost) {
-		HashMap<Integer, AutoMap<GT_Recipe>> aMap = aCompost ? mRecipeCompostCache : mRecipeCache;
-		String aComp = aCompost ? "(Compost)" : "";
-
-		AutoMap<GT_Recipe> aTemp = aMap.get(aTier);
-		if (aTemp == null || aTemp.isEmpty()) {
-			aTemp = new AutoMap<GT_Recipe>();
-			aMap.put(aTier, aTemp);	
-			Logger.INFO("Tier "+aTier+aComp+" had no recipes, initialising new map.");
-		}		
-		if (aTemp.size() < 500) {
-			Logger.INFO("Tier "+aTier+aComp+" has less than 500 recipes, generating "+(500 - aTemp.size())+".");
-			for (int i=aTemp.size();i<500;i++) {
-				aTemp.put(generateBaseRecipe(aCompost, aTier));
-			}
-		}		
-		int aIndex = MathUtils.randInt(0, aTemp.isEmpty() ? 1 : aTemp.size());
-		Logger.INFO("Using recipe with index of "+aIndex+". "+aComp);
-		return aTemp.get(aIndex);
-	}
-
-
-
-
-
-
-
-
-
+	
 
 
 }
