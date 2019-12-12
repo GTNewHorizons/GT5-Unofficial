@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant;
 
+import static gregtech.api.enums.GT_Values.E;
+
+import java.util.HashSet;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -10,7 +14,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
@@ -30,6 +35,27 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	private int mMachineCasingTier = 0;
 	private int mPipeCasingTier = 0;
 	private int mCoilTier = 0;
+
+	/**
+	 * Internal Recipe Map which holds the actual recipes, backed by the real map, shown by NEI.
+	 */
+	private static final GT_Recipe_Map mFluidChemicalReactorRecipes = new GT_Recipe_Map(
+			new HashSet<GT_Recipe>(100),
+			"gt.recipe.fluidchemicaleactor",
+			"Chemical Plant",
+			null,
+			CORE.MODID+":textures/gui/FluidReactor",
+			0,
+			0,
+			0,
+			2,
+			1,
+			"Tier: ",
+			1,
+			E,
+			true,
+			false);
+	
 
 	public GregtechMTE_ChemicalPlant(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -52,22 +78,13 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	@Override
 	public String[] getTooltip() {
 		return new String[] {
-				"Grows Algae!",
-				"Controller Block for the Algae Farm",
-				"Size: 9x3x9 [WxHxL] (open)",
-				"X           X",
-				"X           X", 
-				"XXXXXXXXX", 
-				"Can process (Tier * 10) recipes",
-				"Machine Hulls (all bottom layer)", 
-				"Sterile Farm Casings (all non-hatches)", 
-				"Controller (front centered)",
-				"All hatches must be on the bottom layer",
-				"All hulls must be the same tier, this dictates machine speed",
-				"Does not require power or maintenance",
-				"1x Output Bus", 
-				"1x Input Bus (optional)",
-				"1x Input Hatch (fill with water)",
+				"Heavy Industry, now right at your doorstep!",
+				"Controller Block for the Chemical Plant",
+				"27 Coils",
+				"18 Pipe Casings",
+				"57 Tiered Machine Casings",
+				"80+ Solid Casings",
+				"Hatch tier is limited to Machine Casing tier",
 		};
 	}
 
@@ -118,7 +135,15 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return null;
+		if (mFluidChemicalReactorRecipes.mRecipeList.isEmpty() || mFluidChemicalReactorRecipes.mRecipeList.size() !=  Recipe_GT.Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.mRecipeList.size()) {
+			if (!mFluidChemicalReactorRecipes.mRecipeList.isEmpty()) {
+				mFluidChemicalReactorRecipes.mRecipeList.clear();
+			}
+			for (Recipe_GT i : Recipe_GT.Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.mRecipeList) {
+				mFluidChemicalReactorRecipes.add(i);
+			}
+		}
+		return mFluidChemicalReactorRecipes;
 	}
 
 	@Override
@@ -610,12 +635,12 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		Block aInitStructureCheck;
 		int aInitStructureCheckMeta;
 		if (xDir == 0) {			
-			aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(zDir, 0, 0);
-			aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(zDir, 0, 0);
+			aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(zDir, 1, 0);
+			aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(zDir, 1, 0);
 		}
 		else {			
-			aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(0, 0, xDir);
-			aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(0, 0, xDir);
+			aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(0, 1, xDir);
+			aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(0, 1, xDir);
 		}
 		if (aInitStructureCheck == GregTech_API.sBlockCasings2) {
 			int aMetaSteelCasing = 0;
@@ -752,12 +777,12 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 3;
 			int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 3;
 			if (xDir == 0) {			
-				aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(zDir, 0, 0);
-				aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(zDir, 0, 0);
+				aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(zDir, 1, 0);
+				aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(zDir, 1, 0);
 			}
 			else {			
-				aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(0, 0, xDir);
-				aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(0, 0, xDir);
+				aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(0, 1, xDir);
+				aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(0, 1, xDir);
 			}
 			if (aInitStructureCheck == GregTech_API.sBlockCasings2) {
 				int aMetaSteelCasing = 0;
