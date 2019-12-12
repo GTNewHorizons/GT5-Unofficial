@@ -1,16 +1,11 @@
-package gtPlusPlus.plugin.agrichem.item.algae;
+package gtPlusPlus.core.item.chemistry.general;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.OreDictUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,46 +14,30 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemAgrichemBase extends Item {
+public class ItemGenericChemBase extends Item {
 
 	final protected IIcon base[];
 	
+	final private int aMetaSize = 6;
+	
 	/*
-	 * 0 - Algae Biomass
-	 * 1 - Green Algae Biomass
-	 * 2 - Brown Algae Biomass
-	 * 3 - Golden-Brown Algae Biomass
-	 * 4 - Red Algae Biomass
-	 * 5 - Cellulose Fiber
-	 * 6 - Golden-Brown Cellulose Fiber
-	 * 7 - Red Cellulose Fiber
-	 * 8 - Compost
-	 * 9 - Wood Pellet
-	 * 10 - Wood Brick
-	 * 11 - Cellulose Pulp
-	 * 12 - Raw Bio Resin
-	 * 13 - Catalyst Carrier
-	 * 14 - Green Metal Catalyst
-	 * 15 - Alginic Acid
-	 * 16 - Alumina
-	 * 17 - Aluminium Pellet
-	 * 18 - Sodium Aluminate
-	 * 19 - Sodium Hydroxide // Exists in Newer GT
-	 * 20 - Sodium Carbonate
-	 * 21 - Lithium Chloride
-	 * 22 - Pellet Mold
-	 * 23 - Clean Aluminium Mix
+	 * 0 - Red Metal Catalyst //FeCu
+	 * 1 - Yellow Metal Catalyst //WNi
+	 * 2 - Blue Metal Catalyst //CoTi
+	 * 3 - Orange Metal Catalyst //Vanadium Pd
+	 * 4 - Purple Metal Catalyst //IrIdium Ruthenium
+	 * 5 - Brown Metal Catalyst //NiAl
+	 * 
 	 */
 	
-	public ItemAgrichemBase() {
+	public ItemGenericChemBase() {
 		this.setHasSubtypes(true);
 		this.setNoRepair();
 		this.setMaxStackSize(64);
 		this.setMaxDamage(0);		
-		base = new IIcon[24];		
-		this.setUnlocalizedName("BasicAgrichemItem");
+		base = new IIcon[aMetaSize];		
+		this.setUnlocalizedName("BasicGenericChemItem");
 		GameRegistry.registerItem(this, this.getUnlocalizedName());
 	}
 	
@@ -103,48 +82,10 @@ public class ItemAgrichemBase extends Item {
 		return false;
 	}
 
-	private static boolean mHasCheckedForSodiumHydroxide = false;
-	private static boolean mShowSodiumHydroxide = true;
-	
-	private static boolean checkSodiumHydroxide() {
-		if (mHasCheckedForSodiumHydroxide) {
-			return mShowSodiumHydroxide;
-		}
-		else {
-			if (OreDictUtils.containsValidEntries("dustSodiumHydroxide_GT5U")
-					|| OreDictUtils.containsValidEntries("dustSodiumHydroxide")) {
-				List<ItemStack> aTest = OreDictionary.getOres(
-						"dustSodiumHydroxide", false
-				);
-				if (aTest.isEmpty()) {
-					aTest = OreDictionary.getOres(
-							"dustSodiumHydroxide_GT5U", false
-					);
-					if (!aTest.isEmpty()) {
-						mShowSodiumHydroxide = false;
-					}
-				}
-				else {
-					mShowSodiumHydroxide = false;
-				}
-			}
-		}		
-		mHasCheckedForSodiumHydroxide = true;
-		return mShowSodiumHydroxide;
-	}
-
 	@Override
 	public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
-		for (int i=0;i<base.length;i++) {
-			if (i == 19) {
-				// Only show if it doesn't exist.
-				if (checkSodiumHydroxide()) {
-					aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));					
-				}
-			}
-			else {
-				aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));				
-			}
+		for (int i=0;i<aMetaSize;i++) {			
+			aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));			
 		}
 	}
 
@@ -185,38 +126,12 @@ public class ItemAgrichemBase extends Item {
 
 	@Override
 	public void registerIcons(final IIconRegister u) {
-		for (int i=0;i<this.base.length;i++) {
-			String aPath = CORE.MODID + ":" + "bioscience/MetaItem1/"+i;
+		for (int i=0;i<this.aMetaSize;i++) {
+			String aPath = CORE.MODID + ":" + "science/general/MetaItem1/"+i;
 			this.base[i] = u.registerIcon(aPath);										
 		}
-	}
+	}	
 	
-	
-	private boolean isTextureValid(String aPath) {
-		if (aPath == null) {
-			return false;
-		}
-		else if (aPath.indexOf(92) == -1) {
-			Constructor aTextureAtlasSprite = ReflectionUtils.getConstructor(
-					TextureAtlasSprite.class, String.class
-			);
-			if (aTextureAtlasSprite != null) {
-				try {
-					TextureAtlasSprite aTestAtlas = (TextureAtlasSprite) aTextureAtlasSprite.newInstance(
-							aPath
-					);
-					if (aTestAtlas != null) {
-						return true;
-					}
-				}
-				catch (InstantiationException | IllegalAccessException
-						| IllegalArgumentException
-						| InvocationTargetException e) {
-				}
-			}
-		}
-		return false;
-	}
 	
 	@Override
 	public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
