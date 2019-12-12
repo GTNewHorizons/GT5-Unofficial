@@ -676,8 +676,8 @@ public class RocketFuels extends ItemPackage {
 		Diesel = MaterialUtils.getMaterial("Fuel", "Diesel").getFluid(1).getFluid();
 		
 		// 5.08 Compat
-		if (!FluidUtils.doesFluidExist("OilHeavy")){
-			Oil_Heavy = FluidUtils.generateFluidNoPrefix("OilHeavy", "Heavy Oil", 200, new short[]{10, 10, 10, 100});
+		if (!FluidUtils.doesFluidExist("liquid_heavy_oil")){
+			Oil_Heavy = FluidUtils.generateFluidNoPrefix("liquid_heavy_oil", "Heavy Oil", 200, new short[]{10, 10, 10, 100});
 		}
 		else {
 			Oil_Heavy = MaterialUtils.getMaterial("OilHeavy", "Oil").getFluid(1).getFluid();

@@ -48,7 +48,8 @@ public class AgriculturalChem extends ItemPackage {
 	public static Fluid FertileManureSlurry;
 	// Blood
 	public static Fluid CustomBlood;
-
+	// Red Mud
+	public static Fluid RedMud;
 	/**
 	 * Items
 	 */
@@ -260,7 +261,10 @@ public class AgriculturalChem extends ItemPackage {
 
 		// Sewage
 		FertileManureSlurry = FluidUtils.generateFluidNonMolten("fertile.manure.slurry", "Fertile Manure Slurry",
-				45 + 175, new short[] { 65, 50, 15, 100 }, null, null, 0, true);		
+				45 + 175, new short[] { 65, 50, 15, 100 }, null, null, 0, true);
+		
+		RedMud = FluidUtils.generateFluidNoPrefix("mud.red.slurry", "Red Mud Slurry", 32 + 175, new short[] { 180, 35, 25, 100 }, true);
+		
 	}
 	
 	

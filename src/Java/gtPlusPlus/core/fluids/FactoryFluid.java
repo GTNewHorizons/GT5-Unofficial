@@ -43,7 +43,7 @@ public class FactoryFluid extends Fluid implements Runnable {
 
 	@Override
 	public void run() {
-		this.setIcons(GregTech_API.sBlockIcons.registerIcon(CORE.MODID+ ":" + "fluids/fluid." + this.mTextureName));		
+		this.setIcons(GregTech_API.sBlockIcons.registerIcon(this.mTextureName));		
 	}
 
 }

@@ -321,8 +321,8 @@ public class BioRecipes {
 		},
 				GT_Values.NF,
 				ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 2),
-				20 * 30,
-				30);
+				20 * 4,
+				8);
 
 		// Methanol Extraction
 		GT_Values.RA.addFluidExtractionRecipe(
@@ -379,8 +379,8 @@ public class BioRecipes {
 				ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 12),
 				ItemUtils.getSimpleStack(AgriculturalChem.mPelletMold, 0),
 				ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 3),
-				20 * 2, 
-				30);
+				20 * 10, 
+				16);
 
 		// Assembly Recipe
 		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
@@ -946,17 +946,17 @@ public class BioRecipes {
 							ItemUtils.getSimpleStack(aOreCache.get(aOreName), aOreData2.get(aOreName))
 					}, 
 					new FluidStack[] {
-							FluidUtils.getSteam(4000)
+							FluidUtils.getSteam(2000 * aOreData2.get(aOreName))
 					}, 
 					new ItemStack[] {
 							ItemUtils.getSimpleStack(AgriculturalChem.mCleanAluminiumMix, (int) (Math.ceil(aOreData3.get(aOreName) * 1.4)))
 					}, 
 					new FluidStack[] {
-							FluidUtils.getFluidStack("fluid.sludge", 2500)
+							FluidUtils.getFluidStack(AgriculturalChem.RedMud, 100 * (int) (Math.ceil(aOreData3.get(aOreName) * 1.4)))
 					}, 
 					20 * 60, 
 					aOreData1.get(aOreName), 
-					1);
+					aOreName.equals("Bauxite") ? 2 : 1);
 		}
 
 		GT_Values.RA.addExtruderRecipe(
