@@ -1,29 +1,55 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import java.util.HashSet;
-import java.util.Set;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class RecipeGen_FluidCanning extends RecipeGen_Base {
-
-	public final static Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<RunnableWithInfo<Material>>();
-	static {
-		MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+public class RecipeGen_FluidCanning implements Runnable {
+	
+	public static void init() {
+		FluidCanningRunnableHandler x = new FluidCanningRunnableHandler();
+		x.run();
 	}
 
+	private static class FluidCanningRunnableHandler implements RunnableWithInfo<String> {
+		
+		@Override
+		public void run() {
+			mHasRun = true;
+			for (RecipeGen_FluidCanning aRecipe : mCache) {
+				aRecipe.run();
+			}			
+		}
+
+		@Override
+		public String getInfoData() {
+			return "Fluid Canning Recipes";
+		}		
+	}
+	
+	private static boolean mHasRun = false;
+	
+	private static HashSet<RecipeGen_FluidCanning> mCache = new HashSet<RecipeGen_FluidCanning>();
+	
+	private static void addRunnableToRecipeCache(RecipeGen_FluidCanning r) {
+		if (mHasRun) {
+			CORE.crash();
+		}
+		mCache.add(r);
+	}
+	
+	protected boolean disableOptional;
+	
 	private final GT_Recipe recipe;
 	private final boolean isValid;
 
@@ -95,13 +121,18 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 
 		// Check Valid		
 		boolean aTempValidityCheck = false;
+		//Logger.INFO("Validity Check.");
 		if (aExtracting) {
+			Logger.INFO("Extracting.");
 			if (aInput != null && aFluidOutput != null) {
+				//Logger.INFO("Pass.");
 				aTempValidityCheck = true;
 			}
 		}
 		else {
+			//Logger.INFO("Canning.");
 			if (aInput != null && aOutput != null && (aFluidInput != null || aFluidOutput != null)) {
+				//Logger.INFO("Pass.");
 				aTempValidityCheck = true;				
 			}
 		}		
@@ -110,11 +141,14 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 		if (aTempValidityCheck) {
 			// Valid Recipe
 			recipe = aRecipe;
-			mRecipeGenMap.add(this);
 			disableOptional = aExtracting;
-			isValid = true;			
+			isValid = true;	
+			//Logger.INFO("Passed Validity Check. Hash: "+recipe.hashCode());
+			//Logger.INFO("Mapped as: "+(disableOptional ? "Extracting" : "Canning"));
+			addRunnableToRecipeCache(this);		
 		}
 		else {
+			//Logger.INFO("Failed Validity Check.");
 			isValid = false;
 			disableOptional = aExtracting;
 			aRecipe.mEnabled = false;
@@ -125,40 +159,54 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 
 	@Override
 	public void run() {
+		Logger.INFO("Processing Recipe with Hash: "+recipe.hashCode());
 		generateRecipes();
 	}
 
 	private void generateRecipes() {
 		if (isValid && recipe != null) {
+			//Logger.INFO("Processing "+(disableOptional ? "Extracting" : "Canning")+" Recipe.");
 			if (this.disableOptional) {
 				addFluidExtractionRecipe(recipe);	
 			}
 			else {
 				addFluidCannerRecipe(recipe);
 			}
-		}		
+		}
 	}
 
 	private final boolean addFluidExtractionRecipe(GT_Recipe aRecipe) {
-		if (aRecipe != null) {			
-			int aCount1 = GT_Recipe_Map.sFluidExtractionRecipes.mRecipeList.size();
-			int aCount2 = aCount1;
-			GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(aRecipe);
-			aCount1 = GT_Recipe_Map.sFluidExtractionRecipes.mRecipeList.size();
-			return aCount1 > aCount2;
+		boolean result = false;	
+		int aCount1 = GT_Recipe_Map.sFluidExtractionRecipes.mRecipeList.size();
+		int aCount2 = aCount1;
+		GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(aRecipe);
+		aCount1 = GT_Recipe_Map.sFluidExtractionRecipes.mRecipeList.size();
+		result = aCount1 > aCount2;
+		if (result) {
+			//Logger.INFO("[FIND] Added Extraction recipe for "+ItemUtils.getArrayStackNames(aRecipe.mInputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mOutputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
 		}
-		return false;
+		else {
+			Logger.INFO("[ERROR] Failed adding Extraction recipe for "+ItemUtils.getArrayStackNames(aRecipe.mInputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mOutputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
+			//dumpStack();
+		}
+		return result;
 	}
 
-	private final boolean addFluidCannerRecipe(GT_Recipe recipe2) {
-		if (recipe2 != null) {
-			int aCount1 = GT_Recipe_Map.sFluidCannerRecipes.mRecipeList.size();
-			int aCount2 = aCount1;
-			GT_Recipe_Map.sFluidCannerRecipes.addRecipe(recipe2);
-			aCount1 = GT_Recipe_Map.sFluidCannerRecipes.mRecipeList.size();
-			return aCount1 > aCount2;
+	private final boolean addFluidCannerRecipe(GT_Recipe aRecipe) {
+		boolean result = false;
+		int aCount1 = GT_Recipe_Map.sFluidCannerRecipes.mRecipeList.size();
+		int aCount2 = aCount1;
+		GT_Recipe_Map.sFluidCannerRecipes.addRecipe(aRecipe);
+		aCount1 = GT_Recipe_Map.sFluidCannerRecipes.mRecipeList.size();
+		result = aCount1 > aCount2;
+		if (result) {
+			//Logger.INFO("[FIND] Added Canning recipe for "+ItemUtils.getArrayStackNames(aRecipe.mInputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mOutputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
 		}
-		return false;
+		else {
+			Logger.INFO("[ERROR] Failed adding Canning recipe for "+ItemUtils.getArrayStackNames(aRecipe.mInputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mOutputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
+			//dumpStack();
+		}
+		return result;
 	}
 
 	private void dumpStack() {

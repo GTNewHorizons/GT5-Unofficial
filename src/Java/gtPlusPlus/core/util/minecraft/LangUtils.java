@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class LangUtils {
@@ -46,6 +47,10 @@ public class LangUtils {
 			}
 		}
 		return false;
+	}
+
+	public static String trans(String aNr, String aEnglish) {
+		return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aNr, aEnglish, false);
 	}
 	
 }

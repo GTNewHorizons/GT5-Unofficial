@@ -197,14 +197,18 @@ public class CommonProxy {
 		COMPAT_HANDLER.RemoveRecipesFromOtherMods();
 		Logger.INFO("Initialising Handler, Then Adding Recipes");
 		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
-		Logger.INFO("Loading Gregtech API recipes.");
-		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
 		Logger.INFO("Loading Intermod staging.");
 		COMPAT_IntermodStaging.postInit(e);
 		Logger.INFO("Loading queued recipes.");
 		COMPAT_HANDLER.runQueuedRecipes();
 		Logger.INFO("Registering custom mob drops.");
 		registerCustomMobDrops();
+
+		// Moved last in postInit().
+		// 12/12/19 - Alkalus
+		// Moved last, to prevent recipes being generated post initialisation.
+		Logger.INFO("Loading Gregtech API recipes.");
+		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
 	}
 
 	public void serverStarting(final FMLServerStartingEvent e) {

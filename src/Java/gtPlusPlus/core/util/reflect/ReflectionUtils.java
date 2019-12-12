@@ -28,7 +28,22 @@ public class ReflectionUtils {
 	public static Map<String, Class<?>> mCachedClasses = new LinkedHashMap<String, Class<?>>();
 	public static Map<String, CachedMethod> mCachedMethods = new LinkedHashMap<String, CachedMethod>();
 	public static Map<String, CachedField> mCachedFields = new LinkedHashMap<String, CachedField>();
+	public static Map<String, CachedConstructor> mCachedConstructors = new LinkedHashMap<String, CachedConstructor>();
 
+	private static class CachedConstructor {
+
+		private final Constructor<?> METHOD;
+
+		public CachedConstructor(Constructor<?> aCons) {
+			METHOD = aCons;
+		}
+
+		public Constructor<?> get() {
+			return METHOD;
+		}
+
+	}
+	
 	private static class CachedMethod {
 
 		private final boolean STATIC;
@@ -107,6 +122,49 @@ public class ReflectionUtils {
 		return false;
 	}
 
+	private static boolean cacheConstructor(Class<?> aClass, Constructor<?> aConstructor) {		
+		if (aConstructor == null) {
+			return false;
+		}		
+		CachedConstructor y = mCachedConstructors.get(aClass.getName()+"."+ArrayUtils.toString(aConstructor.getParameterTypes()));
+		if (y == null) {
+			mCachedConstructors.put(aClass.getName()+"."+ArrayUtils.toString(aConstructor.getParameterTypes()), new CachedConstructor(aConstructor));
+			return true;
+		}		
+		return false;
+	}
+
+	
+	/**
+	 * Returns a cached {@link Constructor} object.
+	 * @param aClass - Class containing the Constructor.
+	 * @param aTypes - Varags Class Types for objects constructor.
+	 * @return - Valid, non-final, {@link Method} object, or {@link null}.
+	 */
+	public static Constructor<?> getConstructor(Class<?> aClass, Class<?>... aTypes) {
+		if (aClass == null || aTypes == null) {
+			return null;
+		}		
+		
+		String aMethodKey = ArrayUtils.toString(aTypes);
+		//Logger.REFLECTION("Looking up method in cache: "+(aClass.getName()+"."+aMethodName + "." + aMethodKey));
+		CachedConstructor y = mCachedConstructors.get(aClass.getName() + "." + aMethodKey);
+		if (y == null) {
+			Constructor<?> u = getConstructor_Internal(aClass, aTypes);
+			if (u != null) {
+				Logger.REFLECTION("Caching Constructor: "+aClass.getName() + "." + aMethodKey);
+				cacheConstructor(aClass, u);
+				return u;
+			} else {
+				return null;
+			}
+		} else {
+			return y.get();
+		}
+	}
+	
+	
+	
 
 	/**
 	 * Returns a cached {@link Class} object.
@@ -716,6 +774,55 @@ public class ReflectionUtils {
 		}
 		return m;
 	}
+	
+	private static Constructor<?> getConstructor_Internal(Class<?> aClass, Class<?>... aTypes) {
+		Constructor<?> c = null;
+		try {
+			Logger.REFLECTION("Constructor: Internal Lookup: "+aClass.getName());
+			c = aClass.getDeclaredConstructor(aTypes);
+			if (c != null) {
+				c.setAccessible(true);
+				int modifiers = c.getModifiers();
+				Field modifierField = c.getClass().getDeclaredField("modifiers");
+				modifiers = modifiers & ~Modifier.FINAL;
+				modifierField.setAccessible(true);
+				modifierField.setInt(c, modifiers);
+			}
+		}
+		catch (Throwable t) {
+			Logger.REFLECTION("Constructor: Internal Lookup Failed: "+aClass.getName());
+			try {
+				c = getConstructorRecursively(aClass, aTypes);
+			} catch (Exception e) {
+				Logger.REFLECTION("Unable to find method '"+aClass.getName()+"'");	
+				e.printStackTrace();
+				dumpClassInfo(aClass);
+			}
+		}
+		return c;
+	}
+	
+	private static Constructor<?> getConstructorRecursively(Class<?> aClass, Class<?>... aTypes) throws Exception {
+		try {
+			Logger.REFLECTION("Constructor: Recursion Lookup: "+aClass.getName());
+			Constructor<?> c = aClass.getConstructor(aTypes);
+			if (c != null) {
+				c.setAccessible(true);
+				int modifiers = c.getModifiers();
+				Field modifierField = c.getClass().getDeclaredField("modifiers");
+				modifiers = modifiers & ~Modifier.FINAL;
+				modifierField.setAccessible(true);
+				modifierField.setInt(c, modifiers);
+			}
+			return c;
+		} catch (final NoSuchMethodException | IllegalArgumentException | IllegalAccessException e) {
+			final Class<?> superClass = aClass.getSuperclass();
+			if (superClass == null || superClass == Object.class) {
+				throw e;
+			}
+			return  getConstructor_Internal(superClass, aTypes);
+		}
+	}
 
 	private static Method getMethodRecursively(final Class<?> clazz, final String aMethodName) throws NoSuchMethodException {
 		try {
@@ -795,7 +902,7 @@ public class ReflectionUtils {
 	}
 
 	private static Class<?> getClass_Internal(String string) {
-		Class aClass = null;
+		Class<?> aClass = null;
 		if (ReflectionUtils.doesClassExist(string)) {
 			try {
 				aClass = Class.forName(string);
@@ -815,7 +922,7 @@ public class ReflectionUtils {
 				Logger.REFLECTION("Building: "+aClassName);
 			}
 			Logger.REFLECTION("Trying to search '"+aClassName+"' for inner classes.");
-			Class clazz = ReflectionUtils.getClass(aClassName);			
+			Class<?> clazz = ReflectionUtils.getClass(aClassName);			
 			
 			Class[] y = clazz.getDeclaredClasses();
 			if (y == null || y.length <= 0) {
@@ -824,7 +931,7 @@ public class ReflectionUtils {
 			}
 			else {
 				boolean found = false;
-				for (Class h : y) {
+				for (Class<?> h : y) {
 					Logger.REFLECTION("Found hidden inner class: "+h.getCanonicalName());
 					if (h.getSimpleName().toLowerCase().equals(aData[aData.length-1].toLowerCase())) {
 						Logger.REFLECTION("Found correct class. ["+aData[aData.length-1]+"] Caching at correct location: "+string);

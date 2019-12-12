@@ -13,12 +13,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.slots.SlotChemicalPlantInput;
 import gtPlusPlus.xmod.gregtech.api.gui.fluidreactor.Container_FluidReactor;
@@ -311,13 +311,6 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
 					if (this.mProgresstime > 5) {
 						this.mStuttering = false;
 					}
-
-					XSTR aXSTR = new XSTR();
-					if (GT_Mod.gregtechproxy.mAprilFool && aXSTR.nextInt(5000) == 0) {
-						GT_Utility.sendSoundToPlayers(aBaseMetaTileEntity.getWorld(),
-								(String) GregTech_API.sSoundList.get(5), 10.0F, -1.0F, aBaseMetaTileEntity.getXCoord(),
-								aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord());
-					}
 				}
 			} else {
 				aBaseMetaTileEntity.setActive(false);
@@ -510,11 +503,6 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
 	}
 
 	@Override
-	public int checkRecipe(boolean skipOC) {
-		return super.checkRecipe(skipOC);
-	}
-
-	@Override
 	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPreTick(aBaseMetaTileEntity, aTick);
 
@@ -613,11 +601,6 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
 	@Override
 	public FluidStack drain(int maxDrain, boolean doDrain) {
 		return super.drain(maxDrain, doDrain);
-	}
-
-	@Override
-	protected void onEmptyingContainerWhenEmpty() {
-		super.onEmptyingContainerWhenEmpty();
 	}
 
 	@Override

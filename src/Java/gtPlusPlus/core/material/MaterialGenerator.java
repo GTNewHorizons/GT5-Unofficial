@@ -70,20 +70,12 @@ public class MaterialGenerator {
 	 * @return 
 	 */
 	public static boolean addFluidExtractionRecipe(ItemStack aEmpty, ItemStack aRemains, FluidStack aFluid, Integer aDuration, Integer aEU) {
-		/*GT_Recipe r = new Recipe_GT(
-				true,
-				new ItemStack[] {aEmpty,  aRemains != null ? aRemains : null},
-				new ItemStack[] {},
-				null,
-				new int[] {},
-				new FluidStack[] {},
-				new FluidStack[] {c},
-				a2, a3, a1);*/
-		//new RecipeGen_FluidCanning(r, true);
 		RecipeGen_FluidCanning g = new RecipeGen_FluidCanning(true, aEmpty, aRemains, aFluid, aDuration, aEU);
 		if (g != null && g.valid()) {
+			//Logger.INFO("[FIND] Adding Extraction recipe for "+ItemUtils.getItemName(aEmpty)+", "+ItemUtils.getItemName(aRemains)+", "+ItemUtils.getFluidName(aFluid));
 			return true;
 		}
+		Logger.INFO("[ERROR] FAILED adding Extraction recipe for "+ItemUtils.getItemName(aEmpty)+", "+ItemUtils.getItemName(aRemains)+", "+ItemUtils.getFluidName(aFluid));
 		return false;
 	}
 

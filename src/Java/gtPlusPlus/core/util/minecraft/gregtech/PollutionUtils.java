@@ -45,6 +45,10 @@ public class PollutionUtils {
 			mIsPollutionEnabled = false;
 		}
 	}
+	
+	public static boolean isPollutionEnabled() {
+		return mIsPollutionEnabled;
+	}
 
 	public static boolean mPollution() {
 		try {

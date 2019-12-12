@@ -149,7 +149,7 @@ public class StandardBaseParticles extends BaseItemParticle {
 	@Override
 	public void registerIcons(IIconRegister reg) {		
 		for (int i = 0; i < this.icons.length; i++) {
-			this.icons[i] = reg.registerIcon(CORE.MODID + ":" + "particle/"+i);			
+			this.icons[i] = reg.registerIcon(CORE.MODID + ":" + "particle/new/"+i);			
 		}
 	}
 

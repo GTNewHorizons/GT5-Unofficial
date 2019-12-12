@@ -833,7 +833,17 @@ public class RECIPES_GREGTECH {
 		//Add an empty recipe, but only if we didn't for the standard GT HF. Prevents Fluid transformation exploits.
 		if (!addedGtExtraction) {
 			CORE.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),	ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("hydrofluoricacid", 125));
-		}
+		}		
+
+		//Gelid Cryotheum
+		CORE.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustCryotheum", 1), FluidUtils.getFluidStack("cryotheum", 250), 200, 240);
+		
+		//Ender Fluid
+		CORE.RA.addFluidExtractionRecipe(ItemUtils.getSimpleStack(Items.ender_pearl), FluidUtils.getFluidStack("ender", 250), 100, 30);		
+		
+		//Blazing Pyrotheum
+		CORE.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1), FluidUtils.getFluidStack("pyrotheum", 250), 200, 240);
+		
 
 	}
 

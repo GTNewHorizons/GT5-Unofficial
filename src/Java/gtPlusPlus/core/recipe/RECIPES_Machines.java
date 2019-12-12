@@ -16,6 +16,7 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.*;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -940,7 +941,7 @@ public class RECIPES_Machines {
 
 			}
 
-			if (CORE.ConfigSwitches.enableMachine_Pollution && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+			if (CORE.ConfigSwitches.enableMachine_Pollution && PollutionUtils.isPollutionEnabled()){
 
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateCarbon", "plateCarbon", "plateCarbon",

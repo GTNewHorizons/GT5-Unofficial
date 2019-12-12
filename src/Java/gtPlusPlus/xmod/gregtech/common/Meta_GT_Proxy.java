@@ -482,7 +482,7 @@ public class Meta_GT_Proxy {
 	 * @deprecated Use {@link StaticFields59#getFieldFromGregtechProxy(boolean,String)} instead
 	 */
 	public static Object getFieldFromGregtechProxy(boolean client, String fieldName) {
-		return StaticFields59.getFieldFromGregtechProxy(fieldName);
+		return StaticFields59.getFieldFromGregtechProxy(client, fieldName);
 	}
 
 	public static void setCustomGregtechTooltip(String aNbtTagName, FormattedTooltipString aData) {

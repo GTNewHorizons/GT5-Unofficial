@@ -6,6 +6,7 @@ import java.util.List;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gtPlusPlus.api.helpers.MaterialHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
@@ -105,6 +106,8 @@ public class AgriculturalChem extends ItemPackage {
 	 * 19 - Sodium Hydroxide // Exists in Newer GT
 	 * 20 - Sodium Carbonate
 	 * 21 - Lithium Chloride
+	 * 22 - Pellet Mold
+	 * 23 - Clean Aluminium Mix
 	 */
 
 	public static ItemStack mAlgaeBiosmass;
@@ -129,6 +132,8 @@ public class AgriculturalChem extends ItemPackage {
 	public static ItemStack mSodiumHydroxide;
 	public static ItemStack mSodiumCarbonate;
 	public static ItemStack mLithiumChloride;
+	public static ItemStack mPelletMold;
+	public static ItemStack mCleanAluminiumMix;
 	
 
 	@Override
@@ -196,6 +201,8 @@ public class AgriculturalChem extends ItemPackage {
 		}		
 		mSodiumCarbonate = ItemUtils.simpleMetaStack(mAgrichemItem1, 20, 1);
 		mLithiumChloride = ItemUtils.simpleMetaStack(mAgrichemItem1, 21, 1);
+		mPelletMold = ItemUtils.simpleMetaStack(mAgrichemItem1, 22, 1);
+		mCleanAluminiumMix = ItemUtils.simpleMetaStack(mAgrichemItem1, 23, 1);
 
 		ItemUtils.addItemToOreDictionary(mGreenAlgaeBiosmass, "biomassGreenAlgae");
 		ItemUtils.addItemToOreDictionary(mBrownAlgaeBiosmass, "biomassBrownAlgae");
@@ -533,8 +540,8 @@ public class AgriculturalChem extends ItemPackage {
 		GT_Values.RA.addCentrifugeRecipe(CI.getNumberedCircuit(20), ItemUtils.getSimpleStack(aManureByprod, 4),
 				FluidUtils.getFluidStack("sulfuricacid", 250), // In Fluid
 				FluidUtils.getFluidStack("sulfuricapatite", 50), // Out Fluid
-				Materials.Phosphorus.getDustSmall(2), Materials.Calcium.getDustSmall(2),
-				Materials.Copper.getDustTiny(1), Materials.Carbon.getDust(1), ItemUtils.getSimpleStack(dustDirt, 1),
+				MaterialHelper.getDustSmall(Materials.Phosphorus, 2), MaterialHelper.getDustSmall(Materials.Calcium, 2),
+				MaterialHelper.getDustTiny(Materials.Copper, 1), MaterialHelper.getDust(Materials.Carbon, 1), ItemUtils.getSimpleStack(dustDirt, 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAmmoniumNitrate", 1),
 				new int[] { 2500, 2500, 750, 1000, 5000, 250 }, // Chances
 				20 * 20, // Time

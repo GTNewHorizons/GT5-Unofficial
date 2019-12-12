@@ -12,6 +12,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntityRocketFuelGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_LargeRocketEngine;
@@ -32,12 +33,15 @@ public class GregtechRocketFuelGenerator {
 		GregtechItemList.Controller_RocketEngine.set(
 				new GregtechMetaTileEntity_LargeRocketEngine(996, "gtpp.multimachine.rocketengine", "Rocketdyne F-1A Engine").getStackForm(1L));
 				
+		
+		ItemList aDieselEngine = Utils.getValueOfItemList("Machine_Multi_DieselEngine", ItemList.Machine_Multi_LargeBoiler_TungstenSteel);
+		
 		 GT_ModHandler.addCraftingRecipe(
 				 GregtechItemList.Controller_RocketEngine.get(1L),
 				 CI.bitsd,
 				 new Object[]{
 						 "PCP", "EME", "GWG",
-						 'M', ItemList.Machine_Multi_DieselEngine,
+						 'M', aDieselEngine,
 						 'P', ItemList.Electric_Piston_IV,
 						 'E', ItemList.Field_Generator_EV,
 						 'C', OrePrefixes.circuit.get(Materials.Master),

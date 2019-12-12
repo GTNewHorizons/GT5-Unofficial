@@ -10,6 +10,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -55,5 +56,21 @@ public class MaterialHelper {
 			}
 		}
 		return false;
+	}
+	
+	public static ItemStack getCells(Materials aMaterial, int i) {
+		return ItemUtils.getOrePrefixStack(OrePrefixes.cell, aMaterial, i);		
+	}
+	public static ItemStack getDust(Materials aMaterial, int i) {
+		return ItemUtils.getOrePrefixStack(OrePrefixes.dust, aMaterial, i);		
+	}
+	public static ItemStack getDustSmall(Materials aMaterial, int i) {
+		return ItemUtils.getOrePrefixStack(OrePrefixes.dustSmall, aMaterial, i);		
+	}
+	public static ItemStack getDustTiny(Materials aMaterial, int i) {
+		return ItemUtils.getOrePrefixStack(OrePrefixes.dustTiny, aMaterial, i);		
+	}
+	public static ItemStack getGems(Materials aMaterial, int i) {
+		return ItemUtils.getOrePrefixStack(OrePrefixes.gem, aMaterial, i);		
 	}
 }

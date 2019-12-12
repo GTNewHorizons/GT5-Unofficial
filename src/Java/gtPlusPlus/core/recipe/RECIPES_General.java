@@ -21,6 +21,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
@@ -156,13 +157,13 @@ public class RECIPES_General {
 
 
 		//Shaped Crafting for ULV Material Dusts		
-		
+
 		//Potin
 		if (RecipeUtils.addShapelessGregtechRecipe(new Object[] {"dustLead", "dustBronze", "dustTin",
 				"dustLead", "dustBronze"}, ALLOY.POTIN.getDust(5))){
 			Logger.INFO("Added shapeless recipe for Potin Dust.");
 		}
-		
+
 		//Tumbaga
 		if (RecipeUtils.addShapelessGregtechRecipe(new Object[] {
 				"dustGold", "dustGold", "dustCopper"}, ItemUtils.getSimpleStack(ModItems.dustTumbagaMix))){
@@ -173,7 +174,7 @@ public class RECIPES_General {
 				ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
 				ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
 				"dustGold"
-				},
+		},
 				ALLOY.TUMBAGA.getDust(10))){
 			Logger.INFO("Added shapeless recipe for Tumbaga Dust.");
 		}
@@ -293,7 +294,7 @@ public class RECIPES_General {
 						CI.getElectricPump(2, 1),
 						CI.getPlate(2, GTNH ? 4 : 2),
 						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(0), GTNH ? 2 : 1),
-						},
+				},
 				FluidUtils.getHotWater(500), // Fluid
 				ItemUtils.getSimpleStack(ModBlocks.blockPestKiller), // Output
 				20 * 60, // Dur
@@ -394,12 +395,11 @@ public class RECIPES_General {
 			generatePipeRecipes(e.mDefaultLocalName, e.getMass(), tVoltageMultiplier);
 		}
 
-		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK)
-			RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[4], "rotorGtStainlessSteel", CI.component_Plate[4],
-					CI.getTieredCircuitOreDictName(3), CI.machineHull_HV, CI.getTieredCircuitOreDictName(3),
-					CI.component_Plate[4], CI.electricPump_HV, CI.component_Plate[4],
-					GregtechItemList.Hatch_Air_Intake.get(1L, new Object[0]));
+		RecipeUtils.addShapedGregtechRecipe(
+				CI.component_Plate[4], "rotorGtStainlessSteel", CI.component_Plate[4],
+				CI.getTieredCircuitOreDictName(3), CI.machineHull_HV, CI.getTieredCircuitOreDictName(3),
+				CI.component_Plate[4], CI.electricPump_HV, CI.component_Plate[4],
+				GregtechItemList.Hatch_Air_Intake.get(1L, new Object[0]));
 
 		RecipeUtils.addShapedGregtechRecipe(CI.component_Plate[6], ALLOY.MARAGING250.getGear(1), CI.component_Plate[6],
 				CI.getTieredCircuitOreDictName(4), GregtechItemList.Casing_AdvancedVacuum.get(1),
@@ -417,7 +417,7 @@ public class RECIPES_General {
 				CI.component_Plate[8], GregtechItemList.Hatch_Input_Naquadah.get(1L, new Object[0]));
 
 
-		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+		if (PollutionUtils.isPollutionEnabled()) {
 			GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Muffler_Adv_LV.get(1L, new Object[0]), bitsd,
 					new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_LV.get(1), Character.valueOf('P'),
 							GregtechItemList.Pollution_Cleaner_LV.get(1) });

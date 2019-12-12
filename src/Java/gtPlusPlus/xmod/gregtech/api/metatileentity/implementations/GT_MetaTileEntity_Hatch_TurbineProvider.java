@@ -31,11 +31,11 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
 	}
 	
 	public GT_MetaTileEntity_Hatch_TurbineProvider(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier, aDescription, aTextures);
+		super(aName, aTier, aDescription[0], aTextures);
 	}
 
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT_MetaTileEntity_Hatch_TurbineProvider(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+		return new GT_MetaTileEntity_Hatch_TurbineProvider(this.mName, this.mTier, this.mDescription, this.mTextures);
 	}
 	
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

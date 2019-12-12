@@ -1,12 +1,18 @@
 package gtPlusPlus.plugin.agrichem.item.algae;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.OreDictUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureClock;
+import net.minecraft.client.renderer.texture.TextureCompass;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +25,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemAgrichemBase extends Item {
 
-	protected IIcon base[] = new IIcon[22];
+	final protected IIcon base[];
 	
 	/*
 	 * 0 - Algae Biomass
@@ -44,13 +50,16 @@ public class ItemAgrichemBase extends Item {
 	 * 19 - Sodium Hydroxide // Exists in Newer GT
 	 * 20 - Sodium Carbonate
 	 * 21 - Lithium Chloride
+	 * 22 - Pellet Mold
+	 * 23 - Clean Aluminium Mix
 	 */
 	
 	public ItemAgrichemBase() {
 		this.setHasSubtypes(true);
 		this.setNoRepair();
 		this.setMaxStackSize(64);
-		this.setMaxDamage(0);
+		this.setMaxDamage(0);		
+		base = new IIcon[24];		
 		this.setUnlocalizedName("BasicAgrichemItem");
 		GameRegistry.registerItem(this, this.getUnlocalizedName());
 	}
@@ -179,8 +188,36 @@ public class ItemAgrichemBase extends Item {
 	@Override
 	public void registerIcons(final IIconRegister u) {
 		for (int i=0;i<this.base.length;i++) {
-			this.base[i] = u.registerIcon(CORE.MODID + ":" + "bioscience/MetaItem1/"+i);				
+			String aPath = CORE.MODID + ":" + "bioscience/MetaItem1/"+i;
+			this.base[i] = u.registerIcon(aPath);										
 		}
+	}
+	
+	
+	private boolean isTextureValid(String aPath) {
+		if (aPath == null) {
+			return false;
+		}
+		else if (aPath.indexOf(92) == -1) {
+			Constructor aTextureAtlasSprite = ReflectionUtils.getConstructor(
+					TextureAtlasSprite.class, String.class
+			);
+			if (aTextureAtlasSprite != null) {
+				try {
+					TextureAtlasSprite aTestAtlas = (TextureAtlasSprite) aTextureAtlasSprite.newInstance(
+							aPath
+					);
+					if (aTestAtlas != null) {
+						return true;
+					}
+				}
+				catch (InstantiationException | IllegalAccessException
+						| IllegalArgumentException
+						| InvocationTargetException e) {
+				}
+			}
+		}
+		return false;
 	}
 	
 	@Override

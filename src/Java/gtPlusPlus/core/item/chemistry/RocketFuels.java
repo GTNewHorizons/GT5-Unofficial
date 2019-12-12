@@ -9,6 +9,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.api.helpers.MaterialHelper;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
@@ -478,15 +479,17 @@ public class RocketFuels extends ItemPackage {
 		}
 
 
+		MaterialHelper.getCells(aMaterial_Water, 1);
+		
 		ItemStack aCellEmpty = CI.emptyCells(1);
-		ItemStack aCellWater = aMaterial_Water.getCells(1);
-		ItemStack aCellOxygen = aMaterial_Oxygen.getCells(1);
-		ItemStack aCellChloramine = aMaterial_Chloramine.getCells(1);
-		ItemStack aCellDimethylamine = aMaterial_Dimethylamine.getCells(1);
-		ItemStack aCellDilutedHydrochloricAcid = aMaterial_DilutedHydrochloricAcid.getCells(1);
-		ItemStack aCellNitrogenDioxide = aMaterial_NitrogenDioxide.getCells(1);
-		ItemStack aCellDinitrogenTetroxide = aMaterial_DinitrogenTetroxide.getCells(1);
-		ItemStack aCellDimethylhydrazine = aMaterial_Dimethylhydrazine.getCells(1);
+		ItemStack aCellWater = MaterialHelper.getCells(aMaterial_Water, 1);
+		ItemStack aCellOxygen = MaterialHelper.getCells(aMaterial_Oxygen, 1);
+		ItemStack aCellChloramine = MaterialHelper.getCells(aMaterial_Chloramine, 1);
+		ItemStack aCellDimethylamine = MaterialHelper.getCells(aMaterial_Dimethylamine, 1);
+		ItemStack aCellDilutedHydrochloricAcid = MaterialHelper.getCells(aMaterial_DilutedHydrochloricAcid, 1);
+		ItemStack aCellNitrogenDioxide = MaterialHelper.getCells(aMaterial_NitrogenDioxide, 1);
+		ItemStack aCellDinitrogenTetroxide = MaterialHelper.getCells(aMaterial_DinitrogenTetroxide, 1);
+		ItemStack aCellDimethylhydrazine = MaterialHelper.getCells(aMaterial_Dimethylhydrazine, 1);
 
 
 
@@ -671,7 +674,17 @@ public class RocketFuels extends ItemPackage {
 
 		//Register default fluids
 		Diesel = MaterialUtils.getMaterial("Fuel", "Diesel").getFluid(1).getFluid();
-		Oil_Heavy = MaterialUtils.getMaterial("OilHeavy", "Oil").getFluid(1).getFluid();		
+		
+		// 5.08 Compat
+		if (!FluidUtils.doesFluidExist("OilHeavy")){
+			Oil_Heavy = FluidUtils.generateFluidNoPrefix("OilHeavy", "Heavy Oil", 200, new short[]{10, 10, 10, 100});
+		}
+		else {
+			Oil_Heavy = MaterialUtils.getMaterial("OilHeavy", "Oil").getFluid(1).getFluid();
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellOilHeavy", 1) == null){				
+				new BaseItemComponent("OilHeavy", "Heavy Oil", new short[] {10, 10, 10});
+			}
+		}		
 
 
 		//Create Kerosene

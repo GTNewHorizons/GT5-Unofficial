@@ -113,6 +113,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Bomb_Cast_Set, Bomb_Cast_Broken,
 	Bomb_Cast_Mold,
 	
+	// Pellet Mold
+	Pellet_Mold,
+	
 	//Charged Items for Tree Farms
 	Farm_Processor_EV, 
 	Farm_Processor_IV,

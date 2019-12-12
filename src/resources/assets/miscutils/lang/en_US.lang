@@ -3038,7 +3038,6 @@ tile.blockRoundRobinator.4.name=Round Robinator V
 
 
 //Added 16/10/19
-
 item.BioRecipeSelector.name=Programmed Bio Circuit
 item.FermentationBase.name=Cell of Fermentation Base
 item.ureamix.name=Cell of Urea Mix
@@ -3075,3 +3074,20 @@ item.butanol.name=Butanol Cell
 fluidHotWater=Heated Water
 fluidHotWater.name=Heated Water
 //Try Fix IC2 Garbage ^^
+
+
+//Added 11/12/19
+item.itemHotIngotTitanium.name=Hot Titanium Ingot
+item.OilHeavy.name=Heavy Oil Cell
+item.UnsymmetricalDimethylhydrazine.name=Unsymmetrical Dimethylhydrazine Cell
+item.benzene.name=Benzene Cell
+item.Benzene.name=Benzene Cell
+item.phenol.name=Phenol Cell
+item.CarbonDioxide.name=Carbon Dioxide Cell
+item.itemCellCarbonDioxide.name=Carbon Dioxide Cell
+item.CarbonMonoxide.name=Carbon Monoxide Cell
+item.itemCellCarbonMonoxide.name=Carbon Monoxide Cell
+item.acetone.name=Acetone Cell
+item.saltwater.name=Salt Water Cell
+item.BasicAgrichemItem.22.name=Mold (Pellet)
+item.BasicAgrichemItem.23.name=Clean Aluminium Mix

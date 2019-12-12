@@ -10,9 +10,11 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.helpers.MaterialHelper;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.bop.blocks.rainforest.LeavesRainforestTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.LogRainforestTree;
@@ -136,17 +138,41 @@ public class BOP_Block_Registrator {
 	}
 
 	public static void addPyrolyeOvenRecipes(final ItemStack logStack) {
-		GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 1, Materials.Charcoal.getGems(20), Materials.Creosote.getFluid(4000L), 640, 64);
-		GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000L), 2, Materials.Charcoal.getGems(20), Materials.Creosote.getFluid(4000L), 320, 96);
-		GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 3, Materials.Ash.getDust(4), Materials.OilHeavy.getFluid(200L), 320, 192);
-		GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 3, Materials.Charcoal.getGems(20), Materials.CharcoalByproducts.getGas(4000L), 640, 64);
-		GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000L), 4, Materials.Charcoal.getGems(20), Materials.CharcoalByproducts.getGas(4000L), 320, 96);
-		GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 5, Materials.Charcoal.getGems(20), Materials.WoodGas.getGas(1500L), 640, 64);
-		GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000L), 6, Materials.Charcoal.getGems(20), Materials.WoodGas.getGas(1500L), 320, 96);
-		GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 7, Materials.Charcoal.getGems(20), Materials.WoodVinegar.getFluid(3000L), 640, 64);
-		GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000L), 8, Materials.Charcoal.getGems(20), Materials.WoodVinegar.getFluid(3000L), 320, 96);
-		GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 9, Materials.Charcoal.getGems(20), Materials.WoodTar.getFluid(1500L), 640, 64);
-		GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000L), 10, Materials.Charcoal.getGems(20), Materials.WoodTar.getFluid(1500L), 320, 96);
+
+		Materials aOilHeavy = MaterialUtils.getMaterial("OilHeavy");
+		Materials aCharcoalByproducts = MaterialUtils.getMaterial("CharcoalByproducts");
+		Materials aWoodGas = MaterialUtils.getMaterial("WoodGas");
+		Materials aWoodVinegar = MaterialUtils.getMaterial("WoodVinegar");
+		Materials aWoodTar = MaterialUtils.getMaterial("WoodTar");
+
+
+		CORE.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 1, MaterialHelper.getGems(Materials.Charcoal, 20), Materials.Creosote.getFluid(4000L), 640, 64);
+		CORE.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000L), 2, MaterialHelper.getGems(Materials.Charcoal, 20), Materials.Creosote.getFluid(4000L), 320, 96);
+		
+		if (aOilHeavy != null) {
+			CORE.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 3, MaterialHelper.getDust(Materials.Ash, 4), aOilHeavy.getFluid(200L), 320, 192);
+			
+		}
+		if (aCharcoalByproducts != null) {
+			CORE.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 3, MaterialHelper.getGems(Materials.Charcoal, 20), aCharcoalByproducts.getGas(4000L), 640, 64);
+			CORE.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000L), 4, MaterialHelper.getGems(Materials.Charcoal, 20), aCharcoalByproducts.getGas(4000L), 320, 96);
+			
+		}
+		if (aWoodGas != null) {
+			CORE.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 5, MaterialHelper.getGems(Materials.Charcoal, 20), aWoodGas.getGas(1500L), 640, 64);
+			CORE.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000L), 6, MaterialHelper.getGems(Materials.Charcoal, 20), aWoodGas.getGas(1500L), 320, 96);
+			
+		}
+		if (aWoodVinegar != null) {
+			CORE.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 7, MaterialHelper.getGems(Materials.Charcoal, 20), aWoodVinegar.getFluid(3000L), 640, 64);
+			CORE.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000L), 8, MaterialHelper.getGems(Materials.Charcoal, 20), aWoodVinegar.getFluid(3000L), 320, 96);
+			
+		}
+		if (aWoodTar != null) {
+			CORE.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 9, MaterialHelper.getGems(Materials.Charcoal, 20), aWoodTar.getFluid(1500L), 640, 64);
+			CORE.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000L), 10, MaterialHelper.getGems(Materials.Charcoal, 20), aWoodTar.getFluid(1500L), 320, 96);
+		
+		}
 	}
 
 }
