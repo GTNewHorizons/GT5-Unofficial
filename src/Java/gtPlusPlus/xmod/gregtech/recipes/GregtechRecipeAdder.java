@@ -8,15 +8,14 @@ import java.util.List;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import gregtech.api.util.SemiFluidFuelHandler;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
@@ -1181,6 +1180,15 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 	@Override
 	public boolean addFluidReactorRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int time, long eu, int aTier) {
+		
+		if (aInputs.length > 4 || aInputFluids.length > 4 || aOutputs.length > 4 || aFluidOutputs.length > 2) {
+			Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(aInputs));
+			Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(aInputFluids));
+			Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(aOutputs));
+			Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(aFluidOutputs));
+			CORE.crash();
+		}
+		
 		
 		Recipe_GT aSpecialRecipe = new Recipe_GT(
     			false,

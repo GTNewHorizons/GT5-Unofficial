@@ -208,7 +208,7 @@ public class BioRecipes {
 		//GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1), null, 96, 1);
 
 		//Combustion Fuels
-		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellButanol", 1), null, 250, 0);
+		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellButanol", 1), null, 1125, 0);
 
 	}
 	private static void recipeGreenAlgae() {
@@ -465,14 +465,14 @@ public class BioRecipes {
 	private static void recipeAluminiumSilverCatalyst() {
 		// Assembly Recipe
 		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
-				getBioChip(20),
+				getBioChip(4),
 				ItemUtils.getSimpleStack(AgriculturalChem.mCatalystCarrier, 10),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 4),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 4)
 		}, 
 				GT_Values.NF, 
 				ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 10),
-				600 * 20, 
+				20 * 20, 
 				30);
 	}
 
@@ -599,7 +599,7 @@ public class BioRecipes {
 								FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 200),						
 						},
 						60 * 20,
-						30,
+						2,
 						1);
 			}
 			
@@ -621,7 +621,7 @@ public class BioRecipes {
 								FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 50),						
 						},
 						60 * 20,
-						30,
+						2,
 						1);
 			}			
 		}
@@ -1248,19 +1248,19 @@ public class BioRecipes {
 		CORE.RA.addFluidReactorRecipe(
 				new ItemStack[] {
 						getBioChip(12),
-						ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 20)
+						ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 20)
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 2000),
+						FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 500),
 				},
 				new ItemStack[] {
 
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mMethane, 10),						
+						FluidUtils.getFluidStack(BioRecipes.mMethane, 20),						
 				},
 				20 * 20,
-				16,
+				8,
 				1);
 
 		CORE.RA.addFluidReactorRecipe(
@@ -1277,10 +1277,10 @@ public class BioRecipes {
 
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mLiquidPlastic, (144/4)),						
+						FluidUtils.getFluidStack(BioRecipes.mEthylene, 1250),						
 				},
-				120 * 20,
-				240,
+				60 * 20,
+				60,
 				2);
 	}
 

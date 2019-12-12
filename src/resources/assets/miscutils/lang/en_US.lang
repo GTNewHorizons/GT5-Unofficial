@@ -3091,3 +3091,22 @@ item.acetone.name=Acetone Cell
 item.saltwater.name=Salt Water Cell
 item.BasicAgrichemItem.22.name=Mold (Pellet)
 item.BasicAgrichemItem.23.name=Clean Aluminium Mix
+
+//Added 12/12/19
+
+item.BasicGenericChemItem.0.name=Red Metal Catalyst
+item.BasicGenericChemItem.1.name=Yellow Metal Catalyst
+item.BasicGenericChemItem.2.name=Blue Metal Catalyst
+item.BasicGenericChemItem.3.name=Orange Metal Catalyst
+item.BasicGenericChemItem.4.name=Purple Metal Catalyst
+item.BasicGenericChemItem.5.name=Brown Metal Catalyst
+item.MudRedSlurry.name=Cell of Red Mud Slurry
+item.liquid_toluene.name=Toluene Cell
+
+item.BasicAlgaeItem.0.name=Algae Spore (I)
+item.BasicAlgaeItem.1.name=Algae Spore (II)
+item.BasicAlgaeItem.2.name=Algae Spore (III)
+item.BasicAlgaeItem.3.name=Algae Spore (IV)
+item.BasicAlgaeItem.4.name=Algae Spore (V)
+item.BasicAlgaeItem.5.name=Algae Spore (VI)
+item.BasicAlgaeItem.6.name=Algae Spore (VII)

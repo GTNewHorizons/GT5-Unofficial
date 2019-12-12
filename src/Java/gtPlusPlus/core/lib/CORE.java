@@ -290,19 +290,19 @@ public class CORE {
 	}
 
 	public static final void crash() {
-		Logger.ERROR("==========================================================");
-		Logger.ERROR("[GT++ CRASH]");
-		Logger.ERROR("==========================================================");
-		Logger.ERROR("Oooops...");
-		Logger.ERROR("This should only happy in a development environment or when something really bad happens.");
-		Logger.ERROR("==========================================================");
-		Logger.ERROR("Called from: "+ReflectionUtils.getMethodName(0));
-		Logger.ERROR(ReflectionUtils.getMethodName(1));
-		Logger.ERROR(ReflectionUtils.getMethodName(2));
-		Logger.ERROR(ReflectionUtils.getMethodName(3));
-		Logger.ERROR(ReflectionUtils.getMethodName(4));
-		Logger.ERROR(ReflectionUtils.getMethodName(5));
-		Logger.ERROR(ReflectionUtils.getMethodName(6));		
+		Logger.INFO("==========================================================");
+		Logger.INFO("[GT++ CRASH]");
+		Logger.INFO("==========================================================");
+		Logger.INFO("Oooops...");
+		Logger.INFO("This should only happy in a development environment or when something really bad happens.");
+		Logger.INFO("==========================================================");
+		Logger.INFO("Called from: "+ReflectionUtils.getMethodName(0));
+		Logger.INFO(ReflectionUtils.getMethodName(1));
+		Logger.INFO(ReflectionUtils.getMethodName(2));
+		Logger.INFO(ReflectionUtils.getMethodName(3));
+		Logger.INFO(ReflectionUtils.getMethodName(4));
+		Logger.INFO(ReflectionUtils.getMethodName(5));
+		Logger.INFO(ReflectionUtils.getMethodName(6));		
 		FMLCommonHandler.instance().exitJava(0, true);
 	}
 	

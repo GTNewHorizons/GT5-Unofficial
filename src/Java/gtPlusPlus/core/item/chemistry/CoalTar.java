@@ -6,14 +6,12 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -334,8 +332,6 @@ public class CoalTar extends ItemPackage {
 		}
 		else {
 			Toluene = FluidUtils.getWildcardFluidStack("liquid_toluene", 1).getFluid();
-			Item itemCellToluene = new BaseItemComponent("liquid_toluene", "Toluene", new short[]{140, 70, 20, 100});
-			CORE.RA.addFluidCannerRecipe(ItemUtils.getEmptyCell(), ItemUtils.getSimpleStack(itemCellToluene), FluidUtils.getFluidStack(Toluene, 1000), null);
 		}
 
 		//Create Coal Tar

@@ -138,7 +138,7 @@ extends GregtechMetaCasingBlocksAbstract {
 					return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
 				case 15:
 				default:
-					return TexturesGtBlock.Overlay_UU_Matter.getIcon();
+					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
 
 			}
 		}
