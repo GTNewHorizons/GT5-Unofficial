@@ -29,6 +29,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Optional;
 
@@ -78,10 +79,17 @@ public class BWCoreStaticReplacementMethodes {
 
             return new ItemStack(itemstack.getItem(), 1, i1);
         } else {
-            Optional<IRecipe> iPossibleRecipe = RECENTLYUSEDRECIPES.stream().filter(r -> r.matches(inventoryCrafting, world)).findFirst();
+            Optional<IRecipe> iPossibleRecipe = Optional.empty();
+            int index = 0;
+            for (Iterator<IRecipe> iterator = RECENTLYUSEDRECIPES.iterator(); iterator.hasNext(); ++index) {
+                IRecipe RECENTLYUSEDRECIPE = iterator.next();
+                if (RECENTLYUSEDRECIPE.matches(inventoryCrafting, world)) {
+                    iPossibleRecipe = Optional.of(RECENTLYUSEDRECIPE);
+                    break;
+                }
+            }
 
             if (iPossibleRecipe.isPresent()) {
-                int index = RECENTLYUSEDRECIPES.indexOf(iPossibleRecipe.get());
                 if (index != 0) {
                     --index;
                     RECENTLYUSEDRECIPES.remove(iPossibleRecipe.get());
