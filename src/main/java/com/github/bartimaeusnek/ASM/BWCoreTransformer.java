@@ -40,6 +40,7 @@ public class BWCoreTransformer implements IClassTransformer {
             "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
             "PLACING MY GLASS-BLOCK RUNNABLE INTO THE GT_API",
             "DUCTTAPING RWG WORLDEN FAILS",
+            "PATCHING CRAFTING MANAGER FOR CACHING RECIPES"
            // "REMOVING 12% BONUS OUTPUTS FROM GT++ SIFTER"
     };
     public static final String[] CLASSESBEEINGTRANSFORMED = {
@@ -49,6 +50,7 @@ public class BWCoreTransformer implements IClassTransformer {
             "thaumcraft.common.tiles.TileWandPedestal",
             "gregtech.GT_Mod",
             "rwg.world.ChunkGeneratorRealistic",
+            "net.minecraft.item.crafting.CraftingManager"
            // "gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialSifter"
     };
     static boolean obfs;
@@ -282,6 +284,23 @@ public class BWCoreTransformer implements IClassTransformer {
                         }
                     }
                 }
+                case 6: {
+                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
+                    String name_deObfs = "findMatchingRecipe";
+                    String name_Obfs = "a";
+                    String name_src = "func_82787_a";
+                    for (MethodNode toPatch : methods) {
+                        if (ASMUtils.isCorrectMethod(toPatch,name_deObfs,name_Obfs,name_src)){
+                            toPatch.instructions = new InsnList();
+                            toPatch.instructions.add(new VarInsnNode(ALOAD,1));
+                            toPatch.instructions.add(new VarInsnNode(ALOAD,2));
+                            toPatch.instructions.add(new MethodInsnNode(INVOKESTATIC,"com/github/bartimaeusnek/ASM/BWCoreStaticReplacementMethodes","findCachedMatchingRecipe","(Lnet/minecraft/inventory/InventoryCrafting;Lnet/minecraft/world/World;)Lnet/minecraft/item/ItemStack;",false));
+                            toPatch.instructions.add(new InsnNode(ARETURN));
+                            break scase;
+                        }
+                    }
+                }
+
 //                case 6: {
 //                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
 //                    ((IntInsnNode) methods.get(11).instructions.get(10)).operand = 10000;

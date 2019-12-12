@@ -22,7 +22,82 @@
 
 package com.github.bartimaeusnek.ASM;
 
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.World;
+
+import java.util.LinkedList;
+import java.util.Optional;
+
 public class BWCoreStaticReplacementMethodes {
+
+    public static final LinkedList<IRecipe> RECENTLYUSEDRECIPES = new LinkedList<>();
+
+    @SuppressWarnings("ALL")
+    public static ItemStack findCachedMatchingRecipe(InventoryCrafting inventoryCrafting, World world) {
+        int i = 0;
+        ItemStack itemstack = null;
+        ItemStack itemstack1 = null;
+        int j;
+
+        for (j = 0; j < inventoryCrafting.getSizeInventory(); ++j)
+        {
+            ItemStack itemstack2 = inventoryCrafting.getStackInSlot(j);
+
+            if (itemstack2 != null)
+            {
+                if (i == 0)
+                {
+                    itemstack = itemstack2;
+                }
+
+                if (i == 1)
+                {
+                    itemstack1 = itemstack2;
+                }
+
+                ++i;
+            }
+        }
+
+        if (i == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.stackSize == 1 && itemstack1.stackSize == 1 && itemstack.getItem().isRepairable())
+        {
+            Item item = itemstack.getItem();
+            int j1 = item.getMaxDamage() - itemstack.getItemDamageForDisplay();
+            int k = item.getMaxDamage() - itemstack1.getItemDamageForDisplay();
+            int l = j1 + k + item.getMaxDamage() * 5 / 100;
+            int i1 = item.getMaxDamage() - l;
+
+            if (i1 < 0)
+            {
+                i1 = 0;
+            }
+
+            return new ItemStack(itemstack.getItem(), 1, i1);
+        } else {
+            Optional<IRecipe> iPossibleRecipe = RECENTLYUSEDRECIPES.stream().filter(r -> r.matches(inventoryCrafting, world)).findFirst();
+
+            if (iPossibleRecipe.isPresent()) {
+                int index = RECENTLYUSEDRECIPES.indexOf(iPossibleRecipe.get());
+                if (index != 0) {
+                    --index;
+                    RECENTLYUSEDRECIPES.remove(iPossibleRecipe.get());
+                    RECENTLYUSEDRECIPES.add(index, iPossibleRecipe.get());
+                }
+                return iPossibleRecipe.get().getCraftingResult(inventoryCrafting);
+            }
+
+            iPossibleRecipe = CraftingManager.getInstance().getRecipeList().stream().filter(r -> ((IRecipe)r).matches(inventoryCrafting, world)).findFirst();
+            ItemStack stack = iPossibleRecipe.map(iRecipe -> iRecipe.getCraftingResult(inventoryCrafting)).orElse(null);
+            if (stack != null)
+                RECENTLYUSEDRECIPES.addLast(iPossibleRecipe.get());
+            return stack;
+        }
+    }
+
     private BWCoreStaticReplacementMethodes() {
     }
 

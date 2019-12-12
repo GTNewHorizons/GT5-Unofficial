@@ -31,6 +31,9 @@ import com.github.bartimaeusnek.bartworks.client.creativetabs.BioTab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.GT2Tab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.bartworksTab;
 import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
+import com.github.bartimaeusnek.bartworks.common.commands.ChangeConfig;
+import com.github.bartimaeusnek.bartworks.common.commands.PrintRecipeListToFile;
+import com.github.bartimaeusnek.bartworks.common.commands.SummonRuin;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
@@ -198,7 +201,12 @@ public final class MainMod {
         }
     }
 
-    private static boolean recipesAdded;
+    @Mod.EventHandler
+    public void onServerStarting(FMLServerStartingEvent event){
+        event.registerServerCommand(new SummonRuin());
+        event.registerServerCommand(new ChangeConfig());
+        event.registerServerCommand(new PrintRecipeListToFile());
+    }
 
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
@@ -214,6 +222,8 @@ public final class MainMod {
         fixEnergyRequirements();
         MainMod.unificationRecipeEnforcer();
     }
+
+    private static boolean recipesAdded;
 
     public static void runOnPlayerJoined(boolean classicMode, boolean extraGasRecipes){
         OreDictHandler.adaptCacheForWorld();
