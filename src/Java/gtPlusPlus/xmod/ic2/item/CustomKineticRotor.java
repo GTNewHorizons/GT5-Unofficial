@@ -6,6 +6,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.Utils;
 import ic2.api.item.IKineticRotor;
 import ic2.core.IC2;
 import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
@@ -24,7 +25,7 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
 	private final int mTier;
 	
 	@SideOnly(Side.CLIENT)
-	private final IIcon[] mTextures = new IIcon[6];
+	private final IIcon[] mTextures;
 	
 	private static final String[] mRegistrationNames = new String[] {
 			"itemwoodrotor", "itemironrotor", "itemsteelrotor", "itemwcarbonrotor"
@@ -71,6 +72,12 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
 	
 	public CustomKineticRotor(int aTier) {
 		mTier = aTier;
+		if (Utils.isClient()) {
+			mTextures = new IIcon[6];
+		}
+		else {
+			mTextures = null;
+		}
 		this.setMaxStackSize(1);
 		// Handle Differences if EIO is not loaded
 		if (!LoadedMods.EnderIO && (aTier == 0 || aTier == 2)) {
