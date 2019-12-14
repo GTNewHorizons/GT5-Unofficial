@@ -293,8 +293,7 @@ public class SSList<E> implements List<E>, Deque<E>, Set<E> {
             return;
         SSListNode<E> node = getNode(index);
         node.setPriority(node.getPriority()+prio);
-        if (node.getBefore() != null)
-            while (node.getPriority() > node.getBefore().getPriority()){
+        while (node.getBefore() != null && node.getPriority() > node.getBefore().getPriority()){
                 moveNodeUp(node);
         }
     }
