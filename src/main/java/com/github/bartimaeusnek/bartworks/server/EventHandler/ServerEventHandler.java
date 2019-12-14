@@ -67,7 +67,7 @@ public class ServerEventHandler {
                    String oreDictName = OreDictionary.getOreName(oreID);
                    for (Werkstoff e : Werkstoff.werkstoffHashSet) {
                        replace = e.getGenerationFeatures().enforceUnification;
-                       if (replace && oreDictName.contains(e.getVarName())) {
+                       if (replace && (oreDictName.contains(e.getVarName()) || e.getADDITIONAL_OREDICT().stream().anyMatch(oreDictName::contains))) {
                            String prefix = oreDictName.replace(e.getVarName(), "");
                            toReplace = GT_OreDictUnificator.get(OrePrefixes.getPrefix(prefix),e.getVarName(),stack.stackSize);
                        }

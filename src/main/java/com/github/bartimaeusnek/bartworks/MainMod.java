@@ -284,12 +284,15 @@ public final class MainMod {
                         GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.add(new BWRecipes.DynamicGTRecipe(false, null, null, null, null, new FluidStack[]{wrongNamedFluid}, new FluidStack[]{werkstoff.getFluidOrGas(1)}, 1, 1, 0));
                     }
                 }
+                HashSet<String> oreDictNames = new HashSet<>(werkstoff.getADDITIONAL_OREDICT());
+                oreDictNames.add(werkstoff.getVarName());
                 MainMod.runMoltenUnificationEnfocement(werkstoff);
                 MainMod.runUnficationDeleter(werkstoff);
+                for (String s : oreDictNames)
                 for (OrePrefixes prefixes : OrePrefixes.values()) {
-                    if (OreDictionary.getOres(prefixes + werkstoff.getVarName()).size() > 1) {
-                        for (int j = 0; j < OreDictionary.getOres(prefixes + werkstoff.getVarName()).size(); j++) {
-                            ItemStack toReplace = OreDictionary.getOres(prefixes + werkstoff.getVarName()).get(j);
+                    if (OreDictionary.getOres(prefixes + s).size() > 1) {
+                        for (int j = 0; j < OreDictionary.getOres(prefixes + s).size(); j++) {
+                            ItemStack toReplace = OreDictionary.getOres(prefixes + s).get(j);
                             ItemStack replacement = werkstoff.get(prefixes);
                             if (GT_Utility.areStacksEqual(toReplace,replacement) || replacement == null || replacement.getItem() == null)
                                 continue;

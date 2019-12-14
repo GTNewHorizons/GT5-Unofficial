@@ -670,24 +670,27 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return durOverride;
         }
 
-        public void setDurOverride(int durOverride) {
+        public Werkstoff.Stats setDurOverride(int durOverride) {
             this.durOverride = durOverride;
+            return this;
         }
 
         public float getSpeedOverride() {
             return speedOverride;
         }
 
-        public void setSpeedOverride(float speedOverride) {
+        public Werkstoff.Stats setSpeedOverride(float speedOverride) {
             this.speedOverride = speedOverride;
+            return this;
         }
 
         public byte getQualityOverride() {
             return qualityOverride;
         }
 
-        public void setQualityOverride(byte qualityOverride) {
+        public Werkstoff.Stats setQualityOverride(byte qualityOverride) {
             this.qualityOverride = qualityOverride;
+            return this;
         }
 
         byte qualityOverride;

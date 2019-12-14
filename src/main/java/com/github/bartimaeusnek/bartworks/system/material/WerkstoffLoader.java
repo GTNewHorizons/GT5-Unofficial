@@ -1305,6 +1305,32 @@ public class WerkstoffLoader implements Runnable {
             new Pair<>(Materials.Chlorine,1),
             new Pair<>(Materials.Oxygen,1)
     );
+    public static final Werkstoff AdemicSteel = new Werkstoff(
+            new short[]{0xcc,0xcc,0xcc},
+            "Ademic Steel",
+            "The break in the line",
+            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setDurOverride(6144).setMeltingPoint(1800).setSpeedOverride(12).setQualityOverride((byte) 4),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMetalItems().addCraftingMetalWorkingItems().addMolten().addSimpleMetalWorkingItems().addMultipleIngotMetalWorkingItems(),
+            96,
+            TextureSet.SET_METALLIC,
+            new Pair<>(Materials.Steel ,2),
+            new Pair<>(Materials.VanadiumSteel,1),
+            new Pair<>(Materials.DamascusSteel,1),
+            new Pair<>(Materials.Carbon,4)
+    );
+    public static final Werkstoff RawAdemicSteel = new Werkstoff(
+            new short[]{0xed,0xed,0xed},
+            "Raw Ademic Steel",
+            new Werkstoff.Stats().setCentrifuge(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMixerRecipes(),
+            97,
+            TextureSet.SET_ROUGH,
+            new Pair<>(Materials.Steel ,2),
+            new Pair<>(Materials.VanadiumSteel,1),
+            new Pair<>(Materials.DamascusSteel,1)
+    );
 
     public static HashMap<OrePrefixes, BW_MetaGenerated_Items> items = new HashMap<>();
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();
@@ -1435,12 +1461,14 @@ public class WerkstoffLoader implements Runnable {
         Materials.Radon.add(WerkstoffLoader.NOBLE_GAS);
         WerkstoffLoader.Oganesson.add(WerkstoffLoader.NOBLE_GAS,WerkstoffLoader.ANAEROBE_GAS);
 
+
         Materials.Nitrogen.add(WerkstoffLoader.ANAEROBE_GAS);
 
         WerkstoffLoader.Calcium.add(WerkstoffLoader.ANAEROBE_SMELTING);
 
         WerkstoffLoader.LuVTierMaterial.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
         WerkstoffLoader.Ruridit.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
+        WerkstoffLoader.AdemicSteel.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
 
         WerkstoffLoader.MagnetoResonaticDust.add(WerkstoffLoader.NO_BLAST);
 
