@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.ASM;
 
+import com.github.bartimaeusnek.bartworks.util.selfsortinglist.SSList;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,12 +31,11 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Optional;
 
 public class BWCoreStaticReplacementMethodes {
 
-    public static final LinkedList<IRecipe> RECENTLYUSEDRECIPES = new LinkedList<>();
+    public static final SSList<IRecipe> RECENTLYUSEDRECIPES = new SSList<>();
 
     @SuppressWarnings("ALL")
     public static ItemStack findCachedMatchingRecipe(InventoryCrafting inventoryCrafting, World world) {
@@ -81,8 +81,8 @@ public class BWCoreStaticReplacementMethodes {
         } else {
             Optional<IRecipe> iPossibleRecipe = Optional.empty();
             int index = 0;
-            for (Iterator<IRecipe> iterator = RECENTLYUSEDRECIPES.iterator(); iterator.hasNext(); ++index) {
-                IRecipe RECENTLYUSEDRECIPE = iterator.next();
+            for (Iterator<IRecipe> it = RECENTLYUSEDRECIPES.iterator(); it.hasNext();++index) {
+                IRecipe RECENTLYUSEDRECIPE = it.next();
                 if (RECENTLYUSEDRECIPE.matches(inventoryCrafting, world)) {
                     iPossibleRecipe = Optional.of(RECENTLYUSEDRECIPE);
                     break;
@@ -90,11 +90,7 @@ public class BWCoreStaticReplacementMethodes {
             }
 
             if (iPossibleRecipe.isPresent()) {
-                if (index != 0) {
-                    --index;
-                    RECENTLYUSEDRECIPES.remove(iPossibleRecipe.get());
-                    RECENTLYUSEDRECIPES.add(index, iPossibleRecipe.get());
-                }
+                RECENTLYUSEDRECIPES.addPrioToNode(index);
                 return iPossibleRecipe.get().getCraftingResult(inventoryCrafting);
             }
 
