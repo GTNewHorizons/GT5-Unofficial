@@ -20,27 +20,27 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.util.selfsortinglist;
+package com.github.bartimaeusnek.bartworks.util.accessprioritylist;
 
-public class SSListNode<E> {
+public class AccessPriorityListNode<E> {
 
-    public final static SSListNode EMPTY_NODE = new SSListNode(null);
+    public final static AccessPriorityListNode EMPTY_NODE = new AccessPriorityListNode(null);
 
     private final E ELEMENT;
     private long priority = Long.MIN_VALUE;
-    private SSListNode<E> next;
-    private SSListNode<E> before;
+    private AccessPriorityListNode<E> next;
+    private AccessPriorityListNode<E> before;
 
-    public SSListNode(E element) {
+    public AccessPriorityListNode(E element) {
         ELEMENT = element;
     }
 
-    public SSListNode(SSListNode<E> before, E element, SSListNode<E> next) {
+    public AccessPriorityListNode(AccessPriorityListNode<E> before, E element, AccessPriorityListNode<E> next) {
         this.ELEMENT = element;
         connect(next, before);
     }
 
-    public void connect(SSListNode<E> next, SSListNode<E> before){
+    public void connect(AccessPriorityListNode<E> next, AccessPriorityListNode<E> before){
         this.setNext(next);
         this.setBefore(before);
     }
@@ -57,19 +57,19 @@ public class SSListNode<E> {
         this.priority = priority;
     }
 
-    public SSListNode<E> getNext() {
+    public AccessPriorityListNode<E> getNext() {
         return next;
     }
 
-    public void setNext(SSListNode<E> next) {
+    public void setNext(AccessPriorityListNode<E> next) {
         this.next = next;
     }
 
-    public SSListNode<E> getBefore() {
+    public AccessPriorityListNode<E> getBefore() {
         return before;
     }
 
-    public void setBefore(SSListNode<E> before) {
+    public void setBefore(AccessPriorityListNode<E> before) {
         this.before = before;
     }
 }

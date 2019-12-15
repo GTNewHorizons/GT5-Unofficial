@@ -20,26 +20,26 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.util.selfsortinglist;
+package com.github.bartimaeusnek.bartworks.util.accessprioritylist;
 
 import java.util.*;
 
-public class SSList<E> implements List<E>, Deque<E>, Set<E> {
+public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     transient int size = 0;
-    transient SSListNode<E> head;
-    transient SSListNode<E> tail;
+    transient AccessPriorityListNode<E> head;
+    transient AccessPriorityListNode<E> tail;
 
-    public static SSList create(){
-        return new SSList();
+    public static AccessPriorityList create(){
+        return new AccessPriorityList();
     }
 
-    public SSList() {}
+    public AccessPriorityList() {}
 
     @Override
     public void addFirst(E t) {
-        final SSListNode<E> first = head;
-        final SSListNode<E> newNode = new SSListNode<>(null, t, first);
+        final AccessPriorityListNode<E> first = head;
+        final AccessPriorityListNode<E> newNode = new AccessPriorityListNode<>(null, t, first);
         head = newNode;
         if (first == null)
             tail = newNode;
@@ -50,8 +50,8 @@ public class SSList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public void addLast(E t) {
-        final SSListNode<E> last = tail;
-        final SSListNode<E> newNode = new SSListNode<>(last, t, null);
+        final AccessPriorityListNode<E> last = tail;
+        final AccessPriorityListNode<E> newNode = new AccessPriorityListNode<>(last, t, null);
         tail = newNode;
         if (last == null)
             head = newNode;
@@ -137,12 +137,12 @@ public class SSList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return new SSListIterators.SSListIterator<>(head);
+        return new AccessPriorityListIterators.AccessPriorityListIterator<>(head);
     }
 
     @Override
     public Iterator<E> descendingIterator() {
-        return new SSListIterators.SSListReverseIterator<>(tail);
+        return new AccessPriorityListIterators.AccessPriorityListReverseIterator<>(tail);
     }
 
     @Override
@@ -167,12 +167,12 @@ public class SSList<E> implements List<E>, Deque<E>, Set<E> {
         return true;
     }
 
-    private void moveNodeUp(SSListNode<E> node){
+    private void moveNodeUp(AccessPriorityListNode<E> node){
         if (node == head || node.getBefore() == null)
             return;
-        final SSListNode<E> before = node.getBefore();
-        final SSListNode<E> beforeBefore = before.getBefore();
-        final SSListNode<E> next = node.getNext();
+        final AccessPriorityListNode<E> before = node.getBefore();
+        final AccessPriorityListNode<E> beforeBefore = before.getBefore();
+        final AccessPriorityListNode<E> next = node.getNext();
 
         // <0,1,2> <1,2,3> N<2,3,4> <3,4,5>
 
@@ -197,14 +197,14 @@ public class SSList<E> implements List<E>, Deque<E>, Set<E> {
         // <0,1,3> N<0,3,2> <3,2,4> <2,4,5>
     }
 
-    SSListNode<E> getNode(int index) {
+    AccessPriorityListNode<E> getNode(int index) {
         if (index <= (size / 2)) {
-            SSListNode<E> x = head;
+            AccessPriorityListNode<E> x = head;
             for (int i = 0; i < index; i++)
                 x = x.getNext();
             return x;
         } else {
-            SSListNode<E> x = tail;
+            AccessPriorityListNode<E> x = tail;
             for (int i = size - 1; i > index; i--)
                 x = x.getBefore();
             return x;
@@ -237,7 +237,7 @@ public class SSList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public E peek() {
-        return null;
+        return getFirst();
     }
 
     @Override
@@ -285,13 +285,24 @@ public class SSList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public void clear() {
-
+        if (tail != null) {
+            AccessPriorityListNode<E> node = tail;
+            while (node.getBefore() != null) {
+                node.setNext(null);
+                node.setPriority(0L);
+                node = node.getBefore();
+                node.getNext().setBefore(null);
+            }
+            this.size = 0;
+            this.head = null;
+            this.tail = null;
+        }
     }
 
     public void addPrioToNode(int index, long prio){
         if (!isValidIndex(index))
             return;
-        SSListNode<E> node = getNode(index);
+        AccessPriorityListNode<E> node = getNode(index);
         node.setPriority(node.getPriority()+prio);
         while (node.getBefore() != null && node.getPriority() > node.getBefore().getPriority()){
                 moveNodeUp(node);
@@ -306,7 +317,7 @@ public class SSList<E> implements List<E>, Deque<E>, Set<E> {
     public E get(int index) {
         if (!isValidIndex(index))
             return null;
-        SSListNode<E> node = getNode(index);
+        AccessPriorityListNode<E> node = getNode(index);
         return node.getELEMENT();
     }
 
@@ -337,12 +348,12 @@ public class SSList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public ListIterator<E> listIterator() {
-        return new SSListIterators.SSListListIterator<>(head,tail,false);
+        return new AccessPriorityListIterators.AccessPriorityListListIterator<>(head,tail,false);
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        return new SSListIterators.SSListListIterator<>(this,index);
+        return new AccessPriorityListIterators.AccessPriorityListListIterator<>(this,index);
     }
 
     @Override

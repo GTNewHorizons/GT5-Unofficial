@@ -22,7 +22,7 @@
 
 package com.github.bartimaeusnek.ASM;
 
-import com.github.bartimaeusnek.bartworks.util.selfsortinglist.SSList;
+import com.github.bartimaeusnek.bartworks.util.accessprioritylist.AccessPriorityList;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,7 +35,7 @@ import java.util.Optional;
 
 public class BWCoreStaticReplacementMethodes {
 
-    public static final SSList<IRecipe> RECENTLYUSEDRECIPES = new SSList<>();
+    public static final AccessPriorityList<IRecipe> RECENTLYUSEDRECIPES = new AccessPriorityList<>();
 
     @SuppressWarnings("ALL")
     public static ItemStack findCachedMatchingRecipe(InventoryCrafting inventoryCrafting, World world) {

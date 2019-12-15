@@ -20,30 +20,30 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.util.selfsortinglist;
+package com.github.bartimaeusnek.bartworks.util.accessprioritylist;
 
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.Iterator;
 import java.util.ListIterator;
 
-public class SSListIterators {
+public class AccessPriorityListIterators {
 
 
-    public static class SSListListIterator<E> implements ListIterator<E> {
-        final SSListNode<E> head;
-        final SSListNode<E> tail;
-        SSListNode<E> current;
+    public static class AccessPriorityListListIterator<E> implements ListIterator<E> {
+        final AccessPriorityListNode<E> head;
+        final AccessPriorityListNode<E> tail;
+        AccessPriorityListNode<E> current;
         int counter = 0;
         boolean reverse;
-        public SSListListIterator(SSListNode<E> head,SSListNode<E> tail, boolean reverse) {
+        public AccessPriorityListListIterator(AccessPriorityListNode<E> head, AccessPriorityListNode<E> tail, boolean reverse) {
             this.head = head;
             this.tail = tail;
             current = reverse ? tail : head;
             this.reverse = reverse;
         }
 
-        public SSListListIterator(SSList<E> list, int index) {
+        public AccessPriorityListListIterator(AccessPriorityList<E> list, int index) {
             this.head = list.head;
             this.tail = list.tail;
             current = list.getNode(index);
@@ -102,10 +102,10 @@ public class SSListIterators {
         }
     }
 
-    public static class SSListIterator<E> implements Iterator<E> {
-        final SSListNode<E> head;
-        SSListNode<E> current;
-        public SSListIterator(SSListNode<E> head) {
+    public static class AccessPriorityListIterator<E> implements Iterator<E> {
+        final AccessPriorityListNode<E> head;
+        AccessPriorityListNode<E> current;
+        public AccessPriorityListIterator(AccessPriorityListNode<E> head) {
             this.head = this.current = head;
         }
 
@@ -122,11 +122,11 @@ public class SSListIterators {
         }
     }
 
-    public static class SSListReverseIterator<E> implements Iterator<E> {
-        final SSListNode<E> tail;
-        SSListNode<E> current;
+    public static class AccessPriorityListReverseIterator<E> implements Iterator<E> {
+        final AccessPriorityListNode<E> tail;
+        AccessPriorityListNode<E> current;
 
-        public SSListReverseIterator(SSListNode<E> tail) {
+        public AccessPriorityListReverseIterator(AccessPriorityListNode<E> tail) {
             this.tail = this.current = tail;
         }
 
