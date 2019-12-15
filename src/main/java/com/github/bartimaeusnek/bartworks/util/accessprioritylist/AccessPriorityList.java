@@ -22,6 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.util.accessprioritylist;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 import java.util.*;
 
 public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
@@ -30,7 +32,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
     transient AccessPriorityListNode<E> head;
     transient AccessPriorityListNode<E> tail;
 
-    public static AccessPriorityList create(){
+    public static AccessPriorityList create() {
         return new AccessPriorityList();
     }
 
@@ -62,32 +64,32 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public boolean offerFirst(E e) {
-        return false;
+        throw new NotImplementedException("");
     }
 
     @Override
     public boolean offerLast(E e) {
-        return false;
+        throw new NotImplementedException("");
     }
 
     @Override
     public E removeFirst() {
-        return null;
+        throw new NotImplementedException("");
     }
 
     @Override
     public E removeLast() {
-        return null;
+        throw new NotImplementedException("");
     }
 
     @Override
     public E pollFirst() {
-        return null;
+        throw new NotImplementedException("");
     }
 
     @Override
     public E pollLast() {
-        return null;
+        throw new NotImplementedException("");
     }
 
     @Override
@@ -112,12 +114,12 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public boolean removeFirstOccurrence(Object o) {
-        return false;
+        throw new NotImplementedException("");
     }
 
     @Override
     public boolean removeLastOccurrence(Object o) {
-        return false;
+        throw new NotImplementedException("");
     }
 
     @Override
@@ -132,7 +134,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public boolean contains(Object o) {
-        return false;
+        throw new NotImplementedException("");
     }
 
     @Override
@@ -148,16 +150,18 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
     @Override
     public Object[] toArray() {
         Object[] ret = new Object[size];
-        while (listIterator().hasNext())
-            ret[listIterator().nextIndex()-1] = listIterator().next();
+        int index = 0;
+        for (Iterator<E> it = iterator(); it.hasNext(); index++)
+            ret[index] = it.next();
         return ret;
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
         T[] ret = (T[]) new Object[size];
-        while (listIterator().hasNext())
-            ret[listIterator().nextIndex()-1] = (T) listIterator().next();
+        int index = 0;
+        for (Iterator<T> it = (Iterator<T>) iterator(); it.hasNext(); index++)
+            ret[index] = it.next();
         return ret;
     }
 
@@ -181,6 +185,8 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
         if (beforeBefore != null)
             beforeBefore.setNext(node);
+        else
+            head = node;
         // <0,1,3> <1,2,3> N<0,3,4> <3,4,5>
 
         before.setBefore(node);
@@ -191,6 +197,8 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
         if (next != null)
             next.setBefore(before);
+        else
+            tail = before;
         // <0,1,3> N<0,3,4> <3,2,4> <2,4,5>
 
         node.setNext(before);
@@ -213,26 +221,28 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public boolean offer(E e) {
-        return false;
+        throw new NotImplementedException("");
     }
 
     private boolean isValidIndex(int index) {
-        return index >= 0 && index < size;
+        if (index >= 0 && index < size)
+            return true;
+        throw new ArrayIndexOutOfBoundsException("NOT A VAILD INDEX!");
     }
 
     @Override
     public E remove() {
-        return null;
+        throw new NotImplementedException("");
     }
 
     @Override
     public E poll() {
-        return null;
+        throw new NotImplementedException("");
     }
 
     @Override
     public E element() {
-        return null;
+        throw new NotImplementedException("");
     }
 
     @Override
@@ -247,17 +257,17 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public E pop() {
-        return null;
+        throw new NotImplementedException("");
     }
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        throw new NotImplementedException("");
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        throw new NotImplementedException("");
     }
 
     @Override
@@ -270,17 +280,17 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        return false;
+        throw new NotImplementedException("");
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        throw new NotImplementedException("");
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        throw new NotImplementedException("");
     }
 
     @Override
@@ -323,27 +333,27 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public E set(int index, E element) {
-        return null;
+        throw new NotImplementedException("");
     }
 
     @Override
     public void add(int index, E element) {
-
+        throw new NotImplementedException("");
     }
 
     @Override
     public E remove(int index) {
-        return null;
+        throw new NotImplementedException("");
     }
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        throw new NotImplementedException("");
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        throw new NotImplementedException("");
     }
 
     @Override
@@ -358,11 +368,11 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        return null;
+        throw new NotImplementedException("");
     }
 
     @Override
     public Spliterator<E> spliterator() {
-        return null;
+        throw new NotImplementedException("");
     }
 }
