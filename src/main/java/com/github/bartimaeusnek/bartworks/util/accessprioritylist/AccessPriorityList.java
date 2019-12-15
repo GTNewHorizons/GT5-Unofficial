@@ -304,7 +304,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
             return;
         AccessPriorityListNode<E> node = getNode(index);
         node.setPriority(node.getPriority()+prio);
-        while (node.getBefore() != null && node.getPriority() > node.getBefore().getPriority()){
+        while (node.getBefore() != null && node.getPriority() >= node.getBefore().getPriority()){
                 moveNodeUp(node);
         }
     }
