@@ -197,7 +197,7 @@ public class SSList<E> implements List<E>, Deque<E>, Set<E> {
         // <0,1,3> N<0,3,2> <3,2,4> <2,4,5>
     }
 
-    private SSListNode<E> getNode(int index) {
+    SSListNode<E> getNode(int index) {
         if (index <= (size / 2)) {
             SSListNode<E> x = head;
             for (int i = 0; i < index; i++)
@@ -337,12 +337,12 @@ public class SSList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public ListIterator<E> listIterator() {
-        return new SSListIterators.SSListListIterator<>(head,tail);
+        return new SSListIterators.SSListListIterator<>(head,tail,false);
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        return null;
+        return new SSListIterators.SSListListIterator<>(this,index);
     }
 
     @Override

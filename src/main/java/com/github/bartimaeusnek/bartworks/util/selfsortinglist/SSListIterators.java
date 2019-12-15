@@ -35,15 +35,24 @@ public class SSListIterators {
         final SSListNode<E> tail;
         SSListNode<E> current;
         int counter = 0;
-        public SSListListIterator(SSListNode<E> head,SSListNode<E> tail) {
+        boolean reverse;
+        public SSListListIterator(SSListNode<E> head,SSListNode<E> tail, boolean reverse) {
             this.head = head;
             this.tail = tail;
-            current = null;
+            current = reverse ? tail : head;
+            this.reverse = reverse;
+        }
+
+        public SSListListIterator(SSList<E> list, int index) {
+            this.head = list.head;
+            this.tail = list.tail;
+            current = list.getNode(index);
+            counter = index;
         }
 
         @Override
         public boolean hasNext() {
-            return head != current;
+            return reverse ? head != current : tail != current;
         }
 
         @Override
@@ -56,7 +65,7 @@ public class SSListIterators {
 
         @Override
         public boolean hasPrevious() {
-            return tail != current;
+            return !reverse ? head != current : tail != current;
         }
 
         @Override
@@ -97,8 +106,7 @@ public class SSListIterators {
         final SSListNode<E> head;
         SSListNode<E> current;
         public SSListIterator(SSListNode<E> head) {
-            this.head = head;
-            current = null;
+            this.head = this.current = head;
         }
 
         @Override
@@ -118,9 +126,8 @@ public class SSListIterators {
         final SSListNode<E> tail;
         SSListNode<E> current;
 
-        public SSListReverseIterator(SSListNode<E> head) {
-            this.tail = head;
-            current = null;
+        public SSListReverseIterator(SSListNode<E> tail) {
+            this.tail = this.current = tail;
         }
 
         @Override
