@@ -25,7 +25,7 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
 	private final int mTier;
 	
 	@SideOnly(Side.CLIENT)
-	private final IIcon[] mTextures;
+	private IIcon[] mTextures;
 	
 	private static final String[] mRegistrationNames = new String[] {
 			"itemwoodrotor", "itemironrotor", "itemsteelrotor", "itemwcarbonrotor"
@@ -72,12 +72,6 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
 	
 	public CustomKineticRotor(int aTier) {
 		mTier = aTier;
-		if (Utils.isClient()) {
-			mTextures = new IIcon[6];
-		}
-		else {
-			mTextures = null;
-		}
 		this.setMaxStackSize(1);
 		// Handle Differences if EIO is not loaded
 		if (!LoadedMods.EnderIO && (aTier == 0 || aTier == 2)) {
@@ -274,6 +268,7 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
 	@Override
 	public void registerIcons(IIconRegister iconRegister) {		
 		int aIndex = 0;
+		mTextures = new IIcon[6];
 		for (String y : mUnlocalNames) {
 			mTextures[aIndex++] = iconRegister.registerIcon(IC2.textureDomain + ":" + "rotors/" + y);		
 		}		

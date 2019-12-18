@@ -1,11 +1,15 @@
 buildscript {
     repositories {
-		jcenter()
         mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+		jcenter()	
+        //maven {
+        //    name = "forge"
+        //    url = "http://files.minecraftforge.net/maven"
+        //}
+		maven {
+			name = "gt"
+			url = "https://gregtech.overminddl1.com/"
+		}	
         maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
@@ -20,14 +24,80 @@ buildscript {
     }
 }
 
-apply plugin: 'forge'
+// Because Forge is too stupid to fix Deprecation Issues, and we cannot fix it on our end! (until we fork Forge)
+allprojects {
+	tasks.withType(JavaCompile) {
+		//options.compilerArgs << "-Xlint:deprecation"
+	}
+	tasks.withType(Javadoc) {
+-		options.addStringOption('Xdoclint:none', '-quiet')
+-	}
+}
+
+apply plugin: 'eclipse'
+eclipse {
+	classpath {
+		downloadJavadoc = true
+		downloadSources = true
+	}
+}
+
 apply plugin: 'idea'
-apply plugin: 'java'
-apply plugin: 'maven'
+idea{
+	module {
+		downloadJavadoc = true
+		downloadSources = true
+	}
+}
+
+apply plugin: 'forge'
+
+file "build.properties" withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
+
 apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
+
+version = "${config.gtpp.version}"
+group= "gtPlusPlus"
+archivesBaseName = "GT-PlusPlus"
+
+
+//Java Version
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+//Compile against UTF-8
+compileTestJava.options.encoding = 'UTF-8'
+javadoc.options.encoding = 'UTF-8'
+compileJava.options.encoding = 'UTF-8'
+
+minecraft {
+    version = "${config.minecraft.version}-${config.forge.version}"
+    runDir = "eclipse"
+}
 
 idea { module { inheritOutputDirs = true } }
 
+configurations {
+    provided
+    embedded
+    compile.extendsFrom provided, embedded
+}
+
+repositories {
+	maven {
+		name = "gt"
+		url = "http://gregtech.overminddl1.com/"
+	}
+	maven {
+		name = "ic2"
+		url = "http://maven.ic2.player.to/"
+	}
+}
 
 sourceSets {
     main {
@@ -36,86 +106,52 @@ sourceSets {
     }
 }
 
-configurations {
-    //fatJar
-}
-
 dependencies {
+
+    provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"  
+    
+	compile "mcp.mobius.waila:Waila:1.5.11-RC2-NONEI_1.7.10:dev"
+	compile "codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev"
+	compile "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
+	compile "codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev"
+	
+	compile "com.enderio.core:EnderCore:1.7.10-0.2.0.39_beta:dev"
+	compile "com.enderio:EnderIO:1.7.10-2.3.0.430_beta:dev"
+	
+	compile "cofh:CoFHCore:1.7.10R3.0.4:dev"
+	compile "cofh:CoFHLib:1.7.10R3.0.3:dev"
+	compileOnly "net.sengir.forestry:forestry_1.7.10:4.2.16.64:dev"		
+	compileOnly "mods.railcraft:Railcraft_1.7.10:9.12.3.0:dev"
+	
+	//compileOnly "micdoodle8.mods:GalacticraftCore:1.7-3.0.12.504:Dev"
+	//compileOnly "micdoodle8.mods:MicdoodleCore:1.7-3.0.12.504:Dev"
+	
+	compileOnly "thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev"	
+	compile "com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf"	
+    
     compile fileTree(dir: 'libs', include: '*.jar')
-	//testCompile 'junit:junit:4.12'
-    //fatJar files('libs/Segment-2.1.1.jar')
 }
 
-//Java Version
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+processResources
+{
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
 
-//Compile against UTF-8
-compileJava.options.encoding = 'UTF-8'
-compileTestJava.options.encoding = 'UTF-8'
-javadoc.options.encoding = 'UTF-8'
-
-//Jar Info
-archivesBaseName = "GT-PlusPlus"
-version = "1.7.02.99-pre"
-minecraft.version = "1.7.10-10.13.4.1614-1.7.10"
-
-minecraft {
-    version = "1.7.10-10.13.4.1614-1.7.10"
-    runDir = "$projectDir"
-}
-
-//Gradle Tweak
-//Prevent java 8's strict doclint for javadocs from failing builds
-allprojects {
-	tasks.withType(Javadoc) {
-		options.addStringOption('Xdoclint:none', '-quiet')
-	}
-}
-
-//Maven
-repositories {
-	maven {
-		name = "ic2"
-		url = "http://maven.ic2.player.to/"
-	}
-}
-
-task discordChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	file = new File("CHANGELOG Basic ${project.version}.txt");
-	untaggedName = "Current Basic release ${project.version}"
-	fromCommit = "aa9f04218e5298414f900b9fe61131f7ed26b8f1"
-	toRef =  "HEAD"
-	templateContent = file('changeloggeneral.mustache').getText('UTF-8')
-}
-task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	file = new File("CHANGELOG ${project.version}.md");
-	untaggedName = "Current release ${project.version}"
-	fromCommit = "aa9f04218e5298414f900b9fe61131f7ed26b8f1"
-	toRef =  "HEAD"
-	templateContent = file('changelog.mustache').getText('UTF-8')
-}
-task curseChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	file = new File("CHANGELOG Curse ${project.version}.md");
-	untaggedName = "Current Curse release ${project.version}"
-	fromCommit = "aa9f04218e5298414f900b9fe61131f7ed26b8f1"
-	toRef =  "HEAD"
-	templateContent = file('changelogcurse.mustache').getText('UTF-8')
-}
-//task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-// file = new File("CHANGELOG.md");
-// templateContent = file('changelog.mustache').getText('UTF-8');
-//}
-
-jar {
-    archiveName = archivesBaseName + "-" + version + ".jar"
-    manifest {
-        attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
-        attributes 'FMLCorePluginContainsFMLMod': 'true'
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-    //from configurations.fatJar.collect { it.isDirectory() ? it : zipTree(it) }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+	exclude '**/Thumbs.db'
 }
-
 
 task sourceJar(type: Jar) {
     from sourceSets.main.allSource
@@ -135,6 +171,28 @@ task devJar(type: Jar) {
     }
 }
 
+task discordChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	file = new File("build/changelog/Basic ${project.version}.txt");
+	untaggedName = "Current Basic release ${project.version}"
+	fromCommit = "${config.commit.hash}"
+	toRef =  "HEAD"
+	templateContent = file('changeloggeneral.mustache').getText('UTF-8')
+}
+task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	file = new File("build/changelog/${project.version}.md");
+	untaggedName = "Current release ${project.version}"
+	fromCommit = "${config.commit.hash}"
+	toRef =  "HEAD"
+	templateContent = file('changelog.mustache').getText('UTF-8')
+}
+task curseChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	file = new File("build/changelog/Curse ${project.version}.md");
+	untaggedName = "Current Curse release ${project.version}"
+	fromCommit = "${config.commit.hash}"
+	toRef =  "HEAD"
+	templateContent = file('changelogcurse.mustache').getText('UTF-8')
+}
+
 artifacts {
     archives devJar
 	archives sourceJar
@@ -143,26 +201,3 @@ artifacts {
 build.finalizedBy(gitChangelogTask)
 build.finalizedBy(curseChangelogTask)
 build.finalizedBy(discordChangelogTask)
-
-processResources {
-	// this will ensure that this task is redone when the versions change.
-	inputs.property "version", project.version
-	inputs.property "mcversion", project.minecraft.version
-
-	// replace stuff in mcmod.info, nothing else
-	from(sourceSets.main.resources.srcDirs) {
-		include 'mcmod.info'
-		// replace version and mcversion
-		expand 'version':project.version, 'mcversion':project.minecraft.version
-	}
-
-	// copy everything else, thats not the mcmod.info
-	from(sourceSets.main.resources.srcDirs) {
-		exclude 'mcmod.info'
-		exclude '**/*.md'
-	}
-}
-
-def getBuildNumber() {
-	return "$System.env.BUILD_NUMBER" != "null" ? "$System.env.BUILD_NUMBER" : "0"
-}
