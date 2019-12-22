@@ -1834,6 +1834,8 @@ public class WerkstoffLoader implements Runnable {
                 if (werkstoff.getGenerationFeatures().hasOres()) {
                     GT_OreDictUnificator.registerOre(ore + werkstoff.getVarName(), werkstoff.get(ore));
                     GT_OreDictUnificator.registerOre(oreSmall + werkstoff.getVarName(), werkstoff.get(oreSmall));
+                    werkstoff.getADDITIONAL_OREDICT().forEach( e ->  OreDictionary.registerOre(ore+e, werkstoff.get(ore)));
+                    werkstoff.getADDITIONAL_OREDICT().forEach( e ->  OreDictionary.registerOre(oreSmall+e, werkstoff.get(oreSmall)));
                 }
 
                 if (werkstoff.getGenerationFeatures().hasGems())
@@ -1841,6 +1843,7 @@ public class WerkstoffLoader implements Runnable {
 
                 if (werkstoff.getGenerationFeatures().hasGems() || (werkstoff.getGenerationFeatures().toGenerate & 0b10) != 0){
                     GT_OreDictUnificator.registerOre(block + werkstoff.getVarName(), werkstoff.get(block));
+                    werkstoff.getADDITIONAL_OREDICT().forEach( e ->  OreDictionary.registerOre(block+e, werkstoff.get(block)));
                 }
 
                 werkstoff.getADDITIONAL_OREDICT()
@@ -1926,7 +1929,7 @@ public class WerkstoffLoader implements Runnable {
     private void addSimpleMetalRecipes(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(plate)) {
             if (werkstoff.hasItemType(gem)) {
-                GT_Values.RA.addLatheRecipe(werkstoff.get(gem), werkstoff.get(stick), werkstoff.get(dustSmall), (int) Math.max(werkstoff.getStats().getMass() * 5L, 1L), 16);
+                GT_Values.RA.addLatheRecipe(werkstoff.get(gem), werkstoff.get(stick), werkstoff.get(dustSmall,2), (int) Math.max(werkstoff.getStats().getMass() * 5L, 1L), 16);
                 GT_ModHandler.addCraftingRecipe(werkstoff.get(stick, 2), GT_Proxy.tBits, new Object[]{"s", "X", 'X', werkstoff.get(stickLong)});
                 GT_ModHandler.addCraftingRecipe(werkstoff.get(stick), GT_Proxy.tBits, new Object[]{"f ", " X", 'X', werkstoff.get(gem)});
                 GT_Values.RA.addForgeHammerRecipe(werkstoff.get(stick, 2), werkstoff.get(stickLong), (int) Math.max(werkstoff.getStats().getMass(), 1L), 16);
@@ -1941,7 +1944,7 @@ public class WerkstoffLoader implements Runnable {
             GT_Values.RA.addForgeHammerRecipe(werkstoff.get(ingot,3), werkstoff.get(plate,2), (int) Math.max(werkstoff.getStats().getMass(), 1L), 16);
             GregTech_API.registerCover(werkstoff.get(plate), new GT_RenderedTexture(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA(), false), null);
 
-            GT_Values.RA.addLatheRecipe(werkstoff.get(ingot), werkstoff.get(stick), werkstoff.get(dustSmall), (int) Math.max(werkstoff.getStats().getMass() * 5L, 1L), 16);
+            GT_Values.RA.addLatheRecipe(werkstoff.get(ingot), werkstoff.get(stick), werkstoff.get(dustSmall,2), (int) Math.max(werkstoff.getStats().getMass() * 5L, 1L), 16);
 
             GT_Values.RA.addForgeHammerRecipe(werkstoff.get(stick, 2), werkstoff.get(stickLong), (int) Math.max(werkstoff.getStats().getMass(), 1L), 16);
 
