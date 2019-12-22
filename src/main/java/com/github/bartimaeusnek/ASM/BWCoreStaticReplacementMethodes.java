@@ -30,8 +30,9 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Optional;
+import java.util.List;
 
 public class BWCoreStaticReplacementMethodes {
 
@@ -79,25 +80,32 @@ public class BWCoreStaticReplacementMethodes {
 
             return new ItemStack(itemstack.getItem(), 1, i1);
         } else {
-            Optional<IRecipe> iPossibleRecipe = Optional.empty();
+            IRecipe iPossibleRecipe = null;
             int index = 0;
-            for (Iterator<IRecipe> it = RECENTLYUSEDRECIPES.iterator(); it.hasNext();++index) {
+            for (Iterator<IRecipe> it = RECENTLYUSEDRECIPES.iterator(); it.hasNext(); ++index) {
                 IRecipe RECENTLYUSEDRECIPE = it.next();
                 if (RECENTLYUSEDRECIPE.matches(inventoryCrafting, world)) {
-                    iPossibleRecipe = Optional.of(RECENTLYUSEDRECIPE);
+                    iPossibleRecipe = RECENTLYUSEDRECIPE;
                     break;
                 }
             }
 
-            if (iPossibleRecipe.isPresent()) {
+            if (iPossibleRecipe != null) {
                 RECENTLYUSEDRECIPES.addPrioToNode(index);
-                return iPossibleRecipe.get().getCraftingResult(inventoryCrafting);
+                return iPossibleRecipe.getCraftingResult(inventoryCrafting);
             }
 
-            iPossibleRecipe = CraftingManager.getInstance().getRecipeList().stream().filter(r -> ((IRecipe)r).matches(inventoryCrafting, world)).findFirst();
-            ItemStack stack = iPossibleRecipe.map(iRecipe -> iRecipe.getCraftingResult(inventoryCrafting)).orElse(null);
-            if (stack != null)
-                RECENTLYUSEDRECIPES.addLast(iPossibleRecipe.get());
+            ItemStack stack = null;
+            HashSet<IRecipe> recipeHashSet = new HashSet<>();
+            for (IRecipe recipe : (List<IRecipe>) CraftingManager.getInstance().getRecipeList())
+                if (recipe.matches(inventoryCrafting, world))
+                    recipeHashSet.add(recipe);
+
+            for (IRecipe recipe : recipeHashSet){
+                stack = recipe.getCraftingResult(inventoryCrafting);
+                if (stack != null && recipeHashSet.size() == 1)
+                    RECENTLYUSEDRECIPES.addLast(recipe);
+            }
             return stack;
         }
     }
