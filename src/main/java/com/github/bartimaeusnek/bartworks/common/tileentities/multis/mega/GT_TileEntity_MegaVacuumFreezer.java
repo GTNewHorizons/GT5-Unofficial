@@ -143,11 +143,11 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return (
-                   BW_Util.check_layer(aBaseMetaTileEntity, 7, -7, -6, GregTech_API.sBlockCasings2, 1, 7, false, 17)
+                   BW_Util.check_layer(aBaseMetaTileEntity, 7, -7, -6, GregTech_API.sBlockCasings2, 1, 7, false,false,true, GregTech_API.sBlockCasings2,1,true, 17)
                 && BW_Util.check_layer(aBaseMetaTileEntity, 7, -6, 0, GregTech_API.sBlockCasings2, 1, 7, false, false, true, Blocks.air, -1, true, 17)
                 && BW_Util.check_layer(aBaseMetaTileEntity, 7, 0, 1, GregTech_API.sBlockCasings2, 1, 7, true, false, true, Blocks.air, -1, true, 17)
                 && BW_Util.check_layer(aBaseMetaTileEntity, 7, 1, 7, GregTech_API.sBlockCasings2, 1, 7, false, false, true, Blocks.air, -1, true, 17)
-                && BW_Util.check_layer(aBaseMetaTileEntity, 7, 7, 8, GregTech_API.sBlockCasings2, 1, 7, false, 17)
+                && BW_Util.check_layer(aBaseMetaTileEntity, 7, 7, 8, GregTech_API.sBlockCasings2, 1, 7, false,false,true, GregTech_API.sBlockCasings2,1,true, 17)
                 ) && !this.mInputBusses.isEmpty() && !this.mOutputBusses.isEmpty() && !this.mEnergyHatches.isEmpty() && !this.mMaintenanceHatches.isEmpty();
     }
 
