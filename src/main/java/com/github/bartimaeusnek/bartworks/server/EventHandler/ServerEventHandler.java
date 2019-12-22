@@ -55,6 +55,9 @@ public class ServerEventHandler {
         if (event == null || !(event.player instanceof EntityPlayerMP))
             return;
 
+        if (event.player.worldObj.getTotalWorldTime() % 20 != 0)
+            return;
+
         boolean replace = false;
         ItemStack toReplace = null;
         for (int i = 0; i < event.player.inventory.mainInventory.length; i++) {
@@ -62,19 +65,32 @@ public class ServerEventHandler {
            if (stack == null)
                continue;
            int[] oreIDs = OreDictionary.getOreIDs(stack);
+
            if (oreIDs.length > 0){
-               for (int oreID : oreIDs) {
+               loop: for (int oreID : oreIDs) {
                    String oreDictName = OreDictionary.getOreName(oreID);
                    for (Werkstoff e : Werkstoff.werkstoffHashSet) {
                        replace = e.getGenerationFeatures().enforceUnification;
-                       if (replace && (oreDictName.contains(e.getVarName()) || e.getADDITIONAL_OREDICT().stream().anyMatch(oreDictName::contains))) {
-                           String prefix = oreDictName.replace(e.getVarName(), "");
-                           toReplace = GT_OreDictUnificator.get(OrePrefixes.getPrefix(prefix),e.getVarName(),stack.stackSize);
+                       if (replace) {
+                           if (oreDictName.contains(e.getVarName())) {
+                               String prefix = oreDictName.replace(e.getVarName(), "");
+                               toReplace = GT_OreDictUnificator.get(OrePrefixes.getPrefix(prefix), e.getVarName(), stack.stackSize);
+                               break loop;
+                           } else {
+                               for (String s : e.getADDITIONAL_OREDICT()) {
+                                   if (oreDictName.contains(s)) {
+                                       String prefix = oreDictName.replace(s, "");
+                                       toReplace = GT_OreDictUnificator.get(OrePrefixes.getPrefix(prefix), e.getVarName(), stack.stackSize);
+                                       break loop;
+                                   }
+                               }
+                           }
                        }
+                       replace = false;
                    }
                }
            }
-           if (replace) {
+           if (replace && toReplace != null) {
                event.player.inventory.setInventorySlotContents(i, toReplace);
                replace = false;
            }

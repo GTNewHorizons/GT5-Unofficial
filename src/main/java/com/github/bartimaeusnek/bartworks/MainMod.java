@@ -162,8 +162,8 @@ public final class MainMod {
         ServerEventHandler serverEventHandler = new ServerEventHandler();
         if (FMLCommonHandler.instance().getSide().isServer()) {
             MinecraftForge.EVENT_BUS.register(serverEventHandler);
-            FMLCommonHandler.instance().bus().register(serverEventHandler);
         }
+        FMLCommonHandler.instance().bus().register(serverEventHandler);
         if (ConfigHandler.BioLab)
             new BioLabLoader().run();
         if (ConfigHandler.newStuff) {
