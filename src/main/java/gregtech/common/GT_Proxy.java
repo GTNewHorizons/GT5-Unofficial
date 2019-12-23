@@ -503,7 +503,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         RecipeSorter.register("gregtech:shapeless", GT_Shapeless_Recipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
         
         // Register chunk manager with Forge
-        ForgeChunkManager.setForcedChunkLoadingCallback(GT_Mod.instance, new GT_ChunkManager());
+        GT_ChunkManager.init();
     }
 
     public void onLoad() {

@@ -413,5 +413,4 @@ public abstract class GT_MetaTileEntity_DrillerBase extends GT_MetaTileEntity_Mu
         }
         return false;
     }
-
 }

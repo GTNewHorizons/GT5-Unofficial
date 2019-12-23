@@ -32,6 +32,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
     private final ArrayList<ChunkPosition> oreBlockPositions = new ArrayList<>();
     protected int mTier=1;
+    boolean mChunkLoadingEnabled = true;
 
     private int chunkRadiusConfig = getRadiusInChunks();
 
@@ -59,6 +60,21 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "OreDrillingPlant.png");
     }
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+            mChunkLoadingEnabled = !mChunkLoadingEnabled;
+            GT_Utility.sendChatToPlayer(aPlayer, mChunkLoadingEnabled ? trans("502", "Mining chunk loading enabled") : trans("503", "Mining chunk loading disabled"));
+        }
+        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+    }
+    @Override
+    protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
+        if (!mChunkLoadingEnabled)
+            return super.workingAtBottom(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
+
+        return true;
+    }
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
@@ -81,6 +97,8 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
     @Override
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
+        if (mChunkLoadingEnabled)
+            return super.workingDownward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
         if (yHead != oldYHead) oreBlockPositions.clear();
 
         fillMineListIfEmpty(xDrill, yDrill, zDrill, xPipe, zPipe, yHead);

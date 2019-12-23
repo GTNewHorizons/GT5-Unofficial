@@ -195,4 +195,6 @@ public class GT_Values {
      * This will make all chunkloading machines act as World Anchors (true) or Passive Anchors (false)
      */
     public static boolean alwaysReloadChunkloaders = false;
+
+    public static boolean debugChunkloders = false;
 }
