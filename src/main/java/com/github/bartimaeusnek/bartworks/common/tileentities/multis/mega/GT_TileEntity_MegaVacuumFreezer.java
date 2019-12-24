@@ -151,5 +151,4 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
                 ) && !this.mInputBusses.isEmpty() && !this.mOutputBusses.isEmpty() && !this.mEnergyHatches.isEmpty() && !this.mMaintenanceHatches.isEmpty();
     }
 
-
 }

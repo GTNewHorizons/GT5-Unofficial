@@ -74,13 +74,21 @@ public class ServerEventHandler {
                        if (replace) {
                            if (oreDictName.contains(e.getVarName())) {
                                String prefix = oreDictName.replace(e.getVarName(), "");
-                               toReplace = GT_OreDictUnificator.get(OrePrefixes.getPrefix(prefix), e.getVarName(), stack.stackSize);
+                               OrePrefixes prefixes = OrePrefixes.getPrefix(prefix);
+                               if (prefixes == null) {
+                                   continue;
+                               }
+                               toReplace = GT_OreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
                                break loop;
                            } else {
                                for (String s : e.getADDITIONAL_OREDICT()) {
                                    if (oreDictName.contains(s)) {
                                        String prefix = oreDictName.replace(s, "");
-                                       toReplace = GT_OreDictUnificator.get(OrePrefixes.getPrefix(prefix), e.getVarName(), stack.stackSize);
+                                       OrePrefixes prefixes = OrePrefixes.getPrefix(prefix);
+                                       if (prefixes == null) {
+                                           continue;
+                                       }
+                                       toReplace = GT_OreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
                                        break loop;
                                    }
                                }
