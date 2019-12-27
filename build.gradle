@@ -173,6 +173,15 @@ processResources
             }
         }
 
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+artifacts {
+    archives devJar
+}
+
 task signJar(dependsOn: 'reobf') {
     doLast {
         ant.signjar(
