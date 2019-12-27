@@ -113,7 +113,7 @@ public class CircuitImprintLoader implements Runnable {
         for (ItemStack is : newRecipe.mInputs){
             int[] oreIDs = OreDictionary.getOreIDs(is);
             if(oreIDs == null || oreIDs.length < 1 || !OreDictionary.getOreName(oreIDs[0]).contains("circuit")) {
-                is.stackSize = 64;
+                is.stackSize = Math.min(is.stackSize * 6, 64);
                 if (is.stackSize > is.getItem().getItemStackLimit() || is.stackSize > is.getMaxStackSize())
                     is.stackSize = is.getMaxStackSize();
             }
@@ -162,7 +162,7 @@ public class CircuitImprintLoader implements Runnable {
         if (CircuitImprintLoader.checkForBlacklistedComponents(in)){
            return null;
         }
-        return new BWRecipes.DynamicGTRecipe(false,in,new ItemStack[]{out},BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(CircuitImprintLoader.getTagFromStack(original.mOutputs[0]),0,0),null, original.mFluidInputs,null,original.mDuration,original.mEUt,original.mSpecialValue);
+        return new BWRecipes.DynamicGTRecipe(false,in,new ItemStack[]{out},BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(CircuitImprintLoader.getTagFromStack(original.mOutputs[0]),0,0),null, original.mFluidInputs,null,original.mDuration * 16,original.mEUt,0);
     }
 
 
