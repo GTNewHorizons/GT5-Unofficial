@@ -26,6 +26,7 @@ import gregtech.api.objects.GT_Fluid;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.GT_UO_DimensionList;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.util.*;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.gui.GT_ContainerVolumetricFlask;

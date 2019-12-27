@@ -47,7 +47,8 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mOilId = aNBT.getInteger("mOilId");
-        chunkRangeConfig = aNBT.getInteger("chunkRangeConfig");
+        if (aNBT.hasKey("chunkRangeConfig"))
+            chunkRangeConfig = aNBT.getInteger("chunkRangeConfig");
     }
 
     protected String[] getDescriptionInternal(String tierSuffix) {

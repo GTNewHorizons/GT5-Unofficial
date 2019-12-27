@@ -10,6 +10,7 @@ import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.internal.IGT_Mod;
+import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.*;
@@ -271,6 +272,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Values.cleanroomGlass= (float) tMainConfig.get("machines","ReinforcedGlassPercentageForCleanroom",5D).getDouble(5D);
         GT_Values.enableChunkloaders = tMainConfig.get("machines",  "enableChunkloaders", true).getBoolean(true);
         GT_Values.alwaysReloadChunkloaders = tMainConfig.get("machines",  "alwaysReloadChunkloaders", false).getBoolean(false);
+        GT_Values.debugChunkloaders = tMainConfig.get("machines",  "debugChunkloaders", false).getBoolean(false);
 
         GregTech_API.TICKS_FOR_LAG_AVERAGING = tMainConfig.get(aTextGeneral, "TicksForLagAveragingWithScanner", 25).getInt(25);
         GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = tMainConfig.get(aTextGeneral, "MillisecondsPassedInGTTileEntityUntilLagWarning", 100).getInt(100);
@@ -1179,6 +1181,8 @@ public class GT_Mod implements IGT_Mod {
                 tRunnable.run();
             }
         } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+        if (GT_Values.debugChunkloaders)
+            aEvent.registerServerCommand(new GT_ChunkManager.DebugCommand());
     }
 
     @Mod.EventHandler
