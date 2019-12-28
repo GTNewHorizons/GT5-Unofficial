@@ -11,13 +11,17 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -42,6 +46,10 @@ public abstract class GT_MetaTileEntity_DrillerBase extends GT_MetaTileEntity_Mu
     private int xDrill, yDrill, zDrill, xPipe, zPipe, yHead;
     protected int workState;
     protected static final int STATE_DOWNWARD = 0, STATE_AT_BOTTOM = 1, STATE_UPWARD = 2;
+
+    protected boolean mChunkLoadingEnabled = true;
+    protected ChunkCoordIntPair mCurrentChunk = null;
+    protected boolean mWorkChunkNeedsReload = true;
 
     public GT_MetaTileEntity_DrillerBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -72,13 +80,51 @@ public abstract class GT_MetaTileEntity_DrillerBase extends GT_MetaTileEntity_Mu
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("workState", workState);
+        aNBT.setBoolean("chunkLoadingEnabled", mChunkLoadingEnabled);
+        aNBT.setBoolean("isChunkloading", mCurrentChunk != null);
+        if (mCurrentChunk != null) {
+            aNBT.setInteger("loadedChunkXPos", mCurrentChunk.chunkXPos);
+            aNBT.setInteger("loadedChunkZPos", mCurrentChunk.chunkZPos);
+        }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         workState = aNBT.getInteger("workState");
-        if (aNBT.hasKey("isPickingPipes")) workState = aNBT.getBoolean("isPickingPipes") ? STATE_UPWARD : STATE_DOWNWARD;
+        if (aNBT.hasKey("isPickingPipes"))
+            workState = aNBT.getBoolean("isPickingPipes") ? STATE_UPWARD : STATE_DOWNWARD;
+        if (aNBT.hasKey("chunkLoadingEnabled"))
+            mChunkLoadingEnabled = aNBT.getBoolean("chunkLoadingEnabled");
+        if (aNBT.getBoolean("isChunkloading")) {
+            mCurrentChunk = new ChunkCoordIntPair(aNBT.getInteger("loadedChunkXPos"), aNBT.getInteger("loadedChunkZPos"));
+        }
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+            mChunkLoadingEnabled = !mChunkLoadingEnabled;
+            GT_Utility.sendChatToPlayer(aPlayer, mChunkLoadingEnabled ? trans("502", "Mining chunk loading enabled") : trans("503", "Mining chunk loading disabled"));
+        }
+        return super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+    }
+
+    @Override
+    public void onRemoval() {
+        if (mChunkLoadingEnabled)
+            GT_ChunkManager.releaseTicket((TileEntity)getBaseMetaTileEntity());
+        super.onRemoval();
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && mCurrentChunk != null && !mWorkChunkNeedsReload && !aBaseMetaTileEntity.isAllowedToWork()) {
+            // if machine has stopped, stop chunkloading
+            GT_ChunkManager.releaseTicket((TileEntity)aBaseMetaTileEntity);
+            mWorkChunkNeedsReload = true;
+        }
     }
 
     protected boolean tryPickPipe() {

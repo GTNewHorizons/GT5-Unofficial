@@ -32,12 +32,8 @@ import java.util.HashSet;
 import static gregtech.api.enums.GT_Values.VN;
 
 public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTileEntity_DrillerBase implements IChunkLoader {
-
     private final ArrayList<ChunkPosition> oreBlockPositions = new ArrayList<>();
     protected int mTier = 1;
-    private boolean mChunkLoadingEnabled = true;
-    private ChunkCoordIntPair mCurrentChunk = null;
-    private boolean mWorkChunkNeedsReload = true;
     private int chunkRadiusConfig = getRadiusInChunks();
 
     GT_MetaTileEntity_OreDrillingPlantBase(int aID, String aName, String aNameRegional) {
@@ -52,12 +48,6 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("chunkRadiusConfig", chunkRadiusConfig);
-        aNBT.setBoolean("chunkLoadingEnabled", mChunkLoadingEnabled);
-        aNBT.setBoolean("isChunkloading", mCurrentChunk != null);
-        if (mCurrentChunk != null) {
-            aNBT.setInteger("loadedChunkXPos", mCurrentChunk.chunkXPos);
-            aNBT.setInteger("loadedChunkZPos", mCurrentChunk.chunkZPos);
-        }
     }
 
     @Override
@@ -65,27 +55,6 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("chunkRadiusConfig"))
             chunkRadiusConfig = aNBT.getInteger("chunkRadiusConfig");
-        if (aNBT.hasKey("chunkLoadingEnabled"))
-            mChunkLoadingEnabled = aNBT.getBoolean("chunkLoadingEnabled");
-        if (aNBT.getBoolean("isChunkloading")) {
-            mCurrentChunk = new ChunkCoordIntPair(aNBT.getInteger("loadedChunkXPos"), aNBT.getInteger("loadedChunkZPos"));
-        }
-    }
-    @Override
-    public void onRemoval() {
-        if (mChunkLoadingEnabled)
-            GT_ChunkManager.releaseTicket((TileEntity)getBaseMetaTileEntity());
-        super.onRemoval();
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && mCurrentChunk != null && !mWorkChunkNeedsReload && !aBaseMetaTileEntity.isAllowedToWork()) {
-            // if machine has stopped, stop chunkloading
-            GT_ChunkManager.releaseTicket((TileEntity)aBaseMetaTileEntity);
-            mWorkChunkNeedsReload = true;
-        }
     }
 
     @Override
@@ -94,14 +63,6 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "OreDrillingPlant.png");
-    }
-    @Override
-    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-            mChunkLoadingEnabled = !mChunkLoadingEnabled;
-            GT_Utility.sendChatToPlayer(aPlayer, mChunkLoadingEnabled ? trans("502", "Mining chunk loading enabled") : trans("503", "Mining chunk loading disabled"));
-        }
-        return super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
     }
 
     @Override
