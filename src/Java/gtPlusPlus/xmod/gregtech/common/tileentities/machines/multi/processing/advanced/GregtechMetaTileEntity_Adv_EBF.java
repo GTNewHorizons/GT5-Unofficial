@@ -422,6 +422,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 						if (mGraceTimer-- == 0) {
 							this.causeMaintenanceIssue();
 							this.stopMachine();
+							mGraceTimer = 2;
 						}						
 					}
 				}			
