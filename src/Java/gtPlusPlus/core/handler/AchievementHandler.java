@@ -17,6 +17,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
@@ -74,7 +75,9 @@ public class AchievementHandler {
 		this.registerAchievement("semifluid", -14, -10, GregtechItemList.Generator_SemiFluid_HV.get(1), aBaseAchievementName, false);
 		this.registerAchievement("earlywasher", -13, -10, GregtechItemList.SimpleDustWasher_ULV.get(1), aBaseAchievementName, false);
 		this.registerAchievement("advancedsteam", -12, -10, GregtechItemList.Boiler_Advanced_MV.get(1), aBaseAchievementName, false);
-		this.registerAchievement("pollutionremoval", -11, -10, GregtechItemList.Pollution_Cleaner_IV.get(1), aBaseAchievementName, false);
+		if (PollutionUtils.isPollutionEnabled()) {
+			this.registerAchievement("pollutionremoval", -11, -10, GregtechItemList.Pollution_Cleaner_IV.get(1), aBaseAchievementName, false);			
+		}
 		this.registerAchievement("hiampxform", -10, -10, GregtechItemList.Transformer_HA_HV_MV.get(1), aBaseAchievementName, false);		
 		
 		

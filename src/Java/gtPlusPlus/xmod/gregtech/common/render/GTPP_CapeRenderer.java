@@ -63,7 +63,6 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 	private final ArrayList<String> mData;
 
 	public GTPP_CapeRenderer() {
-		setRenderManager(RenderManager.instance);
 		downloadCapeList();		
 		ArrayList<String> aTemp = new ArrayList<String>();
 		try {
@@ -76,10 +75,19 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 	}
 
 	private static boolean hasResourceChecked = false;
+	private static boolean hasSetRenderer = false;
 	private boolean hasCape = false;
 	private ResourceLocation tResource = null;
 
 	public synchronized void receiveRenderSpecialsEvent(RenderPlayerEvent.Specials.Pre aEvent) {
+		if (this.renderManager == null) {
+			hasSetRenderer = false;
+		}
+		if (!hasSetRenderer) {
+			if (RenderManager.instance != null) {
+				setRenderManager(RenderManager.instance);
+			}
+		}		
 		AbstractClientPlayer aPlayer = (AbstractClientPlayer) aEvent.entityPlayer;
 		if (!ConfigSwitches.enableCustomCapes) {
 			aEvent.setCanceled(true);

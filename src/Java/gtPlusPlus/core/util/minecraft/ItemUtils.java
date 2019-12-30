@@ -7,6 +7,7 @@ import java.util.Map;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -30,6 +31,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
@@ -41,10 +43,11 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -57,13 +60,13 @@ public class ItemUtils {
 	public static ItemStack getSimpleStack(final Block x) {
 		return simpleMetaStack(Item.getItemFromBlock(x), 0, 1);
 	}
-	
+
 
 	public static ItemStack getSimpleStack(final Block x, int i) {
 		if (i == 0) {
 			return getSimpleStack(x, i, 1);			
 		}
-		
+
 		return getSimpleStack(x, 0, i);
 	}
 
@@ -205,29 +208,28 @@ public class ItemUtils {
 		}
 	}
 
-	@SuppressWarnings("unused")
-	public static ItemStack simpleMetaStack(final Item item, final int meta, final int size) {
-		try {
-			if (item == null) {
-				return null;
-			}
-			Item em = item;
-			final Item em1 = item;
-			Logger.WARNING("Found: " + em1.getUnlocalizedName() + ":" + meta);
-			if (em1 != null) {
-				if (null == em) {
-					em = em1;
-				}
-				if (em != null) {
-					final ItemStack metaStack = new ItemStack(em, size, meta);
-					return metaStack;
-				}
-			}
-			return null;
-		} catch (final NullPointerException e) {
-			// Utils.LOG_ERROR(item.getUnlocalizedName()+" not found. [NULL]");
+	public static ItemStack simpleMetaStack(ItemStack simpleStack, int meta, int size) {
+		return simpleMetaStack(simpleStack.getItem(), meta, size);
+	}
+
+	public static ItemStack simpleMetaStack(final Item item, int meta, int size) {
+		if (item == null) {
 			return null;
 		}
+		if (meta < 0 || meta > Short.MAX_VALUE) {
+			meta = 0;
+		}
+		if (size < 0 || size > 64) {
+			size = 1;
+		}
+		//Logger.INFO("Found Metastack: " + item.getUnlocalizedName() + ":" + meta);
+		//Logger.INFO(""+ReflectionUtils.getMethodName(0));
+		//Logger.INFO(""+ReflectionUtils.getMethodName(1));
+		//Logger.INFO(""+ReflectionUtils.getMethodName(2));
+		//Logger.INFO(""+ReflectionUtils.getMethodName(3));
+		//Logger.INFO(""+ReflectionUtils.getMethodName(4));
+		final ItemStack metaStack = new ItemStack(item, size, meta);
+		return metaStack;
 	}
 
 	public static ItemStack simpleMetaStack(final Block block, final int meta, final int size) {
@@ -302,9 +304,9 @@ public class ItemUtils {
 		else {
 			mTemp = Utils.sanitizeString(mTemp);			
 		}
-		
-		
-		
+
+
+
 		if (oredictName.contains("rod")) {
 			String s = "stick"+oredictName.substring(3);
 			oredictName = s;
@@ -371,7 +373,7 @@ public class ItemUtils {
 					return returnValue.copy();					
 				}
 			}
-			
+
 			Logger.RECIPE(oredictName + " was not valid.");
 			return null;
 		} catch (final Throwable t) {
@@ -402,7 +404,7 @@ public class ItemUtils {
 				new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, mChemForm, Colour, "Dust"),
 				new BaseItemDustUnique("itemDustSmall" + unlocalizedName, materialName, mChemForm, Colour, "Small"),
 				new BaseItemDustUnique("itemDustTiny" + unlocalizedName, materialName, mChemForm, Colour, "Tiny") };
-		
+
 		//Generate Shaped/Shapeless Recipes
 
 		final ItemStack normalDust = ItemUtils.getSimpleStack(output[0]);
@@ -456,7 +458,7 @@ public class ItemUtils {
 				Logger.WARNING("4 Small dust from 1 Dust Recipe: "+materialName+" - Failed");
 			}
 		}
-		
+
 		return output;
 	}
 
@@ -486,7 +488,7 @@ public class ItemUtils {
 	public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust) {
 		return generateSpecialUseDusts(material, onlyLargeDust, false);
 	}
-	
+
 	public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust, final boolean disableExtraRecipes) {
 		final String materialName = material.getLocalizedName();
 		final String unlocalizedName = Utils.sanitizeString(materialName);
@@ -693,20 +695,22 @@ public class ItemUtils {
 
 	public static String[] getArrayStackNamesAsArray(final ItemStack[] aStack) {
 		final String[] itemNames = aStack == null ? new String[] {} : new String[aStack.length];
-		Logger.INFO(""+aStack.length);
-		
+		if (aStack != null){ 
+			Logger.INFO(""+aStack.length);
+		}
+
 		if (aStack == null || aStack.length < 1) {
 			return itemNames;
 		}
-		
+
 		int arpos = 0;
 		for (final ItemStack alph : aStack) {			
 			if (alph == null) {
 				continue;
 			}			
 			try {
-			itemNames[arpos] = alph.getDisplayName();
-			arpos++;
+				itemNames[arpos] = alph.getDisplayName();
+				arpos++;
 			}
 			catch (Throwable t) {
 				t.printStackTrace();
@@ -998,15 +1002,15 @@ public class ItemUtils {
 
 		return true;
 	}
-	
-	
+
+
 	public static IInventory organiseInventory(IInventory aInputInventory) {
 		ItemStack[] p = new ItemStack[aInputInventory.getSizeInventory()];
 		for (int o = 0; o < aInputInventory.getSizeInventory(); o++) {
 			p[o] = aInputInventory.getStackInSlot(o);
 		}		
 		//ItemStack[] g = organiseInventory(p);
-		
+
 		IInventory aTemp = aInputInventory;	
 		for (int i = 0; i < p.length; ++i) {
 			for (int j = i + 1; j < p.length; ++j) {
@@ -1016,22 +1020,22 @@ public class ItemUtils {
 				}
 			}
 		}	
-		
+
 		/*	
 		for (int o = 0; o < aInputInventory.getSizeInventory(); o++) {
 			aTemp.setInventorySlotContents(o, g[o]);
 		}*/		
 		return aTemp;
 	}
-	
-	
+
+
 	public static ItemStack[] organiseInventory(ItemStack[] aInputs) {
 
 		//Update Slots		
 		int aInvSize = aInputs.length;
 		ItemStack[] newArray = new ItemStack[aInvSize];
-		
-		
+
+
 		//Try merge stacks
 		for (int i = 0; i < aInvSize; i++) {
 			for (int i2 = 0; i2 < aInvSize; i2++) {
@@ -1045,29 +1049,29 @@ public class ItemUtils {
 					}
 					//Try Merge
 					else {						
-						
+
 						if (GT_Utility.areStacksEqual(t1[0], t1[1])) {						
-						while ((t1[0].stackSize < 64 && t1[1].stackSize > 0)) {							
-							t1[0].stackSize++;
-							t1[1].stackSize--;
-							if (t1[1].stackSize <= 0) {
-								t1[1] = null;
-								break;
-							}
-							if (t1[0].stackSize == 64) {
-								break;
-							}							
-						}						
-						newArray[i] = t1[1];
-						newArray[i2] = t1[0];						
+							while ((t1[0].stackSize < 64 && t1[1].stackSize > 0)) {							
+								t1[0].stackSize++;
+								t1[1].stackSize--;
+								if (t1[1].stackSize <= 0) {
+									t1[1] = null;
+									break;
+								}
+								if (t1[0].stackSize == 64) {
+									break;
+								}							
+							}						
+							newArray[i] = t1[1];
+							newArray[i2] = t1[0];						
 						}
 					}
 				}
 			}
 		}
-		
+
 		ItemStack[] newArray2 = new ItemStack[aInvSize];
-		
+
 		//Move nulls to end
 		int count2 = 0;
 		for (int i = 0; i < aInvSize; i++) 
@@ -1075,10 +1079,18 @@ public class ItemUtils {
 				newArray2[count2++] = newArray[i];
 		while (count2 < aInvSize) 
 			newArray2[count2++] = null;			
-		
+
 		return newArray2;
 
+
+	}
 	
+	public static String getFluidName(FluidStack aFluid) {
+		return aFluid != null ? aFluid.getFluid().getLocalizedName(aFluid) : "NULL";
+	}
+	
+	public static String getFluidName(Fluid aFluid) {
+		return aFluid != null ? aFluid.getLocalizedName() : "NULL";
 	}
 
 	public static String getItemName(ItemStack aStack) {
@@ -1089,7 +1101,7 @@ public class ItemUtils {
 		try {
 			aDisplay = ("" + StatCollector
 					.translateToLocal(aStack.getItem().getUnlocalizedNameInefficiently(aStack) + ".name"))
-							.trim();
+					.trim();
 			if (aStack.hasTagCompound()) {
 				if (aStack.stackTagCompound != null && aStack.stackTagCompound.hasKey("display", 10)) {
 					NBTTagCompound nbttagcompound = aStack.stackTagCompound.getCompoundTag("display");
@@ -1117,7 +1129,7 @@ public class ItemUtils {
 		String aDisplay = null;
 		try {
 			aDisplay = (aStack.getUnlocalizedName()).trim();
-			
+
 		} catch (Throwable t) {
 			aDisplay = aStack.getItem().getUnlocalizedName();
 		}
@@ -1126,7 +1138,7 @@ public class ItemUtils {
 		}
 		return aDisplay;
 	}
-	
+
 	public static boolean isItemGregtechTool(ItemStack aStack) {
 		if (aStack == null) {
 			return false;
@@ -1139,49 +1151,49 @@ public class ItemUtils {
 		}
 		return false;
 	}
-	
+
 	public static boolean isToolWrench(ItemStack aWrench) {
 		if (isItemGregtechTool(aWrench) && (aWrench.getItemDamage() == 16 || aWrench.getItemDamage() == 120 || aWrench.getItemDamage() == 122 || aWrench.getItemDamage() == 124 || aWrench.getItemDamage() == 7734)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public static boolean isToolMallet(ItemStack aMallet) {
 		if (isItemGregtechTool(aMallet) && (aMallet.getItemDamage() == 14)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public static boolean isToolScrewdriver(ItemStack aScrewdriver) {
 		if (isItemGregtechTool(aScrewdriver) && (aScrewdriver.getItemDamage() == 22 || aScrewdriver.getItemDamage() == 150)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public static boolean isToolCrowbar(ItemStack aCrowbar) {
 		if (isItemGregtechTool(aCrowbar) && (aCrowbar.getItemDamage() == 20)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public static boolean isToolWirecutters(ItemStack aWirecutters) {
 		if (isItemGregtechTool(aWirecutters) && (aWirecutters.getItemDamage() == 26)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public static boolean isToolHammer(ItemStack aHammer) {
 		if (isItemGregtechTool(aHammer) && (aHammer.getItemDamage() == 12 || aHammer.getItemDamage() == 7734)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public static boolean isToolSolderingIron(ItemStack aSoldering) {
 		if (isItemGregtechTool(aSoldering) && (aSoldering.getItemDamage() == 160)) {
 			return true;
@@ -1210,14 +1222,38 @@ public class ItemUtils {
 	public static ItemStack getEnchantedBook(Enchantment aEnch, int aLevel) {
 		return enchantItem(new ItemStack(Items.enchanted_book), aEnch, aLevel);		
 	}
-	
+
 	public static ItemStack enchantItem(ItemStack aStack, Enchantment aEnch, int aLevel) {
 		Items.enchanted_book.addEnchantment(aStack, new EnchantmentData(aEnch, aLevel));
 		return aStack;	
 	}
 
 	public static boolean doesOreDictHaveEntryFor(String string) {		
-		return OreDictionary.doesOreNameExist(string);
+		return OreDictUtils.containsValidEntries(string);
+	}
+
+	public static void hideItemFromNEI(ItemStack aItemToHide) {
+		codechicken.nei.api.API.hideItem(aItemToHide);		
+	}
+
+	public static ItemStack getNullStack() {
+		return GT_Values.NI;
+	}
+
+
+	public static ItemStack depleteStack(ItemStack aStack) {
+		return depleteStack(aStack, 1);
+	}
+
+	public static ItemStack depleteStack(ItemStack aStack, int aAmount) {
+		final int cap = aStack.stackSize;
+		if (cap > 1 && cap > aAmount) {
+			aStack.stackSize = (MathUtils.balance((aStack.stackSize - 1), 0, 64));
+			if (aStack.stackSize > 0) {
+				return aStack;				
+			}
+		}
+		return getNullStack();
 	}
 
 }

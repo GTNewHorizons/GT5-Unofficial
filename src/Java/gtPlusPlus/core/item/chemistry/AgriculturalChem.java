@@ -1,10 +1,12 @@
 package gtPlusPlus.core.item.chemistry;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
-import forestry.plugins.PluginCore;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gtPlusPlus.api.helpers.MaterialHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
@@ -14,6 +16,12 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.plugin.agrichem.BioRecipes;
+import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
+import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
+import gtPlusPlus.plugin.agrichem.item.algae.ItemBioChip;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -40,7 +48,8 @@ public class AgriculturalChem extends ItemPackage {
 	public static Fluid FertileManureSlurry;
 	// Blood
 	public static Fluid CustomBlood;
-
+	// Red Mud
+	public static Fluid RedMud;
 	/**
 	 * Items
 	 */
@@ -70,6 +79,64 @@ public class AgriculturalChem extends ItemPackage {
 	// Fertilizer
 
 
+	
+	public static Item mAlgae;
+	public static Item mBioCircuit;
+	public static Item mAgrichemItem1;
+	
+	/*
+	 * 0 - Algae Biomass
+	 * 1 - Green Algae Biomass
+	 * 2 - Brown Algae Biomass
+	 * 3 - Golden-Brown Algae Biomass
+	 * 4 - Red Algae Biomass
+	 * 5 - Cellulose Fiber
+	 * 6 - Golden-Brown Cellulose Fiber
+	 * 7 - Red Cellulose Fiber
+	 * 8 - Compost
+	 * 9 - Wood Pellet
+	 * 10 - Wood Brick
+	 * 11 - Cellulose Pulp
+	 * 12 - Raw Bio Resin
+	 * 13 - Catalyst Carrier
+	 * 14 - Green Metal Catalyst
+	 * 15 - Alginic Acid
+	 * 16 - Alumina
+	 * 17 - Aluminium Pellet
+	 * 18 - Sodium Aluminate
+	 * 19 - Sodium Hydroxide // Exists in Newer GT
+	 * 20 - Sodium Carbonate
+	 * 21 - Lithium Chloride
+	 * 22 - Pellet Mold
+	 * 23 - Clean Aluminium Mix
+	 */
+
+	public static ItemStack mAlgaeBiosmass;
+	public static ItemStack mGreenAlgaeBiosmass;
+	public static ItemStack mBrownAlgaeBiosmass;
+	public static ItemStack mGoldenBrownAlgaeBiosmass;
+	public static ItemStack mRedAlgaeBiosmass;
+	public static ItemStack mCelluloseFiber;
+	public static ItemStack mGoldenBrownCelluloseFiber;
+	public static ItemStack mRedCelluloseFiber;
+	public static ItemStack mCompost;
+	public static ItemStack mWoodPellet;
+	public static ItemStack mWoodBrick;
+	public static ItemStack mCellulosePulp;
+	public static ItemStack mRawBioResin;
+	public static ItemStack mCatalystCarrier;
+	public static ItemStack mGreenCatalyst;
+	public static ItemStack mAlginicAcid;
+	public static ItemStack mAlumina;
+	public static ItemStack mAluminiumPellet;
+	public static ItemStack mSodiumAluminate;
+	public static ItemStack mSodiumHydroxide;
+	public static ItemStack mSodiumCarbonate;
+	public static ItemStack mLithiumChloride;
+	public static ItemStack mPelletMold;
+	public static ItemStack mCleanAluminiumMix;
+	
+
 	@Override
 	public void items() {
 		// Nitrogen, Ammonium Nitrate, Phosphates, Calcium, Copper, Carbon
@@ -81,7 +148,100 @@ public class AgriculturalChem extends ItemPackage {
 				"Ca5(PO4)3(OH)", Utils.rgbtoHexValue(240, 240, 240))[0];
 
 		// Dirt Dust :)
-		dustDirt = ItemUtils.generateSpecialUseDusts("Dirt", "Dried Earth", Utils.rgbtoHexValue(65, 50, 15))[0];		
+		dustDirt = ItemUtils.generateSpecialUseDusts("Dirt", "Dried Earth", Utils.rgbtoHexValue(65, 50, 15))[0];	
+		
+		mAlgae = new ItemAlgaeBase();
+		mAgrichemItem1 = new ItemAgrichemBase();
+		mBioCircuit = new ItemBioChip();		
+		GregtechItemList.Circuit_BioRecipeSelector.set(mBioCircuit);
+		
+		
+
+		mAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 0, 1);
+		mGreenAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 1, 1);
+		mBrownAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 2, 1);
+		mGoldenBrownAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 3, 1);
+		mRedAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 4, 1);
+		mCelluloseFiber = ItemUtils.simpleMetaStack(mAgrichemItem1, 5, 1);
+		mGoldenBrownCelluloseFiber = ItemUtils.simpleMetaStack(mAgrichemItem1, 6, 1);
+		mRedCelluloseFiber = ItemUtils.simpleMetaStack(mAgrichemItem1, 7, 1);
+		mCompost = ItemUtils.simpleMetaStack(mAgrichemItem1, 8, 1);
+		mWoodPellet = ItemUtils.simpleMetaStack(mAgrichemItem1, 9, 1);
+		mWoodBrick = ItemUtils.simpleMetaStack(mAgrichemItem1, 10, 1);
+		mCellulosePulp = ItemUtils.simpleMetaStack(mAgrichemItem1, 11, 1);
+		mRawBioResin = ItemUtils.simpleMetaStack(mAgrichemItem1, 12, 1);
+		mCatalystCarrier = ItemUtils.simpleMetaStack(mAgrichemItem1, 13, 1);
+		mGreenCatalyst = ItemUtils.simpleMetaStack(mAgrichemItem1, 14, 1);
+		mAlginicAcid = ItemUtils.simpleMetaStack(mAgrichemItem1, 15, 1);
+		mAlumina = ItemUtils.simpleMetaStack(mAgrichemItem1, 16, 1);
+		mAluminiumPellet = ItemUtils.simpleMetaStack(mAgrichemItem1, 17, 1);
+		mSodiumAluminate = ItemUtils.simpleMetaStack(mAgrichemItem1, 18, 1);
+		
+		/**
+		 * If It exists, don't add a new one.
+		 */
+		if (OreDictionary.doesOreNameExist("dustSodiumHydroxide_GT5U") || OreDictionary.doesOreNameExist("dustSodiumHydroxide")) {
+			List<ItemStack> aTest = OreDictionary.getOres("dustSodiumHydroxide", false);
+			ItemStack aTestStack;
+			if (aTest.isEmpty()) {
+				aTest = OreDictionary.getOres("dustSodiumHydroxide_GT5U", false);
+				if (aTest.isEmpty()) {
+					aTestStack = ItemUtils.simpleMetaStack(mAgrichemItem1, 19, 1);	
+				}
+				else {
+					aTestStack = aTest.get(0);
+				}
+			}
+			else {
+				aTestStack = aTest.get(0);
+			}
+			mSodiumHydroxide = aTestStack;
+		}
+		else {
+			mSodiumHydroxide = ItemUtils.simpleMetaStack(mAgrichemItem1, 19, 1);			
+		}		
+		mSodiumCarbonate = ItemUtils.simpleMetaStack(mAgrichemItem1, 20, 1);
+		mLithiumChloride = ItemUtils.simpleMetaStack(mAgrichemItem1, 21, 1);
+		mPelletMold = ItemUtils.simpleMetaStack(mAgrichemItem1, 22, 1);
+		mCleanAluminiumMix = ItemUtils.simpleMetaStack(mAgrichemItem1, 23, 1);
+
+		ItemUtils.addItemToOreDictionary(mGreenAlgaeBiosmass, "biomassGreenAlgae");
+		ItemUtils.addItemToOreDictionary(mBrownAlgaeBiosmass, "biomassBrownAlgae");
+		ItemUtils.addItemToOreDictionary(mGoldenBrownAlgaeBiosmass, "biomassGoldenBrownAlgae");
+		ItemUtils.addItemToOreDictionary(mRedAlgaeBiosmass, "biomassRedAlgae");
+
+		ItemUtils.addItemToOreDictionary(mCelluloseFiber, "fiberCellulose");
+		ItemUtils.addItemToOreDictionary(mGoldenBrownCelluloseFiber, "fiberCellulose");
+		ItemUtils.addItemToOreDictionary(mGoldenBrownCelluloseFiber, "fiberGoldenBrownCellulose");
+		ItemUtils.addItemToOreDictionary(mRedCelluloseFiber, "fiberCellulose");
+		ItemUtils.addItemToOreDictionary(mRedCelluloseFiber, "fiberRedCellulose");
+		
+		ItemUtils.addItemToOreDictionary(mWoodPellet, "pelletWood");
+		ItemUtils.addItemToOreDictionary(mWoodBrick, "brickWood");
+		ItemUtils.addItemToOreDictionary(mCellulosePulp, "pulpCellulose");
+
+		ItemUtils.addItemToOreDictionary(mCatalystCarrier, "catalystEmpty");
+		ItemUtils.addItemToOreDictionary(mGreenCatalyst, "catalystAluminiumSilver");
+		ItemUtils.addItemToOreDictionary(mAlginicAcid, "dustAlginicAcid");
+		ItemUtils.addItemToOreDictionary(mAlumina, "dustAlumina");
+		ItemUtils.addItemToOreDictionary(mAluminiumPellet, "pelletAluminium");
+
+		ItemUtils.addItemToOreDictionary(mSodiumAluminate, "dustSodiumAluminate");
+		ItemUtils.addItemToOreDictionary(mSodiumHydroxide, "dustSodiumHydroxide");	
+		ItemUtils.addItemToOreDictionary(mSodiumCarbonate, "dustSodiumCarbonate");
+		ItemUtils.addItemToOreDictionary(mLithiumChloride, "dustLithiumChloride");	
+		
+		//Handle GT NaOH dusts
+		List<ItemStack> NaOHSmall = OreDictionary.getOres("dustSmallSodiumHydroxide_GT5U", false);
+		if (!NaOHSmall.isEmpty()) {
+			ItemUtils.addItemToOreDictionary(NaOHSmall.get(0), "dustSmallSodiumHydroxide");				
+		}
+		List<ItemStack> NaOHTiny = OreDictionary.getOres("dustTinySodiumHydroxide_GT5U", false);
+		if (!NaOHTiny.isEmpty()) {
+			ItemUtils.addItemToOreDictionary(NaOHTiny.get(0), "dustTinySodiumHydroxide");				
+		}
+		
+		
 	}
 
 	@Override
@@ -101,7 +261,10 @@ public class AgriculturalChem extends ItemPackage {
 
 		// Sewage
 		FertileManureSlurry = FluidUtils.generateFluidNonMolten("fertile.manure.slurry", "Fertile Manure Slurry",
-				45 + 175, new short[] { 65, 50, 15, 100 }, null, null, 0, true);		
+				45 + 175, new short[] { 65, 50, 15, 100 }, null, null, 0, true);
+		
+		RedMud = FluidUtils.generateFluidNoPrefix("mud.red.slurry", "Red Mud Slurry", 32 + 175, new short[] { 180, 35, 25, 100 }, true);
+		
 	}
 	
 	
@@ -155,20 +318,20 @@ public class AgriculturalChem extends ItemPackage {
 
 	}
 
-	private static AutoMap<ItemStack> mMeats = new AutoMap<ItemStack>();
-	private static AutoMap<ItemStack> mFish = new AutoMap<ItemStack>();
-	private static AutoMap<ItemStack> mFruits = new AutoMap<ItemStack>();
-	private static AutoMap<ItemStack> mVege = new AutoMap<ItemStack>();
-	private static AutoMap<ItemStack> mNuts = new AutoMap<ItemStack>();
-	private static AutoMap<ItemStack> mSeeds = new AutoMap<ItemStack>();
-	private static AutoMap<ItemStack> mPeat = new AutoMap<ItemStack>();
-	private static AutoMap<ItemStack> mBones = new AutoMap<ItemStack>();
-	private static AutoMap<ItemStack> mBoneMeal = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mMeats = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mFish = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mFruits = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mVege = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mNuts = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mSeeds = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mPeat = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mBones = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mBoneMeal = new AutoMap<ItemStack>();
 
-	private static AutoMap<ItemStack> mList_Master_Meats = new AutoMap<ItemStack>();
-	private static AutoMap<ItemStack> mList_Master_FruitVege = new AutoMap<ItemStack>();
-	private static AutoMap<ItemStack> mList_Master_Bones = new AutoMap<ItemStack>();
-	private static AutoMap<ItemStack> mList_Master_Seeds = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mList_Master_Meats = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mList_Master_FruitVege = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mList_Master_Seeds = new AutoMap<ItemStack>();
+	private final static AutoMap<ItemStack> mList_Master_Bones = new AutoMap<ItemStack>();
 
 	private static void processAllOreDict() {
 		processOreDict("listAllmeatraw", mMeats);
@@ -322,6 +485,10 @@ public class AgriculturalChem extends ItemPackage {
 			}
 		}
 	}
+	
+	public static ItemStack aFertForestry;
+	public static ItemStack aFertIC2;
+	
 
 	private static void addMiscRecipes() {
 
@@ -334,19 +501,32 @@ public class AgriculturalChem extends ItemPackage {
 		 * Forestry Support
 		 */
 		if (LoadedMods.Forestry) {
-
-			Item aForestryFert = PluginCore.items.fertilizerCompound;
-
-			CORE.RA.addDehydratorRecipe(
-					new ItemStack[] { CI.getNumberedCircuit(11), ItemUtils.getSimpleStack(aDustOrganicFert, 4) }, null,
-					null, new ItemStack[] { ItemUtils.getSimpleStack(aForestryFert, 3), aManureByprod, aManureByprod },
-					new int[] { 10000, 2000, 2000 }, 20 * 20, 240);
+			Field aItemField = ReflectionUtils.getField(ReflectionUtils.getClass("forestry.plugins.PluginCore"), "items");
+			try {
+				Object aItemRegInstance = aItemField != null ? aItemField.get(aItemField) : null;
+				if (aItemRegInstance != null) {
+					Field aFertField = ReflectionUtils.getField(aItemRegInstance.getClass(), "fertilizerCompound");	
+					Object aItemInstance = aFertField.get(aItemRegInstance);
+					if (aItemInstance instanceof Item) {
+						aFertForestry = ItemUtils.getSimpleStack((Item) aItemInstance);
+						Item aForestryFert = (Item) aItemInstance;
+						CORE.RA.addDehydratorRecipe(
+								new ItemStack[] { CI.getNumberedCircuit(11), ItemUtils.getSimpleStack(aDustOrganicFert, 4) }, null,
+								null, new ItemStack[] { ItemUtils.getSimpleStack(aForestryFert, 3), aManureByprod, aManureByprod },
+								new int[] { 10000, 2000, 2000 }, 20 * 20, 240);
+					}
+				}
+			}
+			catch (IllegalArgumentException | IllegalAccessException e) {
+				
+			}		
 		}
 
 		/**
 		 * IC2 Support
 		 */
 		if (LoadedMods.IndustrialCraft2) {
+			aFertIC2 = ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 1);
 			CORE.RA.addDehydratorRecipe(
 					new ItemStack[] { CI.getNumberedCircuit(12), ItemUtils.getSimpleStack(aDustOrganicFert, 4) }, null,
 					null, new ItemStack[] { ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 3), aManureByprod,
@@ -364,8 +544,8 @@ public class AgriculturalChem extends ItemPackage {
 		GT_Values.RA.addCentrifugeRecipe(CI.getNumberedCircuit(20), ItemUtils.getSimpleStack(aManureByprod, 4),
 				FluidUtils.getFluidStack("sulfuricacid", 250), // In Fluid
 				FluidUtils.getFluidStack("sulfuricapatite", 50), // Out Fluid
-				Materials.Phosphorus.getDustSmall(2), Materials.Calcium.getDustSmall(2),
-				Materials.Copper.getDustTiny(1), Materials.Carbon.getDust(1), ItemUtils.getSimpleStack(dustDirt, 1),
+				MaterialHelper.getDustSmall(Materials.Phosphorus, 2), MaterialHelper.getDustSmall(Materials.Calcium, 2),
+				MaterialHelper.getDustTiny(Materials.Copper, 1), MaterialHelper.getDust(Materials.Carbon, 1), ItemUtils.getSimpleStack(dustDirt, 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAmmoniumNitrate", 1),
 				new int[] { 2500, 2500, 750, 1000, 5000, 250 }, // Chances
 				20 * 20, // Time
@@ -380,7 +560,6 @@ public class AgriculturalChem extends ItemPackage {
 
 	@Override
 	public String errorMessage() {
-		// TODO Auto-generated method stub
 		return "Failed to generate recipes for AgroChem.";
 	}
 
@@ -403,6 +582,9 @@ public class AgriculturalChem extends ItemPackage {
 		addAdvancedOrganiseFertRecipes();
 
 		addMiscRecipes();
+		
+		BioRecipes.init();
+		
 		return true;
 	}
 }

@@ -85,8 +85,17 @@ public class Material {
 
 
 	public static AutoMap<Materials> invalidMaterials = new AutoMap<Materials>();
+	
 
-	public Material(String materialName, MaterialState defaultState, short[] rgba, int radiationLevel, MaterialStack[] materialStacks) {
+	public Material(final String materialName, final MaterialState defaultState, final MaterialStack... inputs){
+		this(materialName, defaultState, null, inputs);
+	}
+	
+	public Material(final String materialName, final MaterialState defaultState, final short[] rgba, final MaterialStack... inputs){
+		this(materialName, defaultState, null, 0, rgba, -1, -1, -1, -1, false, "", 0, false, false, inputs);
+	}
+
+	public Material(final String materialName, final MaterialState defaultState, final short[] rgba, int radiationLevel, MaterialStack... materialStacks) {
 		this(materialName, defaultState, null, 0, rgba, -1, -1, -1, -1, false, "", radiationLevel, false, materialStacks);
 	}
 
@@ -94,8 +103,8 @@ public class Material {
 		this(materialName, defaultState, null, 0, rgba, j, k, l, m, false, "", radiationLevel, false, materialStacks);
 	}
 
-	public Material(String materialName, MaterialState defaultState, final TextureSet set, short[] rgba, int j, int k, int l, int m, int radiationLevel, MaterialStack[] materialStacks){
-		this(materialName, defaultState, set, 0, rgba, j, k, l, m, false, "", radiationLevel, false, materialStacks);
+	public Material(String materialName, MaterialState defaultState, final TextureSet set, short[] rgba, int meltingPoint, int boilingPoint, int protons, int neutrons, int radiationLevel, MaterialStack[] materialStacks){
+		this(materialName, defaultState, set, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, false, "", radiationLevel, false, materialStacks);
 	}
 	
 	public Material(final String materialName, final MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final MaterialStack... inputs){
@@ -228,7 +237,7 @@ public class Material {
 					int hashSize = MathUtils.howManyPlaces(aValueForGen);
 
 					String a = String.valueOf(aValueForGen);
-					String b = null;
+					String b = "";
 					
 					if (hashSize < 9) {
 						int aSecondHash = this.materialState.hashCode();
@@ -370,9 +379,6 @@ public class Material {
 						aDataSet.put(m.getStackMaterial().vRadiationLevel);
 					}
 					byte aAverage = MathUtils.getByteAverage(aDataSet);
-					if (aAverage > Byte.MAX_VALUE || aAverage < Byte.MIN_VALUE) {
-						aAverage = 0;
-					}
 					if (aAverage > 0) {
 						Logger.MATERIALS(this.getLocalizedName()+" is radioactive due to trace elements. Level: "+aAverage+".");
 						this.isRadioactive = true;
@@ -463,32 +469,31 @@ public class Material {
 			}
 
 			if (generateFluid){
-				final Materials isValid = Materials.get(this.getLocalizedName());
-				if (FluidUtils.getFluidStack(localizedName, 1) != null){
-					this.vMoltenFluid = FluidUtils.getFluidStack(localizedName, 1).getFluid();
-				}
-				else if (isValid == null || isValid == Materials._NULL){
-					queueFluidGeneration();
+				final Materials isValid = Materials.get(this.getLocalizedName());				
+				FluidStack aTest = FluidUtils.getWildcardFluidStack(localizedName, 1);				
+				if (aTest != null){
+					this.vMoltenFluid = aTest.getFluid();
 				}
 				else {
-					if (isValid.mFluid != null){
-						this.vMoltenFluid = isValid.mFluid;
-					}
-					else if (isValid.mGas != null){
-						this.vMoltenFluid = isValid.mGas;
-					}
-					else {
+					if (isValid == null || isValid == Materials._NULL){
 						queueFluidGeneration();
 					}
+					else {		
+						FluidStack aTest2 = FluidUtils.getWildcardFluidStack(localizedName, 1);	
+						if (aTest2 != null){
+							this.vMoltenFluid = aTest2.getFluid();
+						}
+						else {
+							queueFluidGeneration();
+						}
+					}
 				}
-
 				this.vPlasma = this.generatePlasma();
 			}
 			else {
 				this.vMoltenFluid = null;
 				this.vPlasma = null;
 			}
-
 			String ratio = "";
 			if (this.vSmallestRatio != null) {
 				for (int hu=0;hu<this.vSmallestRatio.length;hu++){
@@ -521,11 +526,6 @@ public class Material {
 			Logger.MATERIALS("Stack Trace for "+materialName);
 			t.printStackTrace();
 		}
-	}
-
-	public Material(String string, MaterialState solid, TextureSet setShiny, int i, short[] s, int j, int k, int l,
-			int m, boolean b, String string2, int n) {
-		// TODO Auto-generated constructor stub
 	}
 
 	public final TextureSet getTextureSet() {
@@ -860,10 +860,9 @@ public class Material {
 			ItemStack a1 = getOre(1);
 			Item a2 = a1.getItem();
 			Block a3 = Block.getBlockFromItem(a2);
-
-			//Logger.DEBUG_MATERIALS("[Invalid Ore] Is a1 valid? "+(a1 != null));
-			//Logger.DEBUG_MATERIALS("[Invalid Ore] Is a2 valid? "+(a2 != null));
-			//Logger.DEBUG_MATERIALS("[Invalid Ore] Is a3 valid? "+(a3 != null));
+			if (a3 != null) {
+				return a3;
+			}
 
 			Block x = Block.getBlockFromItem(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ore"+Utils.sanitizeString(this.unlocalizedName), stacksize).getItem());
 			if (x != null){
@@ -1095,96 +1094,41 @@ public class Material {
 		if (this.materialState == MaterialState.ORE){
 			return null;
 		}
+		
+		Fluid aGTBaseFluid = null;
 
-		final Materials isValid = Materials.get(this.getLocalizedName());
-		//Logger.MATERIALS("Is "+this.getLocalizedName()+" a Gregtech material? "+(isValid != null && isValid != Materials._NULL)+" | Found "+isValid.mDefaultLocalName);
-		if (isValid != Materials._NULL){
-			for (Materials m : invalidMaterials.values()){
-				if (isValid == m){
-					Logger.MATERIALS("Trying to generate a fluid for blacklisted material: "+m.mDefaultLocalName);
-					FluidStack a1 = m.getFluid(1);
-					FluidStack a2 = m.getGas(1);
-					FluidStack a3 = m.getMolten(1);
-					FluidStack a4 = m.getSolid(1);
-					FluidStack a5 = m.getPlasma(1);
-					if (a1 != null){
-						Logger.MATERIALS("Using a pre-defined Fluid from GT. Fluid.");
-						return a1.getFluid();
-					}
-					if (a2 != null){
-						Logger.MATERIALS("Using a pre-defined Fluid from GT. Gas.");
-						return a2.getFluid();
-					}
-					if (a3 != null){
-						Logger.MATERIALS("Using a pre-defined Fluid from GT. Molten.");
-						return a3.getFluid();
-					}
-					if (a4 != null){
-						Logger.MATERIALS("Using a pre-defined Fluid from GT. Solid.");
-						return a4.getFluid();
-					}
-					if (a5 != null){
-						Logger.MATERIALS("Using a pre-defined Fluid from GT. Plasma.");
-						return a5.getFluid();
-					}
-					Logger.MATERIALS("Using null.");
-					return null;
-				}
-			}
-		}
+		// Clean up Internal Fluid Generation
+		final Materials n1 = MaterialUtils.getMaterial(this.getLocalizedName(), Utils.sanitizeString(this.getLocalizedName()));
+		final Materials n2 = MaterialUtils.getMaterial(this.getUnlocalizedName(), Utils.sanitizeString(this.getUnlocalizedName()));
 
-		if (this.materialState == MaterialState.SOLID){
-			if (isValid.mFluid != null){
-				Logger.MATERIALS("Using a pre-defined Fluid from GT. mFluid.");
-				return isValid.mFluid;
-			}
-			else if (isValid.mStandardMoltenFluid != null){
-				Logger.MATERIALS("Using a pre-defined Fluid from GT. mStandardMoltenFluid.");
-				return isValid.mStandardMoltenFluid;
-			}
-		}
-		else if (this.materialState == MaterialState.GAS){
-			if (isValid.mGas != null){
-				Logger.MATERIALS("Using a pre-defined Fluid from GT. mGas.");
-				return isValid.mGas;
-			}
-		}
-		else if (this.materialState == MaterialState.LIQUID || this.materialState == MaterialState.PURE_LIQUID){
-			if (isValid.mFluid != null){
-				Logger.MATERIALS("Using a pre-defined Fluid from GT. mFluid.");
-				return isValid.mFluid;
-			}
-			else if (isValid.mGas != null){
-				Logger.MATERIALS("Using a pre-defined Fluid from GT. mGas.");
-				return isValid.mGas;
-			}
-			else if (isValid.mStandardMoltenFluid != null){
-				Logger.MATERIALS("Using a pre-defined Fluid from GT. mStandardMoltenFluid.");
-				return isValid.mStandardMoltenFluid;
-			}
-		}
+		FluidStack f1 = FluidUtils.getWildcardFluidStack(n1, 1);
+		FluidStack f2 = FluidUtils.getWildcardFluidStack(n2, 1);
+		FluidStack f3 = FluidUtils.getWildcardFluidStack(Utils.sanitizeString(this.getUnlocalizedName(), new char[] {'-', '_'}), 1);
+		FluidStack f4 = FluidUtils.getWildcardFluidStack(Utils.sanitizeString(this.getLocalizedName(), new char[] {'-', '_'}), 1);
 
-		FluidStack aTest1 = FluidUtils.getFluidStack("molten."+Utils.sanitizeString(this.getLocalizedName()), 1);
-		FluidStack aTest2 = FluidUtils.getFluidStack("fluid."+Utils.sanitizeString(this.getLocalizedName()), 1);
-		FluidStack aTest3 = FluidUtils.getFluidStack(Utils.sanitizeString(this.getLocalizedName()), 1);
-
-		if (aTest1 != null) {
-			Logger.MATERIALS("Found FluidRegistry entry for "+"molten."+Utils.sanitizeString(this.getLocalizedName()));
-			return aTest1.getFluid();
+		if (f1 != null) {
+			aGTBaseFluid = f1.getFluid();
 		}
-		if (aTest2 != null) {
-			Logger.MATERIALS("Found FluidRegistry entry for "+"fluid."+Utils.sanitizeString(this.getLocalizedName()));
-			return aTest2.getFluid();
+		else if (f2 != null) {
+			aGTBaseFluid = f2.getFluid();
 		}
-		if (aTest3 != null) {
-			Logger.MATERIALS("Found FluidRegistry entry for "+Utils.sanitizeString(this.getLocalizedName()));
-			return aTest3.getFluid();
+		else if (f3 != null) {
+			aGTBaseFluid = f3.getFluid();
 		}
+		else if (f4 != null) {
+			aGTBaseFluid = f4.getFluid();
+		}
+		
 
 		ItemStack aFullCell = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1);
+		ItemStack aFullCell2 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getLocalizedName(), 1);
+		ItemStack aFullCell3 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+Utils.sanitizeString(this.getUnlocalizedName(), new char[] {'-', '_'}), 1);
+		ItemStack aFullCell4 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+Utils.sanitizeString(this.getLocalizedName(), new char[] {'-', '_'}), 1);
+		
 		Logger.MATERIALS("Generating our own fluid.");
-		//Generate a Cell if we need to
-		if (aFullCell == null){
+		//Generate a Cell if we need to, but first validate all four searches are invalid
+		
+		if (!ItemUtils.checkForInvalidItems(new ItemStack[] {aFullCell, aFullCell2, aFullCell3, aFullCell4})){
 			if (this.vGenerateCells){
 				Item g = new BaseItemCell(this);
 				aFullCell = ItemUtils.getSimpleStack(g);
@@ -1194,7 +1138,29 @@ public class Material {
 				Logger.MATERIALS("Did not generate a cell for "+this.getUnlocalizedName());
 			}
 		}
+		else {
+			// One cell we searched for was valid, let's register it.
+			if (aFullCell != null) {
+				this.registerComponentForMaterial(ComponentTypes.CELL, aFullCell);
+			}
+			else if (aFullCell2 != null) {
+				this.registerComponentForMaterial(ComponentTypes.CELL, aFullCell2);					
+			}
+			else if (aFullCell3 != null) {
+				this.registerComponentForMaterial(ComponentTypes.CELL, aFullCell3);					
+			}
+			else if (aFullCell4 != null) {
+				this.registerComponentForMaterial(ComponentTypes.CELL, aFullCell4);					
+			}
+		}
 
+		// We found a GT fluid, let's use it.
+		// Good chance we registered the cell from this material too.
+		if (aGTBaseFluid != null) {
+			return aGTBaseFluid;
+		}
+		
+		// This fluid does not exist at all, time to generate it.
 		if (this.materialState == MaterialState.SOLID){
 			return FluidUtils.addGTFluid(
 					this.getUnlocalizedName(),
@@ -1334,7 +1300,17 @@ public class Material {
 	}
 	
 	
+	public boolean registerComponentForMaterial(FluidStack aStack) {
+		return registerComponentForMaterial(this, aStack);
+	}
 	
+	private static boolean registerComponentForMaterial(Material componentMaterial, FluidStack aStack) {		
+		if (componentMaterial != null && aStack != null && componentMaterial.vMoltenFluid == null) {
+			componentMaterial.vMoltenFluid = aStack.getFluid();
+			return true;
+		}
+		return false;
+	}
 	
 	public boolean registerComponentForMaterial(ComponentTypes aPrefix, ItemStack aStack) {
 		return registerComponentForMaterial(this, aPrefix.getGtOrePrefix(), aStack);

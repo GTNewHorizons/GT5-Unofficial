@@ -69,7 +69,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 @MCVersion(value = "1.7.10")
-@Mod(modid = CORE.MODID, name = CORE.name, version = CORE.VERSION, dependencies = "required-after:Forge; after:TConstruct; after:PlayerAPI; after:dreamcraft; after:IC2; after:ihl; after:psychedelicraft; after:gregtech; after:Forestry; after:MagicBees; after:CoFHCore; after:Growthcraft; after:Railcraft; after:CompactWindmills; after:ForbiddenMagic; after:MorePlanet; after:PneumaticCraft; after:ExtraUtilities; after:Thaumcraft; after:rftools; after:simplyjetpacks; after:BigReactors; after:EnderIO; after:tectech; after:GTRedtech; after:beyondrealitycore; after:OpenBlocks; after:IC2NuclearControl; after:TGregworks; after:StevesCarts;")
+@Mod(modid = CORE.MODID, name = CORE.name, version = CORE.VERSION, dependencies = "required-after:Forge; after:TConstruct; after:PlayerAPI; after:dreamcraft; after:IC2; after:ihl; after:psychedelicraft; after:gregtech; after:Forestry; after:MagicBees; after:CoFHCore; after:Growthcraft; after:Railcraft; after:CompactWindmills; after:ForbiddenMagic; after:MorePlanet; after:PneumaticCraft; after:ExtraUtilities; after:Thaumcraft; after:rftools; after:simplyjetpacks; after:BigReactors; after:EnderIO; after:tectech; after:GTRedtech; after:beyondrealitycore; after:OpenBlocks; after:IC2NuclearControl; after:TGregworks; after:StevesCarts; after:xreliquary;")
 public class GTplusplus implements ActionListener {
 
 	public static enum INIT_PHASE {
@@ -105,7 +105,6 @@ public class GTplusplus implements ActionListener {
 	//Mod Instance
 	@Mod.Instance(CORE.MODID)
 	public static GTplusplus instance;
-	public static Meta_GT_Proxy instanceGtProxy;
 
 	//Material Loader
 	public static GT_Material_Loader mGregMatLoader;
@@ -181,8 +180,7 @@ public class GTplusplus implements ActionListener {
 		mChunkLoading.preInit(event);
 		proxy.preInit(event);
 		Logger.INFO("Setting up our own GT_Proxy.");
-		instanceGtProxy = Meta_GT_Proxy.instance;
-		instanceGtProxy.preInit();
+		Meta_GT_Proxy.preInit();
 		Core_Manager.preInit();
 	}
 
@@ -194,7 +192,7 @@ public class GTplusplus implements ActionListener {
 		proxy.init(event);
 		HazmatUtils.init();
 		proxy.registerNetworkStuff();
-		instanceGtProxy.init();
+		Meta_GT_Proxy.init();
 		Core_Manager.init();
 
 		//Used by foreign players to generate .lang files for translation.
@@ -211,7 +209,7 @@ public class GTplusplus implements ActionListener {
 		mChunkLoading.postInit(event);
 		proxy.postInit(event);
 		BookHandler.runLater();
-		instanceGtProxy.postInit();
+		Meta_GT_Proxy.postInit();
 		Core_Manager.postInit();
 		//SprinklerHandler.registerModFerts();
 
@@ -238,12 +236,14 @@ public class GTplusplus implements ActionListener {
 		if (LoadedMods.Thaumcraft) {
 			event.registerServerCommand(new CommandDumpAspects());
 		}
+		Core_Manager.serverStart();
 		INIT_PHASE.STARTED.setPhaseActive(true);
 	}
 
 	@Mod.EventHandler
 	public synchronized void serverStopping(final FMLServerStoppingEvent event) {
 		mChunkLoading.serverStopping(event);
+		Core_Manager.serverStop();
 		if (GregtechBufferThread.mBufferThreadAllocation.size() > 0) {
 			for (GregtechBufferThread i : GregtechBufferThread.mBufferThreadAllocation.values()) {
 				i.destroy();
@@ -366,21 +366,9 @@ public class GTplusplus implements ActionListener {
 		//Advanced Vacuum Freezer generation
 		mOriginalCount[2] = GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList.size();
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList) {
-			if (x != null && RecipeUtils.doesGregtechRecipeHaveEqualCells(x)) {	
-				int mTime = (x.mDuration/2);
-				int len = x.mFluidInputs.length;
-				FluidStack[] y = new FluidStack[len + 1];
-				int slot = y.length - 1;				
-				int mr3 = 0;
-				for (FluidStack f : x.mFluidInputs) {
-					if (f != null) {
-						y[mr3] = f;
-					}
-					mr3++;
-				}
-				y[slot] = FluidUtils.getFluidStack("cryotheum", mTime);				
+			if (x != null && RecipeUtils.doesGregtechRecipeHaveEqualCells(x)) {			
 				if (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs)) {
-					if (CORE.RA.addAdvancedFreezerRecipe(x.mInputs, y, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue)) {
+					if (CORE.RA.addAdvancedFreezerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue)) {
 						mValidCount[2]++;
 					}
 				}

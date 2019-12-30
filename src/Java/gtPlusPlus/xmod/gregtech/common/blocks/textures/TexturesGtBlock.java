@@ -30,9 +30,15 @@ public class TexturesGtBlock {
 	public static class CustomIcon implements IIconContainer, Runnable {
 		protected IIcon mIcon;
 		protected String mIconName;
+		protected String mModID;
 
 		public CustomIcon(final String aIconName) {
+			this(CORE.MODID, aIconName);
+		}
+		
+		public CustomIcon(final String aModID, final String aIconName) {
 			this.mIconName = aIconName;
+			this.mModID = aModID;
 			mCustomiconMap.put(this);
 			Logger.WARNING("Constructing a Custom Texture. " + this.mIconName);
 			GregTech_API.sGTBlockIconload.add(this);
@@ -50,7 +56,7 @@ public class TexturesGtBlock {
 
 		@Override
 		public void run() {
-			this.mIcon = GregTech_API.sBlockIcons.registerIcon(CORE.MODID + ":"  + this.mIconName);
+			this.mIcon = GregTech_API.sBlockIcons.registerIcon(this.mModID + ":"  + this.mIconName);
 			Logger.WARNING("FIND ME _ Processing texture: "+this.getTextureFile().getResourcePath());
 		}
 
@@ -273,6 +279,8 @@ public class TexturesGtBlock {
 	public static final CustomIcon TEXTURE_CASING_AMAZON = new CustomIcon("TileEntities/CASING_AMAZON");
 	public static final CustomIcon TEXTURE_CASING_ADVANCED_CRYOGENIC = new CustomIcon("TileEntities/MACHINE_CASING_ADVANCED_CRYOGENIC");
 	public static final CustomIcon TEXTURE_CASING_ADVANCED_VOLCNUS = new CustomIcon("TileEntities/MACHINE_CASING_ADVANCED_VOLCANUS");
+	public static final CustomIcon TEXTURE_CASING_ROCKETDYNE = new CustomIcon("TileEntities/MACHINE_CASING_ROCKETDYNE");
+		
 
 	public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II = new CustomIcon("iconsets/MACHINE_CASING_FUSION_3");
 	public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_INNER = new CustomIcon("iconsets/MACHINE_CASING_FUSION_COIL_II");
@@ -342,8 +350,13 @@ public class TexturesGtBlock {
 	private static final CustomIcon Internal_Overlay_Machine_Controller_Advanced_Active = new CustomIcon("iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_ACTIVE");
 	public static final CustomIcon Overlay_Machine_Controller_Advanced_Active = Internal_Overlay_Machine_Controller_Advanced_Active;
 	
-	
-	
+	//Fluid Reactor Overlays
+	public static final CustomIcon Overlay_FluidReactor_Front = new CustomIcon("TileEntities/FluidReactor/OVERLAY_FRONT");
+	public static final CustomIcon Overlay_FluidReactor_Side = new CustomIcon("TileEntities/FluidReactor/OVERLAY_SIDE");
+	public static final CustomIcon Overlay_FluidReactor_Top = new CustomIcon("TileEntities/FluidReactor/OVERLAY_TOP");
+	public static final CustomIcon Overlay_FluidReactor_Front_Active = new CustomIcon("TileEntities/FluidReactor/OVERLAY_FRONT_ACTIVE");
+	public static final CustomIcon Overlay_FluidReactor_Side_Active = new CustomIcon("TileEntities/FluidReactor/OVERLAY_SIDE_ACTIVE");
+	public static final CustomIcon Overlay_FluidReactor_Top_Active = new CustomIcon("TileEntities/FluidReactor/OVERLAY_TOP_ACTIVE");	
 	
 	//Crafting Overlays
 	private static final CustomIcon Internal_Overlay_Crafting_Bronze = new CustomIcon("TileEntities/bronze_top_crafting");
@@ -555,10 +568,7 @@ public class TexturesGtBlock {
 
 
 
-	public static Object Casing_Material_Turbine;
-
-
-
+	public static Object Casing_Material_Turbine;	
 
 	
 }

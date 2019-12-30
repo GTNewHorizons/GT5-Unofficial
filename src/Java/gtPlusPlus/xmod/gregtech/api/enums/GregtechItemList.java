@@ -39,6 +39,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Emitter_ULV,
 	Sensor_ULV,
 
+	//Recipe Circuit
+	Circuit_BioRecipeSelector,
+	
 	//Circuits
 	Old_Circuit_Primitive, Old_Circuit_Basic, Old_Circuit_Good,
 	Old_Circuit_Advanced, Old_Circuit_Data, Old_Circuit_Elite,
@@ -102,12 +105,16 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Carbyne_Sheet_Finished,
 	
 	//End Game Laser Engraver Lens
+	Laser_Lens_WoodsGlass,
 	Laser_Lens_Special,
 	
 	//Bombs
 	Bomb_Cast, Bomb_Cast_Molten, 
 	Bomb_Cast_Set, Bomb_Cast_Broken,
 	Bomb_Cast_Mold,
+	
+	// Pellet Mold
+	Pellet_Mold,
 	
 	//Charged Items for Tree Farms
 	Farm_Processor_EV, 
@@ -224,7 +231,12 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Fish Pond
 	Industrial_FishingPond,
 	Casing_FishPond,  
-
+	
+	//Algae
+	AlgaeFarm_Controller,
+	
+	//Chemical Plant
+	ChemicalPlant_Controller,
 
 	//GT4 autoCrafter
 	GT4_Multi_Crafter, 
@@ -318,6 +330,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Vacuum_Furnace,
 	Controller_Vacuum_Furnace,
 
+	// Large Rocket Engine
+	Casing_RocketEngine,
+	Controller_RocketEngine,
 
 
 	//----------------------------------------------------------------------------
@@ -335,6 +350,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	//XL Turbine Rotor Hatch
 	Hatch_Turbine_Rotor,
+	
+	//Standard Turbine Rotor Hatch
+	Hatch_Input_TurbineHousing,
 	
 	//Control Core
 	Hatch_Control_Core,
@@ -471,6 +489,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_ZPM_Component_Maker,
 	Machine_UV_Component_Maker,
 	
+	// Fluid Reactor
+	FluidReactor_LV, FluidReactor_HV,
+	FluidReactor_IV, FluidReactor_ZPM,
+	
 	//Breakers
 	BreakerBox_ULV, BreakerBox_LV, BreakerBox_MV,
 	BreakerBox_HV, BreakerBox_EV, BreakerBox_IV,
@@ -594,7 +616,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	FakeMachineCasingPlate_MV, FakeMachineCasingPlate_HV,
 	FakeMachineCasingPlate_EV, FakeMachineCasingPlate_IV,
 	FakeMachineCasingPlate_LuV, FakeMachineCasingPlate_ZPM,
-	FakeMachineCasingPlate_UV, FakeMachineCasingPlate_MAX,
+	FakeMachineCasingPlate_UV, FakeMachineCasingPlate_MAX, 
 	
 
 	//----------------------------------------------------------------------------
@@ -607,7 +629,6 @@ public enum GregtechItemList implements GregtechItemContainer {
 	private ItemStack mStack;
 	private boolean mHasNotBeenSet = true;
 
-	public static Fluid sOilExtraHeavy, sOilHeavy, sOilMedium, sOilLight, sNaturalGas;
 
 	@Override
 	public GregtechItemList set(final Item aItem) {

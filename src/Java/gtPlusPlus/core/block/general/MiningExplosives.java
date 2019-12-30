@@ -165,8 +165,8 @@ public class MiningExplosives extends BlockTNT {
 		/*this.blockIcon = iconRegister.registerIcon(this.getTextureName() + "_side");
 		this.textureTop = iconRegister.registerIcon(this.getTextureName() + "_top");
 		this.textureBottom = iconRegister.registerIcon(this.getTextureName() + "_bottom");*/
-		this.blockIcon = iconRegister.registerIcon(CORE.MODID + ":" + "Chrono/" + "MetalSheet2");
-		this.textureTop = iconRegister.registerIcon(CORE.MODID + ":" + "Chrono/" + "MetalFunnel");
-		this.textureBottom = iconRegister.registerIcon(CORE.MODID + ":" + "Chrono/" + "MetalPanel");
+		this.blockIcon = iconRegister.registerIcon(CORE.MODID + ":" + "chrono/" + "MetalSheet2");
+		this.textureTop = iconRegister.registerIcon(CORE.MODID + ":" + "chrono/" + "MetalFunnel");
+		this.textureBottom = iconRegister.registerIcon(CORE.MODID + ":" + "chrono/" + "MetalPanel");
 	}
 }

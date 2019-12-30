@@ -36,11 +36,11 @@ public class CONTAINER_1by1_Turbine extends GT_Container_1by1 {
     	}
     	@Override
     	public boolean isItemValid(final ItemStack itemstack) {
-    		/*if (itemstack.getItem() instanceof GT_MetaGenerated_Tool) {
+    		if (itemstack.getItem() instanceof GT_MetaGenerated_Tool) {
     			if (itemstack.getItemDamage() >= 170 && itemstack.getItemDamage() <= 176) {
     				return true;
     			}    			
-    		}*/
+    		}
     		return false;
     	}
     	@Override

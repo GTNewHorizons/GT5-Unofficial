@@ -29,7 +29,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow;
-import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_VisualPlate;
+import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_ToggleVisual;
 
 public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
@@ -333,10 +333,12 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
             }
             else {              
                 aTierName = GT_Values.VN[i];
-                mMachineCasingCovers[i].set(this.addItem(aFirstMachineCasingID++, aTierName+" Machine Plate Cover", "Looks visually like an "+aTierName+" machine casing, apply to pipe/cable as cover", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L)}));
-                GregTech_API.registerCover(mMachineCasingCovers[i].get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[i][0]}), new GTPP_Cover_VisualPlate());
+                mMachineCasingCovers[i].set(this.addItem(aFirstMachineCasingID++, aTierName+" Machine Plate Cover", "Deprecated - Shapeless Craft to new version", new Object[]{}));
+                GregTech_API.registerCover(mMachineCasingCovers[i].get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[i][0]}), new GTPP_Cover_ToggleVisual());
              }
         }
+        GregtechItemList.Laser_Lens_WoodsGlass.set(this.addItem(140, "Wood's Glass Lens", "Allows UV & IF to pass through, blocks visible light spectrums", new Object[0]));
+
 		
 		
 	}

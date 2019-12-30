@@ -7,16 +7,11 @@ import java.util.Map;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
@@ -26,6 +21,8 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeGen_Recycling implements Runnable {
@@ -60,6 +57,7 @@ public class RecipeGen_Recycling implements Runnable {
 
 	public static void generateRecipes(final Material material) {
 
+		if (material != null)
 		Logger.WARNING("Generating Recycling recipes for " + material.getLocalizedName());
 
 		final OrePrefixes[] mValidPrefixesAsString = { OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.nugget,
@@ -139,7 +137,7 @@ public class RecipeGen_Recycling implements Runnable {
 					//Fluid Extractor
 					if (ItemUtils.checkForInvalidItems(tempStack)) {
 						// mValidItems[mSlotIndex++] = tempStack;
-						if ((mDust != null) && GT_Values.RA.addFluidExtractionRecipe(tempStack, null, material.getFluid(mFluidAmount), 0, 30, material.vVoltageMultiplier)) {
+						if ((mDust != null) && CORE.RA.addFluidExtractionRecipe(tempStack, material.getFluid(mFluidAmount), 30, material.vVoltageMultiplier)) {
 							Logger.WARNING("Fluid Recycle Recipe: " + material.getLocalizedName() + " - Success - Recycle "
 									+ tempStack.getDisplayName() + " and obtain " + mFluidAmount+"mb of "+material.getFluid(1).getLocalizedName()+".");
 						}

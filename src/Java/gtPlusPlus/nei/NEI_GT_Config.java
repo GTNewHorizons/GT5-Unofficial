@@ -1,9 +1,9 @@
 package gtPlusPlus.nei;
 
+import codechicken.nei.api.API;
+import codechicken.nei.api.IConfigureNEI;
 import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
-
-import codechicken.nei.api.IConfigureNEI;
 
 public class NEI_GT_Config
 implements IConfigureNEI {
@@ -18,11 +18,16 @@ implements IConfigureNEI {
 			}
 		}
 		for (final Gregtech_Recipe_Map tMap : gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map.sMappings) {
-			if (tMap.mNEIAllowed) {
-				new GT_NEI_MultiBlockHandler(tMap);
+			if (tMap.mNEIAllowed) {				
+				if (!tMap.mUnlocalizedName.equals(Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.mUnlocalizedName)) {
+					new GT_NEI_MultiBlockHandler(tMap);					
+				}				
 			}
 		}
+		new GT_NEI_FluidReactor(Gregtech_Recipe_Map.sFluidChemicalReactorRecipes);
 		sIsAdded = true;
+		API.registerRecipeHandler(new DecayableRecipeHandler());
+		API.registerUsageHandler(new DecayableRecipeHandler());
 	}
 
 	@Override

@@ -32,6 +32,16 @@ public class Core_Fishing implements IPlugin {
 	}
 
 	@Override
+	public boolean serverStart() {
+		return false;
+	}
+
+	@Override
+	public boolean serverStop() {
+		return false;
+	}
+
+	@Override
 	public String getPluginName() {
 		return "GT++ Fishing Module";
 	}

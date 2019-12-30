@@ -35,7 +35,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Low Pressure Turbine Casing"); 
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "High Pressure Turbine Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Vacuum Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Turbodyne Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "");
@@ -51,8 +51,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_Turbine_LP.set(new ItemStack(this, 1, 8));
 		GregtechItemList.Casing_Turbine_HP.set(new ItemStack(this, 1, 9));
 		GregtechItemList.Casing_Vacuum_Furnace.set(new ItemStack(this, 1, 10));
-		/*GregtechItemList.Casing_ThermalContainment.set(new ItemStack(this, 1, 11));
-		GregtechItemList.Casing_Autocrafter.set(new ItemStack(this, 1, 12));
+		GregtechItemList.Casing_RocketEngine.set(new ItemStack(this, 1, 11));
+		/*GregtechItemList.Casing_Autocrafter.set(new ItemStack(this, 1, 12));
 		GregtechItemList.Casing_CuttingFactoryFrame.set(new ItemStack(this, 1, 13));
 		GregtechItemList.Casing_TeslaTower.set(new ItemStack(this, 1, 14));
 		GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.set(new ItemStack(this, 1, 15));*/
@@ -122,7 +122,7 @@ extends GregtechMetaCasingBlocksAbstract {
 					
 					//Multitank Exterior Casing
 				case 11:
-					return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
+					return TexturesGtBlock.TEXTURE_CASING_ROCKETDYNE.getIcon();
 					//Reactor Casing I
 				case 12:
 					return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
@@ -138,7 +138,7 @@ extends GregtechMetaCasingBlocksAbstract {
 					return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
 				case 15:
 				default:
-					return TexturesGtBlock.Overlay_UU_Matter.getIcon();
+					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
 
 			}
 		}

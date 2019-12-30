@@ -9,7 +9,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -17,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_InputBus {
-	public GT_Recipe_Map mRecipeMap = null;
 
 	public GT_MetaTileEntity_SuperBus_Input(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier);

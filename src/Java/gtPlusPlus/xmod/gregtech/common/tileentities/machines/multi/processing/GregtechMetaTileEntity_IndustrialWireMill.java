@@ -1,24 +1,19 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 
 public class GregtechMetaTileEntity_IndustrialWireMill
 extends GregtechMeta_MultiBlockBase {
@@ -53,7 +48,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Input Bus",
 				"1x Output Bus",
 				"1x Energy Hatch",
-				"Maintenance Hatch must be at the back, centered",
+				//"Maintenance Hatch must be at the back, centered",
 		};
 	}
 	
@@ -108,6 +103,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		final byte tSide = this.getBaseMetaTileEntity().getBackFacing();
+		int aCasingCount = 0;
 		if ((this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 1)) && (this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 2) && (this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 3)))) {
 			for (byte i = 2; i < 6; i = (byte) (i + 1)) {
 				IGregTechTileEntity tTileEntity;
@@ -147,6 +143,11 @@ extends GregtechMeta_MultiBlockBase {
 									log("Bad Casing on Wiremill.");
 									return false;
 								}	
+								else {
+									if (aTile == null) {
+										aCasingCount++;
+									}
+								}
 						}
 					}
 				}
@@ -168,7 +169,7 @@ extends GregtechMeta_MultiBlockBase {
 			return false;
 		}
 		log("True");
-		return true;
+		return aCasingCount >= 32;
 	}
 
 	@Override

@@ -18,13 +18,7 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
 	public static final boolean mGt6Pipe;
 	
 	static {
-		Boolean aGt6 = (Boolean) StaticFields59.getFieldFromGregtechProxy("gt6Pipe");
-		if (aGt6 != null) {
-			mGt6Pipe = aGt6;
-		}
-		else {
-			mGt6Pipe = false;
-		}
+		mGt6Pipe = StaticFields59.mGT6StylePipes;		
 	}
 	
 	public final GT_Materials mMaterial;

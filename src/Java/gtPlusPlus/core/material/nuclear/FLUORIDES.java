@@ -3,6 +3,7 @@ package gtPlusPlus.core.material.nuclear;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -166,54 +167,6 @@ public class FLUORIDES {
 
 	//LFTR sub components
 	
-	//OH
-	public static final Material HYDROXIDE = new Material(
-			"Hydroxide", //Material Name
-			MaterialState.PURE_LIQUID, //State
-			null, //Material Colour
-			-1, //Melting Point in C
-			-1, //Boiling Point in C
-			-1, //Protons
-			-1,
-			false, //Uses Blast furnace?
-			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1)
-			});
-	
-	//NH3
-	public static final Material AMMONIA = new Material(
-			"Ammonia", //Material Name
-			MaterialState.PURE_LIQUID, //State
-			null, //Material Colour
-			-77, //Melting Point in C
-			-33, //Boiling Point in C
-			-1, //Protons
-			-1,
-			false, //Uses Blast furnace?
-			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 3)
-			});
-	
-	//NH4
-	public static final Material AMMONIUM = new Material(
-			"Ammonium", //Material Name
-			MaterialState.PURE_LIQUID, //State
-			null, //Material Colour
-			-1, //Melting Point in C
-			-1, //Boiling Point in C
-			-1, //Protons
-			-1,
-			false, //Uses Blast furnace?
-			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 4)
-			});
-	
 	//(NH4)HF2
 	public static final Material AMMONIUM_BIFLUORIDE = new Material(
 			"Ammonium Bifluoride", //Material Name
@@ -226,7 +179,7 @@ public class FLUORIDES {
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(FLUORIDES.AMMONIUM, 1),
+					new MaterialStack(MISC_MATERIALS.AMMONIUM, 1),
 					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 2)
 			});
@@ -244,7 +197,7 @@ public class FLUORIDES {
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().BERYLLIUM, 1),
-					new MaterialStack(FLUORIDES.HYDROXIDE, 2)
+					new MaterialStack(MISC_MATERIALS.HYDROXIDE, 2)
 			});
 	
 	// (NH4)2Be(OH)2 / (NH4)2BeF4
@@ -259,7 +212,7 @@ public class FLUORIDES {
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(FLUORIDES.AMMONIUM, 2),
+					new MaterialStack(MISC_MATERIALS.AMMONIUM, 2),
 					new MaterialStack(FLUORIDES.BERYLLIUM_HYDROXIDE, 1)
 			});
 	

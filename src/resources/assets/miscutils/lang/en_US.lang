@@ -2956,3 +2956,157 @@ item.GTPP.bauble.fireprotection.0.name=Supreme Pizza Gloves
 //Added 16/5/19
 item.itemCellSeleniumDioxide.name=Selenium Dioxide Cell
 item.itemCellSeleniousAcid.name=Selenious Acid Cell
+
+//Added 25/7/19
+container.pestkiller=Pest Killer
+
+//Added 15/8/19
+gtpp.nei.decayables=Decayables Chest
+entity.batKing.name=Bat King
+item.itemCellCarbyne.name=Carbyne Cell
+item.itemCellHydrogenCyanide.name=Cell of Hydrogen Cyanide
+item.itemCactusCharcoal.name=Cactus Charcoal
+item.itemCactusCoke.name=Cactus Coke
+item.itemSugarCharcoal.name=Sugar Charcoal
+item.itemSugarCoke.name=Sugar Coke
+item.LiquidHydrogen.name=Liquid Hydrogen Cell [LOH]
+
+
+
+//Added 24/8/19
+//Debug Labels
+tile.blockDoorAlloy.name=Reinforced Door
+tile.blockInhibitorObelisk.name=Inhibitor Obelisk
+tile.Battlesign.name=Battlesign
+tile.blockMagicBox.name=Magic Box
+tile.blockManaPod.name=Mana Pod Stem
+tile.buildToolBlock.name=Tool Block
+tile.blockRedPlasma.name=Red Plasma Block
+tile.pipeBlock.name=Pipe
+item.null.name=REPORT ERROR TO ALKALUS
+
+
+//Added 24/8/19
+tile.OreGreenockite.name=Greenockite Ore
+item.crushedGreenockite.name=Crushed Greenockite Ore
+item.crushedCentrifugedGreenockite.name=Centrifuged Crushed Greenockite Ore
+item.crushedPurifiedGreenockite.name=Purified Crushed Greenockite Ore
+item.dustImpureGreenockite.name=Impure Greenockite Dust
+item.dustPureGreenockite.name=Purified Greenockite Dust
+item.itemDustGreenockite.name=Greenockite Dust
+item.itemDustTinyGreenockite.name=Tiny Pile of Greenockite Dust
+item.itemDustSmallGreenockite.name=Small Pile of Greenockite Dust
+
+tile.OreRareEarthI.name=Rare Earth (I) Ore
+item.crushedRareEarthI.name=Crushed Rare Earth (I) Ore
+item.crushedCentrifugedRareEarthI.name=Centrifuged Crushed Rare Earth (I) Ore
+item.crushedPurifiedRareEarthI.name=Purified Crushed Rare Earth (I) Ore
+item.dustImpureRareEarthI.name=Impure Rare Earth (I) Dust
+item.dustPureRareEarthI.name=Purified Rare Earth (I) Dust
+item.itemDustRareEarthI.name=Rare Earth (I) Dust
+item.itemDustTinyRareEarthI.name=Tiny Pile of Rare Earth (I) Dust
+item.itemDustSmallRareEarthI.name=Small Pile of Rare Earth (I) Dust
+
+tile.OreRareEarthII.name=Rare Earth (II) Ore
+item.crushedRareEarthII.name=Crushed Rare Earth (II) Ore
+item.crushedCentrifugedRareEarthII.name=Centrifuged Crushed Rare Earth (II) Ore
+item.crushedPurifiedRareEarthII.name=Purified Crushed Rare Earth (II) Ore
+item.dustImpureRareEarthII.name=Impure Rare Earth (II) Dust
+item.dustPureRareEarthII.name=Purified Rare Earth (II) Dust
+item.itemDustRareEarthII.name=Rare Earth (II) Dust
+item.itemDustTinyRareEarthII.name=Tiny Pile of Rare Earth (II) Dust
+item.itemDustSmallRareEarthII.name=Small Pile of Rare Earth (II) Dust
+
+tile.OreRareEarthIII.name=Rare Earth (III) Ore
+item.crushedRareEarthIII.name=Crushed Rare Earth (III) Ore
+item.crushedCentrifugedRareEarthIII.name=Centrifuged Crushed Rare Earth (III) Ore
+item.crushedPurifiedRareEarthIII.name=Purified Crushed Rare Earth (III) Ore
+item.dustImpureRareEarthIII.name=Impure Rare Earth (III) Dust
+item.dustPureRareEarthIII.name=Purified Rare Earth (III) Dust
+item.itemDustRareEarthIII.name=Rare Earth (III) Dust
+item.itemDustTinyRareEarthIII.name=Tiny Pile of Rare Earth (III) Dust
+item.itemDustSmallRareEarthIII.name=Small Pile of Rare Earth (III) Dust
+
+
+
+//Added 13/10/19
+tile.blockRoundRobinator.0.name=Round Robinator I
+tile.blockRoundRobinator.1.name=Round Robinator II
+tile.blockRoundRobinator.2.name=Round Robinator III
+tile.blockRoundRobinator.3.name=Round Robinator IV
+tile.blockRoundRobinator.4.name=Round Robinator V
+
+
+//Added 16/10/19
+item.BioRecipeSelector.name=Programmed Bio Circuit
+item.FermentationBase.name=Cell of Fermentation Base
+item.ureamix.name=Cell of Urea Mix
+item.liquidresin.name=Cell of Liquid Resin
+item.propionicacid.name=Propionic Acid Cell
+item.aceticacid.name=Acetic Acid Cell
+item.BasicAgrichemItem.0.name=Algae Biomass
+item.BasicAgrichemItem.1.name=Green Algae Biomass
+item.BasicAgrichemItem.2.name=Brown Algae Biomass
+item.BasicAgrichemItem.3.name=Golden-Brown Algae Biomass
+item.BasicAgrichemItem.4.name=Red Algae Biomass
+item.BasicAgrichemItem.5.name=Cellulose Fiber
+item.BasicAgrichemItem.6.name=Golden-Brown Cellulose Fiber
+item.BasicAgrichemItem.7.name=Red Cellulose Fiber
+item.BasicAgrichemItem.8.name=Compost
+item.BasicAgrichemItem.9.name=Wood Pellet
+item.BasicAgrichemItem.10.name=Wood Brick
+item.BasicAgrichemItem.11.name=Cellulose Pulp
+item.BasicAgrichemItem.12.name=Raw Bio Resin
+item.BasicAgrichemItem.13.name=Catalyst Carrier
+item.BasicAgrichemItem.14.name=Green Metal Catalyst
+item.BasicAgrichemItem.15.name=Alginic Acid
+item.BasicAgrichemItem.16.name=Alumina
+item.BasicAgrichemItem.17.name=Aluminium Pellet
+item.BasicAgrichemItem.18.name=Sodium Aluminate
+item.BasicAgrichemItem.19.name=Sodium Hydroxide
+item.BasicAgrichemItem.20.name=Sodium Carbonate
+item.BasicAgrichemItem.21.name=Lithium Chloride
+
+//Added 24/10/19
+item.butanol.name=Butanol Cell
+
+//Try Fix IC2 Garbage vv
+fluidHotWater=Heated Water
+fluidHotWater.name=Heated Water
+//Try Fix IC2 Garbage ^^
+
+
+//Added 11/12/19
+item.itemHotIngotTitanium.name=Hot Titanium Ingot
+item.OilHeavy.name=Heavy Oil Cell
+item.UnsymmetricalDimethylhydrazine.name=Unsymmetrical Dimethylhydrazine Cell
+item.benzene.name=Benzene Cell
+item.Benzene.name=Benzene Cell
+item.phenol.name=Phenol Cell
+item.CarbonDioxide.name=Carbon Dioxide Cell
+item.itemCellCarbonDioxide.name=Carbon Dioxide Cell
+item.CarbonMonoxide.name=Carbon Monoxide Cell
+item.itemCellCarbonMonoxide.name=Carbon Monoxide Cell
+item.acetone.name=Acetone Cell
+item.saltwater.name=Salt Water Cell
+item.BasicAgrichemItem.22.name=Mold (Pellet)
+item.BasicAgrichemItem.23.name=Clean Aluminium Mix
+
+//Added 12/12/19
+
+item.BasicGenericChemItem.0.name=Red Metal Catalyst
+item.BasicGenericChemItem.1.name=Yellow Metal Catalyst
+item.BasicGenericChemItem.2.name=Blue Metal Catalyst
+item.BasicGenericChemItem.3.name=Orange Metal Catalyst
+item.BasicGenericChemItem.4.name=Purple Metal Catalyst
+item.BasicGenericChemItem.5.name=Brown Metal Catalyst
+item.MudRedSlurry.name=Cell of Red Mud Slurry
+item.liquid_toluene.name=Toluene Cell
+
+item.BasicAlgaeItem.0.name=Algae Spore (I)
+item.BasicAlgaeItem.1.name=Algae Spore (II)
+item.BasicAlgaeItem.2.name=Algae Spore (III)
+item.BasicAlgaeItem.3.name=Algae Spore (IV)
+item.BasicAlgaeItem.4.name=Algae Spore (V)
+item.BasicAlgaeItem.5.name=Algae Spore (VI)
+item.BasicAlgaeItem.6.name=Algae Spore (VII)

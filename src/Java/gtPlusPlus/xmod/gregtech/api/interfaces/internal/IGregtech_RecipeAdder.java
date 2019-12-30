@@ -204,6 +204,7 @@ public interface IGregtech_RecipeAdder {
 	public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid, ItemStack output, int time, int eu);
 	public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid, ItemStack output, Object object, int time, int eu);
 	public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid, ItemStack output, ItemStack object, int time);
+	public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, int aCircuit, FluidStack inputFluid, FluidStack outputFluid, ItemStack output, ItemStack output2, int time, int eu);
 
 	public boolean addMultiblockChemicalRecipe(ItemStack[] itemStacks, FluidStack[] fluidStacks, FluidStack[] fluidStacks2, ItemStack[] outputs, int time, int eu);
 
@@ -215,8 +216,16 @@ public interface IGregtech_RecipeAdder {
 
 	public boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aDust, ItemStack aOutput);
 
-	public void addFluidExtractionRecipe(ItemStack input, Object input2, FluidStack output, int aTime, int aEu, int aSpecial);
-	 
+	public boolean addFluidExtractionRecipe(ItemStack input, FluidStack output, int aTime, int aEu);
+	
+	public boolean addFluidExtractionRecipe(ItemStack aContainer, ItemStack aFullContainer, FluidStack rFluidOut, int aTime, int aEu);
+
+	public boolean addFluidCannerRecipe(ItemStack aContainer, ItemStack aFullContainer, FluidStack rFluidIn);
+	
+	public boolean addFluidCannerRecipe(ItemStack aContainer, ItemStack aFullContainer, FluidStack rFluidIn, FluidStack rFluidOut);
+	
+	public boolean addFluidCannerRecipe(ItemStack aContainer, ItemStack aFullContainer, FluidStack rFluidIn, FluidStack rFluidOut, int aTime, int aEu);
+	
 	/**
      * Adds a Fusion reactor Recipe
      *
@@ -254,7 +263,25 @@ public interface IGregtech_RecipeAdder {
 	public boolean addFusionReactorRecipe(ItemStack aInputStackA, ItemStack aInputStackB, FluidStack plasma, int aOutputChance, int aFusionDurationInTicks, int aEu, int aSpecial);
 
 	
-    boolean addVacuumFurnaceRecipe(ItemStack aInput1, ItemStack aInput2,
+    public boolean addVacuumFurnaceRecipe(ItemStack aInput1, ItemStack aInput2,
             FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1,
             ItemStack aOutput2, int aDuration, int aEUt, int aLevel);
+    
+
+	public boolean addUvLaserRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int time, long eu);
+	public boolean addIrLaserRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int time, long eu);
+
+	public boolean addFluidReactorRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int time, long eu, int aTier);
+
+	public boolean addBlastRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int time, long eu, int aHeat);
+
+	public boolean addPyrolyseRecipe(ItemStack aInput, FluidStack aFluidInput, int intCircuit, ItemStack aOutput, FluidStack aFluidOutput, int aDuration, int aEUt);
+
+	public boolean addExtractorRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt);
+
+	public boolean addDistilleryRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, ItemStack aSolidOutput, int aDuration, int aEUt, boolean aHidden);
+
+	public boolean addPulverisationRecipe(final ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, final ItemStack aOutput3);
+
+
 }

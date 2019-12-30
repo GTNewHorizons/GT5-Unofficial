@@ -12,6 +12,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.ChunkManager;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -51,12 +53,14 @@ import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.galacticraft.handler.HandlerTooltip_GC;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.thermalfoundation.item.TF_Items;
+import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.ForgeChunkManager;
 
 public class CommonProxy {
@@ -144,6 +148,8 @@ public class CommonProxy {
 		// Block Handler for all events.
 		Utils.registerEvent(new BlockEventHandler());
 		Utils.registerEvent(new GeneralTooltipEventHandler());
+		// Handles Tooltips for items giving custom multiblock behaviour
+		Utils.registerEvent(new SpecialBehaviourTooltipHandler());		
 		// Handles Custom tooltips for EIO.
 		Utils.registerEvent(new HandlerTooltip_EIO());
 		// Handles Custom Tooltips for GC
@@ -187,12 +193,22 @@ public class CommonProxy {
 		}
 
 		// Compat Handling
+		Logger.INFO("Removing recipes from other mods.");
 		COMPAT_HANDLER.RemoveRecipesFromOtherMods();
+		Logger.INFO("Initialising Handler, Then Adding Recipes");
 		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
-		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
+		Logger.INFO("Loading Intermod staging.");
 		COMPAT_IntermodStaging.postInit(e);
+		Logger.INFO("Loading queued recipes.");
 		COMPAT_HANDLER.runQueuedRecipes();
+		Logger.INFO("Registering custom mob drops.");
 		registerCustomMobDrops();
+
+		// Moved last in postInit().
+		// 12/12/19 - Alkalus
+		// Moved last, to prevent recipes being generated post initialisation.
+		Logger.INFO("Loading Gregtech API recipes.");
+		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
 	}
 
 	public void serverStarting(final FMLServerStartingEvent e) {
@@ -258,7 +274,7 @@ public class CommonProxy {
 		
 		//Special mobs Support
 		if (ReflectionUtils.doesClassExist("toast.specialMobs.entity.zombie.EntityBrutishZombie")) {
-			Class aBrutishZombie = ReflectionUtils.getClass("toast.specialMobs.entity.zombie.EntityBrutishZombie");
+			Class<?> aBrutishZombie = ReflectionUtils.getClass("toast.specialMobs.entity.zombie.EntityBrutishZombie");
 			ItemStack aFortune1 = ItemUtils.getEnchantedBook(Enchantment.fortune, 1);
 			ItemStack aFortune2 = ItemUtils.getEnchantedBook(Enchantment.fortune, 1);
 			ItemStack aFortune3 = ItemUtils.getEnchantedBook(Enchantment.fortune, 1);
@@ -268,8 +284,45 @@ public class CommonProxy {
 			EntityUtils.registerDropsForMob(aBrutishZombie, ItemUtils.getItemStackOfAmountFromOreDict("ingotRedAlloy", 1), 3, 200);		
 		}
 		
+		//GalaxySpace Support
+		if (ReflectionUtils.doesClassExist("galaxyspace.SolarSystem.moons.europa.entities.EntityEvolvedColdBlaze")) {
+			Class<?> aColdBlaze = ReflectionUtils.getClass("galaxyspace.SolarSystem.moons.europa.entities.EntityEvolvedColdBlaze");			
+			ItemStack aSmallBlizz, aTinyBlizz, aSmallCryo, aTinyCryo;			
+			aSmallBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallBlizz", 1);
+			aTinyBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBlizz", 1);			
+			aSmallCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallCryotheum", 1);
+			aTinyCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCryotheum", 1);			
+			EntityUtils.registerDropsForMob(aColdBlaze, ItemUtils.getItemStackOfAmountFromOreDict("stickBlizz", 1), 2, 500);			
+			if (aSmallBlizz != null) {
+				EntityUtils.registerDropsForMob(aColdBlaze, aSmallBlizz, 2, 750);				
+			}
+			if (aTinyBlizz != null) {
+				EntityUtils.registerDropsForMob(aColdBlaze, aTinyBlizz, 4, 1500);			
+			}
+			if (aSmallCryo != null) {
+				EntityUtils.registerDropsForMob(aColdBlaze, aSmallCryo, 1, 50);				
+			}
+			if (aTinyCryo != null) {
+				EntityUtils.registerDropsForMob(aColdBlaze, aTinyCryo, 2, 100);			
+			}
+		}		
 		
-		
+	}
+	
+	protected final AutoMap<Pair<Item, IItemRenderer>> mItemRenderMappings = new AutoMap<Pair<Item, IItemRenderer>>();
+	
+
+	public static void registerItemRendererGlobal(Item aItem, IItemRenderer aRenderer) {
+		GTplusplus.proxy.registerItemRenderer(aItem, aRenderer);
+	}
+	
+	public void registerItemRenderer(Item aItem, IItemRenderer aRenderer) {
+		if (Utils.isServer()) {
+			return;
+		}
+		else {
+			mItemRenderMappings.add(new Pair<Item, IItemRenderer>(aItem, aRenderer));
+		}		
 	}
 
 }

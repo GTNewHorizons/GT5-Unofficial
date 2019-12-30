@@ -1,6 +1,36 @@
 package gtPlusPlus.preloader.asm.transformers;
 
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.AALOAD;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACONST_NULL;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.ARETURN;
+import static org.objectweb.asm.Opcodes.ARRAYLENGTH;
+import static org.objectweb.asm.Opcodes.ASM5;
+import static org.objectweb.asm.Opcodes.ASTORE;
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.F_APPEND;
+import static org.objectweb.asm.Opcodes.F_CHOP;
+import static org.objectweb.asm.Opcodes.F_SAME;
+import static org.objectweb.asm.Opcodes.F_SAME1;
+import static org.objectweb.asm.Opcodes.GETSTATIC;
+import static org.objectweb.asm.Opcodes.GOTO;
+import static org.objectweb.asm.Opcodes.I2L;
+import static org.objectweb.asm.Opcodes.ICONST_0;
+import static org.objectweb.asm.Opcodes.IFEQ;
+import static org.objectweb.asm.Opcodes.IFLE;
+import static org.objectweb.asm.Opcodes.IFNONNULL;
+import static org.objectweb.asm.Opcodes.IFNULL;
+import static org.objectweb.asm.Opcodes.ILOAD;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.IRETURN;
+import static org.objectweb.asm.Opcodes.ISTORE;
+import static org.objectweb.asm.Opcodes.L2I;
+import static org.objectweb.asm.Opcodes.LDIV;
+import static org.objectweb.asm.Opcodes.LREM;
+import static org.objectweb.asm.Opcodes.NEW;
 
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.AnnotationVisitor;
@@ -11,12 +41,7 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.preloader.DevHelper;
-import net.minecraft.item.ItemStack;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
 
 public class ClassTransformer_TC_ItemWispEssence {	
 
@@ -245,30 +270,6 @@ public class ClassTransformer_TC_ItemWispEssence {
 			return methodVisitor;
 		}
 
-	}
-	static Aspect[] displayAspects;
-
-	@SideOnly(Side.CLIENT)
-	public int getColorFromItemStack(ItemStack stack, int par2) {
-		if (stack == null) {
-			return 0;
-		}		
-		if (this.getAspects(stack) != null) {
-			return this.getAspects(stack).getAspects()[0].getColor();
-		} else {
-			int idx = (int) (System.currentTimeMillis() / 500L % (long) displayAspects.length);
-			return displayAspects[idx].getColor();
-		}
-	}
-
-	public AspectList getAspects(ItemStack itemstack) {
-		if (itemstack.hasTagCompound()) {
-			AspectList aspects = new AspectList();
-			aspects.readFromNBT(itemstack.getTagCompound());
-			return aspects.size() > 0 ? aspects : null;
-		} else {
-			return null;
-		}
 	}
 
 

@@ -247,9 +247,9 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
 	public int getFuelValue(FluidStack aLiquid) {
 		if (aLiquid != null && this.getRecipes() != null) {
 			Collection<GT_Recipe> tRecipeList = this.getRecipes().mRecipeList;
-			Logger.WARNING("Fuels: "+tRecipeList.size());
 			if (tRecipeList != null) {
-				Iterator var4 = tRecipeList.iterator();
+				Logger.WARNING("Fuels: "+tRecipeList.size());
+				Iterator<GT_Recipe> var4 = tRecipeList.iterator();
 
 				while (var4.hasNext()) {
 					GT_Recipe tFuel = (GT_Recipe) var4.next();

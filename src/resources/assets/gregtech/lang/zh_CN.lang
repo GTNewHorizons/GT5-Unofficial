@@ -8,7 +8,7 @@ GTPP.machines.tier=等级
 GTPP.multiblock.pollutionreduced=减少污染至
 GTPP.multiblock.pollution=污染
 GTPP.multiblock.energy=能量存储
-GTPP.multiblock.Progress=进程
+GTPP.multiblock.progress=进程
 GTPP.multiblock.efficiency=效率
 GTPP.multiblock.problems=为每桶
 GTPP.multiblock.mei=最大能量输入
@@ -46,7 +46,12 @@ GTPP.nanohealer.tooltip.4=不会阻止死亡
 GTPP.nanohealer.tooltip.5=Shift+右键来切换信息
 GTPP.nanohealer.hidden=隐藏信息?
 
-
+//10/4/19
+//Tooltips for the Mob Killing Baubles
+GTPP.monsterkiller.tooltip.1=在Baubles的护身符栏内使用
+GTPP.monsterkiller.tooltip.2=排泄
+GTPP.monsterkiller.tooltip.3=每击杀
+GTPP.monsterkiller.tooltip.4=目标类型:
 
 
 
@@ -190,4 +195,4 @@ achievement.decay.technetium99.desc=回旋加速器产品
 
 
 
-//This zh_CN.lang is translation by huajijam for GregTech++ (18/2/19)
+//This zh_CN.lang is translated by huajijam for GregTech++ (20/4/19)

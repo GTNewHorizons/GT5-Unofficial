@@ -18,6 +18,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.GT_Proxy;
 import gtPlusPlus.api.objects.Logger;
@@ -37,6 +38,7 @@ public class StaticFields59 {
 	public static final Field mPreventableComponents;
 	public static final Field mDisabledItems;
 	public static final Field mMultiblockChemicalRecipes;
+	public static final Field mPyrolyseRecipes;
 	public static final Field mDescriptionArray;
 	public static final Field mCasingTexturePages;
 	public static final Field mAssLineVisualMapNEI;
@@ -79,8 +81,16 @@ public class StaticFields59 {
 		}
 
 		sAssemblylineVisualRecipes = aTemp;
+		
 		mMultiblockChemicalRecipes = getField(GT_Recipe_Map.class, "sMultiblockChemicalRecipes");
-		Logger.INFO("[SH] Got Field: sMultiblockChemicalRecipes");
+		Logger.INFO("[SH] Got Field: sMultiblockChemicalRecipes");	
+		if (ReflectionUtils.doesFieldExist(GT_Recipe.GT_Recipe_Map.class, "sPyrolyseRecipes")) {
+			mPyrolyseRecipes = getField(GT_Recipe_Map.class, "sPyrolyseRecipes");
+			Logger.INFO("[SH] Got Field: sPyrolyseRecipes");
+		}
+		else {
+			mPyrolyseRecipes = null;
+		}
 
 		mCalculatePollutionReduction = getMethod(GT_MetaTileEntity_Hatch_Muffler.class, "calculatePollutionReduction",
 				int.class);
@@ -143,6 +153,14 @@ public class StaticFields59 {
 	public static synchronized final GT_Recipe_Map getLargeChemicalReactorRecipeMap() {
 		try {
 			return (GT_Recipe_Map) mMultiblockChemicalRecipes.get(null);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			return null;
+		}
+	}
+
+	public static synchronized final GT_Recipe_Map getPyrolyseRecipeMap() {
+		try {
+			return mPyrolyseRecipes != null ? (GT_Recipe_Map) mPyrolyseRecipes.get(null) : null;
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			return null;
 		}

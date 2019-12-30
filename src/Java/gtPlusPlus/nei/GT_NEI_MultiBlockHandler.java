@@ -928,7 +928,7 @@ extends TemplateRecipeHandler {
 	}
 
 
-	public class recipeCompare implements Comparator<GT_Recipe> {
+	public class RecipeCompare implements Comparator<GT_Recipe> {
 		public int compare(GT_Recipe a, GT_Recipe b) {
 			if (a.mEUt != b.mEUt) {
 				return a.mEUt - b.mEUt;

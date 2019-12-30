@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import gregtech.api.enums.Materials;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -24,14 +26,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class TinkersUtils {
 
-	private static final Class mClass_Smeltery;
-	private static final Class mClass_TConstructRegistry;	
-	private static final Class mClass_ToolMaterial;	
-	private static final Class mClass_IPattern;
-	private static final Class mClass_DynamicToolPart;
-	private static final Class mClass_FluidType;
-	private static final Class mClass_CastingRecipe;
-	private static final Class mClass_TinkerSmeltery;
+	private static final Class<?> mClass_Smeltery;
+	private static final Class<?> mClass_TConstructRegistry;	
+	private static final Class<?> mClass_ToolMaterial;	
+	private static final Class<?> mClass_IPattern;
+	private static final Class<?> mClass_DynamicToolPart;
+	private static final Class<?> mClass_FluidType;
+	private static final Class<?> mClass_CastingRecipe;
+	private static final Class<?> mClass_TinkerSmeltery;
 	
 	private static final Field mField_MoltenIronFluid;
 	
@@ -313,15 +315,35 @@ public class TinkersUtils {
 			ItemStack ingotCast = new ItemStack(mTinkerMetalPattern, aType, 0);	
 			return ingotCast;
 		}
-		return ItemUtils.getErrorStack(1, "Bad Tinkers Pattern");
-		
-		
-		
-		
-		
-		
-		
+		return ItemUtils.getErrorStack(1, "Bad Tinkers Pattern");		
 	}	
+	
+	private static AutoMap<?> mDryingRackRecipes;
+	
+	public static List<?> getDryingRecipes(){		
+		if (mDryingRackRecipes != null) {
+			return mDryingRackRecipes;
+		}		
+		AutoMap<Object> aData = new AutoMap<Object>();
+		int aCount = 0;
+		try {
+			ArrayList<?> recipes = (ArrayList<?>) ReflectionUtils.getField(ReflectionUtils.getClass("tconstruct.library.crafting.DryingRackRecipes"), "recipes").get(null);
+			if (recipes != null) {
+				for (Object o : recipes) {
+					aData.put(o);
+					aCount++;
+				}
+				Logger.INFO("Found "+aCount+" Tinkers drying rack recipes.");
+			}
+			else {
+				Logger.INFO("Failed to find any Tinkers drying rack recipes.");
+			}
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			Logger.INFO("Failed to find any Tinkers drying rack recipes.");
+		}	
+		mDryingRackRecipes = aData;
+		return aData;
+	}
 	
 	/**
 	 * Generates Tinkers {@link ToolMaterial}'s reflectively.
@@ -340,7 +362,7 @@ public class TinkersUtils {
 	 */
 	public static Object generateToolMaterial(String name, String localizationString, int level, int durability, int speed, int damage,	float handle, int reinforced, float stonebound, String style, int primaryColor) {
 		try {
-			Constructor constructor = mClass_ToolMaterial.getConstructor(String.class, String.class, int.class, int.class, int.class, int.class, float.class, int.class, float.class, String.class, int.class);
+			Constructor<?> constructor = mClass_ToolMaterial.getConstructor(String.class, String.class, int.class, int.class, int.class, int.class, float.class, int.class, float.class, String.class, int.class);
 			Object myObject = constructor.newInstance(name, localizationString, level, durability, speed, damage, handle, reinforced, stonebound, style, primaryColor);
 			return myObject;
 		} catch (Throwable t) {
@@ -404,24 +426,24 @@ public class TinkersUtils {
 		}
 	}	
 	
-	public static List getTableCastingRecipes(){		
+	public static List<?> getTableCastingRecipes(){		
 		Object aCastingTableHandlerInstance = getCastingInstance(0);		
-		List aTemp;
+		List<?> aTemp;
 		try {
-			aTemp = (List) mMethod_getCastingRecipes.invoke(aCastingTableHandlerInstance, new Object[] {});
+			aTemp = (List<?>) mMethod_getCastingRecipes.invoke(aCastingTableHandlerInstance, new Object[] {});
 			return aTemp;
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}		
-		return new ArrayList();
+		return new ArrayList<Object>();
 	}
 	
 	public static boolean generateCastingRecipes(Material aMaterial, int aID) {
 		
-		List newRecipies = new LinkedList();		
+		List<CastingRecipeHandler> newRecipies = new LinkedList<CastingRecipeHandler>();		
         
 			
-			Iterator iterator1 = getTableCastingRecipes().iterator();
+			Iterator<?> iterator1 = getTableCastingRecipes().iterator();
 			Fluid aMoltenIron = null;
 			if (aMoltenIron == null) {
 				try {
@@ -451,7 +473,7 @@ public class TinkersUtils {
 			Object ft;
 			try {
 				ft = mMethod_getFluidType.invoke(null, aMaterial.getLocalizedName());
-				Iterator iterator2 = newRecipies.iterator();
+				Iterator<CastingRecipeHandler> iterator2 = newRecipies.iterator();
 				while (iterator2.hasNext()) {
 					CastingRecipeHandler recipe = new CastingRecipeHandler(iterator2.next());
 					if (!recipe.valid){

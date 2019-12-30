@@ -21,7 +21,7 @@ public class ThreadFakeWorldGenerator extends Thread {
 	
 	public ThreadFakeWorldGenerator() {
         setName("gtpp.handler.fakeworldtrees");
-        run();
+        start();
 	}
 	
 	public static ThreadFakeWorldGenerator getInstance() {

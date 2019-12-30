@@ -175,7 +175,7 @@ public class BlockBaseModular extends BasicBlock {
 				}
 			}		
 			metType = (metType.equals("9j4852jyo3rjmh3owlhw9oe") ? "METALLIC" : metType);	
-			int tier = this.blockMaterial.vTier;
+			int tier = blockMaterial != null ? this.blockMaterial.vTier : 0;
 			String aType = (this.thisBlock == BlockTypes.FRAME) ? "frameGt" : (tier <= 4 ? "block1" : "block5");			
 			this.blockIcon = iIcon.registerIcon("gregtech" + ":" + "materialicons/"+ metType +"/" + aType);
 	}

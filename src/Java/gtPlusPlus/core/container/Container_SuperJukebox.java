@@ -191,7 +191,7 @@ public class Container_SuperJukebox extends Container {
 
 	@Override
 	public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
-		if (tile_entity.getWorldObj().isRemote || tile_entity == null) return null;
+		if (tile_entity == null || tile_entity.getWorldObj().isRemote) return null;
 		switch (aSlotIndex) {
 		case SLOT_HOLO_PLAY:
 			if (tile_entity == null) return null;
@@ -217,7 +217,7 @@ public class Container_SuperJukebox extends Container {
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
-		if (tile_entity.getWorldObj().isRemote || tile_entity == null) return;
+		if (tile_entity == null || tile_entity.getWorldObj().isRemote) return;
 
 		isPlaying = tile_entity.mIsPlaying;
 		isLooping = tile_entity.mIsLooping;

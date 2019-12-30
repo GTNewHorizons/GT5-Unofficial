@@ -7,6 +7,7 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -62,18 +63,21 @@ public class DebugScanner extends CoreItem {
 			PlayerUtils.messagePlayer(player, "Invisible? "+entity.isInvisible());
 			PlayerUtils.messagePlayer(player, "Age: "+entity.ticksExisted);
 			
-			if (entity instanceof EntityLiving) {
-				EntityLiving g = (EntityLiving) entity;
+			if (entity instanceof EntityLivingBase) {
+				EntityLivingBase g = (EntityLivingBase) entity;
 				PlayerUtils.messagePlayer(player, "Health: "+g.getHealth()+"/"+g.getMaxHealth());
 				PlayerUtils.messagePlayer(player, "On ground? "+g.onGround);
-				PlayerUtils.messagePlayer(player, "Can Loot? "+g.canPickUpLoot());
-				PlayerUtils.messagePlayer(player, "Child? "+g.isChild());
-				if (entity instanceof EntityPlayer) {
-					EntityPlayer y = (EntityPlayer) entity;
-					PlayerUtils.messagePlayer(player, "Experience: "+y.experience);
-					PlayerUtils.messagePlayer(player, "Name: "+y.getCommandSenderName());				
-				}
+				PlayerUtils.messagePlayer(player, "Child? "+g.isChild());				
+			}
+			if (entity instanceof EntityLiving) {
+				EntityLiving g = (EntityLiving) entity;
+				PlayerUtils.messagePlayer(player, "Can Loot? "+g.canPickUpLoot());				
 				
+			}
+			if (entity instanceof EntityPlayer) {
+				EntityPlayer y = (EntityPlayer) entity;
+				PlayerUtils.messagePlayer(player, "Experience: "+y.experience);
+				PlayerUtils.messagePlayer(player, "Name: "+y.getCommandSenderName());				
 			}
 			
 		}

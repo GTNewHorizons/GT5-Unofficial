@@ -1,6 +1,6 @@
 package gtPlusPlus.core.inventories;
 
-import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.slots.SlotIntegratedCircuit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -167,7 +167,7 @@ public class InventoryCircuitProgrammer implements IInventory{
 	 */
 	@Override
 	public boolean isItemValidForSlot(final int slot, final ItemStack itemstack) {
-		return (itemstack.getItem() == CI.getNumberedCircuit(0).getItem());
+		return SlotIntegratedCircuit.isItemValidForSlot(itemstack);
 	}
 
 }

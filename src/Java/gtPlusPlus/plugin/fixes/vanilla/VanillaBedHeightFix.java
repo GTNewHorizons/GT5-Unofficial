@@ -23,7 +23,7 @@ public class VanillaBedHeightFix implements IBugFix {
 		mParent = minstance;
 		if (DevHelper.isValidHelperObject()) {	
 			Method m;
-			if (DevHelper.IsObfuscatedEnvironment()) {
+			if (DevHelper.isObfuscatedEnvironment()) {
 				m = ReflectionUtils.getMethod(EntityPlayer.class, "func_71018_a", int.class, int.class,	int.class);
 			}
 			else {

@@ -1,10 +1,15 @@
 package gtPlusPlus.core.util.data;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import net.minecraft.item.ItemStack;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import net.minecraft.item.ItemStack;
 
 public class ArrayUtils {
 
@@ -73,6 +78,14 @@ public class ArrayUtils {
 			t.printStackTrace();
 			return null;
 		}
+	}
+
+	public static String toString(Object[] aArray, String string) {
+		return org.apache.commons.lang3.ArrayUtils.toString(aArray, string);
+	}
+
+	public static String toString(Object[] aArray) {
+		return org.apache.commons.lang3.ArrayUtils.toString(aArray);
 	}
 
 }

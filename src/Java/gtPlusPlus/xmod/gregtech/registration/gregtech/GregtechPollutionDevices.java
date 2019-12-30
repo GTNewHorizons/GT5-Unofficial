@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaAtmosphericReconditioner;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionCreator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionDetector;
@@ -12,8 +12,8 @@ public class GregtechPollutionDevices {
 
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Anti-Pollution Devices.");
-			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			if (PollutionUtils.isPollutionEnabled()) {
+				Logger.INFO("Gregtech5u Content | Registering Anti-Pollution Devices.");
 				run1();
 			}
 		}
@@ -50,7 +50,6 @@ public class GregtechPollutionDevices {
 					"pollutioncleaner.10.tier.single", "Biosphere Cleanser", 9).getStackForm(1L));
 		}
 		
-		GregtechItemList.Hatch_Air_Intake.set(new GT_MetaTileEntity_Hatch_AirIntake(861, "hatch.air.intake.tier.00", "Air Intake Hatch", 5).getStackForm(1L));
 
 		
 	}

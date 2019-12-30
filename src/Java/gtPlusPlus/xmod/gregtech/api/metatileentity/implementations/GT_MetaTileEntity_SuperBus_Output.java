@@ -58,7 +58,7 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
 		if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
 			this.fillStacksIntoFirstSlots();
 		}
-
+        super.onPostTick(aBaseMetaTileEntity, aTimer);
 	}
 
 	public void updateSlots() {

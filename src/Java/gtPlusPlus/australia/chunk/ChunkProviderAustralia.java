@@ -9,26 +9,29 @@ import java.util.Map;
 import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.registry.VillagerRegistry;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.australia.gen.map.MapGenLargeRavine;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.*;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.SpawnerAnimals;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.*;
+import net.minecraft.world.gen.ChunkProviderGenerate;
+import net.minecraft.world.gen.MapGenBase;
+import net.minecraft.world.gen.MapGenCaves;
+import net.minecraft.world.gen.NoiseGenerator;
+import net.minecraft.world.gen.NoiseGeneratorOctaves;
+import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
-import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.MapGenMineshaft;
 import net.minecraft.world.gen.structure.MapGenScatteredFeature;
-import net.minecraft.world.gen.structure.MapGenVillage;
-
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
@@ -40,16 +43,6 @@ public class ChunkProviderAustralia extends ChunkProviderGenerate implements ICh
 	private NoiseGeneratorOctaves noiseGen2;
 	private NoiseGeneratorOctaves noiseGen3;
 	private NoiseGeneratorPerlin noiseGen4;
-
-	/**
-	 * A NoiseGeneratorOctaves used in generating terrain
-	 */
-	public NoiseGeneratorOctaves noiseGen5;
-	/**
-	 * A NoiseGeneratorOctaves used in generating terrain
-	 */
-	public NoiseGeneratorOctaves noiseGen6;
-	public NoiseGeneratorOctaves mobSpawnerNoise;
 	/**
 	 * Reference to the World object.
 	 */

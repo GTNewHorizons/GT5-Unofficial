@@ -2,13 +2,6 @@ package gtPlusPlus.core.material;
 
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.Recipe_GT;
-
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -24,7 +17,11 @@ import gtPlusPlus.core.item.base.gears.BaseItemGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotHot;
 import gtPlusPlus.core.item.base.nugget.BaseItemNugget;
-import gtPlusPlus.core.item.base.ore.*;
+import gtPlusPlus.core.item.base.ore.BaseItemCentrifugedCrushedOre;
+import gtPlusPlus.core.item.base.ore.BaseItemCrushedOre;
+import gtPlusPlus.core.item.base.ore.BaseItemImpureDust;
+import gtPlusPlus.core.item.base.ore.BaseItemPurifiedCrushedOre;
+import gtPlusPlus.core.item.base.ore.BaseItemPurifiedDust;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.base.rings.BaseItemRing;
@@ -36,7 +33,21 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.loaders.*;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_AlloySmelter;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Assembler;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelter;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Extruder;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_FluidCanning;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Fluids;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MaterialProcessing;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Ore;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plates;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_ShapedCrafting;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class MaterialGenerator {
@@ -48,21 +59,36 @@ public class MaterialGenerator {
 	@SuppressWarnings("unused")
 	private static volatile Block tempBlock;
 	
-	public static void addFluidExtractionRecipe(ItemStack a, Object b, FluidStack c, int a1, int a2, int a3) {
-		GT_Recipe r = new Recipe_GT(
-				true,
-				new ItemStack[] {a,  b != null ? (ItemStack) b : null},
-				new ItemStack[] {},
-				null,
-				new int[] {},
-				new FluidStack[] {},
-				new FluidStack[] {c},
-				a2, a3, a1);
-		new RecipeGen_FluidCanning(r, true);
+
+	public static boolean addFluidExtractionRecipe(ItemStack aEmpty, ItemStack aRemains, FluidStack aFluid) {
+		return addFluidExtractionRecipe(aEmpty, aRemains, aFluid, null, null);
 	}
 	
-	public static void addFluidCannerRecipe(ItemStack aFullContainer, ItemStack aEmpty, FluidStack rFluidIn, FluidStack rFluidOut) {		
-		GT_Recipe r = new Recipe_GT(
+	/**
+	 * Called Reflectively from CORE.RA.addFluidExtractionRecipe
+	 * @param aSpecial 
+	 * @return 
+	 */
+	public static boolean addFluidExtractionRecipe(ItemStack aEmpty, ItemStack aRemains, FluidStack aFluid, Integer aDuration, Integer aEU) {
+		RecipeGen_FluidCanning g = new RecipeGen_FluidCanning(true, aEmpty, aRemains, aFluid, aDuration, aEU);
+		if (g != null && g.valid()) {
+			//Logger.INFO("[FIND] Adding Extraction recipe for "+ItemUtils.getItemName(aEmpty)+", "+ItemUtils.getItemName(aRemains)+", "+ItemUtils.getFluidName(aFluid));
+			return true;
+		}
+		Logger.INFO("[ERROR] FAILED adding Extraction recipe for "+ItemUtils.getItemName(aEmpty)+", "+ItemUtils.getItemName(aRemains)+", "+ItemUtils.getFluidName(aFluid));
+		return false;
+	}
+
+
+	public static boolean addFluidCannerRecipe(ItemStack aEmpty, ItemStack aFullContainer, FluidStack aFluidIn, FluidStack rFluidOut) {	
+		return addFluidCannerRecipe(aEmpty, aFullContainer, aFluidIn, rFluidOut, null, null);
+	}
+	/**
+	 * Called Reflectively from CORE.RA.addFluidCannerRecipe
+	 * @return 
+	 */
+	public static boolean addFluidCannerRecipe(ItemStack aEmpty, ItemStack aFullContainer, FluidStack aFluidIn, FluidStack rFluidOut, Integer aTime, Integer aEu) {		
+		/*GT_Recipe r = new Recipe_GT(
 				true,
 				new ItemStack[] {aEmpty},
 				new ItemStack[] {aFullContainer},
@@ -70,12 +96,13 @@ public class MaterialGenerator {
 				new int[] {},
 				new FluidStack[] {rFluidIn},
 				new FluidStack[] {rFluidOut},
-				0, 0, 0);
-		new RecipeGen_FluidCanning(r, false);
-	}
-	
-	public static void generateFluidExtractorRecipe(GT_Recipe recipe, boolean extracting) {
-		new RecipeGen_FluidCanning(recipe, extracting);
+				0, 0, 0);*/
+		//new RecipeGen_FluidCanning(r, false);
+		RecipeGen_FluidCanning g = new RecipeGen_FluidCanning(false, aEmpty, aFullContainer, aFluidIn, null, null, 0);
+		if (g != null && g.valid()) {
+			return true;
+		}
+		return false;
 	}
 	
 	public static void generate(final Material matInfo){
