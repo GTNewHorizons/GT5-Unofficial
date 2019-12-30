@@ -228,8 +228,8 @@ item.itemRingSelenium.name=硒环
 item.itemScrewSelenium.name=硒螺丝
 item.itemRotorSelenium.name=硒转子
 item.itemGearSelenium.name=硒齿轮
-item.itemCellUranium232.name=铀 232单元
-item.itemCellUranium233.name=铀 233单元
+item.itemCellUranium232.name=铀232单元
+item.itemCellUranium233.name=铀233单元
 item.itemCellThoriumTetrafluoride.name=四氟化钍单元
 item.itemCellThoriumHexafluoride.name=六氟化钍单元
 item.itemCellUraniumTetrafluoride.name=四氟化铀单元
@@ -519,64 +519,64 @@ item.itemDustSmallFermium.name=小堆镄粉
 item.itemNuggetFermium.name=镄粒
 item.itemPlateFermium.name=镄板
 item.itemPlateDoubleFermium.name=双重镄板
-item.itemIngotLithium7.name=锂 7锭
-item.itemDustLithium7.name=锂 7粉
-item.itemDustTinyLithium7.name=小撮锂 7粉
-item.itemDustSmallLithium7.name=小堆锂 7粉
-item.itemNuggetLithium7.name=锂 7粒
-item.itemPlateLithium7.name=锂 7板
-item.itemPlateDoubleLithium7.name=双重锂 7板
-item.itemIngotThorium232.name=钍 232锭
-item.itemDustThorium232.name=钍 232粉
-item.itemDustTinyThorium232.name=小撮钍 232粉
-item.itemDustSmallThorium232.name=小堆钍 232粉
-item.itemNuggetThorium232.name=钍 232粒
-item.itemPlateThorium232.name=钍 232板
-item.itemPlateDoubleThorium232.name=双重钍 232板
-item.itemIngotUranium232.name=铀 232锭
-item.itemDustUranium232.name=铀 232粉
-item.itemDustTinyUranium232.name=小撮铀 232粉
-item.itemDustSmallUranium232.name=小堆铀 232粉
-item.itemNuggetUranium232.name=铀 232粒
-item.itemPlateUranium232.name=铀 232板
-item.itemRodUranium232.name=铀 232杆
-item.itemRodLongUranium232.name=长铀 232杆
-item.itemIngotUranium233.name=铀 233锭
-item.itemDustUranium233.name=铀 233粉
-item.itemDustTinyUranium233.name=小撮铀 233粉
-item.itemDustSmallUranium233.name=小堆铀 233粉
-item.itemNuggetUranium233.name=铀 233粒
-item.itemPlateUranium233.name=铀 233板
-item.itemRodUranium233.name=铀 233杆
-item.itemRodLongUranium233.name=长铀 233杆
-item.itemIngotPlutonium238.name=钚 238锭
-item.itemDustPlutonium238.name=钚 238粉
-item.itemDustTinyPlutonium238.name=小撮钚 238粉
-item.itemDustSmallPlutonium238.name=小堆钚 238粉
-item.itemNuggetPlutonium238.name=钚 238粒
-item.itemPlatePlutonium238.name=钚 238板
-item.itemPlateDoublePlutonium238.name=双重钚 238板
-item.itemIngotStrontium90.name=锶 90锭
-item.itemDustStrontium90.name=锶 90粉
-item.itemDustTinyStrontium90.name=小撮锶 90粉
-item.itemDustSmallStrontium90.name=小堆锶 90粉
-item.itemNuggetStrontium90.name=锶 90粒
-item.itemPlateStrontium90.name=锶 90板
-item.itemPlateDoubleStrontium90.name=双重锶 90板
-item.itemIngotPolonium210.name=钋 210锭
-item.itemDustPolonium210.name=钋 210粉
-item.itemDustTinyPolonium210.name=小撮钋 210粉
-item.itemDustSmallPolonium210.name=小堆钋 210粉
-item.itemNuggetPolonium210.name=钋 210粒
-item.itemPlatePolonium210.name=钋 210板
-item.itemPlateDoublePolonium210.name=双重钋 210板
-item.itemIngotAmericium241.name=镅 241锭
-item.itemDustAmericium241.name=镅 241粉
-item.itemDustTinyAmericium241.name=小撮镅 241粉
-item.itemDustSmallAmericium241.name=小堆镅 241粉
-item.itemNuggetAmericium241.name=镅 241粒
-item.itemPlateAmericium241.name=镅 241板
-item.itemPlateDoubleAmericium241.name=双重镅 241板
+item.itemIngotLithium7.name=锂7锭
+item.itemDustLithium7.name=锂7粉
+item.itemDustTinyLithium7.name=小撮锂7粉
+item.itemDustSmallLithium7.name=小堆锂7粉
+item.itemNuggetLithium7.name=锂7粒
+item.itemPlateLithium7.name=锂7板
+item.itemPlateDoubleLithium7.name=双重锂7板
+item.itemIngotThorium232.name=钍232锭
+item.itemDustThorium232.name=钍232粉
+item.itemDustTinyThorium232.name=小撮钍232粉
+item.itemDustSmallThorium232.name=小堆钍232粉
+item.itemNuggetThorium232.name=钍232粒
+item.itemPlateThorium232.name=钍232板
+item.itemPlateDoubleThorium232.name=双重钍232板
+item.itemIngotUranium232.name=铀232锭
+item.itemDustUranium232.name=铀232粉
+item.itemDustTinyUranium232.name=小撮铀232粉
+item.itemDustSmallUranium232.name=小堆铀232粉
+item.itemNuggetUranium232.name=铀232粒
+item.itemPlateUranium232.name=铀232板
+item.itemRodUranium232.name=铀232杆
+item.itemRodLongUranium232.name=长铀232杆
+item.itemIngotUranium233.name=铀233锭
+item.itemDustUranium233.name=铀233粉
+item.itemDustTinyUranium233.name=小撮铀233粉
+item.itemDustSmallUranium233.name=小堆铀233粉
+item.itemNuggetUranium233.name=铀233粒
+item.itemPlateUranium233.name=铀233板
+item.itemRodUranium233.name=铀233杆
+item.itemRodLongUranium233.name=长铀233杆
+item.itemIngotPlutonium238.name=钚238锭
+item.itemDustPlutonium238.name=钚238粉
+item.itemDustTinyPlutonium238.name=小撮钚238粉
+item.itemDustSmallPlutonium238.name=小堆钚238粉
+item.itemNuggetPlutonium238.name=钚238粒
+item.itemPlatePlutonium238.name=钚238板
+item.itemPlateDoublePlutonium238.name=双重钚238板
+item.itemIngotStrontium90.name=锶90锭
+item.itemDustStrontium90.name=锶90粉
+item.itemDustTinyStrontium90.name=小撮锶90粉
+item.itemDustSmallStrontium90.name=小堆锶90粉
+item.itemNuggetStrontium90.name=锶90粒
+item.itemPlateStrontium90.name=锶90板
+item.itemPlateDoubleStrontium90.name=双重锶90板
+item.itemIngotPolonium210.name=钋210锭
+item.itemDustPolonium210.name=钋210粉
+item.itemDustTinyPolonium210.name=小撮钋210粉
+item.itemDustSmallPolonium210.name=小堆钋210粉
+item.itemNuggetPolonium210.name=钋210粒
+item.itemPlatePolonium210.name=钋210板
+item.itemPlateDoublePolonium210.name=双重钋210板
+item.itemIngotAmericium241.name=镅241锭
+item.itemDustAmericium241.name=镅241粉
+item.itemDustTinyAmericium241.name=小撮镅241粉
+item.itemDustSmallAmericium241.name=小堆镅241粉
+item.itemNuggetAmericium241.name=镅241粒
+item.itemPlateAmericium241.name=镅241板
+item.itemPlateDoubleAmericium241.name=双重镅241板
 item.itemIngotSiliconCarbide.name=碳化硅锭
 item.itemDustSiliconCarbide.name=碳化硅粉
 item.itemDustTinySiliconCarbide.name=小撮碳化硅粉
@@ -1481,14 +1481,14 @@ item.itemDustTinyUN18Fertiliser.name=小撮流体肥料un-18粉
 item.itemDustUN32Fertiliser.name=流体肥料UN-32粉
 item.itemDustSmallUN32Fertiliser.name=小堆流体肥料UN-32粉
 item.itemDustTinyUN32Fertiliser.name=小撮流体肥料UN-32粉
-item.itemNuggetPlutonium239.name=钚 239粒
-item.itemCellPlutonium239.name=钚 239单元
-item.itemIngotPlutonium239.name=钚 239锭
-item.itemPlatePlutonium239.name=钚 239板
-item.itemPlateDoublePlutonium239.name=双重钚 239板
-item.itemDustPlutonium239.name=钚 239粉
-item.itemDustSmallPlutonium239.name=小堆钚 239粉
-item.itemDustTinyPlutonium239.name=小撮钚 239粉
+item.itemNuggetPlutonium239.name=钚239粒
+item.itemCellPlutonium239.name=钚239单元
+item.itemIngotPlutonium239.name=钚239锭
+item.itemPlatePlutonium239.name=钚239板
+item.itemPlateDoublePlutonium239.name=双重钚239板
+item.itemDustPlutonium239.name=钚239粉
+item.itemDustSmallPlutonium239.name=小堆钚239粉
+item.itemDustTinyPlutonium239.name=小撮钚239粉
 
 
 //Multitools
@@ -1973,10 +1973,10 @@ item.itemDustTinyPromethium.name=小撮钷粉
 item.itemDustPromethium.name=钷粉
 tile.Block of Promethium.name=钷块
 
-item.itemCellAmericium241.name=镅 241单元
-item.itemCellPolonium210.name=钋 210单元
-item.itemCellStrontium90.name=锶 90单元
-item.itemCellPlutonium238.name=钚 238单元
+item.itemCellAmericium241.name=镅241单元
+item.itemCellPolonium210.name=钋210单元
+item.itemCellStrontium90.name=锶90单元
+item.itemCellPlutonium238.name=钚238单元
 
 entity.MiningCharge.name=采矿费用
 entity.throwablePotionSulfuric.name=硫酸烧瓶
@@ -2711,10 +2711,250 @@ tile.playerDoorWood.name=木自动门
 
 //Added 4/2/19
 
-item.GTPP.BattPack.06.name=充电工具包[LuV]
-item.GTPP.BattPack.07.name=充电工具包[ZPM]
-item.GTPP.BattPack.08.name=充电工具包[UV]
-item.GTPP.BattPack.09.name=充电工具包[MAX]
+item.GTPP.BattPack.06.name=充电套件[LuV]
+item.GTPP.BattPack.07.name=充电套件[ZPM]
+item.GTPP.BattPack.08.name=充电套件[UV]
+item.GTPP.BattPack.09.name=充电套件[MAX]
 
 
-//This zh_CN.lang is translation by huajijam for GregTech++ (5/2/19)
+//Added 13/3/19
+item.gtpp.debug.scanner.name=GT++排错扫描器
+item.RawWaste.name=动物粪便单元
+item.ManureSlurry.name=粪浆单元
+item.FertileManureSlurry.name=肥沃的泥浆单元
+item.itemDustTinyDemicheleiteBr.name=小撮德米凯莱(Br)
+item.itemDustSmallDemicheleiteBr.name=小堆德米凯莱(Br)
+tile.blockPooCollector.name=农业下水道
+tile.Block of Lithium 7.name=锂7块
+
+//Added 14/3/19
+item.blood.name=血单元
+item.aniline.name=苯胺单元
+item.cadaverine.name=尸胺单元
+item.polyurethane.name=聚氨酯单元
+item.putrescine.name=腐胺单元
+item.cyclohexane.name=环己单元
+item.cyclohexanone.name=环己酮单元
+item.nitrobenzene.name=硝基苯单元
+item.ender.name=液体末影单元
+item.xpjuice.name=液体经验单元
+item.itemBombUnf.name=可投掷炸弹(未完成)
+item.itemBombCasing.name=炸弹框架
+item.gtpp.throwable.bomb.name=可投掷炸弹
+item.itemDetCable.name=炸弹保险丝
+tile.blockPooCollector.0.name=农业下水道
+tile.blockPooCollector.8.name=生物复合收集器
+item.itemIngotBakelite.name=电木锭
+item.itemDustBakelite.name=电木粉
+item.itemDustTinyBakelite.name=小撮电木粉
+item.itemDustSmallBakelite.name=小堆电木粉
+item.itemNuggetBakelite.name=电木粒
+item.itemPlateBakelite.name=电木板
+item.itemPlateDoubleBakelite.name=双重电木板
+item.itemCellBakelite.name=电木单元
+tile.Block of Bakelite.name=电木块
+item.itemIngotNylon.name=尼龙锭
+item.itemDustNylon.name=尼龙粉
+item.itemDustTinyNylon.name=小撮尼龙粉
+item.itemDustSmallNylon.name=小堆尼龙粉
+item.itemNuggetNylon.name=尼龙粒
+item.itemPlateNylon.name=尼龙板 
+item.itemPlateDoubleNylon.name=双重尼龙板
+item.itemCellNylon.name=尼龙单元
+tile.Block of Nylon.name=尼龙块
+item.itemIngotTeflon.name=特氟龙锭
+item.itemDustTeflon.name=特氟龙粉
+item.itemDustTinyTeflon.name=小撮特氟龙粉
+item.itemDustSmallTeflon.name=小堆特氟龙粉
+item.itemNuggetTeflon.name=特氟龙粒
+item.itemPlateTeflon.name=特氟龙板
+item.itemPlateDoubleTeflon.name=双重特氟龙板
+item.itemCellTeflon.name=特氟龙单元
+tile.Block of Teflon.name=特氟龙块
+
+//Added 17/4/19
+//Spelling Corrections
+item.particle.ion.Aluminium.name=铝离子
+item.particle.ion.Caesium.name=铯离子
+
+item.GTPP.MonsterKiller.Enderman.name=末影人杀手
+item.GTPP.MonsterKiller.Spider.name=蜘蛛杀手
+item.GTPP.MonsterKiller.Skeleton.name=骷髅杀手
+item.GTPP.MonsterKiller.Creeper.name=爬行者杀手
+item.GTPP.MonsterKiller.Zombie.name=僵尸杀手
+item.GTPP.MonsterKiller.Hellish.name=下界生物杀手
+
+item.itemIngotRunite.name=虚恩锭
+item.itemDustRunite.name=虚恩粉
+item.itemDustTinyRunite.name=小撮虚恩粉
+item.itemDustSmallRunite.name=小堆虚恩粉
+item.itemNuggetRunite.name=虚恩锭
+item.itemPlateRunite.name=虚恩板
+item.itemPlateDoubleRunite.name=双重虚恩板
+item.itemCellRunite.name=虚恩单元
+tile.Block of Runite.name=虚恩块
+
+item.itemIngotDragonblood.name=龙物质锭
+item.itemDustDragonblood.name=龙物质粉
+item.itemDustTinyDragonblood.name=小撮龙物质粉
+item.itemDustSmallDragonblood.name=小堆龙物质粉
+item.itemNuggetDragonblood.name=龙血碎片
+item.itemPlateDragonblood.name=龙物质板
+item.itemPlateDoubleDragonblood.name=双重龙物质板
+item.itemCellDragonblood.name=龙血单元
+tile.Block of Dragonblood.name=龙物质块
+
+item.itemIngotBlackTitanium.name=黑钛锭
+item.itemDustBlackTitanium.name=黑钛粉
+item.itemDustTinyBlackTitanium.name=小撮黑钛粉
+item.itemDustSmallBlackTitanium.name=小堆黑钛粉
+item.itemNuggetBlackTitanium.name=黑钛粒
+item.itemPlateBlackTitanium.name=黑钛板
+item.itemPlateDoubleBlackTitanium.name=双重黑钛板
+item.itemCellBlackTitanium.name=黑钛单元
+tile.Block of Black Titanium.name=黑钛块
+
+item.itemIngotAncientGranite.name=古花岗岩锭
+item.itemHotIngotAncientGranite.name=热古花岗岩锭
+item.itemDustAncientGranite.name=古花岗岩粉
+item.itemDustTinyAncientGranite.name=小撮古花岗岩粉
+item.itemDustSmallAncientGranite.name=小堆古花岗岩粉
+item.itemNuggetAncientGranite.name=古花岗岩粒
+item.itemPlateAncientGranite.name=古花岗岩板
+item.itemPlateDoubleAncientGranite.name=双重古花岗岩板
+tile.Block of Ancient Granite.name=古花岗岩块
+
+item.itemIngotBabbitAlloy.name=巴氏合金锭
+item.itemHotIngotBabbitAlloy.name=热巴氏合金锭
+item.itemDustBabbitAlloy.name=巴氏合金粉
+item.itemDustTinyBabbitAlloy.name=小撮巴氏合金粉
+item.itemDustSmallBabbitAlloy.name=小堆巴氏合金粉
+item.itemNuggetBabbitAlloy.name=巴氏合金粒
+item.itemPlateBabbitAlloy.name=巴氏合金板
+item.itemPlateDoubleBabbitAlloy.name=双重巴氏合金板
+item.itemCellBabbitAlloy.name=巴氏合金单元
+tile.Block of Babbit Alloy.name=巴氏合金块
+
+item.itemIngotBlackMetal.name=黑物质锭
+item.itemHotIngotBlackMetal.name=热黑物质锭
+item.itemDustBlackMetal.name=黑物质粉
+item.itemDustTinyBlackMetal.name=小撮黑物质粉
+item.itemDustSmallBlackMetal.name=小堆黑物质粉
+item.itemNuggetBlackMetal.name=黑物质粒
+item.itemPlateBlackMetal.name=黑物质板
+item.itemPlateDoubleBlackMetal.name=双重黑物质板
+item.itemBoltBlackMetal.name=黑物质螺栓
+item.itemRodBlackMetal.name=黑物质杆
+item.itemRodLongBlackMetal.name=黑物质长杆
+item.itemRingBlackMetal.name=黑物质环
+item.itemScrewBlackMetal.name=黑物质螺丝
+item.itemRotorBlackMetal.name=黑物质转子
+item.itemGearBlackMetal.name=黑物质齿轮
+item.itemCellBlackMetal.name=黑物质单元
+tile.Block of Black Metal.name=黑物质块
+tile.Black Metal Frame Box.name=黑物质框架
+
+item.itemIngotwhiteMetal.name=白物质锭
+item.itemHotIngotwhiteMetal.name=热白物质锭
+item.itemDustwhiteMetal.name=白物质粉
+item.itemDustTinywhiteMetal.name=小撮白物质粉
+item.itemDustSmallwhiteMetal.name=小堆白物质粉
+item.itemNuggetwhiteMetal.name=白物质粒
+item.itemPlatewhiteMetal.name=白物质板
+item.itemPlateDoublewhiteMetal.name=双重白物质板
+item.itemBoltwhiteMetal.name=白物质螺栓
+item.itemRodwhiteMetal.name=白物质杆
+item.itemRodLongwhiteMetal.name=白物质长杆
+item.itemRingwhiteMetal.name=白物质环
+item.itemScrewwhiteMetal.name=白物质螺丝
+item.itemRotorwhiteMetal.name=白物质转子
+item.itemGearwhiteMetal.name=白物质齿轮
+item.itemCellwhiteMetal.name=白物质单元
+tile.Block of white Metal.name=白物质块
+tile.white Metal Frame Box.name=白物质框架
+
+//Added 29/04/2019
+tile.OreRunite.name=虚恩矿
+item.crushedRunite.name=粉碎的虚恩矿
+item.crushedCentrifugedRunite.name=离心的粉碎虚恩矿
+item.crushedPurifiedRunite.name=洗净的的粉碎虚恩矿
+item.dustImpureRunite.name=含杂虚恩粉
+item.dustPureRunite.name=洗净虚恩粉
+
+tile.OreAncientGranite.name=古花岗岩矿
+item.crushedAncientGranite.name=粉碎的古花岗岩矿
+item.crushedCentrifugedAncientGranite.name=离心的粉碎古花岗岩矿
+item.crushedPurifiedAncientGranite.name=洗净的粉碎古花岗岩矿
+item.dustImpureAncientGranite.name=含杂古花岗岩粉
+item.dustPureAncientGranite.name=洗净古花岗岩粉
+
+item.itemIngotRhugnor.name=鲁格诺锭
+item.itemDustRhugnor.name=鲁格诺粉
+item.itemDustTinyRhugnor.name=小撮鲁格诺粉
+item.itemDustSmallRhugnor.name=小堆鲁格诺粉
+item.itemNuggetRhugnor.name=鲁格诺粒
+item.itemPlateRhugnor.name=鲁格诺板
+item.itemPlateDoubleRhugnor.name=双重鲁格诺板
+item.itemCellRhugnor.name=鲁格诺单元
+tile.Block of Rhugnor.name=鲁格诺块
+
+
+
+
+//Added 13/5/19
+
+item.GTPP.BattPack.01.name=充能套件[LV]
+item.GTPP.BattPack.02.name=充能套件[MV]
+item.GTPP.BattPack.03.name=充能套件[HV]
+item.GTPP.BattPack.04.name=充能套件[EV]
+item.GTPP.BattPack.05.name=充能套件[IV]
+item.IndustrialDiamondExquisite.name=精致的工业钻石
+
+item.itemSpringCelestialTungsten.name=天体钨弹簧
+item.itemSpringWhiteMetal.name=白物质弹簧
+item.itemSpringNitinol60.name=镍钛诺60弹簧
+item.itemSpringWatertightSteel.name=防水钢弹簧
+item.itemSpringEglinSteel.name=埃格林钢弹簧
+
+item.itemSmallSpringMaragingSteel250.name=小马氏体时效钢250弹簧
+item.itemSmallSpringNichrome.name=小镍铬合金弹簧
+item.itemSmallSpringStaballoy.name=小型贫铀合金弹簧
+item.itemSmallSpringBlackSteel.name=小黑钢弹簧
+item.itemSmallSpringBlackTitanium.name=小黑钛弹簧
+
+item.itemFineWireWhiteMetal.name=精致白物质导线
+item.itemFineWirePalladium.name=精致钯导线
+item.itemFineWireZirconium.name=精致锆导线
+item.itemFineWireGrisium.name=精致格里西姆合金导线
+item.itemFineWireBabbitAlloy.name=精致巴氏合金导线
+item.itemFineWireKoboldite.name=精致妖金导线
+item.itemFineWireHG1223.name=精致HG-1223导线
+item.itemFineWireQuantum.name=精致量子导线
+
+item.itemHeavyPlatePotin.name=重型粗青铜板
+item.itemHeavyPlateWatertightSteel.name=重型防水钢板
+item.itemHeavyPlateBronze.name=重型青铜板
+item.itemHeavyPlateOsmiridium.name=重型铱锇合金板
+item.itemHeavyPlateQuantum.name=重型量子板
+item.itemHeavyPlateBlackSteel.name=重型黑钢板
+item.itemHeavyPlateStainlessSteel.name=重型不锈钢板
+item.itemHeavyPlateEglinSteel.name=重型埃格林钢板
+item.itemHeavyPlateMaragingSteel300.name=重型马氏体时效钢300板
+item.itemHeavyPlateTalonite.name=铬钴磷酸盐合金板
+item.itemHeavyPlateHypogen.name=重型海珀珍板
+item.itemHeavyPlateRhugnor.name=重型鲁格诺板
+item.itemHeavyPlateAdvancedNitinol.name=重型高级镍钛诺板
+item.itemHeavyPlateAstralTitanium.name=重型星体钛板
+item.itemHeavyPlateCelestialTungsten.name=重型天体钨板
+item.itemHeavyPlateWhiteMetal.name=重型白物质板
+item.itemHeavyPlateBlackMetal.name=重型黑物质板
+item.itemHeavyPlateAncientGranite.name=重型古花岗岩板
+
+item.GTPP.bauble.fireprotection.0.name=Supreme披萨手套
+
+
+//Added 16/5/19
+item.itemCellSeleniumDioxide.name=二氧化硒单元
+item.itemCellSeleniousAcid.name=亚硒酸单元
+
+//This zh_CN.lang is translated by huajijam for GregTech++ (9/6/19)
