@@ -33,7 +33,7 @@ public class ThreadPooCollector extends Thread {
 	
 	public ThreadPooCollector() {
         setName("gtpp.handler.poop");
-        run();
+        start();
 	}
 	
 	public static ThreadPooCollector getInstance() {

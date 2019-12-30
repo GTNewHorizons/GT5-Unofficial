@@ -1,6 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
+import static gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils.mPollution;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -40,6 +43,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	protected boolean mHasPollution = false;
 	protected int SLOT_ROTOR = 4;
 	protected int SLOT_FILTER = 5;
+	protected static boolean mPollutionEnabled = true;
 	
 	protected boolean mSaveRotor = false;
 
@@ -55,10 +59,12 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
 						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB)
 		});
+		mPollutionEnabled = PollutionUtils.mPollution();
 	}
 
 	public GregtechMetaAtmosphericReconditioner(String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
 		super(aName, aTier, 2, aDescription, aTextures, 2, 0, aGUIName, aNEIName);
+		mPollutionEnabled = PollutionUtils.mPollution();
 	}
 
 	/*public GregtechMetaAtmosphericReconditioner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
@@ -75,10 +81,9 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	@Override
 	public String[] getDescription() {
 		
-		boolean highTier = this.mTier >= 7;
+		boolean highTier = this.mTier >= 7;		
 		
-		
-		return new String[]{
+		String[] A = new String[]{
 				this.mDescription,
 				highTier ? "Will attempt to remove 1/4 pollution from 8 surrounding chunks" : "",
 						highTier ? "If these chunks are not loaded, they will be ignored" : "",
@@ -87,9 +92,19 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 				"Can be configured with a soldering iron to change modes",
 				"Low Efficiency: Removes half pollution, Turbine takes 50% dmg",
 				"High Efficiency: Removes full pollution, Turbine takes 100% dmg",
-				"Turbine Rotor will not break in LE mode",
-				
+				"Turbine Rotor will not break in LE mode",				
 				};
+		if (!mPollutionEnabled) {
+			String[] B = new String[] {
+					"===============================================",				
+					"Pollution is disabled, scrubbers will now have a bonus use",				
+					"They are now able to remove ALL lingering pollution as GT ignores it",		
+					"and it will linger forever!",		
+					"===============================================",								
+			};
+			A = ArrayUtils.addAll(A, B);
+		}		
+		return A;
 	}
 
 	@Override
@@ -187,7 +202,19 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 					if (aBaseMetaTileEntity.isActive()){							
 
 						//Do nothing if there is no pollution.
-						if(this.mHasPollution && mCurrentPollution > 0){	
+						if(this.mHasPollution && mCurrentPollution > 0){
+							
+							//Only check every 30s.
+							if (!isIdle && aTick % (20L * 30) == 0L){
+								mPollutionEnabled = PollutionUtils.mPollution();
+								//Clear out pollution if it's disabled, because I am a nice gal.
+								if (!mPollution()) {
+									PollutionUtils.nullifyPollution(this.getBaseMetaTileEntity());
+								}
+							}
+							
+							
+							
 
 							//Use a Turbine
 							if(hasRotor(stackRotor) && hasAirFilter(stackFilter)){
@@ -683,8 +710,17 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 		catch (Throwable t) {
 			aTooltipSuper.put("Maximum pollution removed per second: "+mPollutionReduction);
 		}
-		aTooltipSuper.put("Air Sides: "+mAirSides);		
-		return aTooltipSuper.toArray();
+		aTooltipSuper.put("Air Sides: "+mAirSides);	
+		
+		String[] mBuiltOutput = new String[aTooltipSuper.size()];
+		int aIndex = 0;
+		for (String i : aTooltipSuper) {
+			mBuiltOutput[aIndex++] = i;
+		}
+		
+		
+		
+		return mBuiltOutput;
 	}
 
 	@Override

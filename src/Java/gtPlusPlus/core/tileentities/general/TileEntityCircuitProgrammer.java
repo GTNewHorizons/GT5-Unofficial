@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.inventories.InventoryCircuitProgrammer;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.slots.SlotIntegratedCircuit;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInventory {
@@ -76,16 +77,21 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
 			boolean doAdd = false;
 			ItemStack g = this.getStackInSlot(e);
 			int aSize = 0;
-			ItemStack aInputStack = null;			
-			if (g != null) {				
+			ItemStack aInputStack = null;	
+			int aTypeInSlot = SlotIntegratedCircuit.isRegularProgrammableCircuit(g);
+			if (aTypeInSlot >= 0 && g != null) {
+				// No Existing Output
 				if (!hasOutput) {
 					aSize = g.stackSize;
 					doAdd = true;
 				}
+				// Existing Output
 				else {
 					ItemStack f = this.getStackInSlot(25);
-					if (f != null) {
-						if (f.getItemDamage() == e) {
+					int aTypeInCheckedSlot = SlotIntegratedCircuit.isRegularProgrammableCircuit(f);					
+					// Check that the Circuit in the Output slot is not null and the same type as the circuit input.
+					if (aTypeInCheckedSlot >= 0 && (aTypeInSlot == aTypeInCheckedSlot) && f != null) {
+						if (g.getItem() == f.getItem() && f.getItemDamage() == e) {
 							aSize = f.stackSize + g.stackSize;							
 							if (aSize > 64) {
 								aInputStack = g.copy();
@@ -93,16 +99,23 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
 							}
 							doAdd = true;							
 						}
-					}
-					else {
-						doAdd = true;
-						aSize = g.stackSize;
 					}					
 				}				
-				if (doAdd) {				
-					ItemStack aOutput = CI.getNumberedCircuit(e);
-					aOutput.stackSize = aSize;				
+				if (doAdd) {	
+					// Check Circuit Type					
+					ItemStack aOutput;
+					if (aTypeInSlot == 0) {
+						aOutput = CI.getNumberedCircuit(e);
+					}
+					else if (aTypeInSlot == 1) {
+						aOutput = CI.getNumberedBioCircuit(e);
+					}
+					else {
+						aOutput = null;
+					}			
+					
 					if (aOutput != null) {
+						aOutput.stackSize = aSize;
 						this.setInventorySlotContents(e, aInputStack);
 						this.setInventorySlotContents(25, aOutput);
 						return true;

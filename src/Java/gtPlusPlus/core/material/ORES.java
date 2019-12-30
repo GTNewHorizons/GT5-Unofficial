@@ -90,9 +90,10 @@ public final class ORES {
 			-1,
 			-1, //Radiation
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().LEAD, 1),
-					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 4)
+					new MaterialStack(ELEMENT.getInstance().LEAD, 2),
+					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 3),
+					new MaterialStack(ELEMENT.getInstance().CAESIUM, 1),
 			});	
 
 	public static final Material NICHROMITE = new Material(
@@ -126,7 +127,10 @@ public final class ORES {
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 1), //Y not YT/YB
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 3)
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 3),
+					new MaterialStack(ELEMENT.getInstance().IRON, 4),
+					new MaterialStack(ELEMENT.getInstance().TIN, 1),
+					new MaterialStack(ELEMENT.getInstance().NITROGEN, 2)
 			});	
 
 	//Samarskite_Y
@@ -260,6 +264,7 @@ public final class ORES {
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().YTTERBIUM, 1),
 					new MaterialStack(ELEMENT.getInstance().PHOSPHORUS, 1),
 					new MaterialStack(ELEMENT.getInstance().OXYGEN, 4)
 			});
@@ -793,6 +798,21 @@ public final class ORES {
 					new MaterialStack(ELEMENT.getInstance().RADIUM, 1),
 					new MaterialStack(ELEMENT.getInstance().SULFUR, 16),
 					new MaterialStack(ELEMENT.getInstance().OXYGEN, 15)
+			});
+
+	public static final Material GREENOCKITE = new Material(
+			"Greenockite", //Material Name
+			MaterialState.ORE, //State
+			TextureSets.GEM_A.get(), //Texture Set
+			new short[]{110, 193, 25, 0}, //Material Colour
+			-1,
+			-1,
+			-1,
+			-1,
+			-1, //Radiation
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().CADMIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().SULFUR, 2),
 			});
 	
 

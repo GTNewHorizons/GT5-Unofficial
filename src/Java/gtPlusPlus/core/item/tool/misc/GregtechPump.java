@@ -1127,7 +1127,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 		else if ((aTileEntity instanceof IFluidTank || aTileEntity instanceof IFluidHandler)) {
 			if (aTileEntity instanceof IFluidTank) {
 				Logger.INFO("Tile Was instanceof IFluidTank.");
-				FluidStack f = ((IFluidTank) aTileEntity).getFluid();
+				FluidStack f = ((IFluidTank) aTileEntity).getFluid();				
 				if (aSetFluid == null) {
 					aSetFluid = f;
 					aSetFluid.amount = f.amount;

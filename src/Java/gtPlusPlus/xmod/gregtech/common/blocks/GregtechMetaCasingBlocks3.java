@@ -66,6 +66,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Volcanus Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Fusion Machine Casing MK III");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Advanced Fusion Coil");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Unnamed");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Containment Casing");
 		GregtechItemList.Casing_FishPond.set(new ItemStack(this, 1, 0));
 		GregtechItemList.Casing_Extruder.set(new ItemStack(this, 1, 1));

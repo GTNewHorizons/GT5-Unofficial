@@ -1,10 +1,10 @@
 package gtPlusPlus.xmod.gregtech.recipes;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -28,7 +28,7 @@ public class RecipesToRemove {
 			Logger.INFO("Removed vanilla GT Rare Earth processing.");			
 			//Set the Chemical Symbol for Rare Earth now that we are giving it custom outputs
 			//Best not to set this unless the original recipe is removed.
-			Materials.RareEarth.mChemicalFormula = "("
+			/*Materials.RareEarth.mChemicalFormula = "("
 					+ELEMENT.getInstance().YTTRIUM.vChemicalSymbol
 					+ELEMENT.getInstance().NEODYMIUM.vChemicalSymbol
 					+ELEMENT.getInstance().LANTHANUM.vChemicalSymbol
@@ -38,7 +38,18 @@ public class RecipesToRemove {
 					+ELEMENT.getInstance().YTTERBIUM.vChemicalSymbol
 					+ELEMENT.getInstance().SAMARIUM.vChemicalSymbol
 					+ELEMENT.getInstance().GADOLINIUM.vChemicalSymbol+
-					")";	
+					")";*/
+			
+			Material[] aLowTierOutputMaterials = new Material[] {
+					ORES.GREENOCKITE
+			};
+			
+			
+			
+			
+			
+			
+			
 		}
 		
 	}

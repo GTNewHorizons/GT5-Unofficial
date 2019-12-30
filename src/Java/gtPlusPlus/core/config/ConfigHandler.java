@@ -176,6 +176,7 @@ public class ConfigHandler {
 				"Enables Custom GT++ Cape.");		
 		disableZombieReinforcement = config.getBoolean("disableZombieReinforcement", "features", false,
 				"Disables Zombie Reinforcement on hard difficutly.");
+		enableWatchdogBGM = config.getInt("enableWatchdogBGM", "features", 0, 0, Short.MAX_VALUE, "Set to a value greater than 0 to reduce the ticks taken to delay between BGM tracks. Acceptable Values are 1-32767, where 0 is disabled. Vanilla Uses 12,000 & 24,000. 200 is 10s.");
 	
 		//Biomes
 		EVERGLADES_ID = config.getInt("darkworld_ID", "worldgen", 227, 1, 254, "The ID of the Dark Dimension.");

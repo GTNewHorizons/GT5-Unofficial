@@ -53,7 +53,8 @@ public class TF_Items {
 		if (ReflectionUtils.doesClassExist("cofh.core.util.energy.FurnaceFuelHandler")){
 			FurnaceFuelHandler.registerFuel(dustPyrotheum, 2400); //cofh.core.util.energy.FurnaceFuelHandler.registerFuel(ItemStack, int)
 		}
-
+		
+		ItemUtils.addItemToOreDictionary(rodBlizz, "stickBlizz");
 
 		itemRodBlizz = ItemUtils.simpleMetaStack(itemMaterial, 1, 1);
 		itemDustBlizz = ItemUtils.simpleMetaStack(itemMaterial, 2, 1);

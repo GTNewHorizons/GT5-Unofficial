@@ -154,16 +154,7 @@ public class RECIPES_Tools {
 				CobbleStone, sandHammer, CobbleStone,
 				CobbleStone, CobbleStone, CobbleStone,
 				RECIPE_Sand);
-
-		if (LoadedMods.Baubles){
-			//Cloaking Device
-			RecipeUtils.recipeBuilder(
-					plateDoubleNiChrome, plateIridiumAlloy, plateDoubleNiChrome,
-					plateIridiumAlloy, batteryUltimate, plateIridiumAlloy,
-					plateDoubleNiChrome, plateIridiumAlloy, plateDoubleNiChrome,
-					personalCloakingDevice);
-
-		}
+		
 		//Sand to Sandstone
 		RecipeUtils.recipeBuilder(
 				Sand, Sand, Sand,

@@ -420,8 +420,10 @@ public class ChargingHelper {
 		if (stack == null) {
 			return false;
 		}
-		return (Info.itemEnergy.getEnergyValue(stack) > 0.0D)
-				|| (ElectricItem.manager.discharge(stack, (1.0D / 0.0D), 4, true, true, true) > 0.0D);
+		else {
+			return false;
+		}
+		//return (Info.itemEnergy.getEnergyValue(stack) > 0.0D) || (ElectricItem.manager.discharge(stack, (1.0D / 0.0D), 4, true, true, true) > 0.0D);
 	}
 
 }

@@ -6,6 +6,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
@@ -447,7 +448,10 @@ public class CI {
 	}
 
 	public static final ItemStack getTieredMachineCasing(int tier){
-		if (tier == 0){
+		if (tier == 0){			
+			if (machineCasing_ULV == null) {
+				machineCasing_ULV = ItemList.Casing_ULV.get(1);				
+			}			
 			return machineCasing_ULV;
 		}
 		else if (tier == 1){
@@ -544,7 +548,7 @@ public class CI {
 	
 	private static final Material[] aMaterial_Main = new Material[] {
 			ALLOY.POTIN,
-			ALLOY.ZIRCONIUM_CARBIDE,				
+			ALLOY.TUMBAGA,				
 			ALLOY.EGLIN_STEEL,				
 			ALLOY.INCONEL_792,				
 			ALLOY.TUNGSTEN_TITANIUM_CARBIDE,				
@@ -558,7 +562,7 @@ public class CI {
 	};		
 	
 	private static final Material[] aMaterial_Secondary = new Material[] {
-			ALLOY.TUMBAGA,
+			ALLOY.STEEL,
 			ALLOY.SILICON_CARBIDE,
 			ALLOY.TUNGSTEN_CARBIDE,				
 			ALLOY.INCONEL_690,				
@@ -573,7 +577,7 @@ public class CI {
 	};	
 	
 	private static final Material[] aMaterial_Tertiary = new Material[] {
-			ALLOY.STEEL,
+			ELEMENT.getInstance().LEAD,
 			ELEMENT.getInstance().ALUMINIUM,
 			ALLOY.STAINLESS_STEEL,
 			ELEMENT.getInstance().TUNGSTEN,
@@ -631,12 +635,22 @@ public class CI {
 	}
 
 	public static FluidStack getTieredFluid(int aTier, int aAmount, int aType) {
-		ItemStack aCell = getTieredComponent(OrePrefixes.liquid, aTier, 1);
+		// Weird Legacy handling
+		/*ItemStack aCell = getTieredComponent(OrePrefixes.liquid, aTier, 1);
 		FluidStack a = GT_Utility.getFluidForFilledItem(aCell, true);
 		if (a == null) {
 			a = aMaster[aType][aTier].getFluid(aAmount);
-		}
-		a.amount = aAmount;
+		}*/		
+		
+		// Modern Handling
+		FluidStack a = aMaster[aType][aTier].getFluid(aAmount);			
+		if (a == null) {
+			ItemStack aCell = getTieredComponent(OrePrefixes.liquid, aTier, 1);
+			if (aCell != null) {
+				a = GT_Utility.getFluidForFilledItem(aCell, true);
+				a.amount = aAmount;
+			}
+		}		
 		return a;
 	}
 	
@@ -1224,6 +1238,10 @@ public class CI {
 			return ItemUtils.simpleMetaStack(StaticFields59.getBlockCasings5(), i, 1);
 		}
 
+	}
+
+	public static ItemStack getNumberedBioCircuit(int i) {
+		return ItemUtils.simpleMetaStack(AgriculturalChem.mBioCircuit, i, 0);
 	}
 
 }

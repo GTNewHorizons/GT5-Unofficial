@@ -329,8 +329,6 @@ public class Preloader_ClassTransformer2 {
 				Logger.REFLECTION("mItemStorageNBT: "+(mItemStorageNBT != null));
 
 				//mItemStorageNBT
-
-				ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, tID);
 				NBTTagCompound tNBT = new NBTTagCompound();
 
 				if (tRecipeStuff != null && !tRecipeStuff.hasNoTags()) tNBT.setTag("GT.CraftingComponents", tRecipeStuff);

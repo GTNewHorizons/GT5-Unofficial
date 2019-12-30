@@ -22,6 +22,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaEnergyBuffer;
@@ -48,7 +49,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, "Use Screwdriver to change voltage", EnumChatFormatting.GREEN+"CREATIVE MACHINE"};
+		return new String[] {this.mDescription, "Use Screwdriver to change voltage", "Hold Shift while using Screwdriver to change amperage", EnumChatFormatting.GREEN+"CREATIVE MACHINE"};
 	}
 
 	/*
@@ -177,43 +178,48 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 	}
 
 	@Override
-	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		if (this.mTier < 9) {
-			this.mTier++;
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {		
+		if (KeyboardUtils.isShiftKeyDown()) {
+			super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);			
 		}
 		else {
-			this.mTier = 0;
-		}
-		this.markDirty();
-		try {
-			Field field = ReflectionUtils.getField(this.getClass(), "mTextures");				
-			field.setAccessible(true);
-			Field modifiersField = Field.class.getDeclaredField("modifiers");
-			modifiersField.setAccessible(true);
-			modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-			ITexture[][][] V = getTextureSet(null);
-			if (V != null) {
-				Logger.REFLECTION("Got Valid Textures.");	
-				if (this.getBaseMetaTileEntity().isClientSide()) {
-					Logger.REFLECTION("Clientside Call.");	
-					Logger.REFLECTION("Refreshing Textures on buffer.");
-					field.set(this, V);
-					Logger.REFLECTION("Refreshed Textures on buffer.");
-				}
-				else {
-					Logger.REFLECTION("Serverside Call.");	
-				}
+			if (this.mTier < (CORE.GTNH ? GT_Values.V.length : 9)) {
+				this.mTier++;
 			}
 			else {
-				Logger.REFLECTION("Bad mTextures setter.");				
-			}			
-		}
-		catch (Throwable t) {
-			//Bad refresh.
-			t.printStackTrace();
-			Logger.REFLECTION("Bad mTextures setter.");
-		}
-		PlayerUtils.messagePlayer(aPlayer, "Now running at "+GT_Values.VOLTAGE_NAMES[this.mTier]+". ["+MathUtils.isNumberEven(this.mTier)+"]");
-		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+				this.mTier = 0;
+			}
+			this.markDirty();
+			try {
+				Field field = ReflectionUtils.getField(this.getClass(), "mTextures");				
+				field.setAccessible(true);
+				Field modifiersField = Field.class.getDeclaredField("modifiers");
+				modifiersField.setAccessible(true);
+				modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+				ITexture[][][] V = getTextureSet(null);
+				if (V != null) {
+					Logger.REFLECTION("Got Valid Textures.");	
+					if (this.getBaseMetaTileEntity().isClientSide()) {
+						Logger.REFLECTION("Clientside Call.");	
+						Logger.REFLECTION("Refreshing Textures on buffer.");
+						field.set(this, V);
+						Logger.REFLECTION("Refreshed Textures on buffer.");
+					}
+					else {
+						Logger.REFLECTION("Serverside Call.");	
+					}
+				}
+				else {
+					Logger.REFLECTION("Bad mTextures setter.");				
+				}			
+			}
+			catch (Throwable t) {
+				//Bad refresh.
+				t.printStackTrace();
+				Logger.REFLECTION("Bad mTextures setter.");
+			}
+			PlayerUtils.messagePlayer(aPlayer, "Now running at "+GT_Values.VOLTAGE_NAMES[this.mTier]+".");
+		}		
+		
 	}
 }

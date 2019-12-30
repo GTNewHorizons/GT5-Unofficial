@@ -19,9 +19,11 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gtPlusPlus.api.helpers.GregtechPlusPlus_API.Multiblock_API;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.api.objects.minecraft.multi.NoOutputBonusMultiBehaviour;
 import gtPlusPlus.australia.gen.gt.WorldGen_GT_Australia;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.OldCircuitHandler;
@@ -30,21 +32,25 @@ import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
+import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.Gregtech_Blocks;
-import gtPlusPlus.xmod.gregtech.loaders.ProcessingAngelGrinder;
+import gtPlusPlus.xmod.gregtech.loaders.ProcessingAngleGrinder;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricButcherKnife;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricLighter;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricSnips;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingToolHeadChoocher;
+import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_AlgaeFarm;
 import gtPlusPlus.xmod.gregtech.recipes.RecipesToRemove;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechNitroDieselFix;
@@ -59,6 +65,7 @@ public class HANDLER_GT {
 	public static final List<WorldGen_GT> sWorldgenListEverglades = new ArrayList<WorldGen_GT>();
 	public static final List<WorldGen_GT_Australia> sWorldgenListAustralia = new ArrayList<WorldGen_GT_Australia>();
 	public static final List<GTPP_Worldgen> sCustomWorldgenList = new ArrayList<GTPP_Worldgen>();
+	public static GT_MetaGenerated_Tool sMetaGeneratedToolInstance;
 
 	public static void preInit(){
 
@@ -88,7 +95,7 @@ public class HANDLER_GT {
 
 		//Only loads if the config option is true (default: true)
 		if (CORE.ConfigSwitches.enableSkookumChoochers){
-			new MetaGeneratedGregtechTools();
+			sMetaGeneratedToolInstance= MetaGeneratedGregtechTools.getInstance();
 		}
 
 		if (ConfigSwitches.enableOldGTcircuits && !CORE.GTNH){
@@ -107,7 +114,7 @@ public class HANDLER_GT {
 		if (CORE.ConfigSwitches.enableSkookumChoochers){
 			new ProcessingToolHeadChoocher().run();
 		}
-		new ProcessingAngelGrinder().run();
+		new ProcessingAngleGrinder().run();
 		new ProcessingElectricSnips().run();
 		new ProcessingElectricButcherKnife().run();
 		new ProcessingElectricLighter().run();
@@ -121,6 +128,9 @@ public class HANDLER_GT {
 		}
 
 
+		// Register the No-Bonus Special Behaviour.
+		Multiblock_API.registerSpecialMultiBehaviour(new NoOutputBonusMultiBehaviour());
+
 		//Register some custom recipe maps for any enabled multiblocks.
 		//MultiblockRecipeMapHandler.run();
 	}
@@ -133,17 +143,23 @@ public class HANDLER_GT {
 		}		
 		RecipesToRemove.go();
 		convertPyroToCokeOven();
+		Meta_GT_Proxy.fixIC2FluidNames();
+		RecipeLoader_AlgaeFarm.generateRecipes();
 	}
 
 	private static void convertPyroToCokeOven() {
-        int aCount = 0;
-	    for (GT_Recipe g : GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes.mRecipeList) {
-	        if (AddGregtechRecipe.importPyroRecipe(g)) {
-	            aCount++;
+		if (ReflectionUtils.doesFieldExist(GT_Recipe.GT_Recipe_Map.class, "sPyrolyseRecipes")) {
+			int aCount = 0; 
+	        GT_Recipe_Map aMap = StaticFields59.getPyrolyseRecipeMap();
+	        if (aMap != null) {
+	        	for (GT_Recipe g : aMap.mRecipeList) {
+	        		if (AddGregtechRecipe.importPyroRecipe(g)) {
+	    	            aCount++;
+	    	        }    	    
+	        	}
+	    	    Logger.INFO("Converted "+aCount+" Pyrolyse recipes into Industrial Coke Oven recipes.");
 	        }
-	    }
-	    Logger.INFO("Converted "+aCount+" Pyrolyse recipes into Industrial Coke Oven recipes.");
-	    
+		}        	    
     }
 
     private static GT_Recipe replaceItemInRecipeWithAnother(GT_Recipe aRecipe, ItemStack aExisting, ItemStack aNewItem) {
@@ -346,6 +362,10 @@ public class HANDLER_GT {
 	                        OrePrefixes.wireGt01.get(Materials.Superconductor)});*/
 		}
 		else {
+			
+
+			Materials aPolytetrafluoroethylene = MaterialUtils.getMaterial("Polytetrafluoroethylene", "Plastic");
+			
 	        Logger.INFO("Adding new hard Shaped recipes for Hulls.");
 	        GT_ModHandler.addCraftingRecipe(ItemList.Hull_LuV.get(1),
 	                RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED,
@@ -357,13 +377,13 @@ public class HANDLER_GT {
 	                new Object[]{"PHP", "CMC", 'M', ItemList.Casing_ZPM, 'C',
 	                        OrePrefixes.cableGt01.get(Materials.Naquadah), 'H',
 	                        CI.getPlate(aTier_ZPM, 1), 'P',
-	                        OrePrefixes.plate.get(Materials.Polytetrafluoroethylene)});
+	                        OrePrefixes.plate.get(aPolytetrafluoroethylene)});
 	        GT_ModHandler.addCraftingRecipe(ItemList.Hull_UV.get(1),
 	                RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED,
 	                new Object[]{"PHP", "CMC", 'M', ItemList.Casing_UV, 'C',
 	                        OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), 'H',
 	                        CI.getPlate(aTier_UV, 1), 'P',
-	                        OrePrefixes.plate.get(Materials.Polytetrafluoroethylene)});
+	                        OrePrefixes.plate.get(aPolytetrafluoroethylene)});
             /*GT_ModHandler.addCraftingRecipe(ItemList.Hull_MAX.get(1),
                     RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED,
                     new Object[]{"PHP", "CMC", 'M', ItemList.Casing_MAX, 'C',

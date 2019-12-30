@@ -47,7 +47,7 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{
 				"Controller Block for the Industrial Maceration Stack",
 				"60% faster than using single block machines of the same voltage",
-				"Increased output chances on % outputs",
+				//"Increased output chances on % outputs",
 				"Processes 8*tier materials at a time",
 				"ULV = Tier 0, LV = Tier 1, etc.",
 				"-------------------------------------------------------",

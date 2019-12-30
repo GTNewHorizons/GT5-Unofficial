@@ -79,7 +79,7 @@ public class EntityNativeAustralian extends EntityVillager {
 	@Override
 	public void readEntityFromNBT(NBTTagCompound aNBT) {
 		if (aNBT.hasKey("aCustomName")) {
-			if (this.getCustomNameTag() != aNBT.getString("aCustomName")) {
+			if (!this.getCustomNameTag().equals(aNBT.getString("aCustomName"))) {
 				this.setCustomNameTag(aNBT.getString("aCustomName"));
 			}
 		}
@@ -105,7 +105,7 @@ public class EntityNativeAustralian extends EntityVillager {
 
 	@Override
 	public void setProfession(int p_70938_1_) {
-		super.setProfession(mRoleID);
+		super.setProfession(7738);
 	}
 
 	@Override
@@ -190,9 +190,10 @@ public class EntityNativeAustralian extends EntityVillager {
 
 	protected MerchantRecipeList getBuyingList() {
 		Field v82191;
-		MerchantRecipeList o;
+		MerchantRecipeList o = null;
 		v82191 = ReflectionUtils.getField(getClass(), "buyingList");
 		try {
+			if (v82191 != null)
 			o = (MerchantRecipeList) v82191.get(this);
 			Logger.WARNING("Is BuyingList Valid? " + (v82191 != null));
 			return v82191 != null ? o : null;

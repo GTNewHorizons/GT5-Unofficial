@@ -55,9 +55,6 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 		//if (material.getMaterialComposites().length > 1){
 		Logger.MATERIALS("[Recipe Generator Debug] ["+material.getLocalizedName()+"]");
 		int tVoltageMultiplier = MaterialUtils.getVoltageForTier(material.vTier);
-		if (tVoltageMultiplier < 120) {
-			tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 480 : 120;
-		}
 
 		final ItemStack dustStone = ItemUtils.getItemStackOfAmountFromOreDict("dustStone", 1);
 		Material bonusA = null; //Ni
@@ -222,9 +219,10 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 
 		Logger.MATERIALS("material.getCrushed(1): "+(material.getCrushed(1) != null));
 		Logger.MATERIALS("material.getCrushedPurified(1): "+(material.getCrushedPurified(1) != null));
-		Logger.MATERIALS("bonusA.getTinyDust(1): "+(tinyDustA != null)+" | Material: "+(bonusA != null) + " | Material name: "+(bonusA != null ? bonusA.getLocalizedName() : "invalid material"));
-		Logger.MATERIALS("bonusB.getTinyDust(1): "+(tinyDustB != null)+" | Material: "+(bonusB != null) + " | Material name: "+(bonusB != null ? bonusB.getLocalizedName() : "invalid material"));
 
+		Logger.MATERIALS("material.getTinyDust(1): "+(ItemUtils.getItemName(bonusA.getCrushed(1))));
+		Logger.MATERIALS("material.getTinyDust(1): "+(ItemUtils.getItemName(bonusB.getCrushed(1))));
+		
 		try {
 			//.08 compat
 			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushed(1), 200, material.getCrushedCentrifuged(1), tinyDustB, dustStone)){
@@ -362,7 +360,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 						mInternalOutputs[4],
 						mInternalOutputs[5],
 						mChances, 
-						20*1*(tVoltageMultiplier/10), 
+						(int) Math.max(material.getMass() * 3L * 1, 1), 
 						tVoltageMultiplier)){
 					Logger.MATERIALS("[Electrolyzer] Generated Electrolyzer recipe for "+matDust.getDisplayName());
 				}
@@ -445,7 +443,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 						null,
 						mInternalOutputs,
 						mChances,
-						20*1*(tVoltageMultiplier/10),
+						(int) Math.max(material.getMass() * 4L * 1, 1),
 						tVoltageMultiplier)){
 					Logger.MATERIALS("[Dehydrator] Generated Dehydrator recipe for "+matDust.getDisplayName());
 				}

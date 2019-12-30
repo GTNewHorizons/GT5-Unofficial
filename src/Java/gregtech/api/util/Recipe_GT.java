@@ -18,6 +18,7 @@ import gtPlusPlus.api.interfaces.IComparableRecipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.NoConflictGTRecipeMap;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.nei.GT_NEI_MultiBlockHandler;
@@ -260,6 +261,23 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 
 		//Basic Washer Map
 		public static final GT_Recipe_Map sSimpleWasherRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(3), "gt.recipe.simplewasher", "Simple Dust Washer", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, true);
+		
+		public static final Gregtech_Recipe_Map sFluidChemicalReactorRecipes = new Gregtech_Recipe_Map(
+				new HashSet<Recipe_GT>(100),
+				"gt.recipe.fluidchemicaleactor",
+				"Chemical Plant",
+				null,
+				CORE.MODID+":textures/gui/FluidReactor",
+				0,
+				0,
+				0,
+				2,
+				1,
+				"Tier: ",
+				1,
+				E,
+				true,
+				false);
 
 
 		//RTG Fuel Map

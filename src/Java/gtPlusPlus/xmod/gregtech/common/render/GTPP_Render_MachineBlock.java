@@ -10,10 +10,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.common.blocks.GT_Block_Machines;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.render.GT_Renderer_Block;
 import gtPlusPlus.xmod.gregtech.common.blocks.GTPP_Block_Machines;
+import gtPlusPlus.xmod.gregtech.common.helpers.GT_MethodHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -134,14 +133,15 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
 	public static boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
 			RenderBlocks aRenderer) {
 		TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+				
 		return tTileEntity instanceof ITexturedTileEntity
 				? renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer,
-						new ITexture[][]{((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 0),
-								((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 1),
-								((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 2),
-								((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 3),
-								((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 4),
-								((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 5)})
+						new ITexture[][]{GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 0),
+								GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 1),
+								GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 2),
+								GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 3),
+								GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 4),
+								GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 5)})
 				: false;
 	}
 
@@ -190,7 +190,7 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
 					ITexture[][] tCovers = new ITexture[6][];
 
 					for (byte i = 0; i < 6; ++i) {
-						tCovers[i] = aTileEntity.getTexture(aBlock, i);
+						tCovers[i] = GT_MethodHelper.getTexture((TileEntity) aTileEntity, aBlock, i);
 						arg15[i] = aTileEntity.getTextureUncovered(i);
 					}
 

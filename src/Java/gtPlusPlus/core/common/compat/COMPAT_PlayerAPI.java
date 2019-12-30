@@ -23,7 +23,7 @@ public class COMPAT_PlayerAPI {
 
 	public static class clientProxy{
 		public static void initPre(){
-			Utils.registerEvent(SneakManager.instance);
+			//Utils.registerEvent(SneakManager.instance);
 		}
 
 		public static void Init(){

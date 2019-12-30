@@ -8,7 +8,6 @@ import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -222,10 +221,10 @@ public class FishTrapHandler {
 	private static void addGregtechFluidRecipe(final ItemStack input){
 		if (LoadedMods.Gregtech){
 			if (CORE.GTNH) {
-				MaterialGenerator.addFluidExtractionRecipe(input, null, FluidUtils.getFluidStack("fishoil", 50), 10000, 16, 4);
+				CORE.RA.addFluidExtractionRecipe(input, FluidUtils.getFluidStack("fishoil", 50), 16, 4);
 			}
 			else {
-				MaterialGenerator.addFluidExtractionRecipe(input, null, FluidUtils.getFluidStack("fishoil", 4), 0, 16, 4); //4eu/t  total eu used = 64 so time = 64/4
+				CORE.RA.addFluidExtractionRecipe(input, FluidUtils.getFluidStack("fishoil", 4), 16, 4); //4eu/t  total eu used = 64 so time = 64/4
 			}
 		}
 	}

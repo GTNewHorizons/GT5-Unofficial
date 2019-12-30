@@ -288,6 +288,10 @@ public final class ModItems {
 	public static Item itemAirFilter;
 
 	public static Item itemCoalCoke;
+	public static Item itemCactusCharcoal;
+	public static Item itemSugarCharcoal;
+	public static Item itemCactusCoke;
+	public static Item itemSugarCoke;
 
 	public static Item itemCircuitLFTR;
 
@@ -394,11 +398,8 @@ public final class ModItems {
 		//Some Simple forms of materials
 		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemStickyRubber");
 		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
-		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStackFromFQRN(CORE.MODID+":itemStickyRubber", 1));
-
-
-		itemCoalCoke = new BaseItemBurnable("itemCoalCoke", "Coking Coal", tabMisc, 64, 0, "Used for metallurgy.", "fuelCoke", 3200, 0).setTextureName(CORE.MODID + ":itemCoalCoke");
-
+		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStackFromFQRN(CORE.MODID+":itemStickyRubber", 1));		
+		
 		//Register Hydrogen Blobs first, so we can replace old helium blobs.
 		itemHydrogenBlob = new CoreItem("itemHydrogenBlob", "Mysterious Hydrogen Blob", tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
 		//Register Old Helium Blob, this will be replaced when held by a player.
@@ -564,9 +565,9 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.TUNGSTEN_TITANIUM_CARBIDE);
 
 			//LFTR Fuel components
-			MaterialGenerator.generate(FLUORIDES.HYDROXIDE); //LFTR fuel component
-			MaterialGenerator.generate(FLUORIDES.AMMONIA); //LFTR fuel component
-			MaterialGenerator.generate(FLUORIDES.AMMONIUM); //LFTR fuel component
+			MaterialGenerator.generate(MISC_MATERIALS.HYDROXIDE); //LFTR fuel component
+			MaterialGenerator.generate(MISC_MATERIALS.AMMONIA); //LFTR fuel component
+			MaterialGenerator.generate(MISC_MATERIALS.AMMONIUM); //LFTR fuel component
 			MaterialGenerator.generate(FLUORIDES.AMMONIUM_BIFLUORIDE); //LFTR fuel component
 			MaterialGenerator.generate(FLUORIDES.BERYLLIUM_HYDROXIDE); //LFTR fuel component
 			MaterialGenerator.generate(FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE); //LFTR fuel component
@@ -1054,10 +1055,10 @@ public final class ModItems {
 			GT_OreDictUnificator.registerOre("platePhasedIron", ItemUtils.getSimpleStack(itemPlatePulsatingIron));
 			GT_OreDictUnificator.registerOre("blockVibrantAlloy", ItemUtils.getItemStackOfAmountFromOreDict("blockPhasedGold", 1));			
 
-			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getPlate(1), null, MaterialEIO.REDSTONE_ALLOY.getFluid(144), 10000, 16, 4*9);
-			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getIngot(1), null, MaterialEIO.REDSTONE_ALLOY.getFluid(144), 10000, 16, 4*9);
-			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getNugget(1), null, MaterialEIO.REDSTONE_ALLOY.getFluid(16), 10000, 16, 4);
-			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getBlock(1), null, MaterialEIO.REDSTONE_ALLOY.getFluid(1294), 10000, 16, 4*9*9);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getPlate(1), MaterialEIO.REDSTONE_ALLOY.getFluid(144), 16, 4*9);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getIngot(1), MaterialEIO.REDSTONE_ALLOY.getFluid(144), 16, 4*9);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getNugget(1), MaterialEIO.REDSTONE_ALLOY.getFluid(16), 16, 4);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getBlock(1), MaterialEIO.REDSTONE_ALLOY.getFluid(1294), 16, 4*9*9);
 			
 		}
 		else {

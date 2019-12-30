@@ -85,6 +85,16 @@ public class Core_SulfuricChemistry implements IPlugin {
 	}
 
 	@Override
+	public boolean serverStart() {
+		return false;
+	}
+
+	@Override
+	public boolean serverStop() {
+		return false;
+	}
+
+	@Override
 	public String getPluginName() {
 		return "GT++ Revised Sulfuric Chemistry Module";
 	}

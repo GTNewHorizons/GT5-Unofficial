@@ -148,8 +148,19 @@ public class ItemGenericToken extends CoreItem {
 	}
 
 	@Override
-	public int getItemStackLimit(ItemStack stack) {
-		return mMaxStackSizes.get(stack.getItemDamage());
+	public int getItemStackLimit(ItemStack aStack) {
+		if (aStack == null) {
+			return getItemStackLimit();
+		}
+		else {
+			Integer aSize = mMaxStackSizes.get(aStack.getItemDamage());
+			if (aSize != null) {
+				return aSize;
+			}
+			else {
+				return getItemStackLimit();
+			}
+		}
 	}
 
 	@Override

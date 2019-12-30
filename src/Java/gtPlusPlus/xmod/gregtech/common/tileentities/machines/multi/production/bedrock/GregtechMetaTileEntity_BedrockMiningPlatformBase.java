@@ -23,6 +23,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MiningUtils;
+import gtPlusPlus.core.util.minecraft.OreDictUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
@@ -509,23 +510,23 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		mMixedOreData.put(new Pair<String, Integer>("oreLapis", 40));
 		mMixedOreData.put(new Pair<String, Integer>("oreRedstone", 40));
 		
-		if (LoadedMods.Thaumcraft || (OreDictionary.doesOreNameExist("oreAmber") && OreDictionary.doesOreNameExist("oreCinnabar"))) {
+		if (LoadedMods.Thaumcraft || (OreDictUtils.containsValidEntries("oreAmber") && OreDictUtils.containsValidEntries("oreCinnabar"))) {
 			mMixedOreData.put(new Pair<String, Integer>("oreAmber", 20));
 			mMixedOreData.put(new Pair<String, Integer>("oreCinnabar", 20));
 		}
-		if (LoadedMods.Railcraft || OreDictionary.doesOreNameExist("oreSaltpeter")) {	
+		if (LoadedMods.Railcraft || OreDictUtils.containsValidEntries("oreSaltpeter")) {	
 			mMixedOreData.put(new Pair<String, Integer>("oreSaltpeter", 10));
 		}
-		if (LoadedMods.IndustrialCraft2 || OreDictionary.doesOreNameExist("oreUranium")) {
+		if (LoadedMods.IndustrialCraft2 || OreDictUtils.containsValidEntries("oreUranium")) {
 			mMixedOreData.put(new Pair<String, Integer>("oreUranium", 10));	
 		}
-		if (OreDictionary.doesOreNameExist("oreSulfur")) {
+		if (OreDictUtils.containsValidEntries("oreSulfur")) {
 			mMixedOreData.put(new Pair<String, Integer>("oreSulfur", 15));			
 		}
-		if (OreDictionary.doesOreNameExist("oreSilicon")) {
+		if (OreDictUtils.containsValidEntries("oreSilicon")) {
 			mMixedOreData.put(new Pair<String, Integer>("oreSilicon", 15));			
 		}
-		if (OreDictionary.doesOreNameExist("oreApatite")) {
+		if (OreDictUtils.containsValidEntries("oreApatite")) {
 			mMixedOreData.put(new Pair<String, Integer>("oreApatite", 25));			
 		}
 		

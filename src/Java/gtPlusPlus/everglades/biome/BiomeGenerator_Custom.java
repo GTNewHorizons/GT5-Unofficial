@@ -21,10 +21,6 @@ import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
 public class BiomeGenerator_Custom extends BiomeDecorator {
-    /** The world the BiomeDecorator is currently decorating */
-    public World currentWorld;
-    /** The Biome Decorator's random number generator. */
-    public Random randomGenerator;    
     
     public WorldGenerator fluoriteGen;
 

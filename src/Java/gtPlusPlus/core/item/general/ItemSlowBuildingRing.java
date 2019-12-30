@@ -2,10 +2,15 @@ package gtPlusPlus.core.item.general;
 
 import java.util.List;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
-
-import net.minecraft.client.Minecraft;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.handler.events.CustomMovementHandler;
+import gtPlusPlus.core.handler.events.SneakManager;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,14 +18,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.handler.events.CustomMovementHandler;
-import gtPlusPlus.core.handler.events.SneakManager;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 @Optional.InterfaceList(value = {@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"), @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles")})
 public class ItemSlowBuildingRing extends Item implements IBauble{
@@ -42,23 +39,11 @@ public class ItemSlowBuildingRing extends Item implements IBauble{
 		if (worldObj.isRemote) {
 			return;
 		}
-		if (player instanceof EntityPlayer){
-			for (final ItemStack is : ((EntityPlayer) player).inventory.mainInventory) {
-				if (is == itemStack) {
-					continue;
-				}
-				if (is != null) {
-
-
-				}
-			}
-		}
 		super.onUpdate(itemStack, worldObj, player, p_77663_4_, p_77663_5_);
 	}
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-
 		return (EnumChatFormatting.YELLOW+"Slow Building Ring"+EnumChatFormatting.GRAY);
 	}
 
@@ -68,6 +53,7 @@ public class ItemSlowBuildingRing extends Item implements IBauble{
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		list.add("");
@@ -95,13 +81,32 @@ public class ItemSlowBuildingRing extends Item implements IBauble{
 
 	@Override //TODO
 	public void onEquipped(final ItemStack arg0, final EntityLivingBase arg1) {
-		doEffect(arg1);
+		try {
+			EntityPlayer aPlayer;
+			if (arg1 instanceof EntityPlayer) {
+				aPlayer = (EntityPlayer) arg1;
+				SneakManager s = SneakManager.get(aPlayer);				
+				s.putRingOn();
+			}
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 
 	@Override //TODO
 	public void onUnequipped(final ItemStack arg0, final EntityLivingBase arg1) {
-		SneakManager.setSprintingStateON();
-		SneakManager.setCrouchingStateOFF();
+		try {
+			EntityPlayer aPlayer;
+			if (arg1 instanceof EntityPlayer) {
+				aPlayer = (EntityPlayer) arg1;
+				SneakManager s = SneakManager.get(aPlayer);				
+				s.takeRingOff();
+			}
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 
 	@Override //TODO
@@ -110,19 +115,25 @@ public class ItemSlowBuildingRing extends Item implements IBauble{
 	}
 
 	private static void doEffect(final EntityLivingBase arg1){
-		if (arg1.worldObj.isRemote){
-			if (!arg1.isSneaking()){
-				arg1.setSneaking(true);
-				Minecraft.getMinecraft().thePlayer.setSneaking(true);
-				SneakManager.setSprintingStateOFF();
-				SneakManager.setCrouchingStateON();
+		try {		
+			// Get World
+			World aWorld = arg1.worldObj;
+			if (aWorld != null && !aWorld.isRemote) {				
+				EntityPlayer aPlayer;
+				if (arg1 instanceof EntityPlayer) {
+					aPlayer = (EntityPlayer) arg1;
+					SneakManager s = SneakManager.get(aPlayer);	
+					if (!aPlayer.isSneaking()){						
+						aPlayer.setSneaking(true);
+					}						
+					if (aPlayer.isSprinting()) {
+						aPlayer.setSprinting(false);						
+					}				
+				}				
 			}
-			else if (arg1.isSneaking()){
-				arg1.setSprinting(false);
-				Minecraft.getMinecraft().thePlayer.setSprinting(true);
-				SneakManager.setSprintingStateOFF();
-				SneakManager.setCrouchingStateON();
-			}
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
 		}
 	}
 

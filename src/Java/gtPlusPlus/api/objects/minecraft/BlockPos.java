@@ -19,7 +19,7 @@ public class BlockPos implements Serializable{
 	public final int yPos;
 	public final int zPos;
 	public final int dim;
-	public final World world;
+	public final transient World world;
 	
 	public static BlockPos generateBlockPos(String sUUID) {
 		String[] s2 = sUUID.split("@");

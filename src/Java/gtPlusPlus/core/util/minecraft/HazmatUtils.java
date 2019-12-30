@@ -306,7 +306,14 @@ public class HazmatUtils {
 			//Logger.INFO("[Hazmat] Item was mapped for TTs");
 			Collections.sort(aTempTooltipData);
 			//Logger.INFO("[Hazmat] Sorted TTs");
-			return aTempTooltipData.toArray();
+			
+			String[] mBuiltOutput = new String[aTempTooltipData.size()];
+			int aIndex = 0;
+			for (String i : aTempTooltipData) {
+				mBuiltOutput[aIndex++] = i;
+			}
+			
+			return mBuiltOutput;
 		}
 	}
 

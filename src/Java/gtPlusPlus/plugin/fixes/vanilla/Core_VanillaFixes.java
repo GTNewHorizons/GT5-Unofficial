@@ -11,10 +11,12 @@ public class Core_VanillaFixes implements IPlugin {
 
 	final static Core_VanillaFixes mInstance;
 	final static VanillaBedHeightFix mBedFixInstance;
+	final static VanillaBackgroundMusicFix mMusicFixInstance;
 
 	static {
 		mInstance = new Core_VanillaFixes();
 		mBedFixInstance = new VanillaBedHeightFix(mInstance);
+		mMusicFixInstance = new VanillaBackgroundMusicFix(mInstance);
 		mInstance.log("Preparing "+mInstance.getPluginName()+" for use.");
 	}
 	
@@ -38,6 +40,17 @@ public class Core_VanillaFixes implements IPlugin {
 	}
 
 	@Override
+	public boolean serverStart() {
+		mMusicFixInstance.manage();
+		return true;
+	}
+
+	@Override
+	public boolean serverStop() {
+		return true;
+	}
+
+	@Override
 	public String getPluginName() {
 		return "GT++ Vanilla Fixes Module";
 	}
@@ -48,6 +61,7 @@ public class Core_VanillaFixes implements IPlugin {
 	}
 	
 	private boolean fixVanillaOD() {		
+		registerToOreDict(ItemUtils.getSimpleStack(Items.blaze_rod), "rodBlaze");
 		registerToOreDict(ItemUtils.getSimpleStack(Items.nether_wart), "cropNetherWart");	
 		registerToOreDict(ItemUtils.getSimpleStack(Items.reeds), "sugarcane");	
 		registerToOreDict(ItemUtils.getSimpleStack(Items.paper), "paper");	
@@ -58,7 +72,7 @@ public class Core_VanillaFixes implements IPlugin {
 		registerToOreDict(ItemUtils.getSimpleStack(Items.nether_star), "netherStar");	
 		registerToOreDict(ItemUtils.getSimpleStack(Items.leather), "leather");	
 		registerToOreDict(ItemUtils.getSimpleStack(Items.feather), "feather");	
-		registerToOreDict(ItemUtils.getSimpleStack(Items.egg), "egg");
+		registerToOreDict(ItemUtils.getSimpleStack(Items.egg), "egg");	
 		registerToOreDict(ItemUtils.getSimpleStack(Blocks.end_stone), "endstone");	
 		registerToOreDict(ItemUtils.getSimpleStack(Blocks.vine), "vine");	
 		registerToOreDict(ItemUtils.getSimpleStack(Blocks.cactus), "blockCactus");	
@@ -69,7 +83,12 @@ public class Core_VanillaFixes implements IPlugin {
 	}
 	
 	private void registerToOreDict(ItemStack aStack, String aString) {
-		mInstance.log("Registering "+aStack.getDisplayName()+" to OreDictionary under the tag '"+aString+"'. (Added to Forge in 1.8.9)");
+		if (aStack.getItem() == Items.blaze_rod) {
+			mInstance.log("Registering "+aStack.getDisplayName()+" to OreDictionary under the tag '"+aString+"'.");			
+		}
+		else {
+			mInstance.log("Registering "+aStack.getDisplayName()+" to OreDictionary under the tag '"+aString+"'. (Added to Forge in 1.8.9)");			
+		}		
 		ItemUtils.addItemToOreDictionary(aStack, aString);		
 	}
 

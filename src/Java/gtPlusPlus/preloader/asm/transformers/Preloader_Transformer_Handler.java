@@ -65,6 +65,12 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		boolean obfuscated = checkObfuscated();
 		boolean probablyShouldBeFalse = false;
 
+		// Fix LWJGL index array out of bounds on keybinding IDs
+		if (transformedName.equals("org.lwjgl.input.Keyboard") && mConfig.enabledLwjglKeybindingFix) {	
+			FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_LWJGL_Keyboard(basicClass).getWriter().toByteArray();
+		}		
+		
 		//Enable mapping of Tickets and loaded chunks. - Forge
 		if (transformedName.equals("net.minecraftforge.common.ForgeChunkManager") && mConfig.enableChunkDebugging) {	
 			FMLRelaunchLog.log("[GT++ ASM] Chunkloading Patch", Level.INFO, "Transforming %s", transformedName);
@@ -95,6 +101,11 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		if (transformedName.equals("mods.railcraft.common.fluids.FluidHelper") && mConfig.enableRcFlowFix) {	
 			FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_Railcraft_FluidHelper(basicClass, obfuscated).getWriter().toByteArray();
+		}
+		//Fix Weird glitch involving negative itemstacks.
+		if (transformedName.equals("mods.railcraft.common.util.inventory.InvTools") && mConfig.enableRcItemDupeFix) {	
+			FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_Railcraft_InvTools(basicClass, obfuscated).getWriter().toByteArray();
 		}
 
 		//Fix GC stuff
@@ -156,6 +167,12 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			return new ClassTransformer_GT_BaseMetaTileEntity(basicClass).getWriter().toByteArray();
 		}
 		
+		//Fix log handling on the charcoal pit
+		if (transformedName.equals("gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Charcoal_Pit")) {	
+			FMLRelaunchLog.log("[GT++ ASM] GT Charcoal Pit Fix", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_CharcoalPit(basicClass, obfuscated).getWriter().toByteArray();
+		}
+		
 		
 		
 		
@@ -214,8 +231,8 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 				return new ClassTransformer_IC2_GetHarvestTool(basicClass, obfuscated, transformedName).getWriter().toByteArray();			
 			}
 		}
-		//Fix IC2 Hazmat
 		
+		//Fix IC2 Hazmat		
 		if (transformedName.equals("ic2.core.item.armor.ItemArmorHazmat")) {
 			FMLRelaunchLog.log("[GT++ ASM] IC2 Hazmat Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_IC2_Hazmat(basicClass, transformedName).getWriter().toByteArray();			

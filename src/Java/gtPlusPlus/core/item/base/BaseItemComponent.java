@@ -96,7 +96,7 @@ public class BaseItemComponent extends Item{
 		this.extraData = RGBA;
 		this.setTextureName(CORE.MODID + ":" + "item"+ComponentTypes.CELL.COMPONENT_NAME);
 		GameRegistry.registerItem(this, aFormattedNameForFluids);
-		GT_OreDictUnificator.registerOre(ComponentTypes.CELL.getOreDictName()+aFormattedNameForFluids, ItemUtils.getSimpleStack(this));
+		GT_OreDictUnificator.registerOre(ComponentTypes.CELL.getOreDictName()+Utils.sanitizeStringKeepBrackets(localName), ItemUtils.getSimpleStack(this));
 		registerComponent();
 	}
 
@@ -165,12 +165,31 @@ public class BaseItemComponent extends Item{
 	public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 
 		try {
+			
+
+			if (this.componentMaterial == null){
+				if (this.materialName != null){
+					//list.add(Utils.sanitizeStringKeepBrackets(materialName));					
+				}				
+			}			
+			
 			if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("") && (this.componentMaterial != null)){
 
 
 				if (this.componentMaterial != null){
-					if ((!this.componentMaterial.vChemicalFormula.equals("??")) && (!this.componentMaterial.vChemicalFormula.equals("?")) && (this.componentMaterial.getState() != MaterialState.PURE_LIQUID)) {
+					if (!this.componentMaterial.vChemicalFormula.contains("?") && this.componentMaterial.getState() != MaterialState.PURE_LIQUID) {
 						list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
+					}
+					else if (this.componentMaterial.vChemicalFormula.contains("?") && this.componentMaterial.getState() != MaterialState.PURE_LIQUID) {
+						String temp = componentMaterial.vChemicalFormula;
+						temp = temp.replace(" ", "");
+						temp = temp.replace("-", "");
+						temp = temp.replace("_", "");
+						temp = temp.replace("!", "");
+						temp = temp.replace("@", "");
+						temp = temp.replace("#", "");
+						temp = temp.replace(" ", "");				
+						list.add(temp);
 					}
 
 					if (this.componentMaterial.isRadioactive){

@@ -6,7 +6,6 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -22,13 +21,11 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
-import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_Cyclotron;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
@@ -71,18 +68,19 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	@Override
 	public String getCustomGUIResourceName() {
-		return "FusionComputer";
+		return null;
 	}	
 
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new CONTAINER_Cyclotron(aPlayerInventory, aBaseMetaTileEntity);
+		return super.getServerGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
+		//return new CONTAINER_Cyclotron(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_FusionReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "FusionComputer.png", Recipe_GT.Gregtech_Recipe_Map.sCyclotronRecipes.mNEIName);
-		//return null;
+		return super.getClientGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
+		//return new GUI_Cyclotron(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), Recipe_GT.Gregtech_Recipe_Map.sCyclotronRecipes.mNEIName);
 	}
 
 	@Override
@@ -171,12 +169,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 					return false;
 				}
 			}
-			mWrench = true;
-			mScrewdriver = true;
-			mSoftHammer = true;
-			mHardHammer = true;
-			mSolderingTool = true;
-			mCrowbar = true;
+			this.fixAllMaintenanceIssue();
 			log("Built Cyclotron.");
 			turnCasingActive(true);
 			return true;
@@ -318,7 +311,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 		/*if (CORE.DEVENV) {
 			return this.checkRecipeGeneric();
 		}*/
-		
+		this.fixAllMaintenanceIssue();		
 		
 		//log("Recipe Check.");
 		ArrayList<ItemStack> tItemList = getStoredInputs();
@@ -409,6 +402,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 			
 			//Time Counter
 			this.mTotalRunTime++;
+			this.fixAllMaintenanceIssue();
 			
 			onRunningTick(null);	
 			
@@ -432,6 +426,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				mChargeHatches.clear();
 				mDischargeHatches.clear();
 				mControlCoreBus.clear();
+				mAirIntakes.clear();
 				mMultiDynamoHatches.clear();
 				mMachine = aFormCheck;
 			}
@@ -499,7 +494,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 					stopMachine();
 				}
 			}
-			doRandomMaintenanceDamage();
+			//doRandomMaintenanceDamage();
 			aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mWrench ? 0 : 1) | (mScrewdriver ? 0 : 2) | (mSoftHammer ? 0 : 4) | (mHardHammer ? 0 : 8)
 					| (mSolderingTool ? 0 : 16) | (mCrowbar ? 0 : 32) | (mMachine ? 0 : 64));
 			aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);

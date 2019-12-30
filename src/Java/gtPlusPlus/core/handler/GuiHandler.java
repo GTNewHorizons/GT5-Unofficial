@@ -2,16 +2,22 @@ package gtPlusPlus.core.handler;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
-
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
-import gtPlusPlus.core.container.*;
+import gtPlusPlus.core.container.Container_BackpackBase;
+import gtPlusPlus.core.container.Container_CircuitProgrammer;
+import gtPlusPlus.core.container.Container_DecayablesChest;
+import gtPlusPlus.core.container.Container_FishTrap;
+import gtPlusPlus.core.container.Container_Grindle;
+import gtPlusPlus.core.container.Container_ModularityTable;
+import gtPlusPlus.core.container.Container_PestKiller;
+import gtPlusPlus.core.container.Container_ProjectTable;
+import gtPlusPlus.core.container.Container_RoundRobinator;
+import gtPlusPlus.core.container.Container_SuperJukebox;
+import gtPlusPlus.core.container.Container_TradeTable;
+import gtPlusPlus.core.container.Container_Workbench;
+import gtPlusPlus.core.container.Container_WorkbenchAdvanced;
 import gtPlusPlus.core.container.box.LunchBoxContainer;
 import gtPlusPlus.core.container.box.MagicBagContainer;
 import gtPlusPlus.core.container.box.ToolBoxContainer;
@@ -22,20 +28,38 @@ import gtPlusPlus.core.gui.item.GuiBaseGrindle;
 import gtPlusPlus.core.gui.item.box.LunchBoxGui;
 import gtPlusPlus.core.gui.item.box.MagicBagGui;
 import gtPlusPlus.core.gui.item.box.ToolBoxGui;
-import gtPlusPlus.core.gui.machine.*;
+import gtPlusPlus.core.gui.machine.GUI_CircuitProgrammer;
+import gtPlusPlus.core.gui.machine.GUI_DecayablesChest;
+import gtPlusPlus.core.gui.machine.GUI_FishTrap;
+import gtPlusPlus.core.gui.machine.GUI_ModularityTable;
+import gtPlusPlus.core.gui.machine.GUI_PestKiller;
+import gtPlusPlus.core.gui.machine.GUI_ProjectTable;
+import gtPlusPlus.core.gui.machine.GUI_RoundRobinator;
+import gtPlusPlus.core.gui.machine.GUI_SuperJukebox;
+import gtPlusPlus.core.gui.machine.GUI_TradeTable;
+import gtPlusPlus.core.gui.machine.GUI_Workbench;
+import gtPlusPlus.core.gui.machine.GUI_WorkbenchAdvanced;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.inventories.BaseInventoryGrindle;
 import gtPlusPlus.core.inventories.box.LunchBoxInventory;
 import gtPlusPlus.core.inventories.box.MagicBagInventory;
 import gtPlusPlus.core.inventories.box.ToolBoxInventory;
-import gtPlusPlus.core.item.tool.misc.box.ContainerBoxBase;
-import gtPlusPlus.core.item.tool.misc.box.CustomBoxInventory;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
-import gtPlusPlus.core.tileentities.machines.*;
+import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
+import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
+import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
+import gtPlusPlus.core.tileentities.machines.TileEntityRoundRobinator;
+import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
+import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
+import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.World;
 
 public class GuiHandler implements IGuiHandler {
 
@@ -53,6 +77,8 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI12 = 11; // Bag for Magic Tools
 	public static final int GUI13 = 12; // Decayables Chest
 	public static final int GUI14 = 13; // Super Jukebox
+	public static final int GUI15 = 14; // Pest Killer
+	public static final int GUI16 = 15; // Round-Robinator
 
 	public static void init() {
 
@@ -97,9 +123,13 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_CircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
 			} else if (ID == GUI13) {
 				return new Container_DecayablesChest(player.inventory, (TileEntityDecayablesChest) te);
-			}else if (ID == GUI14) {
+			} else if (ID == GUI14) {
 				return new Container_SuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
-			}
+			} else if (ID == GUI15) {
+				return new Container_PestKiller(player.inventory, (TileEntityPestKiller) te);
+			}  else if (ID == GUI16) {
+				return new Container_RoundRobinator(player.inventory, (TileEntityRoundRobinator) te);
+			} 
 		}
 
 		if (ID == GUI9) {
@@ -157,7 +187,11 @@ public class GuiHandler implements IGuiHandler {
 				return new GUI_DecayablesChest(player.inventory, (TileEntityDecayablesChest) te);
 			} else if (ID == GUI14) {
 				return new GUI_SuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
-			}
+			} else if (ID == GUI15) {
+				return new GUI_PestKiller(player.inventory, (TileEntityPestKiller) te);
+			}  else if (ID == GUI16) {
+				return new GUI_RoundRobinator(player.inventory, (TileEntityRoundRobinator) te);
+			} 
 		}
 
 		if (ID == GUI9) {

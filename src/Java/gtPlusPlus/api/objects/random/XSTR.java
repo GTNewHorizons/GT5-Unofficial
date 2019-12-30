@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * 03.06.2016
  * version 0.0.4
  */
-public class XSTR extends Random {
+public class XSTR extends Random implements Cloneable {
 
 	private static final long serialVersionUID = 6208727693524452904L;
 	private long seed;
@@ -115,6 +115,13 @@ public class XSTR extends Random {
 	 */
 	@Override
 	public XSTR clone() {
+		try {
+			super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return new XSTR(this.getSeed());
 	}
 

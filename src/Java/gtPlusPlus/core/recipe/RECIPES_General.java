@@ -1,11 +1,14 @@
 package gtPlusPlus.core.recipe;
 
+import static gtPlusPlus.core.lib.CORE.GTNH;
 import static gtPlusPlus.core.recipe.common.CI.bitsd;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generateWireRecipes;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
@@ -14,15 +17,14 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -55,7 +57,6 @@ public class RECIPES_General {
 			OUTPUT_Blueprint = ItemUtils.getSimpleStack(ModItems.itemBlueprintBase);	
 			run();
 			addCompressedObsidian();
-			addHandPumpRecipes();
 			migratedRecipes();
 		}
 	}
@@ -118,12 +119,6 @@ public class RECIPES_General {
 			Logger.INFO("Added a recipe for Rainforest oak Saplings.");
 		}
 
-
-		// Try fix this ore
-		if (ModBlocks.blockOreFluorite != null){
-			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(ModBlocks.blockOreFluorite)}, FLUORIDES.FLUORITE.getOre(1));
-		}
-
 		//Iron bars
 		final ItemStack ironBars;
 		if (CORE.GTNH) {
@@ -162,13 +157,13 @@ public class RECIPES_General {
 
 
 		//Shaped Crafting for ULV Material Dusts		
-		
+
 		//Potin
 		if (RecipeUtils.addShapelessGregtechRecipe(new Object[] {"dustLead", "dustBronze", "dustTin",
 				"dustLead", "dustBronze"}, ALLOY.POTIN.getDust(5))){
 			Logger.INFO("Added shapeless recipe for Potin Dust.");
 		}
-		
+
 		//Tumbaga
 		if (RecipeUtils.addShapelessGregtechRecipe(new Object[] {
 				"dustGold", "dustGold", "dustCopper"}, ItemUtils.getSimpleStack(ModItems.dustTumbagaMix))){
@@ -179,7 +174,7 @@ public class RECIPES_General {
 				ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
 				ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
 				"dustGold"
-				},
+		},
 				ALLOY.TUMBAGA.getDust(10))){
 			Logger.INFO("Added shapeless recipe for Tumbaga Dust.");
 		}
@@ -291,6 +286,19 @@ public class RECIPES_General {
 				20 * 30, // Dur
 				16); // Eu
 
+		// Pest Killer
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(16),
+						CI.getTieredMachineCasing(1),
+						CI.getElectricPump(2, 1),
+						CI.getPlate(2, GTNH ? 4 : 2),
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(0), GTNH ? 2 : 1),
+				},
+				FluidUtils.getHotWater(500), // Fluid
+				ItemUtils.getSimpleStack(ModBlocks.blockPestKiller), // Output
+				20 * 60, // Dur
+				16); // Eu
 
 
 
@@ -333,42 +341,6 @@ public class RECIPES_General {
 
 		}
 		return true;
-	}
-
-	private static void addHandPumpRecipes() {
-		if (RecipeUtils.recipeBuilder(
-				CI.electricPump_LV, "circuitBasic", null,
-				"ringBrass", CI.electricMotor_LV, "circuitBasic",
-				"plateSteel", "plateSteel", "rodBrass",
-				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1)))	
-			Logger.INFO("Added recipe for Hand Pump I - true");
-		if (RecipeUtils.recipeBuilder(
-				CI.electricPump_MV, "circuitAdvanced", null,
-				"ringMagnalium", CI.electricMotor_MV, "circuitAdvanced",
-				"plateAluminium", "plateAluminium", "rodMagnalium",
-				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1)))	
-			Logger.INFO("Added recipe for Hand Pump II - true");	
-		if (RecipeUtils.recipeBuilder(
-				CI.electricPump_HV, "circuitData", null,
-				"ringChrome", CI.electricMotor_HV, "circuitData",
-				"plateStainlessSteel", "plateStainlessSteel", "rodChrome",
-				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1)))		
-			Logger.INFO("Added recipe for Hand Pump III - true");
-		if (RecipeUtils.recipeBuilder(
-				CI.electricPump_EV, "circuitElite", null,
-				"ringTitanium", CI.electricMotor_EV, "circuitElite",
-				"plateTungstenSteel", "plateTungstenSteel", "rodTitanium",
-				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1)))	
-			Logger.INFO("Added recipe for Hand Pump IV - true");
-
-
-
-		GT_Values.RA.addAssemblerRecipe(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1), CI.getNumberedCircuit(20), ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1000, 1), 30, 30);
-		GT_Values.RA.addAssemblerRecipe(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1), CI.getNumberedCircuit(20), ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1001, 1), 120, 120);
-		GT_Values.RA.addAssemblerRecipe(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1), CI.getNumberedCircuit(20), ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1002, 1), 480, 480);
-		GT_Values.RA.addAssemblerRecipe(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1), CI.getNumberedCircuit(20), ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1003, 1), 1820, 1820);
-
-
 	}
 
 	private static void migratedRecipes() {
@@ -423,12 +395,11 @@ public class RECIPES_General {
 			generatePipeRecipes(e.mDefaultLocalName, e.getMass(), tVoltageMultiplier);
 		}
 
-		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK)
-			RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[4], "rotorGtStainlessSteel", CI.component_Plate[4],
-					CI.getTieredCircuitOreDictName(3), CI.machineHull_HV, CI.getTieredCircuitOreDictName(3),
-					CI.component_Plate[4], CI.electricPump_HV, CI.component_Plate[4],
-					GregtechItemList.Hatch_Air_Intake.get(1L, new Object[0]));
+		RecipeUtils.addShapedGregtechRecipe(
+				CI.component_Plate[4], "rotorGtStainlessSteel", CI.component_Plate[4],
+				CI.getTieredCircuitOreDictName(3), CI.machineHull_HV, CI.getTieredCircuitOreDictName(3),
+				CI.component_Plate[4], CI.electricPump_HV, CI.component_Plate[4],
+				GregtechItemList.Hatch_Air_Intake.get(1L, new Object[0]));
 
 		RecipeUtils.addShapedGregtechRecipe(CI.component_Plate[6], ALLOY.MARAGING250.getGear(1), CI.component_Plate[6],
 				CI.getTieredCircuitOreDictName(4), GregtechItemList.Casing_AdvancedVacuum.get(1),
@@ -446,7 +417,7 @@ public class RECIPES_General {
 				CI.component_Plate[8], GregtechItemList.Hatch_Input_Naquadah.get(1L, new Object[0]));
 
 
-		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+		if (PollutionUtils.isPollutionEnabled()) {
 			GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Muffler_Adv_LV.get(1L, new Object[0]), bitsd,
 					new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_LV.get(1), Character.valueOf('P'),
 							GregtechItemList.Pollution_Cleaner_LV.get(1) });

@@ -1,47 +1,77 @@
 package gtPlusPlus.core.handler.events;
 
-import net.minecraft.client.Minecraft;
+import java.util.concurrent.ConcurrentHashMap;
 
 import gtPlusPlus.api.objects.Logger;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class SneakManager {
 
 	//We make this a singleton for clientside data storage.
-	public static SneakManager instance = new SneakManager();
-	protected static final Minecraft mc = Minecraft.getMinecraft();
-	public static boolean		canSprint		= true;
-	public static boolean		isSneaking		= true;
-	public static boolean		optionDoubleTap			= true;
-	public static boolean		wasSprintDisabled		= false;
 
-	private static State Sprinting = State.ON;
-	private static State Crouching = State.OFF;
+	public static ConcurrentHashMap<String, SneakManager> mPlayerCache = new ConcurrentHashMap<String, SneakManager>();
+	
+	private static void addPlayer(EntityPlayer aPlayer) {
+		String aKey = getKey(aPlayer);
+		if (!mPlayerCache.containsKey(aKey)) {
+			mPlayerCache.put(aKey, new SneakManager(aPlayer));
+		}		
+	}
+	
+	public static SneakManager get(EntityPlayer aPlayer) {
+		
+		String aKey = getKey(aPlayer);
+		if (!mPlayerCache.containsKey(aKey)) {
+			addPlayer(aPlayer);
+		}		
+		return mPlayerCache.get(aKey);
+	}
+	
+	private static String getKey(EntityPlayer aPlayer) {
+		return ""+aPlayer.getGameProfile().getId().toString();
+	}
+	
+	
+	public SneakManager instance;
+	public EntityPlayer owner;
+	public boolean		canSprint		= true;
+	public boolean		isSneaking		= true;
+	public boolean		optionDoubleTap			= true;
+	public boolean		wasSprintDisabled		= false;	
+	public boolean		mIsWearingRing			= false;
 
-	public static boolean Sneaking(){
+	private State Sprinting = State.ON;
+	private State Crouching = State.OFF;
+	
+	public SneakManager(EntityPlayer aPlayer) {
+		owner = aPlayer;
+	}
+
+	public boolean Sneaking(){
 		return Crouching.getState();
 	}
 
-	public static boolean Sprinting(){
+	public boolean Sprinting(){
 		return Sprinting.getState();
 	}
 
-	public static State getSneakingState(){
+	public State getSneakingState(){
 		return Crouching;
 	}
 
-	public static State getSprintingDisabledState(){
+	public State getSprintingDisabledState(){
 		return Sprinting;
 	}
 
-	public static void toggleSneaking(){
+	public void toggleSneaking(){
 		toggleState(Crouching);
 	}
 
-	public static void toggleSprinting(){
+	public void toggleSprinting(){
 		toggleState(Sprinting);
 	}
 
-	private static State toggleState(final State state){
+	private State toggleState(final State state){
 		Logger.INFO("State Toggle");
 		if (state == State.ON) {
 			return State.OFF;
@@ -49,22 +79,38 @@ public class SneakManager {
 		return State.ON;
 	}
 
-	public static State setCrouchingStateON(){
+	private State setCrouchingStateON(){
 		return Crouching = State.ON;
 	}
 
-	public static State setCrouchingStateOFF(){
+	private State setCrouchingStateOFF(){
 		return Crouching = State.OFF;
 	}
 
-	public static State setSprintingStateON(){
+	private State setSprintingStateON(){
 		return Sprinting = State.ON;
 	}
 
-	public static State setSprintingStateOFF(){
+	private State setSprintingStateOFF(){
 		return Sprinting = State.OFF;
 	}
-
+	
+	public void putRingOn() {
+		mIsWearingRing = true;
+		setSprintingStateOFF();
+		setCrouchingStateON();
+	}
+	
+	public void takeRingOff() {
+		mIsWearingRing = false;
+		setSprintingStateON();
+		setCrouchingStateOFF();
+	}
+	
+	public boolean isWearingRing() {
+		return mIsWearingRing;
+	}	
+	
 	public static enum State {
 		ON(true),
 		OFF(false);

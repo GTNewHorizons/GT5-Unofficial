@@ -6,13 +6,13 @@ import java.io.File;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
-
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.australia.biome.type.Biome_AustralianDesert;
-import gtPlusPlus.australia.biome.type.Biome_AustralianDesert2;
 import gtPlusPlus.australia.biome.type.Biome_AustralianDesert_Ex;
 import gtPlusPlus.australia.biome.type.Biome_AustralianForest;
 import gtPlusPlus.australia.biome.type.Biome_AustralianOcean;

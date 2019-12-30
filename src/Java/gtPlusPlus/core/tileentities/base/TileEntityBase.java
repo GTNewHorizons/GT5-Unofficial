@@ -1315,6 +1315,24 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 		}
 		return false;
 	}
+
+
+	/**
+	 * Adds support for the newer function added by https://github.com/Blood-Asp/GT5-Unofficial/commit/73ee102b63efd92c0f164a7ed7a79ebcd2619617#diff-3051838621d8ae87aa5ccd1345e1f07d
+	 */
+	public boolean inputEnergyFrom(byte arg0, boolean arg1) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	/**
+	 * Adds support for the newer function added by https://github.com/Blood-Asp/GT5-Unofficial/commit/73ee102b63efd92c0f164a7ed7a79ebcd2619617#diff-3051838621d8ae87aa5ccd1345e1f07d
+	 */
+	public boolean outputsEnergyTo(byte arg0, boolean arg1) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 	
 

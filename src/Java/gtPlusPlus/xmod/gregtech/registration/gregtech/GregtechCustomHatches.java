@@ -8,9 +8,11 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler_Adv;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Naquadah;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_TurbineProvider;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Input;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Output;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
@@ -62,6 +64,25 @@ public class GregtechCustomHatches {
 				"Naquadah Reactor Input hatch" // Local name
 				).getStackForm(1L));
 
+
+		GregtechItemList.Hatch_Input_TurbineHousing.set(new GT_MetaTileEntity_Hatch_TurbineProvider(31025, // ID
+				"hatch.turbine.input.tier.00", // unlocal name
+				"Turbine Housing", // Local name
+				8
+				).getStackForm(1L));	
+
+		// Multiblock Control Core Bus
+		GregtechItemList.Hatch_Control_Core.set((new GT_MetaTileEntity_Hatch_ControlCore(30020, "hatch.control.adv", "Control Core Module", 1)).getStackForm(1L));
+		
+		// Multiblock Air Intake Hatch
+		GregtechItemList.Hatch_Air_Intake.set(new GT_MetaTileEntity_Hatch_AirIntake(861, "hatch.air.intake.tier.00", "Air Intake Hatch", 5).getStackForm(1L));
+		
+		
+		
+		
+		
+		
+
 	}
 
 	private static void run2() {
@@ -91,12 +112,7 @@ public class GregtechCustomHatches {
 				.getStackForm(1L));
 		GregtechItemList.Hatch_Muffler_Adv_MAX
 		.set((new GT_MetaTileEntity_Hatch_Muffler_Adv(30009, "hatch.muffler.adv.tier.09", "Advanced Muffler Hatch (MAX)", 9))
-				.getStackForm(1L));		
-
-		//GT++ multiblock Control Core Bus
-		GregtechItemList.Hatch_Control_Core
-		.set((new GT_MetaTileEntity_Hatch_ControlCore(30020, "hatch.control.adv", "Control Core Module", 1))
-				.getStackForm(1L));
+				.getStackForm(1L));	
 	}
 
 	private static void run3() {

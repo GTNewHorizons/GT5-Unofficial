@@ -266,7 +266,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
 					//Get us four ItemStacks to input into the mixer
 					ItemStack input1, input2, input3, input4;
-					input1 = (inputStacks.length >= 1) ? (input1 = (inputStacks[0] == null) ? null : inputStacks[0]) : null;
+					input1 = inputStacks[0];
 					input2 = (inputStacks.length >= 2) ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1]) : null;
 					input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2]) : null;
 					input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3]) : null;

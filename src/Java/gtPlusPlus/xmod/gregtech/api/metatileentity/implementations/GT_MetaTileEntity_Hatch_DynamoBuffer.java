@@ -34,14 +34,17 @@ public class GT_MetaTileEntity_Hatch_DynamoBuffer extends GT_MetaTileEntity_Hatc
 		return new ITexture[]{aBaseTexture, TexturesGtBlock.OVERLAYS_ENERGY_OUT_MULTI_BUFFER[this.mTier]};
 	}
 
+	@Override
 	public long getMinimumStoredEU() {
 		return 0L;
 	}
 
+	@Override
 	public long maxEUStore() {
 		return 512L + GT_Values.V[this.mTier + 1] * 2048L;
 	}
 
+	@Override
 	public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
 		return (MetaTileEntity) new GT_MetaTileEntity_Hatch_DynamoBuffer(this.mName, this.mTier, this.mDescription, this.mTextures);
 	}

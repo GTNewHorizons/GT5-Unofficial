@@ -1,15 +1,10 @@
 package gtPlusPlus.xmod.galacticraft;
 
-import java.util.HashMap;
-
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.xmod.galacticraft.system.core.space.BaseSolarSystem;
-import gtPlusPlus.xmod.galacticraft.system.hd10180.SystemHD10180;
 
 public class HANDLER_GalactiCraft {
 	
-	private static final HashMap<String, BaseSolarSystem> mSystemsCache = new HashMap<String, BaseSolarSystem>();
+	//private static final HashMap<String, BaseSolarSystem> mSystemsCache = new HashMap<String, BaseSolarSystem>();
 	
 	public static void preInit(){
 		if (LoadedMods.GalacticraftCore){

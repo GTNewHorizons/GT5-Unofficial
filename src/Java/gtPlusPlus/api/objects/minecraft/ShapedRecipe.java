@@ -3,11 +3,7 @@ package gtPlusPlus.api.objects.minecraft;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.everglades.dimension.Dimension_Everglades;
-import gtPlusPlus.xmod.forestry.bees.items.FR_ItemRegistry;
-import gtPlusPlus.xmod.ic2.item.IC2_Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -36,13 +32,7 @@ public class ShapedRecipe {
 		String[] aLoggingInfo = new String[9];
 
 		if (mBlackList == null) {
-			mBlackList = new ItemStack[] {
-					ItemUtils.getSimpleStack(ModBlocks.blockNet),
-					ItemUtils.getSimpleStack(ModBlocks.blockXpConverter),
-					ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard),
-					ItemUtils.getSimpleStack(ModBlocks.blockMiningExplosive),
-					ItemUtils.getSimpleStack(Dimension_Everglades.blockPortalFrame),
-			};
+			mBlackList = new ItemStack[] {};
 		}
 
 		//Just to be safe

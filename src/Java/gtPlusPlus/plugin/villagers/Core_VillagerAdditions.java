@@ -102,6 +102,22 @@ public class Core_VillagerAdditions implements IPlugin {
 	}
 
 	@Override
+	public boolean serverStart() {
+		if (shouldLoad) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean serverStop() {
+		if (shouldLoad) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public String getPluginName() {
 		return "GT++ Enhanced Villagers";
 	}

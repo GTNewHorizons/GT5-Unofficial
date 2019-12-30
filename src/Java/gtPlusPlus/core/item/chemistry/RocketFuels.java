@@ -9,6 +9,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.api.helpers.MaterialHelper;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
@@ -25,7 +26,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RocketFuels extends ItemPackage {
-	
+
 	public static HashSet<String> mValidRocketFuelNames = new HashSet<String>();
 	public static HashMap<Integer, Fluid> mValidRocketFuels = new HashMap<Integer, Fluid>();
 
@@ -40,6 +41,7 @@ public class RocketFuels extends ItemPackage {
 	public static Fluid Nitrous_Oxide;		
 	public static Fluid Hydrated_Ammonium_Nitrate_Slurry;	
 	public static Fluid Liquid_Oxygen;
+	public static Fluid Liquid_Hydrogen;
 	public static Fluid Formaldehyde;
 
 
@@ -51,16 +53,16 @@ public class RocketFuels extends ItemPackage {
 
 	public static Item Ammonium_Nitrate_Dust;
 	public static Item Formaldehyde_Catalyst;
-	
+
 	public static void createKerosene(){
-		
-		
-		
+
+
+
 		FluidStack fuelA = FluidUtils.getFluidStack("diesel", 300);
 		FluidStack fuelB = FluidUtils.getFluidStack("fuel", 300);
-		
-		
-		
+
+
+
 		if (fuelA != null){
 			//GT_Values.RA.addDistilleryRecipe(23, fuelA, FluidUtils.getFluidStack(Kerosene, 50), 200, 64, false);
 			GT_Values.RA.addDistilleryRecipe(CI.getNumberedCircuit(23), fuelA, FluidUtils.getFluidStack(Kerosene, 100), 200, 64, false);
@@ -134,7 +136,11 @@ public class RocketFuels extends ItemPackage {
 	private static void createLOX() {		
 		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellLiquidOxygen", 1), 20*16);
 		CORE.RA.addAdvancedFreezerRecipe(new ItemStack[] {}, new FluidStack[] {FluidUtils.getFluidStack("oxygen", 3000)}, new FluidStack[] {FluidUtils.getFluidStack(Liquid_Oxygen, 3000)}, new ItemStack[] {}, new int[] {}, 20*16, 240, 0);
+	}
 
+	private static void createLOH() {		
+		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellLiquidhydrogen", 1), 20*16);
+		CORE.RA.addAdvancedFreezerRecipe(new ItemStack[] {}, new FluidStack[] {FluidUtils.getFluidStack("hydrogen", 300)}, new FluidStack[] {FluidUtils.getFluidStack(Liquid_Hydrogen, 300)}, new ItemStack[] {}, new int[] {}, 20*4, 540, 0);
 	}
 
 	private static void createHydratedAmmoniumNitrateSlurry() {
@@ -213,7 +219,7 @@ public class RocketFuels extends ItemPackage {
 				0,
 				0,
 				256)); //Fuel Value
-		
+
 		mRocketFuels.put(1, new Recipe_GT(
 				true,
 				new ItemStack[] {},
@@ -225,7 +231,7 @@ public class RocketFuels extends ItemPackage {
 				0,
 				0,
 				512)); //Fuel Value
-		
+
 		mRocketFuels.put(2, new Recipe_GT(
 				true,
 				new ItemStack[] {},
@@ -237,7 +243,7 @@ public class RocketFuels extends ItemPackage {
 				0,
 				0,
 				768)); //Fuel Value
-		
+
 		mRocketFuels.put(3, new Recipe_GT(
 				true,
 				new ItemStack[] {},
@@ -249,8 +255,8 @@ public class RocketFuels extends ItemPackage {
 				0,
 				0,
 				1024)); //Fuel Value
-		
-		
+
+
 		//Add in default Diesel for the Buggy
 		mValidRocketFuels.put(-1, Diesel);	
 
@@ -287,7 +293,7 @@ public class RocketFuels extends ItemPackage {
 
 		GT_Values.RA.addCentrifugeRecipe(
 				CI.getNumberedCircuit(23),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellRP1Fuel", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellRP1", 1),
 				FluidUtils.getFluidStack(Liquid_Oxygen, 4000), 
 				FluidUtils.getFluidStack(RP1_Plus_Liquid_Oxygen, 200), 
 				CI.emptyCells(1),
@@ -348,7 +354,7 @@ public class RocketFuels extends ItemPackage {
 					20*48,
 					480);	
 		}
-		
+
 
 		GT_Values.RA.addCentrifugeRecipe(
 				CI.getNumberedCircuit(23),
@@ -429,6 +435,7 @@ public class RocketFuels extends ItemPackage {
 		if (!CORE.GTNH) {
 			createLOX();
 		}
+		createLOH();
 
 
 		createHydratedAmmoniumNitrateSlurry();		
@@ -439,18 +446,18 @@ public class RocketFuels extends ItemPackage {
 
 		createRocketFuels();
 		addRocketFuelsToMap();
-		
+
 		return true;
 	}
 
 	@Override
 	public boolean onLoadComplete(FMLLoadCompleteEvent event) {	
 
-		
+
 		if (MathUtils.randInt(1, 2) > 0) {
 			return false;
 		}
-		
+
 
 		Materials aMaterial_Chloramine = MaterialUtils.getMaterial("Chloramine");
 		Materials aMaterial_Dimethylamine = MaterialUtils.getMaterial("Dimethylamine");
@@ -458,33 +465,35 @@ public class RocketFuels extends ItemPackage {
 		Materials aMaterial_NitrogenDioxide = MaterialUtils.getMaterial("NitrogenDioxide");
 		Materials aMaterial_DinitrogenTetroxide = MaterialUtils.getMaterial("DinitrogenTetroxide");
 		Materials aMaterial_Dimethylhydrazine = MaterialUtils.getMaterial("Dimethylhydrazine");
-		
+
 		Materials aMaterial_Oxygen = Materials.Oxygen;
 		Materials aMaterial_Water = Materials.Water;
 		Materials aMaterial_HypochlorousAcid = MaterialUtils.getMaterial("HypochlorousAcid");
 		Materials aMaterial_Ammonia = MaterialUtils.getMaterial("Ammonia");
 		Materials aMaterial_Methanol = MaterialUtils.getMaterial("Methanol");
-		
+
 		if (aMaterial_Chloramine == null || aMaterial_Dimethylamine == null || aMaterial_DilutedHydrochloricAcid == null 
 				|| aMaterial_Dimethylhydrazine == null || aMaterial_NitrogenDioxide == null || aMaterial_DinitrogenTetroxide == null 
 				|| aMaterial_HypochlorousAcid == null || aMaterial_Ammonia == null || aMaterial_Methanol == null) {
 			return false;
 		}
-		
 
+
+		MaterialHelper.getCells(aMaterial_Water, 1);
+		
 		ItemStack aCellEmpty = CI.emptyCells(1);
-		ItemStack aCellWater = aMaterial_Water.getCells(1);
-		ItemStack aCellOxygen = aMaterial_Oxygen.getCells(1);
-		ItemStack aCellChloramine = aMaterial_Chloramine.getCells(1);
-		ItemStack aCellDimethylamine = aMaterial_Dimethylamine.getCells(1);
-		ItemStack aCellDilutedHydrochloricAcid = aMaterial_DilutedHydrochloricAcid.getCells(1);
-		ItemStack aCellNitrogenDioxide = aMaterial_NitrogenDioxide.getCells(1);
-		ItemStack aCellDinitrogenTetroxide = aMaterial_DinitrogenTetroxide.getCells(1);
-		ItemStack aCellDimethylhydrazine = aMaterial_Dimethylhydrazine.getCells(1);
-		
-		
-		
-		
+		ItemStack aCellWater = MaterialHelper.getCells(aMaterial_Water, 1);
+		ItemStack aCellOxygen = MaterialHelper.getCells(aMaterial_Oxygen, 1);
+		ItemStack aCellChloramine = MaterialHelper.getCells(aMaterial_Chloramine, 1);
+		ItemStack aCellDimethylamine = MaterialHelper.getCells(aMaterial_Dimethylamine, 1);
+		ItemStack aCellDilutedHydrochloricAcid = MaterialHelper.getCells(aMaterial_DilutedHydrochloricAcid, 1);
+		ItemStack aCellNitrogenDioxide = MaterialHelper.getCells(aMaterial_NitrogenDioxide, 1);
+		ItemStack aCellDinitrogenTetroxide = MaterialHelper.getCells(aMaterial_DinitrogenTetroxide, 1);
+		ItemStack aCellDimethylhydrazine = MaterialHelper.getCells(aMaterial_Dimethylhydrazine, 1);
+
+
+
+
 
 
 		GT_Recipe aChemReactor_1 = new Recipe_GT(
@@ -510,10 +519,10 @@ public class RocketFuels extends ItemPackage {
 				0,  //Dura
 				0,  //Eu
 				0); //Special
-		
-		
-		
-		
+
+
+
+
 		GT_Recipe aChemReactor_Basic_1 = new Recipe_GT(
 				true, //Optimise
 				new ItemStack[] {}, //I
@@ -561,18 +570,18 @@ public class RocketFuels extends ItemPackage {
 				0,  //Dura
 				0,  //Eu
 				0); //Special
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
+
+
+
 
 		GT_Recipe aChemReactor_Adv_1 = new Recipe_GT(
 				true, //Optimise
@@ -598,26 +607,26 @@ public class RocketFuels extends ItemPackage {
 				0,  //Eu
 				0); //Special
 
-		
-		
+
+
 
 		//RecipeUtils.removeGtRecipe(aChemReactor_Basic_1, GT_Recipe.GT_Recipe_Map.sChemicalRecipes);
 		//RecipeUtils.removeGtRecipe(aChemReactor_Basic_1, GT_Recipe.GT_Recipe_Map.sChemicalRecipes);
 		//RecipeUtils.removeGtRecipe(aChemReactor_Basic_1, GT_Recipe.GT_Recipe_Map.sChemicalRecipes);
 		//RecipeUtils.removeGtRecipe(aChemReactor_Basic_1, GT_Recipe.GT_Recipe_Map.sChemicalRecipes);	
-		
-		
-		
-		
-		
 
-      /*  GT_Values.RA.addChemicalRecipe(                   Materials.Chloramine.getCells(2),    GT_Utility.getIntegratedCircuit(1),  Materials.Dimethylamine.getGas(5000), Materials.Dimethylhydrazine.getFluid(6000),        Materials.DilutedHydrochloricAcid.getCells(1), Materials.Empty.getCells(1), 960, 480);        
+
+
+
+
+
+		/*  GT_Values.RA.addChemicalRecipe(                   Materials.Chloramine.getCells(2),    GT_Utility.getIntegratedCircuit(1),  Materials.Dimethylamine.getGas(5000), Materials.Dimethylhydrazine.getFluid(6000),        Materials.DilutedHydrochloricAcid.getCells(1), Materials.Empty.getCells(1), 960, 480);        
         GT_Values.RA.addChemicalRecipe(                   Materials.Dimethylamine.getCells(5), GT_Utility.getIntegratedCircuit(1),  Materials.Chloramine.getFluid(2000),  Materials.Dimethylhydrazine.getFluid(6000),        Materials.DilutedHydrochloricAcid.getCells(1), Materials.Empty.getCells(4), 960, 480);        
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Chloramine.getCells(2),    Materials.Empty.getCells(4),         Materials.Dimethylamine.getGas(5000), Materials.DilutedHydrochloricAcid.getFluid(1000),  Materials.Dimethylhydrazine.getCells(6),       GT_Values.NI, 960, 480);        
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Dimethylamine.getCells(5), Materials.Empty.getCells(1),         Materials.Chloramine.getFluid(2000),  Materials.DilutedHydrochloricAcid.getFluid(1000),  Materials.Dimethylhydrazine.getCells(6),       GT_Values.NI, 960, 480);        
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Dimethylamine.getCells(5), Materials.Chloramine.getCells(2),    Materials.Chloramine.getFluid(2000),  Materials.DilutedHydrochloricAcid.getFluid(1000),  Materials.Dimethylhydrazine.getCells(6),       Materials.DilutedHydrochloricAcid.getCells(1), 960, 480);        
     	GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.HypochlorousAcid.getFluid(3000), Materials.Ammonia.getGas(8000), Materials.Methanol.getFluid(12000)}, new FluidStack[]{Materials.Dimethylhydrazine.getFluid(12000), Materials.DilutedHydrochloricAcid.getFluid(2000), Materials.Water.getFluid(9000)}, null, 1040, 480);
-        
+
         GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(2),    GT_Values.NI,                        Materials.NitrogenDioxide.getGas(1000), Materials.DinitrogenTetroxide.getGas(1000), GT_Values.NI, 640);        
         GT_Values.RA.addChemicalRecipe(Materials.NitrogenDioxide.getCells(1), GT_Utility.getIntegratedCircuit(2),  GT_Values.NF,                           Materials.DinitrogenTetroxide.getGas(1000), Materials.Empty.getCells(1), 640);        
         GT_Values.RA.addChemicalRecipe(Materials.NitrogenDioxide.getCells(1), GT_Utility.getIntegratedCircuit(12), GT_Values.NF,                           GT_Values.NF, Materials.DinitrogenTetroxide.getCells(1), 640);        
@@ -629,25 +638,25 @@ public class RocketFuels extends ItemPackage {
         GT_Values.RA.addMixerRecipe(Materials.Dimethylhydrazine.getCells(2), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Oxygen.getGas(1000), new FluidStack(ItemList.sRocketFuel, 3000), Materials.Empty.getCells(2), 60, 16);
         GT_Values.RA.addMixerRecipe(Materials.Oxygen.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Dimethylhydrazine.getFluid(2000), new FluidStack(ItemList.sRocketFuel, 3000), Materials.Empty.getCells(1), 60, 16);
 
-		
-		*/
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+		 */
+
+
+
+
+
+
+
+
+
 		//Get Rocket Fuel
-		
+
 		//Find recipes using default values
-		
+
 		//Remove	
-		
+
 		//Rebake map		
-		
+
 		return true;
 	};
 
@@ -662,18 +671,28 @@ public class RocketFuels extends ItemPackage {
 
 	@Override
 	public void fluids() {
-		
+
 		//Register default fluids
 		Diesel = MaterialUtils.getMaterial("Fuel", "Diesel").getFluid(1).getFluid();
-		Oil_Heavy = MaterialUtils.getMaterial("OilHeavy", "Oil").getFluid(1).getFluid();		
 		
-		
+		// 5.08 Compat
+		if (!FluidUtils.doesFluidExist("liquid_heavy_oil")){
+			Oil_Heavy = FluidUtils.generateFluidNoPrefix("liquid_heavy_oil", "Heavy Oil", 200, new short[]{10, 10, 10, 100});
+		}
+		else {
+			Oil_Heavy = MaterialUtils.getMaterial("OilHeavy", "Oil").getFluid(1).getFluid();
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellOilHeavy", 1) == null){				
+				new BaseItemComponent("OilHeavy", "Heavy Oil", new short[] {10, 10, 10});
+			}
+		}		
+
+
 		//Create Kerosene
 		Kerosene = FluidUtils.generateFluidNonMolten("Kerosene", "Kerosene", 500, new short[]{150, 40, 150, 100}, null, null);
 		CoalTar.Coal_Oil = Kerosene;
-		
+
 		//RP! Focket Fuel
-		RP1 = FluidUtils.generateFluidNonMolten("RP1Fuel", "RP-1 Rocket Fuel", 500, new short[]{210, 50, 50, 100}, null, null);
+		RP1 = FluidUtils.generateFluidNonMolten("RP1Fuel", "RP-1", 500, new short[]{210, 50, 50, 100}, null, null);
 
 		//Create Nitrogen Tetroxide
 		Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("NitrogenTetroxide", "Nitrogen Tetroxide", -11, new short[]{170, 170, 0, 100}, null, null);
@@ -697,7 +716,7 @@ public class RocketFuels extends ItemPackage {
 				new BaseItemComponent("NitrousOxide", "Nitrous Oxide", new short[] {10, 10, 175});
 			}
 		}
-		
+
 		//Unsymmetrical_Dimethylhydrazine		
 		if (FluidUtils.getFluidStack("1,1dimethylhydrazine", 1) == null){
 			Unsymmetrical_Dimethylhydrazine = FluidUtils.generateFluidNonMolten("UnsymmetricalDimethylhydrazine", "Unsymmetrical Dimethylhydrazine", -57, new short[]{70, 210, 20, 100}, null, null);
@@ -727,16 +746,31 @@ public class RocketFuels extends ItemPackage {
 				new BaseItemComponent("LiquidOxygen", "Liquid Oxygen", new short[] {10, 10, 175});
 			}
 		}
-		
+
+		//Create Liquid_Hydrogen
+		if (FluidUtils.getFluidStack("LiquidHydrogen", 1) == null && FluidUtils.getFluidStack("liquidhydrogen", 1) == null){
+			Liquid_Hydrogen = FluidUtils.generateFluidNonMolten("LiquidHydrogen", "Liquid Hydrogen", -240, new short[]{75, 75, 220, 100}, null, null);
+		}
+		else {
+			if (FluidUtils.getFluidStack("LiquidHydrogen", 1) != null ) {
+				Liquid_Hydrogen = FluidUtils.getFluidStack("LiquidHydrogen", 1).getFluid();				
+			}
+			else {
+				Liquid_Hydrogen = FluidUtils.getFluidStack("liquidhydrogen", 1).getFluid();
+			}
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellLiquidHydrogen", 1) == null){				
+				new BaseItemComponent("LiquidHydrogen", "Liquid Hydrogen", new short[] {10, 10, 175});
+			}
+		}
 
 		Formaldehyde = FluidUtils.generateFluidNonMolten("Formaldehyde", "Formaldehyde", -92, new short[]{150, 75, 150, 100}, null, null);
-		
+
 		Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("RocketFuelMixA", "H8N4C2O4 Rocket Fuel", -185, new short[]{50, 220, 50, 100}, null, null);
-		RP1_Plus_Liquid_Oxygen = FluidUtils.generateFluidNonMolten("RocketFuelMixB", "Rp-1 Fuel Mixture", -250, new short[]{250, 50, 50, 100}, null, null);
+		RP1_Plus_Liquid_Oxygen = FluidUtils.generateFluidNonMolten("RocketFuelMixB", "Rp-1 Rocket Fuel", -250, new short[]{250, 50, 50, 100}, null, null);
 		Monomethylhydrazine_Plus_Nitric_Acid = FluidUtils.generateFluidNonMolten("RocketFuelMixC", "CN3H7O3 Rocket Fuel", -300, new short[]{125, 75, 180, 100}, null, null);
 		Dense_Hydrazine_Mix = FluidUtils.generateFluidNonMolten("RocketFuelMixD", "Dense Hydrazine Fuel Mixture", -250, new short[]{175, 80, 120, 100}, null, null);
 
-		
+
 	}
 
 

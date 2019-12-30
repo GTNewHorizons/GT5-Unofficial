@@ -19,7 +19,11 @@ public class AsmConfig {
 	public static boolean enableCofhPatch;
 	public static boolean enableGcFuelChanges;
 	public static boolean enableRcFlowFix;
+	public static boolean enableRcItemDupeFix;
 	public static boolean enableTcAspectSafety;
+	public static boolean enabledLwjglKeybindingFix;
+	
+	public static boolean disableAllLogging;
 
 	public AsmConfig(File file) {
 		if (!loaded) {
@@ -40,7 +44,13 @@ public class AsmConfig {
 
 			Property prop;	
 			
-			//Debug
+			//Debug			
+			prop = config.get("debug", "disableAllLogging", false);
+			prop.comment = "Disables ALL logging from GT++.";
+			prop.setLanguageKey("gtpp.disableAllLogging").setRequiresMcRestart(false);
+			disableAllLogging = prop.getBoolean(false);
+			propOrderDebug.add(prop.getName());
+			
 			prop = config.get("debug", "enableChunkDebugging", false);
 			prop.comment = "Enable/Disable Chunk Debugging Features, Must Be enabled on Client and Server.";
 			prop.setLanguageKey("gtpp.enableChunkDebugging").setRequiresMcRestart(true);
@@ -68,6 +78,12 @@ public class AsmConfig {
 			prop.setLanguageKey("gtpp.enableTiConFluidLighting").setRequiresMcRestart(true);
 			enableTiConFluidLighting = prop.getBoolean(true);
 			propOrder.add(prop.getName());
+
+			prop = config.get("general", "enabledLwjglKeybindingFix", true);
+			prop.comment = "Prevents the game crashing from having invalid keybinds. https://github.com/alkcorp/GTplusplus/issues/544";
+			prop.setLanguageKey("gtpp.enabledLwjglKeybindingFix").setRequiresMcRestart(true);
+			enabledLwjglKeybindingFix = prop.getBoolean(true);
+			propOrder.add(prop.getName());			
 			
 			prop = config.get("general", "enableGtTooltipFix", true);
 			prop.comment = "Enable/Disable Custom GT Tooltips";
@@ -89,6 +105,13 @@ public class AsmConfig {
 			prop.comment = "Quadruples max RC IO rates on tanks";
 			prop.setLanguageKey("gtpp.enableRcFlowFix").setRequiresMcRestart(true);
 			enableRcFlowFix = prop.getBoolean(true);
+			propOrder.add(prop.getName());
+			
+			//Railcraft Dupe Fix			
+			prop = config.get("general", "enableRcItemDupeFix", true);
+			prop.comment = "Fixes possible negative itemstacks";
+			prop.setLanguageKey("gtpp.enableRcItemDupeFix").setRequiresMcRestart(true);
+			enableRcItemDupeFix = prop.getBoolean(true);
 			propOrder.add(prop.getName());
 			
 			

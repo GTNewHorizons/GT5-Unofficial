@@ -1,8 +1,10 @@
 package gtPlusPlus.preloader.asm.transformers;
 
-import static org.objectweb.asm.Opcodes.*;
-
-import java.io.File;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.ASM5;
+import static org.objectweb.asm.Opcodes.IFEQ;
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.RETURN;
 
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassVisitor;
@@ -11,26 +13,7 @@ import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.preloader.CORE_Preloader;
-import net.minecraftforge.common.config.Configuration;
-
-public class Preloader_ClassTransformer {
-
-	public static boolean getConfig(){
-		final Configuration config = new Configuration(	new File(Utils.getMcDir(), "config/GTplusplus/GTplusplus.cfg"));
-		if (config != null){		
-			config.load();
-			// Circuits
-			CORE_Preloader.enableOldGTcircuits = config.getBoolean("enableOldGTcircuits", "gregtech", false,
-					"Restores circuits and their recipes from Pre-5.09.28 times.");
-			Logger.INFO("GT++ ASM - Loaded the configuration file.");
-			return CORE_Preloader.enableOldGTcircuits;
-		}
-		Logger.INFO("GT++ ASM - Failed loading the configuration file.");
-		return false;
-	}
+public class Preloader_ClassTransformer {	
 
 	public static final class OreDictionaryVisitor extends ClassVisitor {
 

@@ -7,25 +7,21 @@ import java.lang.reflect.Method;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import cpw.mods.fml.common.Loader;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
-import gregtech.GT_Mod;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
-
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
+import gregtech.GT_Mod;
+import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot_OLD;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
-import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GTPP_Bees {
@@ -111,11 +107,9 @@ public class GTPP_Bees {
     }
     
     private void addExtractorRecipe(ItemStack input, FluidStack output){
-    	MaterialGenerator.addFluidExtractionRecipe(
+    	CORE.RA.addFluidExtractionRecipe(
     			input, 
-    			null, 
     			output, 
-    			0, 
     			30, 
     			8);
     }

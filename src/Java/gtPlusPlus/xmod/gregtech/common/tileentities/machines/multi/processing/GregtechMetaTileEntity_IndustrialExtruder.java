@@ -58,7 +58,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Output Bus",
 				"1x Input Hatch",
 				"1x Energy Hatch",
-				"Maintenance Hatch must be at the back, centered",
+				//"Maintenance Hatch must be at the back, centered",
 				};
 	}
 
@@ -142,6 +142,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		final byte tSide = this.getBaseMetaTileEntity().getBackFacing();
+		int aCasingCount = 0;
 		if ((this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 1)) && (this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 2) && (this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 3)))) {			
 			for (byte i = 2; i < 6; i = (byte) (i + 1)) {
 				IGregTechTileEntity tTileEntity;
@@ -183,7 +184,11 @@ extends GregtechMeta_MultiBlockBase {
 								log("Bad Casing on Extruder.");
 								return false;
 							}
-							
+							else {
+								if (aTile == null) {
+									aCasingCount++;
+								}
+							}							
 						}
 					}
 				}
@@ -200,8 +205,11 @@ extends GregtechMeta_MultiBlockBase {
 			log("False 5");
 			return false;
 		}
+		
+		
+		
 		log("True");
-		return true;
+		return aCasingCount >= 28;
 	}
 
 	@Override

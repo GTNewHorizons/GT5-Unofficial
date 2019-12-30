@@ -7,23 +7,28 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.material.*;
+import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.*;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Heat;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntityFluid;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_Cable;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntityGeothermalGenerator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -101,9 +106,9 @@ public class GregtechConduits {
 		
 		
 		//Generate Heat Pipes
-		GregtechItemList.HeatPipe_Tier_1.set(new GT_MetaPipeEntity_Heat(31021,	"gtpp.pipe.heat.basic.01", "Lead Heat Pipe (500C)", Materials.Lead, 500).getStackForm(1L));
-		GregtechItemList.HeatPipe_Tier_2.set(new GT_MetaPipeEntity_Heat(31022,	"gtpp.pipe.heat.basic.02", "Iron Heat Pipe (500C)", Materials.Iron, 500).getStackForm(1L));
-		GregtechItemList.HeatPipe_Tier_3.set(new GT_MetaPipeEntity_Heat(31023,	"gtpp.pipe.heat.basic.03", "Silver Heat Pipe (1500C)", Materials.Silver, 1500).getStackForm(1L));
+		//GregtechItemList.HeatPipe_Tier_1.set(new GT_MetaPipeEntity_Heat(31021,	"gtpp.pipe.heat.basic.01", "Lead Heat Pipe (500C)", Materials.Lead, 500).getStackForm(1L));
+		//GregtechItemList.HeatPipe_Tier_2.set(new GT_MetaPipeEntity_Heat(31022,	"gtpp.pipe.heat.basic.02", "Iron Heat Pipe (500C)", Materials.Iron, 500).getStackForm(1L));
+		//GregtechItemList.HeatPipe_Tier_3.set(new GT_MetaPipeEntity_Heat(31023,	"gtpp.pipe.heat.basic.03", "Silver Heat Pipe (1500C)", Materials.Silver, 1500).getStackForm(1L));
 		
 		
 		
