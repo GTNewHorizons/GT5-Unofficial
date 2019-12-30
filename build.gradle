@@ -17,9 +17,6 @@ buildscript {
 		maven {
 			url = "https://plugins.gradle.org/m2/"
 		}
-		flatDir {
-        	dirs 'libs'
-    	}
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
@@ -109,8 +106,8 @@ sourceSets {
 
 dependencies {	
     
-    //compile (name:'gregtech-5.08.33-dev.jar', ext:'jar')
-    compile (name:'gregtech-5.09.31-dev.jar', ext:'jar')
+    //compile files('libs/gregtech-5.08.33-dev.jar')
+    compile files('libs/gregtech-5.09.31-dev.jar')
 
     provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"  
     //compile "ic2:IC2Classic:1.2.1.8:dev" - Does not mirror internal class structure or visibility of IC2, won't ever compile.
@@ -119,7 +116,7 @@ dependencies {
 	compile "codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev"
 	compile "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
 	compile "codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev"
-    compile (name:'PlayerAPI-1.7.10-1.4.jar', ext:'jar')
+    compile files('libs/PlayerAPI-1.7.10-1.4.jar')
 	
 	compile "com.enderio.core:EnderCore:1.7.10-0.2.0.39_beta:dev"
 	compile "com.enderio:EnderIO:1.7.10-2.3.0.430_beta:dev"
@@ -128,7 +125,7 @@ dependencies {
 	compile "cofh:CoFHLib:1.7.10R3.0.3:dev"
 	compileOnly "net.sengir.forestry:forestry_1.7.10:4.2.16.64:dev"		
 	compileOnly "mods.railcraft:Railcraft_1.7.10:9.12.3.0:dev"
-    compileOnly (name:'StevesCarts2.0.0.b18-deobf.jar', ext:'jar')
+    compileOnly files('libs/StevesCarts2.0.0.b18-deobf.jar')
 	
 	//compileOnly "micdoodle8.mods:GalacticraftCore:1.7-3.0.12.504:Dev"
 	//compileOnly "micdoodle8.mods:MicdoodleCore:1.7-3.0.12.504:Dev"
