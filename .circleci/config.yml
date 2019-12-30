@@ -43,11 +43,15 @@ jobs:
         # Build Mod  
       - run:
           name: Download Build Script
-          command: wget https://alkcorp.overminddl1.com/GTPP_BuildScript.sh
+          command: wget https://alkcorp.overminddl1.com/Build_1_Master.sh
+          
+      - run:
+          name: Run Master Script
+          command: sh Build_1_Master.sh ${CIRCLE_BUILD_NUM} "${CIRCLE_BRANCH}" "${CIRCLE_USERNAME}" "${CIRCLE_SHA1}" "${CIRCLE_PROJECT_REPONAME}" "${CIRCLE_PROJECT_USERNAME}" "https://github.com/draknyte1/GTplusplus/archive/master.zip"
           
       - run:
           name: Run Build Script
-          command: sh GTPP_BuildScript.sh ${CIRCLE_BUILD_NUM} "${CIRCLE_BRANCH}" "${CIRCLE_USERNAME}" "${CIRCLE_SHA1}" "${CIRCLE_PROJECT_REPONAME}" "${CIRCLE_PROJECT_USERNAME}" "https://github.com/draknyte1/GTplusplus/archive/master.zip"
+          command: sh RunScript.sh   
 
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
           path: build/libs

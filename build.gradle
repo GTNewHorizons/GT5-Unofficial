@@ -56,10 +56,15 @@ file "build.properties" withReader {
     ext.config = new ConfigSlurper().parse prop
 }
 
+file "version.properties" withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config2 = new ConfigSlurper().parse prop
+}
 
 apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 
-version = "${config.gtpp.version}"
+version = "${config.gtpp.version}.${config2.mod.version}"
 group= "gtPlusPlus"
 archivesBaseName = "GT-PlusPlus"
 
