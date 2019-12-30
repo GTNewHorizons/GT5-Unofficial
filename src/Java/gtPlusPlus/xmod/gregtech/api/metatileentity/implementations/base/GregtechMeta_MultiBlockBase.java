@@ -989,6 +989,15 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	 * log("GOOD RETURN - 1"); return true; }
 	 */
 
+	public long getMaxInputEnergy() {
+		long rEnergy = 0;
+		if (mEnergyHatches.size() < 2) // so it only takes 1 amp is only 1 hatch is present so it works like most gt multies
+			return mEnergyHatches.get(0).getBaseMetaTileEntity().getInputVoltage();
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
+            if (isValidMetaTileEntity(tHatch)) rEnergy += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.getBaseMetaTileEntity().getInputAmperage();
+        return rEnergy;
+	}
+
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
@@ -1003,6 +1012,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		long tEnergy = getMaxInputEnergy();
 		log("Running checkRecipeGeneric(0)");
 		
 		GT_Recipe tRecipe = findRecipe(
@@ -1079,7 +1089,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		log("tVoltage: "+tVoltage);
 		log("tRecipeEUt: "+tRecipeEUt);
 		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
+		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
 			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
 				log("Broke at "+parallelRecipes+".");
 				break;
@@ -1289,7 +1299,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-
+		long tEnergy = getMaxInputEnergy();
 		log("Running checkRecipeGeneric(0)");
 
 		GT_Recipe tRecipe = aRecipe != null ? aRecipe : findRecipe(
@@ -1386,7 +1396,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		log("tVoltage: "+tVoltage);
 		log("tRecipeEUt: "+tRecipeEUt);
 		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
+		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
 			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
 				log("Broke at "+parallelRecipes+".");
 				break;

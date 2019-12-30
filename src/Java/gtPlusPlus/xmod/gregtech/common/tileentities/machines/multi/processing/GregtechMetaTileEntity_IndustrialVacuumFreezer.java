@@ -184,6 +184,8 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		return false;
 	}
 
+	private volatile int mGraceTimer = 2;
+
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		/*if (this.getBaseMetaTileEntity().isActive()) {
@@ -192,5 +194,19 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 			}
 		}	*/
 		super.onPostTick(aBaseMetaTileEntity, aTick);
+
+		if (this.mStartUpCheck < 0) {
+			if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {			
+				if (aTick % 10 == 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
+					if (!this.depleteInput(FluidUtils.getFluidStack("cryotheum", 10))) {						
+						if (mGraceTimer-- == 0) {
+							this.causeMaintenanceIssue();
+							this.stopMachine();
+							mGraceTimer = 2;
+						}						
+					}
+				}			
+			}
+		}
 	}
 }

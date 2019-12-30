@@ -267,6 +267,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		long tEnergy = getMaxInputEnergy();
 		Logger.WARNING("Running checkRecipeGeneric(0)");
 
 		GT_Recipe tRecipe = this.getRecipeMap().findRecipe(getBaseMetaTileEntity(), mLastRecipe, false,
@@ -289,12 +290,14 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		// EU discount
 		float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
 		int tHeatCapacityDivTiers = (mHeatingCapacity - tRecipe.mSpecialValue) / 900;
+		if (tHeatCapacityDivTiers > 0)
+		tRecipeEUt = (int) (tRecipeEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
 		float tTotalEUt = 0.0f;
 
 		int parallelRecipes = 0;
 		// Count recipes to do in parallel, consuming input items and fluids and
 		// considering input voltage limits
-		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
+		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
 			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
 				Logger.WARNING("Broke at " + parallelRecipes + ".");
 				break;
@@ -332,9 +335,6 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				this.mMaxProgresstime /= (tHeatCapacityDivTiers >= rInt ? 4 : 2);
 			}
 		}
-
-		if (tHeatCapacityDivTiers > 0)
-			this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
 		if (this.mEUt > 0) {
 			this.mEUt = (-this.mEUt);
 		}
@@ -422,6 +422,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 						if (mGraceTimer-- == 0) {
 							this.causeMaintenanceIssue();
 							this.stopMachine();
+							mGraceTimer = 2;
 						}						
 					}
 				}			
