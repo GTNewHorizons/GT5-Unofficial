@@ -101,6 +101,8 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 			calculatePollutionReduction = GT_MetaTileEntity_Hatch_Muffler.class.getDeclaredMethod("calculatePollutionReduction", int.class);
 		} catch (NoSuchMethodException | SecurityException e) {}		
 
+		mCustomBehviours = new HashMap<String, SpecialMultiBehaviour>();
+		
 	}
 
 	//Find Recipe Methods
@@ -119,7 +121,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	public ArrayList<GT_MetaTileEntity_Hatch_OutputBattery> mDischargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_OutputBattery>();
 
 	// Custom Behaviour Map
-	HashMap<String, SpecialMultiBehaviour> mCustomBehviours;
+	private static final HashMap<String, SpecialMultiBehaviour> mCustomBehviours;
 	
 	
 	public GregtechMeta_MultiBlockBase(final int aID, final String aName,
@@ -1022,8 +1024,8 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		 */
 		
 		// First populate the map if we need to.
-		if (mCustomBehviours.isEmpty()) {
-			mCustomBehviours = Multiblock_API.getSpecialBehaviourItemMap();			
+		if (mCustomBehviours == null || mCustomBehviours.isEmpty()) {
+			mCustomBehviours.putAll(Multiblock_API.getSpecialBehaviourItemMap());
 		}
 		
 		// We have a special slot object in the recipe

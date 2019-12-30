@@ -451,7 +451,7 @@ public class RECIPES_Machines {
 
 				//Add recycle recipes for the Iron Plated Bricks
 				//GT_ModHandler.addPulverisationRecipe(RECIPE_IronPlatedBricks, ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustIron", 6), ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustClay", 2), true);
-				RECIPES_GREGTECH.addPulverisationRecipe(
+				CORE.RA.addPulverisationRecipe(
 						RECIPE_IronPlatedBricks,
 						ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustIron", 6),
 						ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustClay", 2),

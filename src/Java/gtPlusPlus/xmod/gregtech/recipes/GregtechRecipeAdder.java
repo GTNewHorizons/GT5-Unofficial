@@ -7,10 +7,13 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.CustomRecipeMap;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -1276,6 +1279,29 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3) {
+		//return GT_Values.RA.addPulveriserRecipe(arg0, arg1, arg2, arg3, arg4)
+
+		aOutput1 = GT_OreDictUnificator.get(true, aOutput1);
+		aOutput2 = GT_OreDictUnificator.get(true, aOutput2);
+		aOutput3 = GT_OreDictUnificator.get(true, aOutput3);
+		if ((GT_Utility.isStackInvalid(aInput)) || (GT_Utility.isStackInvalid(aOutput1))) {
+			return false;
+		}
+		if (GT_Utility.getContainerItem(aInput, false) == null) {
+
+			if (GregTech_API.sRecipeFile.get(ConfigCategories.Machines.maceration, aInput, true)) {
+				GT_Utility.addSimpleIC2MachineRecipe(aInput, GT_ModHandler.getMaceratorRecipeList(), null,
+						new Object[] { aOutput1 });
+			}
+			GT_Values.RA.addPulveriserRecipe(aInput, new ItemStack[] { aOutput1, aOutput2, aOutput3 },
+					new int[] { 10000, 10000, 10000 }, 400, 2);
+		}
+		return true;
+	
 	}
 
 

@@ -281,5 +281,7 @@ public interface IGregtech_RecipeAdder {
 
 	public boolean addDistilleryRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, ItemStack aSolidOutput, int aDuration, int aEUt, boolean aHidden);
 
+	public boolean addPulverisationRecipe(final ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, final ItemStack aOutput3);
+
 
 }
