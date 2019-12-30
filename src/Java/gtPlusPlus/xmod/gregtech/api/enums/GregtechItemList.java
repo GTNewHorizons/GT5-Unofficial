@@ -466,7 +466,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Super_Chest_LV, Super_Chest_MV, Super_Chest_HV, Super_Chest_EV, Super_Chest_IV, 
 
 	//Chunkloader
-	GT_Chunkloader_HV, GT_Chunkloader_EV, GT_Chunkloader_IV, 
+	GT_Chunkloader_HV, GT_Chunkloader_ZPM, GT_Chunkloader_IV, 
 
 
 	//Wireless Chargers

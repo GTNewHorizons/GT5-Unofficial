@@ -1,122 +1,165 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
+import static gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils.mPollution;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
-import com.google.common.collect.MapMaker;
-import com.google.common.collect.UnmodifiableIterator;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.minecraftforge.common.ForgeChunkManager.Type;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.interfaces.IGregtechPacketEntity;
-import gtPlusPlus.core.handler.chunkloading.ChunkManager;
-import gtPlusPlus.core.util.minecraft.network.PacketBuilder;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.interfaces.IChunkLoader;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.chunkloading.GTPP_ChunkManager;
+import gtPlusPlus.core.chunkloading.StaticChunkFunctions;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
-public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredMachineBlock implements IGregtechPacketEntity {
+public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMachine implements IChunkLoader {
 
-	@SuppressWarnings("unused")
-	private final static int yMin = 0;
-	private final static int yMax = 254;
-	private final int xMin, xMax;
-	private final int zMin, zMax;
-	
-	public GregtechMetaTileEntityChunkLoader(final int aID, final String aName, final String aNameRegional, final int aTier) {
-		super(aID, aName, aNameRegional, aTier, 0, "Loads chunks: " + (16 + (48 * aTier)) + " powered");
-		xMin = this.xCoord-47;
-		xMax = this.xCoord+47;
-		zMin = this.zCoord-47;
-		zMax = this.zCoord+47;
+	public GregtechMetaTileEntityChunkLoader(int aID, String aName, String aNameRegional, int aTier) {
+		super(aID, aName, aNameRegional, aTier, 2, "Loads " + getMaxChunksToLoadForTier(aTier) + " chunks when powered", 0, 0, "Recycler.png", "", 
+				new ITexture[]{
+						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
+						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
+						new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
+						new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab),
+						new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Vent_Fast),
+						new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Vent),
+						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
+						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB)
+		});
 	}
 
-	public GregtechMetaTileEntityChunkLoader(final String aName, final int aTier, final int aInvSlotCount, final String aDescription, final ITexture[][][] aTextures) {
-		super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-		xMin = this.xCoord-47;
-		xMax = this.xCoord+47;
-		zMin = this.zCoord-47;
-		zMax = this.zCoord+47;
+	public GregtechMetaTileEntityChunkLoader(String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+		super(aName, aTier, 2, aDescription, aTextures, 0, 0, aGUIName, aNEIName);
+	}
+
+	public static int getMaxChunksToLoadForTier(int aTier) {
+		return (aTier * aTier);
 	}
 
 	@Override
-	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntityChunkLoader(this.mName, this.mTier, this.mInventory.length, this.mDescription, this.mTextures);
+	public String[] getDescription() {
+		return new String[] {
+				this.mDescription,
+		};
+	}
+
+	@Override
+	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
+		final ITexture[][][] rTextures = new ITexture[10][17][];
+		for (byte i = -1; i < 16; i++) {
+			rTextures[0][i + 1] = this.getFront(i);
+			rTextures[1][i + 1] = this.getBack(i);
+			rTextures[2][i + 1] = this.getBottom(i);
+			rTextures[3][i + 1] = this.getTop(i);
+			rTextures[4][i + 1] = this.getSides(i);
+			rTextures[5][i + 1] = this.getFrontActive(i);
+			rTextures[6][i + 1] = this.getBackActive(i);
+			rTextures[7][i + 1] = this.getBottomActive(i);
+			rTextures[8][i + 1] = this.getTopActive(i);
+			rTextures[9][i + 1] = this.getSidesActive(i);
+		}
+		return rTextures;
 	}
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1], (aSide != 1) ? null : aActive ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER)};
+		return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0 : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex + 1];
+	}
+
+
+	public ITexture[] getFront(final byte aColor) {
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)};
+	}
+
+
+	public ITexture[] getBack(final byte aColor) {
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)};
+	}
+
+
+	public ITexture[] getBottom(final byte aColor) {
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)};
+	}
+
+
+	public ITexture[] getTop(final byte aColor) {
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)};
+	}
+
+
+	public ITexture[] getSides(final byte aColor) {
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Redox_3)};
+	}
+
+
+	public ITexture[] getFrontActive(final byte aColor) {
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)};
+	}
+
+
+	public ITexture[] getBackActive(final byte aColor) {
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)};
+	}
+
+
+	public ITexture[] getBottomActive(final byte aColor) {
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)};
+	}
+
+
+	public ITexture[] getTopActive(final byte aColor) {
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)};
+	}
+
+
+	public ITexture[] getSidesActive(final byte aColor) {
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Redox_3)};
 	}
 
 	@Override
-	public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
-		
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		PlayerUtils.messagePlayer(aPlayer, "Running every "+" minutes.");	
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
 	@Override
-	public void onRemoval() {
-		
+	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+		return new GregtechMetaTileEntityChunkLoader(this.mName, this.mTier, this.mDescription, this.mTextures, this.mGUIName, this.mNEIName);
 	}
 
 	@Override
-	public boolean isSimpleMachine() {
-		return false;
-	}
-
-	@Override
-	public boolean isFacingValid(final byte aFacing) {
-		return aFacing > 1;
-	}
-
-	@Override
-	public boolean isEnetInput() {
+	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
+		if (aBaseMetaTileEntity.isClientSide()){
+			return true;
+		}
+		this.showPollution(aPlayer.getEntityWorld(), aPlayer);
 		return true;
 	}
 
-	@Override
-	public boolean isInputFacing(final byte aSide) {
-		return true;
-	}
-
-	@Override
-	public boolean isTeleporterCompatible() {
-		return false;
-	}
-
-	@Override
-	public long getMinimumStoredEU() {
-		return 512;
-	}
-
-	@Override
-	public long maxEUStore() {
-		return 512 + (V[this.mTier] * 50);
-	}
-
-	@Override
-	public long maxEUInput() {
-		return V[this.mTier];
-	}
-
-	@Override
-	public long maxAmperesIn() {
-		return 2;
+	private void showPollution(final World worldIn, final EntityPlayer playerIn){
+		//PlayerUtils.messagePlayer(playerIn, "Running every "+mFrequency+" minutes. Owner: "+this.getBaseMetaTileEntity().getOwnerName());
+		//PlayerUtils.messagePlayer(playerIn, "Last run: "+Utils.getSecondsFromMillis(aDiff)+" seconds ago.");	
 	}
 
 	@Override
@@ -129,230 +172,230 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 		return false;
 	}
 
-	@Override
-	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
-		return new ITexture[0][0][0];
-	}
 
 	@Override
-	public void saveNBTData(final NBTTagCompound aNBT) {
-		
+	public String[] getInfoData() {
+		return new String[] {
+				this.getLocalName()
+		};
 	}
 
 	@Override
-	public void loadNBTData(final NBTTagCompound aNBT) {
-		
-	}
-	
-	
-	
-	
-	/**
-	 * Chunkloading Code from Railcraft
-	 */
-
-	private static final Map<UUID, Ticket> tickets = new MapMaker().makeMap();
-	private static final byte MAX_CHUNKS = 25;
-	private static final byte ANCHOR_RADIUS = 1;
-	private int prevX;
-	private int prevY;
-	private int prevZ;
-	private Set<ChunkCoordIntPair> chunks;
-	private boolean hasTicket;
-	private boolean refreshTicket;
-	private boolean powered;
-	private UUID uuid;
-	private int xCoord, yCoord, zCoord;	
-
-	public UUID getUUID() {
-		if (this.uuid == null) {
-			this.uuid = UUID.randomUUID();
-		}
-
-		return this.uuid;
-	}
-
-	private boolean sendClientUpdate = false;
-	
-	public void sendUpdateToClient(IGregTechTileEntity aBaseMetaTileEntity) {
-		if (aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
-			this.sendClientUpdate = true;
-		} else {
-			PacketBuilder.instance().sendTileEntityPacket(aBaseMetaTileEntity);
-		}
-
-	}
-
-	
-	@Override
-	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer) {
-		super.onPostTick(aBaseMetaTileEntity, aTimer);
-		if (!aBaseMetaTileEntity.isServerSide()) {			
-			return;		
-		} 
-		else {
-			if (this.xCoord != this.prevX || this.yCoord != this.prevY || this.zCoord != this.prevZ) {
-				this.releaseTicket(aBaseMetaTileEntity);
-				this.prevX = this.xCoord;
-				this.prevY = this.yCoord;
-				this.prevZ = this.zCoord;
-			}
-			
-			this.powered = meetsTicketRequirements();
-			if (this.hasActiveTicket() && (this.getTicket().world != aBaseMetaTileEntity.getWorld() || this.refreshTicket || !this.powered)) {
-				this.releaseTicket(aBaseMetaTileEntity);
-			}
-			if (!this.hasActiveTicket()) {
-				this.requestTicket(aBaseMetaTileEntity);
-			}
-		}	
-		if (this.sendClientUpdate) {
-			this.sendClientUpdate = false;
-			PacketBuilder.instance().sendTileEntityPacket(aBaseMetaTileEntity);
-		}	
-	}
-
-	public void validate() {
-		this.refreshTicket = true;
-	}
-
-	protected void releaseTicket(IGregTechTileEntity aBaseMetaTileEntity) {
-		this.refreshTicket = false;
-		this.setTicket(aBaseMetaTileEntity, (Ticket) null);
-	}
-
-	protected void requestTicket(IGregTechTileEntity aBaseMetaTileEntity) {
-		if (this.meetsTicketRequirements()) {
-			Ticket chunkTicket = this.getTicketFromForge(aBaseMetaTileEntity);
-			if (chunkTicket != null) {
-				this.setTicketData(aBaseMetaTileEntity, chunkTicket);
-				this.forceChunkLoading(aBaseMetaTileEntity, chunkTicket);
-			}
-		}
-	}
-
-	protected boolean meetsTicketRequirements() {
-		return this.getEUVar() > (V[this.mTier]*2);
-	}
-	
-	public Ticket getTicketFromForge(IGregTechTileEntity aBaseMetaTileEntity) {
-		return ForgeChunkManager.requestTicket(GTplusplus.instance, aBaseMetaTileEntity.getWorld(), Type.NORMAL);
-	}
-
-	protected void setTicketData(IGregTechTileEntity aBaseMetaTileEntity, Ticket chunkTicket) {
-		chunkTicket.getModData().setInteger("xCoord", this.xCoord);
-		chunkTicket.getModData().setInteger("yCoord", this.yCoord);
-		chunkTicket.getModData().setInteger("zCoord", this.zCoord);
-		chunkTicket.getModData().setString("type", "StandardChunkLoader");
-	}
-
-	public boolean hasActiveTicket() {
-		return this.getTicket() != null;
-	}
-
-	public Ticket getTicket() {
-		return (Ticket) tickets.get(this.getUUID());
-	}
-
-	public void setTicket(IGregTechTileEntity aBaseMetaTileEntity, Ticket t) {
-		boolean changed = false;
-		Ticket ticket = this.getTicket();
-		if (ticket != t) {
-			if (ticket != null) {
-				if (ticket.world == aBaseMetaTileEntity.getWorld()) {
-					UnmodifiableIterator<ChunkCoordIntPair> var4 = ticket.getChunkList().iterator();
-
-					while (var4.hasNext()) {
-						ChunkCoordIntPair chunk = (ChunkCoordIntPair) var4.next();
-						if (ForgeChunkManager.getPersistentChunksFor(aBaseMetaTileEntity.getWorld()).keys().contains(chunk)) {
-							ForgeChunkManager.unforceChunk(ticket, chunk);
-						}
-					}
-
-					ForgeChunkManager.releaseTicket(ticket);
-				}
-
-				tickets.remove(this.getUUID());
-			}
-
-			changed = true;
-		}
-
-		this.hasTicket = t != null;
-		if (this.hasTicket) {
-			tickets.put(this.getUUID(), t);
-		}
-
-		if (changed) {
-			this.sendUpdateToClient(aBaseMetaTileEntity);
-		}
-
-	}
-	
-	public void forceChunkLoading(IGregTechTileEntity aBaseMetaTileEntity, Ticket ticket) {
-		this.setTicket(aBaseMetaTileEntity, ticket);
-		this.setupChunks();
-		if (this.chunks != null) {
-			Iterator<ChunkCoordIntPair> var2 = this.chunks.iterator();
-			while (var2.hasNext()) {
-				ChunkCoordIntPair chunk = (ChunkCoordIntPair) var2.next();
-				ForgeChunkManager.forceChunk(ticket, chunk);
-			}
-		}
-	}
-	
-	public void setupChunks() {
-		if (!this.hasTicket) {
-			this.chunks = null;
-		}
-		else {
-			this.chunks = ChunkManager.getInstance().getChunksAround(this.xCoord >> 4, this.zCoord >> 4, 1);
-		}
+	public boolean isGivingInformation() {
+		return true;
 	}
 
 	@Override
-	public void onExplosion() {
-		this.releaseTicket(this.getBaseMetaTileEntity());
-		super.onExplosion();
-	}
-
-	@Override
-	public void onValueUpdate(byte aValue) {
-		super.onValueUpdate(aValue);
-	}
-
-	@Override
-	public void onMachineBlockUpdate() {
-		super.onMachineBlockUpdate();
-	}
-
-	@Override
-	public void markDirty() {
-		this.refreshTicket = true;
-		super.markDirty();
-	}
-
-	@Override
-	public boolean connectsToItemPipe(byte aSide) {
+	public boolean canInsertItem(final int p_102007_1_, final ItemStack p_102007_2_, final int p_102007_3_) {
 		return false;
 	}
 
 	@Override
-	public void doExplosion(long aExplosionPower) {
-		this.releaseTicket(this.getBaseMetaTileEntity());
-		super.doExplosion(aExplosionPower);
+	public boolean canExtractItem(final int p_102008_1_, final ItemStack p_102008_2_, final int p_102008_3_) {
+		return false;
 	}
 
-	public void writePacketData(DataOutputStream data) throws IOException {
-		data.writeBoolean(this.hasTicket);
+	@Override
+	public int getSizeInventory() {
+		return 0;
 	}
 
-	public void readPacketData(DataInputStream data) throws IOException {
-		boolean tick = data.readBoolean();
-		if (this.hasTicket != tick) {
-			this.hasTicket = tick;
-			this.markDirty();
+	@Override
+	public boolean isUseableByPlayer(final EntityPlayer p_70300_1_) {
+		return true;
+	}
+
+	@Override
+	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
+		super.onPostTick(aBaseMetaTileEntity, aTick);
+		
+		// Have we set the Chunk this Tile resides in yet?
+        if (mCurrentChunk == null) {
+            int xTile = getBaseMetaTileEntity().getXCoord();
+            int zTile = getBaseMetaTileEntity().getZCoord();
+        	createInitialWorkingChunk(aBaseMetaTileEntity, xTile, zTile);
+        }       
+		
+        // Try unload all chunks if fail to meet global chunkloading conditions.
+		if (StaticChunkFunctions.onPostTick(aBaseMetaTileEntity, aTick)) {
+			// Can this tile actively chunkload?
+			if (getChunkLoadingActive()) {
+				// Consume some power
+				this.setEUVar(this.getEUVar() - (maxEUInput() * maxAmperesIn()));
+				
+		        // Do we need to re-request tickets?
+		        if (getDoesWorkChunkNeedReload()) {
+		        	// Request ticket for current chunk.
+		            GTPP_ChunkManager.requestChunkLoad((TileEntity)getBaseMetaTileEntity(), mCurrentChunk);
+		            // Request a ticket for each chunk we have mapped out in a spiral pattern.
+		            if (!mLoadedChunks.isEmpty()) {
+		            	for (ChunkCoordIntPair Y : mLoadedChunks) {
+		                    GTPP_ChunkManager.requestChunkLoad((TileEntity)getBaseMetaTileEntity(), Y);            		
+		            	}
+		            }
+		            setDoesWorkChunkNeedReload(false);            
+		        }
+				
+			}
+		}		
+	}
+
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		super.saveNBTData(aNBT);
+		StaticChunkFunctions.saveNBTDataForTileEntity(this.getBaseMetaTileEntity(), aNBT);
+	}
+
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		super.loadNBTData(aNBT);
+		StaticChunkFunctions.loadNBTDataForTileEntity(this.getBaseMetaTileEntity(), aNBT);
+	}
+
+	@Override
+	public long maxAmperesIn() {
+		return 2;
+	}
+
+	@Override
+	public long getMinimumStoredEU() {
+		return V[mTier] * 2;
+	}
+
+	@Override
+	public long maxEUStore() {
+		return V[mTier] * 256;
+	}
+
+	@Override
+	public long maxEUInput() {
+		return V[mTier];
+	}
+
+	
+	/*
+	 * Chunkloading Vars
+	 */
+	
+	private long mTicksRemainingForChunkloading = -1;
+	private ChunkCoordIntPair mCurrentChunk;
+	private Set<ChunkCoordIntPair> mLoadedChunks = new HashSet<ChunkCoordIntPair>();
+	private boolean mRefreshChunkTickets = false;
+	
+	@Override
+	public long getTicksRemaining() {
+		return -1;
+	}
+
+	@Override
+	public void setTicksRemaining(long aTicks) {
+		mTicksRemainingForChunkloading = aTicks;
+	}
+
+	@Override
+	public ChunkCoordIntPair getResidingChunk() {
+		return mCurrentChunk;
+	}
+
+	@Override
+	public void setResidingChunk(ChunkCoordIntPair aCurrentChunk) {
+		mCurrentChunk = aCurrentChunk;
+	}
+
+	@Override
+	public boolean getChunkLoadingActive() {
+		return this.getEUVar() >= maxEUInput() * maxAmperesIn();
+	}
+
+	@Override
+	public void setChunkLoadingActive(boolean aActive) {
+		
+	}
+
+	@Override
+	public boolean getDoesWorkChunkNeedReload() {		
+		return mRefreshChunkTickets;
+	}
+
+	@Override
+	public void setDoesWorkChunkNeedReload(boolean aActive) {
+		mRefreshChunkTickets = aActive;
+	}
+
+	@Override
+	public boolean addChunkToLoadedList(ChunkCoordIntPair aActiveChunk) {
+		return mLoadedChunks.add(aActiveChunk);
+	}
+
+	@Override
+	public boolean removeChunkFromLoadedList(ChunkCoordIntPair aActiveChunk) {
+		return mLoadedChunks.remove(aActiveChunk);
+	}
+
+	@Override
+	public Set<ChunkCoordIntPair> getManagedChunks() {
+		return mLoadedChunks;
+	}
+
+	@Override
+	public void onRemoval() {
+		StaticChunkFunctions.onRemoval(getBaseMetaTileEntity());
+		super.onRemoval();
+	}
+	
+	public static Set<ChunkCoordIntPair> spiralChunks(final IGregTechTileEntity aBaseMetaTileEntity, int X, int Z) {
+		World w = aBaseMetaTileEntity.getWorld();
+		HashSet<ChunkCoordIntPair> aSet = new HashSet<ChunkCoordIntPair>();
+		if (w == null) {
+			return aSet;
 		}
-		this.setupChunks();
+		Chunk thisChunk = w.getChunkFromBlockCoords(aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getZCoord());
+		ChunkCoordIntPair aChunkCo = new ChunkCoordIntPair(thisChunk.xPosition, thisChunk.zPosition);		
+	    int x,z,dx,dz;
+	    x = z = dx =0;
+	    dz = -1;
+	    int t = Math.max(X,Z);
+	    int maxI = t*t;
+	    for(int i =0; i < maxI; i++){
+	        if ((-X/2 <= x) && (x <= X/2) && (-Z/2 <= z) && (z <= Z/2)){
+	            Chunk C = w.getChunkFromChunkCoords(aChunkCo.chunkXPos + x, aChunkCo.chunkZPos + z);
+	            if (C != null) {
+	            	aSet.add(new ChunkCoordIntPair(C.xPosition, C.zPosition));
+	            }
+	        }
+	        if( (x == z) || ((x < 0) && (x == -z)) || ((x > 0) && (x == 1-z))){
+	            t = dx;
+	            dx = -dz;
+	            dz = t;
+	        }
+	        x += dx;
+	        z += dz;
+	    }
+	    return aSet;
 	}
+
+	@Override
+	public int getChunkloaderTier() {
+		return mTier;
+	}
+	
+	public void createInitialWorkingChunk(IGregTechTileEntity aBaseMetaTileEntity, int aTileX, int aTileZ) {
+		final int centerX = aTileX >> 4;
+		final int centerZ = aTileZ >> 4;
+		addChunkToLoadedList(new ChunkCoordIntPair(centerX, centerZ));
+		GTPP_ChunkManager.requestChunkLoad((TileEntity)aBaseMetaTileEntity.getMetaTileEntity(), getResidingChunk());		
+		// If this surrounding chunk map for this tile is empty, we spiral out and map chunks to keep loaded.
+		if (getManagedChunks().isEmpty()) {
+			int aChunks = GregtechMetaTileEntityChunkLoader.getMaxChunksToLoadForTier(getChunkloaderTier());					
+			mLoadedChunks.addAll(spiralChunks(aBaseMetaTileEntity, getChunkloaderTier(), getChunkloaderTier()));
+		}	
+		if (!mLoadedChunks.isEmpty()) {
+        	for (ChunkCoordIntPair Y : mLoadedChunks) {
+                GTPP_ChunkManager.requestChunkLoad((TileEntity)aBaseMetaTileEntity.getMetaTileEntity(), Y);            		
+        	}
+        }
+		setDoesWorkChunkNeedReload(false);
+	}
+	
+
 }

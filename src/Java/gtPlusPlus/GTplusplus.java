@@ -29,6 +29,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.Recipe_GT;
 import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.chunkloading.GTPP_ChunkManager;
 import gtPlusPlus.core.commands.CommandDebugChunks;
 import gtPlusPlus.core.commands.CommandEnableDebugWhileRunning;
 import gtPlusPlus.core.commands.CommandMath;
@@ -182,6 +183,7 @@ public class GTplusplus implements ActionListener {
 		Logger.INFO("Setting up our own GT_Proxy.");
 		Meta_GT_Proxy.preInit();
 		Core_Manager.preInit();
+		GTPP_ChunkManager.init();
 	}
 
 	// Init
@@ -235,6 +237,9 @@ public class GTplusplus implements ActionListener {
 		event.registerServerCommand(new CommandDebugChunks());
 		if (LoadedMods.Thaumcraft) {
 			event.registerServerCommand(new CommandDumpAspects());
+		}
+		if (GTPP_ChunkManager.debugChunkloaders) {
+			event.registerServerCommand(new GTPP_ChunkManager.DebugCommand());
 		}
 		Core_Manager.serverStart();
 		INIT_PHASE.STARTED.setPhaseActive(true);
