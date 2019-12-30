@@ -160,6 +160,14 @@ processResources
 	exclude '**/Thumbs.db'
 }
 
+jar {
+    archiveName = archivesBaseName + "-" + version + ".jar"
+    manifest {
+        attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
+}
+
 task sourceJar(type: Jar) {
     from sourceSets.main.allSource
     classifier = 'sources'
