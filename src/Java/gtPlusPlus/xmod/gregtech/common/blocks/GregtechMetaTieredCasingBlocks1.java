@@ -28,7 +28,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.Gregt
 public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbstract {
 
 
-	private static class TieredCasingItemBlock extends GregtechMetaCasingItems {
+	public static class TieredCasingItemBlock extends GregtechMetaCasingItems {
 
 		public TieredCasingItemBlock(Block par1) {
 			super(par1);
