@@ -37,7 +37,6 @@ import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.ConfigHandler;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
-import gtPlusPlus.core.handler.chunkloading.ChunkLoading;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.handler.events.MissingMappingsEvent;
@@ -47,7 +46,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.HazmatUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
@@ -66,7 +64,6 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechMiniRaFusion;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 @MCVersion(value = "1.7.10")
@@ -116,9 +113,6 @@ public class GTplusplus implements ActionListener {
 	//GT++ Proxy Instances
 	@SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.proxy.ServerProxy")
 	public static CommonProxy proxy;
-	
-	//Chunk handler
-	public static ChunkLoading mChunkLoading;
 
 	// Loads Textures
 	@SideOnly(value = Side.CLIENT)
@@ -138,7 +132,6 @@ public class GTplusplus implements ActionListener {
 	public GTplusplus() {
 		super();
 		INIT_PHASE.SUPER.setPhaseActive(true);
-		mChunkLoading = new ChunkLoading();
 	}
 
 	// Pre-Init
@@ -176,9 +169,6 @@ public class GTplusplus implements ActionListener {
 		Utils.registerEvent(new MissingMappingsEvent());
 		Logger.INFO("Login Handler Initialized");
 
-
-
-		mChunkLoading.preInit(event);
 		proxy.preInit(event);
 		Logger.INFO("Setting up our own GT_Proxy.");
 		Meta_GT_Proxy.preInit();
@@ -190,7 +180,6 @@ public class GTplusplus implements ActionListener {
 	@Mod.EventHandler
 	public void init(final FMLInitializationEvent event) {
 		INIT_PHASE.INIT.setPhaseActive(true);
-		mChunkLoading.init(event);
 		proxy.init(event);
 		HazmatUtils.init();
 		proxy.registerNetworkStuff();
@@ -208,7 +197,6 @@ public class GTplusplus implements ActionListener {
 	@Mod.EventHandler
 	public void postInit(final FMLPostInitializationEvent event) {
 		INIT_PHASE.POST_INIT.setPhaseActive(true);
-		mChunkLoading.postInit(event);
 		proxy.postInit(event);
 		BookHandler.runLater();
 		Meta_GT_Proxy.postInit();
@@ -231,7 +219,6 @@ public class GTplusplus implements ActionListener {
 	@EventHandler
 	public synchronized void serverStarting(final FMLServerStartingEvent event) {
 		INIT_PHASE.SERVER_START.setPhaseActive(true);
-		mChunkLoading.serverStarting(event);
         event.registerServerCommand(new CommandMath());
         event.registerServerCommand(new CommandEnableDebugWhileRunning());
 		event.registerServerCommand(new CommandDebugChunks());
@@ -247,7 +234,6 @@ public class GTplusplus implements ActionListener {
 
 	@Mod.EventHandler
 	public synchronized void serverStopping(final FMLServerStoppingEvent event) {
-		mChunkLoading.serverStopping(event);
 		Core_Manager.serverStop();
 		if (GregtechBufferThread.mBufferThreadAllocation.size() > 0) {
 			for (GregtechBufferThread i : GregtechBufferThread.mBufferThreadAllocation.values()) {

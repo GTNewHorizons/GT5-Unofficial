@@ -14,7 +14,6 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.api.objects.minecraft.ChunkManager;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.InternalEntityRegistry;
@@ -61,7 +60,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.common.ForgeChunkManager;
 
 public class CommonProxy {
 
@@ -159,9 +157,6 @@ public class CommonProxy {
 			Utils.registerEvent(new StopAnnoyingFuckingAchievements());
 		}
 
-		// Register Chunkloader
-		ForgeChunkManager.setForcedChunkLoadingCallback(GTplusplus.instance, ChunkManager.getInstance());
-		Utils.registerEvent(ChunkManager.getInstance());
 		Utils.registerEvent(new EnderDragonDeathHandler());
 		Utils.registerEvent(new EntityDeathHandler());
 

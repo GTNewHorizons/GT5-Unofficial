@@ -592,7 +592,7 @@ public class CI {
 	};	
 	
 	private static final Materials[] aMaterial_Cables = new Materials[] {
-			(CORE.ConfigSwitches.enableCustom_Cables && LoadedMods.EnderIO) ? Materials.RedstoneAlloy :  CORE.GTNH ? Materials.Lead : Materials.Tin,
+			!CORE.GTNH ? Materials.Lead : Materials.Tin,
 			Materials.Cobalt,
 			Materials.AnnealedCopper,
 			Materials.Gold,

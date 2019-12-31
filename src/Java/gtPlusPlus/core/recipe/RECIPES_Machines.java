@@ -223,6 +223,7 @@ public class RECIPES_Machines {
 		}	
 
 		initModItems();
+		tieredMachineHulls();
 		controlCores();
 		energyCores();
 		wirelessChargers();
@@ -232,6 +233,39 @@ public class RECIPES_Machines {
 		ztonesCoverRecipes();
 		superBuses();
 		roundRobinators();
+	}
+
+	private static void tieredMachineHulls() {
+		
+		GregtechItemList[] aHulls = new GregtechItemList[] {
+				GregtechItemList.GTPP_Casing_ULV,
+				GregtechItemList.GTPP_Casing_LV,
+				GregtechItemList.GTPP_Casing_MV,
+				GregtechItemList.GTPP_Casing_HV,
+				GregtechItemList.GTPP_Casing_EV,
+				GregtechItemList.GTPP_Casing_IV,
+				GregtechItemList.GTPP_Casing_LuV,
+				GregtechItemList.GTPP_Casing_ZPM,
+				GregtechItemList.GTPP_Casing_UV,
+				GregtechItemList.GTPP_Casing_MAX
+		};
+		
+		for (int i=0;i<10;i++) {			
+			CORE.RA.addSixSlotAssemblingRecipe(
+					new ItemStack[] {
+							CI.getNumberedBioCircuit(22),
+							CI.getTieredMachineCasing(i),
+							CI.getPlate(i, 8),
+							CI.getGear(i, 2),
+							CI.getTieredComponent(OrePrefixes.cableGt02, i, 4),
+							CI.getTieredComponent(OrePrefixes.circuit, i, 2)
+					},
+					CI.getTieredFluid(i, 144 * i * 2), 
+					aHulls[i].get(1), 
+					20 * 20, 
+					MaterialUtils.getVoltageForTier(i));			
+		}
+		
 	}
 
 	private static void initModItems(){
