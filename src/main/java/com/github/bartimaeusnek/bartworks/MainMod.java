@@ -217,7 +217,7 @@ public final class MainMod {
         removeIC2Recipes();
         MainMod.addElectricImplosionCompressorRecipes();
         PlatinumSludgeOverHaul.replacePureElements();
-        new CircuitImprintLoader().run();
+
         runOnServerStarted();
         fixEnergyRequirements();
         MainMod.unificationRecipeEnforcer();
@@ -225,8 +225,11 @@ public final class MainMod {
 
     private static boolean recipesAdded;
 
-    public static void runOnPlayerJoined(boolean classicMode, boolean extraGasRecipes){
+    public static void runOnPlayerJoined(boolean classicMode, boolean extraGasRecipes) {
         OreDictHandler.adaptCacheForWorld();
+
+        CircuitImprintLoader.run();
+
         if (!recipesAdded) {
             if (!extraGasRecipes) {
                 ArrayListMultimap<SubTag, GT_Recipe> toChange = MainMod.getRecipesToChange(NOBLE_GAS, ANAEROBE_GAS);
@@ -238,6 +241,7 @@ public final class MainMod {
 //        removeDuplicateRecipes();
             recipesAdded = true;
         }
+
     }
 
     private static void fixEnergyRequirements() {
