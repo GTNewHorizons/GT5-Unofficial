@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -53,7 +53,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class BW_TileEntityContainer extends BlockContainer implements ITileAddsInformation {
 
-    Class<? extends TileEntity> tileEntity;
+    protected Class<? extends TileEntity> tileEntity;
 
     public BW_TileEntityContainer(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_);
@@ -123,9 +123,9 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
         TileEntity t = world.getTileEntity(x,y,z);
         if (t instanceof ITileDropsContent){
             int[] dropSlots = ((ITileDropsContent)t).getDropSlots();
-            for (int i = 0; i < dropSlots.length; i++) {
-                if (((ITileDropsContent)t).getStackInSlot(dropSlots[i]) != null)
-                    world.spawnEntityInWorld(new EntityItem(world,x,y,z,((BW_TileEntity_HeatedWaterPump)t).getStackInSlot(dropSlots[i])));
+            for (int dropSlot : dropSlots) {
+                if (((ITileDropsContent) t).getStackInSlot(dropSlot) != null)
+                    world.spawnEntityInWorld(new EntityItem(world, x, y, z, ((BW_TileEntity_HeatedWaterPump) t).getStackInSlot(dropSlot)));
             }
         }
         super.breakBlock(world, x, y, z, block, meta);

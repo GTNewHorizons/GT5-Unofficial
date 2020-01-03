@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.client.renderer;
 
-import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGeneratedOreTE;
+import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Block_TE;
+import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Blocks;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
@@ -39,7 +40,7 @@ public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int modelId, RenderBlocks aRenderer) {
-        BW_MetaGeneratedOreTE tTileEntity = new BW_MetaGeneratedOreTE();
+        BW_MetaGenerated_Block_TE tTileEntity = ((BW_MetaGenerated_Blocks)aBlock).getProperTileEntityForRendering();
         tTileEntity.mMetaData = (short) aMeta;
         aBlock.setBlockBoundsForItemRender();
         aRenderer.setRenderBoundsFromBlock(aBlock);

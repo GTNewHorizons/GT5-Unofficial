@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,6 +58,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -67,7 +68,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
     private static final IIconContainer[] iIconContainers = new IIconContainer[2];
     private static final ITexture[] iTextures = new ITexture[3];
 
-    private final ArrayList<TileEntityDispenser> tedList = new ArrayList<TileEntityDispenser>();
+    private final ArrayList<TileEntityDispenser> tedList = new ArrayList<>();
     private BW_RotorBlock rotorBlock;
     private byte hasDoor;
 
@@ -102,8 +103,6 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
     public boolean recipe_fallback(ItemStack aStack) {
         //sight... fallback to the macerator recipes
         GT_Recipe.GT_Recipe_Map tMap = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
-        if (tMap == null)
-            return false;
         GT_Recipe tRecipe = tMap.findRecipe(this.getBaseMetaTileEntity(), false, false, V[1], null, aStack);
         if (tRecipe == null)
             return false;
@@ -346,6 +345,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
         return false;
     }
 
+    @SuppressWarnings("ALL")
     public boolean addOutput(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack))
             return false;
@@ -626,19 +626,13 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
             if (aFacing == aSide || aSide == 0) {
                 GT_TileEntity_Windmill.iTextures[0] = new GT_RenderedTexture(GT_TileEntity_Windmill.iIconContainers[0]);
-                for (int i = 0; i < ret.length; i++) {
-                    ret[i] = GT_TileEntity_Windmill.iTextures[0];
-                }
+                Arrays.fill(ret, GT_TileEntity_Windmill.iTextures[0]);
             } else if (aSide == 1) {
                 GT_TileEntity_Windmill.iTextures[1] = new GT_RenderedTexture(GT_TileEntity_Windmill.iIconContainers[1]);
-                for (int i = 0; i < ret.length; i++) {
-                    ret[i] = GT_TileEntity_Windmill.iTextures[1];
-                }
+                Arrays.fill(ret, GT_TileEntity_Windmill.iTextures[1]);
             } else {
                 GT_TileEntity_Windmill.iTextures[2] = new GT_RenderedTexture(Textures.BlockIcons.COVER_WOOD_PLATE);
-                for (int i = 0; i < ret.length; i++) {
-                    ret[i] = GT_TileEntity_Windmill.iTextures[2];
-                }
+                Arrays.fill(ret, GT_TileEntity_Windmill.iTextures[2]);
             }
         }
         return ret;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,6 +50,7 @@ import java.util.List;
 /*
  * Original GT File slightly Modified
  */
+@SuppressWarnings("ALL")
 @ChannelHandler.Sharable
 public class BW_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet> implements IGT_NetworkHandler {
 
@@ -58,7 +59,7 @@ public class BW_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
 
     public BW_Network() {
         this.mChannel = NetworkRegistry.INSTANCE.newChannel("BartWorks", this, new BW_Network.HandlerShared());
-        this.mSubChannels = new GT_Packet[]{new RendererPacket(), new CircuitProgrammerPacket(), new OrePacket(), new OreDictCachePacket(), new ServerJoinedPackage()};
+        this.mSubChannels = new GT_Packet[]{new RendererPacket(), new CircuitProgrammerPacket(), new MetaBlockPacket(), new OreDictCachePacket(), new ServerJoinedPackage()};
     }
 
     protected void encode(ChannelHandlerContext aContext, GT_Packet aPacket, List<Object> aOutput) throws Exception {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,12 @@
 package com.github.bartimaeusnek.bartworks.system.material;
 
 import com.github.bartimaeusnek.bartworks.API.IRadMaterial;
+import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.util.Pair;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -56,6 +58,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.werkstoffHashMap;
+import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.werkstoffHashSet;
 
 public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRadMaterial {
 
@@ -65,29 +68,35 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         public Item getTabIconItem() {
             return new ItemStack(Blocks.iron_ore).getItem();
         }
+
     };
+
     protected final OrePrefixes orePrefixes;
-    private final short aNumToGen = (short) werkstoffHashMap.size();
+
+    public BW_MetaGenerated_Items(OrePrefixes orePrefixes, Object unused){
+        super("bwMetaGeneratedGTEnhancement" + orePrefixes.name(), (short) 32766, (short) 0);
+        this.orePrefixes = orePrefixes;
+    }
 
     public BW_MetaGenerated_Items(OrePrefixes orePrefixes) {
         super("bwMetaGenerated" + orePrefixes.name(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
         this.setCreativeTab(BW_MetaGenerated_Items.metaTab);
-        for (int i = 0; i < this.aNumToGen; i++) {
-            ItemStack tStack = new ItemStack(this, 1, i);
-            Werkstoff w = werkstoffHashMap.get((short) i);
-            if (w == null || ((w.getGenerationFeatures().blacklist & orePrefixes.mMaterialGenerationBits) != 0) )
+        for (Werkstoff w : werkstoffHashSet) {
+            ItemStack tStack = new ItemStack(this, 1, w.getmID());
+            if (((w.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) != 0) )
                 continue;
-            if ((w.getGenerationFeatures().toGenerate & orePrefixes.mMaterialGenerationBits) == 0 && orePrefixes.mMaterialGenerationBits != 0)
+            if ((w.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) == 0 && Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes) != 0)
                 continue;
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", this.getDefaultLocalization(w));
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", w.getToolTip());
             if (ConfigHandler.experimentalThreadedLoader)
-                OreDictAdder.addToMap(new Pair<>(this.orePrefixes.name() + w.getDefaultName().replaceAll(" ",""), tStack));
+                OreDictAdder.addToMap(new Pair<>(this.orePrefixes.name() + w.getVarName(), tStack));
             else
-                GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.getDefaultName().replaceAll(" ",""), tStack);
+                GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.getVarName(), tStack);
         }
     }
+
 
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure || this.orePrefixes == OrePrefixes.crushed) {
@@ -98,17 +107,15 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
                     int tX = MathHelper.floor_double(aItemEntity.posX);
                     int tY = MathHelper.floor_double(aItemEntity.posY);
                     int tZ = MathHelper.floor_double(aItemEntity.posZ);
+                    Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
+                    byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((this.orePrefixes == OrePrefixes.dustImpure) || (this.orePrefixes == OrePrefixes.dustPure)) {
-                        Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                        byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                         if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
                             aItemEntity.setEntityItemStack(WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
                             aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                             return true;
                         }
-                    } else if (this.orePrefixes == OrePrefixes.crushed) {
-                        Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                        byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
+                    } else {
                         if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
                             aItemEntity.setEntityItemStack(WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
                             aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
@@ -122,6 +129,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
 //        String tooltip = GT_LanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".tooltip");
 //        if (!tooltip.isEmpty())
@@ -131,6 +139,10 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         }
         if (this.orePrefixes == OrePrefixes.crushed)
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.purify.2"));
+
+        if (aStack != null && aStack.getItem() instanceof BW_MetaGenerated_Items && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
+            aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.nqgen"));
+
         aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 
@@ -144,21 +156,31 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     }
 
     @Override
-    public final IIconContainer getIconContainer(int aMetaData) {
-        return werkstoffHashMap.get((short) aMetaData) == null ? null : this.orePrefixes.mTextureIndex == -1 ? null : werkstoffHashMap.get((short) aMetaData).getTexSet().mTextures[this.orePrefixes.mTextureIndex];
+    public IIconContainer getIconContainer(int aMetaData) {
+        if (werkstoffHashMap.get((short) aMetaData) == null)
+            return null;
+        if (this.orePrefixes.mTextureIndex == -1)
+            return getIconContainerBartWorks(aMetaData);
+        return werkstoffHashMap.get((short) aMetaData).getTexSet().mTextures[this.orePrefixes.mTextureIndex];
+    }
+
+    protected IIconContainer getIconContainerBartWorks(int aMetaData) {
+        if (FMLCommonHandler.instance().getSide().isClient())
+            return PrefixTextureLinker.texMap.get(this.orePrefixes).get(werkstoffHashMap.get((short) aMetaData).getTexSet());
+        return null;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
-        for (int i = 0; i < this.aNumToGen; i++) {
-            Werkstoff werkstoff = werkstoffHashMap.get((short) i);
-            if (werkstoff != null && ((werkstoff.getGenerationFeatures().toGenerate & this.orePrefixes.mMaterialGenerationBits) != 0) && ((werkstoff.getGenerationFeatures().blacklist & this.orePrefixes.mMaterialGenerationBits) == 0)) {
-                ItemStack tStack = new ItemStack(this, 1, i);
+    @SuppressWarnings("unchecked")
+    public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+        for (Werkstoff werkstoff : werkstoffHashSet) {
+            if (werkstoff != null && ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) != 0) && ((werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) == 0)) {
+                ItemStack tStack = new ItemStack(this, 1, werkstoff.getmID());
                 aList.add(tStack);
             }
         }
-        super.getSubItems(var1, aCreativeTab, aList);
+        //super.getSubItems(var1, aCreativeTab, aList);
     }
 
     @Override
@@ -203,7 +225,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
 
     @Override
     public int getItemStackLimit(ItemStack aStack) {
-        return 64;
+        return this.orePrefixes.mDefaultStackSize;
     }
 
     @Override
@@ -231,6 +253,11 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
 
     @Override
     public int getCapacity(ItemStack aStack) {
-        return this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma ? 1000 : this.orePrefixes == WerkstoffLoader.cellMolten ? 144 : 0;
+        return this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma ? 1000 : this.orePrefixes == WerkstoffLoader.cellMolten || this.orePrefixes == WerkstoffLoader.capsuleMolten ? 144 : 0;
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack aStack) {
+        return this.orePrefixes == OrePrefixes.cell ||this.orePrefixes == OrePrefixes.cellPlasma || this.orePrefixes == WerkstoffLoader.cellMolten ? Materials.Empty.getCells(1) : null;
     }
 }

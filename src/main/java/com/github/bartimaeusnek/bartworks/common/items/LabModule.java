@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,7 @@ public class LabModule extends SimpleSubItemClass {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
         aList.add(StatCollector.translateToLocal("tooltip.labmodule.0.name"));
         super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);

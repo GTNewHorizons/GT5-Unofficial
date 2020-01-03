@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,9 +31,8 @@ import java.util.List;
 
 public class ThreadedLoader  implements Runnable {
 
-    List<Thread> threads = new ArrayList<>();
-    List<Thread> threadsInit = new ArrayList<>();
-
+    private List<Thread> threads = new ArrayList<>();
+    private List<Thread> threadsInit = new ArrayList<>();
 
     @Override
     public synchronized void run() {
@@ -66,19 +65,20 @@ public class ThreadedLoader  implements Runnable {
             WerkstoffLoader.INSTANCE.gameRegistryHandler();
     }
 
-    class AllRecipes extends Thread {
+    static class AllRecipes extends Thread {
 
         public synchronized void run() {
             WerkstoffLoader.INSTANCE.run();
         }
+
     }
 
-    class MaterialGen extends Thread {
+    static class MaterialGen extends Thread {
+
         public synchronized void run() {
             WerkstoffLoader.INSTANCE.runInit();
         }
+
     }
-
-
 
 }

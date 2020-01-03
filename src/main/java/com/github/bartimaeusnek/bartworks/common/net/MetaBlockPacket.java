@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.net;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGeneratedOreTE;
+import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Block_TE;
 import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.net.GT_Packet;
@@ -33,14 +33,14 @@ import net.minecraft.world.World;
 
 import java.nio.ByteBuffer;
 
-public class OrePacket extends GT_Packet {
+public class MetaBlockPacket extends GT_Packet {
 
     int x;
     short y;
     int z;
     short meta;
 
-    public OrePacket(int x, int y, int z, int meta) {
+    public MetaBlockPacket(int x, int y, int z, int meta) {
         super(false);
         this.x = x;
         this.y = (short) y;
@@ -48,7 +48,7 @@ public class OrePacket extends GT_Packet {
         this.meta = (short) meta;
     }
 
-    public OrePacket() {
+    public MetaBlockPacket() {
         super(true);
     }
 
@@ -72,7 +72,7 @@ public class OrePacket extends GT_Packet {
         this.z = buff.getInt();
         this.y = buff.getShort();
         this.meta = buff.getShort();
-        OrePacket todecode = new OrePacket(this.x, this.y, this.z, this.meta);
+        MetaBlockPacket todecode = new MetaBlockPacket(this.x, this.y, this.z, this.meta);
         if (buff.getInt() != MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(12).putInt(this.x).putInt(this.z).putShort(this.y).putShort(this.meta).array(), 0, 12, 31)) {
             MainMod.LOGGER.error("PACKET HASH DOES NOT MATCH!");
             return null;
@@ -84,8 +84,8 @@ public class OrePacket extends GT_Packet {
     public void process(IBlockAccess iBlockAccess) {
         if (iBlockAccess != null) {
             TileEntity tTileEntity = iBlockAccess.getTileEntity(this.x, this.y, this.z);
-            if ((tTileEntity instanceof BW_MetaGeneratedOreTE)) {
-                ((BW_MetaGeneratedOreTE) tTileEntity).mMetaData = this.meta;
+            if ((tTileEntity instanceof BW_MetaGenerated_Block_TE)) {
+                ((BW_MetaGenerated_Block_TE) tTileEntity).mMetaData = this.meta;
             }
             if (((iBlockAccess instanceof World)) && (((World) iBlockAccess).isRemote)) {
                 ((World) iBlockAccess).markBlockForUpdate(this.x, this.y, this.z);

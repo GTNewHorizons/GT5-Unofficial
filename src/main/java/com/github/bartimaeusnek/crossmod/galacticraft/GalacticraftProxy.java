@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
 package com.github.bartimaeusnek.crossmod.galacticraft;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b;
+import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128ba;
 import com.github.bartimaeusnek.crossmod.galacticraft.atmosphere.BWAtmosphereManager;
 import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128SolarSystem;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -34,9 +36,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
-
-import static com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b.init_OresRoss128;
-import static com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b.init_undergroundFluidsRoss128;
 
 public class GalacticraftProxy {
     public static GT_UO_DimensionList uo_dimensionList = new GT_UO_DimensionList();
@@ -72,10 +71,12 @@ public class GalacticraftProxy {
     private static void commonpreInit(FMLPreInitializationEvent e) {
         GalacticraftProxy.gtConf = new Configuration(new File(new File(e.getModConfigurationDirectory(), "GregTech"), "GregTech.cfg"));
         GalacticraftProxy.uo_dimensionList.getConfig(GalacticraftProxy.gtConf, "undergroundfluid");
-        init_undergroundFluidsRoss128();
+        BW_WorldGenRoss128b.initundergroundFluids();
+        BW_WorldGenRoss128ba.init_undergroundFluids();
         if (GalacticraftProxy.gtConf.hasChanged())
             GalacticraftProxy.gtConf.save();
-        init_OresRoss128();
+        BW_WorldGenRoss128b.initOres();
+        BW_WorldGenRoss128ba.init_Ores();
         MinecraftForge.EVENT_BUS.register(BWAtmosphereManager.INSTANCE);
     }
 

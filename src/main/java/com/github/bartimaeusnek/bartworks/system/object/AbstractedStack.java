@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -69,7 +69,7 @@ public class AbstractedStack implements Serializable {
     public AbstractedStack(ItemStack itemStack) {
         if (itemStack == null)
             throw new UnsupportedOperationException();
-        this.idDamage = new Pair<Integer,Short>(Item.getIdFromItem(itemStack.getItem()), (short) itemStack.getItemDamage());
+        this.idDamage = new Pair<>(Item.getIdFromItem(itemStack.getItem()), (short) itemStack.getItemDamage());
         this.mTag = itemStack.getTagCompound();
     }
 

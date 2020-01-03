@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@ package com.github.bartimaeusnek.bartworks.util;
 import gregtech.api.enums.Dyes;
 
 import java.util.Arrays;
-
+@SuppressWarnings("unused")
 public class BW_ColorUtil {
     private BW_ColorUtil(){}
 
@@ -203,9 +203,12 @@ public class BW_ColorUtil {
     }
 
     public static short[] correctCorlorArray(short[] rgba){
-        if (rgba.length<4) {
+        if (rgba.length > 4) {
+            rgba = Arrays.copyOfRange(rgba, 0,4);
+        }
+        if (rgba.length < 4) {
             short[] tmp = Arrays.copyOf(rgba, 4);
-            Arrays.fill(tmp,rgba.length-1,4, (short) 0);
+            Arrays.fill(tmp,rgba.length,4, (short) 0);
             rgba = tmp;
         }
         if (rgba[0] > 255)

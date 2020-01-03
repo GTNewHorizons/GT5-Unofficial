@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,8 +41,8 @@ class TooltipCache {
 
         if (!tooltip.isEmpty()) {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < tooltip.size(); i++) {
-                sb.append(tooltip.get(i));
+            for (String s : tooltip) {
+                sb.append(s);
                 sb.append(System.lineSeparator());
             }
             char[] rettype = sb.toString().toCharArray();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,16 +35,20 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static gregtech.api.enums.GT_Values.V;
 
-public class GT_Industrial_Alchemic_Furnace extends GT_MetaTileEntity_MultiBlockBase {
+@SuppressWarnings("ALL")
+public class GT_Industrial_Alchemic_Construct extends GT_MetaTileEntity_MultiBlockBase {
 
-    List<Object> mEssentiaHatches = new ArrayList<>();
+    private List<Object> mEssentiaHatches = new ArrayList<>();
 
     public boolean addInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity.getClass().isInstance(EMTHandler.aEssentiaInputHatch))
@@ -68,11 +72,11 @@ public class GT_Industrial_Alchemic_Furnace extends GT_MetaTileEntity_MultiBlock
         }
     }
 
-    public GT_Industrial_Alchemic_Furnace(int aID, String aName, String aNameRegional) {
+    public GT_Industrial_Alchemic_Construct(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_Industrial_Alchemic_Furnace(String aName) {
+    private GT_Industrial_Alchemic_Construct(String aName) {
         super(aName);
     }
 
@@ -84,9 +88,10 @@ public class GT_Industrial_Alchemic_Furnace extends GT_MetaTileEntity_MultiBlock
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
         ItemStack stack = new ItemStack(Items.feather);
+        String owner = this.getBaseMetaTileEntity().getOwnerName();
+        Object allAspects = null;
         try {
-            String owner = this.getBaseMetaTileEntity().getOwnerName();
-            Object allAspects = ThaumcraftHandler.AspectAdder.mAspectListClass.newInstance();
+            allAspects = ThaumcraftHandler.AspectAdder.mAspectListClass.newInstance();
             for (Object o : this.mEssentiaHatches) {
                 Object aspectList = EMTHandler.aAspectField.get(o);
                 ThaumcraftHandler.AspectAdder.add.invoke(allAspects,aspectList);
@@ -98,13 +103,49 @@ public class GT_Industrial_Alchemic_Furnace extends GT_MetaTileEntity_MultiBlock
             return false;
         }
         ItemStack[] tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
-        ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
+        ItemStack outputItems = null;
 
         long tVoltage = this.getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        GT_Recipe tRecipe = TCRecipeHandler.alchemicalConstructHandler.findRecipe(this.getBaseMetaTileEntity(),null,false, false, V[tTier], null, stack,tInputs);
-
-        return false;
+        GT_Recipe tRecipe = TCRecipeHandler.alchemicalConstructHandler.findRecipe(this.getBaseMetaTileEntity(),null,false, false, V[tTier], null, stack, tInputs);
+        ItemStack helper = (ItemStack) tRecipe.mSpecialItems;
+        NBTTagCompound tagCompound = helper.getTagCompound();
+        String research = tagCompound.getCompoundTag("display").getString("Name");
+        Object aspectList = null;
+        try {
+            aspectList = ThaumcraftHandler.AspectAdder.mAspectListClass.newInstance();
+            ThaumcraftHandler.AspectAdder.readAspectListFromNBT.invoke(aspectList,tagCompound);
+        } catch (IllegalAccessException | InvocationTargetException | InstantiationException  e) {
+            e.printStackTrace();
+            return false;
+        }
+        boolean complete = false;
+        try {
+            complete = (boolean) ThaumcraftHandler.AspectAdder.isResearchComplete.invoke(null,owner,research);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        if (!complete)
+            return false;
+        if (!tRecipe.isRecipeInputEqual(true,new FluidStack[0],tInputs))
+            return false;
+        LinkedHashMap<Object,Integer> list = null;
+        LinkedHashMap<Object,Integer> needed = null;
+        try {
+            list = (LinkedHashMap) ThaumcraftHandler.AspectAdder.linkedAspektList.get(allAspects);
+            needed = (LinkedHashMap) ThaumcraftHandler.AspectAdder.linkedAspektList.get(aspectList);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
+        assert list != null;
+        assert needed != null;
+        for (Map.Entry<Object,Integer> toTake : needed.entrySet()){
+            list.replace(toTake.getKey(),list.get(toTake.getKey())-toTake.getValue());
+        }
+        this.addOutput(tRecipe.mOutputs[0]);
+        this.updateSlots();
+        return true;
     }
 
     @Override
@@ -134,7 +175,7 @@ public class GT_Industrial_Alchemic_Furnace extends GT_MetaTileEntity_MultiBlock
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_Industrial_Alchemic_Furnace(mName);
+        return new GT_Industrial_Alchemic_Construct(mName);
     }
 
     @Override

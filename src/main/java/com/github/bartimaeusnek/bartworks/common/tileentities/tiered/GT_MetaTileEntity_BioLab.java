@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,9 +52,15 @@ import net.minecraftforge.fluids.FluidStack;
 public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
 
     private static final String MGUINAME = "BW.GUI.BioLab.png";
+    private static final int DNA_EXTRACTION_MODULE = 0;
+    private static final int PCR_THERMOCYCLE_MODULE = 1;
+    private static final int PLASMID_SYNTHESIS_MODULE = 2;
+    private static final int TRANSFORMATION_MODULE = 3;
+    private static final int CLONAL_CELLULAR_SYNTHESIS_MODULE = 4;
+    private static final int INCUBATION_MODULE = 5;
 
     public GT_MetaTileEntity_BioLab(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, null, 6, 2, GT_MetaTileEntity_BioLab.MGUINAME, null, new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")/*this is topactive*/), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT")/*this is top*/), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM")));
+        super(aID, aName, aNameRegional, aTier, 1, (String) null, 6, 2, GT_MetaTileEntity_BioLab.MGUINAME, null, new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")/*this is topactive*/), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT")/*this is top*/), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM")));
     }
 
     public GT_MetaTileEntity_BioLab(String aName, int aTier, int aAmperage, String aDescription, ITexture[][][] aTextures, String aNEIName) {
@@ -62,6 +68,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new GT_MetaTileEntity_BioLab(this.mName, this.mTier, this.mAmperage, this.mDescription, this.mTextures, this.mNEIName);
     }
@@ -85,12 +92,12 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
         if (this.getSpecialSlot() != null && this.getSpecialSlot().getItem() instanceof LabModule) {
             int damage = this.getSpecialSlot().getItemDamage();
             switch (damage) {
-                case 0:
+                case DNA_EXTRACTION_MODULE:
                     if (GT_Utility.isStackValid(this.mInventory[4]) && this.mInventory[4].getItem() instanceof LabParts && this.mInventory[4].getItemDamage() == 0 && this.mInventory[4].getTagCompound() != null &&  //checks if it is a Culture
                             GT_Utility.isStackValid(this.mInventory[5]) && this.mInventory[5].getItem() instanceof LabParts && this.mInventory[5].getItemDamage() == 1 && this.mInventory[5].getTagCompound() == null &&
                             GT_Utility.isStackValid(this.mInventory[6]) && this.mInventory[6].getItem() instanceof LabParts && this.mInventory[6].getItemDamage() == 3 &&
                             GT_Utility.areStacksEqual(this.mInventory[7], Materials.Ethanol.getCells(1)) &&
-                            this.mFluid.isFluidEqual(FluidRegistry.getFluidStack("ic2distilledwater", 1000)) && this.mFluid.amount >= 1000
+                            this.mFluid != null && this.mFluid.isFluidEqual(FluidRegistry.getFluidStack("ic2distilledwater", 1000)) && this.mFluid.amount >= 1000
                     ) {
 
                         NBTTagCompound DNABioDataTag = this.mInventory[4].getTagCompound().getCompoundTag("DNA");
@@ -119,12 +126,12 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         return GT_MetaTileEntity_BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                     break;
-                case 1: {
+                case PCR_THERMOCYCLE_MODULE: {
                     if (GT_Utility.isStackValid(this.mInventory[4]) && this.mInventory[4].getItem() instanceof LabParts && this.mInventory[4].getItemDamage() == 1 && this.mInventory[4].getTagCompound() != null &&  //checks if it is a Culture
                             GT_Utility.isStackValid(this.mInventory[7]) && GT_Utility.areStacksEqual(this.mInventory[7], ItemList.Tool_DataOrb.get(1L)) &&
                             GT_Utility.isStackValid(this.mInventory[5]) && GT_Utility.areStacksEqual(this.mInventory[5], FluidLoader.BioLabFluidCells[0]) &&
                             GT_Utility.isStackValid(this.mInventory[6]) && GT_Utility.areStacksEqual(this.mInventory[6], FluidLoader.BioLabFluidCells[3]) &&
-                            this.mFluid.isFluidEqual(dnaFluid) && this.mFluid.amount >= 1000) {
+                            this.mFluid != null && this.mFluid.isFluidEqual(dnaFluid) && this.mFluid.amount >= 1000) {
                         NBTTagCompound DNABioDataTag = this.mInventory[4].getTagCompound();
                         if (DNABioDataTag == null)
                             return super.checkRecipe(skipOC);
@@ -159,7 +166,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                     }
                 }
                 break;
-                case 2: {
+                case PLASMID_SYNTHESIS_MODULE: {
                     ItemStack inp2 = ItemList.Tool_DataOrb.get(1L);
                     Behaviour_DataOrb.setDataTitle(inp2, "DNA Sample");
                     Behaviour_DataOrb.setDataName(inp2, BioCultureLoader.BIO_DATA_BETA_LACMATASE.getName());
@@ -169,7 +176,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                                     GT_Utility.isStackValid(this.mInventory[6]) && GT_Utility.areStacksEqual(this.mInventory[6], ItemList.Tool_DataOrb.get(1L), true) &&
                                     Behaviour_DataOrb.getDataTitle(this.mInventory[6]).equals("DNA Sample") && (!(Behaviour_DataOrb.getDataName(this.mInventory[6]).isEmpty())) &&
                                     GT_Utility.isStackValid(this.mInventory[7]) && GT_Utility.areStacksEqual(this.mInventory[7], inp2) &&
-                                    this.mFluid.isFluidEqual(dnaFluid) && (this.mFluid.amount >= 1000)) {
+                                    this.mFluid != null && this.mFluid.isFluidEqual(dnaFluid) && (this.mFluid.amount >= 1000)) {
                         BioData cultureDNABioData = BioData.getBioDataFromName(Behaviour_DataOrb.getDataName(this.mInventory[6]));
                         if (cultureDNABioData == null)
                             return super.checkRecipe(skipOC);
@@ -190,13 +197,12 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
 
                 }
                 break;
-
-                case 3: {
+                case TRANSFORMATION_MODULE: {
                     if (
                             GT_Utility.isStackValid(this.mInventory[4]) && GT_Utility.areStacksEqual(this.mInventory[4], BioItemList.getPetriDish(null), true) && this.mInventory[4].getTagCompound() != null &&
                                     GT_Utility.isStackValid(this.mInventory[5]) && GT_Utility.areStacksEqual(this.mInventory[5], BioItemList.getPlasmidCell(null), true) && this.mInventory[5].getTagCompound() != null &&
                                     GT_Utility.isStackValid(this.mInventory[6]) && GT_Utility.areStacksEqual(this.mInventory[6], FluidLoader.BioLabFluidCells[2]) &&
-                                    this.mFluid.isFluidEqual(FluidRegistry.getFluidStack("ic2distilledwater", 1000)) && this.mFluid.amount >= 1000) {
+                                    this.mFluid != null && this.mFluid.isFluidEqual(FluidRegistry.getFluidStack("ic2distilledwater", 1000)) && this.mFluid.amount >= 1000) {
                         BioData cultureDNABioData = BioData.getBioDataFromNBTTag(this.mInventory[5].getTagCompound());
                         BioCulture bioCulture = BioCulture.getBioCultureFromNBTTag(this.mInventory[4].getTagCompound());
                         if (cultureDNABioData == null || bioCulture == null)
@@ -208,9 +214,9 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                                 this.mInventory[i].stackSize--;
                         }
                         this.mFluid.amount -= 1000;
-                        bioCulture.setPlasmid(BioPlasmid.convertDataToPlasmid(cultureDNABioData));
+                        bioCulture = bioCulture.setPlasmid(BioPlasmid.convertDataToPlasmid(cultureDNABioData));
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
-                            this.mOutputItems[0] = BioItemList.getPetriDish(this.checkForExisting(bioCulture));
+                            this.mOutputItems[0] = BioItemList.getPetriDish(bioCulture);
                         }
                         this.mOutputItems[1] = ItemList.Cell_Universal_Fluid.get(1L);
                         this.calculateOverclockedNess(BW_Util.getMachineVoltageFromTier(3 + rTier + cultureDNABioData.getTier()), 500);
@@ -218,7 +224,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                     }
                 }
                 break;
-                case 4: {
+                case CLONAL_CELLULAR_SYNTHESIS_MODULE: {
 
                     ItemStack Outp = ItemList.Tool_DataOrb.get(1L);
                     Behaviour_DataOrb.setDataTitle(Outp, "DNA Sample");
@@ -242,7 +248,9 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         this.mFluid.amount -= 8000;
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
                             BioCulture out = BioCulture.getBioCulture(BioDNA.convertDataToDNA(cultureDNABioData));
-                            out.setPlasmid(BioPlasmid.convertDataToPlasmid(cultureDNABioData));
+                            if (out == null)
+                                return GT_MetaTileEntity_BasicMachine.DID_NOT_FIND_RECIPE;
+                            out = out.setPlasmid(BioPlasmid.convertDataToPlasmid(cultureDNABioData));
                             this.mOutputItems[0] = BioItemList.getPetriDish(out);
                         }
                         this.calculateOverclockedNess(BW_Util.getMachineVoltageFromTier(3 + rTier + cultureDNABioData.getTier()), 500);
@@ -250,6 +258,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                     }
                 }
                 break;
+                case INCUBATION_MODULE:
                 default:
                     return super.checkRecipe(skipOC);
             }
@@ -257,17 +266,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
         return super.checkRecipe(skipOC);
     }
 
-    private BioCulture checkForExisting(BioCulture culture) {
-        if (culture == null)
-            return null;
-        for (BioCulture bc : BioCulture.BIO_CULTURE_ARRAY_LIST)
-            if (culture.getdDNA().equals(bc.getdDNA()) && culture.getPlasmid().equals(bc.getPlasmid()))
-                return bc;
-        return culture;
-    }
-
     @Override
-    @SuppressWarnings("deprecation")
     public String[] getDescription() {
         return new String[]{StatCollector.translateToLocal("tooltip.tile.biolab.0.name"), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
     }

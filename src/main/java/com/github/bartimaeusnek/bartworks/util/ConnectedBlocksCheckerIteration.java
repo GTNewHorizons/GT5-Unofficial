@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,9 +38,9 @@ import java.util.Queue;
  */
 public class ConnectedBlocksCheckerIteration {
 
-    public final HashSet<Coords> hashset = new HashSet<Coords>(2048);
-    public final HashSet<Coords> checked = new HashSet<Coords>(4096);
-    private final Queue<Coords> kwoe = new LinkedList<Coords>();
+    public final HashSet<Coords> hashset = new HashSet<>(2048);
+    public final HashSet<Coords> checked = new HashSet<>(4096);
+    private final Queue<Coords> kwoe = new LinkedList<>();
 
     public long get_connected(World w, int x, int y, int z, Block b){
         kwoe.add(new Coords(x,y,z,w.provider.dimensionId));

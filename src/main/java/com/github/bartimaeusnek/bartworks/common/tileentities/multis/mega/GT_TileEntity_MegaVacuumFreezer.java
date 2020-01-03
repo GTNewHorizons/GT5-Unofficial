@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,7 +92,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
         ItemStack[] tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
-        ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> outputItems = new ArrayList<>();
 
         long tVoltage = this.getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
@@ -142,14 +142,13 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        HashSet<Boolean> ret = new HashSet<Boolean>();
-        ret.add(BW_Util.check_layer(aBaseMetaTileEntity, 7, -7, -6, GregTech_API.sBlockCasings2, 1, 7, false, 17));
-        ret.add(BW_Util.check_layer(aBaseMetaTileEntity, 7, -6, 0, GregTech_API.sBlockCasings2, 1, 7, false, false, true, Blocks.air, -1, true, 17));
-        ret.add(BW_Util.check_layer(aBaseMetaTileEntity, 7, 0, 1, GregTech_API.sBlockCasings2, 1, 7, true, false, true, Blocks.air, -1, true, 17));
-        ret.add(BW_Util.check_layer(aBaseMetaTileEntity, 7, 1, 7, GregTech_API.sBlockCasings2, 1, 7, false, false, true, Blocks.air, -1, true, 17));
-        ret.add(BW_Util.check_layer(aBaseMetaTileEntity, 7, 7, 8, GregTech_API.sBlockCasings2, 1, 7, false, 17));
-        return !(ret.contains(Boolean.FALSE) || this.mInputBusses.isEmpty() || this.mOutputBusses.isEmpty() || this.mEnergyHatches.isEmpty() || this.mMaintenanceHatches.isEmpty());
+        return (
+                   BW_Util.check_layer(aBaseMetaTileEntity, 7, -7, -6, GregTech_API.sBlockCasings2, 1, 7, false,false,true, GregTech_API.sBlockCasings2,1,true, 17)
+                && BW_Util.check_layer(aBaseMetaTileEntity, 7, -6, 0, GregTech_API.sBlockCasings2, 1, 7, false, false, true, Blocks.air, -1, true, 17)
+                && BW_Util.check_layer(aBaseMetaTileEntity, 7, 0, 1, GregTech_API.sBlockCasings2, 1, 7, true, false, true, Blocks.air, -1, true, 17)
+                && BW_Util.check_layer(aBaseMetaTileEntity, 7, 1, 7, GregTech_API.sBlockCasings2, 1, 7, false, false, true, Blocks.air, -1, true, 17)
+                && BW_Util.check_layer(aBaseMetaTileEntity, 7, 7, 8, GregTech_API.sBlockCasings2, 1, 7, false,false,true, GregTech_API.sBlockCasings2,1,true, 17)
+                ) && !this.mInputBusses.isEmpty() && !this.mOutputBusses.isEmpty() && !this.mEnergyHatches.isEmpty() && !this.mMaintenanceHatches.isEmpty();
     }
-
 
 }

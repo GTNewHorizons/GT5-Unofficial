@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -60,7 +61,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
         super(aID, aName, aNameRegional);
     }
 
-    public GT_TileEntity_CircuitAssemblyLine(String aName) {
+    private GT_TileEntity_CircuitAssemblyLine(String aName) {
         super(aName);
     }
 
@@ -98,11 +99,17 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
     }
 
     @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        if (!this.type.equals(new NBTTagCompound()))
+            aNBT.setTag("Type", this.type);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         if (!this.type.equals(new NBTTagCompound()))
             aNBT.setTag("Type", this.type);
         super.saveNBTData(aNBT);
-
     }
 
     private final Collection<GT_Recipe> GT_RECIPE_COLLECTION = new HashSet<>();
@@ -115,6 +122,10 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
 
         if (this.bufferedRecipe != null && this.bufferedRecipe.isRecipeInputEqual(true,false, BW_Util.getFluidsFromInputHatches(this), BW_Util.getItemsFromInputBusses(this))) {
             BW_Util.calculateOverclockedNessMulti(this.bufferedRecipe.mEUt,this.bufferedRecipe.mDuration,1,this.getMaxInputVoltage(),this);
+            if (this.mEUt > 0)
+                this.mEUt = -this.mEUt;
+            this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+            this.mEfficiencyIncrease = 10000;
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
             this.mOutputItems = this.bufferedRecipe.mOutputs;
             this.mOutputFluids = this.bufferedRecipe.mFluidOutputs;
@@ -142,6 +153,10 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
                 continue;
 
             BW_Util.calculateOverclockedNessMulti(this.bufferedRecipe.mEUt,this.bufferedRecipe.mDuration,1,this.getMaxInputVoltage(),this);
+            if (this.mEUt > 0)
+                this.mEUt = -this.mEUt;
+            this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+            this.mEfficiencyIncrease = 10000;
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
             this.mOutputItems = this.bufferedRecipe.mOutputs;
             this.mOutputFluids = this.bufferedRecipe.mFluidOutputs;
@@ -155,79 +170,123 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-        int r;
-        int i;
-        IGregTechTileEntity tTileEntity;
-        if (xDir != 0) {
-            for(r = 0; r <= 7; ++r) {
-                i = r * xDir;
 
-                tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 0, i);
-                if (!this.addEnergyInputToMachineList(tTileEntity, 16))
-                    if ((aBaseMetaTileEntity.getBlockOffset(0, 0, i) != GregTech_API.sBlockCasings3 || aBaseMetaTileEntity.getMetaIDOffset(0, 0, i) != 10) && r == 1)
-                        return false;
-                if (!aBaseMetaTileEntity.getBlockOffset(0, -1, i).getUnlocalizedName().equals("blockAlloyGlass"))
+        int xBase = aBaseMetaTileEntity.getXCoord() + xDir;
+        int yBase = aBaseMetaTileEntity.getYCoord();
+        int zBase = aBaseMetaTileEntity.getZCoord() + zDir;
+
+        boolean sided = xDir == 0;
+
+        if (sided)
+            ++zBase;
+        else
+            ++xBase;
+
+        int length = 0;
+        boolean backwards = false;
+
+
+        while (true) {
+            IGregTechTileEntity igtte = aBaseMetaTileEntity.getIGregTechTileEntity(sided ? xBase + length : xBase - 1, yBase - 2, sided ? zBase - 1 : zBase + length);
+            if (igtte == null){
+                backwards = true;
+                length = 0;
+                break;
+            }
+
+            if (igtte.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OutputBus)
+                break;
+
+            ++length;
+
+            if (length > 7){
+                backwards = true;
+                length = 0;
+                break;
+            }
+
+        }
+        if (backwards)
+            while (true) {
+                IGregTechTileEntity igtte = aBaseMetaTileEntity.getIGregTechTileEntity(sided ? xBase + length : xBase - 1, yBase - 2, sided ? zBase - 1 : zBase + length);
+                if (igtte == null)
                     return false;
 
-                tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(0, -2, i);
-                if (!this.addMaintenanceToMachineList(tTileEntity, 16) && !this.addInputToMachineList(tTileEntity, 16))
-                    if (aBaseMetaTileEntity.getBlockOffset(0, -2, i) != GregTech_API.sBlockCasings2 || aBaseMetaTileEntity.getMetaIDOffset(0, -2, i) != 0)
-                        return false;
+                if (igtte.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OutputBus)
+                    break;
 
-                if (i != 0 && (aBaseMetaTileEntity.getBlockOffset(xDir, -1, i) != GregTech_API.sBlockCasings2 || aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, i) != 5))
+                --length;
+
+                if (length < -7){
                     return false;
-
-                if (!aBaseMetaTileEntity.getBlockOffset(xDir * 2, -1, i).getUnlocalizedName().equals("blockAlloyGlass"))
-                    return false;
-
-                tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir * 2, -2, i);
-                if (!this.addMaintenanceToMachineList(tTileEntity, 16) && !this.addInputToMachineList(tTileEntity, 16))
-                    if (aBaseMetaTileEntity.getBlockOffset(xDir * 2, -2, i) != GregTech_API.sBlockCasings2 || aBaseMetaTileEntity.getMetaIDOffset(xDir * 2, -2, i) != 0)
-                        return false;
-
-                tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, -2, i);
-                if (!this.addInputToMachineList(tTileEntity, 16) && this.addOutputToMachineList(tTileEntity, 16))
-                    return r > 0 && this.mEnergyHatches.size() > 0;
+                }
 
             }
-        } else {
 
-            for(r = 0; r <= 7; ++r) {
-                i = r * -zDir;
+        if (sided)
+            zBase -= 2;
+        else
+            xBase -= 2;
 
-                //top with grate and energy hatch
-                tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, 0, zDir);
-                if (!this.addEnergyInputToMachineList(tTileEntity, 16))
-                    if ((aBaseMetaTileEntity.getBlockOffset(i, 0, 0) != GregTech_API.sBlockCasings3 || aBaseMetaTileEntity.getMetaIDOffset(i, 0, 0) != 10) && r == 1)
-                        return false;
+        for (int x = (backwards && sided ? length : 0); x <= (backwards && sided ? 0 : (sided ? length : 2)); x++) {
+            for (int y = -2; y <= 0; y++) {
+                for (int z = (backwards && !sided ? length : 0); z <= (backwards && !sided ? 0 : (sided ? 2 : length)); z++) {
+                    if (xBase + x == this.getBaseMetaTileEntity().getXCoord() && yBase + y == this.getBaseMetaTileEntity().getYCoord() && zBase + z == this.getBaseMetaTileEntity().getZCoord())
+                        continue;
 
-                if (!aBaseMetaTileEntity.getBlockOffset(i, -1, 0).getUnlocalizedName().equals("blockAlloyGlass"))
-                    return false;
+                    IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntity(xBase + x, yBase + y, zBase + z);
+                    Block block = aBaseMetaTileEntity.getBlock(xBase + x, yBase + y, zBase + z);
+                    byte meta = aBaseMetaTileEntity.getMetaID(xBase + x, yBase + y, zBase + z);
 
-                tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, -2, 0);
-                if (!this.addMaintenanceToMachineList(tTileEntity, 16) && !this.addInputToMachineList(tTileEntity, 16))
-                    if (aBaseMetaTileEntity.getBlockOffset(i, -2, 0) != GregTech_API.sBlockCasings2 || aBaseMetaTileEntity.getMetaIDOffset(i, -2, 0) != 0)
-                        return false;
-
-                if (i != 0 && (aBaseMetaTileEntity.getBlockOffset(i, -1, zDir) != GregTech_API.sBlockCasings2 || aBaseMetaTileEntity.getMetaIDOffset(i, -1, zDir) != 5))
-                    return false;
-
-                if (!aBaseMetaTileEntity.getBlockOffset(i, -1, zDir * 2).getUnlocalizedName().equals("blockAlloyGlass"))
-                    return false;
-
-
-                tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, -2, zDir * 2);
-                if (!this.addMaintenanceToMachineList(tTileEntity, 16) && !this.addInputToMachineList(tTileEntity, 16))
-                    if (aBaseMetaTileEntity.getBlockOffset(i, -2, zDir * 2) != GregTech_API.sBlockCasings2 || aBaseMetaTileEntity.getMetaIDOffset(i, -2, zDir * 2) != 0)
-                        return false;
-
-                tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, -2, zDir);
-                if (!this.addInputToMachineList(tTileEntity, 16) && this.addOutputToMachineList(tTileEntity, 16))
-                    return r > 0 && this.mEnergyHatches.size() == 1;
+                    switch (y) {
+                        case -2: {
+                            switch (sided ? z : x) {
+                                case 0:
+                                case 2: {
+                                    if (!this.addMaintenanceToMachineList(tTileEntity, 16) && !this.addInputToMachineList(tTileEntity, 16))
+                                        if (block != GregTech_API.sBlockCasings2 || meta != 0)
+                                            return false;
+                                    break;
+                                }
+                                case 1: {
+                                    if (!this.addInputToMachineList(tTileEntity, 16) && !((sided ? x : z) == length && this.addOutputToMachineList(tTileEntity, 16)))
+                                        return false;
+                                    break;
+                                }
+                                default:
+                                    break;
+                            }
+                            break;
+                        }
+                        case -1: {
+                            switch (sided ? z : x) {
+                                case 0:
+                                case 2: {
+                                    if (BW_Util.calculateGlassTier(block, meta) < 4)
+                                        return false;
+                                    break;
+                                }
+                                case 1: {
+                                    if (block != GregTech_API.sBlockCasings2 || meta != 5)
+                                        return false;
+                                    break;
+                                }
+                                default:
+                                    break;
+                            }
+                            break;
+                        }
+                        case 0: {
+                            if (!this.addEnergyInputToMachineList(tTileEntity, 16))
+                                if (block != GregTech_API.sBlockCasings3 || meta != 10)
+                                    return false;
+                            break;
+                        }
+                    }
+                }
             }
         }
-
-        return false;
+        return this.mEnergyHatches.size() > 0 && this.mMaintenanceHatches.size() == 1;
     }
 
     @Override
@@ -296,7 +355,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
                 "Circuit Assembly Line", "Size(WxHxD): (2-7)x3x3, variable length",
                 "Bottom: Steel Machine Casing(or 1x Maintenance or Input Hatch),",
                 "ULV Input Bus (Last ULV Output Bus), Steel Machine Casing",
-                "Middle: Reinforced Glass, Assembling Line Casing, Reinforced Glass",
+                "Middle: EV+ Tier Glass, Assembling Line Casing, EV+ Tier Glass",
                 "Top: Grate Machine Casing (or Controller or 1x Energy Hatch)",
                 "Up to 7 repeating slices, last is Output Bus",
                 "Imprint this machine with a Circuit Imprint,",

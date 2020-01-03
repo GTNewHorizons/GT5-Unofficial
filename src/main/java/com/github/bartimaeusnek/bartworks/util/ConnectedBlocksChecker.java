@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ import java.util.HashSet;
 
 public class ConnectedBlocksChecker {
 
-    public final HashSet<Coords> hashset = new HashSet<Coords>(2048);
+    public final HashSet<Coords> hashset = new HashSet<>(2048);
 
     public static byte check_sourroundings(Coords C, Block b) {
         byte ret = 0;

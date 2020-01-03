@@ -55,6 +55,7 @@ BW_GlasBlocks.8.name=Bloc de Verre Boronsilicate coloré (Violet)
 BW_GlasBlocks.9.name=Bloc de Verre Boronsilicate coloré (Jaune)
 BW_GlasBlocks.10.name=Bloc de Verre Boronsilicate coloré (Vert Clair)
 BW_GlasBlocks.11.name=Bloc de Verre Boronsilicate coloré (Marron)
+BW_GlasBlocks.12.name=Thorium Yttrium Glass Block
 
 tooltip.glas.0.name=Tier de verre:
 tooltip.LESU.0.name=Capacité maximum!
@@ -142,3 +143,21 @@ tile.biovat.name=Bio Cuve
 tile.radiohatch.name=Trappe Radio
 tile.bw.windmill.name=Eolienne
 tile.manutrafo.name=Transformateur Manuel
+
+item.TRISOPellet.name=TRISO pebble
+item.TRISOPelletBall.name=TRISO pebble ball
+item.BISOPelletBall.name=BISO pebble ball
+item.BISOPellet.name=BISO pebble
+item.TRISOPelletCompound.name=TRISO pebble compund
+item.BISOPelletCompound.name=BISO pebble compund
+itemGroup.bartworksMetaMaterials=BartWorks' Meta Materials
+
+tooltip.tile.eic.0.name=Controller Block for the Electric Implosion Compressor;Size(WxHxD): 3x9x3;Uses Electricity instead of Explosives;Controller: Layer 3, front, center;Layer 1 and Layer 9: Solid Steel Machine Casings, each: 1 Energy Hatch in the middle;Layer 2,3,7,8: Middle: Nickel-Zinc-Ferrit Blocks, Outer: Transformer-Winding Blocks;Layer 4,5,6: Neutronium Blocks;1+ Input Bus, 1+ Output Bus, 1 Maintenance Hatch at any Solid Steel Machine Casing;Do NOT Obstruct or mine the Moving parts while in Operation, will explode if you do so!
+
+
+planet.Ross128b=Ross128b
+moon.Ross128ba=Ross128ba
+star.Ross128=Ross128
+solarsystem.Ross128System=Ross128-System
+
+itemGroup.bw.MetaItems.0=BartWorks Circuit Overhaul Items

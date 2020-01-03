@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,23 +27,27 @@ import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -73,6 +77,72 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         return fdsc;
     }
 
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setByte("glasTier",glasTier);
+        aNBT.setByte("circuitMode",circuitMode);
+        aNBT.setLong("lEUt",lEUt);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.circuitMode = aNBT.getByte("circuitMode");
+        this.glasTier = aNBT.getByte("glasTier");
+        this.lEUt = aNBT.getLong("lEUt");
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (this.lEUt > 0) {
+            this.addEnergyOutput(this.lEUt * (long)this.mEfficiency / 10000L);
+            return true;
+        } else if (this.lEUt < 0 && !this.drainEnergyInput((-this.lEUt) * 10000L / (long)Math.max(1000, this.mEfficiency))) {
+            this.stopMachine();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    @Override
+    public void stopMachine() {
+        this.mOutputItems = null;
+        this.mEUt = 0;
+        this.lEUt = 0;
+        this.mEfficiency = 0;
+        this.mProgresstime = 0;
+        this.mMaxProgresstime = 0;
+        this.mEfficiencyIncrease = 0;
+        this.getBaseMetaTileEntity().disableWorking();
+    }
+
+    public String[] getInfoData() {
+        int mPollutionReduction = 0;
+
+        for (GT_MetaTileEntity_Hatch_Muffler e : this.mMufflerHatches) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(e)) {
+                mPollutionReduction = Math.max(e.calculatePollutionReduction(this.mPollution), mPollutionReduction);
+            }
+        }
+
+        long storedEnergy = 0L;
+        long maxEnergy = 0L;
+
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+
+        return new String[]{StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN + this.mProgresstime / 20 + EnumChatFormatting.RESET + " s / " + EnumChatFormatting.YELLOW + this.mMaxProgresstime / 20 + EnumChatFormatting.RESET + " s", StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN + storedEnergy + EnumChatFormatting.RESET + " EU / " + EnumChatFormatting.YELLOW + maxEnergy + EnumChatFormatting.RESET + " EU", StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED + -this.lEUt + EnumChatFormatting.RESET + " EU/t", StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW + this.getMaxInputVoltage() + EnumChatFormatting.RESET + " EU/t(*2A) " + StatCollector.translateToLocal("GT5U.machines.tier") + ": " + EnumChatFormatting.YELLOW + GT_Values.VN[GT_Utility.getTier(this.getMaxInputVoltage())] + EnumChatFormatting.RESET, StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " + EnumChatFormatting.RED + (this.getIdealStatus() - this.getRepairStatus()) + EnumChatFormatting.RESET + " " + StatCollector.translateToLocal("GT5U.multiblock.efficiency") + ": " + EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F + EnumChatFormatting.RESET + " %", StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN + mPollutionReduction + EnumChatFormatting.RESET + " %"};
+    }
+
+    private long lEUt = 0;
+    
     public boolean drainEnergyInput(long aEU) {
         if (aEU <= 0)
             return true;
@@ -110,19 +180,50 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
 //        return glasTier != 8 && rVoltage > BW_Util.getTierVoltage(glasTier) ? BW_Util.getTierVoltage(glasTier) : rVoltage ;
 //    }
 
+
+    private byte circuitMode = 0;
+
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aPlayer.isSneaking()) {
+            --circuitMode;
+            if (circuitMode < 0)
+                circuitMode = 24;
+        } else {
+            ++circuitMode;
+            if (circuitMode > 24)
+                circuitMode = 0;
+        }
+
+        GT_Utility.sendChatToPlayer(aPlayer,circuitMode > 0 ? "MEBF will prioritise circuit: "+circuitMode : "Circuit prioritisation disabled.");
+    }
+
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
+
         ItemStack[] tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
+
         FluidStack[] tFluids = this.getStoredFluids().toArray(new FluidStack[0]);
         long tVoltage = this.getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+        GT_Recipe tRecipe;
+        if (circuitMode > 0 && Arrays.stream(tInputs).anyMatch(e -> GT_Utility.areStacksEqual(e,GT_Utility.getIntegratedCircuit(circuitMode),true))){
+            List<ItemStack> modInputs = Arrays.stream(tInputs).filter(Objects::nonNull).filter(e -> !e.getItem().equals(GT_Utility.getIntegratedCircuit(circuitMode).getItem())).collect(Collectors.toList());
+            modInputs.add(GT_Utility.getIntegratedCircuit(circuitMode));
+            tInputs = modInputs.toArray(new ItemStack[0]);
+        }
+        tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+        if (tRecipe == null) {
+            if (circuitMode == 0)
+                return false;
+            tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
+            tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+            if (tRecipe == null)
+                return false;
+        }
 
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
-        if (tRecipe == null)
-            return false;
-
-        ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
-        ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
+        ArrayList<ItemStack> outputItems = new ArrayList<>();
+        ArrayList<FluidStack> outputFluids = new ArrayList<>();
 
         boolean found_Recipe = false;
         int processed = 0;
@@ -149,25 +250,25 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
 
-            byte overclockCount = 0;
+            byte overclockCount;
             long actualEUT = (long) (tRecipe.mEUt) * processed;
-            if (actualEUT > Integer.MAX_VALUE) {
-                byte divider = 0;
-                while (actualEUT > Integer.MAX_VALUE) {
-                    actualEUT = actualEUT / 2;
-                    divider++;
-                }
-                overclockCount = this.calculateOverclockednessEBF((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), nominalV);
-            } else
+//            if (actualEUT > Integer.MAX_VALUE) {
+//                byte divider = 0;
+//                while (actualEUT > Integer.MAX_VALUE) {
+//                    actualEUT = actualEUT / 2;
+//                    divider++;
+//                }
+//                overclockCount = this.calculateOverclockednessEBF((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), nominalV);
+//            } else
                 overclockCount = this.calculateOverclockednessEBF(actualEUT, tRecipe.mDuration, nominalV);
             //In case recipe is too OP for that machine
-            if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
+            if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.lEUt == Integer.MAX_VALUE - 1)
                 return false;
-            if (this.mEUt > 0) {
-                this.mEUt = (-this.mEUt);
+            if (this.lEUt > 0) {
+                this.lEUt = (-this.lEUt);
             }
             if (tHeatCapacityDivTiers > 0) {
-                this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
+                this.lEUt = (int) (this.lEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
                 this.mMaxProgresstime >>= Math.min(tHeatCapacityDivTiers / 2, overclockCount); //extra free overclocking if possible
                 if (this.mMaxProgresstime < 1)
                     this.mMaxProgresstime = 1;//no eu efficiency correction
@@ -199,10 +300,10 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
             long xMaxProgresstime = ((long) aDuration) << 1;
             if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
                 //make impossible if too long
-                this.mEUt = Integer.MAX_VALUE - 1;
+                this.lEUt = Integer.MAX_VALUE - 1;
                 this.mMaxProgresstime = Integer.MAX_VALUE - 1;
             } else {
-                this.mEUt = (int) (aEUt >> 2);
+                this.lEUt = (int) (aEUt >> 2);
                 this.mMaxProgresstime = (int) xMaxProgresstime;
             }
             //return 0;
@@ -227,12 +328,12 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                 timesOverclocked--;
             }
             if (xEUt > Integer.MAX_VALUE - 1) {
-                this.mEUt = Integer.MAX_VALUE - 1;
+                this.lEUt = Integer.MAX_VALUE - 1;
                 this.mMaxProgresstime = Integer.MAX_VALUE - 1;
             } else {
-                this.mEUt = (int) xEUt;
-                if (this.mEUt == 0)
-                    this.mEUt = 1;
+                this.lEUt = (int) xEUt;
+                if (this.lEUt == 0)
+                    this.lEUt = 1;
                 if (this.mMaxProgresstime <= 0)
                     this.mMaxProgresstime = 1;//set time to 1 tick
             }
@@ -243,13 +344,13 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         this.mHeatingCapacity = 0;
-        HashSet<Boolean> ret = new HashSet<Boolean>();
-        ret.add(BW_Util.check_layer(iGregTechTileEntity, 7, -2, -1, GregTech_API.sBlockCasings1, 11, 7, false,false,true,GregTech_API.sBlockCasings1,11,true,11));
-        ret.add(BW_Util.check_layer(iGregTechTileEntity, 7, 17, 18, GregTech_API.sBlockCasings1, 11, 7, false, null, -1, 11));
-        ret.add(BW_Util.check_layer(iGregTechTileEntity, 6, -1, 17, GregTech_API.sBlockCasings5, -1, 7, false, false, true, Blocks.air, -1, false, 11));
+        boolean ret;
+        ret = BW_Util.check_layer(iGregTechTileEntity, 7, -2, -1, GregTech_API.sBlockCasings1, 11, 7, false,false,true,GregTech_API.sBlockCasings1,11,true,11);
+        ret &= BW_Util.check_layer(iGregTechTileEntity, 7, 17, 18, GregTech_API.sBlockCasings1, 11, 7, false, null, -1, 11);
+        ret &= BW_Util.check_layer(iGregTechTileEntity, 6, -1, 17, GregTech_API.sBlockCasings5, -1, 7, false, false, true, Blocks.air, -1, false, 11);
         for (int y = -1; y < 17; y++) {
-            ret.add(BW_Util.check_layer(iGregTechTileEntity, 7, y, y + 1, ItemRegistry.bw_glasses[0], -1, 7, y == 0, false, false, null, -1, false, 11));
-            if (!this.getCoilHeat(iGregTechTileEntity, 7, y, 6))
+            ret &= BW_Util.check_layer(iGregTechTileEntity, 7, y, y + 1, ItemRegistry.bw_glasses[0], -1, 7, y == 0, false, false, null, -1, false, 11);
+            if (!this.getCoilHeat(iGregTechTileEntity, y))
                 return false;
             List<Byte> metasFromLayer = BW_Util.getMetasFromLayer(iGregTechTileEntity, 7, y, y + 1, 7, y == 0, false, false);
             for (Byte meta : metasFromLayer) {
@@ -280,16 +381,16 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                     return false;
             }
 
-        return !ret.contains(Boolean.FALSE) && !this.mMaintenanceHatches.isEmpty() && !this.mOutputBusses.isEmpty() && !this.mInputBusses.isEmpty();
+        return ret && !this.mMaintenanceHatches.isEmpty() && !this.mOutputBusses.isEmpty() && !this.mInputBusses.isEmpty();
     }
 
-    private boolean getCoilHeat(IGregTechTileEntity iGregTechTileEntity, int offset, int y, int radius) {
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * offset;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * offset;
+    private boolean getCoilHeat(IGregTechTileEntity iGregTechTileEntity, int y) {
+        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 7;
+        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 7;
         int internalH = 0;
-        for (int x = -radius; x <= radius; x++) {
-            for (int z = -radius; z <= radius; z++) {
-                if (Math.abs(x) < radius && Math.abs(z) != radius)
+        for (int x = -6; x <= 6; x++) {
+            for (int z = -6; z <= 6; z++) {
+                if (Math.abs(x) < 6 && Math.abs(z) != 6)
                     continue;
                 byte tUsedMeta = iGregTechTileEntity.getMetaIDOffset(xDir + x, y, zDir + z);
                 switch (tUsedMeta) {
@@ -319,6 +420,9 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                         break;
                     case 8:
                         internalH = 10801;
+                        break;
+                    case 9:
+                        internalH = 21601;
                         break;
                     default:
                         break;

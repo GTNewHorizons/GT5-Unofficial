@@ -92,11 +92,24 @@ repositories {
 
 dependencies {
     compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
-    compileOnly "applecore:AppleCore:${config.applecore.version}:api"
     compile "micdoodle8.mods:MicdoodleCore:${config.galacticraft.version}:Dev"
     compile "micdoodle8.mods:GalacticraftCore:${config.galacticraft.version}:Dev"
     compile "micdoodle8.mods:Galacticraft-Planets:${config.galacticraft.version}:Dev"
     compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api"
+    compileOnly "applecore:AppleCore:${config.applecore.version}:api"
+    compileOnly "com.enderio.core:EnderCore:${config.enderiocore.version}:dev"
+    compileOnly "com.enderio:EnderIO:${config.enderio.version}:dev"
+    compileOnly "com.enderio:EnderIO:${config.enderio.version}:dev"
+}
+
+task getRailCraft(type: Download) {
+    onlyIf {
+        !file("libs/Railcraft_1.7.10-9.12.2.0-dev.jar").exists()
+    }
+    src 'http://downloads.gtnewhorizons.com/Mods_for_Jenkins/Railcraft_1.7.10-9.12.2.0-dev.jar'
+    dest file("libs/Railcraft_1.7.10-9.12.2.0-dev.jar")
+    mustRunAfter "deobfBinJar"
+    mustRunAfter "repackMinecraft"
 }
 
 //task getGregTech(type: Download) {
@@ -109,10 +122,10 @@ dependencies {
 //    mustRunAfter "repackMinecraft"
 //}
 
-//tasks.setupCIWorkspace.dependsOn getGregTech
-//tasks.setupDevWorkspace.dependsOn getGregTech
-//tasks.setupDecompWorkspace.dependsOn getGregTech
-//tasks.compileJava.dependsOn getGregTech
+tasks.setupCIWorkspace.dependsOn getRailCraft
+tasks.setupDevWorkspace.dependsOn getRailCraft
+tasks.setupDecompWorkspace.dependsOn getRailCraft
+tasks.compileJava.dependsOn getRailCraft
 
 processResources
 {

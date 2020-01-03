@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -56,15 +56,15 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
     private static final int BASECASINGINDEX = 44;
     private static final int HELIUM_NEEDED = 730000;
     private int HeliumSupply;
-    private int BISOPeletSupply;
-    private int TRISOPeletSupply;
+    private int BISOPeletSupply, savedBISO;
+    private int TRISOPeletSupply, savedTRISO;
     private boolean empty;
 
     public GT_TileEntity_THTR(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_TileEntity_THTR(String aName) {
+    private GT_TileEntity_THTR(String aName) {
         super(aName);
     }
 
@@ -76,10 +76,12 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.HeliumSupply =aNBT.getInteger("HeliumSupply");
-        this.BISOPeletSupply =aNBT.getInteger("BISOPeletSupply");
-        this.TRISOPeletSupply =aNBT.getInteger("TRISOPeletSupply");
-        this.empty =aNBT.getBoolean("EmptyMode");
+        this.HeliumSupply = aNBT.getInteger("HeliumSupply");
+        this.BISOPeletSupply = aNBT.getInteger("BISOPeletSupply");
+        this.TRISOPeletSupply = aNBT.getInteger("TRISOPeletSupply");
+        this.savedBISO = aNBT.getInteger("savedBISO");
+        this.savedTRISO = aNBT.getInteger("savedTRISO");
+        this.empty = aNBT.getBoolean("EmptyMode");
     }
 
     @Override
@@ -88,6 +90,8 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         aNBT.setInteger("HeliumSupply", this.HeliumSupply);
         aNBT.setInteger("BISOPeletSupply", this.BISOPeletSupply);
         aNBT.setInteger("TRISOPeletSupply", this.TRISOPeletSupply);
+        aNBT.setInteger("savedBISO", this.savedBISO);
+        aNBT.setInteger("savedTRISO", this.savedTRISO);
         aNBT.setBoolean("EmptyMode", this.empty);
     }
 
@@ -134,25 +138,29 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         if (!(this.HeliumSupply >= GT_TileEntity_THTR.HELIUM_NEEDED && this.BISOPeletSupply + this.TRISOPeletSupply >= 100000))
             return false;
 
+        int toReduce = new XSTR().nextInt((int)Math.floor(((double)this.BISOPeletSupply + (double)this.TRISOPeletSupply) / 200D));
+
+        this.savedBISO = BISOPeletSupply;
+        this.savedTRISO = TRISOPeletSupply;
+
         if (new XSTR().nextBoolean()) {
             if (this.BISOPeletSupply > 0)
-                --this.BISOPeletSupply;
+                this.BISOPeletSupply -= toReduce;
             else
-                --this.TRISOPeletSupply;
+                this.TRISOPeletSupply -= toReduce;
         } else {
             if (this.TRISOPeletSupply > 0)
-                --this.TRISOPeletSupply;
+                this.TRISOPeletSupply -= toReduce;
             else
-                --this.BISOPeletSupply;
+                this.BISOPeletSupply -= toReduce;
         }
 
         this.updateSlots();
-        if (this.mOutputFluids == null || this.mOutputFluids[0] == null)
-            this.mOutputFluids = new FluidStack[]{FluidRegistry.getFluidStack("ic2hotcoolant",0)};
+
+        this.mOutputFluids = new FluidStack[]{FluidRegistry.getFluidStack("ic2hotcoolant",0)};
 
         this.mEUt=0;
         this.mMaxProgresstime=648000;
-
         return true;
     }
 
@@ -166,47 +174,33 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
             this.HeliumSupply = 0;
             this.TRISOPeletSupply = 0;
             this.BISOPeletSupply = 0;
+            this.savedTRISO = 0;
+            this.savedBISO = 0;
             return true;
         }
 
         long accessibleCoolant = 0;
-        long toProduce=0;
         for (FluidStack fluidStack : this.getStoredFluids()) {
             if (fluidStack.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant",1))) {
-                accessibleCoolant+=fluidStack.amount;
+                accessibleCoolant += fluidStack.amount;
             }
         }
-
-        toProduce = (long) ((0.00711111111111111111111111111111D*(double)this.TRISOPeletSupply + 0.00474074074074074074074074074074D*(double)this.BISOPeletSupply));
-
-        if (toProduce > accessibleCoolant) {
-//            new ExplosionIC2(
-//                    this.getBaseMetaTileEntity().getWorld(),
-//                    null,
-//                    this.getBaseMetaTileEntity().getXCoord(),
-//                    this.getBaseMetaTileEntity().getYCoord(),
-//                    this.getBaseMetaTileEntity().getZCoord(),
-//                    50f,
-//                    0.01f,
-//                    ExplosionIC2.Type.Nuclear
-//                    ).doExplosion();
-            toProduce=accessibleCoolant;
-        }
-
-        accessibleCoolant=toProduce;
+        
+        accessibleCoolant = Math.min((long) ((0.00711111111111111111111111111111D*(double)this.savedTRISO + 0.00474074074074074074074074074074D*(double)this.savedBISO)), accessibleCoolant);
 
         for (FluidStack fluidStack : this.getStoredFluids()) {
             if (fluidStack.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant",1))) {
                 if (accessibleCoolant >= fluidStack.amount) {
                     accessibleCoolant -= fluidStack.amount;
-                    fluidStack.amount=0;
+                    fluidStack.amount = 0;
                 } else if (accessibleCoolant > 0) {
-                    fluidStack.amount-=accessibleCoolant;
-                    accessibleCoolant=0;
+                    fluidStack.amount -= accessibleCoolant;
+                    accessibleCoolant = 0;
                 }
             }
         }
-        this.mOutputFluids[0].amount+=toProduce;
+        this.mOutputFluids[0].amount += accessibleCoolant;
+        this.updateSlots();
         return true;
     }
 
@@ -296,7 +290,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                 "BISO-Pebbles:", this.BISOPeletSupply + "pcs.",
                 "TRISO-Pebbles:", this.TRISOPeletSupply + "pcs.",
                 "Helium-Level:", this.HeliumSupply+"L / "+ GT_TileEntity_THTR.HELIUM_NEEDED +"L",
-                "Coolant/t:", this.BISOPeletSupply+this.TRISOPeletSupply >= 100000 ? (long) ((0.03471*(float)this.TRISOPeletSupply + 0.0267*(float)this.BISOPeletSupply))+"L/t" : "0L/t",
+                "Coolant/t:", this.savedBISO+this.savedTRISO >= 100000 ? (long) ((0.00711111111111111111111111111111D * (double) this.savedTRISO + 0.00474074074074074074074074074074D * (double) this.savedBISO))+"L/t" : "0L/t",
                 "Problems:", String.valueOf(this.getIdealStatus() - this.getRepairStatus())
         };
     }
@@ -330,6 +324,13 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         }
 
         public static void registerTHR_Recipes(){
+            GT_Values.RA.addCentrifugeRecipe(
+                    Materials.Thorium.getDust(1),GT_Values.NI,GT_Values.NF,GT_Values.NF,
+                    Materials.Thorium.getDustSmall(2),Materials.Thorium.getDustSmall(1),
+                    WerkstoffLoader.Thorium232.get(OrePrefixes.dustTiny,1),WerkstoffLoader.Thorium232.get(OrePrefixes.dustTiny,1),
+                    WerkstoffLoader.Thorium232.get(OrePrefixes.dustTiny,1),Materials.Lutetium.getDustTiny(1),
+                    new int[]{1600,1500,200,200,50,50},
+                    10000, BW_Util.getMachineVoltageFromTier(4));
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                     GT_OreDictUnificator.get(OrePrefixes.plateDense,Materials.Lead,6),
                     GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.TungstenSteel,1)

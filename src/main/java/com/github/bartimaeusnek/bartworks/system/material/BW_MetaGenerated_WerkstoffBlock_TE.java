@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,27 +22,27 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
-import net.minecraftforge.oredict.OreDictionary;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.objects.GT_RenderedTexture;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 
-import java.util.HashSet;
+public class BW_MetaGenerated_WerkstoffBlock_TE extends BW_MetaGenerated_Block_TE {
 
-public class BWUnificationEnforcer {
-    private static boolean enabled;
-    private static final HashSet<String> UNIFICATION_TARGETS = new HashSet<>();
-    public static boolean isEnabled() {
-        return BWUnificationEnforcer.enabled;
+    @Override
+    public ITexture[] getTexture(Block aBlock, byte aSide) {
+        Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
+        if ((aMaterial != null)) {
+            GT_RenderedTexture aIconSet = new GT_RenderedTexture(aMaterial.getTexSet().mTextures[OrePrefixes.block.mTextureIndex], aMaterial.getRGBA());
+            return new ITexture[]{new GT_CopiedBlockTexture(Blocks.iron_block, 0, 0), aIconSet};
+        }
+        return new ITexture[]{new GT_CopiedBlockTexture(Blocks.iron_block, 0, 0), new GT_RenderedTexture(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex])};
     }
 
-    public static HashSet<String> getUnificationTargets() {
-        return BWUnificationEnforcer.UNIFICATION_TARGETS;
+    @Override
+    protected Block GetProperBlock() {
+        return WerkstoffLoader.BWBlocks;
     }
-
-    public static void addUnificationTarget(String aOreDictName){
-        if (aOreDictName == null || aOreDictName.isEmpty() || !OreDictionary.doesOreNameExist(aOreDictName))
-            return;
-        BWUnificationEnforcer.UNIFICATION_TARGETS.add(aOreDictName);
-        BWUnificationEnforcer.enabled = true;
-    }
-
-
 }

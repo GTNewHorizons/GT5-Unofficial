@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class BioData {
-    public static final ArrayList<BioData> BIO_DATA_ARRAY_LIST = new ArrayList<BioData>();
+    public static final ArrayList<BioData> BIO_DATA_ARRAY_LIST = new ArrayList<>();
 
     protected String name;
     protected int ID;
@@ -59,6 +59,7 @@ public class BioData {
         this.name = bioData.name;
         this.ID = bioData.ID;
         this.chance = bioData.chance;
+        this.tier = bioData.tier;
     }
 
     public static BioData convertBioPlasmidToBioData(BioPlasmid bioPlasmid) {

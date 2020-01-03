@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.ASM;
 
+import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.google.common.eventbus.EventBus;
@@ -41,6 +42,7 @@ import java.util.List;
 
 import static com.github.bartimaeusnek.ASM.BWCoreTransformer.shouldTransform;
 
+@SuppressWarnings("ALL")
 public class BWCore extends DummyModContainer {
 
     public static final String BWCORE_NAME = "BartWorks ASM Core";
@@ -61,8 +63,13 @@ public class BWCore extends DummyModContainer {
         shouldTransform[0] = Loader.isModLoaded("ExtraUtilities") && ConfigHandler.enabledPatches[0];
         shouldTransform[1] = Loader.isModLoaded("ExtraUtilities") && ConfigHandler.enabledPatches[1];
         shouldTransform[3] = Loader.isModLoaded("Thaumcraft") && ConfigHandler.enabledPatches[3];
+        shouldTransform[4] = true;
+        shouldTransform[5] = Loader.isModLoaded("RWG") && ConfigHandler.enabledPatches[5];
+        shouldTransform[6] = ConfigHandler.enabledPatches[6];
+        //shouldTransform[6] = true;
         BWCore.BWCORE_LOG.info("Extra Utilities found and ASM Patch enabled? " + shouldTransform[0]);
         BWCore.BWCORE_LOG.info("Thaumcraft found and ASM Patch enabled? " + shouldTransform[3]);
+        BWCore.BWCORE_LOG.info("RWG found and ASM Patch enabled? " + shouldTransform[5]);
     }
 
     @Override
@@ -70,6 +77,10 @@ public class BWCore extends DummyModContainer {
         List<ArtifactVersion> ret = new ArrayList<>();
         ret.add(new DefaultArtifactVersion("ExtraUtilities", true));
         ret.add(new DefaultArtifactVersion("Thaumcraft", true));
+        ret.add(new DefaultArtifactVersion("miscutils", true));
+        ret.add(new DefaultArtifactVersion("RWG", true));
+        ret.add(new DefaultArtifactVersion("gregtech", true));
+        ret.add(new DefaultArtifactVersion(MainMod.MOD_ID, true));
         ret.add(new DefaultArtifactVersion(BartWorksCrossmod.MOD_ID, true));
         return ret;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,11 +51,8 @@ public class GT_WandBuffer extends GT_MetaTileEntity_BasicBatteryBuffer {
             this.mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3L;
             this.mBatteryCount = 0;
             this.mChargeableCount = 0;
-            ItemStack[] var4 = this.mInventory;
-            int var5 = var4.length;
 
-            for(int var6 = 0; var6 < var5; ++var6) {
-                ItemStack tStack = var4[var6];
+            for (ItemStack tStack : this.mInventory) {
                 if (ThaumcraftHandler.isWand(tStack)) {
                     ++this.mBatteryCount;
                     ++this.mChargeableCount;
@@ -82,23 +79,20 @@ public class GT_WandBuffer extends GT_MetaTileEntity_BasicBatteryBuffer {
         boolean storedOverflow = false;
         long tScale = this.getBaseMetaTileEntity().getEUCapacity();
         long tStored = this.getBaseMetaTileEntity().getStoredEU();
-        long tStep = 0L;
+        long tStep;
         if (this.mInventory != null) {
-            ItemStack[] var9 = this.mInventory;
-            int var10 = var9.length;
 
-            for(int var11 = 0; var11 < var10; ++var11) {
-                ItemStack aStack = var9[var11];
+            for (ItemStack aStack : this.mInventory) {
                 if (GT_ModHandler.isElectricItem(aStack)) {
                     if (aStack.getItem() instanceof GT_MetaBase_Item) {
-                        Long[] stats = ((GT_MetaBase_Item)aStack.getItem()).getElectricStats(aStack);
+                        Long[] stats = ((GT_MetaBase_Item) aStack.getItem()).getElectricStats(aStack);
                         if (stats != null) {
                             if (stats[0] > 4611686018427387903L) {
                                 scaleOverflow = true;
                             }
 
                             tScale += stats[0];
-                            tStep = ((GT_MetaBase_Item)aStack.getItem()).getRealCharge(aStack);
+                            tStep = ((GT_MetaBase_Item) aStack.getItem()).getRealCharge(aStack);
                             if (tStep > 4611686018427387903L) {
                                 storedOverflow = true;
                             }
@@ -106,8 +100,8 @@ public class GT_WandBuffer extends GT_MetaTileEntity_BasicBatteryBuffer {
                             tStored += tStep;
                         }
                     } else if (aStack.getItem() instanceof IElectricItem) {
-                        tStored += (long)ElectricItem.manager.getCharge(aStack);
-                        tScale += (long)((IElectricItem)aStack.getItem()).getMaxCharge(aStack);
+                        tStored += (long) ElectricItem.manager.getCharge(aStack);
+                        tScale += (long) ((IElectricItem) aStack.getItem()).getMaxCharge(aStack);
                     }
                 }
             }

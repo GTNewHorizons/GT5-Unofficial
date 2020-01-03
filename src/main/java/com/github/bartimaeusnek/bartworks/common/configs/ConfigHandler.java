@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -64,6 +64,7 @@ public class ConfigHandler {
 
     //One-Side-Only
     public static boolean debugLog;
+    public static boolean GTppLogDisabler;
     public static boolean tooltips = true;
     public static boolean[] enabledPatches;
 
@@ -92,6 +93,7 @@ public class ConfigHandler {
             ConfigHandler.IDOffset = 12600;
             ConfigHandler.c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + ConfigHandler.IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").set(12600);
         }
+        ConfigHandler.GTppLogDisabler = ConfigHandler.c.get("System", "Disable GT++ Logging", false, "Enables or Disables GT++ Logging.").getBoolean(false);
         ConfigHandler.debugLog = ConfigHandler.c.get("System", "Enable Debug Log", false, "Enables or Disables the debug log.").getBoolean(false);
         ConfigHandler.experimentalThreadedLoader = ConfigHandler.c.get("System", "Enable Experimental Threaded Material Loader", false, "Enables or Disables the Experimental Threaded Material Loader.").getBoolean(false);
 
@@ -105,7 +107,7 @@ public class ConfigHandler {
         ConfigHandler.ross128btier = ConfigHandler.c.get("CrossMod Interactions", "Rocket Tier - Ross128b", 3, "The Rocket Tier for Ross128b").getInt(3);
         ConfigHandler.ross128batier = ConfigHandler.c.get("CrossMod Interactions", "Rocket Tier - Ross128ba", 3, "The Rocket Tier for Ross128a").getInt(3);
         ConfigHandler.ross128bRuinChance = ConfigHandler.c.get("CrossMod Interactions", "Ruin Chance - Ross128b", 512, "Higher Values mean lesser Ruins.").getInt(512);
-        ConfigHandler.Ross128Enabled = ConfigHandler.c.get("CrossMod Interactions", "Galacticraft - Activate Ross128 System", true, "If the Ross128 System should be activated").getBoolean(true);
+        ConfigHandler.Ross128Enabled = ConfigHandler.c.get("CrossMod Interactions", "Galacticraft - Activate Ross128 System", true, "If the Ross128 System should be activated, DO NOT CHANGE AFTER WORLD GENERATION").getBoolean(true);
         ConfigHandler.landerType = ConfigHandler.c.get("CrossMod Interactions", "LanderType", 3, "1 = Moon Lander, 2 = Landing Balloons, 3 = Asteroid Lander").getInt(3);
         ConfigHandler.disableMagicalForest = ConfigHandler.c.get("CrossMod Interactions", "Disable Magical Forest - Ross128b", false, "True disables the magical Forest Biome on Ross for more performance during World generation.").getBoolean(false);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,10 +41,10 @@ public class Coords {
 
     @Override
     public boolean equals(Object o) {
-//        if (this == o)
-//            return true;
-//        if (o == null || this.getClass() != o.getClass())
-//            return false;
+        if (this == o)
+            return true;
+        if (o == null || this.getClass() != o.getClass())
+            return false;
         Coords coords = (Coords) o;
         return this.x == coords.x &&
                 this.y == coords.y &&

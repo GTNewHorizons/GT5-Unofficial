@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,8 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Map;
 
-public class Pair<A, B> implements Map.Entry {
+@SuppressWarnings("unchecked")
+public class Pair<A, B> implements Map.Entry<A, B> {
     Object[] pair = new Object[2];
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,31 +23,42 @@
 package com.github.bartimaeusnek.bartworks.util;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OreDictNames;
+import gregtech.api.enums.ToolDictNames;
+import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.objects.ItemData;
+import gregtech.api.util.*;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import javax.annotation.Nonnegative;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import javax.annotation.Nonnull;
+import java.lang.reflect.Field;
+import java.util.*;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GT_Values.*;
 
+@SuppressWarnings("unused")
 public class BW_Util {
 
     public static final int STANDART = 0;
@@ -200,9 +211,7 @@ public class BW_Util {
     }
 
     public static int calculateSv(Materials materials) {
-        Iterator it = BioVatLogicAdder.RadioHatch.getMaSv().iterator();
-        while (it.hasNext()) {
-            BioVatLogicAdder.MaterialSvPair pair = (BioVatLogicAdder.MaterialSvPair) it.next();
+        for (BioVatLogicAdder.MaterialSvPair pair : BioVatLogicAdder.RadioHatch.getMaSv()) {
             if (pair.getMaterials().equals(materials))
                 return pair.getSievert();
         }
@@ -212,6 +221,27 @@ public class BW_Util {
     public static boolean checkStackAndPrefix(ItemStack itemStack) {
         return itemStack != null && GT_OreDictUnificator.getAssociation(itemStack) != null && GT_OreDictUnificator.getAssociation(itemStack).mPrefix != null && GT_OreDictUnificator.getAssociation(itemStack).mMaterial != null && GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
     }
+
+//    public static int getRecipeHash(GT_Recipe recipe) {
+//        int mInputItemsRawHash = Arrays.stream(recipe.mInputs).filter(Objects::nonNull).mapToInt(e ->
+//                Objects.hash(Item.getIdFromItem(e.getItem()),e.getItemDamage(), e.getTagCompound())
+//        ).hashCode();
+//        int mInputFluidRawHash = Arrays.stream(recipe.mFluidInputs).filter(Objects::nonNull).mapToInt(e ->
+//                Objects.hash(e.getFluidID(),e.amount,e.tag)
+//        ).hashCode();
+//        int mOutputItemRawHash = Arrays.stream(recipe.mOutputs).filter(Objects::nonNull).mapToInt(e ->
+//                Objects.hash(Item.getIdFromItem(e.getItem()),e.getItemDamage(), e.getTagCompound())
+//        ).hashCode();
+//        int mOutputFluidRawHash = Arrays.stream(recipe.mFluidOutputs).filter(Objects::nonNull).mapToInt(e ->
+//                Objects.hash(e.getFluidID(),e.amount,e.tag)
+//        ).hashCode();
+//        int mChancesRawHash = Arrays.hashCode(recipe.mChances);
+//        int others = Objects.hash(recipe.mEUt,recipe.mSpecialValue,recipe.mDuration);
+//        int specialItem = Objects.hash(recipe.mSpecialItems instanceof ItemStack ?
+//                ((ItemStack) (recipe.mSpecialItems)).getItem() : recipe.mSpecialItems instanceof Item ? recipe.mSpecialItems : 0 ,
+//                recipe.mSpecialItems instanceof ItemStack ? ((ItemStack) (recipe.mSpecialItems)).getItemDamage() : 0);
+//        return Objects.hash(mInputItemsRawHash,mInputFluidRawHash,mOutputItemRawHash,mOutputFluidRawHash,mChancesRawHash,others,specialItem);
+//    }
 
     public static int getMachineVoltageFromTier(int tier) {
         return (int) (30 * Math.pow(4, (tier - 1)));
@@ -223,6 +253,10 @@ public class BW_Util {
 
     public static boolean areStacksEqualOrNull(ItemStack aStack1, ItemStack aStack2) {
         return (aStack1 == null && aStack2 == null) || GT_Utility.areStacksEqual(aStack1, aStack2);
+    }
+
+    public static boolean areStacksEqualOrEachNull(ItemStack aStack1, ItemStack aStack2) {
+        return aStack1 == null || aStack2 == null || GT_Utility.areStacksEqual(aStack1, aStack2);
     }
 
     public static byte getByteFromRarity(EnumRarity rarity) {
@@ -296,8 +330,8 @@ public class BW_Util {
                 xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
             }
 
-            if (xEUt > maxInputVoltage){
-                //downclock one notch, we have overshot.
+            while (xEUt > maxInputVoltage){
+                //downclock one notch until we are good again, we have overshot.
                 xEUt >>=2;
                 base.mMaxProgresstime <<= 1;
             }
@@ -318,10 +352,8 @@ public class BW_Util {
     public static long getnominalVoltage(GT_MetaTileEntity_MultiBlockBase base) {
         long rVoltage = 0L;
         long rAmperage = 0L;
-        Iterator var3 = base.mEnergyHatches.iterator();
 
-        while (var3.hasNext()) {
-            GT_MetaTileEntity_Hatch_Energy tHatch = (GT_MetaTileEntity_Hatch_Energy) var3.next();
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : base.mEnergyHatches) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 if (rVoltage == 0 || rVoltage > tHatch.getBaseMetaTileEntity().getInputVoltage())
                     rVoltage = tHatch.getBaseMetaTileEntity().getInputVoltage();
@@ -347,6 +379,10 @@ public class BW_Util {
         return tmp.toArray(new ItemStack[0]);
     }
 
+
+    public static Element createNewElement(String variableName, long aProtons, long aNeutrons, long aAdditionalMass, long aHalfLifeSeconds, String aDecayTo, String aName, boolean aIsIsotope){
+        return EnumHelper.addEnum(Element.class,variableName,new Class[]{long.class, long.class, long.class, long.class, String.class, String.class, boolean.class}, new Object[]{aProtons, aNeutrons, aAdditionalMass, aHalfLifeSeconds, aDecayTo, aName, aIsIsotope});
+    }
 
     public static EnumRarity getRarityFromByte(byte b) {
         switch (b) {
@@ -478,4 +514,251 @@ public class BW_Util {
             default: return -1;
         }
     }
+
+    public static byte calculateGlassTier(@Nonnull Block block, @Nonnegative byte meta) {
+
+        if (block.equals(ItemRegistry.bw_glasses[0]))
+            return meta == 12 ? 5 : meta > 1 && meta < 6 ? (byte) (meta + 3) : 4;
+
+        if (block.getUnlocalizedName().equals("blockAlloyGlass"))
+            return 4;
+
+        if (block.equals(Blocks.glass))
+            return 3;
+
+        for (BioVatLogicAdder.BlockMetaPair B : BioVatLogicAdder.BioVatGlass.getGlassMap().keySet())
+            if (B.getBlock().equals(block) && B.getaByte().equals(meta))
+                return BioVatLogicAdder.BioVatGlass.getGlassMap().get(B);
+
+        if (block.getMaterial().equals(Material.glass))
+            return 3;
+
+        return 0;
+    }
+
+    private static Field sBufferedRecipeList;
+    public static List<IRecipe> getGTBufferedRecipeList() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+        if (sBufferedRecipeList == null) {
+            sBufferedRecipeList = FieldUtils.getDeclaredField(GT_ModHandler.class,"sBufferRecipeList",true);
+        }
+        if (sBufferedRecipeList == null) {
+            sBufferedRecipeList = FieldUtils.getField(GT_ModHandler.class,"sBufferRecipeList",true);
+        }
+        return (List<IRecipe>) sBufferedRecipeList.get(null);
+    }
+
+    public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
+        return createGTCraftingRecipe(aResult, new Enchantment[0], new int[0], (aBitMask & GT_ModHandler.RecipeBits.MIRRORED) != 0L, (aBitMask & GT_ModHandler.RecipeBits.BUFFERED) != 0L, (aBitMask & GT_ModHandler.RecipeBits.KEEPNBT) != 0L, (aBitMask & GT_ModHandler.RecipeBits.DISMANTLEABLE) != 0L, (aBitMask & GT_ModHandler.RecipeBits.NOT_REMOVABLE) == 0L, (aBitMask & GT_ModHandler.RecipeBits.REVERSIBLE) != 0L, (aBitMask & GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0L, (aBitMask & GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT) != 0L, (aBitMask & GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES) != 0L, (aBitMask & GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0L, (aBitMask & GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0L, (aBitMask & GT_ModHandler.RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0L, (aBitMask & GT_ModHandler.RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0L, aRecipe);
+    }
+
+    public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable, boolean aRemovable, boolean aReversible, boolean aRemoveAllOthersWithSameOutput, boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput, boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions, boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
+        aResult = GT_OreDictUnificator.get(true, aResult);
+        if (aOnlyAddIfResultIsNotNull && aResult == null) return null;
+        if (aResult != null && Items.feather.getDamage(aResult) == W) Items.feather.setDamage(aResult, 0);
+        if (aRecipe == null || aRecipe.length <= 0) return null;
+
+        boolean tThereWasARecipe = false;
+
+        for (byte i = 0; i < aRecipe.length; i++) {
+            if (aRecipe[i] instanceof IItemContainer)
+                aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
+            else if (aRecipe[i] instanceof Enum)
+                aRecipe[i] = ((Enum) aRecipe[i]).name();
+            else if (!(aRecipe[i] == null || aRecipe[i] instanceof ItemStack || aRecipe[i] instanceof ItemData || aRecipe[i] instanceof String || aRecipe[i] instanceof Character))
+                aRecipe[i] = aRecipe[i].toString();
+        }
+
+        try {
+            StringBuilder shape = new StringBuilder(E);
+            int idx = 0;
+            if (aRecipe[idx] instanceof Boolean) {
+                throw new IllegalArgumentException();
+            }
+
+            ArrayList<Object> tRecipeList = new ArrayList<Object>(Arrays.asList(aRecipe));
+
+            while (aRecipe[idx] instanceof String) {
+                StringBuilder s = new StringBuilder((String) aRecipe[idx++]);
+                shape.append(s);
+                while (s.length() < 3) s.append(" ");
+                if (s.length() > 3) throw new IllegalArgumentException();
+
+                for (char c : s.toString().toCharArray()) {
+                    switch (c) {
+                        case 'b':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolBlade.name());
+                            break;
+                        case 'c':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolCrowbar.name());
+                            break;
+                        case 'd':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolScrewdriver.name());
+                            break;
+                        case 'f':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolFile.name());
+                            break;
+                        case 'h':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolHardHammer.name());
+                            break;
+                        case 'i':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolSolderingIron.name());
+                            break;
+                        case 'j':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolSolderingMetal.name());
+                            break;
+                        case 'k':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolKnife.name());
+                            break;
+                        case 'm':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolMortar.name());
+                            break;
+                        case 'p':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolDrawplate.name());
+                            break;
+                        case 'r':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolSoftHammer.name());
+                            break;
+                        case 's':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolSaw.name());
+                            break;
+                        case 'w':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolWrench.name());
+                            break;
+                        case 'x':
+                            tRecipeList.add(c);
+                            tRecipeList.add(ToolDictNames.craftingToolWireCutter.name());
+                            break;
+                    }
+                }
+            }
+
+            aRecipe = tRecipeList.toArray();
+
+            if (aRecipe[idx] instanceof Boolean) {
+                idx++;
+            }
+            Map<Character, ItemStack> tItemStackMap = new HashMap<>();
+            Map<Character, ItemData> tItemDataMap = new HashMap<>();
+            tItemStackMap.put(' ', null);
+
+            boolean tRemoveRecipe = true;
+
+            for (; idx < aRecipe.length; idx += 2) {
+                if (aRecipe[idx] == null || aRecipe[idx + 1] == null) {
+                    if (D1) {
+                        GT_Log.err.println("WARNING: Missing Item for shaped Recipe: " + (aResult == null ? "null" : aResult.getDisplayName()));
+                        for (Object tContent : aRecipe) GT_Log.err.println(tContent);
+                    }
+                    return null;
+                }
+                Character chr = (Character) aRecipe[idx];
+                Object in = aRecipe[idx + 1];
+                if (in instanceof ItemStack) {
+                    tItemStackMap.put(chr, GT_Utility.copy(in));
+                    tItemDataMap.put(chr, GT_OreDictUnificator.getItemData((ItemStack) in));
+                } else if (in instanceof ItemData) {
+                    String tString = in.toString();
+                    switch (tString) {
+                        case "plankWood":
+                            tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
+                            break;
+                        case "stoneNetherrack":
+                            tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
+                            break;
+                        case "stoneObsidian":
+                            tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
+                            break;
+                        case "stoneEndstone":
+                            tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
+                            break;
+                        default:
+                            tItemDataMap.put(chr, (ItemData) in);
+                            break;
+                    }
+                    ItemStack tStack = GT_OreDictUnificator.getFirstOre(in, 1);
+                    if (tStack == null) tRemoveRecipe = false;
+                    else tItemStackMap.put(chr, tStack);
+                    in = aRecipe[idx + 1] = in.toString();
+                } else if (in instanceof String) {
+                    if (in.equals(OreDictNames.craftingChest.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
+                    else if (in.equals(OreDictNames.craftingBook.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
+                    else if (in.equals(OreDictNames.craftingPiston.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
+                    else if (in.equals(OreDictNames.craftingFurnace.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
+                    else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
+                    else if (in.equals(OreDictNames.craftingAnvil.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
+                    ItemStack tStack = GT_OreDictUnificator.getFirstOre(in, 1);
+                    if (tStack == null) tRemoveRecipe = false;
+                    else tItemStackMap.put(chr, tStack);
+                } else {
+                    throw new IllegalArgumentException();
+                }
+            }
+
+            if (aReversible && aResult != null) {
+                ItemData[] tData = new ItemData[9];
+                int x = -1;
+                for (char chr : shape.toString().toCharArray()) tData[++x] = tItemDataMap.get(chr);
+                if (GT_Utility.arrayContainsNonNull(tData))
+                    GT_OreDictUnificator.addItemData(aResult, new ItemData(tData));
+            }
+
+            if (aCheckForCollisions && tRemoveRecipe) {
+                ItemStack[] tRecipe = new ItemStack[9];
+                int x = -1;
+                for (char chr : shape.toString().toCharArray()) {
+                    tRecipe[++x] = tItemStackMap.get(chr);
+                    if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == W)
+                        Items.feather.setDamage(tRecipe[x], 0);
+                }
+                tThereWasARecipe = GT_ModHandler.removeRecipe(tRecipe) != null;
+            }
+        } catch (Throwable e) {
+            e.printStackTrace(GT_Log.err);
+        }
+
+        if (aResult == null || aResult.stackSize <= 0) return null;
+
+        if (aRemoveAllOthersWithSameOutput || aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT || aRemoveAllOtherShapedsWithSameOutput || aRemoveAllOtherNativeRecipes)
+            tThereWasARecipe = GT_ModHandler.removeRecipeByOutput(aResult, !aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, aRemoveAllOtherShapedsWithSameOutput, aRemoveAllOtherNativeRecipes) || tThereWasARecipe;
+
+        if (aOnlyAddIfThereIsAnyRecipeOutputtingThis && !tThereWasARecipe) {
+            ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
+            int tList_sS=tList.size();
+            for (int i = 0; i < tList_sS && !tThereWasARecipe; i++) {
+                IRecipe tRecipe = tList.get(i);
+                if (GT_ModHandler.sSpecialRecipeClasses.contains(tRecipe.getClass().getName())) continue;
+                if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
+                    tList.remove(i--); tList_sS=tList.size();
+                    tThereWasARecipe = true;
+                }
+            }
+        }
+
+        if (Items.feather.getDamage(aResult) == W || Items.feather.getDamage(aResult) < 0)
+            Items.feather.setDamage(aResult, 0);
+
+        GT_Utility.updateItemStack(aResult);
+
+        return new GT_Shaped_Recipe(GT_Utility.copy(aResult), aDismantleable, aRemovable, aKeepNBT, aEnchantmentsAdded, aEnchantmentLevelsAdded, aRecipe).setMirrored(aMirrored);
+    }
+
 }

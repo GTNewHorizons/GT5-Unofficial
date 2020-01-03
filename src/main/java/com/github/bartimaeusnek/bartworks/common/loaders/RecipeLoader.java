@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,10 +27,14 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEnti
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ManualTrafo;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_THTR;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_Windmill;
+import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
+import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -51,6 +55,7 @@ public class RecipeLoader implements Runnable {
     protected static final long BITSD = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void run() {
 
         if (ConfigHandler.GTNH) {
@@ -251,12 +256,13 @@ public class RecipeLoader implements Runnable {
 
             GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 64, 1000), GT_Utility.getIntegratedCircuit(17), Materials.SolderingAlloy.getMolten(9216), ItemRegistry.megaMachines[0], 72000, BW_Util.getMachineVoltageFromTier(3));
             GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 64, 1002), GT_Utility.getIntegratedCircuit(17), Materials.SolderingAlloy.getMolten(9216), ItemRegistry.megaMachines[1], 72000, BW_Util.getMachineVoltageFromTier(3));
+            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 64, 1126), GT_Utility.getIntegratedCircuit(17), Materials.SolderingAlloy.getMolten(9216), ItemRegistry.megaMachines[2], 72000, BW_Util.getMachineVoltageFromTier(3));
 
             GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0), Materials.Nickel.getMolten(5184), new ItemStack(ItemRegistry.bw_glasses[0], 1, 1), 800, BW_Util.getMachineVoltageFromTier(3));
-            GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, 1), Materials.Tungsten.getMolten(1296), new ItemStack(ItemRegistry.bw_glasses[0], 1, 2), 800, BW_Util.getMachineVoltageFromTier(5));
-            GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, 2), Materials.Chrome.getMolten(1296), new ItemStack(ItemRegistry.bw_glasses[0], 1, 3), 800, BW_Util.getMachineVoltageFromTier(6));
-            GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, 3), Materials.Iridium.getMolten(3888), new ItemStack(ItemRegistry.bw_glasses[0], 1, 4), 800, BW_Util.getMachineVoltageFromTier(7));
-            GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, 4), Materials.Osmium.getMolten(1296), new ItemStack(ItemRegistry.bw_glasses[0], 1, 5), 800, BW_Util.getMachineVoltageFromTier(8));
+            GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, 1), Materials.Tungsten.getMolten(1296), new ItemStack(ItemRegistry.bw_glasses[0], 1, 2), 800, BW_Util.getMachineVoltageFromTier(4));
+            GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, 2), Materials.Chrome.getMolten(1296), new ItemStack(ItemRegistry.bw_glasses[0], 1, 3), 800, BW_Util.getMachineVoltageFromTier(5));
+            GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, 3), Materials.Iridium.getMolten(3888), new ItemStack(ItemRegistry.bw_glasses[0], 1, 4), 800, BW_Util.getMachineVoltageFromTier(6));
+            GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, 4), Materials.Osmium.getMolten(1296), new ItemStack(ItemRegistry.bw_glasses[0], 1, 5), 800, BW_Util.getMachineVoltageFromTier(7));
 
             for (int i = 0; i < Dyes.dyeBrown.getSizeOfFluidList(); ++i) {
                 GT_Values.RA.addChemicalBathRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0), Dyes.dyeRed.getFluidDye(i, 36), new ItemStack(ItemRegistry.bw_glasses[0], 1, 6), null, null, null, 64, 2);
@@ -278,7 +284,6 @@ public class RecipeLoader implements Runnable {
                 GT_Values.RA.addChemicalBathRecipe(new ItemStack(ItemRegistry.bw_glasses[0], 1, i), Materials.Chlorine.getGas(50), new ItemStack(ItemRegistry.bw_glasses[0], 1, 0), null, null, null, 64, 2);
             }
 
-
             GT_ModHandler.addCraftingRecipe(
                     new ItemStack(ItemRegistry.WINDMETER),
                     GT_ModHandler.RecipeBits.NOT_REMOVABLE,
@@ -293,7 +298,7 @@ public class RecipeLoader implements Runnable {
             );
 
             Materials[] cables = {Materials.Lead, Materials.Tin, Materials.AnnealedCopper, Materials.Gold, Materials.Aluminium, Materials.Tungsten, Materials.VanadiumGallium, Materials.Naquadah, Materials.NaquadahAlloy, Materials.Superconductor};
-            Materials[] hulls = {Materials.WroughtIron, Materials.Steel, Materials.Aluminium, Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, Materials.Chrome, Materials.Iridium, Materials.Osmium, Materials.Naquadah};
+            ISubTagContainer[] hulls = {Materials.WroughtIron, Materials.Steel, Materials.Aluminium, Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, WerkstoffLoader.LuVTierMaterial, Materials.Iridium, Materials.Osmium, Materials.Naquadah};
             ItemStack[] bats = {ItemList.Battery_Hull_LV.get(1L), ItemList.Battery_Hull_MV.get(1L), ItemList.Battery_Hull_HV.get(1L)};
             ItemStack[] chreac = {ItemList.Machine_MV_ChemicalReactor.get(1L), ItemList.Machine_HV_ChemicalReactor.get(1L), ItemList.Machine_EV_ChemicalReactor.get(1L)};
 
@@ -318,7 +323,7 @@ public class RecipeLoader implements Runnable {
             for (int i = 0; i < GT_Values.VN.length; i++) {
                 try {
                     Materials cable = cables[i];
-                    Materials hull = hulls[i];
+                    ItemStack hull = hulls[i] instanceof Materials ? GT_OreDictUnificator.get(OrePrefixes.plate, hulls[i], 1L) : ((Werkstoff) hulls[i]).get(OrePrefixes.plate);
                     ItemStack machinehull = ItemList.MACHINE_HULLS[i].get(1L);
 
                     GT_ModHandler.addCraftingRecipe(
@@ -329,7 +334,7 @@ public class RecipeLoader implements Runnable {
                                     "WCW",
                                     "PWP",
                                     'W', GT_OreDictUnificator.get(OrePrefixes.wireGt16, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             });
                     GT_ModHandler.addCraftingRecipe(
@@ -341,7 +346,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt12, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -354,7 +359,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt12, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -367,7 +372,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt08, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -380,7 +385,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt08, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -393,7 +398,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt04, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -406,7 +411,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt04, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -419,7 +424,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt02, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -432,7 +437,7 @@ public class RecipeLoader implements Runnable {
                                     "PDP",
                                     'D', ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.cableGt02, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -446,7 +451,7 @@ public class RecipeLoader implements Runnable {
                                     'H', ItemList.Circuit_Parts_Coil.get(1L),
                                     'D', ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.wireGt16, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -460,7 +465,7 @@ public class RecipeLoader implements Runnable {
                                     'H', ItemList.Circuit_Parts_Coil.get(1L),
                                     'D', ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)),
                                     'W', GT_OreDictUnificator.get(OrePrefixes.wireGt16, cable, 1L),
-                                    'P', GT_OreDictUnificator.get(OrePrefixes.plate, hull, 1L),
+                                    'P', hull,
                                     'C', machinehull
                             }
                     );
@@ -479,7 +484,7 @@ public class RecipeLoader implements Runnable {
             );
 
             GT_ModHandler.addCraftingRecipe(
-                    new GT_TileEntity_ManualTrafo(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + 1, "bw.manualtrafo", StatCollector.translateToLocal("tile.manutrafo.name")).getStackForm(1L),
+                    /*Loader.isModLoaded("tectech") ? new TT_TileEntity_ManualTrafo(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + 1, "bw.manualtrafo", StatCollector.translateToLocal("tile.manutrafo.name")).getStackForm(1L) :*/ new GT_TileEntity_ManualTrafo(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + 1, "bw.manualtrafo", StatCollector.translateToLocal("tile.manutrafo.name")).getStackForm(1L),
                     RecipeLoader.BITSD,
                     new Object[]{
                             "SCS",
@@ -754,6 +759,7 @@ public class RecipeLoader implements Runnable {
                     }
             );
 
+            if (!Loader.isModLoaded("tectech"))
             GT_Values.RA.addAssemblylineRecipe(
                     ItemList.Machine_Multi_ImplosionCompressor.get(1L),24000,
                     new ItemStack[]{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -77,7 +77,7 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
             }
         }
 
-        ItemStack[] tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
+        ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
         if (tInputList.size() > 0) {
             GT_Recipe tRecipe = GT_TileEntity_ElectricImplosionCompressor.eicMap.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
             if (tRecipe != null && tRecipe.isRecipeInputEqual(true, null, tInputs)) {
@@ -177,6 +177,7 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
     }
 
     @Override
+    @SuppressWarnings("ALL")
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;

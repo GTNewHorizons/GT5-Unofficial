@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.awt.*;
-
+@SuppressWarnings("ALL")
 public final class BioObjectAdder {
 
 //    @Deprecated
@@ -156,7 +156,7 @@ public final class BioObjectAdder {
      * @return the propper Bacteria Tier (at least 0)
      */
     public static int getBacteriaTierFromVoltageTier(int voltageTier) {
-        return voltageTier - 6 > 0 ? voltageTier - 6 : 0;
+        return Math.max(voltageTier - 6, 0);
     }
 
     /**

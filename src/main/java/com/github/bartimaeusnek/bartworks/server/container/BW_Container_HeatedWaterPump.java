@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -71,10 +71,24 @@ public class BW_Container_HeatedWaterPump extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int p_82846_2_) {
+        Slot slot = this.getSlot(p_82846_2_);
+        if (p_82846_2_ == 0 && slot.getStack() != null) {
+            for (int i = 25; i < this.inventorySlots.size(); i++) {
+                if (((Slot) this.inventorySlots.get(i)).getStack() == null) {
+                    ((Slot) this.inventorySlots.get(i)).putStack(slot.getStack());
+                    slot.putStack(null);
+                }
+            }
+        }
+        else if (p_82846_2_ > 1 && slot.getStack() != null && ((Slot) this.inventorySlots.get(0)).getStack() == null && ((Slot) this.inventorySlots.get(0)).isItemValid(slot.getStack())){
+            ((Slot) this.inventorySlots.get(0)).putStack(slot.getStack());
+            slot.putStack(null);
+        }
         return null;
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         if (this.TILE.getWorldObj().isRemote)

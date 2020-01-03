@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -63,7 +63,7 @@ public class OreDictCachePacket extends GT_Packet {
     public GT_Packet decode(ByteArrayDataInput byteArrayDataInput) {
         int size = byteArrayDataInput.readInt();
         for (int i = 0; i < size; i++) {
-            this.hashSet.add(new Pair<Integer,Short>(byteArrayDataInput.readInt(),byteArrayDataInput.readShort()));
+            this.hashSet.add(new Pair<>(byteArrayDataInput.readInt(),byteArrayDataInput.readShort()));
         }
         return new OreDictCachePacket(this.hashSet);
     }

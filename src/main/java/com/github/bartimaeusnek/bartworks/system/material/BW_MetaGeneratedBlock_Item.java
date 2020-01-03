@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,9 +35,9 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BW_MetaGeneratedOre_Item extends BW_ItemBlocks {
+public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
 
-    public BW_MetaGeneratedOre_Item(Block par1) {
+    public BW_MetaGeneratedBlock_Item(Block par1) {
         super(par1);
     }
 
@@ -50,11 +50,12 @@ public class BW_MetaGeneratedOre_Item extends BW_ItemBlocks {
     }
 
     public String getItemStackDisplayName(ItemStack aStack) {
-        return GT_LanguageManager.getTranslation("bw.blockores.01." + aStack.getItemDamage() + ".name");
+        return GT_LanguageManager.getTranslation( getUnlocalizedName(aStack) + ".name");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         if (!GT_Utility.isStackValid(aStack) || aPlayer == null || aStack.getItemDamage() <= 0)
             return;
@@ -69,7 +70,7 @@ public class BW_MetaGeneratedOre_Item extends BW_ItemBlocks {
             if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tDamage, 3)) {
                 return false;
             }
-            BW_MetaGeneratedOreTE tTileEntity = (BW_MetaGeneratedOreTE) aWorld.getTileEntity(aX, aY, aZ);
+            BW_MetaGenerated_Block_TE tTileEntity = (BW_MetaGenerated_Block_TE) aWorld.getTileEntity(aX, aY, aZ);
             tTileEntity.mMetaData = tDamage;
         } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3)) {
             return false;

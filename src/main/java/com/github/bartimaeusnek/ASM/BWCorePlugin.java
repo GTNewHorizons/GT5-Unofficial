@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -67,6 +67,7 @@ public class BWCorePlugin implements IFMLLoadingPlugin {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public void injectData(Map<String, Object> data) {
         if (data.get("runtimeDeobfuscationEnabled") != null) {
             BWCoreTransformer.obfs = (boolean) data.get("runtimeDeobfuscationEnabled");

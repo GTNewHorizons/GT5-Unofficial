@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.common.items;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.BioCulture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
@@ -73,6 +74,7 @@ public class LabParts extends SimpleSubItemClass {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean b) {
         if (itemStack == null)
             return;
@@ -101,19 +103,20 @@ public class LabParts extends SimpleSubItemClass {
             return;
         }
 
+        BioCulture culture = BioCulture.getBioCulture(itemStack.getTagCompound().getString("Name"));
 
         switch (itemStack.getItemDamage()) {
             case 0:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.5.name") + " " + itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.5.name") + " " + itemStack.getTagCompound().getString("Name") + (culture != null ? " ("+culture.getLocalisedName()+")" : ""));
                 if (!itemStack.getTagCompound().getBoolean("Breedable")) {
                     list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));
                 }
                 break;
             case 1:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.7.name") + " " + itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.7.name") + " " + itemStack.getTagCompound().getString("Name") + (culture != null ? " ("+culture.getLocalisedName()+")" : ""));
                 break;
             case 2:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.8.name") + " " + itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.8.name") + " " + itemStack.getTagCompound().getString("Name") + (culture != null ? " ("+culture.getLocalisedName()+")" : ""));
                 break;
             default:
                 break;
@@ -122,13 +125,11 @@ public class LabParts extends SimpleSubItemClass {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
-        for (ItemStack stack : getAllPetriDishes())
-            list.add(stack);
-        for (ItemStack stack : getAllDNASampleFlasks())
-            list.add(stack);
-        for (ItemStack stack : getAllPlasmidCells())
-            list.add(stack);
+        list.addAll(getAllPetriDishes());
+        list.addAll(getAllDNASampleFlasks());
+        list.addAll(getAllPlasmidCells());
         super.getSubItems(item, creativeTabs, list);
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ public class LoaderRegistry implements Runnable {
 
     @Override
     public void run() {
-        new ItemRegistry().run();
+        ItemRegistry.run();
         new RecipeLoader().run();
     }
 

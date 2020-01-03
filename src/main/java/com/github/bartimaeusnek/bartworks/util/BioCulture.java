@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.util;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
@@ -37,8 +38,16 @@ import java.util.Objects;
 
 public class BioCulture extends BioData implements IColorModulationContainer {
 
-    public static final ArrayList<BioCulture> BIO_CULTURE_ARRAY_LIST = new ArrayList<BioCulture>();
+    public static final ArrayList<BioCulture> BIO_CULTURE_ARRAY_LIST = new ArrayList<>();
     public static final BioCulture NULLCULTURE = BioCulture.createAndRegisterBioCulture(Color.BLUE, "", BioPlasmid.NULLPLASMID, BioDNA.NULLDNA, false); //fallback NULL culture, also Blue =)
+
+    public String getLocalisedName() {
+        return GT_LanguageManager.getTranslation(this.getName());
+    }
+
+    public void setLocalisedName(String localisedName) {
+        GT_LanguageManager.addStringLocalization(this.getName(),localisedName);
+    }
 
     Color color;
     BioPlasmid plasmid;
@@ -111,6 +120,8 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     public static BioCulture getBioCulture(String Name) {
+        if (Name == null || Name.isEmpty())
+            return null;
         for (BioCulture b : BIO_CULTURE_ARRAY_LIST)
             if (b.name.equals(Name))
                 return b;
@@ -168,16 +179,35 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         return this.plasmid;
     }
 
-    public void setPlasmid(BioPlasmid plasmid) {
+    public BioCulture setPlasmid(BioPlasmid plasmid) {
+        return checkForExisting(new BioCulture(this.color, this.name, this.ID, plasmid, this.dDNA, this.rarity, this.bBreedable));
+    }
+
+    private BioCulture checkForExisting(BioCulture culture) {
+        if (culture == null)
+            return null;
+        for (BioCulture bc : BioCulture.BIO_CULTURE_ARRAY_LIST)
+            if (culture.getdDNA().equals(bc.getdDNA()) && culture.getPlasmid().equals(bc.getPlasmid()))
+                return bc;
+        return culture;
+    }
+
+    public BioCulture setPlasmidUnsafe(BioPlasmid plasmid) {
         this.plasmid = plasmid;
+        return this;
     }
 
     public BioDNA getdDNA() {
         return this.dDNA;
     }
 
-    public void setdDNA(BioDNA dDNA) {
+    public BioCulture setdDNA(BioDNA dDNA) {
+        return checkForExisting(new BioCulture(this.color, this.name, this.ID, this.plasmid, dDNA, this.rarity, this.bBreedable));
+    }
+
+    public BioCulture setdDNAUnsafe(BioDNA dDNA) {
         this.dDNA = dDNA;
+        return this;
     }
 
     @Override

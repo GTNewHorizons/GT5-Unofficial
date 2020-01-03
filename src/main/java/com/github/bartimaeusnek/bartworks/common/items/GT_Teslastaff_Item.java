@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
@@ -45,7 +46,7 @@ import java.util.List;
 import java.util.Set;
 
 public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
-    private static final Set effective = Sets.newHashSet(Blocks.web);
+    private static final Set<Block> effective = Sets.newHashSet(Blocks.web);
     private final double mCharge;
     private final double mTransfer;
     public int mTier;
@@ -65,6 +66,7 @@ public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         aList.add(StatCollector.translateToLocal("tooltip.teslastaff.0.name"));
         aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
@@ -73,8 +75,7 @@ public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
     public boolean hitEntity(ItemStack aStack, EntityLivingBase aTarget, EntityLivingBase aPlayer) {
         if (aTarget instanceof EntityLiving && ElectricItem.manager.canUse(aStack, 9000000)) {
             EntityLiving tTarget = (EntityLiving) aTarget;
-            EntityLivingBase tPlayer = aPlayer;
-            ElectricItem.manager.use(aStack, 9000000, tPlayer);
+            ElectricItem.manager.use(aStack, 9000000, aPlayer);
             for (int i = 1; i < 5; ++i) {
                 if (tTarget.getEquipmentInSlot(i) != null && tTarget.getEquipmentInSlot(i).getItem() instanceof IElectricItem) {
                     tTarget.setCurrentItemOrArmor(i, null);
@@ -85,6 +86,7 @@ public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
     }
 
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List itemList) {
         ItemStack itemStack = new ItemStack(this, 1);
         if (this.getChargedItem(itemStack) == this) {

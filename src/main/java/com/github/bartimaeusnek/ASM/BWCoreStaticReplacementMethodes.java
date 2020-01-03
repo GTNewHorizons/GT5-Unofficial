@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,94 @@
 
 package com.github.bartimaeusnek.ASM;
 
+import com.github.bartimaeusnek.bartworks.util.accessprioritylist.AccessPriorityList;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.World;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
 public class BWCoreStaticReplacementMethodes {
+
+    public static final AccessPriorityList<IRecipe> RECENTLYUSEDRECIPES = new AccessPriorityList<>();
+
+    @SuppressWarnings("ALL")
+    public static ItemStack findCachedMatchingRecipe(InventoryCrafting inventoryCrafting, World world) {
+        int i = 0;
+        ItemStack itemstack = null;
+        ItemStack itemstack1 = null;
+        int j;
+
+        for (j = 0; j < inventoryCrafting.getSizeInventory(); ++j)
+        {
+            ItemStack itemstack2 = inventoryCrafting.getStackInSlot(j);
+
+            if (itemstack2 != null)
+            {
+                if (i == 0)
+                {
+                    itemstack = itemstack2;
+                }
+
+                if (i == 1)
+                {
+                    itemstack1 = itemstack2;
+                }
+
+                ++i;
+            }
+        }
+
+        if (i == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.stackSize == 1 && itemstack1.stackSize == 1 && itemstack.getItem().isRepairable())
+        {
+            Item item = itemstack.getItem();
+            int j1 = item.getMaxDamage() - itemstack.getItemDamageForDisplay();
+            int k = item.getMaxDamage() - itemstack1.getItemDamageForDisplay();
+            int l = j1 + k + item.getMaxDamage() * 5 / 100;
+            int i1 = item.getMaxDamage() - l;
+
+            if (i1 < 0)
+            {
+                i1 = 0;
+            }
+
+            return new ItemStack(itemstack.getItem(), 1, i1);
+        } else {
+            IRecipe iPossibleRecipe = null;
+            int index = 0;
+            for (Iterator<IRecipe> it = RECENTLYUSEDRECIPES.iterator(); it.hasNext(); ++index) {
+                IRecipe RECENTLYUSEDRECIPE = it.next();
+                if (RECENTLYUSEDRECIPE.matches(inventoryCrafting, world)) {
+                    iPossibleRecipe = RECENTLYUSEDRECIPE;
+                    break;
+                }
+            }
+
+            if (iPossibleRecipe != null) {
+                RECENTLYUSEDRECIPES.addPrioToNode(index);
+                return iPossibleRecipe.getCraftingResult(inventoryCrafting);
+            }
+
+            ItemStack stack = null;
+            HashSet<IRecipe> recipeHashSet = new HashSet<>();
+            for (IRecipe recipe : (List<IRecipe>) CraftingManager.getInstance().getRecipeList())
+                if (recipe.matches(inventoryCrafting, world))
+                    recipeHashSet.add(recipe);
+
+            for (IRecipe recipe : recipeHashSet){
+                stack = recipe.getCraftingResult(inventoryCrafting);
+                if (stack != null && recipeHashSet.size() == 1)
+                    RECENTLYUSEDRECIPES.addLast(recipe);
+            }
+            return stack;
+        }
+    }
+
     private BWCoreStaticReplacementMethodes() {
     }
 

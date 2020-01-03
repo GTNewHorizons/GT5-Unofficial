@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 bartimaeusnek
+ * Copyright (c) 2018-2019 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,11 +32,11 @@ public final class WerkstoffAdderRegistry implements Runnable {
     private WerkstoffAdderRegistry() {
     }
 
-    public static final WerkstoffAdderRegistry getINSTANCE() {
+    public static WerkstoffAdderRegistry getINSTANCE() {
         return INSTANCE;
     }
 
-    public static final void addWerkstoffAdder(Runnable adder) {
+    public static void addWerkstoffAdder(Runnable adder) {
         INSTANCE.toRun.add(adder);
     }
 
