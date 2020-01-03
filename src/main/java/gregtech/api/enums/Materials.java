@@ -945,31 +945,33 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     static {
         initSubTags();
-        Iron                    .mOreReRegistrations.add(AnyIron    );
-        PigIron                 .mOreReRegistrations.add(AnyIron    );
-        WroughtIron             .mOreReRegistrations.add(AnyIron    );
+        Iron.mOreReRegistrations.add(AnyIron);
+        PigIron.mOreReRegistrations.add(AnyIron);
+        WroughtIron.mOreReRegistrations.add(AnyIron);
 
-        Copper                  .mOreReRegistrations.add(AnyCopper  );
-        AnnealedCopper          .mOreReRegistrations.add(AnyCopper  );
+        Copper.mOreReRegistrations.add(AnyCopper);
+        AnnealedCopper.mOreReRegistrations.add(AnyCopper);
 
-        Bronze                  .mOreReRegistrations.add(AnyBronze  );
+        Bronze.mOreReRegistrations.add(AnyBronze);
 
-        Rubber					.mOreReRegistrations.add(AnyRubber);
-        StyreneButadieneRubber	.mOreReRegistrations.add(AnyRubber);
-        Silicone				.mOreReRegistrations.add(AnyRubber);
+        Rubber.mOreReRegistrations.add(AnyRubber);
+        StyreneButadieneRubber.mOreReRegistrations.add(AnyRubber);
+        Silicone.mOreReRegistrations.add(AnyRubber);
 
-        StyreneButadieneRubber	.mOreReRegistrations.add(AnySyntheticRubber);
-        Silicone				.mOreReRegistrations.add(AnySyntheticRubber);
+        StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
+        Silicone.mOreReRegistrations.add(AnySyntheticRubber);
 
-        Peanutwood              .setMaceratingInto(Wood             );
-        WoodSealed              .setMaceratingInto(Wood             );
-        NetherBrick             .setMaceratingInto(Netherrack       );
+        Electrotine.mOreReRegistrations.add(Nikolite);
 
-        SamariumMagnetic        .setSmeltingInto(Samarium           ).setMaceratingInto(Samarium        ).setArcSmeltingInto(Samarium           );
-        NeodymiumMagnetic       .setSmeltingInto(Neodymium          ).setMaceratingInto(Neodymium       ).setArcSmeltingInto(Neodymium          );
-        SteelMagnetic           .setSmeltingInto(Steel              ).setMaceratingInto(Steel           ).setArcSmeltingInto(Steel              );
-        Iron                    .setSmeltingInto(Iron               ).setMaceratingInto(Iron            ).setArcSmeltingInto(WroughtIron        );
-        AnyIron                 .setSmeltingInto(Iron               ).setMaceratingInto(Iron            ).setArcSmeltingInto(WroughtIron        );
+        Peanutwood.setMaceratingInto(Wood);
+        WoodSealed.setMaceratingInto(Wood);
+        NetherBrick.setMaceratingInto(Netherrack);
+
+        SamariumMagnetic.setSmeltingInto(Samarium).setMaceratingInto(Samarium).setArcSmeltingInto(Samarium);
+        NeodymiumMagnetic.setSmeltingInto(Neodymium).setMaceratingInto(Neodymium).setArcSmeltingInto(Neodymium);
+        SteelMagnetic.setSmeltingInto(Steel).setMaceratingInto(Steel).setArcSmeltingInto(Steel);
+        Iron.setSmeltingInto(Iron).setMaceratingInto(Iron).setArcSmeltingInto(WroughtIron);
+        AnyIron.setSmeltingInto(Iron).setMaceratingInto(Iron).setArcSmeltingInto(WroughtIron);
         PigIron                 .setSmeltingInto(Iron               ).setMaceratingInto(Iron            ).setArcSmeltingInto(WroughtIron        );
         WroughtIron             .setSmeltingInto(WroughtIron        ).setMaceratingInto(WroughtIron     ).setArcSmeltingInto(WroughtIron        );
         IronMagnetic            .setSmeltingInto(Iron               ).setMaceratingInto(Iron            ).setArcSmeltingInto(WroughtIron        );
@@ -1599,7 +1601,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 aMaterial.mTransparent = GregTech_API.sMaterialProperties.get(aConfigPath, "Transparent", aMaterial.mTransparent);
                 String aColor = GregTech_API.sMaterialProperties.get(aConfigPath, "DyeColor", aMaterial.mColor == Dyes._NULL ? "None" : aMaterial.mColor.toString());
                 aMaterial.mColor = aColor.equals("None") ? Dyes._NULL : Dyes.get(aColor);
-                String[] aRGBA = GregTech_API.sMaterialProperties.get(aConfigPath, "MatRGBA", String.valueOf(aMaterial.mRGBa[0] + "," + aMaterial.mRGBa[1] + "," + aMaterial.mRGBa[2] + "," + aMaterial.mRGBa[3] + ",")).split(",");
+                String[] aRGBA = GregTech_API.sMaterialProperties.get(aConfigPath, "MatRGBA", aMaterial.mRGBa[0] + "," + aMaterial.mRGBa[1] + "," + aMaterial.mRGBa[2] + "," + aMaterial.mRGBa[3] + ",").split(",");
                 aMaterial.mRGBa[0] = Short.parseShort(aRGBA[0]);
                 aMaterial.mRGBa[1] = Short.parseShort(aRGBA[1]);
                 aMaterial.mRGBa[2] = Short.parseShort(aRGBA[2]);

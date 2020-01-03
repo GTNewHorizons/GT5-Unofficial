@@ -260,15 +260,19 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
         drillX = aNBT.getInteger("drillX");
         drillY = aNBT.getInteger("drillY");
         drillZ = aNBT.getInteger("drillZ");
-        radiusConfig = aNBT.getInteger("radiusConfig");
+        if (aNBT.hasKey("radiusConfig"))
+            radiusConfig = aNBT.getInteger("radiusConfig");
     }
 
     private FakePlayer mFakePlayer = null;
 
     protected FakePlayer getFakePlayer(IGregTechTileEntity aBaseTile) {
-        if (mFakePlayer == null) mFakePlayer = GT_Utility.getFakePlayer(aBaseTile);
-        mFakePlayer.setWorld(aBaseTile.getWorld());
-        mFakePlayer.setPosition(aBaseTile.getXCoord(), aBaseTile.getYCoord(), aBaseTile.getZCoord());
+        if (mFakePlayer == null)
+            mFakePlayer = GT_Utility.getFakePlayer(aBaseTile);
+        if (mFakePlayer != null) {
+            mFakePlayer.setWorld(aBaseTile.getWorld());
+            mFakePlayer.setPosition(aBaseTile.getXCoord(), aBaseTile.getYCoord(), aBaseTile.getZCoord());
+        }
         return mFakePlayer;
     }
 
