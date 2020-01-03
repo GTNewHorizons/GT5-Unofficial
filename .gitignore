@@ -42,3 +42,6 @@ hs_err_pid*
 !/libs/CodeChickenLib-1.7.10-1.1.1.99-dev.jar
 !/libs/NotEnoughItems-1.7.10-1.0.4.95-dev.jar
 !/libs/gregtech-5.09.32-dev.jar
+SetupWorkspaces.bat
+SetupDevWorkspaces.bat
+Idea.bat
