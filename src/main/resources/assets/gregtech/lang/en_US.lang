@@ -30,6 +30,17 @@ GT5U.EBF.heat=Heat capacity
 GT5U.MS.multismelting=Multi smelting
 
 GT5U.machines.tier=Tier
+GT5U.machines.workarea=Work Area
+GT5U.machines.blocks=Blocks
+GT5U.machines.chunks=Chunks
+GT5U.machines.miner=Miner
+GT5U.machines.pump=Pump
+GT5U.machines.pumpareaset=Pumping area set to
+GT5U.machines.oilfluidpump=Oil/Fluid Pump
+GT5U.machines.minermulti=Multiblock Miner
+
+
+
 
 GT5U.multiblock.pollution=Pollution reduced to
 GT5U.multiblock.energy=Stored Energy

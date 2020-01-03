@@ -8,6 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -91,7 +93,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             if (chunkRangeConfig > getRangeInChunks())
                 chunkRangeConfig = 1;
         }
-        GT_Utility.sendChatToPlayer(aPlayer, "Set to work on " + chunkRangeConfig + "x" + chunkRangeConfig + " chunks");//TODO Add translation support
+        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workareaset") + " " + chunkRangeConfig + "x" + chunkRangeConfig + StatCollector.translateToLocal("GT5U.machines.chunks"));//TODO Add translation support
     }
 
     @Override
@@ -230,5 +232,14 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             mOilFieldChunks.remove( tChunk );
         }
         return tOil.amount == 0 ? null : tOil;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        return new String[]{
+                EnumChatFormatting.BLUE+StatCollector.translateToLocal("GT5U.machines.oilfluidpump")+EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.machines.workarea")+": " + EnumChatFormatting.GREEN + (chunkRangeConfig)+ " x " + (chunkRangeConfig) + 
+                EnumChatFormatting.RESET+" " + StatCollector.translateToLocal("GT5U.machines.chunks")
+        };
     }
 }

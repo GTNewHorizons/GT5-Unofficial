@@ -18,6 +18,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -123,7 +125,9 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
             if (radiusConfig > max)
                 radiusConfig = 0;
         }
-        GT_Utility.sendChatToPlayer(aPlayer, "Pumping area set to " + (radiusConfig * 2 + 1) + "x" + (radiusConfig * 2 + 1));//TODO Add translation support
+        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workareaset") + " " + (radiusConfig * 2 + 1) + "x" + (radiusConfig * 2 + 1));//TODO Add translation support
+        
+        clearQueue(false);
 
     }
 
@@ -516,7 +520,10 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel, ArrayList<String> aList) {
-        aList.addAll(Arrays.asList("Primary pumping fluid:   " + (this.mPrimaryPumpedBlock != null ? this.mPrimaryPumpedBlock.getLocalizedName() : "None"),
+        aList.addAll(Arrays.asList(  EnumChatFormatting.BLUE+StatCollector.translateToLocal("GT5U.machines.pump")+EnumChatFormatting.RESET,
+                                     StatCollector.translateToLocal("GT5U.machines.workarea")+": " + EnumChatFormatting.GREEN + (radiusConfig * 2 + 1)+ 
+                                         EnumChatFormatting.RESET+" " + StatCollector.translateToLocal("GT5U.machines.blocks"),
+                                    "Primary pumping fluid:   " + (this.mPrimaryPumpedBlock != null ? this.mPrimaryPumpedBlock.getLocalizedName() : "None"),
                                    "Secondary pumping fluid: " + (this.mSecondaryPumpedBlock != null ? this.mSecondaryPumpedBlock.getLocalizedName() : "None"),
                                    "Pumps below: " + mPumpCountBelow,
                                    "Queue size: " + mPumpList.size(),
@@ -642,5 +649,14 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
         mFakePlayer.setWorld(aBaseTile.getWorld());
         mFakePlayer.setPosition(aBaseTile.getXCoord(), aBaseTile.getYCoord(), aBaseTile.getZCoord());
         return mFakePlayer;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        return new String[]{
+                EnumChatFormatting.BLUE+StatCollector.translateToLocal("GT5U.machines.pump")+EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.machines.workarea")+": " + EnumChatFormatting.GREEN + (radiusConfig * 2 + 1)+ 
+                EnumChatFormatting.RESET+" " + StatCollector.translateToLocal("GT5U.machines.blocks")
+        };
     }
 }

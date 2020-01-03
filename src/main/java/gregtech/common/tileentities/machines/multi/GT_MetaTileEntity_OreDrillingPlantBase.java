@@ -20,6 +20,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.fluids.FluidStack;
@@ -81,7 +83,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             if (chunkRadiusConfig > getRadiusInChunks())
                 chunkRadiusConfig = 1;
         }
-        GT_Utility.sendChatToPlayer(aPlayer, "Set to mine in a " + (chunkRadiusConfig << 4) + " radius");//TODO Add translation support
+        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workareaset") + " " + (chunkRadiusConfig << 4) + StatCollector.translateToLocal("GT5U.machines.workareaset"));//TODO Add translation support
     }
 
     @Override
@@ -331,5 +333,14 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 "Use Screwdriver to configure block radius",
                 "Maximum radius is " + (getRadiusInChunks() << 4) + " blocks",
                 "Fortune bonus of " + (mTier + 3)};
+    }
+
+    @Override
+    public String[] getInfoData() {
+        return new String[]{
+                EnumChatFormatting.BLUE+StatCollector.translateToLocal("GT5U.machines.minermulti")+EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.machines.workarea")+": " + EnumChatFormatting.GREEN + (chunkRadiusConfig * 2 + 1)+ 
+                EnumChatFormatting.RESET+" " + StatCollector.translateToLocal("GT5U.machines.chunks")
+        };
     }
 }

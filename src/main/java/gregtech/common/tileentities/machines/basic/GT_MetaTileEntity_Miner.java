@@ -18,6 +18,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.ArrayList;
@@ -104,7 +106,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
                 if (radiusConfig > RADIUS[mTier])
                     radiusConfig = 0;
             }
-            GT_Utility.sendChatToPlayer(aPlayer, "Work area set to " + (radiusConfig * 2 + 1) + "x" + (radiusConfig * 2 + 1));//TODO Add translation support
+            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workareaset") + " " + (radiusConfig * 2 + 1) + "x" + (radiusConfig * 2 + 1));//TODO Add translation support
         }
     }
 
@@ -274,6 +276,15 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
             mFakePlayer.setPosition(aBaseTile.getXCoord(), aBaseTile.getYCoord(), aBaseTile.getZCoord());
         }
         return mFakePlayer;
+    }
+    
+    @Override
+    public String[] getInfoData() {
+        return new String[]{
+                EnumChatFormatting.BLUE+StatCollector.translateToLocal("GT5U.machines.miner")+EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.machines.workarea")+": " + EnumChatFormatting.GREEN + (radiusConfig * 2 + 1)+ 
+                EnumChatFormatting.RESET+" " + StatCollector.translateToLocal("GT5U.machines.blocks")
+        };
     }
 
 }
