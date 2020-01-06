@@ -1244,4 +1244,24 @@ public class CI {
 		return ItemUtils.simpleMetaStack(AgriculturalChem.mBioCircuit, i, 0);
 	}
 
+	public static ItemStack getTieredGTPPMachineCasing(int aTier, int aAmount) {
+		GregtechItemList[] aHulls = new GregtechItemList[] {
+				GregtechItemList.GTPP_Casing_ULV,
+				GregtechItemList.GTPP_Casing_LV,
+				GregtechItemList.GTPP_Casing_MV,
+				GregtechItemList.GTPP_Casing_HV,
+				GregtechItemList.GTPP_Casing_EV,
+				GregtechItemList.GTPP_Casing_IV,
+				GregtechItemList.GTPP_Casing_LuV,
+				GregtechItemList.GTPP_Casing_ZPM,
+				GregtechItemList.GTPP_Casing_UV,
+				GregtechItemList.GTPP_Casing_MAX
+		};
+		return aHulls[aTier].get(aAmount);
+	}
+
+	public static ItemStack getTieredComponentOfMaterial(Materials aMaterial, OrePrefixes aPrefix, int aAmount) {
+		return ItemUtils.getOrePrefixStack(aPrefix, aMaterial, aAmount);
+	}
+
 }

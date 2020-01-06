@@ -61,6 +61,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 		return new String[] {
 				"Grows Algae!",
 				"Controller Block for the Algae Farm",
+				"Provide compost to boost production by one tier",
 				"Size: 9x3x9 [WxHxL] (open)",
 				"X           X",
 				"X           X", 

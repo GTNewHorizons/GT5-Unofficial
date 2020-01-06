@@ -54,6 +54,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
         return new String[]{
                 "Controller Block for the Advanced Distillation Tower",
                 "T1 constructed identical to standard DT",
+                "T2 is currently disabled.",
                 "T2 is not variable height",
                 "Size(WxHxD): 3x26x3",
                 "Controller (Front bottom)",
@@ -62,7 +63,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
                 "1x Output Bus (Any bottom layer casing)",
                 "1x Maintenance Hatch (Any casing)",
                 "1x Energy Hatch (Any casing)",
-                "Clean Stainless Steel Machine Casings for the rest ((7 x 25) - 5 at least!)",
+                "Integral Framework I's for the rest",
                 s,
                 s1,
                 s2};

@@ -8,6 +8,7 @@ import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
@@ -15,6 +16,7 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -231,8 +233,146 @@ public class RECIPES_Machines {
 		industrialVacuumFurnace();
 		fakeMachineCasingCovers();
 		ztonesCoverRecipes();
+		overflowValveCovers();
 		superBuses();
 		roundRobinators();
+		chunkloaders();
+		distillus();
+		algaeFarm();
+		chemPlant();
+		
+	}
+
+	private static void chemPlant() {
+		
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+					CI.getNumberedBioCircuit(19),
+					CI.getTieredGTPPMachineCasing(1, 6),
+					CI.getTieredComponentOfMaterial(Materials.Steel, OrePrefixes.gearGt, 6),
+					CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.plate, 32),
+					CI.getTieredComponentOfMaterial(Materials.CobaltBrass, OrePrefixes.dust, 16),
+					ALLOY.STAINLESS_STEEL.getFrameBox(4),
+				}, 
+				ALLOY.STEEL.getFluid(2 * (144 * 4)), 
+				GregtechItemList.ChemicalPlant_Controller.get(1), 
+				120 * 20, 
+				MaterialUtils.getVoltageForTier(2));
+		
+	}
+
+	private static void algaeFarm() {
+		
+		// Give the shitty algae a use :)
+		CORE.RA.addDistilleryRecipe(
+				ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 32),
+				null,
+				null,
+				ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4),
+				20 * 15,
+				16, 
+				false);
+		
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+					CI.getNumberedBioCircuit(21),
+					CI.getTieredGTPPMachineCasing(0, 4),
+					CI.getTieredComponentOfMaterial(Materials.Iron, OrePrefixes.rod, 12),
+					CI.getTieredComponentOfMaterial(Materials.Wood, OrePrefixes.plate, 32),
+					CI.getTieredComponentOfMaterial(Materials.Bronze, OrePrefixes.bolt, 16),
+					CI.getTieredComponentOfMaterial(Materials.Redstone, OrePrefixes.dust, 32),
+				}, 
+				ALLOY.POTIN.getFluid(2 * (144 * 4)), 
+				GregtechItemList.AlgaeFarm_Controller.get(1), 
+				60 * 20, 
+				MaterialUtils.getVoltageForTier(1));	
+		
+		
+	}
+
+	private static void distillus() {
+		
+		CORE.RA.addFluidReactorRecipe(
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(19),
+						ItemList.Distillation_Tower.get(2),
+						GregtechItemList.GTPP_Casing_IV.get(16),
+						CI.getTieredComponent(OrePrefixes.circuit, 6, 8)
+				}, 
+				new FluidStack[] {
+						ALLOY.AQUATIC_STEEL.getFluid(144 * 32),
+						ALLOY.BABBIT_ALLOY.getFluid(144 * 16),
+						ALLOY.BRONZE.getFluid(144 * 64),
+						ALLOY.KANTHAL.getFluid(144 * 16),
+				}, 
+				new ItemStack[] {
+						GregtechItemList.Machine_Adv_DistillationTower.get(1)
+				}, 
+				new FluidStack[] {
+						
+				},
+				20 * 600, 
+				MaterialUtils.getVoltageForTier(6), 
+				3);
+		
+	}
+
+	private static void chunkloaders() {
+		
+		ItemStack aOutputs[] = new ItemStack[] {
+				GregtechItemList.GT_Chunkloader_HV.get(1L),
+				GregtechItemList.GT_Chunkloader_IV.get(1L),
+				GregtechItemList.GT_Chunkloader_ZPM.get(1L),
+		};
+		
+		int aIndex = 0;
+		
+		for (int i=3;i<8;i++) {	
+			if (i == 4 || i == 6) {
+				continue;
+			}			
+			CORE.RA.addSixSlotAssemblingRecipe(
+					new ItemStack[] {
+						CI.getNumberedBioCircuit(21),
+						CI.getElectricPiston(i, 10),
+						CI.getFieldGenerator(i + 1, 6),
+						CI.getPlate(i, 16),
+						CI.getEmitter(i - 1, 24),
+						CI.getTieredComponent(OrePrefixes.cableGt08, i, 16)
+					}, 
+					ALLOY.EGLIN_STEEL.getFluid(i * (144 * 4)), 
+					aOutputs[aIndex++].copy(), 
+					300 * 20, 
+					MaterialUtils.getVoltageForTier(i));			
+		}
+		
+		
+	}
+
+	private static void overflowValveCovers() {
+		ItemStack aOutputs[] = new ItemStack[] {
+				GregtechItemList.Cover_Overflow_ULV.get(1L),
+				GregtechItemList.Cover_Overflow_LV.get(1L),
+				GregtechItemList.Cover_Overflow_MV.get(1L),
+				GregtechItemList.Cover_Overflow_HV.get(1L),
+				GregtechItemList.Cover_Overflow_EV.get(1L),
+				GregtechItemList.Cover_Overflow_IV.get(1L),	
+		};
+		
+		for (int i=0;i<6;i++) {			
+			CORE.RA.addSixSlotAssemblingRecipe(
+					new ItemStack[] {
+						CI.getNumberedBioCircuit(19),
+						CI.getElectricPump(i, 2),
+						CI.getElectricMotor(i, 2),
+						CI.getPlate(i, 4)
+					}, 
+					FluidUtils.getWater(i * 1500), 
+					aOutputs[i].copy(), 
+					20 * 20, 
+					MaterialUtils.getVoltageForTier(i));			
+		}
+		
 	}
 
 	private static void tieredMachineHulls() {
