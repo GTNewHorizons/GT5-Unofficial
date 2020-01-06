@@ -32,9 +32,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class HellFire extends BlockFire {
 	@Deprecated
-	private final int[] field_149849_a = new int[4096];
+	private final int[] field_149849_a = new int[Short.MAX_VALUE];
 	@Deprecated
-	private final int[] field_149848_b = new int[4096];
+	private final int[] field_149848_b = new int[Short.MAX_VALUE];
 	@SideOnly(Side.CLIENT)
 	private IIcon[] IIconArray;
 
@@ -53,20 +53,23 @@ public class HellFire extends BlockFire {
 	private void enableBrutalFire() {
 		for (final Object o : Block.blockRegistry.getKeys())
 		{
+			
+			try {
+			
 			final String name = (String)o;
 			final Block b = Block.getBlockFromName(name);
-
-			if ((b == Blocks.grass) || (b == Blocks.mycelium)){
-				final int spread = 3;
-				final int flamm = 3;
-				this.setFireInfo(b, spread * 4, flamm * 4);
-			}
-
 			if (b != Blocks.air)
 			{
 				final int spread = Blocks.fire.getEncouragement(b);
 				final int flamm = Blocks.fire.getFlammability(b);
-				this.setFireInfo(b, spread * 4, flamm * 4);
+				if (flamm > 0 && spread > 0) {
+					this.setFireInfo(b, spread * 4, flamm * 4);
+				}
+			}
+			
+			}
+			catch (Throwable t) {
+				t.printStackTrace();
 			}
 		}
 
@@ -450,7 +453,7 @@ public class HellFire extends BlockFire {
 			throw new IllegalArgumentException("Tried to set air on fire... This is bad.");
 		}
 		final int id = Block.getIdFromBlock(block);
-		if (id >= 4096) {
+		if (id >= 4096 || id >= field_149849_a.length || id >= field_149848_b.length) {
 			return;
 		}
 		this.field_149849_a[id] = encouragement;
