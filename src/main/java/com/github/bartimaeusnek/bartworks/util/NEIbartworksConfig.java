@@ -72,5 +72,8 @@ public class NEIbartworksConfig implements IConfigureNEI {
             stack.setItemDamage(Short.MAX_VALUE);
             API.hideItem(stack);
         }
+//        for (int i = 0; i < Short.MAX_VALUE; i++) {
+//            API.addItemListEntry(new ItemStack(WerkstoffLoader.BWOres,1,i));
+//        }
     }
 }

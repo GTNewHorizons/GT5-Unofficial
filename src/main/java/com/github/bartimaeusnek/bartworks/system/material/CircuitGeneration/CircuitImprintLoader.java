@@ -46,111 +46,73 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.HashSet;
-import java.util.Iterator;
 
 public class CircuitImprintLoader {
 
-    public static final ArrayListMultimap<NBTTagCompound,GT_Recipe> recipeTagMap = ArrayListMultimap.create();
-
-    static final HashBiMap<CircuitData,ItemStack> bwCircuitTagMap = HashBiMap.create(20);
     public static short reverseIDs = Short.MAX_VALUE-1;
-    public static HashBiMap<Short, ItemList> circuitIIconRefs = HashBiMap.create(20);
 
-//    /**
-//     * stack is assumed valid
-//     **/
-//    private static NBTTagCompound getUniqueIdentifierFromStack(ItemStack stack){
-//        NBTTagCompound tagCompound = new NBTTagCompound();
-//        tagCompound.setString("Name", stack.getUnlocalizedName());
-//        tagCompound.setString("ODName", OreDictionary.getOreName(OreDictionary.getOreID(stack)));
-//        tagCompound.setShort("Damage", (short)stack.getItemDamage());
-//
-//        return tagCompound;
-//    }
-//
-//    private static ItemStack getStackFromUniqueIdentifier(NBTTagCompound tagCompound){
-//        return OreDictionary.getOres(tagCompound.getString("ODName")).stream().filter(
-//                e ->
-//                        e.getItemDamage() == tagCompound.getShort("Damage")
-//                     && e.getUnlocalizedName().equals(tagCompound.getString("Name"))
-//
-//        ).findFirst().orElse(null);
-//    }
-
-    public static NBTTagCompound getTagFromStack(ItemStack stack){
-        if (GT_Utility.isStackValid(stack))
-            return stack.copy().splitStack(1).writeToNBT(new NBTTagCompound());
-        return new NBTTagCompound();
-    }
-
-    public static ItemStack getStackFromTag(NBTTagCompound tagCompound){
-        return ItemStack.loadItemStackFromNBT(tagCompound);
-    }
+    public static final ArrayListMultimap<NBTTagCompound,GT_Recipe> recipeTagMap = ArrayListMultimap.create();
+    public static final HashBiMap<Short, ItemList> circuitIIconRefs = HashBiMap.create(20);
+    public static final HashSet<ItemStack> blacklistSet = new HashSet<>();
+    static final HashBiMap<CircuitData,ItemStack> bwCircuitTagMap = HashBiMap.create(20);
+    private static final HashSet<IRecipe> recipeWorldCache = new HashSet<>();
+    private static final HashSet<GT_Recipe> gtrecipeWorldCache = new HashSet<>();
 
     public static void run() {
-        boolean newServer = false;
-        if (BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).mRecipeList.size() > 0){
-            BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).mRecipeList.clear();
-            recipeTagMap.clear();
-            newServer = true;
-        }
-
-        Iterator<GT_Recipe> it = GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList.iterator();
-        GT_Recipe circuitRecipe;
-
         HashSet<GT_Recipe> toRem = new HashSet<>();
         HashSet<GT_Recipe> toAdd = new HashSet<>();
 
-        while (it.hasNext()) {
-            circuitRecipe = it.next();
+        boolean newServer = checkAndDeleteCALRecipes();
+        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList.forEach(e -> CircuitImprintLoader.handleCircuitRecipeRebuilding(e, toRem, toAdd));
+        exchangeRecipesInList(toRem,toAdd,newServer);
+        makeCircuitImprintRecipes(newServer);
+    }
 
-            ItemStack[] outputs = circuitRecipe.mOutputs;
+    private static void handleCircuitRecipeRebuilding(GT_Recipe circuitRecipe, HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd) {
+        ItemStack[] outputs = circuitRecipe.mOutputs;
+        String name = getTypeFromOreDict(outputs);
 
-            if (outputs.length < 1)
-                continue;
+        if (name.contains("Circuit") || name.contains("circuit")) {
 
-            int[] oreIDS = OreDictionary.getOreIDs(outputs[0]);
+            CircuitImprintLoader.recipeTagMap.put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
 
-            if (oreIDS.length < 1)
-                continue;
-
-            String name = OreDictionary.getOreName(oreIDS[0]);
-
-            if (name.contains("Circuit") || name.contains("circuit")) {
-
-                CircuitImprintLoader.recipeTagMap.put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
-
-                if (circuitRecipe.mFluidInputs[0].isFluidEqual(Materials.SolderingAlloy.getMolten(0))) {
-
-                    GT_Recipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
-
-                    if (newRecipe != null)
-                        BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).addRecipe(newRecipe);
-
-                    if (circuitRecipe.mEUt > BW_Util.getTierVoltage(ConfigHandler.cutoffTier)) {
-                        toRem.add(circuitRecipe);
-                        toAdd.add(CircuitImprintLoader.makeMoreExpensive(circuitRecipe));
-                    }
-
-                } else {
-
-                    if (circuitRecipe.mEUt > BW_Util.getTierVoltage(ConfigHandler.cutoffTier))
-                        toRem.add(circuitRecipe);
-
-                }
+            if (circuitRecipe.mFluidInputs[0].isFluidEqual(Materials.SolderingAlloy.getMolten(0))) {
+                GT_Recipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
+                if (newRecipe != null)
+                    BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).addRecipe(newRecipe);
+                addCutoffRecipeToSets(toRem,toAdd,circuitRecipe);
+            } else {
+                if (circuitRecipe.mEUt > BW_Util.getTierVoltage(ConfigHandler.cutoffTier))
+                    toRem.add(circuitRecipe);
             }
         }
+    }
 
+    private static String getTypeFromOreDict(ItemStack[] outputs) {
+        int[] oreIDS = OreDictionary.getOreIDs(outputs[0]);
+
+        if (oreIDS.length < 1)
+            return "";
+
+        return OreDictionary.getOreName(oreIDS[0]);
+    }
+
+    private static void exchangeRecipesInList(HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd, boolean newServer) {
         if (!newServer) {
             GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList.addAll(toAdd);
             GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList.removeAll(toRem);
         }
+    }
 
-        makeCircuitImprintRecipes();
+    private static void addCutoffRecipeToSets(HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd, GT_Recipe circuitRecipe) {
+        if (circuitRecipe.mEUt > BW_Util.getTierVoltage(ConfigHandler.cutoffTier)) {
+            toRem.add(circuitRecipe);
+            toAdd.add(CircuitImprintLoader.makeMoreExpensive(circuitRecipe));
+        }
     }
 
     @SuppressWarnings("deprecation")
-    public static GT_Recipe makeMoreExpensive(GT_Recipe original){
+    public static GT_Recipe makeMoreExpensive(GT_Recipe original) {
         GT_Recipe newRecipe = original.copy();
         for (ItemStack is : newRecipe.mInputs){
             int[] oreIDs = OreDictionary.getOreIDs(is);
@@ -165,51 +127,71 @@ public class CircuitImprintLoader {
         return newRecipe;
     }
 
-    @SuppressWarnings("deprecation")
-    public static GT_Recipe reBuildRecipe(GT_Recipe original){
-       ItemStack out = original.copy().getOutput(0);
-       out.stackSize *= 16;
-       ItemStack[] in = new  ItemStack[6];
-       BiMap<ItemList, Short> inversed = CircuitImprintLoader.circuitIIconRefs.inverse();
-       for (int i = 0; i < 6; i++) {
-           try {
-                for (ItemList il : inversed.keySet()){
-                   if (GT_Utility.areStacksEqual(il.get(1), original.mInputs[i])) {
-                       in[i] = BW_Meta_Items.getNEWCIRCUITS().getStack(inversed.get(il), original.mInputs[i].stackSize);
-                   }
+    public static GT_Recipe reBuildRecipe(GT_Recipe original) {
+        ItemStack[] in = new ItemStack[6];
+        BiMap<ItemList, Short> inversed = CircuitImprintLoader.circuitIIconRefs.inverse();
 
-                }
-                if (original.mInputs[i] != null && in[i] == null){
-                    if (BW_Util.checkStackAndPrefix(original.mInputs[i]) && GT_OreDictUnificator.getAssociation(original.mInputs[i]).mPrefix == OrePrefixes.wireGt01){
-                        in[i] = GT_OreDictUnificator.get(OrePrefixes.wireGt16,GT_OreDictUnificator.getAssociation(original.mInputs[i]).mMaterial.mMaterial,original.mInputs[i].stackSize);
-                    }
-                    else if (BW_Util.checkStackAndPrefix(original.mInputs[i]) && GT_OreDictUnificator.getAssociation(original.mInputs[i]).mPrefix == OrePrefixes.wireFine){
-                        in[i] = GT_OreDictUnificator.get(OrePrefixes.wireGt04,GT_OreDictUnificator.getAssociation(original.mInputs[i]).mMaterial.mMaterial,original.mInputs[i].stackSize);
-                    }
-                    else {
-                        in[i] = original.mInputs[i].copy();
-                        in[i].stackSize *= 16;
-                        if (in[i].stackSize > in[i].getItem().getItemStackLimit() || in[i].stackSize > in[i].getMaxStackSize())
-                            in[i].stackSize = in[i].getMaxStackSize();
-                    }
-//                  if (in[i].stackSize > 64)
-//                      return null;
-                    }
-                } catch (ArrayIndexOutOfBoundsException e){
-                    break;
-                } catch (NullPointerException e){
-                    e.printStackTrace();
-                }
+        for (int i = 0; i < 6; i++) {
+            try {
+                replaceCircuits(inversed,original,in,i);
+                replaceComponents(in,original,i);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                break;
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
         }
-        if (CircuitImprintLoader.checkForBlacklistedComponents(in)){
-           return null;
+
+        if (CircuitImprintLoader.checkForBlacklistedComponents(in)) {
+            return null;
         }
-        return new BWRecipes.DynamicGTRecipe(false,in,new ItemStack[]{out},BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(CircuitImprintLoader.getTagFromStack(original.mOutputs[0]),0,0),null, original.mFluidInputs,null,original.mDuration * 16,original.mEUt,0);
+
+        return new BWRecipes.DynamicGTRecipe(false, in, new ItemStack[]{getOutputMultiplied(original)}, BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(CircuitImprintLoader.getTagFromStack(original.mOutputs[0]), 0, 0), null, original.mFluidInputs, null, original.mDuration * 16, original.mEUt, 0);
     }
 
-    public static final HashSet<ItemStack> blacklistSet = new HashSet<>();
+    private static ItemStack getOutputMultiplied(GT_Recipe original){
+        ItemStack out = original.copy().getOutput(0);
+        out.stackSize *= 16;
+        return out;
+    }
 
-    private static boolean checkForBlacklistedComponents(ItemStack[] itemStacks){
+    private static void replaceCircuits(BiMap<ItemList, Short> inversed, GT_Recipe original, ItemStack[] in, int index){
+        for (ItemList il : inversed.keySet()) {
+            if (GT_Utility.areStacksEqual(il.get(1), original.mInputs[index])) {
+                in[index] = BW_Meta_Items.getNEWCIRCUITS().getStack(inversed.get(il), original.mInputs[index].stackSize);
+            }
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private static void replaceComponents(ItemStack[] in, GT_Recipe original, int index) throws ArrayIndexOutOfBoundsException {
+        if (original.mInputs[index] != null && in[index] == null) {
+            //big wires
+            if (BW_Util.checkStackAndPrefix(original.mInputs[index]) && GT_OreDictUnificator.getAssociation(original.mInputs[index]).mPrefix == OrePrefixes.wireGt01) {
+                in[index] = GT_OreDictUnificator.get(OrePrefixes.wireGt16, GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial, original.mInputs[index].stackSize);
+            //fine wires
+            } else if (BW_Util.checkStackAndPrefix(original.mInputs[index]) && GT_OreDictUnificator.getAssociation(original.mInputs[index]).mPrefix == OrePrefixes.wireFine) {
+                in[index] = GT_OreDictUnificator.get(OrePrefixes.wireGt04, GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial, original.mInputs[index].stackSize);
+            //other components
+            } else {
+                in[index] = original.mInputs[index].copy();
+                in[index].stackSize *= 16;
+                if (in[index].stackSize > in[index].getItem().getItemStackLimit() || in[index].stackSize > in[index].getMaxStackSize())
+                    in[index].stackSize = in[index].getMaxStackSize();
+            }
+        }
+    }
+
+    private static void makeCircuitImprintRecipes(boolean newServer) {
+        if (newServer)
+            removeOldRecipesFromRegistries();
+        CircuitImprintLoader.recipeTagMap.keySet().forEach(e -> {
+            makeAndAddSlicingRecipe(e);
+            makeAndAddCraftingRecipes(e);
+        });
+    }
+
+    private static boolean checkForBlacklistedComponents(ItemStack[] itemStacks) {
         for (ItemStack is: itemStacks){
             for (ItemStack is2 : CircuitImprintLoader.blacklistSet){
                 if (GT_Utility.areStacksEqual(is,is2))
@@ -219,10 +201,7 @@ public class CircuitImprintLoader {
         return false;
     }
 
-    private static HashSet<IRecipe> recipeWorldCache = new HashSet<>();
-    private static HashSet<GT_Recipe> gtrecipeWorldCache = new HashSet<>();
-
-    private static void removeOldRecipesFromRegistries(){
+    private static void removeOldRecipesFromRegistries() {
         recipeWorldCache.forEach(CraftingManager.getInstance().getRecipeList()::remove);
         BWCoreStaticReplacementMethodes.RECENTLYUSEDRECIPES.clear();
         gtrecipeWorldCache.forEach(GT_Recipe.GT_Recipe_Map.sSlicerRecipes.mRecipeList::remove);
@@ -239,34 +218,59 @@ public class CircuitImprintLoader {
         gtrecipeWorldCache.clear();
     }
 
-    private static void makeCircuitImprintRecipes() {
+    private static void makeAndAddSlicingRecipe(NBTTagCompound tag) {
+        ItemStack stack = CircuitImprintLoader.getStackFromTag(tag);
+        int eut = Integer.MAX_VALUE;
 
-        removeOldRecipesFromRegistries();
-
-        for (NBTTagCompound tag : CircuitImprintLoader.recipeTagMap.keySet()){
-            ItemStack stack = CircuitImprintLoader.getStackFromTag(tag);
-            int eut = Integer.MAX_VALUE;
-
-            for (GT_Recipe recipe : CircuitImprintLoader.recipeTagMap.get(tag)) {
-                eut = Math.min(eut, recipe.mEUt);
-            }
-
-            eut = Math.min(eut, BW_Util.getMachineVoltageFromTier(BW_Util.getCircuitTierFromOreDictName(OreDictionary.getOreName(OreDictionary.getOreIDs(stack)[0]))));
-            GT_Recipe slicingRecipe = new BWRecipes.DynamicGTRecipe(true,new ItemStack[]{stack,ItemList.Shape_Slicer_Flat.get(0)},new ItemStack[]{BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1)},null,null,null,null,300,eut, BW_Util.CLEANROOM);
-            gtrecipeWorldCache.add(slicingRecipe);
-            GT_Recipe.GT_Recipe_Map.sSlicerRecipes.add(slicingRecipe);
-
-            ShapedOreRecipe gtrecipe = BW_Util.createGTCraftingRecipe(BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,0,1), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{
-                    " X ",
-                    "GPG",
-                    " X ",
-                    'P', BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1),
-                    'G', WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite,1),
-                    'X', BW_Meta_Items.getNEWCIRCUITS().getStack(3)});
-            recipeWorldCache.add(gtrecipe);
-            GameRegistry.addRecipe(gtrecipe);
-
+        for (GT_Recipe recipe : CircuitImprintLoader.recipeTagMap.get(tag)) {
+            eut = Math.min(eut, recipe.mEUt);
         }
-
+        eut = Math.min(eut, BW_Util.getMachineVoltageFromTier(BW_Util.getCircuitTierFromOreDictName(OreDictionary.getOreName(OreDictionary.getOreIDs(stack)[0]))));
+        GT_Recipe slicingRecipe = new BWRecipes.DynamicGTRecipe(true,new ItemStack[]{stack,ItemList.Shape_Slicer_Flat.get(0)},new ItemStack[]{BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1)},null,null,null,null,300,eut, BW_Util.CLEANROOM);
+        gtrecipeWorldCache.add(slicingRecipe);
+        GT_Recipe.GT_Recipe_Map.sSlicerRecipes.add(slicingRecipe);
     }
+
+    private static void makeAndAddCraftingRecipes(NBTTagCompound tag) {
+        ItemStack circuit = BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,0,1);
+        Object[] imprintRecipe = {
+                " X ",
+                "GPG",
+                " X ",
+                'P', BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1),
+                'G', WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite,1),
+                'X', BW_Meta_Items.getNEWCIRCUITS().getStack(3)
+        };
+
+        IRecipe bwrecipe = new BWRecipes.BWNBTDependantCraftingRecipe(circuit,imprintRecipe);
+        ShapedOreRecipe gtrecipe = BW_Util.createGTCraftingRecipe(circuit, GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.BUFFERED, imprintRecipe);
+
+        //Adds the actual recipe
+        recipeWorldCache.add(bwrecipe);
+        GameRegistry.addRecipe(bwrecipe);
+        //Adds the NEI visual recipe
+        recipeWorldCache.add(gtrecipe);
+        GameRegistry.addRecipe(gtrecipe);
+    }
+
+    public static NBTTagCompound getTagFromStack(ItemStack stack) {
+        if (GT_Utility.isStackValid(stack))
+            return stack.copy().splitStack(1).writeToNBT(new NBTTagCompound());
+        return new NBTTagCompound();
+    }
+
+    public static ItemStack getStackFromTag(NBTTagCompound tagCompound) {
+        return ItemStack.loadItemStackFromNBT(tagCompound);
+    }
+
+    private static boolean checkAndDeleteCALRecipes() {
+        boolean newServer = false;
+        if (BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).mRecipeList.size() > 0){
+            BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).mRecipeList.clear();
+            recipeTagMap.clear();
+            newServer = true;
+        }
+        return newServer;
+    }
+
 }

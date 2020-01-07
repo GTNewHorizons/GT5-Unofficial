@@ -45,12 +45,13 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
         super(p_i45386_1_, tileEntity, blockName);
     }
 
-    protected void doRegistrationStuff(Werkstoff w){
+    protected void doRegistrationStuff(Werkstoff w) {
         if (w != null) {
             if ((w.getGenerationFeatures().toGenerate & 0b1000) == 0 || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
                 return;
             GT_ModHandler.addValuableOre(this, w.getmID(), 1);
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + "." + w.getmID() + ".name", w.getDefaultName() + OrePrefixes.ore.mLocalizedMaterialPost);
+
         }
     }
 
@@ -113,7 +114,7 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
     }
 
     @SuppressWarnings("unused")
-    private boolean checkForAir(IBlockAccess aWorld, int aX, int aY, int aZ){
+    private boolean checkForAir(IBlockAccess aWorld, int aX, int aY, int aZ) {
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
                 for (int z = -1; z <= 1; z++) {

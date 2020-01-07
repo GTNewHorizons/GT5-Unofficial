@@ -72,9 +72,8 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
             }
             BW_MetaGenerated_Block_TE tTileEntity = (BW_MetaGenerated_Block_TE) aWorld.getTileEntity(aX, aY, aZ);
             tTileEntity.mMetaData = tDamage;
-        } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3)) {
+        } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3))
             return false;
-        }
         if (aWorld.getBlock(aX, aY, aZ) == this.field_150939_a) {
             this.field_150939_a.onBlockPlacedBy(aWorld, aX, aY, aZ, aPlayer, aStack);
             this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, tDamage);

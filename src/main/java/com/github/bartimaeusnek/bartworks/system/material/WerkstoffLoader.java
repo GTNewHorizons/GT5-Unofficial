@@ -1356,7 +1356,7 @@ public class WerkstoffLoader implements Runnable {
         return WerkstoffLoader.getCorrespondingItemStack(orePrefixes, werkstoff, 1);
     }
 
-    public static ItemStack getCorrespondingItemStack(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
+    private static ItemStack getCorrespondingItemStackUnsafe(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount){
         if (!werkstoff.getGenerationFeatures().enforceUnification) {
             ItemStack ret = OreDictHandler.getItemStack(werkstoff.getVarName(), orePrefixes, amount);
             if (ret != null)
@@ -1369,6 +1369,15 @@ public class WerkstoffLoader implements Runnable {
         else if (orePrefixes == block)
             return new ItemStack(WerkstoffLoader.BWBlocks,amount,werkstoff.getmID());
         else if (WerkstoffLoader.items.get(orePrefixes) == null)
+            return null;
+        return new ItemStack(WerkstoffLoader.items.get(orePrefixes), amount, werkstoff.getmID()).copy();
+    }
+
+    public static ItemStack getCorrespondingItemStack(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
+        ItemStack stack = getCorrespondingItemStackUnsafe(orePrefixes, werkstoff, amount);
+        if (stack != null)
+            return stack;
+        else
             MainMod.LOGGER.catching(Level.ERROR,new Exception("NO SUCH ITEM! "+orePrefixes+werkstoff.getVarName() +" If you encounter this as a user, make sure to contact the authors of the pack/the mods you're playing! " +
                     "If you are a Developer, you forgot to enable "+orePrefixes+" OrePrefix for Werkstoff "+werkstoff.getDefaultName()));
         return new ItemStack(WerkstoffLoader.items.get(orePrefixes), amount, werkstoff.getmID()).copy();
@@ -1640,11 +1649,10 @@ public class WerkstoffLoader implements Runnable {
     }
 
     private static void runGTItemDataRegistrator() {
-       // HashSet<Materials> toRem = new HashSet<>();
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             //int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, String aConfigSection, boolean aCustomOre, String aCustomID
             Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial() : Materials.get(werkstoff.getVarName()) != Materials._NULL ? Materials.get(werkstoff.getVarName()) :
-                    new Materials(-1, werkstoff.getTexSet(), werkstoff.getToolSpeed(), werkstoff.getDurability(), werkstoff.getToolQuality(),0, werkstoff.getRGBA()[0],werkstoff.getRGBA()[1], werkstoff.getRGBA()[2], werkstoff.getRGBA()[3], werkstoff.getVarName(), werkstoff.getDefaultName(),0,0,werkstoff.getStats().meltingPoint,werkstoff.getStats().meltingPoint,werkstoff.getStats().isBlastFurnace(),false,0,1,1,null);
+                    new Materials(-1, werkstoff.getTexSet(), werkstoff.getToolSpeed(), werkstoff.getDurability(), werkstoff.getToolQuality(), 0, werkstoff.getRGBA()[0], werkstoff.getRGBA()[1], werkstoff.getRGBA()[2], werkstoff.getRGBA()[3], werkstoff.getVarName(), werkstoff.getDefaultName(), 0, 0, werkstoff.getStats().meltingPoint, werkstoff.getStats().meltingPoint, werkstoff.getStats().isBlastFurnace(), false, 0, 1, 1, null);
             for (OrePrefixes prefixes : values()) {
                 if (!(prefixes == cell && werkstoff.getType().equals(Werkstoff.Types.ELEMENT))) {
                     if (prefixes == dust && werkstoff.getType().equals(Werkstoff.Types.ELEMENT)) {
@@ -1655,7 +1663,7 @@ public class WerkstoffLoader implements Runnable {
                                     if (e.mLinkedMaterials.size() > 0)
                                         break;
                                     werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial() : Materials.get(werkstoff.getVarName()) != Materials._NULL ? Materials.get(werkstoff.getVarName()) :
-                                            new Materials(-1, werkstoff.getTexSet(), werkstoff.getToolSpeed(), werkstoff.getDurability(), werkstoff.getToolQuality(),0, werkstoff.getRGBA()[0],werkstoff.getRGBA()[1], werkstoff.getRGBA()[2], werkstoff.getRGBA()[3], werkstoff.getVarName(), werkstoff.getDefaultName(),0,0,werkstoff.getStats().meltingPoint,werkstoff.getStats().meltingPoint,werkstoff.getStats().isBlastFurnace(),false,0,1,1,null);
+                                            new Materials(-1, werkstoff.getTexSet(), werkstoff.getToolSpeed(), werkstoff.getDurability(), werkstoff.getToolQuality(), 0, werkstoff.getRGBA()[0], werkstoff.getRGBA()[1], werkstoff.getRGBA()[2], werkstoff.getRGBA()[3], werkstoff.getVarName(), werkstoff.getDefaultName(), 0, 0, werkstoff.getStats().meltingPoint, werkstoff.getStats().meltingPoint, werkstoff.getStats().isBlastFurnace(), false, 0, 1, 1, null);
                                     werkstoffBridgeMaterial.mElement = e;
                                     e.mLinkedMaterials = new ArrayList<>();
                                     e.mLinkedMaterials.add(werkstoffBridgeMaterial);
@@ -1693,6 +1701,7 @@ public class WerkstoffLoader implements Runnable {
                         werkstoffBridgeMaterial.mFluid = werkstoff.getFluidOrGas(1).getFluid();
                         werkstoffBridgeMaterial.mGas = werkstoff.getFluidOrGas(1).getFluid();
                     }
+
                     if (werkstoff.getGenerationFeatures().hasMolten()) {
                         werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1).getFluid();
                     }
@@ -1701,33 +1710,74 @@ public class WerkstoffLoader implements Runnable {
                     try {
                         Field f = Materials.class.getField("mLocalizedName");
                         f.set(werkstoffBridgeMaterial, werkstoff.getDefaultName());
-                    } catch (NoSuchFieldException | IllegalAccessException ignored){}
+                    } catch (NoSuchFieldException | IllegalAccessException ignored) {
+                    }
                     werkstoffBridgeMaterial.mChemicalFormula = werkstoff.getToolTip();
                     if (Loader.isModLoaded("Thaumcraft"))
                         werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
                     werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
                     werkstoffBridgeMaterial.mHandleMaterial = werkstoff.contains(SubTag.BURNING) ? Materials.Blaze : werkstoff.contains(SubTag.MAGICAL) ? Materials.Thaumium : werkstoffBridgeMaterial.mDurability > 5120 ? Materials.TungstenSteel : werkstoffBridgeMaterial.mDurability > 1280 ? Materials.Steel : Materials.Wood;
-                    //toRem.add(werkstoffBridgeMaterial);
-                    if (werkstoff.getStats().isRadioactive()){
-                        werkstoffBridgeMaterial.setEnchantmentForArmors(Enchantment_Radioactivity.INSTANCE,werkstoff.getStats().getEnchantmentlvl());
-                        werkstoffBridgeMaterial.setEnchantmentForTools(Enchantment_Radioactivity.INSTANCE,werkstoff.getStats().getEnchantmentlvl());
+                    if (werkstoff.getStats().isRadioactive()) {
+                        werkstoffBridgeMaterial.setEnchantmentForArmors(Enchantment_Radioactivity.INSTANCE, werkstoff.getStats().getEnchantmentlvl());
+                        werkstoffBridgeMaterial.setEnchantmentForTools(Enchantment_Radioactivity.INSTANCE, werkstoff.getStats().getEnchantmentlvl());
                     }
                     werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
-                    if (WerkstoffLoader.items.get(prefixes) != null)
-                        if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) != 0 && (werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) == 0 && werkstoff.get(prefixes) != null && werkstoff.get(prefixes).getItem() != null)
-                            GT_OreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, werkstoff.get(prefixes), false);
+                    //if (WerkstoffLoader.items.get(prefixes) != null)
                 }
             }
         }
-//        try {
-//            Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
-//            f.setAccessible(true);
-//            Map<String, Materials> MATERIALS_MAP = (Map<String, Materials>) f.get(null);
-//            for (Materials o : toRem)
-//                MATERIALS_MAP.remove(o.mName);
-//        } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
-//            e.printStackTrace();
-//        }
+        addAssociationToItems();
+        addFakeItemDataToInWorldBlocksAndCleanUpFakeData();
+    }
+
+    public static void addAssociationToItems() {
+        Arrays.stream(values()).forEach( prefixes -> {
+        Werkstoff.werkstoffHashSet.stream()
+                .filter(werkstoff -> werkstoff.hasItemType(prefixes) && (werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) == 0)
+                .forEach(werkstoff -> {
+                    Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial();
+                    ItemStack stack = WerkstoffLoader.getCorrespondingItemStackUnsafe(prefixes, werkstoff, 1);
+                    if (stack != null && stack.getItem() != null) {
+                        GT_OreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, stack, false);
+                        GT_OreDictUnificator.set(prefixes, werkstoffBridgeMaterial, stack,  true, true);
+                    }
+                });
+        });
+    }
+
+    /**
+     *  very hacky way to make my ores/blocks/smallores detectable by gt assosication in world, well at least the prefix.
+     *  used for the miners mostly
+     *  removing this hacky material from the materials map instantly. we only need the item data.
+     */
+    private static void addFakeItemDataToInWorldBlocksAndCleanUpFakeData() {
+
+        Map<String, Materials> MATERIALS_MAP = null;
+
+        try {
+            Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
+            f.setAccessible(true);
+            MATERIALS_MAP = (Map<String, Materials>) f.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
+            e.printStackTrace();
+        }
+
+        if (MATERIALS_MAP == null)
+            throw new NullPointerException("MATERIALS_MAP null!");
+
+        Materials oreMat = new Materials(-1,null,0,0,0,false,"bwores","bwores",null,true,null);
+        Materials smallOreMat = new Materials(-1,null,0,0,0,false,"bwsmallores","bwsmallores",null,true,null);
+        Materials blockMat = new Materials(-1,null,0,0,0,false,"bwblocks","bwblocks",null,true,null);
+
+        for (int i = 0; i < 16; i++) {
+            GT_OreDictUnificator.addAssociation(ore, oreMat, new ItemStack(BWOres,1,i), true);
+            GT_OreDictUnificator.addAssociation(oreSmall, smallOreMat, new ItemStack(BWSmallOres,1,i), true);
+            GT_OreDictUnificator.addAssociation(block, blockMat, new ItemStack(BWBlocks,1,i), true);
+        }
+
+        MATERIALS_MAP.remove("bwores");
+        MATERIALS_MAP.remove("bwsmallores");
+        MATERIALS_MAP.remove("bwblocks");
     }
 
     private void addTools(Werkstoff werkstoff){
@@ -1834,8 +1884,8 @@ public class WerkstoffLoader implements Runnable {
                 if (werkstoff.getGenerationFeatures().hasOres()) {
                     GT_OreDictUnificator.registerOre(ore + werkstoff.getVarName(), werkstoff.get(ore));
                     GT_OreDictUnificator.registerOre(oreSmall + werkstoff.getVarName(), werkstoff.get(oreSmall));
-                    werkstoff.getADDITIONAL_OREDICT().forEach( e ->  OreDictionary.registerOre(ore+e, werkstoff.get(ore)));
-                    werkstoff.getADDITIONAL_OREDICT().forEach( e ->  OreDictionary.registerOre(oreSmall+e, werkstoff.get(oreSmall)));
+                    werkstoff.getADDITIONAL_OREDICT().forEach( e -> OreDictionary.registerOre(ore+e, werkstoff.get(ore)));
+                    werkstoff.getADDITIONAL_OREDICT().forEach( e -> OreDictionary.registerOre(oreSmall+e, werkstoff.get(oreSmall)));
                 }
 
                 if (werkstoff.getGenerationFeatures().hasGems())
@@ -1850,7 +1900,7 @@ public class WerkstoffLoader implements Runnable {
                         .forEach(s -> ENABLED_ORE_PREFIXES
                                  .stream()
                                  .filter(o -> Objects.nonNull(werkstoff.get(o)))
-                                 .forEach( od -> OreDictionary.registerOre(od+s, werkstoff.get(od))));
+                                 .forEach(od -> OreDictionary.registerOre(od+s, werkstoff.get(od))));
             }
 
             GT_OreDictUnificator.registerOre("craftingIndustrialDiamond", WerkstoffLoader.CubicZirconia.get(gemExquisite));
