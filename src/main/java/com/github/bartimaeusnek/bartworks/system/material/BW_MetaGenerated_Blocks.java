@@ -48,12 +48,11 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
         this.setResistance(5.0F);
         this.setBlockTextureName("stone");
         this.setCreativeTab(metaTab);
-        for (Werkstoff w : Werkstoff.werkstoffHashSet)
-            doRegistrationStuff(w);
+        Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }
 
     @SideOnly(Side.CLIENT)
-    public final BW_MetaGenerated_Block_TE getProperTileEntityForRendering(){
+    public final BW_MetaGenerated_Block_TE getProperTileEntityForRendering() {
         return (BW_MetaGenerated_Block_TE) createNewTileEntity(null,0);
     }
 
@@ -69,9 +68,8 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
     }
 
     public int getRenderType() {
-        if (BW_Renderer_Block_Ores.INSTANCE == null) {
+        if (BW_Renderer_Block_Ores.INSTANCE == null)
             return super.getRenderType();
-        }
         return BW_Renderer_Block_Ores.INSTANCE.mRenderID;
     }
 

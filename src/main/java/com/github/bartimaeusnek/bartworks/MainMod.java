@@ -120,9 +120,9 @@ public final class MainMod {
 
         if (Loader.isModLoaded("miscutils") && ConfigHandler.GTppLogDisabler) {
             try {
-                Field loggerField = FieldUtils.getField(Class.forName("gtPlusPlus.api.objects.Logger"),"modLogger",true);
-                FieldUtils.removeFinalModifier(loggerField,true);
-                loggerField.set(null,(Logger)new STFUGTPPLOG());
+                Field loggerField = FieldUtils.getField(Class.forName("gtPlusPlus.api.objects.Logger"), "modLogger", true);
+                FieldUtils.removeFinalModifier(loggerField, true);
+                loggerField.set(null, (Logger) new STFUGTPPLOG());
             } catch (IllegalAccessException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -180,8 +180,8 @@ public final class MainMod {
         NetworkRegistry.INSTANCE.registerGuiHandler(MainMod.instance, MainMod.GH);
         if (ConfigHandler.BioLab) {
             new GTNHBlocks().run();
-            for (Map.Entry<BioVatLogicAdder.BlockMetaPair, Byte>pair : BioVatLogicAdder.BioVatGlass.getGlassMap().entrySet()){
-                GT_OreDictUnificator.registerOre("blockGlass"+VN[pair.getValue()],new ItemStack(pair.getKey().getBlock(),1,pair.getKey().getaByte()));
+            for (Map.Entry<BioVatLogicAdder.BlockMetaPair, Byte> pair : BioVatLogicAdder.BioVatGlass.getGlassMap().entrySet()) {
+                GT_OreDictUnificator.registerOre("blockGlass" + VN[pair.getValue()], new ItemStack(pair.getKey().getBlock(), 1, pair.getKey().getaByte()));
             }
         }
 
@@ -191,18 +191,18 @@ public final class MainMod {
                 new ThreadedLoader().run();
             else
                 INSTANCE.run();
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor","Electric Implosions?");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor.desc","Basically a giant Hammer that presses Stuff - No more TNT!");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.dehp","Heat from below!");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.dehp.desc","Get ALL the thermal energy!");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.circuitassemblyline","Cheaper Circuits?");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.circuitassemblyline.desc","Well, yes, but actually no...");
-            GT_LanguageManager.addStringLocalization("metaitem.01.tooltip.nqgen","Can be used as Enriched Naquadah Fuel Substitute");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor", "Electric Implosions?");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor.desc", "Basically a giant Hammer that presses Stuff - No more TNT!");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.dehp", "Heat from below!");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.dehp.desc", "Get ALL the thermal energy!");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.circuitassemblyline", "Cheaper Circuits?");
+            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.circuitassemblyline.desc", "Well, yes, but actually no...");
+            GT_LanguageManager.addStringLocalization("metaitem.01.tooltip.nqgen", "Can be used as Enriched Naquadah Fuel Substitute");
         }
     }
 
     @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent event){
+    public void onServerStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new SummonRuin());
         event.registerServerCommand(new ChangeConfig());
         event.registerServerCommand(new PrintRecipeListToFile());
@@ -212,6 +212,7 @@ public final class MainMod {
     public void onServerStarted(FMLServerStartedEvent event) {
         MainMod.runOnPlayerJoined(ConfigHandler.classicMode, ConfigHandler.disableExtraGassesForEBF);
     }
+
     @Mod.EventHandler
     public void onModLoadingComplete(FMLLoadCompleteEvent event) {
         removeIC2Recipes();
@@ -227,7 +228,6 @@ public final class MainMod {
 
     public static void runOnPlayerJoined(boolean classicMode, boolean extraGasRecipes) {
         OreDictHandler.adaptCacheForWorld();
-
         CircuitImprintLoader.run();
 
         if (!recipesAdded) {
@@ -246,12 +246,12 @@ public final class MainMod {
 
     private static void fixEnergyRequirements() {
         maploop:
-        for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings){
-            for (GT_Recipe recipe : map.mRecipeList){
+        for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings) {
+            for (GT_Recipe recipe : map.mRecipeList) {
                 if (recipe.mFakeRecipe)
                     continue maploop;
-                for (int i = 0; i < (VN.length-1); i++) {
-                    if (recipe.mEUt == BW_Util.getTierVoltage(i)){
+                for (int i = 0; i < (VN.length - 1); i++) {
+                    if (recipe.mEUt == BW_Util.getTierVoltage(i)) {
                         recipe.mEUt = BW_Util.getMachineVoltageFromTier(i);
                     }
                 }
@@ -293,61 +293,61 @@ public final class MainMod {
                 MainMod.runMoltenUnificationEnfocement(werkstoff);
                 MainMod.runUnficationDeleter(werkstoff);
                 for (String s : oreDictNames)
-                for (OrePrefixes prefixes : OrePrefixes.values()) {
-                    if (OreDictionary.getOres(prefixes + s).size() > 1) {
-                        for (int j = 0; j < OreDictionary.getOres(prefixes + s).size(); j++) {
-                            ItemStack toReplace = OreDictionary.getOres(prefixes + s).get(j);
-                            ItemStack replacement = werkstoff.get(prefixes);
-                            if (GT_Utility.areStacksEqual(toReplace,replacement) || replacement == null || replacement.getItem() == null)
-                                continue;
-                            if (toReplace != null) {
-                                for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings) {
-                                    HashSet<GT_Recipe> toRem = new HashSet<>();
-                                    for (GT_Recipe recipe : map.mRecipeList) {
-                                        boolean removal = map.equals(GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes) || map.equals(GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes);
-                                        for (int i = 0; i < recipe.mInputs.length; i++) {
-                                            if (GT_Utility.areStacksEqual(recipe.mInputs[i], toReplace)) {
-                                                if (removal)
-                                                    toRem.add(recipe);
-                                                else {
-                                                    int amount = recipe.mInputs[i].stackSize;
-                                                    recipe.mInputs[i] = replacement.splitStack(amount);
+                    for (OrePrefixes prefixes : OrePrefixes.values()) {
+                        if (OreDictionary.getOres(prefixes + s).size() > 1) {
+                            for (int j = 0; j < OreDictionary.getOres(prefixes + s).size(); j++) {
+                                ItemStack toReplace = OreDictionary.getOres(prefixes + s).get(j);
+                                ItemStack replacement = werkstoff.get(prefixes);
+                                if (GT_Utility.areStacksEqual(toReplace, replacement) || replacement == null || replacement.getItem() == null)
+                                    continue;
+                                if (toReplace != null) {
+                                    for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings) {
+                                        HashSet<GT_Recipe> toRem = new HashSet<>();
+                                        for (GT_Recipe recipe : map.mRecipeList) {
+                                            boolean removal = map.equals(GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes) || map.equals(GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes);
+                                            for (int i = 0; i < recipe.mInputs.length; i++) {
+                                                if (GT_Utility.areStacksEqual(recipe.mInputs[i], toReplace)) {
+                                                    if (removal)
+                                                        toRem.add(recipe);
+                                                    else {
+                                                        int amount = recipe.mInputs[i].stackSize;
+                                                        recipe.mInputs[i] = replacement.splitStack(amount);
+                                                    }
+                                                }
+                                            }
+                                            for (int i = 0; i < recipe.mOutputs.length; i++) {
+                                                if (GT_Utility.areStacksEqual(recipe.mOutputs[i], toReplace)) {
+                                                    if (removal)
+                                                        toRem.add(recipe);
+                                                    else {
+                                                        int amount = recipe.mOutputs[i].stackSize;
+                                                        recipe.mOutputs[i] = replacement.splitStack(amount);
+                                                    }
+                                                }
+                                            }
+                                            if (recipe.mSpecialItems instanceof ItemStack) {
+                                                if (GT_Utility.areStacksEqual((ItemStack) recipe.mSpecialItems, toReplace)) {
+                                                    if (removal)
+                                                        toRem.add(recipe);
+                                                    else {
+                                                        int amount = ((ItemStack) recipe.mSpecialItems).stackSize;
+                                                        recipe.mSpecialItems = replacement.splitStack(amount);
+                                                    }
                                                 }
                                             }
                                         }
-                                        for (int i = 0; i < recipe.mOutputs.length; i++) {
-                                            if (GT_Utility.areStacksEqual(recipe.mOutputs[i], toReplace)) {
-                                                if (removal)
-                                                    toRem.add(recipe);
-                                                else {
-                                                    int amount = recipe.mOutputs[i].stackSize;
-                                                    recipe.mOutputs[i] = replacement.splitStack(amount);
-                                                }
-                                            }
-                                        }
-                                        if (recipe.mSpecialItems instanceof ItemStack) {
-                                            if (GT_Utility.areStacksEqual((ItemStack) recipe.mSpecialItems, toReplace)) {
-                                                if (removal)
-                                                    toRem.add(recipe);
-                                                else {
-                                                    int amount = ((ItemStack) recipe.mSpecialItems).stackSize;
-                                                    recipe.mSpecialItems = replacement.splitStack(amount);
-                                                }
-                                            }
-                                        }
+                                        map.mRecipeList.removeAll(toRem);
                                     }
-                                    map.mRecipeList.removeAll(toRem);
                                 }
                             }
                         }
                     }
-                }
             }
         }
     }
 
     @SuppressWarnings("ALL")
-    private static void runMoltenUnificationEnfocement(Werkstoff werkstoff){
+    private static void runMoltenUnificationEnfocement(Werkstoff werkstoff) {
         if (werkstoff.getGenerationFeatures().enforceUnification && werkstoff.getGenerationFeatures().hasMolten()) {
             try {
                 FluidContainerRegistry.FluidContainerData data = new FluidContainerRegistry.FluidContainerData(new FluidStack(Objects.requireNonNull(molten.get(werkstoff)), 144), werkstoff.get(cellMolten), Materials.Empty.getCells(1));
@@ -415,26 +415,26 @@ public final class MainMod {
 
         for (OrePrefixes prefixes : OrePrefixes.values())
             if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) != 0 && ((werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) == 0)) {
-                GT_OreDictUnificator.set(prefixes,werkstoff.getBridgeMaterial(),werkstoff.get(prefixes),true,true);
+                GT_OreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
                 for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                    GT_OreDictUnificator.addAssociation(prefixes,werkstoff.getBridgeMaterial(),stack,false);
+                    GT_OreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
                     GT_OreDictUnificator.getAssociation(stack).mUnificationTarget = werkstoff.get(prefixes);
                 }
             }
     }
 
-    private static ArrayListMultimap<SubTag,GT_Recipe> getRecipesToChange(SubTag... GasTags){
+    private static ArrayListMultimap<SubTag, GT_Recipe> getRecipesToChange(SubTag... GasTags) {
         Iterator<GT_Recipe> it = GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeList.iterator();
-        ArrayListMultimap<SubTag,GT_Recipe> toAdd = ArrayListMultimap.create();
+        ArrayListMultimap<SubTag, GT_Recipe> toAdd = ArrayListMultimap.create();
         while (it.hasNext()) {
             GT_Recipe recipe = it.next();
             if (recipe.mFluidInputs != null && recipe.mFluidInputs.length > 0) {
                 String FluidString = recipe.mFluidInputs[0].getFluid().getName().replaceAll("molten", "").replaceAll("fluid", "");
                 Materials mat = Materials.get(FluidString.substring(0, 1).toUpperCase() + FluidString.substring(1));
                 if (mat != Materials._NULL) {
-                    for (SubTag tag : GasTags){
+                    for (SubTag tag : GasTags) {
                         if (mat.contains(tag)) {
-                            DebugLog.log("Found EBF Recipe to change, Output:"+ BW_Util.translateGTItemStack(recipe.mOutputs[0]));
+                            DebugLog.log("Found EBF Recipe to change, Output:" + BW_Util.translateGTItemStack(recipe.mOutputs[0]));
                             toAdd.put(tag, recipe);
                         }
                     }
@@ -444,10 +444,10 @@ public final class MainMod {
         return toAdd;
     }
 
-    private static HashSet<ItemStack> getNoGasItems(ArrayListMultimap<SubTag,GT_Recipe> base){
+    private static HashSet<ItemStack> getNoGasItems(ArrayListMultimap<SubTag, GT_Recipe> base) {
         Iterator<GT_Recipe> it = GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeList.iterator();
         HashSet<ItemStack> toAdd = new HashSet<>();
-        ArrayListMultimap<SubTag,GT_Recipe> repToAdd = ArrayListMultimap.create();
+        ArrayListMultimap<SubTag, GT_Recipe> repToAdd = ArrayListMultimap.create();
         while (it.hasNext()) {
             GT_Recipe recipe = it.next();
             for (SubTag tag : base.keySet())
@@ -457,7 +457,7 @@ public final class MainMod {
                                 for (int i = 0; i < recipe.mInputs.length; i++) {
                                     if ((recipe.mFluidInputs == null || recipe.mFluidInputs.length == 0) && BW_Util.checkStackAndPrefix(recipe.mInputs[i]) && BW_Util.checkStackAndPrefix(baseRe.mInputs[i]) && GT_OreDictUnificator.getAssociation(recipe.mInputs[i]).mMaterial.mMaterial.equals(GT_OreDictUnificator.getAssociation(baseRe.mInputs[i]).mMaterial.mMaterial) && GT_Utility.areStacksEqual(recipe.mOutputs[0], baseRe.mOutputs[0])) {
                                         toAdd.add(recipe.mOutputs[0]);
-                                        repToAdd.put(tag,recipe);
+                                        repToAdd.put(tag, recipe);
                                         continue recipeLoop;
                                     }
                                 }
@@ -467,7 +467,7 @@ public final class MainMod {
         return toAdd;
     }
 
-    private static void editRecipes(ArrayListMultimap<SubTag,GT_Recipe> base, HashSet<ItemStack> noGas) {
+    private static void editRecipes(ArrayListMultimap<SubTag, GT_Recipe> base, HashSet<ItemStack> noGas) {
         if (GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeFluidNameMap.contains(Objects.requireNonNull(fluids.get(Oganesson)).getName()))
             return;
         HashSet<GT_Recipe> toAdd = new HashSet<>();
@@ -480,13 +480,13 @@ public final class MainMod {
                         for (Werkstoff werkstoff : Werkstoff.werkstoffHashMap.values()) {
                             if (!werkstoff.contains(GasTag))
                                 continue;
-                            int time = (int) ((double) recipe.mDuration / 200D * (200D + (werkstoff.getStats().getProtons() >= mat.getProtons() ? (double) mat.getProtons() - (double) werkstoff.getStats().getProtons() : (double) mat.getProtons()*2.75D - (double) werkstoff.getStats().getProtons())));
+                            int time = (int) ((double) recipe.mDuration / 200D * (200D + (werkstoff.getStats().getProtons() >= mat.getProtons() ? (double) mat.getProtons() - (double) werkstoff.getStats().getProtons() : (double) mat.getProtons() * 2.75D - (double) werkstoff.getStats().getProtons())));
                             toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{new FluidStack(Objects.requireNonNull(fluids.get(werkstoff)), recipe.mFluidInputs[0].amount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
                         }
                         for (Materials materials : Materials.values()) {
                             if (!materials.contains(GasTag))
                                 continue;
-                            int time = (int) ((double) recipe.mDuration / 200D * (200D + (materials.getProtons() >= mat.getProtons() ? (double) mat.getProtons() - (double) materials.getProtons() : (double) mat.getProtons()*2.75D - (double) materials.getProtons())));
+                            int time = (int) ((double) recipe.mDuration / 200D * (200D + (materials.getProtons() >= mat.getProtons() ? (double) mat.getProtons() - (double) materials.getProtons() : (double) mat.getProtons() * 2.75D - (double) materials.getProtons())));
                             toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{materials.getGas(recipe.mFluidInputs[0].amount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
                         }
                         for (ItemStack is : noGas) {
@@ -510,17 +510,17 @@ public final class MainMod {
             GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeList.removeAll(base.get(GasTag));
         }
         HashSet<GT_Recipe> duplicates = new HashSet<>();
-        for (GT_Recipe recipe : toAdd){
-            for (GT_Recipe recipe2 : toAdd){
+        for (GT_Recipe recipe : toAdd) {
+            for (GT_Recipe recipe2 : toAdd) {
                 if (recipe.mEUt != recipe2.mEUt || recipe.mDuration != recipe2.mDuration || recipe.mSpecialValue != recipe2.mSpecialValue || recipe == recipe2 || recipe.mInputs.length != recipe2.mInputs.length || recipe.mFluidInputs.length != recipe2.mFluidInputs.length)
                     continue;
                 boolean isSame = true;
                 for (int i = 0; i < recipe.mInputs.length; i++) {
-                    if (!GT_Utility.areStacksEqual(recipe.mInputs[i],recipe2.mInputs[i]))
+                    if (!GT_Utility.areStacksEqual(recipe.mInputs[i], recipe2.mInputs[i]))
                         isSame = false;
                 }
                 for (int i = 0; i < recipe.mFluidInputs.length; i++) {
-                    if (!GT_Utility.areFluidsEqual(recipe.mFluidInputs[i],recipe2.mFluidInputs[i]))
+                    if (!GT_Utility.areFluidsEqual(recipe.mFluidInputs[i], recipe2.mFluidInputs[i]))
                         isSame = false;
                 }
                 if (isSame)
