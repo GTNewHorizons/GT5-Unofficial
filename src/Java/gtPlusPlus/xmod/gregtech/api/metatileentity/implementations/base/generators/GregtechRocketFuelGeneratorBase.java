@@ -267,12 +267,10 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 				final int tFuelValue = this.getFuelValue(this.mFluid), tConsumed = this.consumedFluidPerOperation(this.mFluid);
 				if ((tFuelValue > 0) && (tConsumed > 0) && (this.mFluid.amount >= tConsumed)) {
 					final long tFluidAmountToUse = Math.min(this.mFluid.amount / tConsumed, (((this.maxEUOutput() * 20) + this.getMinimumStoredEU()) - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
-					if ((tFluidAmountToUse > 0) && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)){					
-						useFuel = Utils.invertBoolean(useFuel);			
-						int aSafeFloor= (int) Math.max(((tFluidAmountToUse * tConsumed)/3), 1);
-						int toConsumeTrue = (int) (useFuel ? aSafeFloor : 0);
+					if ((tFluidAmountToUse > 0) && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)){							
+						int aSafeFloor = (int) Math.max(((tFluidAmountToUse * tConsumed)/3), 1); 
 						//Logger.INFO("True consumption: "+toConsumeTrue+" | Consuming this tick? "+useFuel);
-						this.mFluid.amount -= toConsumeTrue;
+						this.mFluid.amount -= (int) aSafeFloor;
 						PollutionUtils.addPollution(getBaseMetaTileEntity(), 10 * getPollution());
 					}
 				}

@@ -645,7 +645,7 @@ public class RECIPES_GREGTECH {
 				},
 				new int[] {10000}, //Output Chance 
 				20 * 120,
-				122880);
+				30720);
 
 
 
