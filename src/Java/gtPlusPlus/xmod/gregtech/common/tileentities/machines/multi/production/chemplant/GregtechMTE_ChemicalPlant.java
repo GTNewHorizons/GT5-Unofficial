@@ -999,9 +999,9 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			if (aRecipeCatalyst.isItemEqual(aInput)) {
 					if (aInput.stackSize == 1) {
 						int damage = getDamage(aInput) + aMaxParrallel;
-						if (damage >getMaxCatalystDuarbilerty() ) {
+						if (damage > getMaxCatalystDurability() ) {
 							aOutPut.add(aInput);
-							allowedParrallel += aMaxParrallel + (getMaxCatalystDuarbilerty() - damage);
+							allowedParrallel += aMaxParrallel + (getMaxCatalystDurability() - damage);
 							if (allowedParrallel >aMaxParrallel ) {
 								return aMaxParrallel;
 							}	
@@ -1055,7 +1055,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				setDamage(aStack,damage);
 			}
 		} 
-		else 
+		else {
 			log("not consuming catalyst");
 		}
 	}

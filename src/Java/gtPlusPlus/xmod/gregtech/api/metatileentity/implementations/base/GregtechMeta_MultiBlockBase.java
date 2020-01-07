@@ -790,7 +790,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	public static Method aLogger = null;
 
 	public void log(String s) {
-		boolean reset = true;
+		boolean reset = false;
 		if (reset || aLogger == null) {
 			if (!AsmConfig.disableAllLogging) {
 				aLogger = ReflectionUtils.getMethod(
