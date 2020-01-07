@@ -322,7 +322,8 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		if (this.mMode == MODE_SCRAP) {
 
 			long tVoltage = getMaxInputVoltage();
-			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));			
+			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));	
+			long tEnergy = getMaxInputEnergy();		
 			GT_Recipe c = new Recipe_GT(false, new ItemStack[] { GT_Utility.copyAmount(1, aItemInputs[0]) },
 					GT_ModHandler.getRecyclerOutput(GT_Utility.copyAmount(64, aItemInputs[0]), 0) == null ? null
 							: new ItemStack[] { ItemList.IC2_Scrap.get(1) },
@@ -335,7 +336,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 			int parallelRecipes = 0;
 			// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-			for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
+			for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
 				if (!c.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
 					log("Broke at "+parallelRecipes+".");
 					break;
