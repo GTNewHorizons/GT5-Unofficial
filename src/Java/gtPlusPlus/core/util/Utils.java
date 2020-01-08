@@ -497,14 +497,13 @@ public class Utils {
 		return true;
 	}
 
-	public static File getMcDir() {		
-		if (Minecraft.getMinecraft() == null) {
-			return new File("testdir");
-		}		
-		if ((MinecraftServer.getServer() != null) && MinecraftServer.getServer().isDedicatedServer()) {
-			return new File(".");
+	public static File getMcDir() {	
+		if (Utils.isClient()) {
+			if (Minecraft.getMinecraft() != null) {
+				return Minecraft.getMinecraft().mcDataDir;
+			}
 		}
-		return Minecraft.getMinecraft().mcDataDir;
+		return new File(".");
 	}
 
 	private static short cellID = 15;

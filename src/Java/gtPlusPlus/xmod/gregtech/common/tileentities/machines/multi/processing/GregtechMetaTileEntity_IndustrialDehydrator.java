@@ -212,6 +212,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		long tEnergy = getMaxInputEnergy();
 		Logger.WARNING("Running checkRecipeGeneric(0)");
 
 		GT_Recipe tRecipe = this.getRecipeMap().findRecipe(getBaseMetaTileEntity(), mLastRecipe, false,
@@ -239,7 +240,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 		int parallelRecipes = 0;
 		// Count recipes to do in parallel, consuming input items and fluids and
 		// considering input voltage limits
-		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
+		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
 			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
 				Logger.WARNING("Broke at " + parallelRecipes + ".");
 				break;

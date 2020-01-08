@@ -50,7 +50,7 @@ public class LangUtils {
 	}
 
 	public static String trans(String aNr, String aEnglish) {
-		return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aNr, aEnglish, false);
+		return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_GTPP_" + aNr, aEnglish, false);
 	}
 	
 }

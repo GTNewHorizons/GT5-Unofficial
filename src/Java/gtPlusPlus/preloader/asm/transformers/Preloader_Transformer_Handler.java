@@ -15,7 +15,6 @@ import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDicti
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
 
-@SuppressWarnings("static-access")
 public class Preloader_Transformer_Handler implements IClassTransformer {
 
 	private final boolean mEnabled = false;

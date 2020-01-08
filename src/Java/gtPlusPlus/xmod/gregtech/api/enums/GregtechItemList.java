@@ -132,6 +132,14 @@ public enum GregtechItemList implements GregtechItemContainer {
 	 * MultiBlocks
 	 */
 
+	
+	// Tier GT++ Casings
+	GTPP_Casing_ULV, GTPP_Casing_LV, 
+	GTPP_Casing_MV, GTPP_Casing_HV, 
+	GTPP_Casing_EV, GTPP_Casing_IV, 
+	GTPP_Casing_LuV, GTPP_Casing_ZPM, 
+	GTPP_Casing_UV, GTPP_Casing_MAX,
+	
 	//IronBlastFurnace Machine_Bronze_BlastFurnace
 	Machine_Iron_BlastFurnace, 
 	Casing_IronPlatedBricks,
@@ -288,6 +296,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_Adv_BlastFurnace, 
 	Casing_Adv_BlastFurnace,
 	Machine_Adv_ImplosionCompressor, 
+	Machine_Adv_DistillationTower,
 
 
 	//Advanced Vacuum Freezer
@@ -466,7 +475,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Super_Chest_LV, Super_Chest_MV, Super_Chest_HV, Super_Chest_EV, Super_Chest_IV, 
 
 	//Chunkloader
-	GT_Chunkloader_HV, GT_Chunkloader_EV, GT_Chunkloader_IV, 
+	GT_Chunkloader_HV, GT_Chunkloader_ZPM, GT_Chunkloader_IV, 
 
 
 	//Wireless Chargers

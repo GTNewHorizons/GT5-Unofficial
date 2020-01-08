@@ -147,7 +147,7 @@ extends TemplateRecipeHandler {
 	@Override
 	public String getOverlayIdentifier() {
 		//return this.mRecipeMap.mNEIName;
-		return "Penis";
+		return "";
 	}
 
 	@Override

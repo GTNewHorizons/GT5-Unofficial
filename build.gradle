@@ -131,6 +131,9 @@ dependencies {
 	compileOnly "net.sengir.forestry:forestry_1.7.10:4.2.16.64:dev"		
 	compileOnly "mods.railcraft:Railcraft_1.7.10:9.12.3.0:dev"
     compileOnly files('libs/StevesCarts2.0.0.b18-deobf.jar')
+    
+    compileOnly "openmods:OpenModsLib:1.7.10-0.10:deobf"
+    compileOnly "openblocks:OpenBlocks:1.7.10-1.6-1.7.10:deobf"
 	
 	//compileOnly "micdoodle8.mods:GalacticraftCore:1.7-3.0.12.504:Dev"
 	//compileOnly "micdoodle8.mods:MicdoodleCore:1.7-3.0.12.504:Dev"

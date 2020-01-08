@@ -111,7 +111,7 @@ public class RecipeLoader_AlgaeFarm {
 				new int[] {}, 
 				new FluidStack[] {GT_Values.NF},
 				new FluidStack[] {GT_Values.NF},
-				(int) (aDurations[aTier] * aOutputTimeMulti.get()), // Time
+				(int) (aDurations[aTier] * aOutputTimeMulti.get() / 2), // Time
 				0,
 				0);
 		

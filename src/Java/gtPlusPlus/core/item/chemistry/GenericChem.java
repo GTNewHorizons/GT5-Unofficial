@@ -106,12 +106,12 @@ public class GenericChem extends ItemPackage {
 
 	private ItemStack mCatalystCarrier;
 	
-	public ItemStack mRedCatalyst;
-	public ItemStack mYellowCatalyst;
-	public ItemStack mBlueCatalyst;
-	public ItemStack mOrangeCatalyst;
-	public ItemStack mPurpleCatalyst;
-	public ItemStack mBrownCatalyst;
+	public static ItemStack mRedCatalyst;
+	public static ItemStack mYellowCatalyst;
+	public static ItemStack mBlueCatalyst;
+	public static ItemStack mOrangeCatalyst;
+	public static ItemStack mPurpleCatalyst;
+	public static ItemStack mBrownCatalyst;
 	
 	
 	public void registerItemStacks() {
@@ -227,14 +227,13 @@ public class GenericChem extends ItemPackage {
 		CORE.RA.addFluidReactorRecipe(
 				new ItemStack[] {
 						getTierTwoChip(),		
-						ItemUtils.getSimpleStack(mBrownCatalyst, 1)
+						ItemUtils.getSimpleStack(mBrownCatalyst, 0)
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(Benzene, 2000),
 						FluidUtils.getFluidStack("hydrogen", 10000)
 				}, 
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(mCatalystCarrier, 1)
 						
 				}, 
 				new FluidStack[] {
@@ -251,14 +250,13 @@ public class GenericChem extends ItemPackage {
 		CORE.RA.addFluidReactorRecipe(
 				new ItemStack[] {
 						getTierTwoChip(),		
-						ItemUtils.getSimpleStack(mBlueCatalyst, 1)
+						ItemUtils.getSimpleStack(mBlueCatalyst, 0)
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(Cyclohexane, 2000),
 						FluidUtils.getFluidStack("air", 10000)
 				}, 
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(mCatalystCarrier, 1)
 						
 				}, 
 				new FluidStack[] {
@@ -431,14 +429,13 @@ public class GenericChem extends ItemPackage {
 		CORE.RA.addFluidReactorRecipe(
 				new ItemStack[] {
 						getTierThreeChip(),		
-						ItemUtils.getSimpleStack(mBlueCatalyst, 1)
+						ItemUtils.getSimpleStack(mBlueCatalyst, 0)
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(NitroBenzene, 2000),
 						FluidUtils.getFluidStack("hydrogen", 10000)
 				}, 
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(mCatalystCarrier, 1)
 						
 				}, 
 				new FluidStack[] {
@@ -510,7 +507,7 @@ public class GenericChem extends ItemPackage {
 		CORE.RA.addFluidReactorRecipe(
 				new ItemStack[] {
 						CI.getNumberedCircuit(4),		
-						ItemUtils.getSimpleStack(mOrangeCatalyst, 1),			
+						ItemUtils.getSimpleStack(mOrangeCatalyst, 0),			
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(Ethylanthraquinone2, 4000),

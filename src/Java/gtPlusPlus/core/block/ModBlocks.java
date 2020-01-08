@@ -29,6 +29,7 @@ import gtPlusPlus.core.block.machine.Machine_WorkbenchAdvanced;
 import gtPlusPlus.core.block.machine.bedrock.Mining_Head_Fake;
 import gtPlusPlus.core.block.machine.bedrock.Mining_Pipe_Fake;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaTieredCasingBlocks1;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
@@ -96,6 +97,7 @@ public final class ModBlocks {
 	public static Block blockPooCollector;
 	
 	public static Block blockPestKiller;
+	public static GregtechMetaTieredCasingBlocks1 BlockTieredCasings1;
 
 	public static void init() {
 		Logger.INFO("Initializing Blocks.");

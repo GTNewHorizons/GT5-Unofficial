@@ -491,7 +491,7 @@ public class BioRecipes {
 
 		CORE.RA.addFluidReactorRecipe(
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 1)
+						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 0)
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mMethanol, 700),
@@ -499,7 +499,6 @@ public class BioRecipes {
 						FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 2000),
 				},
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(AgriculturalChem.mCatalystCarrier, 1)
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mAceticAcid, 250),						
@@ -735,7 +734,7 @@ public class BioRecipes {
 	private static void recipePropionicAcid() {
 		CORE.RA.addFluidReactorRecipe(
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 1)
+						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 0)
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mEthylene, 500),
@@ -743,7 +742,6 @@ public class BioRecipes {
 						FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 2000),
 				},
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(AgriculturalChem.mCatalystCarrier, 1)
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mPropionicAcid, 250),						
@@ -1289,13 +1287,12 @@ public class BioRecipes {
 		CORE.RA.addFluidReactorRecipe(
 				new ItemStack[] {
 						getBioChip(19),
-						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 1),
+						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 0),
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mMethane, 1000),
 				},
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(AgriculturalChem.mCatalystCarrier, 1),						
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mBenzene, 500),					
@@ -1310,13 +1307,12 @@ public class BioRecipes {
 		CORE.RA.addFluidReactorRecipe(
 				new ItemStack[] {
 						getBioChip(20),
-						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 1),
+						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 0),
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mEthylbenzene, 100),
 				},
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(AgriculturalChem.mCatalystCarrier, 1),						
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mStyrene, 25),					

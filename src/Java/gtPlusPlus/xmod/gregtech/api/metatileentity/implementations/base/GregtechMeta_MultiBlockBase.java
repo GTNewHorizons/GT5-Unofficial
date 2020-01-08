@@ -770,7 +770,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 			// We have Fluid Stacks we did not merge. Do we have space?
 			if (aOutputFluids.size() > 0) {
 				// Not enough space to add fluids.
-				if (aOutputFluids.size() < aEmptyFluidHatches) {
+				if (aOutputFluids.size() > aEmptyFluidHatches) {
 					Logger.INFO("Failed to find enough space for all fluid outputs.");
 					return false;
 				}
@@ -790,7 +790,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	public static Method aLogger = null;
 
 	public void log(String s) {
-		boolean reset = true;
+		boolean reset = false;
 		if (reset || aLogger == null) {
 			if (!AsmConfig.disableAllLogging) {
 				aLogger = ReflectionUtils.getMethod(

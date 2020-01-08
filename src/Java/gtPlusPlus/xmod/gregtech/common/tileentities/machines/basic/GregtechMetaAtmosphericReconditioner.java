@@ -71,13 +71,11 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 		super(aName, aTier, 2, aDescription, aTextures, 2, 0, aGUIName, aNEIName);
 	}*/
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaAtmosphericReconditioner(this.mName, this.mTier, this.mDescription, this.mTextures, this.mGUIName, this.mNEIName);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public String[] getDescription() {
 		
