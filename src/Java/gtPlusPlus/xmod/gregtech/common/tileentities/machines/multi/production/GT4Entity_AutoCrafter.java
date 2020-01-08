@@ -223,7 +223,10 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 				}
 			} catch (IllegalArgumentException | IllegalAccessException e) {			
 			}			
-		}		
+		}
+		else if (this.mMachineMode == MODE.DISASSEMBLY) {
+			return null;
+		}
 		return GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 	}
 
