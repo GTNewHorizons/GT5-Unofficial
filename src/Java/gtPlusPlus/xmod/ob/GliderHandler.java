@@ -17,32 +17,60 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class GliderHandler {
-	
+
 	private static final AutoMap<Integer> mDimensionalBlacklist = new AutoMap<Integer>();
-	
+
 	@SubscribeEvent
-	public void onItemUsage(final PlayerUseItemEvent event) {		
-		if (event != null && event.entityPlayer != null) {			
-			ItemStack aItem = event.item;			
+	public void onItemUsageEx(final PlayerInteractEvent event) {		
+		if (event != null && event.entityPlayer != null) {
+
+			if (event.action != Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR) {
+				Logger.WARNING("[OpenBlocks] Wrong type of PlayerInteractEvent, skipping.");
+			}
+			if (event.entityPlayer.worldObj.isRemote) {
+				return;
+			}
+
+			ItemStack aItem = event.entityPlayer.getItemInUse();
+			if (!ItemUtils.checkForInvalidItems(aItem)) {
+				Logger.WARNING("[OpenBlocks] Item in use was invalid, trying currentlyEquipped.");
+				aItem = event.entityPlayer.getCurrentEquippedItem();
+			}
+			if (!ItemUtils.checkForInvalidItems(aItem)) {
+				Logger.WARNING("[OpenBlocks] Item in use was invalid, trying heldItem.");
+				aItem = event.entityPlayer.getHeldItem();
+			}			
 			if (ItemUtils.checkForInvalidItems(aItem)) {
 				Class aItemGliderClass = ReflectionUtils.getClass("openblocks.common.item.ItemHangGlider");
 				if (aItemGliderClass.isInstance(aItem.getItem())) {
 					if (!canPlayerGlideInThisDimension(event.entityPlayer)){
 						event.setCanceled(true);	
 						PlayerUtils.messagePlayer(event.entityPlayer, "Glider is blacklisted in this dimension.");
-						Logger.INFO(""+event.entityPlayer.getCommandSenderName()+" tried to use glider in dimension "+event.entityPlayer.getEntityWorld().provider.dimensionId+".");
+						Logger.WARNING("[OpenBlocks] "+event.entityPlayer.getCommandSenderName()+" tried to use glider in dimension "+event.entityPlayer.getEntityWorld().provider.dimensionId+".");
 					}
 					else {
-						Logger.INFO(""+event.entityPlayer.getCommandSenderName()+" used glider in dimension "+event.entityPlayer.getEntityWorld().provider.dimensionId+".");						
+						Logger.WARNING("[OpenBlocks] "+event.entityPlayer.getCommandSenderName()+" used glider in dimension "+event.entityPlayer.getEntityWorld().provider.dimensionId+".");						
 					}
 				}
+				else {
+					Logger.WARNING("[OpenBlocks] Item was not a glider.");						
+				}
+			}
+			else {
+				Logger.WARNING("[OpenBlocks] Bad Item in player hand.");						
 			}			
+		}
+		else {
+			Logger.WARNING("[OpenBlocks] Bad event or player.");						
 		}		
+
+
 	}
-	
+
 	private static final boolean canPlayerGlideInThisDimension(EntityPlayer aPlayer) {
 		World aWorld = aPlayer.worldObj;
 		if (aWorld == null) {
@@ -63,7 +91,7 @@ public class GliderHandler {
 		}		
 		return true;		
 	}
-	
+
 	static final void populateBlacklist() {		
 		if (!mDimensionalBlacklist.isEmpty()) {
 			return;
@@ -102,6 +130,6 @@ public class GliderHandler {
 			}			
 		}		
 	}
-	
-	
+
+
 }
