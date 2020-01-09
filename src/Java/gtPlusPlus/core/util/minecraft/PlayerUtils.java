@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 
 public class PlayerUtils {
@@ -103,15 +103,25 @@ public class PlayerUtils {
 	@SideOnly(Side.SERVER)
 	public static ItemStack getItemStackInPlayersHand(final EntityPlayer player){
 		ItemStack heldItem = null;
-		try{heldItem = player.getHeldItem();
-		}catch(final NullPointerException e){
+		try{
+			heldItem = player.getHeldItem();
+		}
+		catch(final NullPointerException e){
 			e.printStackTrace();
 			return null;
 		}
 		if (heldItem != null){
 			return heldItem;
 		}
-		return null;
+		else {
+			if (Utils.isClient()) {
+				heldItem = player.getItemInUse();
+			}
+			else {
+				heldItem = player.getCurrentEquippedItem();
+			}
+		}		
+		return heldItem;
 	}
 
 	@SideOnly(Side.CLIENT)

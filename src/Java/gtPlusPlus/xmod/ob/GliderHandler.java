@@ -35,15 +35,7 @@ public class GliderHandler {
 				return;
 			}
 
-			ItemStack aItem = event.entityPlayer.getItemInUse();
-			if (!ItemUtils.checkForInvalidItems(aItem)) {
-				Logger.WARNING("[OpenBlocks] Item in use was invalid, trying currentlyEquipped.");
-				aItem = event.entityPlayer.getCurrentEquippedItem();
-			}
-			if (!ItemUtils.checkForInvalidItems(aItem)) {
-				Logger.WARNING("[OpenBlocks] Item in use was invalid, trying heldItem.");
-				aItem = event.entityPlayer.getHeldItem();
-			}			
+			ItemStack aItem = PlayerUtils.getItemStackInPlayersHand(event.entityPlayer);		
 			if (ItemUtils.checkForInvalidItems(aItem)) {
 				Class aItemGliderClass = ReflectionUtils.getClass("openblocks.common.item.ItemHangGlider");
 				if (aItemGliderClass.isInstance(aItem.getItem())) {
