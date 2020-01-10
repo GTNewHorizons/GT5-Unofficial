@@ -65,7 +65,13 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		 * Only EntityLivingBase is left untouched, as nothing else truly needs to be calling this method and avoiding forge hooks.
 		 * May exclude all vanilla/forge class if this causes issues though.
 		 */
-		if (mConfig.enabledFixEntitySetHealth) {
+		PatchForge : if (mConfig.enabledFixEntitySetHealth && !transformedName.contains("gtPlusPlus.preloader")) {
+			
+			//Skip Vanilla/Forge Classes
+			if (transformedName.contains("net.minecraft.") || transformedName.contains("cpw.")) {
+				//break PatchForge;
+			}
+			
 			ClassTransformer_Forge_EntityLivingBase_SetHealth aForgeHealthFix = new ClassTransformer_Forge_EntityLivingBase_SetHealth(transformedName, basicClass);		
 			if (aForgeHealthFix.isValidTransformer() && aForgeHealthFix.didPatchClass()) {
 				FMLRelaunchLog.log("[GT++ ASM] Fix EntityLivingBase.setHealth misuse", Level.INFO, "Transforming %s", transformedName);				

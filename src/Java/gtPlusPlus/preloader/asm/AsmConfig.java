@@ -52,10 +52,10 @@ public class AsmConfig {
 			disableAllLogging = prop.getBoolean(false);
 			propOrderDebug.add(prop.getName());
 			
-			prop = config.get("debug", "enabledFixEntitySetHealth", true);
+			prop = config.get("debug", "enabledFixEntitySetHealth", false);
 			prop.comment = "Enable/Disable entity setHealth() fix.";
 			prop.setLanguageKey("gtpp.enabledFixEntitySetHealth").setRequiresMcRestart(true);
-			enabledFixEntitySetHealth = prop.getBoolean(true);
+			enabledFixEntitySetHealth = prop.getBoolean(false);
 			propOrderDebug.add(prop.getName());
 			
 			prop = config.get("debug", "enableChunkDebugging", false);
