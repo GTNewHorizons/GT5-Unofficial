@@ -30,9 +30,9 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		System.out.println("[GT++ ASM] Asm Config Location: "+mConfig.config.getConfigFile().getAbsolutePath());
 		System.out.println("[GT++ ASM] Is DevHelper Valid? "+gtPlusPlus.preloader.DevHelper.mIsValidHelper);
 	}
-	
+
 	private static Boolean mObf = null;
-	
+
 	public boolean checkObfuscated() {
 		if (mObf != null) {
 			return mObf;
@@ -60,6 +60,19 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 	}
 
 	public byte[] transform(String name, String transformedName, byte[] basicClass) {
+		/*
+		 * Here we patch all instances of entity.setHealth and replace them with a static function.
+		 * Only EntityLivingBase is left untouched, as nothing else truly needs to be calling this method and avoiding forge hooks.
+		 * May exclude all vanilla/forge class if this causes issues though.
+		 */
+		if (mConfig.enabledFixEntitySetHealth) {
+			ClassTransformer_Forge_EntityLivingBase_SetHealth aForgeHealthFix = new ClassTransformer_Forge_EntityLivingBase_SetHealth(transformedName, basicClass);		
+			if (aForgeHealthFix.isValidTransformer() && aForgeHealthFix.didPatchClass()) {
+				FMLRelaunchLog.log("[GT++ ASM] Fix EntityLivingBase.setHealth misuse", Level.INFO, "Transforming %s", transformedName);				
+				basicClass = aForgeHealthFix.getWriter().toByteArray();
+			}
+		}
+
 		// Is this environment obfuscated? (Extra checks just in case some weird shit happens during the check)
 		boolean obfuscated = checkObfuscated();
 		boolean probablyShouldBeFalse = false;
@@ -69,7 +82,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_LWJGL_Keyboard(basicClass).getWriter().toByteArray();
 		}		
-		
+
 		//Enable mapping of Tickets and loaded chunks. - Forge
 		if (transformedName.equals("net.minecraftforge.common.ForgeChunkManager") && mConfig.enableChunkDebugging) {	
 			FMLRelaunchLog.log("[GT++ ASM] Chunkloading Patch", Level.INFO, "Transforming %s", transformedName);
@@ -94,7 +107,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			FMLRelaunchLog.log("[GT++ ASM] Bright Fluids", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_TiConFluids("getLightValue", obfuscated, basicClass).getWriter().toByteArray();
 		}
-		
+
 		//Fix RC stuff
 		//Patching PROCESS_VOLUME to allow 4x more transfer limits
 		if (transformedName.equals("mods.railcraft.common.fluids.FluidHelper") && mConfig.enableRcFlowFix) {	
@@ -123,15 +136,15 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			}
 		}
 
-		
-		
-		
-		
-		
+
+
+
+
+
 		/**
 		 * Gregtech ASM Patches
 		 */
-		
+
 		//Make GT_Utilities safer		
 		if (transformedName.equals("gtPlusPlus.preloader.asm.transformers.ClassTransformer_GT_Utility")) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Utilities Patch", Level.INFO, "Transforming %s", transformedName);
@@ -147,7 +160,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Achievements Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_GT_Achievements_CrashFix(basicClass, obfuscated).getWriter().toByteArray();
 		}
-		
+
 		//Fix bad handling of a loop left from original decompilation
 		//Also Fix Achievements, although currently disabled.
 		if (transformedName.equals("gregtech.common.GT_Client")) {	
@@ -165,16 +178,16 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech setMetaTileEntity Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_GT_BaseMetaTileEntity(basicClass).getWriter().toByteArray();
 		}
-		
+
 		//Fix log handling on the charcoal pit
 		if (transformedName.equals("gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Charcoal_Pit")) {	
 			FMLRelaunchLog.log("[GT++ ASM] GT Charcoal Pit Fix", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_GT_CharcoalPit(basicClass, obfuscated).getWriter().toByteArray();
 		}
-		
-		
-		
-		
+
+
+
+
 		//Patching Meta Tile Tooltips
 		if (transformedName.equals("gregtech.common.blocks.GT_Item_Machines") && mConfig.enableGtTooltipFix) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Tooltip Patch", Level.INFO, "Transforming %s", transformedName);
@@ -203,7 +216,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			}			
 			return new ClassTransformer_GT_BlockMachines_MetaPipeEntity(basicClass, probablyShouldBeFalse, mode).getWriter().toByteArray();
 		}
-			
+
 		String[] aIC2ClassNames = new String[] {
 				"ic2.core.block.BlockTileEntity",
 				"ic2.core.block.machine.BlockMachine",
@@ -230,24 +243,24 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 				return new ClassTransformer_IC2_GetHarvestTool(basicClass, obfuscated, transformedName).getWriter().toByteArray();			
 			}
 		}
-		
+
 		//Fix IC2 Hazmat		
 		if (transformedName.equals("ic2.core.item.armor.ItemArmorHazmat")) {
 			FMLRelaunchLog.log("[GT++ ASM] IC2 Hazmat Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_IC2_Hazmat(basicClass, transformedName).getWriter().toByteArray();			
 		}
-		
+
 		//Fix Thaumcraft Shit
 		//Patching ItemWispEssence to allow invalid item handling
 		if (transformedName.equals("thaumcraft.common.items.ItemWispEssence") && mConfig.enableTcAspectSafety) {	
 			FMLRelaunchLog.log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_TC_ItemWispEssence(basicClass, obfuscated).getWriter().toByteArray();
 		}
-		
-		
+
+
 		return basicClass;
 	}
 
-	
-	
+
+
 }

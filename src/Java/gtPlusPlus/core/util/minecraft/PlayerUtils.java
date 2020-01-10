@@ -1,10 +1,13 @@
 package gtPlusPlus.core.util.minecraft;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -12,8 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.Utils;
 
 public class PlayerUtils {
 
@@ -100,7 +101,6 @@ public class PlayerUtils {
 		return null;
 	}
 
-	@SideOnly(Side.SERVER)
 	public static ItemStack getItemStackInPlayersHand(final EntityPlayer player){
 		ItemStack heldItem = null;
 		try{
