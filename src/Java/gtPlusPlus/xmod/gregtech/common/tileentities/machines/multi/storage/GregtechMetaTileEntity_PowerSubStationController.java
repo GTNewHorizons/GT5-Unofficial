@@ -47,6 +47,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	private final int ENERGY_TAX = 2;
 
 	//TecTech Support
+	public ArrayList<GT_MetaTileEntity_Hatch> mAllEnergyHatches = new ArrayList<GT_MetaTileEntity_Hatch>();
 	public ArrayList<GT_MetaTileEntity_Hatch> mAllDynamoHatches = new ArrayList<GT_MetaTileEntity_Hatch>();
 
 	public GregtechMetaTileEntity_PowerSubStationController(final int aID, final String aName, final String aNameRegional) {
@@ -138,9 +139,23 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 7) {
 			return 8;
 		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 8) {
-			return CORE.GTNH ? GT_Values.V.length : 9;
+			return 9;
 		} else {
 			return -1;
+		}
+	}
+
+	public static int getMaxHatchTier(int aCellTier) {
+		switch(aCellTier) {
+			case 9:
+				return CORE.GTNH ? 15 : 9;
+			default:
+				if (aCellTier < 4) {
+					return 0;
+				}
+				else {
+					return aCellTier;
+				}
 		}
 	}
 
@@ -153,8 +168,11 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
 
-		this.mMultiDynamoHatches.clear();
-		this.mAllDynamoHatches.clear();
+		this.mTecTechDynamoHatches.clear();
+		this.mAllDynamoHatches.clear();		
+
+		this.mTecTechEnergyHatches.clear();
+		this.mAllEnergyHatches.clear();
 
 		boolean tFoundCeiling = false;
 		int tCasingCount = 0;
@@ -249,7 +267,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		mAllDynamoHatches.addAll(this.mDynamoHatches);
 
 		if (LoadedMods.TecTech) {
-			mAllDynamoHatches.addAll(this.mMultiDynamoHatches);
+			mAllDynamoHatches.addAll(this.mTecTechDynamoHatches);
 		}
 
 
@@ -257,7 +275,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			checkMachineProblem("Needed 1 maintenance hatch, found " + this.mMaintenanceHatches.size());
 			return false;
 		}
-		if (this.mEnergyHatches.size() < 1) {
+		if (this.mAllEnergyHatches.size() < 1) {
 			checkMachineProblem("Needed at least 1 energy hatch, found 0");
 			return false;
 		}
@@ -269,15 +287,17 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		// Find average EU throughput
 		int totalEuThroughput = 0;
 		int hatchCount = 0;
+		
+		int aMaxHatchTier = getMaxHatchTier(tOverallCellTier);
 
-		for (GT_MetaTileEntity_Hatch_Energy re : this.mEnergyHatches) {
+		for (GT_MetaTileEntity_Hatch re : this.mAllEnergyHatches) {
 			long tier = re.getOutputTier();
-			if(tier > tOverallCellTier) {
-				checkMachineProblem("Energy hatch (tier " + tier + ") is too strong for cells (tier " + tOverallCellTier + ")");
+			if(tier > aMaxHatchTier) {
+				checkMachineProblem("Energy hatch (tier " + tier + ") is too strong for cells (tier " + aMaxHatchTier + ")");
 				return false;
 			}
 			if(tier < 3) {
-				checkMachineProblem("Energy hatch (tier " + tier + ") is too weak for cells (tier " + tOverallCellTier + ")");
+				checkMachineProblem("Energy hatch (tier " + tier + ") is too weak for cells (tier " + aMaxHatchTier + ")");
 				return false;
 			}
 			totalEuThroughput += re.maxEUInput();
@@ -286,12 +306,12 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 		for (GT_MetaTileEntity_Hatch re : this.mAllDynamoHatches) {
 			long tier = re.getInputTier();
-			if(tier > tOverallCellTier) {
-				checkMachineProblem("Dynamo hatch (tier " + tier + ") is too strong for cells (tier " + tOverallCellTier + ")");
+			if(tier > aMaxHatchTier) {
+				checkMachineProblem("Dynamo hatch (tier " + tier + ") is too strong for cells (tier " + aMaxHatchTier + ")");
 				return false;
 			}
 			if(tier < 3) {
-				checkMachineProblem("Energy hatch (tier " + tier + ") is too weak for cells (tier " + tOverallCellTier + ")");
+				checkMachineProblem("Energy hatch (tier " + tier + ") is too weak for cells (tier " + aMaxHatchTier + ")");
 				return false;
 			}
 			totalEuThroughput += re.maxEUOutput();
@@ -431,6 +451,12 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		return MathUtils.roundToClosestInt(mTax);
 	}
 
+
+	@Override
+	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		this.fixAllMaintenanceIssue();
+	}
+
 	@Override
 	public boolean onRunningTick(ItemStack aStack) {
 		// First, decay overcharge (0.1% of stored energy plus 1000 EU per tick)
@@ -448,7 +474,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		for (GT_MetaTileEntity_Hatch_OutputBattery tHatch : this.mDischargeHatches) {
 			drawEnergyFromHatch(tHatch);
 		}
-		for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches) {
+		for (GT_MetaTileEntity_Hatch tHatch : this.mAllEnergyHatches) {
 			drawEnergyFromHatch(tHatch);
 		}
 

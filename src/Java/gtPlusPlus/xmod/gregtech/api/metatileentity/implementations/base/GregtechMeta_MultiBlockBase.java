@@ -99,9 +99,8 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 
 		try {
 			calculatePollutionReduction = GT_MetaTileEntity_Hatch_Muffler.class.getDeclaredMethod("calculatePollutionReduction", int.class);
-		} catch (NoSuchMethodException | SecurityException e) {}		
-
-		mCustomBehviours = new HashMap<String, SpecialMultiBehaviour>();
+		} 
+		catch (NoSuchMethodException | SecurityException e) {}		
 		
 	}
 
@@ -121,7 +120,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	public ArrayList<GT_MetaTileEntity_Hatch_OutputBattery> mDischargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_OutputBattery>();
 
 	// Custom Behaviour Map
-	private static final HashMap<String, SpecialMultiBehaviour> mCustomBehviours;
+	private static final HashMap<String, SpecialMultiBehaviour> mCustomBehviours = new HashMap<String, SpecialMultiBehaviour>();;
 	
 	
 	public GregtechMeta_MultiBlockBase(final int aID, final String aName,
@@ -1034,7 +1033,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		 */
 		
 		// First populate the map if we need to.
-		if (mCustomBehviours == null || mCustomBehviours.isEmpty()) {
+		if (mCustomBehviours.isEmpty()) {
 			mCustomBehviours.putAll(Multiblock_API.getSpecialBehaviourItemMap());
 		}
 		
@@ -1553,7 +1552,8 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 				this.mDischargeHatches.clear();
 				this.mControlCoreBus.clear();
 				this.mAirIntakes.clear();
-				this.mMultiDynamoHatches.clear();
+				this.mTecTechEnergyHatches.clear();
+				this.mTecTechDynamoHatches.clear();
 			}
 		}
 
@@ -1578,7 +1578,14 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 			tTileEntity = localIterator.next();
 		}
 		tTileEntity = null;
-		for (final Iterator<GT_MetaTileEntity_Hatch> localIterator = this.mMultiDynamoHatches
+		for (final Iterator<GT_MetaTileEntity_Hatch> localIterator = this.mTecTechDynamoHatches
+				.iterator(); localIterator.hasNext(); tTileEntity
+				.getBaseMetaTileEntity()
+				.doExplosion(gregtech.api.enums.GT_Values.V[8])) {
+			tTileEntity = localIterator.next();
+		}
+		tTileEntity = null;
+		for (final Iterator<GT_MetaTileEntity_Hatch> localIterator = this.mTecTechEnergyHatches
 				.iterator(); localIterator.hasNext(); tTileEntity
 				.getBaseMetaTileEntity()
 				.doExplosion(gregtech.api.enums.GT_Values.V[8])) {
@@ -1873,7 +1880,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		//Handle TT Multi-A Dynamos
 		else if (LoadedMods.TecTech && isThisHatchMultiDynamo(aMetaTileEntity)) {
 			log("Found isThisHatchMultiDynamo");
-			aDidAdd = addToMachineListInternal(mMultiDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
+			aDidAdd = addToMachineListInternal(mTecTechDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
 		}		
 
 		//Handle Fluid Hatches using seperate logic
@@ -2126,10 +2133,16 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 
 
 	/**
-	 * This is the array Used to Store the Tectech Multi-Amp hatches.
+	 * This is the array Used to Store the Tectech Multi-Amp Dynamo hatches.
 	 */
 
-	public ArrayList<GT_MetaTileEntity_Hatch> mMultiDynamoHatches = new ArrayList<GT_MetaTileEntity_Hatch>();	
+	public ArrayList<GT_MetaTileEntity_Hatch> mTecTechDynamoHatches = new ArrayList<GT_MetaTileEntity_Hatch>();	
+	
+	/**
+	 * This is the array Used to Store the Tectech Multi-Amp Energy hatches.
+	 */
+
+	public ArrayList<GT_MetaTileEntity_Hatch> mTecTechEnergyHatches = new ArrayList<GT_MetaTileEntity_Hatch>();	
 
 	/**
 	 * TecTech Multi-Amp Dynamo Support
@@ -2149,12 +2162,11 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		}
 		if (isThisHatchMultiDynamo(aTileEntity)) {
 			updateTexture(aTileEntity, aBaseCasingIndex);
-			return this.mMultiDynamoHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+			return this.mTecTechDynamoHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
 		}
 		return false;
 	}
 
-	@SuppressWarnings("rawtypes")
 	public boolean isThisHatchMultiDynamo(Object aMetaTileEntity){
 		Class<?> mDynamoClass;
 		mDynamoClass = ReflectionUtils.getClass("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti");
@@ -2175,6 +2187,52 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 
 		}
 		return super.addDynamoToMachineList(aTileEntity, aBaseCasingIndex);
+	}
+	
+	
+	/**
+	 * TecTech Multi-Amp Energy Hatch Support
+	 * @param aTileEntity - The Energy Hatch
+	 * @param aBaseCasingIndex - Casing Texture
+	 * @return
+	 */
+
+	public boolean addMultiAmpEnergyToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex){
+		//GT_MetaTileEntity_Hatch_DynamoMulti
+		if (aTileEntity == null) {
+			return false;
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) {
+			return false;
+		}
+		if (isThisHatchMultiEnergy(aTileEntity)) {
+			updateTexture(aTileEntity, aBaseCasingIndex);
+			return this.mTecTechEnergyHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+		}
+		return false;
+	}
+	
+	public boolean isThisHatchMultiEnergy(Object aMetaTileEntity){
+		Class<?> mDynamoClass;
+		mDynamoClass = ReflectionUtils.getClass("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti");
+		if (mDynamoClass != null){
+			if (mDynamoClass.isInstance(aMetaTileEntity)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (LoadedMods.TecTech){
+			if (isThisHatchMultiDynamo(aTileEntity)) {
+				addMultiAmpDynamoToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+
+		}
+		return super.addEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
 	}
 
 

@@ -14,11 +14,7 @@ public class GregtechPlusPlus_API {
 
 	public static class Multiblock_API {
 
-		private static final HashMap<String, SpecialMultiBehaviour> mSpecialBehaviourItemMap;
-
-		static {
-			mSpecialBehaviourItemMap = new HashMap<String, SpecialMultiBehaviour>();		
-		}
+		private static final HashMap<String, SpecialMultiBehaviour> mSpecialBehaviourItemMap = new HashMap<String, SpecialMultiBehaviour>();
 		
 		/**
 		 * Register a special behaviour for GT++ Multis to listen use.
