@@ -282,7 +282,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 			return false;
 		}
 
-		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
+		aMaxParallelRecipes = this.canBufferOutputs(tRecipe, aMaxParallelRecipes);
+		if (aMaxParallelRecipes == 0) {
 			Logger.WARNING("BAD RETURN - 2");
 			return false;
 		}

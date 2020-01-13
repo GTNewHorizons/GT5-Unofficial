@@ -227,7 +227,8 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 			return false;
 		}
 
-		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
+		aMaxParallelRecipes = this.canBufferOutputs(tRecipe, aMaxParallelRecipes);
+		if (aMaxParallelRecipes == 0) {
 			Logger.WARNING("BAD RETURN - 2");
 			return false;
 		}

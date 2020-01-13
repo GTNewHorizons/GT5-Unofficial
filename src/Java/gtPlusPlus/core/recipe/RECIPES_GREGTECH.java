@@ -646,6 +646,18 @@ public class RECIPES_GREGTECH {
 				new int[] {10000}, //Output Chance 
 				20 * 120,
 				30720);
+		
+		//NITINOL_60
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[] {
+					ELEMENT.getInstance().TITANIUM.getDust(3),
+					ELEMENT.getInstance().NICKEL.getDust(2)
+				},
+				ALLOY.NITINOL_60.getFluid(20 * 144),
+				0,
+				20 * 75,
+				7680);
+		
 
 
 

@@ -351,7 +351,8 @@ extends GregtechMeta_MultiBlockBase {
 			return false;
 		}
 
-		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
+		aMaxParallelRecipes = this.canBufferOutputs(tRecipe, aMaxParallelRecipes);
+		if (aMaxParallelRecipes == 0) {
 			Logger.MACHINE_INFO("BAD RETURN - 2|"+tCircuitID);
 			return false;
 		}

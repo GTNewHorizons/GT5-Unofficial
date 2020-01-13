@@ -775,7 +775,7 @@ public final class ALLOY {
 			"Pikyonium 64B", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{52, 103, 186, 0}, //Material Colour
-			7850, //Melting Point in C
+			6850, //Melting Point in C
 			11765, //Boiling Point in C
 			-1,
 			-1,
