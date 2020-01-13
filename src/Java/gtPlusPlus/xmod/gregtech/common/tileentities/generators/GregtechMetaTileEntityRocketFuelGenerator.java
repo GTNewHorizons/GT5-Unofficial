@@ -54,12 +54,12 @@ extends GregtechRocketFuelGeneratorBase {
 	}
 
 	public void onConfigLoad() {
-		this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "RocketEngine.efficiency.tier." + this.mTier, ((40+((this.mTier) * 16))/4)+(this.mTier));
+		this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "RocketEngine.efficiency.tier." + this.mTier, 80 - (10 * (this.mTier - 4)));
 	}
 
 	@Override
 	public int getEfficiency() {
-		int eff = ((40+((this.mTier) * 16))/4)+(this.mTier);		
+		int eff = 80 - (10 * (this.mTier - 4));
 		return eff;
 		
 	}

@@ -832,7 +832,8 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		}
 		
 		
-		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
+		aMaxParallelRecipes = this.canBufferOutputs(tRecipe, aMaxParallelRecipes);
+		if (aMaxParallelRecipes == 0) {
 			log("BAD RETURN - 2");
 			return false;
 		}

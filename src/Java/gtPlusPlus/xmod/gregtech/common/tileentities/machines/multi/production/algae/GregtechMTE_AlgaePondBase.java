@@ -379,7 +379,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 			return false;
 		}
 
-		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes, false)) {
+		aMaxParallelRecipes = this.canBufferOutputs(tRecipe, aMaxParallelRecipes);
+		if (aMaxParallelRecipes == 0) {
 			return false;
 		}
 

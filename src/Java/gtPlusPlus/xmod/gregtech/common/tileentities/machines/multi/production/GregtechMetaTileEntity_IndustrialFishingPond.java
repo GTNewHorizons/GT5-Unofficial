@@ -549,7 +549,8 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 		ItemStack[] mFishOutput = generateLoot(this.mMode);
 		mFishOutput = removeNulls(mFishOutput);
 		GT_Recipe g = new Recipe_GT(true, new ItemStack[] {}, mFishOutput, null, new int[] {}, aFluidInputs, mOutputFluids, 200, 16, 0);
-		if (!this.canBufferOutputs(g, aMaxParallelRecipes)) {
+		aMaxParallelRecipes = this.canBufferOutputs(g, aMaxParallelRecipes);
+		if (aMaxParallelRecipes == 0) {
 			log("No Space");
 			return false;
 		}		
