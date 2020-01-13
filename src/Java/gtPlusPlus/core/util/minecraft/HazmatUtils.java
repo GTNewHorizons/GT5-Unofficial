@@ -18,6 +18,7 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import ic2.core.item.armor.ItemArmorHazmat;
 import ic2.core.item.armor.ItemArmorNanoSuit;
@@ -35,6 +36,38 @@ public class HazmatUtils {
 
 	private static boolean mInit = false;
 	private static HazmatUtils mInstance;
+	
+	private static final String[] mDefaultHazmat = new String[] {
+			"IC2:itemArmorNanoHelmet:27",
+			"IC2:itemArmorNanoChestplate:27",
+			"IC2:itemArmorNanoLegs:27",
+			"IC2:itemArmorNanoBoots:27",
+
+			"IC2:itemArmorQuantumHelmet:27",
+			"IC2:itemArmorQuantumChestplate:27",
+			"IC2:itemArmorQuantumLegs:27",
+			"IC2:itemArmorQuantumBoots:27",
+	};
+	
+
+	private static final String[] mGravisuit = new String[] {
+			"GraviSuite:advNanoChestPlate:27",
+			"GraviSuite:graviChestPlate:27",
+	};
+	private static final String[] mElectroMagicTools = new String[] {
+			"EMT:NanosuitGogglesRevealing:27",
+			"EMT:NanoBootsTraveller:27",
+			"EMT:NanosuitWing:27",
+			"EMT:itemArmorQuantumChestplate:27",
+			"EMT:QuantumGogglesRevealing:27",
+			"EMT:QuantumBootsTraveller:27",
+			"EMT:QuantumWing:27",
+	};
+	private static final String[] mAdvancedSolarPanels = new String[] {
+			"AdvancedSolarPanel:advanced_solar_helmet:27",
+			"AdvancedSolarPanel:hybrid_solar_helmet:27",
+			"AdvancedSolarPanel:ultimate_solar_helmet:27",
+	};
 
 	public static void init() {
 		if (mInit) {
@@ -49,19 +82,36 @@ public class HazmatUtils {
 		sHazmatList.add(GT_ModHandler.getIC2Item("hazmatBoots", 1L, 32767));
 
 		// Make Nano a hazmat suit
-		addProtection(ItemUtils.getItemStackFromFQRN("IC2:itemArmorNanoHelmet:27", 1));
-		addProtection(ItemUtils.getItemStackFromFQRN("IC2:itemArmorNanoChestplate:27", 1));
-		addProtection(ItemUtils.getItemStackFromFQRN("IC2:itemArmorNanoLegs:27", 1));
-		addProtection(ItemUtils.getItemStackFromFQRN("IC2:itemArmorNanoBoots:27", 1));
+		// Make Quantum a hazmat suit		
+		
 
-		Logger.INFO("[Hazmat] Registered Nano as hazmat gear.");
-
-		// Make Quantum a hazmat suit
-		addProtection(ItemUtils.getItemStackFromFQRN("IC2:itemArmorQuantumHelmet:27", 1));
-		addProtection(ItemUtils.getItemStackFromFQRN("IC2:itemArmorQuantumChestplate:27", 1));
-		addProtection(ItemUtils.getItemStackFromFQRN("IC2:itemArmorQuantumLegs:27", 1));
-		addProtection(ItemUtils.getItemStackFromFQRN("IC2:itemArmorQuantumBoots:27", 1));
-		Logger.INFO("[Hazmat] Registered Quantum as hazmat gear.");
+		if (LoadedMods.IndustrialCraft2 || LoadedMods.IndustrialCraft2Classic) {
+			for (String aItemName : mDefaultHazmat) {				
+				addProtection(ItemUtils.getItemStackFromFQRN(aItemName, 1));
+			}
+			Logger.INFO("[Hazmat] Registered IC2 Items as hazmat gear.");
+		}
+		
+		if (LoadedMods.isModLoaded("EMT")) {
+			for (String aItemName : mElectroMagicTools) {				
+				addProtection(ItemUtils.getItemStackFromFQRN(aItemName, 1));
+			}
+			Logger.INFO("[Hazmat] Registered EMT Items as hazmat gear.");
+		}
+		
+		if (LoadedMods.isModLoaded("GraviSuite")) {
+			for (String aItemName : mGravisuit) {				
+				addProtection(ItemUtils.getItemStackFromFQRN(aItemName, 1));
+			}
+			Logger.INFO("[Hazmat] Registered Gravisuit Items as hazmat gear.");
+		}
+		
+		if (LoadedMods.isModLoaded("AdvancedSolarPanel")) {
+			for (String aItemName : mAdvancedSolarPanels) {				
+				addProtection(ItemUtils.getItemStackFromFQRN(aItemName, 1));
+			}
+			Logger.INFO("[Hazmat] Registered Adv. Solar Items as hazmat gear.");
+		}	
 
 		Utils.registerEvent(mInstance);
 		Logger.INFO("[Hazmat] Registered Tooltip handler for hazmat gear.");

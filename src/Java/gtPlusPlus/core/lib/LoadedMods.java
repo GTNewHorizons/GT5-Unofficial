@@ -2,6 +2,8 @@ package gtPlusPlus.core.lib;
 
 import static gtPlusPlus.core.lib.CORE.*;
 
+import java.util.HashMap;
+
 import cpw.mods.fml.common.Loader;
 
 import gtPlusPlus.api.objects.Logger;
@@ -50,6 +52,7 @@ public class LoadedMods {
 	public static boolean Mekanism = false;
 	public static boolean RedTech = false; //RedMage's Mod
 	public static boolean TecTech = false; //Technus' Mod
+	public static boolean KekzTech = false; //KekzDealers' Mod
 	public static boolean TiCon = false;
 	public static boolean StevesCarts = false;
 	public static boolean Witchery = false;
@@ -63,7 +66,7 @@ public class LoadedMods {
 	@SuppressWarnings("deprecation")
 	public static void checkLoaded(){
 		Logger.INFO("Looking for optional mod prereqs.");
-		if (Loader.isModLoaded("gregtech") ){
+		if (isModLoaded("gregtech") ){
 			Gregtech = true;
 			Logger.INFO("Components enabled for: Gregtech");
 			if (Gregtech){
@@ -80,140 +83,140 @@ public class LoadedMods {
 
 			totalMods++;
 		}
-		if (Loader.isModLoaded("dreamcraft")){
+		if (isModLoaded("dreamcraft")){
 			DreamCraft = true;
 			GTNH = true;
 			Logger.INFO("Components enabled for: DreamCraft");
 			Logger.INFO("Components enabled for: GT: New Horizons");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("beyondrealitycore")){
+		if (isModLoaded("beyondrealitycore")){
 			BeyondRealityCore = true;
 			BRC = true;
 			Logger.INFO("Components enabled for: Beyond Reality");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("PlayerAPI")){
+		if (isModLoaded("PlayerAPI")){
 			PlayerAPI = true;
 			Logger.INFO("Components enabled for: PlayerAPI");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("berriespp")) {
+		if (isModLoaded("berriespp")) {
 			CropsPlusPlus = true;
 			Logger.INFO("Components enabled for: Crops++");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("xreliquary")) {
+		if (isModLoaded("xreliquary")) {
 			Reliquary = true;
 			Logger.INFO("Components enabled for: Reliquary");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("TConstruct")){
+		if (isModLoaded("TConstruct")){
 			TiCon = true;
 			Logger.INFO("Components enabled for: Tinkers Construct");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("BuildCraft")){
+		if (isModLoaded("BuildCraft")){
 			BuildCraft = true;
 			Logger.INFO("Components enabled for: BuildCraft");
 			totalMods++;
 		}
-		if ((Loader.isModLoaded("EnderIO")) && !ConfigSwitches.disableEnderIOIntegration){
+		if ((isModLoaded("EnderIO")) && !ConfigSwitches.disableEnderIOIntegration){
 			EnderIO = true;
 			Logger.INFO("Components enabled for: EnderIO");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("BigReactors")){
+		if (isModLoaded("BigReactors")){
 			Big_Reactors = true;
 			Logger.INFO("Components enabled for: Big Reactors");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("IC2")){
+		if (isModLoaded("IC2")){
 			IndustrialCraft2 = true;
 			Logger.INFO("Components enabled for: IndustrialCraft2");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("IC2-Classic-Spmod")){
+		if (isModLoaded("IC2-Classic-Spmod")){
 			IndustrialCraft2Classic = true;
 			Logger.INFO("Components enabled for: IndustrialCraft2-Classic");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("simplyjetpacks")){
+		if (isModLoaded("simplyjetpacks")){
 			Simply_Jetpacks = true;
 			Logger.INFO("Components enabled for: Simply Jetpacks");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("rftools")){
+		if (isModLoaded("rftools")){
 			RFTools = true;
 			Logger.INFO("Components enabled for: RFTools");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("StevesCarts")){
+		if (isModLoaded("StevesCarts")){
 			StevesCarts = true;
 			Logger.INFO("Components enabled for: StevesCarts");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("OpenBlocks")){
+		if (isModLoaded("OpenBlocks")){
 			OpenBlocks = true;
 			Logger.INFO("Components enabled for: OpenBlocks");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("Thaumcraft")){
+		if (isModLoaded("Thaumcraft")){
 			Thaumcraft = true;
 			Logger.INFO("Components enabled for: Thaumcraft");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("BiomesOPlenty")){
+		if (isModLoaded("BiomesOPlenty")){
 			BiomesOPlenty = true;
 			Logger.INFO("Components enabled for: BiomesOPlenty");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("ExtraUtilities")){
+		if (isModLoaded("ExtraUtilities")){
 			Extra_Utils = true;
 			Logger.INFO("Components enabled for: Extra_Utils");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("harvestcraft")){
+		if (isModLoaded("harvestcraft")){
 			PamsHarvestcraft = true;
 			Logger.INFO("Components enabled for: PamsHarvestcraft");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("PneumaticCraft")){
+		if (isModLoaded("PneumaticCraft")){
 			PneumaticCraft = true;
 			Logger.INFO("Components enabled for: PneumaticCraft");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("MorePlanet")){
+		if (isModLoaded("MorePlanet")){
 			MorePlanets  = true;
 			Logger.INFO("Components enabled for: MorePlanets");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("ForbiddenMagic")){
+		if (isModLoaded("ForbiddenMagic")){
 			ForbiddenMagic  = true;
 			Logger.INFO("Components enabled for: ForbiddenMagic");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("CompactWindmills")){
+		if (isModLoaded("CompactWindmills")){
 			CompactWindmills  = true;
 			Logger.INFO("Components enabled for: CompactWindmills");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("Railcraft")){
+		if (isModLoaded("Railcraft")){
 			Railcraft  = true;
 			Logger.INFO("Components enabled for: Railcraft");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("Waila")){
+		if (isModLoaded("Waila")){
 			Waila  = true;
 			Logger.INFO("Components enabled for: WAILA");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("Mekanism")){
+		if (isModLoaded("Mekanism")){
 			Mekanism  = true;
 			Logger.INFO("Components enabled for: Mekanism - This feature is not configurable and balances Mekanism to suit GT.");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("Growthcraft")){
+		if (isModLoaded("Growthcraft")){
 			Logger.INFO("Growthcraft Version: "+getModVersion("Growthcraft"));
 			if (getModVersion("Growthcraft").equals("1.7.10-2.3.1")){
 				//Load Growthcraft Compat
@@ -226,67 +229,67 @@ public class LoadedMods {
 				Logger.INFO("Growthcraft found, but the version was too new. I will update GC support eventually.");
 			}
 		}
-		if (Loader.isModLoaded("CoFHCore")){
+		if (isModLoaded("CoFHCore")){
 			CoFHCore  = true;
 			Logger.INFO("Components enabled for: CoFHCore");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("Forestry")){
+		if (isModLoaded("Forestry")){
 			Forestry  = true;
 			Logger.INFO("Components enabled for: Forestry");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("MagicBees")){
+		if (isModLoaded("MagicBees")){
 			MagicBees  = true;
 			Logger.INFO("Components enabled for: MagicBees");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("psychedelicraft")){
+		if (isModLoaded("psychedelicraft")){
 			Psychedelicraft  = true;
 			Logger.INFO("Components enabled for: Psychedelicraft");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("ImmersiveEngineering")){
+		if (isModLoaded("ImmersiveEngineering")){
 			ImmersiveEngineering  = true;
 			Logger.INFO("Components enabled for: ImmersiveEngineering");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("ExtraBees")){
+		if (isModLoaded("ExtraBees")){
 			ExtraBees  = true;
 			Logger.INFO("Components enabled for: ExtraBees");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("ThermalFoundation") == false){
+		if (isModLoaded("ThermalFoundation") == false){
 			ThermalFoundation  = false;
 			Logger.INFO("Components enabled for: ThermalFoundation - This feature will disable itself if you add TF.");
 			totalMods++;
 		}
-		else if (Loader.isModLoaded("ThermalFoundation")){
+		else if (isModLoaded("ThermalFoundation")){
 			ThermalFoundation  = true;
 			Logger.INFO("Components disabled for: ThermalFoundation - This feature will enable itself if you remove TF.");
 			//totalMods++;
 		}
-		if (Loader.isModLoaded("ihl")){
+		if (isModLoaded("ihl")){
 			IHL  = true;
 			Logger.INFO("Components enabled for: IHL");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("Baubles")){
+		if (isModLoaded("Baubles")){
 			Baubles  = true;
 			Logger.INFO("Components enabled for: Baubles");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("GalacticraftCore")){
+		if (isModLoaded("GalacticraftCore")){
 			GalacticraftCore  = true;
 			Logger.INFO("Components enabled for: Galacticraft Core");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("OpenComputers")){
+		if (isModLoaded("OpenComputers")){
 			OpenComputers  = true;
 			Logger.INFO("Components enabled for: OpenComputers");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("computronics")){
+		if (isModLoaded("computronics")){
 			Computronics  = true;
 			Logger.INFO("Components disabled for: Computronics - This feature will enable itself if you remove Computronics.");
 			totalMods++;
@@ -294,17 +297,22 @@ public class LoadedMods {
 		else {
 			Logger.INFO("Components enabled for: Computronics - This feature will disable itself if you add Computronics.");
 		}
-		if (Loader.isModLoaded("GTRedtech")){
+		if (isModLoaded("GTRedtech")){
 			RedTech  = true;
 			Logger.INFO("Components enabled for: GTRedtech");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("tectech")){
+		if (isModLoaded("tectech")){
 			TecTech  = true;
 			Logger.INFO("Components enabled for: TecTech");
 			totalMods++;
+		}
+		if (isModLoaded("kekztech")){
+			KekzTech  = true;
+			Logger.INFO("Components enabled for: KekzTech");
+			totalMods++;
 		}	
-		if (Loader.isModLoaded("witchery")){
+		if (isModLoaded("witchery")){
 			Witchery  = true;
 			Logger.INFO("Components enabled for: Witchery");
 			totalMods++;
@@ -317,6 +325,18 @@ public class LoadedMods {
 	public static String getModVersion(final String modName){
 		final String ver = cpw.mods.fml.common.FMLCommonHandler.instance().findContainerFor(modName).getVersion();
 		return ver;
+	}
+	
+	private static final HashMap<String, Boolean> mLoadedModCache = new HashMap<String, Boolean>();
+
+	public static boolean isModLoaded(String aModName) {
+		Boolean aResult = mLoadedModCache.get(aModName);
+		if (aResult == null) {
+			boolean aTemp = Loader.isModLoaded(aModName);
+			mLoadedModCache.put(aModName, aTemp);
+			aResult = aTemp;
+		}
+		return aResult;
 	}
 
 }

@@ -352,7 +352,8 @@ public class MaterialUtils {
 		}
 		if (g == null) {
 			Logger.INFO("Failed finding material '"+aMaterialName+"' & fallback '"+aFallbackMaterialName+"', returning _NULL.");
-			g = Materials._NULL;
+			CORE.crash();
+			//g = Materials._NULL;
 		}
 		return g;		
 	}

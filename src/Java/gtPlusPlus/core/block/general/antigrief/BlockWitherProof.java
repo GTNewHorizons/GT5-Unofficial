@@ -12,6 +12,8 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.boss.IBossDisplayData;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -103,6 +105,60 @@ public class BlockWitherProof extends Block{
 	@Override
 	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
 		return false;
+	}
+
+	@Override
+	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
+		super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World p_149737_2_, int p_149737_3_, int p_149737_4_, int p_149737_5_) {
+		if (aPlayer != null && aPlayer instanceof EntityPlayerMP) {
+			return 1f;
+		}
+		return -1f;
+	}
+
+	@Override
+	public float getExplosionResistance(Entity p_149638_1_) {
+		return Float.MAX_VALUE;
+	}
+
+	@Override
+	public void onBlockClicked(World p_149699_1_, int p_149699_2_, int p_149699_3_, int p_149699_4_, EntityPlayer p_149699_5_) {
+		super.onBlockClicked(p_149699_1_, p_149699_2_, p_149699_3_, p_149699_4_, p_149699_5_);
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {		
+		if ((entity == null) || !entity.isEntityAlive()){
+			return;
+		}
+		if ((entity instanceof EntityWither) || (entity instanceof EntityDragon) || (entity instanceof IBossDisplayData)){
+			return;
+		}
+		else {
+			super.onEntityCollidedWithBlock(world, x, y, z, entity);
+		}
+	}
+
+	@Override
+	public void harvestBlock(World p_149636_1_, EntityPlayer p_149636_2_, int p_149636_3_, int p_149636_4_, int p_149636_5_, int p_149636_6_) {
+		super.harvestBlock(	p_149636_1_, p_149636_2_, p_149636_3_, p_149636_4_, p_149636_5_, p_149636_6_);
+	}
+
+	@Override
+	public boolean canHarvestBlock(EntityPlayer player, int meta) {
+		if (player != null && player instanceof EntityPlayerMP) {
+			return true;
+		}
+		return super.canHarvestBlock(player, meta);
+	}
+
+	@Override
+	public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+		return Float.MAX_VALUE;
 	}
 
 
