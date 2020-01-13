@@ -15,6 +15,7 @@ public class AsmConfig {
 	public static boolean enableTiConFluidLighting;
 	public static boolean enableGtTooltipFix;
 	public static boolean enableGtNbtFix;
+	public static boolean enableGtCharcoalPitFix;
 	public static boolean enableChunkDebugging;
 	public static boolean enableCofhPatch;
 	public static boolean enableGcFuelChanges;
@@ -96,6 +97,14 @@ public class AsmConfig {
 			prop.comment = "Enable/Disable Custom GT Tooltips";
 			prop.setLanguageKey("gtpp.enableGtTooltipFix").setRequiresMcRestart(true);
 			enableGtTooltipFix = prop.getBoolean(true);
+			propOrder.add(prop.getName());
+			
+				
+			
+			prop = config.get("general", "enableGtCharcoalPitFix", true);
+			prop.comment = "Makes the Charcoal Pile Igniter work better.";
+			prop.setLanguageKey("gtpp.enableGtCharcoalPitFix").setRequiresMcRestart(true);
+			enableGtCharcoalPitFix = prop.getBoolean(true);
 			propOrder.add(prop.getName());
 			
 			prop = config.get("general", "enableGcFuelChanges", true);

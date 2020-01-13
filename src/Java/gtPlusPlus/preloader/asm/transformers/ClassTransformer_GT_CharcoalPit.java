@@ -17,10 +17,9 @@ import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.api.enums.OrePrefixes;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -31,35 +30,48 @@ public class ClassTransformer_GT_CharcoalPit {
 	private final ClassWriter writer;
 
 	public static boolean isWoodLog(Block log) {
-		//Logger.INFO("checking for log");
 		boolean isLog1 = OrePrefixes.log.contains(new ItemStack(log, 1));
 		if (isLog1) {
-			//Logger.INFO("Found 1");
 			return true;
 		}
 		ArrayList<ItemStack> oredict = OreDictionary.getOres("logWood");
 		if (oredict.contains(ItemUtils.getSimpleStack(log))) {
-			//Logger.INFO("found 2");
 			return true;
-		}	
-		//Logger.INFO("Did not find. "+(log != null ? ""+log.getLocalizedName() : "Null or invalid block?"));	
+		}
 		return false;
 	}
 	
 	public ClassTransformer_GT_CharcoalPit(byte[] basicClass, boolean obfuscated) {
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;
+		boolean aBadTime = false;
+		if (ReflectionUtils.doesClassExist("aji")) {
+				obfuscated = true;			
+		}
+		else {
+			if (ReflectionUtils.doesClassExist("net.minecraft.block.Block")) {
+				obfuscated = false;
+			}
+			else {
+				// Bad... Like.. very bad..
+				FMLRelaunchLog.log("[GT++ ASM] GT Charcoal Pit Fix", Level.INFO, "Unable to find Block.class/aji.class, this is BAD. Not Patching.");				
+			}
+		}
 		aTempReader = new ClassReader(basicClass);
 		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
-		aTempReader.accept(new AddFieldAdapter(aTempWriter), 0);
-		injectMethod("isWoodLog", obfuscated, aTempWriter);
-		if (aTempReader != null && aTempWriter != null) {
-			isValid = true;
-		} else {
+		if (!aBadTime) {
+			aTempReader.accept(new CustomClassVisitor(aTempWriter), 0);
+			injectMethod("isWoodLog", obfuscated, aTempWriter);
+			if (aTempReader != null && aTempWriter != null) {
+				isValid = true;
+			} else {
+				isValid = false;
+			}			
+		}
+		else {
 			isValid = false;
 		}
-		FMLRelaunchLog.log("[GT++ ASM] GT Charcoal Pit Fix", Level.INFO,
-				"Valid? " + isValid + ".");
+		FMLRelaunchLog.log("[GT++ ASM] GT Charcoal Pit Fix", Level.INFO, "Valid? " + isValid + ".");
 		reader = aTempReader;
 		writer = aTempWriter;
 	}
@@ -86,11 +98,12 @@ public class ClassTransformer_GT_CharcoalPit {
 			aBlockClassName = "aji";
 		}		
 		if (aMethodName.equals("isWoodLog")) {
+			
 			mv = cw.visitMethod(ACC_PUBLIC, "isWoodLog", "(L"+aBlockClassName+";)Z", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
 			mv.visitLabel(l0);
-			mv.visitLineNumber(49, l0);
+			mv.visitLineNumber(197, l0);
 			mv.visitVarInsn(ALOAD, 1);
 			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_GT_CharcoalPit", "isWoodLog", "(L"+aBlockClassName+";)Z", false);
 			mv.visitInsn(IRETURN);
@@ -101,14 +114,15 @@ public class ClassTransformer_GT_CharcoalPit {
 			mv.visitMaxs(1, 2);
 			mv.visitEnd();
 			didInject = true;
+			
 		}
 		FMLRelaunchLog.log("[GT++ ASM] GT Charcoal Pit Fix", Level.INFO, "Method injection complete.");
 		return didInject;
 	}
 
-	public class AddFieldAdapter extends ClassVisitor {
+	public class CustomClassVisitor extends ClassVisitor {
 
-		public AddFieldAdapter(ClassVisitor cv) {
+		public CustomClassVisitor(ClassVisitor cv) {
 			super(ASM5, cv);
 			this.cv = cv;
 		}
