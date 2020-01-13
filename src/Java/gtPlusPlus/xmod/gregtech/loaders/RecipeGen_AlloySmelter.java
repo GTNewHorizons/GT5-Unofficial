@@ -40,7 +40,7 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 				ItemList.Shape_Mold_Nugget.get(0),
 				material.getNugget(9),
 				(int) Math.max(material.getMass() * 2L, 1L),
-				2 * tVoltageMultiplier);
+				tVoltageMultiplier);
 
 		//Gears
 		if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getGear(1)))
@@ -49,7 +49,7 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 				ItemList.Shape_Mold_Gear.get(0),
 				material.getGear(1),
 				(int) Math.max(material.getMass() * 2L, 1L),
-				2 * tVoltageMultiplier);
+				tVoltageMultiplier);
 		
 		//Ingot
 		if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getNugget(1)))
@@ -58,7 +58,7 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 				ItemList.Shape_Mold_Ingot.get(0),
 				material.getIngot(1),
 				(int) Math.max(material.getMass() * 2L, 1L),
-				2 * tVoltageMultiplier);
+				tVoltageMultiplier);
 
 	}
 
