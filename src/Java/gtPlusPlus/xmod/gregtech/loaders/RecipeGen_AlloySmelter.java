@@ -29,7 +29,7 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 	}
 
 	private void generateRecipes(final Material material){
-		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
+		final int tVoltageMultiplier = material.vVoltageMultiplier;
 
 		
 		

@@ -34,7 +34,6 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 
 	private void generateRecipes(final Material material){
 
-		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
 		final ItemStack itemIngot = material.getIngot(1);
 		final ItemStack itemPlate = material.getPlate(1);
 		final ItemStack itemGear = material.getGear(1);
