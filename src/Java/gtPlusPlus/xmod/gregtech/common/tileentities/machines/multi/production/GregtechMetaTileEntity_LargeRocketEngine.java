@@ -317,7 +317,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 		int tY = getBaseMetaTileEntity().getYCoord();
 		int tZ = getBaseMetaTileEntity().getZCoord();
 		
-		this.mMultiDynamoHatches.clear();
+		this.mTecTechDynamoHatches.clear();
 		this.mAllDynamoHatches.clear();
 		
 		final int MAX_LENGTH = 8;
@@ -436,7 +436,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 		mAllDynamoHatches.addAll(this.mDynamoHatches);
 
 		if (LoadedMods.TecTech) {
-			mAllDynamoHatches.addAll(this.mMultiDynamoHatches);
+			mAllDynamoHatches.addAll(this.mTecTechDynamoHatches);
 		}
 
 		if (this.mAllDynamoHatches.size() <= 0 || this.mAllDynamoHatches.isEmpty()) {
