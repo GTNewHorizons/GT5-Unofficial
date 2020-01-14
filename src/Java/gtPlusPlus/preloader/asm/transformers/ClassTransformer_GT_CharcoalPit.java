@@ -27,7 +27,7 @@ public class ClassTransformer_GT_CharcoalPit {
 	private final ClassWriter writer;
 
 	public static boolean isWoodLog(Block log) {
-		return isWoodLog(log, 0);	
+		return isWoodLog(log, Short.MAX_VALUE);	
 	}
 
 	public static boolean isWoodLog(Block log, int meta) {
