@@ -13,6 +13,7 @@ import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
@@ -30,13 +31,19 @@ public class ClassTransformer_GT_CharcoalPit {
 	}
 
 	public static boolean isWoodLog(Block log, int meta) {
-		boolean isLog1 = OrePrefixes.log.contains(ItemUtils.getSimpleStack(log, meta, 1));
-		if (isLog1) {
-			return true;
+		ItemStack aLogStack = ItemUtils.getSimpleStack(log, meta, 1);
+		ArrayList<ItemStack> aData = OrePrefixes.log.mPrefixedItems;
+		for (ItemStack aStack : aData) {
+			if (GT_Utility.areStacksEqual(aStack, aLogStack)) {
+				return true;
+			}
 		}
-		ArrayList<ItemStack> oredict = OreDictionary.getOres("logWood");
-		if (oredict.contains(ItemUtils.getSimpleStack(log))) {
-			return true;
+		aData.clear();
+		aData = OreDictionary.getOres("logWood");
+		for (ItemStack aStack : aData) {
+			if (GT_Utility.areStacksEqual(aStack, aLogStack)) {
+				return true;
+			}
 		}
 		return false;
 	}
