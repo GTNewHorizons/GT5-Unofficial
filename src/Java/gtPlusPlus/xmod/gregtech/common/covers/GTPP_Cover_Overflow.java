@@ -1,13 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.covers;
 
-import java.util.HashMap;
-
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.ObjMap;
+import gtPlusPlus.core.util.minecraft.LangUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -15,121 +11,88 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public class GTPP_Cover_Overflow extends GT_CoverBehavior {
+
+	public final int mTransferRate;
+	public final int mInitialTransferRate;
 	public final int mMaxTransferRate;
-	
-	public static final ObjMap<String, HashMap<String, Object>> mOverflowCache = new ObjMap<String, HashMap<String, Object>>(10000, 0.5f);
 
 	public GTPP_Cover_Overflow(int aTransferRate) {
-		this.mMaxTransferRate = aTransferRate*1000;
+		this.mTransferRate = aTransferRate * 1000 / 10;
+		this.mInitialTransferRate = aTransferRate;
+		this.mMaxTransferRate = aTransferRate * 1000;
 	}
 
 	public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
 			long aTimer) {
-		
-		HashMap<String, Object> aCoverData = getCover(aSide, aCoverID, aCoverVariable, aTileEntity);
-		//Do things
-		
-		if (aCoverData != null) {
-			if (aCoverData.containsKey("aCoverVariable"))
-			return (int) aCoverData.get("aCoverVariable");
-		}
-		
-		
-		if (aCoverVariable % 6 > 1 && aTileEntity instanceof IMachineProgress
-				&& ((IMachineProgress) aTileEntity).isAllowedToWork() != aCoverVariable % 6 < 4) {
+		if (aCoverVariable == 0) {
 			return aCoverVariable;
-		} else {
-			if (aTileEntity instanceof IFluidHandler) {
-				IFluidHandler tTank2 = aTileEntity.getITankContainerAtSide(aSide);
-				if (tTank2 != null) {
-					IFluidHandler tTank1 = (IFluidHandler) aTileEntity;
-					FluidStack tLiquid;
-					if (aCoverVariable % 2 == 0) {
-						tLiquid = tTank1.drain(ForgeDirection.getOrientation(aSide), this.mMaxTransferRate, false);
-						if (tLiquid != null) {
-							tLiquid = tLiquid.copy();
-							tLiquid.amount = tTank2.fill(ForgeDirection.getOrientation(aSide).getOpposite(), tLiquid,
-									false);
-							if (tLiquid.amount > 0) {
-								if ((aCoverVariable % 2 == 0 || aSide != 1) && (aCoverVariable % 2 != 0 || aSide != 0)
-										&& aTileEntity.getUniversalEnergyCapacity() >= (long) Math.min(1,
-												tLiquid.amount / 10)) {
-									if (aTileEntity.isUniversalEnergyStored((long) Math.min(1, tLiquid.amount / 10))) {
-										aTileEntity.decreaseStoredEnergyUnits((long) Math.min(1, tLiquid.amount / 10),
-												true);
-										tTank2.fill(ForgeDirection.getOrientation(aSide).getOpposite(), tTank1.drain(
-												ForgeDirection.getOrientation(aSide), tLiquid.amount, true), true);
-									}
-								} else {
-									tTank2.fill(ForgeDirection.getOrientation(aSide).getOpposite(),
-											tTank1.drain(ForgeDirection.getOrientation(aSide), tLiquid.amount, true),
-											true);
-								}
-							}
-						}
-					} else {
-						tLiquid = tTank2.drain(ForgeDirection.getOrientation(aSide).getOpposite(), this.mMaxTransferRate,
-								false);
-						if (tLiquid != null) {
-							tLiquid = tLiquid.copy();
-							tLiquid.amount = tTank1.fill(ForgeDirection.getOrientation(aSide), tLiquid, false);
-							if (tLiquid.amount > 0) {
-								if ((aCoverVariable % 2 == 0 || aSide != 1) && (aCoverVariable % 2 != 0 || aSide != 0)
-										&& aTileEntity.getUniversalEnergyCapacity() >= (long) Math.min(1,
-												tLiquid.amount / 10)) {
-									if (aTileEntity.isUniversalEnergyStored((long) Math.min(1, tLiquid.amount / 10))) {
-										aTileEntity.decreaseStoredEnergyUnits((long) Math.min(1, tLiquid.amount / 10),
-												true);
-										tTank1.fill(ForgeDirection.getOrientation(aSide),
-												tTank2.drain(ForgeDirection.getOrientation(aSide).getOpposite(),
-														tLiquid.amount, true),
-												true);
-									}
-								} else {
-									tTank1.fill(ForgeDirection.getOrientation(aSide),
-											tTank2.drain(ForgeDirection.getOrientation(aSide).getOpposite(),
-													tLiquid.amount, true),
-											true);
-								}
+		}
+		if ((aTileEntity instanceof IFluidHandler)) {
+			//Logger.INFO("Trying to Void via Overflow.");
+			IFluidHandler tTank1;
+			ForgeDirection directionFrom;
+			directionFrom = ForgeDirection.UNKNOWN;
+			tTank1 = (IFluidHandler) aTileEntity;			
+			if (tTank1 != null) {
+				//Logger.INFO("Found Self. "+aSide);
+				//FluidStack aTankStack = tTank1.drain(ForgeDirection.UNKNOWN, 1, false);
+				FluidStack aTankStack = tTank1.getTankInfo(directionFrom)[0].fluid;
+				if (aTankStack != null) {
+					//Logger.INFO("Found Fluid inside self - "+aTankStack.getLocalizedName()+", overflow point set at "+aCoverVariable+"L and we have "+aTankStack.amount+"L inside.");
+					if (aTankStack.amount > aCoverVariable) {
+						int aAmountToDrain = aTankStack.amount - aCoverVariable;
+						//Logger.INFO("There is "+aAmountToDrain+" more fluid in the tank than we would like.");
+						if (aAmountToDrain > 0) {
+							FluidStack tLiquid = tTank1.drain(directionFrom, Math.abs(aAmountToDrain), true);	
+							if (tLiquid != null) {
+								//Logger.INFO("Drained "+aAmountToDrain+"L.");
 							}
 						}
 					}
 				}
+				else {
+					//Logger.INFO("Could not simulate drain on self.");
+				}
 			}
-
-			return aCoverVariable;
 		}
+		return aCoverVariable;
 	}
 
 	public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
 			EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		
-		
-		if ((double) aX > 0.375D && (double) aX < 0.625D || aSide <= 3 || (double) aY > 0.375D && (double) aY < 0.625D
-				|| (double) aZ <= 0.375D || (double) aZ >= 0.625D) {			
-			HashMap<String, Object> aCoverData = getCover(aSide, aCoverID, aCoverVariable, aTileEntity);			
-			float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
-			switch ((byte) ((byte) ((int) (tCoords[0] * 2.0F)) + 2 * (byte) ((int) (tCoords[1] * 2.0F)))) {
-				case 0 :
-					aCoverVariable -= 1000;
-					break;
-				case 1 :
-					aCoverVariable += 1000;
-					break;
-				case 2 :
-					aCoverVariable -= 32000;
-					break;
-				case 3 :
-					aCoverVariable += 32000;
-			}			
-			aCoverData.remove("aCoverVariable");
-			aCoverData.put("aCoverVariable", aCoverVariable);			
-			updateCoverMap(aCoverData);
-			
+		if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
+			aCoverVariable += aPlayer.isSneaking() ? 4096 : 1024;
+		} else {
+			aCoverVariable -= aPlayer.isSneaking() ? 4096 : 1024;
 		}
-		GT_Utility.sendChatToPlayer(aPlayer, "Overflow Limit: " + aCoverVariable);
-
+		if (aCoverVariable > mMaxTransferRate) {
+			aCoverVariable = mInitialTransferRate;
+		}
+		if (aCoverVariable <= 0) {
+			aCoverVariable = mInitialTransferRate;
+		}
+		GT_Utility.sendChatToPlayer(aPlayer, LangUtils.trans("009", "Overflow point: ") + aCoverVariable + trans("010", "L"));
 		return aCoverVariable;
+	}
+
+	public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+			EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		boolean aShift = aPlayer.isSneaking();
+		int aAmount = aShift ? 128 : 8;
+		if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
+			aCoverVariable += aAmount;
+		} else {
+			aCoverVariable -= aAmount;
+		}
+		if (aCoverVariable > mMaxTransferRate) {
+			aCoverVariable = mInitialTransferRate;
+		}
+		if (aCoverVariable <= 0) {
+			aCoverVariable = mInitialTransferRate;
+		}
+		GT_Utility.sendChatToPlayer(aPlayer, LangUtils.trans("009", "Overflow point: ") + aCoverVariable + trans("010", "L"));
+		aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
+		return true;
 	}
 
 	public boolean letsRedstoneGoIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
@@ -157,17 +120,11 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
 	}
 
 	public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-		return aCoverVariable > 1 && aTileEntity instanceof IMachineProgress
-				&& ((IMachineProgress) aTileEntity).isAllowedToWork() != aCoverVariable % 6 < 4
-						? false
-						: aCoverVariable >= 6 || aCoverVariable % 2 != 0;
+		return false;
 	}
 
 	public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-		return aCoverVariable > 1 && aTileEntity instanceof IMachineProgress
-				&& ((IMachineProgress) aTileEntity).isAllowedToWork() != aCoverVariable % 6 < 4
-						? false
-						: aCoverVariable >= 6 || aCoverVariable % 2 == 0;
+		return true;
 	}
 
 	public boolean alwaysLookConnected(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
@@ -175,39 +132,6 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
 	}
 
 	public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-		return 1;
-	}
-	
-	public HashMap<String, Object> getCover(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity){
-		//Map this cover
-		String aTileDataKey = "|"+aTileEntity.getXCoord()+"|"+aTileEntity.getYCoord()+"|"+aTileEntity.getZCoord()+"|"+aTileEntity.getWorld().provider.dimensionId+"|"+aSide+"|";		
-		HashMap<String, Object> aTileData;
-		long aCurrentTime = System.currentTimeMillis();
-		if (mOverflowCache.get(aTileDataKey) != null) {
-			aTileData = mOverflowCache.get(aTileDataKey);	
-			aTileData.remove("aLastUpdatedTime");
-			aTileData.put("aLastUpdateTime", aCurrentTime);
-			//Logger.INFO("Found Existing Cover in Cache.");
-		}
-		else {
-			aTileData = new HashMap<String, Object>();
-			aTileData.put("aCoverKey", aTileDataKey);
-			aTileData.put("aSide", aSide);
-			aTileData.put("aCoverID", aCoverID);
-			aTileData.put("aCoverVariable", aCoverVariable);
-			aTileData.put("aLastUpdateTime", aCurrentTime);
-			mOverflowCache.put(aTileDataKey, aTileData);
-			Logger.INFO("Adding new Cover to Cache. Storing under key: "+aTileDataKey);
-		}
-		return aTileData;		
-	}
-	
-	public void updateCoverMap(HashMap<String, Object> aCoverData) {
-		String mAccessKey = (String) aCoverData.get("aCoverKey");
-		if (mOverflowCache.get(mAccessKey) != null) {
-			mOverflowCache.remove(mAccessKey);
-		}
-		mOverflowCache.put(mAccessKey, aCoverData);		
-		return;
+		return 5;
 	}
 }

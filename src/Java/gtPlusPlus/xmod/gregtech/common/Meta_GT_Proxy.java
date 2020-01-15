@@ -1,16 +1,11 @@
 package gtPlusPlus.xmod.gregtech.common;
 
-import static gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow.mOverflowCache;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -29,7 +24,6 @@ import gregtech.api.util.Recipe_GT;
 import gregtech.common.GT_Proxy;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.data.ObjMap;
 import gtPlusPlus.api.objects.minecraft.FormattedTooltipString;
 import gtPlusPlus.core.handler.AchievementHandler;
 import gtPlusPlus.core.lib.CORE;
@@ -117,7 +111,6 @@ public class Meta_GT_Proxy {
 	}
 
 	public static void init() {
-		scheduleCoverMapCleaner();
 		setValidHeatingCoilMetas();	
 		PollutionUtils.setPollutionFluids();
 		fixIC2FluidNames();		
@@ -434,47 +427,6 @@ public class Meta_GT_Proxy {
 			return false;
 		}
 	}
-
-
-	public static void scheduleCoverMapCleaner(){
-		TimerTask repeatedTask = new TimerTask() {
-			public void run() {
-				cleanupOverFlowCoverCache();
-			}
-		};
-		Timer timer = new Timer("CoverCleanupManager");	     
-		long delay  = 120000L;
-		long period = 300000L;
-		timer.scheduleAtFixedRate(repeatedTask, delay, period);
-	}
-
-	public static int cleanupOverFlowCoverCache() {
-		ObjMap<String, ?> cache = mOverflowCache;
-		int aRemoved = 0;
-		long aCurrentTime = System.currentTimeMillis()/1000;
-		for (Object o : cache.values()) {
-			if (o != null && o instanceof HashMap) {
-				@SuppressWarnings("unchecked")
-				HashMap<String, Object> m = (HashMap<String, Object>) o;
-				if (m != null) {
-					String s = (String) m.get("aCoverKey");
-					if (m.containsKey("aLastUpdatedTime")) {
-						long mapTime = (long) m.get("mLastUpdatedTime");
-						if ((aCurrentTime-(mapTime/1000) > 30)){
-							mOverflowCache.remove(s);
-							aRemoved++;							
-						}
-					}
-					else {
-						mOverflowCache.remove(s);
-						aRemoved++;
-					}
-				}
-			}
-		}
-		return aRemoved;
-	}
-
 
 	static GT_Proxy[] mProxies = new GT_Proxy[2];
 
