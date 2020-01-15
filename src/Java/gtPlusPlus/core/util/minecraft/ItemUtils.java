@@ -25,11 +25,14 @@ import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.item.base.dusts.decimal.BaseItemCentidust;
 import gtPlusPlus.core.item.base.dusts.decimal.BaseItemDecidust;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate_OLD;
+import gtPlusPlus.core.item.chemistry.AgriculturalChem;
+import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
 import gtPlusPlus.core.item.tool.staballoy.MultiSpadeBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -1302,6 +1305,42 @@ public class ItemUtils {
 				return ItemList.NULL;
 			}
 		}		
+	}
+
+	public static boolean isControlCircuit(ItemStack aStack) {
+		if (aStack != null) {
+			Item aItem = aStack.getItem();
+			if (aItem == CI.getNumberedBioCircuit(0).getItem() || aItem == CI.getNumberedCircuit(0).getItem()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean isCatalyst(ItemStack aStack) {
+
+		if (GT_Utility.areStacksEqual(aStack, GenericChem.mBlueCatalyst, true)) {
+			return true;
+		}
+		if (GT_Utility.areStacksEqual(aStack, GenericChem.mBrownCatalyst, true)) {
+			return true;
+		}
+		if (GT_Utility.areStacksEqual(aStack, GenericChem.mOrangeCatalyst, true)) {
+			return true;
+		}
+		if (GT_Utility.areStacksEqual(aStack, GenericChem.mPurpleCatalyst, true)) {
+			return true;
+		}
+		if (GT_Utility.areStacksEqual(aStack, GenericChem.mRedCatalyst, true)) {
+			return true;
+		}
+		if (GT_Utility.areStacksEqual(aStack, GenericChem.mYellowCatalyst, true)) {
+			return true;
+		}
+		if (GT_Utility.areStacksEqual(aStack, AgriculturalChem.mGreenCatalyst, true)) {
+			return true;
+		}
+		return false;
 	}
 
 }

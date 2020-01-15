@@ -1182,7 +1182,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 
 	@Override
-	public boolean addFluidReactorRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int time, long eu, int aTier) {
+	public boolean addChemicalPlantRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int time, long eu, int aTier) {
 		
 		if (aInputs.length > 4 || aInputFluids.length > 4 || aOutputs.length > 4 || aFluidOutputs.length > 2) {
 			Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(aInputs));
@@ -1205,10 +1205,10 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     			(int) eu,
     			aTier);   
 		
-		int aSize = Recipe_GT.Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.mRecipeList.size();
+		int aSize = Recipe_GT.Gregtech_Recipe_Map.sChemicalPlantRecipes.mRecipeList.size();
 		int aSize2 = aSize;
-		Recipe_GT.Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.add(aSpecialRecipe);
-		aSize = Recipe_GT.Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.mRecipeList.size();
+		Recipe_GT.Gregtech_Recipe_Map.sChemicalPlantRecipes.add(aSpecialRecipe);
+		aSize = Recipe_GT.Gregtech_Recipe_Map.sChemicalPlantRecipes.mRecipeList.size();
 		return aSize > aSize2;
 	}
 

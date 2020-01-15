@@ -339,7 +339,23 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
              }
         }
         GregtechItemList.Laser_Lens_WoodsGlass.set(this.addItem(140, "Wood's Glass Lens", "Allows UV & IF to pass through, blocks visible light spectrums"));
-
+        
+        int aStartID = 141;
+        GregtechItemList[] aTransParts = new GregtechItemList[] {
+        		GregtechItemList.TransmissionComponent_ULV,
+        		GregtechItemList.TransmissionComponent_LV,
+        		GregtechItemList.TransmissionComponent_MV,
+        		GregtechItemList.TransmissionComponent_HV,
+        		GregtechItemList.TransmissionComponent_EV,
+        		GregtechItemList.TransmissionComponent_IV,
+        		GregtechItemList.TransmissionComponent_LuV,
+        		GregtechItemList.TransmissionComponent_ZPM,
+        		GregtechItemList.TransmissionComponent_UV,
+        		GregtechItemList.TransmissionComponent_MAX,
+        };
+        for (int aIndex=0;aIndex<10;aIndex++){
+        	aTransParts[aIndex].set(this.addItem(aStartID++, "Transmission Component ("+GT_Values.VN[aIndex]+")", "", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, aIndex), getTcAspectStack(TC_Aspects.MACHINA, aIndex), getTcAspectStack(TC_Aspects.MAGNETO, aIndex)}));
+        }
 		
 		
 	}

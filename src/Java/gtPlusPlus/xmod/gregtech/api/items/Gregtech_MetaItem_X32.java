@@ -192,22 +192,9 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
 
 	@Override
 	public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-		if (stack.getDisplayName().contains("ULV")){
-			HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
-		}
-		else if (stack.getDisplayName().contains("LuV")){
-			HEX_OxFFFFFF = 0xffffcc;
-		}
-		else if (stack.getDisplayName().contains("ZPM")){
-			HEX_OxFFFFFF = 0xffe600;
-		}
-		else if (stack.getDisplayName().contains("UV")){
-			HEX_OxFFFFFF = 0xffb300;
-		}
-		else if (stack.getDisplayName().contains("MAX")){
-			HEX_OxFFFFFF = Utils.rgbtoHexValue(MathUtils.randInt(220, 250), MathUtils.randInt(221, 251), MathUtils.randInt(220, 250));
-		}
-		else if (stack.getDisplayName().contains("Sodium")){
+		
+		int aMeta = stack.getItemDamage();		
+		if (stack.getDisplayName().contains("Sodium")){
 			HEX_OxFFFFFF = Utils.rgbtoHexValue(90, 90, 255);
 		}
 		else if (stack.getDisplayName().contains("Cadmium")){
@@ -228,8 +215,28 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
 		else if (stack.getDisplayName().contains("Invar")){
 			HEX_OxFFFFFF = Utils.rgbtoHexValue(180, 180, 120);
 		}
-		else {
-			HEX_OxFFFFFF = 0xffffff;
+		else {			
+			if (aMeta > 50 && aMeta != 150) {
+				HEX_OxFFFFFF = 0xffffff;
+			}
+			else if (stack.getDisplayName().contains("ULV")){
+				HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
+			}
+			else if (stack.getDisplayName().contains("LuV")){
+				HEX_OxFFFFFF = 0xffffcc;
+			}
+			else if (stack.getDisplayName().contains("ZPM")){
+				HEX_OxFFFFFF = 0xffe600;
+			}
+			else if (stack.getDisplayName().contains("UV")){
+				HEX_OxFFFFFF = 0xffb300;
+			}
+			else if (stack.getDisplayName().contains("MAX")){
+				HEX_OxFFFFFF = Utils.rgbtoHexValue(MathUtils.randInt(220, 250), MathUtils.randInt(221, 251), MathUtils.randInt(220, 250));
+			}
+			else {
+				HEX_OxFFFFFF = 0xffffff;
+			}
 		}
 		return HEX_OxFFFFFF;
 	}

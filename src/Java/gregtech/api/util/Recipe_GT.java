@@ -262,7 +262,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		//Basic Washer Map
 		public static final GT_Recipe_Map sSimpleWasherRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(3), "gt.recipe.simplewasher", "Simple Dust Washer", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, true);
 		
-		public static final Gregtech_Recipe_Map sFluidChemicalReactorRecipes = new Gregtech_Recipe_Map(
+		public static final Gregtech_Recipe_Map sChemicalPlantRecipes = new Gregtech_Recipe_Map(
 				new HashSet<Recipe_GT>(100),
 				"gt.recipe.fluidchemicaleactor",
 				"Chemical Plant",
@@ -277,7 +277,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 				1,
 				E,
 				true,
-				false);
+				true);
 
 
 		//RTG Fuel Map
@@ -315,6 +315,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		public static final GT_Recipe_Map sAdvFreezerRecipes_GT = new GT_Recipe_Map(new HashSet<GT_Recipe>(2000), "gt.recipe.temp", "temp", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
 		public static final GT_Recipe_Map sMultiblockCentrifugeRecipes_GT = new GT_Recipe_Map(new HashSet<GT_Recipe>(2000), "gt.recipe.temp2", "temp2", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
 		public static final GT_Recipe_Map sMultiblockElectrolyzerRecipes_GT = new GT_Recipe_Map(new HashSet<GT_Recipe>(2000), "gt.recipe.temp3", "temp3", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
+		public static final GT_Recipe_Map sChemicalPlant_GT = new GT_Recipe_Map(new HashSet<GT_Recipe>(2000), "gt.recipe.temp4", "temp4", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
 
 		//Semi-Fluid Fuel Map 
 		public static final GT_Recipe_Map_Fuel sSemiFluidLiquidFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.semifluidgeneratorfuels", "Semifluid Generator Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);

@@ -20,9 +20,9 @@ public class SlotChemicalPlantInput extends Slot {
 	}
 	
 	public static boolean isItemValidForChemicalPlantSlot(ItemStack aStack) {
-		boolean validItem = Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.containsInput(aStack);		
+		boolean validItem = Gregtech_Recipe_Map.sChemicalPlantRecipes.containsInput(aStack);		
 		if (!validItem) {
-			for (Recipe_GT f : Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.mRecipeList) {
+			for (Recipe_GT f : Gregtech_Recipe_Map.sChemicalPlantRecipes.mRecipeList) {
 				if (f.mFluidInputs.length > 0) {
 					for (FluidStack g : f.mFluidInputs) {
 						if (g != null) {

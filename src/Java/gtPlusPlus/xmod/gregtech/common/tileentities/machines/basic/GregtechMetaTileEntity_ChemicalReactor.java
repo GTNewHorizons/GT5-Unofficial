@@ -43,23 +43,6 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
 	public FluidStack[] mInputFluids = new FluidStack[4];
 	public FluidStack[] mOutputFluids = new FluidStack[2];
 
-	private static final GT_Recipe_Map mFluidChemicalReactorRecipes = new GT_Recipe_Map(
-			new HashSet<GT_Recipe>(100),
-			"gt.recipe.fluidchemicaleactor",
-			"Chemical Plant",
-			null,
-			CORE.MODID+":textures/gui/FluidReactor",
-			0,
-			0,
-			0,
-			2,
-			1,
-			"Tier: ",
-			1,
-			E,
-			true,
-			false);
-
 	public GregtechMetaTileEntity_ChemicalReactor(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 1, 
 				"For mixing fluids", 4, 4, "ChemicalReactor.png", "",
@@ -124,12 +107,7 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeList() {
-		if (mFluidChemicalReactorRecipes.mRecipeList.isEmpty()) {
-			for (Recipe_GT i :Recipe_GT.Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.mRecipeList) {
-				mFluidChemicalReactorRecipes.add(i);
-			}
-		}
-		return mFluidChemicalReactorRecipes;
+		return null;
 	}
 
 	@Override

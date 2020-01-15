@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
-import static gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils.mPollution;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,20 +9,13 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.IChunkLoader;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.chunkloading.GTPP_ChunkManager;
 import gtPlusPlus.core.chunkloading.StaticChunkFunctions;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -36,17 +28,7 @@ import net.minecraft.world.chunk.Chunk;
 public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMachine implements IChunkLoader {
 
 	public GregtechMetaTileEntityChunkLoader(int aID, String aName, String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier, 2, "Loads " + getMaxChunksToLoadForTier(aTier) + " chunks when powered", 0, 0, "Recycler.png", "", 
-				new ITexture[]{
-						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
-						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
-						new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
-						new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab),
-						new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Vent_Fast),
-						new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Vent),
-						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB)
-		});
+		super(aID, aName, aNameRegional, aTier, 2, "Loads " + getMaxChunksToLoadForTier(aTier) + " chunks when powered", 0, 0, "Recycler.png", "", new ITexture[]{});
 	}
 
 	public GregtechMetaTileEntityChunkLoader(String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
@@ -54,13 +36,27 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
 	}
 
 	public static int getMaxChunksToLoadForTier(int aTier) {
-		return (aTier * aTier);
+		if (aTier < 4) {
+			return 3 * 3;
+		}
+		if (aTier < 6) {
+			return 7 * 7;
+		}
+		if (aTier < 8) {
+			return 15 * 15;
+		}
+		else {
+			return 0;
+		}
 	}
 
 	@Override
 	public String[] getDescription() {
 		return new String[] {
-				this.mDescription,
+				"Loads " + getMaxChunksToLoadForTier(this.mTier) + " chunks when powered",
+				"Consumes 2A",
+				"Behaves Identically to a Railcraft World Anchor",
+				CORE.GT_Tooltip
 		};
 	}
 
@@ -89,57 +85,56 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
 
 
 	public ITexture[] getFront(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel), new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])};
 	}
 
 
 	public ITexture[] getBack(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel), new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])};
 	}
 
 
 	public ITexture[] getBottom(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel), new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])};
 	}
 
 
 	public ITexture[] getTop(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel), new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])};
 	}
 
 
 	public ITexture[] getSides(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Redox_3)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel), new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])};
 	}
 
 
 	public ITexture[] getFrontActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel), new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier+1])};
 	}
 
 
 	public ITexture[] getBackActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel), new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier+1])};
 	}
 
 
 	public ITexture[] getBottomActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel), new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier+1])};
 	}
 
 
 	public ITexture[] getTopActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel), new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier+1])};
 	}
 
 
 	public ITexture[] getSidesActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Redox_3)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel), new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier+1])};
 	}
 
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		PlayerUtils.messagePlayer(aPlayer, "Running every "+" minutes.");	
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
@@ -175,9 +170,7 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
 
 	@Override
 	public String[] getInfoData() {
-		return new String[] {
-				this.getLocalName()
-		};
+		return super.getInfoData();
 	}
 
 	@Override

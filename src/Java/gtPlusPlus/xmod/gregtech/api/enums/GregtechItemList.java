@@ -39,6 +39,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Emitter_ULV,
 	Sensor_ULV,
 
+	// Mixed Components
+	TransmissionComponent_ULV, TransmissionComponent_LV, 
+	TransmissionComponent_MV, TransmissionComponent_HV, 
+	TransmissionComponent_EV, TransmissionComponent_IV,
+	TransmissionComponent_LuV, TransmissionComponent_ZPM, 
+	TransmissionComponent_UV, TransmissionComponent_MAX, 
+	
 	//Recipe Circuit
 	Circuit_BioRecipeSelector,
 	
@@ -625,7 +632,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	FakeMachineCasingPlate_MV, FakeMachineCasingPlate_HV,
 	FakeMachineCasingPlate_EV, FakeMachineCasingPlate_IV,
 	FakeMachineCasingPlate_LuV, FakeMachineCasingPlate_ZPM,
-	FakeMachineCasingPlate_UV, FakeMachineCasingPlate_MAX, 
+	FakeMachineCasingPlate_UV, FakeMachineCasingPlate_MAX,
+	
+	
 	
 
 	//----------------------------------------------------------------------------

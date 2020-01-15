@@ -253,7 +253,7 @@ public class RECIPES_Machines {
 					CI.getTieredComponentOfMaterial(Materials.Steel, OrePrefixes.gearGt, 6),
 					CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.plate, 32),
 					CI.getTieredComponentOfMaterial(Materials.CobaltBrass, OrePrefixes.dust, 16),
-					ALLOY.STAINLESS_STEEL.getFrameBox(4),
+					CI.getTieredComponent(OrePrefixes.frameGt, 2, 4),
 				}, 
 				ALLOY.STEEL.getFluid(2 * (144 * 4)), 
 				GregtechItemList.ChemicalPlant_Controller.get(1), 
@@ -293,7 +293,7 @@ public class RECIPES_Machines {
 
 	private static void distillus() {
 		
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedBioCircuit(19),
 						ItemList.Distillation_Tower.get(2),
@@ -338,7 +338,7 @@ public class RECIPES_Machines {
 						CI.getElectricPiston(i, 10),
 						CI.getFieldGenerator(i + 1, 6),
 						CI.getPlate(i, 16),
-						CI.getEmitter(i - 1, 24),
+						CI.getTransmissionComponent(i - 1, 8),
 						CI.getTieredComponent(OrePrefixes.cableGt08, i, 16)
 					}, 
 					ALLOY.EGLIN_STEEL.getFluid(i * (144 * 4)), 
@@ -394,7 +394,7 @@ public class RECIPES_Machines {
 		for (int i=0;i<10;i++) {			
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
-							CI.getNumberedBioCircuit(22),
+							CI.getNumberedBioCircuit(20),
 							CI.getTieredMachineCasing(i),
 							CI.getPlate(i, 8),
 							CI.getGear(i, 2),
@@ -1488,8 +1488,7 @@ public class RECIPES_Machines {
 										GregtechItemList.Casing_Refinery_Structural.get(4),
 										ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR, GTNH ? 2 : 1),
 										CI.getTieredComponent(OrePrefixes.cableGt08, GTNH ? 7 : 6, GTNH ? 32 : 16),
-										CI.getEmitter(GTNH ? 6 : 5, 2), 
-										CI.getSensor(GTNH ? 6 : 5, 2),
+										CI.getTransmissionComponent(GTNH ? 6 : 5, 2), 
 										GregtechItemList.Gregtech_Computer_Cube.get(1),
 								},
 								CI.getTieredFluid(7, 144 * (GTNH ? 32 : 8)), GregtechItemList.GT4_Multi_Crafter.get(1),
@@ -2178,8 +2177,7 @@ public class RECIPES_Machines {
 			int aTier = (i + 1);			
 			ItemStack[] aInputs = new ItemStack[] {
 					CI.getTieredMachineHull(i, 1 * aCostMultiplier),
-					CI.getEmitter(i, 2 * aCostMultiplier),
-					CI.getSensor(i, 2 * aCostMultiplier),
+					CI.getTransmissionComponent(i, 2 * aCostMultiplier),
 					CI.getFieldGenerator(i, 1 * aCostMultiplier),
 					CI.getTieredComponent(OrePrefixes.plate, aTier, 4 * aCostMultiplier),
 					CI.getTieredComponent(OrePrefixes.circuit, aTier, 2 * aCostMultiplier),
@@ -2199,9 +2197,8 @@ public class RECIPES_Machines {
 		CORE.RA.addSixSlotAssemblingRecipe(				
 				new ItemStack[] {
 						CI.getTieredMachineHull(-1, 1 * aCostMultiplier),
-						CI.getEmitter(2, 2 * aCostMultiplier),
+						CI.getTransmissionComponent(2, 2 * aCostMultiplier),
 						CI.getElectricPiston(4, 2 * aCostMultiplier),
-						CI.getSensor(4, 1 * aCostMultiplier),
 						CI.getTieredComponent(OrePrefixes.plate, 5, 4 * aCostMultiplier),
 						CI.getTieredComponent(OrePrefixes.pipeSmall, 4, 1 * aCostMultiplier),
 				},					

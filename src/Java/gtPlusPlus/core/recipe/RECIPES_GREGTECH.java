@@ -511,6 +511,30 @@ public class RECIPES_GREGTECH {
 
 	private static void laserEngraverRecipes() {		
 
+		// Laser Sensors and Emitters together
+		GregtechItemList[] aTransParts = new GregtechItemList[] {
+				GregtechItemList.TransmissionComponent_ULV,
+				GregtechItemList.TransmissionComponent_LV,
+				GregtechItemList.TransmissionComponent_MV,
+				GregtechItemList.TransmissionComponent_HV,
+				GregtechItemList.TransmissionComponent_EV,
+				GregtechItemList.TransmissionComponent_IV,
+				GregtechItemList.TransmissionComponent_LuV,
+				GregtechItemList.TransmissionComponent_ZPM,
+				GregtechItemList.TransmissionComponent_UV,
+				GregtechItemList.TransmissionComponent_MAX,
+		};
+		for (int i=0;i<10;i++) {
+			GT_Values.RA.addLaserEngraverRecipe(
+					CI.getEmitter(i, 2),
+					CI.getSensor(i, 2),
+					aTransParts[i].get(1),
+					20 * 5,
+					MaterialUtils.getVoltageForTier(i));
+		}
+
+
+
 		GT_Values.RA.addLaserEngraverRecipe(
 				GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 6L),
 				GregtechItemList.Laser_Lens_Special.get(0),
@@ -646,18 +670,18 @@ public class RECIPES_GREGTECH {
 				new int[] {10000}, //Output Chance 
 				20 * 120,
 				30720);
-		
+
 		//NITINOL_60
 		CORE.RA.addBlastSmelterRecipe(
 				new ItemStack[] {
-					ELEMENT.getInstance().TITANIUM.getDust(3),
-					ELEMENT.getInstance().NICKEL.getDust(2)
+						ELEMENT.getInstance().TITANIUM.getDust(3),
+						ELEMENT.getInstance().NICKEL.getDust(2)
 				},
 				ALLOY.NITINOL_60.getFluid(20 * 144),
 				0,
 				20 * 75,
 				7680);
-		
+
 
 
 
@@ -847,13 +871,13 @@ public class RECIPES_GREGTECH {
 
 		//Gelid Cryotheum
 		CORE.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustCryotheum", 1), FluidUtils.getFluidStack("cryotheum", 250), 200, 240);
-		
+
 		//Ender Fluid
 		CORE.RA.addFluidExtractionRecipe(ItemUtils.getSimpleStack(Items.ender_pearl), FluidUtils.getFluidStack("ender", 250), 100, 30);		
-		
+
 		//Blazing Pyrotheum
 		CORE.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1), FluidUtils.getFluidStack("pyrotheum", 250), 200, 240);
-		
+
 
 	}
 
@@ -1568,10 +1592,10 @@ public class RECIPES_GREGTECH {
 				GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Invar, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 4L), GregtechItemList.Fluid_Cell_144L.get(1L, new Object[0]), 75, 32);
 			}
 		}
-		
+
 
 		if (LoadedMods.Baubles) {
-			
+
 
 
 			// Turbine Housing Research Page
@@ -1600,8 +1624,8 @@ public class RECIPES_GREGTECH {
 					ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_9_CLOAKING, 1),
 					20 * 60 * 10,
 					(int) GT_Values.V[7]);
-			
-			
+
+
 			// Supreme Pizza Gloves
 			CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
 					ItemUtils.getGregtechCircuit(19),

@@ -3,6 +3,7 @@ package gtPlusPlus.nei;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,7 +27,11 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.nei.GT_NEI_MultiBlockHandler.CachedDefaultRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
@@ -44,31 +49,37 @@ extends TemplateRecipeHandler {
 		GuiContainerManager.addTooltipHandler(new GT_RectHandler());
 	}
 
-	protected final GT_Recipe_Map mRecipeMap;
+	protected Gregtech_Recipe_Map mRecipeMap;
 
-	public GT_NEI_FluidReactor(final GT_Recipe_Map sfluidchemicalreactorrecipes) {
-		this.mRecipeMap = sfluidchemicalreactorrecipes;
-		this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), this.getOverlayIdentifier(), new Object[0]));
+	public GT_NEI_FluidReactor() {
+		this.mRecipeMap = Gregtech_Recipe_Map.sChemicalPlantRecipes;
+		this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), this.getRecipeMapName(), new Object[0]));
 		if (!NEI_GT_Config.sIsAdded) {
-			FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtechplusplus@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
+			FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtechplusplus@" + this.getRecipeName() + "@" + this.getRecipeMapName());
 			GuiCraftingRecipe.craftinghandlers.add(this);
 			GuiUsageRecipe.usagehandlers.add(this);
 		}
 	}
 
+	public List<Recipe_GT> getSortedRecipes() {
+		List<Recipe_GT> result = new ArrayList<>(this.mRecipeMap.mRecipeList);
+		Collections.sort(result);
+		return result;
+	}
+	
 	public static void drawText(final int aX, final int aY, final String aString, final int aColor) {
 		Minecraft.getMinecraft().fontRenderer.drawString(aString, aX, aY, aColor);
 	}
 
 	@Override
 	public TemplateRecipeHandler newInstance() {
-		return new GT_NEI_FluidReactor(this.mRecipeMap);
+		return new GT_NEI_FluidReactor();
 	}
 
 	@Override
 	public void loadCraftingRecipes(final String outputId, final Object... results) {
-		if (outputId.equals(this.mRecipeMap.mNEIName)) {
-			for (final GT_Recipe tRecipe : this.mRecipeMap.mRecipeList) {
+		if (outputId.equals(getRecipeMapName())) {
+			for (Recipe_GT tRecipe : getSortedRecipes()) {
 				if (!tRecipe.mHidden) {
 					this.arecipes.add(new CachedDefaultRecipe(tRecipe));
 				}
@@ -80,29 +91,29 @@ extends TemplateRecipeHandler {
 
 	@Override
 	public void loadCraftingRecipes(final ItemStack aResult) {
-		final ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aResult);
+		ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aResult);
 
-		final ArrayList<ItemStack> tResults = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> tResults = new ArrayList<ItemStack>();
 		tResults.add(aResult);
 		tResults.add(GT_OreDictUnificator.get(true, aResult));
 		if ((tPrefixMaterial != null) && (!tPrefixMaterial.mBlackListed) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
-			for (final OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
+			for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
 				tResults.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
 			}
 		}
-		final FluidStack tFluid = GT_Utility.getFluidForFilledItem(aResult, true);
+		FluidStack tFluid = GT_Utility.getFluidForFilledItem(aResult, true);
 		if (tFluid != null) {
 			tResults.add(GT_Utility.getFluidDisplayStack(tFluid, false));
-			for (final FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
+			for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
 				if (tData.fluid.isFluidEqual(tFluid)) {
 					tResults.add(GT_Utility.copy(new Object[]{tData.filledContainer}));
 				}
 			}
 		}
-		for (final GT_Recipe tRecipe : this.mRecipeMap.mRecipeList) {
+		for (Recipe_GT tRecipe : getSortedRecipes()) {
 			if (!tRecipe.mHidden) {
-				final CachedDefaultRecipe tNEIRecipe = new CachedDefaultRecipe(tRecipe);
-				for (final ItemStack tStack : tResults) {
+				CachedDefaultRecipe tNEIRecipe = new CachedDefaultRecipe(tRecipe);
+				for (ItemStack tStack : tResults) {
 					if (tNEIRecipe.contains(tNEIRecipe.mOutputs, tStack)) {
 						this.arecipes.add(tNEIRecipe);
 						break;
@@ -110,33 +121,33 @@ extends TemplateRecipeHandler {
 				}
 			}
 		}
+		//CachedDefaultRecipe tNEIRecipe;
 	}
 
-	@Override
-	public void loadUsageRecipes(final ItemStack aInput) {
-		final ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aInput);
+	public void loadUsageRecipes(ItemStack aInput) {
+		ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aInput);
 
-		final ArrayList<ItemStack> tInputs = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> tInputs = new ArrayList<ItemStack>();
 		tInputs.add(aInput);
 		tInputs.add(GT_OreDictUnificator.get(false, aInput));
 		if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
-			for (final OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
+			for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
 				tInputs.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
 			}
 		}
-		final FluidStack tFluid = GT_Utility.getFluidForFilledItem(aInput, true);
+		FluidStack tFluid = GT_Utility.getFluidForFilledItem(aInput, true);
 		if (tFluid != null) {
 			tInputs.add(GT_Utility.getFluidDisplayStack(tFluid, false));
-			for (final FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
+			for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
 				if (tData.fluid.isFluidEqual(tFluid)) {
 					tInputs.add(GT_Utility.copy(new Object[]{tData.filledContainer}));
 				}
 			}
 		}
-		for (final GT_Recipe tRecipe : this.mRecipeMap.mRecipeList) {
+		for (Recipe_GT tRecipe : getSortedRecipes()) {
 			if (!tRecipe.mHidden) {
-				final CachedDefaultRecipe tNEIRecipe = new CachedDefaultRecipe(tRecipe);
-				for (final ItemStack tStack : tInputs) {
+				CachedDefaultRecipe tNEIRecipe = new CachedDefaultRecipe(tRecipe);
+				for (ItemStack tStack : tInputs) {
 					if (tNEIRecipe.contains(tNEIRecipe.mInputs, tStack)) {
 						this.arecipes.add(tNEIRecipe);
 						break;
@@ -144,6 +155,11 @@ extends TemplateRecipeHandler {
 				}
 			}
 		}
+		//CachedDefaultRecipe tNEIRecipe;
+	}
+
+	public String getRecipeMapName() {
+		return this.mRecipeMap.mNEIName;
 	}
 
 	@Override
@@ -195,7 +211,13 @@ extends TemplateRecipeHandler {
 							(tStack.item.stackSize != 0)) {
 						break;
 					}
-					currenttip.add("Does not get consumed in the process");
+					if (ItemUtils.isCatalyst(aStack)) {
+						currenttip.add("Does not always get consumed in the process");
+						currenttip.add("Higher tier pipe casings allow this item to last longer");						
+					}
+					else if (ItemUtils.isControlCircuit(aStack)) {
+						currenttip.add("Does not get consumed in the process");					
+					}
 					break;
 				}
 			}

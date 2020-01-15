@@ -339,7 +339,7 @@ public class BioRecipes {
 				ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 1));
 
 		// Plastic		
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(16),
 						ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 64),
@@ -489,7 +489,7 @@ public class BioRecipes {
 						var9); // Eu
 		 */	
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 0)
 				},
@@ -583,7 +583,7 @@ public class BioRecipes {
 				continue;
 			}
 			if (ItemUtils.checkForInvalidItems(a)) {
-				CORE.RA.addFluidReactorRecipe(
+				CORE.RA.addChemicalPlantRecipe(
 						new ItemStack[] {
 								getBioChip(2),
 								ItemUtils.getSimpleStack(a, 10)
@@ -605,7 +605,7 @@ public class BioRecipes {
 		}
 		for (ItemStack a : aSeeds) {
 			if (ItemUtils.checkForInvalidItems(a)) {
-				CORE.RA.addFluidReactorRecipe(
+				CORE.RA.addChemicalPlantRecipe(
 						new ItemStack[] {
 								getBioChip(3),
 								ItemUtils.getSimpleStack(a, 20)
@@ -626,7 +626,7 @@ public class BioRecipes {
 		}
 
 		// Sugar Cane
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(4),
 						ItemUtils.getSimpleStack(Items.reeds, 16)
@@ -644,7 +644,7 @@ public class BioRecipes {
 				30,
 				1);
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(5),
 						ItemUtils.getSimpleStack(Items.reeds, 32),
@@ -666,7 +666,7 @@ public class BioRecipes {
 		// Sugar Beet
 		if (OreDictUtils.containsValidEntries("cropSugarbeet")) {
 
-			CORE.RA.addFluidReactorRecipe(
+			CORE.RA.addChemicalPlantRecipe(
 					new ItemStack[] {
 							getBioChip(4),
 							ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 8),
@@ -684,7 +684,7 @@ public class BioRecipes {
 					30,
 					1);
 
-			CORE.RA.addFluidReactorRecipe(
+			CORE.RA.addChemicalPlantRecipe(
 					new ItemStack[] {
 							getBioChip(5),
 							ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 16),
@@ -705,7 +705,7 @@ public class BioRecipes {
 		}
 
 		// Produce Acetone, Butanol and Ethanol
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(5),
 						ItemUtils.getItemStackOfAmountFromOreDict("cellFermentationBase", 48),
@@ -732,7 +732,7 @@ public class BioRecipes {
 	}
 
 	private static void recipePropionicAcid() {
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 0)
 				},
@@ -781,7 +781,7 @@ public class BioRecipes {
 	}
 
 	private static void recipeSodiumHydroxide() {
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(4)
 				},
@@ -799,7 +799,7 @@ public class BioRecipes {
 				120,
 				1);
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(5),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustSodium", 5)
@@ -821,7 +821,7 @@ public class BioRecipes {
 	private static void recipeSodiumCarbonate() {
 
 		if (OreDictUtils.containsValidEntries("fuelCoke")) {			
-			CORE.RA.addFluidReactorRecipe(
+			CORE.RA.addChemicalPlantRecipe(
 					new ItemStack[] {
 							getBioChip(18),
 							ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 3),
@@ -844,7 +844,7 @@ public class BioRecipes {
 
 		}	
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(18),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 6),
@@ -938,7 +938,7 @@ public class BioRecipes {
 		}
 
 		for (String aOreName : aOreNames) {
-			CORE.RA.addFluidReactorRecipe(
+			CORE.RA.addChemicalPlantRecipe(
 					new ItemStack[] {
 							CI.getNumberedBioCircuit(14),
 							ItemUtils.getSimpleStack(aOreCache.get(aOreName), aOreData2.get(aOreName))
@@ -1051,7 +1051,7 @@ public class BioRecipes {
 	private static void recipeSulfuricAcid() {
 
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(7),
 						ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 10),
@@ -1070,7 +1070,7 @@ public class BioRecipes {
 				60,
 				1);
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(7),
 						ItemUtils.getSimpleStack(AgriculturalChem.mRedCelluloseFiber, 5),
@@ -1094,7 +1094,7 @@ public class BioRecipes {
 	private static void recipeUrea() {
 
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(9),
 				},
@@ -1113,7 +1113,7 @@ public class BioRecipes {
 				30,
 				1);
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(9),
 				},
@@ -1134,7 +1134,7 @@ public class BioRecipes {
 
 	private static void recipeRawBioResin() {
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(3),
 						ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 10),
@@ -1156,7 +1156,7 @@ public class BioRecipes {
 
 	private static void recipeLiquidResin() {
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(3),
 						ItemUtils.getSimpleStack(AgriculturalChem.mRawBioResin, 1)
@@ -1174,7 +1174,7 @@ public class BioRecipes {
 				30,
 				1);
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(3),
 						ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 8)
@@ -1199,7 +1199,7 @@ public class BioRecipes {
 		ItemStack aFert;
 		if (LoadedMods.Forestry) {
 			aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertForestry, 2);			
-			CORE.RA.addFluidReactorRecipe(
+			CORE.RA.addChemicalPlantRecipe(
 					new ItemStack[] {
 							getBioChip(11),
 							ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 16),
@@ -1220,7 +1220,7 @@ public class BioRecipes {
 		}
 
 		aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertIC2, 2);
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(12),
 						ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 16),
@@ -1243,7 +1243,7 @@ public class BioRecipes {
 
 	private static void recipeMethane() {
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(12),
 						ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 20)
@@ -1261,7 +1261,7 @@ public class BioRecipes {
 				8,
 				1);
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(13),
 						ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 64),
@@ -1284,7 +1284,7 @@ public class BioRecipes {
 
 	private static void recipeBenzene() {
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(19),
 						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 0),
@@ -1304,7 +1304,7 @@ public class BioRecipes {
 
 	private static void recipeStyrene() {
 
-		CORE.RA.addFluidReactorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(20),
 						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 0),

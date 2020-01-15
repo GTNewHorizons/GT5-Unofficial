@@ -20,12 +20,12 @@ implements IConfigureNEI {
 		}
 		for (final Gregtech_Recipe_Map tMap : gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map.sMappings) {
 			if (tMap.mNEIAllowed) {				
-				if (!tMap.mUnlocalizedName.equals(Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.mUnlocalizedName)) {
+				if (!tMap.mUnlocalizedName.equals(Gregtech_Recipe_Map.sChemicalPlantRecipes.mUnlocalizedName)) {
 					new GT_NEI_MultiBlockHandler(tMap);					
 				}				
 			}
 		}
-		new GT_NEI_FluidReactor(GregtechMTE_ChemicalPlant.getGeneratedRecipeMap());
+		new GT_NEI_FluidReactor();
 		sIsAdded = true;
 		API.registerRecipeHandler(new DecayableRecipeHandler());
 		API.registerUsageHandler(new DecayableRecipeHandler());

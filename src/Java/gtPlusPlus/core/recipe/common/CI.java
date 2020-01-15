@@ -1264,4 +1264,20 @@ public class CI {
 		return ItemUtils.getOrePrefixStack(aPrefix, aMaterial, aAmount);
 	}
 
+	public static ItemStack getTransmissionComponent(int aTier, int aAmount) {
+		GregtechItemList[] aTransParts = new GregtechItemList[] {
+				GregtechItemList.TransmissionComponent_ULV,
+				GregtechItemList.TransmissionComponent_LV,
+				GregtechItemList.TransmissionComponent_MV,
+				GregtechItemList.TransmissionComponent_HV,
+				GregtechItemList.TransmissionComponent_EV,
+				GregtechItemList.TransmissionComponent_IV,
+				GregtechItemList.TransmissionComponent_LuV,
+				GregtechItemList.TransmissionComponent_ZPM,
+				GregtechItemList.TransmissionComponent_UV,
+				GregtechItemList.TransmissionComponent_MAX,
+		};
+		return aTransParts[aTier].get(aAmount);
+	}
+
 }

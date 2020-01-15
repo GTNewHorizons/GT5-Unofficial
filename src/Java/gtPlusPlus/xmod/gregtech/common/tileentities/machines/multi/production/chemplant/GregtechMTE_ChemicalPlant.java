@@ -51,36 +51,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
-	
+
 	private int mSolidCasingTier = 0;
 	private int mMachineCasingTier = 0;
 	private int mPipeCasingTier = 0;
-	private int mCoilTier = 0;
-
-	public static GT_Recipe_Map getGeneratedRecipeMap() {
-		return mFluidChemicalReactorRecipes;
-	}
-	
-	/**
-	 * Internal Recipe Map which holds the actual recipes, backed by the real map, shown by NEI.
-	 */
-	private static final GT_Recipe_Map mFluidChemicalReactorRecipes = new GT_Recipe_Map(
-			new HashSet<GT_Recipe>(100),
-			"gt.recipe.fluidchemicaleactor",
-			"Chemical Plant",
-			null,
-			CORE.MODID+":textures/gui/FluidReactor",
-			0,
-			0,
-			0,
-			2,
-			1,
-			"Tier: ",
-			1,
-			E,
-			true,
-			false);
-	
+	private int mCoilTier = 0;	
 
 	public GregtechMTE_ChemicalPlant(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -176,15 +151,13 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		if (mFluidChemicalReactorRecipes.mRecipeList.isEmpty() || mFluidChemicalReactorRecipes.mRecipeList.size() !=  Recipe_GT.Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.mRecipeList.size()) {
-			if (!mFluidChemicalReactorRecipes.mRecipeList.isEmpty()) {
-				mFluidChemicalReactorRecipes.mRecipeList.clear();
-			}
-			for (Recipe_GT i : Recipe_GT.Gregtech_Recipe_Map.sFluidChemicalReactorRecipes.mRecipeList) {
-				mFluidChemicalReactorRecipes.add(i);
-			}
+		return Recipe_GT.Gregtech_Recipe_Map.sChemicalPlant_GT;
+	}
+
+	public static void generateRecipes() {
+		for (Recipe_GT i : Recipe_GT.Gregtech_Recipe_Map.sChemicalPlantRecipes.mRecipeList) {
+			Recipe_GT.Gregtech_Recipe_Map.sChemicalPlant_GT.add(i);
 		}
-		return mFluidChemicalReactorRecipes;
 	}
 
 	@Override
@@ -764,7 +737,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	public String getCustomGUIResourceName() {
 		return null;
 	}
-	
+
 	// Same speed bonus as pyro oven
 	public int getSpeedBonus() {
 		return 50 * (this.mCoilTier - 2);
@@ -793,14 +766,14 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	public boolean checkRecipe(final ItemStack aStack) {		
 		return checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), getSpeedBonus());
 	}
-	
-	
+
+
 	@Override
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
-		
+
 		// Based on the Processing Array. A bit overkill, but very flexible.		
 
 		// Reset outputs and progress stats
@@ -813,34 +786,34 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 		long tEnergy = getMaxInputEnergy();
 		log("Running checkRecipeGeneric(0)");
-		
+
 		GT_Recipe tRecipe = findRecipe(
 				getBaseMetaTileEntity(), mLastRecipe, false,
 				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
-		
-		
+
+
 		log("Running checkRecipeGeneric(1)");
 		// Remember last recipe - an optimization for findRecipe()
 		this.mLastRecipe = tRecipe;
-		
-		
+
+
 		if (tRecipe == null) {
 			log("BAD RETURN - 1");
 			return false;
 		}	
-		
+
 		if (tRecipe.mSpecialValue > this.mSolidCasingTier) {
 			log("solid tier is too low");
 			return false;
 		}
-		
-		
+
+
 		aMaxParallelRecipes = this.canBufferOutputs(tRecipe, aMaxParallelRecipes);
 		if (aMaxParallelRecipes == 0) {
 			log("BAD RETURN - 2");
 			return false;
 		}
-		
+
 		// checks if it has enough catalyst durabilety
 		ArrayList<ItemStack>tCatalysts = null; 
 		int tMaxParrallelCatalyst = aMaxParallelRecipes;
@@ -850,7 +823,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			tCatalysts = new ArrayList<ItemStack>();
 			tMaxParrallelCatalyst = getCatalysts(aItemInputs, tCatalystRecipe, aMaxParallelRecipes,tCatalysts);
 		}
-			
+
 		if (tMaxParrallelCatalyst == 0) {
 			log("found not enough catalists catalyst");
 			return false;
@@ -884,7 +857,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			log("BAD RETURN - 3");
 			return false;
 		}
-		
+
 		if (tCatalysts != null) {
 			log("damaging catalyst");
 			for (int j = 0;j<parallelRecipes;j++) {
@@ -900,7 +873,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		}
 
 		// -- Try not to fail after this point - inputs have already been consumed! --
-		
+
 
 		// Convert speed bonus to duration multiplier
 		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
@@ -927,7 +900,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		if (this.mEUt > 0) {
 			this.mEUt = (-this.mEUt);
 		}
-		
+
 
 		this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
 
@@ -1001,19 +974,19 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		int allowedParrallel = 0;
 		for (final ItemStack aInput : aItemInputs) {
 			if (aRecipeCatalyst.isItemEqual(aInput)) {
-					if (aInput.stackSize == 1) {
-						int damage = getDamage(aInput) + aMaxParrallel;
-						if (damage > getMaxCatalystDurability() ) {
-							aOutPut.add(aInput);
-							allowedParrallel += aMaxParrallel + (getMaxCatalystDurability() - damage);
-							if (allowedParrallel >aMaxParrallel ) {
-								return aMaxParrallel;
-							}	
-							continue;
-						}
+				if (aInput.stackSize == 1) {
+					int damage = getDamage(aInput) + aMaxParrallel;
+					if (damage > getMaxCatalystDurability() ) {
+						aOutPut.add(aInput);
+						allowedParrallel += aMaxParrallel + (getMaxCatalystDurability() - damage);
+						if (allowedParrallel >aMaxParrallel ) {
+							return aMaxParrallel;
+						}	
+						continue;
 					}
-					aOutPut.add(aInput);
-					return aMaxParrallel;
+				}
+				aOutPut.add(aInput);
+				return aMaxParrallel;
 			}
 		}
 		return allowedParrallel;
@@ -1042,8 +1015,8 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		}
 		return null;
 	}
-	
-	
+
+
 	private void damageCatalyst(ItemStack aStack) {
 		if (MathUtils.randFloat(0, 10000000)/10000000f < (1.2f - (0.2 * this.mPipeCasingTier))) {
 			int damage = getDamage(aStack) + 1;
@@ -1063,7 +1036,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			log("not consuming catalyst");
 		}
 	}
-	
+
 	private int getDamage(ItemStack aStack) {
 		if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
 			final NBTTagCompound tagMain = new NBTTagCompound();
@@ -1075,13 +1048,13 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		NBTTagCompound aNBT = aStack.getTagCompound();
 		return aNBT.getCompoundTag("catalyst").getInteger("Damage");
 	}
-	
+
 	private void setDamage(ItemStack aStack,int aAmount) {
 		NBTTagCompound aNBT = aStack.getTagCompound();
 		aNBT = aNBT.getCompoundTag("catalyst");
 		aNBT.setInteger("Damage", aAmount);
 	}
-	
+
 
 
 	@SideOnly(Side.CLIENT)

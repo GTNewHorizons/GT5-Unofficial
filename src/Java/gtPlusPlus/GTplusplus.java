@@ -58,6 +58,7 @@ import gtPlusPlus.xmod.gregtech.api.objects.GregtechBufferThread;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.GregtechMTE_ChemicalPlant;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechMiniRaFusion;
@@ -291,6 +292,7 @@ public class GTplusplus implements ActionListener {
 		FishPondFakeRecipe.generateFishPondRecipes();	
 		GregtechMiniRaFusion.generateSlowFusionrecipes();
 		SemiFluidFuelHandler.generateFuels();
+		GregtechMTE_ChemicalPlant.generateRecipes();
 
 		//Large Centrifuge generation
 		mOriginalCount[0] = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.size();
