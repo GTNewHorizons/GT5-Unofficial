@@ -401,7 +401,7 @@ public class RECIPES_Machines {
 							CI.getTieredComponent(OrePrefixes.cableGt02, i, 4),
 							CI.getTieredComponent(OrePrefixes.circuit, i, 2)
 					},
-					CI.getTieredFluid(i, 144 * i * 2), 
+					CI.getAlternativeTieredFluid(i, 144 * i * 2), 
 					aHulls[i].get(1), 
 					20 * 20, 
 					MaterialUtils.getVoltageForTier(i));			
