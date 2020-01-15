@@ -31,7 +31,7 @@ extends GregtechMeta_MultiBlockBase {
 	private int mHeatingCapacity = 0;
 	private int mMode = 0;
 	private boolean isUsingControllerCircuit = false;
-	private static final Item circuit = CI.getNumberedCircuit(0).getItem();
+	private static Item circuit;
 
 	public GregtechMetaTileEntity_AlloyBlastSmelter(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -48,7 +48,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String getMachineType() {
-		return "Alloy Smelter";
+		return "Fluid Alloy Cooker";
 	}
 
 	@Override
@@ -106,6 +106,9 @@ extends GregtechMeta_MultiBlockBase {
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
 		if (this.getBaseMetaTileEntity().isServerSide()) {
 			//Get Controller Circuit
+			if (circuit == null) {
+				circuit = CI.getNumberedCircuit(0).getItem();
+			}
 			if (aStack != null && aStack.getItem() == circuit) {
 				this.mMode = aStack.getItemDamage();	
 				return this.isUsingControllerCircuit = true;
