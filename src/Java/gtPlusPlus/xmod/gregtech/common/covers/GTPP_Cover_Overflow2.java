@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.covers;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.LangUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,23 +30,30 @@ public class GTPP_Cover_Overflow2 extends GT_CoverBehavior {
 			return aCoverVariable;
 		}
 		if ((aTileEntity instanceof IFluidHandler)) {
+			//Logger.INFO("Trying to Void via Overflow.");
 			IFluidHandler tTank1;
 			ForgeDirection directionFrom;
 			directionFrom = ForgeDirection.UNKNOWN;
-			if (aCoverVariable > 0) {
-				tTank1 = (IFluidHandler) aTileEntity;
-			} else {
-				tTank1 = aTileEntity.getITankContainerAtSide(aSide);
-			}
+			tTank1 = (IFluidHandler) aTileEntity;			
 			if (tTank1 != null) {
-				FluidStack aTankStack = tTank1.drain(ForgeDirection.UNKNOWN, 0, false);
+				//Logger.INFO("Found Self. "+aSide);
+				//FluidStack aTankStack = tTank1.drain(ForgeDirection.UNKNOWN, 1, false);
+				FluidStack aTankStack = tTank1.getTankInfo(directionFrom)[0].fluid;
 				if (aTankStack != null) {
+					//Logger.INFO("Found Fluid inside self - "+aTankStack.getLocalizedName()+", overflow point set at "+aCoverVariable+"L and we have "+aTankStack.amount+"L inside.");
 					if (aTankStack.amount > aCoverVariable) {
 						int aAmountToDrain = aTankStack.amount - aCoverVariable;
+						Logger.INFO("There is "+aAmountToDrain+" more fluid in the tank than we would like.");
 						if (aAmountToDrain > 0) {
-							FluidStack tLiquid = tTank1.drain(directionFrom, Math.abs(aAmountToDrain), false);							
+							FluidStack tLiquid = tTank1.drain(directionFrom, Math.abs(aAmountToDrain), true);	
+							if (tLiquid != null) {
+								Logger.INFO("Drained "+aAmountToDrain+"L.");
+							}
 						}
 					}
+				}
+				else {
+					//Logger.INFO("Could not simulate drain on self.");
 				}
 			}
 		}
@@ -65,7 +73,7 @@ public class GTPP_Cover_Overflow2 extends GT_CoverBehavior {
 		if (aCoverVariable <= 0) {
 			aCoverVariable = mInitialTransferRate;
 		}
-		GT_Utility.sendChatToPlayer(aPlayer, LangUtils.trans("009", "Overflow point: ") + aCoverVariable + trans("010", "L/5T"));
+		GT_Utility.sendChatToPlayer(aPlayer, LangUtils.trans("009", "Overflow point: ") + aCoverVariable + trans("010", "L"));
 		return aCoverVariable;
 	}
 
@@ -84,7 +92,7 @@ public class GTPP_Cover_Overflow2 extends GT_CoverBehavior {
 		if (aCoverVariable <= 0) {
 			aCoverVariable = mInitialTransferRate;
 		}
-		GT_Utility.sendChatToPlayer(aPlayer, LangUtils.trans("009", "Overflow point: ") + aCoverVariable + trans("010", "L/5T"));
+		GT_Utility.sendChatToPlayer(aPlayer, LangUtils.trans("009", "Overflow point: ") + aCoverVariable + trans("010", "L"));
 		aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
 		return true;
 	}
