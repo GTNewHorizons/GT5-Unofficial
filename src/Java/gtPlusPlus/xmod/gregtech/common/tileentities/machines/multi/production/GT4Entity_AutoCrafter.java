@@ -33,6 +33,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.helpers.CraftingHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.autocrafter.AC_Helper_Utils;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 
@@ -269,20 +270,53 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 		}
 	}
 
+//	@Override
+//	public boolean checkRecipe(final ItemStack aStack) {
+//
+//		final long tVoltage = this.getMaxInputVoltage();
+//		final byte tTier = this.mTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+//
+//		if (mMachineMode == MODE.DISASSEMBLY) {
+//			return doDisassembly();
+//		} else if (mMachineMode == MODE.CRAFTING) {
+//			return doCrafting(aStack);
+//		} else {
+//			return super.checkRecipeGeneric(getMaxParallelRecipes(), 100, 200);
+//		}
+//	}	
+	
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-
-		final long tVoltage = this.getMaxInputVoltage();
-		final byte tTier = this.mTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-
 		if (mMachineMode == MODE.DISASSEMBLY) {
 			return doDisassembly();
 		} else if (mMachineMode == MODE.CRAFTING) {
 			return doCrafting(aStack);
 		} else {
-			return super.checkRecipeGeneric(getMaxParallelRecipes(), 100, 200);
+			ArrayList<FluidStack> tFluids = getStoredFluids();	
+			//Logger.MACHINE_INFO("1");
+			for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+				ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+				tBus.mRecipeMap = getRecipeMap();
+				//Logger.MACHINE_INFO("2");
+				if (isValidMetaTileEntity(tBus)) {
+					//Logger.MACHINE_INFO("3");
+					for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+						if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+							tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+					}
+				}
+				
+				Object[] tempArray = tFluids.toArray(new FluidStack[] {});
+				FluidStack[] properArray;
+				properArray = ((tempArray != null && tempArray.length > 0) ? (FluidStack[]) tempArray : new FluidStack[] {});
+
+				//Logger.MACHINE_INFO("4");
+				if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), properArray,
+					getMaxParallelRecipes(), 100, 200, 10000)) return true;
+			}
+			return false;
 		}
-	}	
+	}
 	
 	@Override
 	public int getMaxParallelRecipes() {

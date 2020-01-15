@@ -137,13 +137,13 @@ extends GregtechMeta_MultiBlockBase {
 		int depth = 1;
 		int mPlascreteCount = 0;
 		for (int i = 1; i < 4; i++) {
-			Block tBlock = aBaseMetaTileEntity.getBlockOffset(i, 0, 0);
-			int tMeta = aBaseMetaTileEntity.getMetaIDOffset(i, 0, 0);
-			if (tBlock == ModBlocks.blockCasings3Misc && tMeta == 1) {
-				Logger.INFO("Found Correct Top Casing at offset "+i);
+			if (aBaseMetaTileEntity.getAirOffset(i, -1, 0)) {
+				Logger.INFO("aitfound "+i);
 				continue;				
 			}
-			else {
+			Block tBlock = aBaseMetaTileEntity.getBlockOffset(i, -1, 0);
+			int tMeta = aBaseMetaTileEntity.getMetaIDOffset(i, -1, 0);
+			{
 				if (isValidCasingBlock(tBlock, tMeta)) {
 					x = i;
 					z = i;
@@ -176,7 +176,7 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		//!addToMachineList(tTileEntity, mCasingTextureID)
 		if (depth >= -1) {
-			Logger.INFO("Structure is not 5 blocks or taller.");
+			Logger.INFO("Structure is not 5 blocks or taller. depth = "+depth);
 			return false;
 		}
 		
@@ -207,7 +207,7 @@ extends GregtechMeta_MultiBlockBase {
 						}
 						else if (dY < 0) {							
 							//Check Walls
-							if (dX == -x || dX == x || dZ == -z || dZ == z) {
+							if (dY != depth && (dX == -x || dX == x || dZ == -z || dZ == z)) {
 								if (!isValidCasingBlock(tBlock, tMeta) && !addToMachineList(tTileEntity, mCasingTextureID)) {
 									Logger.INFO("Found Incorrect Wall Casing at offset X:"+dX+" | Y:"+dY+" | Z:"+dZ);
 									return false;
