@@ -1897,6 +1897,12 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 			aDidAdd = addToMachineListInternal(mDischargeHatches, aMetaTileEntity, aBaseCasingIndex);
 		}
 
+		//Handle TT Multi-A Energy Hatches
+		else if (LoadedMods.TecTech && isThisHatchMultiEnergy(aMetaTileEntity)) {
+			log("Found isThisHatchMultiEnergy");
+			aDidAdd = addToMachineListInternal(mTecTechEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
+		}		
+
 		//Handle TT Multi-A Dynamos
 		else if (LoadedMods.TecTech && isThisHatchMultiDynamo(aMetaTileEntity)) {
 			log("Found isThisHatchMultiDynamo");
@@ -2202,7 +2208,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	public boolean addDynamoToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (LoadedMods.TecTech){
 			if (isThisHatchMultiDynamo(aTileEntity)) {
-				addMultiAmpDynamoToMachineList(aTileEntity, aBaseCasingIndex);
+				return addMultiAmpDynamoToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 
 		}
@@ -2247,8 +2253,8 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	@Override
 	public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (LoadedMods.TecTech){
-			if (isThisHatchMultiDynamo(aTileEntity)) {
-				addMultiAmpDynamoToMachineList(aTileEntity, aBaseCasingIndex);
+			if (isThisHatchMultiEnergy(aTileEntity)) {
+				return addMultiAmpEnergyToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 
 		}

@@ -10,7 +10,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
@@ -264,9 +263,11 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		/**
 		 * TecTech Support, this allows adding Multi-Amp dynamos.
 		 */
+		mAllEnergyHatches.addAll(this.mEnergyHatches);
 		mAllDynamoHatches.addAll(this.mDynamoHatches);
 
 		if (LoadedMods.TecTech) {
+			mAllDynamoHatches.addAll(this.mTecTechEnergyHatches);
 			mAllDynamoHatches.addAll(this.mTecTechDynamoHatches);
 		}
 

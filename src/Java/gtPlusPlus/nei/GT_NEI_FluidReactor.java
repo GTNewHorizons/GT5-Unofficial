@@ -8,27 +8,29 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.GT_GUIContainer_BasicMachine;
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.*;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
-import gtPlusPlus.core.lib.CORE;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerInputHandler;
 import codechicken.nei.guihook.IContainerTooltipHandler;
-import codechicken.nei.recipe.*;
+import codechicken.nei.recipe.GuiCraftingRecipe;
+import codechicken.nei.recipe.GuiRecipe;
+import codechicken.nei.recipe.GuiUsageRecipe;
+import codechicken.nei.recipe.TemplateRecipeHandler;
+import cpw.mods.fml.common.event.FMLInterModComms;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.gui.GT_GUIContainer_BasicMachine;
+import gregtech.api.objects.ItemData;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.lib.CORE;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -42,9 +44,9 @@ extends TemplateRecipeHandler {
 		GuiContainerManager.addTooltipHandler(new GT_RectHandler());
 	}
 
-	protected final Gregtech_Recipe_Map mRecipeMap;
+	protected final GT_Recipe_Map mRecipeMap;
 
-	public GT_NEI_FluidReactor(final Gregtech_Recipe_Map sfluidchemicalreactorrecipes) {
+	public GT_NEI_FluidReactor(final GT_Recipe_Map sfluidchemicalreactorrecipes) {
 		this.mRecipeMap = sfluidchemicalreactorrecipes;
 		this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), this.getOverlayIdentifier(), new Object[0]));
 		if (!NEI_GT_Config.sIsAdded) {

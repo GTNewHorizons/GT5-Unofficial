@@ -57,7 +57,10 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	private int mPipeCasingTier = 0;
 	private int mCoilTier = 0;
 
-
+	public static GT_Recipe_Map getGeneratedRecipeMap() {
+		return mFluidChemicalReactorRecipes;
+	}
+	
 	/**
 	 * Internal Recipe Map which holds the actual recipes, backed by the real map, shown by NEI.
 	 */

@@ -4,6 +4,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.GregtechMTE_ChemicalPlant;
 
 public class NEI_GT_Config
 implements IConfigureNEI {
@@ -24,7 +25,7 @@ implements IConfigureNEI {
 				}				
 			}
 		}
-		new GT_NEI_FluidReactor(Gregtech_Recipe_Map.sFluidChemicalReactorRecipes);
+		new GT_NEI_FluidReactor(GregtechMTE_ChemicalPlant.getGeneratedRecipeMap());
 		sIsAdded = true;
 		API.registerRecipeHandler(new DecayableRecipeHandler());
 		API.registerUsageHandler(new DecayableRecipeHandler());
