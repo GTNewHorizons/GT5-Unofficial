@@ -1270,7 +1270,7 @@ public class ItemUtils {
 	}
 	
 	public static ItemStack getItemListObject(String aObjectFromExperimentalName, String aReplacementName, int aAmount) {
-		ItemList aItemListObject = getItemListObject(aReplacementName, aReplacementName);
+		ItemList aItemListObject = getItemListObject(aObjectFromExperimentalName, aReplacementName);
 		if (aItemListObject == ItemList.NULL || aItemListObject == null) {
 			return null;
 		}
