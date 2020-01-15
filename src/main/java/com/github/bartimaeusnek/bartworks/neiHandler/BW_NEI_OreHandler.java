@@ -96,21 +96,30 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
     public void drawExtras(int recipe) {
     if ((recipe < this.arecipes.size()) && (this.arecipes.get(recipe) instanceof CachedOreRecipe) ) {
         CachedOreRecipe cachedOreRecipe = (CachedOreRecipe) this.arecipes.get(recipe);
-
-        GuiDraw.drawString(ChatColorHelper.BOLD + "DIM: " + ChatColorHelper.RESET + cachedOreRecipe.worldGen.getDimName(), 0, 40, 0, false);
+        if (cachedOreRecipe == null || cachedOreRecipe.getOtherStacks() == null ||
+                cachedOreRecipe.getOtherStacks().get(0) == null || cachedOreRecipe.getOtherStacks().get(1) == null
+                || cachedOreRecipe.getOtherStacks().get(2) == null || cachedOreRecipe.getOtherStacks().get(3) == null ||
+                cachedOreRecipe.getOtherStacks().get(0).item == null || cachedOreRecipe.getOtherStacks().get(1).item == null
+                || cachedOreRecipe.getOtherStacks().get(2).item == null || cachedOreRecipe.getOtherStacks().get(3).item == null
+        )
+            return;
+        if (cachedOreRecipe.worldGen != null)
+            GuiDraw.drawString(ChatColorHelper.BOLD + "DIM: " + ChatColorHelper.RESET + cachedOreRecipe.worldGen.getDimName(), 0, 40, 0, false);
         GuiDraw.drawString(ChatColorHelper.BOLD + "Primary:", 0, 50, 0, false);
-        GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(0).item.getDisplayName(), 0, 60, 0, false);
+        GuiDraw.drawString(cachedOreRecipe.getOtherStacks().get(0).item.getDisplayName(), 0, 60, 0, false);
 
         if (!cachedOreRecipe.small) {
             GuiDraw.drawString(ChatColorHelper.BOLD + "Secondary:", 0, 70, 0, false);
-            GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(1).item.getDisplayName(), 0, 80, 0, false);
+            GuiDraw.drawString(cachedOreRecipe.getOtherStacks().get(1).item.getDisplayName(), 0, 80, 0, false);
             GuiDraw.drawString(ChatColorHelper.BOLD + "InBetween:", 0, 90, 0, false);
-            GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(2).item.getDisplayName(), 0, 100, 0, false);
+            GuiDraw.drawString(cachedOreRecipe.getOtherStacks().get(2).item.getDisplayName(), 0, 100, 0, false);
             GuiDraw.drawString(ChatColorHelper.BOLD + "Sporadic:", 0, 110, 0, false);
-            GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(3).item.getDisplayName(), 0, 120, 0, false);
+            GuiDraw.drawString(cachedOreRecipe.getOtherStacks().get(3).item.getDisplayName(), 0, 120, 0, false);
         } else {
-            GuiDraw.drawString(ChatColorHelper.BOLD + "Amount per Chunk:",0,70,0,false);
-            GuiDraw.drawString(((CachedOreRecipe) this.arecipes.get(recipe)).worldGen.mDensity+"",0,80,0, false);
+            if (cachedOreRecipe.worldGen != null) {
+                GuiDraw.drawString(ChatColorHelper.BOLD + "Amount per Chunk:", 0, 70, 0, false);
+                GuiDraw.drawString(cachedOreRecipe.worldGen.mDensity + "", 0, 80, 0, false);
+            }
         }
     }
         super.drawExtras(recipe);

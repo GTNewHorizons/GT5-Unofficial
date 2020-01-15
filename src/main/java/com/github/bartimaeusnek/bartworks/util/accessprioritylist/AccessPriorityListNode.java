@@ -72,4 +72,10 @@ public class AccessPriorityListNode<E> {
     public void setBefore(AccessPriorityListNode<E> before) {
         this.before = before;
     }
+
+    void destroy(){
+        this.before = null;
+        this.next = null;
+        this.priority = 0L;
+    }
 }

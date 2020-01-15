@@ -57,21 +57,37 @@ public class CircuitImprintLoader {
     static final HashBiMap<CircuitData,ItemStack> bwCircuitTagMap = HashBiMap.create(20);
     private static final HashSet<IRecipe> recipeWorldCache = new HashSet<>();
     private static final HashSet<GT_Recipe> gtrecipeWorldCache = new HashSet<>();
+    private static final HashSet<GT_Recipe> ORIGINAL_CAL_RECIPES = new HashSet<>();
+    private static final HashSet<GT_Recipe> MODIFIED_CAL_RECIPES = new HashSet<>();
 
     public static void run() {
         HashSet<GT_Recipe> toRem = new HashSet<>();
         HashSet<GT_Recipe> toAdd = new HashSet<>();
 
-        boolean newServer = checkAndDeleteCALRecipes();
+        deleteCALRecipesAndTags();
+        rebuildCircuitAssemblerMap(toRem,toAdd);
+        exchangeRecipesInList(toRem,toAdd);
+        makeCircuitImprintRecipes();
+
+        toRem = null;
+        toAdd = null;
+    }
+
+    private static void reAddOriginalRecipes(){
+        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList.removeAll(MODIFIED_CAL_RECIPES);
+        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList.addAll(ORIGINAL_CAL_RECIPES);
+        ORIGINAL_CAL_RECIPES.clear();
+        MODIFIED_CAL_RECIPES.clear();
+    }
+
+    private static void rebuildCircuitAssemblerMap(HashSet<GT_Recipe> toRem,HashSet<GT_Recipe> toAdd) {
+        reAddOriginalRecipes();
         GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList.forEach(e -> CircuitImprintLoader.handleCircuitRecipeRebuilding(e, toRem, toAdd));
-        exchangeRecipesInList(toRem,toAdd,newServer);
-        makeCircuitImprintRecipes(newServer);
     }
 
     private static void handleCircuitRecipeRebuilding(GT_Recipe circuitRecipe, HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd) {
         ItemStack[] outputs = circuitRecipe.mOutputs;
         String name = getTypeFromOreDict(outputs);
-
         if (name.contains("Circuit") || name.contains("circuit")) {
 
             CircuitImprintLoader.recipeTagMap.put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
@@ -80,7 +96,7 @@ public class CircuitImprintLoader {
                 GT_Recipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
                 if (newRecipe != null)
                     BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).addRecipe(newRecipe);
-                addCutoffRecipeToSets(toRem,toAdd,circuitRecipe);
+                    addCutoffRecipeToSets(toRem,toAdd,circuitRecipe);
             } else {
                 if (circuitRecipe.mEUt > BW_Util.getTierVoltage(ConfigHandler.cutoffTier))
                     toRem.add(circuitRecipe);
@@ -97,11 +113,11 @@ public class CircuitImprintLoader {
         return OreDictionary.getOreName(oreIDS[0]);
     }
 
-    private static void exchangeRecipesInList(HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd, boolean newServer) {
-        if (!newServer) {
-            GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList.addAll(toAdd);
-            GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList.removeAll(toRem);
-        }
+    private static void exchangeRecipesInList(HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd) {
+        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList.addAll(toAdd);
+        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList.removeAll(toRem);
+        ORIGINAL_CAL_RECIPES.addAll(toRem);
+        MODIFIED_CAL_RECIPES.addAll(toAdd);
     }
 
     private static void addCutoffRecipeToSets(HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd, GT_Recipe circuitRecipe) {
@@ -182,9 +198,8 @@ public class CircuitImprintLoader {
         }
     }
 
-    private static void makeCircuitImprintRecipes(boolean newServer) {
-        if (newServer)
-            removeOldRecipesFromRegistries();
+    private static void makeCircuitImprintRecipes() {
+        removeOldRecipesFromRegistries();
         CircuitImprintLoader.recipeTagMap.keySet().forEach(e -> {
             makeAndAddSlicingRecipe(e);
             makeAndAddCraftingRecipes(e);
@@ -225,6 +240,7 @@ public class CircuitImprintLoader {
         for (GT_Recipe recipe : CircuitImprintLoader.recipeTagMap.get(tag)) {
             eut = Math.min(eut, recipe.mEUt);
         }
+
         eut = Math.min(eut, BW_Util.getMachineVoltageFromTier(BW_Util.getCircuitTierFromOreDictName(OreDictionary.getOreName(OreDictionary.getOreIDs(stack)[0]))));
         GT_Recipe slicingRecipe = new BWRecipes.DynamicGTRecipe(true,new ItemStack[]{stack,ItemList.Shape_Slicer_Flat.get(0)},new ItemStack[]{BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1)},null,null,null,null,300,eut, BW_Util.CLEANROOM);
         gtrecipeWorldCache.add(slicingRecipe);
@@ -263,14 +279,9 @@ public class CircuitImprintLoader {
         return ItemStack.loadItemStackFromNBT(tagCompound);
     }
 
-    private static boolean checkAndDeleteCALRecipes() {
-        boolean newServer = false;
-        if (BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).mRecipeList.size() > 0){
+    private static void deleteCALRecipesAndTags() {
             BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).mRecipeList.clear();
             recipeTagMap.clear();
-            newServer = true;
-        }
-        return newServer;
     }
 
 }

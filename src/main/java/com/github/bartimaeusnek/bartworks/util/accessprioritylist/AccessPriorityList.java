@@ -74,12 +74,26 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public E removeFirst() {
-        throw new NotImplementedException("");
+        E first = head.getELEMENT();
+        AccessPriorityListNode<E> node = head;
+        head = node.getNext();
+        head.setBefore(null);
+        node.destroy();
+        node = null;
+        this.size--;
+        return first;
     }
 
     @Override
     public E removeLast() {
-        throw new NotImplementedException("");
+        E last = tail.getELEMENT();
+        AccessPriorityListNode<E> node = tail;
+        tail = node.getBefore();
+        tail.setNext(null);
+        node.destroy();
+        node = null;
+        this.size--;
+        return last;
     }
 
     @Override
@@ -237,7 +251,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public E poll() {
-        throw new NotImplementedException("");
+        return removeFirst();
     }
 
     @Override
@@ -257,11 +271,15 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public E pop() {
-        throw new NotImplementedException("");
+        return removeFirst();
     }
 
     @Override
     public boolean remove(Object o) {
+//        Object p;
+//        for (Iterator it = this.iterator(); it.hasNext(); o.equals(p)){
+//            p = it.next();
+//        }
         throw new NotImplementedException("");
     }
 
@@ -272,9 +290,9 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        for (E e : c) {
-            this.addLast(e);
-        }
+        if (c == null)
+            return false;
+        c.forEach(this::addLast);
         return true;
     }
 

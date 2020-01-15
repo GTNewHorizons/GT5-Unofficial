@@ -32,6 +32,7 @@ import com.github.bartimaeusnek.bartworks.client.creativetabs.GT2Tab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.bartworksTab;
 import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
 import com.github.bartimaeusnek.bartworks.common.commands.ChangeConfig;
+import com.github.bartimaeusnek.bartworks.common.commands.ClearCraftingCache;
 import com.github.bartimaeusnek.bartworks.common.commands.PrintRecipeListToFile;
 import com.github.bartimaeusnek.bartworks.common.commands.SummonRuin;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
@@ -206,6 +207,7 @@ public final class MainMod {
         event.registerServerCommand(new SummonRuin());
         event.registerServerCommand(new ChangeConfig());
         event.registerServerCommand(new PrintRecipeListToFile());
+        event.registerServerCommand(new ClearCraftingCache());
     }
 
     @Mod.EventHandler
