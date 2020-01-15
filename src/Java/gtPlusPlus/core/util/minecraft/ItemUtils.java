@@ -39,6 +39,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -100,6 +101,11 @@ public class ItemUtils {
 		return y;
 	}
 
+	public static ItemStack getWildcardStack(final ItemStack x) {
+		final ItemStack y = ItemUtils.simpleMetaStack(x, WILDCARD_VALUE, 1);
+		return y;
+	}
+	
 	public static ItemStack getIC2Cell(final String S) {
 		final ItemStack moreTemp = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + S, 1);
 
@@ -154,12 +160,19 @@ public class ItemUtils {
 		}
 	}
 
-	public static void addItemToOreDictionary(final ItemStack stack, final String oreDictName) {
-		try {
-			GT_OreDictUnificator.registerOre(oreDictName, stack);
-		} catch (final NullPointerException e) {
-			Logger.ERROR(stack.getDisplayName() + " not registered. [NULL]");
+	public static void addItemToOreDictionary(ItemStack stack, final String oreDictName, boolean useWildcardMeta) {
+		if (useWildcardMeta) {
+			stack = ItemUtils.getWildcardStack(stack);
 		}
+		try {
+			OreDictionary.registerOre(oreDictName, stack);
+		} catch (final NullPointerException e) {
+			Logger.ERROR(ItemUtils.getItemName(stack) + " not registered. [NULL]");
+		}
+	}
+	
+	public static void addItemToOreDictionary(final ItemStack stack, final String oreDictName) {
+		addItemToOreDictionary(stack, oreDictName, false);
 	}
 
 	public static ItemStack getItemStackWithMeta(final boolean MOD, final String FQRN, final String itemName,

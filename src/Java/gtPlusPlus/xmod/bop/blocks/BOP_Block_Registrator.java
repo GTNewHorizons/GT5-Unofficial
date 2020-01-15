@@ -41,9 +41,9 @@ public class BOP_Block_Registrator {
 		log_Rainforest = new LogRainforestTree();
 		leaves_Rainforest = new LeavesRainforestTree();
 		sapling_Rainforest = new SaplingRainforestTree();
-		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(log_Rainforest), "logWood");
-		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(leaves_Rainforest), "treeLeaves");
-		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(sapling_Rainforest), "treeSapling");		
+		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(log_Rainforest), "logWood", true);
+		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(leaves_Rainforest), "treeLeaves", true);
+		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(sapling_Rainforest), "treeSapling", true);		
 		return true;
 	}
 
