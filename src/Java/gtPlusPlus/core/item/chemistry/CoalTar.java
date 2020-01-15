@@ -272,6 +272,8 @@ public class CoalTar extends ItemPackage {
 		recipePhthalicAcidToPhthalicAnhydride();
 		
 		recipeEthylBenzineFuelsIntoHeavyFuel();		
+		
+		recipePhthalicAcidConversion();
 
 		//Burn the coal gas!
 		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1), null, 96, 1);
@@ -280,6 +282,14 @@ public class CoalTar extends ItemPackage {
 		CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTar", 1), 16);		
 		
 		return true;
+	}
+
+	private void recipePhthalicAcidConversion() {
+		FluidStack aMyAcid = FluidUtils.getFluidStack(Phthalic_Acid, 500);
+		FluidStack aGtAcid = FluidUtils.getFluidStack("phtalicacid", 500);
+		if (aMyAcid != null && aGtAcid != null) {
+			CORE.RA.addDistilleryRecipe(CI.getNumberedBioCircuit(8), aMyAcid, aGtAcid, null, 50, 16, false);
+		}
 	}
 
 	@Override
@@ -347,7 +357,7 @@ public class CoalTar extends ItemPackage {
 		Naphthalene = FluidUtils.generateFluidNonMolten("Naphthalene", "Naphthalene", 115, new short[]{210, 185, 135, 100}, null, null);
 		// v - Oxidize with mercury and nitric acid
 		//Create Phthalic Acid
-		Phthalic_Acid = FluidUtils.generateFluidNonMolten("PhthalicAcid", "Phthalic Acid", 207, new short[]{210, 220, 210, 100}, null, null);
+		Phthalic_Acid = FluidUtils.generateFluidNonMolten("PhthalicAcid", "Phtalic Acid", 207, new short[]{210, 220, 210, 100}, null, null);
 		// v - Dehydrate at 180C+
 		//Create Phthalic Anhydride
 		//ItemUtils.generateSpecialUseDusts("PhthalicAnhydride", "Phthalic Anhydride", "C6H4(CO)2O", Utils.rgbtoHexValue(175, 175, 175));

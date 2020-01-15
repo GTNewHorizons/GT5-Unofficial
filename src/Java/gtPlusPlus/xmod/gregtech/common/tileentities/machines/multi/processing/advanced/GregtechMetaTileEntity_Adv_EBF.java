@@ -152,9 +152,14 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		Block tUsedBlock = aBaseMetaTileEntity.getBlockOffset(xDir + 1, 2, zDir);
 		byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 2, zDir);
 		this.mHeatingCapacity = StaticFields59.getHeatingCapacityForCoil(tUsedBlock, tUsedMeta);
+		
+		int aCasingCount = 0;
 
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
+				
+				
+				
 				if ((i != 0) || (j != 0)) {					
 					//Coils 1
 					if (!isValidBlockForStructure(null, CASING_TEXTURE_ID, false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j), StaticFields59.getBlockCasings5(), tUsedMeta)) {
@@ -170,8 +175,15 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				}
 				
 				//Top Layer
+				
+				Block aCurrentBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j);
+				int aCurrentMeta = (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j);
+				if (aCurrentBlock == ModBlocks.blockCasings3Misc && aCurrentMeta == 11) {
+					aCasingCount++;
+				}
+				
 				final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j);					
-				if (!isValidBlockForStructure(tTileEntity2, CASING_TEXTURE_ID, true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j), ModBlocks.blockCasings3Misc, 11)) {
+				if (!isValidBlockForStructure(tTileEntity2, CASING_TEXTURE_ID, true, aCurrentBlock, aCurrentMeta, ModBlocks.blockCasings3Misc, 11)) {
 					Logger.INFO("Top Layer missing.");
 					return false;
 				}
@@ -179,9 +191,16 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		}
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
+
+				
+				Block aCurrentBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j);
+				int aCurrentMeta = (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j);
+				if (aCurrentBlock == ModBlocks.blockCasings3Misc && aCurrentMeta == 11) {
+					aCasingCount++;
+				}
 				if ((xDir + i != 0) || (zDir + j != 0)) {
 					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0,zDir + j);					
-					if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j), ModBlocks.blockCasings3Misc, 11)) {
+					if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aCurrentBlock, aCurrentMeta, ModBlocks.blockCasings3Misc, 11)) {
 						Logger.INFO("Bottom Layer missing.");
 						return false;
 					}					
@@ -189,8 +208,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 			}
 		}
 		
-		// TODO - Fix Casing Count
-		return true;
+		return aCasingCount >= 10;
 	}
 
 	public int getMaxEfficiency(ItemStack aStack) {

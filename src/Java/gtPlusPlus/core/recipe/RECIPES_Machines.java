@@ -22,6 +22,7 @@ import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
 import gtPlusPlus.xmod.gregtech.common.items.MetaCustomCoverItem;
 import net.minecraft.block.Block;
@@ -540,13 +541,15 @@ public class RECIPES_Machines {
 					20 * 30, 
 					30);
 
+			ItemStack aFluidRegulator1 = ItemUtils.getItemListObject("FluidRegulator_MV", "Pump_HV", GTNH ? 4 : 2);
+			ItemStack aFluidRegulator2 = ItemUtils.getItemListObject("FluidRegulator_IV", "Pump_LuV", GTNH ? 4 : 2);
+			
 			//Poo Collector		
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
 							CI.machineHull_MV,
-							CI.getTieredComponent(OrePrefixes.circuit, 2, GTNH ? 4 : 2),
+							aFluidRegulator1,
 							CI.getTieredComponent(OrePrefixes.pipeMedium, 2, GTNH ? 4 : 2),
-							CI.getElectricPump(2, GTNH ? 4 : 2),
 							ALLOY.EGLIN_STEEL.getPlate(GTNH ? 8 : 4),
 							ALLOY.POTIN.getScrew(GTNH ? 12 : 6)
 					}, 
@@ -560,9 +563,8 @@ public class RECIPES_Machines {
 					new ItemStack[] {
 							CI.getTieredMachineHull(-1),
 							ItemUtils.getSimpleStack(ModBlocks.blockPooCollector),
-							CI.getTieredComponent(OrePrefixes.circuit, 5, GTNH ? 8 : 4),
+							aFluidRegulator2,
 							CI.getTieredComponent(OrePrefixes.pipeHuge, 6, GTNH ? 8 : 4),
-							CI.getElectricPump(5, GTNH ? 12 : 6),
 							CI.getTieredComponent(OrePrefixes.screw, 6, GTNH ? 32 : 16)
 					}, 
 					CI.getAlternativeTieredFluid(5, 144 * 9), 
@@ -886,6 +888,7 @@ public class RECIPES_Machines {
 						"plateDoubleGrisium", "rotorGrisium", "plateDoubleGrisium",
 						RECIPE_IndustrialMultiTankController);
 			}
+			//TODO
 
 			//Semi-Fluid Generators
 			ItemStack mSemiFluidgen = ItemUtils.getItemStackFromFQRN("IC2:blockGenerator:7", 1);

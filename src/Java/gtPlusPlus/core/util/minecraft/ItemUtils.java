@@ -1268,5 +1268,40 @@ public class ItemUtils {
 		}
 		return getNullStack();
 	}
+	
+	public static ItemStack getItemListObject(String aObjectFromExperimentalName, String aReplacementName, int aAmount) {
+		ItemList aItemListObject = getItemListObject(aReplacementName, aReplacementName);
+		if (aItemListObject == ItemList.NULL || aItemListObject == null) {
+			return null;
+		}
+		else {
+			return aItemListObject.get(aAmount);
+		}
+	}
+	
+	public static ItemStack getItemListObject(ItemList aItemListObject, int aAmount) {
+		if (aItemListObject == ItemList.NULL || aItemListObject == null) {
+			return null;
+		}
+		else {
+			return aItemListObject.get(aAmount);
+		}
+	}
+
+	public static ItemList getItemListObject(String aObjectFromExperimentalName, String aReplacementName) {
+		ItemList aVal = ItemList.valueOf(aObjectFromExperimentalName);
+		if (aVal != null) {
+			return aVal;
+		}
+		else {
+			aVal = ItemList.valueOf(aReplacementName);
+			if (aVal != null) {
+				return aVal;
+			}
+			else {
+				return ItemList.NULL;
+			}
+		}		
+	}
 
 }

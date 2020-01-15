@@ -112,7 +112,30 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), 250);		
+		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+			ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+			tBus.mRecipeMap = getRecipeMap();
+			if (isValidMetaTileEntity(tBus)) {
+				for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+						tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+				}
+			}			
+			ItemStack[] inputs = new ItemStack[tBusItems.size()];
+			int slot = 0;
+			for (ItemStack g : tBusItems) {
+				inputs[slot++] = g;
+			}			
+			if (inputs.length > 0) {				
+				log("Recipe. ["+inputs.length+"]["+getMaxParallelRecipes()+"]");				
+				if (checkRecipeGeneric(inputs, new FluidStack[]{}, getMaxParallelRecipes(), getEuDiscountForParallelism(), 250, 10000)) {
+					log("Recipe 2.");
+					return true;
+				}
+			}			
+
+		}
+		return false;
 	}
 	
 	@Override

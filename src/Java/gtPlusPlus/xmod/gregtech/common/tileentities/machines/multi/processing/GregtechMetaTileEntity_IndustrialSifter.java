@@ -53,8 +53,6 @@ extends GregtechMeta_MultiBlockBase {
 				"Controller (Center Bottom)",
 				"1x Input Bus (Any top or bottom edge casing)",
 				"4x Output Bus (Any top or bottom edge casing)",
-				"1x Maintenance Hatch (Any top or bottom edge casing)",
-				"1x Muffler Hatch (Any top or bottom edge casing)",
 				"1x Energy Hatch (Any top or bottom edge casing)",
 				"18x Sieve Grate (Top and Middle 3x3)",
 				"Sieve Casings for the rest (35 min)"
