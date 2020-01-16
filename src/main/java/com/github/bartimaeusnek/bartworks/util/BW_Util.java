@@ -445,7 +445,7 @@ public class BW_Util {
                         continue;
                     boolean b = Math.abs(x) < radius && Math.abs(z) != radius;
                     if (insideCheck && b) {
-                        if (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(inside) && (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmginside || dmginside > (-1))) {
+                        if (! (inside.equals(Blocks.air) ? aBaseMetaTileEntity.getAir(xDir + x, y, zDir + z) : aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(inside) ) && (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmginside || dmginside > (-1))) {
                             if (!(allowHatches && (
                                     ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addDynamoToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
                                             ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
