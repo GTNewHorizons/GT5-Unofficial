@@ -10,6 +10,7 @@ import java.util.Set;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class ArrayUtils {
 
@@ -86,6 +87,15 @@ public class ArrayUtils {
 
 	public static String toString(Object[] aArray) {
 		return org.apache.commons.lang3.ArrayUtils.toString(aArray);
+	}
+
+	public static <T> Object[] getArrayFromArrayList(ArrayList<T> aArrayList) {
+		Object[] aGenericArray = new Object[aArrayList.size()];
+		int aIndex = 0;
+		for (T object : aArrayList) {
+			aGenericArray[aIndex++] = object;
+		}
+		return aGenericArray;
 	}
 
 }

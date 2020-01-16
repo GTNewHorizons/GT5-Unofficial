@@ -4,7 +4,6 @@ import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 import static gtPlusPlus.core.lib.CORE.LOAD_ALL_CONTENT;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
@@ -14,7 +13,6 @@ import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.BaseEuItem;
 import gtPlusPlus.core.item.base.BaseItemBackpack;
-import gtPlusPlus.core.item.base.BaseItemBurnable;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.BaseItemDamageable;
 import gtPlusPlus.core.item.base.BaseItemTCShard;
@@ -55,7 +53,6 @@ import gtPlusPlus.core.item.general.ItemGenericToken;
 import gtPlusPlus.core.item.general.ItemGiantEgg;
 import gtPlusPlus.core.item.general.ItemHalfCompleteCasings;
 import gtPlusPlus.core.item.general.ItemLavaFilter;
-import gtPlusPlus.core.item.general.RF2EU_Battery;
 import gtPlusPlus.core.item.general.books.ItemBaseBook;
 import gtPlusPlus.core.item.general.capture.ItemEntityCatcher;
 import gtPlusPlus.core.item.general.chassis.ItemBoilerChassis;
@@ -97,6 +94,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.GTplusplus_Everglades;
+import gtPlusPlus.xmod.cofh.HANDLER_COFH;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import net.minecraft.item.EnumRarity;
@@ -1135,10 +1133,6 @@ public final class ModItems {
 		if (LoadedMods.IndustrialCraft2|| LOAD_ALL_CONTENT){
 			Logger.INFO("IndustrialCraft2 Found - Loading Resources.");
 			
-			if (LoadedMods.CoFHCore) {
-				RfEuBattery = new RF2EU_Battery();				
-			}
-
 			//Baubles Mod Test
 			try {
 				final Class<?> baublesTest = ReflectionUtils.getClass("baubles.api.IBauble");
@@ -1167,7 +1161,7 @@ public final class ModItems {
 
 		//UtilsItems.generateSpawnEgg("ic2", "boatcarbon", Utils.generateSingularRandomHexValue(), Utils.generateSingularRandomHexValue());
 
-
+		HANDLER_COFH.initItems();
 
 		/*
 		 * Misc Items

@@ -14,6 +14,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -128,7 +129,7 @@ extends GregtechMeta_MultiBlockBase {
 			}			
 			if (inputs.length > 0) {				
 				log("Recipe. ["+inputs.length+"]["+getMaxParallelRecipes()+"]");				
-				if (checkRecipeGeneric(inputs, new FluidStack[]{}, getMaxParallelRecipes(), getEuDiscountForParallelism(), 250, 10000)) {
+				if (checkRecipeGeneric(inputs, (FluidStack[]) ArrayUtils.getArrayFromArrayList(this.getStoredFluids()), getMaxParallelRecipes(), getEuDiscountForParallelism(), 250, 10000)) {
 					log("Recipe 2.");
 					return true;
 				}

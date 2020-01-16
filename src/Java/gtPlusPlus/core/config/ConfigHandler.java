@@ -113,6 +113,9 @@ public class ConfigHandler {
 				"gregtech", true, "Very basic automated cauldron for dust washing.");
 		enableMachine_Pollution = config.getBoolean("enableMachinePollution",
 				"gregtech", true, "Pollution Detector & Scrubbers.");
+		enableMachine_RF_Convetor = config.getBoolean("enableMachineRFConvetor", "gregtech",
+				true, "Converts RF to GTEU. Requires COFH-Core to be installed.");
+		
 	
 		// Multi machines
 		enableMultiblock_AlloyBlastSmelter = config.getBoolean("enableMultiblockAlloyBlastSmelter",

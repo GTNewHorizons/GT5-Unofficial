@@ -605,6 +605,16 @@ public class RECIPES_Machines {
 						plateEnergeticAlloy, pipeLargeCopper, plateEnergeticAlloy,
 						RECIPE_SteamCondenser);
 			}
+			
+
+			//Steam Condenser
+			if (LoadedMods.CoFHCore && CORE.ConfigSwitches.enableMachine_RF_Convetor){
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.getPlate(4, 1), CI.getTieredCircuitOreDictName(5), CI.getPlate(4, 1),
+						CI.getTransmissionComponent(3, 1), CI.getTieredGTPPMachineCasing(4, 1), CI.getTransmissionComponent(3, 1),
+						CI.getPlate(4, 1), plateEnergeticAlloy, CI.getPlate(4, 1),
+						GregtechItemList.Energy_Buffer_RF_Convertor.get(1));
+			}
 
 
 			if (CORE.ConfigSwitches.enableMultiblock_IronBlastFurnace){

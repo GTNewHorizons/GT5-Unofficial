@@ -26,7 +26,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
-	private byte aCurrentOutputAmperage = 4;
+	protected byte aCurrentOutputAmperage = 4;
 
 	public GregtechMetaEnergyBuffer(final int aID, final String aName, final String aNameRegional, final int aTier, final String aDescription, final int aSlotCount) {
 		super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
@@ -253,7 +253,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 		final double c = ((double) tempStorage / this.maxEUStore()) * 100;
 		final double roundOff = Math.round(c * 100.00) / 100.00;
 		PlayerUtils.messagePlayer(playerIn, "Energy: " + GT_Utility.formatNumbers(tempStorage) + " EU at "+V[this.mTier]+"v ("+roundOff+"%)");
-		PlayerUtils.messagePlayer(playerIn, "Amperage: " + GT_Utility.formatNumbers(maxAmperesIn())+"A");
+		PlayerUtils.messagePlayer(playerIn, "Amperage: " + GT_Utility.formatNumbers(maxAmperesOut())+"A");
 
 	}
 	//Utils.LOG_WARNING("Begin Show Energy");

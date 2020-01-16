@@ -524,6 +524,8 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//512v Creative Buffer
 	Energy_Buffer_CREATIVE,
+	//Variable voltage RF convertor
+	Energy_Buffer_RF_Convertor,
 	//Energy Buffers
 	Energy_Buffer_1by1_ULV, Energy_Buffer_1by1_LV,
 	Energy_Buffer_1by1_MV, Energy_Buffer_1by1_HV,

@@ -7,8 +7,10 @@ import gregtech.api.util.GT_ModHandler;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOreDictNames;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_RfConvertor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.creative.GregtechMetaCreativeEnergyBuffer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaEnergyBuffer;
 
@@ -22,11 +24,8 @@ public class GregtechEnergyBuffer
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Logger.INFO("Gregtech5u Content | Registering Energy Buffer Blocks.");
-			if (CORE.ConfigSwitches.enableMachine_RocketEngines) {
-				run1();
-			}
+			run1();
 		}
-
 	}
 
 	private static void run1()
@@ -57,6 +56,15 @@ public class GregtechEnergyBuffer
 				"energybuffer.tier.xx",
 				"512V Creative Energy Buffer", 3, "", 0)
 				.getStackForm(1L));
+
+		if (LoadedMods.CoFHCore && CORE.ConfigSwitches.enableMachine_RF_Convetor) {
+			// RF Convertor Buffer Has Special ID
+			GregtechItemList.Energy_Buffer_RF_Convertor
+			.set(new GT_MetaTileEntity_RfConvertor(31022,
+					"energybuffer.rf.tier.01",
+					"RF Energy Convertor", 3, "", 0)
+					.getStackForm(1L));
+		}
 
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Energy_Buffer_1by1_ULV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "WTW", "WMW", Character.valueOf('M'), ItemList.Hull_ULV, Character.valueOf('W'), OrePrefixes.wireGt08.get(Materials.Lead), Character.valueOf('T'), GregtechOreDictNames.buffer_core });
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Energy_Buffer_1by1_LV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "WTW", "WMW", Character.valueOf('M'), ItemList.Hull_LV, Character.valueOf('W'), OrePrefixes.wireGt08.get(Materials.Tin), Character.valueOf('T'), GregtechOreDictNames.buffer_core });
