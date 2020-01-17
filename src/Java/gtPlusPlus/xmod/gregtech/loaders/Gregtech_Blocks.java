@@ -26,7 +26,7 @@ public class Gregtech_Blocks {
 		ModBlocks.blockCasings3Misc = new GregtechMetaCasingBlocks3();
 		ModBlocks.blockCasings4Misc = new GregtechMetaCasingBlocks4();
 		
-		ModBlocks.BlockTieredCasings1 = new GregtechMetaTieredCasingBlocks1();
+		ModBlocks.blockCasingsTieredGTPP = new GregtechMetaTieredCasingBlocks1();
 
 	}
 }

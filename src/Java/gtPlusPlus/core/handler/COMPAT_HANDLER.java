@@ -68,6 +68,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialCuttingF
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialElectrolyzer;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialExtruder;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFishPond;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialAlloySmelter;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFuelRefinery;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialGeneratorArray;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMacerator;
@@ -216,6 +217,7 @@ public class COMPAT_HANDLER {
 			GregtechPowerBreakers.run();
 			GregtechFluidReactor.run();
 			GregtechAlgaeContent.run();
+			GregtechIndustrialAlloySmelter.run();
 
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

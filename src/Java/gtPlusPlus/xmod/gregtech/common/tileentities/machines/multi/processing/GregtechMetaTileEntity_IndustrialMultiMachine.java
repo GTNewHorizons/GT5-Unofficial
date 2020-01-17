@@ -55,12 +55,12 @@ extends GregtechMeta_MultiBlockBase {
 	private static final int MODE_EXTRACTOR = 5;
 	private static final int MODE_LASER = 6;
 	private static final int MODE_AUTOCLAVE = 7;
-	private static final int MODE_REPLICATOR = 8;
+	private static final int MODE_FLUIDSOLIDIFY = 8;
 	private static final int[][] MODE_MAP = new int[][] {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}};
 	public static final String[] aToolTipNames = new String[9];
 	
 	static {
-		for (int id = 0; id < 8; id++) {
+		for (int id = 0; id < 9; id++) {
 			String aNEI = GT_LanguageManager.getTranslation(getRecipeMap(id).mUnlocalizedName);
 			aToolTipNames[id] = aNEI != null ? aNEI : "BAD NEI NAME (Report to Github)";			
 		}
@@ -143,7 +143,17 @@ extends GregtechMeta_MultiBlockBase {
 						tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
 				}
 			}
-
+			
+			boolean aFoundCircuitInBus = false;
+			for (ItemStack aBusItem : tBusItems) {
+				if (ItemUtils.isControlCircuit(aBusItem)) {
+					aFoundCircuitInBus = true;
+				}
+			}
+			if (!aFoundCircuitInBus) {
+				continue;
+			}
+			
 			Object[] tempArray = tFluids.toArray(new FluidStack[] {});
 			FluidStack[] properArray;
 			properArray = ((tempArray != null && tempArray.length > 0) ? (FluidStack[]) tempArray : new FluidStack[] {});
@@ -188,7 +198,7 @@ extends GregtechMeta_MultiBlockBase {
 
 							if (!isValidBlockForStructure(tTileEntity, getTextureIndex(), true, aBlock, aMeta,
 									ModBlocks.blockCasings3Misc, 2)) {
-								Logger.INFO("Bad centrifuge casing");
+								Logger.INFO("Bad casing");
 								return false;
 							}
 							++tAmount;
@@ -287,15 +297,13 @@ extends GregtechMeta_MultiBlockBase {
 		else if (aMode == MODE_AUTOCLAVE) {
 			return GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;			
 		}
-		else if (aMode == MODE_REPLICATOR) {
-			return null;
+		else if (aMode == MODE_FLUIDSOLIDIFY) {
+			return GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes;
 		}
 		else {
 			return null;
 		}
 	}
-
-	private final AutoMap<ItemStack> mReplicatorOutputMap = new AutoMap<ItemStack>();
 
 	@Override
 	public boolean checkRecipeGeneric(
@@ -310,12 +318,6 @@ extends GregtechMeta_MultiBlockBase {
 		int tCircuitID = getCircuitID(tCircuit);
 		
 		Logger.MACHINE_INFO("Mode: "+tCircuitID);
-
-		// Time to Defer to Special Handling if it's in replicator mode.
-		if (tCircuitID == MODE_REPLICATOR) {
-		    return false;
-		//	return checkReplicatorRecipe(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
-		}
 
 		// Reset outputs and progress stats
 		this.mEUt = 0;
@@ -477,396 +479,6 @@ extends GregtechMeta_MultiBlockBase {
 		startProcess();
 
 		Logger.MACHINE_INFO("GOOD RETURN - 1|"+tCircuitID);
-		return true;
-	}
-
-	private FluidStack mReplicatorFluidOutput;
-	//Replicator handling
-	public boolean checkReplicatorRecipe(
-			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll) {
-
-		// Based on the Processing Array. A bit overkill, but very flexible.
-		// Reset outputs and progress stats
-		this.mEUt = 0;
-		this.mMaxProgresstime = 0;
-		this.mOutputItems = new ItemStack[]{};
-		this.mOutputFluids = new FluidStack[]{};
-		this.mReplicatorOutputMap.clear();
-
-		long tVoltage = getMaxInputVoltage();
-		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-
-		if (canBufferOutputs(aItemInputs, aMaxParallelRecipes)) {
-			Logger.WARNING("BAD RETURN - 2.0");
-			return false;
-		}
-
-		ItemStack tDataOrb = null;
-		ItemStack tCellStack = null;
-		ItemStack tReplicatedItem;
-		FluidStack tOutputFluid = null;
-		FluidStack tInputFluid = null;
-		final Materials tMaterial = Element.get(Behaviour_DataOrb.getDataName(tDataOrb)).mLinkedMaterials.get(0);
-		final long tMass = tMaterial.getMass();	
-
-		// Find First Data Orb with Scan Data
-		for (ItemStack I : aItemInputs) {
-			if (ItemList.Tool_DataOrb.isStackEqual((Object) I, false, true) && Behaviour_DataOrb.getDataTitle(I).equals("Elemental-Scan")) {
-				tDataOrb = I.copy();
-				break;
-			}
-		}
-
-		// Find First empty cell stack
-		for (ItemStack I : aItemInputs) {
-			if (ItemList.Cell_Empty.isStackEqual((Object) I)) {
-				tCellStack = I.copy();
-				break;
-			}
-		}
-
-		// Find UUM
-		for (FluidStack F : aFluidInputs) {
-			if (F != null && F.isFluidEqual(Materials.UUMatter.getFluid(1L))) {
-				final FluidStack tFluid = F;
-				if (tFluid.amount >= tMass && tMass > 0L) {
-					tInputFluid = tFluid;
-				}
-			}
-		}
-
-		// No Data Orb or UUM found?
-		if (tDataOrb == null || tInputFluid == null) {
-			return false;
-		}	
-		// Temp Values
-		int tEUt = (int) GT_Values.V[(int) this.getInputTier()];
-		int tMaxProgresstime = (int) (tMass * 512L / (1 << tTier - 1));	
-		float tRecipeEUt = (tEUt * aEUPercent) / 100.0f;
-		float tTotalEUt = 0.0f;
-		int parallelRecipes = 0;
-		ItemStack[] expectedInputs = {tDataOrb};
-		FluidStack[] expectedFluidInputs = {Materials.UUMatter.getFluid(tMass)};	
-
-		/**
-		 * Magic
-		 */
-
-		int COST_UUM = 0;
-		int COST_CELLS = 0;
-
-		// Determine Output Item & Cost.
-		if ((tReplicatedItem = GT_OreDictUnificator.get(OrePrefixes.dust, (Object) tMaterial, 1L)) == null) {
-			if ((tReplicatedItem = GT_OreDictUnificator.get(OrePrefixes.cell, (Object) tMaterial, 1L)) != null) {
-				if ((tOutputFluid = GT_Utility.getFluidForFilledItem(tReplicatedItem, true)) == null) {
-					if (ItemList.Cell_Empty.isStackEqual((Object) tCellStack) && this.canBufferOutputs(new ItemStack[]{tReplicatedItem}, 1)) {
-						COST_CELLS = 1;
-						COST_UUM = (int) tMass;
-					}					
-				} else {
-					tReplicatedItem = null;
-					if (this.getDrainableStack() == null || (this.getDrainableStack().isFluidEqual(tOutputFluid) && this.getDrainableStack().amount < 16000)) {
-						COST_UUM = (int) tMass;
-					}
-				}
-			}
-		} else if (this.canBufferOutputs(new ItemStack[]{tReplicatedItem}, 1)) {
-			COST_UUM = (int) tMass;
-		}
-
-		// Costs no UUM and no valid outputs? Let's bail gracefully before we consume inputs.
-		if (COST_UUM <= 0 || (tReplicatedItem == null && tOutputFluid == null)) {
-			return false;
-		}
-
-		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
-			if (!isRecipeInputEqual(true, aFluidInputs, aItemInputs, expectedFluidInputs, expectedInputs)) {
-				Logger.WARNING("Broke at "+parallelRecipes+"..0");
-				break;
-			}
-			Logger.WARNING("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+"..0");
-			tTotalEUt += tRecipeEUt;
-		}
-
-		if (parallelRecipes == 0) {
-			Logger.WARNING("BAD RETURN - 3.0");
-			return false;
-		}
-
-		// Set Vars to Parralel amount
-		COST_CELLS *= parallelRecipes;
-
-		// Requires a cell? Ok, let's use some.
-		if (COST_CELLS > 0) {
-			this.depleteInput(ItemUtils.getEmptyCell(COST_CELLS));
-		}
-
-		// Build an output map, for simplicity.
-		for (int r=0;r<parallelRecipes;r++) {
-			this.mReplicatorOutputMap.put(ItemUtils.getSimpleStack(tReplicatedItem, 1));
-		}
-
-		// -- Try not to fail after this point - inputs have already been consumed! --
-		ItemStack[] mBuiltOutput = new ItemStack[this.mReplicatorOutputMap.size()];
-		int aIndex = 0;
-		for (ItemStack i : this.mReplicatorOutputMap) {
-			mBuiltOutput[aIndex++] = i;
-		}
-		
-		
-		// Convert speed bonus to duration multiplier
-		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
-		aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
-		float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
-		this.mMaxProgresstime = (int)(tMaxProgresstime * tTimeFactor);
-
-		this.mEUt = (int)Math.ceil(tTotalEUt);
-
-		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-		this.mEfficiencyIncrease = 10000;
-
-		// Overclock
-		if (this.mEUt <= 16) {
-			this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-			this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
-		} else {
-			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-				this.mEUt *= 4;
-				this.mMaxProgresstime /= 2;
-			}
-		}
-
-		if (this.mEUt > 0) {
-			this.mEUt = (-this.mEUt);
-		}
-
-		this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
-		// Collect output item types
-		ItemStack[] tOutputItems = new ItemStack[1];
-		for (int h = 0; h < 1; h++) {
-			if (mBuiltOutput[h] != null) {
-				tOutputItems[h] = mBuiltOutput[h].copy();
-				tOutputItems[h].stackSize = 0;
-			}
-		}
-
-		// Set output item stack sizes (taking output chance into account)
-		for (int f = 0; f < tOutputItems.length; f++) {
-			if (mBuiltOutput[f] != null && tOutputItems[f] != null) {
-				for (int g = 0; g < parallelRecipes; g++) {
-					tOutputItems[f].stackSize += mBuiltOutput[f].stackSize;
-				}
-			}
-		}
-
-		tOutputItems = removeNulls(tOutputItems);
-
-		// Sanitize item stack size, splitting any stacks greater than max stack size
-		List<ItemStack> splitStacks = new ArrayList<ItemStack>();
-		for (ItemStack tItem : tOutputItems) {
-			while (tItem.getMaxStackSize() < tItem.stackSize) {
-				ItemStack tmp = tItem.copy();
-				tmp.stackSize = tmp.getMaxStackSize();
-				tItem.stackSize = tItem.stackSize - tItem.getMaxStackSize();
-				splitStacks.add(tmp);
-			}
-		}
-
-		if (splitStacks.size() > 0) {
-			ItemStack[] tmp = new ItemStack[splitStacks.size()];
-			tmp = splitStacks.toArray(tmp);
-			tOutputItems = ArrayUtils.addAll(tOutputItems, tmp);
-		}
-
-		// Strip empty stacks
-		List<ItemStack> tSList = new ArrayList<ItemStack>();
-		for (ItemStack tS : tOutputItems) {
-			if (tS.stackSize > 0) tSList.add(tS);
-		}
-		tOutputItems = tSList.toArray(new ItemStack[tSList.size()]);
-
-		// Commit outputs
-		this.mOutputItems = tOutputItems;
-		//this.mOutputFluids = tOutputFluids;
-		updateSlots();
-
-		// Play sounds (GT++ addition - GT multiblocks play no sounds)
-		startProcess();
-
-		Logger.WARNING("GOOD RETURN - 1.0");
-		return true;
-	}
-
-
-	//Special Space Checking
-	private boolean canBufferOutputs(ItemStack[] aInputs, int aParallelRecipes) {
-		// Count slots available in output buses
-		ArrayList<ItemStack> tBusStacks = new ArrayList<>();
-
-		int tEmptySlots = 0;
-		for (final GT_MetaTileEntity_Hatch_OutputBus tBus : this.mOutputBusses) {
-			if (!isValidMetaTileEntity(tBus)) {
-				continue;
-			}
-			final IInventory tBusInv = tBus.getBaseMetaTileEntity();
-			for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-				if (tBus.getStackInSlot(i) == null) {
-					tEmptySlots++;
-				}
-				else {
-					tBusStacks.add(tBus.getStackInSlot(i));
-				}
-			}
-		}
-
-		int slotsNeeded = aInputs.length;
-		for (final ItemStack tRecipeOutput: aInputs) {
-			if (tRecipeOutput == null) continue;
-			int amount = tRecipeOutput.stackSize * aParallelRecipes;
-			for (final ItemStack tBusStack : tBusStacks) {
-				if (GT_Utility.areStacksEqual(tBusStack, tRecipeOutput)) {
-					if (tBusStack.stackSize + amount <= tBusStack.getMaxStackSize()) {
-						slotsNeeded--;
-						break;
-					}
-				}
-			}
-		}
-		// Enough open slots?
-		if (tEmptySlots < slotsNeeded) return false;
-		return true;
-
-	}
-
-	public FluidStack getDrainableStack() {
-		return this.mReplicatorFluidOutput;
-	}
-
-	public FluidStack setDrainableStack(final FluidStack aFluid) {
-		return this.mReplicatorFluidOutput = aFluid;
-	}
-
-	public boolean isRecipeInputEqual(final boolean aDecreaseStacksizeBySuccess, 
-			final FluidStack[] aFluidInputs,
-			final ItemStack[] aInputs,
-			final FluidStack[] mFluidInputs,
-			final ItemStack[] mInputs) {
-		return this.isRecipeInputEqual(aDecreaseStacksizeBySuccess, false, aFluidInputs, aInputs, mFluidInputs, mInputs);
-	}
-
-	public boolean isRecipeInputEqual(
-			final boolean aDecreaseStacksizeBySuccess,
-			final boolean aDontCheckStackSizes,
-			final FluidStack[] aFluidInputs,
-			final ItemStack[] aInputs,
-			final FluidStack[] aExpectedFluidInputs,
-			final ItemStack[] mExpectedInputs) {
-		if (aExpectedFluidInputs.length > 0 && aFluidInputs == null) {
-			return false;
-		}
-		for (final FluidStack tFluid : aExpectedFluidInputs) {
-			if (tFluid != null) {
-				boolean temp = true;
-				int amt = tFluid.amount;
-				for (final FluidStack aFluid : aFluidInputs) {
-					if (aFluid != null && aFluid.isFluidEqual(tFluid)) {
-						if (aDontCheckStackSizes) {
-							temp = false;
-							break;
-						}
-						amt -= aFluid.amount;
-						if (amt < 1) {
-							temp = false;
-							break;
-						}
-					}
-				}
-				if (temp) {
-					return false;
-				}
-			}
-		}
-		if (mExpectedInputs.length > 0 && aInputs == null) {
-			return false;
-		}
-		for (final ItemStack tStack : mExpectedInputs) {
-			if (tStack != null) {
-				int amt = tStack.stackSize;
-				boolean temp = true;
-				for (final ItemStack aStack : aInputs) {
-					if (GT_Utility.areUnificationsEqual(aStack, tStack, true)
-							|| GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true)) {
-						if (aDontCheckStackSizes) {
-							temp = false;
-							break;
-						}
-						amt -= aStack.stackSize;
-						if (amt < 1) {
-							temp = false;
-							break;
-						}
-					}
-				}
-				if (temp) {
-					return false;
-				}
-			}
-		}
-		if (aDecreaseStacksizeBySuccess) {
-			if (aFluidInputs != null) {
-				for (final FluidStack tFluid : aExpectedFluidInputs) {
-					if (tFluid != null) {
-						int amt = tFluid.amount;
-						for (final FluidStack aFluid2 : aFluidInputs) {
-							if (aFluid2 != null && aFluid2.isFluidEqual(tFluid)) {
-								if (aDontCheckStackSizes) {
-									final FluidStack fluidStack = aFluid2;
-									fluidStack.amount -= amt;
-									break;
-								}
-								if (aFluid2.amount >= amt) {
-									final FluidStack fluidStack2 = aFluid2;
-									fluidStack2.amount -= amt;
-									amt = 0;
-									break;
-								}
-								amt -= aFluid2.amount;
-								aFluid2.amount = 0;
-							}
-						}
-					}
-				}
-			}
-			if (aInputs != null) {
-				for (final ItemStack tStack : mExpectedInputs) {
-					if (tStack != null) {
-						int amt = tStack.stackSize;
-						for (final ItemStack aStack2 : aInputs) {
-							if (GT_Utility.areUnificationsEqual(aStack2, tStack, true) || GT_Utility
-									.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack2), tStack, true)) {
-								if (aDontCheckStackSizes) {
-									final ItemStack itemStack = aStack2;
-									itemStack.stackSize -= amt;
-									break;
-								}
-								if (aStack2.stackSize >= amt) {
-									final ItemStack itemStack2 = aStack2;
-									itemStack2.stackSize -= amt;
-									amt = 0;
-									break;
-								}
-								amt -= aStack2.stackSize;
-								aStack2.stackSize = 0;
-							}
-						}
-					}
-				}
-			}
-		}
 		return true;
 	}
 

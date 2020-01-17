@@ -564,7 +564,7 @@ public class CI {
 	private static final Material[] aMaterial_Secondary = new Material[] {
 			ALLOY.STEEL,
 			ALLOY.SILICON_CARBIDE,
-			ALLOY.TUNGSTEN_CARBIDE,				
+			ALLOY.BABBIT_ALLOY,				
 			ALLOY.INCONEL_690,				
 			ALLOY.STELLITE,
 			ALLOY.ARCANITE,				
@@ -579,7 +579,7 @@ public class CI {
 	private static final Material[] aMaterial_Tertiary = new Material[] {
 			ELEMENT.getInstance().LEAD,
 			ELEMENT.getInstance().ALUMINIUM,
-			ALLOY.STAINLESS_STEEL,
+			ELEMENT.STANDALONE.BLACK_METAL,
 			ELEMENT.getInstance().TUNGSTEN,
 			ALLOY.HASTELLOY_N,
 			ALLOY.ENERGYCRYSTAL,				

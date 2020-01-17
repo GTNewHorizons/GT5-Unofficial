@@ -55,7 +55,8 @@ public final class ModBlocks {
 	public static Block blockCasingsMisc;
 	public static Block blockCasings2Misc;
 	public static Block blockCasings3Misc;
-	public static Block blockCasings4Misc;
+	public static Block blockCasings4Misc;	
+	public static Block blockCasingsTieredGTPP;
 	
 	public static Block blockMetaTileEntity;
 	public static Block blockHeliumGenerator;
@@ -97,7 +98,6 @@ public final class ModBlocks {
 	public static Block blockPooCollector;
 	
 	public static Block blockPestKiller;
-	public static GregtechMetaTieredCasingBlocks1 BlockTieredCasings1;
 
 	public static void init() {
 		Logger.INFO("Initializing Blocks.");

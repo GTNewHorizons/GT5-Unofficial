@@ -155,6 +155,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Industrial_Centrifuge, 
 	Casing_Centrifuge1,
 
+	// Large Alloy Smelter
+	Industrial_AlloySmelter,
+	
 	//Coke Oven
 	Industrial_CokeOven,
 	Casing_CokeOven,

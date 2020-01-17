@@ -86,7 +86,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				"Speed: 120% | Eu Usage: 90% | Parallel: 8",
 				"Consumes 10L of " + mHotFuelName + " per second during operation",
 				"Constructed exactly the same as a normal EBF",
-				"Use "+mCasingName+"s (10 at least!)",
+				"Use "+mCasingName+"s (9 at least!)",
 				"1x " + mHatchName + " (Required)",
 				"TAG_HIDE_HATCHES"
 		};
@@ -208,7 +208,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 			}
 		}
 		
-		return aCasingCount >= 10;
+		return aCasingCount >= 9;
 	}
 
 	public int getMaxEfficiency(ItemStack aStack) {

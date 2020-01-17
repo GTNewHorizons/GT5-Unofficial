@@ -246,7 +246,7 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
 			return 0;
 		}
 
-		Logger.INFO("Someone is trying to inject RF from "+from+". Type:"+tTileEntity.getClass().getName());
+		Logger.WARNING("Someone is trying to inject RF from "+from+". Type:"+tTileEntity.getClass().getName());
 
 		// Calculate maximum RF we need to consume 
 		int aInputRF = MathUtils.safeInt(this.maxEUOutput() * GregTech_API.mEUtoRF / 100);
@@ -261,22 +261,22 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
 
 		long aStoredEU = this.getEUVar();
 		long aMaxEU = this.maxEUStore();
-		Logger.INFO("Stored: "+aStoredEU+", Capacity: "+aMaxEU+"");
+		Logger.WARNING("Stored: "+aStoredEU+", Capacity: "+aMaxEU+"");
 		if (aStoredEU < aMaxEU) {
-			Logger.INFO("StoredEU < MaxEU");
+			Logger.WARNING("StoredEU < MaxEU");
 			long aRemainingSpace = aMaxEU - aStoredEU;
 			if (aRemainingSpace > 0) {
 				long tEU = 0;
 				byte aSide = (byte) from.ordinal();
-				Logger.INFO("Free: "+aRemainingSpace+"EU");
+				Logger.WARNING("Free: "+aRemainingSpace+"EU");
 				if (tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(aSide)), 1, true) == 1) {
 					tEU = (long) ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(aSide)), (int) maxEUOutput() * 100 / GregTech_API.mRFtoEU, false);
-					Logger.INFO("Drained from IEnergyProvider Tile: "+(tEU * 100 / GregTech_API.mRFtoEU)+"");
+					Logger.WARNING("Drained from IEnergyProvider Tile: "+(tEU * 100 / GregTech_API.mRFtoEU)+"");
 					tEU = tEU * GregTech_API.mRFtoEU / 100;
 				} 
 				else if (tTileEntity instanceof IEnergyStorage && ((IEnergyStorage) tTileEntity).extractEnergy(1, true) == 1) {
 					tEU = (long) ((IEnergyStorage) tTileEntity).extractEnergy((int) maxEUOutput() * 100 / GregTech_API.mRFtoEU, false);
-					Logger.INFO("Drained from IEnergyStorage Tile: "+(tEU * 100 / GregTech_API.mRFtoEU)+"");
+					Logger.WARNING("Drained from IEnergyStorage Tile: "+(tEU * 100 / GregTech_API.mRFtoEU)+"");
 					tEU = tEU * GregTech_API.mRFtoEU / 100;
 				} 
 				else if (GregTech_API.meIOLoaded && tTileEntity instanceof IPowerContainer && ((IPowerContainer) tTileEntity).getEnergyStored() > 0) {
@@ -287,27 +287,27 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
 						ICapBankNetwork network = ((TileCapBank) tTileEntity).getNetwork();
 						if (network != null && network.getEnergyStoredL() > 0) {							
 							tEU = Math.min((Math.min(Math.min(network.getEnergyStoredL(), storedRF - extractRF), network.getMaxOutput())) * GregTech_API.mRFtoEU / 100, maxEUOutput());
-							Logger.INFO("Drained from EIO CapBank Tile: "+(tEU * 100 / GregTech_API.mRFtoEU)+"");
+							Logger.WARNING("Drained from EIO CapBank Tile: "+(tEU * 100 / GregTech_API.mRFtoEU)+"");
 							network.addEnergy((int) -(tEU * 100 / GregTech_API.mRFtoEU));
 						}
 					} else {
 						if (storedRF > extractRF) {
 							((IPowerContainer) tTileEntity).setEnergyStored(storedRF - extractRF);
 							tEU = maxEUOutput();
-							Logger.INFO("Drained from EIO Tile: "+(tEU * 100 / GregTech_API.mRFtoEU)+"");
+							Logger.WARNING("Drained from EIO Tile: "+(tEU * 100 / GregTech_API.mRFtoEU)+"");
 						} else {
 							((IPowerContainer) tTileEntity).setEnergyStored(0);
 							tEU = storedRF * GregTech_API.mRFtoEU / 100;
-							Logger.INFO("Drained from EIO Tile: "+(tEU * 100 / GregTech_API.mRFtoEU)+"");
+							Logger.WARNING("Drained from EIO Tile: "+(tEU * 100 / GregTech_API.mRFtoEU)+"");
 						}
 					}
 				}
-				Logger.INFO("EU to inject: "+tEU+"EU");
+				Logger.WARNING("EU to inject: "+tEU+"EU");
 				if (!simulate) {
 					aVal = this.getBaseMetaTileEntity().increaseStoredEnergyUnits(tEU, true);
 				}
 				if (tEU > 0) {
-					Logger.INFO("Tried injecting "+tEU+" eu into self. Success? "+aVal);
+					Logger.WARNING("Tried injecting "+tEU+" eu into self. Success? "+aVal);
 				}
 			}
 		}
