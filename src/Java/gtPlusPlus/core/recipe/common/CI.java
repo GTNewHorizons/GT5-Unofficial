@@ -7,6 +7,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
+import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
@@ -1278,6 +1279,82 @@ public class CI {
 				GregtechItemList.TransmissionComponent_MAX,
 		};
 		return aTransParts[aTier].get(aAmount);
+	}
+
+	public static ItemStack getEmptyCatalyst(int aAmount) {
+		return ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 13, aAmount);
+	}
+
+	/**
+	 * Aluminium + Silver Catalyst
+	 * @param aAmount - Stacksize
+	 * @return - A Catalyst stack of given size
+	 */
+	public static ItemStack getGreenCatalyst(int aAmount) {
+		return ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 14, aAmount);
+	}
+	
+	/**
+	 * Iron + Copper Catalyst
+	 * @param aAmount - Stacksize
+	 * @return - A Catalyst stack of given size
+	 */
+	public static ItemStack getRedCatalyst(int aAmount) {
+		return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 0, aAmount);
+	}
+	
+	/**
+	 * Tungsten + Nickel Catalyst
+	 * @param aAmount - Stacksize
+	 * @return - A Catalyst stack of given size
+	 */
+	public static ItemStack getYellowCatalyst(int aAmount) {
+		return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 1, aAmount);
+	}
+	
+	/**
+	 * Cobalt + Titanium Catalyst
+	 * @param aAmount - Stacksize
+	 * @return - A Catalyst stack of given size
+	 */
+	public static ItemStack getBlueCatalyst(int aAmount) {
+		return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 2, aAmount);
+	}
+	
+	/**
+	 * Vanadium + Palladium Catalyst
+	 * @param aAmount - Stacksize
+	 * @return - A Catalyst stack of given size
+	 */
+	public static ItemStack getOrangeCatalyst(int aAmount) {
+		return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 3, aAmount);
+	}
+	
+	/**
+	 * Iridium + Ruthenium Catalyst
+	 * @param aAmount - Stacksize
+	 * @return - A Catalyst stack of given size
+	 */
+	public static ItemStack getPurpleCatalyst(int aAmount) {
+		return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 4, aAmount);
+	}
+	
+	/**
+	 * Aluminium + Nickel Catalyst
+	 * @param aAmount - Stacksize
+	 * @return - A Catalyst stack of given size
+	 */
+	public static ItemStack getBrownCatalyst(int aAmount) {
+		return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 5, aAmount);
+	}
+	
+	/**
+	 * Platinum + Rhodium Catalyst
+	 * @param aAmount - Stacksize
+	 * @return - A Catalyst stack of given size
+	 */
+	public static ItemStack getPinkCatalyst(int aAmount) {
+		return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 6, aAmount);
 	}
 
 }

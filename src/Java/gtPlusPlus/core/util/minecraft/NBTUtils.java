@@ -464,4 +464,15 @@ public class NBTUtils {
 		return ReflectionUtils.setField(aEntity, "customEntityData", aTag);
 	}
 
+	public static boolean hasTagCompound(ItemStack aStack) {
+		return aStack.hasTagCompound();
+	}
+	
+	public static void createEmptyTagCompound(ItemStack aStack) {
+		if (!hasTagCompound(aStack)) {
+			NBTTagCompound aTag = new NBTTagCompound();
+			aStack.setTagCompound(aTag);
+		}
+	}
+
 }

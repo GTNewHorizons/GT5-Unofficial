@@ -457,7 +457,7 @@ public class BioRecipes {
 				ItemUtils.getItemStackOfAmountFromOreDict("screwTin", GTNH ? 6 : 3)
 		}, 
 				GT_Values.NF, 
-				ItemUtils.getSimpleStack(AgriculturalChem.mCatalystCarrier, 1),
+				CI.getEmptyCatalyst(1),
 				300 * 20, 
 				16);
 	}	
@@ -466,12 +466,12 @@ public class BioRecipes {
 		// Assembly Recipe
 		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
 				getBioChip(4),
-				ItemUtils.getSimpleStack(AgriculturalChem.mCatalystCarrier, 10),
+				CI.getEmptyCatalyst(10),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 4),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 4)
 		}, 
 				GT_Values.NF, 
-				ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 10),
+				CI.getGreenCatalyst(10),
 				20 * 20, 
 				30);
 	}
@@ -479,7 +479,7 @@ public class BioRecipes {
 	private static void recipeAceticAcid() {
 
 		/*		GT_Values.RA.addMixerRecipe(
-						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 10),
+						CI.getGreenCatalyst(10),
 						var2,
 						var3, var4,
 						var5, // Fluid in
@@ -491,7 +491,7 @@ public class BioRecipes {
 
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 0)
+						CI.getGreenCatalyst(0)
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mMethanol, 700),
@@ -734,7 +734,7 @@ public class BioRecipes {
 	private static void recipePropionicAcid() {
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 0)
+						CI.getGreenCatalyst(0)
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mEthylene, 500),
@@ -1287,7 +1287,7 @@ public class BioRecipes {
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(19),
-						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 0),
+						CI.getGreenCatalyst(0),
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mMethane, 1000),
@@ -1307,7 +1307,7 @@ public class BioRecipes {
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(20),
-						ItemUtils.getSimpleStack(AgriculturalChem.mGreenCatalyst, 0),
+						CI.getGreenCatalyst(0),
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mEthylbenzene, 100),

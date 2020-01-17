@@ -3110,3 +3110,6 @@ item.BasicAlgaeItem.3.name=Algae Spore (IV)
 item.BasicAlgaeItem.4.name=Algae Spore (V)
 item.BasicAlgaeItem.5.name=Algae Spore (VI)
 item.BasicAlgaeItem.6.name=Algae Spore (VII)
+
+//Added17/01/20
+item.BasicGenericChemItem.6.name=Pink Metal Catalyst

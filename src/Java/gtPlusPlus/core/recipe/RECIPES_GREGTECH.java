@@ -17,6 +17,7 @@ import gregtech.api.util.ThermalFuel;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
@@ -39,6 +40,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
+import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -91,6 +93,7 @@ public class RECIPES_GREGTECH {
 		latheRecipes();
 		vacuumFreezerRecipes();
 		fluidheaterRecipes();
+		chemplantRecipes();
 
 
 		/**
@@ -105,6 +108,30 @@ public class RECIPES_GREGTECH {
 
 
 		addFuels();
+	}
+
+	private static void chemplantRecipes() {
+
+		// Advanced method for Nitric Acid Production
+		/*		CORE.RA.addChemicalPlantRecipe(
+						new ItemStack[] {
+								CI.getNumberedBioCircuit(17),
+								CI.getPinkCatalyst(0),
+						},
+						new FluidStack[] {
+								FluidUtils.getLava(10000),
+								FluidUtils.getDistilledWater(5000)
+						},
+						new ItemStack[] {
+								
+						},
+						new FluidStack[] {
+								FluidUtils.getFluidStack("nitricacid", 2000),					
+						},
+						10 * 20,
+						480,
+						3);*/
+		
 	}
 
 	private static void fluidheaterRecipes() {

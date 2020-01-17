@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.items.behaviours;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import codechicken.lib.math.MathHelper;
@@ -63,7 +62,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 		if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {			
 			if (aPlayer.isSneaking()) {
 				Logger.INFO("Changing Mode");
-				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
+				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
 				Logger.INFO("Is currently in Fireball mode? "+aCurrentMode);
 				boolean aNewMode = Utils.invertBoolean(aCurrentMode);
 				Logger.INFO("Is now set to Fireball mode? "+aNewMode);
@@ -72,7 +71,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 				PlayerUtils.messagePlayer(aPlayer, "Current Mode: "+EnumChatFormatting.RED+(aNewMode ? "Projectile" : "Fire Starter"));
 			}
 			else {
-				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
+				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
 				if (aCurrentMode) {
 					//Shoot Lightning Attack
 					aWorld.playSoundAtEntity(aPlayer, "random.bow", 0.5F, 0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
@@ -112,16 +111,16 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 		if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {			
 			if (aPlayer.isSneaking()) {
 				Logger.INFO("Changing Mode");
-				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
+				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
 				Logger.INFO("Is currently in Fireball mode? "+aCurrentMode);
 				boolean aNewMode = Utils.invertBoolean(aCurrentMode);
 				Logger.INFO("Is now set to Fireball mode? "+aNewMode);
-				aStack.getTagCompound().setBoolean("aFireballMod", aNewMode);
+				aStack.getTagCompound().setBoolean("aFireballMode", aNewMode);
 				//NBTUtils.setBoolean(aStack, "aFireballMode", aNewMode);
 				PlayerUtils.messagePlayer(aPlayer, "Current Mode: "+EnumChatFormatting.RED+(aNewMode ? "Projectile" : "Fire Starter"));
 			}
 			else {
-				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
+				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
 				if (aCurrentMode) {
 					//Shoot Lightning Attack
 					aWorld.playSoundAtEntity(aPlayer, "random.bow", 0.5F, 0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
@@ -199,11 +198,14 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 					}
 				}				
 				boolean aCurrentMode; 		
+				if (!NBTUtils.hasTagCompound(aStack)) {
+					NBTUtils.createEmptyTagCompound(aStack);
+				}
 				if (NBTUtils.hasKey(aStack, "aFireballMode")) {
-					aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
+					aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
 				}
 				else {
-					aStack.getTagCompound().setBoolean("aFireballMod", false);
+					aStack.getTagCompound().setBoolean("aFireballMode", false);
 					aCurrentMode = false;
 				}				
 				aList.add("Current Mode: "+EnumChatFormatting.RED+(aCurrentMode ? "Projectile" : "Fire Starter"));	

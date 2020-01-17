@@ -37,6 +37,7 @@ import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -996,20 +997,9 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		if (aItemInputs != null) {
 			for (final ItemStack aInput : aItemInputs) {
 				if (aInput != null) {
-					if (aInput.isItemEqual(GenericChem.mRedCatalyst))
+					if (ItemUtils.isCatalyst(aInput)) {
 						return aInput;
-					else if (aInput.isItemEqual(GenericChem.mYellowCatalyst))
-						return aInput;
-					else if (aInput.isItemEqual(GenericChem.mBlueCatalyst))
-						return aInput;
-					else if (aInput.isItemEqual(GenericChem.mOrangeCatalyst))
-						return aInput;
-					else if (aInput.isItemEqual(GenericChem.mPurpleCatalyst))
-						return aInput;
-					else if (aInput.isItemEqual(AgriculturalChem.mGreenCatalyst))
-						return aInput;
-					else if (aInput.isItemEqual(GenericChem.mBrownCatalyst))
-						return aInput;
+					}
 				}
 			}
 		}
@@ -1023,7 +1013,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			log("damage catalyst "+damage);
 			if (damage >= getMaxCatalystDurability()) {
 				log("consume catalyst");
-				ItemStack emptyCatalyst = ItemUtils.getSimpleStack(AgriculturalChem.mCatalystCarrier,1);
+				ItemStack emptyCatalyst = CI.getEmptyCatalyst(1);
 				addOutput(emptyCatalyst);
 				setDamage(aStack,0);
 				aStack.stackSize -= 1;
