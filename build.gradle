@@ -148,6 +148,7 @@ processResources
 }
 
 jar {
+    exclude ("assets/gregtech/textures/items/materialicons/copy.bat")
     manifest {
         attributes 'FMLCorePlugin': 'com.github.bartimaeusnek.ASM.BWCorePlugin','FMLCorePluginContainsFMLMod': 'true'
     }
