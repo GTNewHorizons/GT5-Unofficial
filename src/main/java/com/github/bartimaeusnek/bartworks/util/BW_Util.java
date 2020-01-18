@@ -349,6 +349,51 @@ public class BW_Util {
         }
     }
 
+    public static void calculateOverclockedNessMultiPefectOC(@Nonnegative int aEUt, @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage, GT_MetaTileEntity_MultiBlockBase base){
+        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
+        if (mTier == 0) {
+            //Long time calculation
+            long xMaxProgresstime = ((long) aDuration) << 1;
+            if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
+                //make impossible if too long
+                base.mEUt = Integer.MAX_VALUE - 1;
+                base.mMaxProgresstime = Integer.MAX_VALUE - 1;
+            } else {
+                base.mEUt = aEUt >> 2;
+                base.mMaxProgresstime = (int) xMaxProgresstime;
+            }
+        } else {
+            long xEUt = aEUt;
+            //Isnt too low EUt check?
+            long tempEUt = Math.max(xEUt, V[1]);
+
+            base.mMaxProgresstime = aDuration;
+
+            while (tempEUt <= V[mTier - 1] * mAmperage) {
+                tempEUt <<= 1;//this actually controls overclocking
+                base.mMaxProgresstime >>= 1;//this is effect of overclocking
+                xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 1;//U know, if the time is less than 1 tick make the machine use less power
+            }
+
+            while (xEUt > maxInputVoltage) {
+                //downclock one notch until we are good again, we have overshot.
+                xEUt >>= 1;
+                base.mMaxProgresstime <<= 1;
+            }
+            if (xEUt > Integer.MAX_VALUE - 1) {
+                base.mEUt = Integer.MAX_VALUE - 1;
+                base.mMaxProgresstime = Integer.MAX_VALUE - 1;
+            } else {
+                base.mEUt = (int) xEUt;
+                if (base.mEUt == 0)
+                    base.mEUt = 1;
+                if (base.mMaxProgresstime <= 0)
+                    base.mMaxProgresstime = 1;//set time to 1 tick
+            }
+        }
+    }
+
+
     public static long getnominalVoltage(GT_MetaTileEntity_MultiBlockBase base) {
         long rVoltage = 0L;
         long rAmperage = 0L;
@@ -487,9 +532,10 @@ public class BW_Util {
                         continue;
                     if (controllerLayer && (xDir + x == 0 && zDir + z == 0))
                         continue;
-                    if (insideCheck && (Math.abs(x) < radius && Math.abs(z) != radius))
+                    final boolean inside = Math.abs(x) < radius && Math.abs(z) != radius;
+                    if (insideCheck && inside)
                         ret.add(aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z));
-                    if (!(Math.abs(x) < radius && Math.abs(z) != radius)) {
+                    if (!inside) {
                         ret.add(aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z));
                     }
                 }
@@ -537,7 +583,9 @@ public class BW_Util {
     }
 
     private static Field sBufferedRecipeList;
-    public static List<IRecipe> getGTBufferedRecipeList() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+
+    @SuppressWarnings("unchecked")
+    public static List<IRecipe> getGTBufferedRecipeList() throws SecurityException, IllegalArgumentException, IllegalAccessException{
         if (sBufferedRecipeList == null) {
             sBufferedRecipeList = FieldUtils.getDeclaredField(GT_ModHandler.class,"sBufferRecipeList",true);
         }
@@ -551,6 +599,7 @@ public class BW_Util {
         return createGTCraftingRecipe(aResult, new Enchantment[0], new int[0], (aBitMask & GT_ModHandler.RecipeBits.MIRRORED) != 0L, (aBitMask & GT_ModHandler.RecipeBits.BUFFERED) != 0L, (aBitMask & GT_ModHandler.RecipeBits.KEEPNBT) != 0L, (aBitMask & GT_ModHandler.RecipeBits.DISMANTLEABLE) != 0L, (aBitMask & GT_ModHandler.RecipeBits.NOT_REMOVABLE) == 0L, (aBitMask & GT_ModHandler.RecipeBits.REVERSIBLE) != 0L, (aBitMask & GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0L, (aBitMask & GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT) != 0L, (aBitMask & GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES) != 0L, (aBitMask & GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0L, (aBitMask & GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0L, (aBitMask & GT_ModHandler.RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0L, (aBitMask & GT_ModHandler.RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0L, aRecipe);
     }
 
+    @SuppressWarnings({"rawtypes","unchecked"})
     public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable, boolean aRemovable, boolean aReversible, boolean aRemoveAllOthersWithSameOutput, boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput, boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions, boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
         aResult = GT_OreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return null;
@@ -575,7 +624,7 @@ public class BW_Util {
                 throw new IllegalArgumentException();
             }
 
-            ArrayList<Object> tRecipeList = new ArrayList<Object>(Arrays.asList(aRecipe));
+            ArrayList<Object> tRecipeList = new ArrayList<>(Arrays.asList(aRecipe));
 
             while (aRecipe[idx] instanceof String) {
                 StringBuilder s = new StringBuilder((String) aRecipe[idx++]);

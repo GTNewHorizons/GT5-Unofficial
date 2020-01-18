@@ -34,10 +34,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public final class BWAtmosphereManager {
@@ -84,8 +81,7 @@ public final class BWAtmosphereManager {
 
     @SafeVarargs
     public static void addGasToWorld(int worldID, Pair<ISubTagContainer,Integer>... toPut){
-        for (Pair<ISubTagContainer,Integer> toadd : toPut)
-            BWAtmosphereManager.gasConcentration.put(worldID,toadd);
+        Arrays.stream(toPut).forEach(toadd -> BWAtmosphereManager.gasConcentration.put(worldID, toadd));
     }
 
     private static boolean addGCGasToWorld(int worldID, IAtmosphericGas gas, int aNumber, int aMaxNumber){

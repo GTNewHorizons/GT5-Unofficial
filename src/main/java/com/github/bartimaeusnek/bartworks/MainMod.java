@@ -129,10 +129,11 @@ public final class MainMod {
             }
         }
 
-        if (Loader.isModLoaded("dreamcraft")) {
+        if (Loader.isModLoaded("dreamcraft"))
             ConfigHandler.GTNH = true;
-        }
+
         ConfigHandler.GTNH = ConfigHandler.ezmode != ConfigHandler.GTNH;
+
         if (ConfigHandler.debugLog) {
             try {
                 new DebugLog(preinit);
@@ -140,6 +141,7 @@ public final class MainMod {
                 e.printStackTrace();
             }
         }
+
         if (ConfigHandler.GTNH)
             MainMod.LOGGER.info("GTNH-Detected . . . ACTIVATE HARDMODE.");
 
@@ -147,6 +149,7 @@ public final class MainMod {
             BioCultureLoader bioCultureLoader = new BioCultureLoader();
             bioCultureLoader.run();
         }
+
         if (ConfigHandler.newStuff) {
             INSTANCE.init();
             Werkstoff.init();
@@ -154,6 +157,7 @@ public final class MainMod {
             if (FMLCommonHandler.instance().getSide().isClient())
                 new PrefixTextureLinker();
         }
+
     }
 
     @Mod.EventHandler
@@ -192,14 +196,18 @@ public final class MainMod {
                 new ThreadedLoader().run();
             else
                 INSTANCE.run();
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor", "Electric Implosions?");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor.desc", "Basically a giant Hammer that presses Stuff - No more TNT!");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.dehp", "Heat from below!");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.dehp.desc", "Get ALL the thermal energy!");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.circuitassemblyline", "Cheaper Circuits?");
-            GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.circuitassemblyline.desc", "Well, yes, but actually no...");
-            GT_LanguageManager.addStringLocalization("metaitem.01.tooltip.nqgen", "Can be used as Enriched Naquadah Fuel Substitute");
+            localiseAchievements();
         }
+    }
+
+    private static void localiseAchievements(){
+        GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor", "Electric Implosions?");
+        GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor.desc", "Basically a giant Hammer that presses Stuff - No more TNT!");
+        GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.dehp", "Heat from below!");
+        GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.dehp.desc", "Get ALL the thermal energy!");
+        GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.circuitassemblyline", "Cheaper Circuits?");
+        GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.circuitassemblyline.desc", "Well, yes, but actually no...");
+        GT_LanguageManager.addStringLocalization("metaitem.01.tooltip.nqgen", "Can be used as Enriched Naquadah Fuel Substitute");
     }
 
     @Mod.EventHandler

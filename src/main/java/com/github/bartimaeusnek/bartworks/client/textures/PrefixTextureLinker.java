@@ -35,7 +35,7 @@ import java.util.HashMap;
 
 @SideOnly(Side.CLIENT)
 public class PrefixTextureLinker implements Runnable {
-    public static HashMap<OrePrefixes,HashMap<TextureSet, Textures.ItemIcons.CustomIcon>> texMap = new HashMap<>();
+    public static HashMap<OrePrefixes, HashMap<TextureSet, Textures.ItemIcons.CustomIcon>> texMap = new HashMap<>();
 
     {
         GregTech_API.sBeforeGTLoad.add(this);
@@ -43,21 +43,24 @@ public class PrefixTextureLinker implements Runnable {
 
     @Override
     public void run() {
-
-        for (OrePrefixes prefixes : OrePrefixes.values()) {
-            if (prefixes == OrePrefixes.rod)
-                continue;
-            HashMap<TextureSet, Textures.ItemIcons.CustomIcon> curr = new HashMap<>();
-            if (prefixes.mTextureIndex == -1 && Werkstoff.GenerationFeatures.prefixLogic.get(prefixes) != 0) {
-                Arrays.stream(TextureSet.class.getFields()).filter(field -> field.getName().contains("SET")).forEach(SET -> {
-                    try {
-                        curr.put((TextureSet) SET.get(null), new Textures.ItemIcons.CustomIcon("materialicons/" + SET.getName().substring(4) + "/" + prefixes));
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
+        Arrays.stream(OrePrefixes.values())
+                .filter(prefixes -> prefixes != OrePrefixes.rod
+                        && prefixes.mTextureIndex == -1 && Werkstoff.GenerationFeatures.prefixLogic.get(prefixes) != 0)
+                .forEach(prefixes -> {
+                    HashMap<TextureSet, Textures.ItemIcons.CustomIcon> curr = new HashMap<>();
+                    Arrays.stream(TextureSet.class.getFields())
+                            .filter(field -> field.getName().contains("SET"))
+                            .forEach(SET -> {
+                                try {
+                                    curr.put((TextureSet) SET.get(null),
+                                            new Textures.ItemIcons.CustomIcon(
+                                                    "materialicons/" + SET.getName().substring(4) + "/" + prefixes)
+                                    );
+                                } catch (IllegalAccessException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                    texMap.put(prefixes, curr);
                 });
-                texMap.put(prefixes, curr);
-            }
-        }
     }
 }

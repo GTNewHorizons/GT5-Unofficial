@@ -60,6 +60,7 @@ public class CircuitImprintLoader {
     private static final HashSet<GT_Recipe> ORIGINAL_CAL_RECIPES = new HashSet<>();
     private static final HashSet<GT_Recipe> MODIFIED_CAL_RECIPES = new HashSet<>();
 
+    @SuppressWarnings("unused")
     public static void run() {
         HashSet<GT_Recipe> toRem = new HashSet<>();
         HashSet<GT_Recipe> toAdd = new HashSet<>();
@@ -162,7 +163,7 @@ public class CircuitImprintLoader {
             return null;
         }
 
-        return new BWRecipes.DynamicGTRecipe(false, in, new ItemStack[]{getOutputMultiplied(original)}, BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(CircuitImprintLoader.getTagFromStack(original.mOutputs[0]), 0, 0), null, original.mFluidInputs, null, original.mDuration * 16, original.mEUt, 0);
+        return new BWRecipes.DynamicGTRecipe(false, in, new ItemStack[]{getOutputMultiplied(original)}, BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(CircuitImprintLoader.getTagFromStack(original.mOutputs[0]), 0, 0), null, original.mFluidInputs, null, original.mDuration * 12, original.mEUt, 0);
     }
 
     private static ItemStack getOutputMultiplied(GT_Recipe original){

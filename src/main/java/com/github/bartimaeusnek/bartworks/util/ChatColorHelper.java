@@ -24,6 +24,8 @@ package com.github.bartimaeusnek.bartworks.util;
 
 public class ChatColorHelper {
 
+    private ChatColorHelper() {}
+
     public static final String BLACK = (char) 167 + "0";
     public static final String DARKBLUE = (char) 167 + "1";
     public static final String DARKGREEN = (char) 167 + "2";
