@@ -416,7 +416,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		aToolTip = ArrayUtils.addAll(aToolTip, z);
 
 		//Valid Cached Tooltip during Run-Time		
-		if (aCachedToolTip == null || aCachedToolTip.length <= 0 || aCachedToolTip.length != aToolTip.length) {
+		if (aCachedToolTip == null || aCachedToolTip.length <= 0 || aCachedToolTip.length != aToolTip.length || this.mTotalRunTime % 100 == 0) {
 			aCachedToolTip = aToolTip;			
 		}		
 		return aCachedToolTip;
