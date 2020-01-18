@@ -415,7 +415,8 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		aToolTip = ArrayUtils.addAll(aToolTip, x);
 		aToolTip = ArrayUtils.addAll(aToolTip, z);
 
-		if (aCachedToolTip == null || aCachedToolTip.length <= 0) {
+		//Valid Cached Tooltip during Run-Time		
+		if (aCachedToolTip == null || aCachedToolTip.length <= 0 || aCachedToolTip.length != aToolTip.length) {
 			aCachedToolTip = aToolTip;			
 		}		
 		return aCachedToolTip;
@@ -2581,7 +2582,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 			else if (aFoundBlock != aExpectedBlock) {
 				if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
 					log("A1 - Found: "+aFoundBlock.getLocalizedName()+":"+aFoundMeta+", Expected: "+aExpectedBlock.getLocalizedName()+":"+aExpectedMeta);	
-					log("Loc: "+(new BlockPos(aBaseMetaTileEntity).getLocationString()));
+					//log("Loc: "+(new BlockPos(aBaseMetaTileEntity).getLocationString()));
 				}
 				return false;
 			}

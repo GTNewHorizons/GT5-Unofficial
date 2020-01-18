@@ -912,46 +912,10 @@ public class ItemUtils {
 		return CORE.burnables.add(new Pair<Integer, ItemStack>(burn, aBurnable));
 	}
 
-	/**
-	 * Quick Block Name Lookup that is friendly to servers and locale.
-	 */
-	private static volatile Map<String, String> mLocaleCache = new HashMap<String, String>();
-
 	public static String getLocalizedNameOfBlock(BlockPos pos) {
 		Block block = pos.world.getBlock(pos.xPos, pos.yPos, pos.zPos);
 		int metaData = pos.world.getBlockMetadata(pos.xPos, pos.yPos, pos.zPos);
-		return getLocalizedNameOfBlock(block, metaData);
-	}
-
-	public synchronized static String getLocalizedNameOfBlock(Block block, int meta) {
-		if (block == null || meta < 0) {
-			return "Bad Block";
-		}
-		String mCacheKey = block.getUnlocalizedName() + ":" + meta;
-		if (mLocaleCache.containsKey(mCacheKey)) {
-			// Recache the key if it's invalid.
-			if (mLocaleCache.get(mCacheKey).toLowerCase().contains(".name")) {
-				mLocaleCache.remove(mCacheKey);
-				String mNew = ItemUtils.simpleMetaStack(block, meta, 1).getDisplayName();
-				//Logger.INFO("Re-caching "+mNew+" into locale cache.");
-				mLocaleCache.put(mCacheKey, mNew);
-			}
-			//Logger.INFO("Returning Cached Value.");
-			return mLocaleCache.get(mCacheKey);
-		} else {
-			Item item = Item.getItemFromBlock(block);
-			if (item == null) {
-				return "Bad Item";
-			}
-			String unlocalizedName = item.getUnlocalizedName(new ItemStack(block, 1, meta));
-			String blockName = StatCollector.translateToLocal(unlocalizedName + ".name");
-			if (blockName.toLowerCase().contains(".name")) {
-				blockName = ItemUtils.simpleMetaStack(block, meta, 1).getDisplayName();
-			}
-			mLocaleCache.put(mCacheKey, blockName);
-			//Logger.INFO("Cached New Value.");
-			return blockName;
-		}
+		return LangUtils.getLocalizedNameOfBlock(block, metaData);
 	}
 
 	public static boolean checkForInvalidItems(ItemStack mInput) {
@@ -1344,6 +1308,10 @@ public class ItemUtils {
 			return true;
 		}
 		return false;
+	}
+
+	public static String getLocalizedNameOfBlock(Block aBlock, int aMeta) {
+		return LangUtils.getLocalizedNameOfBlock(aBlock, aMeta);
 	}
 
 }
