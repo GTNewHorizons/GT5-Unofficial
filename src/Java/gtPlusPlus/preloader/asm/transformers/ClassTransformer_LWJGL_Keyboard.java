@@ -9,6 +9,7 @@ import static org.objectweb.asm.Opcodes.ILOAD;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
@@ -18,14 +19,19 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
 
 public class ClassTransformer_LWJGL_Keyboard {
 
 	private final boolean isValid;
 	private final ClassReader reader;
 	private final ClassWriter writer;
+
+	private static final HashMap<String, String> mBadKeyCache = new HashMap<String, String>();
 
 	/**
 	 * Gets a key's name
@@ -41,8 +47,33 @@ public class ClassTransformer_LWJGL_Keyboard {
 				return aTemp[key];
 			}
 		}
-		Logger.INFO("Unable to map key code "+key+" to LWJGL keymap.");
-		return getKeyName()[0x00]; // Return nothing
+		String aCachedValue = mBadKeyCache.get("key-"+key);
+		if (aCachedValue == null) {
+			FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Unable to map key code "+key+" to LWJGL keymap.");
+			FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Caching key value to be empty.");
+			//mBadKeyCache.put("key-"+key, getKeyName()[0x00]);
+			aCachedValue = "FIX!";
+			mBadKeyCache.put("key-"+key, aCachedValue);
+			trySetClientKey(key);
+		}
+		return aCachedValue; // Return nothing
+	}
+
+	public static void trySetClientKey(int aKey) {
+		if (Utils.isClient() && ReflectionUtils.doesClassExist("net.minecraft.client.Minecraft")) {
+			FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Trying to set key value to be empty.");	
+			GameSettings options = Minecraft.getMinecraft().gameSettings;
+			KeyBinding[] akeybinding = Minecraft.getMinecraft().gameSettings.keyBindings;
+			int i = akeybinding.length;
+			for (int j = 0; j < i; ++j) {
+				KeyBinding keybinding = akeybinding[j];
+				if (keybinding != null && keybinding.getKeyCode() == aKey) {
+					options.setOptionKeyBinding(keybinding, 0);
+					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Set keybind "+aKey+" to 0.");
+					break;
+				}
+			}
+		}
 	}
 
 	@SuppressWarnings("rawtypes")
