@@ -18,6 +18,7 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class ClassTransformer_LWJGL_Keyboard {
@@ -40,6 +41,7 @@ public class ClassTransformer_LWJGL_Keyboard {
 				return aTemp[key];
 			}
 		}
+		Logger.INFO("Unable to map key code "+key+" to LWJGL keymap.");
 		return getKeyName()[0x00]; // Return nothing
 	}
 
@@ -77,20 +79,27 @@ public class ClassTransformer_LWJGL_Keyboard {
 		return new String[] {};
 	}
 
-	public ClassTransformer_LWJGL_Keyboard(byte[] basicClass) {
+	public ClassTransformer_LWJGL_Keyboard(byte[] basicClass, boolean isClientSettings) {
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;
 		aTempReader = new ClassReader(basicClass);
-		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
-		aTempReader.accept(new AddFieldAdapter(aTempWriter), 0);
-		injectMethod("getKeyName", aTempWriter);
+		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);	
+		if (!isClientSettings) {
+			//gtPlusPlus.preloader.keyboard.BetterKeyboard.init();
+			aTempReader.accept(new PatchLWJGL(aTempWriter), 0);		
+			injectLWJGLPatch(aTempWriter);		
+		}
+		else {
+			//gtPlusPlus.preloader.keyboard.BetterKeyboard.init();
+			aTempReader.accept(new PatchClientSettings(aTempWriter), 0);
+			injectClientSettingPatch(aTempWriter);
+		}
 		if (aTempReader != null && aTempWriter != null) {
 			isValid = true;
 		} else {
 			isValid = false;
 		}
-		FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO,
-				"Valid? " + isValid + ".");
+		FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Valid? " + isValid + ".");
 		reader = aTempReader;
 		writer = aTempWriter;
 	}
@@ -107,37 +116,103 @@ public class ClassTransformer_LWJGL_Keyboard {
 		return writer;
 	}
 
-	public boolean injectMethod(String aMethodName, ClassWriter cw) {
+	private boolean isClientSettingsObfuscated = false;
+
+
+	public boolean injectLWJGLPatch(ClassWriter cw) {
 		MethodVisitor mv;
 		boolean didInject = false;
 		FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO,
-				"Injecting " + aMethodName + ".");
-		if (aMethodName.equals("getKeyName")) {
-			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC + ACC_SYNCHRONIZED, "getKeyName", "(I)Ljava/lang/String;", null,
-					null);
-			mv.visitCode();
-			Label l0 = new Label();
-			mv.visitLabel(l0);
-			mv.visitLineNumber(49, l0);
-			mv.visitVarInsn(ILOAD, 0);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_LWJGL_Keyboard",
-					"getKeyName", "(I)Ljava/lang/String;", false);
-			mv.visitInsn(ARETURN);
-			Label l1 = new Label();
-			mv.visitLabel(l1);
-			mv.visitLocalVariable("key", "I", null, l0, l1, 0);
-			mv.visitMaxs(1, 1);
-			mv.visitEnd();
-			didInject = true;
-		}
-		FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO,
-				"Method injection complete.");
+				"Injecting " + "getKeyName" + ".");
+		mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC + ACC_SYNCHRONIZED, "getKeyName", "(I)Ljava/lang/String;", null,
+				null);
+		mv.visitCode();
+		Label l0 = new Label();
+		mv.visitLabel(l0);
+		mv.visitLineNumber(49, l0);
+		mv.visitVarInsn(ILOAD, 0);
+		mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_LWJGL_Keyboard",
+				"getKeyName", "(I)Ljava/lang/String;", false);
+		mv.visitInsn(ARETURN);
+		Label l1 = new Label();
+		mv.visitLabel(l1);
+		mv.visitLocalVariable("key", "I", null, l0, l1, 0);
+		mv.visitMaxs(1, 1);
+		mv.visitEnd();
+		didInject = true;
+
+		FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Method injection complete.");
 		return didInject;
 	}
 
-	public class AddFieldAdapter extends ClassVisitor {
 
-		public AddFieldAdapter(ClassVisitor cv) {
+	public boolean injectClientSettingPatch(ClassWriter cw) {
+		MethodVisitor mv;
+		boolean didInject = false;
+		String aMethodName = this.isClientSettingsObfuscated ? "func_74298_c" : "getKeyDisplayString";
+		FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Injecting " + aMethodName + ".");
+		mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, aMethodName, "(I)Ljava/lang/String;", null, null);		
+		mv.visitCode();
+		Label l0 = new Label();
+		mv.visitLabel(l0);
+		mv.visitLineNumber(130, l0);
+		mv.visitVarInsn(ILOAD, 0);
+		mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/keyboard/BetterKeyboard", "getKeyDisplayString", "(I)Ljava/lang/String;", false);
+		mv.visitInsn(ARETURN);
+		Label l1 = new Label();
+		mv.visitLabel(l1);
+		mv.visitLocalVariable("p_74298_0_", "I", null, l0, l1, 0);
+		mv.visitMaxs(1, 1);
+		mv.visitEnd();		
+		didInject = true;
+		FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Method injection complete.");
+		return didInject;
+	}
+
+
+
+	public class PatchClientSettings extends ClassVisitor {
+
+		public PatchClientSettings(ClassVisitor cv) {
+			super(ASM5, cv);
+			this.cv = cv;
+		}
+
+		private final String[] aMethodsToStrip = new String[] { "func_74298_c", "getKeyDisplayString" };
+
+		@Override
+		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+			MethodVisitor methodVisitor;
+			boolean found = false;
+
+			for (String s : aMethodsToStrip) {
+				if (name.equals(s)) {
+					if (name.equals(aMethodsToStrip[0])) {
+						isClientSettingsObfuscated = true;
+					}
+					else {
+						isClientSettingsObfuscated = false;
+					}
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
+			} else {
+				methodVisitor = null;
+			}
+			if (found) {
+				FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Found method " + name + ", removing.");
+			}
+			return methodVisitor;
+		}
+
+	}
+
+	public class PatchLWJGL extends ClassVisitor {
+
+		public PatchLWJGL(ClassVisitor cv) {
 			super(ASM5, cv);
 			this.cv = cv;
 		}

@@ -84,9 +84,13 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		boolean probablyShouldBeFalse = false;
 
 		// Fix LWJGL index array out of bounds on keybinding IDs
-		if (transformedName.equals("org.lwjgl.input.Keyboard") && mConfig.enabledLwjglKeybindingFix) {	
+		if ((transformedName.equals("org.lwjgl.input.Keyboard") || transformedName.equals("bbj") || transformedName.equals("net.minecraft.client.settings.GameSettings")) && mConfig.enabledLwjglKeybindingFix) {	
+			boolean isClientSettingsClass = false;
+			if (!transformedName.equals("org.lwjgl.input.Keyboard")) {
+				isClientSettingsClass = true;
+			}			
 			FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_LWJGL_Keyboard(basicClass).getWriter().toByteArray();
+			return new ClassTransformer_LWJGL_Keyboard(basicClass, isClientSettingsClass).getWriter().toByteArray();
 		}		
 
 		//Enable mapping of Tickets and loaded chunks. - Forge
