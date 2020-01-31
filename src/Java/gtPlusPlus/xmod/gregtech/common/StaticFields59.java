@@ -258,31 +258,31 @@ public class StaticFields59 {
 	public static int getHeatingCapacityForCoilTier(int aCoilTier) {
 		int mHeatingCapacity = 0;
 		switch (aCoilTier) {
-		case 1:
+		case 0:
 			mHeatingCapacity = 1800;
 			break;
-		case 2:
+		case 1:
 			mHeatingCapacity = 2700;
 			break;
-		case 3:
+		case 2:
 			mHeatingCapacity = 3600;
 			break;
-		case 4:
+		case 3:
 			mHeatingCapacity = 4500;
 			break;
-		case 5:
+		case 4:
 			mHeatingCapacity = 5400;
 			break;
-		case 6:
+		case 5:
 			mHeatingCapacity = 7200;
 			break;
-		case 7:
+		case 6:
 			mHeatingCapacity = 9000;
 			break;
-		case 8:
+		case 7:
 			mHeatingCapacity = 9900;
 			break;
-		case 9:
+		case 8:
 			mHeatingCapacity = 10800;
 			break;
 		default:

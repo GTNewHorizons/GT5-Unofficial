@@ -121,15 +121,16 @@ extends GregtechMeta_MultiBlockBase {
 					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
 						tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
 				}
-			}			
+			}	
 			ItemStack[] inputs = new ItemStack[tBusItems.size()];
 			int slot = 0;
 			for (ItemStack g : tBusItems) {
 				inputs[slot++] = g;
 			}			
 			if (inputs.length > 0) {				
-				log("Recipe. ["+inputs.length+"]["+getMaxParallelRecipes()+"]");				
-				if (checkRecipeGeneric(inputs, (FluidStack[]) ArrayUtils.getArrayFromArrayList(this.getStoredFluids()), getMaxParallelRecipes(), getEuDiscountForParallelism(), 250, 10000)) {
+				log("Recipe. ["+inputs.length+"]["+getMaxParallelRecipes()+"]");	
+				FluidStack[] fluid = this.getStoredFluids().toArray(new FluidStack[] {});	
+				if (checkRecipeGeneric(inputs,fluid , getMaxParallelRecipes(), getEuDiscountForParallelism(), 250, 10000)) {
 					log("Recipe 2.");
 					return true;
 				}
