@@ -1,5 +1,11 @@
 # Welcome to the GT++ Github!  
 
+## Patreon
+[Become a humble Patron!](https://www.patreon.com/bePatron?u=9530372) <-- Clicky clicky    
+There's cookies, capes and sometimes even cakes!  
+Monthly goals will permit a community vote, which dictates new content additions.  
+Funds raised are distributed between all active developers. (Currently Alkalus & Bot)
+
 ## Current Build Status  
 ### CircleCI - [![CircleCI](https://circleci.com/gh/alkcorp/GTplusplus/tree/master.svg?style=svg)](https://circleci.com/gh/alkcorp/GTplusplus/tree/master)   
 Click the Green Passed/Red Failed button for the latest BETA builds!  
