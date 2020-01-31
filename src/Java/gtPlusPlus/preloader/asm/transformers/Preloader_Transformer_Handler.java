@@ -119,11 +119,16 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		}
 
 		//Fix RC stuff
-		//Patching PROCESS_VOLUME to allow 4x more transfer limits
-		if (transformedName.equals("mods.railcraft.common.fluids.FluidHelper") && mConfig.enableRcFlowFix) {	
+		//Patching PROCESS_VOLUME to allow more transfer limits
+		if (transformedName.equals("mods.railcraft.common.fluids.FluidHelper") && (mConfig.enableRcFlowFix && mConfig.maxRailcraftTankProcessVolume != 4000)) {	
 			FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_Railcraft_FluidHelper(basicClass, obfuscated).getWriter().toByteArray();
-		}
+		}		
+		//Patching TRANSFER_RATE in Fluid Loaders/Unloaders
+		if ((transformedName.equals("mods.railcraft.common.blocks.machine.gamma.TileFluidLoader") && mConfig.maxRailcraftFluidLoaderFlow != 20) || (transformedName.equals("mods.railcraft.common.blocks.machine.gamma.TileFluidUnloader") && mConfig.maxRailcraftFluidUnloaderFlow != 80)) {	
+			FMLRelaunchLog.log("[GT++ ASM] Railcraft TRANSFER_RATE Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_Railcraft_FluidCartHandling(basicClass, obfuscated, transformedName).getWriter().toByteArray();
+		}		
 		//Fix Weird glitch involving negative itemstacks.
 		if (transformedName.equals("mods.railcraft.common.util.inventory.InvTools") && mConfig.enableRcItemDupeFix) {	
 			FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO, "Transforming %s", transformedName);

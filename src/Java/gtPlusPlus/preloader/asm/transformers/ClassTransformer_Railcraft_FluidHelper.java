@@ -13,6 +13,7 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gtPlusPlus.preloader.asm.AsmConfig;
 import net.minecraft.inventory.IInventory;
 
 public class ClassTransformer_Railcraft_FluidHelper {	
@@ -21,13 +22,16 @@ public class ClassTransformer_Railcraft_FluidHelper {
 	private final ClassReader reader;
 	private final ClassWriter writer;	
 
-	public static final int PROCESS_VOLUME = 16000;	
+	public static int PROCESS_VOLUME;	
 
 	public ClassTransformer_Railcraft_FluidHelper(byte[] basicClass, boolean obfuscated2) {
+		
+		PROCESS_VOLUME = AsmConfig.maxRailcraftTankProcessVolume;
+		
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;
 
-		FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Attempting to patch field PROCESS_VOLUME in mods.railcraft.common.fluids.FluidHelper");	
+		FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Attempting to patch field PROCESS_VOLUME in mods.railcraft.common.fluids.FluidHelper with new value: "+PROCESS_VOLUME);	
 
 		boolean obfuscated = false;
 		boolean a1 = false;
@@ -99,7 +103,7 @@ public class ClassTransformer_Railcraft_FluidHelper {
 				"[GT++ ASM] Railcraft PROCESS_VOLUME Patch",
 				Level.INFO,	
 				"Injecting " + fieldName + " with new value.");
-		FieldVisitor fv = cv.visitField(access, fieldName, "I", null, 16000);
+		FieldVisitor fv = cv.visitField(access, fieldName, "I", null, PROCESS_VOLUME);
 		if (fv != null) {
 			fv.visitEnd();
 			return true;

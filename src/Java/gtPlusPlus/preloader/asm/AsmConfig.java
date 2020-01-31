@@ -20,6 +20,9 @@ public class AsmConfig {
 	public static boolean enableCofhPatch;
 	public static boolean enableGcFuelChanges;
 	public static boolean enableRcFlowFix;
+	public static int maxRailcraftTankProcessVolume;
+	public static int maxRailcraftFluidLoaderFlow;
+	public static int maxRailcraftFluidUnloaderFlow;
 	public static boolean enableRcItemDupeFix;
 	public static boolean enableTcAspectSafety;
 	public static boolean enabledLwjglKeybindingFix;
@@ -118,9 +121,29 @@ public class AsmConfig {
 			
 			//Railcraft Tank fix
 			prop = config.get("general", "enableRcFlowFix", true);
-			prop.comment = "Quadruples max RC IO rates on tanks";
+			prop.comment = "Allows Custom max IO rates on RC tanks";
 			prop.setLanguageKey("gtpp.enableRcFlowFix").setRequiresMcRestart(true);
 			enableRcFlowFix = prop.getBoolean(true);
+			propOrder.add(prop.getName());
+			
+			prop = config.get("general", "maxRailcraftTankProcessVolume", 4000);
+			prop.comment = "Max IO for RC fluid tanks (Not Carts). 'enableRcFlowFix' Must be enabled.";
+			prop.setLanguageKey("gtpp.maxRailcraftTankProcessVolume").setRequiresMcRestart(true);
+			maxRailcraftTankProcessVolume = prop.getInt(4000);
+			propOrder.add(prop.getName());
+			
+			// Railcraft Loader Max flowrate
+			prop = config.get("general", "maxRailcraftFluidLoaderFlow", 20);
+			prop.comment = "Max Output rate for RC Fluid Loaders";
+			prop.setLanguageKey("gtpp.maxRailcraftFluidLoaderFlow").setRequiresMcRestart(true);
+			maxRailcraftFluidLoaderFlow = prop.getInt(20);
+			propOrder.add(prop.getName());
+			
+			// Railcraft Unloader Max flowrate
+			prop = config.get("general", "maxRailcraftFluidUnloaderFlow", 80);
+			prop.comment = "Max Output rate for RC Fluid Unloaders";
+			prop.setLanguageKey("gtpp.maxRailcraftFluidUnloaderFlow").setRequiresMcRestart(true);
+			maxRailcraftFluidUnloaderFlow = prop.getInt(80);
 			propOrder.add(prop.getName());
 			
 			//Railcraft Dupe Fix			
