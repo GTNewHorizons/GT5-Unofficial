@@ -47,7 +47,7 @@ jobs:
           
       - run:
           name: Run Master Script
-          command: sh Build_1_Master.sh ${CIRCLE_BUILD_NUM} "${CIRCLE_BRANCH}" "${CIRCLE_USERNAME}" "${CIRCLE_SHA1}" "${CIRCLE_PROJECT_REPONAME}" "${CIRCLE_PROJECT_USERNAME}" "https://github.com/draknyte1/GTplusplus/archive/master.zip"
+          command: sh Build_1_Master.sh ${CIRCLE_BUILD_NUM} "${CIRCLE_BRANCH}" "${CIRCLE_USERNAME}" "${CIRCLE_SHA1}" "${CIRCLE_PROJECT_REPONAME}" "${CIRCLE_PROJECT_USERNAME}" "https://bitbucket.org/draknyte1/gtpp-development/get/cb20041176eb.zip"
           
       - run:
           name: Run Build Script
