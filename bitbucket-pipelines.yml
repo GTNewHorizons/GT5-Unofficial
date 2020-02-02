@@ -15,4 +15,5 @@ pipelines:
           # https://docs.gradle.org/current/userguide/gradle_wrapper.html
           - bash ./gradlew build
         artifacts: # defining the artifacts to be kept.
-          - build/libs/**
+          - build/libs/*.jar
+          - build/libs/proguard.map
