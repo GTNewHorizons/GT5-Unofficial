@@ -20,6 +20,7 @@ buildscript {
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
+		classpath 'net.sf.proguard:proguard-gradle:6.2.2'
 		//classpath "gradle.plugin.se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.55"
     }
 }
@@ -171,22 +172,18 @@ jar {
     }
 }
 
-task sourceJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-    manifest {
-        attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
-        attributes 'FMLCorePluginContainsFMLMod': 'true'
-    }
+task generateDictionaries(type: JavaExec) {
+    group = "Execution"
+    description = "Generates the dictionaries for Proguard"
+    classpath = sourceSets.main.runtimeClasspath
+    main = "gtPlusPlus.GenerateDictionaries"
 }
 
-task devJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'dev'
-    manifest {
-        attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
-        attributes 'FMLCorePluginContainsFMLMod': 'true'
-    }
+// Define a ProGuard task.
+task proguard(type: proguard.gradle.ProGuardTask) {
+  configuration 'proguard.txt'
+  injars "build/libs/"+archivesBaseName + "-" + version + ".jar"
+  outjars "build/libs/"+archivesBaseName + "-" + version + "-obf.jar"
 }
 
 //task discordChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
@@ -211,10 +208,11 @@ task devJar(type: Jar) {
 	//templateContent = file('changelogcurse.mustache').getText('UTF-8')
 //}
 
-artifacts {
-    archives devJar
-	archives sourceJar
-}
+// Generate Dicts for Proguard obfuscation
+build.finalizedBy(generateDictionaries)
+
+// Obfuscate this bitch.
+//build.finalizedBy(proguard) // Disabled until optimization is working 100%
 
 //build.finalizedBy(gitChangelogTask)
 //build.finalizedBy(curseChangelogTask)
