@@ -20,7 +20,7 @@ buildscript {
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
-		classpath "gradle.plugin.se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.55"
+		//classpath "gradle.plugin.se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.55"
     }
 }
 
@@ -216,6 +216,6 @@ artifacts {
 	archives sourceJar
 }
 
-build.finalizedBy(gitChangelogTask)
-build.finalizedBy(curseChangelogTask)
-build.finalizedBy(discordChangelogTask)
+//build.finalizedBy(gitChangelogTask)
+//build.finalizedBy(curseChangelogTask)
+//build.finalizedBy(discordChangelogTask)
