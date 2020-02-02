@@ -189,27 +189,27 @@ task devJar(type: Jar) {
     }
 }
 
-task discordChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	file = new File("build/changelog/Basic ${project.version}.txt");
-	untaggedName = "Current Basic release ${project.version}"
-	fromCommit = "${config.commit.hash}"
-	toRef =  "HEAD"
-	templateContent = file('changeloggeneral.mustache').getText('UTF-8')
-}
-task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	file = new File("build/changelog/${project.version}.md");
-	untaggedName = "Current release ${project.version}"
-	fromCommit = "${config.commit.hash}"
-	toRef =  "HEAD"
-	templateContent = file('changelog.mustache').getText('UTF-8')
-}
-task curseChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	file = new File("build/changelog/Curse ${project.version}.md");
-	untaggedName = "Current Curse release ${project.version}"
-	fromCommit = "${config.commit.hash}"
-	toRef =  "HEAD"
-	templateContent = file('changelogcurse.mustache').getText('UTF-8')
-}
+//task discordChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	//file = new File("build/changelog/Basic ${project.version}.txt");
+	//untaggedName = "Current Basic release ${project.version}"
+	//fromCommit = "${config.commit.hash}"
+	//toRef =  "HEAD"
+	//templateContent = file('changeloggeneral.mustache').getText('UTF-8')
+//}
+//task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	//file = new File("build/changelog/${project.version}.md");
+	//untaggedName = "Current release ${project.version}"
+	//fromCommit = "${config.commit.hash}"
+	//toRef =  "HEAD"
+	//templateContent = file('changelog.mustache').getText('UTF-8')
+//}
+//task curseChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	//file = new File("build/changelog/Curse ${project.version}.md");
+	//untaggedName = "Current Curse release ${project.version}"
+	//fromCommit = "${config.commit.hash}"
+	//toRef =  "HEAD"
+	//templateContent = file('changelogcurse.mustache').getText('UTF-8')
+//}
 
 artifacts {
     archives devJar
