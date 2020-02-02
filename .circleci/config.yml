@@ -11,7 +11,11 @@ jobs:
       JVM_OPTS: -Xms2048m Xmx4000m
       
       
-    steps:
+    steps:    
+      - add_ssh_keys:
+          fingerprints:
+          - "17:37:c7:07:d3:2b:a9:b8:b8:8f:e8:d5:23:fd:9a:4c"
+    
       - checkout
       
       - run:
@@ -51,7 +55,7 @@ jobs:
           
       - run:
           name: Run Build Script
-          command: sh RunScript.sh   
+          command: sh RunScript.sh "17:37:c7:07:d3:2b:a9:b8:b8:8f:e8:d5:23:fd:9a:4c"   
 
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
           path: build/libs
