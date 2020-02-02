@@ -62,7 +62,7 @@ file "version.properties" withReader {
     ext.config2 = new ConfigSlurper().parse prop
 }
 
-apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
+//apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 
 version = "${config.gtpp.version}.${config2.mod.version}"
 group= "gtPlusPlus"
