@@ -66,7 +66,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 				"X           X",
 				"X           X", 
 				"XXXXXXXXX", 
-				"Machine Casing (all bottom layer)", 
+				"Machine Casings (all bottom layer)", 
 				"Sterile Farm Casings (rest)", 
 				"Controller (front centered)",
 				"All hatches must be on the bottom layer",
