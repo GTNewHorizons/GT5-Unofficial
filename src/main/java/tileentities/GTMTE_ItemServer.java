@@ -75,7 +75,6 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 				.addOtherStructurePart("2nd and 3rd slice, top", "3x1x1 Item Server Rack Casing")
 				.addOtherStructurePart("2nd and 3rd slice, sides", "2x 1x4x1 Item Server Drive")
 				.addOtherStructurePart("Back slice", "3x5x1 Item Server Rack Casing")
-				.addInputBus("Instead of any casing")
 				.signAndFinalize("Kekzdealer");
 		if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return b.getInformation();
@@ -181,7 +180,6 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 						thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 				
 				if(!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
 						&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 					
 					// If it's not a hatch, is it the right casing for this machine?
@@ -272,7 +270,6 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 									thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 							
 							if(!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-									&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
 									&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 								
 								// If it's not a hatch, is it the right casing for this machine?
@@ -322,7 +319,6 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 								thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 						
 						if(!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-								&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
 								&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 							
 							// If it's not a hatch, is it the right casing for this machine?

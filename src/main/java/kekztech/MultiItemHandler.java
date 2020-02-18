@@ -64,7 +64,7 @@ public class MultiItemHandler {
 	}
 	
 	public int getItemTypeCapacity() {
-		return items.length;
+		return items != null ? items.length : 0;
 	}
 	
 	public int getPerTypeCapacity() {
@@ -97,16 +97,19 @@ public class MultiItemHandler {
 	 * 			Storage slot number. Zero indexed.
 	 * @param itemStack
 	 * 			ItemStack to insert.
+	 * @return 
+	 * 			Operation success state.
 	 */
-	public void insertStackInSlot(int slot, ItemStack itemStack) {
+	public boolean insertStackInSlot(int slot, ItemStack itemStack) {
 		System.out.println("Inserting " + itemStack.getDisplayName() + " into " + slot);
 		if(itemStack == null 
 				|| items[slot] != null
 				|| locked
 				|| slot >= items.length) {
-			return;
+			return false;
 		} else {
 			items[slot] = itemStack;
+			return true;
 		}
 	}
 	

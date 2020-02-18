@@ -2,22 +2,22 @@ package tileentities;
 
 import kekztech.MultiItemHandler;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class TE_ItemServerIOPort extends TileEntity implements IInventory {
+public class TE_ItemServerIOPort extends TileEntity implements ISidedInventory {
 	
 	private MultiItemHandler mih;
 	
 	public void setMultiItemHandler(MultiItemHandler mih) {
-		System.out.println("MIH set");
 		this.mih = mih;
+		System.out.println("MIH set");
 	}
 	
 	@Override
 	public int getSizeInventory() {
-		return (mih != null) ? mih.getItemTypeCapacity() : 9;
+		return (mih != null) ? mih.getItemTypeCapacity() : 0;
 	}
 
 	@Override
@@ -36,8 +36,9 @@ public class TE_ItemServerIOPort extends TileEntity implements IInventory {
 			} else {
 				return null;			
 			}			
+		} else {
+			return null;			
 		}
-		return null;
 	}
 
 	@Override
@@ -47,26 +48,26 @@ public class TE_ItemServerIOPort extends TileEntity implements IInventory {
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack itemStack) {
-		System.out.println("Set slot, MIH: " + mih);
+		System.out.println("Set slot: " + slot);
 		if(mih != null) {
-			if(itemStack == null || !itemStack.isItemEqual(mih.getStackInSlot(slot))) {
+			if(itemStack == null) {
 				return;
 			} else {
-				if(mih.getStackInSlot(slot) == null) {
-					System.out.println("Set slot: Allocate new");
-					mih.insertStackInSlot(slot, itemStack);
-				} else {
-					final int change = itemStack.stackSize - mih.getStackInSlot(slot).stackSize;
-					if(change < 0) {
-						System.out.println("Set slot: reduce");
-						mih.reduceStackInSlot(slot, change);
+				if(!mih.insertStackInSlot(slot, itemStack)) {
+					final int delta = itemStack.stackSize - mih.getStackInSlot(slot).stackSize;
+					if(delta < 0) {
+						System.out.println("Set slot reduce: " + itemStack.getDisplayName());
+						mih.reduceStackInSlot(slot, delta);
 					} else {
-						System.out.println("Set slot: increase");
-						mih.increaseStackInSlot(slot, change);
-					}					
+						System.out.println("Set slot increase: " + itemStack.getDisplayName());
+						mih.increaseStackInSlot(slot, delta);
+					}
+					
+				} else {
+					System.out.println("Allocated new slot for: " + itemStack.getDisplayName());
 				}
 				super.markDirty();
-			}			
+			}
 		}
 	}
 
@@ -103,6 +104,29 @@ public class TE_ItemServerIOPort extends TileEntity implements IInventory {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
 		return (mih != null) ? (mih.getStackInSlot(slot).isItemEqual(itemStack) || mih.getStackInSlot(slot) == null) : false;
+	}
+
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side) {
+		if(mih != null) {
+			final int[] as = new int[mih.getItemTypeCapacity()];
+			for(int i = 0; i < mih.getItemTypeCapacity(); i++) {
+				as[i] = i;
+			}
+			return as;
+		} else {
+			return new int[1];
+		}
+	}
+
+	@Override
+	public boolean canInsertItem(int slot, ItemStack itemStack, int side) {
+		return isItemValidForSlot(slot, itemStack);
+	}
+
+	@Override
+	public boolean canExtractItem(int slot, ItemStack itemStack, int side) {
+		return (mih != null) ? true : false;
 	}
 
 }
