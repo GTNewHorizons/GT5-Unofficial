@@ -343,7 +343,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 							runningCostAcc += 4.0f;
 							fluidCapacityAcc += (float) STORAGE_FIELD4.getCapacity();
 						} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
-								.equals(STORAGE_FIELD4.getUnlocalizedName())) {
+								.equals(STORAGE_FIELD5.getUnlocalizedName())) {
 							runningCostAcc += 8.0f;
 							fluidCapacityAcc += (float) STORAGE_FIELD5.getCapacity();
 						} else {

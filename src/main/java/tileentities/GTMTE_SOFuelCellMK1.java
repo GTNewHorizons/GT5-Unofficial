@@ -35,9 +35,9 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 	private final int CASING_META = 1;
 	private final int CASING_TEXTURE_ID = 49;
 	
-	private final int OXYGEN_PER_TICK = 20;
+	private final int OXYGEN_PER_SEC = 400;
 	private final int EU_PER_TICK = 1024;
-	private final int STEAM_PER_TICK = 900;
+	private final int STEAM_PER_SEC = 18000;
 	
 	public GTMTE_SOFuelCellMK1(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -60,8 +60,8 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 		b.addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
 				.addInfo("Consumes 29,480EU worth of fuel with up to 97% efficiency each second")
 				.addInfo("Steam production requires the SOFC to heat up completely first")
-				.addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_TICK + "L/t Steam")
-				.addInfo("Additionally requires " + OXYGEN_PER_TICK + "L/t Oxygen gas")
+				.addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
+				.addInfo("Additionally requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
 				.addSeparator()
 				.beginStructureBlock(3, 3, 5)
 				.addController("Front Center")
@@ -119,22 +119,21 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 					if((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
 							&& hatchFluid.isFluidEqual(liquid)) {
 						
-						liquid.amount = EU_PER_TICK / aFuel.mSpecialValue;
+						liquid.amount = Math.round((EU_PER_TICK * 20) / aFuel.mSpecialValue);
 						
 						if(super.depleteInput(liquid)) {
 							
-							if(!super.depleteInput(Materials.Oxygen.getGas(OXYGEN_PER_TICK))) {
+							if(!super.depleteInput(Materials.Oxygen.getGas(OXYGEN_PER_SEC))) {
 								super.mEUt = 0;
 								super.mEfficiency = 0;
 								return false;
 							}
 							
 							super.mEUt = EU_PER_TICK;
-							super.mProgresstime = 1;
-							super.mMaxProgresstime = 1;
-							super.mEfficiencyIncrease = 5;
+							super.mMaxProgresstime = 20;
+							super.mEfficiencyIncrease = 40;
 							if(super.mEfficiency == getMaxEfficiency(null)) {
-								super.addOutput(GT_ModHandler.getSteam(STEAM_PER_TICK));
+								super.addOutput(GT_ModHandler.getSteam(STEAM_PER_SEC));
 							}
 							return true;
 						}

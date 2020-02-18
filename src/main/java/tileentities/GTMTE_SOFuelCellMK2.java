@@ -35,9 +35,9 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 	final int CASING_META = 0;
 	final int CASING_TEXTURE_ID = 48;
 	
-	private final int OXYGEN_PER_TICK = 100;
+	private final int OXYGEN_PER_SEC = 2000;
 	private final int EU_PER_TICK = 24576; // 100% Efficiency, 3A IV
-	private final int STEAM_PER_TICK = 4800; // SH Steam (10,800EU/t @ 150% Efficiency) 
+	private final int STEAM_PER_SEC = 96000; // SH Steam (10,800EU/t @ 150% Efficiency) 
 	
 	public GTMTE_SOFuelCellMK2(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -60,8 +60,8 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 		b.addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
 				.addInfo("Consumes 442,200EU worth of fuel with up to 97% efficiency each second")
 				.addInfo("Steam production requires the SOFC to heat up completely first")
-				.addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_TICK + "L/t Steam")
-				.addInfo("Additionally requires " + OXYGEN_PER_TICK + "L/t Oxygen gas")
+				.addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
+				.addInfo("Additionally requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
 				.addSeparator()
 				.beginStructureBlock(3, 3, 5)
 				.addController("Front Center")
@@ -119,22 +119,21 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 					if((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
 							&& hatchFluid.isFluidEqual(liquid)) {
 						
-						liquid.amount = EU_PER_TICK / aFuel.mSpecialValue;
+						liquid.amount = Math.round((EU_PER_TICK * 20) / aFuel.mSpecialValue);
 						
 						if(super.depleteInput(liquid)) {
 							
-							if(!super.depleteInput(Materials.Oxygen.getGas(OXYGEN_PER_TICK))) {
+							if(!super.depleteInput(Materials.Oxygen.getGas(OXYGEN_PER_SEC))) {
 								super.mEUt = 0;
 								super.mEfficiency = 0;
 								return false;
 							}
 							
 							super.mEUt = EU_PER_TICK;
-							super.mProgresstime = 1;
-							super.mMaxProgresstime = 1;
-							super.mEfficiencyIncrease = 20;
+							super.mMaxProgresstime = 20;
+							super.mEfficiencyIncrease = 80;
 							if(super.mEfficiency == getMaxEfficiency(null)) {
-								super.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", STEAM_PER_TICK));
+								super.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", STEAM_PER_SEC));
 							}
 							return true;
 						}

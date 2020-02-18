@@ -16,6 +16,7 @@ import blocks.Block_TFFTStorageFieldBlockT1;
 import blocks.Block_TFFTStorageFieldBlockT2;
 import blocks.Block_TFFTStorageFieldBlockT3;
 import blocks.Block_TFFTStorageFieldBlockT4;
+import blocks.Block_TFFTStorageFieldBlockT5;
 import blocks.Block_YSZUnit;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.Loader;
@@ -95,6 +96,7 @@ public class KekzCore {
 		Block_TFFTStorageFieldBlockT2.getInstance().registerBlock();
 		Block_TFFTStorageFieldBlockT3.getInstance().registerBlock();
 		Block_TFFTStorageFieldBlockT4.getInstance().registerBlock();
+		Block_TFFTStorageFieldBlockT5.getInstance().registerBlock();
 		Block_TFFTMultiHatch.getInstance().registerBlock();
 		Block_ReactorChamber_OFF.getInstance().registerBlock();
 		Block_ReactorChamber_ON.getInstance().registerBlock();
@@ -284,7 +286,7 @@ public class KekzCore {
 				200, 480);
 		final ItemStack[] tfftstoragefield3 = {
 				GT_Utility.getIntegratedCircuit(6),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 2),
 				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 2),
 				GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1),
 				ItemList.Field_Generator_MV.get(1L),
@@ -307,6 +309,19 @@ public class KekzCore {
 				tfftstoragefield4, 
 				FluidRegistry.getFluidStack("molten.epoxid", 1152),
 				new ItemStack(Block_TFFTStorageFieldBlockT4.getInstance(), 1), 
+				400, 4098);
+		final ItemStack[] tfftstoragefield5 = {
+				GT_Utility.getIntegratedCircuit(6),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4),
+				GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.HSSS, 1),
+				GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Enderium, 1),
+				ItemList.Field_Generator_EV.get(1L),
+				ItemList.Electric_Pump_IV.get(1L)
+			};
+		GT_Values.RA.addAssemblerRecipe(
+				tfftstoragefield5, 
+				FluidRegistry.getFluidStack("molten.epoxid", 1152),
+				new ItemStack(Block_TFFTStorageFieldBlockT5.getInstance(), 1), 
 				400, 4098);
 		final Object[] multi_hatch = {
 				"PRP", "UFU", "PRP",
@@ -345,12 +360,12 @@ public class KekzCore {
 		// Ceramic plates
 		GT_Values.RA.addAlloySmelterRecipe(
 				craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), Loader.isModLoaded("bartworks") ? 3 : 10), 
-				ItemList.Shape_Mold_Plate.get(1),
+				ItemList.Shape_Mold_Plate.get(0),
 				craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicPlate.getMetaID(), 1), 
 				400, 480);
 		GT_Values.RA.addFormingPressRecipe(
 				craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10), 
-				ItemList.Shape_Mold_Plate.get(1),
+				ItemList.Shape_Mold_Plate.get(0),
 				craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicPlate.getMetaID(), 1), 
 				800, 480);
 		

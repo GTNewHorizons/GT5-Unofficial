@@ -19,7 +19,7 @@ public class IB_TFFTStorageFieldBlockT5 extends ItemBlock {
 	public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean advancedTooltips) {
 		lines.add("This is not a fluid tank");
 		lines.add("Capacity: " + Block_TFFTStorageFieldBlockT5.getCapacity() + "L");
-		lines.add("Power Draw: 0.5EU/t");
+		lines.add("Power Draw: 8EU/t");
 	}
 	
 }
