@@ -18,7 +18,6 @@ import blocks.Block_TFFTStorageFieldBlockT3;
 import blocks.Block_TFFTStorageFieldBlockT4;
 import blocks.Block_TFFTStorageFieldBlockT5;
 import blocks.Block_YSZUnit;
-import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;

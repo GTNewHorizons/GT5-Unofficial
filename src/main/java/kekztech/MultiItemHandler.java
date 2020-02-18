@@ -1,7 +1,5 @@
 package kekztech;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 
 public class MultiItemHandler {
@@ -10,31 +8,44 @@ public class MultiItemHandler {
 	
 	private boolean locked = true;
 	
-	private final ArrayList<ItemStack> items = new ArrayList<>();
+	private ItemStack[] items;
 	
 	public MultiItemHandler() {
 		
 	}
 	
-	/**
-	 * Tries to adapt the internal storage to match structure changes.
-	 * Structure should turn off and give a warning if this returns false. 
-	 * Otherwise items might unavailable.
+	/** 
+	 * Adapts the internal storage to structure changes.
+	 * In the event of structure down-sizing, all excess items
+	 * will be dropped on the ground.
 	 * 
 	 * @param itemTypeCapacity
-	 * 			New item array length to adapt to.
-	 * @return Success status of the operation. 
 	 */
-	public boolean setItemTypeCapacity(int itemTypeCapacity) {
-		if(items.size() > itemTypeCapacity) {
-			System.out.println("WARNING: ITEM SERVER STRUCTURE WAS DOWNSIZED TOO FAR! LOCKING FOR SAFETY.");
-			setLock(true);
-			return false;
+	public void setItemTypeCapacity(int itemTypeCapacity) {
+		if(items.length > itemTypeCapacity) {
+			// Generate new smaller backing array
+			final ItemStack[] newItems = new ItemStack[itemTypeCapacity];
+			for(int i = 0; i < newItems.length; i++) {
+				newItems[i] = items[i];
+			}
+			// Sort out item overflow
+			final ItemStack[] toDrop = new ItemStack[items.length - itemTypeCapacity];
+			for(int i = 0; i < toDrop.length; i++) {
+				toDrop[i] = items[i + newItems.length - 1];
+			}
+			// TODO drop overflow items to the ground
+			
+			// Swap array
+			items = newItems;
 		} else {
-			items.ensureCapacity(itemTypeCapacity);
-			// If the lock was engaged, it should only be disengaged by turning 
-			// the structure back on after fixing the above warning.
-			return true;
+			// Generate new larger backing array
+			final ItemStack[] newItems = new ItemStack[itemTypeCapacity];
+			for(int i = 0; i < items.length; i++) {
+				newItems[i] = items[i];
+			}
+			
+			// Swap array
+			items = newItems;
 		}
 	}
 	
@@ -44,7 +55,6 @@ public class MultiItemHandler {
 	
 	/**
 	 * Lock internal storage in case Item Server is not running.
-	 * May also be engaged in case of item safety issues.
 	 * 
 	 * @param state
 	 * 				Lock state.
@@ -54,60 +64,98 @@ public class MultiItemHandler {
 	}
 	
 	public int getItemTypeCapacity() {
-		return items.size();
+		return items.length;
 	}
 	
 	public int getPerTypeCapacity() {
 		return perTypeCapacity;
 	}
 	
+	/**
+	 * Returns the ItemStack from the specified slot.
+	 * 
+	 * @param slot
+	 * 			Storage slot number. Zero indexed.
+	 * @return
+	 * 			ItemStack from storage or null if 
+	 * 			storage is locked or invalid slot parameter.
+	 */
 	public ItemStack getStackInSlot(int slot) {
 		System.out.println("Stack in slot " + slot + " requested");
-		if(locked || slot >= items.size()) {
+		if(locked || slot >= items.length) {
 			return null;
 		} else {
-			return items.get(slot);
+			return items[slot];
 		}
 	}
 	
+	/**
+	 * Inserts a new ItemStack into storage,
+	 * but only if the slot is still unassigned.
+	 * 
+	 * @param slot
+	 * 			Storage slot number. Zero indexed.
+	 * @param itemStack
+	 * 			ItemStack to insert.
+	 */
 	public void insertStackInSlot(int slot, ItemStack itemStack) {
 		System.out.println("Inserting " + itemStack.getDisplayName() + " into " + slot);
 		if(itemStack == null 
-				|| items.get(slot) != null
+				|| items[slot] != null
 				|| locked
-				|| slot >= items.size()) {
+				|| slot >= items.length) {
 			return;
 		} else {
-			items.set(slot, itemStack);
+			items[slot] = itemStack;
 		}
 	}
 	
+	/**
+	 * Tries to increase the item amount in a specified slot.
+	 * 
+	 * @param slot
+	 * 			Storage slot number. Zero indexed.
+	 * @param amount
+	 * 			Amount to increase by.
+	 * @return
+	 * 			Actual amount the item amount was increased by.
+	 */
 	public int increaseStackInSlot(int slot, int amount) {
 		System.out.println("Increasing item in slot " + slot + " by " + amount);
-		if(slot >= items.size()
+		if(slot >= items.length
 				|| locked
 				|| amount <= 0) {
 			return 0;
 		} else {
-			final int space = perTypeCapacity - items.get(slot).stackSize;
+			final int space = perTypeCapacity - items[slot].stackSize;
 			final int fit = Math.min(space, amount);
-			items.get(slot).stackSize += fit;
+			items[slot].stackSize += fit;
 			return fit;
 		}
 	}
 	
+	/**
+	 * Tries to reduce the item amount in a specified slot.
+	 * 
+	 * @param slot
+	 * 			Storage slot number. Zero indexed.
+	 * @param amount
+	 * 			Amount to decrease by.
+	 * @return
+	 * 			Actual amount the item amount was decreased by.
+	 */
 	public int reduceStackInSlot(int slot, int amount) {
 		System.out.println("Reducing item in slot " + slot + " by " + amount);
-		if(slot >= items.size()
+		if(slot >= items.length
 				|| locked
 				|| amount <= 0) {
 			return 0;
 		} else {
-			final int available = items.get(slot).stackSize;
+			final int available = items[slot].stackSize;
 			final int take = Math.min(available, amount);
-			items.get(slot).stackSize -= take;
+			items[slot].stackSize -= take;
 			if(take == available) {
-				items.set(slot, null);
+				items[slot] = null;
 			}
 			return take;
 		}
