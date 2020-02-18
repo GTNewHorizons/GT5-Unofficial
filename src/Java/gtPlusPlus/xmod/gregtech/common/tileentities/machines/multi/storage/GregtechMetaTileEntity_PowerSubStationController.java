@@ -267,7 +267,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		mAllDynamoHatches.addAll(this.mDynamoHatches);
 
 		if (LoadedMods.TecTech) {
-			mAllDynamoHatches.addAll(this.mTecTechEnergyHatches);
+			mAllEnergyHatches.addAll(this.mTecTechEnergyHatches);
 			mAllDynamoHatches.addAll(this.mTecTechDynamoHatches);
 		}
 
