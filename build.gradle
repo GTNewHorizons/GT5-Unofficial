@@ -20,7 +20,8 @@ buildscript {
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
-		classpath "gradle.plugin.se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.55"
+		classpath 'net.sf.proguard:proguard-gradle:6.2.2'
+		//classpath "gradle.plugin.se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.55"
     }
 }
 
@@ -62,7 +63,7 @@ file "version.properties" withReader {
     ext.config2 = new ConfigSlurper().parse prop
 }
 
-apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
+//apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 
 version = "${config.gtpp.version}.${config2.mod.version}"
 group= "gtPlusPlus"
@@ -171,51 +172,48 @@ jar {
     }
 }
 
-task sourceJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-    manifest {
-        attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
-        attributes 'FMLCorePluginContainsFMLMod': 'true'
-    }
+task generateDictionaries(type: JavaExec) {
+    group = "Execution"
+    description = "Generates the dictionaries for Proguard"
+    classpath = sourceSets.main.runtimeClasspath
+    main = "gtPlusPlus.GenerateDictionaries"
 }
 
-task devJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'dev'
-    manifest {
-        attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
-        attributes 'FMLCorePluginContainsFMLMod': 'true'
-    }
+// Define a ProGuard task.
+task proguard(type: proguard.gradle.ProGuardTask) {
+  configuration 'proguard.txt'
+  injars "build/libs/"+archivesBaseName + "-" + version + ".jar"
+  outjars "build/libs/"+archivesBaseName + "-" + version + "-obf.jar"
 }
 
-task discordChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	file = new File("build/changelog/Basic ${project.version}.txt");
-	untaggedName = "Current Basic release ${project.version}"
-	fromCommit = "${config.commit.hash}"
-	toRef =  "HEAD"
-	templateContent = file('changeloggeneral.mustache').getText('UTF-8')
-}
-task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	file = new File("build/changelog/${project.version}.md");
-	untaggedName = "Current release ${project.version}"
-	fromCommit = "${config.commit.hash}"
-	toRef =  "HEAD"
-	templateContent = file('changelog.mustache').getText('UTF-8')
-}
-task curseChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	file = new File("build/changelog/Curse ${project.version}.md");
-	untaggedName = "Current Curse release ${project.version}"
-	fromCommit = "${config.commit.hash}"
-	toRef =  "HEAD"
-	templateContent = file('changelogcurse.mustache').getText('UTF-8')
-}
+//task discordChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	//file = new File("build/changelog/Basic ${project.version}.txt");
+	//untaggedName = "Current Basic release ${project.version}"
+	//fromCommit = "${config.commit.hash}"
+	//toRef =  "HEAD"
+	//templateContent = file('changeloggeneral.mustache').getText('UTF-8')
+//}
+//task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	//file = new File("build/changelog/${project.version}.md");
+	//untaggedName = "Current release ${project.version}"
+	//fromCommit = "${config.commit.hash}"
+	//toRef =  "HEAD"
+	//templateContent = file('changelog.mustache').getText('UTF-8')
+//}
+//task curseChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	//file = new File("build/changelog/Curse ${project.version}.md");
+	//untaggedName = "Current Curse release ${project.version}"
+	//fromCommit = "${config.commit.hash}"
+	//toRef =  "HEAD"
+	//templateContent = file('changelogcurse.mustache').getText('UTF-8')
+//}
 
-artifacts {
-    archives devJar
-	archives sourceJar
-}
+// Generate Dicts for Proguard obfuscation
+build.finalizedBy(generateDictionaries)
 
-build.finalizedBy(gitChangelogTask)
-build.finalizedBy(curseChangelogTask)
-build.finalizedBy(discordChangelogTask)
+// Obfuscate this bitch.
+//build.finalizedBy(proguard) // Disabled until optimization is working 100%
+
+//build.finalizedBy(gitChangelogTask)
+//build.finalizedBy(curseChangelogTask)
+//build.finalizedBy(discordChangelogTask)

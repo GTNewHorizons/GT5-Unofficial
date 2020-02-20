@@ -43,7 +43,7 @@ public class ReflectionUtils {
 		}
 
 	}
-	
+
 	private static class CachedMethod {
 
 		private final boolean STATIC;
@@ -134,7 +134,7 @@ public class ReflectionUtils {
 		return false;
 	}
 
-	
+
 	/**
 	 * Returns a cached {@link Constructor} object.
 	 * @param aClass - Class containing the Constructor.
@@ -145,7 +145,7 @@ public class ReflectionUtils {
 		if (aClass == null || aTypes == null) {
 			return null;
 		}		
-		
+
 		String aMethodKey = ArrayUtils.toString(aTypes);
 		//Logger.REFLECTION("Looking up method in cache: "+(aClass.getName()+"."+aMethodName + "." + aMethodKey));
 		CachedConstructor y = mCachedConstructors.get(aClass.getName() + "." + aMethodKey);
@@ -162,9 +162,9 @@ public class ReflectionUtils {
 			return y.get();
 		}
 	}
-	
-	
-	
+
+
+
 
 	/**
 	 * Returns a cached {@link Class} object.
@@ -227,14 +227,14 @@ public class ReflectionUtils {
 			return y.get();
 		}
 	}
-		
+
 	public static boolean isStaticMethod(Class<?> aClass, String aMethodName, Class<?>... aTypes) {
 		return isStaticMethod(ReflectionUtils.getMethod(aClass, aMethodName, aTypes));
 	}
-	
+
 	public static boolean isStaticMethod(Method aMethod) {
 		if (aMethod != null && Modifier.isStatic(aMethod.getModifiers())) {
-				return true;
+			return true;
 		}
 		return false;
 	}
@@ -467,7 +467,7 @@ public class ReflectionUtils {
 		Logger.REFLECTION("Invoke failed or did something wrong.");		
 		return false;
 	}
-	
+
 	public static boolean invoke(Object objectInstance, Method method, Object[] values){		
 		if (method == null || values == null || (!ReflectionUtils.isStaticMethod(method)  && objectInstance == null)){
 			//Logger.REFLECTION("Null value when trying to Dynamically invoke "+methodName+" on an object of type: "+objectInstance.getClass().getName());
@@ -774,7 +774,7 @@ public class ReflectionUtils {
 		}
 		return m;
 	}
-	
+
 	private static Constructor<?> getConstructor_Internal(Class<?> aClass, Class<?>... aTypes) {
 		Constructor<?> c = null;
 		try {
@@ -801,7 +801,7 @@ public class ReflectionUtils {
 		}
 		return c;
 	}
-	
+
 	private static Constructor<?> getConstructorRecursively(Class<?> aClass, Class<?>... aTypes) throws Exception {
 		try {
 			Logger.REFLECTION("Constructor: Recursion Lookup: "+aClass.getName());
@@ -921,30 +921,39 @@ public class ReflectionUtils {
 				aClassName += (i > 0) ? "."+aData[i] : ""+aData[i];
 				Logger.REFLECTION("Building: "+aClassName);
 			}
-			Logger.REFLECTION("Trying to search '"+aClassName+"' for inner classes.");
-			Class<?> clazz = ReflectionUtils.getClass(aClassName);			
-			
-			Class[] y = clazz.getDeclaredClasses();
-			if (y == null || y.length <= 0) {
-				Logger.REFLECTION("No hidden inner classes found.");
-				return null;				
-			}
-			else {
-				boolean found = false;
-				for (Class<?> h : y) {
-					Logger.REFLECTION("Found hidden inner class: "+h.getCanonicalName());
-					if (h.getSimpleName().toLowerCase().equals(aData[aData.length-1].toLowerCase())) {
-						Logger.REFLECTION("Found correct class. ["+aData[aData.length-1]+"] Caching at correct location: "+string);
-						Logger.REFLECTION("Found at location: "+h.getCanonicalName());
-						ReflectionUtils.mCachedClasses.put(string, h);
-						aClass = h;
-						found = true;
-						break;						
+			if (aClassName != null && aClassName.length() > 0) {
+				Logger.REFLECTION("Trying to search '"+aClassName+"' for inner classes.");
+				Class<?> clazz = ReflectionUtils.getClass(aClassName);			
+				if (clazz != null) {
+					Class[] y = clazz.getDeclaredClasses();
+					if (y == null || y.length <= 0) {
+						Logger.REFLECTION("No hidden inner classes found.");
+						return null;				
+					}
+					else {
+						boolean found = false;
+						for (Class<?> h : y) {
+							Logger.REFLECTION("Found hidden inner class: "+h.getCanonicalName());
+							if (h.getSimpleName().toLowerCase().equals(aData[aData.length-1].toLowerCase())) {
+								Logger.REFLECTION("Found correct class. ["+aData[aData.length-1]+"] Caching at correct location: "+string);
+								Logger.REFLECTION("Found at location: "+h.getCanonicalName());
+								ReflectionUtils.mCachedClasses.put(string, h);
+								aClass = h;
+								found = true;
+								break;						
+							}
+						}
+						if (!found) {
+							return null;
+						}
 					}
 				}
-				if (!found) {
+				else {
 					return null;
 				}
+			}
+			else {
+				return null;
 			}
 		}
 		return aClass;
@@ -964,11 +973,9 @@ public class ReflectionUtils {
 	 */
 	private static void makeModifiable(Field nameField) throws Exception {
 		nameField.setAccessible(true);
-		int modifiers = nameField.getModifiers();
-		Field modifierField = nameField.getClass().getDeclaredField("modifiers");
-		modifiers = modifiers & ~Modifier.FINAL;
-		modifierField.setAccessible(true);
-		modifierField.setInt(nameField, modifiers);
+        Field modifiers = getField(Field.class, "modifiers");
+        modifiers.setAccessible(true);
+        modifiers.setInt(nameField, nameField.getModifiers() & ~Modifier.FINAL);
 	}
 
 

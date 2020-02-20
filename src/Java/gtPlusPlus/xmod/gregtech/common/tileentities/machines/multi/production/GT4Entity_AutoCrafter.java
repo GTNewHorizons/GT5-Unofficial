@@ -197,6 +197,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 			return false;
 		}
 		// mInventoryCrafter = new CraftingHelper(this);
+		setTier();
 		return tAmount >= 10;
 
 	}
@@ -225,7 +226,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 			} catch (IllegalArgumentException | IllegalAccessException e) {			
 			}			
 		}
-		else if (this.mMachineMode == MODE.DISASSEMBLY) {
+		else if (this.mMachineMode == MODE.DISASSEMBLY || this.mMachineMode == MODE.CRAFTING) {
 			return null;
 		}
 		return GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
@@ -285,6 +286,11 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 //		}
 //	}	
 	
+	private void setTier() {
+		long tVoltage = getMaxInputVoltage();
+		this.mTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+	}
+	
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		if (mMachineMode == MODE.DISASSEMBLY) {
@@ -296,7 +302,6 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 			//Logger.MACHINE_INFO("1");
 			for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
 				ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
-				tBus.mRecipeMap = getRecipeMap();
 				//Logger.MACHINE_INFO("2");
 				if (isValidMetaTileEntity(tBus)) {
 					//Logger.MACHINE_INFO("3");
@@ -380,6 +385,10 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 					if (this.mTier > 5) {
 						this.mMaxProgresstime >>= this.mTier - 5;
 					}
+					if (this.mEUt > 0)
+						this.mEUt = (-this.mEUt);
+					this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+					this.mEfficiencyIncrease = 10000;		
 					inputItem.stackSize--;
 					if (inputItem.stackSize <= 0) {
 						tInputs[0] = null;
@@ -508,6 +517,10 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 						if (this.mTier > 5) {
 							this.mMaxProgresstime >>= this.mTier - 5;
 						}
+						if (this.mEUt > 0)
+							this.mEUt = (-this.mEUt);
+						this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+						this.mEfficiencyIncrease = 10000;	
 
 						if (mCorrectInputs == 9) {
 							ItemStack mOutputItem = storedData_Output[0];

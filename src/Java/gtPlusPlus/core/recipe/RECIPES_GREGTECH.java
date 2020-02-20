@@ -701,6 +701,7 @@ public class RECIPES_GREGTECH {
 		//NITINOL_60
 		CORE.RA.addBlastSmelterRecipe(
 				new ItemStack[] {
+						ItemUtils.getGregtechCircuit(2),
 						ELEMENT.getInstance().TITANIUM.getDust(3),
 						ELEMENT.getInstance().NICKEL.getDust(2)
 				},

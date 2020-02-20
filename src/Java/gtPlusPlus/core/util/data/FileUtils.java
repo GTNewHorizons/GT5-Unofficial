@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 
 import gtPlusPlus.api.objects.Logger;
@@ -26,17 +27,21 @@ public class FileUtils {
 
 	public static File createFile(String path, String filename, String extension) {
 		File file = new File(Utils.getMcDir(), path + filename + extension);
+		return createFile(file);
+	}
+	
+	public static File createFile(File aFile) {
 		boolean blnCreated = false;
-		Logger.INFO("Trying to use path "+file.getPath());
+		Logger.INFO("Trying to use path "+aFile.getPath());
 		try {
-			Logger.INFO("Trying to use path "+file.getCanonicalPath());
-			Logger.INFO("Trying to use absolute path "+file.getAbsolutePath());
-			blnCreated = file.createNewFile();
+			Logger.INFO("Trying to use path "+aFile.getCanonicalPath());
+			Logger.INFO("Trying to use absolute path "+aFile.getAbsolutePath());
+			blnCreated = aFile.createNewFile();
 		} catch (IOException ioe) {
 			Logger.INFO("Error while creating a new empty file :" + ioe);
 			return null;
 		}
-		return blnCreated ? file : null;
+		return blnCreated ? aFile : null;
 	}
 
 	public static File getFile(String filename, String extension) {
@@ -92,4 +97,22 @@ public class FileUtils {
 		}
 		return false;
 	}
+
+	    /**
+     * Reads the contents of a file line by line to a List of Strings using the default encoding for the VM.
+     * The file is always closed.
+     *
+     * @param file  the file to read, must not be {@code null}
+     * @return the list of Strings representing each line in the file, never {@code null}
+     * @throws IOException in case of an I/O error
+     * @since 1.3
+     */
+    public static List<String> readLines(File file) {
+        try {
+			return org.apache.commons.io.FileUtils.readLines(file, utf8);
+		}
+		catch (IOException e) {
+			return new ArrayList<String>();
+		}
+    }
 }

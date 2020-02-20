@@ -330,9 +330,10 @@ extends GregtechMeta_MultiBlockBase {
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-
-
-		GT_Recipe tRecipe = this.getRecipeMap(tCircuit).findRecipe(
+		GT_Recipe.GT_Recipe_Map tRecipeMap = this.getRecipeMap(tCircuit);
+		if (tRecipeMap == null)
+			return false;
+		GT_Recipe tRecipe = tRecipeMap.findRecipe(
 				getBaseMetaTileEntity(), this.mLastRecipeExtended[tCircuitID], false,
 				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 
