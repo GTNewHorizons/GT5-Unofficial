@@ -278,35 +278,6 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 		}
 	}
 
-	@Override
-	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer) {
-		/*if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU()) && (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified() || aTimer % 200 == 0 || mSuccess > 0)) {
-		 */
-		if (aBaseMetaTileEntity.isServerSide()  && (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified() || ((aTimer % 200) == 0) || (this.mSuccess > 0))) {
-			this.value_last = this.value_current;
-			this.value_current = this.bUnbreakable;
-			if (this.value_last != this.value_current){
-				Logger.WARNING("VALUE CHANGE - Ticking for a moment.");
-				if (this.bUnbreakable == true){
-					//Xasda.setmTileEntity((BaseMetaTileEntity) aBaseMetaTileEntity);
-					//Utils.LOG_ERROR("Safe is Indestructible.");
-					this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()).setResistance(Float.MAX_VALUE);
-					this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()).setBlockUnbreakable();
-				}
-				else {
-					//Xasda.setmTileEntity((BaseMetaTileEntity) aBaseMetaTileEntity);
-					//Utils.LOG_ERROR("Safe is not Indestructible.");
-					this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()).setResistance(1F);
-					this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()).setHardness(2);
-
-				}
-			}
-			else {
-
-			}
-
-		}
-	}
 
 	@Override
 	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
