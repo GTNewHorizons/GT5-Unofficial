@@ -114,7 +114,6 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket
         } catch (Exception e) {
             clientLocale = "en_US";
         }
-        aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }
 
