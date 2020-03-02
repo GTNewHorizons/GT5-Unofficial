@@ -85,6 +85,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 				.addEnergyHatch("Any top or bottom casing")
 				.addOtherStructurePart("Inner 3x7x3 tube", "Storage Field Blocks")
 				.addOtherStructurePart("Outer 5x7x5 glass shell", "AE2 Quartz Glass of Vanilla Stained Glass")
+				.addMaintenanceHatch("Instead of any casing or glass, have to touch storage field.")
 				.addIOHatches("Instead of any casing or glass, have to touch storage field. True for the Multi-Hatch as well.")
 				.signAndFinalize("Kekzdealer");
 		if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -118,7 +119,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public boolean checkRecipe(ItemStack guiSlotItem) {
 		
-		this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
+		super.mEfficiency = 10000 - (super.getIdealStatus() - super.getRepairStatus()) * 1000;
 		this.mEfficiencyIncrease = 10000;
 		this.mEUt = runningCost;
 		super.mMaxProgresstime = 10;
