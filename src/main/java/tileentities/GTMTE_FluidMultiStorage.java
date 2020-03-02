@@ -120,8 +120,8 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 	public boolean checkRecipe(ItemStack guiSlotItem) {
 		
 		super.mEfficiency = 10000 - (super.getIdealStatus() - super.getRepairStatus()) * 1000;
-		this.mEfficiencyIncrease = 10000;
-		this.mEUt = runningCost;
+		super.mEfficiencyIncrease = 10000;
+		super.mEUt = runningCost;
 		super.mMaxProgresstime = 10;
 		
 		// If there are no basic I/O hatches, let multi hatches handle it and skip a lot of code!
@@ -492,7 +492,9 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
 		ll.add("Auto-voiding: " + doVoidExcess);
 		ll.add("Per-Fluid Capacity: " + mfh.getCapacity() + "L");
-		ll.add("Running Cost: " + (-super.mEUt) + "EU/t");
+		ll.add("Running Cost: " 
+				// mEUt does not naturally reflect efficiency status. Do that here.
+				+ ((-super.mEUt) * 10000 / Math.max(1000, super.mEfficiency))  + "EU/t");
 		ll.add("Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus()) 
 				? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET 
 						: EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
