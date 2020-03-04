@@ -85,7 +85,7 @@ public class KekzCore {
 		ErrorItem.getInstance().registerItem();
 		MetaItem_ReactorComponent.getInstance().registerItem();
 		MetaItem_CraftingComponent.getInstance().registerItem();
-		Item_Configurator.getInstance().registerItem();
+		// disabled for release; Item_Configurator.getInstance().registerItem();
 		Items.registerOreDictNames();
 		// Blocks
 		Block_YSZUnit.getInstance().registerBlock();
@@ -100,18 +100,18 @@ public class KekzCore {
 		Block_ReactorChamber_OFF.getInstance().registerBlock();
 		Block_ReactorChamber_ON.getInstance().registerBlock();
 		Block_ControlRod.getInstance().registerBlock();
-		Block_ItemServerDrive.getInstance().registerBlock();
-		Block_ItemServerRackCasing.getInstance().registerBlock();
-		Block_ItemServerIOPort.getInstance().registerBlock();
-		Block_ItemProxyCable.getInstance().registerBlock();
-		Block_ItemProxySource.getInstance().registerBlock();
-		Block_ItemProxyEndpoint.getInstance().registerBlock();
+		// disabled for release; Block_ItemServerDrive.getInstance().registerBlock();
+		// disabled for release; Block_ItemServerRackCasing.getInstance().registerBlock();
+		// disabled for release; Block_ItemServerIOPort.getInstance().registerBlock();
+		// disabled for release; Block_ItemProxyCable.getInstance().registerBlock();
+		// disabled for release; Block_ItemProxySource.getInstance().registerBlock();
+		// disabled for release; Block_ItemProxyEndpoint.getInstance().registerBlock();
 		// Register TileEntities
 		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");
-		GameRegistry.registerTileEntity(TE_ItemServerIOPort.class, "kekztech_itemserverioport_tile");
-		GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
-		GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
-		GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
+		// disabled for release; GameRegistry.registerTileEntity(TE_ItemServerIOPort.class, "kekztech_itemserverioport_tile");
+		// disabled for release; GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
+		// disabled for release; GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
+		// disabled for release; GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
 		
 		// Register guis
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
@@ -124,9 +124,9 @@ public class KekzCore {
 		sofc2 = new GTMTE_SOFuelCellMK2(13102, "multimachine.fuelcellmk2", "Solid-Oxide Fuel Cell Mk II");
 		mdr = new GTMTE_ModularNuclearReactor(13103, "multimachine.nuclearreactor", "Nuclear Reactor");
 		fms = new GTMTE_FluidMultiStorage(13104, "multimachine.tf_fluidtank", "T.F.F.T");
-		is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");	
+		// disabled for release; is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");	
 		// Register renderer
-		ConduitRenderer.getInstance().registerRenderer();
+		// disabled for release; ConduitRenderer.getInstance().registerRenderer();
 	}
 	
 	@Mod.EventHandler
@@ -165,7 +165,7 @@ public class KekzCore {
 				'C', OrePrefixes.circuit.get(Materials.Data)
 		};
 		GT_ModHandler.addCraftingRecipe(fms.getStackForm(1), tfft_recipe);
-		final Object[] is_recipe = {
+		/*final Object[] is_recipe = {
 				"FRF", "CGC", "PZP",
 				'F', GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1),
 				'R', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1),
@@ -174,7 +174,7 @@ public class KekzCore {
 				'P', GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 1),
 				'Z', GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1)
 		};
-		GT_ModHandler.addCraftingRecipe(is.getStackForm(1), is_recipe);
+		GT_ModHandler.addCraftingRecipe(is.getStackForm(1), is_recipe);*/
 		
 		
 		// Ceramic Electrolyte Units
@@ -204,7 +204,7 @@ public class KekzCore {
 				2400, 1920);
 		
 		// Item Server Structure blocks
-		final Object[] is_rack_recipe = {
+		/*final Object[] is_rack_recipe = {
 				"BRB", "CFC", "BRB",
 				'B', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlueSteel, 1),
 				'R', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Aluminium, 1),
@@ -245,7 +245,7 @@ public class KekzCore {
 					is_drive, 
 					FluidRegistry.getFluidStack("molten.polyethylene", 1152),
 					new ItemStack(Block_ItemServerDrive.getInstance(), 1), 
-					200, 7680);
+					200, 7680);*/
 		
 		// T.F.F.T Structure blocks
 		final ItemStack[] tfftcasing = {
@@ -321,7 +321,7 @@ public class KekzCore {
 				tfftstoragefield5, 
 				FluidRegistry.getFluidStack("molten.epoxid", 1152),
 				new ItemStack(Block_TFFTStorageFieldBlockT5.getInstance(), 1), 
-				400, 4098);
+				400, 6147);
 		final Object[] multi_hatch = {
 				"PRP", "UFU", "PRP",
 				'P', GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NiobiumTitanium, 1),
