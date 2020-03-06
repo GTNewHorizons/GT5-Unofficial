@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -764,6 +764,7 @@ public class WerkstoffLoader implements Runnable {
     public static final Werkstoff PTResidue = new Werkstoff(
             new short[]{0x64,0x63,0x2E},
             "Platinum Residue",
+            "??IrOsRhRu??",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
@@ -899,7 +900,7 @@ public class WerkstoffLoader implements Runnable {
     public static final Werkstoff LeachResidue = new Werkstoff(
             new short[]{0x64, 0x46, 0x29},
             "Leach Residue",
-            "??IrOsRhRu??",
+            "??IrOsRu??",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures(),
@@ -1731,8 +1732,8 @@ public class WerkstoffLoader implements Runnable {
     }
 
     public static void addAssociationToItems() {
-        Arrays.stream(values()).forEach( prefixes -> {
-        Werkstoff.werkstoffHashSet.stream()
+        Arrays.stream(values()).forEach( prefixes ->
+                Werkstoff.werkstoffHashSet.stream()
                 .filter(werkstoff -> werkstoff.hasItemType(prefixes) && (werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(prefixes)) == 0)
                 .forEach(werkstoff -> {
                     Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial();
@@ -1741,8 +1742,7 @@ public class WerkstoffLoader implements Runnable {
                         GT_OreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, stack, false);
                         GT_OreDictUnificator.set(prefixes, werkstoffBridgeMaterial, stack,  true, true);
                     }
-                });
-        });
+                }));
     }
 
     /**

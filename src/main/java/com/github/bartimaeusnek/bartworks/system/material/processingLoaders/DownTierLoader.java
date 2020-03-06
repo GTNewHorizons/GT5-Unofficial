@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
 
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.StreamUtils;
 import gregtech.api.util.GT_Recipe;
 
 import java.util.HashSet;
@@ -33,13 +34,8 @@ public class DownTierLoader implements Runnable {
 
     @Override
     public void run() {
-        GT_Recipe.GT_Recipe_Map.sMappings.stream().filter(map ->
-                !(map == GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes
-                        || map == GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes
-                        || map == GT_Recipe.GT_Recipe_Map.sMassFabFakeRecipes
-                        || map == GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes
-                        || map == GT_Recipe.GT_Recipe_Map.sFusionRecipes
-                        || map == GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes))
+        GT_Recipe.GT_Recipe_Map.sMappings.stream()
+                .filter(map -> StreamUtils.filterVisualMaps(map) && map != GT_Recipe.GT_Recipe_Map.sFusionRecipes)
                 .forEach(map -> {
                     Set<GT_Recipe> newRecipes = new HashSet<>();
                     Set<GT_Recipe> toRem = new HashSet<>();

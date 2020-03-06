@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -53,6 +53,7 @@ import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.Down
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.StreamUtils;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.google.common.collect.ArrayListMultimap;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -230,7 +231,6 @@ public final class MainMod {
         PlatinumSludgeOverHaul.replacePureElements();
 
         runOnServerStarted();
-        fixEnergyRequirements();
         MainMod.unificationRecipeEnforcer();
     }
 
@@ -248,25 +248,27 @@ public final class MainMod {
             }
             if (classicMode)
                 new DownTierLoader().run();
-//        removeDuplicateRecipes();
+//          removeDuplicateRecipes();
             recipesAdded = true;
         }
 
+        fixEnergyRequirements();
+
+        //Accept recipe map changes into Buffers
+        GT_Recipe.GT_Recipe_Map.sMappings.forEach(GT_Recipe.GT_Recipe_Map::reInit);
     }
 
     private static void fixEnergyRequirements() {
-        maploop:
-        for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings) {
-            for (GT_Recipe recipe : map.mRecipeList) {
-                if (recipe.mFakeRecipe)
-                    continue maploop;
-                for (int i = 0; i < (VN.length - 1); i++) {
-                    if (recipe.mEUt == BW_Util.getTierVoltage(i)) {
-                        recipe.mEUt = BW_Util.getMachineVoltageFromTier(i);
+        GT_Recipe.GT_Recipe_Map.sMappings.stream()
+                .filter(StreamUtils::filterVisualMaps)
+                .forEach(gt_recipe_map ->
+                        gt_recipe_map.mRecipeList.parallelStream().forEach( gt_recipe -> {
+                    for (int i = 0; i < (VN.length - 1); i++) {
+                        if (gt_recipe.mEUt > BW_Util.getMachineVoltageFromTier(i) && gt_recipe.mEUt <= BW_Util.getTierVoltage(i)) {
+                            gt_recipe.mEUt = BW_Util.getMachineVoltageFromTier(i);
+                        }
                     }
-                }
-            }
-        }
+                }));
     }
 
     private static void unificationRecipeEnforcer() {

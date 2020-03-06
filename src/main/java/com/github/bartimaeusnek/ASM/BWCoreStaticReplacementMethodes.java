@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.ASM;
 
+import com.github.bartimaeusnek.bartworks.util.NonNullWrappedHashSet;
 import com.github.bartimaeusnek.bartworks.util.accessprioritylist.AccessPriorityList;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -96,16 +97,28 @@ public class BWCoreStaticReplacementMethodes {
             }
 
             ItemStack stack = null;
-            HashSet<IRecipe> recipeHashSet = new HashSet<>();
-            for (IRecipe recipe : (List<IRecipe>) CraftingManager.getInstance().getRecipeList())
-                if (recipe.matches(inventoryCrafting, world))
-                    recipeHashSet.add(recipe);
 
-            for (IRecipe recipe : recipeHashSet){
-                stack = recipe.getCraftingResult(inventoryCrafting);
-                if (stack != null && recipeHashSet.size() == 1)
-                    RECENTLYUSEDRECIPES.addLast(recipe);
+            HashSet<IRecipe> recipeSet = new NonNullWrappedHashSet<>();
+            List recipeList = CraftingManager.getInstance().getRecipeList();
+
+            for (int k = 0; k < recipeList.size(); k++) {
+                recipeSet.add((IRecipe) recipeList.get(k));
             }
+
+            Object[] arr = recipeSet.parallelStream().filter(r -> r.matches(inventoryCrafting, world)).toArray();
+
+            if (arr.length == 0)
+                return null;
+
+            IRecipe recipe = (IRecipe) arr[0];
+            stack = recipe.getCraftingResult(inventoryCrafting);
+
+            if (arr.length != 1)
+                return stack;
+
+            if (stack != null)
+                RECENTLYUSEDRECIPES.addLast(recipe);
+
             return stack;
         }
     }

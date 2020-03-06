@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -103,7 +103,7 @@ public class RecipeLoader implements Runnable {
                         "CDC",
                         "SBS",
                         "CFC",
-                        'C', GT_OreDictUnificator.get(OrePrefixes.circuit, ConfigHandler.GTNH ? Materials.Advanced : Materials.Basic, 1L),
+                        'C', ConfigHandler.GTNH ? "circuitAdvanced" : "circuitBasic",
                         'D', ItemList.Cover_Screen.get(1L),
                         'S', GT_OreDictUnificator.get(OrePrefixes.cableGt12, ConfigHandler.GTNH ? Materials.Platinum : Materials.AnnealedCopper, 1L),
                         'B', new ItemStack(ItemRegistry.BW_BLOCKS[1]),
@@ -112,24 +112,24 @@ public class RecipeLoader implements Runnable {
 
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(ItemRegistry.DESTRUCTOPACK),
-                RecipeLoader.BITSD,
+                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{
                         "CPC",
                         "PLP",
                         "CPC",
-                        'C', GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
+                        'C', "circuitAdvanced",
                         'P', GT_OreDictUnificator.get(ConfigHandler.GTNH ? OrePrefixes.plateDouble : OrePrefixes.plate, Materials.Aluminium, 1L),
                         'L', new ItemStack(Items.lava_bucket)
                 });
 
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(ItemRegistry.DESTRUCTOPACK),
-                RecipeLoader.BITSD,
+                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{
                         "CPC",
                         "PLP",
                         "CPC",
-                        'C', GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
+                        'C', "circuitAdvanced",
                         'P', GT_OreDictUnificator.get(ConfigHandler.GTNH ? OrePrefixes.plateDouble : OrePrefixes.plate, ConfigHandler.GTNH ? Materials.Steel : Materials.Iron, 1L),
                         'L', new ItemStack(Items.lava_bucket)
                 });
