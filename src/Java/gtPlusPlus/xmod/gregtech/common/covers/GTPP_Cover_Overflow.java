@@ -61,15 +61,15 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
 	public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
 			EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
-			aCoverVariable += aPlayer.isSneaking() ? 4096 : 1024;
+			aCoverVariable += (mMaxTransferRate * (aPlayer.isSneaking() ? 0.1f : 0.01f));
 		} else {
-			aCoverVariable -= aPlayer.isSneaking() ? 4096 : 1024;
+			aCoverVariable -= (mMaxTransferRate * (aPlayer.isSneaking() ? 0.1f : 0.01f));
 		}
 		if (aCoverVariable > mMaxTransferRate) {
 			aCoverVariable = mInitialTransferRate;
 		}
 		if (aCoverVariable <= 0) {
-			aCoverVariable = mInitialTransferRate;
+			aCoverVariable = mMaxTransferRate;
 		}
 		GT_Utility.sendChatToPlayer(aPlayer, LangUtils.trans("009", "Overflow point: ") + aCoverVariable + trans("010", "L"));
 		return aCoverVariable;
@@ -88,7 +88,7 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
 			aCoverVariable = mInitialTransferRate;
 		}
 		if (aCoverVariable <= 0) {
-			aCoverVariable = mInitialTransferRate;
+			aCoverVariable = mMaxTransferRate;
 		}
 		GT_Utility.sendChatToPlayer(aPlayer, LangUtils.trans("009", "Overflow point: ") + aCoverVariable + trans("010", "L"));
 		aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
