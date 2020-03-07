@@ -1,14 +1,13 @@
 package bloodasp.galacticgreg.dynconfig;
 
-import gregtech.api.GregTech_API;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import bloodasp.galacticgreg.GalacticGreg;
 import bloodasp.galacticgreg.api.ModContainer;
 import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
+import gregtech.api.GregTech_API;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is the dynamic config class for every ore-vein that will generate config values according to the dimension and
@@ -16,7 +15,12 @@ import bloodasp.galacticgreg.registry.GalacticGregRegistry;
  */
 public class DynamicOreMixWorldConfig {
 	private String _mWorldGenName;
-	private Map<String, Boolean> _mDynWorldConfigMap = null;
+
+	public Map<String, Boolean> get_mDynWorldConfigMap() {
+		return new HashMap<>(_mDynWorldConfigMap != null ? _mDynWorldConfigMap : new HashMap<>());
+	}
+
+	private Map<String, Boolean> _mDynWorldConfigMap;
 	private final String _mConfigName;
 	
 	private String getConfigKeyName(ModContainer pMC, ModDimensionDef pMDD)
@@ -40,13 +44,13 @@ public class DynamicOreMixWorldConfig {
 	public DynamicOreMixWorldConfig(String pWorldGenName)
 	{
 		_mWorldGenName = pWorldGenName;
-		_mDynWorldConfigMap = new HashMap<String, Boolean>();
+		_mDynWorldConfigMap = new HashMap<>();
 		_mConfigName = String.format("worldgen.%s", _mWorldGenName);
 	}
 
 	public DynamicOreMixWorldConfig(String pWorldGenName, boolean bw){
 		_mWorldGenName = pWorldGenName;
-		_mDynWorldConfigMap = new HashMap<String, Boolean>();
+		_mDynWorldConfigMap = new HashMap<>();
 		_mConfigName = String.format("worldgen.gagregbartworks.%s", _mWorldGenName);
 	}
 
@@ -58,10 +62,7 @@ public class DynamicOreMixWorldConfig {
 	public boolean isEnabledInDim(ModDimensionDef pMDD)
 	{
 		String tDimIdentifier = pMDD.getDimIdentifier();
-		if (_mDynWorldConfigMap.containsKey(tDimIdentifier))
-			return _mDynWorldConfigMap.get(tDimIdentifier);
-		else
-			return false;
+		return _mDynWorldConfigMap.getOrDefault(tDimIdentifier, false);
 	}
 	
 	/**

@@ -20,7 +20,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static bloodasp.galacticgreg.GalacticGreg.smallOreWorldgenList;
 
@@ -28,6 +30,8 @@ public class BW_Worldgen_Ore_SmallOre_Space extends BW_OreLayer {
 
     private ModDimensionDef pDimensionDef;
     private DynamicOreMixWorldConfig _mDynWorldConfig;
+    private String name;
+
     public BW_Worldgen_Ore_SmallOre_Space(String aName, boolean pDefault, int pMinY, int pMaxY, int pDensity, int pPrimary, ISubTagContainer primaryBW) {
         super(aName, pDefault, 0, 0, 0, 0, 0, primaryBW, Materials._NULL, Materials._NULL, Materials._NULL);
         mMinY = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "MinHeight", pMinY));
@@ -37,11 +41,22 @@ public class BW_Worldgen_Ore_SmallOre_Space extends BW_OreLayer {
         bwOres = ((byte) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "BWGTlogic", bwOres));
         _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName,true);
         _mDynWorldConfig.InitDynamicConfig();
+        StringBuilder ret = new StringBuilder();
+        for (Map.Entry<String,Boolean> key : _mDynWorldConfig.get_mDynWorldConfigMap().entrySet().stream().filter(Map.Entry::getValue).collect(Collectors.toSet()))
+            ret.append(key.getKey().split("_")[1]).append("; ");
+        name = ret.length() == 0 ? "" :  ret.substring(0, ret.length() - 1);
         if (mEnabled) {
             smallOreWorldgenList.add(this);
         }
+
     }
 
+    /**
+     * Script Friendly Constructor,
+     * WONT WORK WITH NEI
+     * @param aName
+     * @param enabled
+     */
     public BW_Worldgen_Ore_SmallOre_Space(String aName, boolean enabled){
         this(aName,enabled,0,0,0,0,enabled ? Werkstoff.default_null_Werkstoff : Materials._NULL);
     }
@@ -91,11 +106,11 @@ public class BW_Worldgen_Ore_SmallOre_Space extends BW_OreLayer {
 
     @Override
     public int[] getDefaultDamageToReplace() {
-        return new int[0];
+        return null;
     }
 
     @Override
     public String getDimName() {
-        return null;
+        return name;
     }
 }

@@ -1,24 +1,18 @@
 package bloodasp.galacticgreg;
 
+import bloodasp.galacticgreg.api.ModDimensionDef;
+import bloodasp.galacticgreg.auxiliary.GTOreGroup;
 import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_Layer_Space;
-import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_SmallOre_Space;
+import bloodasp.galacticgreg.dynconfig.DynamicOreMixWorldConfig;
+import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-import bloodasp.galacticgreg.api.ModDimensionDef;
-import bloodasp.galacticgreg.auxiliary.GTOreGroup;
-import bloodasp.galacticgreg.dynconfig.DynamicOreMixWorldConfig;
-import bloodasp.galacticgreg.registry.GalacticGregRegistry;
+
+import java.util.*;
 
 public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 	public static int sWeight = 0;
@@ -35,7 +29,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 	private long mProfilingStart;
 	private long mProfilingEnd;
 
-	private DynamicOreMixWorldConfig _mDynWorldConfig = null;
+	private DynamicOreMixWorldConfig _mDynWorldConfig;
 
 	public GT_Worldgen_GT_Ore_Layer_Space(String pName, boolean pDefault, int pMinY, int pMaxY, int pWeight, int pDensity, int pSize, Materials pPrimary, Materials pSecondary, Materials pBetween, Materials pSporadic)
 	{
@@ -92,7 +86,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 		return _mDynWorldConfig.isEnabledInDim(pDimensionDef);
 	}
 
-	private static Map<String, Integer> _mBufferedVeinCountList = new HashMap<String, Integer>(); 
+	private static Map<String, Integer> _mBufferedVeinCountList = new HashMap<>();
 	
 	/**
 	 * Get the number of enabled OreMixes for given Dimension.
@@ -118,7 +112,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 	}
 	
 	
-	private static Map<String, List<String>> _mBufferedVeinList = new HashMap<String, List<String>>();
+	private static Map<String, List<String>> _mBufferedVeinList = new HashMap<>();
 	/**
 	 * Get a List of all Veins which are enabled for given Dim. Query is buffered
 	 * @param pDimensionDef
@@ -126,13 +120,13 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 	 */
 	private static List<String> getOreMixIDsForDim(ModDimensionDef pDimensionDef)
 	{
-		List<String> tReturn = null;
+		List<String> tReturn;
 		
 		if (_mBufferedVeinList.containsKey(pDimensionDef.getDimIdentifier()))
 			tReturn = _mBufferedVeinList.get(pDimensionDef.getDimIdentifier());
 		else
 		{
-			tReturn = new ArrayList<String>();
+			tReturn = new ArrayList<>();
 			for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
 				if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef))
 					tReturn.add(tWorldGen.mWorldGenName);
@@ -268,31 +262,28 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 			int cZ = pChunkZ - pRandom.nextInt(this.mSize);
 			int eZ = pChunkZ + 16 + pRandom.nextInt(this.mSize);
 			for (int tZ = cZ; tZ <= eZ; tZ++) {
+				final int maxx = Math.max(Math.abs(cX - tX), Math.abs(eX - tX));
+				final int maxz = Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ));
 				if (this.mSecondaryMeta > 0) {
 					for (int i = tMinY - 1; i < tMinY + 2; i++) {
-						if ((pRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0)
-								|| (pRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0)) {
+						if ((pRandom.nextInt(Math.max(1, maxz / this.mDensity)) == 0) || (pRandom.nextInt(Math.max(1, maxx / this.mDensity)) == 0)) {
 							GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, i, tZ, this.mSecondaryMeta);
 						}
 					}
 				}
 				if ((this.mBetweenMeta > 0)
-						&& ((pRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (pRandom.nextInt(Math.max(1,
-								Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0))) {
+						&& ((pRandom.nextInt(Math.max(1, maxz / this.mDensity)) == 0) || (pRandom.nextInt(Math.max(1, maxx / this.mDensity)) == 0))) {
 					GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, tMinY + 2 + pRandom.nextInt(2), tZ, this.mBetweenMeta);
 				}
 				if (this.mPrimaryMeta > 0) {
 					for (int i = tMinY + 3; i < tMinY + 6; i++) {
-						if ((pRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0)
-								|| (pRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0)) {
-
+						if ((pRandom.nextInt(Math.max(1, maxz / this.mDensity)) == 0) || (pRandom.nextInt(Math.max(1, maxx / this.mDensity)) == 0)) {
 							GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, i, tZ, this.mPrimaryMeta);
 						}
 					}
 				}
 				if ((this.mSporadicMeta > 0)
-						&& ((pRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (pRandom.nextInt(Math.max(1,
-								Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0))) {
+						&& ((pRandom.nextInt(Math.max(1, maxz / this.mDensity)) == 0) || (pRandom.nextInt(Math.max(1, maxx / this.mDensity)) == 0))) {
 					GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, tMinY - 1 + pRandom.nextInt(7), tZ, this.mSporadicMeta);
 				}
 			}
@@ -305,9 +296,8 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 				long tTotalTime = mProfilingEnd - mProfilingStart;
 				GalacticGreg.Profiler.AddTimeToList(tMDD, tTotalTime);
 				GalacticGreg.Logger.debug("Done with OreLayer-Worldgen in DimensionType %s. Generation took %d ms", tMDD.getDimensionName(), tTotalTime);
-			} catch (Exception e) { } // Silently ignore errors
+			} catch (Exception ignored) { } // Silently ignore errors
 		}
-
 
 		GalacticGreg.Logger.trace("Leaving executeWorldgen");
 		return true;

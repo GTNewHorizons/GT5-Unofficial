@@ -1,13 +1,11 @@
 package bloodasp.galacticgreg.command;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
+import appeng.api.util.WorldCoord;
+import appeng.items.storage.ItemSpatialStorageCell;
+import bloodasp.galacticgreg.GalacticGreg;
+import bloodasp.galacticgreg.auxiliary.PlayerChatHelper;
+import bloodasp.galacticgreg.schematics.SpaceSchematic;
+import bloodasp.galacticgreg.schematics.SpaceSchematicFactory;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -15,27 +13,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import appeng.api.util.WorldCoord;
-import appeng.items.storage.ItemSpatialStorageCell;
-import bloodasp.galacticgreg.GalacticGreg;
-import bloodasp.galacticgreg.auxiliary.PlayerChatHelper;
-import bloodasp.galacticgreg.schematics.SpaceSchematic;
-import bloodasp.galacticgreg.schematics.SpaceSchematicFactory;
-import bloodasp.galacticgreg.schematics.SpaceSchematicHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This command allows to export any structure that has been stored inside a spatial storage cell
  * to a xml file that can later be enabled for spawning in dimensions.
  */
 public class AEStorageCommand implements ICommand {
-	private List aliases;
+	private List<String> aliases;
 	public AEStorageCommand()
 	{
-		this.aliases = new ArrayList();
+		this.aliases = new ArrayList<>();
 		this.aliases.add("exportae");
 	}
 	
@@ -52,7 +45,7 @@ public class AEStorageCommand implements ICommand {
 	}
 	
 	  @Override
-	  public List getCommandAliases()
+	  public List<String> getCommandAliases()
 	  {
 	    return this.aliases;
 	  }
@@ -67,7 +60,7 @@ public class AEStorageCommand implements ICommand {
 				  if (pArgs.length < 1)
 					  return;
 				  
-				  String tName = pArgs[0].toString();
+				  String tName = pArgs[0];
 				  
 				  EntityPlayer tEP = (EntityPlayer) pCommandSender;
 				  // Check if item in hand is a spatial storage cell
@@ -176,6 +169,7 @@ public class AEStorageCommand implements ICommand {
 		return 0;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List addTabCompletionOptions(ICommandSender p_71516_1_,
 			String[] p_71516_2_) {

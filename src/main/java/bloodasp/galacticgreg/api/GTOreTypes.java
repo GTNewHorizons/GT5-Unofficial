@@ -40,7 +40,7 @@ public enum GTOreTypes {
 	private int _mBlockMeta;
 	private int _mUpdateMode;
 	
-	private GTOreTypes(int pOffset, Block pBlock, int pMeta, int pUpdateMode)
+	GTOreTypes(int pOffset, Block pBlock, int pMeta, int pUpdateMode)
 	{
 		_mOffset = pOffset;
 		_mStoneBlock = pBlock;

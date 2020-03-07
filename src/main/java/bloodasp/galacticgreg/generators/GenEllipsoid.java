@@ -1,18 +1,15 @@
 package bloodasp.galacticgreg.generators;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import bloodasp.galacticgreg.GalacticGreg;
 import bloodasp.galacticgreg.api.Enums.SpaceObjectType;
 import bloodasp.galacticgreg.api.Enums.TargetBlockPosition;
 import bloodasp.galacticgreg.api.ISpaceObjectGenerator;
 import bloodasp.galacticgreg.api.StructureInformation;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Simple ellipsoid-generator. Based on the formular created by Chrysator.
@@ -130,7 +127,7 @@ public class GenEllipsoid implements ISpaceObjectGenerator {
 
 	@Override
 	public void reset() {
-		_mStructure = new ArrayList<StructureInformation>();
+		_mStructure = new ArrayList<>();
 		_mEllipsoidCenter = Vec3.createVectorHelper(0, 0, 0);
 	}
 }

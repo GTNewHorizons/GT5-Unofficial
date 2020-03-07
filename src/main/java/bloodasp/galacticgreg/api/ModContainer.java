@@ -44,7 +44,7 @@ public class ModContainer {
 	public ModContainer(String pModName)
 	{
 		_mModName = pModName;
-		_mDimensionLookup = new ArrayList<ModDimensionDef>();
+		_mDimensionLookup = new ArrayList<>();
 	}
 	
 	

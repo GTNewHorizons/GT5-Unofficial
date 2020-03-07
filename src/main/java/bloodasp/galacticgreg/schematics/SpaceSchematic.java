@@ -1,18 +1,11 @@
 package bloodasp.galacticgreg.schematics;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
+import bloodasp.galacticgreg.api.StructureInformation;
 import net.minecraft.block.Block;
 import net.minecraft.util.Vec3;
-import bloodasp.galacticgreg.api.StructureInformation;
+
+import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 
 /**
  * Class for XML Structure files. You only should edit/use this file/class if you want to add/fix stuff with 
@@ -65,7 +58,7 @@ public class SpaceSchematic {
 	public ArrayList<BaseStructureInfo> coordInfo()
 	{
 		if (mStructureInfoList == null)
-			mStructureInfoList = new ArrayList<BaseStructureInfo>();
+			mStructureInfoList = new ArrayList<>();
 		
 		return mStructureInfoList;
 	}
@@ -73,7 +66,7 @@ public class SpaceSchematic {
 	public void addStructureInfo(StructureInformation pStrucInfo)
 	{
 		if (mStructureInfoList == null)
-			mStructureInfoList = new ArrayList<BaseStructureInfo>();
+			mStructureInfoList = new ArrayList<>();
 		mStructureInfoList.add(new BaseStructureInfo(pStrucInfo));
 	}
 	
