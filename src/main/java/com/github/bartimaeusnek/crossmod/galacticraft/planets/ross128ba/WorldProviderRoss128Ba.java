@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128ba;
 
+import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import com.github.bartimaeusnek.crossmod.galacticraft.planets.AbstractWorldProviderSpace;
 import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128SolarSystem;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -43,7 +44,7 @@ public class WorldProviderRoss128Ba extends AbstractWorldProviderSpace {
 
     @Override
     public long getDayLength() {
-        return (long) Math.floor(24000f*9.9f/100f);
+        return (long) MathUtils.floor(24000f*9.9f/100f);
     }
     @Override
     public boolean hasSunset() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ import com.github.bartimaeusnek.bartworks.common.items.SimpleSubItemClass;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -138,7 +139,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         if (!(this.HeliumSupply >= GT_TileEntity_THTR.HELIUM_NEEDED && this.BISOPeletSupply + this.TRISOPeletSupply >= 100000))
             return false;
 
-        int toReduce = new XSTR().nextInt((int)Math.floor(((double)this.BISOPeletSupply + (double)this.TRISOPeletSupply) / 200D));
+        int toReduce = new XSTR().nextInt((int) MathUtils.floor(((double)this.BISOPeletSupply + (double)this.TRISOPeletSupply) / 200D));
 
         this.savedBISO = BISOPeletSupply;
         this.savedTRISO = TRISOPeletSupply;

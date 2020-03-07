@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -143,8 +143,8 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     private int calcMod(double x) {
-        int ret = (int) Math.ceil(ConfigHandler.bioVatMaxParallelBonus*(-(((2D*x/(double)this.getOutputCapacity())-1D)*(2D*x/(double)this.getOutputCapacity()-1D))+1D));
-        return ret <= 0 ? 1 : Math.min(ret, 100);//(int) Math.ceil((-0.00000025D * x * (x - this.getOutputCapacity())));
+        int ret = (int) MathUtils.ceil(ConfigHandler.bioVatMaxParallelBonus*(-(((2D*x/(double)this.getOutputCapacity())-1D)*(2D*x/(double)this.getOutputCapacity()-1D))+1D));
+        return ret <= 0 ? 1 : Math.min(ret, 100);//(int) MathUtils.ceil((-0.00000025D * x * (x - this.getOutputCapacity())));
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -96,15 +96,23 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
     public void drawExtras(int recipe) {
     if ((recipe < this.arecipes.size()) && (this.arecipes.get(recipe) instanceof CachedOreRecipe) ) {
         CachedOreRecipe cachedOreRecipe = (CachedOreRecipe) this.arecipes.get(recipe);
-        if (cachedOreRecipe == null || cachedOreRecipe.getOtherStacks() == null ||
-                cachedOreRecipe.getOtherStacks().get(0) == null || cachedOreRecipe.getOtherStacks().get(1) == null
-                || cachedOreRecipe.getOtherStacks().get(2) == null || cachedOreRecipe.getOtherStacks().get(3) == null ||
-                cachedOreRecipe.getOtherStacks().get(0).item == null || cachedOreRecipe.getOtherStacks().get(1).item == null
-                || cachedOreRecipe.getOtherStacks().get(2).item == null || cachedOreRecipe.getOtherStacks().get(3).item == null
-        )
+
+        if (cachedOreRecipe == null || cachedOreRecipe.getOtherStacks() == null || cachedOreRecipe.getOtherStacks().size() == 0)
             return;
+
+        if (!cachedOreRecipe.small) {
+            if (cachedOreRecipe.getOtherStacks().get(0) == null || cachedOreRecipe.getOtherStacks().get(0).item == null
+                    || cachedOreRecipe.getOtherStacks().get(1) == null
+                    || cachedOreRecipe.getOtherStacks().get(2) == null || cachedOreRecipe.getOtherStacks().get(3) == null || cachedOreRecipe.getOtherStacks().get(1).item == null
+                    || cachedOreRecipe.getOtherStacks().get(2).item == null || cachedOreRecipe.getOtherStacks().get(3).item == null
+            )
+                return;
+        } else if (cachedOreRecipe.getOtherStacks().get(0) == null || cachedOreRecipe.getOtherStacks().get(0).item == null)
+                return;
+
         if (cachedOreRecipe.worldGen != null)
             GuiDraw.drawString(ChatColorHelper.BOLD + "DIM: " + ChatColorHelper.RESET + cachedOreRecipe.worldGen.getDimName(), 0, 40, 0, false);
+
         GuiDraw.drawString(ChatColorHelper.BOLD + "Primary:", 0, 50, 0, false);
         GuiDraw.drawString(cachedOreRecipe.getOtherStacks().get(0).item.getDisplayName(), 0, 60, 0, false);
 

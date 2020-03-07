@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
-@IFMLLoadingPlugin.SortingIndex(999999999)//Load as late as possible (after fastcraft/OptiFine).
+@IFMLLoadingPlugin.SortingIndex(Integer.MAX_VALUE)//Load as late as possible (after fastcraft/OptiFine).
 @IFMLLoadingPlugin.MCVersion("1.7.10")
 @IFMLLoadingPlugin.TransformerExclusions("com.github.bartimaeusnek.ASM")
 @IFMLLoadingPlugin.Name(BWCorePlugin.BWCORE_PLUGIN_NAME)

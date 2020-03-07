@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_RadioHatch;
+import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
@@ -60,7 +61,7 @@ public class GT_GUIContainer_RadioHatch extends GT_GUIContainerMetaTile_Machine 
             this.drawTexturedModalRect(124, 18, 124, 18, 16, 48);
         }
         GL11.glColor3f(1f, 1f, 1f);
-        this.drawTexturedModalRect(124, 18, 176, 0, 16, 48 - (int) Math.ceil(48 * (rem / maxT)));
+        this.drawTexturedModalRect(124, 18, 176, 0, 16, 48 - (int) MathUtils.ceil(48 * (rem / maxT)));
         this.drawTexturedModalRect(65, 13, 192, 0, (48 * (((GT_Container_RadioHatch) this.mContainer).sv)) / (GT_GUIContainer_RadioHatch.maxSv), 16);
 
 

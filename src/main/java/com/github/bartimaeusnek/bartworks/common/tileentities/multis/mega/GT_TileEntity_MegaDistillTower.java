@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import com.google.common.collect.ArrayListMultimap;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -141,7 +142,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
         if (super.addOutputToMachineList(aTileEntity, aBaseCasingIndex)) {
             if (aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output) {
                 int layer = aTileEntity.getYCoord() - controllerY;
-                layer = (int) Math.ceil(((double)layer) /5D)-1;
+                layer = (int) MathUtils.ceil(((double)layer) /5D)-1;
                 LAYERMAP.put(layer,(GT_MetaTileEntity_Hatch_Output) aTileEntity.getMetaTileEntity());
             }
             return true;

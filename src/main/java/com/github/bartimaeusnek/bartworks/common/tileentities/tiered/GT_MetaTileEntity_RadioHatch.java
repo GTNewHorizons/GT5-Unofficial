@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ import com.github.bartimaeusnek.bartworks.client.gui.GT_GUIContainer_RadioHatch;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_RadioHatch;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import com.github.bartimaeusnek.crossmod.GTpp.loader.RadioHatchCompat;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.ItemList;
@@ -82,14 +83,14 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
         else if (x == 61)
             ret = 4500;
         else if (x <= 100)
-            ret = (long) Math.ceil((8000D * Math.tanh(-x / 20D) + 8000D) * 1000D);
+            ret = (long) MathUtils.ceil((8000D * Math.tanh(-x / 20D) + 8000D) * 1000D);
         else
-            ret = (long) Math.ceil(((8000D * Math.tanh(-x / 65D) + 8000D)));
+            ret = (long) MathUtils.ceil(((8000D * Math.tanh(-x / 65D) + 8000D)));
         return ret;//*20;
     }
 
     public int getSievert() {
-        return this.sievert - (int) Math.ceil((float) this.sievert / 100f * (float) this.coverage);
+        return this.sievert - (int) MathUtils.ceil((float) this.sievert / 100f * (float) this.coverage);
     }
 
     public short[] getColorForGUI() {
