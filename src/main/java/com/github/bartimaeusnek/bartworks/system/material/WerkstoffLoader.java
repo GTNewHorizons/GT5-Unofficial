@@ -740,14 +740,15 @@ public class WerkstoffLoader implements Runnable {
     public static final Werkstoff PTMetallicPowder = new Werkstoff(
             Materials.Platinum.getRGBA(),
             "Platinum Metallic Powder",
-            "",
+            "??PtPdIrOsRhRu??",
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures(),
             47,
-            TextureSet.SET_METALLIC
+            TextureSet.SET_METALLIC,
             //No Byproducts
-            //No Ingredients
+            new Pair<>(Materials.Platinum,1),
+            new Pair<>(Materials.Stone,2)
     );
     public static final Werkstoff AquaRegia = new Werkstoff(
             new short[]{0xff,0xb1,0x32},
@@ -795,7 +796,6 @@ public class WerkstoffLoader implements Runnable {
             51,
             TextureSet.SET_METALLIC
             //No Byproducts
-            //No Ingredients
     );
     public static final Werkstoff PDAmmonia = new Werkstoff(
             Materials.Palladium.getRGBA(),
@@ -817,9 +817,10 @@ public class WerkstoffLoader implements Runnable {
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures(),
             53,
-            TextureSet.SET_METALLIC
+            TextureSet.SET_METALLIC,
             //No Byproducts
-            //No Ingredients
+            new Pair<>(Materials.Palladium,1),
+            new Pair<>(Materials.Stone,2)
     );
     public static final Werkstoff PDRawPowder = new Werkstoff(
             Materials.Palladium.getRGBA(),
@@ -1016,8 +1017,10 @@ public class WerkstoffLoader implements Runnable {
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures(),
             69,
-            TextureSet.SET_ROUGH
+            TextureSet.SET_ROUGH,
             //No Byproducts
+            new Pair<>(Materials.Osmiridium,1),
+            new Pair<>(Materials.Stone,2)
     );
     public static final Werkstoff IrLeachResidue = new Werkstoff(
             new short[]{0x84, 0x66, 0x49},
@@ -1027,7 +1030,9 @@ public class WerkstoffLoader implements Runnable {
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures(),
             70,
-            TextureSet.SET_ROUGH
+            TextureSet.SET_ROUGH,
+            new Pair<>(Materials.Iridium,1),
+            new Pair<>(Materials.Stone,2)
             //No Byproducts
     );
     public static final Werkstoff PGSDResidue = new Werkstoff(
@@ -1129,7 +1134,9 @@ public class WerkstoffLoader implements Runnable {
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures(),
             79,
-            TextureSet.SET_DULL
+            TextureSet.SET_DULL,
+            new Pair<>(Rhodium,1),
+            new Pair<>(Materials.Stone,1)
     );
     public static final Werkstoff RHSalt = new Werkstoff(
             new short[]{0x84, 0x84, 0x84},
