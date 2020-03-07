@@ -1,19 +1,19 @@
 package bloodasp.galacticgreg.command;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.command.ICommand;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
 import bloodasp.galacticgreg.GalacticGreg;
 import bloodasp.galacticgreg.api.ModContainer;
 import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.command.ICommand;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentText;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Ingame command to get the average oregen time(s) for the active dimensions
@@ -21,10 +21,10 @@ import cpw.mods.fml.relauncher.Side;
  *
  */
 public class ProfilingCommand implements ICommand {
-	private List aliases;
+	private List<String> aliases;
 	public ProfilingCommand()
 	{
-		this.aliases = new ArrayList();
+		this.aliases = new ArrayList<>();
 		this.aliases.add("ggregprofiler");
 	}
 	
@@ -41,7 +41,7 @@ public class ProfilingCommand implements ICommand {
 	}
 	
 	  @Override
-	  public List getCommandAliases()
+	  public List<String> getCommandAliases()
 	  {
 	    return this.aliases;
 	  }
@@ -87,6 +87,7 @@ public class ProfilingCommand implements ICommand {
 		return 0;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List addTabCompletionOptions(ICommandSender p_71516_1_,
 			String[] p_71516_2_) {

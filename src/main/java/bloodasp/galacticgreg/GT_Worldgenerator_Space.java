@@ -1,19 +1,22 @@
 package bloodasp.galacticgreg;
 
+import bloodasp.galacticgreg.api.*;
+import bloodasp.galacticgreg.api.Enums.DimensionType;
+import bloodasp.galacticgreg.api.Enums.SpaceObjectType;
+import bloodasp.galacticgreg.api.Enums.TargetBlockPosition;
+import bloodasp.galacticgreg.auxiliary.GTOreGroup;
 import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_Layer_Space;
 import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_SmallOre_Space;
-import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGeneratedOreTE;
-import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_SmallOres;
+import bloodasp.galacticgreg.dynconfig.DynamicDimensionConfig;
+import bloodasp.galacticgreg.dynconfig.DynamicDimensionConfig.AsteroidConfig;
+import bloodasp.galacticgreg.registry.GalacticGregRegistry;
+import cpw.mods.fml.common.IWorldGenerator;
+import cpw.mods.fml.common.eventhandler.EventBus;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_Log;
-
-import java.util.Random;
-
 import gregtech.api.world.GT_Worldgen;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
@@ -21,23 +24,8 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.ChestGenHooks;
-import bloodasp.galacticgreg.api.AsteroidBlockComb;
-import bloodasp.galacticgreg.api.BlockMetaComb;
-import bloodasp.galacticgreg.api.Enums.DimensionType;
-import bloodasp.galacticgreg.api.Enums.SpaceObjectType;
-import bloodasp.galacticgreg.api.Enums.TargetBlockPosition;
-import bloodasp.galacticgreg.api.GTOreTypes;
-import bloodasp.galacticgreg.api.ISpaceObjectGenerator;
-import bloodasp.galacticgreg.api.ModDimensionDef;
-import bloodasp.galacticgreg.api.SpecialBlockComb;
-import bloodasp.galacticgreg.api.StructureInformation;
-import bloodasp.galacticgreg.auxiliary.GTOreGroup;
-import bloodasp.galacticgreg.dynconfig.DynamicDimensionConfig;
-import bloodasp.galacticgreg.dynconfig.DynamicDimensionConfig.AsteroidConfig;
-import bloodasp.galacticgreg.registry.GalacticGregRegistry;
-import cpw.mods.fml.common.IWorldGenerator;
-import cpw.mods.fml.common.eventhandler.EventBus;
-import cpw.mods.fml.common.registry.GameRegistry;
+
+import java.util.Random;
 
 public class GT_Worldgenerator_Space implements IWorldGenerator {
 	public static boolean sAsteroids = true;
@@ -87,14 +75,14 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 			tBiome = BiomeGenBase.plains.biomeName;
 		}*/
 		
-		if (tDimDef.getDimensionType() == DimensionType.Asteroid || tDimDef.getDimensionType() == DimensionType.AsteroidAndPlanet)
+		if (tDimDef.getDimensionType() != DimensionType.Planet)
 		{
 			if (tDimDef.getRandomAsteroidMaterial() == null)
 				GalacticGreg.Logger.error("Dimension [%s] is set to Asteroids, but no asteroid material is specified! Nothing will generate", tDimDef.getDimensionName());
 			else
 				Generate_Asteroids(tDimDef, pRandom, pWorld, pX, pZ);
 		}
-		else if (tDimDef.getDimensionType() == DimensionType.Planet || tDimDef.getDimensionType() == DimensionType.AsteroidAndPlanet)
+		else if (tDimDef.getDimensionType() != DimensionType.Asteroid)
 		{
 			Generate_OreVeins(tDimDef, pRandom, pWorld, pX, pZ, "", pChunkGenerator, pChunkProvider);
 		}
@@ -323,10 +311,8 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 						// If no ore-block has been placed yet...
 						if (!tPlacedOreBlock)
 						{
-							boolean tFlag = true;
-
 							// try to spawn special blocks
-							tFlag = doGenerateSpecialBlocks(pDimensionDef, pRandom, pWorld, tAConf, si.getX(), si.getY(), si.getZ(), si.getBlockPosition());
+							boolean tFlag = doGenerateSpecialBlocks(pDimensionDef, pRandom, pWorld, tAConf, si.getX(), si.getY(), si.getZ(), si.getBlockPosition());
 		
 							// No special block placed? Try smallores
 							if (tFlag)
@@ -350,7 +336,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 				long tTotalTime = mProfilingEnd - mProfilingStart;
 				GalacticGreg.Profiler.AddTimeToList(pDimensionDef, tTotalTime);
 				GalacticGreg.Logger.debug("Done with Asteroid-Worldgen in DimensionType %s. Generation took %d ms", pDimensionDef.getDimensionName(), tTotalTime);
-				} catch (Exception e) { } // Silently ignore errors
+				} catch (Exception ignored) { } // Silently ignore errors
 			}
 			// ---------------------------
 		}

@@ -1,9 +1,5 @@
 package bloodasp.galacticgreg;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import bloodasp.galacticgreg.auxiliary.GalacticGregConfig;
 import bloodasp.galacticgreg.auxiliary.LogHelper;
 import bloodasp.galacticgreg.auxiliary.ProfilingStorage;
@@ -16,17 +12,20 @@ import bloodasp.galacticgreg.schematics.SpaceSchematicHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import gregtech.api.GregTech_API;
 import gregtech.api.world.GT_Worldgen;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 @Mod(modid = GalacticGreg.MODID, version = GalacticGreg.VERSION, dependencies = "required-after:GalacticraftCore; required-after:gregtech@5.09.32.30;", acceptableRemoteVersions="*")
 public class GalacticGreg {
-	public static final List<GT_Worldgen> smallOreWorldgenList = new ArrayList();
-	public static final List<GT_Worldgen> oreVeinWorldgenList = new ArrayList();
+	public static final List<GT_Worldgen> smallOreWorldgenList = new ArrayList<>();
+	public static final List<GT_Worldgen> oreVeinWorldgenList = new ArrayList<>();
 
 	public static final String NICE_MODID = "GalacticGreg";
 	public static final String MODID = "galacticgreg";
@@ -64,7 +63,7 @@ public class GalacticGreg {
 //		GalacticGregRegistry.registerModContainer(ModRegisterer.Setup_GalactiCraftCore());
 //	}
 
-	public static final ArrayList<Runnable> ADDITIONALVEINREGISTER = new ArrayList<Runnable>();
+	public static final ArrayList<Runnable> ADDITIONALVEINREGISTER = new ArrayList<>();
 
 	/**
 	 * Postload phase. Mods can add their custom definition to our api in their own PreLoad or Init-phase

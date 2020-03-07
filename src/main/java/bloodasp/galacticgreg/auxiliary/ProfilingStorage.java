@@ -1,12 +1,11 @@
 package bloodasp.galacticgreg.auxiliary;
 
+import bloodasp.galacticgreg.api.ModDimensionDef;
+
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import bloodasp.galacticgreg.api.ModDimensionDef;
 
 /**
  * A simple FIFO-storage for Long-values
@@ -18,13 +17,13 @@ public class ProfilingStorage {
 	
 	public ProfilingStorage()
 	{
-		mProfilingMap = new HashMap<String, List<Long>>();
+		mProfilingMap = new HashMap<>();
 	}
 	
 	/**
 	 * Add a new time to the list of pDimension. Will be ignored it tTotalTime == 0
 	 * @param pDimension
-	 * @param tTotalTime
+	 * @param pTotalTime
 	 */
 	public void AddTimeToList(ModDimensionDef pDimension, long pTotalTime)
 	{
@@ -34,7 +33,7 @@ public class ProfilingStorage {
 				return;
 			
 			if(!mProfilingMap.containsKey(pDimension.getDimIdentifier()))
-				mProfilingMap.put(pDimension.getDimIdentifier(), new LinkedList<Long>());
+				mProfilingMap.put(pDimension.getDimIdentifier(), new LinkedList<>());
 	
 			LinkedList<Long> ll = (LinkedList<Long>) mProfilingMap.get(pDimension.getDimIdentifier());
 			
@@ -64,14 +63,12 @@ public class ProfilingStorage {
 			long tAverage = 0;
 			long tReturnVal = 0;
 			
-			LinkedList ll = (LinkedList) mProfilingMap.get(pDimension.getDimIdentifier());
+			LinkedList<Long> ll = (LinkedList<Long>) mProfilingMap.get(pDimension.getDimIdentifier());
 			
 			if(ll != null)
 			{
-				Iterator<Long> qItr = ll.iterator();
-				while(qItr.hasNext())
-				{
-					tAverage += qItr.next();
+				for (Long aLong : ll) {
+					tAverage += aLong;
 					tTotalVal++;
 				}
 				

@@ -1,16 +1,15 @@
 package bloodasp.galacticgreg.dynconfig;
 
-import gregtech.api.GregTech_API;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import net.minecraftforge.common.ChestGenHooks;
 import bloodasp.galacticgreg.GalacticGreg;
 import bloodasp.galacticgreg.api.Enums.DimensionType;
 import bloodasp.galacticgreg.api.ModContainer;
 import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
+import gregtech.api.GregTech_API;
+import net.minecraftforge.common.ChestGenHooks;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This dynamic config is different to the OreMix one. This is used/bound to the ModDimensionDef,
@@ -37,7 +36,7 @@ public class DynamicDimensionConfig {
 		public boolean RandomizeNumLootItems;
 	}
 	
-	private static Map<String, AsteroidConfig> _mDynamicAsteroidMap = new HashMap<String, AsteroidConfig>();
+	private static Map<String, AsteroidConfig> _mDynamicAsteroidMap = new HashMap<>();
 
 	private static String getConfigKeyName(ModContainer pMC, ModDimensionDef pMDD)
 	{
@@ -51,10 +50,7 @@ public class DynamicDimensionConfig {
 	
 	public static AsteroidConfig getAsteroidConfig(ModDimensionDef pDimDef)
 	{
-		if (!_mDynamicAsteroidMap.containsKey(pDimDef.getDimIdentifier()))
-			return null;
-		else
-			return _mDynamicAsteroidMap.get(pDimDef.getDimIdentifier());
+		return _mDynamicAsteroidMap.getOrDefault(pDimDef.getDimIdentifier(), null);
 	}
 	
 	public static boolean InitDynamicConfig()

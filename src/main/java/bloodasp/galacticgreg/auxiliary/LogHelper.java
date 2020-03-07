@@ -1,17 +1,16 @@
 package bloodasp.galacticgreg.auxiliary;
 
-import java.util.ArrayList;
-
+import cpw.mods.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
-import cpw.mods.fml.common.FMLLog;
+import java.util.ArrayList;
 
 /**
  * Generic LogHelper to print stuff to the console
  * @author Namikon
  */
 public final class LogHelper {
-	private ArrayList<String> _mReportedCategories = new ArrayList<String>();
+	private ArrayList<String> _mReportedCategories = new ArrayList<>();
 	private boolean doDebugLogs = false;
 	private boolean doTraceLogs = false;
 	private boolean quietMode = false;
@@ -56,7 +55,7 @@ public final class LogHelper {
 	 */
 	public void ResetCategories()
 	{
-		_mReportedCategories = new ArrayList<String>();
+		_mReportedCategories = new ArrayList<>();
 	}
 	
 	/**

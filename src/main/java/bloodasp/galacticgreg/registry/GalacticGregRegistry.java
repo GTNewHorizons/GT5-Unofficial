@@ -1,10 +1,5 @@
 package bloodasp.galacticgreg.registry;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import net.minecraft.world.chunk.IChunkProvider;
 import bloodasp.galacticgreg.GalacticGreg;
 import bloodasp.galacticgreg.api.Enums.DimensionType;
 import bloodasp.galacticgreg.api.ModContainer;
@@ -12,13 +7,18 @@ import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.dynconfig.DynamicDimensionConfig;
 import bloodasp.galacticgreg.generators.GenEllipsoid;
 import cpw.mods.fml.common.Loader;
+import net.minecraft.world.chunk.IChunkProvider;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * GalacticGregs registry
  *
  */
 public class GalacticGregRegistry {
-	private static final Map<String, ModContainer> _mModContainers = new HashMap<String, ModContainer>();
+	private static final Map<String, ModContainer> _mModContainers = new HashMap<>();
 	public static final String DIM_UNKNOWN = "GGREG_DIMENSION_UNKNOWN";
 	private static boolean _mInitializationDone = false;
 	

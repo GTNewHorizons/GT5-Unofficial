@@ -1,21 +1,16 @@
 package bloodasp.galacticgreg.schematics;
 
+import bloodasp.galacticgreg.GalacticGreg;
+import org.apache.commons.io.FileUtils;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-import org.apache.commons.io.FileUtils;
-
-import net.minecraft.util.Vec3;
-import bloodasp.galacticgreg.GalacticGreg;
-import bloodasp.galacticgreg.api.Enums.SpaceObjectType;
-import bloodasp.galacticgreg.api.StructureInformation;
 
 /**
  * Class for XML Structure files. You only should edit/use this file/class if you want to add/fix stuff with 
@@ -28,12 +23,13 @@ public class SpaceSchematicHandler {
 	File _mSchematicsFolderName;
 	private List<SpaceSchematic> _mSpaceSchematics;
 	
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public SpaceSchematicHandler(File pConfigFolder)
 	{
 		_mConfigFolderName = new File(String.format("%s/%s", pConfigFolder.toString(), GalacticGreg.NICE_MODID));
 		_mSchematicsFolderName = new File(String.format("%s/schematics", _mConfigFolderName));
 
-		_mSpaceSchematics = new ArrayList<SpaceSchematic>();
+		_mSpaceSchematics = new ArrayList<>();
 		
 		if (!_mSchematicsFolderName.exists())
 			_mSchematicsFolderName.mkdirs();
@@ -45,7 +41,7 @@ public class SpaceSchematicHandler {
 	public SpaceSchematic getRandomSpaceSchematic()
 	{
 		int tRandomChance = GalacticGreg.GalacticRandom.nextInt(100);
-		List<Integer> tRandomIDs = new ArrayList<Integer>();
+		List<Integer> tRandomIDs = new ArrayList<>();
 		SpaceSchematic tChoosenSchematic = null;
 		
 		if (_mSpaceSchematics == null)
@@ -88,7 +84,7 @@ public class SpaceSchematicHandler {
 		try
 		{
 			Collection<File> structureFiles = FileUtils.listFiles(_mSchematicsFolderName, new String[] {"xml"}, false);
-			List<SpaceSchematic> tNewSpaceSchematics = new ArrayList<SpaceSchematic>();
+			List<SpaceSchematic> tNewSpaceSchematics = new ArrayList<>();
 			int tErrorsFound = 0;
 			
 			if (structureFiles.isEmpty())
@@ -111,7 +107,6 @@ public class SpaceSchematicHandler {
 				{
 					GalacticGreg.Logger.error("Error while loading Schematic %s", tSchematic);
 					e.printStackTrace();
-					continue;
 				}
 				
 			}

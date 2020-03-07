@@ -1,17 +1,14 @@
 package bloodasp.galacticgreg;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.init.Blocks;
-import net.minecraft.world.gen.ChunkProviderEnd;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon;
 import bloodasp.galacticgreg.api.*;
 import bloodasp.galacticgreg.api.Enums.AllowedBlockPosition;
 import bloodasp.galacticgreg.api.Enums.DimensionType;
+import net.minecraft.init.Blocks;
+import net.minecraft.world.gen.ChunkProviderEnd;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * In this class, you'll find everything you need in order to tell GGreg what to do and where.
@@ -27,7 +24,7 @@ public class ModRegisterer
 	 */
 	private static List<ModDBMDef> singleToList(ModDBMDef pDef)
 	{
-		List<ModDBMDef> tLst = new ArrayList<ModDBMDef>();
+		List<ModDBMDef> tLst = new ArrayList<>();
 		tLst.add(pDef);
 		return tLst;
 	}

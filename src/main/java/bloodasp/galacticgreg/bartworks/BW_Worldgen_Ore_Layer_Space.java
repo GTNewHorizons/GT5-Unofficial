@@ -20,14 +20,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static bloodasp.galacticgreg.GalacticGreg.oreVeinWorldgenList;
 
 public class BW_Worldgen_Ore_Layer_Space extends BW_OreLayer {
 
     private ModDimensionDef pDimensionDef;
-
+    private String name;
     private DynamicOreMixWorldConfig _mDynWorldConfig;
 
     /**
@@ -67,6 +69,11 @@ public class BW_Worldgen_Ore_Layer_Space extends BW_OreLayer {
         }
         _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName,true);
         _mDynWorldConfig.InitDynamicConfig();
+
+        StringBuilder ret = new StringBuilder();
+        for (Map.Entry<String,Boolean> key : _mDynWorldConfig.get_mDynWorldConfigMap().entrySet().stream().filter(Map.Entry::getValue).collect(Collectors.toSet()))
+            ret.append(key.getKey().split("_")[1]).append("; ");
+        name = ret.substring(0, ret.length() - 1);
     }
 
     /**
@@ -100,12 +107,16 @@ public class BW_Worldgen_Ore_Layer_Space extends BW_OreLayer {
         mBetweenMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "OreSporadiclyInbetween", pBetween));
         mSporadicMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "OreSporaticlyAround", pSporadic));
         bwOres = ((byte) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "BWGTlogic", bwOres));
+        _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName,true);
+        _mDynWorldConfig.InitDynamicConfig();
+        StringBuilder ret = new StringBuilder();
+        for (Map.Entry<String,Boolean> key : _mDynWorldConfig.get_mDynWorldConfigMap().entrySet().stream().filter(Map.Entry::getValue).collect(Collectors.toSet()))
+            ret.append(key.getKey().split("_")[1]).append("; ");
+        name = ret.length() == 0 ? "" : ret.substring(0, ret.length() - 1);
         if (mEnabled) {
             sWeight += this.mWeight;
             oreVeinWorldgenList.add(this);
         }
-        _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName,true);
-        _mDynWorldConfig.InitDynamicConfig();
     }
 
     /**
@@ -118,8 +129,7 @@ public class BW_Worldgen_Ore_Layer_Space extends BW_OreLayer {
         this(aName,enabled,0,0,0,0,0,0,0,0,0,true,true,true,true);
     }
 
-    public boolean isEnabledForDim(ModDimensionDef pDimensionDef)
-    {
+    public boolean isEnabledForDim(ModDimensionDef pDimensionDef) {
         return _mDynWorldConfig.isEnabledInDim(pDimensionDef);
     }
 
@@ -163,7 +173,7 @@ public class BW_Worldgen_Ore_Layer_Space extends BW_OreLayer {
 
     @Override
     public String getDimName() {
-        return pDimensionDef.getDimensionName();
+       return name;
     }
 
 

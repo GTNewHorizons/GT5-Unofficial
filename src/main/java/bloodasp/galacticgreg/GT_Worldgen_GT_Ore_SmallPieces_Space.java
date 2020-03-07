@@ -1,16 +1,15 @@
 package bloodasp.galacticgreg;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
-import gregtech.api.world.GT_Worldgen;
-
-import java.util.Random;
-
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkProvider;
 import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.dynconfig.DynamicOreMixWorldConfig;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
+import gregtech.api.world.GT_Worldgen;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
+
+import java.util.Random;
 
 public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
 	public final short mMinY;
@@ -20,7 +19,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
 	
 	private long mProfilingStart;
 	private long mProfilingEnd;
-	private DynamicOreMixWorldConfig _mDynWorldConfig = null;
+	private DynamicOreMixWorldConfig _mDynWorldConfig;
 	
 	public GT_Worldgen_GT_Ore_SmallPieces_Space(String pName, boolean pDefault, int pMinY, int pMaxY, int pAmount, Materials pPrimary)
 	{
@@ -97,7 +96,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
 				long tTotalTime = mProfilingEnd - mProfilingStart;
 				GalacticGreg.Profiler.AddTimeToList(tMDD, tTotalTime);
 				GalacticGreg.Logger.debug("Done with SmallOre-Worldgen in DimensionType %s. Generation took %d ms", tMDD.getDimensionName(), tTotalTime);
-			} catch (Exception e) {  } // Silently ignore errors
+			} catch (Exception ignored) {  } // Silently ignore errors
 		}
 		
 		GalacticGreg.Logger.trace("Leaving executeWorldgen");

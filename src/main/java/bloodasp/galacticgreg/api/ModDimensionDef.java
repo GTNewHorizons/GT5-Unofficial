@@ -1,16 +1,17 @@
 package bloodasp.galacticgreg.api;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import net.minecraft.block.Block;
-import net.minecraft.world.chunk.IChunkProvider;
-//import bloodasp.galacticgreg.GalacticGreg;
 import bloodasp.galacticgreg.api.Enums.AirReplaceRule;
 import bloodasp.galacticgreg.api.Enums.DimensionType;
 import bloodasp.galacticgreg.api.Enums.ReplaceState;
 import bloodasp.galacticgreg.api.Enums.SpaceObjectType;
+import net.minecraft.block.Block;
+import net.minecraft.world.chunk.IChunkProvider;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+//import bloodasp.galacticgreg.GalacticGreg;
 
 /**
  * Class to define a Dimension. Supposed to be added to a ModContainer
@@ -222,7 +223,7 @@ public class ModDimensionDef {
 	 * 
 	 * For example, on GalactiCraft Mars, this value is set to GTOreTypes.RedGranite, because it matches the
 	 * color better. If you don't set anything here, it will generate regular stone-ores.
-	 * @param pOffset
+	 * @param pStoneType
 	 */
 	public void setStoneType(GTOreTypes pStoneType)
 	{
@@ -325,14 +326,14 @@ public class ModDimensionDef {
 		_mChunkProvider = pChunkProviderName;
 		_mDimensionType = pDimType;
 		
-		_mReplaceableBlocks = new ArrayList<ModDBMDef>();
+		_mReplaceableBlocks = new ArrayList<>();
 		if (pBlockDefinitions != null)
 			_mReplaceableBlocks.addAll(pBlockDefinitions);
 		
-		_mValidAsteroidMaterials = new ArrayList<AsteroidBlockComb>();
-		_mSpecialBlocksForAsteroids = new ArrayList<SpecialBlockComb>();
-		_mSpaceObjectsGenerators = new ArrayList<ISpaceObjectGenerator>();
-		_mSpaceStructureGenerators = new ArrayList<ISpaceObjectGenerator>();
+		_mValidAsteroidMaterials = new ArrayList<>();
+		_mSpecialBlocksForAsteroids = new ArrayList<>();
+		_mSpaceObjectsGenerators = new ArrayList<>();
+		_mSpaceStructureGenerators = new ArrayList<>();
 	}
 
 	/**Internal function
@@ -342,13 +343,13 @@ public class ModDimensionDef {
 	 */
 	protected void setParentModName(String pModName)
 	{
-		if (!_mInternalDimIdentifier.equals(STR_NOTDEFINED))
-			return; // Don't update, we're already set
-		else
-		{
+		if (_mInternalDimIdentifier.equals(STR_NOTDEFINED)) {
 			_mInternalDimIdentifier = String.format("%s_%s", pModName, _mDimensionName);
 			//GalacticGreg.Logger.debug("Set Internal Identifier for Dimension %s to %s", _mDimensionName, _mInternalDimIdentifier);
 		}
+
+		// Else Don't update, we're already set
+
 	}
 	
 	/**Internal function
@@ -431,13 +432,12 @@ public class ModDimensionDef {
 	
 	/**
 	 * Define the material the asteroid shall be made of, more advanced option to specify your own blocks
-	 * @param pMaterial
+	 * @param pBlockComb
 	 */
 	public void addAsteroidMaterial(AsteroidBlockComb pBlockComb) {
-		if (_mValidAsteroidMaterials.contains(pBlockComb))
-			return;
-		else
+		if (!_mValidAsteroidMaterials.contains(pBlockComb)) {
 			_mValidAsteroidMaterials.add(pBlockComb);
+		}
 	}
 	
 	/**
@@ -448,10 +448,9 @@ public class ModDimensionDef {
 	 * @param pBlock Block-Meta Combination that shall be used
 	 */
 	public void addSpecialAsteroidBlock(SpecialBlockComb pBlock) {
-		if (_mSpecialBlocksForAsteroids.contains(pBlock))
-			return;
-		else
+		if (!_mSpecialBlocksForAsteroids.contains(pBlock)) {
 			_mSpecialBlocksForAsteroids.add(pBlock);
+		}
 	}
 	
 	/**Internal function
@@ -470,7 +469,6 @@ public class ModDimensionDef {
 			catch(Exception e)
 			{
 				//GalacticGreg.Logger.error("Unable to finalize replaceable block with modname for block %s. Dimension %s will probably have problems generating ores", rpb.getBlockName(), _mDimensionName);
-				continue;
 			}
 		}
 	}

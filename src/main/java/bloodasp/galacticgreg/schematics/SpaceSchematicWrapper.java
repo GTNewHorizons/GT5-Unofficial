@@ -1,11 +1,5 @@
 package bloodasp.galacticgreg.schematics;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.util.Vec3;
 import bloodasp.galacticgreg.GalacticGreg;
 import bloodasp.galacticgreg.api.BlockMetaComb;
 import bloodasp.galacticgreg.api.Enums.SpaceObjectType;
@@ -13,6 +7,12 @@ import bloodasp.galacticgreg.api.Enums.TargetBlockPosition;
 import bloodasp.galacticgreg.api.ISpaceObjectGenerator;
 import bloodasp.galacticgreg.api.StructureInformation;
 import bloodasp.galacticgreg.schematics.SpaceSchematic.BaseStructureInfo;
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.util.Vec3;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class for XML Structure files. You only should edit/use this file/class if you want to add/fix stuff with 
@@ -40,7 +40,7 @@ public class SpaceSchematicWrapper implements ISpaceObjectGenerator {
 	 */
 	private void RecalculatePosition()
 	{
-		_mFinalizedStructure = new ArrayList<StructureInformation>();
+		_mFinalizedStructure = new ArrayList<>();
 		
 		for (BaseStructureInfo bsi: _mSchematic.coordInfo())
 		{
