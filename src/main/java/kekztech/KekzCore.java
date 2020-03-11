@@ -85,7 +85,7 @@ public class KekzCore {
 		ErrorItem.getInstance().registerItem();
 		MetaItem_ReactorComponent.getInstance().registerItem();
 		MetaItem_CraftingComponent.getInstance().registerItem();
-		// disabled for release; Item_Configurator.getInstance().registerItem();
+		Item_Configurator.getInstance().registerItem();
 		Items.registerOreDictNames();
 		// Blocks
 		Block_YSZUnit.getInstance().registerBlock();
@@ -100,18 +100,18 @@ public class KekzCore {
 		Block_ReactorChamber_OFF.getInstance().registerBlock();
 		Block_ReactorChamber_ON.getInstance().registerBlock();
 		Block_ControlRod.getInstance().registerBlock();
-		// disabled for release; Block_ItemServerDrive.getInstance().registerBlock();
-		// disabled for release; Block_ItemServerRackCasing.getInstance().registerBlock();
-		// disabled for release; Block_ItemServerIOPort.getInstance().registerBlock();
-		// disabled for release; Block_ItemProxyCable.getInstance().registerBlock();
-		// disabled for release; Block_ItemProxySource.getInstance().registerBlock();
-		// disabled for release; Block_ItemProxyEndpoint.getInstance().registerBlock();
+		Block_ItemServerDrive.getInstance().registerBlock();
+		Block_ItemServerRackCasing.getInstance().registerBlock();
+		Block_ItemServerIOPort.getInstance().registerBlock();
+		Block_ItemProxyCable.getInstance().registerBlock();
+		Block_ItemProxySource.getInstance().registerBlock();
+		Block_ItemProxyEndpoint.getInstance().registerBlock();
 		// Register TileEntities
 		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");
-		// disabled for release; GameRegistry.registerTileEntity(TE_ItemServerIOPort.class, "kekztech_itemserverioport_tile");
-		// disabled for release; GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
-		// disabled for release; GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
-		// disabled for release; GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
+		GameRegistry.registerTileEntity(TE_ItemServerIOPort.class, "kekztech_itemserverioport_tile");
+		GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
+		GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
+		GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
 		
 		// Register guis
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
@@ -124,9 +124,9 @@ public class KekzCore {
 		sofc2 = new GTMTE_SOFuelCellMK2(13102, "multimachine.fuelcellmk2", "Solid-Oxide Fuel Cell Mk II");
 		mdr = new GTMTE_ModularNuclearReactor(13103, "multimachine.nuclearreactor", "Nuclear Reactor");
 		fms = new GTMTE_FluidMultiStorage(13104, "multimachine.tf_fluidtank", "T.F.F.T");
-		// disabled for release; is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");	
+		is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");	
 		// Register renderer
-		// disabled for release; ConduitRenderer.getInstance().registerRenderer();
+		ConduitRenderer.getInstance().registerRenderer();
 	}
 	
 	@Mod.EventHandler
