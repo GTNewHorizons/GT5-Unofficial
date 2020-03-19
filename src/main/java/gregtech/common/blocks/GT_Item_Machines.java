@@ -23,6 +23,9 @@ import java.util.List;
 
 public class GT_Item_Machines
         extends ItemBlock {
+
+    private static String[] directionNames = {"down", "up", "north", "south", "west", "east"};
+
     public GT_Item_Machines(Block par1) {
         super(par1);
         setMaxDamage(0);
@@ -99,8 +102,7 @@ public class GT_Item_Machines
                     int coverId = mCoverSides[i];
                     ItemStack coverStack = GT_Utility.intToStack(coverId);
                     if (coverStack != null) {
-                        String dir = ForgeDirection.getOrientation(i).name().substring(0, 1);
-                        aList.add(String.format("Cover on %s side: %s", dir, coverStack.getDisplayName()));
+                        aList.add(String.format("Cover on %s side: %s", directionNames[i], coverStack.getDisplayName()));
                     }
                 }
             }
