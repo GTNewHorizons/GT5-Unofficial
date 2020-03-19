@@ -21,7 +21,6 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GT_NBT_Key;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -74,7 +73,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         try {
             aNBT.setInteger("mID", mID);
             aNBT.setIntArray("mCoverData", mCoverData);
-            aNBT.setIntArray(GT_NBT_Key.mCoverSides, mCoverSides);
+            aNBT.setIntArray("mCoverSides", mCoverSides);
             aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
             aNBT.setByte("mConnections", mConnections);
             aNBT.setByte("mColor", mColor);
@@ -138,7 +137,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         } else {
             if (aID <= 0) mID = (short) aNBT.getInteger("mID");
             else mID = aID;
-            mCoverSides = aNBT.getIntArray(GT_NBT_Key.mCoverSides);
+            mCoverSides = aNBT.getIntArray("mCoverSides");
             mCoverData = aNBT.getIntArray("mCoverData");
             mSidedRedstone = aNBT.getByteArray("mRedstoneSided");
             mConnections = aNBT.getByte("mConnections");
@@ -804,7 +803,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         for (byte i = 0; i < mCoverSides.length; i++) {
             if (mCoverSides[i] != 0) {
                 tNBT.setIntArray("mCoverData", mCoverData);
-                tNBT.setIntArray(GT_NBT_Key.mCoverSides, mCoverSides);
+                tNBT.setIntArray("mCoverSides", mCoverSides);
                 break;
             }
         }

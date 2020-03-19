@@ -109,7 +109,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             aNBT.setLong("mStoredSteam", mStoredSteam);
             aNBT.setLong("mStoredEnergy", mStoredEnergy);
             aNBT.setIntArray("mCoverData", mCoverData);
-            aNBT.setIntArray(GT_NBT_Key.mCoverSides, mCoverSides);
+            aNBT.setIntArray("mCoverSides", mCoverSides);
             aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
             aNBT.setByte("mColor", mColor);
             aNBT.setByte("mLightValue", mLightValue);
@@ -198,7 +198,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             mInputDisabled = aNBT.getBoolean("mInputDisabled");
             mOutputDisabled = aNBT.getBoolean("mOutputDisabled");
             mOtherUpgrades = (byte) (aNBT.getByte("mOtherUpgrades") + aNBT.getByte("mBatteries") + aNBT.getByte("mLiBatteries"));
-            mCoverSides = aNBT.getIntArray(GT_NBT_Key.mCoverSides);
+            mCoverSides = aNBT.getIntArray("mCoverSides");
             mCoverData = aNBT.getIntArray("mCoverData");
             mSidedRedstone = aNBT.getByteArray("mRedstoneSided");
             mRecipeStuff = aNBT.getCompoundTag("GT.CraftingComponents");
@@ -1288,7 +1288,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         for (byte i = 0; i < mCoverSides.length; i++) {
             if (mCoverSides[i] != 0) {
                 tNBT.setIntArray("mCoverData", mCoverData);
-                tNBT.setIntArray(GT_NBT_Key.mCoverSides, mCoverSides);
+                tNBT.setIntArray("mCoverSides", mCoverSides);
                 break;
             }
         }

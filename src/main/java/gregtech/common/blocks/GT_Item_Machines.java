@@ -13,7 +13,6 @@ import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GT_NBT_Key;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -98,8 +97,8 @@ public class GT_Item_Machines
     }
 
     private void addInstalledCoversInformation(NBTTagCompound aNBT, List<String> aList) {
-        if (aNBT.hasKey(GT_NBT_Key.mCoverSides)){
-            int[] mCoverSides = aNBT.getIntArray(GT_NBT_Key.mCoverSides);
+        if (aNBT.hasKey("mCoverSides")){
+            int[] mCoverSides = aNBT.getIntArray("mCoverSides");
             if (mCoverSides != null && mCoverSides.length == 6) {
                 for (byte i = 0; i < 6; i++) {
                     int coverId = mCoverSides[i];
