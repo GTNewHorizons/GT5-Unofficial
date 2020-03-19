@@ -9,7 +9,11 @@ import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_ItsNotMyFaultException;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_NBT_Key;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -17,14 +21,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
 public class GT_Item_Machines
         extends ItemBlock {
 
-    private static String[] directionNames = {"down", "up", "north", "south", "west", "east"};
+    private static String[] directionNames = {"bottom", "top", "north", "south", "west", "east"};
 
     public GT_Item_Machines(Block par1) {
         super(par1);
