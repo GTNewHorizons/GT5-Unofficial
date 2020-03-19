@@ -26,7 +26,7 @@ import java.util.List;
 public class GT_Item_Machines
         extends ItemBlock {
 
-    private static String[] directionNames = {"Bottom", "Top", "North", "South", "West", "East"};
+    private static final String[] directionNames = {"Bottom", "Top", "North", "South", "West", "East"};
 
     public GT_Item_Machines(Block par1) {
         super(par1);
