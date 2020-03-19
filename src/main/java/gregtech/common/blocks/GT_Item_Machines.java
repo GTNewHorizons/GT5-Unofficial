@@ -9,10 +9,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item;
-import gregtech.api.util.GT_ItsNotMyFaultException;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -20,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
@@ -85,9 +83,27 @@ public class GT_Item_Machines
                 if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
                     aList.add(tAmount + " " + GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMTANKS", "Steam Tank Upgrades", !GregTech_API.sPostloadFinished ));
                 }
+
+                addInstalledCoversInformation(aNBT, aList);
             }
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
+        }
+    }
+
+    private void addInstalledCoversInformation(NBTTagCompound aNBT, List<String> aList) {
+        if (aNBT.hasKey(GT_NBT_Key.mCoverSides)){
+            int[] mCoverSides = aNBT.getIntArray(GT_NBT_Key.mCoverSides);
+            if (mCoverSides != null && mCoverSides.length == 6) {
+                for (byte i = 0; i < 6; i++) {
+                    int coverId = mCoverSides[i];
+                    ItemStack coverStack = GT_Utility.intToStack(coverId);
+                    if (coverStack != null) {
+                        String dir = ForgeDirection.getOrientation(i).name().substring(0, 1);
+                        aList.add(String.format("Cover on %s side: %s", dir, coverStack.getDisplayName()));
+                    }
+                }
+            }
         }
     }
 
