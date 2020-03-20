@@ -1325,6 +1325,7 @@ public static Materials Shadow                  = new Materials( 368, TextureSet
         setEnchantmentFireAspectTools();
         setEnchantmentSilkTouchTools();
         setEnchantmentSmiteTools();
+        setEnchantmentBaneOfArthropodsTools();
         setEnchantmentSharpnessTools();
     }
 
