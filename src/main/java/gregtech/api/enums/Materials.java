@@ -2215,7 +2215,7 @@ public static Materials Shadow                  = new Materials( 368, TextureSet
 
     private static String getConfigPath(Materials aMaterial) {
         String cOre = aMaterial.mCustomOre ? aMaterial.mCustomID : aMaterial.mName;
-        return new StringBuilder(10 + aMaterial.mConfigSection.length() + cOre.length()).append("materials.").append(aMaterial.mConfigSection).append(".").append(cOre).toString();
+        return new StringBuilder(10 + aMaterial.mConfigSection.length() + 1 + cOre.length()).append("materials.").append(aMaterial.mConfigSection).append(".").append(cOre).toString();
     }
 
     private static void addHarvestLevelNerfs(Materials aMaterial, String aConfigPath) {
