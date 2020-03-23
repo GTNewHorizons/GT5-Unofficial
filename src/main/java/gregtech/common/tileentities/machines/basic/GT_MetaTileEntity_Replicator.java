@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 public class GT_MetaTileEntity_Replicator
         extends GT_MetaTileEntity_BasicMachine {
@@ -103,7 +104,7 @@ public class GT_MetaTileEntity_Replicator
 
     public int getCapacity() {
         if ((sHeaviestElementMass == 0) && (GregTech_API.sPostloadFinished)) {
-            Materials.getMaterialsMap().values().parallelStream().forEach(tMaterial -> sHeaviestElementMass = Math.max(sHeaviestElementMass, (int) tMaterial.getMass()));
+            sHeaviestElementMass = Materials.getMaterialsMap().values().stream().mapToInt(material -> (int)material.getMass()).max().orElseThrow(NoSuchElementException::new);
         }
         return sHeaviestElementMass;
     }
