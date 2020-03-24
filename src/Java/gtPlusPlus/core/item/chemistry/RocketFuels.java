@@ -19,6 +19,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.item.chemistry.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -82,19 +83,24 @@ public class RocketFuels extends ItemPackage {
 	}
 
 	public static void createNitrogenTetroxide(){	
-		CORE.RA.addDehydratorRecipe(
+		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 4)
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 4),
+						ItemUtils.getSimpleStack(mOrangeCatalyst, 0),
 				}, 
-				FluidUtils.getFluidStack("nitricacid", 2000), 
-				FluidUtils.getFluidStack(Nitrogen_Tetroxide, 450),
+				new FluidStack[] {
+						FluidUtils.getFluidStack("nitricacid", 2000)
+				},
 				new ItemStack[]{
 						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 1),	
 						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 1)						
 				},
-				new int[]{100, 50}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(Nitrogen_Tetroxide, 2000),
+				},
 				20*16, 
-				500);
+				500,
+				4);
 	}
 
 	public static void createHydrazine(){
@@ -125,7 +131,7 @@ public class RocketFuels extends ItemPackage {
 				FluidUtils.getFluidStack("hydrogen", 2000),
 				FluidUtils.getFluidStack(Monomethylhydrazine, 3000),
 				new ItemStack[] {
-						CI.emptyCells(4)
+						CI.emptyCells(2)
 				},
 				new int[] {10000},
 				20*48,
