@@ -731,7 +731,7 @@ public final class ALLOY {
 			"Lafium Compound", //Material Name
 			MaterialState.SOLID, //State
 			null, //Material Colour
-			6750, //Melting Point in C
+			6350, //Melting Point in C
 			9865, //Boiling Point in C
 			-1,
 			-1,
