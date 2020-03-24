@@ -1,6 +1,6 @@
 package gtPlusPlus.core.config;
 
-import static gtPlusPlus.core.item.general.RF2EU_Battery.*;
+import static gtPlusPlus.core.item.general.RF2EU_Battery.rfPerEU;
 import static gtPlusPlus.core.lib.CORE.*;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
 import static gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames;
