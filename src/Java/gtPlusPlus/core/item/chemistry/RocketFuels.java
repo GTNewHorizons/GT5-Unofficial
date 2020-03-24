@@ -19,7 +19,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.core.item.chemistry.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -83,24 +82,19 @@ public class RocketFuels extends ItemPackage {
 	}
 
 	public static void createNitrogenTetroxide(){	
-		CORE.RA.addChemicalPlantRecipe(
+		CORE.RA.addDehydratorRecipe(
 				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 4),
-						ItemUtils.getSimpleStack(mOrangeCatalyst, 0),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 4)
 				}, 
-				new FluidStack[] {
-						FluidUtils.getFluidStack("nitricacid", 2000)
-				},
+				FluidUtils.getFluidStack("nitricacid", 2000), 
+				FluidUtils.getFluidStack(Nitrogen_Tetroxide, 450),
 				new ItemStack[]{
 						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 1),	
 						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 1)						
 				},
-				new FluidStack[] {
-						FluidUtils.getFluidStack(Nitrogen_Tetroxide, 2000),
-				},
+				new int[]{100, 50}, 
 				20*16, 
-				500,
-				4);
+				500);
 	}
 
 	public static void createHydrazine(){
