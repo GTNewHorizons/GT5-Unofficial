@@ -1544,39 +1544,39 @@ public class RECIPES_GREGTECH {
 		//Low tier Charge Packs
 
 		final ItemStack[] aPackBatteries = new ItemStack[] {
-				ItemList.Battery_RE_LV_Lithium.get(GTNH ? 8 : 4),
-				ItemList.Battery_RE_MV_Lithium.get(GTNH ? 8 : 4),
-				ItemList.Battery_RE_HV_Lithium.get(GTNH ? 8 : 4),
-				GregtechItemList.Battery_RE_EV_Lithium.get(GTNH ? 8 : 4),
-				ItemList.Energy_LapotronicOrb.get(GTNH ? 8 : 4),
+				ItemList.Battery_RE_LV_Lithium.get(4),
+				ItemList.Battery_RE_MV_Lithium.get(4),
+				ItemList.Battery_RE_HV_Lithium.get(4),
+				GregtechItemList.Battery_RE_EV_Lithium.get(4),
+				ItemList.Energy_LapotronicOrb.get(4),
 		};
 		final ItemStack[] aPackPlates = new ItemStack[] {
-				CI.getPlate(1, GTNH ? 6 : 3),
-				CI.getPlate(2, GTNH ? 12 : 6),
-				CI.getPlate(3, GTNH ? 18 : 9),
-				CI.getPlate(4, GTNH ? 24 : 12),
-				CI.getPlate(5, GTNH ? 30 : 15),
+				CI.getPlate(1,8),
+				CI.getPlate(2,8),
+				CI.getPlate(3,8),
+				CI.getPlate(4,8),
+				CI.getPlate(5,8),
 		};
 		final ItemStack[] aPackWire = new ItemStack[] {
-				CI.getTieredComponent(OrePrefixes.wireGt02, 1, GTNH ? 16 : 8),
-				CI.getTieredComponent(OrePrefixes.wireGt04, 2, GTNH ? 16 : 8),
-				CI.getTieredComponent(OrePrefixes.wireGt08, 3, GTNH ? 14 : 7),
-				CI.getTieredComponent(OrePrefixes.wireGt12, 4, GTNH ? 12 : 6),
-				CI.getTieredComponent(OrePrefixes.wireGt16, 5, GTNH ? 12 : 6),
+				CI.getTieredComponent(OrePrefixes.wireGt02, 1,6),
+				CI.getTieredComponent(OrePrefixes.wireGt04, 2,6),
+				CI.getTieredComponent(OrePrefixes.wireGt08, 3,6),
+				CI.getTieredComponent(OrePrefixes.wireGt12, 4,6),
+				CI.getTieredComponent(OrePrefixes.wireGt16, 5,6),
 		};
 		final ItemStack[] aPackCircuit = new ItemStack[] {
-				CI.getTieredComponent(OrePrefixes.circuit, 1, GTNH ? 4 : 2),
-				CI.getTieredComponent(OrePrefixes.circuit, 2, GTNH ? 4 : 2),
-				CI.getTieredComponent(OrePrefixes.circuit, 3, GTNH ? 8 : 4),
-				CI.getTieredComponent(OrePrefixes.circuit, 4, GTNH ? 8 : 4),
-				CI.getTieredComponent(OrePrefixes.circuit, 5, GTNH ? 12 : 6),
+				CI.getTieredComponent(OrePrefixes.circuit, 1,4),
+				CI.getTieredComponent(OrePrefixes.circuit, 2,4),
+				CI.getTieredComponent(OrePrefixes.circuit, 3,4),
+				CI.getTieredComponent(OrePrefixes.circuit, 4,4),
+				CI.getTieredComponent(OrePrefixes.circuit, 5,4),
 		};
 		final ItemStack[] aPackRing = new ItemStack[] {
-				CI.getTieredComponent(OrePrefixes.ring, 1, GTNH ? 20 : 10),
-				CI.getTieredComponent(OrePrefixes.ring, 2, GTNH ? 20 : 10),
-				CI.getTieredComponent(OrePrefixes.ring, 3, GTNH ? 20 : 10),
-				CI.getTieredComponent(OrePrefixes.ring, 4, GTNH ? 20 : 10),
-				CI.getTieredComponent(OrePrefixes.ring, 5, GTNH ? 20 : 10),
+				CI.getTieredComponent(OrePrefixes.ring, 1,12),
+				CI.getTieredComponent(OrePrefixes.ring, 2,12),
+				CI.getTieredComponent(OrePrefixes.ring, 3,12),
+				CI.getTieredComponent(OrePrefixes.ring, 4,12),
+				CI.getTieredComponent(OrePrefixes.ring, 5,12),
 		};
 		final ItemStack[] aPackOutput = new ItemStack[] {
 				ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_1),
