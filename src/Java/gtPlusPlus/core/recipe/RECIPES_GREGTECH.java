@@ -2177,7 +2177,7 @@ public class RECIPES_GREGTECH {
 				}, 
 				null,
 				new int[] { 1500, 40, 20, 15, 10, 5 },
-				20 * 10,
+				20 * 20,
 				(int) aVoltageRecipe[7],
 				750 * 20);
 
