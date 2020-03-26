@@ -39,6 +39,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     public String mNEI;
     public int damageFactorLow = 5;
     public float damageFactorHigh = 0.6f;
+    public GT_MetaTileEntity_MultiBlockBase mCleanroom;
 
     public ArrayList<GT_MetaTileEntity_Hatch_Input> mInputHatches = new ArrayList<GT_MetaTileEntity_Hatch_Input>();
     public ArrayList<GT_MetaTileEntity_Hatch_Output> mOutputHatches = new ArrayList<GT_MetaTileEntity_Hatch_Output>();

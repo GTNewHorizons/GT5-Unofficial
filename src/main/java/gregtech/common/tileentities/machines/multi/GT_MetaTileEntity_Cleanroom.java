@@ -201,6 +201,14 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBas
 								);
 							}
 							((GT_MetaTileEntity_BasicMachine_GT_Recipe) aMetaTileEntity).mCleanroom = this;
+						} else
+						if (aMetaTileEntity != null && aMetaTileEntity instanceof GT_MetaTileEntity_MultiBlockBase) {
+							if (debugCleanroom) {
+								GT_Log.out.println(
+										"Cleanroom: Machine detected, adding pointer back to cleanroom"
+								);
+							}
+							((GT_MetaTileEntity_MultiBlockBase) aMetaTileEntity).mCleanroom = this;
 						}
 					}
 				}
