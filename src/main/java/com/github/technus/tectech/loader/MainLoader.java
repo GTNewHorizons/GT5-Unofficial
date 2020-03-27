@@ -323,6 +323,7 @@ public final class MainLoader {
                 "DraconicEvolution",
                 "IC2NuclearControl",
                 "IronChest",
+                "irontank",
                 "opensecurity",
                 "openmodularturrets",
                 "Railcraft",
