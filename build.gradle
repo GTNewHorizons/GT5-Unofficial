@@ -156,6 +156,8 @@ dependencies {
 	compile "codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev"
     compile "api.player:PlayerAPI:1.7.10-1.4"
 	
+	compile "minetweaker:MineTweaker3:1.7.10-3.0.10:dev-full"
+	
 	compile "com.enderio.core:EnderCore:1.7.10-0.2.0.39_beta:dev"
 	compile "com.enderio:EnderIO:1.7.10-2.3.0.430_beta:dev"
 	
@@ -168,8 +170,9 @@ dependencies {
     compileOnly "openmods:OpenModsLib:1.7.10-0.10:deobf"
     compileOnly "openblocks:OpenBlocks:1.7.10-1.6-1.7.10:deobf"
 	
-	//compileOnly "micdoodle8.mods:GalacticraftCore:1.7-3.0.12.504:Dev"
 	//compileOnly "micdoodle8.mods:MicdoodleCore:1.7-3.0.12.504:Dev"
+	//compileOnly "micdoodle8.mods:GalacticraftCore:1.7-3.0.12.504:Dev"
+	//compileOnly "micdoodle8.mods:Galacticraft-Planets:1.7-3.0.12.504:Dev"	
 	
 	compileOnly "thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev"	
 	compile "com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf"	

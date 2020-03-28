@@ -40,6 +40,7 @@ import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.effects.RarityUncommon;
+import gtPlusPlus.core.item.food.BaseItemMetaFood;
 import gtPlusPlus.core.item.general.BaseItemGrindle;
 import gtPlusPlus.core.item.general.BufferCore;
 import gtPlusPlus.core.item.general.ItemAirFilter;
@@ -366,6 +367,8 @@ public final class ModItems {
 	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Infernal;
 
 	public static CoreItem itemExquisiteIndustrialDiamond;
+
+	public static BaseItemMetaFood itemMetaFood;
 
 	static {
 		Logger.INFO("Items!");

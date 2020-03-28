@@ -3113,3 +3113,14 @@ item.BasicAlgaeItem.6.name=Algae Spore (VII)
 
 //Added17/01/20
 item.BasicGenericChemItem.6.name=Pink Metal Catalyst
+
+//Added23/03/20
+item.BasicMetaFood.0.name=Raw Human Meat
+item.BasicMetaFood.1.name=Cooked Human Meat
+item.BasicMetaFood.2.name=Raw Horse Meat
+item.BasicMetaFood.3.name=Cooked Horse Meat
+item.BasicMetaFood.4.name=Raw Wolf Meat
+item.BasicMetaFood.5.name=Cooked Wolf Meat
+item.BasicMetaFood.6.name=Raw Ocelot Meat
+item.BasicMetaFood.7.name=Cooked Ocelot Meat
+item.BasicMetaFood.8.name=Blaze Flesh
