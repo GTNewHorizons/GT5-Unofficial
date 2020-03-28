@@ -15,6 +15,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_LanguageManager;
@@ -118,7 +119,10 @@ public class Meta_GT_Proxy {
 
 	public static void postInit() {
 		mAssemblyAchievements = new AchievementHandler();	
-		fixIC2FluidNames();				
+		fixIC2FluidNames();		
+		
+		// Finalise TAE
+		TAE.finalizeTAE();		
 	}
 
 	@SuppressWarnings("deprecation")

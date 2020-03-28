@@ -104,8 +104,9 @@ public class CommandEnableDebugWhileRunning implements ICommand
 				ItemStack aHeldItem = PlayerUtils.getItemStackInPlayersHand(P);
 				if (aHeldItem != null) {
 					String aItemDisplayName = ItemUtils.getItemName(aHeldItem);
+					String aItemUnlocalName = ItemUtils.getUnlocalizedItemName(aHeldItem);
 					String aNbtString = tryIterateNBTData(aHeldItem);	
-					PlayerUtils.messagePlayer(P, "["+aItemDisplayName+"] "+aNbtString);				
+					PlayerUtils.messagePlayer(P, "["+aItemUnlocalName+"]"+"["+aItemDisplayName+"] "+aNbtString);				
 				}
 				else {
 					PlayerUtils.messagePlayer(P, "No item held.");

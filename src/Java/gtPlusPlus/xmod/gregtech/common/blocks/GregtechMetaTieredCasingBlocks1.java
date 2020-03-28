@@ -66,7 +66,7 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
 		//GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "");
 		//GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "");
 		//GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "");
-		//GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", " ");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Placeholder Block");
 		
 		GregtechItemList.GTPP_Casing_ULV.set(new ItemStack(this, 1, 0));
 		GregtechItemList.GTPP_Casing_LV.set(new ItemStack(this, 1, 1));
@@ -93,9 +93,9 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
 		}
 		switch (aMeta) {			
 			case 10:
-				return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
+				return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 			case 11:
-				return Textures.BlockIcons.MACHINE_HEATPROOFCASING.getIcon();
+				return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 			case 12:
 				return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 			case 13:
@@ -103,9 +103,9 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
 			case 14:
 				return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 			case 15:
-				return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR.getIcon();
+				return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 		}		
-		return TexturesGtBlock.TEXTURE_CASING_TIERED_ULV.getIcon();
+		return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 	}
 
 }

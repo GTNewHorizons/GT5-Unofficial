@@ -154,11 +154,11 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(28)],
+			return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(0, 10)],
 					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE
 							: Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER) };
 		}
-		return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(28)] };
+		return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(0, 10)] };
 	}
 
 	@Override
@@ -179,7 +179,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 
-							if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(28), true, aBlock, aMeta,
+							if (!isValidBlockForStructure(tTileEntity, TAE.getIndexFromPage(0, 10), true, aBlock, aMeta,
 									ModBlocks.blockCasings2Misc, 12)) {
 								Logger.INFO("Bad Autcrafter casing");
 								return false;

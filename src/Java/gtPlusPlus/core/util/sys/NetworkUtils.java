@@ -121,7 +121,7 @@ public class NetworkUtils {
 	private static boolean checkAddressWithTimeout(String URL, int timeout) {
 		
 		 try {
-		        InetAddress.getByName(URL).isReachable(3000); //Replace with your name
+		        InetAddress.getByName(URL).isReachable(timeout); //Replace with your name
 		        return true;
 		    } catch (Exception e) {
 		        return false;

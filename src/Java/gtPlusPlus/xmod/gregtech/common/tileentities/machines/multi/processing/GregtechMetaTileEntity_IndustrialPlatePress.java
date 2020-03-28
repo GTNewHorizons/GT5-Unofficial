@@ -72,9 +72,9 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_Mu
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(4)], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[50], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(4)]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[50]};
 	}
 
 	@Override
@@ -148,7 +148,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_Mu
 							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 
-							if (!isValidBlockForStructure(tTileEntity, TAE.getIndexFromPage(0, 4), true, aBlock, aMeta,
+							if (!isValidBlockForStructure(tTileEntity, 50, true, aBlock, aMeta,
 									ModBlocks.blockCasingsMisc, 4)) {
 								Logger.INFO("Bad material press casing");
 								return false;

@@ -1,27 +1,23 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import java.util.List;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.TAE;
+import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Material_Casings;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler3;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.GregtechMetaTileEntity_PowerSubStationController;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-
-import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Material_Casings;
-
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler3;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-
-import java.util.List;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class GregtechMetaCasingBlocks3
 extends GregtechMetaCasingBlocksAbstract {
@@ -50,7 +46,7 @@ extends GregtechMetaCasingBlocksAbstract {
 	public GregtechMetaCasingBlocks3() {
 		super(GregtechMetaCasingItemBlocks3.class, "gtplusplus.blockcasings.3", GT_Material_Casings.INSTANCE);
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-			TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
+			TAE.registerTexture(2, i, new GT_CopiedBlockTexture(this, 6, i));
 		}
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Aquatic Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Inconel Reinforced Casing");
@@ -66,7 +62,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Volcanus Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Fusion Machine Casing MK III");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Advanced Fusion Coil");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Unnamed");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Unnamed"); // Can Use, don't change texture (Used for Fusion MK4)
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Containment Casing");
 		GregtechItemList.Casing_FishPond.set(new ItemStack(this, 1, 0));
 		GregtechItemList.Casing_Extruder.set(new ItemStack(this, 1, 1));
@@ -365,28 +361,6 @@ extends GregtechMetaCasingBlocksAbstract {
 			}
 			return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
 		}
-		switch (tMeta) {
-			case 9 : {
-				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-			}
-			case 10 : {
-				return Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
-			}
-			case 11 : {
-				return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
-			}
-			case 12 : {
-				return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
-			}
-			case 14 : {
-				return TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA.getIcon();
-			}
-			case 15 : {
-				return TexturesGtBlock.TEXTURE_MAGIC_PANEL_A.getIcon();
-			}
-			default : {
-				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-			}
-		}
+		return CasingTextureHandler3.getIcon(aSide, tMeta);
 	}
 }

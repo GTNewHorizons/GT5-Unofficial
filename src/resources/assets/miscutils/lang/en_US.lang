@@ -3124,3 +3124,7 @@ item.BasicMetaFood.5.name=Cooked Wolf Meat
 item.BasicMetaFood.6.name=Raw Ocelot Meat
 item.BasicMetaFood.7.name=Cooked Ocelot Meat
 item.BasicMetaFood.8.name=Blaze Flesh
+
+item.itemCellNaquadahFuel.name=Naquadah Fuel Cell
+item.itemCellEnrichedNaquadahFuel.name=Enriched Naquadah Fuel Cell
+item.itemCellNaquadriaFuel.name=Naquadria Fuel Cell

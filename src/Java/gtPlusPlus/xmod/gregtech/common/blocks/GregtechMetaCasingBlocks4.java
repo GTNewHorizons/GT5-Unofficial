@@ -22,40 +22,33 @@ extends GregtechMetaCasingBlocksAbstract {
 	public GregtechMetaCasingBlocks4() {
 		super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.4", GT_Material_Casings.INSTANCE);
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-			TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
+			if (i == 2 || i == 4 || i == 5 || i == 6 || i == 7 || i == 8 || i == 9 || i == 12 || i == 13 || i == 14 || i == 15) {
+				continue;
+			}
+			TAE.registerTexture(3, i, new GT_CopiedBlockTexture(this, 6, i));
 		}
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Naquadah Reactor Base"); //48
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reactor Piping");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Naquadah Containment Chamber");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Tempered Arc Furnace Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Structural Solar Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Salt Containment Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Thermal Containment Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Turbine Shaft");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Low Pressure Turbine Casing"); 
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "High Pressure Turbine Casing");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Vacuum Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Turbodyne Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", " ");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", ""); // Unused
 		GregtechItemList.Casing_Naq_Reactor_A.set(new ItemStack(this, 1, 0));
 		GregtechItemList.Casing_Naq_Reactor_B.set(new ItemStack(this, 1, 1));
 		GregtechItemList.Casing_Naq_Reactor_C.set(new ItemStack(this, 1, 2));
 		GregtechItemList.Casing_Industrial_Arc_Furnace.set(new ItemStack(this, 1, 3));
-		GregtechItemList.Casing_SolarTower_Structural.set(new ItemStack(this, 1, 4));
-		GregtechItemList.Casing_SolarTower_SaltContainment.set(new ItemStack(this, 1, 5));
-		GregtechItemList.Casing_SolarTower_HeatContainment.set(new ItemStack(this, 1, 6));
-		GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 7));
-		GregtechItemList.Casing_Turbine_LP.set(new ItemStack(this, 1, 8));
-		GregtechItemList.Casing_Turbine_HP.set(new ItemStack(this, 1, 9));
 		GregtechItemList.Casing_Vacuum_Furnace.set(new ItemStack(this, 1, 10));
 		GregtechItemList.Casing_RocketEngine.set(new ItemStack(this, 1, 11));
-		/*GregtechItemList.Casing_Autocrafter.set(new ItemStack(this, 1, 12));
-		GregtechItemList.Casing_CuttingFactoryFrame.set(new ItemStack(this, 1, 13));
-		GregtechItemList.Casing_TeslaTower.set(new ItemStack(this, 1, 14));
-		GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.set(new ItemStack(this, 1, 15));*/
 	}	
 
 	private static final LargeTurbineTextureHandler mTurbineTextures = new LargeTurbineTextureHandler();
@@ -76,67 +69,43 @@ extends GregtechMetaCasingBlocksAbstract {
 		 //Texture ID's. case 0 == ID[57]
 		if ((aMeta >= 0) && (aMeta < 16)) {
 			switch (aMeta) {
-				//Centrifuge
 				case 0:
 					return TexturesGtBlock.Casing_Trinium_Titanium.getIcon();
-					//Coke Oven Frame
 				case 1:
 					return TexturesGtBlock.TEXTURE_TECH_C.getIcon();
-					//Coke Oven Casing Tier 1
 				case 2:
 					return TexturesGtBlock.TEXTURE_ORGANIC_PANEL_A_GLOWING.getIcon();
-					//Coke Oven Casing Tier 2
 				case 3:					
 					return TexturesGtBlock.TEXTURE_METAL_PANEL_A.getIcon();
-					//Material Press Casings
 				case 4:
-					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();				
-					//Sifter Structural
+					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();	
 				case 5:
 					return TexturesGtBlock.Casing_Material_Stellite.getIcon();
-					//Sifter Sieve
 				case 6:
 					return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
-
-					
-					//Vanadium Radox Battery
 				case 7:
-					return TexturesGtBlock.Casing_Redox_1.getIcon();
-					//Power Sub-Station Casing
+					return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 				case 8:
-					return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
-					//Cyclotron Coil
+					return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 				case 9:
-					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
-					
-					
-					//Cyclotron External Casing
-				case 10:
-					
+					return Textures.BlockIcons.RENDERING_ERROR.getIcon();	
+				case 10:					
 					if (aSide <2) {
 						return TexturesGtBlock.TEXTURE_STONE_RED_B.getIcon();					
 					}
 					else {
 						return TexturesGtBlock.TEXTURE_STONE_RED_A.getIcon();					
 					}
-					
-					//Multitank Exterior Casing
 				case 11:
 					return TexturesGtBlock.TEXTURE_CASING_ROCKETDYNE.getIcon();
-					//Reactor Casing I
 				case 12:
-					return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
-					//Reactor Casing II
+					return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 				case 13:
-					if (aSide <2) {
-						return TexturesGtBlock.TEXTURE_TECH_A.getIcon();					
-					}
-					else {
-						return TexturesGtBlock.TEXTURE_TECH_B.getIcon();					
-					}
+					return Textures.BlockIcons.RENDERING_ERROR.getIcon();	
 				case 14:
-					return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
+					return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 				case 15:
+					return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 				default:
 					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
 

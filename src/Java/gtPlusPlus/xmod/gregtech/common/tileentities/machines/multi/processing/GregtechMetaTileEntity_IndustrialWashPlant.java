@@ -238,7 +238,7 @@ extends GregtechMeta_MultiBlockBase {
 
 
 	public byte getCasingTextureIndex() {
-		return (byte) TAE.GTPP_INDEX(20);
+		return (byte) TAE.GTPP_INDEX(11);
 	}
 
 	private boolean addToMachineList(final IGregTechTileEntity tTileEntity) {

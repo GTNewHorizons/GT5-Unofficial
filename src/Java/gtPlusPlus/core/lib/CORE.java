@@ -290,12 +290,18 @@ public class CORE {
 		public static final String VERSION = "0.1";
 	}
 
+
 	public static final void crash() {
+		crash("Generic Crash");
+	}
+	
+	public static final void crash(String aReason) {
 		Logger.INFO("==========================================================");
 		Logger.INFO("[GT++ CRASH]");
 		Logger.INFO("==========================================================");
 		Logger.INFO("Oooops...");
 		Logger.INFO("This should only happy in a development environment or when something really bad happens.");
+		Logger.INFO("Reason: "+aReason);
 		Logger.INFO("==========================================================");
 		Logger.INFO("Called from: "+ReflectionUtils.getMethodName(0));
 		Logger.INFO(ReflectionUtils.getMethodName(1));
