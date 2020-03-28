@@ -193,32 +193,38 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 	}
 
 	@Override
-	public boolean checkRecipe(final ItemStack aStack) {
-		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-			ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
-			tBus.mRecipeMap = getRecipeMap();
-			if (isValidMetaTileEntity(tBus)) {
-				for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
-						tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-				}
-			}			
-			ItemStack[] inputs = new ItemStack[tBusItems.size()];
-			int slot = 0;
-			for (ItemStack g : tBusItems) {
-				inputs[slot++] = g;
-			}			
-			if (inputs.length > 0) {				
-				int para = (4* GT_Utility.getTier(this.getMaxInputVoltage()));
-				log("Recipe. ["+inputs.length+"]["+para+"]");				
-				if (checkRecipeGeneric(inputs, new FluidStack[]{}, para, 100, 250, 10000)) {
-					log("Recipe 2.");
-					return true;
-				}
-			}			
-
+	public boolean checkRecipe(final ItemStack aStack) {		
+		// Run standard recipe handling for distillery recipes
+		if (mMode == 1) {
+			return this.checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), 100);
 		}
-		return false;
+		else {
+			for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+				ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+				tBus.mRecipeMap = getRecipeMap();
+				if (isValidMetaTileEntity(tBus)) {
+					for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+						if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+							tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+					}
+				}			
+				ItemStack[] inputs = new ItemStack[tBusItems.size()];
+				int slot = 0;
+				for (ItemStack g : tBusItems) {
+					inputs[slot++] = g;
+				}			
+				if (inputs.length > 0) {				
+					int para = (4* GT_Utility.getTier(this.getMaxInputVoltage()));
+					log("Recipe. ["+inputs.length+"]["+para+"]");				
+					if (checkRecipeGeneric(inputs, new FluidStack[]{}, para, 100, 250, 10000)) {
+						log("Recipe 2.");
+						return true;
+					}
+				}			
+
+			}
+			return false;
+		}
 	}
 
 	@Override
