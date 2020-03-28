@@ -110,7 +110,6 @@ public class RECIPES_GREGTECH {
 		addFuels();
 	}
 	
-	static int[] aVoltageRecipe = {8,30,120,480,1920,7680,30720,122880,491520,1966080};
 
 
 	private static void chemplantRecipes() {
@@ -194,7 +193,7 @@ public class RECIPES_GREGTECH {
 				ALLOY.QUANTUM.getFluid(256),
 				ELEMENT.STANDALONE.HYPOGEN.getFluid(4),
 				2048 * 4,
-				(int) aVoltageRecipe[9],
+				(int) MaterialUtils.getVoltageForTier(9),
 				600000000 * 2);
 
 		//Rhugnor
@@ -203,7 +202,7 @@ public class RECIPES_GREGTECH {
 				ALLOY.PIKYONIUM.getFluid(128),
 				ELEMENT.STANDALONE.RHUGNOR.getFluid(8),
 				2048 * 4,
-				(int) aVoltageRecipe[7],
+				(int) MaterialUtils.getVoltageForTier(7),
 				150000000 * 2);
 
 	}
@@ -251,7 +250,7 @@ public class RECIPES_GREGTECH {
 				},
 				ItemUtils.getSimpleStack(ModBlocks.blockCasings3Misc, 15, 32), 
 				20 * 60 * 10 * (GTNH ? 2 : 1),
-				(int) aVoltageRecipe[6]);
+				(int) MaterialUtils.getVoltageForTier(6));
 
 		//Slow Fusion Controller
 		CORE.RA.addAssemblylineRecipe(
@@ -279,7 +278,7 @@ public class RECIPES_GREGTECH {
 				},
 				GregtechItemList.Miniature_Fusion.get(1), 
 				20 * 60 * 5 * (GTNH ? 2 : 1),
-				(int) aVoltageRecipe[7]);
+				(int) MaterialUtils.getVoltageForTier(7));
 
 
 		//Plasma Tank
@@ -302,7 +301,7 @@ public class RECIPES_GREGTECH {
 				},
 				GregtechItemList.Plasma_Tank.get(1), 
 				20 * 60 * 1 * (GTNH ? 2 : 1),
-				(int) aVoltageRecipe[5]);
+				(int) MaterialUtils.getVoltageForTier(5));
 
 		// Turbine Automation Port
 		CORE.RA.addAssemblylineRecipe(
@@ -331,7 +330,7 @@ public class RECIPES_GREGTECH {
 				},
 				GregtechItemList.Hatch_Input_TurbineHousing.get(4), 
 				20 * 60 * 60 * (GTNH ? 2 : 1),
-				(int) aVoltageRecipe[8]);
+				(int) MaterialUtils.getVoltageForTier(8));
 
 
 		/*
@@ -370,7 +369,7 @@ public class RECIPES_GREGTECH {
 					},
 					aGemCasings[aCasingSlot++], 
 					20 * 60 * 1 * (GTNH ? 2 : 1),
-					(int) aVoltageRecipe[j]);
+					(int) MaterialUtils.getVoltageForTier(j));
 		}
 
 		/*
@@ -412,7 +411,7 @@ public class RECIPES_GREGTECH {
 					},
 					aGemBatteries[aCasingSlot++], 
 					20 * 60 * 1 * (GTNH ? 2 : 1),
-					(int) aVoltageRecipe[j]);
+					(int) MaterialUtils.getVoltageForTier(j));
 		}
 
 
@@ -441,7 +440,7 @@ public class RECIPES_GREGTECH {
 					},
 					ItemUtils.getItemStackFromFQRN("miscutils:personalHealingDevice", 1), 
 					20 * 60 * 30 * (GTNH ? 2 : 1),
-					(int) aVoltageRecipe[7]);
+					(int) MaterialUtils.getVoltageForTier(7));
 
 
 
@@ -485,7 +484,7 @@ public class RECIPES_GREGTECH {
 						},
 						aChargeOutputs[aCurrSlot], 
 						20 * 60 * 30 * (GTNH ? 2 : 1) * (aCurrSlot+1),
-						(int) aVoltageRecipe[h]);
+						(int) MaterialUtils.getVoltageForTier(h));
 				aCurrSlot++;
 			}
 
@@ -513,7 +512,7 @@ public class RECIPES_GREGTECH {
 					},
 					ItemUtils.getItemStackFromFQRN("miscutils:personalCloakingDevice", 1), 
 					20 * 60 * 30 * (GTNH ? 2 : 1),
-					(int) aVoltageRecipe[8]);
+					(int) MaterialUtils.getVoltageForTier(8));
 		}
 
 
@@ -2160,7 +2159,7 @@ public class RECIPES_GREGTECH {
 				null,
 				new int[] { 50, 50, 50, 50, 50, 50 },
 				20 * 300 * 9,
-				(int) aVoltageRecipe[7],
+				(int) MaterialUtils.getVoltageForTier(7),
 				750 * 20);
 
 		// Lepton Smash
@@ -2176,9 +2175,9 @@ public class RECIPES_GREGTECH {
 						Particle.getBaseParticle(Particle.TAU_NEUTRINO),
 				}, 
 				null,
-				new int[] { 1500, 40, 20, 15, 10, 5 },
-				20 * 20,
-				(int) aVoltageRecipe[7],
+				new int[] { 600, 40, 20, 15, 10, 5 },
+				20 * 300 * 8,
+				(int) MaterialUtils.getVoltageForTier(7),
 				750 * 20);
 
 		// Boson Smash
@@ -2195,7 +2194,7 @@ public class RECIPES_GREGTECH {
 				null,
 				new int[] { 160, 260, 150, 150, 1 },
 				20 * 300 * 6,
-				(int) aVoltageRecipe[7],
+				(int) MaterialUtils.getVoltageForTier(7),
 				750 * 20);
 
 
@@ -2216,7 +2215,7 @@ public class RECIPES_GREGTECH {
 				null,
 				new int[] { 10, 20, 20, 10, 10, 5, 5, 2 },
 				17 * 247 * 32,
-				(int) aVoltageRecipe[8],
+				(int) MaterialUtils.getVoltageForTier(8),
 				750 * 20);
 
 		// Graviton Smash
@@ -2230,7 +2229,7 @@ public class RECIPES_GREGTECH {
 				null,
 				new int[] {15, 100},
 				20 * (GTNH ? 90 : 30),
-				(int) aVoltageRecipe[6],
+				(int) MaterialUtils.getVoltageForTier(6),
 				1000 * 20);		
 
 		FluidStack aPlasma = Materials.Duranium.getMolten(GTNH ? 40 : 10);
@@ -2253,7 +2252,7 @@ public class RECIPES_GREGTECH {
 				null,
 				new int[] {100},
 				20 * (GTNH ? 300 : 60),
-				(int) aVoltageRecipe[6],
+				(int) MaterialUtils.getVoltageForTier(6),
 				1000 * 20);
 
 		/*
@@ -2290,7 +2289,7 @@ public class RECIPES_GREGTECH {
 								null,
 								new int[] { 275, 250, 225, 275, 250, 225, 275, 250, 275},
 								20 * 20 * (IonCount++) * tenCountA,
-								(int) aVoltageRecipe[7],
+								(int) MaterialUtils.getVoltageForTier(7),
 								1500 * 20 * tenCountA);
 			}
 			else {
@@ -2324,7 +2323,7 @@ public class RECIPES_GREGTECH {
 				null,
 				new int[] { 125, 125, 125, 125, 125, 125, 125, 125, 125 },
 				20 * 20,
-				(int) aVoltageRecipe[6],
+				(int) MaterialUtils.getVoltageForTier(6),
 				15000);
 
 		// Generate Hydrogen Plasma Recipe
@@ -2346,7 +2345,7 @@ public class RECIPES_GREGTECH {
 				FluidUtils.getFluidStack("plasma.hydrogen", 1),
 				new int[] { 250, 250, 250, 500, 500, 500, 10000 },
 				20 * 60 * 2,
-				(int) aVoltageRecipe[6],
+				(int) MaterialUtils.getVoltageForTier(6),
 				750 * 20);
 
 
@@ -2371,7 +2370,7 @@ public class RECIPES_GREGTECH {
 				null,
 				new int[] { 750, 750, 750, 750, 750, 750,  750, 750, 750 },
 				20 * 20,
-				(int) aVoltageRecipe[6],
+				(int) MaterialUtils.getVoltageForTier(6),
 				15000);
 
 		CORE.RA.addCyclotronRecipe(
@@ -2394,7 +2393,7 @@ public class RECIPES_GREGTECH {
 				null,
 				new int[] { 375, 375, 375, 375, 375, 375, 375, 375, 375  },
 				20 * 20,
-				(int) aVoltageRecipe[6],
+				(int) MaterialUtils.getVoltageForTier(6),
 				15000);
 
 
@@ -2418,7 +2417,7 @@ public class RECIPES_GREGTECH {
 				null,
 				new int[] { 2500 },
 				20 * 60 * 15,
-				(int) aVoltageRecipe[7],
+				(int) MaterialUtils.getVoltageForTier(7),
 				15000);
 
 
