@@ -15,6 +15,7 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gtPlusPlus.core.util.Utils;
 
 public class ClassTransformer_GT_Utility {
 
@@ -66,7 +67,8 @@ public class ClassTransformer_GT_Utility {
 		MethodVisitor mv;
 		boolean didInject = false;
 		ClassWriter cw = getWriter();	
-		FMLRelaunchLog.log("[GT++ ASM] Gregtech Utilities Patch", Level.INFO, "Injecting " + aMethodName + ".");		
+		String aClassNameFormatted = Utils.class.getName().replace(".", "/");
+		FMLRelaunchLog.log("[GT++ ASM] Gregtech Utilities Patch", Level.INFO, "Injecting " + aMethodName + ", static replacement call to "+aClassNameFormatted+".");		
 		if (aMethodName.equals("getTier")) {
 			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "getTier", "(J)B", null, null);
 			mv.visitCode();
@@ -74,7 +76,7 @@ public class ClassTransformer_GT_Utility {
 			mv.visitLabel(l0);
 			mv.visitLineNumber(23, l0);
 			mv.visitVarInsn(LLOAD, 0);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/core/util/Utils", "getTier", "(J)B", false);
+			mv.visitMethodInsn(INVOKESTATIC, aClassNameFormatted, "getTier", "(J)B", false);
 			mv.visitInsn(IRETURN);
 			Label l1 = new Label();
 			mv.visitLabel(l1);

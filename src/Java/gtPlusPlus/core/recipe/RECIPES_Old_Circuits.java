@@ -1,24 +1,24 @@
 package gtPlusPlus.core.recipe;
 
 import cpw.mods.fml.common.Loader;
-
-import net.minecraft.item.ItemStack;
-
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OreDictNames;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-
-import codechicken.nei.api.API;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import net.minecraft.item.ItemStack;
 
 public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 	public RECIPES_Old_Circuits() {
@@ -445,7 +445,7 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 
 			for (String component : CircuitToHide){
 				try {
-					API.hideItem(Utils.getValueOfItemList(component, null).get(1L, new Object[0]));
+					ItemUtils.hideItemFromNEI(ItemUtils.getValueOfItemList(component, null).get(1L, new Object[0]));
 				} catch (IllegalArgumentException I){
 					Logger.INFO("Could not find "+component+" in the Gregtech item list.");
 					Logger.INFO("This is NOT an error, simply a notification.");

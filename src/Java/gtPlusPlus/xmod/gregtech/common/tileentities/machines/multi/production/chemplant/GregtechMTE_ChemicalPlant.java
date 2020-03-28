@@ -755,7 +755,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		if (aBaseMetaTileEntity.isClientSide()) {
 			this.mSolidCasingTier = getCasingTierOnClientSide();
 		}
-
 	}
 
 	@Override

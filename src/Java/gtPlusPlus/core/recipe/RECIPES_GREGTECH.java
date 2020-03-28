@@ -597,6 +597,16 @@ public class RECIPES_GREGTECH {
 				ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_1_CONTAINMENT, 1),
 				20 * 60 * 5,
 				MaterialUtils.getVoltageForTier(5));
+		
+		// Distillus Upgrade Chip
+		GT_Values.RA.addLaserEngraverRecipe(
+				GregtechItemList.Laser_Lens_WoodsGlass.get(0),
+				ItemUtils.simpleMetaStack(AgriculturalChem.mBioCircuit, 20, 1),
+				GregtechItemList.Distillus_Upgrade_Chip.get(1),
+				20 * 60 * 5,
+				MaterialUtils.getVoltageForTier(5));
+		
+		
 
 
 	}
@@ -1493,10 +1503,10 @@ public class RECIPES_GREGTECH {
 		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {ItemUtils.getSimpleStack(Items.nether_star), ItemUtils.getItemStackOfAmountFromOreDict("plateTungstenSteel", 8), ItemUtils.getItemStackOfAmountFromOreDict("stickBlackSteel", 8)}, null, ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard, 32), 30*20, 500);
 
 
-		ItemStack aFluidReg1 = Utils.getValueOfItemList("FluidRegulator_LV", ItemList.Pump_LV).get(1);
-		ItemStack aFluidReg2 = Utils.getValueOfItemList("FluidRegulator_MV", ItemList.Pump_MV).get(1);
-		ItemStack aFluidReg3 = Utils.getValueOfItemList("FluidRegulator_HV", ItemList.Pump_HV).get(1);
-		ItemStack aFluidReg4 = Utils.getValueOfItemList("FluidRegulator_EV", ItemList.Pump_EV).get(1);
+		ItemStack aFluidReg1 = ItemUtils.getValueOfItemList("FluidRegulator_LV", ItemList.Pump_LV).get(1);
+		ItemStack aFluidReg2 = ItemUtils.getValueOfItemList("FluidRegulator_MV", ItemList.Pump_MV).get(1);
+		ItemStack aFluidReg3 = ItemUtils.getValueOfItemList("FluidRegulator_HV", ItemList.Pump_HV).get(1);
+		ItemStack aFluidReg4 = ItemUtils.getValueOfItemList("FluidRegulator_EV", ItemList.Pump_EV).get(1);
 
 		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
 				aFluidReg1,

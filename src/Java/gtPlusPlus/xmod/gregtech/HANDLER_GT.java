@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -23,7 +24,9 @@ import gtPlusPlus.api.helpers.GregtechPlusPlus_API.Multiblock_API;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.api.objects.minecraft.multi.NoEUBonusMultiBehaviour;
 import gtPlusPlus.api.objects.minecraft.multi.NoOutputBonusMultiBehaviour;
+import gtPlusPlus.api.objects.minecraft.multi.NoSpeedBonusMultiBehaviour;
 import gtPlusPlus.australia.gen.gt.WorldGen_GT_Australia;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.OldCircuitHandler;
@@ -131,6 +134,8 @@ public class HANDLER_GT {
 
 		// Register the No-Bonus Special Behaviour.
 		Multiblock_API.registerSpecialMultiBehaviour(new NoOutputBonusMultiBehaviour());
+		Multiblock_API.registerSpecialMultiBehaviour(new NoSpeedBonusMultiBehaviour());
+		Multiblock_API.registerSpecialMultiBehaviour(new NoEUBonusMultiBehaviour());
 
 		//Register some custom recipe maps for any enabled multiblocks.
 		//MultiblockRecipeMapHandler.run();

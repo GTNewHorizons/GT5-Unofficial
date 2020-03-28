@@ -16,7 +16,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.TAE;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -2213,7 +2212,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 			}
 
 		}
-		return super.addDynamoToMachineList(aTileEntity, aBaseCasingIndex);
+		return addToMachineList(aTileEntity, aBaseCasingIndex);
 	}
 	
 	
@@ -2536,9 +2535,10 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		boolean isHatch = false;
 		if (aBaseMetaTileEntity != null) {
 
-			if (aCasingID < 64) {
+			// Unsure why this check exists?
+			/*if (aCasingID < 64) {
 				aCasingID = TAE.GTPP_INDEX(aCasingID);
-			}
+			}*/
 
 			isHatch = this.addToMachineList(aBaseMetaTileEntity, aCasingID);
 			if (isHatch) {

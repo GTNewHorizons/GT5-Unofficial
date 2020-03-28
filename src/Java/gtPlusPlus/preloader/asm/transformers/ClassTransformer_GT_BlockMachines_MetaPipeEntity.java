@@ -21,7 +21,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -149,7 +148,7 @@ public class ClassTransformer_GT_BlockMachines_MetaPipeEntity {
 
 	int mMode;
 
-	public ClassTransformer_GT_BlockMachines_MetaPipeEntity(byte[] basicClass, boolean obfuscated, int aMode) {
+	public ClassTransformer_GT_BlockMachines_MetaPipeEntity(byte[] basicClass, int aMode) {
 		mMode = aMode;
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;

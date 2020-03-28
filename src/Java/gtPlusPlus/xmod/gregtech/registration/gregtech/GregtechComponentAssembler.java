@@ -197,7 +197,7 @@ public class GregtechComponentAssembler {
 			ItemStack Input[] = { wireStack, cableStack, rodStack, magrodStack };
 
 			return CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-					ItemList.valueOf("Electric_Motor_" + GT_Values.VN[tier]).get(1), (tier * 40),
+					CI.getElectricMotor(tier, 1), (tier * 40),
 					((int) GT_Values.V[tier] / 16) * 15);
 		}
 		catch (Throwable t) {
@@ -213,12 +213,12 @@ public class GregtechComponentAssembler {
 			ItemStack rodStack = ItemUtils.getGregtechOreStack(OrePrefixes.stick, mat, 2);
 			ItemStack plateStack = ItemUtils.getGregtechOreStack(OrePrefixes.plate, mat, 3);
 			ItemStack gearStack = ItemUtils.getGregtechOreStack(OrePrefixes.gearGtSmall, mat, 1);
-			ItemStack motorStack = ItemList.valueOf("Electric_Motor_" + GT_Values.VN[tier]).get(1);
+			ItemStack motorStack = CI.getElectricMotor(tier, 1);
 
 			ItemStack Input[] = { plateStack, cableStack, rodStack, gearStack, motorStack };
 
 			return CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-					ItemList.valueOf("Electric_Piston_" + GT_Values.VN[tier]).get(1), (tier * 40),
+					CI.getElectricPiston(tier, 1), (tier * 40),
 					((int) GT_Values.V[tier] / 16) * 15);
 		}
 		catch (Throwable t) {
@@ -230,7 +230,7 @@ public class GregtechComponentAssembler {
 		try {
 			OrePrefixes prefixCable = OrePrefixes.cableGt01;
 			ItemStack cableStack = ItemUtils.getGregtechOreStack(prefixCable, cable, 1);
-			ItemStack motorStack = ItemList.valueOf("Electric_Motor_" + GT_Values.VN[tier]).get(2);
+			ItemStack motorStack = CI.getElectricMotor(tier, 2);
 			boolean mAdd[];
 			final ArrayList<ItemStack> oreDictList = OreDictionary.getOres("plateAnyRubber");
 			if (!oreDictList.isEmpty()) {
@@ -241,7 +241,7 @@ public class GregtechComponentAssembler {
 					returnValue.stackSize = 6;
 					ItemStack Input[] = { cableStack, motorStack, returnValue };
 					mAdd[mcount++] = CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-							ItemList.valueOf("Conveyor_Module_" + GT_Values.VN[tier]).get(1), (tier * 40),
+							CI.getConveyor(tier, 1), (tier * 40),
 							((int) GT_Values.V[tier] / 16) * 15);
 				}
 				int added = 0;
@@ -261,7 +261,7 @@ public class GregtechComponentAssembler {
 				ItemStack Input[] = { cableStack, motorStack,
 						ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateRubber", 6) };
 				return CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-						ItemList.valueOf("Conveyor_Module_" + GT_Values.VN[tier]).get(1), (tier * 40),
+						CI.getConveyor(tier, 1), (tier * 40),
 						((int) GT_Values.V[tier] / 16) * 15);
 			}
 
@@ -277,7 +277,7 @@ public class GregtechComponentAssembler {
 			ItemStack screwStack = ItemUtils.getGregtechOreStack(OrePrefixes.screw, main, 1);
 			ItemStack rotorStack = ItemUtils.getGregtechOreStack(OrePrefixes.rotor, main, 1);
 			ItemStack pipeStack = ItemUtils.getGregtechOreStack(OrePrefixes.pipeMedium, pipe, 1);
-			ItemStack motorStack = ItemList.valueOf("Electric_Motor_" + GT_Values.VN[tier]).get(1);
+			ItemStack motorStack = CI.getElectricMotor(tier, 1);
 			boolean mAdd[];
 			final ArrayList<ItemStack> oreDictList = OreDictionary.getOres("ringAnyRubber");
 			if (!oreDictList.isEmpty()) {
@@ -288,7 +288,7 @@ public class GregtechComponentAssembler {
 					returnValue.stackSize = 2;
 					ItemStack Input[] = { cableStack, screwStack, rotorStack, pipeStack, motorStack, returnValue };
 					mAdd[mcount++] = CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-							ItemList.valueOf("Electric_Pump_" + GT_Values.VN[tier]).get(1), (tier * 40),
+							CI.getElectricPump(tier, 1), (tier * 40),
 							((int) GT_Values.V[tier] / 16) * 15);
 				}
 				int added = 0;
@@ -308,7 +308,7 @@ public class GregtechComponentAssembler {
 				ItemStack Input[] = { cableStack, screwStack, rotorStack, pipeStack, motorStack,
 						ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ringRubber", 2) };
 				return CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-						ItemList.valueOf("Electric_Pump_" + GT_Values.VN[tier]).get(1), (tier * 40),
+						CI.getElectricPump(tier, 1), (tier * 40),
 						((int) GT_Values.V[tier] / 16) * 15);
 			}
 
@@ -322,8 +322,8 @@ public class GregtechComponentAssembler {
 		try {
 			ItemStack cableStack = ItemUtils.getGregtechOreStack(OrePrefixes.cableGt01, cable, 3);
 			ItemStack rodStack = ItemUtils.getGregtechOreStack(OrePrefixes.stick, stick, 2);
-			ItemStack motorStack = ItemList.valueOf("Electric_Motor_" + GT_Values.VN[tier]).get(2);
-			ItemStack pistonStack = ItemList.valueOf("Electric_Piston_" + GT_Values.VN[tier]).get(1);
+			ItemStack motorStack = CI.getElectricMotor(tier, 2);
+			ItemStack pistonStack = CI.getElectricPiston(tier, 1);
 			
 			boolean mAdd[];
 			final ItemStack oreDictList[] = CI.getAllCircuitsOfTier(tier);
@@ -335,7 +335,7 @@ public class GregtechComponentAssembler {
 					returnValue.stackSize = 1;					
 					ItemStack Input[] = { returnValue, cableStack, rodStack, pistonStack, motorStack  };
 					mAdd[mcount++] = CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-							ItemList.valueOf("Robot_Arm_" + GT_Values.VN[tier]).get(1), (tier * 40),
+							CI.getRobotArm(tier, 1), (tier * 40),
 							((int) GT_Values.V[tier] / 16) * 15);					
 				}
 				for (boolean y : mAdd) {
@@ -353,7 +353,7 @@ public class GregtechComponentAssembler {
 			else {
 				ItemStack Input[] = { ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(tier), 1), cableStack, rodStack, pistonStack, motorStack  };
 				return CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-						ItemList.valueOf("Robot_Arm_" + GT_Values.VN[tier]).get(1), (tier * 40),
+						CI.getRobotArm(tier, 1), (tier * 40),
 						((int) GT_Values.V[tier] / 16) * 15);
 			}
 			
@@ -381,8 +381,8 @@ public class GregtechComponentAssembler {
 			else
 				mWT = "01";
 			
-			ItemStack eyeQuantum = ItemList.valueOf("QuantumEye").get(1);
-			ItemStack starQuantum = ItemList.valueOf("QuantumStar").get(1);
+			ItemStack eyeQuantum = ItemUtils.getValueOfItemList("QuantumEye", 1, ItemUtils.getSimpleStack(Items.ender_eye, 4));
+			ItemStack starQuantum = ItemUtils.getValueOfItemList("QuantumStar", 1, ItemUtils.getSimpleStack(Items.nether_star, 4));
 
 			if (tier == 1)
 				gem = ItemUtils.getSimpleStack(Items.ender_pearl);
@@ -410,7 +410,7 @@ public class GregtechComponentAssembler {
 					returnValue.stackSize = 4;					
 					ItemStack Input[] = { returnValue, wireStack, gem };
 					mAdd[mcount++] =  CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-							ItemList.valueOf("Field_Generator_" + GT_Values.VN[tier]).get(1), (tier * 40),
+							CI.getFieldGenerator(tier, 1), (tier * 40),
 							((int) GT_Values.V[tier] / 16) * 15);					
 				}
 				for (boolean y : mAdd) {
@@ -428,7 +428,7 @@ public class GregtechComponentAssembler {
 			else {				
 				ItemStack Input[] = { ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(tier), 4), wireStack, gem };
 				return CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-						ItemList.valueOf("Field_Generator_" + GT_Values.VN[tier]).get(1), (tier * 40),
+						CI.getFieldGenerator(tier, 1), (tier * 40),
 						((int) GT_Values.V[tier] / 16) * 15);
 			}		
 			
@@ -454,7 +454,7 @@ public class GregtechComponentAssembler {
 					returnValue.stackSize = 2;					
 					ItemStack Input[] = { returnValue, cableStack, gemstack, magrodStack };
 					mAdd[mcount++] = CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-							ItemList.valueOf("Emitter_" + GT_Values.VN[tier]).get(1), (tier * 40),
+							CI.getEmitter(tier, 1), (tier * 40),
 							((int) GT_Values.V[tier] / 16) * 15);					
 				}
 				for (boolean y : mAdd) {
@@ -472,7 +472,7 @@ public class GregtechComponentAssembler {
 			else {
 				ItemStack Input[] = { ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(tier), 2), cableStack, gemstack, magrodStack };
 				return CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-						ItemList.valueOf("Emitter_" + GT_Values.VN[tier]).get(1), (tier * 40),
+						CI.getEmitter(tier, 1), (tier * 40),
 						((int) GT_Values.V[tier] / 16) * 15);
 			}	
 			
@@ -500,7 +500,7 @@ public class GregtechComponentAssembler {
 					returnValue.stackSize = 1;					
 					ItemStack Input[] = { gemStack, cableStack, returnValue, magrodStack };
 					mAdd[mcount++] = CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-							ItemList.valueOf("Sensor_" + GT_Values.VN[tier]).get(1), (tier * 40),
+							CI.getSensor(tier, 1), (tier * 40),
 							((int) GT_Values.V[tier] / 16) * 15);					
 				}
 				for (boolean y : mAdd) {
@@ -518,7 +518,7 @@ public class GregtechComponentAssembler {
 			else {
 				ItemStack Input[] = { gemStack, cableStack, magrodStack, ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(tier), 1) };
 				return CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
-						ItemList.valueOf("Sensor_" + GT_Values.VN[tier]).get(1), (tier * 40),
+						CI.getSensor(tier, 1), (tier * 40),
 						((int) GT_Values.V[tier] / 16) * 15);
 			}
 			

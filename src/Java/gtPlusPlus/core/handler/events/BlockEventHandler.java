@@ -16,17 +16,28 @@ import net.minecraft.util.ChunkCoordinates;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.oredict.OreDictionary;
+import thaumcraft.common.lib.FakeThaumcraftPlayer;
 
 public class BlockEventHandler {
 	public static ArrayList<ItemStack> oreLimestone;
 	public static ArrayList<ItemStack> blockLimestone;
 	public static ItemStack fluoriteOre;
+	
+	public static void init() {
+		//Set Variables for Fluorite Block handling
+		Logger.INFO("Setting some Variables for the block break event handler.");
+		BlockEventHandler.oreLimestone = OreDictionary.getOres("oreLimestone");
+		BlockEventHandler.blockLimestone = OreDictionary.getOres("limestone");
+		BlockEventHandler.fluoriteOre = FLUORIDES.FLUORITE.getOre(1);
+	}
 
 	@SubscribeEvent
 	public void onBlockLeftClicked(final PlayerInteractEvent event) {
@@ -90,7 +101,7 @@ public class BlockEventHandler {
 					ChunkCoordinates aChunkLocation = p.getPlayerCoordinates();
 
 					// Cache Fake Player
-					if (p instanceof FakePlayer
+					if (p instanceof FakePlayer || p instanceof FakeThaumcraftPlayer 
 							|| (event.harvester.getCommandSenderName() == null
 									|| event.harvester.getCommandSenderName().length() <= 0)
 							|| (p.isEntityInvulnerable() && !p.canCommandSenderUseCommand(0, "")

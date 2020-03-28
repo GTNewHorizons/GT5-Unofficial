@@ -148,7 +148,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_Mu
 							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 
-							if (!isValidBlockForStructure(tTileEntity, 4, true, aBlock, aMeta,
+							if (!isValidBlockForStructure(tTileEntity, TAE.getIndexFromPage(0, 4), true, aBlock, aMeta,
 									ModBlocks.blockCasingsMisc, 4)) {
 								Logger.INFO("Bad material press casing");
 								return false;

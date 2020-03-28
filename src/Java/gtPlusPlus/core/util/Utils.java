@@ -935,22 +935,6 @@ public class Utils {
 		return false;
 	}
 
-	public static ItemList getValueOfItemList(String string, ItemList aOther) {		
-		ItemList[] aListValues = ItemList.class.getEnumConstants();		
-		for (ItemList aItem : aListValues) {
-			if (aItem != null) {
-				if (aItem.name().equals(string) || aItem.name().toLowerCase().equals(string.toLowerCase())) {
-					return aItem;
-				}
-			}
-		}
-		Logger.INFO("Tried to obtain '"+string+"' from the GT ItemList, however it does not exist.");
-		if (aOther != null) {
-			Logger.INFO("Using fallback option instead - "+aOther.name());
-		}
-		return aOther;
-	}
-
 	public static long getMillisSince(long aStartTime, long aCurrentTime) {		
 		return (aCurrentTime - aStartTime);
 	}

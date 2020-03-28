@@ -4,6 +4,14 @@ import static gtPlusPlus.core.lib.CORE.RANDOM;
 
 import java.util.List;
 
+import gregtech.api.enums.ItemList;
+import gtPlusPlus.core.entity.item.ItemEntityGiantEgg;
+import gtPlusPlus.core.item.base.BaseItemBurnable;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -13,16 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-
-import gregtech.api.enums.ItemList;
-
-import gtPlusPlus.core.entity.item.ItemEntityGiantEgg;
-import gtPlusPlus.core.item.base.BaseItemBurnable;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
 
 public class ItemGiantEgg extends BaseItemBurnable {
 
@@ -138,7 +136,7 @@ public class ItemGiantEgg extends BaseItemBurnable {
 					if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && Utils.getGregtechSubVersion() > 28) {
 						
 
-						ItemList xl = Utils.getValueOfItemList("Circuit_Chip_Stemcell", ItemList.Circuit_Elite);						
+						ItemList xl = ItemUtils.getValueOfItemList("Circuit_Chip_Stemcell", ItemList.Circuit_Elite);						
 						if (xl != null && xl.hasBeenSet()) {
 							mCorrectStemCells = xl.get(1);
 						}

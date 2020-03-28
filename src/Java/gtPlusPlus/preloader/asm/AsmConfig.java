@@ -1,6 +1,8 @@
 package gtPlusPlus.preloader.asm;
 
 import cpw.mods.fml.common.FMLLog;
+import gtPlusPlus.preloader.Preloader_Logger;
+
 import java.io.File;
 import java.util.ArrayList;
 import net.minecraftforge.common.config.Configuration;
@@ -11,7 +13,8 @@ public class AsmConfig {
 	
 	public static boolean loaded;
 	public static Configuration config;
-	
+
+	public static boolean enableOreDictPatch;
 	public static boolean enableTiConFluidLighting;
 	public static boolean enableGtTooltipFix;
 	public static boolean enableGtNbtFix;
@@ -79,6 +82,12 @@ public class AsmConfig {
 			prop.setLanguageKey("gtpp.enableCofhPatch").setRequiresMcRestart(true);
 			enableCofhPatch = prop.getBoolean(false);
 			propOrderDebug.add(prop.getName());
+			
+			prop = config.get("debug", "enableOreDictPatch", false);
+			prop.comment = "Enable/Disable Forge OreDictionary Patch (Useful for Development)";
+			prop.setLanguageKey("gtpp.enableOreDictPatch").setRequiresMcRestart(true);
+			enableOreDictPatch = prop.getBoolean(false);
+			propOrderDebug.add(prop.getName());	
 			
 			
 			
@@ -168,15 +177,15 @@ public class AsmConfig {
 				config.save();
 			}
 
-			FMLLog.log(Level.INFO, "[GT++ ASM] Chunk Debugging - Enabled: "+enableChunkDebugging, new Object[0]);
-			FMLLog.log(Level.INFO, "[GT++ ASM] Gt Nbt Fix - Enabled: "+enableGtNbtFix, new Object[0]);
-			FMLLog.log(Level.INFO, "[GT++ ASM] TiCon Fluid Lighting - Enabled: "+enableTiConFluidLighting, new Object[0]);
-			FMLLog.log(Level.INFO, "[GT++ ASM] Gt Tooltip Fix - Enabled: "+enableGtTooltipFix, new Object[0]);
-			FMLLog.log(Level.INFO, "[GT++ ASM] COFH Patch - Enabled: "+enableCofhPatch, new Object[0]);
-			FMLLog.log(Level.INFO, "[GT++ ASM] Gc Fuel Changes Patch - Enabled: "+enableGcFuelChanges, new Object[0]);
-			FMLLog.log(Level.INFO, "[GT++ ASM] Railcraft Fluid Flow Patch - Enabled: "+enableRcFlowFix, new Object[0]);
-			FMLLog.log(Level.INFO, "[GT++ ASM] Thaumcraft Aspect Safety Patch - Enabled: "+enableTcAspectSafety, new Object[0]);
-			FMLLog.log(Level.INFO, "[GT++ ASM] Fix bad usage of EntityLivingBase.setHealth Patch - Enabled: "+enabledFixEntitySetHealth, new Object[0]);
+			Preloader_Logger.INFO("Chunk Debugging - Enabled: "+enableChunkDebugging);
+			Preloader_Logger.INFO("Gt Nbt Fix - Enabled: "+enableGtNbtFix);
+			Preloader_Logger.INFO("TiCon Fluid Lighting - Enabled: "+enableTiConFluidLighting);
+			Preloader_Logger.INFO("Gt Tooltip Fix - Enabled: "+enableGtTooltipFix);
+			Preloader_Logger.INFO("COFH Patch - Enabled: "+enableCofhPatch);
+			Preloader_Logger.INFO("Gc Fuel Changes Patch - Enabled: "+enableGcFuelChanges);
+			Preloader_Logger.INFO("Railcraft Fluid Flow Patch - Enabled: "+enableRcFlowFix);
+			Preloader_Logger.INFO("Thaumcraft Aspect Safety Patch - Enabled: "+enableTcAspectSafety);
+			Preloader_Logger.INFO("Fix bad usage of EntityLivingBase.setHealth Patch - Enabled: "+enabledFixEntitySetHealth);
 			
 		} catch (Exception var3) {
 			FMLLog.log(Level.ERROR, var3, "GT++ ASM had a problem loading it's config", new Object[0]);

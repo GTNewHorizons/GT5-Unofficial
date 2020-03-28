@@ -110,7 +110,7 @@ public class CommonProxy {
 		Logger.INFO("[Proxy] Calling Render registrator.");
 		registerRenderThings();
 
-		if (!mFluidsGenerated && ItemList.valueOf("Cell_Empty").hasBeenSet()) {
+		if (!mFluidsGenerated && ItemList.Cell_Empty.hasBeenSet()) {
 			Material.generateQueuedFluids();
 			mFluidsGenerated = true;
 		}
@@ -126,7 +126,7 @@ public class CommonProxy {
 		registerCustomItemsForMaterials();
 		ModBlocks.blockCustomMobSpawner = new BlockGenericSpawner();
 
-		if (!mFluidsGenerated && ItemList.valueOf("Cell_Empty").hasBeenSet()) {
+		if (!mFluidsGenerated && ItemList.Cell_Empty.hasBeenSet()) {
 			Material.generateQueuedFluids();
 			mFluidsGenerated = true;
 		} else {

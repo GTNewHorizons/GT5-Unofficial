@@ -42,7 +42,6 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -1220,7 +1219,6 @@ public class ItemUtils {
 		return GT_Values.NI;
 	}
 
-
 	public static ItemStack depleteStack(ItemStack aStack) {
 		return depleteStack(aStack, 1);
 	}
@@ -1234,41 +1232,6 @@ public class ItemUtils {
 			}
 		}
 		return getNullStack();
-	}
-	
-	public static ItemStack getItemListObject(String aObjectFromExperimentalName, String aReplacementName, int aAmount) {
-		ItemList aItemListObject = getItemListObject(aObjectFromExperimentalName, aReplacementName);
-		if (aItemListObject == ItemList.NULL || aItemListObject == null) {
-			return null;
-		}
-		else {
-			return aItemListObject.get(aAmount);
-		}
-	}
-	
-	public static ItemStack getItemListObject(ItemList aItemListObject, int aAmount) {
-		if (aItemListObject == ItemList.NULL || aItemListObject == null) {
-			return null;
-		}
-		else {
-			return aItemListObject.get(aAmount);
-		}
-	}
-
-	public static ItemList getItemListObject(String aObjectFromExperimentalName, String aReplacementName) {
-		ItemList aVal = ItemList.valueOf(aObjectFromExperimentalName);
-		if (aVal != null) {
-			return aVal;
-		}
-		else {
-			aVal = ItemList.valueOf(aReplacementName);
-			if (aVal != null) {
-				return aVal;
-			}
-			else {
-				return ItemList.NULL;
-			}
-		}		
 	}
 
 	public static boolean isControlCircuit(ItemStack aStack) {
@@ -1312,6 +1275,43 @@ public class ItemUtils {
 
 	public static String getLocalizedNameOfBlock(Block aBlock, int aMeta) {
 		return LangUtils.getLocalizedNameOfBlock(aBlock, aMeta);
+	}
+	
+
+
+	public static ItemList getValueOfItemList(String string, ItemList aOther) {		
+		ItemList[] aListValues = ItemList.class.getEnumConstants();		
+		for (ItemList aItem : aListValues) {
+			if (aItem != null) {
+				if (aItem.name().equals(string) || aItem.name().toLowerCase().equals(string.toLowerCase())) {
+					return aItem;
+				}
+			}
+		}
+		Logger.INFO("Tried to obtain '"+string+"' from the GT ItemList, however it does not exist.");
+		if (aOther != null) {
+			Logger.INFO("Using fallback option instead - "+aOther.name());
+		}
+		return aOther;
+	}
+	public static ItemStack getValueOfItemList(String string, int aAmount, ItemList aOther) {	
+		return getValueOfItemList(string, aOther).get(aAmount);
+	}
+	
+	public static ItemStack getValueOfItemList(String string, int aAmount, ItemStack aOther) {		
+		ItemList[] aListValues = ItemList.class.getEnumConstants();		
+		for (ItemList aItem : aListValues) {
+			if (aItem != null) {
+				if (aItem.name().equals(string) || aItem.name().toLowerCase().equals(string.toLowerCase())) {
+					return aItem.get(aAmount);
+				}
+			}
+		}
+		Logger.INFO("Tried to obtain '"+string+"' from the GT ItemList, however it does not exist.");
+		if (aOther != null) {
+			Logger.INFO("Using fallback option instead - "+ItemUtils.getItemName(aOther));
+		}
+		return aOther;
 	}
 
 }

@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_SemiFluidGenerator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_LargeSemifluidGenerator;
 
 public class GregtechSemiFluidgenerators {
 
@@ -12,6 +13,8 @@ public class GregtechSemiFluidgenerators {
 				"Advanced Semi-Fluid Generator", 2).getStackForm(1L));
 		GregtechItemList.Generator_SemiFluid_HV.set(new GT_MetaTileEntity_SemiFluidGenerator(839, "basicgenerator.semifluid.tier.03",
 				"Turbo Semi-Fluid Generator", 3).getStackForm(1L));
+		GregtechItemList.Controller_LargeSemifluidGenerator.set(new GregtechMetaTileEntity_LargeSemifluidGenerator(31026, "gtpp.multimachine.semifluidgenerator", "Large Semifluid Burner").getStackForm(1L));
+		
 	}
 	
 }

@@ -2,15 +2,22 @@ package gtPlusPlus.core.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 
@@ -84,6 +91,27 @@ public class CommandEnableDebugWhileRunning implements ICommand
 			AsmConfig.disableAllLogging = Utils.invertBoolean(AsmConfig.disableAllLogging);
 			PlayerUtils.messagePlayer(P, "Toggled GT++ Logging - Enabled: "+(!AsmConfig.disableAllLogging));
 		}
+		/*		else if (argString[0].toLowerCase().equals("test")) {
+					ItemStack mSemiFluidgen = ItemUtils.simpleMetaStack("IC2:blockGenerator", 7, 1);		
+					final EntityPlayer P = CommandUtils.getPlayer(S);
+					if(mSemiFluidgen != null) {
+						PlayerUtils.messagePlayer(P, ItemUtils.getItemName(mSemiFluidgen));
+					}			
+				}*/
+		else if (argString[0].toLowerCase().equals("hand")) {
+			final EntityPlayer P = CommandUtils.getPlayer(S);	
+			if (P != null) {
+				ItemStack aHeldItem = PlayerUtils.getItemStackInPlayersHand(P);
+				if (aHeldItem != null) {
+					String aItemDisplayName = ItemUtils.getItemName(aHeldItem);
+					String aNbtString = tryIterateNBTData(aHeldItem);	
+					PlayerUtils.messagePlayer(P, "["+aItemDisplayName+"] "+aNbtString);				
+				}
+				else {
+					PlayerUtils.messagePlayer(P, "No item held.");
+				}
+			}
+		}
 		else {		
 			final EntityPlayer P = CommandUtils.getPlayer(S);	
 			PlayerUtils.messagePlayer(P, "Invalid command, use '?' as an argument for help.'");
@@ -116,6 +144,36 @@ public class CommandEnableDebugWhileRunning implements ICommand
 
 	public boolean playerUsesCommand(final World W, final EntityPlayer P, final int cost){
 		return true;
+	}
+	
+	public static String tryIterateNBTData(ItemStack aStack) {
+		try {
+			AutoMap<String> aItemDataTags = new AutoMap<String>();
+			NBTTagCompound aNBT = NBTUtils.getNBT(aStack);
+			if (aNBT != null) {
+				if (!aNBT.hasNoTags()) {
+					Map<?, ?> mInternalMap = ReflectionUtils.getField(aNBT, "tagMap");
+					if (mInternalMap != null) {
+						for (Map.Entry<?, ?> e : mInternalMap.entrySet()) {
+							aItemDataTags.add(e.getKey().toString()+":"+e.getValue());
+						}
+						int a = 0;
+						String data = "";
+						for (String tag : aItemDataTags) {
+							data += (tag+",");
+						}
+						if (data.endsWith(",")) {
+							data = data.substring(0, data.length()-2);
+						}
+						return data;
+					} else {
+						Logger.INFO("Data map reflected from NBTTagCompound was not valid.");
+						return "Bad NBT";
+					}
+				} 
+			} 
+		} catch (Throwable t) {}
+		return "";
 	}
 
 }

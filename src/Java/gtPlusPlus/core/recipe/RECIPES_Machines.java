@@ -2,9 +2,14 @@ package gtPlusPlus.core.recipe;
 
 import static gtPlusPlus.core.lib.CORE.GTNH;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -15,16 +20,17 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.*;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
 import gtPlusPlus.xmod.gregtech.common.items.MetaCustomCoverItem;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -241,29 +247,29 @@ public class RECIPES_Machines {
 		distillus();
 		algaeFarm();
 		chemPlant();
-		
+
 	}
 
 	private static void chemPlant() {
-		
+
 		CORE.RA.addSixSlotAssemblingRecipe(
 				new ItemStack[] {
-					CI.getNumberedBioCircuit(19),
-					CI.getTieredGTPPMachineCasing(1, 6),
-					CI.getTieredComponentOfMaterial(Materials.Steel, OrePrefixes.gearGt, 6),
-					CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.plate, 32),
-					CI.getTieredComponentOfMaterial(Materials.CobaltBrass, OrePrefixes.dust, 16),
-					CI.getTieredComponent(OrePrefixes.frameGt, 2, 4),
+						CI.getNumberedBioCircuit(19),
+						CI.getTieredGTPPMachineCasing(1, 6),
+						CI.getTieredComponentOfMaterial(Materials.Steel, OrePrefixes.gearGt, 6),
+						CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.plate, 32),
+						CI.getTieredComponentOfMaterial(Materials.CobaltBrass, OrePrefixes.dust, 16),
+						CI.getTieredComponent(OrePrefixes.frameGt, 2, 4),
 				}, 
 				ALLOY.STEEL.getFluid(2 * (144 * 4)), 
 				GregtechItemList.ChemicalPlant_Controller.get(1), 
 				120 * 20, 
 				MaterialUtils.getVoltageForTier(2));
-		
+
 	}
 
 	private static void algaeFarm() {
-		
+
 		// Give the shitty algae a use :)
 		CORE.RA.addDistilleryRecipe(
 				ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 32),
@@ -273,26 +279,26 @@ public class RECIPES_Machines {
 				20 * 15,
 				16, 
 				false);
-		
+
 		CORE.RA.addSixSlotAssemblingRecipe(
 				new ItemStack[] {
-					CI.getNumberedBioCircuit(21),
-					CI.getTieredGTPPMachineCasing(0, 4),
-					CI.getTieredComponentOfMaterial(Materials.Iron, OrePrefixes.rod, 12),
-					CI.getTieredComponentOfMaterial(Materials.Wood, OrePrefixes.plate, 32),
-					CI.getTieredComponentOfMaterial(Materials.Bronze, OrePrefixes.bolt, 16),
-					CI.getTieredComponentOfMaterial(Materials.Redstone, OrePrefixes.dust, 32),
+						CI.getNumberedBioCircuit(21),
+						CI.getTieredGTPPMachineCasing(0, 4),
+						CI.getTieredComponentOfMaterial(Materials.Iron, OrePrefixes.rod, 12),
+						CI.getTieredComponentOfMaterial(Materials.Wood, OrePrefixes.plate, 32),
+						CI.getTieredComponentOfMaterial(Materials.Bronze, OrePrefixes.bolt, 16),
+						CI.getTieredComponentOfMaterial(Materials.Redstone, OrePrefixes.dust, 32),
 				}, 
 				ALLOY.POTIN.getFluid(2 * (144 * 4)), 
 				GregtechItemList.AlgaeFarm_Controller.get(1), 
 				60 * 20, 
 				MaterialUtils.getVoltageForTier(1));	
-		
-		
+
+
 	}
 
 	private static void distillus() {
-		
+
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedBioCircuit(19),
@@ -310,44 +316,44 @@ public class RECIPES_Machines {
 						GregtechItemList.Machine_Adv_DistillationTower.get(1)
 				}, 
 				new FluidStack[] {
-						
+
 				},
 				20 * 600, 
 				MaterialUtils.getVoltageForTier(6), 
 				3);
-		
+
 	}
 
 	private static void chunkloaders() {
-		
+
 		ItemStack aOutputs[] = new ItemStack[] {
 				GregtechItemList.GT_Chunkloader_HV.get(1L),
 				GregtechItemList.GT_Chunkloader_IV.get(1L),
 				GregtechItemList.GT_Chunkloader_ZPM.get(1L),
 		};
-		
+
 		int aIndex = 0;
-		
+
 		for (int i=3;i<8;i++) {	
 			if (i == 4 || i == 6) {
 				continue;
 			}			
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
-						CI.getNumberedBioCircuit(21),
-						CI.getElectricPiston(i, 10),
-						CI.getFieldGenerator(i + 1, 6),
-						CI.getPlate(i, 16),
-						CI.getTransmissionComponent(i - 1, 8),
-						CI.getTieredComponent(OrePrefixes.cableGt08, i, 16)
+							CI.getNumberedBioCircuit(21),
+							CI.getElectricPiston(i, 10),
+							CI.getFieldGenerator(i + 1, 6),
+							CI.getPlate(i, 16),
+							CI.getTransmissionComponent(i - 1, 8),
+							CI.getTieredComponent(OrePrefixes.cableGt08, i, 16)
 					}, 
 					ALLOY.EGLIN_STEEL.getFluid(i * (144 * 4)), 
 					aOutputs[aIndex++].copy(), 
 					300 * 20, 
 					MaterialUtils.getVoltageForTier(i));			
 		}
-		
-		
+
+
 	}
 
 	private static void overflowValveCovers() {
@@ -359,25 +365,25 @@ public class RECIPES_Machines {
 				GregtechItemList.Cover_Overflow_EV.get(1L),
 				GregtechItemList.Cover_Overflow_IV.get(1L),	
 		};
-		
+
 		for (int i=0;i<6;i++) {			
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
-						CI.getNumberedBioCircuit(19),
-						CI.getElectricPump(i, 2),
-						CI.getElectricMotor(i, 2),
-						CI.getPlate(i, 4)
+							CI.getNumberedBioCircuit(19),
+							CI.getElectricPump(i, 2),
+							CI.getElectricMotor(i, 2),
+							CI.getPlate(i, 4)
 					}, 
-					FluidUtils.getWater(i * 1500), 
+					FluidUtils.getWater((i+1) * 750), 
 					aOutputs[i].copy(), 
 					20 * 20, 
 					MaterialUtils.getVoltageForTier(i));			
 		}
-		
+
 	}
 
 	private static void tieredMachineHulls() {
-		
+
 		GregtechItemList[] aHulls = new GregtechItemList[] {
 				GregtechItemList.GTPP_Casing_ULV,
 				GregtechItemList.GTPP_Casing_LV,
@@ -390,7 +396,7 @@ public class RECIPES_Machines {
 				GregtechItemList.GTPP_Casing_UV,
 				GregtechItemList.GTPP_Casing_MAX
 		};
-		
+
 		for (int i=0;i<10;i++) {			
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
@@ -401,12 +407,12 @@ public class RECIPES_Machines {
 							CI.getTieredComponent(OrePrefixes.cableGt02, i, 4),
 							CI.getTieredComponent(OrePrefixes.circuit, i, 2)
 					},
-					CI.getAlternativeTieredFluid(i, 144 * i * 2), 
+					CI.getAlternativeTieredFluid(i, 144 * (i+1) * 2), 
 					aHulls[i].get(1), 
 					20 * 20, 
 					MaterialUtils.getVoltageForTier(i));			
 		}
-		
+
 	}
 
 	private static void initModItems(){
@@ -443,7 +449,7 @@ public class RECIPES_Machines {
 				EV_MACHINE_Wiremill= ItemList.Machine_IV_Wiremill.get(1);
 				HV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
 				EV_MACHINE_Macerator= ItemList.Machine_IV_Macerator.get(1);			
-				EV_MACHINE_MassFabricator= CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? gtPlusPlus.core.util.Utils.getValueOfItemList("Machine_LuV_Massfab", ItemList.Machine_IV_Massfab).get(1) : ItemList.Machine_IV_Massfab.get(1);
+				EV_MACHINE_MassFabricator= CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemUtils.getValueOfItemList("Machine_LuV_Massfab", ItemList.Machine_IV_Massfab).get(1) : ItemList.Machine_IV_Massfab.get(1);
 				EV_MACHINE_Centrifuge= ItemList.Machine_IV_Centrifuge.get(1);
 				EV_MACHINE_Cutter = ItemList.Machine_IV_Cutter.get(1);
 				EV_MACHINE_Extruder = ItemList.Machine_IV_Extruder.get(1);
@@ -541,9 +547,9 @@ public class RECIPES_Machines {
 					20 * 30, 
 					30);
 
-			ItemStack aFluidRegulator1 = ItemUtils.getItemListObject("FluidRegulator_MV", "Pump_HV", GTNH ? 4 : 2);
-			ItemStack aFluidRegulator2 = ItemUtils.getItemListObject("FluidRegulator_IV", "Pump_LuV", GTNH ? 4 : 2);
-			
+			ItemStack aFluidRegulator1 = ItemUtils.getValueOfItemList("FluidRegulator_MV",GTNH ? 4 : 2, ItemList.Electric_Pump_HV);
+			ItemStack aFluidRegulator2 = ItemUtils.getValueOfItemList("FluidRegulator_IV", GTNH ? 4 : 2, ItemUtils.getValueOfItemList("Electric_Pump_LuV", GTNH ? 8 : 4, ItemList.Electric_Pump_IV));
+
 			//Poo Collector		
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
@@ -605,7 +611,7 @@ public class RECIPES_Machines {
 						plateEnergeticAlloy, pipeLargeCopper, plateEnergeticAlloy,
 						RECIPE_SteamCondenser);
 			}
-			
+
 
 			//Steam Condenser
 			if (LoadedMods.CoFHCore && CORE.ConfigSwitches.enableMachine_RF_Convetor){
@@ -900,25 +906,47 @@ public class RECIPES_Machines {
 			}
 			//TODO
 
-			//Semi-Fluid Generators
-			ItemStack mSemiFluidgen = ItemUtils.getItemStackFromFQRN("IC2:blockGenerator:7", 1);
-			mSemiFluidgen.setItemDamage(7);
+			//Semi-Fluid Generators			
+			ItemStack[][] aSemiFluidInputs = new ItemStack[3][6];
+			aSemiFluidInputs[0] = new ItemStack[]{
+					CI.getNumberedBioCircuit(14),
+					CI.getTieredMachineHull(1, 1),
+					CI.getElectricPiston(1, GTNH ? 4 : 2),
+					CI.getTieredComponent(OrePrefixes.circuit, 1, GTNH ? 4 : 2),
+					CI.getPlate(1, GTNH ? 8 : 4),
+					CI.getGear(1, GTNH ? 4 : 2)
+			};
+			aSemiFluidInputs[1] = new ItemStack[]{
+					CI.getNumberedBioCircuit(14),
+					CI.getTieredMachineHull(2, 1),
+					CI.getElectricPiston(2, GTNH ? 4 : 2),
+					CI.getTieredComponent(OrePrefixes.circuit, 2, GTNH ? 4 : 2),
+					CI.getPlate(2, GTNH ? 8 : 4),
+					CI.getGear(2, GTNH ? 4 : 2)
+			};
+			aSemiFluidInputs[2] = new ItemStack[]{
+					CI.getNumberedBioCircuit(14),
+					CI.getTieredMachineHull(3, 1),
+					CI.getElectricPiston(3, GTNH ? 4 : 2),
+					CI.getTieredComponent(OrePrefixes.circuit, 3, GTNH ? 4 : 2),
+					CI.getPlate(3, GTNH ? 8 : 4),
+					CI.getGear(3, GTNH ? 4 : 2)
+			};
+			FluidStack[] aSemiFluidFluidInputs = new FluidStack[] {
+					ALLOY.BRONZE.getFluid(144 * 8),
+					ALLOY.STEEL.getFluid(144 * 8),
+					ELEMENT.getInstance().ALUMINIUM.getFluid(144 * 8),
+			};
+
 			//ItemUtils.simpleMetaStack("IC2:blockGenerator:7", 7, 1);			
-			ItemStack[] aSemifluids = new ItemStack[] {mSemiFluidgen, GregtechItemList.Generator_SemiFluid_LV.get(1), GregtechItemList.Generator_SemiFluid_MV.get(1), GregtechItemList.Generator_SemiFluid_HV.get(1)};
-			for (int o=1;o<4;o++) {
+			ItemStack[] aSemifluids = new ItemStack[] {GregtechItemList.Generator_SemiFluid_LV.get(1), GregtechItemList.Generator_SemiFluid_MV.get(1), GregtechItemList.Generator_SemiFluid_HV.get(1)};
+			for (int o=0;o<3;o++) {
 				CORE.RA.addSixSlotAssemblingRecipe(
-						new ItemStack[] {
-								aSemifluids[o-1],
-								CI.getElectricPiston(o, GTNH ? 4 : 2),
-								CI.getElectricMotor(o, GTNH ? 2 : 1),
-								CI.getTieredComponent(OrePrefixes.circuit, o, GTNH ? 4 : 2),
-								CI.getPlate(o, GTNH ? 8 : 4),
-								CI.getGear(o-1, GTNH ? 4 : 2)
-						},
-						CI.getAlternativeTieredFluid(o, 144 * 4),
+						aSemiFluidInputs[o],
+						aSemiFluidFluidInputs[o],
 						aSemifluids[o],
 						20 * 30,
-						(int) GT_Values.V[o]);
+						MaterialUtils.getVoltageForTier(o+1));
 			}			
 
 			if (CORE.ConfigSwitches.enableMultiblock_AlloyBlastSmelter){
@@ -955,9 +983,9 @@ public class RECIPES_Machines {
 
 				//Matter Fabricator CPU
 				RecipeUtils.addShapedGregtechRecipe(
-						"plateDoubleQuantum", CI.circuitTier5, "plateDoubleQuantum",
+						CI.getDoublePlate(8, 1), CI.circuitTier5, CI.getPlate(8, 1),
 						cableTier8, CI.machineCasing_LuV, cableTier8,
-						"plateDoubleQuantum", CI.circuitTier5, "plateDoubleQuantum",
+						CI.getPlate(8, 1), CI.circuitTier5, CI.getPlate(8, 1),
 						RECIPE_IndustrialMatterFabController);
 				//Matter Fabricator Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
@@ -967,9 +995,9 @@ public class RECIPES_Machines {
 						RECIPE_IndustrialMatterFabFrame);
 				//Matter Fabricator Coil
 				RecipeUtils.addShapedGregtechRecipe(
-						"plateQuantum", "plateQuantum", "plateQuantum",
+						CI.getPlate(6, 1), CI.getPlate(7, 1), CI.getPlate(6, 1),
 						"frameGtStellite", CI.machineCasing_UV, "frameGtStellite",
-						"plateQuantum", "plateQuantum", "plateQuantum",
+						CI.getPlate(6, 1), CI.getPlate(7, 1), CI.getPlate(6, 1),
 						RECIPE_IndustrialMatterFabCoil);
 			}
 
@@ -1120,12 +1148,6 @@ public class RECIPES_Machines {
 					aSimpleWasherTier += 2;
 					aSlot++;
 				}
-
-
-
-
-
-
 			}
 
 			if (CORE.ConfigSwitches.enableMachine_Pollution && PollutionUtils.isPollutionEnabled()){
@@ -1148,20 +1170,6 @@ public class RECIPES_Machines {
 						CI.component_Plate[2], CI.electricMotor_ULV, CI.component_Plate[2],
 						CI.getTieredCircuit(1), CI.machineHull_LV, CI.getTieredCircuit(0),
 						GregtechItemList.Pollution_Detector.get(1));
-
-				//Air Intake Hatch
-
-
-
-				ItemList FluidRegulator_IV = Utils.getValueOfItemList("FluidRegulator_IV", ItemList.Pump_IV);				
-				ItemStack aTieredFluidRegulator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? FluidRegulator_IV.get(1) : ItemList.Pump_IV.get(1);
-
-
-				RecipeUtils.addShapedGregtechRecipe(
-						CI.component_Plate[6], ItemList.Casing_Grate.get(1), CI.component_Plate[6],
-						CI.component_Plate[6], aTieredFluidRegulator, CI.component_Plate[6],
-						CI.getTieredCircuit(4), ItemList.Hatch_Input_IV.get(1), CI.getTieredCircuit(4),
-						GregtechItemList.Hatch_Air_Intake.get(1));
 
 				//ULV
 				RecipeUtils.addShapedGregtechRecipe(
@@ -1267,6 +1275,15 @@ public class RECIPES_Machines {
 						);
 			}
 
+			//Air Intake Hatch
+			ItemList FluidRegulator_IV = ItemUtils.getValueOfItemList("FluidRegulator_IV", ItemList.Pump_IV);				
+			ItemStack aTieredFluidRegulator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? FluidRegulator_IV.get(1) : ItemList.Pump_IV.get(1);
+			RecipeUtils.addShapedGregtechRecipe(
+					CI.component_Plate[6], ItemList.Casing_Grate.get(1), CI.component_Plate[6],
+					CI.component_Plate[6], aTieredFluidRegulator, CI.component_Plate[6],
+					CI.getTieredCircuit(4), ItemList.Hatch_Input_IV.get(1), CI.getTieredCircuit(4),
+					GregtechItemList.Hatch_Air_Intake.get(1));
+
 			if (CORE.ConfigSwitches.enableMultiblock_LiquidFluorideThoriumReactor){
 
 				//Thorium Reactor
@@ -1342,15 +1359,6 @@ public class RECIPES_Machines {
 						CI.craftingToolHammer_Hard, "frameGtHastelloyC276", CI.craftingToolWrench,
 						CI.component_Plate[5], CI.getTieredMachineCasing(4), "ringInconel792",
 						GregtechItemList.Casing_Refinery_Structural.get(Casing_Amount));
-
-
-
-
-
-
-
-
-
 			}
 
 			//Shelves
@@ -1419,14 +1427,24 @@ public class RECIPES_Machines {
 						RECIPE_CyclotronController,					
 						60 * 20 * 5, 
 						MaterialUtils.getVoltageForTier(5));
-
-
-
-
-
-
-
 			}
+
+			// Mazut
+			GT_ModHandler.addCraftingRecipe(
+					GregtechItemList.Controller_LargeSemifluidGenerator.get(1L),
+					CI.bitsd, 
+					new Object[]{
+							"PCP", 
+							"EME", 
+							"GWG",
+							'M', ItemList.Hull_EV, 
+							'P', ItemList.Electric_Piston_EV, 
+							'E', ItemList.Electric_Pump_EV, 
+							'C', OrePrefixes.circuit.get(Materials.Data), 
+							'W', OrePrefixes.cableGt08.get(Materials.Electrum), 
+							'G', ALLOY.INCONEL_792.getGear(1)
+					});
+
 
 			if (CORE.ConfigSwitches.enableMultiblock_PowerSubstation){
 				RecipeUtils.recipeBuilder(
@@ -1475,8 +1493,7 @@ public class RECIPES_Machines {
 			if (CORE.ConfigSwitches.enableMultiblock_LargeAutoCrafter) {
 
 				ItemStack aCoreBlock = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK
-						? ItemList.valueOf("Block_IridiumTungstensteel").get(1,
-								ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1))
+						? ItemUtils.getValueOfItemList("Block_IridiumTungstensteel", 1, ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1))
 								: ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1);
 
 						aCoreBlock.stackSize = GTNH ? 2 : 1;
@@ -1622,7 +1639,7 @@ public class RECIPES_Machines {
 				cell1 = CI.conveyorModule_EV;
 				cell2 = CI.electricMotor_IV;
 				ItemStack casingAmazon = GregtechItemList.Casing_AmazonWarehouse.get(1);
-				ItemStack aTieredUnboxinator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemList.valueOf("Machine_LuV_Unboxinator").get(1, ItemList.Machine_IV_Unboxinator.get(1)) : ItemList.Machine_IV_Unboxinator.get(1);
+				ItemStack aTieredUnboxinator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemUtils.getValueOfItemList("Machine_LuV_Unboxinator", 1, ItemList.Machine_IV_Unboxinator.get(1)) : ItemList.Machine_IV_Unboxinator.get(1);
 
 
 				RecipeUtils.recipeBuilder(
@@ -1768,7 +1785,7 @@ public class RECIPES_Machines {
 
 
 
-				ItemStack aDrillController = Utils.getValueOfItemList("OreDrill4", ItemList.Hull_UV).get(1);				
+				ItemStack aDrillController = ItemUtils.getValueOfItemList("OreDrill4", ItemList.Hull_UV).get(1);				
 
 				//Drilling Platform
 				CORE.RA.addSixSlotAssemblingRecipe(

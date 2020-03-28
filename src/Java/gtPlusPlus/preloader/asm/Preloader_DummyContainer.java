@@ -2,27 +2,24 @@ package gtPlusPlus.preloader.asm;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.List;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.LoadController;
-import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.ModMetadata;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.versioning.ArtifactVersion;
-
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.Utils;
+import cpw.mods.fml.common.event.FMLConstructionEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gtPlusPlus.preloader.CORE_Preloader;
+import gtPlusPlus.preloader.Preloader_Logger;
 import net.minecraftforge.common.config.Configuration;
 
 public class Preloader_DummyContainer extends DummyModContainer {
 
 	public Preloader_DummyContainer() {
-
 		super(new ModMetadata());
 		ModMetadata meta = getMetadata();
 		meta.modId = CORE_Preloader.MODID;
@@ -35,7 +32,8 @@ public class Preloader_DummyContainer extends DummyModContainer {
 		meta.updateUrl = "";
 		meta.screenshots = new String[0];
 		meta.logoFile = "";
-		meta.dependencies = (List<ArtifactVersion>) CORE_Preloader.DEPENDENCIES;
+		//meta.dependencies = (List<ArtifactVersion>) CORE_Preloader.DEPENDENCIES;
+		Preloader_Logger.INFO("Initializing DummyModContainer");
 
 	}
 	
@@ -47,29 +45,26 @@ public class Preloader_DummyContainer extends DummyModContainer {
 
 	@Subscribe
 	public void modConstruction(FMLConstructionEvent evt){
+		Preloader_Logger.INFO("Constructing DummyModContainer");
 
-	}
-
-	@Subscribe
-	public void init(FMLInitializationEvent evt) {
-
-	}
-	
-	@EventHandler
-	public void load(final FMLInitializationEvent e) {
-		Logger.INFO("[GT++ ASM] Begin resource allocation for " + CORE_Preloader.MODID + " V" + CORE_Preloader.VERSION);
 	}
 	
 	@Subscribe
 	public void preInit(FMLPreInitializationEvent event) {
-		Logger.INFO("[GT++ ASM] Loading " + CORE_Preloader.MODID + " V" + CORE_Preloader.VERSION);
+		Preloader_Logger.INFO("Loading " + CORE_Preloader.MODID + " V" + CORE_Preloader.VERSION);
 		// Handle GT++ Config
 		handleConfigFile(event);
 	}
 
 	@Subscribe
+	public void init(FMLInitializationEvent evt) {
+		Preloader_Logger.INFO("Begin resource allocation for " + CORE_Preloader.MODID + " V" + CORE_Preloader.VERSION);
+
+	}
+
+	@Subscribe
 	public void postInit(FMLPostInitializationEvent evt) {
-		Logger.INFO("[GT++ ASM] Finished loading GT++ Pre-Loader.");
+		Preloader_Logger.INFO("Finished loading.");
 	}
 	
 	public static void handleConfigFile(final FMLPreInitializationEvent event) {
@@ -84,17 +79,17 @@ public class Preloader_DummyContainer extends DummyModContainer {
 	}
 	
 	public static boolean getConfig(){
-		final Configuration config = new Configuration(	new File(Utils.getMcDir(), "config/GTplusplus/GTplusplus.cfg"));
+		final Configuration config = new Configuration(	new File(gtPlusPlus.preloader.CORE_Preloader.MC_DIR, "config/GTplusplus/GTplusplus.cfg"));
 		if (config != null){		
 			config.load();
 			// Circuits
 			CORE_Preloader.enableOldGTcircuits = config.getBoolean("enableOldGTcircuits", "gregtech", false, "Restores circuits and their recipes from Pre-5.09.28 times.");
 			CORE_Preloader.enableWatchdogBGM = config.getInt("enableWatchdogBGM", "features", 0, 0, Short.MAX_VALUE, "Set to a value greater than 0 to reduce the ticks taken to delay between BGM tracks. Acceptable Values are 1-32767, where 0 is disabled. Vanilla Uses 12,000 & 24,000. 200 is 10s.");
 						
-			Logger.INFO("GT++ Preloader - Loaded the configuration file.");
+			Preloader_Logger.INFO("Loaded the configuration file.");
 			return true;
 		}
-		Logger.INFO("GT++ Preloader - Failed loading the configuration file.");
+		Preloader_Logger.INFO("Failed loading the configuration file.");
 		return false;
 	}
 }
