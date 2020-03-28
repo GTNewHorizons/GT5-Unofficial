@@ -47,8 +47,13 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Structural Solar Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Salt Containment Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Thermally Insulated Casing");
-		//GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "");
-		//GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", " ");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", ""); // Unused
 
 		GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 0));
 		GregtechItemList.Casing_Turbine_LP.set(new ItemStack(this, 1, 1));
@@ -77,6 +82,12 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 			return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
 		case 5:
 			return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
+		case 6:
+			return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();	
+		case 7:
+			return TexturesGtBlock.Casing_Material_Stellite.getIcon();
+		case 8:
+			return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
 			
 		}
 

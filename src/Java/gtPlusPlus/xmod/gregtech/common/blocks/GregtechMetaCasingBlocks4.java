@@ -78,11 +78,11 @@ extends GregtechMetaCasingBlocksAbstract {
 				case 3:					
 					return TexturesGtBlock.TEXTURE_METAL_PANEL_A.getIcon();
 				case 4:
-					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();	
+					return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 				case 5:
-					return TexturesGtBlock.Casing_Material_Stellite.getIcon();
+					return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 				case 6:
-					return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
+					return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 				case 7:
 					return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 				case 8:

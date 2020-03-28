@@ -1183,6 +1183,11 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 	@Override
 	public boolean addChemicalPlantRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int time, long eu, int aTier) {
+		return addChemicalPlantRecipe(aInputs, aInputFluids, aOutputs, aFluidOutputs, new int[] {}, time, eu, aTier);
+	}
+
+	@Override
+	public boolean addChemicalPlantRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int[] aChances, int time, long eu, int aTier) {
 		
 		if (aInputs.length > 4 || aInputFluids.length > 4 || aOutputs.length > 4 || aFluidOutputs.length > 2) {
 			Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(aInputs));
@@ -1198,7 +1203,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     			aInputs,
     			aOutputs,
     			null,
-    			new int[] {},
+    			aChances,
     			aInputFluids,
     			aFluidOutputs,
     			time,

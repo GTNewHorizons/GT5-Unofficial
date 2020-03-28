@@ -2,7 +2,7 @@ package gtPlusPlus.core.item.chemistry;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.lib.CORE;
@@ -16,8 +16,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
-import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -64,16 +62,17 @@ public class GenericChem extends ItemPackage {
 	 * Fluids
 	 */
 
-	public Fluid Benzene;
-	public Fluid NitroBenzene;
-	public Fluid Aniline;
-	public Fluid Polyurethane;
-	public Fluid Phenol; //https://en.wikipedia.org/wiki/Phenol#Uses
-	public Fluid Cyclohexane; //https://en.wikipedia.org/wiki/Cyclohexane	
-	public Fluid Cyclohexanone; //https://en.wikipedia.org/wiki/Cyclohexanone
-	
-	public Fluid Cadaverine; //https://en.wikipedia.org/wiki/Cadaverine
-	public Fluid Putrescine; //https://en.wikipedia.org/wiki/Putrescine
+	public static Fluid Benzene;
+	public static Fluid NitroBenzene;
+	public static Fluid Aniline;
+	public static Fluid Polyurethane;
+	public static Fluid Phenol; //https://en.wikipedia.org/wiki/Phenol#Uses
+	public static Fluid Cyclohexane; //https://en.wikipedia.org/wiki/Cyclohexane	
+	public static Fluid Cyclohexanone; //https://en.wikipedia.org/wiki/Cyclohexanone	
+	public static Fluid Cadaverine; //https://en.wikipedia.org/wiki/Cadaverine
+	public static Fluid Putrescine; //https://en.wikipedia.org/wiki/Putrescine
+	public static Fluid BoricAcid;
+	public static Fluid HydrochloricAcid;
 	
 
 	public static Fluid Ethylanthraquinone2;
@@ -158,6 +157,8 @@ public class GenericChem extends ItemPackage {
 		
 		Aniline = FluidUtils.generateFluidNoPrefix("aniline", "Aniline", 266,	new short[] { 100, 100, 30, 100 }, true);
 		
+		BoricAcid = FluidUtils.generateFluidNoPrefix("boricacid", "Boric Acid", 278, new short[] { 90, 30, 120, 100 }, true);
+		
 		Polyurethane = FluidUtils.generateFluidNoPrefix("polyurethane", "Polyurethane", 350,	new short[] { 100, 70, 100, 100 }, true);
 		
 		if (!FluidRegistry.isFluidRegistered("phenol")) {
@@ -165,7 +166,15 @@ public class GenericChem extends ItemPackage {
 		}
 		else {
 			Phenol = FluidRegistry.getFluid("phenol");
-		}		
+		}	
+		
+		// Use GT's if it exists, else make our own.
+		if (!FluidRegistry.isFluidRegistered("hydrochloricacid_gt5u")) {
+			HydrochloricAcid = FluidRegistry.getFluid("hydrochloricacid_gt5u");	
+		}
+		else {
+			HydrochloricAcid = FluidUtils.generateFluidNoPrefix("hydrochloricacid", "Hydrochloric Acid", 285,	new short[] { 183, 200, 196, 100 }, true);
+		}	
 		
 		Cyclohexane = FluidUtils.generateFluidNoPrefix("cyclohexane", "Cyclohexane", 32 + 175,	new short[] { 100, 70, 30, 100 }, true);		
 		Cyclohexanone = FluidUtils.generateFluidNoPrefix("cyclohexanone", "Cyclohexanone", 32 + 175,	new short[] { 100, 70, 30, 100 }, true);
@@ -221,9 +230,81 @@ public class GenericChem extends ItemPackage {
 		recipe2Ethylanthrahydroquinone();
 		recipeHydrogenPeroxide();
 		recipeLithiumHydroperoxide();
-		recipeLithiumPeroxide();		
+		recipeLithiumPeroxide();	
+		
+		if (!HydrochloricAcid.getName().toLowerCase().contains("gt5u")) {
+			recipeHydrochloricAcid();			
+		}
 		
 		return true;
+	}
+
+	private void recipeHydrochloricAcid() {
+		
+		ItemStack aAcidCell = ItemUtils.getItemStackOfAmountFromOreDict("cellHydrochloricAcid", 1);
+		
+        GT_Values.RA.addChemicalRecipe(                   
+        		ELEMENT.getInstance().CHLORINE.getCell(1), 
+        		GT_Utility.getIntegratedCircuit(1),  
+        		ELEMENT.getInstance().HYDROGEN.getFluid(1000), 
+        		FluidUtils.getFluidStack(HydrochloricAcid, 2000), 
+        		CI.emptyCells(1), 
+        		60, 
+        		8);
+        
+        GT_Values.RA.addChemicalRecipe(                  
+        		ELEMENT.getInstance().HYDROGEN.getCell(1),
+        		GT_Utility.getIntegratedCircuit(1),  
+        		ELEMENT.getInstance().CHLORINE.getFluid(1000), 
+        		FluidUtils.getFluidStack(HydrochloricAcid, 2000), 
+        		CI.emptyCells(1), 
+        		60, 
+        		8);
+		
+		GT_Values.RA.addElectrolyzerRecipe(
+				CI.emptyCells(1), 
+				GT_Utility.getIntegratedCircuit(1),
+				FluidUtils.getFluidStack(HydrochloricAcid, 2000),
+				ELEMENT.getInstance().CHLORINE.getFluid(1000),
+				ELEMENT.getInstance().HYDROGEN.getCell(1), 
+				GT_Values.NI,            
+				GT_Values.NI, 
+				GT_Values.NI,
+				GT_Values.NI,
+				GT_Values.NI, 
+				null, 
+				720, 
+				30);
+		
+		GT_Values.RA.addElectrolyzerRecipe(
+				CI.emptyCells(1),            
+				GT_Utility.getIntegratedCircuit(11), 
+				FluidUtils.getFluidStack(HydrochloricAcid, 2000),        
+				ELEMENT.getInstance().HYDROGEN.getFluid(1000), 
+				ELEMENT.getInstance().CHLORINE.getCell(1),      
+				GT_Values.NI,                  
+				GT_Values.NI, 
+				GT_Values.NI,
+				GT_Values.NI, 
+				GT_Values.NI, 
+				null, 
+				720, 
+				30);
+		
+		GT_Values.RA.addElectrolyzerRecipe(
+				ItemUtils.getSimpleStack(aAcidCell, 2), 
+				GT_Values.NI,
+				GT_Values.NF,
+				GT_Values.NF, 
+				ELEMENT.getInstance().HYDROGEN.getCell(1),
+				ELEMENT.getInstance().CHLORINE.getCell(1),
+				GT_Values.NI, 
+				GT_Values.NI,
+				GT_Values.NI, 
+				GT_Values.NI, 
+				null, 
+				720, 
+				30);		
 	}
 
 	private void recipeCyclohexane() {
