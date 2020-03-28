@@ -159,7 +159,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 //			return false;
 //		}
 //		else {
-		mLevel = this.getCasingTierOnClientSide();
+		mLevel = this.getCasingTier();
 		//}
 		int aID = TAE.getIndexFromPage(1, 15);
 		int tAmount = 0;
@@ -339,7 +339,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 		this.fixAllMaintenanceIssue();		
 		// Silly Client Syncing
 		if (aBaseMetaTileEntity.isClientSide()) {
-			this.mLevel = getCasingTierOnClientSide();
+			this.mLevel = getCasingTier();
 		}
 
 	}
@@ -484,7 +484,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 	}
 
 
-	private final int getCasingTierOnClientSide() {
+	private final int getCasingTier() {
 		if (this == null || this.getBaseMetaTileEntity().getWorld() == null) {
 			return 0;
 		}
