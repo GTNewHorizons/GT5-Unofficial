@@ -232,7 +232,8 @@ public class GenericChem extends ItemPackage {
 		recipeLithiumHydroperoxide();
 		recipeLithiumPeroxide();	
 		
-		if (!HydrochloricAcid.getName().toLowerCase().contains("gt5u")) {
+		// Add recipes if we are not using GT's fluid.
+		if (!FluidRegistry.isFluidRegistered("hydrochloricacid_gt5u")) {
 			recipeHydrochloricAcid();			
 		}
 		

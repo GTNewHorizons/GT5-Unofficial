@@ -3128,3 +3128,13 @@ item.BasicMetaFood.8.name=Blaze Flesh
 item.itemCellNaquadahFuel.name=Naquadah Fuel Cell
 item.itemCellEnrichedNaquadahFuel.name=Enriched Naquadah Fuel Cell
 item.itemCellNaquadriaFuel.name=Naquadria Fuel Cell
+item.boricacid.name=Boric Acid Cell
+item.hydrochloricacid.name=Hydrochloric Acid Cell
+
+item.BasicAlgaeItem.0.name=Breedable Algae
+item.BasicAlgaeItem.1.name=Breedable Algae
+item.BasicAlgaeItem.2.name=Breedable Algae
+item.BasicAlgaeItem.3.name=Breedable Algae
+item.BasicAlgaeItem.4.name=Breedable Algae
+item.BasicAlgaeItem.5.name=Breedable Algae
+item.BasicAlgaeItem.6.name=Breedable Algae
