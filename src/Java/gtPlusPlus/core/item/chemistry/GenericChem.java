@@ -169,7 +169,7 @@ public class GenericChem extends ItemPackage {
 		}	
 		
 		// Use GT's if it exists, else make our own.
-		if (!FluidRegistry.isFluidRegistered("hydrochloricacid_gt5u")) {
+		if (FluidRegistry.isFluidRegistered("hydrochloricacid_gt5u")) {
 			HydrochloricAcid = FluidRegistry.getFluid("hydrochloricacid_gt5u");	
 		}
 		else {
