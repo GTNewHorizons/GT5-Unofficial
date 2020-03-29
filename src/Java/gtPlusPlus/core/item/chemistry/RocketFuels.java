@@ -152,17 +152,17 @@ public class RocketFuels extends ItemPackage {
 						CI.getNumberedBioCircuit(21),
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack("ammonia", 8000),
-						FluidUtils.getFluidStack("nitricacid", 8000),
+						FluidUtils.getFluidStack("ammonia", 4000),
+						FluidUtils.getFluidStack("nitricacid", 4000),
 				}, 
 				new ItemStack[] {
 
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 22*144),
+						FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 8000),
 
 				},
-				20 * 48, 
+				20 * 60, 
 				120, 
 				1);
 
@@ -329,7 +329,7 @@ public class RocketFuels extends ItemPackage {
 						FluidUtils.getFluidStack(RP1_Plus_Liquid_Oxygen, 1000),
 
 				},
-				20 * 30, 
+				20 * 15, 
 				480, 
 				3);		
 
@@ -350,7 +350,7 @@ public class RocketFuels extends ItemPackage {
 						FluidUtils.getFluidStack(Dense_Hydrazine_Mix, 10000),
 
 				},
-				20 * 40, 
+				20 * 30, 
 				240, 
 				3);	
 
@@ -371,7 +371,7 @@ public class RocketFuels extends ItemPackage {
 						FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide, 3000),
 
 				},
-				20 * 50, 
+				20 * 45, 
 				480, 
 				3);	
 		
@@ -532,7 +532,7 @@ public class RocketFuels extends ItemPackage {
 			}
 		}
 
-		Formaldehyde = FluidUtils.generateFluidNonMolten("Formaldehyde", "Formaldehyde", -92, new short[]{150, 75, 150, 100}, null, null);
+		Formaldehyde = FluidUtils.generateFluidNonMolten("Formaldehyde", "Formaldehyde", 185, new short[]{150, 75, 150, 100}, null, null);
 
 		Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("RocketFuelMixA", "H8N4C2O4 Rocket Fuel", -185, new short[]{50, 220, 50, 100}, null, null);
 		RP1_Plus_Liquid_Oxygen = FluidUtils.generateFluidNonMolten("RocketFuelMixB", "Rp-1 Rocket Fuel", -250, new short[]{250, 50, 50, 100}, null, null);
