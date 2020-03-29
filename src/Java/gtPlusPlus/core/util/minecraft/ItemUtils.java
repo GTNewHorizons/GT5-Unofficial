@@ -27,6 +27,7 @@ import gtPlusPlus.core.item.base.dusts.decimal.BaseItemDecidust;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate_OLD;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
+import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
 import gtPlusPlus.core.item.tool.staballoy.MultiSpadeBase;
 import gtPlusPlus.core.lib.CORE;
@@ -1245,7 +1246,9 @@ public class ItemUtils {
 	}
 	
 	public static boolean isCatalyst(ItemStack aStack) {
-
+		if (GT_Utility.areStacksEqual(aStack, RocketFuels.Formaldehyde_Catalyst_Stack, true)) {
+			return true;
+		}
 		if (GT_Utility.areStacksEqual(aStack, GenericChem.mBlueCatalyst, true)) {
 			return true;
 		}
@@ -1278,6 +1281,18 @@ public class ItemUtils {
 	}
 	
 
+	
+	public static boolean doesItemListEntryExist(String string) {		
+		ItemList[] aListValues = ItemList.class.getEnumConstants();		
+		for (ItemList aItem : aListValues) {
+			if (aItem != null) {
+				if (aItem.name().equals(string) || aItem.name().toLowerCase().equals(string.toLowerCase())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	public static ItemList getValueOfItemList(String string, ItemList aOther) {		
 		ItemList[] aListValues = ItemList.class.getEnumConstants();		
@@ -1294,6 +1309,7 @@ public class ItemUtils {
 		}
 		return aOther;
 	}
+	
 	public static ItemStack getValueOfItemList(String string, int aAmount, ItemList aOther) {	
 		return getValueOfItemList(string, aOther).get(aAmount);
 	}

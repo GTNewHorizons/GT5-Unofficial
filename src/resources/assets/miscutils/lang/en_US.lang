@@ -3131,6 +3131,7 @@ item.itemCellNaquadriaFuel.name=Naquadria Fuel Cell
 item.boricacid.name=Boric Acid Cell
 item.hydrochloricacid.name=Hydrochloric Acid Cell
 
+item.BasicAlgaeItem.name=Breedable Algae
 item.BasicAlgaeItem.0.name=Breedable Algae
 item.BasicAlgaeItem.1.name=Breedable Algae
 item.BasicAlgaeItem.2.name=Breedable Algae

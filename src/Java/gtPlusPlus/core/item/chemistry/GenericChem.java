@@ -244,7 +244,7 @@ public class GenericChem extends ItemPackage {
 		
 		ItemStack aAcidCell = ItemUtils.getItemStackOfAmountFromOreDict("cellHydrochloricAcid", 1);
 		
-        GT_Values.RA.addChemicalRecipe(                   
+        CORE.RA.addChemicalRecipe(                   
         		ELEMENT.getInstance().CHLORINE.getCell(1), 
         		GT_Utility.getIntegratedCircuit(1),  
         		ELEMENT.getInstance().HYDROGEN.getFluid(1000), 
@@ -253,7 +253,7 @@ public class GenericChem extends ItemPackage {
         		60, 
         		8);
         
-        GT_Values.RA.addChemicalRecipe(                  
+        CORE.RA.addChemicalRecipe(                  
         		ELEMENT.getInstance().HYDROGEN.getCell(1),
         		GT_Utility.getIntegratedCircuit(1),  
         		ELEMENT.getInstance().CHLORINE.getFluid(1000), 
