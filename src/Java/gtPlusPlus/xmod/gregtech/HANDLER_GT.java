@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import codechicken.nei.api.API;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -40,6 +39,7 @@ import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
+import gtPlusPlus.xmod.gregtech.api.enums.CustomOrePrefix;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
@@ -82,6 +82,7 @@ public class HANDLER_GT {
 		}
 
 		GregtechFluidHandler.run();		
+		addNewOrePrefixes();
 
 	}
 
@@ -154,6 +155,10 @@ public class HANDLER_GT {
 		WoodCentrifuging.processLogsForMethane();
 	}
 
+	private static void addNewOrePrefixes() {
+		CustomOrePrefix.init();
+	}
+	
 	private static void convertPyroToCokeOven() {
 		if (ReflectionUtils.doesFieldExist(GT_Recipe.GT_Recipe_Map.class, "sPyrolyseRecipes")) {
 			int aCount = 0; 

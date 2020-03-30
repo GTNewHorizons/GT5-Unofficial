@@ -139,6 +139,11 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Chip_MultiNerf_NoOutputBonus,
 	Chip_MultiNerf_NoSpeedBonus,
 	Chip_MultiNerf_NoEuBonus,
+	
+	// Milling Balls
+	Milling_Ball_Alumina,
+	Milling_Ball_Soapstone,
+	
 
 	//----------------------------------------------------------------------------
 	
@@ -365,6 +370,15 @@ public enum GregtechItemList implements GregtechItemContainer {
 	// Large Rocket Engine
 	Casing_RocketEngine,
 	Controller_RocketEngine,
+	
+	// Large Semi-Fluid
+	Controller_LargeSemifluidGenerator,
+	
+	// IsaMill
+	Controller_IsaMill_Controller,
+	Casing_IsaMill_Casing,
+	Casing_IsaMill_Gearbox,
+	Casing_IsaMill_Pipe,
 
 
 	//----------------------------------------------------------------------------
@@ -592,7 +606,6 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Generator_SemiFluid_LV, 
 	Generator_SemiFluid_MV, 
 	Generator_SemiFluid_HV, 
-	Controller_LargeSemifluidGenerator,
 
 
 	//Advanced Mixer 4x4

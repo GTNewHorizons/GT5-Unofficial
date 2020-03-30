@@ -14,6 +14,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map_Fuel;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map_Macerator;
 import gtPlusPlus.api.interfaces.IComparableRecipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -255,6 +256,9 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		//LFTR recipes
 		public static final GT_Recipe_Map sLiquidFluorineThoriumReactorRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.lftr", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
 		public static final GT_Recipe_Map sLiquidFluorineThoriumReactorRecipesEx = new GT_Recipe_Map(new NoConflictGTRecipeMap(), "gt.recipe.lftr.2", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
+		
+		// Ore Milling Map
+        public static final GT_Recipe_Map sOreMillRecipes = new GT_Recipe_Map_Macerator(new HashSet<GT_Recipe>(10000), "gt.recipe.oremill", "Milling", null, RES_PATH_GUI + "basicmachines/LFTR", 1, 4, 1, 0, 1, E, 1, E, true, true);
 		
 		//Fission Fuel Plant Recipes
 		//public static final GT_Recipe_Map sFissionFuelProcessing = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 9, 1, E, 1, E, true, true);

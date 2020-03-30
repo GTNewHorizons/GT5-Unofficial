@@ -23,10 +23,12 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
@@ -1307,6 +1309,89 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		}
 		return true;
 	
+	}
+
+	@Override
+	public boolean addMillingRecipe(Materials aMat, int aEU) {
+		return addMillingRecipe(MaterialUtils.generateMaterialFromGtENUM(aMat), aEU);
+	}
+
+	@Override
+	public boolean addMillingRecipe(Material aMat, int aEU) {
+		
+		ItemStack aOreStack = aMat.getOre(16);
+		ItemStack aCrushedStack = aMat.getCrushed(16);
+		
+		ItemStack aMilledStackOres1 = aMat.getMilled(64);
+		ItemStack aMilledStackCrushed1 = aMat.getMilled(48);
+		ItemStack aMilledStackOres2 = aMat.getMilled(48);
+		ItemStack aMilledStackCrushed2 = aMat.getMilled(32);
+
+		ItemStack aMillingBall_Alumina = GregtechItemList.Milling_Ball_Alumina.get(0);
+		ItemStack aMillingBall_Soapstone = GregtechItemList.Milling_Ball_Soapstone.get(0);
+
+		// Inputs
+		ItemStack[] aInputsOre1 = new ItemStack[] {
+				aOreStack,
+				aMillingBall_Alumina
+		};
+		
+		ItemStack[] aInputsOre2 = new ItemStack[] {
+				aOreStack,
+				aMillingBall_Soapstone
+		};
+		
+		ItemStack[] aInputsCrushed1 = new ItemStack[] {
+				aCrushedStack,
+				aMillingBall_Alumina
+		};
+		
+		ItemStack[] aInputsCrushed2 = new ItemStack[] {
+				aCrushedStack,
+				aMillingBall_Soapstone
+		};
+		
+		// Outputs
+		ItemStack[] aOutputsOre1 = new ItemStack[] {
+				aMilledStackOres1
+		};
+		
+		ItemStack[] aOutputsOre2 = new ItemStack[] {
+				aMilledStackOres2
+		};
+		
+		ItemStack[] aOutputsCrushed1 = new ItemStack[] {
+				aMilledStackCrushed1
+		};
+		
+		ItemStack[] aOutputsCrushed2 = new ItemStack[] {
+				aMilledStackCrushed2
+		};
+
+		ItemStack[][] aInputArray = new ItemStack[][] {aInputsOre1, aInputsOre2, aInputsCrushed1, aInputsCrushed2};
+		ItemStack[][] aOutputArray = new ItemStack[][] {aOutputsOre1, aOutputsOre2, aOutputsCrushed1, aOutputsCrushed2};		
+		int[] aTime = new int[] {6000, 7500, 7500, 9000};		
+
+		int aSize = Recipe_GT.Gregtech_Recipe_Map.sOreMillRecipes.mRecipeList.size();
+		int aSize2 = aSize;
+		
+		for (int i=0;i<4;i++) {
+			Recipe_GT aOreRecipe = new Recipe_GT(
+	    			false,
+	    			aInputArray[i],
+	    			aOutputArray[i],
+	    			null,
+	    			new int[] {},
+	    			null,
+	    			null,
+	    			aTime[i],
+	    			aEU,
+	    			0); 
+			Recipe_GT.Gregtech_Recipe_Map.sOreMillRecipes.add(aOreRecipe);
+		}  
+		
+		aSize = Recipe_GT.Gregtech_Recipe_Map.sOreMillRecipes.mRecipeList.size();
+		return aSize > aSize2;
 	}
 
 

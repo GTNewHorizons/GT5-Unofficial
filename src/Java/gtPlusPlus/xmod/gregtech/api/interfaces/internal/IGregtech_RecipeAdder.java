@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.interfaces.internal;
 
+import gregtech.api.enums.Materials;
+import gtPlusPlus.core.material.Material;
 import net.minecraft.item.ItemStack;
 
 import net.minecraftforge.fluids.FluidStack;
@@ -283,6 +285,9 @@ public interface IGregtech_RecipeAdder {
 	public boolean addDistilleryRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, ItemStack aSolidOutput, int aDuration, int aEUt, boolean aHidden);
 
 	public boolean addPulverisationRecipe(final ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, final ItemStack aOutput3);
+	
+	public boolean addMillingRecipe(Materials aMat, int aEU);
+	public boolean addMillingRecipe(Material aMat, int aEU);
 
 
 }

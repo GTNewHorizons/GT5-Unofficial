@@ -35,6 +35,7 @@ import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
+import gtPlusPlus.core.item.chemistry.MilledOreProcessing;
 import gtPlusPlus.core.item.chemistry.NuclearChem;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
@@ -999,6 +1000,8 @@ public final class ModItems {
 		//General Chemistry
 		new GenericChem();
 		
+		// Milled Ore Processing
+		new MilledOreProcessing();
 		
 		//Bombs
 		itemBombCasing = new CoreItem("itemBombCasing", "Bomb Casing", tabMisc);

@@ -314,9 +314,6 @@ public class CoalTar extends ItemPackage {
 	@Override
 	public void fluids() {
 
-
-		//Special Compatibility for Coke
-		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(ModItems.itemCoalCoke, 1), "fuelCoke");
 		//Create Coal Gas
 		Coal_Gas = FluidUtils.generateFluidNonMolten("CoalGas", "Coal Gas", 500, new short[]{48, 48, 48, 100}, null, null);
 		//Ethanol

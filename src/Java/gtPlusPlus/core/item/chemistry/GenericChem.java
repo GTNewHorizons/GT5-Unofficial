@@ -16,6 +16,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -88,6 +89,19 @@ public class GenericChem extends ItemPackage {
 	public Item PhenolicResins; //https://en.wikipedia.org/wiki/Phenol_formaldehyde_resin
 	public static ItemGenericChemBase mGenericChemItem1;
 
+	private ItemStack mCatalystCarrier;
+	
+	public static ItemStack mRedCatalyst;
+	public static ItemStack mYellowCatalyst;
+	public static ItemStack mBlueCatalyst;
+	public static ItemStack mOrangeCatalyst;
+	public static ItemStack mPurpleCatalyst;
+	public static ItemStack mBrownCatalyst;
+	public static ItemStack mPinkCatalyst;
+
+	public static ItemStack mMillingBallAlumina;
+	public static ItemStack mMillingBallSoapstone;
+
 
 
 	@Override
@@ -101,17 +115,11 @@ public class GenericChem extends ItemPackage {
 		
 		registerItemStacks();
 		registerOreDict();
-	}
 
-	private ItemStack mCatalystCarrier;
-	
-	public static ItemStack mRedCatalyst;
-	public static ItemStack mYellowCatalyst;
-	public static ItemStack mBlueCatalyst;
-	public static ItemStack mOrangeCatalyst;
-	public static ItemStack mPurpleCatalyst;
-	public static ItemStack mBrownCatalyst;
-	public static ItemStack mPinkCatalyst;
+		GregtechItemList.Milling_Ball_Alumina.set(mMillingBallAlumina);
+		GregtechItemList.Milling_Ball_Soapstone.set(mMillingBallSoapstone);
+		
+	}
 	
 	
 	public void registerItemStacks() {
@@ -125,6 +133,8 @@ public class GenericChem extends ItemPackage {
 		mPurpleCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 4, 1);
 		mBrownCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 5, 1);
 		mPinkCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 6, 1);
+		mMillingBallAlumina = ItemUtils.simpleMetaStack(mGenericChemItem1, 7, 1);
+		mMillingBallSoapstone = ItemUtils.simpleMetaStack(mGenericChemItem1, 8, 1);
 		
 	}
 	
@@ -137,6 +147,8 @@ public class GenericChem extends ItemPackage {
 		ItemUtils.addItemToOreDictionary(mPurpleCatalyst, "catalystIridiumRuthenium");
 		ItemUtils.addItemToOreDictionary(mBrownCatalyst, "catalystNickelAluminium");
 		ItemUtils.addItemToOreDictionary(mPinkCatalyst, "catalystPlatinumRhodium");
+		ItemUtils.addItemToOreDictionary(mMillingBallAlumina, "millingballAlumina");
+		ItemUtils.addItemToOreDictionary(mMillingBallSoapstone, "millingballSoapstone");
 		
 	}
 

@@ -3111,10 +3111,10 @@ item.BasicAlgaeItem.4.name=Algae Spore (V)
 item.BasicAlgaeItem.5.name=Algae Spore (VI)
 item.BasicAlgaeItem.6.name=Algae Spore (VII)
 
-//Added17/01/20
+//Added 17/01/20
 item.BasicGenericChemItem.6.name=Pink Metal Catalyst
 
-//Added23/03/20
+//Added 23/03/20
 item.BasicMetaFood.0.name=Raw Human Meat
 item.BasicMetaFood.1.name=Cooked Human Meat
 item.BasicMetaFood.2.name=Raw Horse Meat
@@ -3139,3 +3139,7 @@ item.BasicAlgaeItem.3.name=Breedable Algae
 item.BasicAlgaeItem.4.name=Breedable Algae
 item.BasicAlgaeItem.5.name=Breedable Algae
 item.BasicAlgaeItem.6.name=Breedable Algae
+
+//Added 30/03/20
+item.BasicGenericChemItem.7.name=Alumina Milling Ball
+item.BasicGenericChemItem.8.name=Soapstone Milling Ball
