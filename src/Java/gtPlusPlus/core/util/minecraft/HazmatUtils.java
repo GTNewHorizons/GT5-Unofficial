@@ -86,8 +86,9 @@ public class HazmatUtils {
 		
 
 		if (LoadedMods.IndustrialCraft2 || LoadedMods.IndustrialCraft2Classic) {
-			for (String aItemName : mDefaultHazmat) {				
-				addProtection(ItemUtils.getItemStackFromFQRN(aItemName, 1));
+			for (String aItemName : mDefaultHazmat) {	
+				String[] aSplit = aItemName.split(":");
+				addProtection(GT_ModHandler.getIC2Item(aSplit[1], 1L, 32767));
 			}
 			Logger.INFO("[Hazmat] Registered IC2 Items as hazmat gear.");
 		}
@@ -339,11 +340,18 @@ public class HazmatUtils {
 		return providesProtetion_Generic(sElectroHazmatList, aStack);
 	}
 
-	private static boolean providesProtetion_Generic(GT_HashSet aSet, ItemStack aStack) {
+	private static boolean providesProtetion_Generic(GT_HashSet<GT_ItemStack> aSet, ItemStack aStack) {
 		if (isVanillaHazmatPiece(aStack)) {
 			return true;
 		}
-		return aSet.getMap().containsKey(aStack);
+		for (GT_ItemStack o : aSet) {
+			if (o != null) {
+				if (o.isStackEqual(aStack)){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private static String[] getTooltips(GT_ItemStack aStack) {
