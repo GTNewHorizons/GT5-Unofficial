@@ -10,7 +10,7 @@ import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.Preloader_Logger;
 import gtPlusPlus.preloader.asm.transformers.Preloader_Transformer_Handler;
 import net.minecraft.launchwrapper.Launch;
-import sun.repackage.ForgeEnumHelper;
+import shaded.reflectionfactory.ForgeEnumHelper;
 
 @SortingIndex(10097) 
 @MCVersion(value = "1.7.10")
