@@ -1,9 +1,7 @@
 package gtPlusPlus.core.item.chemistry;
 
-import static gtPlusPlus.core.lib.CORE.GTNH;
-
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
@@ -28,6 +26,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -263,6 +262,21 @@ public class GenericChem extends ItemPackage {
 
 		if (FluidRegistry.isFluidRegistered("fluid.liquid_hydricsulfur") || MaterialUtils.doesMaterialExist("HydricSulfide")) {
 			usingGregtechHydricSulfur = true;
+			Fluid aFluid = null;
+			if (ItemUtils.doesItemListEntryExist("sHydricSulfur")) {
+				ItemStack aListItem = ItemUtils.getValueOfItemList("sHydricSulfur", 1, (ItemList) null);
+				if (aListItem != null) {
+					FluidStack aFluidStack = FluidContainerRegistry.getFluidForFilledItem(aListItem);
+					if (aFluidStack != null) {
+						aFluid = aFluidStack.getFluid();
+					}
+					
+				}
+			}
+			if (aFluid == null) {
+				aFluid = FluidUtils.getWildcardFluidStack("liquid_hydricsulfur", 1000).getFluid();				
+			}
+			Hydrogen_Sulfide = aFluid;
 		}
 		else {
 			Hydrogen_Sulfide = FluidUtils.generateFluidNoPrefix("HydrogenSulfide", "Hydrogen Sulfide", 446, new short[]{240, 130, 30, 100});
@@ -309,15 +323,13 @@ public class GenericChem extends ItemPackage {
 		if (!usingGregtechHydricSulfur) {
 			recipeHydricSulfur();			
 		}
-		else {
-			Hydrogen_Sulfide = FluidRegistry.getFluid("fluid.liquid_hydricsulfur");
-		}
 
 		// Add recipes if we are not using GT's fluid.
 		if (!FluidRegistry.isFluidRegistered("hydrochloricacid_gt5u")) {
 			recipeHydrochloricAcid();			
 		}
 		
+		recipeSodiumEthoxide();
 		recipeCarbonDisulfide();
 		recipeEthylXanthates();
 		recipePotassiumHydroxide();
@@ -326,6 +338,29 @@ public class GenericChem extends ItemPackage {
 
 		return true;
 	}	
+
+
+	private void recipeSodiumEthoxide() {
+		//2 C2H5OH + 2 Na → 2 C2H5ONa + H2
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(16),
+						ELEMENT.getInstance().SODIUM.getDust(2)
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(BioRecipes.mEthanol, 1000),
+				}, 
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(mSodiumEthoxide, 2)
+
+				}, 
+				new FluidStack[] {
+						ELEMENT.getInstance().HYDROGEN.getFluid(2000)						
+				}, 
+				20 *20,
+				120, 
+				2);
+	}
 
 
 	private void recipePotassiumHydroxide() {
@@ -348,7 +383,7 @@ public class GenericChem extends ItemPackage {
 				new FluidStack[] {
 						
 				}, 
-				20 *60 * 2,
+				20 *30,
 				120, 
 				2);
 		
@@ -387,7 +422,7 @@ public class GenericChem extends ItemPackage {
 						FluidUtils.getFluidStack(Carbon_Disulfide, 1000),
 				}, 
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(mPotassiumEthylXanthate, 1)
+						ItemUtils.getSimpleStack(mSodiumEthylXanthate, 1)
 				}, 
 				new FluidStack[] {
 						
@@ -412,7 +447,6 @@ public class GenericChem extends ItemPackage {
 		
 		CORE.RA.addBlastRecipe(
 				new ItemStack[] {
-						CI.getNumberedCircuit(20),
 						ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 8),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 16)						
 				}, 

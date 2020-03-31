@@ -7,6 +7,7 @@ import java.util.Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -20,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -69,7 +71,7 @@ public class CommandEnableDebugWhileRunning implements ICommand
 
 	@Override
 	public void processCommand(final ICommandSender S, final String[] argString){
-		int aMaxArgumentsAllowed = 1;
+		int aMaxArgumentsAllowed = 2;
 
 		if ((argString == null || argString.length == 0 || argString.length > aMaxArgumentsAllowed) || argString[0].toLowerCase().equals("?")) {
 			Logger.INFO("Listing commands and their uses.");			
@@ -78,6 +80,8 @@ public class CommandEnableDebugWhileRunning implements ICommand
 			PlayerUtils.messagePlayer(P, "The following are valid args for the '/gtpp' command:");
 			PlayerUtils.messagePlayer(P, "?       - This help command.");
 			PlayerUtils.messagePlayer(P, "logging - Toggles ALL GT++ logging for current session.");
+			PlayerUtils.messagePlayer(P, "hand - Lists information about held item.");
+			PlayerUtils.messagePlayer(P, "fuid xxx - Tries to find the fluid in the FluidRegistry.");
 			PlayerUtils.messagePlayer(P, "debug   - Toggles GT++ Debug Mode. Only use when advised, may break everything. (OP)");
 		}
 		else if (argString[0].toLowerCase().equals("debug")) {
@@ -151,6 +155,18 @@ public class CommandEnableDebugWhileRunning implements ICommand
 				}
 			}
 		}
+		else if (argString[0].toLowerCase().equals("fluid")) {
+			if (argString.length > 1 && argString[1] != null && argString[1].length() > 0) {			
+				final EntityPlayer P = CommandUtils.getPlayer(S);
+				FluidStack aFluid = FluidUtils.getWildcardFluidStack(argString[1], 1);
+				if (P != null && aFluid != null) {
+					PlayerUtils.messagePlayer(P, "Found fluid stack: "+FluidRegistry.getFluidName(aFluid));						
+				}		
+				else if (P != null && aFluid == null) {
+					PlayerUtils.messagePlayer(P, "Could not find any fluids.");						
+				}	
+			}
+		}
 		else {		
 			final EntityPlayer P = CommandUtils.getPlayer(S);	
 			PlayerUtils.messagePlayer(P, "Invalid command, use '?' as an argument for help.'");
@@ -172,6 +188,8 @@ public class CommandEnableDebugWhileRunning implements ICommand
 		aTabCompletes.add("?");
 		aTabCompletes.add("logging");
 		aTabCompletes.add("debug");
+		aTabCompletes.add("hand");
+		aTabCompletes.add("fluid");
 		return aTabCompletes;
 	}
 
