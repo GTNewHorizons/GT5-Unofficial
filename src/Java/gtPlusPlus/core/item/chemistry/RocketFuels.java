@@ -84,7 +84,7 @@ public class RocketFuels extends ItemPackage {
 	}
 
 	public static void createNitrogenTetroxide(){	
-		CORE.RA.addDehydratorRecipe(
+		/*CORE.RA.addDehydratorRecipe(
 				new ItemStack[]{
 						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 4)
 				}, 
@@ -96,7 +96,31 @@ public class RocketFuels extends ItemPackage {
 				},
 				new int[]{100, 50}, 
 				20*16, 
-				500);
+				500);*/
+		
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 16),
+						ItemUtils.getSimpleStack(GenericChem.mOrangeCatalyst, 0),
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack("nitricacid", 4000)
+				},
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSmallAsh", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 1)
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack(Nitrogen_Tetroxide, 3000),
+				},
+				new int[]{100, 100, 50, 50}, 
+				20*30, 
+				MaterialUtils.getVoltageForTier(3),
+				2);
+
+		
 	}
 
 	public static void createHydrazine(){		
@@ -338,11 +362,11 @@ public class RocketFuels extends ItemPackage {
 
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(RP1_Plus_Liquid_Oxygen, 1000),
+						FluidUtils.getFluidStack(RP1_Plus_Liquid_Oxygen, 1500),
 
 				},
 				20 * 15, 
-				480, 
+				240, 
 				3);		
 
 
@@ -367,31 +391,10 @@ public class RocketFuels extends ItemPackage {
 				3);	
 
 
-		// Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide
-		CORE.RA.addChemicalPlantRecipe(
-				new ItemStack[] {
-						CI.getNumberedCircuit(3),
-				}, 
-				new FluidStack[] {
-						FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine, 2000),
-						FluidUtils.getFluidStack(Nitrogen_Tetroxide, 2000),
-				}, 
-				new ItemStack[] {
-
-				}, 
-				new FluidStack[] {
-						FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide, 3000),
-
-				},
-				20 * 45, 
-				480, 
-				3);	
-
-
 		// Monomethylhydrazine_Plus_Nitric_Acid
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						CI.getNumberedCircuit(4),
+						CI.getNumberedCircuit(3),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(Monomethylhydrazine, 1000),
@@ -401,12 +404,33 @@ public class RocketFuels extends ItemPackage {
 
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(Monomethylhydrazine_Plus_Nitric_Acid, 10000),
+						FluidUtils.getFluidStack(Monomethylhydrazine_Plus_Nitric_Acid, 3000),
+
+				},
+				20 * 45, 
+				480, 
+				3);
+
+
+		// Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(4),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine, 2000),
+						FluidUtils.getFluidStack(Nitrogen_Tetroxide, 2000),
+				}, 
+				new ItemStack[] {
+
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide, 4000),
 
 				},
 				20 * 60, 
-				240, 
-				3);
+				480, 
+				3);	
 
 	}
 

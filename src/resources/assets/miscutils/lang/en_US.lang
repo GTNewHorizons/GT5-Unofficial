@@ -3144,5 +3144,15 @@ item.BasicAlgaeItem.6.name=Breedable Algae
 //Added 30/03/20
 item.milledChalcopyrite.name=Milled Chalcopyrite
 item.milledSphalerite.name=Milled Sphalerite
+item.milledNickel.name=Milled Nickel
+item.milledPlatinum.name=Milled Platinum
+item.milledPentlandite.name=Milled Pentlandite
+
 item.BasicGenericChemItem.7.name=Alumina Milling Ball
 item.BasicGenericChemItem.8.name=Soapstone Milling Ball
+
+item.FrothZincflotation.name=Sphalerite Flotation Froth Cell
+item.FrothCopperflotation.name=Chalcopyrite Flotation Froth Cell
+item.FrothNickelflotation.name=Nickel Flotation Froth Cell
+item.FrothPlatinumflotation.name=Platinum Flotation Froth Cell
+item.FrothPentlanditeflotation.name=Pentlandite Flotation Froth Cell

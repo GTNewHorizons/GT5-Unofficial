@@ -62,8 +62,6 @@ extends GregtechMetaCasingBlocksAbstract {
 					return TexturesGtBlock.TEXTURE_PIPE_GRINDING_MILL.getIcon();
 				case 2:
 					return TexturesGtBlock.TEXTURE_GEARBOX_GRINDING_MILL.getIcon();
-				case 3:					
-					return TexturesGtBlock.TEXTURE_METAL_PANEL_A.getIcon();
 
 			}
 		}

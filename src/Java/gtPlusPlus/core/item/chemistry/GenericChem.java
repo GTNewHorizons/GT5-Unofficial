@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static gtPlusPlus.core.lib.CORE.GTNH;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GT_Utility;
@@ -7,6 +9,7 @@ import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
@@ -16,6 +19,8 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.plugin.agrichem.BioRecipes;
+import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -27,14 +32,21 @@ import net.minecraftforge.fluids.FluidStack;
 public class GenericChem extends ItemPackage {
 
 	/**
+	 * Switches
+	 */
+
+	private static boolean usingGregtechNitricOxide = false;
+	private static boolean usingGregtechNitrogenDioxide = false;
+
+	/**
 	 * Materials
 	 */	
-	
+
 	public static final Material BAKELITE = new Material("Bakelite", MaterialState.SOLID, TextureSet.SET_DULL, new short[]{90, 140, 140}, 120, 240, 23, 24, true, null, 0);//Not a GT Inherited Material
 	public static final Material NYLON = new Material("Nylon", MaterialState.SOLID, TextureSet.SET_SHINY, new short[]{45, 45, 45}, 300, 600, 44, 48, true, null, 0);//Not a GT Inherited Material
 	public static final Material CARBYNE = new Material("Carbyne", MaterialState.SOLID, TextureSet.SET_DULL, new short[]{25, 25, 25}, 2500, 5000, 63, 52, true, null, 0);//Not a GT Inherited Material
-	
-	
+
+
 	//Refined PTFE
 	public static final Material TEFLON = new Material(
 			"Teflon",
@@ -51,14 +63,14 @@ public class GenericChem extends ItemPackage {
 					new MaterialStack(NONMATERIAL.PLASTIC, 15),
 					new MaterialStack(ELEMENT.getInstance().CARBON, 5),
 					new MaterialStack(ELEMENT.getInstance().SODIUM, 5)
-					});// Not a GT
-																										// Inherited
-																										// Material
+			});// Not a GT
+	// Inherited
+	// Material
 
 	//public static final Material HYPOGEN = new Material("Hypogen", MaterialState.SOLID, TextureSets.NUCLEAR.get(), new short[]{220, 120, 75}, 12255, 19377, 240, 251, true, "Hy⚶", 0);//Not a GT Inherited Material
 	//public static final Material HYPOGEN = new Material("Hypogen", MaterialState.SOLID, TextureSets.NUCLEAR.get(), new short[]{220, 120, 75}, 12255, 19377, 240, 251, true, "Hy⚶", 0);//Not a GT Inherited Material
 	//public static final Material Nylon = new Material();
-	
+
 	/**
 	 * Fluids
 	 */
@@ -74,12 +86,14 @@ public class GenericChem extends ItemPackage {
 	public static Fluid Putrescine; //https://en.wikipedia.org/wiki/Putrescine
 	public static Fluid BoricAcid;
 	public static Fluid HydrochloricAcid;
-	
+
 
 	public static Fluid Ethylanthraquinone2;
 	public static Fluid Ethylanthrahydroquinone2;
 	public static Fluid Hydrogen_Peroxide;
 	public static Fluid Lithium_Peroxide;
+	public static Fluid Nitric_Oxide;
+	public static Fluid Nitrogen_Dioxide;
 
 	/**
 	 * Items
@@ -90,7 +104,7 @@ public class GenericChem extends ItemPackage {
 	public static ItemGenericChemBase mGenericChemItem1;
 
 	private ItemStack mCatalystCarrier;
-	
+
 	public static ItemStack mRedCatalyst;
 	public static ItemStack mYellowCatalyst;
 	public static ItemStack mBlueCatalyst;
@@ -112,20 +126,20 @@ public class GenericChem extends ItemPackage {
 		MaterialGenerator.generate(TEFLON, false);		
 
 		mGenericChemItem1 = new ItemGenericChemBase();		
-		
+
 		registerItemStacks();
 		registerOreDict();
 
 		GregtechItemList.Milling_Ball_Alumina.set(mMillingBallAlumina);
 		GregtechItemList.Milling_Ball_Soapstone.set(mMillingBallSoapstone);
-		
+
 	}
-	
-	
+
+
 	public void registerItemStacks() {
 
 		mCatalystCarrier = ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 13, 1);
-		
+
 		mRedCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 0, 1);
 		mYellowCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 1, 1);
 		mBlueCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 2, 1);
@@ -135,9 +149,9 @@ public class GenericChem extends ItemPackage {
 		mPinkCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 6, 1);
 		mMillingBallAlumina = ItemUtils.simpleMetaStack(mGenericChemItem1, 7, 1);
 		mMillingBallSoapstone = ItemUtils.simpleMetaStack(mGenericChemItem1, 8, 1);
-		
+
 	}
-	
+
 	public void registerOreDict() {
 
 		ItemUtils.addItemToOreDictionary(mRedCatalyst, "catalystIronCopper");
@@ -149,7 +163,7 @@ public class GenericChem extends ItemPackage {
 		ItemUtils.addItemToOreDictionary(mPinkCatalyst, "catalystPlatinumRhodium");
 		ItemUtils.addItemToOreDictionary(mMillingBallAlumina, "millingballAlumina");
 		ItemUtils.addItemToOreDictionary(mMillingBallSoapstone, "millingballSoapstone");
-		
+
 	}
 
 	@Override
@@ -157,29 +171,29 @@ public class GenericChem extends ItemPackage {
 
 	@Override
 	public void fluids() {
-		
+
 		if (!FluidRegistry.isFluidRegistered("benzene")) {
 			Benzene = FluidUtils.generateFluidNoPrefix("benzene", "Benzene", 278,	new short[] { 100, 70, 30, 100 }, true);			
 		}
 		else {
 			Benzene = FluidRegistry.getFluid("benzene");
 		}
-		
+
 		NitroBenzene = FluidUtils.generateFluidNoPrefix("nitrobenzene", "NitroBenzene", 278,	new short[] { 70, 50, 40, 100 }, true);
-		
+
 		Aniline = FluidUtils.generateFluidNoPrefix("aniline", "Aniline", 266,	new short[] { 100, 100, 30, 100 }, true);
-		
+
 		BoricAcid = FluidUtils.generateFluidNoPrefix("boricacid", "Boric Acid", 278, new short[] { 90, 30, 120, 100 }, true);
-		
+
 		Polyurethane = FluidUtils.generateFluidNoPrefix("polyurethane", "Polyurethane", 350,	new short[] { 100, 70, 100, 100 }, true);
-		
+
 		if (!FluidRegistry.isFluidRegistered("phenol")) {
 			Phenol = FluidUtils.generateFluidNoPrefix("phenol", "Phenol", 313,	new short[] { 100, 70, 30, 100 }, true);			
 		}
 		else {
 			Phenol = FluidRegistry.getFluid("phenol");
 		}	
-		
+
 		// Use GT's if it exists, else make our own.
 		if (FluidRegistry.isFluidRegistered("hydrochloricacid_gt5u")) {
 			HydrochloricAcid = FluidRegistry.getFluid("hydrochloricacid_gt5u");	
@@ -187,13 +201,13 @@ public class GenericChem extends ItemPackage {
 		else {
 			HydrochloricAcid = FluidUtils.generateFluidNoPrefix("hydrochloricacid", "Hydrochloric Acid", 285,	new short[] { 183, 200, 196, 100 }, true);
 		}	
-		
+
 		Cyclohexane = FluidUtils.generateFluidNoPrefix("cyclohexane", "Cyclohexane", 32 + 175,	new short[] { 100, 70, 30, 100 }, true);		
 		Cyclohexanone = FluidUtils.generateFluidNoPrefix("cyclohexanone", "Cyclohexanone", 32 + 175,	new short[] { 100, 70, 30, 100 }, true);
-		
+
 		Cadaverine = FluidUtils.generateFluidNoPrefix("cadaverine", "Cadaverine", 32 + 175,	new short[] { 100, 70, 30, 100 }, true);
 		Putrescine = FluidUtils.generateFluidNoPrefix("putrescine", "Putrescine", 32 + 175,	new short[] { 100, 70, 30, 100 }, true);
-		
+
 		//Create 2-Ethylanthraquinone
 		//2-Ethylanthraquinone is prepared from the reaction of phthalic anhydride and ethylbenzene
 		Ethylanthraquinone2 = FluidUtils.generateFluidNonMolten("2Ethylanthraquinone", "2-Ethylanthraquinone", 415, new short[]{227, 255, 159, 100}, null, null);
@@ -204,6 +218,21 @@ public class GenericChem extends ItemPackage {
 		//Compressed Air(1500) + Ethylanthrahydroquinone(500) + Anthracene(5) = 450 Ethylanthraquinone && 200 Peroxide
 		Hydrogen_Peroxide = FluidUtils.generateFluidNonMolten("HydrogenPeroxide", "Hydrogen Peroxide", 150, new short[]{210, 255, 255, 100}, null, null);
 
+		if (FluidRegistry.isFluidRegistered("nitricoxide")) {
+			Nitric_Oxide = FluidRegistry.getFluid("nitricoxide");
+			usingGregtechNitricOxide = true;
+		}
+		else {
+			Nitric_Oxide = FluidUtils.generateFluidNoPrefix("nitricoxide", "Nitric Oxide", 200, new short[] {125, 200, 240, 100});
+		}
+		if (FluidRegistry.isFluidRegistered("nitrogendioxide")) {
+			Nitrogen_Dioxide = FluidRegistry.getFluid("nitrogendioxide");
+			usingGregtechNitrogenDioxide = true;
+		}
+		else {
+			Nitrogen_Dioxide = FluidUtils.generateFluidNoPrefix("nitrogendioxide", "Nitrogen Dioxide", 200, new short[] {100, 175, 255, 100});
+		}
+
 
 
 		//Lithium Hydroperoxide - LiOH + H2O2 → LiOOH + 2 H2O
@@ -212,8 +241,8 @@ public class GenericChem extends ItemPackage {
 		//Lithium Peroxide - 2 LiOOH → Li2O2 + H2O2 + 2 H2O
 		Lithium_Peroxide = FluidUtils.generateFluidNonMolten("LithiumPeroxide", "Lithium Peroxide", 446, new short[]{135, 135, 135, 100}, null, null);
 
-		
-		
+
+
 	}	
 
 	@Override
@@ -223,7 +252,7 @@ public class GenericChem extends ItemPackage {
 
 	@Override
 	public boolean generateRecipes() {
-		
+
 		recipeCatalystRed();
 		recipeCatalystYellow();
 		recipeCatalystBlue();
@@ -231,49 +260,117 @@ public class GenericChem extends ItemPackage {
 		recipeCatalystPurple();
 		recipeCatalystBrown();
 		recipeCatalystPink();
-		
+
+		recipeGrindingBallAlumina();
+		recipeGrindingBallSoapstone();
+
 		recipeNitroBenzene();
 		recipeAniline();
 		recipeCadaverineAndPutrescine();
 		recipeCyclohexane();
 		recipeCyclohexanone();
-		
+
 		recipe2Ethylanthraquinone();
 		recipe2Ethylanthrahydroquinone();
 		recipeHydrogenPeroxide();
 		recipeLithiumHydroperoxide();
-		recipeLithiumPeroxide();	
-		
+		recipeLithiumPeroxide();
+		if (!usingGregtechNitricOxide) {
+			recipeNitricOxide();	
+		}
+		if (!usingGregtechNitrogenDioxide) {
+			recipeNitrogenDioxide();	
+		}
+
 		// Add recipes if we are not using GT's fluid.
 		if (!FluidRegistry.isFluidRegistered("hydrochloricacid_gt5u")) {
 			recipeHydrochloricAcid();			
 		}
-		
+		registerFuels();
+
 		return true;
+	}	
+
+
+	private static void registerFuels() {
+
+		// Burnables
+
+		// Gas Fuels
+		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellNitroBenzene", 1), null, 1250, 1);
+
 	}
 
+	private void recipeGrindingBallAlumina() {
+		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+				CI.getNumberedCircuit(10),
+				ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 64)
+		}, 
+				FluidUtils.getFluidStack(GenericChem.Aniline, 4000), 
+				ItemUtils.getSimpleStack(mMillingBallAlumina, 8),
+				180 * 20, 
+				480);
+	}
+	private void recipeGrindingBallSoapstone() {
+		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+				CI.getNumberedCircuit(10),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSoapstone", 32)
+		}, 
+				FluidUtils.getFluidStack(AgrichemFluids.mLiquidResin, 2500), 
+				ItemUtils.getSimpleStack(mMillingBallSoapstone, 8),
+				120 * 20, 
+				480);
+	}
+
+	private void recipeNitrogenDioxide() {
+		ItemStack aNitricOxideCell = ItemUtils.getItemStackOfAmountFromOreDict("cellNitricOxide", 1); 
+		ItemStack aNitrogenDioxideCell = ItemUtils.getItemStackOfAmountFromOreDict("cellNitrogenDioxide", 1);		
+		GT_Values.RA.addChemicalRecipe(                   ItemUtils.getSimpleStack(aNitricOxideCell, 2), GT_Utility.getIntegratedCircuit(1), ELEMENT.getInstance().OXYGEN.getFluid(1000),      FluidUtils.getFluidStack(Nitrogen_Dioxide, 3000), CI.emptyCells(2), 160);
+		GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().OXYGEN.getCell(1),      GT_Utility.getIntegratedCircuit(1), FluidUtils.getFluidStack(Nitric_Oxide, 2000), FluidUtils.getFluidStack(Nitrogen_Dioxide, 3000), CI.emptyCells(1), 160);
+		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ItemUtils.getSimpleStack(aNitricOxideCell, 2), CI.emptyCells(1),        ELEMENT.getInstance().OXYGEN.getFluid(1000),      GT_Values.NF,                           ItemUtils.getSimpleStack(aNitrogenDioxideCell, 3), GT_Values.NI, 160, 30);
+		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ELEMENT.getInstance().OXYGEN.getCell(1),      CI.emptyCells(2),        FluidUtils.getFluidStack(Nitric_Oxide, 2000), GT_Values.NF,                           ItemUtils.getSimpleStack(aNitrogenDioxideCell, 3), GT_Values.NI, 160, 30);
+		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ItemUtils.getSimpleStack(aNitricOxideCell, 2), ELEMENT.getInstance().OXYGEN.getCell(1),       GT_Values.NF,                       GT_Values.NF,                           ItemUtils.getSimpleStack(aNitrogenDioxideCell, 3), GT_Values.NI, 160, 30);
+	}
+
+
+	private void recipeNitricOxide() {
+		ItemStack aWaterCell = ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1);
+		ItemStack aNitricOxideCell = ItemUtils.getItemStackOfAmountFromOreDict("cellNitricOxide", 1); 		
+		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(MISC_MATERIALS.AMMONIA.getCell(8), CI.emptyCells(1),         ELEMENT.getInstance().OXYGEN.getFluid(5000),  FluidUtils.getFluidStack(Nitric_Oxide, 4000), ItemUtils.getSimpleStack(aWaterCell, 9),       GT_Values.NI, 160, 30);
+		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ELEMENT.getInstance().OXYGEN.getCell(5),  CI.emptyCells(4),         MISC_MATERIALS.AMMONIA.getFluid(8000), FluidUtils.getFluidStack(Nitric_Oxide, 4000), ItemUtils.getSimpleStack(aWaterCell, 9),       GT_Values.NI, 160, 30);
+		GT_Values.RA.addChemicalRecipe(                   MISC_MATERIALS.AMMONIA.getCell(8), GT_Utility.getIntegratedCircuit(11), ELEMENT.getInstance().OXYGEN.getFluid(5000),  FluidUtils.getWater(9000),     ItemUtils.getSimpleStack(aNitricOxideCell, 4), CI.emptyCells(4), 160);
+		GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().OXYGEN.getCell(5),  GT_Utility.getIntegratedCircuit(11), MISC_MATERIALS.AMMONIA.getFluid(8000), FluidUtils.getWater(9000),     ItemUtils.getSimpleStack(aNitricOxideCell, 4), CI.emptyCells(1), 160);
+		GT_Values.RA.addChemicalRecipe(                   MISC_MATERIALS.AMMONIA.getCell(8), GT_Utility.getIntegratedCircuit(2),  ELEMENT.getInstance().OXYGEN.getFluid(5000),  FluidUtils.getFluidStack(Nitric_Oxide, 4000), CI.emptyCells(8), 320);
+		GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().OXYGEN.getCell(5),  GT_Utility.getIntegratedCircuit(2),  MISC_MATERIALS.AMMONIA.getFluid(8000), FluidUtils.getFluidStack(Nitric_Oxide, 4000), CI.emptyCells(5), 320);
+		GT_Values.RA.addChemicalRecipe(                   MISC_MATERIALS.AMMONIA.getCell(8), GT_Utility.getIntegratedCircuit(12), ELEMENT.getInstance().OXYGEN.getFluid(5000),  GT_Values.NF,                       ItemUtils.getSimpleStack(aNitricOxideCell, 4), CI.emptyCells(4), 160);
+		GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().OXYGEN.getCell(5),  GT_Utility.getIntegratedCircuit(12), MISC_MATERIALS.AMMONIA.getFluid(8000), GT_Values.NF,                       ItemUtils.getSimpleStack(aNitricOxideCell, 4), CI.emptyCells(1), 160);
+		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(MISC_MATERIALS.AMMONIA.getCell(8), ELEMENT.getInstance().OXYGEN.getCell(5),        GT_Values.NF,                   GT_Values.NF,                       ItemUtils.getSimpleStack(aNitricOxideCell, 4), ItemUtils.getSimpleStack(aWaterCell, 9), 160, 30);
+		GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{MISC_MATERIALS.AMMONIA.getFluid(8000), ELEMENT.getInstance().OXYGEN.getFluid(5000)}, new FluidStack[]{FluidUtils.getFluidStack(Nitric_Oxide, 4000), FluidUtils.getWater(9000)}, null, 160, 30);
+	}
+
+
 	private void recipeHydrochloricAcid() {
-		
+
 		ItemStack aAcidCell = ItemUtils.getItemStackOfAmountFromOreDict("cellHydrochloricAcid", 1);
-		
-        CORE.RA.addChemicalRecipe(                   
-        		ELEMENT.getInstance().CHLORINE.getCell(1), 
-        		GT_Utility.getIntegratedCircuit(1),  
-        		ELEMENT.getInstance().HYDROGEN.getFluid(1000), 
-        		FluidUtils.getFluidStack(HydrochloricAcid, 2000), 
-        		CI.emptyCells(1), 
-        		60, 
-        		8);
-        
-        CORE.RA.addChemicalRecipe(                  
-        		ELEMENT.getInstance().HYDROGEN.getCell(1),
-        		GT_Utility.getIntegratedCircuit(1),  
-        		ELEMENT.getInstance().CHLORINE.getFluid(1000), 
-        		FluidUtils.getFluidStack(HydrochloricAcid, 2000), 
-        		CI.emptyCells(1), 
-        		60, 
-        		8);
-		
+
+		CORE.RA.addChemicalRecipe(                   
+				ELEMENT.getInstance().CHLORINE.getCell(1), 
+				GT_Utility.getIntegratedCircuit(1),  
+				ELEMENT.getInstance().HYDROGEN.getFluid(1000), 
+				FluidUtils.getFluidStack(HydrochloricAcid, 2000), 
+				CI.emptyCells(1), 
+				60, 
+				8);
+
+		CORE.RA.addChemicalRecipe(                  
+				ELEMENT.getInstance().HYDROGEN.getCell(1),
+				GT_Utility.getIntegratedCircuit(1),  
+				ELEMENT.getInstance().CHLORINE.getFluid(1000), 
+				FluidUtils.getFluidStack(HydrochloricAcid, 2000), 
+				CI.emptyCells(1), 
+				60, 
+				8);
+
 		GT_Values.RA.addElectrolyzerRecipe(
 				CI.emptyCells(1), 
 				GT_Utility.getIntegratedCircuit(1),
@@ -288,7 +385,7 @@ public class GenericChem extends ItemPackage {
 				null, 
 				720, 
 				30);
-		
+
 		GT_Values.RA.addElectrolyzerRecipe(
 				CI.emptyCells(1),            
 				GT_Utility.getIntegratedCircuit(11), 
@@ -303,7 +400,7 @@ public class GenericChem extends ItemPackage {
 				null, 
 				720, 
 				30);
-		
+
 		GT_Values.RA.addElectrolyzerRecipe(
 				ItemUtils.getSimpleStack(aAcidCell, 2), 
 				GT_Values.NI,
@@ -321,7 +418,7 @@ public class GenericChem extends ItemPackage {
 	}
 
 	private void recipeCyclohexane() {
-		
+
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getTierTwoChip(),		
@@ -332,7 +429,7 @@ public class GenericChem extends ItemPackage {
 						FluidUtils.getFluidStack("hydrogen", 10000)
 				}, 
 				new ItemStack[] {
-						
+
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(Cyclohexane, 1000),
@@ -340,11 +437,11 @@ public class GenericChem extends ItemPackage {
 				20 * 120, 
 				120, 
 				2);
-		
+
 	}
 
 	private void recipeCyclohexanone() {
-		
+
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getTierTwoChip(),		
@@ -355,7 +452,7 @@ public class GenericChem extends ItemPackage {
 						FluidUtils.getFluidStack("air", 10000)
 				}, 
 				new ItemStack[] {
-						
+
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(Cyclohexanone, 2000),
@@ -363,7 +460,7 @@ public class GenericChem extends ItemPackage {
 				20 * 120, 
 				120, 
 				2);
-		
+
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getTierTwoChip(),
@@ -373,7 +470,7 @@ public class GenericChem extends ItemPackage {
 						FluidUtils.getFluidStack("oxygen", 5000)
 				}, 
 				new ItemStack[] {
-						
+
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(Cyclohexanone, 2000),
@@ -381,10 +478,10 @@ public class GenericChem extends ItemPackage {
 				20 * 120, 
 				120, 
 				2);
-		
-		
-		
-		
+
+
+
+
 	}
 
 	private void recipeCatalystRed() {
@@ -399,7 +496,7 @@ public class GenericChem extends ItemPackage {
 				ItemUtils.getSimpleStack(mRedCatalyst, 10),
 				20 * 20, 
 				30);
-		
+
 	}
 
 	private void recipeCatalystYellow() {
@@ -414,7 +511,7 @@ public class GenericChem extends ItemPackage {
 				ItemUtils.getSimpleStack(mYellowCatalyst, 10),
 				60 * 20, 
 				2000);
-		
+
 	}
 
 	private void recipeCatalystBlue() {
@@ -429,7 +526,7 @@ public class GenericChem extends ItemPackage {
 				ItemUtils.getSimpleStack(mBlueCatalyst, 10),
 				40 * 20, 
 				500);
-		
+
 	}
 
 	private void recipeCatalystOrange() {
@@ -444,7 +541,7 @@ public class GenericChem extends ItemPackage {
 				ItemUtils.getSimpleStack(mOrangeCatalyst, 10),
 				40 * 20, 
 				500);
-		
+
 	}
 
 	private void recipeCatalystPurple() {
@@ -459,7 +556,7 @@ public class GenericChem extends ItemPackage {
 				ItemUtils.getSimpleStack(mPurpleCatalyst, 10),
 				120 * 20, 
 				8000);
-		
+
 	}
 
 	private void recipeCatalystBrown() {
@@ -474,7 +571,7 @@ public class GenericChem extends ItemPackage {
 				ItemUtils.getSimpleStack(mBrownCatalyst, 10),
 				15 * 20, 
 				30);
-		
+
 	}
 
 	private void recipeCatalystPink() {
@@ -489,11 +586,11 @@ public class GenericChem extends ItemPackage {
 				ItemUtils.getSimpleStack(mPinkCatalyst, 10),
 				30 * 20, 
 				2000);
-		
+
 	}
 
 	private void recipeCadaverineAndPutrescine() {
-		
+
 		// Basic Recipe
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
@@ -504,7 +601,7 @@ public class GenericChem extends ItemPackage {
 						FluidUtils.getHotWater(2000)
 				}, 
 				new ItemStack[] {
-						
+
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(Cadaverine, 250),
@@ -525,7 +622,7 @@ public class GenericChem extends ItemPackage {
 						FluidUtils.getHotWater(3000)
 				}, 
 				new ItemStack[] {
-						
+
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(Cadaverine, 750),
@@ -534,11 +631,11 @@ public class GenericChem extends ItemPackage {
 				20 * 120, 
 				240, 
 				2);
-		
+
 	}
 
 	private void recipeAniline() {
-		
+
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getTierThreeChip(),		
@@ -549,7 +646,7 @@ public class GenericChem extends ItemPackage {
 						FluidUtils.getFluidStack("hydrogen", 10000)
 				}, 
 				new ItemStack[] {
-						
+
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(Aniline, 2000),
@@ -557,11 +654,11 @@ public class GenericChem extends ItemPackage {
 				20 * 30, 
 				500, 
 				3);
-		
+
 	}
 
 	private void recipeNitroBenzene() {
-		
+
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getTierThreeChip(),						
@@ -573,7 +670,7 @@ public class GenericChem extends ItemPackage {
 						FluidUtils.getDistilledWater(10000)
 				}, 
 				new ItemStack[] {
-						
+
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack("dilutedsulfuricacid", 3000),
@@ -582,11 +679,11 @@ public class GenericChem extends ItemPackage {
 				20 * 30, 
 				500, 
 				3);
-		
+
 	}
 
 	private void recipe2Ethylanthraquinone() {
-		
+
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedCircuit(4),		
@@ -596,7 +693,7 @@ public class GenericChem extends ItemPackage {
 						FluidUtils.getFluidStack(CoalTar.Ethylbenzene, 2000),
 				}, 
 				new ItemStack[] {
-						
+
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(Ethylanthraquinone2, 2000+(144*4)),
@@ -604,7 +701,7 @@ public class GenericChem extends ItemPackage {
 				20 * 15, 
 				120, 
 				1);		
-		
+
 		/*GT_Values.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 4),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellEthylbenzene", 2),
@@ -612,11 +709,11 @@ public class GenericChem extends ItemPackage {
 				FluidUtils.getFluidStack("fluid.2ethylanthraquinone", 2000+(144*4)),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
 				20*16);*/
-	
+
 	}
 
 	private void recipe2Ethylanthrahydroquinone() {
-		
+
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedCircuit(4),		
@@ -627,7 +724,7 @@ public class GenericChem extends ItemPackage {
 						FluidUtils.getFluidStack("hydrogen", 2000),
 				}, 
 				new ItemStack[] {
-						
+
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 5000),
@@ -635,7 +732,7 @@ public class GenericChem extends ItemPackage {
 				20 * 40, 
 				120, 
 				1);	
-		
+
 		/*GT_Values.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("platePalladium", 0),
 				ItemUtils.getItemStackOfAmountFromOreDict("cell2Ethylanthraquinone", 1),
@@ -643,7 +740,7 @@ public class GenericChem extends ItemPackage {
 				FluidUtils.getFluidStack("fluid.2ethylanthrahydroquinone", 1200),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1),
 				20*40);*/
-	
+
 	}
 
 	private void recipeLithiumPeroxide() {
@@ -665,7 +762,7 @@ public class GenericChem extends ItemPackage {
 	}
 
 	private void recipeLithiumHydroperoxide() {
-		
+
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedCircuit(4),		
@@ -678,14 +775,14 @@ public class GenericChem extends ItemPackage {
 						ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 14),						
 				}, 
 				new FluidStack[] {
-						
+
 				}, 
 				20 * 30, 
 				240, 
 				1);
-		
-		
-		
+
+
+
 		/*CORE.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 7),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 1),
@@ -699,7 +796,7 @@ public class GenericChem extends ItemPackage {
 	}
 
 	private void recipeHydrogenPeroxide() {	
-		
+
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedCircuit(4),
@@ -718,7 +815,7 @@ public class GenericChem extends ItemPackage {
 				20 * 30, 
 				240, 
 				1);
-		
+
 		/*		CORE.RA.addChemicalRecipe(
 						GT_ModHandler.getAirCell(15),
 						ItemUtils.getItemStackOfAmountFromOreDict("cell2Ethylanthrahydroquinone", 5),
@@ -729,38 +826,38 @@ public class GenericChem extends ItemPackage {
 						CI.emptyCells(18),
 						20*30,
 						240);*/
-		
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	private static final ItemStack getTierOneChip() {
 		return CI.getNumberedBioCircuit(4);
 	}
@@ -773,7 +870,7 @@ public class GenericChem extends ItemPackage {
 	private static final ItemStack getTierFourChip() {
 		return CI.getNumberedBioCircuit(16);
 	}
-	
-	
-	
+
+
+
 }

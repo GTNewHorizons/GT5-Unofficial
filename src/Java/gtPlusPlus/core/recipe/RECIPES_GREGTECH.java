@@ -110,25 +110,51 @@ public class RECIPES_GREGTECH {
 
 	private static void chemplantRecipes() {
 
+		//This is subsequently absorbed in water to form nitric acid and nitric oxide.
+	    //3 NO2 (g) + H2O (l) → 2 HNO3 (aq) + NO (g) (ΔH = −117 kJ/mol)
+	    //The nitric oxide is cycled back for reoxidation. Alternatively, if the last step is carried out in air:
+	    //4 NO2 (g) + O2 (g) + 2 H2O (l) → 4 HNO3 (aq)
+		
 		// Advanced method for Nitric Acid Production
-		/*		CORE.RA.addChemicalPlantRecipe(
-						new ItemStack[] {
-								CI.getNumberedBioCircuit(17),
-								CI.getPinkCatalyst(0),
-						},
-						new FluidStack[] {
-								FluidUtils.getLava(10000),
-								FluidUtils.getDistilledWater(5000)
-						},
-						new ItemStack[] {
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(17),
+						CI.getPinkCatalyst(0),
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack(GenericChem.Nitrogen_Dioxide, 3000),
+						FluidUtils.getAir(7000)
+				},
+				new ItemStack[] {
 
-						},
-						new FluidStack[] {
-								FluidUtils.getFluidStack("nitricacid", 2000),					
-						},
-						10 * 20,
-						480,
-						3);*/
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack("nitricacid", 4000),	
+						FluidUtils.getWater(2000),				
+				},
+				10 * 20,
+				480,
+				3);
+		
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(16),
+						CI.getPinkCatalyst(0),
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack(GenericChem.Nitrogen_Dioxide, 3000),
+						FluidUtils.getDistilledWater(5000)
+				},
+				new ItemStack[] {
+
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack("nitricacid", 2000),	
+						FluidUtils.getFluidStack(GenericChem.Nitric_Oxide, 1500),				
+				},
+				10 * 20,
+				480,
+				2);
 		
 		// Produce Boric Acid
 		CORE.RA.addChemicalPlantRecipe(
@@ -162,15 +188,16 @@ public class RECIPES_GREGTECH {
 						FluidUtils.getFluidStack("boricacid", 1500)
 				}, 
 				new ItemStack[] {
-						ELEMENT.getInstance().THORIUM232.getDust(4),
 						ELEMENT.getInstance().THORIUM.getSmallDust(32),
-						ELEMENT.getInstance().URANIUM232.getDust(2)
+						ELEMENT.getInstance().THORIUM232.getDust(2),
+						ELEMENT.getInstance().THORIUM232.getSmallDust(2),
+						ELEMENT.getInstance().URANIUM232.getDust(1),
 				}, 
 				new FluidStack[] {
 
 				},
 				new int[] {
-						0, 0, 20 
+						0, 0, 1000, 250 
 				},
 				20 * 300, 
 				MaterialUtils.getVoltageForTier(4), 
