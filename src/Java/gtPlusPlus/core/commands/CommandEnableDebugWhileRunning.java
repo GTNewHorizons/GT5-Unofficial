@@ -126,9 +126,9 @@ public class CommandEnableDebugWhileRunning implements ICommand
 					String aOreDictData = "";
 					if (!aOreDictNames.isEmpty()) {
 						for (String tag : aOreDictNames) {
-							aOreDictData += (tag+",");
+							aOreDictData += (tag+", ");
 						}
-						if (aOreDictData.endsWith(",")) {
+						if (aOreDictData.endsWith(", ")) {
 							aOreDictData = aOreDictData.substring(0, aOreDictData.length()-2);
 						}
 					}
@@ -164,6 +164,18 @@ public class CommandEnableDebugWhileRunning implements ICommand
 				}		
 				else if (P != null && aFluid == null) {
 					PlayerUtils.messagePlayer(P, "Could not find any fluids.");						
+				}	
+			}
+		}
+		else if (argString[0].toLowerCase().equals("item")) {
+			if (argString.length > 1 && argString[1] != null && argString[1].length() > 0) {			
+				final EntityPlayer P = CommandUtils.getPlayer(S);
+				ItemStack aTest = ItemUtils.getItemStackFromFQRN(argString[1], 1);
+				if (P != null && aTest != null) {
+					PlayerUtils.messagePlayer(P, "Found fluid stack: "+ItemUtils.getItemName(aTest));						
+				}		
+				else if (P != null && aTest == null) {
+					PlayerUtils.messagePlayer(P, "Could not find valid item.");						
 				}	
 			}
 		}
@@ -217,9 +229,9 @@ public class CommandEnableDebugWhileRunning implements ICommand
 						int a = 0;
 						String data = "";
 						for (String tag : aItemDataTags) {
-							data += (tag+",");
+							data += (tag+", ");
 						}
-						if (data.endsWith(",")) {
+						if (data.endsWith(", ")) {
 							data = data.substring(0, data.length()-2);
 						}
 						return data;

@@ -3157,7 +3157,7 @@ item.FrothNickelflotation.name=Nickel Flotation Froth Cell
 item.FrothPlatinumflotation.name=Platinum Flotation Froth Cell
 item.FrothPentlanditeflotation.name=Pentlandite Flotation Froth Cell
 
-
+//Added 31/03/20
 item.BasicGenericChemItem.9.name=Sodium Ethoxide Dust
 item.BasicGenericChemItem.10.name=Sodium Ethyl Xanthate Dust
 item.BasicGenericChemItem.11.name=Potassium Ethyl Xanthate Dust
@@ -3165,3 +3165,7 @@ item.BasicGenericChemItem.12.name=Potassium Hydroxide Dust
 
 item.CarbonDisulfide.name=Carbon Disulfide Cell
 item.HydrogenSulfide.name=Hydrogen Sulfide Cell
+
+item.BasicAgrichemItem.24.name=Pinecone
+item.BasicAgrichemItem.25.name=Crushed Pine Materials
+item.pineoil.name=Pine Oil Cell

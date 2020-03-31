@@ -50,6 +50,8 @@ public class ItemAgrichemBase extends Item {
 	 * 21 - Lithium Chloride
 	 * 22 - Pellet Mold
 	 * 23 - Clean Aluminium Mix
+	 * 24 - Pinecone
+	 * 25 - Crushed Pine
 	 */
 	
 	public ItemAgrichemBase() {
@@ -57,7 +59,7 @@ public class ItemAgrichemBase extends Item {
 		this.setNoRepair();
 		this.setMaxStackSize(64);
 		this.setMaxDamage(0);		
-		base = new IIcon[24];		
+		base = new IIcon[26];		
 		this.setUnlocalizedName("BasicAgrichemItem");
 		GameRegistry.registerItem(this, this.getUnlocalizedName());
 	}

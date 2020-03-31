@@ -292,7 +292,20 @@ public class ItemUtils {
 	public static ItemStack getItemStackFromFQRN(final String fqrn, final int Size) // fqrn = fully qualified resource name
 	{
 		final String[] fqrnSplit = fqrn.split(":");
-		return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
+		if (fqrnSplit.length < 2) {
+			return null;
+		}
+		else if (fqrnSplit.length == 2) {
+			return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
+		}
+		else {
+			if (fqrnSplit.length == 3) {
+				ItemStack aStack = GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
+				int aMeta = Integer.getInteger(fqrnSplit[2]);
+				return ItemUtils.simpleMetaStack(aStack, aMeta, Size);
+			}
+		}
+		return null;
 	}
 
 	public static void generateSpawnEgg(final String entityModID, final String parSpawnName, final int colourEgg,
@@ -871,6 +884,9 @@ public class ItemUtils {
 	}
 
 	public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Materials mMat, int mAmount) {
+		if (mPrefix == OrePrefixes.rod) {
+			mPrefix = OrePrefixes.stick;
+		}
 		ItemStack aGtStack = GT_OreDictUnificator.get(mPrefix, mMat, mAmount);
 		if (aGtStack == null) {
 			Logger.INFO(

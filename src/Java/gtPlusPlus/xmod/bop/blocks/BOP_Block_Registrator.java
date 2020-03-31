@@ -16,6 +16,9 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import gtPlusPlus.xmod.bop.blocks.pine.LeavesPineTree;
+import gtPlusPlus.xmod.bop.blocks.pine.LogPineTree;
+import gtPlusPlus.xmod.bop.blocks.pine.SaplingPineTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.LeavesRainforestTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.LogRainforestTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.SaplingRainforestTree;
@@ -30,10 +33,14 @@ public class BOP_Block_Registrator {
 	public static Block log_Rainforest;
 	public static Block leaves_Rainforest;
 	public static Block sapling_Rainforest;
+	public static Block log_Pine;
+	public static Block leaves_Pine;
+	public static Block sapling_Pine;
 
 	//Runs Each tree Type separately
 	public static final void run(){
 		registerTree_Rainforest();
+		registerTree_Pine();
 	}
 
 
@@ -47,10 +54,23 @@ public class BOP_Block_Registrator {
 		return true;
 	}
 
+	private static final boolean registerTree_Pine(){
+		log_Pine = new LogPineTree();
+		leaves_Pine = new LeavesPineTree();
+		sapling_Pine = new SaplingPineTree();
+		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(log_Pine), "logWood", true);
+		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(leaves_Pine), "treeLeaves", true);
+		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(sapling_Pine), "treeSapling", true);		
+		return true;
+	}
+
 	public static final void recipes() {		
-		//Rainforest Oak
+		// Rainforest Oak
 		addLogRecipes(ItemUtils.getSimpleStack(log_Rainforest));
 		addSaplingRecipes(ItemUtils.getSimpleStack(sapling_Rainforest));
+		// Pine
+		addLogRecipes(ItemUtils.getSimpleStack(log_Pine));
+		addSaplingRecipes(ItemUtils.getSimpleStack(sapling_Pine));
 
 	}
 
