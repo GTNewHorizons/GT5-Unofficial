@@ -125,7 +125,7 @@ public class RocketFuels extends ItemPackage {
 				FluidUtils.getFluidStack("hydrogen", 2000),
 				FluidUtils.getFluidStack(Monomethylhydrazine, 3000),
 				new ItemStack[] {
-						CI.emptyCells(4)
+						CI.emptyCells(2)
 				},
 				new int[] {10000},
 				20*48,

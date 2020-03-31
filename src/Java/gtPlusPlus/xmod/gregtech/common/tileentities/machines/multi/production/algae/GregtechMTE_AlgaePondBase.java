@@ -150,16 +150,17 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 				* mCurrentDirectionZ;
 
 		// Get Expected Tier
-		Block aCasingBlock = aBaseMetaTileEntity.getBlockAtSide((byte) 0);
-		int aCasingMeta = aBaseMetaTileEntity.getMetaIDAtSide((byte) 0);
-
-		// Bad Casings
-		if ((aCasingBlock != GregTech_API.sBlockCasings1) || aCasingMeta > 9) {
-			return false;
-		}
-		else {
-			mLevel = this.getCasingTierOnClientSide();
-		}
+//		Block aCasingBlock = aBaseMetaTileEntity.getBlockAtSide((byte) 3);
+//		int aCasingMeta = aBaseMetaTileEntity.getMetaIDAtSide((byte) 3);
+//
+//		// Bad Casings
+//		if ((aCasingBlock != GregTech_API.sBlockCasings1) || aCasingMeta > 9) {
+//			Logger.INFO("is false");
+//			return false;
+//		}
+//		else {
+		mLevel = this.getCasingTier();
+		//}
 		int aID = TAE.getIndexFromPage(1, 15);
 		int tAmount = 0;
 		check : for (int i = mOffsetX_Lower; i <= mOffsetX_Upper; ++i) {
@@ -180,13 +181,13 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 						Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 						byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 
-						if ((tBlock == ModBlocks.blockCasings2Misc) && (tMeta == 15) && (h >= 0)) {
+						if ((h >= 0) && (tBlock == ModBlocks.blockCasings2Misc) && (tMeta == 15) ) {
 							++tAmount;
 						}
-						else if ((tBlock == GregTech_API.sBlockCasings1) && (tMeta == mLevel) && (h == -1)) {
+						else if ((h == -1) && (tBlock == GregTech_API.sBlockCasings1) && (tMeta == mLevel) ) {
 							++tAmount;
 						}
-						else if ((tBlock == GregTech_API.sBlockCasings1) && (tMeta != mLevel) && (h == -1)) {
+						else if ((h == -1) && (tBlock == GregTech_API.sBlockCasings1) && (tMeta != mLevel) ) {
 							Logger.INFO("Found wrong tiered casing.");
 							return false;
 						}
@@ -338,7 +339,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 		this.fixAllMaintenanceIssue();		
 		// Silly Client Syncing
 		if (aBaseMetaTileEntity.isClientSide()) {
-			this.mLevel = getCasingTierOnClientSide();
+			this.mLevel = getCasingTier();
 		}
 
 	}
@@ -482,8 +483,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 		return false;
 	}
 
-	@SideOnly(Side.CLIENT)
-	private final int getCasingTierOnClientSide() {
+
+	private final int getCasingTier() {
 		if (this == null || this.getBaseMetaTileEntity().getWorld() == null) {
 			return 0;
 		}
@@ -491,8 +492,10 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 			Block aInitStructureCheck;
 			int aInitStructureCheckMeta;
 			IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-			aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(0, -1, 0);
-			aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(0, -1, 0);			
+			int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+	        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+			aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(xDir, -1, zDir);
+			aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, zDir);			
 			if (aInitStructureCheck == GregTech_API.sBlockCasings1) {
 				return aInitStructureCheckMeta;
 			}
