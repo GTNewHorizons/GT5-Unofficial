@@ -18,8 +18,10 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.item.armor.ItemArmorHazmat;
 import ic2.core.item.armor.ItemArmorNanoSuit;
 import ic2.core.item.armor.ItemArmorQuantumSuit;
@@ -248,6 +250,18 @@ public class HazmatUtils {
 	 * @return - Did we register this ItemStack properly?
 	 */
 	public static boolean addProtection(ItemStack aVanStack) {
+		if (ItemUtils.checkForInvalidItems(aVanStack)) {
+			Logger.INFO("=========================Bad Hazmat Addition==============");
+			Logger.INFO("Called from: "+ReflectionUtils.getMethodName(0));
+			Logger.INFO(ReflectionUtils.getMethodName(1));
+			Logger.INFO(ReflectionUtils.getMethodName(2));
+			Logger.INFO(ReflectionUtils.getMethodName(3));
+			Logger.INFO(ReflectionUtils.getMethodName(4));
+			Logger.INFO(ReflectionUtils.getMethodName(5));
+			Logger.INFO(ReflectionUtils.getMethodName(6));	
+			Logger.INFO("==========================================================");
+			return false;
+		}
 		Logger.INFO("[Hazmat] Registering " + aVanStack.getDisplayName() + " for full Hazmat protection.");
 		GT_ItemStack aStack = getGtStackFromVanilla(aVanStack);
 		AutoMap<Boolean> aAdded = new AutoMap<Boolean>();
