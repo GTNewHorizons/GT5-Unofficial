@@ -94,17 +94,19 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 				"Controller Block for the Large Rocket Engine",
 				"Supply Rocket Fuels and 1000L(3000L boosted) of "+mLubricantName+" per hour to run",
 				"Supply 4L of "+mCoolantName+" per second per 2100 eu/t to boost output (optional)", 
-				"Consumes upto 37500L of Air per second",
-				"Produces as much energy as you put fuel in becomes less ",
-				"When producing more then 30K eu/t fuel wil be consume less efficiently (3x - 1.5x eff@55Keu/t)",
+				"Consumes 2000L/s of air per 16384 eu/t produced",
+				"Produces as much energy as you put fuel in",
+				"produses 1500 posution/S per 16384 eu/t produced",
+				"When producing more then 32K eu/t fuel wil be consume less efficiently (3x - 1.5x eff@57Keu/t input energy)",
+				"formula: x = input of energy (10K^(1/3)/ x^(1/3)) * (40K^(1/3)/ x^(1/3))",
 				"Boosting will produce 3x the amount of power but will consume 3x fuel",
 				"Size(WxHxD): 3x3x10, Controller (front centered)",
-				"3x3x10 of Stable "+mCasingName+" (hollow, Min 64!)",
+				"3x3x10 of "+mCasingName+" (hollow, Min 64!)",
 				"8x "+mGearboxName+" inside the Hollow Casing",
 				"1x Dynamo Hatch (Top Middle, Max 8) suports tectech dynamos",
-				"8x Air Intake Hatch (one of the Casings next to a Gear Box, top row allowed)",
-				"2x Input Hatch (Rocket Fuel/Booster) (one of the Casings next to a Gear Box, top row not allowed)",
-				"1x Maintenance Hatch (one of the Casings next to a Gear Box)", 
+				"8x Air Intake Hatch (one of the Casings next to a "+mGearboxName+", top row allowed)",
+				"3x Input Hatch (Rocket Fuel/Booster/co2) (one of the Casings next to a "+mGearboxName+", top row not allowed)",
+				"1x Maintenance Hatch (one of the Casings next to a "+mGearboxName+")", 
 				"1x Muffler Hatch (Back Centre)",
 		};
 	}
@@ -282,10 +284,13 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 	public void setEUProduction(int energy){
 		energy /= 20;
 		double energyEfficiency;
+		double tDevideEnergy = Math.cbrt(energy);
 		if (energy > 10000) {
-			energyEfficiency =  ((double) Math.cbrt(10000)/Math.cbrt(energy));
+			//cbrt(10 000) / 
+			energyEfficiency =  ((double) 21.5443469/tDevideEnergy);
 			if (energy >= 40000)
-				energyEfficiency *= ((double) Math.cbrt(40000)/Math.cbrt(energy));
+				//cbrt(40 000) /
+				energyEfficiency *= ((double)34.19951893/tDevideEnergy);
 			energyEfficiency *= energy;
 		} 
 		else {

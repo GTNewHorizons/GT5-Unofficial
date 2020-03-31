@@ -174,22 +174,21 @@ extends GregtechMeta_MultiBlockBase {
 			final int tZ = this.getBaseMetaTileEntity().getZCoord();
 			for (byte i = -1; i < 2; i = (byte) (i + 1)) {
 				for (byte j = -1; j < 2; j = (byte) (j + 1)) {
-					if ((i != 0) || (j != 0)) {
-						for (byte k = 0; k < 5; k = (byte) (k + 1)) {
-							
-							Block aBlock = this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
-							int aMeta = this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
-							IGregTechTileEntity aTile = this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
-							if (!isValidBlockForStructure(aTile, getCasingTextureIndex(), true, aBlock, aMeta, getCasingBlock(), getCasingMeta())) {
-								log("Bad Casing on Extruder.");
-								return false;
-							}
-							else {
-								if (aTile == null) {
-									aCasingCount++;
-								}
-							}							
+					for (byte k = 0; k < 5; k = (byte) (k + 1)) {
+						if (j == 0 && i ==0)
+							k = 4;
+						Block aBlock = this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
+						int aMeta = this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
+						IGregTechTileEntity aTile = this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
+						if (!isValidBlockForStructure(aTile, getCasingTextureIndex(), true, aBlock, aMeta, getCasingBlock(), getCasingMeta())) {
+							log("Bad Casing on Extruder.");
+							return false;
 						}
+						else {
+							if (aTile == null) {
+								aCasingCount++;
+							}
+						}							
 					}
 				}
 			}
