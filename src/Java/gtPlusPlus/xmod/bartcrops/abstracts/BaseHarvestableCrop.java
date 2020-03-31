@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.bartcrops.abstracts;
 
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.preloader.CORE_Preloader;
 import ic2.api.crops.ICropTile;
 
 public abstract class BaseHarvestableCrop extends BaseCrop {
@@ -44,7 +44,7 @@ public abstract class BaseHarvestableCrop extends BaseCrop {
 
 	public int growthDuration(ICropTile crop) {
 		short r;
-		if (CORE.DEBUG) {
+		if (CORE_Preloader.DEBUG_MODE) {
 			r = 1;
 		} else if (crop.getSize() == 2) {
 			r = 200;

@@ -46,7 +46,6 @@ public class CORE {
 	public static Configuration Config;
 
 	public static boolean DEVENV = false;
-	public static boolean DEBUG = false;
 	public static boolean NBT_PERSISTENCY_PATCH_APPLIED = false;
 	//Only can be set in Dev, no config or setting elsewhere.
 	public static final boolean LOAD_ALL_CONTENT = false;;

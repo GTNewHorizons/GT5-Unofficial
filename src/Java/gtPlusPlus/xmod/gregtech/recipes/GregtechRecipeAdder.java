@@ -1332,21 +1332,25 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 		// Inputs
 		ItemStack[] aInputsOre1 = new ItemStack[] {
+				CI.getNumberedCircuit(10),
 				aOreStack,
 				aMillingBall_Alumina
 		};
 		
 		ItemStack[] aInputsOre2 = new ItemStack[] {
+				CI.getNumberedCircuit(11),
 				aOreStack,
 				aMillingBall_Soapstone
 		};
 		
 		ItemStack[] aInputsCrushed1 = new ItemStack[] {
+				CI.getNumberedCircuit(10),
 				aCrushedStack,
 				aMillingBall_Alumina
 		};
 		
 		ItemStack[] aInputsCrushed2 = new ItemStack[] {
+				CI.getNumberedCircuit(11),
 				aCrushedStack,
 				aMillingBall_Soapstone
 		};

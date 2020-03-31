@@ -1,11 +1,10 @@
 package gtPlusPlus.xmod.gregtech.api.gui;
 
-import net.minecraft.entity.player.InventoryPlayer;
-
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.preloader.CORE_Preloader;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GUI_SteamCondenser extends GT_GUIContainerMetaTile_Machine
 {
@@ -20,7 +19,7 @@ public class GUI_SteamCondenser extends GT_GUIContainerMetaTile_Machine
 	protected void drawGuiContainerForegroundLayer(final int par1, final int par2)
 	{
 		this.fontRendererObj.drawString("Condenser", 8, 4, 4210752);
-		if (CORE.DEBUG){
+		if (CORE_Preloader.DEBUG_MODE){
 			this.tickTime = ((CONTAINER_SteamCondenser)this.mContainer).mTickingTime;
 			this.fontRendererObj.drawString("Tick Time: "+this.tickTime, 8, 12, 4210752);
 		}

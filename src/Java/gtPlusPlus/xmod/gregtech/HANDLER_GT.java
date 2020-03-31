@@ -81,9 +81,7 @@ public class HANDLER_GT {
 			OldCircuitHandler.preInit();
 		}
 
-		GregtechFluidHandler.run();		
-		addNewOrePrefixes();
-
+		GregtechFluidHandler.run();
 	}
 
 	public static void init(){
@@ -155,8 +153,11 @@ public class HANDLER_GT {
 		WoodCentrifuging.processLogsForMethane();
 	}
 
-	private static void addNewOrePrefixes() {
-		CustomOrePrefix.init();
+	public static void addNewOrePrefixes() {
+		for (CustomOrePrefix aPrefixTest : CustomOrePrefix.values()) {
+			Logger.INFO("Adding "+aPrefixTest.name()+" to OrePrefixes Enum.");
+			Logger.INFO("Injecting: "+aPrefixTest.addToEnum());
+		}
 	}
 	
 	private static void convertPyroToCokeOven() {

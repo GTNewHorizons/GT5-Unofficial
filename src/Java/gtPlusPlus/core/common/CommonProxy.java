@@ -1,7 +1,5 @@
 package gtPlusPlus.core.common;
 
-import static gtPlusPlus.core.lib.CORE.DEBUG;
-
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -49,8 +47,10 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
+import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.galacticraft.handler.HandlerTooltip_GC;
+import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
 import net.minecraft.enchantment.Enchantment;
@@ -80,15 +80,19 @@ public class CommonProxy {
 		LoadedMods.checkLoaded();
 		Logger.INFO("Making sure we're ready to party!");
 
-		if (!DEBUG) {
+		if (!CORE_Preloader.DEBUG_MODE) {
 			Logger.WARNING("Development mode not enabled.");
-		} else if (DEBUG) {
+		} else if (CORE_Preloader.DEBUG_MODE) {
 			Logger.INFO("Development mode enabled.");
 		} else {
 			Logger.WARNING("Development mode not set.");
 		}
 
 		AddToCreativeTab.initialiseTabs();
+		
+		if (LoadedMods.Gregtech) {
+			HANDLER_GT.addNewOrePrefixes();
+		}
 
 		// Moved from Init after Debug Loading.
 		// 29/01/18 - Alkalus
@@ -119,7 +123,7 @@ public class CommonProxy {
 
 	public void init(final FMLInitializationEvent e) {
 		// Debug Loading
-		if (CORE.DEBUG) {
+		if (CORE_Preloader.DEBUG_MODE) {
 			DEBUG_INIT.registerHandlers();
 		}
 

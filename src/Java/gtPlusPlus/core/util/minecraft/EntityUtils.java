@@ -74,6 +74,13 @@ public class EntityUtils {
 		final int blockZ = MathHelper.floor_double(parEntity.posZ);
 		return new BlockPos(blockX, blockY, blockZ, parEntity.worldObj);
 	}
+	
+	public static BlockPos findBlockPosOfEntity(final Entity parEntity){
+		final int blockX = MathHelper.floor_double(parEntity.posX);
+		final int blockY = MathHelper.floor_double(parEntity.boundingBox.minY);
+		final int blockZ = MathHelper.floor_double(parEntity.posZ);
+		return new BlockPos(blockX, blockY, blockZ, parEntity.worldObj);
+	}
 
 	//TODO
 	public static void registerEntityToBiomeSpawns(final Class<EntityLiving> classy, final EnumCreatureType EntityType, final BiomeGenBase baseBiomeGen){

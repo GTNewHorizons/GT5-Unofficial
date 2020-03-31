@@ -18,6 +18,7 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.CustomOrePrefix;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -92,7 +93,7 @@ public class BaseOreComponent extends Item{
 			aKey = OrePrefixes.dustPure.name();
 		}
 		else if (componentType == ComponentTypes.MILLED) {
-			aKey = "milled";
+			aKey = CustomOrePrefix.milled.get().name();
 		}
 
 		ItemStack x = aMap.get(aKey);

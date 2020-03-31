@@ -475,10 +475,16 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		try {
 			Block aInitStructureCheck;
 			int aInitStructureCheckMeta;
-			IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();			
-			for (int i=1;1<10;i++) {
+			IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();	
+			if (aBaseMetaTileEntity == null || aBaseMetaTileEntity.getWorld() == null || aBaseMetaTileEntity.getWorld().getChunkFromBlockCoords(aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getZCoord()) == null) {
+				return 0;
+			}
+			for (int i=1;i<10;i++) {
 				aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(0, i, 0);
-				aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(0, i, 0);				
+				aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(0, i, 0);	
+				if (aInitStructureCheck == null) {
+					continue;
+				}
 				if (aInitStructureCheck == GregTech_API.sBlockCasings4 && aInitStructureCheckMeta == 1) {
 					return 0;
 				}
@@ -488,9 +494,9 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 			}
 		}
 		catch (Throwable t) {
-			t.printStackTrace();
-			return 0;
+			//t.printStackTrace();
 		}
+		return 0;
 
 	}
 

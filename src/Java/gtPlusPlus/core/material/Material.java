@@ -892,7 +892,7 @@ public class Material {
 		return getComponentByPrefix(OrePrefixes.dustImpure, stacksize);
 	}
 	public final ItemStack getMilled(final int stacksize){
-		return getComponentByPrefix(CustomOrePrefix.get(CustomOrePrefix.Milled), stacksize);
+		return getComponentByPrefix(CustomOrePrefix.milled.get(), stacksize);
 	}
 	
 	public final boolean hasSolidForm() {		

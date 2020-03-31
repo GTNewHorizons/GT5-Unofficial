@@ -102,16 +102,17 @@ public class BaseItemMetaFood extends ItemFood {
 			mSpecialBehaviourMap.put(aMetaID, aSpecialBehaviour);			
 		}
 		mOreDictNames.put(aMetaID, aOreDictNames);
-		registerFoodToOreDict(aMetaID);
 	}
 	
-	private static void registerFoodToOreDict(int aMetaID) {
-		ArrayList<String> aOreDictNames = mOreDictNames.get(aMetaID);
-		if (aOreDictNames != null && !aOreDictNames.isEmpty()) {
-			ItemStack aFoodStack = ItemUtils.simpleMetaStack(ModItems.itemMetaFood, aMetaID, 1);
-			for (String aOreName : aOreDictNames) {
-				ItemUtils.addItemToOreDictionary(aFoodStack, aOreName);				
-			}
+	public static void registerFoodsToOreDict() {
+		for (int aMetaID=0; aMetaID < mTotalMetaItems; aMetaID++) {
+			ArrayList<String> aOreDictNames = mOreDictNames.get(aMetaID);
+			if (aOreDictNames != null && !aOreDictNames.isEmpty()) {
+				ItemStack aFoodStack = ItemUtils.simpleMetaStack(ModItems.itemMetaFood, aMetaID, 1);
+				for (String aOreName : aOreDictNames) {
+					ItemUtils.addItemToOreDictionary(aFoodStack, aOreName);				
+				}
+			}			
 		}
 	}
 

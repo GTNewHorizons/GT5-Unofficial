@@ -17,6 +17,7 @@ public class CORE_Preloader {
 	
 	public static File MC_DIR;
 	public static boolean DEV_ENVIRONMENT = false;
+	public static boolean DEBUG_MODE = false;
 	public static boolean enableOldGTcircuits = false;
 	public static int enableWatchdogBGM = 0;
 	

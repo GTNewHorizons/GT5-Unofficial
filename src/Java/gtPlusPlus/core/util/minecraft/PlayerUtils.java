@@ -188,4 +188,12 @@ public class PlayerUtils {
 		Utils.sendServerMessage(string);		
 	}
 
+	public static boolean isCreative(EntityPlayer aPlayer) {
+		return aPlayer.capabilities.isCreativeMode;
+	}
+	
+	public static boolean canTakeDamage(EntityPlayer aPlayer) {
+		return !aPlayer.capabilities.disableDamage;
+	} 
+
 }

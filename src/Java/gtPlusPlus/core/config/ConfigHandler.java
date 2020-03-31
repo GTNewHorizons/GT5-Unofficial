@@ -22,8 +22,8 @@ public class ConfigHandler {
 				"Stops mod checking for updates.");
 	
 		// Debug
-		DEBUG = config.getBoolean("debugMode", "debug", false,
-				"Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");
+		/*		DEBUG = config.getBoolean("debugMode", "debug", false,
+						"Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");*/
 		disableEnderIOIntegration = config.getBoolean("disableEnderIO", "debug", false,
 				"Disables EnderIO Integration.");
 		disableEnderIOIngotTooltips = config.getBoolean("disableEnderIOIngotTooltips", "debug", false,

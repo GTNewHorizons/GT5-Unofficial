@@ -55,6 +55,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine_NoPlayerInventory;
@@ -89,7 +90,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		Logger.MACHINE_INFO("Found .08 findRecipe method? "+(a08 != null));
 		Logger.MACHINE_INFO("Found .09 findRecipe method? "+(a09 != null));
 
-		if (CORE.DEBUG) {
+		if (CORE_Preloader.DEBUG_MODE) {
 			aLogger = ReflectionUtils.getMethod(Logger.class, "INFO", String.class);				
 		}
 		else {

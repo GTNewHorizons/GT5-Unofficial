@@ -6,12 +6,12 @@ import java.util.Map;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -81,8 +81,8 @@ public class CommandEnableDebugWhileRunning implements ICommand
 			Logger.INFO("Toggling Debug Mode.");			
 			final EntityPlayer P = CommandUtils.getPlayer(S);		
 			if (PlayerUtils.isPlayerOP(P)) {
-				CORE.DEBUG = Utils.invertBoolean(CORE.DEBUG);
-				PlayerUtils.messagePlayer(P, "Toggled GT++ Debug Mode - Enabled: "+CORE.DEBUG);
+				CORE_Preloader.DEBUG_MODE = Utils.invertBoolean(CORE_Preloader.DEBUG_MODE);
+				PlayerUtils.messagePlayer(P, "Toggled GT++ Debug Mode - Enabled: "+CORE_Preloader.DEBUG_MODE);
 			}
 		}
 		else if (argString[0].toLowerCase().equals("logging")) {

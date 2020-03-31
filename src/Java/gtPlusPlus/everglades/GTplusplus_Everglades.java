@@ -6,10 +6,12 @@ import java.io.File;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.Everglades;
@@ -22,6 +24,7 @@ import gtPlusPlus.everglades.block.DarkWorldContentLoader;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Base;
 import gtPlusPlus.everglades.gen.gt.WorldGen_Ores;
+import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import net.minecraftforge.common.DimensionManager;
@@ -171,7 +174,7 @@ public class GTplusplus_Everglades implements ActionListener {
 		WorldGen_GT_Base.oreveinPercentage = 64;
 		WorldGen_GT_Base.oreveinAttempts = 16;
 		WorldGen_GT_Base.oreveinMaxPlacementAttempts = 4;	
-		if (CORE.DEBUG || CORE.DEVENV){
+		if (CORE_Preloader.DEBUG_MODE || CORE.DEVENV){
 			WorldGen_GT_Base.debugWorldGen = true;
 		}		
 		DarkWorldContentLoader.run();

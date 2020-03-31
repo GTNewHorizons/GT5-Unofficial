@@ -10,6 +10,7 @@ import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.Preloader_Logger;
 import gtPlusPlus.preloader.asm.transformers.Preloader_Transformer_Handler;
 import net.minecraft.launchwrapper.Launch;
+import sun.repackage.ForgeEnumHelper;
 
 @SortingIndex(10097) 
 @MCVersion(value = "1.7.10")
@@ -67,6 +68,8 @@ public class Preloader_FMLLoadingPlugin implements IFMLLoadingPlugin  {
     		Preloader_Logger.ERROR("Unable to determine CoreMod location");
         }
         CORE_Preloader.DEV_ENVIRONMENT = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+        CORE_Preloader.DEBUG_MODE = AsmConfig.debugMode;
+        ForgeEnumHelper.setup();
         Preloader_Logger.INFO("Running on "+gtPlusPlus.preloader.CORE_Preloader.JAVA_VERSION+" | Development Environment: "+CORE_Preloader.DEV_ENVIRONMENT);
 	}
 

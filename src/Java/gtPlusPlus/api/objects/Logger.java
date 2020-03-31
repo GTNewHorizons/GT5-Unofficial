@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.proxy.ClientProxy;
+import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.asm.AsmConfig;
 
 public class Logger {
@@ -39,19 +39,7 @@ public class Logger {
 	// Non-Dev Comments
 	public static void MACHINE_INFO(final String s) {
 		if (enabled) {
-
-			boolean localPlayer = false;
-			try {
-				if (ClientProxy.playerName != null){
-					if (ClientProxy.playerName.toLowerCase().contains("draknyte1")){
-						localPlayer = true;
-					}
-				}
-			}
-			catch (final Throwable t){
-
-			}
-
+			boolean localPlayer = CORE_Preloader.DEV_ENVIRONMENT;
 			if (CORE.ConfigSwitches.MACHINE_INFO || localPlayer) {
 				final String name1 = gtPlusPlus.core.util.reflect.ReflectionUtils.getMethodName(2);
 				modLogger.info("Machine Info: " + s + " | " + name1);
@@ -62,7 +50,7 @@ public class Logger {
 	// Developer Comments
 	public static void WARNING(final String s) {
 		if (enabled) {
-			if (CORE.DEBUG) {
+			if (CORE_Preloader.DEBUG_MODE) {
 				modLogger.warn(s);
 			}
 		}
@@ -71,7 +59,7 @@ public class Logger {
 	// Errors
 	public static void ERROR(final String s) {
 		if (enabled) {
-			if (CORE.DEBUG) {
+			if (CORE_Preloader.DEBUG_MODE) {
 				modLogger.fatal(s);
 			}
 		}
@@ -80,7 +68,7 @@ public class Logger {
 	// Developer Logger
 	public static void SPECIFIC_WARNING(final String whatToLog, final String msg, final int line) {
 		if (enabled) {
-			// if (!CORE.DEBUG){
+			// if (!CORE_Preloader.DEBUG_MODE){
 			FMLLog.warning("GT++ |" + line + "| " + whatToLog + " | " + msg);
 			// }
 		}
@@ -111,7 +99,7 @@ public class Logger {
 	 */
 	public static void BEES(final String s) {
 		if (enabled) {
-			if (CORE.DEVENV || CORE.DEBUG) {
+			if (CORE_Preloader.DEV_ENVIRONMENT || CORE_Preloader.DEBUG_MODE) {
 				modLogger.info("[Bees] "+s);
 			}
 		}
@@ -121,7 +109,7 @@ public class Logger {
 	 */
 	public static void DEBUG_BEES(final String s) {
 		if (enabled) {
-			if (CORE.DEVENV || CORE.DEBUG) {
+			if (CORE_Preloader.DEV_ENVIRONMENT || CORE_Preloader.DEBUG_MODE) {
 				modLogger.info("[Debug][Bees] "+s);
 			}
 		}
@@ -134,7 +122,7 @@ public class Logger {
 	 */
 	public static void MATERIALS(final String s) {
 		if (enabled) {
-			if (/* CORE.DEVENV || */CORE.DEBUG) {
+			if (/* CORE_Preloader.DEV_ENVIRONMENT || */CORE_Preloader.DEBUG_MODE) {
 				modLogger.info("[Materials] "+s);
 			}
 		}
@@ -144,7 +132,7 @@ public class Logger {
 	 */
 	public static void DEBUG_MATERIALS(final String s) {
 		if (enabled) {
-			if (CORE.DEVENV || CORE.DEBUG) {
+			if (CORE_Preloader.DEV_ENVIRONMENT || CORE_Preloader.DEBUG_MODE) {
 				modLogger.info("[Debug][Materials] "+s);
 			}
 		}
@@ -155,7 +143,7 @@ public class Logger {
 	 */
 	public static void REFLECTION(final String s) {
 		if (enabled) {
-			if (CORE.DEVENV || CORE.DEBUG) {
+			if (CORE_Preloader.DEV_ENVIRONMENT || CORE_Preloader.DEBUG_MODE) {
 				modLogger.info("[Reflection] "+s);
 			}
 		}
@@ -167,7 +155,7 @@ public class Logger {
 	 */
 	public static void WORLD(final String s) {
 		if (enabled) {
-			if (CORE.DEVENV || CORE.DEBUG) {
+			if (CORE_Preloader.DEV_ENVIRONMENT || CORE_Preloader.DEBUG_MODE) {
 				modLogger.info("[WorldGen] "+s);
 			}
 		}
@@ -175,7 +163,7 @@ public class Logger {
 
 	public static void RECIPE(String string) {
 		if (enabled) {
-			if (/*CORE.DEVENV || */CORE.DEBUG) {
+			if (/*CORE_Preloader.DEV_ENVIRONMENT || */CORE_Preloader.DEBUG_MODE) {
 				modLogger.info("[Recipe] "+string);		
 			}
 		}

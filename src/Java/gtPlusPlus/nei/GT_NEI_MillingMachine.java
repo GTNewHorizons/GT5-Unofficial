@@ -23,12 +23,13 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.objects.ItemData;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -37,7 +38,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_NEI_FluidReactor
+public class GT_NEI_MillingMachine
 extends TemplateRecipeHandler {
 	public static final int sOffsetX = 5;
 	public static final int sOffsetY = 11;
@@ -47,10 +48,10 @@ extends TemplateRecipeHandler {
 		GuiContainerManager.addTooltipHandler(new GT_RectHandler());
 	}
 
-	protected Gregtech_Recipe_Map mRecipeMap;
+	protected GT_Recipe_Map mRecipeMap;
 
-	public GT_NEI_FluidReactor() {
-		this.mRecipeMap = Gregtech_Recipe_Map.sChemicalPlantRecipes;
+	public GT_NEI_MillingMachine() {
+		this.mRecipeMap = Gregtech_Recipe_Map.sOreMillRecipes;
 		this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), this.getRecipeMapName(), new Object[0]));
 		if (!NEI_GT_Config.sIsAdded) {
 			FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtechplusplus@" + this.getRecipeName() + "@" + this.getRecipeMapName());
@@ -71,7 +72,7 @@ extends TemplateRecipeHandler {
 
 	@Override
 	public TemplateRecipeHandler newInstance() {
-		return new GT_NEI_FluidReactor();
+		return new GT_NEI_MillingMachine();
 	}
 
 	@Override
@@ -162,8 +163,7 @@ extends TemplateRecipeHandler {
 
 	@Override
 	public String getOverlayIdentifier() {
-		//return this.mRecipeMap.mNEIName;
-		return "";
+		return this.mRecipeMap.mNEIName;
 	}
 
 	@Override
@@ -180,13 +180,12 @@ extends TemplateRecipeHandler {
 
 	@Override
 	public String getRecipeName() {
-		//return GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
-		return "            Chem Plant";
+		return GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
 	}
 
 	@Override
 	public String getGuiTexture() {
-		return CORE.MODID+":textures/gui/FluidReactor.png";
+		return this.mRecipeMap.mNEIGUIPath;
 	}
 
 	@Override
@@ -209,9 +208,8 @@ extends TemplateRecipeHandler {
 							(tStack.item.stackSize != 0)) {
 						break;
 					}
-					if (ItemUtils.isCatalyst(aStack)) {
-						currenttip.add("Does not always get consumed in the process");
-						currenttip.add("Higher tier pipe casings allow this item to last longer");						
+					if (ItemUtils.isMillingBall(aStack)) {
+						currenttip.add("Does not always get consumed in the process");						
 					}
 					else if (ItemUtils.isControlCircuit(aStack)) {
 						currenttip.add("Does not get consumed in the process");					
@@ -393,24 +391,18 @@ extends TemplateRecipeHandler {
 
 			int tStartIndex = 0;			
 
-			// Four Input Slots
 			if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-				this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 3, -4));
+				this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 14));
 			}
 			tStartIndex++;
 			if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-				this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 21, -4));
+				this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 14));
 			}
 			tStartIndex++;
 			if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-				this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 39, -4));
+				this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 14));
 			}
-			tStartIndex++;
-			if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-				this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 57, -4));
-			}
-			tStartIndex++;
-			
+			tStartIndex++;			
 			
 			if (aRecipe.mSpecialItems != null) {
 				this.mInputs.add(new FixedPositionedStack(aRecipe.mSpecialItems, 120, 52));
@@ -464,7 +456,7 @@ extends TemplateRecipeHandler {
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return this.getCycledIngredients(GT_NEI_FluidReactor.this.cycleticks / 10, this.mInputs);
+			return this.getCycledIngredients(GT_NEI_MillingMachine.this.cycleticks / 10, this.mInputs);
 		}
 
 		@Override

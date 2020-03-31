@@ -96,6 +96,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.GTplusplus_Everglades;
+import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.cofh.HANDLER_COFH;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
@@ -388,7 +389,7 @@ public final class ModItems {
 		itemDummyResearch = new ItemDummyResearch();
 		
 		//Debug Loading
-		if (CORE.DEBUG){
+		if (CORE_Preloader.DEBUG_MODE){
 			DEBUG_INIT.registerItems();
 		}
 

@@ -30,8 +30,9 @@ public class AsmConfig {
 	public static boolean enableTcAspectSafety;
 	public static boolean enabledLwjglKeybindingFix;
 	public static boolean enabledFixEntitySetHealth;
-	
+
 	public static boolean disableAllLogging;
+	public static boolean debugMode;
 
 	public AsmConfig(File file) {
 		if (!loaded) {
@@ -57,6 +58,12 @@ public class AsmConfig {
 			prop.comment = "Disables ALL logging from GT++.";
 			prop.setLanguageKey("gtpp.disableAllLogging").setRequiresMcRestart(false);
 			disableAllLogging = prop.getBoolean(false);
+			propOrderDebug.add(prop.getName());
+			
+			prop = config.get("debug", "debugMode", false);
+			prop.comment = "Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)";
+			prop.setLanguageKey("gtpp.debugMode").setRequiresMcRestart(false);
+			debugMode = prop.getBoolean(false);
 			propOrderDebug.add(prop.getName());
 			
 			prop = config.get("debug", "enabledFixEntitySetHealth", false);

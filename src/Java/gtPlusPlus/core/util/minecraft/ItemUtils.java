@@ -37,6 +37,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
@@ -354,7 +355,7 @@ public class ItemUtils {
 	}
 
 	public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
-		if (CORE.DEBUG) {
+		if (CORE_Preloader.DEBUG_MODE) {
 			Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(1));
 			Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(2));
 			Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(3));
@@ -1271,6 +1272,16 @@ public class ItemUtils {
 			return true;
 		}
 		if (GT_Utility.areStacksEqual(aStack, AgriculturalChem.mGreenCatalyst, true)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isMillingBall(ItemStack aStack) {
+		if (GT_Utility.areStacksEqual(aStack, GenericChem.mMillingBallAlumina, true)) {
+			return true;
+		}
+		if (GT_Utility.areStacksEqual(aStack, GenericChem.mMillingBallSoapstone, true)) {
 			return true;
 		}
 		return false;

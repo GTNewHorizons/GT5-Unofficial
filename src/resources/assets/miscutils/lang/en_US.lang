@@ -20,6 +20,7 @@ tile.fluidSludge.0.name=Stagnant Waste Water
 //Death Messages
 death.attack.plasmabolt=%s died by burning hot plasma.
 death.attack.plasmabolt.player=%1$s was killed by %2$s using plasma.
+death.attack.gtpp.grinder=%s was ground into nothingness by an IsaMill.
 
 //Alternative Materials
 item.itemPlateBatteryAlloy.name=Plate of Battery Alloy
@@ -3141,5 +3142,7 @@ item.BasicAlgaeItem.5.name=Breedable Algae
 item.BasicAlgaeItem.6.name=Breedable Algae
 
 //Added 30/03/20
+item.milledChalcopyrite.name=Milled Chalcopyrite
+item.milledSphalerite.name=Milled Sphalerite
 item.BasicGenericChemItem.7.name=Alumina Milling Ball
 item.BasicGenericChemItem.8.name=Soapstone Milling Ball

@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -8,15 +12,26 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase {
 
@@ -27,6 +42,8 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 
 	private static ITexture frontFace;
 	private static ITexture frontFaceActive;
+	
+	private static final DamageSource mIsaMillDamageSource = new DamageSource("gtpp.grinder").setDamageBypassesArmor();
 
 	public GregtechMetaTileEntity_IsaMill(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -76,7 +93,123 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_Recipe_Map.sMaceratorRecipes;
+		return Recipe_GT.Gregtech_Recipe_Map.sOreMillRecipes;
+	}
+
+	@Override
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPostTick(aBaseMetaTileEntity, aTick);
+		if (aTick % 20 == 0) {
+			checkForEntities(aBaseMetaTileEntity, aTick);			
+		}
+	}
+
+	private final AutoMap<BlockPos> mFrontBlockPosCache = new AutoMap<BlockPos>();
+
+	public void checkForEntities(IGregTechTileEntity aBaseMetaTileEntity, long aTime) {
+
+		if (aTime % 100 == 0) {
+			mFrontBlockPosCache.clear();
+		}
+		if (mFrontBlockPosCache.isEmpty()) {
+			byte tSide = aBaseMetaTileEntity.getBackFacing();
+			int aTileX = aBaseMetaTileEntity.getXCoord();
+			int aTileY = aBaseMetaTileEntity.getYCoord();
+			int aTileZ = aBaseMetaTileEntity.getZCoord();
+			boolean xFacing = (tSide == 4 || tSide == 5);
+			boolean zFacing = (tSide == 2 || tSide == 3);
+
+			// Check Casings
+			int aDepthOffset = (tSide == 2 || tSide == 4) ? 1 : -1;
+			for (int aHorizontalOffset = -1; aHorizontalOffset < 2; aHorizontalOffset++) {
+				for (int aVerticalOffset = -1; aVerticalOffset < 2; aVerticalOffset++) {			
+					int aX = !xFacing ? (aTileX + aHorizontalOffset) : (aTileX + aDepthOffset);
+					int aY = aTileY + aVerticalOffset;
+					int aZ = !zFacing ? (aTileZ + aHorizontalOffset) : (aTileZ + aDepthOffset);					
+					mFrontBlockPosCache.add(new BlockPos(aX, aY, aZ, aBaseMetaTileEntity.getWorld()));
+				}
+			}
+		}
+
+		AutoMap<EntityLivingBase> aEntities = getEntities(mFrontBlockPosCache, aBaseMetaTileEntity.getWorld());
+		if (!aEntities.isEmpty()) {
+			for (EntityLivingBase aFoundEntity : aEntities) {
+				if (aFoundEntity instanceof EntityPlayer) {
+					EntityPlayer aPlayer = (EntityPlayer) aFoundEntity;
+					if (PlayerUtils.isCreative(aPlayer) || !PlayerUtils.canTakeDamage(aPlayer)) {
+						continue;
+					}
+					else {
+						if (aFoundEntity.getHealth() > 0) {
+							EntityUtils.doDamage(aFoundEntity, mIsaMillDamageSource, (int) (aFoundEntity.getMaxHealth() / 5));
+							if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
+								generateParticles(aFoundEntity);
+							}
+						}
+					}
+				}
+				if (aFoundEntity.getHealth() > 0) {
+					EntityUtils.doDamage(aFoundEntity, mIsaMillDamageSource, Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
+					if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
+						generateParticles(aFoundEntity);
+					}
+				}
+			}
+		}
+	}
+
+	private static final AutoMap<EntityLivingBase> getEntities(AutoMap<BlockPos> aPositionsToCheck, World aWorld){
+		AutoMap<EntityLivingBase> aEntities = new AutoMap<EntityLivingBase>();
+		HashSet<Chunk> aChunksToCheck = new HashSet<Chunk>();
+		if (!aPositionsToCheck.isEmpty()) {
+			Chunk aLocalChunk;
+			for (BlockPos aPos : aPositionsToCheck) {
+				aLocalChunk = aWorld.getChunkFromBlockCoords(aPos.xPos, aPos.zPos);
+				aChunksToCheck.add(aLocalChunk);				
+			}
+		}
+		if (!aChunksToCheck.isEmpty()) {	
+			AutoMap<EntityLivingBase> aEntitiesFound = new AutoMap<EntityLivingBase>();
+			for (Chunk aChunk : aChunksToCheck) {				
+				if (aChunk.isChunkLoaded) {
+					List[] aEntityLists = aChunk.entityLists;
+					for (List aEntitySubList : aEntityLists) {
+						for (Object aEntity : aEntitySubList) {
+							if (aEntity instanceof EntityLivingBase) {
+								EntityLivingBase aPlayer = (EntityLivingBase) aEntity;
+								aEntitiesFound.add(aPlayer);
+							}
+						}
+					}
+				}				
+			}
+			if (!aEntitiesFound.isEmpty()) {
+				for (EntityLivingBase aEntity : aEntitiesFound) {
+					BlockPos aPlayerPos = EntityUtils.findBlockPosOfEntity(aEntity);
+					for (BlockPos aBlockSpaceToCheck : aPositionsToCheck) {
+						if (aBlockSpaceToCheck.equals(aPlayerPos)) {
+							aEntities.add(aEntity);
+						}
+					}
+				}
+			}
+		}		
+		return aEntities;
+	}
+
+	private static void generateParticles(EntityLivingBase aEntity) {
+		BlockPos aPlayerPosBottom = EntityUtils.findBlockPosOfEntity(aEntity);
+		BlockPos aPlayerPosTop = aPlayerPosBottom.getUp();
+		AutoMap<BlockPos> aEntityPositions = new AutoMap<BlockPos>();
+		aEntityPositions.add(aPlayerPosBottom);
+		aEntityPositions.add(aPlayerPosTop);
+		for (int i = 0; i < 64; i++) {	
+			BlockPos aEffectPos = aEntityPositions.get(aEntity.height > 1f ? MathUtils.randInt(0, 1) : 0);
+			float aOffsetX = MathUtils.randFloat(-0.35f, 0.35f);
+			float aOffsetY = MathUtils.randFloat(-0.25f, 0.35f);
+			float aOffsetZ = MathUtils.randFloat(-0.35f, 0.35f);
+			aEntity.worldObj.spawnParticle("reddust", aEffectPos.xPos + aOffsetX, aEffectPos.yPos + 0.3f + aOffsetY, aEffectPos.zPos + aOffsetZ, 0.0D, 0.0D, 0.0D);
+		}
 	}
 
 	@Override
@@ -128,7 +261,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 					int aZ = !zFacing ? (aTileZ + aHorizontalOffset) : (aTileZ + aDepthOffset);
 					Block aCasingBlock = aBaseMetaTileEntity.getBlock(aX, aY, aZ);
 					int aCasingMeta = aBaseMetaTileEntity.getMetaID(aX, aY, aZ);	
-					IGregTechTileEntity aTileEntity = getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ);
+					IGregTechTileEntity aTileEntity = aBaseMetaTileEntity.getIGregTechTileEntity(aX, aY, aZ);
 					if (aTileEntity != null) {
 						final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 						if (aMetaTileEntity != null) {

@@ -48,6 +48,7 @@ public class ItemsFoods {
 		GT_OreDictUnificator.registerOre("foodHotCurriedSausages", ItemUtils.getItemStackFromFQRN(CORE.MODID+":itemHotFoodCurriedSausages", 1));
 
 		ModItems.itemMetaFood = new BaseItemMetaFood();
+		BaseItemMetaFood.registerFoodsToOreDict();
 		addCookingRecipes();
 		addFoodDropsToMobs();
 		

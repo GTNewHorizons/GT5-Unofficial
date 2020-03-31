@@ -1,6 +1,5 @@
 package gtPlusPlus.plugin.sulfurchem;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.interfaces.IPlugin;
@@ -11,6 +10,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
+import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -57,7 +57,7 @@ public class Core_SulfuricChemistry implements IPlugin {
 			int addedNew = addRevisedGT6Recipes();
 			log("Added "+addedNew+" new Sulfuric Chemistry recipes.");
 			
-			if (CORE.DEVENV || CORE.DEBUG) {
+			if (CORE.DEVENV || CORE_Preloader.DEBUG_MODE) {
 				for (int i=0;i<2;i++) {
 					for (GT_Recipe m : mRemovedRecipes1) {
 						String[] mInfo = RecipeUtils.getRecipeInfo(m);
