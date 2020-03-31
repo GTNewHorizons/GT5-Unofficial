@@ -19,6 +19,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 
 public class CommandEnableDebugWhileRunning implements ICommand
@@ -33,14 +36,14 @@ public class CommandEnableDebugWhileRunning implements ICommand
 	@Override
 	public int compareTo(final Object o){
 		if (o instanceof Comparable<?>) {
-		 @SuppressWarnings("unchecked")
-		Comparable<ICommand> a = (Comparable<ICommand>) o;	
-		 if (a.equals(this)) {
-			 return 0;
-		 }
-		 else {
-			 return -1;
-		 }
+			@SuppressWarnings("unchecked")
+			Comparable<ICommand> a = (Comparable<ICommand>) o;	
+			if (a.equals(this)) {
+				return 0;
+			}
+			else {
+				return -1;
+			}
 		}
 		return -1;
 	}
@@ -106,7 +109,42 @@ public class CommandEnableDebugWhileRunning implements ICommand
 					String aItemDisplayName = ItemUtils.getItemName(aHeldItem);
 					String aItemUnlocalName = ItemUtils.getUnlocalizedItemName(aHeldItem);
 					String aNbtString = tryIterateNBTData(aHeldItem);	
-					PlayerUtils.messagePlayer(P, "["+aItemUnlocalName+"]"+"["+aItemDisplayName+"] "+aNbtString);				
+					AutoMap<String> aOreDictNames = new AutoMap<String>();
+
+					int[] aOreIDs = OreDictionary.getOreIDs(aHeldItem);
+					for (int id : aOreIDs) {
+						String aOreNameFromID = OreDictionary.getOreName(id);
+						if (aOreNameFromID != null && aOreNameFromID.length() > 0 && !aOreNameFromID.equals("Unknown")) {
+							aOreDictNames.add(aOreNameFromID);
+						}
+					}
+
+					String aOreDictData = "";
+					if (!aOreDictNames.isEmpty()) {
+						for (String tag : aOreDictNames) {
+							aOreDictData += (tag+",");
+						}
+						if (aOreDictData.endsWith(",")) {
+							aOreDictData = aOreDictData.substring(0, aOreDictData.length()-2);
+						}
+					}
+					
+					String aFluidContainerData = "";
+					FluidStack aHeldItemFluid = FluidContainerRegistry.getFluidForFilledItem(aHeldItem);
+					if (aHeldItemFluid != null) {
+						aFluidContainerData = "["+aHeldItemFluid.getUnlocalizedName()+"]["+aHeldItemFluid.getLocalizedName()+"]";
+					}
+
+					PlayerUtils.messagePlayer(P, "["+aItemUnlocalName+"]"+"["+aItemDisplayName+"] ");
+					if (aFluidContainerData.length() > 0) {
+						PlayerUtils.messagePlayer(P, ""+aFluidContainerData);				
+					}
+					if (!aOreDictNames.isEmpty()) {
+						PlayerUtils.messagePlayer(P, ""+aOreDictData);
+					}
+					if (aNbtString.length() > 0) {
+						PlayerUtils.messagePlayer(P, ""+aNbtString);				
+					}
 				}
 				else {
 					PlayerUtils.messagePlayer(P, "No item held.");
@@ -146,7 +184,7 @@ public class CommandEnableDebugWhileRunning implements ICommand
 	public boolean playerUsesCommand(final World W, final EntityPlayer P, final int cost){
 		return true;
 	}
-	
+
 	public static String tryIterateNBTData(ItemStack aStack) {
 		try {
 			AutoMap<String> aItemDataTags = new AutoMap<String>();

@@ -47,7 +47,7 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Structural Solar Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Salt Containment Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Thermally Insulated Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Flotation Cell Casings"); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", ""); // Unused
@@ -88,6 +88,8 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 			return TexturesGtBlock.Casing_Material_Stellite.getIcon();
 		case 8:
 			return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
+		case 9:
+			return TexturesGtBlock.TEXTURE_CASING_FLOTATION.getIcon();
 			
 		}
 

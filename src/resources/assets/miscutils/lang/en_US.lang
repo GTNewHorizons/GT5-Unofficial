@@ -3156,3 +3156,12 @@ item.FrothCopperflotation.name=Chalcopyrite Flotation Froth Cell
 item.FrothNickelflotation.name=Nickel Flotation Froth Cell
 item.FrothPlatinumflotation.name=Platinum Flotation Froth Cell
 item.FrothPentlanditeflotation.name=Pentlandite Flotation Froth Cell
+
+
+item.BasicGenericChemItem.9.name=Sodium Ethoxide Dust
+item.BasicGenericChemItem.10.name=Sodium Ethyl Xanthate Dust
+item.BasicGenericChemItem.11.name=Potassium Ethyl Xanthate Dust
+item.BasicGenericChemItem.12.name=Potassium Hydroxide Dust
+
+item.CarbonDisulfide.name=Carbon Disulfide Cell
+item.HydrogenSulfide.name=Hydrogen Sulfide Cell

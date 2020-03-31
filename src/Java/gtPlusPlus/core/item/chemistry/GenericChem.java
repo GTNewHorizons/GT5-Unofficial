@@ -3,6 +3,7 @@ package gtPlusPlus.core.item.chemistry;
 import static gtPlusPlus.core.lib.CORE.GTNH;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
@@ -19,6 +20,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -37,6 +39,7 @@ public class GenericChem extends ItemPackage {
 
 	private static boolean usingGregtechNitricOxide = false;
 	private static boolean usingGregtechNitrogenDioxide = false;
+	private static boolean usingGregtechHydricSulfur = false;
 
 	/**
 	 * Materials
@@ -94,6 +97,8 @@ public class GenericChem extends ItemPackage {
 	public static Fluid Lithium_Peroxide;
 	public static Fluid Nitric_Oxide;
 	public static Fluid Nitrogen_Dioxide;
+	public static Fluid Carbon_Disulfide;
+	public static Fluid Hydrogen_Sulfide;
 
 	/**
 	 * Items
@@ -115,6 +120,11 @@ public class GenericChem extends ItemPackage {
 
 	public static ItemStack mMillingBallAlumina;
 	public static ItemStack mMillingBallSoapstone;
+	
+	public static ItemStack mSodiumEthoxide;
+	public static ItemStack mSodiumEthylXanthate;
+	public static ItemStack mPotassiumEthylXanthate;
+	public static ItemStack mPotassiumHydroxide;
 
 
 
@@ -149,6 +159,10 @@ public class GenericChem extends ItemPackage {
 		mPinkCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 6, 1);
 		mMillingBallAlumina = ItemUtils.simpleMetaStack(mGenericChemItem1, 7, 1);
 		mMillingBallSoapstone = ItemUtils.simpleMetaStack(mGenericChemItem1, 8, 1);
+		mSodiumEthoxide = ItemUtils.simpleMetaStack(mGenericChemItem1, 9, 1);
+		mSodiumEthylXanthate = ItemUtils.simpleMetaStack(mGenericChemItem1, 10, 1);
+		mPotassiumEthylXanthate = ItemUtils.simpleMetaStack(mGenericChemItem1, 11, 1);
+		mPotassiumHydroxide = ItemUtils.simpleMetaStack(mGenericChemItem1, 12, 1);
 
 	}
 
@@ -163,6 +177,10 @@ public class GenericChem extends ItemPackage {
 		ItemUtils.addItemToOreDictionary(mPinkCatalyst, "catalystPlatinumRhodium");
 		ItemUtils.addItemToOreDictionary(mMillingBallAlumina, "millingballAlumina");
 		ItemUtils.addItemToOreDictionary(mMillingBallSoapstone, "millingballSoapstone");
+		ItemUtils.addItemToOreDictionary(mSodiumEthoxide, "dustSodiumEthoxide");
+		ItemUtils.addItemToOreDictionary(mSodiumEthylXanthate, "dustSodiumEthylXanthate");
+		ItemUtils.addItemToOreDictionary(mPotassiumEthylXanthate, "dustPotassiumEthylXanthate");
+		ItemUtils.addItemToOreDictionary(mPotassiumHydroxide, "dustPotassiumHydroxide");
 
 	}
 
@@ -241,8 +259,15 @@ public class GenericChem extends ItemPackage {
 		//Lithium Peroxide - 2 LiOOH → Li2O2 + H2O2 + 2 H2O
 		Lithium_Peroxide = FluidUtils.generateFluidNonMolten("LithiumPeroxide", "Lithium Peroxide", 446, new short[]{135, 135, 135, 100}, null, null);
 
+		Carbon_Disulfide = FluidUtils.generateFluidNoPrefix("CarbonDisulfide", "Carbon Disulfide", 350, new short[]{175, 175, 175, 100});
 
-
+		if (FluidRegistry.isFluidRegistered("fluid.liquid_hydricsulfur") || MaterialUtils.doesMaterialExist("HydricSulfide")) {
+			usingGregtechHydricSulfur = true;
+		}
+		else {
+			Hydrogen_Sulfide = FluidUtils.generateFluidNoPrefix("HydrogenSulfide", "Hydrogen Sulfide", 446, new short[]{240, 130, 30, 100});
+		}
+		
 	}	
 
 	@Override
@@ -281,15 +306,151 @@ public class GenericChem extends ItemPackage {
 		if (!usingGregtechNitrogenDioxide) {
 			recipeNitrogenDioxide();	
 		}
+		if (!usingGregtechHydricSulfur) {
+			recipeHydricSulfur();			
+		}
+		else {
+			Hydrogen_Sulfide = FluidRegistry.getFluid("fluid.liquid_hydricsulfur");
+		}
 
 		// Add recipes if we are not using GT's fluid.
 		if (!FluidRegistry.isFluidRegistered("hydrochloricacid_gt5u")) {
 			recipeHydrochloricAcid();			
 		}
+		
+		recipeCarbonDisulfide();
+		recipeEthylXanthates();
+		recipePotassiumHydroxide();
+		
 		registerFuels();
 
 		return true;
 	}	
+
+
+	private void recipePotassiumHydroxide() {
+		//Ca(OH)2 + K2CO3 → CaCO3 + 2 KOH		
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(18),
+						ELEMENT.getInstance().POTASSIUM.getDust(4),	
+						ELEMENT.getInstance().CARBON.getDust(2),	
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 2),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack("oxygen", 6000),
+				}, 
+				new ItemStack[] {
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 2),
+						ItemUtils.getSimpleStack(mPotassiumHydroxide, 4)
+
+				}, 
+				new FluidStack[] {
+						
+				}, 
+				20 *60 * 2,
+				120, 
+				2);
+		
+	}
+
+
+	private void recipeEthylXanthates() {
+
+		//Potassium ethyl xanthate - CH3CH2OH + CS2 + KOH → CH3CH2OCS2K + H2O
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(17),	
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 2),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(BioRecipes.mEthanol, 1000),
+						FluidUtils.getFluidStack(Carbon_Disulfide, 1000),
+				}, 
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(mPotassiumEthylXanthate, 1)
+				}, 
+				new FluidStack[] {
+						FluidUtils.getWater(1000)
+				}, 
+				20 *60,
+				120, 
+				2);
+
+		//Sodium ethyl xanthate - CH3CH2ONa + CS2 → CH3CH2OCS2Na
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(17),	
+						ItemUtils.getSimpleStack(mSodiumEthoxide, 1)
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(Carbon_Disulfide, 1000),
+				}, 
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(mPotassiumEthylXanthate, 1)
+				}, 
+				new FluidStack[] {
+						
+				}, 
+				20 *60,
+				120, 
+				2);
+		
+	}
+
+
+	private void recipeHydricSulfur() {
+		
+		ItemStack aCellHydricSulfide = ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenSulfide", 1);		
+        GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().SULFUR.getDust(1), GT_Utility.getIntegratedCircuit(1), ELEMENT.getInstance().HYDROGEN.getFluid(2000), FluidUtils.getFluidStack(Hydrogen_Sulfide, 3000), GT_Values.NI, 60, 8);
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ELEMENT.getInstance().SULFUR.getDust(1), CI.emptyCells(3),        ELEMENT.getInstance().HYDROGEN.getFluid(2000), GT_Values.NF, ItemUtils.getSimpleStack(aCellHydricSulfide, 3), GT_Values.NI, 60, 8);
+		
+	}
+
+
+	private void recipeCarbonDisulfide() {
+		
+		CORE.RA.addBlastRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(20),
+						ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 8),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 16)						
+				}, 
+				new FluidStack[] {
+						
+				}, 
+				new ItemStack[] {
+						ItemUtils.getItemStackOfAmountFromOreDict("dustDarkAsh", 1)
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(Carbon_Disulfide, 4000)
+				},
+				20 *60 * 10,
+				30,
+				1500);
+
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(20),	
+						ItemUtils.getSimpleStack(mBrownCatalyst, 0),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 4)	
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(CoalTar.Coal_Gas, 1000),
+				}, 
+				new ItemStack[] {
+
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(Carbon_Disulfide, 2000),
+						FluidUtils.getFluidStack(Hydrogen_Sulfide, 4000)
+				}, 
+				20 *60 * 5,
+				30, 
+				2);
+		
+		
+	}
 
 
 	private static void registerFuels() {

@@ -61,7 +61,7 @@ public class BioRecipes {
 	private static Fluid mCarbonDioxide;
 	private static Fluid mCarbonMonoxide;
 	private static Fluid mEthylene;
-	private static Fluid mEthanol;
+	public static Fluid mEthanol;
 	private static Fluid mChlorine;
 	private static Fluid mHydrogen;
 	private static Fluid mDilutedSulfuricAcid;

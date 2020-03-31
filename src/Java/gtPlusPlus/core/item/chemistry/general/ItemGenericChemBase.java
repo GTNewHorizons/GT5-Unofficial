@@ -19,7 +19,7 @@ public class ItemGenericChemBase extends Item {
 
 	final protected IIcon base[];
 	
-	final private int aMetaSize = 9;
+	final private int aMetaSize = 13;
 	
 	/*
 	 * 0 - Red Metal Catalyst //FeCu
@@ -31,6 +31,10 @@ public class ItemGenericChemBase extends Item {
 	 * 6 - Pink Metal Catalyst //PtRh
 	 * 7 - Alumina Grinding Ball
 	 * 8 - Soapstone Grinding Ball
+	 * 9 - Sodium Ethoxide // 2 Sodium + 1 Ethanol | 2 C2H5OH + 2 Na → 2 C2H5ONa + H2
+	 * 10 - Sodium Ethyl Xanthate //CH3CH2ONa + CS2 → CH3CH2OCS2Na
+	 * 11 - Potassium Ethyl Xanthate //CH3CH2OH + CS2 + KOH → CH3CH2OCS2K + H2O
+	 * 12 - Potassium Hydroxide // KOH
 	 */
 	
 	public ItemGenericChemBase() {

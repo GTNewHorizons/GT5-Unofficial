@@ -281,6 +281,7 @@ public class TexturesGtBlock {
 	public static final CustomIcon TEXTURE_CASING_ADVANCED_VOLCNUS = new CustomIcon("TileEntities/MACHINE_CASING_ADVANCED_VOLCANUS");
 	public static final CustomIcon TEXTURE_CASING_ROCKETDYNE = new CustomIcon("TileEntities/MACHINE_CASING_ROCKETDYNE");
 	public static final CustomIcon TEXTURE_CASING_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_GRINDING_FACTORY");
+	public static final CustomIcon TEXTURE_CASING_FLOTATION = new CustomIcon("TileEntities/MACHINE_CASING_FLOTATION");
 		
 	// Custom Pipes
 	public static final CustomIcon TEXTURE_PIPE_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_PIPE_T1");	
