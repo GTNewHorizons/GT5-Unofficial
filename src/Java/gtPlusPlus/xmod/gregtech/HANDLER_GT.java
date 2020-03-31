@@ -23,7 +23,9 @@ import gtPlusPlus.api.helpers.GregtechPlusPlus_API.Multiblock_API;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.api.objects.minecraft.multi.NoEUBonusMultiBehaviour;
 import gtPlusPlus.api.objects.minecraft.multi.NoOutputBonusMultiBehaviour;
+import gtPlusPlus.api.objects.minecraft.multi.NoSpeedBonusMultiBehaviour;
 import gtPlusPlus.australia.gen.gt.WorldGen_GT_Australia;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.OldCircuitHandler;
@@ -37,6 +39,7 @@ import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
+import gtPlusPlus.xmod.gregtech.api.enums.CustomOrePrefix;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
@@ -78,8 +81,7 @@ public class HANDLER_GT {
 			OldCircuitHandler.preInit();
 		}
 
-		GregtechFluidHandler.run();		
-
+		GregtechFluidHandler.run();
 	}
 
 	public static void init(){
@@ -131,6 +133,8 @@ public class HANDLER_GT {
 
 		// Register the No-Bonus Special Behaviour.
 		Multiblock_API.registerSpecialMultiBehaviour(new NoOutputBonusMultiBehaviour());
+		Multiblock_API.registerSpecialMultiBehaviour(new NoSpeedBonusMultiBehaviour());
+		Multiblock_API.registerSpecialMultiBehaviour(new NoEUBonusMultiBehaviour());
 
 		//Register some custom recipe maps for any enabled multiblocks.
 		//MultiblockRecipeMapHandler.run();
@@ -149,6 +153,13 @@ public class HANDLER_GT {
 		WoodCentrifuging.processLogsForMethane();
 	}
 
+	public static void addNewOrePrefixes() {
+		for (CustomOrePrefix aPrefixTest : CustomOrePrefix.values()) {
+			Logger.INFO("Adding "+aPrefixTest.name()+" to OrePrefixes Enum.");
+			Logger.INFO("Injecting: "+aPrefixTest.addToEnum());
+		}
+	}
+	
 	private static void convertPyroToCokeOven() {
 		if (ReflectionUtils.doesFieldExist(GT_Recipe.GT_Recipe_Map.class, "sPyrolyseRecipes")) {
 			int aCount = 0; 

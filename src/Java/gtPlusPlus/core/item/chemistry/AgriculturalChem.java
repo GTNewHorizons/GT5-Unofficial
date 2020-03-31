@@ -12,6 +12,7 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -555,6 +556,22 @@ public class AgriculturalChem extends ItemPackage {
 		CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(PoopJuice, 1000), 12);
 		CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(ManureSlurry, 1000), 24);
 		CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(FertileManureSlurry, 1000), 32);
+
+		// Red Slurry / Tailings Processing
+		GT_Values.RA.addCentrifugeRecipe(
+				CI.getNumberedBioCircuit(10),
+				GT_Values.NI,
+				FluidUtils.getFluidStack(AgriculturalChem.RedMud, 1000),
+				FluidUtils.getWater(500),
+				ELEMENT.getInstance().IRON.getSmallDust(1),
+				ELEMENT.getInstance().COPPER.getSmallDust(1),
+				ELEMENT.getInstance().TIN.getSmallDust(1),
+				ELEMENT.getInstance().SULFUR.getSmallDust(1),
+				ELEMENT.getInstance().NICKEL.getTinyDust(1),
+				ELEMENT.getInstance().LEAD.getTinyDust(1),
+				new int[] { 3000, 3000, 2000, 2000, 1000, 1000 }, 
+				30 * 20, 
+				30);
 
 	}
 

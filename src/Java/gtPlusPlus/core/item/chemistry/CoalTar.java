@@ -189,20 +189,20 @@ public class CoalTar extends ItemPackage {
 		GT_Values.RA.addDistilleryRecipe(
 				CI.getNumberedCircuit(5), //Circuit
 				FluidUtils.getFluidStack("fluid.coaltar", 1500), //aInput
-				FluidUtils.getFluidStack("fluid.kerosene", 400), //aOutput
+				FluidUtils.getFluidStack("fluid.kerosene", 600), //aOutput
 				300, //aDuration
 				64,//aEUt
 				false //Hidden?
 				);	
 		
 		GT_Values.RA.addDistillationTowerRecipe(
-				FluidUtils.getFluidStack("fluid.coaltar", 1000),
+				FluidUtils.getFluidStack("fluid.coaltar", 1200),
 				new FluidStack[]{
 						FluidUtils.getFluidStack("fluid.coaltaroil", 500), //aOutput
 						FluidUtils.getFluidStack("liquid_naphtha", 100), //aOutput
 						FluidUtils.getFluidStack("fluid.ethylbenzene", 150), //aOutput
 						FluidUtils.getFluidStack("fluid.anthracene", 50), //aOutput
-						FluidUtils.getFluidStack("fluid.kerosene", 200), //aOutput
+						FluidUtils.getFluidStack("fluid.kerosene", 400), //aOutput
 				},
 				null,
 				900,
@@ -314,9 +314,6 @@ public class CoalTar extends ItemPackage {
 	@Override
 	public void fluids() {
 
-
-		//Special Compatibility for Coke
-		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(ModItems.itemCoalCoke, 1), "fuelCoke");
 		//Create Coal Gas
 		Coal_Gas = FluidUtils.generateFluidNonMolten("CoalGas", "Coal Gas", 500, new short[]{48, 48, 48, 100}, null, null);
 		//Ethanol

@@ -43,7 +43,6 @@ import gtPlusPlus.core.handler.events.MissingMappingsEvent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.core.util.minecraft.HazmatUtils;
@@ -65,7 +64,6 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechMiniRaFusion;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.oredict.OreDictionary;
 
 @MCVersion(value = "1.7.10")
 @Mod(modid = CORE.MODID, name = CORE.name, version = CORE.VERSION, dependencies = "required-after:Forge; after:TConstruct; after:PlayerAPI; after:dreamcraft; after:IC2; after:ihl; after:psychedelicraft; after:gregtech; after:Forestry; after:MagicBees; after:CoFHCore; after:Growthcraft; after:Railcraft; after:CompactWindmills; after:ForbiddenMagic; after:MorePlanet; after:PneumaticCraft; after:ExtraUtilities; after:Thaumcraft; after:rftools; after:simplyjetpacks; after:BigReactors; after:EnderIO; after:tectech; after:GTRedtech; after:beyondrealitycore; after:OpenBlocks; after:IC2NuclearControl; after:TGregworks; after:StevesCarts; after:xreliquary;")
@@ -80,11 +78,11 @@ public class GTplusplus implements ActionListener {
 		STARTED(SERVER_START);		
 		protected boolean mIsPhaseActive = false;
 		private final INIT_PHASE mPrev;
-		
+
 		private INIT_PHASE(INIT_PHASE aPreviousPhase) {
 			mPrev = aPreviousPhase;
 		}
-		
+
 		public synchronized final boolean isPhaseActive() {			
 			return mIsPhaseActive;
 		}
@@ -98,9 +96,9 @@ public class GTplusplus implements ActionListener {
 			}
 		}
 	}
-	
+
 	public static INIT_PHASE CURRENT_LOAD_PHASE = INIT_PHASE.SUPER;
-	
+
 	//Mod Instance
 	@Mod.Instance(CORE.MODID)
 	public static GTplusplus instance;
@@ -129,7 +127,7 @@ public class GTplusplus implements ActionListener {
 		// Blocks
 		Logger.WARNING("Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
 	}
-	
+
 	public GTplusplus() {
 		super();
 		INIT_PHASE.SUPER.setPhaseActive(true);
@@ -153,8 +151,10 @@ public class GTplusplus implements ActionListener {
 		//setupMaterialWhitelist();
 
 		//HTTP Requests
-		CORE.MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
-		CORE.USER_COUNTRY = GeoUtils.determineUsersCountry();
+		if (CORE.ConfigSwitches.enableUpdateChecker) {
+			CORE.MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
+			CORE.USER_COUNTRY = GeoUtils.determineUsersCountry();
+		}
 
 		// Handle GT++ Config
 		ConfigHandler.handleConfigFile(event);		
@@ -204,11 +204,7 @@ public class GTplusplus implements ActionListener {
 		Core_Manager.postInit();
 		//SprinklerHandler.registerModFerts();
 
-		//Set Variables for Fluorite Block handling
-		Logger.INFO("Setting some Variables for the block break event handler.");
-		BlockEventHandler.oreLimestone = OreDictionary.getOres("oreLimestone");
-		BlockEventHandler.blockLimestone = OreDictionary.getOres("limestone");
-		BlockEventHandler.fluoriteOre = FLUORIDES.FLUORITE.getOre(1);
+		BlockEventHandler.init();
 
 		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Logger.INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
@@ -220,8 +216,8 @@ public class GTplusplus implements ActionListener {
 	@EventHandler
 	public synchronized void serverStarting(final FMLServerStartingEvent event) {
 		INIT_PHASE.SERVER_START.setPhaseActive(true);
-        event.registerServerCommand(new CommandMath());
-        event.registerServerCommand(new CommandEnableDebugWhileRunning());
+		event.registerServerCommand(new CommandMath());
+		event.registerServerCommand(new CommandEnableDebugWhileRunning());
 		event.registerServerCommand(new CommandDebugChunks());
 		if (LoadedMods.Thaumcraft) {
 			event.registerServerCommand(new CommandDumpAspects());
@@ -242,7 +238,7 @@ public class GTplusplus implements ActionListener {
 			}
 			SystemUtils.invokeGC();
 		}
-		
+
 	}
 
 	@Override
@@ -281,7 +277,7 @@ public class GTplusplus implements ActionListener {
 			}
 		}
 	}
-	
+
 	protected void generateGregtechRecipeMaps() {
 
 		int[] mValidCount = new int[] {0, 0, 0};
@@ -324,7 +320,7 @@ public class GTplusplus implements ActionListener {
 				Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes_GT.add(a);
 			}
 		}
-		
+
 		//Large Electrolyzer generation
 		mOriginalCount[1] = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList.size();
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList) {
@@ -349,7 +345,7 @@ public class GTplusplus implements ActionListener {
 				mInvalidCount[1]++;
 			}
 		}
-		
+
 		if (Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.size() < 1) {
 			for (GT_Recipe a : Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes.mRecipeList) {
 				Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.add(a);
@@ -373,11 +369,11 @@ public class GTplusplus implements ActionListener {
 				mInvalidCount[2]++;
 			}
 		}
-		
+
 		//Redo plasma recipes in Adv. Vac.
 		//Meta_GT_Proxy.generatePlasmaRecipesForAdvVacFreezer();
-		
-		
+
+
 		String[] machineName = new String[] {"Centrifuge", "Electrolyzer", "Vacuum Freezer"};
 		for (int i=0;i<3;i++) {
 			Logger.INFO("[Recipe] Generated "+mValidCount[i]+" recipes for the Industrial "+machineName[i]+". The original machine can process "+mOriginalCount[i]+" recipes, meaning "+mInvalidCount[i]+" are invalid for this Multiblock's processing in some way.");

@@ -19,7 +19,6 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
@@ -200,7 +199,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 
 		if (aOffsetMeta <= 3) {
 			FluidStack f = getFluid(aStack);
-			aList.add("Can also drain any other standard fluid container block");
+			aList.add("Cannot drain any other standard fluid container block");
 			aList.add("Cannot be emptied via RMB, use inside a tank with GUI");
 			aList.add(EnumChatFormatting.DARK_GRAY+"This is technically just a fancy fluid cell");
 			aList.add(EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName() : "No Fluids Contained"));
@@ -973,7 +972,8 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 						} 
 						//Try support Standard Fluid Tanks too (May disable if dupes appear again)
 						else if ((tTileEntity instanceof IFluidTank || tTileEntity instanceof IFluidHandler)) {
-							return this.drainIFluidTank(tTileEntity, aStack, aWorld, aPlayer, aX, aY, aZ);
+							//return this.drainIFluidTank(tTileEntity, aStack, aWorld, aPlayer, aX, aY, aZ);
+							return false;
 						}
 					}
 				}

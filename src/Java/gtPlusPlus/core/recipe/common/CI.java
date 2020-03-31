@@ -9,7 +9,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
@@ -17,7 +16,6 @@ import gtPlusPlus.core.recipe.LOADER_Machine_Components;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import ic2.core.Ic2Items;
@@ -184,7 +182,7 @@ public class CI {
 	public static ItemStack explosiveITNT;
 
 	public static void preInit(){
-		
+
 		//Tiered Components
 		component_Plate = new String[]{
 				getTieredComponent(OrePrefixes.plate, 0),
@@ -402,7 +400,7 @@ public class CI {
 			return ItemList.Tool_DataOrb.get(1);				
 		}
 	}
-	
+
 	public static ItemStack getDataStick(){
 		if (CORE.ConfigSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH){
 			return GregtechItemList.Old_Tool_DataStick.get(1);
@@ -489,17 +487,7 @@ public class CI {
 
 	public static void init() {		
 		//Set Explosives
-		try {			
-			ItemList PowerderBarrel = Utils.getValueOfItemList("Block_Powderbarrel", null);
-			if (PowerderBarrel != null){
-				explosivePowderKeg = PowerderBarrel.get(1).copy();
-			}
-			else {
-				explosivePowderKeg = ItemUtils.getSimpleStack(Items.gunpowder).copy();
-			}
-		} catch (java.lang.IllegalArgumentException Y) {
-			explosivePowderKeg = ItemUtils.getSimpleStack(Items.gunpowder).copy();
-		}
+		explosivePowderKeg = ItemUtils.getValueOfItemList("Block_Powderbarrel", 1, ItemUtils.getSimpleStack(Items.gunpowder, 16));
 		explosiveTNT = ItemUtils.getSimpleStack(Blocks.tnt).copy();
 		explosiveITNT = Ic2Items.industrialTnt.copy();
 
@@ -540,13 +528,13 @@ public class CI {
 	public static ItemStack emptyCells(int i) {
 		return ItemUtils.getEmptyCell(i);
 	}
-	
-	
-	
+
+
+
 	/*
 	 * 
 	 */
-	
+
 	private static final Material[] aMaterial_Main = new Material[] {
 			ALLOY.POTIN,
 			ALLOY.TUMBAGA,				
@@ -561,7 +549,7 @@ public class CI {
 			ALLOY.QUANTUM,
 			ELEMENT.STANDALONE.HYPOGEN
 	};		
-	
+
 	private static final Material[] aMaterial_Secondary = new Material[] {
 			ALLOY.STEEL,
 			ALLOY.SILICON_CARBIDE,
@@ -576,7 +564,7 @@ public class CI {
 			ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN,
 			ELEMENT.STANDALONE.HYPOGEN
 	};	
-	
+
 	private static final Material[] aMaterial_Tertiary = new Material[] {
 			ELEMENT.getInstance().LEAD,
 			ELEMENT.getInstance().ALUMINIUM,
@@ -591,21 +579,21 @@ public class CI {
 			ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN,
 			ELEMENT.STANDALONE.HYPOGEN
 	};	
-	
+
 	private static final Materials[] aMaterial_Cables = new Materials[] {
 			!CORE.GTNH ? Materials.Lead : Materials.Tin,
-			Materials.Cobalt,
-			Materials.AnnealedCopper,
-			Materials.Gold,
-			Materials.Titanium,
-			Materials.Nichrome,
-			Materials.Platinum,
-			Materials.YttriumBariumCuprate,
-			Materials.Naquadah,
-			Materials.Duranium,
-			Materials.Superconductor,				
+					Materials.Cobalt,
+					Materials.AnnealedCopper,
+					Materials.Gold,
+					Materials.Titanium,
+					Materials.Nichrome,
+					Materials.Platinum,
+					Materials.YttriumBariumCuprate,
+					Materials.Naquadah,
+					Materials.Duranium,
+					Materials.Superconductor,				
 	};
-	
+
 	private static final Materials[] aMaterial_Circuits = new Materials[] {
 			Materials.Primitive,
 			Materials.Basic,
@@ -619,18 +607,18 @@ public class CI {
 			Materials.Superconductor,
 			Materials.Infinite,				
 	};
-	
+
 	private static final Material[][] aMaster = new Material[][] {aMaterial_Main, aMaterial_Secondary, aMaterial_Tertiary};	
-	
-	
+
+
 	public static FluidStack getTieredFluid(int aTier, int aAmount) {
 		return getTieredFluid(aTier, aAmount, 0);
 	}
-	
+
 	public static FluidStack getAlternativeTieredFluid(int aTier, int aAmount) {
 		return getTieredFluid(aTier, aAmount, 1);
 	}
-	
+
 	public static FluidStack getTertiaryTieredFluid(int aTier, int aAmount) {
 		return getTieredFluid(aTier, aAmount, 2);
 	}
@@ -642,7 +630,7 @@ public class CI {
 		if (a == null) {
 			a = aMaster[aType][aTier].getFluid(aAmount);
 		}*/		
-		
+
 		// Modern Handling
 		FluidStack a = aMaster[aType][aTier].getFluid(aAmount);			
 		if (a == null) {
@@ -654,7 +642,7 @@ public class CI {
 		}		
 		return a;
 	}
-	
+
 	public static ItemStack getEnergyCore(int aTier, int aAmount) {
 		ItemStack[] aOutput = new ItemStack[] {
 				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"1", 1),
@@ -670,39 +658,43 @@ public class CI {
 		};
 		return ItemUtils.getSimpleStack(aOutput[MathUtils.balance(aTier, 0, 9)], aAmount);
 	}
-	
+
 	public static ItemStack getPlate(int aTier, int aAmount) {
 		return getTieredComponent(OrePrefixes.plate, aTier, aAmount);
 	}
-	
+
+	public static ItemStack getDoublePlate(int aTier, int aAmount) {
+		return getTieredComponent(OrePrefixes.plateDouble, aTier, aAmount);
+	}
+
 	public static ItemStack getGear(int aTier, int aAmount) {
 		return getTieredComponent(OrePrefixes.gearGt, aTier, aAmount);
 	}
-	
+
 	public static ItemStack getIngot(int aTier, int aAmount) {
 		return getTieredComponent(OrePrefixes.ingot, aTier, aAmount);
 	}
-	
+
 	public static ItemStack getBolt(int aTier, int aAmount) {
 		return getTieredComponent(OrePrefixes.bolt, aTier, aAmount);
 	}
-	
+
 	public static ItemStack getTieredComponent(OrePrefixes aPrefix, int aTier, int aAmount) {
 		aTier = Math.max(0, aTier);		
-	
+
 		Material m = null;
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
 		if (aPrefix == OrePrefixes.liquid) {
 			int aMatID = (aTier == 0 || aTier == 2 || aTier == 5 || aTier == 8 ? 0 : (aTier == 1 || aTier == 3 || aTier == 6 || aTier == 9 ? 1 : 2));
 			ItemStack aCell = aMaster[aMatID][aTier].getCell(aAmount);
 			return aCell;
 		}
-		
+
 		if (aPrefix == OrePrefixes.circuit) {	
 			if (aTier == 4) {
 				return ItemUtils.getSimpleStack(CI.getDataStick(), aAmount);
@@ -736,19 +728,19 @@ public class CI {
 			else {
 				return ItemUtils.getOrePrefixStack(aPrefix, aMaterial_Cables[aTier], aAmount);
 			}
-			
-			
+
+
 		}
 		if (aPrefix == OrePrefixes.wireGt01 || aPrefix == OrePrefixes.wireGt02 || aPrefix == OrePrefixes.wireGt04 || aPrefix == OrePrefixes.wireGt08 || aPrefix == OrePrefixes.wireGt12 || aPrefix == OrePrefixes.wireGt16) {
 			return ItemUtils.getOrePrefixStack(aPrefix, aMaterial_Cables[aTier], aAmount);
 		}
 
 		if (aPrefix == OrePrefixes.pipeTiny || aPrefix == OrePrefixes.pipeSmall || aPrefix == OrePrefixes.pipe || aPrefix == OrePrefixes.pipeMedium || aPrefix == OrePrefixes.pipeLarge || aPrefix == OrePrefixes.pipeHuge) {
-			
+
 			if (aPrefix == OrePrefixes.pipe) {
 				aPrefix = OrePrefixes.pipeMedium;
 			}			
-			
+
 			if (aTier == 0) {
 				return ItemUtils.getOrePrefixStack(aPrefix, Materials.Lead, aAmount);				
 			}
@@ -787,12 +779,10 @@ public class CI {
 			}			
 		}		
 
-		ItemStack aTempStack = null;
-		
 		if (aPrefix == OrePrefixes.rod) {
 			aPrefix = OrePrefixes.stick;
 		}
-		
+
 		if (aPrefix == OrePrefixes.gear || aPrefix == OrePrefixes.gearGt) {
 			m = aMaster[0][aTier];
 		}
@@ -832,24 +822,24 @@ public class CI {
 		else {
 			m = aMaterial_Main[aTier];
 		}		
-		
+
 		ItemStack aReturn =	ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
-		
+
 		//If Invalid, Try First Material
 		if (!ItemUtils.checkForInvalidItems(aReturn)) {
 			m = aMaster[0][aTier];
 			aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
-			
+
 			//If Invalid, Try Second Material
 			if (!ItemUtils.checkForInvalidItems(aReturn)) {
 				m = aMaster[1][aTier];
 				aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
-				
+
 				//If Invalid, Try Third Material
 				if (!ItemUtils.checkForInvalidItems(aReturn)) {
 					m = aMaster[2][aTier];
 					aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
-					
+
 					//All Invalid? Ok, shit.
 					//Let's add a special error ingot.
 					if (!ItemUtils.checkForInvalidItems(aReturn)) {
@@ -858,12 +848,12 @@ public class CI {
 				}
 			}
 		}
-		
+
 		return aReturn;
 
-		
+
 	}
-	
+
 	public static ItemStack getElectricMotor(int aTier, int aSize) {
 		ItemStack aType;
 		int aLazyTier = 0;
@@ -902,7 +892,7 @@ public class CI {
 		}		
 		return ItemUtils.getSimpleStack(aType, aSize);
 	}
-	
+
 	public static ItemStack getElectricPiston(int aTier, int aSize) {
 		ItemStack aType;
 		int aLazyTier = 0;
@@ -941,7 +931,7 @@ public class CI {
 		}		
 		return ItemUtils.getSimpleStack(aType, aSize);
 	}
-	
+
 	public static ItemStack getElectricPump(int aTier, int aSize) {
 		ItemStack aType;
 		int aLazyTier = 0;
@@ -980,7 +970,7 @@ public class CI {
 		}		
 		return ItemUtils.getSimpleStack(aType, aSize);
 	}
-	
+
 	public static ItemStack getRobotArm(int aTier, int aSize) {
 		ItemStack aType;
 		int aLazyTier = 0;
@@ -1019,7 +1009,7 @@ public class CI {
 		}		
 		return ItemUtils.getSimpleStack(aType, aSize);
 	}
-	
+
 	public static ItemStack getConveyor(int aTier, int aSize) {
 		ItemStack aType;
 		int aLazyTier = 0;
@@ -1058,7 +1048,7 @@ public class CI {
 		}		
 		return ItemUtils.getSimpleStack(aType, aSize);
 	}
-	
+
 	public static ItemStack getEmitter(int aTier, int aSize) {
 		ItemStack aType;
 		int aLazyTier = 0;
@@ -1097,7 +1087,7 @@ public class CI {
 		}		
 		return ItemUtils.getSimpleStack(aType, aSize);
 	}
-	
+
 	public static ItemStack getSensor(int aTier, int aSize) {
 		ItemStack aType;
 		int aLazyTier = 0;
@@ -1136,7 +1126,7 @@ public class CI {
 		}		
 		return ItemUtils.getSimpleStack(aType, aSize);
 	}
-	
+
 	public static ItemStack getFieldGenerator(int aTier, int aSize) {
 		ItemStack aType;
 		int aLazyTier = 0;
@@ -1175,9 +1165,9 @@ public class CI {
 		}		
 		return ItemUtils.getSimpleStack(aType, aSize);
 	}
-	
 
-	
+
+
 	public static ItemStack getTieredMachineHull(int aTier, int aSize) {
 		ItemStack aType;
 		int aLazyTier = 0;
@@ -1293,7 +1283,7 @@ public class CI {
 	public static ItemStack getGreenCatalyst(int aAmount) {
 		return ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 14, aAmount);
 	}
-	
+
 	/**
 	 * Iron + Copper Catalyst
 	 * @param aAmount - Stacksize
@@ -1302,7 +1292,7 @@ public class CI {
 	public static ItemStack getRedCatalyst(int aAmount) {
 		return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 0, aAmount);
 	}
-	
+
 	/**
 	 * Tungsten + Nickel Catalyst
 	 * @param aAmount - Stacksize
@@ -1311,7 +1301,7 @@ public class CI {
 	public static ItemStack getYellowCatalyst(int aAmount) {
 		return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 1, aAmount);
 	}
-	
+
 	/**
 	 * Cobalt + Titanium Catalyst
 	 * @param aAmount - Stacksize
@@ -1320,7 +1310,7 @@ public class CI {
 	public static ItemStack getBlueCatalyst(int aAmount) {
 		return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 2, aAmount);
 	}
-	
+
 	/**
 	 * Vanadium + Palladium Catalyst
 	 * @param aAmount - Stacksize
@@ -1329,7 +1319,7 @@ public class CI {
 	public static ItemStack getOrangeCatalyst(int aAmount) {
 		return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 3, aAmount);
 	}
-	
+
 	/**
 	 * Iridium + Ruthenium Catalyst
 	 * @param aAmount - Stacksize
@@ -1338,7 +1328,7 @@ public class CI {
 	public static ItemStack getPurpleCatalyst(int aAmount) {
 		return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 4, aAmount);
 	}
-	
+
 	/**
 	 * Aluminium + Nickel Catalyst
 	 * @param aAmount - Stacksize
@@ -1347,7 +1337,7 @@ public class CI {
 	public static ItemStack getBrownCatalyst(int aAmount) {
 		return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 5, aAmount);
 	}
-	
+
 	/**
 	 * Platinum + Rhodium Catalyst
 	 * @param aAmount - Stacksize

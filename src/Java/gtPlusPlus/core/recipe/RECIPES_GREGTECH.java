@@ -11,7 +11,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.HotFuel;
 import gregtech.api.util.ThermalFuel;
 import gtPlusPlus.api.objects.Logger;
@@ -40,7 +39,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
-import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -114,26 +112,99 @@ public class RECIPES_GREGTECH {
 
 	private static void chemplantRecipes() {
 
-		// Advanced method for Nitric Acid Production
-		/*		CORE.RA.addChemicalPlantRecipe(
-						new ItemStack[] {
-								CI.getNumberedBioCircuit(17),
-								CI.getPinkCatalyst(0),
-						},
-						new FluidStack[] {
-								FluidUtils.getLava(10000),
-								FluidUtils.getDistilledWater(5000)
-						},
-						new ItemStack[] {
-								
-						},
-						new FluidStack[] {
-								FluidUtils.getFluidStack("nitricacid", 2000),					
-						},
-						10 * 20,
-						480,
-						3);*/
+		//This is subsequently absorbed in water to form nitric acid and nitric oxide.
+	    //3 NO2 (g) + H2O (l) → 2 HNO3 (aq) + NO (g) (ΔH = −117 kJ/mol)
+	    //The nitric oxide is cycled back for reoxidation. Alternatively, if the last step is carried out in air:
+	    //4 NO2 (g) + O2 (g) + 2 H2O (l) → 4 HNO3 (aq)
 		
+		// Advanced method for Nitric Acid Production
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(17),
+						CI.getPinkCatalyst(0),
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack(GenericChem.Nitrogen_Dioxide, 3000),
+						FluidUtils.getAir(7000)
+				},
+				new ItemStack[] {
+
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack("nitricacid", 4000),	
+						FluidUtils.getWater(2000),				
+				},
+				10 * 20,
+				480,
+				3);
+		
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(16),
+						CI.getPinkCatalyst(0),
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack(GenericChem.Nitrogen_Dioxide, 3000),
+						FluidUtils.getDistilledWater(5000)
+				},
+				new ItemStack[] {
+
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack("nitricacid", 2000),	
+						FluidUtils.getFluidStack(GenericChem.Nitric_Oxide, 1500),				
+				},
+				10 * 20,
+				480,
+				2);
+		
+		// Produce Boric Acid
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(21),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustBorax", 4),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(GenericChem.HydrochloricAcid, 2000)
+				}, 
+				new ItemStack[] {
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSalt", 5),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack("boricacid", 2000),
+						FluidUtils.getWater(5000)
+
+				},
+				20 * 30, 
+				MaterialUtils.getVoltageForTier(3), 
+				2);
+		
+		// Produce Th232
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(22),
+						ELEMENT.getInstance().THORIUM.getDust(16)
+				}, 
+				new FluidStack[] {
+						FluidUtils.getDistilledWater(2000),
+						FluidUtils.getFluidStack("boricacid", 1500)
+				}, 
+				new ItemStack[] {
+						ELEMENT.getInstance().THORIUM.getSmallDust(32),
+						ELEMENT.getInstance().THORIUM232.getDust(2),
+						ELEMENT.getInstance().THORIUM232.getSmallDust(2),
+						ELEMENT.getInstance().URANIUM232.getDust(1),
+				}, 
+				new FluidStack[] {
+
+				},
+				new int[] {
+						0, 0, 1000, 250 
+				},
+				20 * 300, 
+				MaterialUtils.getVoltageForTier(4), 
+				3);
+
 	}
 
 	private static void fluidheaterRecipes() {
@@ -586,6 +657,16 @@ public class RECIPES_GREGTECH {
 				ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_1_CONTAINMENT, 1),
 				20 * 60 * 5,
 				MaterialUtils.getVoltageForTier(5));
+
+		// Distillus Upgrade Chip
+		GT_Values.RA.addLaserEngraverRecipe(
+				GregtechItemList.Laser_Lens_WoodsGlass.get(0),
+				ItemUtils.simpleMetaStack(AgriculturalChem.mBioCircuit, 20, 1),
+				GregtechItemList.Distillus_Upgrade_Chip.get(1),
+				20 * 60 * 5,
+				MaterialUtils.getVoltageForTier(5));
+
+
 
 
 	}
@@ -1482,10 +1563,10 @@ public class RECIPES_GREGTECH {
 		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {ItemUtils.getSimpleStack(Items.nether_star), ItemUtils.getItemStackOfAmountFromOreDict("plateTungstenSteel", 8), ItemUtils.getItemStackOfAmountFromOreDict("stickBlackSteel", 8)}, null, ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard, 32), 30*20, 500);
 
 
-		ItemStack aFluidReg1 = Utils.getValueOfItemList("FluidRegulator_LV", ItemList.Pump_LV).get(1);
-		ItemStack aFluidReg2 = Utils.getValueOfItemList("FluidRegulator_MV", ItemList.Pump_MV).get(1);
-		ItemStack aFluidReg3 = Utils.getValueOfItemList("FluidRegulator_HV", ItemList.Pump_HV).get(1);
-		ItemStack aFluidReg4 = Utils.getValueOfItemList("FluidRegulator_EV", ItemList.Pump_EV).get(1);
+		ItemStack aFluidReg1 = ItemUtils.getValueOfItemList("FluidRegulator_LV", ItemList.Pump_LV).get(1);
+		ItemStack aFluidReg2 = ItemUtils.getValueOfItemList("FluidRegulator_MV", ItemList.Pump_MV).get(1);
+		ItemStack aFluidReg3 = ItemUtils.getValueOfItemList("FluidRegulator_HV", ItemList.Pump_HV).get(1);
+		ItemStack aFluidReg4 = ItemUtils.getValueOfItemList("FluidRegulator_EV", ItemList.Pump_EV).get(1);
 
 		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
 				aFluidReg1,
@@ -1806,13 +1887,6 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void centrifugeRecipes() {				
-
-		GT_Values.RA.addCentrifugeRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustThorium", 8), GT_Values.NI,
-				GT_Values.NF, GT_Values.NF, ELEMENT.getInstance().THORIUM232.getDust(2),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallThorium", 20),
-				ELEMENT.getInstance().URANIUM232.getDust(1), GT_Values.NI, GT_Values.NI, GT_Values.NI,
-				new int[] { 0, 0, 10 }, 500 * 20, 2000);
-
 
 		//Process Used Fuel Rods for Krypton
 

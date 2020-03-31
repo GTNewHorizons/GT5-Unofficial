@@ -251,7 +251,7 @@ extends GregtechMeta_MultiBlockBase
 							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 
-							if (!isValidBlockForStructure(tTileEntity, 1, true, aBlock, aMeta,
+							if (!isValidBlockForStructure(tTileEntity, TAE.getIndexFromPage(0, 1), true, aBlock, aMeta,
 									ModBlocks.blockCasings2Misc, 11)) {
 								log("Bad Thermal Boiler casing");
 								return false;

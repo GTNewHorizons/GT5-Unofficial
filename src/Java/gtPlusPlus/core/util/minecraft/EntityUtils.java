@@ -29,8 +29,23 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 public class EntityUtils {
 
-	public static void setEntityOnFire(final Entity entity, final int length){
-		entity.setFire(length);
+	public static void setEntityOnFire(final Entity aEntity, final int length){
+		if (!isEntityImmuneToFire(aEntity)) {
+			aEntity.setFire(length);
+		}
+	}
+	
+	public static boolean isEntityOnFire(final Entity aEntity) {
+		Field aIsOnFire = ReflectionUtils.getField(Entity.class, "fire");
+		if (aIsOnFire != null) {
+			int aFireTime = (int) ReflectionUtils.getFieldValue(aIsOnFire, aEntity);
+			return aFireTime > 0;
+		}
+		return false;
+	}
+	
+	public static boolean isEntityImmuneToFire(Entity aEntity) {
+		return aEntity.isImmuneToFire();
 	}
 
 	public static int getFacingDirection(final Entity entity){
@@ -56,6 +71,13 @@ public class EntityUtils {
 	public static BlockPos findBlockPosUnderEntity(final Entity parEntity){
 		final int blockX = MathHelper.floor_double(parEntity.posX);
 		final int blockY = MathHelper.floor_double(parEntity.boundingBox.minY)-1;
+		final int blockZ = MathHelper.floor_double(parEntity.posZ);
+		return new BlockPos(blockX, blockY, blockZ, parEntity.worldObj);
+	}
+	
+	public static BlockPos findBlockPosOfEntity(final Entity parEntity){
+		final int blockX = MathHelper.floor_double(parEntity.posX);
+		final int blockY = MathHelper.floor_double(parEntity.boundingBox.minY);
 		final int blockZ = MathHelper.floor_double(parEntity.posZ);
 		return new BlockPos(blockX, blockY, blockZ, parEntity.worldObj);
 	}

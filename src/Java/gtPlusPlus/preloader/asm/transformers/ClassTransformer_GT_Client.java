@@ -152,19 +152,24 @@ public class ClassTransformer_GT_Client {
 		}
 
 		if (aGregtech != null) {
+			File file = aGregtech;
+			FileInputStream fis;
+			JarInputStream jis;
 			try {
-				File file = aGregtech;
-				FileInputStream fis = new FileInputStream(file);
-				JarInputStream jis = new JarInputStream(fis);
+				fis = new FileInputStream(file);
+				jis = new JarInputStream(fis);
 				System.out.println(jis.markSupported());
 				JarEntry je;
 				while((je=jis.getNextJarEntry())!=null){					
 					if (je.getName().contains("GT_MetaTileEntity_AssemblyLine")) {
 						FMLRelaunchLog.log("[GT++ ASM] Gregtech Client Proxy Patch", Level.INFO, "Patchable class | "+je.getName());
+						jis.close();
 						return true;
 					}
 				}
-				jis.close();
+				if (jis != null) {
+					jis.close();
+				}
 				return true;
 			} catch (IOException e1) {
 			}

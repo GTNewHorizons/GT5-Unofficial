@@ -280,7 +280,13 @@ public class TexturesGtBlock {
 	public static final CustomIcon TEXTURE_CASING_ADVANCED_CRYOGENIC = new CustomIcon("TileEntities/MACHINE_CASING_ADVANCED_CRYOGENIC");
 	public static final CustomIcon TEXTURE_CASING_ADVANCED_VOLCNUS = new CustomIcon("TileEntities/MACHINE_CASING_ADVANCED_VOLCANUS");
 	public static final CustomIcon TEXTURE_CASING_ROCKETDYNE = new CustomIcon("TileEntities/MACHINE_CASING_ROCKETDYNE");
+	public static final CustomIcon TEXTURE_CASING_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_GRINDING_FACTORY");
 		
+	// Custom Pipes
+	public static final CustomIcon TEXTURE_PIPE_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_PIPE_T1");	
+	
+	// Custom Gearboxes
+	public static final CustomIcon TEXTURE_GEARBOX_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_GEARBOX_T1");	
 
 	public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II = new CustomIcon("iconsets/MACHINE_CASING_FUSION_3");
 	public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_INNER = new CustomIcon("iconsets/MACHINE_CASING_FUSION_COIL_II");

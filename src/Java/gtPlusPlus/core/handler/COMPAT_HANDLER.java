@@ -83,6 +83,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialTreeFarm
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialWashPlant;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialWiremill;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIronBlastFurnace;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIsaMill;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechLFTR;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechLargeTurbinesAndHeatExchanger;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechMiniRaFusion;
@@ -218,6 +219,7 @@ public class COMPAT_HANDLER {
 			GregtechFluidReactor.run();
 			GregtechAlgaeContent.run();
 			GregtechIndustrialAlloySmelter.run();
+			GregtechIsaMill.run();
 
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

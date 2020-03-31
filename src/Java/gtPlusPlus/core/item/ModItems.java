@@ -35,11 +35,13 @@ import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
+import gtPlusPlus.core.item.chemistry.MilledOreProcessing;
 import gtPlusPlus.core.item.chemistry.NuclearChem;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.effects.RarityUncommon;
+import gtPlusPlus.core.item.food.BaseItemMetaFood;
 import gtPlusPlus.core.item.general.BaseItemGrindle;
 import gtPlusPlus.core.item.general.BufferCore;
 import gtPlusPlus.core.item.general.ItemAirFilter;
@@ -94,6 +96,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.GTplusplus_Everglades;
+import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.cofh.HANDLER_COFH;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
@@ -367,6 +370,8 @@ public final class ModItems {
 
 	public static CoreItem itemExquisiteIndustrialDiamond;
 
+	public static BaseItemMetaFood itemMetaFood;
+
 	static {
 		Logger.INFO("Items!");
 		//Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is called upon.
@@ -384,7 +389,7 @@ public final class ModItems {
 		itemDummyResearch = new ItemDummyResearch();
 		
 		//Debug Loading
-		if (CORE.DEBUG){
+		if (CORE_Preloader.DEBUG_MODE){
 			DEBUG_INIT.registerItems();
 		}
 
@@ -996,6 +1001,8 @@ public final class ModItems {
 		//General Chemistry
 		new GenericChem();
 		
+		// Milled Ore Processing
+		new MilledOreProcessing();
 		
 		//Bombs
 		itemBombCasing = new CoreItem("itemBombCasing", "Bomb Casing", tabMisc);

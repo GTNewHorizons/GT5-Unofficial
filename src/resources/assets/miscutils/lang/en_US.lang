@@ -20,6 +20,7 @@ tile.fluidSludge.0.name=Stagnant Waste Water
 //Death Messages
 death.attack.plasmabolt=%s died by burning hot plasma.
 death.attack.plasmabolt.player=%1$s was killed by %2$s using plasma.
+death.attack.gtpp.grinder=%s was ground into nothingness by an IsaMill.
 
 //Alternative Materials
 item.itemPlateBatteryAlloy.name=Plate of Battery Alloy
@@ -3111,5 +3112,47 @@ item.BasicAlgaeItem.4.name=Algae Spore (V)
 item.BasicAlgaeItem.5.name=Algae Spore (VI)
 item.BasicAlgaeItem.6.name=Algae Spore (VII)
 
-//Added17/01/20
+//Added 17/01/20
 item.BasicGenericChemItem.6.name=Pink Metal Catalyst
+
+//Added 23/03/20
+item.BasicMetaFood.0.name=Raw Human Meat
+item.BasicMetaFood.1.name=Cooked Human Meat
+item.BasicMetaFood.2.name=Raw Horse Meat
+item.BasicMetaFood.3.name=Cooked Horse Meat
+item.BasicMetaFood.4.name=Raw Wolf Meat
+item.BasicMetaFood.5.name=Cooked Wolf Meat
+item.BasicMetaFood.6.name=Raw Ocelot Meat
+item.BasicMetaFood.7.name=Cooked Ocelot Meat
+item.BasicMetaFood.8.name=Blaze Flesh
+
+item.itemCellNaquadahFuel.name=Naquadah Fuel Cell
+item.itemCellEnrichedNaquadahFuel.name=Enriched Naquadah Fuel Cell
+item.itemCellNaquadriaFuel.name=Naquadria Fuel Cell
+item.boricacid.name=Boric Acid Cell
+item.hydrochloricacid.name=Hydrochloric Acid Cell
+
+item.BasicAlgaeItem.name=Breedable Algae
+item.BasicAlgaeItem.0.name=Breedable Algae
+item.BasicAlgaeItem.1.name=Breedable Algae
+item.BasicAlgaeItem.2.name=Breedable Algae
+item.BasicAlgaeItem.3.name=Breedable Algae
+item.BasicAlgaeItem.4.name=Breedable Algae
+item.BasicAlgaeItem.5.name=Breedable Algae
+item.BasicAlgaeItem.6.name=Breedable Algae
+
+//Added 30/03/20
+item.milledChalcopyrite.name=Milled Chalcopyrite
+item.milledSphalerite.name=Milled Sphalerite
+item.milledNickel.name=Milled Nickel
+item.milledPlatinum.name=Milled Platinum
+item.milledPentlandite.name=Milled Pentlandite
+
+item.BasicGenericChemItem.7.name=Alumina Milling Ball
+item.BasicGenericChemItem.8.name=Soapstone Milling Ball
+
+item.FrothZincflotation.name=Sphalerite Flotation Froth Cell
+item.FrothCopperflotation.name=Chalcopyrite Flotation Froth Cell
+item.FrothNickelflotation.name=Nickel Flotation Froth Cell
+item.FrothPlatinumflotation.name=Platinum Flotation Froth Cell
+item.FrothPentlanditeflotation.name=Pentlandite Flotation Froth Cell

@@ -46,7 +46,6 @@ public class CORE {
 	public static Configuration Config;
 
 	public static boolean DEVENV = false;
-	public static boolean DEBUG = false;
 	public static boolean NBT_PERSISTENCY_PATCH_APPLIED = false;
 	//Only can be set in Dev, no config or setting elsewhere.
 	public static final boolean LOAD_ALL_CONTENT = false;;
@@ -55,7 +54,7 @@ public class CORE {
 
 	public static final String name = "GT++";
 	public static final String MODID = "miscutils";
-	public static final String VERSION = "1.7.03.45";
+	public static final String VERSION = "1.7.05";
 	public static String MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
 	public static String USER_COUNTRY = GeoUtils.determineUsersCountry();
 	public static boolean isModUpToDate = Utils.isModUpToDate();
@@ -290,12 +289,18 @@ public class CORE {
 		public static final String VERSION = "0.1";
 	}
 
+
 	public static final void crash() {
+		crash("Generic Crash");
+	}
+	
+	public static final void crash(String aReason) {
 		Logger.INFO("==========================================================");
 		Logger.INFO("[GT++ CRASH]");
 		Logger.INFO("==========================================================");
 		Logger.INFO("Oooops...");
 		Logger.INFO("This should only happy in a development environment or when something really bad happens.");
+		Logger.INFO("Reason: "+aReason);
 		Logger.INFO("==========================================================");
 		Logger.INFO("Called from: "+ReflectionUtils.getMethodName(0));
 		Logger.INFO(ReflectionUtils.getMethodName(1));

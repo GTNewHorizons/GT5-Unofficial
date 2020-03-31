@@ -210,7 +210,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 		final int aMeta = getBaseMetaTileEntity().getMetaID(aX, aY, aZ);	
 		final IGregTechTileEntity tTileEntity2 = getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ);	
 		
-		boolean debug = isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(26), true, aBlock, aMeta, getCasing(), getCasingMeta());		
+		boolean debug = isValidBlockForStructure(tTileEntity2, 44, true, aBlock, aMeta, getCasing(), getCasingMeta());		
 		
 		/*if (!debug) {
 			this.getBaseMetaTileEntity().getWorld().setBlock(aX, aY, aZ, ModBlocks.blockCompressedObsidian);
@@ -275,12 +275,12 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		ITexture[] sTexture;
 		if (aSide == aFacing) {
-			sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF, Dyes.getModulation(-1, Dyes._NULL.mRGBa)), new GT_RenderedTexture(getIconOverlay())};
+			sTexture = new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[44], new GT_RenderedTexture(getIconOverlay())};
 		} else {
 			if (!aActive) {
-				sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF, Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
+				sTexture = new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[44]};
 			} else {
-				sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF, Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
+				sTexture = new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[44]};
 			}
 		}
 		return sTexture;
@@ -467,22 +467,22 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	public boolean turnCasingActive(final boolean status) {
 		if (this.mEnergyHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Muffler hatch : this.mMufflerHatches) {
-				hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(26) : (byte) TAE.GTPP_INDEX(26);
+				hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
 			}
 		}
 		if (this.mOutputHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
-				hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(26) : (byte) TAE.GTPP_INDEX(26);
+				hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
 			}
 		}
 		if (this.mInputHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
-				hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(26) : (byte) TAE.GTPP_INDEX(26);
+				hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
 			}
 		}
 		if (this.mMaintenanceHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Maintenance hatch : this.mMaintenanceHatches) {
-				hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(26) : (byte) TAE.GTPP_INDEX(26);
+				hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
 			}
 		}
 		return true;

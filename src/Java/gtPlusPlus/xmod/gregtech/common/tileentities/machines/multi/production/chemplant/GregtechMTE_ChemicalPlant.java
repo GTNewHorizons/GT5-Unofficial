@@ -1,12 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant;
 
-import static gregtech.api.enums.GT_Values.E;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -14,28 +10,17 @@ import org.apache.commons.lang3.ArrayUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.Recipe_GT;
-import gtPlusPlus.api.helpers.GregtechPlusPlus_API.Multiblock_API;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.minecraft.multi.SpecialMultiBehaviour;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
-import gtPlusPlus.core.item.chemistry.GenericChem;
-import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -45,7 +30,6 @@ import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -755,7 +739,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		if (aBaseMetaTileEntity.isClientSide()) {
 			this.mSolidCasingTier = getCasingTierOnClientSide();
 		}
-
 	}
 
 	@Override
@@ -820,13 +803,13 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		int tMaxParrallelCatalyst = aMaxParallelRecipes;
 		ItemStack tCatalystRecipe = findCatalyst(tRecipe.mInputs);
 		if (tCatalystRecipe != null) {
-			log("needs catalyst");
+			log("has catalyst");
 			tCatalysts = new ArrayList<ItemStack>();
 			tMaxParrallelCatalyst = getCatalysts(aItemInputs, tCatalystRecipe, aMaxParallelRecipes,tCatalysts);
 		}
 
 		if (tMaxParrallelCatalyst == 0) {
-			log("found not enough catalists catalyst");
+			log("found not enough catalysts");
 			return false;
 		}
 

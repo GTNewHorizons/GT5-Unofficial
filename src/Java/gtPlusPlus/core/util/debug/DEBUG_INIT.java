@@ -1,12 +1,12 @@
 package gtPlusPlus.core.util.debug;
 
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.preloader.CORE_Preloader;
 
 public class DEBUG_INIT {
 
 	public static void registerBlocks(){
 		//Debug Loading
-		if (CORE.DEBUG){
+		if (CORE_Preloader.DEBUG_MODE){
 
 		}
 	}

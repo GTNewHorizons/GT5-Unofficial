@@ -20,6 +20,7 @@ import gtPlusPlus.api.objects.minecraft.ShapedRecipe;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.Item;
@@ -630,6 +631,17 @@ public static int mInvalidID = 1;
             return rReturn;
         }
     }
+
+
+	public static void addSmeltingRecipe(ItemStack aStackInput, ItemStack aStackOutput) {
+		addSmeltingRecipe(aStackInput, aStackOutput, 0f);
+	}
+    
+	public static void addSmeltingRecipe(ItemStack aStackInput, ItemStack aStackOutput, float aXpGained) {
+
+		GameRegistry.addSmelting(aStackInput, aStackOutput, aXpGained);
+		
+	}
 
 
 

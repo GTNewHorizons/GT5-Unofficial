@@ -1,6 +1,6 @@
 package gtPlusPlus.api.objects.minecraft.multi;
 
-import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 
 public class NoOutputBonusMultiBehaviour extends SpecialMultiBehaviour {
@@ -11,7 +11,7 @@ public class NoOutputBonusMultiBehaviour extends SpecialMultiBehaviour {
 	
 	@Override
 	public ItemStack getTriggerItem() {
-		return CI.getNumberedBioCircuit(22);
+		return GregtechItemList.Chip_MultiNerf_NoOutputBonus.get(1);
 	}
 
 	@Override

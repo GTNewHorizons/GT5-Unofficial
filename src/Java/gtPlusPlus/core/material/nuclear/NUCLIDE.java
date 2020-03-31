@@ -70,8 +70,60 @@ public final class NUCLIDE {
 					new MaterialStack(ELEMENT.getInstance().URANIUM235, 14)
 			});
 
+	// Secondary material is molten metal
+	public static final Material NAQ_FUEL_T1 = new Material(
+			"Naquadah Fuel",
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().NAQUADAH, 2),
+					new MaterialStack(ELEMENT.getInstance().TANTALUM, 3)
+			});
+
+	// Secondary material is a plasma
+	public static final Material NAQ_FUEL_T2 = new Material(
+			"Enriched Naquadah Fuel",
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().NAQUADAH_ENRICHED, 2),
+					new MaterialStack(ELEMENT.getInstance().TITANIUM, 3)
+			});
+	
+	// Secondary material is a plasma
+	public static final Material NAQ_FUEL_T3 = new Material(
+			"Naquadria Fuel",
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().NAQUADRIA, 2),
+					new MaterialStack(ELEMENT.getInstance().AMERICIUM, 3)
+			});
+	
+
 
 	private static final NUCLIDE INSTANCE = new NUCLIDE();
-	public static NUCLIDE getInstance(){return INSTANCE;}
+	
+	public static NUCLIDE getInstance(){
+		return INSTANCE;
+		}
 
 }

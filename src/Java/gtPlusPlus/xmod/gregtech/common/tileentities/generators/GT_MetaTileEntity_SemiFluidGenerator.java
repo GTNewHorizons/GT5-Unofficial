@@ -8,6 +8,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
@@ -15,10 +16,9 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.GTPP_MTE_BasicLosslessGenerator;
 import net.minecraft.item.ItemStack;
 
-public class GT_MetaTileEntity_SemiFluidGenerator extends GTPP_MTE_BasicLosslessGenerator{
+public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_BasicGenerator {
 
 	public static final int BASE_POLLUTION = 2;
 	public int mEfficiency;

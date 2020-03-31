@@ -18,6 +18,7 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.CustomOrePrefix;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,7 +49,6 @@ public class BaseOreComponent extends Item{
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(this.unlocalName);
 		this.setMaxStackSize(64);
-		//this.setTextureName(this.getCorrectTextures());
 		this.componentColour = material.getRgbAsHex();
 		GameRegistry.registerItem(this, this.unlocalName);
 		registerComponent();
@@ -59,9 +59,9 @@ public class BaseOreComponent extends Item{
 				//ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), TC_Aspect_Wrapper.generate(TC_Aspects.RADIO.mAspect), componentMaterial.vRadiationLevel);				
 			}
 		}
-		
+
 	}
-	
+
 	public boolean registerComponent() {	
 		Logger.MATERIALS("Attempting to register "+this.getUnlocalizedName()+".");	
 		if (this.componentMaterial == null) {
@@ -92,7 +92,10 @@ public class BaseOreComponent extends Item{
 		else if (componentType == ComponentTypes.DUSTPURE) {
 			aKey = OrePrefixes.dustPure.name();
 		}
-		
+		else if (componentType == ComponentTypes.MILLED) {
+			aKey = CustomOrePrefix.milled.get().name();
+		}
+
 		ItemStack x = aMap.get(aKey);
 		if (x == null) {
 			aMap.put(aKey, ItemUtils.getSimpleStack(this));
@@ -105,13 +108,6 @@ public class BaseOreComponent extends Item{
 			Logger.MATERIALS("Tried to double register a material component. ");
 			return false;
 		}
-	}
-
-	public String getCorrectTextures(){
-		if (!CORE.ConfigSwitches.useGregtechTextures){
-			return CORE.MODID + ":" + "item"+this.componentType.COMPONENT_NAME;
-		}
-		return "gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME;
 	}
 
 	/*@Override
@@ -181,7 +177,13 @@ public class BaseOreComponent extends Item{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(final IIconRegister par1IconRegister){
-		if (CORE.ConfigSwitches.useGregtechTextures){
+		if (this.componentType == ComponentTypes.MILLED) {
+			this.base = par1IconRegister.registerIcon(CORE.MODID + ":" + "processing/MilledOre/"+this.componentType.getComponent());
+			if (this.componentType.hasOverlay()){
+				this.overlay = par1IconRegister.registerIcon(CORE.MODID + ":" + "processing/MilledOre/"+this.componentType.getComponent()+"_Overlay");
+			}
+		}		
+		else if (CORE.ConfigSwitches.useGregtechTextures){
 			//Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+" is using `"+"gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"' as the layer 0 texture path.");
 			this.base = par1IconRegister.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
 			if (this.componentType.hasOverlay()){
@@ -199,13 +201,21 @@ public class BaseOreComponent extends Item{
 
 	@Override
 	public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
-		if (renderPass == 0 && !CORE.ConfigSwitches.useGregtechTextures){
+		if (this.componentType == ComponentTypes.MILLED) {			
+			if (renderPass == 1){
+				return Utils.rgbtoHexValue(230, 230, 230);
+			}
 			return this.componentColour;
 		}
-		if (renderPass == 1 && CORE.ConfigSwitches.useGregtechTextures){
-			return Utils.rgbtoHexValue(230, 230, 230);
-		}
-		return this.componentColour;
+		else {
+			if (renderPass == 0 && !CORE.ConfigSwitches.useGregtechTextures){
+				return this.componentColour;
+			}
+			if (renderPass == 1 && CORE.ConfigSwitches.useGregtechTextures){
+				return Utils.rgbtoHexValue(230, 230, 230);
+			}
+			return this.componentColour;
+		}		
 	}
 
 
@@ -226,7 +236,8 @@ public class BaseOreComponent extends Item{
 		DUSTPURE("dustPure", "Purified ", " Dust", true),
 		CRUSHED("crushed", "Crushed ", " Ore", true),
 		CRUSHEDCENTRIFUGED("crushedCentrifuged", "Centrifuged Crushed "," Ore", true),
-		CRUSHEDPURIFIED("crushedPurified", "Purified Crushed ", " Ore", true);
+		CRUSHEDPURIFIED("crushedPurified", "Purified Crushed ", " Ore", true),
+		MILLED("milled", "Milled ", " Ore", true);
 
 		private String COMPONENT_NAME;
 		private String PREFIX;
@@ -252,7 +263,7 @@ public class BaseOreComponent extends Item{
 		public boolean hasOverlay(){
 			return this.HAS_OVERLAY;
 		}
-		
+
 		public String getPrefix(){
 			return this.PREFIX;
 		}

@@ -5,8 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
@@ -23,12 +23,9 @@ public class GregtechCustomHatches {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
 			Logger.INFO("Gregtech5u Content | Registering Custom Fluid Hatches.");
 			run1();
-
-			//No pollution in 5.08
-			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			if (PollutionUtils.isPollutionEnabled()) {
 				run2();
-			}
-			
+			}			
 			run3();
 		}
 	}
@@ -201,32 +198,31 @@ public class GregtechCustomHatches {
 		Class<?> aBusEntity = aClass;
 		Constructor<?> constructor;
 		try {
-			constructor = aBusEntity.getConstructor(int.class, String.class, String.class,  int.class, int.class);
+			constructor = aBusEntity.getConstructor(int.class, String.class, String.class, int.class, int.class);
 			if (constructor != null) {
-				Object aPipe;
+				Object aBus;
 				try {
-					aPipe = constructor.newInstance(
+					aBus = constructor.newInstance(
 							aID, aUnlocalName,
 							aLocalName,
 							aTier,
 							(1+ aTier) * 32);
-					if (aPipe == null) {
-						//Logger.INFO("Failed to Generate "+aMaterial+" Hexadecuple pipes.");
+					if (aBus == null) {
+						Logger.INFO("Failed to Generate "+aLocalName+".");
 					}
 					else {
 						Logger.INFO("Generated "+aLocalName+".");
-						return aPipe;
-						//GT_OreDictUnificator.registerOre("pipeHexadecuple" + aMaterial, aPipe.getStackForm(1L));
+						return aBus;
 					}
 				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
-					//Logger.INFO("Failed to Generate "+aMaterial+" Hexadecuple pipes. [Ecx]");
 					e.printStackTrace();
+					Logger.INFO("Failed to Generate "+aLocalName+".");
 				}
 			}
 		} catch (NoSuchMethodException | SecurityException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			Logger.INFO("Failed to Generate "+aLocalName+".");
 		}
 		return null;
 	}

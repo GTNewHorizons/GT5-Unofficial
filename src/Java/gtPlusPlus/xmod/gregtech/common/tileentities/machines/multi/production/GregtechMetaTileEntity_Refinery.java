@@ -72,7 +72,7 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 		return "MatterFabricator";
 	}	
 	
-	private static final GT_Recipe_Map mGregTypeRecipeMap = new GT_Recipe_Map(new HashSet<GT_Recipe>(), "internal.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 4, 1, E, 1, E, true, true);
+	private static final GT_Recipe_Map mGregTypeRecipeMap = new GT_Recipe_Map(new HashSet<GT_Recipe>(), "internal.recipe.fissionfuel", "Nuclear Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 4, 1, E, 1, E, true, false);
 	
 	@Override
 	public GT_Recipe_Map getRecipeMap() {		
@@ -242,6 +242,12 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 				(this.mOutputBusses.size() != 1) || (this.mMufflerHatches.size() != 1) ||
 				(this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() != 1)){
 			Logger.INFO("Wrong Hatch count.");
+			Logger.INFO("I-Hatch Count: "+this.mInputHatches.size());
+			Logger.INFO("O-Hatch Count: "+this.mOutputHatches.size());
+			Logger.INFO("O-Bus Count: "+this.mOutputBusses.size());
+			Logger.INFO("Muffler Count: "+this.mMufflerHatches.size());
+			Logger.INFO("Maint Count: "+this.mMaintenanceHatches.size());
+			Logger.INFO("Energy Count: "+this.mEnergyHatches.size());
 			return false;
 		}
 		if (this.mMufflerHatches.size() == 1){

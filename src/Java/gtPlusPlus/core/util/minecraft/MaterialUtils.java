@@ -501,5 +501,14 @@ public class MaterialUtils {
 		
 	}
 
+	public static boolean doesMaterialExist(String aMatName) {
+		for (Materials m : Materials.values()) {
+			if (m.name().toLowerCase().equals(aMatName.toLowerCase())) {
+				return true;
+			}
+		}
+		return false;		
+	}
+
 
 }

@@ -25,13 +25,11 @@ import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.nei.GT_NEI_MultiBlockHandler.CachedDefaultRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
@@ -62,7 +60,7 @@ extends TemplateRecipeHandler {
 	}
 
 	public List<Recipe_GT> getSortedRecipes() {
-		List<Recipe_GT> result = new ArrayList<>(this.mRecipeMap.mRecipeList);
+		List<Recipe_GT> result = new ArrayList(this.mRecipeMap.mRecipeList);
 		Collections.sort(result);
 		return result;
 	}
@@ -206,7 +204,7 @@ extends TemplateRecipeHandler {
 				}
 			}
 			for (final PositionedStack tStack : tRecipe.mInputs) {
-				if (aStack == tStack.item) {
+				if (GT_Utility.areStacksEqual(aStack, tStack.item)) {
 					if ((gregtech.api.enums.ItemList.Display_Fluid.isStackEqual(tStack.item, true, true)) ||
 							(tStack.item.stackSize != 0)) {
 						break;

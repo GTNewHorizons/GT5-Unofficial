@@ -159,7 +159,9 @@ public class ThaumcraftUtils {
 			rResearch.setItemTriggers(aResearchTriggers);
 			rResearch.setHidden();
 		}
-		rResearch.setPages((TC_ResearchPage_Wrapper[]) tPages.toArray(new TC_ResearchPage_Wrapper[tPages.size()]));
+		
+		Object[] aVarArgs = (TC_ResearchPage_Wrapper[]) tPages.toArray(new TC_ResearchPage_Wrapper[tPages.size()]);		
+		rResearch.setPages(aVarArgs);
 		return rResearch.registerResearchItem();
 	}
 

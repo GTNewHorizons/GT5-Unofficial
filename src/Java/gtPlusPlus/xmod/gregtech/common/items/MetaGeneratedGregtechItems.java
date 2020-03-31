@@ -363,6 +363,15 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         for (int aIndex=0;aIndex<10;aIndex++){
         	aTransParts[aIndex].set(this.addItem(aStartID++, "Transmission Component ("+GT_Values.VN[aIndex]+")", "", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, aIndex), getTcAspectStack(TC_Aspects.MACHINA, aIndex), getTcAspectStack(TC_Aspects.MAGNETO, aIndex)}));
         }
+        
+        // Distillus Chip
+        GregtechItemList.Distillus_Upgrade_Chip.set(this.addItem(151, "Upgrade Chip", "Used to upgrade Distillus to Tier 2"));
+        
+
+        GregtechItemList.Chip_MultiNerf_NoOutputBonus.set(this.addItem(160, "No-Bonus Chip", "You won't like using this"));
+        GregtechItemList.Chip_MultiNerf_NoSpeedBonus.set(this.addItem(161, "No-Bonus Chip", "You won't like using this"));
+        GregtechItemList.Chip_MultiNerf_NoEuBonus.set(this.addItem(162, "No-Bonus Chip", "You won't like using this"));
+        
 		
 		
 	}

@@ -26,6 +26,7 @@ import gtPlusPlus.australia.gen.map.structure.StructureManager;
 import gtPlusPlus.australia.world.AustraliaWorldGenerator;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.Australia;
+import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
@@ -126,7 +127,7 @@ public class GTplusplus_Australia implements ActionListener {
 		WorldGen_GT_Australia_Base.oreveinPercentage = 16;
 		WorldGen_GT_Australia_Base.oreveinAttempts = 16;
 		WorldGen_GT_Australia_Base.oreveinMaxPlacementAttempts = 2;	
-		if (CORE.DEBUG || CORE.DEVENV){
+		if (CORE_Preloader.DEBUG_MODE || CORE.DEVENV){
 			WorldGen_GT_Australia_Base.debugWorldGen = true;
 		}		
 		AustraliaContentLoader.run();

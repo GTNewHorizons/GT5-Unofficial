@@ -2,13 +2,14 @@ package gtPlusPlus.xmod.gregtech.api.enums;
 
 import static gregtech.api.enums.GT_Values.W;
 
-import gregtech.api.util.*;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.xmod.gregtech.api.interfaces.GregtechItemContainer;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
@@ -129,6 +130,19 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Farm_Processor_LuV, 
 	Farm_Processor_ZPM, 
 	Farm_Processor_UV,
+	
+	// Upgrade chip for Distillus
+	Distillus_Upgrade_Chip,
+	
+	
+	// Chips used to nerf my multis via custom behavioural attachments
+	Chip_MultiNerf_NoOutputBonus,
+	Chip_MultiNerf_NoSpeedBonus,
+	Chip_MultiNerf_NoEuBonus,
+	
+	// Milling Balls
+	Milling_Ball_Alumina,
+	Milling_Ball_Soapstone,
 	
 
 	//----------------------------------------------------------------------------
@@ -308,7 +322,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_Adv_ImplosionCompressor, 
 	Machine_Adv_DistillationTower,
 
-
+	//Advanced Assembly Line
+	Machine_Adv_AssemblyLine,
+	
 	//Advanced Vacuum Freezer
 	Industrial_Cryogenic_Freezer, 
 	Casing_AdvancedVacuum,	
@@ -343,7 +359,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	//Larger Turbines
 	Large_Steam_Turbine, Large_HPSteam_Turbine, 
-	Casing_Turbine_Shaft, Casing_Turbine_LP, Casing_Turbine_HP,
+	Casing_Turbine_Shaft, 
+	Casing_Turbine_LP, Casing_Turbine_HP,
+	Casing_Turbine_Gas, Casing_Turbine_Plasma,
 	
 	//Large Vacuum Furnace
 	Casing_Vacuum_Furnace,
@@ -352,6 +370,15 @@ public enum GregtechItemList implements GregtechItemContainer {
 	// Large Rocket Engine
 	Casing_RocketEngine,
 	Controller_RocketEngine,
+	
+	// Large Semi-Fluid
+	Controller_LargeSemifluidGenerator,
+	
+	// IsaMill
+	Controller_IsaMill_Controller,
+	Casing_IsaMill_Casing,
+	Casing_IsaMill_Gearbox,
+	Casing_IsaMill_Pipe,
 
 
 	//----------------------------------------------------------------------------

@@ -23,7 +23,10 @@ extends GregtechMetaCasingBlocksAbstract {
 	public GregtechMetaCasingBlocks() {
 		super(GregtechMetaCasingItems.class, "miscutils.blockcasings", GT_Material_Casings.INSTANCE);
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-			TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
+			if (i == 2 || i == 3 || i == 4) {
+				continue;
+			}
+			TAE.registerTexture(0, i, new GT_CopiedBlockTexture(this, 6, i));
 		}
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Centrifuge Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Structural Coke Oven Casing");

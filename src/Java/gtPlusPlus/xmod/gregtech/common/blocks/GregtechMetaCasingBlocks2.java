@@ -32,7 +32,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
 			int meta = aStack.getItemDamage();
 			int tier = GregtechMetaTileEntity_PowerSubStationController.getCellTier(field_150939_a, meta);
-			if (tier > 0) {
+			if (meta == 7 && tier > 0) {
 				long capacity = GregtechMetaTileEntity_PowerSubStationController.getCapacityFromCellTier(tier);
 				aList.add("Energy Storage: " + GT_Utility.formatNumbers(capacity));
 			}
@@ -43,7 +43,10 @@ extends GregtechMetaCasingBlocksAbstract {
 	public GregtechMetaCasingBlocks2() {
 		super(GregtechMetaCasingItemBlocks2.class, "gtplusplus.blockcasings.2", GT_Material_Casings.INSTANCE);
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-			TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
+			if (i == 4 || i == 10 || i == 11 || i == 12 || i == 14) {
+				continue;
+			}
+			TAE.registerTexture(1, i, new GT_CopiedBlockTexture(this, 6, i));
 		}
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Thermal Processing Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Hastelloy-N Sealant Block");
@@ -59,7 +62,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Thermal Containment Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Autocrafter Frame");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Cutting Factory Frame");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Tesla Containment Casing");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Sterile Farm Casing"); //Tree Farmer Textures
 		GregtechItemList.Casing_ThermalCentrifuge.set(new ItemStack(this, 1, 0));
 		GregtechItemList.Casing_Refinery_External.set(new ItemStack(this, 1, 1));
@@ -75,7 +78,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_ThermalContainment.set(new ItemStack(this, 1, 11));
 		GregtechItemList.Casing_Autocrafter.set(new ItemStack(this, 1, 12));
 		GregtechItemList.Casing_CuttingFactoryFrame.set(new ItemStack(this, 1, 13));
-		GregtechItemList.Casing_TeslaTower.set(new ItemStack(this, 1, 14));
+		//GregtechItemList.Casing_TeslaTower.set(new ItemStack(this, 1, 14));
 		GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.set(new ItemStack(this, 1, 15)); //Tree Farmer Textures
 	}
 

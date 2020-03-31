@@ -19,7 +19,7 @@ public class ItemGenericChemBase extends Item {
 
 	final protected IIcon base[];
 	
-	final private int aMetaSize = 7;
+	final private int aMetaSize = 9;
 	
 	/*
 	 * 0 - Red Metal Catalyst //FeCu
@@ -29,7 +29,8 @@ public class ItemGenericChemBase extends Item {
 	 * 4 - Purple Metal Catalyst //IrIdium Ruthenium
 	 * 5 - Brown Metal Catalyst //NiAl
 	 * 6 - Pink Metal Catalyst //PtRh
-	 * 
+	 * 7 - Alumina Grinding Ball
+	 * 8 - Soapstone Grinding Ball
 	 */
 	
 	public ItemGenericChemBase() {

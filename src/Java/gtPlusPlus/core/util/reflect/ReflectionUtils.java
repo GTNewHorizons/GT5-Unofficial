@@ -365,7 +365,13 @@ public class ReflectionUtils {
 
 
 	public static boolean setField(final Object object, final String fieldName, final Object fieldValue) {
-		Class<?> clazz = object.getClass();
+		Class<?> clazz;
+		if (object instanceof Class) {
+			clazz = (Class<?>) object;
+		}
+		else {
+			clazz = object.getClass();
+		}
 		while (clazz != null) {
 			try {
 				final Field field = getField(clazz, fieldName);
@@ -387,7 +393,13 @@ public class ReflectionUtils {
 	}
 
 	public static boolean setField(final Object object, final Field field, final Object fieldValue) {
-		Class<?> clazz = object.getClass();
+		Class<?> clazz;
+		if (object instanceof Class) {
+			clazz = (Class<?>) object;
+		}
+		else {
+			clazz = object.getClass();
+		}
 		while (clazz != null) {
 			try {
 				final Field field2 = getField(clazz, field.getName());
@@ -520,6 +532,25 @@ public class ReflectionUtils {
 
 		Logger.REFLECTION("Invoke failed or did something wrong.");		
 		return false;
+	}
+
+
+	public static Object invokeNonBool(Object objectInstance, Method method, Object[] values){
+		if (objectInstance == null || method == null || values == null){
+			return false;
+		}		
+		String methodName = method.getName();
+		Class<?> mLocalClass = (objectInstance instanceof Class ? (Class<?>) objectInstance : objectInstance.getClass());
+		Logger.REFLECTION("Trying to invoke "+methodName+" on an instance of "+mLocalClass.getCanonicalName()+".");
+		try {
+				return method.invoke(objectInstance, values);
+		}
+		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			Logger.REFLECTION("Failed to Dynamically invoke "+methodName+" on an object of type: "+mLocalClass.getName());
+		}		
+
+		Logger.REFLECTION("Invoke failed or did something wrong.");		
+		return null;
 	}
 
 	public static Object invokeNonBool(Object objectInstance, String methodName, Class[] parameters, Object[] values){
@@ -973,9 +1004,9 @@ public class ReflectionUtils {
 	 */
 	private static void makeModifiable(Field nameField) throws Exception {
 		nameField.setAccessible(true);
-        Field modifiers = getField(Field.class, "modifiers");
-        modifiers.setAccessible(true);
-        modifiers.setInt(nameField, nameField.getModifiers() & ~Modifier.FINAL);
+		Field modifiers = getField(Field.class, "modifiers");
+		modifiers.setAccessible(true);
+		modifiers.setInt(nameField, nameField.getModifiers() & ~Modifier.FINAL);
 	}
 
 
