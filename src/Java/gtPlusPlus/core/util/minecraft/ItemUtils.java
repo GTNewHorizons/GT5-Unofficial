@@ -1243,10 +1243,11 @@ public class ItemUtils {
 
 	public static ItemStack depleteStack(ItemStack aStack, int aAmount) {
 		final int cap = aStack.stackSize;
-		if (cap > 1 && cap > aAmount) {
-			aStack.stackSize = (MathUtils.balance((aStack.stackSize - 1), 0, 64));
-			if (aStack.stackSize > 0) {
-				return aStack;				
+		if (cap >= 1 && cap >= aAmount) {
+			ItemStack aDepStack = aStack.copy();
+			aDepStack.stackSize = (MathUtils.balance((aDepStack.stackSize - 1), 0, 64));
+			if (aDepStack.stackSize > 0) {
+				return aDepStack;				
 			}
 		}
 		return getNullStack();

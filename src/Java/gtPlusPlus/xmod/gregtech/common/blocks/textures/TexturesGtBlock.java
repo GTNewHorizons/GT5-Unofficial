@@ -389,6 +389,13 @@ public class TexturesGtBlock {
 	//Control Core Bus 
 	private static final CustomIcon Internal_Overlay_Hatch_Control_Core = new CustomIcon("iconsets/OVERLAY_CONTROL_CORE_BUS");
 	public static final CustomIcon Overlay_Hatch_Control_Core = Internal_Overlay_Hatch_Control_Core;
+	// Milling Ball Bus
+	private static final CustomIcon Internal_Overlay_Bus_Milling_Balls = new CustomIcon("iconsets/OVERLAY_MILLING_BALL_BUS");
+	public static final CustomIcon Overlay_Bus_Milling_Balls = Internal_Overlay_Bus_Milling_Balls;
+	// Catalyst Bus
+	private static final CustomIcon Internal_Overlay_Bus_Catalyst = new CustomIcon("iconsets/OVERLAY_CATALYSTS");
+	public static final CustomIcon Overlay_Bus_Catalyst = Internal_Overlay_Bus_Catalyst;	
+	
 	
 	//Dimensional
 	private static final CustomIcon Internal_Overlay_Machine_Dimensional_Blue = new CustomIcon("TileEntities/adv_machine_dimensional_cover_blue");

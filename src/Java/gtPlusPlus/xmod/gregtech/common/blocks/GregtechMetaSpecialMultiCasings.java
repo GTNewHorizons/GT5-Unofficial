@@ -47,8 +47,8 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Structural Solar Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Salt Containment Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Thermally Insulated Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Flotation Cell Casings"); // Unused
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Flotation Cell Casings");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Reinforced Engine Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", ""); // Unused
@@ -64,6 +64,7 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 		GregtechItemList.Casing_SolarTower_Structural.set(new ItemStack(this, 1, 6));
 		GregtechItemList.Casing_SolarTower_SaltContainment.set(new ItemStack(this, 1, 7));
 		GregtechItemList.Casing_SolarTower_HeatContainment.set(new ItemStack(this, 1, 8));
+		GregtechItemList.Casing_Reinforced_Engine_Casing.set(new ItemStack(this, 1, 9));
 	}	
 
 	public IIcon getIcon(int aSide, int aMeta) {
@@ -90,6 +91,8 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 			return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
 		case 9:
 			return TexturesGtBlock.TEXTURE_CASING_FLOTATION.getIcon();
+		case 10:
+			return TexturesGtBlock.Casing_Material_Talonite.getIcon();
 			
 		}
 

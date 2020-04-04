@@ -22,6 +22,7 @@ import com.google.common.reflect.ClassPath;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.data.StringUtils;
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 
 public class ReflectionUtils {
 
@@ -1031,6 +1032,20 @@ public class ReflectionUtils {
 		try {
 			return field.get(instance);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
+		}
+		return null;
+	}
+
+	public static <T> T createNewInstanceFromConstructor(Constructor aConstructor, Object[] aArgs) {
+		T aInstance;
+		try {
+			aInstance = (T) aConstructor.newInstance(aArgs);
+			if (aInstance != null) {
+				return aInstance;
+			}
+		}
+		catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

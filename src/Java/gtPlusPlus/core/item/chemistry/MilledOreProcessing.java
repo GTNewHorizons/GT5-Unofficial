@@ -1,6 +1,5 @@
 package gtPlusPlus.core.item.chemistry;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;

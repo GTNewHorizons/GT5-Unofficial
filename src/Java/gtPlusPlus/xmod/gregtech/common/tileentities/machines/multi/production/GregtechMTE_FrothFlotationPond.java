@@ -81,13 +81,18 @@ public class GregtechMTE_FrothFlotationPond extends GregtechMeta_MultiBlockBase 
 		return GregTech_API.sSoundList.get(Integer.valueOf(207));
 	}
 
+
+	@Override
+	public boolean isFacingValid(final byte aFacing) {
+		Logger.INFO("Facing: "+aFacing);
+		return aFacing == 1;
+	}
+
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 
-		int aID = TAE.getIndexFromPage(1, 15);
-		if (mLevel > -1) {
-			aID = mLevel;
-		}		
+		int aID = TAE.getIndexFromPage(2, 1);
+			
 		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[aID], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
 		}
@@ -105,11 +110,6 @@ public class GregtechMTE_FrothFlotationPond extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
-	public boolean isFacingValid(final byte aFacing) {
-		return aFacing > 1;
-	}
-
-	@Override
 	public int getMaxParallelRecipes() {
 		return 2;
 	}
@@ -122,8 +122,11 @@ public class GregtechMTE_FrothFlotationPond extends GregtechMeta_MultiBlockBase 
 	@Override
 	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 
+		
 		this.mLevel = 0;
-
+		if (this.mLevel == 0) {
+			return false;
+		}
 
 		// Get Facing direction		
 		int mCurrentDirectionX;

@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.OreDictUtils;
@@ -17,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
@@ -82,17 +84,6 @@ public class ItemAgrichemBase extends Item {
 	@Override
 	public String getItemStackDisplayName(ItemStack aStack) {
 		return super.getItemStackDisplayName(aStack);
-	}
-
-	@Override
-	public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
-		try {
-			
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-		}
-		super.addInformation(aStack, p_77624_2_, aList, p_77624_4_);
 	}
 
 	@Override
@@ -171,11 +162,6 @@ public class ItemAgrichemBase extends Item {
 	}
 
 	@Override
-	public boolean showDurabilityBar(ItemStack stack) {
-		return false;
-	}
-
-	@Override
 	public int getItemEnchantability() {
 		return 0;
 	}
@@ -245,5 +231,88 @@ public class ItemAgrichemBase extends Item {
 		return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 	
+
+
+	@Override
+	public double getDurabilityForDisplay(ItemStack aStack) {
+		if (ItemUtils.isCatalyst(aStack)) {			
+			if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()){
+				createCatalystNBT(aStack);
+	        }
+			double currentDamage = getCatalystDamage(aStack);
+			double durabilitypercent = currentDamage / 100;		
+	        return  durabilitypercent;
+		}
+		else {
+			return 1D;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void addInformation(ItemStack aStack, EntityPlayer player, List list, boolean bool) {
+		boolean aHasSpecialTooltips = false;
+		int aMaxDamage = 0;
+		int aDamageSegment = 0;
+		int aDam = 0;
+		EnumChatFormatting durability = EnumChatFormatting.GRAY;
+		if (ItemUtils.isCatalyst(aStack)) {
+			list.add(EnumChatFormatting.GRAY+"Active Reaction Agent");
+			aMaxDamage = getCatalystMaxDamage(aStack);
+			aDamageSegment = aMaxDamage / 5;
+			aDam = aMaxDamage-getCatalystDamage(aStack);
+			aHasSpecialTooltips = true;
+		}
+		if (aHasSpecialTooltips) {			
+			if (aDam > aDamageSegment * 4){
+				durability = EnumChatFormatting.GRAY;
+			}
+			else if (aDam > aDamageSegment * 3){
+				durability = EnumChatFormatting.GREEN;
+			}
+			else if (aDam > aDamageSegment * 2){
+				durability = EnumChatFormatting.YELLOW;
+			}
+			else if (aDam > aDamageSegment){
+				durability = EnumChatFormatting.GOLD;
+			}
+			else if (aDam > 0){
+				durability = EnumChatFormatting.RED;
+			}
+			list.add(durability+""+(aDam)+EnumChatFormatting.GRAY+" / "+aMaxDamage);
+		}
+		super.addInformation(aStack, player, list, bool);
+	}
+	
+	@Override
+	public boolean showDurabilityBar(ItemStack aStack) {
+		if (ItemUtils.isCatalyst(aStack)) {
+			int aDam = getCatalystDamage(aStack);
+			if (aDam > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean createCatalystNBT(ItemStack rStack){
+		return ItemGenericChemBase.createCatalystNBT(rStack);
+	}
+
+	public static int getCatalystDamage(ItemStack aStack) {
+		return ItemGenericChemBase.getCatalystDamage(aStack);
+	}
+	
+	public static int getCatalystMaxDamage(ItemStack aStack) {
+		return ItemGenericChemBase.getCatalystMaxDamage(aStack);
+	}
+
+	public static void setCatalystDamage(ItemStack aStack,int aAmount) {
+		ItemGenericChemBase.setCatalystDamage(aStack, aAmount);
+	}
+	
+	public static int getMaxCatalystDurability(ItemStack aStack) {
+		return ItemGenericChemBase.getMaxCatalystDurability(aStack);
+	}
 
 }

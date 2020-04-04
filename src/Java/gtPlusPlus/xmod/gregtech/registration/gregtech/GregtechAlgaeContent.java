@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.GT_MetaTileEntity_Hatch_Catalysts;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.algae.GregtechMTE_AlgaePondBase;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.GregtechMTE_ChemicalPlant;
 
@@ -22,7 +23,8 @@ public class GregtechAlgaeContent {
 
 		// Chemical Plant		
 		GregtechItemList.ChemicalPlant_Controller.set(new GregtechMTE_ChemicalPlant(998,	"chemicalplant.controller.tier.single", "ExxonMobil Chemical Plant").getStackForm(1L));
-		
+
+		GregtechItemList.Bus_Catalysts.set((new GT_MetaTileEntity_Hatch_Catalysts(31030, "hatch.catalysts", "Catalyst Housing")).getStackForm(1L));
 	}
 
 }
