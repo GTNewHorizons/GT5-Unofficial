@@ -196,3 +196,10 @@ task signJar(dependsOn: 'reobf') {
         )
     }
 }
+
+jar {
+    manifest
+            {
+                attributes "FMLAT": "tectech_at.cfg"
+            }
+}

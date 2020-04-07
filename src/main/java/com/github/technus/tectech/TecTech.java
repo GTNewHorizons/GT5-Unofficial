@@ -98,7 +98,6 @@ public class TecTech {
     public void Load(FMLInitializationEvent event) {
         hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
 
-
         if(configTecTech.DISABLE_MATERIAL_LOADING_FFS){
             try {
                 Field modifiersField = Field.class.getDeclaredField( "modifiers" );

@@ -28,6 +28,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.fluids.Fluid;
@@ -339,23 +340,23 @@ public final class MainLoader {
         for(Block block : GameData.getBlockRegistry().typeSafeIterable()) {
             GameRegistry.UniqueIdentifier uniqueIdentifier=GameRegistry.findUniqueIdentifierFor(block);
             if (uniqueIdentifier != null) {
-                if (modIDs.contains(uniqueIdentifier.modId)) {//Full Whitelisted Mods
+                if (block.blockHardness < 0 || modIDs.contains(uniqueIdentifier.modId)) {
                     continue;
                 } else if ("OpenBlocks".equals(uniqueIdentifier.modId)) {
                     if ("grave".equals(uniqueIdentifier.name)) {
                         continue;
                     }
-                } else if ("TwilightForest".equals(uniqueIdentifier.modId)){
-                    if ("tile.TFShield".equals(uniqueIdentifier.name)){
+                } else if ("TwilightForest".equals(uniqueIdentifier.modId)) {
+                    if ("tile.TFShield".equals(uniqueIdentifier.name)) {
                         block.setResistance(30);
                         continue;
-                    }else if ("tile.TFThorns".equals(uniqueIdentifier.name)){
+                    } else if ("tile.TFThorns".equals(uniqueIdentifier.name)) {
                         block.setResistance(10);
                         continue;
-                    }else if ("tile.TFTowerTranslucent".equals(uniqueIdentifier.name)){
+                    } else if ("tile.TFTowerTranslucent".equals(uniqueIdentifier.name)) {
                         block.setResistance(30);
                         continue;
-                    }else if ("tile.TFDeadrock".equals(uniqueIdentifier.name)) {
+                    } else if ("tile.TFDeadrock".equals(uniqueIdentifier.name)) {
                         block.setResistance(5);
                         continue;
                     } else {
