@@ -116,6 +116,7 @@ dependencies {
 	compile "micdoodle8.mods:GalacticraftCore:${config.galacticraft.version}:Dev"
 	compile "micdoodle8.mods:Galacticraft-Planets:${config.galacticraft.version}:Dev"
 	compile "micdoodle8.mods:Galacticraft:${config.galacticraft.version}:API"
+	compile "com.mod-buildcraft:buildcraft:${config.buildcraft.version}:dev"
 	//Ivy
 	compile name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
 }
@@ -171,6 +172,15 @@ processResources
                 exclude 'mcmod.info'
             }
         }
+
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+artifacts {
+    archives devJar
+}
 
 task signJar(dependsOn: 'reobf') {
     doLast {
