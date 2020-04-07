@@ -182,7 +182,6 @@ public class GTplusplus implements ActionListener {
 	public void init(final FMLInitializationEvent event) {
 		INIT_PHASE.INIT.setPhaseActive(true);
 		proxy.init(event);
-		HazmatUtils.init();
 		proxy.registerNetworkStuff();
 		Meta_GT_Proxy.init();
 		Core_Manager.init();
@@ -199,6 +198,7 @@ public class GTplusplus implements ActionListener {
 	public void postInit(final FMLPostInitializationEvent event) {
 		INIT_PHASE.POST_INIT.setPhaseActive(true);
 		proxy.postInit(event);
+		HazmatUtils.init();
 		BookHandler.runLater();
 		Meta_GT_Proxy.postInit();
 		Core_Manager.postInit();

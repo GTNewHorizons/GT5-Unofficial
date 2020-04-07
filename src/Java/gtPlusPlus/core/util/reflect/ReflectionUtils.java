@@ -537,17 +537,17 @@ public class ReflectionUtils {
 
 
 	public static Object invokeNonBool(Object objectInstance, Method method, Object[] values){
-		if (objectInstance == null || method == null || values == null){
+		if ((!ReflectionUtils.isStaticMethod(method)  && objectInstance == null) || method == null || values == null){
 			return false;
 		}		
 		String methodName = method.getName();
-		Class<?> mLocalClass = (objectInstance instanceof Class ? (Class<?>) objectInstance : objectInstance.getClass());
-		Logger.REFLECTION("Trying to invoke "+methodName+" on an instance of "+mLocalClass.getCanonicalName()+".");
+		String classname = objectInstance != null ? objectInstance.getClass().getCanonicalName() : method.getDeclaringClass().getCanonicalName();
+		Logger.REFLECTION("Trying to invoke "+methodName+" on an instance of "+classname+".");
 		try {
 				return method.invoke(objectInstance, values);
 		}
 		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			Logger.REFLECTION("Failed to Dynamically invoke "+methodName+" on an object of type: "+mLocalClass.getName());
+			Logger.REFLECTION("Failed to Dynamically invoke "+methodName+" on an object of type: "+classname);
 		}		
 
 		Logger.REFLECTION("Invoke failed or did something wrong.");		

@@ -1,31 +1,28 @@
 package gtPlusPlus.core.util.minecraft;
 
-import static gregtech.api.GregTech_API.sBioHazmatList;
-import static gregtech.api.GregTech_API.sElectroHazmatList;
-import static gregtech.api.GregTech_API.sFrostHazmatList;
-import static gregtech.api.GregTech_API.sGasHazmatList;
-import static gregtech.api.GregTech_API.sHeatHazmatList;
-import static gregtech.api.GregTech_API.sRadioHazmatList;
+import static gregtech.api.GregTech_API.*;
 
-import java.util.Collections;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.GregTech_API;
 import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import ic2.core.Ic2Items;
 import ic2.core.item.armor.ItemArmorHazmat;
 import ic2.core.item.armor.ItemArmorNanoSuit;
 import ic2.core.item.armor.ItemArmorQuantumSuit;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -33,44 +30,15 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 public class HazmatUtils {
 
 	public static final GT_HashSet<GT_ItemStack> sHazmatList = new GT_HashSet<GT_ItemStack>();
+	
+	private static final HashMap<Item, Boolean> aIgnoreNBTMap = new HashMap<Item, Boolean>();
 
 	private static final HashMap<String, AutoMap<String>> mToolTips = new HashMap<String, AutoMap<String>>();
 
 	private static boolean mInit = false;
 	private static HazmatUtils mInstance;
-	
-	private static final String[] mDefaultHazmat = new String[] {
-			"IC2:itemArmorNanoHelmet:27",
-			"IC2:itemArmorNanoChestplate:27",
-			"IC2:itemArmorNanoLegs:27",
-			"IC2:itemArmorNanoBoots:27",
 
-			"IC2:itemArmorQuantumHelmet:27",
-			"IC2:itemArmorQuantumChestplate:27",
-			"IC2:itemArmorQuantumLegs:27",
-			"IC2:itemArmorQuantumBoots:27",
-	};
-	
-
-	private static final String[] mGravisuit = new String[] {
-			"GraviSuite:advNanoChestPlate:27",
-			"GraviSuite:graviChestPlate:27",
-	};
-	private static final String[] mElectroMagicTools = new String[] {
-			"EMT:NanosuitGogglesRevealing:27",
-			"EMT:NanoBootsTraveller:27",
-			"EMT:NanosuitWing:27",
-			"EMT:itemArmorQuantumChestplate:27",
-			"EMT:QuantumGogglesRevealing:27",
-			"EMT:QuantumBootsTraveller:27",
-			"EMT:QuantumWing:27",
-	};
-	private static final String[] mAdvancedSolarPanels = new String[] {
-			"AdvancedSolarPanel:advanced_solar_helmet:27",
-			"AdvancedSolarPanel:hybrid_solar_helmet:27",
-			"AdvancedSolarPanel:ultimate_solar_helmet:27",
-	};
-
+	@SuppressWarnings("rawtypes")
 	public static void init() {
 		if (mInit) {
 			return;
@@ -78,40 +46,101 @@ public class HazmatUtils {
 
 		mInstance = new HazmatUtils();
 
-		sHazmatList.add(GT_ModHandler.getIC2Item("hazmatHelmet", 1L, 32767));
-		sHazmatList.add(GT_ModHandler.getIC2Item("hazmatChestplate", 1L, 32767));
-		sHazmatList.add(GT_ModHandler.getIC2Item("hazmatLeggings", 1L, 32767));
-		sHazmatList.add(GT_ModHandler.getIC2Item("hazmatBoots", 1L, 32767));
+		sHazmatList.add(ItemUtils.getSimpleStack(Ic2Items.hazmatHelmet, 1));
+		sHazmatList.add(ItemUtils.getSimpleStack(Ic2Items.hazmatChestplate, 1));
+		sHazmatList.add(ItemUtils.getSimpleStack(Ic2Items.hazmatLeggings, 1));
+		sHazmatList.add(ItemUtils.getSimpleStack(Ic2Items.hazmatBoots, 1));
 
 		// Make Nano a hazmat suit
 		// Make Quantum a hazmat suit		
 		
 
 		if (LoadedMods.IndustrialCraft2 || LoadedMods.IndustrialCraft2Classic) {
-			for (String aItemName : mDefaultHazmat) {	
-				String[] aSplit = aItemName.split(":");
-				addProtection(GT_ModHandler.getIC2Item(aSplit[1], 1L, 32767));
+			AutoMap<ItemStack> aVanillaIC2Armour = new AutoMap<ItemStack>();
+			aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.nanoHelmet, 1));
+			aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.nanoBodyarmor, 1));
+			aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.nanoLeggings, 1));
+			aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.nanoBoots, 1));
+			aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.quantumHelmet, 1));
+			aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.quantumBodyarmor, 1));
+			aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.quantumLeggings, 1));
+			aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.quantumBoots, 1));
+			for (ItemStack aItem : aVanillaIC2Armour) {	
+				addProtection(aItem);
 			}
 			Logger.INFO("[Hazmat] Registered IC2 Items as hazmat gear.");
 		}
 		
 		if (LoadedMods.isModLoaded("EMT")) {
-			for (String aItemName : mElectroMagicTools) {				
-				addProtection(ItemUtils.getItemStackFromFQRN(aItemName, 1));
+			AutoMap<Field> aItemFields = new AutoMap<Field>();
+			Class aItemsEMT = ReflectionUtils.getClass("emt.init.EMTItems");			
+			aItemFields.add(ReflectionUtils.getField(aItemsEMT, "nanoThaumicHelmet"));
+			aItemFields.add(ReflectionUtils.getField(aItemsEMT, "nanoWing"));
+			aItemFields.add(ReflectionUtils.getField(aItemsEMT, "nanoBootsTraveller"));
+			aItemFields.add(ReflectionUtils.getField(aItemsEMT, "quantumThaumicHelmet"));
+			aItemFields.add(ReflectionUtils.getField(aItemsEMT, "quantumWing"));
+			aItemFields.add(ReflectionUtils.getField(aItemsEMT, "quantumArmor"));
+			aItemFields.add(ReflectionUtils.getField(aItemsEMT, "quantumBootsTraveller"));			
+			AutoMap<ItemStack> aEMT = new AutoMap<ItemStack>();
+			for (Field aItemField : aItemFields) {
+				Item aItemObject = null;
+				if (aItemField != null) {
+					try {
+						aItemObject = (Item) aItemField.get(null);
+					}
+					catch (Exception t) {
+						t.printStackTrace();
+					}
+				}
+				if (aItemObject != null) {
+					aEMT.add(ItemUtils.getSimpleStack(aItemObject));
+				}
+				else {
+					Logger.INFO("[Hazmat] Could not get "+aItemField.getName()+" from "+aItemsEMT.getName());					
+				}
+			}
+			Logger.INFO("[Hazmat] Registering "+aEMT.size()+" EMT Items as hazmat gear.");
+			for (ItemStack aItem : aEMT) {	
+				addProtection(aItem);
 			}
 			Logger.INFO("[Hazmat] Registered EMT Items as hazmat gear.");
 		}
 		
-		if (LoadedMods.isModLoaded("GraviSuite")) {
-			for (String aItemName : mGravisuit) {				
-				addProtection(ItemUtils.getItemStackFromFQRN(aItemName, 1));
+		if (LoadedMods.isModLoaded("GraviSuite")) {			
+			AutoMap<Field> aItemFields = new AutoMap<Field>();
+			Class aItemsGravisuite = ReflectionUtils.getClass("gravisuite.GraviSuite");			
+			aItemFields.add(ReflectionUtils.getField(aItemsGravisuite, "advNanoChestPlate"));
+			aItemFields.add(ReflectionUtils.getField(aItemsGravisuite, "graviChestPlate"));			
+			AutoMap<ItemStack> aGravisuite = new AutoMap<ItemStack>();
+			for (Field aItemField : aItemFields) {
+				Item aItemObject = (Item) ReflectionUtils.getFieldValue(aItemField);
+				if (aItemObject != null) {
+					aGravisuite.add(ItemUtils.getSimpleStack(aItemObject));
+				}
+			}
+			Logger.INFO("[Hazmat] Registering "+aGravisuite.size()+" Gravisuit Items as hazmat gear.");
+			for (ItemStack aItem : aGravisuite) {	
+				addProtection(aItem);
 			}
 			Logger.INFO("[Hazmat] Registered Gravisuit Items as hazmat gear.");
 		}
 		
 		if (LoadedMods.isModLoaded("AdvancedSolarPanel")) {
-			for (String aItemName : mAdvancedSolarPanels) {				
-				addProtection(ItemUtils.getItemStackFromFQRN(aItemName, 1));
+			AutoMap<Field> aItemFields = new AutoMap<Field>();
+			Class aItemsEMT = ReflectionUtils.getClass("advsolar.common.AdvancedSolarPanel");
+			aItemFields.add(ReflectionUtils.getField(aItemsEMT, "advancedSolarHelmet"));
+			aItemFields.add(ReflectionUtils.getField(aItemsEMT, "hybridSolarHelmet"));
+			aItemFields.add(ReflectionUtils.getField(aItemsEMT, "ultimateSolarHelmet"));			
+			AutoMap<ItemStack> aASP = new AutoMap<ItemStack>();
+			for (Field aItemField : aItemFields) {
+				Item aItemObject = (Item) ReflectionUtils.getFieldValue(aItemField);
+				if (aItemObject != null) {
+					aASP.add(ItemUtils.getSimpleStack(aItemObject));
+				}
+			}
+			Logger.INFO("[Hazmat] Registering "+aASP.size()+" Adv. Solar Items as hazmat gear.");
+			for (ItemStack aItem : aASP) {	
+				addProtection(aItem);
 			}
 			Logger.INFO("[Hazmat] Registered Adv. Solar Items as hazmat gear.");
 		}	
@@ -127,38 +156,36 @@ public class HazmatUtils {
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent event) {
 		//Logger.INFO("Ticking Hazmat handler");
-		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED
-				&& GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.SERVER_START) {
-			//Logger.INFO("[Hazmat] Bad Phase : " + GTplusplus.CURRENT_LOAD_PHASE);
-			return;
-		}
-		if (event.itemStack == null || isVanillaHazmatPiece(event.itemStack)) {
-			//Logger.INFO("[Hazmat] Invalid Itemstack or vanilla hazmat");
-			return;
-		} else {
-			ItemStack aStackTemp = event.itemStack;
-			GT_ItemStack aStack = new GT_ItemStack(aStackTemp);
-			if (isNanoArmourPiece(aStackTemp) || isQuantumArmourPiece(aStackTemp)) {
-				event.toolTip.add(EnumChatFormatting.DARK_PURPLE+"Provides full hazmat protection.");				
-			}
-			else {
-				//Logger.INFO("[Hazmat] Finding Tooltip Data");
-				String[] aTooltips = getTooltips(aStack);
-				if (aTooltips == null || aTooltips.length == 0) {
-					//Logger.INFO("[Hazmat] No Info!");
-					return;
-				} else {
-					//Logger.INFO("[Hazmat] Found Tooltips!");
-					if (providesProtection(aStackTemp)) {
-						event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE+"Provides full hazmat protection.");
+		if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
+			
+			if (event.itemStack == null || isVanillaHazmatPiece(event.itemStack)) {
+				//Logger.INFO("[Hazmat] Invalid Itemstack or vanilla hazmat");
+				return;
+			} else {
+				ItemStack aStackTemp = event.itemStack;
+				GT_ItemStack aStack = new GT_ItemStack(aStackTemp);
+				if (isNanoArmourPiece(aStackTemp) || isQuantumArmourPiece(aStackTemp)) {
+					event.toolTip.add(EnumChatFormatting.DARK_PURPLE+"Provides full hazmat protection.");				
+				}
+				else {
+					//Logger.INFO("[Hazmat] Finding Tooltip Data");
+					String[] aTooltips = getTooltips(aStack);
+					if (aTooltips == null || aTooltips.length == 0) {
+						//Logger.INFO("[Hazmat] No Info!");
+						return;
 					} else {
-						event.toolTip.add(mToolTipText);
-						for (String r : aTooltips) {
-							event.toolTip.add(" - " + r);
+						//Logger.INFO("[Hazmat] Found Tooltips!");
+						if (providesProtection(aStackTemp)) {
+							event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE+"Provides full hazmat protection.");
+						} else {
+							event.toolTip.add(mToolTipText);
+							for (String r : aTooltips) {
+								event.toolTip.add(" - " + r);
+							}
 						}
 					}
-				}
-			}		
+				}		
+			}
 		}
 	}
 
@@ -176,7 +203,7 @@ public class HazmatUtils {
 		if (living == null || living.isDead) {
 			return false;
 		} else {
-
+			
 			// Map All Player Armour slots
 			AutoMap<ItemStack> aEquipment = new AutoMap<ItemStack>();
 			for (int i = 1; i < 5; ++i) {
@@ -193,11 +220,13 @@ public class HazmatUtils {
 			// Compare Equipment to all items mapped for full hazmat.
 			for (ItemStack aSlotStack : aEquipment) {
 				if (!isHazmatPiece(aSlotStack)) {
+					//Logger.INFO("Found item which is not hazmat. "+ItemUtils.getItemName(aSlotStack));
 					return false;
 				}
 			}
 
 			// We are in some kind of full hazmat, huzzah!
+			//Logger.INFO("Has full hazmat.");
 			return true;
 		}
 	}
@@ -250,8 +279,8 @@ public class HazmatUtils {
 	 * @return - Did we register this ItemStack properly?
 	 */
 	public static boolean addProtection(ItemStack aVanStack) {
-		if (ItemUtils.checkForInvalidItems(aVanStack)) {
-			Logger.INFO("=========================Bad Hazmat Addition==============");
+		if (!ItemUtils.checkForInvalidItems(aVanStack)) {
+			Logger.INFO("=================Bad Hazmat Addition======================");
 			Logger.INFO("Called from: "+ReflectionUtils.getMethodName(0));
 			Logger.INFO(ReflectionUtils.getMethodName(1));
 			Logger.INFO(ReflectionUtils.getMethodName(2));
@@ -276,6 +305,7 @@ public class HazmatUtils {
 				return false;
 			}
 		}
+		aIgnoreNBTMap.put(aVanStack.getItem(), true);
 		Logger.INFO("[Hazmat] Protection added for all 6 damage types, registering to master Hazmat list.");
 		sHazmatList.add(aStack);
 		return true;
@@ -360,7 +390,13 @@ public class HazmatUtils {
 		}
 		for (GT_ItemStack o : aSet) {
 			if (o != null) {
+				if (GT_Utility.areStacksEqual(o.toStack(), aStack, true)) {
+					return true;
+				}
 				if (o.isStackEqual(aStack)){
+					return true;
+				}
+				if (o.mItem == aStack.getItem() && EnergyUtils.EU.isElectricItem(aStack)) {
 					return true;
 				}
 			}
@@ -369,14 +405,14 @@ public class HazmatUtils {
 	}
 
 	private static String[] getTooltips(GT_ItemStack aStack) {
-		String aKey = convertGtItemstackToStringData(aStack);
+		String aKey = convertGtItemstackToStringDataIgnoreDamage(aStack);
 		AutoMap<String> aTempTooltipData = mToolTips.get(aKey);
-		if (aTempTooltipData == null) {
+		if (aTempTooltipData == null || aTempTooltipData.isEmpty()) {
 			//Logger.INFO("[Hazmat] Item was not mapped for TTs - "+aKey);
 			return new String[] {};
 		} else {
 			//Logger.INFO("[Hazmat] Item was mapped for TTs");
-			Collections.sort(aTempTooltipData);
+			//Collections.sort(aTempTooltipData);
 			//Logger.INFO("[Hazmat] Sorted TTs");
 			
 			String[] mBuiltOutput = new String[aTempTooltipData.size()];
@@ -390,15 +426,15 @@ public class HazmatUtils {
 	}
 
 	private static void registerTooltip(GT_ItemStack aStack, String aTooltip) {
-		String aKey = convertGtItemstackToStringData(aStack);
+		String aKey = convertGtItemstackToStringDataIgnoreDamage(aStack);
 		Logger.INFO("[Hazmat] Mapping " + aTooltip + " for " + aKey);
 		AutoMap<String> aTempTooltipData = mToolTips.get(aKey);
 		if (aTempTooltipData == null) {
 			Logger.INFO("No data mapped yet, creating.");
 			aTempTooltipData = new AutoMap<String>();
+			mToolTips.put(aKey, aTempTooltipData);
 		}
 		aTempTooltipData.add(aTooltip);
-		mToolTips.put(convertGtItemstackToStringData(aStack), aTempTooltipData);
 	}
 
 	public static ItemStack getStackFromGtStack(GT_ItemStack aGtStack) {
