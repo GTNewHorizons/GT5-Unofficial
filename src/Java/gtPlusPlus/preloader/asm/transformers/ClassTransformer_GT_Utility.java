@@ -9,8 +9,8 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.preloader.Preloader_Logger;
 
 public class ClassTransformer_GT_Utility {
 
@@ -35,14 +35,20 @@ public class ClassTransformer_GT_Utility {
 			isValid = false;
 		}
 		
-		FMLRelaunchLog.log("[GT++ ASM] Gregtech Utilities Patch", Level.INFO, "Valid patch? " + isValid + ".");
+		Preloader_Logger.LOG("Gregtech Utilities Patch", Level.INFO, "Valid patch? " + isValid + ".");
 		reader = aTempReader;
 		writer = aTempWriter;
 
 		if (reader != null && writer != null) {
-			FMLRelaunchLog.log("[GT++ ASM] Gregtech Utilities Patch", Level.INFO, "Attempting Method Injection.");
+			Preloader_Logger.LOG("Gregtech Utilities Patch", Level.INFO, "Attempting Method Injection.");
 			injectMethod("getTier");			
-			injectMethod("applyRadioactivity");			
+			injectMethod("applyRadioactivity");	
+			injectMethod("isWearingFullFrostHazmat");	
+			injectMethod("isWearingFullHeatHazmat");	
+			injectMethod("isWearingFullBioHazmat");	
+			injectMethod("isWearingFullRadioHazmat");	
+			injectMethod("isWearingFullElectroHazmat");	
+			injectMethod("isWearingFullGasHazmat");
 		}
 
 	}
@@ -63,9 +69,9 @@ public class ClassTransformer_GT_Utility {
 		MethodVisitor mv;
 		boolean didInject = false;
 		ClassWriter cw = getWriter();	
-		String aClassNameFormatted = Utils.class.getName().replace(".", "/");
-		FMLRelaunchLog.log("[GT++ ASM] Gregtech Utilities Patch", Level.INFO, "Injecting " + aMethodName + ", static replacement call to "+aClassNameFormatted+".");		
+		String aClassNameFormatted = Utils.class.getName().replace(".", "/");		
 		if (aMethodName.equals("getTier")) {
+			Preloader_Logger.LOG("Gregtech Utilities Patch", Level.INFO, "Injecting " + aMethodName + ", static replacement call to "+aClassNameFormatted+".");
 			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "getTier", "(J)B", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
@@ -82,6 +88,7 @@ public class ClassTransformer_GT_Utility {
 			didInject = true;
 		}
 		if (aMethodName.equals("applyRadioactivity")){
+			Preloader_Logger.LOG("Gregtech Utilities Patch", Level.INFO, "Injecting " + aMethodName + ".");
 			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "applyRadioactivity", "(Lnet/minecraft/entity/EntityLivingBase;II)Z", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
@@ -390,6 +397,7 @@ public class ClassTransformer_GT_Utility {
 			}
 
 		if (aMethodName.equals("isWearingFullFrostHazmat")){
+			Preloader_Logger.LOG("Gregtech Utilities Patch", Level.INFO, "Injecting " + aMethodName + ".");
 			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "isWearingFullFrostHazmat", "(Lnet/minecraft/entity/EntityLivingBase;)Z", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
@@ -444,6 +452,7 @@ public class ClassTransformer_GT_Utility {
 		}
 
 		if (aMethodName.equals("isWearingFullHeatHazmat")){
+			Preloader_Logger.LOG("Gregtech Utilities Patch", Level.INFO, "Injecting " + aMethodName + ".");
 			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "isWearingFullHeatHazmat", "(Lnet/minecraft/entity/EntityLivingBase;)Z", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
@@ -498,6 +507,7 @@ public class ClassTransformer_GT_Utility {
 		}
 
 		if (aMethodName.equals("isWearingFullBioHazmat")){
+			Preloader_Logger.LOG("Gregtech Utilities Patch", Level.INFO, "Injecting " + aMethodName + ".");
 			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "isWearingFullBioHazmat", "(Lnet/minecraft/entity/EntityLivingBase;)Z", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
@@ -552,6 +562,7 @@ public class ClassTransformer_GT_Utility {
 		}
 
 		if (aMethodName.equals("isWearingFullRadioHazmat")){
+			Preloader_Logger.LOG("Gregtech Utilities Patch", Level.INFO, "Injecting " + aMethodName + ".");
 			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "isWearingFullRadioHazmat", "(Lnet/minecraft/entity/EntityLivingBase;)Z", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
@@ -606,6 +617,7 @@ public class ClassTransformer_GT_Utility {
 		}
 
 		if (aMethodName.equals("isWearingFullElectroHazmat")){
+			Preloader_Logger.LOG("Gregtech Utilities Patch", Level.INFO, "Injecting " + aMethodName + ".");
 			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "isWearingFullElectroHazmat", "(Lnet/minecraft/entity/EntityLivingBase;)Z", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
@@ -660,6 +672,7 @@ public class ClassTransformer_GT_Utility {
 		}
 
 		if (aMethodName.equals("isWearingFullGasHazmat")){
+			Preloader_Logger.LOG("Gregtech Utilities Patch", Level.INFO, "Injecting " + aMethodName + ".");
 			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "isWearingFullGasHazmat", "(Lnet/minecraft/entity/EntityLivingBase;)Z", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
@@ -713,7 +726,7 @@ public class ClassTransformer_GT_Utility {
 			didInject = true;
 		}
 		
-		FMLRelaunchLog.log("[GT++ ASM] Gregtech Utilities Patch", Level.INFO, "Method injection complete.");
+		Preloader_Logger.LOG("Gregtech Utilities Patch", Level.INFO, "Method injection complete.");
 		return didInject;
 	}
 
@@ -759,8 +772,8 @@ public class ClassTransformer_GT_Utility {
 			}
 
 			if (methodVisitor == null) {
-				FMLRelaunchLog.log("[GT++ ASM] Gregtech Utilities Patch", Level.INFO,
-						"Found method " + name + ", removing.");
+				Preloader_Logger.LOG("Gregtech Utilities Patch", Level.INFO, "Found method " + name + ", removing.");
+				Preloader_Logger.LOG("Gregtech Utilities Patch", Level.INFO, "Descriptor: "+desc);
 			}
 			return methodVisitor;
 		}

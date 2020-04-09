@@ -32,26 +32,26 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMTE_FrothFlotationPond extends GregtechMeta_MultiBlockBase {
+public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase {
 
 	private int mLevel = -1;
 
-	public GregtechMTE_FrothFlotationPond(final int aID, final String aName, final String aNameRegional) {
+	public GregtechMTE_FrothFlotationCell(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMTE_FrothFlotationPond(final String aName) {
+	public GregtechMTE_FrothFlotationCell(final String aName) {
 		super(aName);
 	}
 
 	@Override
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return new GregtechMTE_FrothFlotationPond(this.mName);
+		return new GregtechMTE_FrothFlotationCell(this.mName);
 	}
 
 	@Override
 	public String getMachineType() {
-		return "Algae Pond";
+		return "Flotation Cell";
 	}
 
 	@Override

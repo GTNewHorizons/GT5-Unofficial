@@ -6,7 +6,6 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.GregTech_API;
 import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Utility;
@@ -30,8 +29,6 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 public class HazmatUtils {
 
 	public static final GT_HashSet<GT_ItemStack> sHazmatList = new GT_HashSet<GT_ItemStack>();
-	
-	private static final HashMap<Item, Boolean> aIgnoreNBTMap = new HashMap<Item, Boolean>();
 
 	private static final HashMap<String, AutoMap<String>> mToolTips = new HashMap<String, AutoMap<String>>();
 
@@ -305,7 +302,6 @@ public class HazmatUtils {
 				return false;
 			}
 		}
-		aIgnoreNBTMap.put(aVanStack.getItem(), true);
 		Logger.INFO("[Hazmat] Protection added for all 6 damage types, registering to master Hazmat list.");
 		sHazmatList.add(aStack);
 		return true;
