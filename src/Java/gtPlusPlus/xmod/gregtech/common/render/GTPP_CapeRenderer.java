@@ -80,14 +80,12 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 
 			// We have capes turned off, so let's not render.
 			if (!ConfigSwitches.enableCustomCapes) {
-				aEvent.setCanceled(true);
 				return;
 			}
 
 			// We have already checked if this player has a cape, but since they do not, we best not render.
 			if (hasResourceChecked) {
 				if (!hasCape && !CORE.DEVENV) {
-					aEvent.setCanceled(true);
 					return;
 				}
 			}
@@ -103,7 +101,6 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 
 				// If for whatever reason this fails, we just exit early.
 				if (aPlayerUUID.equals("BAD")) {
-					aEvent.setCanceled(true);
 					return;
 				}
 
@@ -164,14 +161,6 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 				hasResourceChecked = true;
 			}
 
-
-			// If player is invisible, don't render.
-			if (GT_Utility.getFullInvisibility(aPlayer) || aPlayer.isInvisible()
-					|| GT_Utility.getPotion(aPlayer, Integer.valueOf(Potion.invisibility.id).intValue())) {
-				aEvent.setCanceled(true);
-				return;
-			}
-
 			if (hasResourceChecked) {
 				// We have met all the conditions, let's render that cape.
 				renderCapeOnPlayer(aEvent, aPlayer);
@@ -185,6 +174,13 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 		try {
 			if (tResource == null && CORE.DEVENV) {
 				tResource = mCapes[3];
+			}
+			
+			// If player is invisible, don't render.
+			if (GT_Utility.getFullInvisibility(aPlayer) || aPlayer.isInvisible()
+					|| GT_Utility.getPotion(aPlayer, Integer.valueOf(Potion.invisibility.id).intValue())) {
+				aEvent.setCanceled(true);
+				return false;
 			}
 
 			if ((tResource != null) && (!aPlayer.getHideCape())) {
