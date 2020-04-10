@@ -385,7 +385,7 @@ public class HazmatUtils {
 			return true;
 		}
 		for (GT_ItemStack o : aSet) {
-			if (o != null) {
+			if (o != null && o.mItem != null && aStack != null && aStack.getItem() != null) {
 				if (GT_Utility.areStacksEqual(o.toStack(), aStack, true)) {
 					return true;
 				}
