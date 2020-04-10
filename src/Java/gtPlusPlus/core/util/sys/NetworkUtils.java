@@ -41,10 +41,10 @@ public class NetworkUtils {
 	public static boolean checkNetworkIsAvailableWithValidInterface(){
 		try {
 			if (hasValidNetworkInterface()){
-				if (checkAddressWithTimeout("http://www.google.com", 10) ||
-						checkAddressWithTimeout("http://www.baidu.com", 10) ||
-						checkAddressWithTimeout("https://github.com/draknyte1/GTplusplus", 10) ||
-						checkAddressWithTimeout("www.yahoo.com", 10)/* ||
+				if (checkAddressWithTimeout("http://www.google.com", 100) ||
+						checkAddressWithTimeout("http://www.baidu.com", 100) ||
+						checkAddressWithTimeout("http://www.github.com/alkcorp/GTplusplus", 100) ||
+						checkAddressWithTimeout("http://www.yahoo.com", 100)/* ||
 						netIsAvailableGoogle() ||
 						netIsAvailableBaidu() ||
 						netIsAvailableGithub() ||
@@ -63,82 +63,26 @@ public class NetworkUtils {
 		return false;
 	}
 
-	private static boolean netIsAvailableGoogle() {
-		try {
-			final URL url = new URL("http://www.google.com");
-			final URLConnection conn = url.openConnection();
-			conn.connect();
-			return true;
-		} catch (final MalformedURLException e) {
-			throw new RuntimeException(e);
-		} catch (final IOException e) {
-			return false;
-		}
-	}
-
-	private static boolean netIsAvailableBaidu() {
-		try {
-			final URL url = new URL("http://www.baidu.com");
-			final URLConnection conn = url.openConnection();
-			conn.connect();
-			return true;
-		} catch (final MalformedURLException e) {
-			throw new RuntimeException(e);
-		} catch (final IOException e) {
-			return false;
-		}
-	}
-
-	private static boolean netIsAvailableGithub() {
-		try {
-			final URL url = new URL("https://github.com/draknyte1/GTplusplus");
-			final URLConnection conn = url.openConnection();
-			conn.connect();
-			return true;
-		} catch (final MalformedURLException e) {
-			throw new RuntimeException(e);
-		} catch (final IOException e) {
-			return false;
-		}
-	}
-
-	private static boolean netIsAvailableOther() {
-		try {
-			final int timeout = 200;
-			final InetAddress[] addresses = InetAddress.getAllByName("www.yahoo.com");
-			for (final InetAddress address : addresses) {
-				if (address.isReachable(timeout)) {
-					return true;
-				}
-				return false;
-			}
-		} catch (final Exception e) {
-			return false;
-		}
-		return false;
-	}
-
 	private static boolean checkAddressWithTimeout(String URL, int timeout) {
-		
-		 try {
-		        InetAddress.getByName(URL).isReachable(timeout); //Replace with your name
-		        return true;
-		    } catch (Exception e) {
-		        return false;
-		    }
-		
-		/*try {			
-			final InetAddress[] addresses = InetAddress.getAllByName(URL);
-			for (final InetAddress address : addresses) {
-				if (address.isReachable(timeout)) {
-					return true;
+
+		try {
+			InetAddress.getByName(URL).isReachable(timeout); //Replace with your name
+			return true;
+		} catch (Exception e) {
+			boolean result = false;
+			try {
+				URL urlObj = new URL(URL);
+				HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
+				con.setRequestMethod("GET");
+				con.setConnectTimeout(timeout);
+				con.connect();		 
+				int code = con.getResponseCode();
+				if (code == 200) {
+					result = true;
 				}
-				return false;
-			}
-		} catch (final Exception e) {
-			return false;
+			} catch (Exception e2) {}
+			return result;
 		}
-		return false;*/
 	}
 
 	private static boolean hasValidNetworkInterface() throws SocketException{
