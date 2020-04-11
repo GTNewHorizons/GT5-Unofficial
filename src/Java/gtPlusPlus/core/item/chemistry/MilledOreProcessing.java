@@ -27,11 +27,17 @@ public class MilledOreProcessing extends ItemPackage {
 	 * Fluids
 	 */
 
-	public static Fluid ZincFlotationFroth;
-	public static Fluid CopperFlotationFroth;
+	public static Fluid SphaleriteFlotationFroth;
+	public static Fluid ChalcopyriteFlotationFroth;
 	public static Fluid NickelFlotationFroth;
 	public static Fluid PlatinumFlotationFroth;
 	public static Fluid PentlanditeFlotationFroth;
+
+	public static Fluid RedstoneFlotationFroth;
+	public static Fluid SpessartineFlotationFroth;
+	public static Fluid GrossularFlotationFroth;
+	public static Fluid AlmandineFlotationFroth;
+	public static Fluid PyropeFlotationFroth;
 
 	public static Fluid PineOil;
 
@@ -54,16 +60,40 @@ public class MilledOreProcessing extends ItemPackage {
 
 	// Iron, Nickel, Promethium, Hafnium 
 	public static Item milledPentlandite;
+	
+	
+	
+	
+	// Redstone, Ruby, Chrome, Firestone
+	public static Item milledRedstone;
 
+	// Manganese, Aluminium, ???, ???
+	public static Item milledSpessartine;
+	
+	// Calcium, Aluminium, ???, ???
+	public static Item milledGrossular;
+	
+	// Iron, Aluminium, Magnesium, Ytterbium
+	public static Item milledAlmandine;
+	
+	// Magnesium, Aluminium, Chrome, Manganese
+	public static Item milledPyrope;
+	
 
 	@Override
 	public void items() {
 
-		milledSphalerite = BaseItemMilledOre.generate(Materials.Sphalerite, MaterialUtils.getVoltageForTier(5));
-		milledChalcopyrite = BaseItemMilledOre.generate(Materials.Chalcopyrite, MaterialUtils.getVoltageForTier(4));
-		milledNickel = BaseItemMilledOre.generate(Materials.Nickel, MaterialUtils.getVoltageForTier(4));
-		milledPlatinum = BaseItemMilledOre.generate(Materials.Platinum, MaterialUtils.getVoltageForTier(5));
-		milledPentlandite = BaseItemMilledOre.generate(Materials.Pentlandite, MaterialUtils.getVoltageForTier(5));
+		milledSphalerite = BaseItemMilledOre.generate(Materials.Sphalerite, MaterialUtils.getVoltageForTier(6));
+		milledChalcopyrite = BaseItemMilledOre.generate(Materials.Chalcopyrite, MaterialUtils.getVoltageForTier(5));
+		milledNickel = BaseItemMilledOre.generate(Materials.Nickel, MaterialUtils.getVoltageForTier(5));
+		milledPlatinum = BaseItemMilledOre.generate(Materials.Platinum, MaterialUtils.getVoltageForTier(6));
+		milledPentlandite = BaseItemMilledOre.generate(Materials.Pentlandite, MaterialUtils.getVoltageForTier(6));
+
+		milledRedstone = BaseItemMilledOre.generate(Materials.Redstone, MaterialUtils.getVoltageForTier(5));
+		milledSpessartine = BaseItemMilledOre.generate(Materials.Spessartine, MaterialUtils.getVoltageForTier(6));
+		milledGrossular = BaseItemMilledOre.generate(Materials.Grossular, MaterialUtils.getVoltageForTier(6));
+		milledAlmandine = BaseItemMilledOre.generate(Materials.Almandine, MaterialUtils.getVoltageForTier(6));
+		milledPyrope = BaseItemMilledOre.generate(Materials.Pyrope, MaterialUtils.getVoltageForTier(4));
 
 	}
 
@@ -76,9 +106,9 @@ public class MilledOreProcessing extends ItemPackage {
 	public void fluids() {
 
 		short[] aZincFrothRGB = Materials.Sphalerite.mRGBa;
-		ZincFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.zincflotation", "Zinc Froth", 32 + 175, new short[] { aZincFrothRGB[0], aZincFrothRGB[1], aZincFrothRGB[2], 100 }, true);
+		SphaleriteFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.zincflotation", "Sphalerite Froth", 32 + 175, new short[] { aZincFrothRGB[0], aZincFrothRGB[1], aZincFrothRGB[2], 100 }, true);
 		short[] aCopperFrothRGB = Materials.Chalcopyrite.mRGBa;
-		CopperFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.copperflotation", "Copper Froth", 32 + 175, new short[] { aCopperFrothRGB[0], aCopperFrothRGB[1], aCopperFrothRGB[2], 100 }, true);
+		ChalcopyriteFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.copperflotation", "Chalcopyrite Froth", 32 + 175, new short[] { aCopperFrothRGB[0], aCopperFrothRGB[1], aCopperFrothRGB[2], 100 }, true);
 		short[] aNickelFrothRGB = Materials.Nickel.mRGBa;
 		NickelFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.nickelflotation", "Nickel Froth", 32 + 175, new short[] { aNickelFrothRGB[0], aNickelFrothRGB[1], aNickelFrothRGB[2], 100 }, true);
 		short[] aPlatinumFrothRGB = Materials.Platinum.mRGBa;
@@ -86,6 +116,18 @@ public class MilledOreProcessing extends ItemPackage {
 		short[] aPentlanditeFrothRGB = Materials.Pentlandite.mRGBa;
 		PentlanditeFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.pentlanditeflotation", "Pentlandite Froth", 32 + 175, new short[] { aPentlanditeFrothRGB[0], aPentlanditeFrothRGB[1], aPentlanditeFrothRGB[2], 100 }, true);
 
+		short[] aRedstoneFrothRGB = Materials.Redstone.mRGBa;
+		RedstoneFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.redstoneflotation", "Redstone Froth", 32 + 175, new short[] { aRedstoneFrothRGB[0], aRedstoneFrothRGB[1], aRedstoneFrothRGB[2], 100 }, true);
+		short[] aSpessartineFrothRGB = Materials.Spessartine.mRGBa;
+		SpessartineFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.spessartineflotation", "Spessartine Froth", 32 + 175, new short[] { aSpessartineFrothRGB[0], aSpessartineFrothRGB[1], aSpessartineFrothRGB[2], 100 }, true);
+		short[] aGrossularFrothRGB = Materials.Grossular.mRGBa;
+		GrossularFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.grossularflotation", "Grossular Froth", 32 + 175, new short[] { aGrossularFrothRGB[0], aGrossularFrothRGB[1], aGrossularFrothRGB[2], 100 }, true);
+		short[] aAlmandineFrothRGB = Materials.Almandine.mRGBa;
+		AlmandineFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.almandineflotation", "Almandine Froth", 32 + 175, new short[] { aAlmandineFrothRGB[0], aAlmandineFrothRGB[1], aAlmandineFrothRGB[2], 100 }, true);
+		short[] aPyropeFrothRGB = Materials.Pyrope.mRGBa;
+		PyropeFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.pyropeflotation", "Pyrope Froth", 32 + 175, new short[] { aPyropeFrothRGB[0], aPyropeFrothRGB[1], aPyropeFrothRGB[2], 100 }, true);
+
+		
 		PineOil = FluidUtils.generateFluidNoPrefix("pineoil", "Pine Oil", 32 + 175, new short[] { 250, 200, 60, 100 }, true);
 
 	}
@@ -126,7 +168,159 @@ public class MilledOreProcessing extends ItemPackage {
 	public boolean generateRecipes() {
 		addMiscRecipes();
 		addPineOilExtraction();
+		addFlotationRecipes1();
+		addFlotationRecipes2();
 		return true;
+	}
+	
+	private void addFlotationRecipes2() {
+		
+		// Redstone
+		CORE.RA.addFlotationRecipe(				
+				Materials.Redstone, 
+				ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PineOil, 3000),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(RedstoneFlotationFroth, 1000)						
+				},
+				20 * 1200, 
+				MaterialUtils.getVoltageForTier(5)
+				);
+		
+		// Spessartine
+		CORE.RA.addFlotationRecipe(				
+				Materials.Spessartine, 
+				ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PineOil, 5000),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(SpessartineFlotationFroth, 1000)						
+				},
+				20 * 1200, 
+				MaterialUtils.getVoltageForTier(6)
+				);
+		
+		// Grossular
+		CORE.RA.addFlotationRecipe(				
+				Materials.Grossular, 
+				ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PineOil, 5000),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(GrossularFlotationFroth, 1000)						
+				},
+				20 * 1200, 
+				MaterialUtils.getVoltageForTier(6)
+				);
+		
+		// Almandine
+		CORE.RA.addFlotationRecipe(				
+				Materials.Almandine, 
+				ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PineOil, 4000),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(AlmandineFlotationFroth, 1000)						
+				},
+				20 * 1200, 
+				MaterialUtils.getVoltageForTier(5)
+				);
+		
+		// Pyrope
+		CORE.RA.addFlotationRecipe(				
+				Materials.Pyrope, 
+				ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PineOil, 2000),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PyropeFlotationFroth, 1000)						
+				},
+				20 * 1200, 
+				MaterialUtils.getVoltageForTier(4)
+				);
+		
+	}
+
+	private void addFlotationRecipes1() {
+		
+		// Sphalerite
+		CORE.RA.addFlotationRecipe(				
+				Materials.Sphalerite, 
+				ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PineOil, 4000),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(SphaleriteFlotationFroth, 1000)						
+				},
+				20 * 1200, 
+				MaterialUtils.getVoltageForTier(6)
+				);
+		
+		// Chalcopyrite
+		CORE.RA.addFlotationRecipe(				
+				Materials.Chalcopyrite, 
+				ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PineOil, 4000),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(ChalcopyriteFlotationFroth, 1000)						
+				},
+				20 * 1200, 
+				MaterialUtils.getVoltageForTier(5)
+				);
+		
+		// Nickel
+		CORE.RA.addFlotationRecipe(				
+				Materials.Nickel, 
+				ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PineOil, 5000),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(NickelFlotationFroth, 1000)						
+				},
+				20 * 1200, 
+				MaterialUtils.getVoltageForTier(5)
+				);
+		
+		// Platinum
+		CORE.RA.addFlotationRecipe(				
+				Materials.Platinum, 
+				ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PineOil, 5000),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PlatinumFlotationFroth, 1000)						
+				},
+				20 * 1200, 
+				MaterialUtils.getVoltageForTier(6)
+				);
+		
+		
+		// Pentlandite
+		CORE.RA.addFlotationRecipe(				
+				Materials.Pentlandite, 
+				ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PineOil, 4000),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PentlanditeFlotationFroth, 1000)						
+				},
+				20 * 1200, 
+				MaterialUtils.getVoltageForTier(6)
+				);
+		
+		
 	}
 
 	private void addPineOilExtraction() {

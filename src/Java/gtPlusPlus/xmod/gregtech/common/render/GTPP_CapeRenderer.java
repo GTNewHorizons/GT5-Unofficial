@@ -296,6 +296,9 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 
 		private static final boolean init() {	
 			CapeUtils.handleOldCapeCache();
+			if (CORE.DEVENV) {
+				return true;
+			}
 			try {
 				if (shouldDownloadCapeList()) {
 					downloadCapeList();
@@ -418,7 +421,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 				}		
 				AutoMap<String> aDecodedData = new AutoMap<String>();
 				for (String aToDecode : aCacheData) {
-					aDecodedData.put(sAES.decrypt(aToDecode));
+					aDecodedData.put(sAES.decode(aToDecode));
 				}
 				if (!aDecodedData.isEmpty()) {
 					AutoMap<Pair<String, String>> aCapeType1 = new AutoMap<Pair<String, String>>();

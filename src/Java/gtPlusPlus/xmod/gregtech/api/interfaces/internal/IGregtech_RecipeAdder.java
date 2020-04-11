@@ -289,5 +289,8 @@ public interface IGregtech_RecipeAdder {
 	public boolean addMillingRecipe(Materials aMat, int aEU);
 	public boolean addMillingRecipe(Material aMat, int aEU);
 
+	public boolean addFlotationRecipe(Materials aMat, ItemStack aXanthate, FluidStack[] aInputFluids, FluidStack[] aOutputFluids, int aTime, int aEU);
+	public boolean addFlotationRecipe(Material aMat, ItemStack aXanthate, FluidStack[] aInputFluids, FluidStack[] aOutputFluids, int aTime, int aEU);
+	
 
 }

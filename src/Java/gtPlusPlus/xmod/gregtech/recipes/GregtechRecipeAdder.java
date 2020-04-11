@@ -11,14 +11,8 @@ import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
-import gregtech.api.util.CustomRecipeMap;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
-import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
@@ -33,6 +27,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
+import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -1323,9 +1318,9 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		ItemStack aCrushedStack = aMat.getCrushed(16);
 		
 		ItemStack aMilledStackOres1 = aMat.getMilled(64);
-		ItemStack aMilledStackCrushed1 = aMat.getMilled(48);
+		ItemStack aMilledStackCrushed1 = aMat.getMilled(32);
 		ItemStack aMilledStackOres2 = aMat.getMilled(48);
-		ItemStack aMilledStackCrushed2 = aMat.getMilled(32);
+		ItemStack aMilledStackCrushed2 = aMat.getMilled(16);
 
 		ItemStack aMillingBall_Alumina = GregtechItemList.Milling_Ball_Alumina.get(0);
 		ItemStack aMillingBall_Soapstone = GregtechItemList.Milling_Ball_Soapstone.get(0);
@@ -1395,6 +1390,46 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		}  
 		
 		aSize = Recipe_GT.Gregtech_Recipe_Map.sOreMillRecipes.mRecipeList.size();
+		return aSize > aSize2;
+	}
+
+	@Override
+	public boolean addFlotationRecipe(Materials aMat, ItemStack aXanthate, FluidStack[] aInputFluids, FluidStack[] aOutputFluids, int aTime, int aEU) {
+		return addFlotationRecipe(MaterialUtils.generateMaterialFromGtENUM(aMat), aXanthate, aInputFluids, aOutputFluids, aTime, aEU);
+	}
+
+	@Override
+	public boolean addFlotationRecipe(Material aMat, ItemStack aXanthate, FluidStack[] aInputFluids, FluidStack[] aOutputFluids, int aTime, int aEU) {
+		
+		FlotationRecipeHandler.registerOreType(aMat);
+		int aSpecialValue = FlotationRecipeHandler.getHashForMaterial(aMat);
+		
+		int aSize = Recipe_GT.Gregtech_Recipe_Map.sFlotationCellRecipes.mRecipeList.size();
+		int aSize2 = aSize;		
+		
+		GT_Recipe aRecipe = new Recipe_GT(
+    			false,
+    			new ItemStack[] {
+    					ItemUtils.getSimpleStack(aXanthate, 32),
+    					aMat.getMilled(64),
+    					aMat.getMilled(64),
+    					aMat.getMilled(64),
+    					aMat.getMilled(64),
+    			},
+    			new ItemStack[] {
+    					
+    			},
+    			null,
+    			new int[] {},
+    			aInputFluids,
+    			aOutputFluids,
+    			aTime,
+    			aEU,
+    			aSpecialValue); 
+		
+		Recipe_GT.Gregtech_Recipe_Map.sFlotationCellRecipes.add(aRecipe);
+		aSize = Recipe_GT.Gregtech_Recipe_Map.sFlotationCellRecipes.mRecipeList.size();
+		
 		return aSize > aSize2;
 	}
 

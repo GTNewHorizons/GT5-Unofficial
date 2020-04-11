@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.a
 
 import java.lang.reflect.Method;
 
+import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
@@ -25,6 +26,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_FusionComputer {
 
@@ -281,6 +283,97 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
     
     private boolean isFusionCoil(int aX, int aY, int aZ) {
         return (getBaseMetaTileEntity().getBlock(aX, aY, aZ) == getFusionCoil() && (getBaseMetaTileEntity().getMetaID(aX, aY, aZ) == getFusionCoilMeta()));
+    }
+    
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (mEfficiency < 0)
+                mEfficiency = 0;
+            if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
+                this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
+                checkRecipe(mInventory[1]);
+            }
+            if (--mUpdate == 0 || --mStartUpCheck == 0) {
+                mInputHatches.clear();
+                mInputBusses.clear();
+                mOutputHatches.clear();
+                mOutputBusses.clear();
+                mDynamoHatches.clear();
+                mEnergyHatches.clear();
+                mMufflerHatches.clear();
+                mMaintenanceHatches.clear();
+                mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
+            }
+            if (mStartUpCheck < 0) {
+                if (mMachine) {
+                    if (this.mEnergyHatches != null) {
+                        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
+                            if (isValidMetaTileEntity(tHatch)) {
+                            	long aVoltage = GT_Values.V[tHatch.mTier];
+                                if (aBaseMetaTileEntity.getStoredEU() + (aVoltage) < maxEUStore()
+                                        && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aVoltage, false)) {
+                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(aVoltage, true);
+                                }
+                            }
+                    }
+                    if (this.mEUStore <= 0 && mMaxProgresstime > 0) {
+                        stopMachine();
+                    }
+                    if (getRepairStatus() > 0) {
+                        if (mMaxProgresstime > 0) {
+                            this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(mEUt, true);
+                            if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
+                                if (mOutputItems != null)
+                                    for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
+                                if (mOutputFluids != null)
+                                    for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
+                                mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+                                mOutputItems = null;
+                                mProgresstime = 0;
+                                mMaxProgresstime = 0;
+                                mEfficiencyIncrease = 0;
+                                if (mOutputFluids != null && mOutputFluids.length > 0) {
+                                    try {
+                                        GT_Mod.instance.achievements.issueAchivementHatchFluid(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), mOutputFluids[0]);
+                                    } catch (Exception e) {
+                                    }
+                                }
+                                this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
+                                if (aBaseMetaTileEntity.isAllowedToWork())
+                                    checkRecipe(mInventory[1]);
+                            }
+                        } else {
+                            if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified()) {
+                                turnCasingActive(mMaxProgresstime > 0);
+                                if (aBaseMetaTileEntity.isAllowedToWork()) {
+                                    this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
+                                    if (checkRecipe(mInventory[1])) {
+                                        if (this.mEUStore < this.mLastRecipe.mSpecialValue) {
+                                            mMaxProgresstime = 0;
+                                            turnCasingActive(false);
+                                        }
+                                        aBaseMetaTileEntity.decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue, true);
+                                    }
+                                }
+                                if (mMaxProgresstime <= 0)
+                                    mEfficiency = Math.max(0, mEfficiency - 1000);
+                            }
+                        }
+                    } else {
+                        this.mLastRecipe = null;
+                        stopMachine();
+                    }
+                } else {
+                    turnCasingActive(false);
+                    this.mLastRecipe = null;
+                    stopMachine();
+                }
+            }
+            aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mWrench ? 0 : 1) | (mScrewdriver ? 0 : 2) | (mSoftHammer ? 0 : 4) | (mHardHammer ? 0 : 8)
+                    | (mSolderingTool ? 0 : 16) | (mCrowbar ? 0 : 32) | (mMachine ? 0 : 64));
+            aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
+        }
     }
 	
 }

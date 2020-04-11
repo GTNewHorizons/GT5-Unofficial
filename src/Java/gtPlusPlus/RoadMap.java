@@ -40,62 +40,41 @@ public class RoadMap {
 	 */
 
 
-	/*private static final LinkedHashMap<String, ObjMap<Integer, Boolean>>mCachedResults = new LinkedHashMap<String, ObjMap<Integer, Boolean>>();
-	public boolean contains(ItemStack aStack) {
-		if (aStack == null){
-			return false;
-		}
-		ObjMap<Integer, Boolean> aCurrentSet;
-		if (mCachedResults.get(this.toString()) != null){
-			aCurrentSet = mCachedResults.get(this.toString());
-		}
-
-		else {
-			aCurrentSet = new ObjMap<Integer, Boolean>(mPrefixedItems.size(), 0.5f);
-			mCachedResults.put(this.toString(), aCurrentSet);
-		}
-
-		if (aCurrentSet.get(aStack.hashCode()) != null){
-			return aCurrentSet.get(aStack.hashCode());
-		}
-		else {
-			for (ItemStack tStack : mPrefixedItems){
-				if (GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())){
-					aCurrentSet.put(aStack.hashCode(), true);
-					return true;
-				}
-			}
-		}
-		aCurrentSet.put(aStack.hashCode(), false);
-		return false;
-	}*/
-
-	/*private static final LinkedHashMap<String, ObjMap<Integer, Boolean>>mCachedResults = new LinkedHashMap<String, ObjMap<Integer, Boolean>>();
-    
-    public boolean contains(ItemStack aStack) {
-        if (aStack == null){
-            return false;
-        }        
-        ObjMap<Integer, Boolean> aCurrentSet = mCachedResults.get(this.toString().toUpperCase());        
-        if (aCurrentSet == null){
-            aCurrentSet = new ObjMap<Integer, Boolean>((mPrefixedItems != null && mPrefixedItems.size() > 0 ? mPrefixedItems.size() : 1000), 0.5f);
-            mCachedResults.put(this.toString().toUpperCase(), aCurrentSet);
-        }        
-        int mainHash = Objects.hashCode(aStack.getItem(), aStack.getItemDamage());
-        Boolean result = aCurrentSet.get(mainHash);
-        if (result != null){
-            return result;
-        }
-        else {
-            for (ItemStack tStack : mPrefixedItems){            	
-                if (GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())){
-                    aCurrentSet.put(Objects.hashCode(tStack.getItem(), tStack.getItemDamage()), true);
-                    return true;
-                }
-            }
-        }
-        aCurrentSet.put(mainHash, false);
-        return false;
-    }*/
+	/*
+	 Thallium - Everglades only.
+	Technetium - Has some recipes but seem to be dead ends so unobtainable.
+	Polonium - Unobtainable.
+	Francium - Unobtainable.
+	Promethium - Unobtainable.
+	Radium - Everglades only.
+	Actinium - Unobtainable.
+	Proactinium - Unobtainable.
+	Neptunium - Has some recipes but seem to be dead ends so unobtainable.
+	Curium - Fusion only.
+	Berkelium - Unobtainable.
+	Californium - Fusion only.
+	Einsteinium - Unobtainable.
+	Fermium - Unobtainable.
+	Strontium - Everglades only.
+	Iodine - Everglades only.
+	Dysprosium - Everglades only.
+	Rhenium - Weird ABS recipe only.
+	Flerovium - Unobtainable.
+	Dubnium - Unobtainable.
+	Seaborgium - Unobtainable.
+	Bohrium - Unobtainable.
+	Hassium - Unobtainable.
+	Meitnerium - Unobtainable.
+	Darmstadtium - Unobtainable.
+	Roentgenium - Unobtainable.
+	Copernicium - Unobtainable.
+	Nihonium - Unobtainable.
+	Moscovium - Unobtainable.
+	Livermorium - Unobtainable.
+	Tennessine - Unobtainable.
+	Nobelium - Unobtainable.
+	Lawrencium - Unobtainable.
+	Astatine - Unobtainable.
+	 */
 
 }

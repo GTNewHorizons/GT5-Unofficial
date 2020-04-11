@@ -209,10 +209,10 @@ public class MaterialUtils {
 	}
 
 	public static int getTierOfMaterial(final double aMeltingPoint){
-		
+
 		return aMeltingPoint < 1000 ? 0 : (MathUtils.roundToClosestInt(aMeltingPoint/1000f));
-		
-		
+
+
 		/*if ((aMeltingPoint >= 0) && (aMeltingPoint <= 1000)){
 			return 1;
 		}
@@ -250,40 +250,42 @@ public class MaterialUtils {
 
 	public static int getVoltageForTier(int aTier) {
 		//aTier += 1; - Probably some logic to this, idk.
-		if (aTier <= 0) {
-			return 16;
-		} else if (aTier == 1) {
-			return 30;
-		} else if (aTier == 2) {
-			return 120;
-		} else if (aTier == 3) {
-			return 480;
-		} else if (aTier == 4) {
-			return 1920;
-		} else if (aTier == 5) {
-			return 7680;
-		} else if (aTier == 6) {
-			return 30720;
-		} else if (aTier == 7) {
-			return 122880;
-		} else if (aTier == 8) {
-			return 491520;
-		} else if (aTier == 9) {
-			return 1966080;
-		} else if (aTier == 10) {
-			return 7864320;
-		} else if (aTier == 11) {
-			return 31457280;
-		} else if (aTier == 12) {
-			return 125829120;
-		} else if (aTier == 13) {
-			return 503316480;
-		} else if (aTier == 14) {
-			return 2013265920;
-		} else {
-			return Integer.MAX_VALUE;
+
+		switch(aTier){
+			case 0:
+				return 16;
+			case 1:
+				return 30;
+			case 2:
+				return 120;
+			case 3:
+				return 480;
+			case 4:
+				return 1920;
+			case 5:
+				return 7680;
+			case 6:
+				return 30720;
+			case 7:
+				return 122880;
+			case 8:
+				return 491520;
+			case 9:
+				return 1966080;
+			case 10:
+				return 7864320;
+			case 11:
+				return 31457280;
+			case 12:
+				return 125829120;
+			case 13:
+				return 503316480;
+			case 14:
+				return 2013265920;
+			default: 
+				return Integer.MAX_VALUE;
 		}
-		
+
 		/*else {
 			int newTier = aTier - 1;
 			return (int) ((4*(Math.pow(4, newTier)))*7.5);
@@ -342,7 +344,7 @@ public class MaterialUtils {
 		TextureSet o =  (r != null && r.isPresent() && r.get() != null) ? r.get() : null;
 		return o;*/
 	}
-	
+
 
 
 	public static Materials getMaterial(String aMaterialName, String aFallbackMaterialName) {
@@ -416,7 +418,7 @@ public class MaterialUtils {
 			return aDataSet;
 		}
 		return aDataSet;	
-	*/}
+		 */}
 
 	public static AutoMap<Material> getCompoundMaterialsRecursively_Speiger(Material toSearch) {
 		AutoMap<Material> resultList = new AutoMap<Material>();
@@ -425,11 +427,11 @@ public class MaterialUtils {
 			return resultList;
 		}
 		final int HARD_LIMIT = 1000;
-		
+
 		// Could be a Deque but i dont use the interface
 		// enough to use it as default.
 		LinkedList<Material> toCheck = new LinkedList<Material>(); 		
-		
+
 		toCheck.add(toSearch);
 		int processed = 0;
 		while (toCheck.size() > 0 && processed < HARD_LIMIT) {
@@ -445,11 +447,11 @@ public class MaterialUtils {
 		}
 		return resultList;
 	}
-	
+
 	public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial) {
 		generateComponentAndAssignToAMaterial(aType, aMaterial, true);
 	}
-	
+
 	public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial, boolean generateRecipes) {		
 		Item aGC;
 		if (aType == ComponentTypes.PLATEHEAVY) {
@@ -460,33 +462,33 @@ public class MaterialUtils {
 		}
 		if (aGC != null) {
 			String aFormattedLangName = aType.getName();
-			
+
 			if (!aFormattedLangName.startsWith(" ")) {
 				if (aFormattedLangName.contains("@")) {
 					String[] aSplit = aFormattedLangName.split("@");
 					aFormattedLangName = aSplit[0] + " " + aMaterial.getLocalizedName() + " " + aSplit[1];
 				}
 			}
-			
+
 			if (aFormattedLangName.equals(aType.getName())) {
 				aFormattedLangName = aMaterial.getLocalizedName() + aFormattedLangName;
-				
+
 			}
-			
-			
-			
+
+
+
 			Logger.MATERIALS("[Lang] "+aGC.getUnlocalizedName()+".name="+aFormattedLangName);
 			aMaterial.registerComponentForMaterial(aType, ItemUtils.getSimpleStack(aGC));			
 		}				
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
 	public static void generateSpecialDustAndAssignToAMaterial(Material aMaterial) {
 		generateSpecialDustAndAssignToAMaterial(aMaterial, true);
 	}
@@ -498,7 +500,7 @@ public class MaterialUtils {
 			aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, ItemUtils.getSimpleStack(aDusts[1]));
 			aMaterial.registerComponentForMaterial(OrePrefixes.dustTiny, ItemUtils.getSimpleStack(aDusts[2]));
 		}
-		
+
 	}
 
 	public static boolean doesMaterialExist(String aMatName) {

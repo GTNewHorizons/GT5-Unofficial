@@ -3,11 +3,7 @@ package gtPlusPlus.core.material;
 import static gregtech.api.enums.GT_Values.M;
 import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -1304,6 +1300,23 @@ public class Material {
 	}
 	
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (!Material.class.isInstance(obj)) {
+			return false;
+		}
+		Material aObj = (Material) obj;
+		if (aObj.unlocalizedName.equals(this.unlocalizedName)) {
+			if (aObj.localizedName.equals(this.localizedName)) {
+				return true;
+			}
+		}		
+		return false;
+	}
+
 	public boolean registerComponentForMaterial(FluidStack aStack) {
 		return registerComponentForMaterial(this, aStack);
 	}

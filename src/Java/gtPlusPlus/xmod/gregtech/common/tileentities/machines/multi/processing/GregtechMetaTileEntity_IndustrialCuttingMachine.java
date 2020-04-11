@@ -1,25 +1,28 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GregtechMetaTileEntity_IndustrialCuttingMachine
 extends GregtechMeta_MultiBlockBase {
+
+	private boolean mCuttingMode = true;
+	
 	public GregtechMetaTileEntity_IndustrialCuttingMachine(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
@@ -35,7 +38,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String getMachineType() {
-		return "Cutting Machine";
+		return "Cutting Machine / Slicing Machine";
 	}
 
 	@Override
@@ -74,7 +77,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_Recipe.GT_Recipe_Map.sCutterRecipes;
+		return mCuttingMode ? GT_Recipe.GT_Recipe_Map.sCutterRecipes : GT_Recipe.GT_Recipe_Map.sSlicerRecipes;
 	}
 
 	@Override
@@ -202,11 +205,22 @@ extends GregtechMeta_MultiBlockBase {
 		return (byte) TAE.GTPP_INDEX(29);
 	}
 
-	private boolean addToMachineList(final IGregTechTileEntity tTileEntity) {
-		return ((this.addMaintenanceToMachineList(tTileEntity, this.getCasingTextureIndex())) || (this.addInputToMachineList(tTileEntity, this.getCasingTextureIndex())) || (this.addOutputToMachineList(tTileEntity, this.getCasingTextureIndex())) || (this.addMufflerToMachineList(tTileEntity, this.getCasingTextureIndex())));
+	@Override
+	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		mCuttingMode = Utils.invertBoolean(mCuttingMode);		
+		String aMode = mCuttingMode ? "Cutting" : "Slicing";		
+		PlayerUtils.messagePlayer(aPlayer, "Mode: "+aMode);
 	}
 
-	private boolean addEnergyInputToMachineList(final IGregTechTileEntity tTileEntity) {
-		return ((this.addEnergyInputToMachineList(tTileEntity, this.getCasingTextureIndex())));
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		super.saveNBTData(aNBT);
+		aNBT.setBoolean("mCuttingMode", mCuttingMode);
+	}
+
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		super.loadNBTData(aNBT);
+		mCuttingMode = aNBT.getBoolean("mCuttingMode");
 	}
 }

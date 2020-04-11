@@ -324,6 +324,10 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 
 		//Semi-Fluid Fuel Map 
 		public static final GT_Recipe_Map_Fuel sSemiFluidLiquidFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.semifluidgeneratorfuels", "Semifluid Generator Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+		
+		// Flotation Cell
+        public static final GT_Recipe_Map sFlotationCellRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(10000), "gt.recipe.flotationcell", "Flotation Cell", null, RES_PATH_GUI + "basicmachines/LFTR", 6, 4, 1, 1, 1, "Ore Key: ", 1, E, true, false);
+		
         
 		
 
