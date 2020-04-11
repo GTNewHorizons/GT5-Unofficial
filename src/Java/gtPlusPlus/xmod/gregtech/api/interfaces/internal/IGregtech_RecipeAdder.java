@@ -268,7 +268,8 @@ public interface IGregtech_RecipeAdder {
     public boolean addVacuumFurnaceRecipe(ItemStack aInput1, ItemStack aInput2,
             FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1,
             ItemStack aOutput2, int aDuration, int aEUt, int aLevel);
-    
+
+	public boolean addVacuumFurnaceRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aLevel);
 
 	public boolean addUvLaserRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int time, long eu);
 	public boolean addIrLaserRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int time, long eu);
@@ -291,6 +292,7 @@ public interface IGregtech_RecipeAdder {
 
 	public boolean addFlotationRecipe(Materials aMat, ItemStack aXanthate, FluidStack[] aInputFluids, FluidStack[] aOutputFluids, int aTime, int aEU);
 	public boolean addFlotationRecipe(Material aMat, ItemStack aXanthate, FluidStack[] aInputFluids, FluidStack[] aOutputFluids, int aTime, int aEU);
+
 	
 
 }

@@ -41,23 +41,23 @@ public class RoadMap {
 
 
 	/*
-	 Thallium - Everglades only.
+	 Thallium - Everglades only. (Mostly useless)
 	Technetium - Has some recipes but seem to be dead ends so unobtainable.
-	Polonium - Unobtainable.
-	Francium - Unobtainable.
+	Polonium - Unobtainable. (Radioactive, Mostly Useless)
+	Francium - Unobtainable. (Radioactive, Mostly Useless)
 	Promethium - Unobtainable.
-	Radium - Everglades only.
-	Actinium - Unobtainable.
-	Proactinium - Unobtainable.
+	Radium - Everglades only. (Do use, Moderately Rare)
+	Actinium - Unobtainable. (Radioactive, Do use)
+	Proactinium - Unobtainable. (Do use)
 	Neptunium - Has some recipes but seem to be dead ends so unobtainable.
 	Curium - Fusion only.
 	Berkelium - Unobtainable.
 	Californium - Fusion only.
 	Einsteinium - Unobtainable.
 	Fermium - Unobtainable.
-	Strontium - Everglades only.
+	Strontium - Everglades only. (Do use 1)
 	Iodine - Everglades only.
-	Dysprosium - Everglades only.
+	Dysprosium - Everglades only. (Do use 1)
 	Rhenium - Weird ABS recipe only.
 	Flerovium - Unobtainable.
 	Dubnium - Unobtainable.
@@ -74,7 +74,7 @@ public class RoadMap {
 	Tennessine - Unobtainable.
 	Nobelium - Unobtainable.
 	Lawrencium - Unobtainable.
-	Astatine - Unobtainable.
+	Astatine - Unobtainable. (Radioactive, Mostly Useless)
 	 */
 
 }

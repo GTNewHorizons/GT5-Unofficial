@@ -1,5 +1,8 @@
 package gtPlusPlus.api.objects.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Quad<K,V,C,R> {
 
 	private final K key;
@@ -28,6 +31,15 @@ public class Quad<K,V,C,R> {
 
 	final public R getValue_3(){
 		return this.value3;
+	}
+	
+	public final List values() {
+		List<Object> aVals = new ArrayList<Object>();
+		aVals.add(key);
+		aVals.add(value);
+		aVals.add(value2);
+		aVals.add(value3);
+		return aVals;
 	}
 
 }
