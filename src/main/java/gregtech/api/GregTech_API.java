@@ -390,7 +390,7 @@ public class GregTech_API {
      */
     public static boolean causeMachineUpdate(World aWorld, int aX, int aY, int aZ) {
         if (!aWorld.isRemote)
-            new Thread(new GT_Runnable_MachineBlockUpdate(aWorld, aX, aY, aZ), "Machine Block Updating").start();
+            new GT_Runnable_MachineBlockUpdate(aWorld, aX, aY, aZ).run();
         return true;
     }
 
