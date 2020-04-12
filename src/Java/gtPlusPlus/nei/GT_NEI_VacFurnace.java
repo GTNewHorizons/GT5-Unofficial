@@ -21,6 +21,7 @@ import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.nei.GT_NEI_MultiBlockHandler.FixedPositionedStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
@@ -175,7 +176,7 @@ extends TemplateRecipeHandler {
 
 	@Override
 	public String getGuiTexture() {
-		return Recipe_GT.Gregtech_Recipe_Map.sFlotationCellRecipes.mNEIGUIPath;
+		return CustomRecipeMap.sFissionFuelProcessing.mNEIGUIPath;
 	}
 
 	@Override
@@ -213,21 +214,21 @@ extends TemplateRecipeHandler {
 		final long tEUt = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
 		final int tDuration = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
 		if (tEUt != 0) {
-			drawText(10, 73, "Total: " + (long) (tDuration * tEUt) + " EU", -16777216);
-			//drawText(10, 83, "Usage: " + tEUt + " EU/t", -16777216);
-			if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
+			drawText(10, 88, "Total: " + (long) (tDuration * tEUt) + " EU", -16777216);
+			drawText(10, 98, "Usage: " + tEUt + " EU/t", -16777216);
+			/*if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
 				drawText(10, 83, "Voltage: " + (tEUt / this.mRecipeMap.mAmperage) + " EU/t", -16777216);
 				drawText(10, 93, "Amperage: " + this.mRecipeMap.mAmperage, -16777216);
 			} else {
 				drawText(10, 93, "Voltage: unspecified", -16777216);
 				drawText(10, 103, "Amperage: unspecified", -16777216);
-			}
+			}*/
 		}
 		if (tDuration > 0) {
-			drawText(10, 103, "Time: " + (tDuration < 20 ? "< 1" : Integer.valueOf(tDuration / 20)) + " secs", -16777216);
+			drawText(10, 108, "Time: " + (tDuration < 20 ? "< 1" : Integer.valueOf(tDuration / 20)) + " secs", -16777216);
 		}
 		if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
-			drawText(10, 113, this.mRecipeMap.mNEISpecialValuePre + (((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, -16777216);
+			drawText(10, 118, this.mRecipeMap.mNEISpecialValuePre + (((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, -16777216);
 		}
 	}
 
@@ -409,45 +410,57 @@ extends TemplateRecipeHandler {
 			}
 			tStartIndex = 0;
 			
-			//Six Output Slots
+			//9 Output Slots
 			if (aRecipe.getOutput(tStartIndex) != null) {
-				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 5, aRecipe.getOutputChance(tStartIndex)));
+				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 101, 4, aRecipe.getOutputChance(tStartIndex)));
 			}
 			tStartIndex++;
 			if (aRecipe.getOutput(tStartIndex) != null) {
-				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 5, aRecipe.getOutputChance(tStartIndex)));
+				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 119, 4, aRecipe.getOutputChance(tStartIndex)));
 			}
 			tStartIndex++;
 			if (aRecipe.getOutput(tStartIndex) != null) {
-				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 5, aRecipe.getOutputChance(tStartIndex)));
+				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 137, 4, aRecipe.getOutputChance(tStartIndex)));
 			}
 			tStartIndex++;
 			if (aRecipe.getOutput(tStartIndex) != null) {
-				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 23, aRecipe.getOutputChance(tStartIndex)));
+				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 101, 22, aRecipe.getOutputChance(tStartIndex)));
 			}
 			tStartIndex++;
 			if (aRecipe.getOutput(tStartIndex) != null) {
-				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 23, aRecipe.getOutputChance(tStartIndex)));
+				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 119, 22, aRecipe.getOutputChance(tStartIndex)));
 			}
 			tStartIndex++;
 			if (aRecipe.getOutput(tStartIndex) != null) {
-				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 23, aRecipe.getOutputChance(tStartIndex)));
+				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 137, 22, aRecipe.getOutputChance(tStartIndex)));
+			}
+			tStartIndex++;
+			if (aRecipe.getOutput(tStartIndex) != null) {
+				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 101, 40, aRecipe.getOutputChance(tStartIndex)));
+			}
+			tStartIndex++;
+			if (aRecipe.getOutput(tStartIndex) != null) {
+				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 119, 40, aRecipe.getOutputChance(tStartIndex)));
+			}
+			tStartIndex++;
+			if (aRecipe.getOutput(tStartIndex) != null) {
+				this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 137, 40, aRecipe.getOutputChance(tStartIndex)));
 			}
 			tStartIndex++;
 			
 			if ((aRecipe.mFluidInputs.length > 0) && (aRecipe.mFluidInputs[0] != null) && (aRecipe.mFluidInputs[0].getFluid() != null)) {
-				this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 30, 52));
+				this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 12, 60));
 				if ((aRecipe.mFluidInputs.length > 1) && (aRecipe.mFluidInputs[1] != null) && (aRecipe.mFluidInputs[1].getFluid() != null)) {
-					this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true), 48, 52));
+					this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true), 30, 60));
 				}
 			}
 
 			if (aRecipe.mFluidOutputs.length > 0) {
 				if ((aRecipe.mFluidOutputs[0] != null) && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 52));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 101, 60));
 				}
 				if ((aRecipe.mFluidOutputs.length > 1) && (aRecipe.mFluidOutputs[1] != null) && (aRecipe.mFluidOutputs[1].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 120, 52));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 119, 60));
 				}
 			}
 		}

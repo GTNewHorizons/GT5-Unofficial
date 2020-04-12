@@ -2268,7 +2268,7 @@ public class RECIPES_Machines {
 
 		CORE.RA.addSixSlotAssemblingRecipe(				
 				new ItemStack[] {
-						GregtechItemList.Casing_Vacuum_Furnace.get(Casing_Amount),
+						GregtechItemList.Casing_Vacuum_Furnace.get(aCostMultiplier),
 						CI.getTieredComponent(OrePrefixes.wireGt16, 7, 4 * aCostMultiplier),
 						CI.getEnergyCore(6, 1 * aCostMultiplier),
 						CI.getRobotArm(4, 4 * aCostMultiplier),
