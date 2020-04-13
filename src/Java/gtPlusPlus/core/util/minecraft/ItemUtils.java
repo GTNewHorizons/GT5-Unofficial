@@ -1266,7 +1266,7 @@ public class ItemUtils {
 	public static boolean isControlCircuit(ItemStack aStack) {
 		if (aStack != null) {
 			Item aItem = aStack.getItem();
-			if (aItem == CI.getNumberedBioCircuit(0).getItem() || aItem == CI.getNumberedCircuit(0).getItem()) {
+			if (aItem == CI.getNumberedBioCircuit(0).getItem() || aItem == CI.getNumberedCircuit(0).getItem() || aItem == CI.getNumberedAdvancedCircuit(0).getItem()) {
 				return true;
 			}
 		}

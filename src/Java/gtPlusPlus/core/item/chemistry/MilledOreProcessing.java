@@ -609,7 +609,7 @@ public class MilledOreProcessing extends ItemPackage {
 
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						CI.getNumberedBioCircuit(16),
+						CI.getNumberedAdvancedCircuit(16),
 						ItemUtils.getSimpleStack(aCrushedPine, 64)
 				}, 
 				new FluidStack[] {
@@ -633,7 +633,7 @@ public class MilledOreProcessing extends ItemPackage {
 
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						CI.getNumberedBioCircuit(18),
+						CI.getNumberedAdvancedCircuit(18),
 						ItemUtils.getSimpleStack(aCrushedPine, 64)
 				}, 
 				new FluidStack[] {
@@ -670,7 +670,7 @@ public class MilledOreProcessing extends ItemPackage {
 
 		return CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						CI.getNumberedBioCircuit(14),
+						CI.getNumberedAdvancedCircuit(14),
 						aInput
 				}, 
 				new FluidStack[] {

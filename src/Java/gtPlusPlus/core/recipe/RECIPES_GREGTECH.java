@@ -120,7 +120,7 @@ public class RECIPES_GREGTECH {
 		// Advanced method for Nitric Acid Production
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						CI.getNumberedBioCircuit(17),
+						CI.getNumberedAdvancedCircuit(17),
 						CI.getPinkCatalyst(0),
 				},
 				new FluidStack[] {
@@ -140,7 +140,7 @@ public class RECIPES_GREGTECH {
 		
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						CI.getNumberedBioCircuit(16),
+						CI.getNumberedAdvancedCircuit(16),
 						CI.getPinkCatalyst(0),
 				},
 				new FluidStack[] {
@@ -161,7 +161,7 @@ public class RECIPES_GREGTECH {
 		// Produce Boric Acid
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						CI.getNumberedCircuit(21),
+						CI.getNumberedAdvancedCircuit(21),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustBorax", 4),
 				}, 
 				new FluidStack[] {
@@ -182,7 +182,7 @@ public class RECIPES_GREGTECH {
 		// Produce Th232
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						CI.getNumberedCircuit(22),
+						CI.getNumberedAdvancedCircuit(22),
 						ELEMENT.getInstance().THORIUM.getDust(16)
 				}, 
 				new FluidStack[] {

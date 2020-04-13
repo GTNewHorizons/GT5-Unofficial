@@ -316,7 +316,7 @@ public class RECIPES_Machines {
 
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						CI.getNumberedBioCircuit(19),
+						CI.getNumberedAdvancedCircuit(19),
 						ItemList.Distillation_Tower.get(2),
 						GregtechItemList.GTPP_Casing_IV.get(16),
 						CI.getTieredComponent(OrePrefixes.circuit, 6, 8)
@@ -355,7 +355,7 @@ public class RECIPES_Machines {
 			}			
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
-							CI.getNumberedBioCircuit(21),
+							CI.getNumberedAdvancedCircuit(21),
 							CI.getElectricPiston(i, 10),
 							CI.getFieldGenerator(i + 1, 6),
 							CI.getPlate(i, 16),
@@ -932,7 +932,7 @@ public class RECIPES_Machines {
 					CI.getGear(1, GTNH ? 4 : 2)
 			};
 			aSemiFluidInputs[1] = new ItemStack[]{
-					CI.getNumberedBioCircuit(14),
+					CI.getNumberedCircuit(14),
 					CI.getTieredMachineHull(2, 1),
 					CI.getElectricPiston(2, GTNH ? 4 : 2),
 					CI.getTieredComponent(OrePrefixes.circuit, 2, GTNH ? 4 : 2),
@@ -940,7 +940,7 @@ public class RECIPES_Machines {
 					CI.getGear(2, GTNH ? 4 : 2)
 			};
 			aSemiFluidInputs[2] = new ItemStack[]{
-					CI.getNumberedBioCircuit(14),
+					CI.getNumberedAdvancedCircuit(14),
 					CI.getTieredMachineHull(3, 1),
 					CI.getElectricPiston(3, GTNH ? 4 : 2),
 					CI.getTieredComponent(OrePrefixes.circuit, 3, GTNH ? 4 : 2),
