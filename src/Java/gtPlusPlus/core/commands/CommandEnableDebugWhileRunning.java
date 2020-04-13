@@ -7,6 +7,7 @@ import java.util.Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -19,6 +20,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 
 public class CommandEnableDebugWhileRunning implements ICommand
@@ -33,14 +38,14 @@ public class CommandEnableDebugWhileRunning implements ICommand
 	@Override
 	public int compareTo(final Object o){
 		if (o instanceof Comparable<?>) {
-		 @SuppressWarnings("unchecked")
-		Comparable<ICommand> a = (Comparable<ICommand>) o;	
-		 if (a.equals(this)) {
-			 return 0;
-		 }
-		 else {
-			 return -1;
-		 }
+			@SuppressWarnings("unchecked")
+			Comparable<ICommand> a = (Comparable<ICommand>) o;	
+			if (a.equals(this)) {
+				return 0;
+			}
+			else {
+				return -1;
+			}
 		}
 		return -1;
 	}
@@ -66,7 +71,7 @@ public class CommandEnableDebugWhileRunning implements ICommand
 
 	@Override
 	public void processCommand(final ICommandSender S, final String[] argString){
-		int aMaxArgumentsAllowed = 1;
+		int aMaxArgumentsAllowed = 2;
 
 		if ((argString == null || argString.length == 0 || argString.length > aMaxArgumentsAllowed) || argString[0].toLowerCase().equals("?")) {
 			Logger.INFO("Listing commands and their uses.");			
@@ -75,6 +80,8 @@ public class CommandEnableDebugWhileRunning implements ICommand
 			PlayerUtils.messagePlayer(P, "The following are valid args for the '/gtpp' command:");
 			PlayerUtils.messagePlayer(P, "?       - This help command.");
 			PlayerUtils.messagePlayer(P, "logging - Toggles ALL GT++ logging for current session.");
+			PlayerUtils.messagePlayer(P, "hand - Lists information about held item.");
+			PlayerUtils.messagePlayer(P, "fuid xxx - Tries to find the fluid in the FluidRegistry.");
 			PlayerUtils.messagePlayer(P, "debug   - Toggles GT++ Debug Mode. Only use when advised, may break everything. (OP)");
 		}
 		else if (argString[0].toLowerCase().equals("debug")) {
@@ -106,11 +113,70 @@ public class CommandEnableDebugWhileRunning implements ICommand
 					String aItemDisplayName = ItemUtils.getItemName(aHeldItem);
 					String aItemUnlocalName = ItemUtils.getUnlocalizedItemName(aHeldItem);
 					String aNbtString = tryIterateNBTData(aHeldItem);	
-					PlayerUtils.messagePlayer(P, "["+aItemUnlocalName+"]"+"["+aItemDisplayName+"] "+aNbtString);				
+					AutoMap<String> aOreDictNames = new AutoMap<String>();
+
+					int[] aOreIDs = OreDictionary.getOreIDs(aHeldItem);
+					for (int id : aOreIDs) {
+						String aOreNameFromID = OreDictionary.getOreName(id);
+						if (aOreNameFromID != null && aOreNameFromID.length() > 0 && !aOreNameFromID.equals("Unknown")) {
+							aOreDictNames.add(aOreNameFromID);
+						}
+					}
+
+					String aOreDictData = "";
+					if (!aOreDictNames.isEmpty()) {
+						for (String tag : aOreDictNames) {
+							aOreDictData += (tag+", ");
+						}
+						if (aOreDictData.endsWith(", ")) {
+							aOreDictData = aOreDictData.substring(0, aOreDictData.length()-2);
+						}
+					}
+					
+					String aFluidContainerData = "";
+					FluidStack aHeldItemFluid = FluidContainerRegistry.getFluidForFilledItem(aHeldItem);
+					if (aHeldItemFluid != null) {
+						aFluidContainerData = "["+aHeldItemFluid.getUnlocalizedName()+"]["+aHeldItemFluid.getLocalizedName()+"]";
+					}
+
+					PlayerUtils.messagePlayer(P, "["+aItemUnlocalName+"]"+"["+aItemDisplayName+"] ");
+					if (aFluidContainerData.length() > 0) {
+						PlayerUtils.messagePlayer(P, ""+aFluidContainerData);				
+					}
+					if (!aOreDictNames.isEmpty()) {
+						PlayerUtils.messagePlayer(P, ""+aOreDictData);
+					}
+					if (aNbtString.length() > 0) {
+						PlayerUtils.messagePlayer(P, ""+aNbtString);				
+					}
 				}
 				else {
 					PlayerUtils.messagePlayer(P, "No item held.");
 				}
+			}
+		}
+		else if (argString[0].toLowerCase().equals("fluid")) {
+			if (argString.length > 1 && argString[1] != null && argString[1].length() > 0) {			
+				final EntityPlayer P = CommandUtils.getPlayer(S);
+				FluidStack aFluid = FluidUtils.getWildcardFluidStack(argString[1], 1);
+				if (P != null && aFluid != null) {
+					PlayerUtils.messagePlayer(P, "Found fluid stack: "+FluidRegistry.getFluidName(aFluid));						
+				}		
+				else if (P != null && aFluid == null) {
+					PlayerUtils.messagePlayer(P, "Could not find any fluids.");						
+				}	
+			}
+		}
+		else if (argString[0].toLowerCase().equals("item")) {
+			if (argString.length > 1 && argString[1] != null && argString[1].length() > 0) {			
+				final EntityPlayer P = CommandUtils.getPlayer(S);
+				ItemStack aTest = ItemUtils.getItemStackFromFQRN(argString[1], 1);
+				if (P != null && aTest != null) {
+					PlayerUtils.messagePlayer(P, "Found fluid stack: "+ItemUtils.getItemName(aTest));						
+				}		
+				else if (P != null && aTest == null) {
+					PlayerUtils.messagePlayer(P, "Could not find valid item.");						
+				}	
 			}
 		}
 		else {		
@@ -134,6 +200,8 @@ public class CommandEnableDebugWhileRunning implements ICommand
 		aTabCompletes.add("?");
 		aTabCompletes.add("logging");
 		aTabCompletes.add("debug");
+		aTabCompletes.add("hand");
+		aTabCompletes.add("fluid");
 		return aTabCompletes;
 	}
 
@@ -146,7 +214,7 @@ public class CommandEnableDebugWhileRunning implements ICommand
 	public boolean playerUsesCommand(final World W, final EntityPlayer P, final int cost){
 		return true;
 	}
-	
+
 	public static String tryIterateNBTData(ItemStack aStack) {
 		try {
 			AutoMap<String> aItemDataTags = new AutoMap<String>();
@@ -161,9 +229,9 @@ public class CommandEnableDebugWhileRunning implements ICommand
 						int a = 0;
 						String data = "";
 						for (String tag : aItemDataTags) {
-							data += (tag+",");
+							data += (tag+", ");
 						}
-						if (data.endsWith(",")) {
+						if (data.endsWith(", ")) {
 							data = data.substring(0, data.length()-2);
 						}
 						return data;

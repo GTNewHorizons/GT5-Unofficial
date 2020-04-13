@@ -3147,12 +3147,36 @@ item.milledSphalerite.name=Milled Sphalerite
 item.milledNickel.name=Milled Nickel
 item.milledPlatinum.name=Milled Platinum
 item.milledPentlandite.name=Milled Pentlandite
-
-item.BasicGenericChemItem.7.name=Alumina Milling Ball
-item.BasicGenericChemItem.8.name=Soapstone Milling Ball
-
 item.FrothZincflotation.name=Sphalerite Flotation Froth Cell
 item.FrothCopperflotation.name=Chalcopyrite Flotation Froth Cell
 item.FrothNickelflotation.name=Nickel Flotation Froth Cell
 item.FrothPlatinumflotation.name=Platinum Flotation Froth Cell
 item.FrothPentlanditeflotation.name=Pentlandite Flotation Froth Cell
+item.BasicGenericChemItem.7.name=Alumina Milling Ball
+item.BasicGenericChemItem.8.name=Soapstone Milling Ball
+
+//Added 31/03/20
+item.BasicGenericChemItem.9.name=Sodium Ethoxide Dust
+item.BasicGenericChemItem.10.name=Sodium Ethyl Xanthate Dust
+item.BasicGenericChemItem.11.name=Potassium Ethyl Xanthate Dust
+item.BasicGenericChemItem.12.name=Potassium Hydroxide Dust
+item.CarbonDisulfide.name=Carbon Disulfide Cell
+item.HydrogenSulfide.name=Hydrogen Sulfide Cell
+item.BasicAgrichemItem.24.name=Pinecone
+item.BasicAgrichemItem.25.name=Crushed Pine Materials
+item.pineoil.name=Pine Oil Cell
+
+//Added 11/4/20
+item.milledRedstone.name=Milled Redstone
+item.milledSpessartine.name=Milled Spessartine
+item.milledGrossular.name=Milled Grossular
+item.milledAlmandine.name=Milled Almandine
+item.milledPyrope.name=Milled Pyrope
+item.FrothRedstoneflotation.name=Redstone Flotation Froth Cell
+item.FrothSpessartineflotation.name=Spessartine Flotation Froth Cell
+item.FrothGrossularflotation.name=Grossular Flotation Froth Cell
+item.FrothAlmandineflotation.name=Almandine Flotation Froth Cell
+item.FrothPyropeflotation.name=Pyrope Flotation Froth Cell
+
+//Added 13/04/20
+item.T3RecipeSelector.name=Programmed Breakthrough Circuit

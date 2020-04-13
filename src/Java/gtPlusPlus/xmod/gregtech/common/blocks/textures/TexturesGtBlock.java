@@ -281,6 +281,7 @@ public class TexturesGtBlock {
 	public static final CustomIcon TEXTURE_CASING_ADVANCED_VOLCNUS = new CustomIcon("TileEntities/MACHINE_CASING_ADVANCED_VOLCANUS");
 	public static final CustomIcon TEXTURE_CASING_ROCKETDYNE = new CustomIcon("TileEntities/MACHINE_CASING_ROCKETDYNE");
 	public static final CustomIcon TEXTURE_CASING_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_GRINDING_FACTORY");
+	public static final CustomIcon TEXTURE_CASING_FLOTATION = new CustomIcon("TileEntities/MACHINE_CASING_FLOTATION");
 		
 	// Custom Pipes
 	public static final CustomIcon TEXTURE_PIPE_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_PIPE_T1");	
@@ -388,6 +389,13 @@ public class TexturesGtBlock {
 	//Control Core Bus 
 	private static final CustomIcon Internal_Overlay_Hatch_Control_Core = new CustomIcon("iconsets/OVERLAY_CONTROL_CORE_BUS");
 	public static final CustomIcon Overlay_Hatch_Control_Core = Internal_Overlay_Hatch_Control_Core;
+	// Milling Ball Bus
+	private static final CustomIcon Internal_Overlay_Bus_Milling_Balls = new CustomIcon("iconsets/OVERLAY_MILLING_BALL_BUS");
+	public static final CustomIcon Overlay_Bus_Milling_Balls = Internal_Overlay_Bus_Milling_Balls;
+	// Catalyst Bus
+	private static final CustomIcon Internal_Overlay_Bus_Catalyst = new CustomIcon("iconsets/OVERLAY_CATALYSTS");
+	public static final CustomIcon Overlay_Bus_Catalyst = Internal_Overlay_Bus_Catalyst;	
+	
 	
 	//Dimensional
 	private static final CustomIcon Internal_Overlay_Machine_Dimensional_Blue = new CustomIcon("TileEntities/adv_machine_dimensional_cover_blue");

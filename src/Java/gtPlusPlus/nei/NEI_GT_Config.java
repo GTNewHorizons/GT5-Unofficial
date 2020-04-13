@@ -18,6 +18,8 @@ implements IConfigureNEI {
 
 		mUniqueRecipeMapHandling.add(Gregtech_Recipe_Map.sChemicalPlantRecipes.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(Gregtech_Recipe_Map.sOreMillRecipes.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(Gregtech_Recipe_Map.sFlotationCellRecipes.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(Gregtech_Recipe_Map.sVacuumFurnaceRecipes.mUnlocalizedName);
 		
 		for (final CustomRecipeMap tMap : gregtech.api.util.CustomRecipeMap.sMappings) {
 			if (tMap.mNEIAllowed) {
@@ -33,6 +35,8 @@ implements IConfigureNEI {
 		}
 		new GT_NEI_FluidReactor();
 		new GT_NEI_MillingMachine();
+		new GT_NEI_FlotationCell();
+		new GT_NEI_VacFurnace();
 		sIsAdded = true;
 		API.registerRecipeHandler(new DecayableRecipeHandler());
 		API.registerUsageHandler(new DecayableRecipeHandler());

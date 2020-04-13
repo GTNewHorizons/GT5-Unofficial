@@ -11,6 +11,7 @@ public class SlotIntegratedCircuit extends Slot {
 
 	public static Item mCircuitItem;
 	public static Item mCircuitItem2;
+	public static Item mCircuitItem3;
 	private final short mCircuitLock;
 
 	public SlotIntegratedCircuit(final IInventory inventory, final int slot, final int x, final int y) {
@@ -44,9 +45,12 @@ public class SlotIntegratedCircuit extends Slot {
 		if (mCircuitItem2 == null) {
 			mCircuitItem2 = CI.getNumberedBioCircuit(0).getItem();
 		}
-		if (mCircuitItem != null && mCircuitItem2 != null) {
+		if (mCircuitItem3 == null) {
+			mCircuitItem3 = CI.getNumberedAdvancedCircuit(0).getItem();
+		}
+		if (mCircuitItem != null && mCircuitItem2 != null && mCircuitItem3 != null) {
 			if (itemstack != null) {
-				if (itemstack.getItem() == mCircuitItem || itemstack.getItem() == mCircuitItem2) {					
+				if (itemstack.getItem() == mCircuitItem || itemstack.getItem() == mCircuitItem2 || itemstack.getItem() == mCircuitItem3) {					
 					if (aLockedCircuitNumber == -1) {
 						isValid = true;
 					}
@@ -73,7 +77,10 @@ public class SlotIntegratedCircuit extends Slot {
 		if (mCircuitItem2 == null) {
 			mCircuitItem2 = CI.getNumberedBioCircuit(0).getItem();
 		}
-		if (mCircuitItem != null && mCircuitItem2 != null) {
+		if (mCircuitItem3 == null) {
+			mCircuitItem3 = CI.getNumberedAdvancedCircuit(0).getItem();
+		}
+		if (mCircuitItem != null && mCircuitItem2 != null && mCircuitItem3 != null) {
 			if (itemstack != null) {
 				if (itemstack.getItem() == mCircuitItem || itemstack.getItem() == mCircuitItem2) {
 					if (itemstack.getItem() == mCircuitItem) {
@@ -81,7 +88,10 @@ public class SlotIntegratedCircuit extends Slot {
 					}
 					else if (itemstack.getItem() == mCircuitItem2) {
 						return 1;
-					}				
+					}	
+					else if (itemstack.getItem() == mCircuitItem3) {
+						return 2;
+					}
 				}
 			}
 		}

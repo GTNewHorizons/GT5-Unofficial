@@ -1,17 +1,20 @@
 package gtPlusPlus.core.util.minecraft;
 
 import gregtech.api.util.GT_ModHandler;
-import gtPlusPlus.api.objects.Logger;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 import ic2.api.item.ISpecialElectricItem;
+import net.minecraft.item.ItemRedstone;
 import net.minecraft.item.ItemStack;
 
 public class EnergyUtils {
 
 	public static class EU {
 		
-		public static boolean isElectricItem(ItemStack aStack) {			
+		public static boolean isElectricItem(ItemStack aStack) {	
+			if (aStack == null || aStack.getItem() == null || aStack.getItem() instanceof ItemRedstone) {
+				return false;
+			}
 			if (aStack.getItem() instanceof ISpecialElectricItem) {
 				return true;
 			}				

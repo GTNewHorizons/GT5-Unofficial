@@ -13,6 +13,8 @@ import net.minecraft.launchwrapper.Launch;
 
 @SortingIndex(10097) 
 @MCVersion(value = "1.7.10")
+@IFMLLoadingPlugin.TransformerExclusions("gtPlusPlus.preloader")
+@IFMLLoadingPlugin.Name(CORE_Preloader.NAME)
 public class Preloader_FMLLoadingPlugin implements IFMLLoadingPlugin  {
 
 	//-Dfml.coreMods.load=gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin

@@ -55,15 +55,11 @@ public class LeavesBase extends BlockLeaves {
 
 	@Override//Drops when Leaf is broken
 	protected void func_150124_c(World world, int x, int y, int z, int meta, int randomChance){
-		if (this.treeType.length == this.bonusDrops.length){
-			for (int i = 0; i < this.treeType.length; ++i){
-				if (this.bonusDrops[i] != null && world.rand.nextInt(randomChance) == 0){
-					this.dropBlockAsItem(world, x, y, z, ItemUtils.getSimpleStack(this.bonusDrops[i], 1));
-				}
+		Logger.INFO("Dropping Bonus Drops");
+		for (int i = 0; i < this.bonusDrops.length; ++i){
+			if (this.bonusDrops[i] != null && world.rand.nextInt(randomChance) == 0){
+				this.dropBlockAsItem(world, x, y, z, ItemUtils.getSimpleStack(this.bonusDrops[i], 1));
 			}
-		}
-		else {
-			Logger.WARNING("Unable to drop anything, Leaf Type array and Loot array are different sizes.");
 		}
 	}
 

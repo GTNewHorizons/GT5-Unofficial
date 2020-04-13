@@ -1,22 +1,26 @@
 package gtPlusPlus.core.util.minecraft;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
+import thaumcraft.common.lib.FakeThaumcraftPlayer;
 
 public class PlayerUtils {
+
+	public static final Map<String, EntityPlayer> mCachedFakePlayers = new WeakHashMap<String, EntityPlayer>();
 
 	public static void messagePlayer(final EntityPlayer P, final String S){
 		gregtech.api.util.GT_Utility.sendChatToPlayer(P, S);
@@ -195,5 +199,53 @@ public class PlayerUtils {
 	public static boolean canTakeDamage(EntityPlayer aPlayer) {
 		return !aPlayer.capabilities.disableDamage;
 	} 
+	
+	public static void cacheFakePlayer(EntityPlayer aPlayer) {
+		ChunkCoordinates aChunkLocation = aPlayer.getPlayerCoordinates();
+		// Cache Fake Player
+		if (aPlayer instanceof FakePlayer || aPlayer instanceof FakeThaumcraftPlayer 
+				|| (aPlayer.getCommandSenderName() == null
+						|| aPlayer.getCommandSenderName().length() <= 0)
+				|| (aPlayer.isEntityInvulnerable() && !aPlayer.canCommandSenderUseCommand(0, "")
+						&& (aChunkLocation == null) || (aChunkLocation.posX == 0 && aChunkLocation.posY == 0
+								&& aChunkLocation.posZ == 0))) {
+			mCachedFakePlayers.put(aPlayer.getUniqueID().toString(), aPlayer);
+		}
+	}
+	
+	public static boolean isCachedFakePlayer(String aUUID) {
+		return mCachedFakePlayers.containsKey(aUUID);
+	}
+	
+	public static boolean isRealPlayer(EntityLivingBase aEntity) {
+		if (aEntity instanceof EntityPlayer) {
+			EntityPlayer p = (EntityPlayer) aEntity;
+			ChunkCoordinates aChunkLocation = p.getPlayerCoordinates();			
+			if (p instanceof FakePlayer) {
+				cacheFakePlayer(p);
+				return false;
+			}
+			if (p instanceof FakeThaumcraftPlayer) {
+				cacheFakePlayer(p);
+				return false;
+			}
+			if (p.getCommandSenderName() == null) {
+				cacheFakePlayer(p);
+				return false;
+			}
+			if (p.getCommandSenderName().length() <= 0) {
+				cacheFakePlayer(p);
+				return false;
+			}
+			if (p.isEntityInvulnerable() && !p.canCommandSenderUseCommand(0, "") && (aChunkLocation.posX == 0 && aChunkLocation.posY == 0 && aChunkLocation.posZ == 0)) {
+				cacheFakePlayer(p);
+				return false;
+			}
+			if (!isCachedFakePlayer(p.getUniqueID().toString())) {
+				return true;
+			}			
+		}		
+		return false;
+	}
 
 }

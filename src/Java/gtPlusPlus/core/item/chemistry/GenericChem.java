@@ -1,33 +1,26 @@
 package gtPlusPlus.core.item.chemistry;
 
-import static gtPlusPlus.core.lib.CORE.GTNH;
-
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.*;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
+import gtPlusPlus.core.item.circuit.ItemAdvancedChip;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.material.MISC_MATERIALS;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.material.MaterialStack;
-import gtPlusPlus.core.material.NONMATERIAL;
+import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.*;
 
 public class GenericChem extends ItemPackage {
 
@@ -37,6 +30,7 @@ public class GenericChem extends ItemPackage {
 
 	private static boolean usingGregtechNitricOxide = false;
 	private static boolean usingGregtechNitrogenDioxide = false;
+	private static boolean usingGregtechHydricSulfur = false;
 
 	/**
 	 * Materials
@@ -94,6 +88,8 @@ public class GenericChem extends ItemPackage {
 	public static Fluid Lithium_Peroxide;
 	public static Fluid Nitric_Oxide;
 	public static Fluid Nitrogen_Dioxide;
+	public static Fluid Carbon_Disulfide;
+	public static Fluid Hydrogen_Sulfide;
 
 	/**
 	 * Items
@@ -102,6 +98,7 @@ public class GenericChem extends ItemPackage {
 	// Phenol Byproducts
 	public Item PhenolicResins; //https://en.wikipedia.org/wiki/Phenol_formaldehyde_resin
 	public static ItemGenericChemBase mGenericChemItem1;
+	public static Item mAdvancedCircuit;
 
 	private ItemStack mCatalystCarrier;
 
@@ -115,6 +112,11 @@ public class GenericChem extends ItemPackage {
 
 	public static ItemStack mMillingBallAlumina;
 	public static ItemStack mMillingBallSoapstone;
+	
+	public static ItemStack mSodiumEthoxide;
+	public static ItemStack mSodiumEthylXanthate;
+	public static ItemStack mPotassiumEthylXanthate;
+	public static ItemStack mPotassiumHydroxide;
 
 
 
@@ -125,7 +127,9 @@ public class GenericChem extends ItemPackage {
 		MaterialGenerator.generate(NYLON, false);
 		MaterialGenerator.generate(TEFLON, false);		
 
-		mGenericChemItem1 = new ItemGenericChemBase();		
+		mGenericChemItem1 = new ItemGenericChemBase();	
+		mAdvancedCircuit = new ItemAdvancedChip();		
+		GregtechItemList.Circuit_T3RecipeSelector.set(mAdvancedCircuit);
 
 		registerItemStacks();
 		registerOreDict();
@@ -149,6 +153,10 @@ public class GenericChem extends ItemPackage {
 		mPinkCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 6, 1);
 		mMillingBallAlumina = ItemUtils.simpleMetaStack(mGenericChemItem1, 7, 1);
 		mMillingBallSoapstone = ItemUtils.simpleMetaStack(mGenericChemItem1, 8, 1);
+		mSodiumEthoxide = ItemUtils.simpleMetaStack(mGenericChemItem1, 9, 1);
+		mSodiumEthylXanthate = ItemUtils.simpleMetaStack(mGenericChemItem1, 10, 1);
+		mPotassiumEthylXanthate = ItemUtils.simpleMetaStack(mGenericChemItem1, 11, 1);
+		mPotassiumHydroxide = ItemUtils.simpleMetaStack(mGenericChemItem1, 12, 1);
 
 	}
 
@@ -163,6 +171,10 @@ public class GenericChem extends ItemPackage {
 		ItemUtils.addItemToOreDictionary(mPinkCatalyst, "catalystPlatinumRhodium");
 		ItemUtils.addItemToOreDictionary(mMillingBallAlumina, "millingballAlumina");
 		ItemUtils.addItemToOreDictionary(mMillingBallSoapstone, "millingballSoapstone");
+		ItemUtils.addItemToOreDictionary(mSodiumEthoxide, "dustSodiumEthoxide");
+		ItemUtils.addItemToOreDictionary(mSodiumEthylXanthate, "dustSodiumEthylXanthate");
+		ItemUtils.addItemToOreDictionary(mPotassiumEthylXanthate, "dustPotassiumEthylXanthate");
+		ItemUtils.addItemToOreDictionary(mPotassiumHydroxide, "dustPotassiumHydroxide");
 
 	}
 
@@ -241,8 +253,30 @@ public class GenericChem extends ItemPackage {
 		//Lithium Peroxide - 2 LiOOH → Li2O2 + H2O2 + 2 H2O
 		Lithium_Peroxide = FluidUtils.generateFluidNonMolten("LithiumPeroxide", "Lithium Peroxide", 446, new short[]{135, 135, 135, 100}, null, null);
 
+		Carbon_Disulfide = FluidUtils.generateFluidNoPrefix("CarbonDisulfide", "Carbon Disulfide", 350, new short[]{175, 175, 175, 100});
 
-
+		if (FluidRegistry.isFluidRegistered("fluid.liquid_hydricsulfur") || MaterialUtils.doesMaterialExist("HydricSulfide")) {
+			usingGregtechHydricSulfur = true;
+			Fluid aFluid = null;
+			if (ItemUtils.doesItemListEntryExist("sHydricSulfur")) {
+				ItemStack aListItem = ItemUtils.getValueOfItemList("sHydricSulfur", 1, (ItemList) null);
+				if (aListItem != null) {
+					FluidStack aFluidStack = FluidContainerRegistry.getFluidForFilledItem(aListItem);
+					if (aFluidStack != null) {
+						aFluid = aFluidStack.getFluid();
+					}
+					
+				}
+			}
+			if (aFluid == null) {
+				aFluid = FluidUtils.getWildcardFluidStack("liquid_hydricsulfur", 1000).getFluid();				
+			}
+			Hydrogen_Sulfide = aFluid;
+		}
+		else {
+			Hydrogen_Sulfide = FluidUtils.generateFluidNoPrefix("HydrogenSulfide", "Hydrogen Sulfide", 446, new short[]{240, 130, 30, 100});
+		}
+		
 	}	
 
 	@Override
@@ -253,6 +287,7 @@ public class GenericChem extends ItemPackage {
 	@Override
 	public boolean generateRecipes() {
 
+		recipeAdvancedChip();
 		recipeCatalystRed();
 		recipeCatalystYellow();
 		recipeCatalystBlue();
@@ -281,15 +316,171 @@ public class GenericChem extends ItemPackage {
 		if (!usingGregtechNitrogenDioxide) {
 			recipeNitrogenDioxide();	
 		}
+		if (!usingGregtechHydricSulfur) {
+			recipeHydricSulfur();			
+		}
 
 		// Add recipes if we are not using GT's fluid.
 		if (!FluidRegistry.isFluidRegistered("hydrochloricacid_gt5u")) {
 			recipeHydrochloricAcid();			
 		}
+		
+		recipeSodiumEthoxide();
+		recipeCarbonDisulfide();
+		recipeEthylXanthates();
+		recipePotassiumHydroxide();
+		
 		registerFuels();
 
 		return true;
 	}	
+
+
+	private void recipeSodiumEthoxide() {
+		//2 C2H5OH + 2 Na → 2 C2H5ONa + H2
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(16),
+						ELEMENT.getInstance().SODIUM.getDust(2)
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(BioRecipes.mEthanol, 1000),
+				}, 
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(mSodiumEthoxide, 2)
+
+				}, 
+				new FluidStack[] {
+						ELEMENT.getInstance().HYDROGEN.getFluid(2000)						
+				}, 
+				20 *20,
+				120, 
+				2);
+	}
+
+
+	private void recipePotassiumHydroxide() {
+		//Ca(OH)2 + K2CO3 → CaCO3 + 2 KOH		
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(18),
+						ELEMENT.getInstance().POTASSIUM.getDust(4),	
+						ELEMENT.getInstance().CARBON.getDust(2),	
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 2),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack("oxygen", 6000),
+				}, 
+				new ItemStack[] {
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 2),
+						ItemUtils.getSimpleStack(mPotassiumHydroxide, 4)
+
+				}, 
+				new FluidStack[] {
+						
+				}, 
+				20 *30,
+				120, 
+				2);
+		
+	}
+
+
+	private void recipeEthylXanthates() {
+
+		//Potassium ethyl xanthate - CH3CH2OH + CS2 + KOH → CH3CH2OCS2K + H2O
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(17),	
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 2),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(BioRecipes.mEthanol, 1000),
+						FluidUtils.getFluidStack(Carbon_Disulfide, 1000),
+				}, 
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(mPotassiumEthylXanthate, 1)
+				}, 
+				new FluidStack[] {
+						FluidUtils.getWater(1000)
+				}, 
+				20 *60,
+				120, 
+				2);
+
+		//Sodium ethyl xanthate - CH3CH2ONa + CS2 → CH3CH2OCS2Na
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(17),	
+						ItemUtils.getSimpleStack(mSodiumEthoxide, 1)
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(Carbon_Disulfide, 1000),
+				}, 
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(mSodiumEthylXanthate, 1)
+				}, 
+				new FluidStack[] {
+						
+				}, 
+				20 *60,
+				120, 
+				2);
+		
+	}
+
+
+	private void recipeHydricSulfur() {
+		
+		ItemStack aCellHydricSulfide = ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenSulfide", 1);		
+        GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().SULFUR.getDust(1), GT_Utility.getIntegratedCircuit(1), ELEMENT.getInstance().HYDROGEN.getFluid(2000), FluidUtils.getFluidStack(Hydrogen_Sulfide, 3000), GT_Values.NI, 60, 8);
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ELEMENT.getInstance().SULFUR.getDust(1), CI.emptyCells(3),        ELEMENT.getInstance().HYDROGEN.getFluid(2000), GT_Values.NF, ItemUtils.getSimpleStack(aCellHydricSulfide, 3), GT_Values.NI, 60, 8);
+		
+	}
+
+
+	private void recipeCarbonDisulfide() {
+		
+		CORE.RA.addBlastRecipe(
+				new ItemStack[] {
+						ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 8),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 16)						
+				}, 
+				new FluidStack[] {
+						
+				}, 
+				new ItemStack[] {
+						ItemUtils.getItemStackOfAmountFromOreDict("dustDarkAsh", 1)
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(Carbon_Disulfide, 4000)
+				},
+				20 *60 * 10,
+				30,
+				1500);
+
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(20),	
+						ItemUtils.getSimpleStack(mBrownCatalyst, 0),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 4)	
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(CoalTar.Coal_Gas, 1000),
+				}, 
+				new ItemStack[] {
+
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(Carbon_Disulfide, 2000),
+						FluidUtils.getFluidStack(Hydrogen_Sulfide, 4000)
+				}, 
+				20 *60 * 5,
+				30, 
+				2);
+		
+		
+	}
 
 
 	private static void registerFuels() {
@@ -859,18 +1050,72 @@ public class GenericChem extends ItemPackage {
 
 
 	private static final ItemStack getTierOneChip() {
-		return CI.getNumberedBioCircuit(4);
+		return CI.getNumberedAdvancedCircuit(4);
 	}
 	private static final ItemStack getTierTwoChip() {
-		return CI.getNumberedBioCircuit(8);
+		return CI.getNumberedAdvancedCircuit(8);
 	}
 	private static final ItemStack getTierThreeChip() {
-		return CI.getNumberedBioCircuit(12);
+		return CI.getNumberedAdvancedCircuit(12);
 	}
 	private static final ItemStack getTierFourChip() {
-		return CI.getNumberedBioCircuit(16);
+		return CI.getNumberedAdvancedCircuit(16);
 	}
 
+	private static void recipeAdvancedChip() {
+		GT_ModHandler.addShapelessCraftingRecipe(
+				GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 0L), 0, new Object[]{OrePrefixes.circuit.get(Materials.Advanced)});
+
+		long bits = 0;
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 1L, new Object[0]), bits,
+				new Object[]{"d  ", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 2L, new Object[0]), bits,
+				new Object[]{" d ", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 3L, new Object[0]), bits,
+				new Object[]{"  d", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 4L, new Object[0]), bits,
+				new Object[]{"   ", " Pd", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 5L, new Object[0]), bits,
+				new Object[]{"   ", " P ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 6L, new Object[0]), bits,
+				new Object[]{"   ", " P ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 7L, new Object[0]), bits,
+				new Object[]{"   ", " P ", "d  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 8L, new Object[0]), bits,
+				new Object[]{"   ", "dP ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 9L, new Object[0]), bits,
+				new Object[]{"P d", "   ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 10L, new Object[0]), bits,
+				new Object[]{"P  ", "  d", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 11L, new Object[0]), bits,
+				new Object[]{"P  ", "   ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 12L, new Object[0]), bits,
+				new Object[]{"P  ", "   ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 13L, new Object[0]), bits,
+				new Object[]{"  P", "   ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 14L, new Object[0]), bits,
+				new Object[]{"  P", "   ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 15L, new Object[0]), bits,
+				new Object[]{"  P", "   ", "d  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 16L, new Object[0]), bits,
+				new Object[]{"  P", "d  ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 17L, new Object[0]), bits,
+				new Object[]{"   ", "   ", "d P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 18L, new Object[0]), bits,
+				new Object[]{"   ", "d  ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 19L, new Object[0]), bits,
+				new Object[]{"d  ", "   ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 20L, new Object[0]), bits,
+				new Object[]{" d ", "   ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 21L, new Object[0]), bits,
+				new Object[]{"d  ", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 22L, new Object[0]), bits,
+				new Object[]{" d ", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 23L, new Object[0]), bits,
+				new Object[]{"  d", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 24L, new Object[0]), bits,
+				new Object[]{"   ", "  d", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+	}
 
 
 }

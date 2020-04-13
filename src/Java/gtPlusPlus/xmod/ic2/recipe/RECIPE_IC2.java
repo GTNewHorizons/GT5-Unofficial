@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.ic2.recipe;
 
 import static gtPlusPlus.core.recipe.RECIPES_Tools.*;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.*;
@@ -12,10 +13,15 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.ic2.item.IC2_Items;
+import ic2.core.Ic2Items;
 
 public class RECIPE_IC2 {
 
@@ -84,6 +90,7 @@ public class RECIPE_IC2 {
 	public static void initRecipes() {
 		
 		checkForEnderIO();
+		addAdvancedHazmat();
 		
 		if (!CORE.GTNH) {
 			//Rotor Blade Recipes
@@ -235,5 +242,85 @@ public class RECIPE_IC2 {
 		}
 
 
+	}
+
+	private static void addAdvancedHazmat() {
+
+		ItemStack[] aBasicHazmatPieces = new ItemStack[] {
+				Ic2Items.hazmatHelmet.copy(), 
+				Ic2Items.hazmatChestplate.copy(), 
+				Ic2Items.hazmatLeggings.copy(),
+				Ic2Items.hazmatBoots.copy()
+				};
+		
+		Material aRubber = MaterialUtils.generateMaterialFromGtENUM(Materials.Rubber);
+		ItemStack aYellowWool = ItemUtils.getSimpleStack(Blocks.wool, 4, 1);
+		ItemStack aBlackWool = ItemUtils.getSimpleStack(Blocks.wool, 15, 1);
+		ItemStack aCoilIC2 = Ic2Items.coil;
+		ItemStack aPlateCobalt = CI.getTieredComponentOfMaterial(Materials.Cobalt, OrePrefixes.plate, 1);
+		ItemStack aGearSmallSteel = CI.getTieredComponentOfMaterial(Materials.Steel, OrePrefixes.gearGtSmall, 1);
+		ItemStack aGearSmallAluminium = CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.gearGtSmall, 1);
+		ItemStack aGearPotin = ALLOY.TUMBAGA.getGear(1);
+		ItemStack aGearSiliconCarbide = ALLOY.SILICON_CARBIDE.getGear(1);		
+		
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(2),
+						aBasicHazmatPieces[0],
+						ItemUtils.getSimpleStack(aYellowWool,16),
+						ItemUtils.getSimpleStack(aPlateCobalt, 4),
+						ItemUtils.getSimpleStack(aCoilIC2, 8),
+						ItemUtils.getSimpleStack(aGearSmallAluminium, 4),
+				}, 
+				aRubber.getFluid(144 * 4), 
+				GregtechItemList.Armour_Hazmat_Advanced_Helmet.get(1), 
+				30 * 20, 
+				MaterialUtils.getVoltageForTier(2));
+		
+
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(2),
+						aBasicHazmatPieces[1],
+						ItemUtils.getSimpleStack(aYellowWool, 64),
+						ItemUtils.getSimpleStack(aCoilIC2, 32),
+						ItemUtils.getSimpleStack(aPlateCobalt, 16),
+						ItemUtils.getSimpleStack(aGearSiliconCarbide, 8),
+				}, 
+				aRubber.getFluid(144 * 10), 
+				GregtechItemList.Armour_Hazmat_Advanced_Chest.get(1), 
+				90 * 20, 
+				MaterialUtils.getVoltageForTier(2));
+		
+
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(2),
+						aBasicHazmatPieces[2],
+						ItemUtils.getSimpleStack(aYellowWool, 32),
+						ItemUtils.getSimpleStack(aCoilIC2, 16),
+						ItemUtils.getSimpleStack(aPlateCobalt, 8),
+						ItemUtils.getSimpleStack(aGearSiliconCarbide, 4),
+				}, 
+				aRubber.getFluid(144 * 8), 
+				GregtechItemList.Armour_Hazmat_Advanced_Legs.get(1), 
+				75 * 20, 
+				MaterialUtils.getVoltageForTier(2));
+		
+
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(2),
+						aBasicHazmatPieces[3],
+						ItemUtils.getSimpleStack(aBlackWool, 16),
+						ItemUtils.getSimpleStack(aCoilIC2, 6),
+						ItemUtils.getSimpleStack(aGearSmallSteel, 8),
+						ItemUtils.getSimpleStack(aGearPotin, 4),
+				}, 
+				aRubber.getFluid(144 * 6), 
+				GregtechItemList.Armour_Hazmat_Advanced_Boots.get(1), 
+				45 * 20, 
+				MaterialUtils.getVoltageForTier(2));
+		
 	}
 }

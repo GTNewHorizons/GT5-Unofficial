@@ -19,6 +19,12 @@ public enum GregtechItemList implements GregtechItemContainer {
 	/**
 	 * Items
 	 */
+	
+	// Advanced Hazmat Suit
+	Armour_Hazmat_Advanced_Helmet,
+	Armour_Hazmat_Advanced_Chest,
+	Armour_Hazmat_Advanced_Legs,
+	Armour_Hazmat_Advanced_Boots,
 
 	//Gregtech Machine Parts
 	Electric_Motor_LuV, Electric_Motor_ZPM, Electric_Motor_UV, Electric_Motor_MAX,
@@ -49,6 +55,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	//Recipe Circuit
 	Circuit_BioRecipeSelector,
+	Circuit_T3RecipeSelector,
 	
 	//Circuits
 	Old_Circuit_Primitive, Old_Circuit_Basic, Old_Circuit_Good,
@@ -363,6 +370,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Turbine_LP, Casing_Turbine_HP,
 	Casing_Turbine_Gas, Casing_Turbine_Plasma,
 	
+	// Large Engine
+	Casing_Reinforced_Engine_Casing,
+	
 	//Large Vacuum Furnace
 	Casing_Vacuum_Furnace,
 	Controller_Vacuum_Furnace,
@@ -375,10 +385,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Controller_LargeSemifluidGenerator,
 	
 	// IsaMill
-	Controller_IsaMill_Controller,
+	Controller_IsaMill,
 	Casing_IsaMill_Casing,
 	Casing_IsaMill_Gearbox,
 	Casing_IsaMill_Pipe,
+	
+	// Flotation Cell
+	Controller_Flotation_Cell,
 
 
 	//----------------------------------------------------------------------------
@@ -402,6 +415,12 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	//Control Core
 	Hatch_Control_Core,
+	
+	// Milling Ball Bus
+	Bus_Milling_Balls,
+
+	// Catalyst Bus
+	Bus_Catalysts,
 
 	//Custom Fluid Hatches
 	Hatch_Input_Cryotheum,

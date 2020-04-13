@@ -110,6 +110,9 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
 					else if (aTypeInSlot == 1) {
 						aOutput = CI.getNumberedBioCircuit(e);
 					}
+					else if (aTypeInSlot == 2) {
+						aOutput = CI.getNumberedAdvancedCircuit(e);
+					}
 					else {
 						aOutput = null;
 					}			

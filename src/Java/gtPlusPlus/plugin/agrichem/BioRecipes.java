@@ -23,11 +23,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.core.util.minecraft.OreDictUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -61,7 +57,7 @@ public class BioRecipes {
 	private static Fluid mCarbonDioxide;
 	private static Fluid mCarbonMonoxide;
 	private static Fluid mEthylene;
-	private static Fluid mEthanol;
+	public static Fluid mEthanol;
 	private static Fluid mChlorine;
 	private static Fluid mHydrogen;
 	private static Fluid mDilutedSulfuricAcid;
@@ -1323,14 +1319,10 @@ public class BioRecipes {
 	}
 
 	private static void recipeBioChip() {
-
 		GT_ModHandler.addShapelessCraftingRecipe(
 				GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 0L), 0, new Object[]{OrePrefixes.circuit.get(Materials.Primitive)});
 
 		long bits = 0;
-
-
-
 		addCraftingRecipe(GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 1L, new Object[0]), bits,
 				new Object[]{"d  ", " P ", "   ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])});
 		addCraftingRecipe(GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 2L, new Object[0]), bits,

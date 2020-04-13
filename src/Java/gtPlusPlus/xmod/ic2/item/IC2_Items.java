@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.ic2.item;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
+import gtPlusPlus.core.item.wearable.hazmat.ItemArmorHazmatEx;
 import gtPlusPlus.core.lib.LoadedMods;
 import net.minecraft.item.ItemStack;
 
@@ -52,6 +53,8 @@ public class IC2_Items {
 		rotor_Material_2 = new ItemStack (new CustomKineticRotor(1));
 		rotor_Material_3 = new ItemStack (new CustomKineticRotor(2));
 		rotor_Material_4 = new ItemStack (new CustomKineticRotor(3));
+		
+		ItemArmorHazmatEx.init();
 
 	}
 }

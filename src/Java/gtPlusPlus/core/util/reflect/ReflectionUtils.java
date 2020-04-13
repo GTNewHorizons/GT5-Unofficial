@@ -22,6 +22,7 @@ import com.google.common.reflect.ClassPath;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.data.StringUtils;
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 
 public class ReflectionUtils {
 
@@ -507,6 +508,30 @@ public class ReflectionUtils {
 		Logger.REFLECTION("Invoke failed or did something wrong.");		
 		return false;
 	}
+	
+	public static boolean invokeVoid(Object objectInstance, Method method, Object[] values){		
+		if (method == null || values == null || (!ReflectionUtils.isStaticMethod(method)  && objectInstance == null)){
+			//Logger.REFLECTION("Null value when trying to Dynamically invoke "+methodName+" on an object of type: "+objectInstance.getClass().getName());
+			return false;
+		}		
+		String methodName = method.getName();
+		String classname = objectInstance != null ? objectInstance.getClass().getCanonicalName() : method.getDeclaringClass().getCanonicalName();
+		Logger.REFLECTION("Trying to invoke "+methodName+" on an instance of "+classname+".");		
+		try {
+			Method mInvokingMethod = method;
+			if (mInvokingMethod != null){
+				Logger.REFLECTION(methodName+" was not null.");
+				mInvokingMethod.invoke(objectInstance, values);
+					Logger.REFLECTION("Successfully invoked "+methodName+".");
+					return true;				
+			}
+		}
+		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			Logger.REFLECTION("Failed to Dynamically invoke "+methodName+" on an object of type: "+classname);
+		}
+		Logger.REFLECTION("Invoke failed or did something wrong.");		
+		return false;
+	}
 
 	public static boolean invokeVoid(Object objectInstance, String methodName, Class[] parameters, Object[] values){
 		if (objectInstance == null || methodName == null || parameters == null || values == null){
@@ -536,17 +561,17 @@ public class ReflectionUtils {
 
 
 	public static Object invokeNonBool(Object objectInstance, Method method, Object[] values){
-		if (objectInstance == null || method == null || values == null){
+		if ((!ReflectionUtils.isStaticMethod(method)  && objectInstance == null) || method == null || values == null){
 			return false;
 		}		
 		String methodName = method.getName();
-		Class<?> mLocalClass = (objectInstance instanceof Class ? (Class<?>) objectInstance : objectInstance.getClass());
-		Logger.REFLECTION("Trying to invoke "+methodName+" on an instance of "+mLocalClass.getCanonicalName()+".");
+		String classname = objectInstance != null ? objectInstance.getClass().getCanonicalName() : method.getDeclaringClass().getCanonicalName();
+		Logger.REFLECTION("Trying to invoke "+methodName+" on an instance of "+classname+".");
 		try {
 				return method.invoke(objectInstance, values);
 		}
 		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			Logger.REFLECTION("Failed to Dynamically invoke "+methodName+" on an object of type: "+mLocalClass.getName());
+			Logger.REFLECTION("Failed to Dynamically invoke "+methodName+" on an object of type: "+classname);
 		}		
 
 		Logger.REFLECTION("Invoke failed or did something wrong.");		
@@ -1031,6 +1056,20 @@ public class ReflectionUtils {
 		try {
 			return field.get(instance);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
+		}
+		return null;
+	}
+
+	public static <T> T createNewInstanceFromConstructor(Constructor aConstructor, Object[] aArgs) {
+		T aInstance;
+		try {
+			aInstance = (T) aConstructor.newInstance(aArgs);
+			if (aInstance != null) {
+				return aInstance;
+			}
+		}
+		catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

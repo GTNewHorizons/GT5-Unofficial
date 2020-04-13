@@ -1235,6 +1235,10 @@ public class CI {
 		return ItemUtils.simpleMetaStack(AgriculturalChem.mBioCircuit, i, 0);
 	}
 
+	public static ItemStack getNumberedAdvancedCircuit(int i) {
+		return ItemUtils.simpleMetaStack(GenericChem.mAdvancedCircuit, i, 0);
+	}
+
 	public static ItemStack getTieredGTPPMachineCasing(int aTier, int aAmount) {
 		GregtechItemList[] aHulls = new GregtechItemList[] {
 				GregtechItemList.GTPP_Casing_ULV,

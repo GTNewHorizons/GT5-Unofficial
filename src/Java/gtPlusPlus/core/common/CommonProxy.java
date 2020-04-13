@@ -1,10 +1,6 @@
 package gtPlusPlus.core.common;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -19,18 +15,8 @@ import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.fluids.FluidFactory;
-import gtPlusPlus.core.handler.BookHandler;
-import gtPlusPlus.core.handler.BurnableFuelHandler;
-import gtPlusPlus.core.handler.COMPAT_HANDLER;
-import gtPlusPlus.core.handler.COMPAT_IntermodStaging;
-import gtPlusPlus.core.handler.GuiHandler;
-import gtPlusPlus.core.handler.StopAnnoyingFuckingAchievements;
-import gtPlusPlus.core.handler.events.BlockEventHandler;
-import gtPlusPlus.core.handler.events.EnderDragonDeathHandler;
-import gtPlusPlus.core.handler.events.EntityDeathHandler;
-import gtPlusPlus.core.handler.events.GeneralTooltipEventHandler;
-import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
-import gtPlusPlus.core.handler.events.ZombieBackupSpawnEventHandler;
+import gtPlusPlus.core.handler.*;
+import gtPlusPlus.core.handler.events.*;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.CORE;
@@ -50,7 +36,6 @@ import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.galacticraft.handler.HandlerTooltip_GC;
-import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
 import net.minecraft.enchantment.Enchantment;
@@ -89,10 +74,7 @@ public class CommonProxy {
 		}
 
 		AddToCreativeTab.initialiseTabs();
-		
-		if (LoadedMods.Gregtech) {
-			HANDLER_GT.addNewOrePrefixes();
-		}
+		EnumHelperHandler.init();
 
 		// Moved from Init after Debug Loading.
 		// 29/01/18 - Alkalus

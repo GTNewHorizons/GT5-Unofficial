@@ -3,6 +3,8 @@ package gtPlusPlus.core.item.chemistry.general;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -12,6 +14,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -19,7 +23,7 @@ public class ItemGenericChemBase extends Item {
 
 	final protected IIcon base[];
 	
-	final private int aMetaSize = 9;
+	final private int aMetaSize = 13;
 	
 	/*
 	 * 0 - Red Metal Catalyst //FeCu
@@ -31,6 +35,10 @@ public class ItemGenericChemBase extends Item {
 	 * 6 - Pink Metal Catalyst //PtRh
 	 * 7 - Alumina Grinding Ball
 	 * 8 - Soapstone Grinding Ball
+	 * 9 - Sodium Ethoxide // 2 Sodium + 1 Ethanol | 2 C2H5OH + 2 Na → 2 C2H5ONa + H2
+	 * 10 - Sodium Ethyl Xanthate //CH3CH2ONa + CS2 → CH3CH2OCS2Na
+	 * 11 - Potassium Ethyl Xanthate //CH3CH2OH + CS2 + KOH → CH3CH2OCS2K + H2O
+	 * 12 - Potassium Hydroxide // KOH
 	 */
 	
 	public ItemGenericChemBase() {
@@ -43,6 +51,14 @@ public class ItemGenericChemBase extends Item {
 		GameRegistry.registerItem(this, this.getUnlocalizedName());
 	}
 	
+	@Override
+	public int getItemStackLimit(ItemStack stack) {
+		if (ItemUtils.isMillingBall(stack)) {
+			return 16;
+		}		
+		return super.getItemStackLimit(stack);
+	}
+
 	@Override
 	public boolean isDamageable() {
 		return false;
@@ -61,17 +77,6 @@ public class ItemGenericChemBase extends Item {
 	@Override
 	public String getItemStackDisplayName(ItemStack aStack) {
 		return super.getItemStackDisplayName(aStack);
-	}
-
-	@Override
-	public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
-		try {
-			
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-		}
-		super.addInformation(aStack, p_77624_2_, aList, p_77624_4_);
 	}
 
 	@Override
@@ -109,11 +114,6 @@ public class ItemGenericChemBase extends Item {
 	@Override
 	public int getDisplayDamage(ItemStack stack) {
 		return stack.getItemDamage();
-	}
-
-	@Override
-	public boolean showDurabilityBar(ItemStack stack) {
-		return false;
 	}
 
 	@Override
@@ -159,6 +159,169 @@ public class ItemGenericChemBase extends Item {
     public String getUnlocalizedName(ItemStack stack) {
 		return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
+	
+
+
+	@Override
+	public double getDurabilityForDisplay(ItemStack aStack) {
+		if (ItemUtils.isMillingBall(aStack)) {			
+			if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()){
+				createMillingBallNBT(aStack);
+	        }
+			double currentDamage = getMillingBallDamage(aStack);
+			double durabilitypercent = currentDamage / 100;		
+	        return  durabilitypercent;
+		}
+		else if (ItemUtils.isCatalyst(aStack)) {			
+			if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()){
+				createCatalystNBT(aStack);
+	        }
+			double currentDamage = getCatalystDamage(aStack);
+			double durabilitypercent = currentDamage / 100;		
+	        return  durabilitypercent;
+		}
+		else {
+			return 1D;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void addInformation(ItemStack aStack, EntityPlayer player, List list, boolean bool) {
+		boolean aHasSpecialTooltips = false;
+		int aMaxDamage = 0;
+		int aDamageSegment = 0;
+		int aDam = 0;
+		EnumChatFormatting durability = EnumChatFormatting.GRAY;
+		if (ItemUtils.isMillingBall(aStack)) {
+			list.add(EnumChatFormatting.GRAY+"Tumble Tumble Tumble");
+			aMaxDamage = getMillingBallMaxDamage(aStack);
+			aDamageSegment = aMaxDamage / 5;
+			aDam = aMaxDamage-getMillingBallDamage(aStack);
+			aHasSpecialTooltips = true;
+		}	
+		if (ItemUtils.isCatalyst(aStack)) {
+			list.add(EnumChatFormatting.GRAY+"Active Reaction Agent");
+			aMaxDamage = getCatalystMaxDamage(aStack);
+			aDamageSegment = aMaxDamage / 5;
+			aDam = aMaxDamage-getCatalystDamage(aStack);
+			aHasSpecialTooltips = true;
+		}
+		if (aHasSpecialTooltips) {			
+			if (aDam > aDamageSegment * 4){
+				durability = EnumChatFormatting.GRAY;
+			}
+			else if (aDam > aDamageSegment * 3){
+				durability = EnumChatFormatting.GREEN;
+			}
+			else if (aDam > aDamageSegment * 2){
+				durability = EnumChatFormatting.YELLOW;
+			}
+			else if (aDam > aDamageSegment){
+				durability = EnumChatFormatting.GOLD;
+			}
+			else if (aDam > 0){
+				durability = EnumChatFormatting.RED;
+			}
+			list.add(durability+""+(aDam)+EnumChatFormatting.GRAY+" / "+aMaxDamage);
+		}
+		super.addInformation(aStack, player, list, bool);
+	}
+	
+	@Override
+	public boolean showDurabilityBar(ItemStack aStack) {
+		if (ItemUtils.isMillingBall(aStack)) {
+			int aDam = getMillingBallDamage(aStack);
+			if (aDam > 0) {
+				return true;
+			}
+		}
+		else if (ItemUtils.isCatalyst(aStack)) {
+			int aDam = getCatalystDamage(aStack);
+			if (aDam > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean createMillingBallNBT(ItemStack rStack){
+		final NBTTagCompound tagMain = new NBTTagCompound();
+		final NBTTagCompound tagNBT = new NBTTagCompound();
+		tagNBT.setLong("Damage", 0);
+		tagNBT.setLong("MaxDamage", getMaxBallDurability(rStack));
+		tagMain.setTag("MillingBall", tagNBT);		
+		rStack.setTagCompound(tagMain);		
+		return true;
+	}
+
+	public static int getMillingBallDamage(ItemStack aStack) {
+		if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
+			createMillingBallNBT(aStack);	
+		}
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		return aNBT.getCompoundTag("MillingBall").getInteger("Damage");
+	}
+	
+	public static int getMillingBallMaxDamage(ItemStack aStack) {
+		if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
+			createMillingBallNBT(aStack);	
+		}
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		return aNBT.getCompoundTag("MillingBall").getInteger("MaxDamage");
+	}
+
+	public static void setMillingBallDamage(ItemStack aStack,int aAmount) {
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		aNBT = aNBT.getCompoundTag("MillingBall");
+		aNBT.setInteger("Damage", aAmount);
+	}
+	
+	public static int getMaxBallDurability(ItemStack aStack) {
+		if (GT_Utility.areStacksEqual(aStack, GenericChem.mMillingBallAlumina, true)) {
+			return 100;
+		}
+		if (GT_Utility.areStacksEqual(aStack, GenericChem.mMillingBallSoapstone, true)) {
+			return 50;
+		}
+		return 0;
+	}
+	
+	public static boolean createCatalystNBT(ItemStack rStack){
+		final NBTTagCompound tagMain = new NBTTagCompound();
+		final NBTTagCompound tagNBT = new NBTTagCompound();
+		tagNBT.setLong("Damage", 0);
+		tagNBT.setLong("MaxDamage", getMaxCatalystDurability(rStack));
+		tagMain.setTag("catalyst", tagNBT);		
+		rStack.setTagCompound(tagMain);		
+		return true;
+	}
+
+	public static int getCatalystDamage(ItemStack aStack) {
+		if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
+			createCatalystNBT(aStack);	
+		}
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		return aNBT.getCompoundTag("catalyst").getInteger("Damage");
+	}
+	
+	public static int getCatalystMaxDamage(ItemStack aStack) {
+		if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
+			createCatalystNBT(aStack);	
+		}
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		return aNBT.getCompoundTag("catalyst").getInteger("MaxDamage");
+	}
+
+	public static void setCatalystDamage(ItemStack aStack,int aAmount) {
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		aNBT = aNBT.getCompoundTag("catalyst");
+		aNBT.setInteger("Damage", aAmount);
+	}
+	
+	public static int getMaxCatalystDurability(ItemStack aStack) {
+		return 50;
+	}
 	
 
 }

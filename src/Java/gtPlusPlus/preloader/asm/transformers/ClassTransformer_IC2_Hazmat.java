@@ -3,11 +3,7 @@ package gtPlusPlus.preloader.asm.transformers;
 import static org.objectweb.asm.Opcodes.*;
 
 import org.apache.logging.log4j.Level;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gtPlusPlus.core.util.minecraft.HazmatUtils;

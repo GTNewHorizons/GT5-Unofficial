@@ -110,6 +110,7 @@ public class AgriculturalChem extends ItemPackage {
 	 * 21 - Lithium Chloride
 	 * 22 - Pellet Mold
 	 * 23 - Clean Aluminium Mix
+	 * 24 - Pinecone
 	 */
 
 	public static ItemStack mAlgaeBiosmass;
@@ -136,6 +137,8 @@ public class AgriculturalChem extends ItemPackage {
 	public static ItemStack mLithiumChloride;
 	public static ItemStack mPelletMold;
 	public static ItemStack mCleanAluminiumMix;
+	public static ItemStack mPinecone;
+	public static ItemStack mCrushedPine;
 	
 
 	@Override
@@ -205,6 +208,8 @@ public class AgriculturalChem extends ItemPackage {
 		mLithiumChloride = ItemUtils.simpleMetaStack(mAgrichemItem1, 21, 1);
 		mPelletMold = ItemUtils.simpleMetaStack(mAgrichemItem1, 22, 1);
 		mCleanAluminiumMix = ItemUtils.simpleMetaStack(mAgrichemItem1, 23, 1);
+		mPinecone = ItemUtils.simpleMetaStack(mAgrichemItem1, 24, 1);
+		mCrushedPine = ItemUtils.simpleMetaStack(mAgrichemItem1, 25, 1);
 
 		ItemUtils.addItemToOreDictionary(mGreenAlgaeBiosmass, "biomassGreenAlgae");
 		ItemUtils.addItemToOreDictionary(mBrownAlgaeBiosmass, "biomassBrownAlgae");
@@ -231,6 +236,8 @@ public class AgriculturalChem extends ItemPackage {
 		ItemUtils.addItemToOreDictionary(mSodiumHydroxide, "dustSodiumHydroxide");	
 		ItemUtils.addItemToOreDictionary(mSodiumCarbonate, "dustSodiumCarbonate");
 		ItemUtils.addItemToOreDictionary(mLithiumChloride, "dustLithiumChloride");	
+		ItemUtils.addItemToOreDictionary(mPinecone, "pinecone");	
+		ItemUtils.addItemToOreDictionary(mCrushedPine, "crushedPineMaterial");	
 		
 		//Handle GT NaOH dusts
 		List<ItemStack> NaOHSmall = OreDictionary.getOres("dustSmallSodiumHydroxide_GT5U", false);

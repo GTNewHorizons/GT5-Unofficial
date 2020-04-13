@@ -185,7 +185,7 @@ public class RocketFuels extends ItemPackage {
 
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						CI.getNumberedBioCircuit(21),
+						CI.getNumberedAdvancedCircuit(21),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack("ammonia", 4000),
@@ -220,7 +220,7 @@ public class RocketFuels extends ItemPackage {
 
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						CI.getNumberedBioCircuit(21),
+						CI.getNumberedAdvancedCircuit(21),
 						ItemUtils.getSimpleStack(Formaldehyde_Catalyst, 0),
 				}, 
 				new FluidStack[] {
@@ -258,7 +258,7 @@ public class RocketFuels extends ItemPackage {
 
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						CI.getNumberedBioCircuit(21),
+						CI.getNumberedAdvancedCircuit(21),
 						ItemUtils.getSimpleStack(Formaldehyde_Catalyst, 0),
 				}, 
 				new FluidStack[] {

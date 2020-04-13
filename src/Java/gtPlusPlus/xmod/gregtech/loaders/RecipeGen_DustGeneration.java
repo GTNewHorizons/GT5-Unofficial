@@ -46,9 +46,8 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 	}
 
 	private void generateRecipes(final Material material, final boolean disableOptional){
-		final int tVoltageMultiplier = material.vVoltageMultiplier;
 
-		Logger.WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
+		Logger.WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName());
 
 		final ItemStack normalDust = material.getDust(1);
 		final ItemStack smallDust = material.getSmallDust(1);

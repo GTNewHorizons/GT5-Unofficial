@@ -16,12 +16,11 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.IC2Potion;
 import ic2.core.item.armor.ItemArmorHazmat;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -103,7 +102,7 @@ public class EntityUtils {
 							duration = radiationLevel*30;
 						}
 						//IC2Potion.radiation.applyTo(entityLiving, duration, damage * 15);
-						GT_Utility.applyRadioactivity(entityLiving, radiationLevel, stackSize);
+						applyRadioactivity(entityLiving, radiationLevel, stackSize);
 					}
 				}
 			}
@@ -111,6 +110,68 @@ public class EntityUtils {
 		}
 		return false;
 	}
+	
+    public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
+        for (byte i = 1; i < 5; i++)
+            if (!HazmatUtils.providesProtetion_Frost(aEntity.getEquipmentInSlot(i))) {
+            	return false;
+            }
+        return true;
+    }
+
+    public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
+        for (byte i = 1; i < 5; i++)
+            if (!HazmatUtils.providesProtetion_Fire(aEntity.getEquipmentInSlot(i))) {
+            	return false;
+            }
+        return true;
+    }
+
+    public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
+        for (byte i = 1; i < 5; i++)
+            if (!HazmatUtils.providesProtetion_Biohazard(aEntity.getEquipmentInSlot(i))) {
+            	return false;
+            }
+        return true;
+    }
+
+    public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
+        for (byte i = 1; i < 5; i++)
+            if (!HazmatUtils.providesProtetion_Radiation(aEntity.getEquipmentInSlot(i))) {
+            	return false;
+            }
+        return true;
+    }
+
+    public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
+        for (byte i = 1; i < 5; i++)
+            if (!HazmatUtils.providesProtetion_Electricity(aEntity.getEquipmentInSlot(i))) {
+            	return false;
+            }
+        return true;
+    }
+
+    public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
+        for (byte i = 1; i < 5; i++)
+            if (!HazmatUtils.providesProtetion_Gas(aEntity.getEquipmentInSlot(i))) {
+            	return false;
+            }
+        return true;
+    }
+	
+    public static boolean applyRadioactivity(EntityLivingBase aEntity, int aLevel, int aAmountOfItems) {
+        if (aLevel > 0 && aEntity != null && aEntity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && aEntity.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD && !ItemArmorHazmat.hasCompleteHazmat(aEntity)) {
+            PotionEffect tEffect = null;
+            aEntity.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, aLevel * 140 * aAmountOfItems + Math.max(0, ((tEffect = aEntity.getActivePotionEffect(Potion.moveSlowdown)) == null ? 0 : tEffect.getDuration())), Math.max(0, (5 * aLevel) / 7)));
+            aEntity.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, aLevel * 150 * aAmountOfItems + Math.max(0, ((tEffect = aEntity.getActivePotionEffect(Potion.digSlowdown)) == null ? 0 : tEffect.getDuration())), Math.max(0, (5 * aLevel) / 7)));
+            aEntity.addPotionEffect(new PotionEffect(Potion.confusion.id, aLevel * 130 * aAmountOfItems + Math.max(0, ((tEffect = aEntity.getActivePotionEffect(Potion.confusion)) == null ? 0 : tEffect.getDuration())), Math.max(0, (5 * aLevel) / 7)));
+            aEntity.addPotionEffect(new PotionEffect(Potion.weakness.id, aLevel * 150 * aAmountOfItems + Math.max(0, ((tEffect = aEntity.getActivePotionEffect(Potion.weakness)) == null ? 0 : tEffect.getDuration())), Math.max(0, (5 * aLevel) / 7)));
+            aEntity.addPotionEffect(new PotionEffect(Potion.hunger.id, aLevel * 130 * aAmountOfItems + Math.max(0, ((tEffect = aEntity.getActivePotionEffect(Potion.hunger)) == null ? 0 : tEffect.getDuration())), Math.max(0, (5 * aLevel) / 7)));
+            aEntity.addPotionEffect(new PotionEffect(IC2Potion.radiation.id, aLevel * 180 * aAmountOfItems + Math.max(0, ((tEffect = aEntity.getActivePotionEffect(Potion.potionTypes[24])) == null ? 0 : tEffect.getDuration())), Math.max(0, (5 * aLevel) / 7)));
+            return true;
+        }
+        return false;
+    }
 
 	public static boolean applyHeatDamageToEntity(final int heatLevel, final World world, final Entity entityHolding){
 		if (!world.isRemote){

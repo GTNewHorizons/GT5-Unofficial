@@ -183,7 +183,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 			super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);			
 		}
 		else {
-			if (this.mTier < (CORE.GTNH ? GT_Values.V.length : 9)) {
+			if (this.mTier < (CORE.GTNH ? GT_Values.V.length-1 : 9)) {
 				this.mTier++;
 			}
 			else {

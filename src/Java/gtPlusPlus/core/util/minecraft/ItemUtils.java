@@ -109,7 +109,7 @@ public class ItemUtils {
 		final ItemStack y = ItemUtils.simpleMetaStack(x, WILDCARD_VALUE, 1);
 		return y;
 	}
-	
+
 	public static ItemStack getIC2Cell(final String S) {
 		final ItemStack moreTemp = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + S, 1);
 
@@ -174,7 +174,7 @@ public class ItemUtils {
 			Logger.ERROR(ItemUtils.getItemName(stack) + " not registered. [NULL]");
 		}
 	}
-	
+
 	public static void addItemToOreDictionary(final ItemStack stack, final String oreDictName) {
 		addItemToOreDictionary(stack, oreDictName, false);
 	}
@@ -291,8 +291,31 @@ public class ItemUtils {
 
 	public static ItemStack getItemStackFromFQRN(final String fqrn, final int Size) // fqrn = fully qualified resource name
 	{
+		Logger.INFO("Trying to split string '"+fqrn+"'.");
 		final String[] fqrnSplit = fqrn.split(":");
-		return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
+		if (fqrnSplit.length < 2) {
+			return null;
+		}
+		else {
+			if (fqrnSplit.length == 2) {
+				Logger.INFO("Mod: "+fqrnSplit[0]+", Item: "+fqrnSplit[1]);
+				return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
+			}
+			else if (fqrnSplit.length == 3 && fqrnSplit[2] != null && fqrnSplit[2].length() > 0) {
+				Logger.INFO("Mod: "+fqrnSplit[0]+", Item: "+fqrnSplit[1]+", Meta: "+fqrnSplit[2]);
+				ItemStack aStack = GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
+				int aMeta = Integer.parseInt(fqrnSplit[2]);
+				if (aStack != null && (aMeta >= 0 && aMeta <= Short.MAX_VALUE)){
+					return ItemUtils.simpleMetaStack(aStack, aMeta, Size);
+				}
+				else {
+					Logger.INFO("Could not find instance of Item: "+fqrnSplit[1]);
+					
+				}
+			}
+
+		}
+		return null;
 	}
 
 	public static void generateSpawnEgg(final String entityModID, final String parSpawnName, final int colourEgg,
@@ -871,6 +894,9 @@ public class ItemUtils {
 	}
 
 	public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Materials mMat, int mAmount) {
+		if (mPrefix == OrePrefixes.rod) {
+			mPrefix = OrePrefixes.stick;
+		}
 		ItemStack aGtStack = GT_OreDictUnificator.get(mPrefix, mMat, mAmount);
 		if (aGtStack == null) {
 			Logger.INFO(
@@ -1065,11 +1091,11 @@ public class ItemUtils {
 
 
 	}
-	
+
 	public static String getFluidName(FluidStack aFluid) {
 		return aFluid != null ? aFluid.getFluid().getLocalizedName(aFluid) : "NULL";
 	}
-	
+
 	public static String getFluidName(Fluid aFluid) {
 		return aFluid != null ? aFluid.getLocalizedName() : "NULL";
 	}
@@ -1227,10 +1253,11 @@ public class ItemUtils {
 
 	public static ItemStack depleteStack(ItemStack aStack, int aAmount) {
 		final int cap = aStack.stackSize;
-		if (cap > 1 && cap > aAmount) {
-			aStack.stackSize = (MathUtils.balance((aStack.stackSize - 1), 0, 64));
-			if (aStack.stackSize > 0) {
-				return aStack;				
+		if (cap >= 1 && cap >= aAmount) {
+			ItemStack aDepStack = aStack.copy();
+			aDepStack.stackSize = (MathUtils.balance((aDepStack.stackSize - 1), 0, 64));
+			if (aDepStack.stackSize > 0) {
+				return aDepStack;				
 			}
 		}
 		return getNullStack();
@@ -1239,13 +1266,13 @@ public class ItemUtils {
 	public static boolean isControlCircuit(ItemStack aStack) {
 		if (aStack != null) {
 			Item aItem = aStack.getItem();
-			if (aItem == CI.getNumberedBioCircuit(0).getItem() || aItem == CI.getNumberedCircuit(0).getItem()) {
+			if (aItem == CI.getNumberedBioCircuit(0).getItem() || aItem == CI.getNumberedCircuit(0).getItem() || aItem == CI.getNumberedAdvancedCircuit(0).getItem()) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public static boolean isCatalyst(ItemStack aStack) {
 		if (GT_Utility.areStacksEqual(aStack, RocketFuels.Formaldehyde_Catalyst_Stack, true)) {
 			return true;
@@ -1276,7 +1303,7 @@ public class ItemUtils {
 		}
 		return false;
 	}
-	
+
 	public static boolean isMillingBall(ItemStack aStack) {
 		if (GT_Utility.areStacksEqual(aStack, GenericChem.mMillingBallAlumina, true)) {
 			return true;
@@ -1290,9 +1317,9 @@ public class ItemUtils {
 	public static String getLocalizedNameOfBlock(Block aBlock, int aMeta) {
 		return LangUtils.getLocalizedNameOfBlock(aBlock, aMeta);
 	}
-	
 
-	
+
+
 	public static boolean doesItemListEntryExist(String string) {		
 		ItemList[] aListValues = ItemList.class.getEnumConstants();		
 		for (ItemList aItem : aListValues) {
@@ -1320,11 +1347,11 @@ public class ItemUtils {
 		}
 		return aOther;
 	}
-	
+
 	public static ItemStack getValueOfItemList(String string, int aAmount, ItemList aOther) {	
 		return getValueOfItemList(string, aOther).get(aAmount);
 	}
-	
+
 	public static ItemStack getValueOfItemList(String string, int aAmount, ItemStack aOther) {		
 		ItemList[] aListValues = ItemList.class.getEnumConstants();		
 		for (ItemList aItem : aListValues) {

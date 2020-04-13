@@ -19,6 +19,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -87,7 +88,6 @@ public class BlockEventHandler {
 
 	}
 
-	public static final Map<String, EntityPlayer> mCachedFakePlayers = new WeakHashMap<String, EntityPlayer>();
 
 	// Used to handle Thaumcraft Shards when TC is not installed.
 	@SubscribeEvent
@@ -97,21 +97,9 @@ public class BlockEventHandler {
 			if (event != null && event.harvester != null && event.harvester.worldObj != null) {
 				if (!event.harvester.worldObj.isRemote) {
 
-					EntityPlayer p = event.harvester;
-					ChunkCoordinates aChunkLocation = p.getPlayerCoordinates();
+					EntityPlayer p = event.harvester;					
 
-					// Cache Fake Player
-					if (p instanceof FakePlayer || p instanceof FakeThaumcraftPlayer 
-							|| (event.harvester.getCommandSenderName() == null
-									|| event.harvester.getCommandSenderName().length() <= 0)
-							|| (p.isEntityInvulnerable() && !p.canCommandSenderUseCommand(0, "")
-									&& (aChunkLocation.posX == 0 && aChunkLocation.posY == 0
-											&& aChunkLocation.posZ == 0))) {
-						mCachedFakePlayers.put(p.getUniqueID().toString(), p);
-					}
-
-					if (!mCachedFakePlayers.containsKey(event.harvester.getUniqueID().toString())) {
-						
+					if (PlayerUtils.isRealPlayer(p)) {						
 						// Spawns Fluorite from Lime Stone
 						if (chanceToDropFluoriteOre != 0) {
 							if (!oreLimestone.isEmpty() || !blockLimestone.isEmpty()) {

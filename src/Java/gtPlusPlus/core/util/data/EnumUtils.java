@@ -12,9 +12,12 @@ public class EnumUtils {
 	 **/
 	public static <T extends Enum<T>> T getValue(Class<T> enumeration, String name) {
 		Optional<T> j = Enums.getIfPresent(enumeration, name);
-		T VALUE = j.get();
-		if (j.get() == null) {
+		T VALUE;
+		if (j == null || !j.isPresent()) {
 			VALUE = valueOfIgnoreCase(enumeration, name);
+		}
+		else {
+			VALUE = j.get();
 		}
 		return VALUE;
 	}
