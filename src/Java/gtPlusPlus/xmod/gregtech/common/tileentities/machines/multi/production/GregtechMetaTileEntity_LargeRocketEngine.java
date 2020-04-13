@@ -107,7 +107,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 				"1x Dynamo Hatch (Top Middle, Max 8) suports tectech dynamos",
 				"8x Air Intake Hatch (one of the Casings next to a "+mGearboxName+", top row allowed)",
 				"3x Input Hatch (Rocket Fuel/Booster/co2) (one of the Casings next to a "+mGearboxName+", top row not allowed)",
-				"1x Input Bus to suply fiters for advanced muffler (one of the Casings next to a \"+mGearboxName+\", top row not allowed)",
+				"1x Input Bus to supply filters for advanced muffler (one of the Casings next to a \"+mGearboxName+\", top row not allowed)",
 				"1x Maintenance Hatch (one of the Casings next to a "+mGearboxName+")", 
 				"1x Muffler Hatch (Back Centre)",
 		};
