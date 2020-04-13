@@ -265,6 +265,21 @@ public class RECIPES_Machines {
 				GregtechItemList.ChemicalPlant_Controller.get(1), 
 				120 * 20, 
 				MaterialUtils.getVoltageForTier(2));
+		
+
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(15),
+						CI.getTieredGTPPMachineCasing(1, 2),
+						ItemList.Hatch_Input_Bus_MV.get(1),
+						CI.getTieredComponentOfMaterial(Materials.Bronze, OrePrefixes.gearGt, 8),
+						CI.getTieredComponentOfMaterial(Materials.Lead, OrePrefixes.plate, 48),
+						CI.getTieredComponentOfMaterial(Materials.SolderingAlloy, OrePrefixes.wireFine, 16),
+				}, 
+				ALLOY.BRONZE.getFluid(2 * (144 * 4)), 
+				GregtechItemList.Bus_Catalysts.get(1), 
+				60 * 20, 
+				MaterialUtils.getVoltageForTier(2));
 
 	}
 

@@ -17,17 +17,13 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.NONMATERIAL;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
+import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.xmod.bop.HANDLER_BiomesOPlenty;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import scala.xml.dtd.ELEMENTS;
 
 public class MilledOreProcessing extends ItemPackage {
 
@@ -423,7 +419,7 @@ public class MilledOreProcessing extends ItemPackage {
 				Materials.Sphalerite, 
 				ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
 				new FluidStack[] {
-						FluidUtils.getFluidStack(PineOil, 4000),
+						FluidUtils.getFluidStack(PineOil, 14000),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(SphaleriteFlotationFroth, 1000)						
@@ -437,7 +433,7 @@ public class MilledOreProcessing extends ItemPackage {
 				Materials.Chalcopyrite, 
 				ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
 				new FluidStack[] {
-						FluidUtils.getFluidStack(PineOil, 4000),
+						FluidUtils.getFluidStack(PineOil, 12000),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(ChalcopyriteFlotationFroth, 1000)						
@@ -451,7 +447,7 @@ public class MilledOreProcessing extends ItemPackage {
 				Materials.Nickel, 
 				ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
 				new FluidStack[] {
-						FluidUtils.getFluidStack(PineOil, 5000),
+						FluidUtils.getFluidStack(PineOil, 25000),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(NickelFlotationFroth, 1000)						
@@ -465,7 +461,7 @@ public class MilledOreProcessing extends ItemPackage {
 				Materials.Platinum, 
 				ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
 				new FluidStack[] {
-						FluidUtils.getFluidStack(PineOil, 5000),
+						FluidUtils.getFluidStack(PineOil, 35000),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(PlatinumFlotationFroth, 1000)						
@@ -480,7 +476,7 @@ public class MilledOreProcessing extends ItemPackage {
 				Materials.Pentlandite, 
 				ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
 				new FluidStack[] {
-						FluidUtils.getFluidStack(PineOil, 4000),
+						FluidUtils.getFluidStack(PineOil, 14000),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(PentlanditeFlotationFroth, 1000)						
@@ -498,7 +494,7 @@ public class MilledOreProcessing extends ItemPackage {
 				Materials.Redstone, 
 				ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
 				new FluidStack[] {
-						FluidUtils.getFluidStack(PineOil, 3000),
+						FluidUtils.getFluidStack(PineOil, 13000),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(RedstoneFlotationFroth, 1000)						
@@ -512,7 +508,7 @@ public class MilledOreProcessing extends ItemPackage {
 				Materials.Spessartine, 
 				ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
 				new FluidStack[] {
-						FluidUtils.getFluidStack(PineOil, 5000),
+						FluidUtils.getFluidStack(PineOil, 35000),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(SpessartineFlotationFroth, 1000)						
@@ -526,7 +522,7 @@ public class MilledOreProcessing extends ItemPackage {
 				Materials.Grossular, 
 				ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
 				new FluidStack[] {
-						FluidUtils.getFluidStack(PineOil, 5000),
+						FluidUtils.getFluidStack(PineOil, 28000),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(GrossularFlotationFroth, 1000)						
@@ -540,7 +536,7 @@ public class MilledOreProcessing extends ItemPackage {
 				Materials.Almandine, 
 				ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
 				new FluidStack[] {
-						FluidUtils.getFluidStack(PineOil, 4000),
+						FluidUtils.getFluidStack(PineOil, 18000),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(AlmandineFlotationFroth, 1000)						
@@ -554,7 +550,7 @@ public class MilledOreProcessing extends ItemPackage {
 				Materials.Pyrope, 
 				ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
 				new FluidStack[] {
-						FluidUtils.getFluidStack(PineOil, 2000),
+						FluidUtils.getFluidStack(PineOil, 8000),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack(PyropeFlotationFroth, 1000)						
@@ -626,12 +622,12 @@ public class MilledOreProcessing extends ItemPackage {
 						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5)
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(PineOil, 1000)						
+						FluidUtils.getFluidStack(PineOil, 500)						
 				}, 
 				new int[] {
 						2000, 2000, 2000, 2000	
 				},
-				20 *60,
+				20 * 60,
 				120, 
 				2);
 
@@ -650,12 +646,12 @@ public class MilledOreProcessing extends ItemPackage {
 						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5)
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(PineOil, 2000)						
+						FluidUtils.getFluidStack(PineOil, 1500)						
 				}, 
 				new int[] {
 						3000, 3000, 3000, 3000	
 				},
-				20 *60,
+				20 * 45,
 				120, 
 				3);
 
