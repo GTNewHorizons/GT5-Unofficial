@@ -508,6 +508,30 @@ public class ReflectionUtils {
 		Logger.REFLECTION("Invoke failed or did something wrong.");		
 		return false;
 	}
+	
+	public static boolean invokeVoid(Object objectInstance, Method method, Object[] values){		
+		if (method == null || values == null || (!ReflectionUtils.isStaticMethod(method)  && objectInstance == null)){
+			//Logger.REFLECTION("Null value when trying to Dynamically invoke "+methodName+" on an object of type: "+objectInstance.getClass().getName());
+			return false;
+		}		
+		String methodName = method.getName();
+		String classname = objectInstance != null ? objectInstance.getClass().getCanonicalName() : method.getDeclaringClass().getCanonicalName();
+		Logger.REFLECTION("Trying to invoke "+methodName+" on an instance of "+classname+".");		
+		try {
+			Method mInvokingMethod = method;
+			if (mInvokingMethod != null){
+				Logger.REFLECTION(methodName+" was not null.");
+				mInvokingMethod.invoke(objectInstance, values);
+					Logger.REFLECTION("Successfully invoked "+methodName+".");
+					return true;				
+			}
+		}
+		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			Logger.REFLECTION("Failed to Dynamically invoke "+methodName+" on an object of type: "+classname);
+		}
+		Logger.REFLECTION("Invoke failed or did something wrong.");		
+		return false;
+	}
 
 	public static boolean invokeVoid(Object objectInstance, String methodName, Class[] parameters, Object[] values){
 		if (objectInstance == null || methodName == null || parameters == null || values == null){

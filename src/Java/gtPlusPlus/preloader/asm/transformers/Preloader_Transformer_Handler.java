@@ -272,10 +272,9 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			return new ClassTransformer_TC_ItemWispEssence(basicClass, obfuscated).getWriter().toByteArray();
 		}
 		//Fix Thaumic Tinkerer Shit
-		//Patching ItemWispEssence to allow invalid item handling
-		if (transformedName.equals(THAUMICTINKERER_TILE_REPAIRER)) {	
-			Preloader_Logger.INFO("Thaumic Tinkerer RepairItem Patch", "Transforming "+transformedName);
-			return new ClassTransformer_TT_ThaumicRestorer(basicClass).getWriter().toByteArray();
+		if (transformedName.equals(THAUMICTINKERER_TILE_REPAIRER) && AsmConfig.enableThaumicTinkererRepairFix) {	
+			//Preloader_Logger.INFO("Thaumic Tinkerer RepairItem Patch", "Transforming "+transformedName);
+			//return new ClassTransformer_TT_ThaumicRestorer(basicClass).getWriter().toByteArray();
 		}
 
 

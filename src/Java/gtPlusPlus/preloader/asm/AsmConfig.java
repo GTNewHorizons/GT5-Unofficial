@@ -30,6 +30,7 @@ public class AsmConfig {
 	public static boolean enableTcAspectSafety;
 	public static boolean enabledLwjglKeybindingFix;
 	public static boolean enabledFixEntitySetHealth;
+	public static boolean enableThaumicTinkererRepairFix;
 
 	public static boolean disableAllLogging;
 	public static boolean debugMode;
@@ -95,6 +96,14 @@ public class AsmConfig {
 			prop.setLanguageKey("gtpp.enableOreDictPatch").setRequiresMcRestart(true);
 			enableOreDictPatch = prop.getBoolean(false);
 			propOrderDebug.add(prop.getName());	
+			
+			prop = config.get("debug", "enableThaumicTinkererRepairFix", false);
+			prop.comment = "Enable/Disable Patch for Thaumic Repairer";
+			prop.setLanguageKey("gtpp.enableThaumicTinkererRepairFix").setRequiresMcRestart(true);
+			enableThaumicTinkererRepairFix = prop.getBoolean(false);
+			propOrderDebug.add(prop.getName());	
+			
+			
 			
 			
 			

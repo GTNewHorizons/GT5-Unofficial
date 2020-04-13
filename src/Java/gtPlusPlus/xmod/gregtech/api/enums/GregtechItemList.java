@@ -19,6 +19,12 @@ public enum GregtechItemList implements GregtechItemContainer {
 	/**
 	 * Items
 	 */
+	
+	// Advanced Hazmat Suit
+	Armour_Hazmat_Advanced_Helmet,
+	Armour_Hazmat_Advanced_Chest,
+	Armour_Hazmat_Advanced_Legs,
+	Armour_Hazmat_Advanced_Boots,
 
 	//Gregtech Machine Parts
 	Electric_Motor_LuV, Electric_Motor_ZPM, Electric_Motor_UV, Electric_Motor_MAX,
@@ -49,6 +55,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	//Recipe Circuit
 	Circuit_BioRecipeSelector,
+	Circuit_T3RecipeSelector,
 	
 	//Circuits
 	Old_Circuit_Primitive, Old_Circuit_Basic, Old_Circuit_Good,

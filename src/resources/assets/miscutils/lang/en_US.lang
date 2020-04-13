@@ -3177,3 +3177,6 @@ item.FrothSpessartineflotation.name=Spessartine Flotation Froth Cell
 item.FrothGrossularflotation.name=Grossular Flotation Froth Cell
 item.FrothAlmandineflotation.name=Almandine Flotation Froth Cell
 item.FrothPyropeflotation.name=Pyrope Flotation Froth Cell
+
+//Added 13/04/20
+item.T3RecipeSelector.name=Programmed Breakthrough Circuit

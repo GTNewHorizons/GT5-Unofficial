@@ -1,18 +1,13 @@
 package gtPlusPlus.core.item.chemistry;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.*;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
+import gtPlusPlus.core.item.circuit.ItemAdvancedChip;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.material.MISC_MATERIALS;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.material.MaterialStack;
-import gtPlusPlus.core.material.NONMATERIAL;
+import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
@@ -25,10 +20,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.*;
 
 public class GenericChem extends ItemPackage {
 
@@ -106,6 +98,7 @@ public class GenericChem extends ItemPackage {
 	// Phenol Byproducts
 	public Item PhenolicResins; //https://en.wikipedia.org/wiki/Phenol_formaldehyde_resin
 	public static ItemGenericChemBase mGenericChemItem1;
+	public static Item mAdvancedCircuit;
 
 	private ItemStack mCatalystCarrier;
 
@@ -134,7 +127,9 @@ public class GenericChem extends ItemPackage {
 		MaterialGenerator.generate(NYLON, false);
 		MaterialGenerator.generate(TEFLON, false);		
 
-		mGenericChemItem1 = new ItemGenericChemBase();		
+		mGenericChemItem1 = new ItemGenericChemBase();	
+		mAdvancedCircuit = new ItemAdvancedChip();		
+		GregtechItemList.Circuit_T3RecipeSelector.set(mAdvancedCircuit);
 
 		registerItemStacks();
 		registerOreDict();
@@ -292,6 +287,7 @@ public class GenericChem extends ItemPackage {
 	@Override
 	public boolean generateRecipes() {
 
+		recipeAdvancedChip();
 		recipeCatalystRed();
 		recipeCatalystYellow();
 		recipeCatalystBlue();
@@ -1066,6 +1062,60 @@ public class GenericChem extends ItemPackage {
 		return CI.getNumberedBioCircuit(16);
 	}
 
+	private static void recipeAdvancedChip() {
+		GT_ModHandler.addShapelessCraftingRecipe(
+				GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 0L), 0, new Object[]{OrePrefixes.circuit.get(Materials.Advanced)});
+
+		long bits = 0;
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 1L, new Object[0]), bits,
+				new Object[]{"d  ", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 2L, new Object[0]), bits,
+				new Object[]{" d ", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 3L, new Object[0]), bits,
+				new Object[]{"  d", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 4L, new Object[0]), bits,
+				new Object[]{"   ", " Pd", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 5L, new Object[0]), bits,
+				new Object[]{"   ", " P ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 6L, new Object[0]), bits,
+				new Object[]{"   ", " P ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 7L, new Object[0]), bits,
+				new Object[]{"   ", " P ", "d  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 8L, new Object[0]), bits,
+				new Object[]{"   ", "dP ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 9L, new Object[0]), bits,
+				new Object[]{"P d", "   ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 10L, new Object[0]), bits,
+				new Object[]{"P  ", "  d", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 11L, new Object[0]), bits,
+				new Object[]{"P  ", "   ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 12L, new Object[0]), bits,
+				new Object[]{"P  ", "   ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 13L, new Object[0]), bits,
+				new Object[]{"  P", "   ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 14L, new Object[0]), bits,
+				new Object[]{"  P", "   ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 15L, new Object[0]), bits,
+				new Object[]{"  P", "   ", "d  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 16L, new Object[0]), bits,
+				new Object[]{"  P", "d  ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 17L, new Object[0]), bits,
+				new Object[]{"   ", "   ", "d P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 18L, new Object[0]), bits,
+				new Object[]{"   ", "d  ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 19L, new Object[0]), bits,
+				new Object[]{"d  ", "   ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 20L, new Object[0]), bits,
+				new Object[]{" d ", "   ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 21L, new Object[0]), bits,
+				new Object[]{"d  ", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 22L, new Object[0]), bits,
+				new Object[]{" d ", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 23L, new Object[0]), bits,
+				new Object[]{"  d", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+		BioRecipes.addCraftingRecipe(GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 24L, new Object[0]), bits,
+				new Object[]{"   ", "  d", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])});
+	}
 
 
 }
