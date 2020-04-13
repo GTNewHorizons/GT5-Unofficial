@@ -124,7 +124,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 		return false;
 	}
 
-	public boolean polluteEnvironment() {		
+	public boolean polluteEnvironment() {	
 		if (airCheck() && damageAirFilter()) {
 			int aEmission = this.calculatePollutionReduction(10000);
 			PollutionUtils.addPollution(this.getBaseMetaTileEntity(), aEmission);			
@@ -214,8 +214,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 				//Logger.INFO("Empty - "+this.mInventory.length);
 			}
 			else {
-				//Logger.INFO("D2");	
-				Logger.INFO("Has Item");			
+				//Logger.INFO("D2");				
 			}	
 		}
 		//Logger.INFO("A4");	
@@ -254,7 +253,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 			//Remove broken Filter
 			if ((filter.getItemDamage() == 0 && currentUse >= 50-1) || (filter.getItemDamage() == 1 && currentUse >= 2500-1)){	
 				breakAirFilter();
-				return false;				
+				return true;				
 			}	
 			else {
 				//Do Damage

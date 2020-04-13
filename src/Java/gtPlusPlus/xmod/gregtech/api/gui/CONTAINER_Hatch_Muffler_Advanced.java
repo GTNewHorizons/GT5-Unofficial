@@ -21,7 +21,7 @@ public class CONTAINER_Hatch_Muffler_Advanced extends GT_ContainerMetaTile_Machi
 
 	@Override
 	public void addSlots(final InventoryPlayer aInventoryPlayer) {
-		this.addSlotToContainer(new SlotAirFilter(this.mTileEntity, 1, 80, 35));
+		this.addSlotToContainer(new SlotAirFilter(this.mTileEntity, 0, 80, 35));
 	}
 
 	@Override
