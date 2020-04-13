@@ -158,40 +158,40 @@ public class MilledOreProcessing extends ItemPackage {
 				SphaleriteFlotationFroth, 
 				ELEMENT.getInstance().ZINC, 180, 
 				ELEMENT.getInstance().IRON, 120,
-				ELEMENT.getInstance().INDIUM, 20, 
-				ELEMENT.getInstance().GERMANIUM, 6
+				ELEMENT.getInstance().INDIUM, 40, 
+				ELEMENT.getInstance().GERMANIUM, 15
 				);		
 		//milledChalcopyrite
 		registerOreDataForMilledType(
 				ChalcopyriteFlotationFroth, 
 				ELEMENT.getInstance().COPPER, 180, 
 				ELEMENT.getInstance().IRON, 120,
-				ELEMENT.getInstance().CADMIUM, 30, 
-				ELEMENT.getInstance().INDIUM, 5
+				ELEMENT.getInstance().CADMIUM, 50, 
+				ELEMENT.getInstance().INDIUM, 10
 				);
 		//milledNickel
 		registerOreDataForMilledType(
 				NickelFlotationFroth, 
 				ELEMENT.getInstance().NICKEL, 150, 
 				ELEMENT.getInstance().COBALT, 120,
-				ELEMENT.getInstance().RHODIUM, 16,
-				ELEMENT.getInstance().RUTHENIUM, 8
+				ELEMENT.getInstance().RHODIUM, 32,
+				ELEMENT.getInstance().RUTHENIUM, 16
 				);
 		//milledPlatinum
 		registerOreDataForMilledType(
 				PlatinumFlotationFroth, 
 				ELEMENT.getInstance().PLATINUM, 120, 
-				ELEMENT.getInstance().RHODIUM, 45,
-				ELEMENT.getInstance().SELENIUM, 24,
-				ELEMENT.getInstance().TELLURIUM, 4
+				ELEMENT.getInstance().RHODIUM, 60,
+				ELEMENT.getInstance().SELENIUM, 40,
+				ELEMENT.getInstance().TELLURIUM, 10
 				);
 		//milledPentlandite
 		registerOreDataForMilledType(
 				PentlanditeFlotationFroth, 
 				ELEMENT.getInstance().IRON, 150, 
 				ELEMENT.getInstance().NICKEL, 100,
-				ELEMENT.getInstance().PROMETHIUM, 12,
-				ELEMENT.getInstance().HAFNIUM, 5
+				ELEMENT.getInstance().PROMETHIUM, 20,
+				ELEMENT.getInstance().HAFNIUM, 10
 				);
 
 		/*
@@ -202,40 +202,40 @@ public class MilledOreProcessing extends ItemPackage {
 				RedstoneFlotationFroth, 
 				NONMATERIAL.REDSTONE, 300, 
 				ELEMENT.getInstance().CHROMIUM, 60,
-				MaterialUtils.generateMaterialFromGtENUM(Materials.Firestone), 30, 
-				ELEMENT.getInstance().DYSPROSIUM, 8
+				MaterialUtils.generateMaterialFromGtENUM(Materials.Firestone), 45, 
+				ELEMENT.getInstance().DYSPROSIUM, 16
 				);		
 		//milledSpessartine
 		registerOreDataForMilledType(
 				SpessartineFlotationFroth, 
 				ELEMENT.getInstance().MANGANESE, 150, 
 				ELEMENT.getInstance().ALUMINIUM, 90,
-				ELEMENT.getInstance().OSMIUM, 20, 
-				ELEMENT.getInstance().STRONTIUM, 10
+				ELEMENT.getInstance().OSMIUM, 30, 
+				ELEMENT.getInstance().STRONTIUM, 20
 				);
 		//milledGrossular
 		registerOreDataForMilledType(
 				GrossularFlotationFroth, 
 				ELEMENT.getInstance().CALCIUM, 180, 
-				ELEMENT.getInstance().ALUMINIUM, 60,
-				ELEMENT.getInstance().TUNGSTEN, 30,
-				ELEMENT.getInstance().THALLIUM, 5
+				ELEMENT.getInstance().ALUMINIUM, 110,
+				ELEMENT.getInstance().TUNGSTEN, 60,
+				ELEMENT.getInstance().THALLIUM, 15
 				);
 		//milledAlmandine
 		registerOreDataForMilledType(
 				AlmandineFlotationFroth, 
 				ELEMENT.getInstance().ALUMINIUM, 150, 
-				ELEMENT.getInstance().MAGNESIUM, 50,
-				ELEMENT.getInstance().YTTRIUM, 15,
-				ELEMENT.getInstance().YTTERBIUM, 5
+				ELEMENT.getInstance().MAGNESIUM, 75,
+				ELEMENT.getInstance().YTTRIUM, 25,
+				ELEMENT.getInstance().YTTERBIUM, 15
 				);
 		//milledPyrope
 		registerOreDataForMilledType(
 				PyropeFlotationFroth, 
 				ELEMENT.getInstance().MAGNESIUM, 110, 
 				ELEMENT.getInstance().MANGANESE, 70,
-				MaterialUtils.generateMaterialFromGtENUM(Materials.Borax), 16,
-				ELEMENT.getInstance().RHENIUM, 4
+				MaterialUtils.generateMaterialFromGtENUM(Materials.Borax), 60,
+				ELEMENT.getInstance().RHENIUM, 20
 				);
 
 
