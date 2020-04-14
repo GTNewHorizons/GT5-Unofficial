@@ -1,11 +1,14 @@
 package gtPlusPlus.xmod.gregtech.common;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -21,7 +24,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gregtech.common.GT_Proxy;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -38,6 +41,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.BaseCustomTileEntity;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.BaseCustomPower_MTE;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import net.minecraft.block.Block;
@@ -120,7 +124,7 @@ public class Meta_GT_Proxy {
 	public static void postInit() {
 		mAssemblyAchievements = new AchievementHandler();	
 		fixIC2FluidNames();		
-		
+
 		// Finalise TAE
 		TAE.finalizeTAE();		
 	}
@@ -212,11 +216,11 @@ public class Meta_GT_Proxy {
 
 	public static boolean generatePlasmaRecipesForAdvVacFreezer() {
 
-		AutoMap<Recipe_GT> aFreezerMapRebaked = new AutoMap<Recipe_GT>();
-		AutoMap<Recipe_GT> aRemovedRecipes = new AutoMap<Recipe_GT>();
+		AutoMap<GTPP_Recipe> aFreezerMapRebaked = new AutoMap<GTPP_Recipe>();
+		AutoMap<GTPP_Recipe> aRemovedRecipes = new AutoMap<GTPP_Recipe>();
 
 		//Find recipes containing Plasma and map them
-		for (Recipe_GT y : Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList) {			
+		for (GTPP_Recipe y : GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList) {			
 			if (y.mFluidInputs.length > 0) {
 				for (FluidStack r : y.mFluidInputs) {
 					if (r.getUnlocalizedName().toLowerCase().contains("plasma")) {
@@ -228,7 +232,7 @@ public class Meta_GT_Proxy {
 			}			
 		}
 
-		AutoMap<Recipe_GT> aNewRecipes = new AutoMap<Recipe_GT>();
+		AutoMap<GTPP_Recipe> aNewRecipes = new AutoMap<GTPP_Recipe>();
 		int aAtomicMass = 0;
 		int aAtomicTier = 0;
 
@@ -275,7 +279,7 @@ public class Meta_GT_Proxy {
 			else {				
 				//Build a new plasma recipe
 				int aTotalTickTime = (20 * 1 + (aAtomicMass));
-				Recipe_GT aTempRecipe = new Recipe_GT(true,
+				GTPP_Recipe aTempRecipe = new GTPP_Recipe(true,
 						new ItemStack[] {},
 						new ItemStack[] {},
 						null, 
@@ -301,24 +305,24 @@ public class Meta_GT_Proxy {
 
 
 		//Add the new recipes to the map we will rebake over the original
-		for (Recipe_GT w : aNewRecipes) {
+		for (GTPP_Recipe w : aNewRecipes) {
 			aFreezerMapRebaked.put(w);
 		}
 
 		//Best not touch the original map if we don't have a valid map to override it with.
 		if (aFreezerMapRebaked.size() > 0) {
 
-			int aOriginalCount = Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList.size();
+			int aOriginalCount = GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList.size();
 
 			//Empty the original map
-			Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList.clear();
+			GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList.clear();
 
 			//Rebake the real map
-			for (Recipe_GT w : aFreezerMapRebaked) {
-				Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList.add(w);
+			for (GTPP_Recipe w : aFreezerMapRebaked) {
+				GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList.add(w);
 			}
 
-			return Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList.size() >= aOriginalCount;
+			return GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList.size() >= aOriginalCount;
 		}			
 
 		return false;
@@ -405,6 +409,32 @@ public class Meta_GT_Proxy {
 
 
 
+	public static boolean setTileEntityClassAsBlacklistedInWorldAccelerator(String aClassName) {
+		if (CORE.GTNH) {
+			Class aMainModClass = ReflectionUtils.getClass("com.dreammaster.main.MainRegistry");
+			Class aCoreModConfig = ReflectionUtils.getClass("com.dreammaster.config");
+			if (aMainModClass != null && aCoreModConfig != null) {
+				Field aCoreConfig = ReflectionUtils.getField(aMainModClass, "CoreConfig");
+				if (aCoreConfig != null) {
+					Field aBlackList = ReflectionUtils.getField(aCoreModConfig, "BlacklistedTileEntiyClassNames");
+					Object aInstance = ReflectionUtils.getFieldValue(aCoreConfig);
+					if (aBlackList != null && aInstance != null) {
+						String[] aBlackListValue = (String[]) ReflectionUtils.getFieldValue(aBlackList, aInstance);
+						if (aBlackListValue != null) {
+							aBlackListValue = ArrayUtils.add(aBlackListValue, aClassName);
+							ReflectionUtils.setField(aInstance, aBlackList, aBlackListValue);
+							return true;
+						}
+					}
+				}
+			}
+		}
+		else {
+			GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames = ArrayUtils.add(GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames, aClassName);	
+			return true;
+		}		
+		return false;
+	}
 
 
 

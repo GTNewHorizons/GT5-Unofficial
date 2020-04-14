@@ -18,7 +18,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachi
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
@@ -140,12 +140,12 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return Recipe_GT.Gregtech_Recipe_Map.sChemicalPlant_GT;
+		return GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlant_GT;
 	}
 
 	public static void generateRecipes() {
-		for (Recipe_GT i : Recipe_GT.Gregtech_Recipe_Map.sChemicalPlantRecipes.mRecipeList) {
-			Recipe_GT.Gregtech_Recipe_Map.sChemicalPlant_GT.add(i);
+		for (GTPP_Recipe i : GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlantRecipes.mRecipeList) {
+			GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlant_GT.add(i);
 		}
 	}
 

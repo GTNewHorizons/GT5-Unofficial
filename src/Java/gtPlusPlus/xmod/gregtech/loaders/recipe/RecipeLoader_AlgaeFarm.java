@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.WeightedCollection;
@@ -103,7 +103,7 @@ public class RecipeLoader_AlgaeFarm {
 		// We set these elsewhere
 		ItemStack[] aOutputs = getOutputsForTier(aTier);
 
-		GT_Recipe tRecipe = new Recipe_GT(
+		GT_Recipe tRecipe = new GTPP_Recipe(
 				false, 
 				aInputs,
 				aOutputs,

@@ -3,18 +3,16 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Recipe;
-
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraft.item.ItemStack;
 
 public class RecipeGen_Plates extends RecipeGen_Base {
 
@@ -126,14 +124,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 	}
 
 	public static boolean addBenderRecipe(final ItemStack aInput1, final ItemStack aOutput1, int aDuration, final int aEUt) {
-		if ((aInput1 == null) || (aOutput1 == null)) {
-			return false;
-		}
-		if ((aDuration = GregTech_API.sRecipeFile.get("bender", aInput1, aDuration)) <= 0) {
-			return false;
-		}
-		new GT_Recipe(aEUt, aDuration, aInput1, aOutput1);
-		return true;
+		return GT_Values.RA.addBenderRecipe(aInput1, aOutput1, aDuration, aEUt);
 	}
 
 	public static boolean addExtruderRecipe(final ItemStack aInput, final ItemStack aShape, final ItemStack aOutput, int aDuration, final int aEUt) {

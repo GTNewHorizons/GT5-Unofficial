@@ -5,7 +5,7 @@ import java.util.HashSet;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -106,7 +106,7 @@ public class RecipeGen_FluidCanning implements Runnable {
 
 		//Check validity
 
-		Recipe_GT aRecipe = new Recipe_GT(
+		GTPP_Recipe aRecipe = new GTPP_Recipe(
 				true,
 				new ItemStack[] { aInput },
 				new ItemStack[] { aOutput },

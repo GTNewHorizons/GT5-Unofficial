@@ -19,7 +19,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.*;
-import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
+import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import gregtech.common.gui.GT_GUIContainer_PrimitiveBlastFurnace;
 import net.minecraft.client.Minecraft;
@@ -39,9 +39,9 @@ public class GTPP_NEI_DefaultHandler
         GuiContainerManager.addTooltipHandler(new GT_RectHandler());
     }
 
-    protected final Gregtech_Recipe_Map mRecipeMap;
+    protected final GTPP_Recipe_Map mRecipeMap;
 
-    public GTPP_NEI_DefaultHandler(Gregtech_Recipe_Map tMap) {
+    public GTPP_NEI_DefaultHandler(GTPP_Recipe_Map tMap) {
         this.mRecipeMap = tMap;
         this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier(), new Object[0]));
         if (!NEI_GT_Config.sIsAdded) {

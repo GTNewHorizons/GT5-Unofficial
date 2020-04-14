@@ -6,7 +6,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class ThermalFuel {
 
 	public static void addThermalFuel(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int euValue, int aSpecialValue) {
-		GT_Recipe x = new GT_Recipe(
+		GTPP_Recipe x = new GTPP_Recipe(
 				true,
 				null,
 				null,
@@ -18,11 +18,11 @@ public class ThermalFuel {
 				euValue, //No Eu produced
 				aSpecialValue //Magic Number
 		);
-		Recipe_GT.Gregtech_Recipe_Map.sGeoThermalFuels.addRecipe(x);
+		GTPP_Recipe.GTPP_Recipe_Map.sGeoThermalFuels.addRecipe(x);
 	}
 	
 	public static void addSteamTurbineFuel(FluidStack aInput1) {
-		GT_Recipe x = new GT_Recipe(
+		GTPP_Recipe x = new GTPP_Recipe(
 				true,
 				null,
 				null,
@@ -34,7 +34,7 @@ public class ThermalFuel {
 				MathUtils.findPercentageOfInt((aInput1.amount/2), 95), //No Eu produced
 				0 //Magic Number
 		);
-		Recipe_GT.Gregtech_Recipe_Map.sSteamTurbineFuels.addRecipe(x);
+		GTPP_Recipe.GTPP_Recipe_Map.sSteamTurbineFuels.addRecipe(x);
 	}
 	
 	

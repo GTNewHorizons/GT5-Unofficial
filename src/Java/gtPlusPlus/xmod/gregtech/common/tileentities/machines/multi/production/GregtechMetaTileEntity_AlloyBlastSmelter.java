@@ -13,7 +13,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.recipe.common.CI;
@@ -99,7 +99,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes;
+		return GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes;
 	}
 
 	@Override
@@ -181,7 +181,7 @@ extends GregtechMeta_MultiBlockBase {
 			if (tInputList.size() > 1) {
 				final long tVoltage = this.getMaxInputVoltage();
 				final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-				final GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+				final GT_Recipe tRecipe = GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
 				if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
 					Logger.WARNING("Found some Valid Inputs.");
 					this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));

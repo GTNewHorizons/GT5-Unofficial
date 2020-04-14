@@ -18,7 +18,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -309,7 +309,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	@Override
 	public GT_Recipe_Map getRecipeMap() {
-		return this.mMode == MODE_SCRAP ? GT_Recipe_Map.sRecyclerRecipes : Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes;
+		return this.mMode == MODE_SCRAP ? GT_Recipe_Map.sRecyclerRecipes : GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes;
 		//return Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes;
 	}
 
@@ -324,7 +324,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 			long tVoltage = getMaxInputVoltage();
 			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));	
 			long tEnergy = getMaxInputEnergy();		
-			GT_Recipe c = new Recipe_GT(false, new ItemStack[] { GT_Utility.copyAmount(1, aItemInputs[0]) },
+			GT_Recipe c = new GTPP_Recipe(false, new ItemStack[] { GT_Utility.copyAmount(1, aItemInputs[0]) },
 					GT_ModHandler.getRecyclerOutput(GT_Utility.copyAmount(64, aItemInputs[0]), 0) == null ? null
 							: new ItemStack[] { ItemList.IC2_Scrap.get(1) },
 					null, new int[] { 2000 }, null, null, 100,

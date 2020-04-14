@@ -139,7 +139,7 @@ public class MultiblockRecipeMapHandler{
 		final Collection<GT_Recipe> x = r.mRecipeList;
 		for (final GT_Recipe newBo : x) {			
 			int duration = MathUtils.findPercentageOfInt(newBo.mDuration, 80);			
-			if (newMap.addRecipe(new GT_Recipe(true, newBo.mInputs, newBo.mOutputs, newBo.mSpecialItems, newBo.mChances, newBo.mFluidInputs, newBo.mFluidOutputs, duration, newBo.mEUt, newBo.mSpecialValue), false, true, true) != null){
+			if (newMap.addRecipe(new GTPP_Recipe(true, newBo.mInputs, newBo.mOutputs, newBo.mSpecialItems, newBo.mChances, newBo.mFluidInputs, newBo.mFluidOutputs, duration, newBo.mEUt, newBo.mSpecialValue), false, true, true) != null){
 				Logger.INFO("Successfully added a simple recipe to the "+newMap.mNEIName+" map.");
 			}
 			else {
@@ -181,7 +181,7 @@ public class MultiblockRecipeMapHandler{
 					}
 				}
 			}
-			if (newMap.addRecipe(new GT_Recipe(true, mInputs, mOutputs, newBo.mSpecialItems, outputChances, mFluidInputs, mFluidOutputs, duration, newBo.mEUt, newBo.mSpecialValue), false, true, true) != null){
+			if (newMap.addRecipe(new GTPP_Recipe(true, mInputs, mOutputs, newBo.mSpecialItems, outputChances, mFluidInputs, mFluidOutputs, duration, newBo.mEUt, newBo.mSpecialValue), false, true, true) != null){
 				Logger.INFO("Successfully added a recipe to the "+newMap.mNEIName+" map.");
 			}
 			else {

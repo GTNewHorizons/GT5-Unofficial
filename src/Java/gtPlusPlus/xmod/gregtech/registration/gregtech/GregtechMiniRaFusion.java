@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Plasma;
@@ -28,10 +28,10 @@ public class GregtechMiniRaFusion {
 				}
 				y.mEUt = (int) Math.min(Math.max(0, z), Integer.MAX_VALUE);
 				y.mCanBeBuffered = true;
-				Recipe_GT.Gregtech_Recipe_Map.sSlowFusionRecipes.add(y);
+				GTPP_Recipe.GTPP_Recipe_Map.sSlowFusionRecipes.add(y);
 			}
 		}
-		int mRecipeCount = Recipe_GT.Gregtech_Recipe_Map.sSlowFusionRecipes.mRecipeList.size();
+		int mRecipeCount = GTPP_Recipe.GTPP_Recipe_Map.sSlowFusionRecipes.mRecipeList.size();
 		if (mRecipeCount > 0) {
 			Logger.INFO("[Pocket Fusion] Generated "+mRecipeCount+" recipes for the Pocket Fusion Reactor.");
 			return true;

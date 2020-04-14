@@ -1,7 +1,7 @@
 package gtPlusPlus.core.slots;
 
-import gregtech.api.util.Recipe_GT;
-import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
+import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -20,9 +20,9 @@ public class SlotChemicalPlantInput extends Slot {
 	}
 	
 	public static boolean isItemValidForChemicalPlantSlot(ItemStack aStack) {
-		boolean validItem = Gregtech_Recipe_Map.sChemicalPlantRecipes.containsInput(aStack);		
+		boolean validItem = GTPP_Recipe_Map.sChemicalPlantRecipes.containsInput(aStack);		
 		if (!validItem) {
-			for (Recipe_GT f : Gregtech_Recipe_Map.sChemicalPlantRecipes.mRecipeList) {
+			for (GTPP_Recipe f : GTPP_Recipe_Map.sChemicalPlantRecipes.mRecipeList) {
 				if (f.mFluidInputs.length > 0) {
 					for (FluidStack g : f.mFluidInputs) {
 						if (g != null) {

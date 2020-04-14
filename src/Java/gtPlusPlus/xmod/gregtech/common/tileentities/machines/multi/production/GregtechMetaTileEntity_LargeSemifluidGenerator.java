@@ -14,7 +14,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynam
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
+import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -76,7 +76,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
 		ArrayList<FluidStack> tFluids = getStoredFluids();
-		Collection<GT_Recipe> tRecipeList = Gregtech_Recipe_Map.sSemiFluidLiquidFuels.mRecipeList;
+		Collection<GT_Recipe> tRecipeList = GTPP_Recipe_Map.sSemiFluidLiquidFuels.mRecipeList;
 
 		if(tFluids.size() > 0 && tRecipeList != null) { //Does input hatch have a semifluid fuel?
 			for (FluidStack hatchFluid1 : tFluids) { //Loops through hatches

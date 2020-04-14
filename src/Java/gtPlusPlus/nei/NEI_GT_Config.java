@@ -4,8 +4,8 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.Recipe_GT;
-import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
+import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.nei.GT_NEI_DefaultHandler;
 import gtPlusPlus.api.objects.data.AutoMap;
 
@@ -19,10 +19,10 @@ implements IConfigureNEI {
 	public synchronized void loadConfig() {
 		sIsAdded = false;
 
-		mUniqueRecipeMapHandling.add(Gregtech_Recipe_Map.sChemicalPlantRecipes.mUnlocalizedName);
-		mUniqueRecipeMapHandling.add(Gregtech_Recipe_Map.sOreMillRecipes.mUnlocalizedName);
-		mUniqueRecipeMapHandling.add(Gregtech_Recipe_Map.sFlotationCellRecipes.mUnlocalizedName);
-		mUniqueRecipeMapHandling.add(Gregtech_Recipe_Map.sVacuumFurnaceRecipes.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sChemicalPlantRecipes.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sOreMillRecipes.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sFlotationCellRecipes.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sVacuumFurnaceRecipes.mUnlocalizedName);
 		
 		// Custom Recipe Maps
 		for (final CustomRecipeMap tMap : CustomRecipeMap.sMappings) {
@@ -32,7 +32,7 @@ implements IConfigureNEI {
 		}
 		
 		// Custom Recipe maps
-		for (final Gregtech_Recipe_Map tMap : Recipe_GT.Gregtech_Recipe_Map.sMappings) {
+		for (final GTPP_Recipe_Map tMap : GTPP_Recipe.GTPP_Recipe_Map.sMappings) {
 			if (tMap.mNEIAllowed) {				
 				if (!mUniqueRecipeMapHandling.contains(tMap.mUnlocalizedName)) {
 					new GTPP_NEI_DefaultHandler(tMap);					
@@ -41,7 +41,7 @@ implements IConfigureNEI {
 		}
 		
 		// Standard GT Recipe Maps
-		for (final GT_Recipe_Map tMap : Recipe_GT.GTPP_Recipe_Map.sMappingsEx) {
+		for (final GT_Recipe_Map tMap : GTPP_Recipe.GTPP_Recipe_Map_Internal.sMappingsEx) {
 			if (tMap.mNEIAllowed) {				
 				if (!mUniqueRecipeMapHandling.contains(tMap.mUnlocalizedName)) {
 					new GT_NEI_DefaultHandler(tMap);					

@@ -5,7 +5,7 @@ import java.util.Collection;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 
 import gtPlusPlus.api.objects.minecraft.NoConflictGTRecipeMap;
 import gtPlusPlus.core.recipe.common.CI;
@@ -30,7 +30,7 @@ public class RecipeLoader_LFTR {
 		//1l/10t= 1000l/2.5hr LiFBeF2ZrF4U235
 
 		//LiFBeF2ThF4UF4
-		GT_Recipe LFTR1 = new Recipe_GT(
+		GT_Recipe LFTR1 = new GTPP_Recipe(
 				true, 
 				new ItemStack[] {CI.getNumberedCircuit(1)},
 				new ItemStack[] {},
@@ -49,7 +49,7 @@ public class RecipeLoader_LFTR {
 				);
 
 		//LiFBeF2ZrF4UF4
-		GT_Recipe LFTR2 = new Recipe_GT(
+		GT_Recipe LFTR2 = new GTPP_Recipe(
 				true, 
 				new ItemStack[] {CI.getNumberedCircuit(2)},
 				new ItemStack[] {},
@@ -68,7 +68,7 @@ public class RecipeLoader_LFTR {
 				);
 
 		//LiFBeF2ZrF4U235
-		GT_Recipe LFTR3 = new Recipe_GT(
+		GT_Recipe LFTR3 = new GTPP_Recipe(
 				true, 
 				new ItemStack[] {CI.getNumberedCircuit(3)},
 				new ItemStack[] {},
@@ -89,9 +89,9 @@ public class RecipeLoader_LFTR {
 		/*mRecipesLFTR.add(LFTR1);
 		mRecipesLFTR.add(LFTR2);
 		mRecipesLFTR.add(LFTR3);*/		
-		Recipe_GT.Gregtech_Recipe_Map.sLiquidFluorineThoriumReactorRecipesEx.add(LFTR1);
-		Recipe_GT.Gregtech_Recipe_Map.sLiquidFluorineThoriumReactorRecipesEx.add(LFTR2);
-		Recipe_GT.Gregtech_Recipe_Map.sLiquidFluorineThoriumReactorRecipesEx.add(LFTR3);
+		GTPP_Recipe.GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipesEx.add(LFTR1);
+		GTPP_Recipe.GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipesEx.add(LFTR2);
+		GTPP_Recipe.GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipesEx.add(LFTR3);
 		
 
 	}

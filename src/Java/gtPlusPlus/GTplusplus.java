@@ -19,6 +19,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.util.*;
+import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map_Internal;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.chunkloading.GTPP_ChunkManager;
@@ -197,7 +198,7 @@ public class GTplusplus implements ActionListener {
 		//SprinklerHandler.registerModFerts();
 
 		BlockEventHandler.init();
-        Recipe_GT.reInit();
+        GTPP_Recipe.reInit();
 
 		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Logger.INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
@@ -249,11 +250,15 @@ public class GTplusplus implements ActionListener {
 	public void onLoadComplete(FMLLoadCompleteEvent event) {
 		proxy.onLoadComplete(event);
 		generateGregtechRecipeMaps();
+		// Check our maps ar euntouched
+		Logger.INFO("Making sure that all GT++ recipes are untouched.");
+		GTPP_Recipe.checkRecipeModifications();
+		Logger.INFO("Passed verification checks.");
 	}
 
     @Mod.EventHandler
     public void onIDChangingEvent(FMLModIdMappingEvent aEvent) {
-        Recipe_GT.reInit();
+        GTPP_Recipe.reInit();
     }
 
 	public static void tryPatchTurbineTextures() {
@@ -313,9 +318,9 @@ public class GTplusplus implements ActionListener {
 			}
 		}
 
-		if (Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.size() < 1) {
-			for (GT_Recipe a : Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList) {
-				Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes_GT.add(a);
+		if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.size() < 1) {
+			for (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList) {
+				GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.add(a);
 			}
 		}
 
@@ -344,9 +349,9 @@ public class GTplusplus implements ActionListener {
 			}
 		}
 
-		if (Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.size() < 1) {
-			for (GT_Recipe a : Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes.mRecipeList) {
-				Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.add(a);
+		if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.size() < 1) {
+			for (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes.mRecipeList) {
+				GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.add(a);
 			}
 		}
 

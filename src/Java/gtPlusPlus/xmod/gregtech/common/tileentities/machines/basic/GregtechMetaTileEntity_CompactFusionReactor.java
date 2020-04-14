@@ -17,7 +17,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -104,7 +104,7 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeList() {
-		return Recipe_GT.Gregtech_Recipe_Map.sSlowFusionRecipes;
+		return GTPP_Recipe.GTPP_Recipe_Map.sSlowFusionRecipes;
 	}
 
 	@Override

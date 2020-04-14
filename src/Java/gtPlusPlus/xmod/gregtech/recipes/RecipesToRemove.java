@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.recipes;
 
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.ORES;
@@ -23,8 +23,8 @@ public class RecipesToRemove {
 			aRareEarthCentrifuging.mEnabled = false;
 			aRareEarthCentrifuging.mHidden = true;
 			GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.remove(aRareEarthCentrifuging);
-			Recipe_GT.GT_Recipe_Map_LargeCentrifuge.sMultiblockCentrifugeRecipes.mRecipeList.remove(aRareEarthCentrifuging);
-			Recipe_GT.GT_Recipe_Map_LargeCentrifuge.sMultiblockCentrifugeRecipes_GT.mRecipeList.remove(aRareEarthCentrifuging);
+			GTPP_Recipe.GT_Recipe_Map_LargeCentrifuge.sMultiblockCentrifugeRecipes.mRecipeList.remove(aRareEarthCentrifuging);
+			GTPP_Recipe.GT_Recipe_Map_LargeCentrifuge.sMultiblockCentrifugeRecipes_GT.mRecipeList.remove(aRareEarthCentrifuging);
 			Logger.INFO("Removed vanilla GT Rare Earth processing.");			
 			//Set the Chemical Symbol for Rare Earth now that we are giving it custom outputs
 			//Best not to set this unless the original recipe is removed.
