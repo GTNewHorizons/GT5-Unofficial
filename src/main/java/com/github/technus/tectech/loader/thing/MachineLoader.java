@@ -16,7 +16,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.CommonValues.VOLTAGE_NAMES;
 import static com.github.technus.tectech.thing.CustomItemList.*;
 
 /**

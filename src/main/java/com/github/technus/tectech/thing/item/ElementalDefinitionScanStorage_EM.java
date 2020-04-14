@@ -2,8 +2,8 @@ package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.Util;
+import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.loader.gui.ModGuiHandler;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.thing.CustomItemList;

@@ -2,7 +2,6 @@ package com.github.technus.tectech.thing.metaTileEntity.single;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Util;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -31,18 +30,18 @@ public class GT_MetaTileEntity_TT_Transformer extends GT_MetaTileEntity_Transfor
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[12][17][];
         for (byte b = -1; b < 16; b++) {
-            rTextures[0][b + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1], OVERLAYS_ENERGY_OUT_MULTI_TT[mTier]};
-            rTextures[1][b + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1], OVERLAYS_ENERGY_OUT_MULTI_TT[mTier]};
-            rTextures[2][b + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1], OVERLAYS_ENERGY_OUT_MULTI_TT[mTier]};
-            rTextures[3][b + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1], OVERLAYS_ENERGY_IN_POWER_TT[mTier + 1]};
-            rTextures[4][b + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1], OVERLAYS_ENERGY_IN_POWER_TT[mTier + 1]};
-            rTextures[5][b + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1], OVERLAYS_ENERGY_IN_POWER_TT[mTier + 1]};
-            rTextures[6][b + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1], OVERLAYS_ENERGY_IN_MULTI_TT[mTier]};
-            rTextures[7][b + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1], OVERLAYS_ENERGY_IN_MULTI_TT[mTier]};
-            rTextures[8][b + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1], OVERLAYS_ENERGY_IN_MULTI_TT[mTier]};
-            rTextures[9][b + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1], OVERLAYS_ENERGY_OUT_POWER_TT[mTier + 1]};
-            rTextures[10][b + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1], OVERLAYS_ENERGY_OUT_POWER_TT[mTier + 1]};
-            rTextures[11][b + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1], OVERLAYS_ENERGY_OUT_POWER_TT[mTier + 1]};
+            rTextures[0][b + 1] = new ITexture[]{MACHINE_CASINGS_TT[mTier][b + 1], OVERLAYS_ENERGY_OUT_MULTI_TT[mTier]};
+            rTextures[1][b + 1] = new ITexture[]{MACHINE_CASINGS_TT[mTier][b + 1], OVERLAYS_ENERGY_OUT_MULTI_TT[mTier]};
+            rTextures[2][b + 1] = new ITexture[]{MACHINE_CASINGS_TT[mTier][b + 1], OVERLAYS_ENERGY_OUT_MULTI_TT[mTier]};
+            rTextures[3][b + 1] = new ITexture[]{MACHINE_CASINGS_TT[mTier][b + 1], OVERLAYS_ENERGY_IN_POWER_TT[mTier + 1]};
+            rTextures[4][b + 1] = new ITexture[]{MACHINE_CASINGS_TT[mTier][b + 1], OVERLAYS_ENERGY_IN_POWER_TT[mTier + 1]};
+            rTextures[5][b + 1] = new ITexture[]{MACHINE_CASINGS_TT[mTier][b + 1], OVERLAYS_ENERGY_IN_POWER_TT[mTier + 1]};
+            rTextures[6][b + 1] = new ITexture[]{MACHINE_CASINGS_TT[mTier][b + 1], OVERLAYS_ENERGY_IN_MULTI_TT[mTier]};
+            rTextures[7][b + 1] = new ITexture[]{MACHINE_CASINGS_TT[mTier][b + 1], OVERLAYS_ENERGY_IN_MULTI_TT[mTier]};
+            rTextures[8][b + 1] = new ITexture[]{MACHINE_CASINGS_TT[mTier][b + 1], OVERLAYS_ENERGY_IN_MULTI_TT[mTier]};
+            rTextures[9][b + 1] = new ITexture[]{MACHINE_CASINGS_TT[mTier][b + 1], OVERLAYS_ENERGY_OUT_POWER_TT[mTier + 1]};
+            rTextures[10][b + 1] = new ITexture[]{MACHINE_CASINGS_TT[mTier][b + 1], OVERLAYS_ENERGY_OUT_POWER_TT[mTier + 1]};
+            rTextures[11][b + 1] = new ITexture[]{MACHINE_CASINGS_TT[mTier][b + 1], OVERLAYS_ENERGY_OUT_POWER_TT[mTier + 1]};
         }
         return rTextures;
     }

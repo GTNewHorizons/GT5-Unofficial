@@ -21,6 +21,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
 import static com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DataReader.READER_OFFLINE;
 import static com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DataReader.READER_ONLINE;
 
@@ -168,16 +169,16 @@ public class GT_MetaTileEntity_MicroController extends GT_MetaTileEntity_TieredM
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if(aBaseMetaTileEntity.getWorld()==null){
             if(aSide==aFacing){
-                return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE};
+                return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE};
             }
-            return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]};
+            return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1]};
         }
         if(aSide==aBaseMetaTileEntity.getFrontFacing()){
-            return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE};
+            return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE};
         }else if(aSide==aFacing){
-            return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+            return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
         }
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]};
+        return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1]};
     }
 
     @Override

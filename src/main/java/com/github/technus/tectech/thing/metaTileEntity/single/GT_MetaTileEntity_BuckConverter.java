@@ -20,9 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMachineBlock {
@@ -54,7 +52,7 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1], aSide == aFacing ? (aActive?BUCK_ACTIVE:BUCK) :
+        return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aSide == aFacing ? (aActive?BUCK_ACTIVE:BUCK) :
                 (aSide==GT_Utility.getOppositeSide(aFacing)?
                         OVERLAYS_ENERGY_IN_POWER_TT[mTier]:
                         (aActive ? OVERLAYS_ENERGY_OUT_POWER_TT[mTier] : OVERLAYS_ENERGY_IN_POWER_TT[mTier]))};

@@ -22,7 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -57,7 +57,7 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1], aSide != aFacing ? aActive? new GT_RenderedTexture(GT_MetaTileEntity_Hatch_OverflowElemental.MufflerEM): new GT_RenderedTexture(GT_MetaTileEntity_Hatch_OverflowElemental.MufflerEMidle) : POLLUTOR};
+        return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aSide != aFacing ? aActive? new GT_RenderedTexture(GT_MetaTileEntity_Hatch_OverflowElemental.MufflerEM): new GT_RenderedTexture(GT_MetaTileEntity_Hatch_OverflowElemental.MufflerEMidle) : POLLUTOR};
     }
 
     @Override

@@ -8,7 +8,8 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.List;
 
-import static com.github.technus.tectech.CommonValues.*;
+import static com.github.technus.tectech.CommonValues.COSMIC_MARK;
+import static com.github.technus.tectech.CommonValues.TEC_MARK_EM;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**

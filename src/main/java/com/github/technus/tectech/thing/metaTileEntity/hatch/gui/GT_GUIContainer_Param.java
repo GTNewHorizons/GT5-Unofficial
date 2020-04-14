@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch.gui;
 
-import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.Util;
+import com.github.technus.tectech.font.TecTechFontRender;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
