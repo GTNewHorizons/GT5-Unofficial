@@ -11,23 +11,15 @@ import java.util.Collection;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.util.FishPondFakeRecipe;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.Recipe_GT;
-import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.chunkloading.GTPP_ChunkManager;
 import gtPlusPlus.core.commands.CommandDebugChunks;
@@ -205,6 +197,7 @@ public class GTplusplus implements ActionListener {
 		//SprinklerHandler.registerModFerts();
 
 		BlockEventHandler.init();
+        Recipe_GT.reInit();
 
 		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Logger.INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
@@ -257,6 +250,11 @@ public class GTplusplus implements ActionListener {
 		proxy.onLoadComplete(event);
 		generateGregtechRecipeMaps();
 	}
+
+    @Mod.EventHandler
+    public void onIDChangingEvent(FMLModIdMappingEvent aEvent) {
+        Recipe_GT.reInit();
+    }
 
 	public static void tryPatchTurbineTextures() {
 		if (enableAnimatedTurbines) {

@@ -3,7 +3,10 @@ package gtPlusPlus.nei;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import gregtech.api.util.CustomRecipeMap;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.Recipe_GT;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
+import gregtech.nei.GT_NEI_DefaultHandler;
 import gtPlusPlus.api.objects.data.AutoMap;
 
 public class NEI_GT_Config
@@ -21,15 +24,27 @@ implements IConfigureNEI {
 		mUniqueRecipeMapHandling.add(Gregtech_Recipe_Map.sFlotationCellRecipes.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(Gregtech_Recipe_Map.sVacuumFurnaceRecipes.mUnlocalizedName);
 		
-		for (final CustomRecipeMap tMap : gregtech.api.util.CustomRecipeMap.sMappings) {
+		// Custom Recipe Maps
+		for (final CustomRecipeMap tMap : CustomRecipeMap.sMappings) {
 			if (tMap.mNEIAllowed) {
-				new GT_NEI_DefaultHandler(tMap);
+				new GTPP_NEI_CustomMapHandler(tMap);
 			}
 		}
-		for (final Gregtech_Recipe_Map tMap : gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map.sMappings) {
+		
+		// Custom Recipe maps
+		for (final Gregtech_Recipe_Map tMap : Recipe_GT.Gregtech_Recipe_Map.sMappings) {
 			if (tMap.mNEIAllowed) {				
 				if (!mUniqueRecipeMapHandling.contains(tMap.mUnlocalizedName)) {
-					new GT_NEI_MultiBlockHandler(tMap);					
+					new GTPP_NEI_DefaultHandler(tMap);					
+				}				
+			}
+		}
+		
+		// Standard GT Recipe Maps
+		for (final GT_Recipe_Map tMap : Recipe_GT.GTPP_Recipe_Map.sMappingsEx) {
+			if (tMap.mNEIAllowed) {				
+				if (!mUniqueRecipeMapHandling.contains(tMap.mUnlocalizedName)) {
+					new GT_NEI_DefaultHandler(tMap);					
 				}				
 			}
 		}
