@@ -30,8 +30,10 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.FormattedTooltipString;
 import gtPlusPlus.core.handler.AchievementHandler;
+import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.LangUtils;
@@ -41,6 +43,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.BaseCustomTileEntity;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.BaseCustomPower_MTE;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
+import gtPlusPlus.xmod.gregtech.common.helpers.MachineUpdateHandler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
@@ -119,6 +122,7 @@ public class Meta_GT_Proxy {
 		setValidHeatingCoilMetas();	
 		PollutionUtils.setPollutionFluids();
 		fixIC2FluidNames();		
+		Utils.registerEvent(new MachineUpdateHandler());
 	}
 
 	public static void postInit() {

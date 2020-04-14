@@ -189,7 +189,7 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 	public static void reInit() {
 		GT_Log.out.println("GT_Mod: Re-Unificating Recipes.");
 		for (final GTPP_Recipe_Map tMapEntry : GTPP_Recipe_Map.sMappings) {
-			tMapEntry.reInit();
+			//tMapEntry.reInit();
 			if (tMapEntry != null && tMapEntry.mRecipeList != null && !tMapEntry.mRecipeList.isEmpty()) {
 				for (GT_Recipe aRecipe : tMapEntry.mRecipeList) {
 					checkRecipeOwnership(aRecipe);					
@@ -197,7 +197,7 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 			}
 		}
 		for (final GTPP_Recipe_Map_Internal tMapEntry : GTPP_Recipe_Map_Internal.sMappingsEx) {
-			tMapEntry.reInit();
+			//tMapEntry.reInit();
 			if (tMapEntry != null && tMapEntry.mRecipeList != null && !tMapEntry.mRecipeList.isEmpty()) {
 				for (GT_Recipe aRecipe : tMapEntry.mRecipeList) {
 					checkRecipeOwnership(aRecipe);					
