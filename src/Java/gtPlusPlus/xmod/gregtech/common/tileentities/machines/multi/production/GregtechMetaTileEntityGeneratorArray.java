@@ -16,7 +16,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -91,7 +91,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 			return null;
 		}
 		else if (this.mMode == MODE_STEAM) {
-			return Recipe_GT.Gregtech_Recipe_Map.sSteamTurbineFuels;
+			return GTPP_Recipe.GTPP_Recipe_Map.sSteamTurbineFuels;
 		}
 		else if (this.mMode == MODE_DIESEL) {
 			return GT_Recipe.GT_Recipe_Map.sDieselFuels;
@@ -100,13 +100,13 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 			return GT_Recipe.GT_Recipe_Map.sTurbineFuels;
 		}
 		else if (this.mMode == MODE_SEMIFLUID) {
-			return Recipe_GT.Gregtech_Recipe_Map.sSemiFluidLiquidFuels;
+			return GTPP_Recipe.GTPP_Recipe_Map.sSemiFluidLiquidFuels;
 		}
 		else if (this.mMode == MODE_GEOTHERMAL) {
-			return Recipe_GT.Gregtech_Recipe_Map.sThermalFuels;
+			return GTPP_Recipe.GTPP_Recipe_Map.sThermalFuels;
 		}
 		else if (this.mMode == MODE_ROCKETFUEL) {
-			return Recipe_GT.Gregtech_Recipe_Map.sRocketFuels;
+			return GTPP_Recipe.GTPP_Recipe_Map.sRocketFuels;
 		}
 		else if (this.mMode == MODE_MAGIC_A) {
 			return GT_Recipe.GT_Recipe_Map.sMagicFuels;

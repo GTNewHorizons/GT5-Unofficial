@@ -14,7 +14,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -104,7 +104,7 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {		
-		return Recipe_GT.Gregtech_Recipe_Map.sSlowFusionRecipes;
+		return GTPP_Recipe.GTPP_Recipe_Map.sSlowFusionRecipes;
 	}
 
 	@Override

@@ -14,36 +14,36 @@ import gtPlusPlus.api.objects.Logger;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-public class CustomRecipeMap/* extends GT_Recipe_Map*/{
+public class CustomRecipeMap/* extends GTPP_Recipe_Map*/{
 	/**
 	 * Contains all Recipe Maps
 	 */
 	public static final Collection<CustomRecipeMap> sMappings = new ArrayList<>();
 
-	//public static final CustomRecipeMap sOreWasherRecipes = new GT_Recipe_Map_OreWasher(new HashSet<GT_Recipe>(0), "ic.recipe.orewasher", "Ore Washer", "ic2.blockOreWashingPlant", RES_PATH_GUI + "basicmachines/OreWasher", 1, 3, 1, 1, 1, E, 1, E, true, false);
+	//public static final CustomRecipeMap sOreWasherRecipes = new GTPP_Recipe_Map_OreWasher(new HashSet<GTPP_Recipe>(0), "ic.recipe.orewasher", "Ore Washer", "ic2.blockOreWashingPlant", RES_PATH_GUI + "basicmachines/OreWasher", 1, 3, 1, 1, 1, E, 1, E, true, false);
 	//Fission Fuel Plant Recipes
-	public static final CustomRecipeMap sFissionFuelProcessing = new CustomRecipeMap(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Nuclear Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 4, 1, E, 1, E, true, true);
+	public static final CustomRecipeMap sFissionFuelProcessing = new CustomRecipeMap(new HashSet<GTPP_Recipe>(50), "gt.recipe.fissionfuel", "Nuclear Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 4, 1, E, 1, E, true, true);
 
 	
-	public static final CustomRecipeMap mMultiWireMill = new CustomRecipeMap(new HashSet<GT_Recipe>(500), "gt.recipe.multi.wiremill", "Multiblock Wiremill", null, RES_PATH_GUI + "basicmachines/FissionFuel", 1, 1, 0, 0, 1, E, 1, E, true, true);
-	public static final CustomRecipeMap mMultiMacerator = new CustomRecipeMap(new HashSet<GT_Recipe>(500), "gt.recipe.multi.macerator", "Maceration Stack", null, RES_PATH_GUI + "basicmachines/FissionFuel", 1, 3, 0, 0, 1, E, 1, E, true, true);
-	public static final CustomRecipeMap mMultiCentrifuge = new CustomRecipeMap(new HashSet<GT_Recipe>(500), "gt.recipe.multi.centrifuge", "Multiblock Centrifuge", null, RES_PATH_GUI + "basicmachines/FissionFuel", 2, 6, 0, 0, 1, E, 1, E, true, true);
-	public static final CustomRecipeMap mMultiElectrolyzer = new CustomRecipeMap(new HashSet<GT_Recipe>(500), "gt.recipe.multi.electrolyzer", "Multiblock Electrolyzer", null, RES_PATH_GUI + "basicmachines/FissionFuel", 2, 6, 0, 0, 1, E, 1, E, true, true);
+	public static final CustomRecipeMap mMultiWireMill = new CustomRecipeMap(new HashSet<GTPP_Recipe>(500), "gt.recipe.multi.wiremill", "Multiblock Wiremill", null, RES_PATH_GUI + "basicmachines/FissionFuel", 1, 1, 0, 0, 1, E, 1, E, true, true);
+	public static final CustomRecipeMap mMultiMacerator = new CustomRecipeMap(new HashSet<GTPP_Recipe>(500), "gt.recipe.multi.macerator", "Maceration Stack", null, RES_PATH_GUI + "basicmachines/FissionFuel", 1, 3, 0, 0, 1, E, 1, E, true, true);
+	public static final CustomRecipeMap mMultiCentrifuge = new CustomRecipeMap(new HashSet<GTPP_Recipe>(500), "gt.recipe.multi.centrifuge", "Multiblock Centrifuge", null, RES_PATH_GUI + "basicmachines/FissionFuel", 2, 6, 0, 0, 1, E, 1, E, true, true);
+	public static final CustomRecipeMap mMultiElectrolyzer = new CustomRecipeMap(new HashSet<GTPP_Recipe>(500), "gt.recipe.multi.electrolyzer", "Multiblock Electrolyzer", null, RES_PATH_GUI + "basicmachines/FissionFuel", 2, 6, 0, 0, 1, E, 1, E, true, true);
 
 	
 	
 	/**
 	 * HashMap of Recipes based on their Items
 	 */
-	public final Map<GT_ItemStack, Collection<GT_Recipe>> mRecipeItemMap = new HashMap<>();
+	public final Map<GT_ItemStack, Collection<GTPP_Recipe>> mRecipeItemMap = new HashMap<>();
 	/**
 	 * HashMap of Recipes based on their Fluids
 	 */
-	public final Map<Fluid, Collection<GT_Recipe>> mRecipeFluidMap = new HashMap<>();
+	public final Map<Fluid, Collection<GTPP_Recipe>> mRecipeFluidMap = new HashMap<>();
 	/**
 	 * The List of all Recipes
 	 */
-	public final Collection<GT_Recipe> mRecipeList;
+	public final Collection<GTPP_Recipe> mRecipeList;
 	/**
 	 * String used as an unlocalised Name.
 	 */
@@ -74,7 +74,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 	 * @param aNEISpecialValuePost       the String after the Special Value. Usually for a Unit or something.
 	 * @param aNEIAllowed                if NEI is allowed to display this Recipe Handler in general.
 	 */
-	public CustomRecipeMap(final Collection<GT_Recipe> aRecipeList, final String aUnlocalizedName, final String aLocalName, final String aNEIName, final String aNEIGUIPath, final int aUsualInputCount, final int aUsualOutputCount, final int aMinimalInputItems, final int aMinimalInputFluids, final int aAmperage, final String aNEISpecialValuePre, final int aNEISpecialValueMultiplier, final String aNEISpecialValuePost, final boolean aShowVoltageAmperageInNEI, final boolean aNEIAllowed) {
+	public CustomRecipeMap(final Collection<GTPP_Recipe> aRecipeList, final String aUnlocalizedName, final String aLocalName, final String aNEIName, final String aNEIGUIPath, final int aUsualInputCount, final int aUsualOutputCount, final int aMinimalInputItems, final int aMinimalInputFluids, final int aAmperage, final String aNEISpecialValuePre, final int aNEISpecialValueMultiplier, final String aNEISpecialValuePost, final boolean aShowVoltageAmperageInNEI, final boolean aNEIAllowed) {
 		//super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
 		sMappings.add(this);
 		this.mNEIAllowed = aNEIAllowed;
@@ -95,23 +95,23 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 		GT_LanguageManager.addStringLocalization(this.mUnlocalizedName = aUnlocalizedName, aLocalName);
 	}
 
-	public GT_Recipe addRecipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-		return this.addRecipe(new GT_Recipe(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+	public GTPP_Recipe addRecipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+		return this.addRecipe(new GTPP_Recipe(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
 	}
 
-	public GT_Recipe addRecipe(final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-		return this.addRecipe(new GT_Recipe(false, null, null, null, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue), false, false, false);
+	public GTPP_Recipe addRecipe(final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+		return this.addRecipe(new GTPP_Recipe(false, null, null, null, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue), false, false, false);
 	}
 
-	public GT_Recipe addRecipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-		return this.addRecipe(new GT_Recipe(aOptimize, aInputs, aOutputs, aSpecial, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+	public GTPP_Recipe addRecipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+		return this.addRecipe(new GTPP_Recipe(aOptimize, aInputs, aOutputs, aSpecial, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
 	}
 
-	public GT_Recipe addRecipe(final GT_Recipe aRecipe) {
+	public GTPP_Recipe addRecipe(final GTPP_Recipe aRecipe) {
 		return this.addRecipe(aRecipe, true, false, false);
 	}
 
-	public GT_Recipe addRecipe(final GT_Recipe aRecipe, final boolean aCheckForCollisions, final boolean aFakeRecipe, final boolean aHidden) {
+	public GTPP_Recipe addRecipe(final GTPP_Recipe aRecipe, final boolean aCheckForCollisions, final boolean aFakeRecipe, final boolean aHidden) {
 		aRecipe.mHidden = aHidden;
 		aRecipe.mFakeRecipe = aFakeRecipe;
 		if ((aRecipe.mFluidInputs.length < this.mMinimalInputFluids) && (aRecipe.mInputs.length < this.mMinimalInputItems)) {
@@ -126,29 +126,29 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 	/**
 	 * Only used for fake Recipe Handlers to show something in NEI, do not use this for adding actual Recipes! findRecipe wont find fake Recipes, containsInput WILL find fake Recipes
 	 */
-	public GT_Recipe addFakeRecipe(final boolean aCheckForCollisions, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-		return this.addFakeRecipe(aCheckForCollisions, new GT_Recipe(false, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+	public GTPP_Recipe addFakeRecipe(final boolean aCheckForCollisions, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+		return this.addFakeRecipe(aCheckForCollisions, new GTPP_Recipe(false, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
 	}
 
 	/**
 	 * Only used for fake Recipe Handlers to show something in NEI, do not use this for adding actual Recipes! findRecipe wont find fake Recipes, containsInput WILL find fake Recipes
 	 */
-	public GT_Recipe addFakeRecipe(final boolean aCheckForCollisions, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-		return this.addFakeRecipe(aCheckForCollisions, new GT_Recipe(false, aInputs, aOutputs, aSpecial, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+	public GTPP_Recipe addFakeRecipe(final boolean aCheckForCollisions, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+		return this.addFakeRecipe(aCheckForCollisions, new GTPP_Recipe(false, aInputs, aOutputs, aSpecial, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
 	}
 
 	/**
 	 * Only used for fake Recipe Handlers to show something in NEI, do not use this for adding actual Recipes! findRecipe wont find fake Recipes, containsInput WILL find fake Recipes
 	 */
-	public GT_Recipe addFakeRecipe(final boolean aCheckForCollisions, final GT_Recipe aRecipe) {
+	public GTPP_Recipe addFakeRecipe(final boolean aCheckForCollisions, final GTPP_Recipe aRecipe) {
 		return this.addRecipe(aRecipe, aCheckForCollisions, true, false);
 	}
 
-	public GT_Recipe add(final GT_Recipe aRecipe) {
+	public GTPP_Recipe add(final GTPP_Recipe aRecipe) {
 		this.mRecipeList.add(aRecipe);
 		for (final FluidStack aFluid : aRecipe.mFluidInputs) {
 			if (aFluid != null) {
-				Collection<GT_Recipe> tList = this.mRecipeFluidMap.get(aFluid.getFluid());
+				Collection<GTPP_Recipe> tList = this.mRecipeFluidMap.get(aFluid.getFluid());
 				if (tList == null) {
 					this.mRecipeFluidMap.put(aFluid.getFluid(), tList = new HashSet<>(1));
 				}
@@ -159,11 +159,11 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 	}
 
 	public void reInit() {
-		final Map<GT_ItemStack, Collection<GT_Recipe>> tMap = this.mRecipeItemMap;
+		final Map<GT_ItemStack, Collection<GTPP_Recipe>> tMap = this.mRecipeItemMap;
 		if (tMap != null) {
 			tMap.clear();
 		}
-		for (final GT_Recipe tRecipe : this.mRecipeList) {
+		for (final GTPP_Recipe tRecipe : this.mRecipeList) {
 			GT_OreDictUnificator.setStackArray(true, tRecipe.mInputs);
 			GT_OreDictUnificator.setStackArray(true, tRecipe.mOutputs);
 			if (tMap != null) {
@@ -193,11 +193,11 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 		return (aFluid != null) && this.mRecipeFluidMap.containsKey(aFluid);
 	}
 
-	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack... aInputs) {
+	public GTPP_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack... aInputs) {
 		return this.findRecipe(aTileEntity, null, aNotUnificated, aVoltage, aFluids, null, aInputs);
 	}
 
-	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack... aInputs) {
+	public GTPP_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GTPP_Recipe aRecipe, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack... aInputs) {
 		return this.findRecipe(aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, null, aInputs);
 	}
 
@@ -213,7 +213,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 	 * @param aInputs        the Item Inputs
 	 * @return the Recipe it has found or null for no matching Recipe
 	 */
-	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack aSpecialSlot, ItemStack... aInputs) {
+	public GTPP_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GTPP_Recipe aRecipe, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack aSpecialSlot, ItemStack... aInputs) {
 		// No Recipes? Well, nothing to be found then.
 		if (this.mRecipeList.isEmpty()) {
 			Logger.WARNING("BAD RECIPE");
@@ -277,11 +277,11 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 				Logger.WARNING("BAD RECIPE [b1]");
 				if (tStack != null) {
 					Logger.WARNING("BAD RECIPE [b2] | "+tStack.getDisplayName());
-					Collection<GT_Recipe>
+					Collection<GTPP_Recipe>
 					tRecipes = this.mRecipeItemMap.get(new GT_ItemStack(tStack));
 					if (tRecipes != null) {
 						Logger.WARNING("BAD RECIPE [b3]");
-						for (final GT_Recipe tRecipe : tRecipes) {
+						for (final GTPP_Recipe tRecipe : tRecipes) {
 							Logger.WARNING("BAD RECIPE [b4]");
 							if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
 								Logger.WARNING("BAD RECIPE [b5]");
@@ -293,7 +293,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 					tRecipes = this.mRecipeItemMap.get(new GT_ItemStack(GT_Utility.copyMetaData(W, tStack)));
 					if (tRecipes != null) {
 						Logger.WARNING("BAD RECIPE [b7]");
-						for (final GT_Recipe tRecipe : tRecipes) {
+						for (final GTPP_Recipe tRecipe : tRecipes) {
 							Logger.WARNING("BAD RECIPE [b8]");
 							if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
 								Logger.WARNING("BAD RECIPE [b9]");
@@ -312,11 +312,11 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 				Logger.WARNING("BAD RECIPE [c1]");
 				if (aFluid != null) {
 					Logger.WARNING("BAD RECIPE [c2]");
-					final Collection<GT_Recipe>
+					final Collection<GTPP_Recipe>
 					tRecipes = this.mRecipeFluidMap.get(aFluid.getFluid());
 					if (tRecipes != null) {
 						Logger.WARNING("BAD RECIPE [c3]");
-						for (final GT_Recipe tRecipe : tRecipes) {
+						for (final GTPP_Recipe tRecipe : tRecipes) {
 							Logger.WARNING("BAD RECIPE [c4]");
 							if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
 								Logger.WARNING("BAD RECIPE [c5]");
@@ -333,11 +333,11 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 		return null;
 	}
 
-	protected GT_Recipe addToItemMap(final GT_Recipe aRecipe) {
+	protected GTPP_Recipe addToItemMap(final GTPP_Recipe aRecipe) {
 		for (final ItemStack aStack : aRecipe.mInputs) {
 			if (aStack != null) {
 				final GT_ItemStack tStack = new GT_ItemStack(aStack);
-				Collection<GT_Recipe> tList = this.mRecipeItemMap.get(tStack);
+				Collection<GTPP_Recipe> tList = this.mRecipeItemMap.get(tStack);
 				if (tList == null) {
 					this.mRecipeItemMap.put(tStack, tList = new HashSet<>(1));
 				}

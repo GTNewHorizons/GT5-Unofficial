@@ -7,7 +7,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -49,7 +49,7 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeList() {
-		return Recipe_GT.Gregtech_Recipe_Map.sSimpleWasherRecipes;
+		return GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes;
 	}
 
 	@Override

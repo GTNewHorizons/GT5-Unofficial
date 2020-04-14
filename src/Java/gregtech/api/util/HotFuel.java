@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class HotFuel {
 
 	public static void addNewHotFuel(FluidStack aInput1, FluidStack aOutput1, ItemStack[] outputItems, int[] chances, int aSpecialValue) {
-		GT_Recipe x = new GT_Recipe(
+		GTPP_Recipe x = new GTPP_Recipe(
 				true,
 				null,
 				outputItems,
@@ -19,7 +19,7 @@ public class HotFuel {
 				0, //No Eu produced
 				aSpecialValue //Magic Number
 		);
-		Recipe_GT.Gregtech_Recipe_Map.sThermalFuels.addRecipe(x);
+		GTPP_Recipe.GTPP_Recipe_Map.sThermalFuels.addRecipe(x);
 	}
 	
 	

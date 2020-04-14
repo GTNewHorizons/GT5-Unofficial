@@ -9,7 +9,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
@@ -281,8 +281,8 @@ public class RocketFuels extends ItemPackage {
 	}
 
 	private static void addRocketFuelsToMap() {		
-		HashMap<Integer, Recipe_GT> mRocketFuels = new LinkedHashMap<Integer, Recipe_GT>();
-		mRocketFuels.put(0, new Recipe_GT(
+		HashMap<Integer, GTPP_Recipe> mRocketFuels = new LinkedHashMap<Integer, GTPP_Recipe>();
+		mRocketFuels.put(0, new GTPP_Recipe(
 				true,
 				new ItemStack[] {},
 				new ItemStack[] {},
@@ -294,7 +294,7 @@ public class RocketFuels extends ItemPackage {
 				0,
 				256)); //Fuel Value
 
-		mRocketFuels.put(1, new Recipe_GT(
+		mRocketFuels.put(1, new GTPP_Recipe(
 				true,
 				new ItemStack[] {},
 				new ItemStack[] {},
@@ -306,7 +306,7 @@ public class RocketFuels extends ItemPackage {
 				0,
 				512)); //Fuel Value
 
-		mRocketFuels.put(2, new Recipe_GT(
+		mRocketFuels.put(2, new GTPP_Recipe(
 				true,
 				new ItemStack[] {},
 				new ItemStack[] {},
@@ -318,7 +318,7 @@ public class RocketFuels extends ItemPackage {
 				0,
 				768)); //Fuel Value
 
-		mRocketFuels.put(3, new Recipe_GT(
+		mRocketFuels.put(3, new GTPP_Recipe(
 				true,
 				new ItemStack[] {},
 				new ItemStack[] {},
@@ -336,11 +336,11 @@ public class RocketFuels extends ItemPackage {
 
 		mValidRocketFuelNames.add(FluidRegistry.getFluidName(Diesel));
 		for (int mID : mRocketFuels.keySet()) {
-			Recipe_GT aFuelRecipe = mRocketFuels.get(mID);
+			GTPP_Recipe aFuelRecipe = mRocketFuels.get(mID);
 			if (aFuelRecipe != null) {
 				mValidRocketFuelNames.add(FluidRegistry.getFluidName(aFuelRecipe.mFluidInputs[0].getFluid()));
 				mValidRocketFuels.put(mID, aFuelRecipe.mFluidInputs[0].getFluid());
-				Recipe_GT.Gregtech_Recipe_Map.sRocketFuels.add(aFuelRecipe);		
+				GTPP_Recipe.GTPP_Recipe_Map.sRocketFuels.add(aFuelRecipe);		
 			}
 		}
 
@@ -1007,8 +1007,8 @@ public class RocketFuels extends ItemPackage {
 		return true;
 	}
 
-	private static Recipe_GT getHalfBakedRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, int aEU) {
-		return new Recipe_GT(false,	aInputs, null, null, null, aFluidInputs, null, 0, aEU, 0);
+	private static GTPP_Recipe getHalfBakedRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, int aEU) {
+		return new GTPP_Recipe(false,	aInputs, null, null, null, aFluidInputs, null, 0, aEU, 0);
 
 	}
 

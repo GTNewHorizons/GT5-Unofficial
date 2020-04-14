@@ -16,7 +16,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_FoodStat;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gregtech.common.covers.GT_Cover_Arm;
 import gregtech.common.covers.GT_Cover_Conveyor;
 import gregtech.common.covers.GT_Cover_Pump;
@@ -200,7 +200,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Pellet_RTG_SR90.set(this.addItem(42, StringUtils.superscript("90")+"Sr Pellet", "", new Object[]{getTcAspectStack(TC_Aspects.RADIO, 4L), getTcAspectStack(TC_Aspects.POTENTIA, 2L), getTcAspectStack(TC_Aspects.METALLUM, 2L)}));
 		GregtechItemList.Pellet_RTG_PO210.set(this.addItem(43, StringUtils.superscript("210")+"Po Pellet", "", new Object[]{getTcAspectStack(TC_Aspects.RADIO, 4L), getTcAspectStack(TC_Aspects.POTENTIA, 2L), getTcAspectStack(TC_Aspects.METALLUM, 2L)}));
 		GregtechItemList.Pellet_RTG_AM241.set(this.addItem(44, StringUtils.superscript("241")+"Am Pellet", "", new Object[]{getTcAspectStack(TC_Aspects.RADIO, 4L), getTcAspectStack(TC_Aspects.POTENTIA, 2L), getTcAspectStack(TC_Aspects.METALLUM, 2L)}));
-		Recipe_GT.Gregtech_Recipe_Map.sRTGFuels.addRecipe(
+		GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.addRecipe(
 				true,
 				new ItemStack[]{GregtechItemList.Pellet_RTG_PU238.get(1)},
 				new ItemStack[]{},
@@ -210,7 +210,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 				0,
 				64,
 				MathUtils.roundToClosestInt(87.7f));
-		Recipe_GT.Gregtech_Recipe_Map.sRTGFuels.addRecipe(
+		GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.addRecipe(
 				true,
 				new ItemStack[]{GregtechItemList.Pellet_RTG_SR90.get(1)},
 				new ItemStack[]{},
@@ -220,7 +220,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 				0,
 				32,
 				MathUtils.roundToClosestInt(28.8f));
-		Recipe_GT.Gregtech_Recipe_Map.sRTGFuels.addRecipe(
+		GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.addRecipe(
 				true,
 				new ItemStack[]{GregtechItemList.Pellet_RTG_PO210.get(1)},
 				new ItemStack[]{},
@@ -230,7 +230,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 				0,
 				512,
 				MathUtils.roundToClosestInt(1f));
-		Recipe_GT.Gregtech_Recipe_Map.sRTGFuels.addRecipe(
+		GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.addRecipe(
 				true,
 				new ItemStack[]{GregtechItemList.Pellet_RTG_AM241.get(1)},
 				new ItemStack[]{},

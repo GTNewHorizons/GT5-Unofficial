@@ -19,6 +19,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.NoConflictGTRecipeMap;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.data.AES;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.nei.GT_NEI_MultiBlockHandler;
@@ -32,19 +33,90 @@ import net.minecraftforge.fluids.FluidStack;
  * @author Alkalus
  *
  */
-public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
+public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 
-	public Recipe_GT(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecialItems, final int[] aChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+	private final String mRecipeHash;
+	private final AutoMap<Integer> mHashMap = new AutoMap<Integer>();	
+	private static final AES mEncoder = new AES("RecipeChecking");
+	
+	public GTPP_Recipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecialItems, final int[] aChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
 		super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
 		//Logger.SPECIFIC_WARNING(this.getClass().getName()+" | [GregtechRecipe]", "Created new recipe instance for "+ItemUtils.getArrayStackNames(aInputs), 167);
+		mRecipeHash = getRecipeHash(this);
+		mHashMap.addAll(convertStringDataToInts(getEncodedRecipeData(this)));
 	}
 
-	public Recipe_GT(final ItemStack aInput1, final ItemStack aOutput1, final int aFuelValue, final int aType) {
+	public GTPP_Recipe(final ItemStack aInput1, final ItemStack aOutput1, final int aFuelValue, final int aType) {
 		this(aInput1, aOutput1, null, null, null, aFuelValue, aType);
+	}
+	
+	private static AutoMap<Integer> convertStringDataToInts(AutoMap<String> aData){
+		AutoMap<Integer> aMap = new AutoMap<Integer>();
+		for (String string : aData) {
+			aMap.add(string.hashCode());
+		}
+		return aMap;
+	}
+	
+	private static AutoMap<String> getEncodedRecipeData(GTPP_Recipe aRecipe){
+		AutoMap<String> aData = new AutoMap<String>();
+		aData.add(mEncoder.encode(aRecipe.mRecipeHash));
+		aData.add(mEncoder.encode(""+aRecipe.mCanBeBuffered));
+		aData.add(mEncoder.encode(""+aRecipe.mHidden));
+		aData.add(mEncoder.encode(""+aRecipe.mEnabled));
+		aData.add(mEncoder.encode(""+aRecipe.mDuration));
+		aData.add(mEncoder.encode(""+aRecipe.mEUt));
+		aData.add(mEncoder.encode(""+aRecipe.mFakeRecipe));
+		aData.add(mEncoder.encode(""+aRecipe.mSpecialItems));
+		aData.add(mEncoder.encode(aRecipe.mChances.toString()));
+		aData.add(mEncoder.encode(aRecipe.mInputs.toString()));
+		aData.add(mEncoder.encode(aRecipe.mOutputs.toString()));
+		aData.add(mEncoder.encode(aRecipe.mFluidInputs.toString()));
+		aData.add(mEncoder.encode(aRecipe.mFluidOutputs.toString()));		
+		return aData;
+	}
+	
+	public static String getRecipeHash(GT_Recipe aRecipe) {	
+		String aEncoderString = mEncoder.encode(aRecipe.toString());
+		return aEncoderString;
+	}
+	
+	private final void checkModified() {
+		if (hasBeenModified()) {
+			CORE.crash("Someone has edited an internal GT++ recipe, which is no longer allowed. Please complain to whoever has done this, not Alkalus.");
+		}
+	}
+	
+	private final boolean hasBeenModified() {
+		String aEncoderString = mEncoder.encode(this.toString());
+		boolean aBasicHashCheck = mRecipeHash.equals(aEncoderString);
+		if (!aBasicHashCheck) {
+			Logger.INFO("This Recipe Hash: "+aEncoderString);
+			Logger.INFO("Expected Hash Code: "+mRecipeHash);
+			return true;
+		}
+		AutoMap<Integer> aData = new AutoMap<Integer>();
+		aData.addAll(convertStringDataToInts(getEncodedRecipeData(this)));
+		long aHashTotal = 0;
+		long aExpectedHashTotal = 0;
+		for (int a : aData) {
+			aHashTotal += a;
+		}
+		for (int a : mHashMap) {
+			aExpectedHashTotal += a;
+		}
+		if (aHashTotal != aExpectedHashTotal) {
+			Logger.INFO("This Recipe Hash: "+aEncoderString);
+			Logger.INFO("Expected Hash Code: "+mRecipeHash);
+			Logger.INFO("This Recipe Hash: "+aHashTotal);
+			Logger.INFO("Expected Hash Code: "+aExpectedHashTotal);
+			return true;
+		}		
+		return false;
 	}
 
 	// aSpecialValue = EU per Liter! If there is no Liquid for this Object, then it gets multiplied with 1000!
-	public Recipe_GT(final ItemStack aInput1, final ItemStack aOutput1, final ItemStack aOutput2, final ItemStack aOutput3, final ItemStack aOutput4, final int aSpecialValue, final int aType) {
+	public GTPP_Recipe(final ItemStack aInput1, final ItemStack aOutput1, final ItemStack aOutput2, final ItemStack aOutput3, final ItemStack aOutput4, final int aSpecialValue, final int aType) {
 		this(true, new ItemStack[]{aInput1}, new ItemStack[]{aOutput1, aOutput2, aOutput3, aOutput4}, null, null, null, null, 0, 0, Math.max(1, aSpecialValue));
 
 		Logger.WARNING("Switch case method for adding fuels");
@@ -53,15 +125,15 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 				// Diesel Generator
 				case 0:
 					Logger.WARNING("Added fuel "+aInput1.getDisplayName()+" is ROCKET FUEL - continuing");
-					Gregtech_Recipe_Map.sRocketFuels.addRecipe(this);
+					GTPP_Recipe_Map.sRocketFuels.addRecipe(this);
 					break;
 					// Gas Turbine
 				case 1:
-					Gregtech_Recipe_Map.sGeoThermalFuels.addRecipe(this);
+					GTPP_Recipe_Map.sGeoThermalFuels.addRecipe(this);
 					break;
 					// Thermal Generator
 				case 2:
-					Gregtech_Recipe_Map.sRTGFuels.addRecipe(this);
+					GTPP_Recipe_Map.sRTGFuels.addRecipe(this);
 					break;
 					// Plasma Generator
 				case 4:
@@ -80,21 +152,21 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 	}
 
 	//Custom Recipe Handlers
-	public Recipe_GT(final ItemStack aInput, final FluidStack aFluid, final ItemStack[] aOutput, final int aDuration, final int aEUt) {
+	public GTPP_Recipe(final ItemStack aInput, final FluidStack aFluid, final ItemStack[] aOutput, final int aDuration, final int aEUt) {
 		this(true, new ItemStack[]{aInput}, aOutput.clone(), null, null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
 		if ((this.mInputs.length > 0) && (this.mOutputs[0] != null)) {
-			Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(this);
+			GTPP_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(this);
 		}
 	}
 
-	public Recipe_GT(final FluidStack aInput1, final FluidStack aInput2, final FluidStack aOutput1, final int aDuration, final int aEUt, final int aSpecialValue) {
+	public GTPP_Recipe(final FluidStack aInput1, final FluidStack aInput2, final FluidStack aOutput1, final int aDuration, final int aEUt, final int aSpecialValue) {
 		this(true, null, null, null, null, new FluidStack[]{aInput1, aInput2}, new FluidStack[]{aOutput1}, Math.max(aDuration, 1), aEUt, Math.max(Math.min(aSpecialValue, 160000000), 0));
 		if (this.mInputs.length > 1) {
-			Gregtech_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.addRecipe(this);
+			GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.addRecipe(this);
 		}
 	}
 
-	public Recipe_GT(
+	public GTPP_Recipe(
 			final FluidStack aInput1, final FluidStack aInput2, final FluidStack aInput3,
 			final FluidStack aInput4, final FluidStack aInput5, final FluidStack aInput6,
 			final FluidStack aInput7, final FluidStack aInput8, final FluidStack aInput9,
@@ -116,8 +188,37 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 
 	public static void reInit() {
 		GT_Log.out.println("GT_Mod: Re-Unificating Recipes.");
-		for (final Gregtech_Recipe_Map tMapEntry : Gregtech_Recipe_Map.sMappings) {
+		for (final GTPP_Recipe_Map tMapEntry : GTPP_Recipe_Map.sMappings) {
 			tMapEntry.reInit();
+			if (tMapEntry != null && tMapEntry.mRecipeList != null && !tMapEntry.mRecipeList.isEmpty()) {
+				for (GT_Recipe aRecipe : tMapEntry.mRecipeList) {
+					checkRecipeOwnership(aRecipe);					
+				}
+			}
+		}
+		for (final GTPP_Recipe_Map_Internal tMapEntry : GTPP_Recipe_Map_Internal.sMappingsEx) {
+			tMapEntry.reInit();
+			if (tMapEntry != null && tMapEntry.mRecipeList != null && !tMapEntry.mRecipeList.isEmpty()) {
+				for (GT_Recipe aRecipe : tMapEntry.mRecipeList) {
+					checkRecipeOwnership(aRecipe);					
+				}
+			}
+		}		
+	}
+	
+	private final static boolean checkRecipeOwnership(GT_Recipe aRecipe) {
+		if (aRecipe != null && aRecipe instanceof GTPP_Recipe) {
+			GTPP_Recipe nRecipe = (GTPP_Recipe) aRecipe;
+			GTPP_Recipe_Map_Internal.mHashedRecipes.put(nRecipe.hashCode(), nRecipe);
+			return true;
+		}		
+		return false;
+	}
+	
+	public final static void checkRecipeModifications() {
+		for (GTPP_Recipe aRecipe : GTPP_Recipe_Map_Internal.mHashedRecipes.values()) {
+			Logger.INFO("Checking recipe: "+aRecipe.hashCode());
+			aRecipe.checkModified();
 		}
 	}
 
@@ -235,40 +336,53 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 
 		return true;
 	}
+	
+	public static class GTPP_Recipe_Map_Internal extends GT_Recipe_Map {
 
-	public static class Gregtech_Recipe_Map {
+		public static final Collection<GTPP_Recipe_Map_Internal> sMappingsEx = new ArrayList<>();
+		private static final HashMap<Integer, GTPP_Recipe> mHashedRecipes = new HashMap<Integer, GTPP_Recipe>();
+		
+		public GTPP_Recipe_Map_Internal(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
+			super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
+			GT_Recipe_Map.sMappings.remove(this);
+			GTPP_Recipe_Map_Internal.sMappingsEx.add(this);
+		}
+		
+	}
+
+	public static class GTPP_Recipe_Map {
 		/**
 		 * Contains all Recipe Maps
 		 */
-		public static final Collection<Gregtech_Recipe_Map> sMappings = new ArrayList<>();
+		public static final Collection<GTPP_Recipe_Map> sMappings = new ArrayList<>();
 		//public static final GT_Recipe_Map sChemicalBathRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.chemicalbath", "Chemical Bath", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
-		public static final GT_Recipe_Map sCokeOvenRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.cokeoven", "Coke Oven", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 2, 1, 0, 1, E, 1, E, true, true);
-		public static final GT_Recipe_Map sMatterFab2Recipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.matterfab2", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Default", 9, 9, 0, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sCokeOvenRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gt.recipe.cokeoven", "Coke Oven", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 2, 1, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sMatterFab2Recipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gt.recipe.matterfab2", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Default", 9, 9, 0, 0, 1, E, 1, E, true, true);
 		//public static final Gregtech_Recipe_Map sMatterFabRecipes = new Gregtech_Recipe_Map(new HashSet<GregtechRecipe>(200), "gt.recipe.matterfab", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Massfabricator", 1, 3, 1, 1, 1, E, 1, E, true, true);
 		
 		public static final GT_Recipe_Map_Fuel sRocketFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.rocketenginefuel", "Rocket Engine Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 3000, " EU", true, true);
        
-		public static final GT_Recipe_Map sGeoThermalFuels = new GT_Recipe_Map(new HashSet<GT_Recipe>(10), "gt.recipe.geothermalfuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-		public static final GT_Recipe_Map sChemicalDehydratorRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.chemicaldehydrator", "Dehydrator", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 9, 0, 0, 1, E, 1, E, true, true);
-		public static final GT_Recipe_Map sVacuumFurnaceRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(500), "gt.recipe.vacfurnace", "Vacuum Furnace", null, "gregtech:textures/gui/basicmachines/Default", 6, 6, 1, 0, 1, "Heat Capacity: ", 1, " K", false, true);
-		public static final GT_Recipe_Map sAlloyBlastSmelterRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.alloyblastsmelter", "Alloy Blast Smelter", null, RES_PATH_GUI + "basicmachines/BlastSmelter", 9, 9, 1, 0, 1, E, 1, E, true, true);
-		public static final GT_Recipe_Map sSteamTurbineFuels = new GT_Recipe_Map(new HashSet<GT_Recipe>(10), "gt.recipe.geothermalfuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+		public static final GTPP_Recipe_Map_Internal sGeoThermalFuels = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10), "gt.recipe.geothermalfuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+		public static final GTPP_Recipe_Map_Internal sChemicalDehydratorRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gt.recipe.chemicaldehydrator", "Dehydrator", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 9, 0, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sVacuumFurnaceRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(500), "gt.recipe.vacfurnace", "Vacuum Furnace", null, "gregtech:textures/gui/basicmachines/Default", 6, 6, 1, 0, 1, "Heat Capacity: ", 1, " K", false, true);
+		public static final GTPP_Recipe_Map_Internal sAlloyBlastSmelterRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gt.recipe.alloyblastsmelter", "Alloy Blast Smelter", null, RES_PATH_GUI + "basicmachines/BlastSmelter", 9, 9, 1, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sSteamTurbineFuels = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10), "gt.recipe.geothermalfuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
 
 		//LFTR recipes
-		public static final GT_Recipe_Map sLiquidFluorineThoriumReactorRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.lftr", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
-		public static final GT_Recipe_Map sLiquidFluorineThoriumReactorRecipesEx = new GT_Recipe_Map(new NoConflictGTRecipeMap(), "gt.recipe.lftr.2", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
+		public static final GTPP_Recipe_Map_Internal sLiquidFluorineThoriumReactorRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(50), "gt.recipe.lftr", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
+		public static final GTPP_Recipe_Map_Internal sLiquidFluorineThoriumReactorRecipesEx = new GTPP_Recipe_Map_Internal(new NoConflictGTRecipeMap(), "gt.recipe.lftr.2", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
 		
 		// Ore Milling Map
-        public static final GT_Recipe_Map sOreMillRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(10000), "gt.recipe.oremill", "Milling", null, RES_PATH_GUI + "basicmachines/LFTR", 3, 4, 1, 0, 1, E, 1, E, true, false);
+        public static final GTPP_Recipe_Map_Internal sOreMillRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gt.recipe.oremill", "Milling", null, RES_PATH_GUI + "basicmachines/LFTR", 3, 4, 1, 0, 1, E, 1, E, true, false);
 		
 		//Fission Fuel Plant Recipes
-		//public static final GT_Recipe_Map sFissionFuelProcessing = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 9, 1, E, 1, E, true, true);
+		//public static final GTPP_Recipe_Map sFissionFuelProcessing = new GTPP_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 9, 1, E, 1, E, true, true);
 
 		//Basic Washer Map
-		public static final GT_Recipe_Map sSimpleWasherRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(3), "gt.recipe.simplewasher", "Simple Dust Washer", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sSimpleWasherRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gt.recipe.simplewasher", "Simple Dust Washer", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, true);
 		
-		public static final Gregtech_Recipe_Map sChemicalPlantRecipes = new Gregtech_Recipe_Map(
-				new HashSet<Recipe_GT>(100),
+		public static final GTPP_Recipe_Map sChemicalPlantRecipes = new GTPP_Recipe_Map(
+				new HashSet<GTPP_Recipe>(100),
 				"gt.recipe.fluidchemicaleactor",
 				"Chemical Plant",
 				null,
@@ -282,11 +396,11 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 				1,
 				E,
 				true,
-				true);
+				false);
 
 
 		//RTG Fuel Map
-		public static final GT_Recipe.GT_Recipe_Map_Fuel sRTGFuels = new Recipe_GT.GT_Recipe_Map_Fuel(
+		public static final GT_Recipe.GT_Recipe_Map_Fuel sRTGFuels = new GTPP_Recipe.GT_Recipe_Map_Fuel(
 				new HashSet<GT_Recipe>(10), "gt.recipe.RTGgenerators", "RTG", null,
 				"gregtech:textures/gui/basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 365, " Minecraft Days", true, true);
 
@@ -296,15 +410,15 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 				"Fuel Value: ", 1000, " EU", true, false);
 
 		//Cyclotron recipe map
-		public static final GT_Recipe_Map sCyclotronRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.cyclotron", "COMET - Compact Cyclotron", null, RES_PATH_GUI + "basicmachines/BlastSmelter", 2, 16, 0, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sCyclotronRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gt.recipe.cyclotron", "COMET - Compact Cyclotron", null, RES_PATH_GUI + "basicmachines/BlastSmelter", 2, 16, 0, 0, 1, E, 1, E, true, true);
 
 		//Advanced Mixer
-		public static final GT_Recipe_Map sAdvancedMixerRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(1000), "gt.recipe.advanced.mixer",
+		public static final GTPP_Recipe_Map_Internal sAdvancedMixerRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(1000), "gt.recipe.advanced.mixer",
 				"Advanced Material Combiner", null, "gregtech:textures/gui/basicmachines/MixerAdvanced", 4, 4, 1, 0, 2, "", 1, "", true, true);
 
 
 		//Mini Fusion
-		public static final GT_Recipe_Map sSlowFusionRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.slowfusionreactor",
+		public static final GTPP_Recipe_Map_Internal sSlowFusionRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(50), "gt.recipe.slowfusionreactor",
 				"Mimir - Slow Fusion", null, "gregtech:textures/gui/basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1,
 				" EU", true, true);
 
@@ -313,20 +427,20 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		public static final GT_Recipe_Map sComponentAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<GT_Recipe>(300), "gt.recipe.componentassembler", "Component Assembler", null, RES_PATH_GUI + "basicmachines/Assembler", 6, 1, 1, 0, 1, E, 1, E, true, true);
 		
 		//Special Maps for Multis
-		public static final GT_Recipe_Map sFishPondRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(3), "gt.recipe.fishpond", "Zhuhai - Fishing Port", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 1, 0, 0, 1, "Requires Circuit: ", 1, ".", true, true);
-		public static final Gregtech_Recipe_Map sMultiblockCentrifugeRecipes = new GT_Recipe_Map_LargeCentrifuge();
-		public static final Gregtech_Recipe_Map sMultiblockElectrolyzerRecipes = new GT_Recipe_Map_LargeElectrolyzer();
-		public static final Gregtech_Recipe_Map sAdvFreezerRecipes = new GT_Recipe_Map_AdvancedVacuumFreezer();
-		public static final GT_Recipe_Map sAdvFreezerRecipes_GT = new GT_Recipe_Map(new HashSet<GT_Recipe>(2000), "gt.recipe.temp", "temp", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
-		public static final GT_Recipe_Map sMultiblockCentrifugeRecipes_GT = new GT_Recipe_Map(new HashSet<GT_Recipe>(2000), "gt.recipe.temp2", "temp2", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
-		public static final GT_Recipe_Map sMultiblockElectrolyzerRecipes_GT = new GT_Recipe_Map(new HashSet<GT_Recipe>(2000), "gt.recipe.temp3", "temp3", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
-		public static final GT_Recipe_Map sChemicalPlant_GT = new GT_Recipe_Map(new HashSet<GT_Recipe>(2000), "gt.recipe.temp4", "temp4", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
+		public static final GTPP_Recipe_Map_Internal sFishPondRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gt.recipe.fishpond", "Zhuhai - Fishing Port", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 1, 0, 0, 1, "Requires Circuit: ", 1, ".", true, true);
+		public static final GTPP_Recipe_Map sMultiblockCentrifugeRecipes = new GT_Recipe_Map_LargeCentrifuge();
+		public static final GTPP_Recipe_Map sMultiblockElectrolyzerRecipes = new GT_Recipe_Map_LargeElectrolyzer();
+		public static final GTPP_Recipe_Map sAdvFreezerRecipes = new GT_Recipe_Map_AdvancedVacuumFreezer();
+		public static final GTPP_Recipe_Map_Internal sAdvFreezerRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.temp", "temp", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
+		public static final GTPP_Recipe_Map_Internal sMultiblockCentrifugeRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.temp2", "temp2", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
+		public static final GTPP_Recipe_Map_Internal sMultiblockElectrolyzerRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.temp3", "temp3", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
+		public static final GTPP_Recipe_Map_Internal sChemicalPlant_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.temp4", "temp4", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
 
 		//Semi-Fluid Fuel Map 
 		public static final GT_Recipe_Map_Fuel sSemiFluidLiquidFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.semifluidgeneratorfuels", "Semifluid Generator Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
 		
 		// Flotation Cell
-        public static final GT_Recipe_Map sFlotationCellRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(10000), "gt.recipe.flotationcell", "Flotation Cell", null, RES_PATH_GUI + "basicmachines/LFTR", 6, 4, 1, 1, 1, "Ore Key: ", 1, E, true, false);
+        public static final GTPP_Recipe_Map_Internal sFlotationCellRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gt.recipe.flotationcell", "Flotation Cell", null, RES_PATH_GUI + "basicmachines/LFTR", 6, 4, 1, 1, 1, "Ore Key: ", 1, E, true, false);
 		
         
 		
@@ -334,15 +448,15 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		/**
 		 * HashMap of Recipes based on their Items
 		 */
-		public final Map<GT_ItemStack, Collection<Recipe_GT>> mRecipeItemMap = new HashMap<>();
+		public final Map<GT_ItemStack, Collection<GTPP_Recipe>> mRecipeItemMap = new HashMap<>();
 		/**
 		 * HashMap of Recipes based on their Fluids
 		 */
-		public final Map<Fluid, Collection<Recipe_GT>> mRecipeFluidMap = new HashMap<>();
+		public final Map<Fluid, Collection<GTPP_Recipe>> mRecipeFluidMap = new HashMap<>();
 		/**
 		 * The List of all Recipes
 		 */
-		public final Collection<Recipe_GT> mRecipeList;
+		public final Collection<GTPP_Recipe> mRecipeList;
 		/**
 		 * String used as an unlocalised Name.
 		 */
@@ -373,7 +487,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		 * @param aNEISpecialValuePost       the String after the Special Value. Usually for a Unit or something.
 		 * @param aNEIAllowed                if NEI is allowed to display this Recipe Handler in general.
 		 */
-		public Gregtech_Recipe_Map(final Collection<Recipe_GT> aRecipeList,
+		public GTPP_Recipe_Map(final Collection<GTPP_Recipe> aRecipeList,
 				final String aUnlocalizedName, final String aLocalName, final String aNEIName,
 				final String aNEIGUIPath, final int aUsualInputCount,
 				final int aUsualOutputCount, final int aMinimalInputItems,
@@ -400,20 +514,20 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			GT_LanguageManager.addStringLocalization(this.mUnlocalizedName = aUnlocalizedName, aLocalName);
 		}
 
-		public Recipe_GT addRecipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-			return this.addRecipe(new Recipe_GT(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+		public GTPP_Recipe addRecipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+			return this.addRecipe(new GTPP_Recipe(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
 		}
 
-		public Recipe_GT addRecipe(final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-			return this.addRecipe(new Recipe_GT(false, null, null, null, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue), false, false, false);
+		public GTPP_Recipe addRecipe(final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+			return this.addRecipe(new GTPP_Recipe(false, null, null, null, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue), false, false, false);
 		}
 
-		public Recipe_GT addRecipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-			return this.addRecipe(new Recipe_GT(aOptimize, aInputs, aOutputs, aSpecial, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+		public GTPP_Recipe addRecipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+			return this.addRecipe(new GTPP_Recipe(aOptimize, aInputs, aOutputs, aSpecial, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
 		}
 
-		public Recipe_GT addRecipe(final boolean aOptimize, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-			return this.addRecipe(new Recipe_GT(aOptimize, null, null, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+		public GTPP_Recipe addRecipe(final boolean aOptimize, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+			return this.addRecipe(new GTPP_Recipe(aOptimize, null, null, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
 		}
 
 		/*public GregtechRecipe addRecipe(boolean aOptimize, FluidStack aInput1, FluidStack aOutput1, ItemStack[] bInput1, ItemStack[] bOutput1, int aDuration, int aEUt, int aSpecialValue) {
@@ -421,12 +535,12 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 
 			}*/
 
-		public Recipe_GT addRecipe(final Recipe_GT aRecipe) {
+		public GTPP_Recipe addRecipe(final GTPP_Recipe aRecipe) {
 			Logger.WARNING("Adding Recipe Method 1");
 			return this.addRecipe(aRecipe, true, false, false);
 		}
 
-		protected Recipe_GT addRecipe(final Recipe_GT aRecipe, final boolean aCheckForCollisions, final boolean aFakeRecipe, final boolean aHidden) {
+		protected GTPP_Recipe addRecipe(final GTPP_Recipe aRecipe, final boolean aCheckForCollisions, final boolean aFakeRecipe, final boolean aHidden) {
 			Logger.WARNING("Adding Recipe Method 2 - This Checks if hidden, fake or if duplicate recipes exists, I think.");
 			aRecipe.mHidden = aHidden;
 			aRecipe.mFakeRecipe = aFakeRecipe;
@@ -449,31 +563,31 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		/**
 		 * Only used for fake Recipe Handlers to show something in NEI, do not use this for adding actual Recipes! findRecipe wont find fake Recipes, containsInput WILL find fake Recipes
 		 */
-		public Recipe_GT addFakeRecipe(final boolean aCheckForCollisions, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-			return this.addFakeRecipe(aCheckForCollisions, new Recipe_GT(false, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+		public GTPP_Recipe addFakeRecipe(final boolean aCheckForCollisions, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+			return this.addFakeRecipe(aCheckForCollisions, new GTPP_Recipe(false, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
 		}
 
 		/**
 		 * Only used for fake Recipe Handlers to show something in NEI, do not use this for adding actual Recipes! findRecipe wont find fake Recipes, containsInput WILL find fake Recipes
 		 */
-		public Recipe_GT addFakeRecipe(final boolean aCheckForCollisions, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-			return this.addFakeRecipe(aCheckForCollisions, new Recipe_GT(false, aInputs, aOutputs, aSpecial, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+		public GTPP_Recipe addFakeRecipe(final boolean aCheckForCollisions, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+			return this.addFakeRecipe(aCheckForCollisions, new GTPP_Recipe(false, aInputs, aOutputs, aSpecial, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
 		}
 
 		/**
 		 * Only used for fake Recipe Handlers to show something in NEI, do not use this for adding actual Recipes! findRecipe wont find fake Recipes, containsInput WILL find fake Recipes
 		 */
-		public Recipe_GT addFakeRecipe(final boolean aCheckForCollisions, final Recipe_GT aRecipe) {
+		public GTPP_Recipe addFakeRecipe(final boolean aCheckForCollisions, final GTPP_Recipe aRecipe) {
 			return this.addRecipe(aRecipe, aCheckForCollisions, true, false);
 		}
 
-		public Recipe_GT add(final Recipe_GT aRecipe) {
+		public GTPP_Recipe add(final GTPP_Recipe aRecipe) {
 			Logger.WARNING("Adding Recipe Method 3");
 			this.mRecipeList.add(aRecipe);
 			for (final FluidStack aFluid : aRecipe.mFluidInputs) {
 				if (aFluid != null) {
 					Logger.WARNING("Fluid is valid - getting some kind of fluid instance to add to the recipe hashmap.");
-					Collection<Recipe_GT> tList = this.mRecipeFluidMap.get(aFluid.getFluid());
+					Collection<GTPP_Recipe> tList = this.mRecipeFluidMap.get(aFluid.getFluid());
 					if (tList == null) {
 						this.mRecipeFluidMap.put(aFluid.getFluid(), tList = new HashSet<>(1));
 					}
@@ -484,11 +598,11 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		}
 
 		public void reInit() {
-			final Map<GT_ItemStack, Collection<Recipe_GT>> tMap = this.mRecipeItemMap;
+			final Map<GT_ItemStack, Collection<GTPP_Recipe>> tMap = this.mRecipeItemMap;
 			if (tMap != null) {
 				tMap.clear();
 			}
-			for (final Recipe_GT tRecipe : this.mRecipeList) {
+			for (final GTPP_Recipe tRecipe : this.mRecipeList) {
 				GT_OreDictUnificator.setStackArray(true, tRecipe.mInputs);
 				GT_OreDictUnificator.setStackArray(true, tRecipe.mOutputs);
 				if (tMap != null) {
@@ -518,11 +632,11 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			return (aFluid != null) && this.mRecipeFluidMap.containsKey(aFluid);
 		}
 
-		public Recipe_GT findRecipe(final IHasWorldObjectAndCoords aTileEntity, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack... aInputs) {
+		public GTPP_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack... aInputs) {
 			return this.findRecipe(aTileEntity, null, aNotUnificated, aVoltage, aFluids, null, aInputs);
 		}
 
-		public Recipe_GT findRecipe(final IHasWorldObjectAndCoords aTileEntity, final Recipe_GT aRecipe, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack... aInputs) {
+		public GTPP_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GTPP_Recipe aRecipe, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack... aInputs) {
 			return this.findRecipe(aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, null, aInputs);
 		}
 
@@ -538,7 +652,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		 * @param aInputs        the Item Inputs
 		 * @return the Recipe it has found or null for no matching Recipe
 		 */
-		public Recipe_GT findRecipe(final IHasWorldObjectAndCoords aTileEntity, final Recipe_GT aRecipe, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack aSpecialSlot, ItemStack... aInputs) {
+		public GTPP_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GTPP_Recipe aRecipe, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack aSpecialSlot, ItemStack... aInputs) {
 			// No Recipes? Well, nothing to be found then.
 			if (this.mRecipeList.isEmpty()) {
 				return null;
@@ -593,10 +707,10 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			if ((this.mUsualInputCount > 0) && (aInputs != null)) {
 				for (final ItemStack tStack : aInputs) {
 					if (tStack != null) {
-						Collection<Recipe_GT>
+						Collection<GTPP_Recipe>
 						tRecipes = this.mRecipeItemMap.get(new GT_ItemStack(tStack));
 						if (tRecipes != null) {
-							for (final Recipe_GT tRecipe : tRecipes) {
+							for (final GTPP_Recipe tRecipe : tRecipes) {
 								if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
 									return tRecipe.mEnabled && ((aVoltage * this.mAmperage) >= tRecipe.mEUt) ? tRecipe : null;
 								}
@@ -604,7 +718,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 						}
 						tRecipes = this.mRecipeItemMap.get(new GT_ItemStack(GT_Utility.copyMetaData(W, tStack)));
 						if (tRecipes != null) {
-							for (final Recipe_GT tRecipe : tRecipes) {
+							for (final GTPP_Recipe tRecipe : tRecipes) {
 								if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
 									return tRecipe.mEnabled && ((aVoltage * this.mAmperage) >= tRecipe.mEUt) ? tRecipe : null;
 								}
@@ -618,10 +732,10 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			if ((this.mMinimalInputItems == 0) && (aFluids != null)) {
 				for (final FluidStack aFluid : aFluids) {
 					if (aFluid != null) {
-						final Collection<Recipe_GT>
+						final Collection<GTPP_Recipe>
 						tRecipes = this.mRecipeFluidMap.get(aFluid.getFluid());
 						if (tRecipes != null) {
-							for (final Recipe_GT tRecipe : tRecipes) {
+							for (final GTPP_Recipe tRecipe : tRecipes) {
 								if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
 									return tRecipe.mEnabled && ((aVoltage * this.mAmperage) >= tRecipe.mEUt) ? tRecipe : null;
 								}
@@ -635,14 +749,14 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			return null;
 		}
 
-		protected Recipe_GT addToItemMap(final Recipe_GT aRecipe) {
+		protected GTPP_Recipe addToItemMap(final GTPP_Recipe aRecipe) {
 			Logger.WARNING("Adding Recipe Method 4");
 			for (final ItemStack aStack : aRecipe.mInputs) {
 				if (aStack != null) {
 					Logger.WARNING("Method 4 - Manipulating "+aStack.getDisplayName());
 					final GT_ItemStack tStack = new GT_ItemStack(aStack);
 					Logger.WARNING("Method 4 - Made gt stack of item "+tStack.toStack().getDisplayName());
-					Collection<Recipe_GT> tList = this.mRecipeItemMap.get(tStack);
+					Collection<GTPP_Recipe> tList = this.mRecipeItemMap.get(tStack);
 					if (tList != null){
 						Logger.WARNING("Method 4 - Gt Recipe Hashmap: "+tList.toString());
 					}
@@ -663,7 +777,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			return aRecipe;
 		}
 
-		public Recipe_GT findRecipe(final IGregTechTileEntity baseMetaTileEntity, final Recipe_GT aRecipe, final boolean aNotUnificated,
+		public GTPP_Recipe findRecipe(final IGregTechTileEntity baseMetaTileEntity, final GTPP_Recipe aRecipe, final boolean aNotUnificated,
 				final long aVoltage, final FluidStack[] aFluids, final FluidStack[] fluidStacks) {
 
 			ItemStack aInputs[] = null;
@@ -721,10 +835,10 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			if ((this.mUsualInputCount > 0) && (aInputs != null)) {
 				for (final ItemStack tStack : aInputs) {
 					if (tStack != null) {
-						Collection<Recipe_GT>
+						Collection<GTPP_Recipe>
 						tRecipes = this.mRecipeItemMap.get(new GT_ItemStack(tStack));
 						if (tRecipes != null) {
-							for (final Recipe_GT tRecipe : tRecipes) {
+							for (final GTPP_Recipe tRecipe : tRecipes) {
 								if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
 									return tRecipe.mEnabled && ((aVoltage * this.mAmperage) >= tRecipe.mEUt) ? tRecipe : null;
 								}
@@ -732,7 +846,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 						}
 						tRecipes = this.mRecipeItemMap.get(new GT_ItemStack(GT_Utility.copyMetaData(W, tStack)));
 						if (tRecipes != null) {
-							for (final Recipe_GT tRecipe : tRecipes) {
+							for (final GTPP_Recipe tRecipe : tRecipes) {
 								if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
 									return tRecipe.mEnabled && ((aVoltage * this.mAmperage) >= tRecipe.mEUt) ? tRecipe : null;
 								}
@@ -746,10 +860,10 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			if ((this.mMinimalInputItems == 0) && (aFluids != null)) {
 				for (final FluidStack aFluid : aFluids) {
 					if (aFluid != null) {
-						final Collection<Recipe_GT>
+						final Collection<GTPP_Recipe>
 						tRecipes = this.mRecipeFluidMap.get(aFluid.getFluid());
 						if (tRecipes != null) {
-							for (final Recipe_GT tRecipe : tRecipes) {
+							for (final GTPP_Recipe tRecipe : tRecipes) {
 								if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
 									return tRecipe.mEnabled && ((aVoltage * this.mAmperage) >= tRecipe.mEUt) ? tRecipe : null;
 								}
@@ -771,8 +885,8 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 	/**
 	 * Abstract Class for general Recipe Handling of non GT Recipes
 	 */
-	public static abstract class GT_Recipe_Map_NonGTRecipes extends Gregtech_Recipe_Map {
-		public GT_Recipe_Map_NonGTRecipes(final Collection<Recipe_GT> aRecipeList, final String aUnlocalizedName, final String aLocalName, final String aNEIName, final String aNEIGUIPath, final int aUsualInputCount, final int aUsualOutputCount, final int aMinimalInputItems, final int aMinimalInputFluids, final int aAmperage, final String aNEISpecialValuePre, final int aNEISpecialValueMultiplier, final String aNEISpecialValuePost, final boolean aShowVoltageAmperageInNEI, final boolean aNEIAllowed) {
+	public static abstract class GT_Recipe_Map_NonGTRecipes extends GTPP_Recipe_Map {
+		public GT_Recipe_Map_NonGTRecipes(final Collection<GTPP_Recipe> aRecipeList, final String aUnlocalizedName, final String aLocalName, final String aNEIName, final String aNEIGUIPath, final int aUsualInputCount, final int aUsualOutputCount, final int aMinimalInputItems, final int aMinimalInputFluids, final int aAmperage, final String aNEISpecialValuePre, final int aNEISpecialValueMultiplier, final String aNEISpecialValuePost, final boolean aShowVoltageAmperageInNEI, final boolean aNEIAllowed) {
 			super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
 		}
 
@@ -792,37 +906,37 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		}
 
 		@Override
-		public Recipe_GT addRecipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+		public GTPP_Recipe addRecipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
 			return null;
 		}
 
 		@Override
-		public Recipe_GT addRecipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+		public GTPP_Recipe addRecipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
 			return null;
 		}
 
 		@Override
-		public Recipe_GT addRecipe(final Recipe_GT aRecipe) {
+		public GTPP_Recipe addRecipe(final GTPP_Recipe aRecipe) {
 			return null;
 		}
 
 		@Override
-		public Recipe_GT addFakeRecipe(final boolean aCheckForCollisions, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+		public GTPP_Recipe addFakeRecipe(final boolean aCheckForCollisions, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final int[] aOutputChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
 			return null;
 		}
 
 		@Override
-		public Recipe_GT addFakeRecipe(final boolean aCheckForCollisions, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
+		public GTPP_Recipe addFakeRecipe(final boolean aCheckForCollisions, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecial, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
 			return null;
 		}
 
 		@Override
-		public Recipe_GT addFakeRecipe(final boolean aCheckForCollisions, final Recipe_GT aRecipe) {
+		public GTPP_Recipe addFakeRecipe(final boolean aCheckForCollisions, final GTPP_Recipe aRecipe) {
 			return null;
 		}
 
 		@Override
-		public Recipe_GT add(final Recipe_GT aRecipe) {
+		public GTPP_Recipe add(final GTPP_Recipe aRecipe) {
 			return null;
 		}
 
@@ -830,7 +944,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		public void reInit() {/**/}
 
 		@Override
-		protected Recipe_GT addToItemMap(final Recipe_GT aRecipe) {
+		protected GTPP_Recipe addToItemMap(final GTPP_Recipe aRecipe) {
 			return null;
 		}
 	}
@@ -838,51 +952,51 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 	/**
 	 * Just a Recipe Map with Utility specifically for Fuels.
 	 */
-	public static class Gregtech_Recipe_Map_Fuel extends Gregtech_Recipe_Map {
-		public Gregtech_Recipe_Map_Fuel(final Collection<Recipe_GT> aRecipeList, final String aUnlocalizedName, final String aLocalName, final String aNEIName, final String aNEIGUIPath, final int aUsualInputCount, final int aUsualOutputCount, final int aMinimalInputItems, final int aMinimalInputFluids, final int aAmperage, final String aNEISpecialValuePre, final int aNEISpecialValueMultiplier, final String aNEISpecialValuePost, final boolean aShowVoltageAmperageInNEI, final boolean aNEIAllowed) {
+	public static class Gregtech_Recipe_Map_Fuel extends GTPP_Recipe_Map {
+		public Gregtech_Recipe_Map_Fuel(final Collection<GTPP_Recipe> aRecipeList, final String aUnlocalizedName, final String aLocalName, final String aNEIName, final String aNEIGUIPath, final int aUsualInputCount, final int aUsualOutputCount, final int aMinimalInputItems, final int aMinimalInputFluids, final int aAmperage, final String aNEISpecialValuePre, final int aNEISpecialValueMultiplier, final String aNEISpecialValuePost, final boolean aShowVoltageAmperageInNEI, final boolean aNEIAllowed) {
 			super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
 		}
 
-		public Recipe_GT addFuel(final ItemStack aInput, final ItemStack aOutput, final int aFuelValueInEU) {
+		public GTPP_Recipe addFuel(final ItemStack aInput, final ItemStack aOutput, final int aFuelValueInEU) {
 			Logger.WARNING("Adding Fuel using method 1");
 			return this.addFuel(aInput, aOutput, null, null, 10000, aFuelValueInEU);
 		}
 
-		public Recipe_GT addFuel(final ItemStack aInput, final ItemStack aOutput, final int aChance, final int aFuelValueInEU) {
+		public GTPP_Recipe addFuel(final ItemStack aInput, final ItemStack aOutput, final int aChance, final int aFuelValueInEU) {
 			Logger.WARNING("Adding Fuel using method 2");
 			return this.addFuel(aInput, aOutput, null, null, aChance, aFuelValueInEU);
 		}
 
-		public Recipe_GT addFuel(final FluidStack aFluidInput, final FluidStack aFluidOutput, final int aFuelValueInEU) {
+		public GTPP_Recipe addFuel(final FluidStack aFluidInput, final FluidStack aFluidOutput, final int aFuelValueInEU) {
 			Logger.WARNING("Adding Fuel using method 3");
 			return this.addFuel(null, null, aFluidInput, aFluidOutput, 10000, aFuelValueInEU);
 		}
 
-		public Recipe_GT addFuel(final ItemStack aInput, final ItemStack aOutput, final FluidStack aFluidInput, final FluidStack aFluidOutput, final int aFuelValueInEU) {
+		public GTPP_Recipe addFuel(final ItemStack aInput, final ItemStack aOutput, final FluidStack aFluidInput, final FluidStack aFluidOutput, final int aFuelValueInEU) {
 			Logger.WARNING("Adding Fuel using method 4");
 			return this.addFuel(aInput, aOutput, aFluidInput, aFluidOutput, 10000, aFuelValueInEU);
 		}
 
-		public Recipe_GT addFuel(final ItemStack aInput, final ItemStack aOutput, final FluidStack aFluidInput, final FluidStack aFluidOutput, final int aChance, final int aFuelValueInEU) {
+		public GTPP_Recipe addFuel(final ItemStack aInput, final ItemStack aOutput, final FluidStack aFluidInput, final FluidStack aFluidOutput, final int aChance, final int aFuelValueInEU) {
 			Logger.WARNING("Adding Fuel using method 5");
 			return this.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput}, null, new int[]{aChance}, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, 0, 0, aFuelValueInEU);
 		}
 	}
 
-	public static class GT_Recipe_Map_LargeCentrifuge extends Gregtech_Recipe_Map {
+	public static class GT_Recipe_Map_LargeCentrifuge extends GTPP_Recipe_Map {
 		private static int INPUT_COUNT;
 		private static int OUTPUT_COUNT;
 		private static int FLUID_INPUT_COUNT;
 		private static int FLUID_OUTPUT_COUNT;
 
 		public GT_Recipe_Map_LargeCentrifuge() {
-			super(new HashSet<Recipe_GT>(2000), "gt.recipe.largecentrifuge", "Large Centrifuge", null,
+			super(new HashSet<GTPP_Recipe>(2000), "gt.recipe.largecentrifuge", "Large Centrifuge", null,
 					RES_PATH_GUI + "basicmachines/FissionFuel", GT_Recipe_Map_LargeCentrifuge.INPUT_COUNT,
 					GT_Recipe_Map_LargeCentrifuge.OUTPUT_COUNT, 0, 0, 1, "", 1, "", true, true);
 		}
 
 		@Override
-		public Recipe_GT addRecipe(final boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs,
+		public GTPP_Recipe addRecipe(final boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs,
 				final Object aSpecial, final int[] aOutputChances, FluidStack[] aFluidInputs,
 				FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
 			final ArrayList<ItemStack> adjustedInputs = new ArrayList<ItemStack>();
@@ -956,7 +1070,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			}
 			aOutputs = adjustedOutputs.toArray(new ItemStack[adjustedOutputs.size()]);
 			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);
-			Recipe_GT mNew = new GT_Recipe_LargeCentrifuge(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
+			GTPP_Recipe mNew = new GT_Recipe_LargeCentrifuge(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
 			if (RecipeUtils.doesGregtechRecipeHaveEqualCells(mNew)) {
 				return this.addRecipe(mNew);
 			}
@@ -972,7 +1086,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			GT_Recipe_Map_LargeCentrifuge.FLUID_OUTPUT_COUNT = 4;
 		}
 
-		private static class GT_Recipe_LargeCentrifuge extends Recipe_GT {
+		private static class GT_Recipe_LargeCentrifuge extends GTPP_Recipe {
 			protected GT_Recipe_LargeCentrifuge(final boolean aOptimize, final ItemStack[] aInputs,
 					final ItemStack[] aOutputs, final Object aSpecialItems, final int[] aChances,
 					final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration,
@@ -1034,20 +1148,20 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		}
 	}
 
-	public static class GT_Recipe_Map_LargeElectrolyzer extends Gregtech_Recipe_Map {
+	public static class GT_Recipe_Map_LargeElectrolyzer extends GTPP_Recipe_Map {
 		private static int INPUT_COUNT;
 		private static int OUTPUT_COUNT;
 		private static int FLUID_INPUT_COUNT;
 		private static int FLUID_OUTPUT_COUNT;
 
 		public GT_Recipe_Map_LargeElectrolyzer() {
-			super(new HashSet<Recipe_GT>(2000), "gt.recipe.largeelectrolyzer", "Large Electrolyzer", null,
+			super(new HashSet<GTPP_Recipe>(2000), "gt.recipe.largeelectrolyzer", "Large Electrolyzer", null,
 					RES_PATH_GUI + "basicmachines/FissionFuel", GT_Recipe_Map_LargeElectrolyzer.INPUT_COUNT,
 					GT_Recipe_Map_LargeElectrolyzer.OUTPUT_COUNT, 0, 0, 1, "", 1, "", true, true);
 		}
 
 		@Override
-		public Recipe_GT addRecipe(final boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs,
+		public GTPP_Recipe addRecipe(final boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs,
 				final Object aSpecial, final int[] aOutputChances, FluidStack[] aFluidInputs,
 				FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
 			final ArrayList<ItemStack> adjustedInputs = new ArrayList<ItemStack>();
@@ -1121,7 +1235,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			}
 			aOutputs = adjustedOutputs.toArray(new ItemStack[adjustedOutputs.size()]);
 			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);			
-			Recipe_GT mNew = new GT_Recipe_LargeElectrolyzer(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
+			GTPP_Recipe mNew = new GT_Recipe_LargeElectrolyzer(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
 			if (RecipeUtils.doesGregtechRecipeHaveEqualCells(mNew)) {
 				return this.addRecipe(mNew);
 			}
@@ -1137,7 +1251,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			GT_Recipe_Map_LargeElectrolyzer.FLUID_OUTPUT_COUNT = 4;
 		}
 
-		private static class GT_Recipe_LargeElectrolyzer extends Recipe_GT {
+		private static class GT_Recipe_LargeElectrolyzer extends GTPP_Recipe {
 			protected GT_Recipe_LargeElectrolyzer(final boolean aOptimize, final ItemStack[] aInputs,
 					final ItemStack[] aOutputs, final Object aSpecialItems, final int[] aChances,
 					final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration,
@@ -1201,20 +1315,20 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		}
 	}
 
-	public static class GT_Recipe_Map_AdvancedVacuumFreezer extends Gregtech_Recipe_Map {
+	public static class GT_Recipe_Map_AdvancedVacuumFreezer extends GTPP_Recipe_Map {
 		private static int INPUT_COUNT;
 		private static int OUTPUT_COUNT;
 		private static int FLUID_INPUT_COUNT;
 		private static int FLUID_OUTPUT_COUNT;
 
 		public GT_Recipe_Map_AdvancedVacuumFreezer() {
-			super(new HashSet<Recipe_GT>(2000), "gt.recipe.advfreezer", "Adv. Cryogenic Freezer", null,
+			super(new HashSet<GTPP_Recipe>(2000), "gt.recipe.advfreezer", "Adv. Cryogenic Freezer", null,
 					RES_PATH_GUI + "basicmachines/FissionFuel", GT_Recipe_Map_AdvancedVacuumFreezer.INPUT_COUNT,
 					GT_Recipe_Map_AdvancedVacuumFreezer.OUTPUT_COUNT, 0, 0, 1, "", 1, "", true, true);
 		}
 
 		@Override
-		public Recipe_GT addRecipe(final boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs,
+		public GTPP_Recipe addRecipe(final boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs,
 				final Object aSpecial, final int[] aOutputChances, FluidStack[] aFluidInputs,
 				FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
 			final ArrayList<ItemStack> adjustedInputs = new ArrayList<ItemStack>();
@@ -1289,7 +1403,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			aOutputs = adjustedOutputs.toArray(new ItemStack[adjustedOutputs.size()]);
 			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);
 
-			Recipe_GT mNew = new GT_Recipe_AdvFreezer(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
+			GTPP_Recipe mNew = new GT_Recipe_AdvFreezer(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
 			if (RecipeUtils.doesGregtechRecipeHaveEqualCells(mNew)) {
 				return this.addRecipe(mNew);
 			}
@@ -1305,7 +1419,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			GT_Recipe_Map_AdvancedVacuumFreezer.FLUID_OUTPUT_COUNT = 4;
 		}
 
-		private static class GT_Recipe_AdvFreezer extends Recipe_GT {
+		private static class GT_Recipe_AdvFreezer extends GTPP_Recipe {
 			protected GT_Recipe_AdvFreezer(final boolean aOptimize, final ItemStack[] aInputs,
 					final ItemStack[] aOutputs, final Object aSpecialItems, final int[] aChances,
 					final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration,
@@ -1364,7 +1478,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		return null;
 	}
 
-	public int compareTo(Recipe_GT recipe) {
+	public int compareTo(GTPP_Recipe recipe) {
 		// first lowest tier recipes
 		// then fastest
 		// then with lowest special value

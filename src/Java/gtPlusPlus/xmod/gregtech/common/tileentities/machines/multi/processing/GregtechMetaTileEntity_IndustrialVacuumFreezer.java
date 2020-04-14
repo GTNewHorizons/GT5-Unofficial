@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes;
-import static gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes_GT;
+import static gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes;
+import static gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
@@ -12,7 +12,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -112,7 +112,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 				sAdvFreezerRecipes_GT.add(a);
 			}
 		}		
-		return Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes_GT;
+		return GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT;
 	}
 
 	public boolean isCorrectMachinePart(final ItemStack aStack) {

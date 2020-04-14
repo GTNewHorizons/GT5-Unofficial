@@ -18,7 +18,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.IonParticles;
@@ -314,7 +314,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-		GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sCyclotronRecipes.findRecipe(getBaseMetaTileEntity(), false,
+		GT_Recipe tRecipe = GTPP_Recipe.GTPP_Recipe_Map.sCyclotronRecipes.findRecipe(getBaseMetaTileEntity(), false,
 				gregtech.api.enums.GT_Values.V[tTier], tFluidInputs, tItemInputs);
 		if (tRecipe != null){
 			if (tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {

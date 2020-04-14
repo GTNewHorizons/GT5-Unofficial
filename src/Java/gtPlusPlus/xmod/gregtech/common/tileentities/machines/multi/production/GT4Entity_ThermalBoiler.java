@@ -12,7 +12,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.general.ItemLavaFilter;
@@ -94,7 +94,7 @@ extends GregtechMeta_MultiBlockBase
 		}
 		
 
-		for (GT_Recipe tRecipe : Recipe_GT.Gregtech_Recipe_Map.sThermalFuels.mRecipeList) {
+		for (GT_Recipe tRecipe : GTPP_Recipe.GTPP_Recipe_Map.sThermalFuels.mRecipeList) {
 			FluidStack tFluid = tRecipe.mFluidInputs[0];
 			if (tFluid != null) {
 				if (depleteInput(tFluid)) {

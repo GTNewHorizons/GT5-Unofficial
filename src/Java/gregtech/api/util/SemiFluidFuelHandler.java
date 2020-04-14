@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map.sSemiFluidLiquidFuels;
+import static gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map.sSemiFluidLiquidFuels;
 
 import java.util.HashMap;
 
@@ -29,7 +29,7 @@ public class SemiFluidFuelHandler {
 		FluidStack p = aFuel;
 		if (p != null && aFuelValue > 0) {
 			GT_Recipe aRecipe =
-					new Recipe_GT(true,
+					new GTPP_Recipe(true,
 							new ItemStack[] {},
 							new ItemStack[] {},
 							null,
@@ -100,7 +100,7 @@ public class SemiFluidFuelHandler {
 				}
 
 				if (aFuelValue <= (128*3)) {
-					GT_Recipe aRecipe = new Recipe_GT(true, new ItemStack[] {}, new ItemStack[] {}, null, new int[] {},
+					GT_Recipe aRecipe = new GTPP_Recipe(true, new ItemStack[] {}, new ItemStack[] {}, null, new int[] {},
 							new FluidStack[] { p.getKey() }, null, 0, 0, aFuelValue);
 					if (aRecipe.mSpecialValue > 0) {
 						Logger.INFO("Added " + aRecipe.mFluidInputs[0].getLocalizedName() + " to the Semi-Fluid Generator fuel map. Fuel Produces "+(aRecipe.mSpecialValue*1000)+"EU per 1000L.");

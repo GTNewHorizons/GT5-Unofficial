@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.*;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -33,7 +33,7 @@ public class GregtechComponentAssembler {
 		
 		GregtechItemList.Machine_LV_Component_Maker.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(985,
 				"basicmachine.componentmaker.tier.01", "Basic Component Maker", 1, "Components, Unite!",
-				Recipe_GT.Gregtech_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", false,
+				GTPP_Recipe.GTPP_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", false,
 				false, 0, "ASSEMBLER",
 				new Object[] { "ACA", "VMV", "WCW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'A',
@@ -42,7 +42,7 @@ public class GregtechComponentAssembler {
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 }).getStackForm(1L));
 		GregtechItemList.Machine_MV_Component_Maker.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(986,
 				"basicmachine.componentmaker.tier.02", "Advanced Component Maker", 2, "Components, Unite!",
-				Recipe_GT.Gregtech_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", false,
+				GTPP_Recipe.GTPP_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", false,
 				false, 0, "ASSEMBLER",
 				new Object[] { "ACA", "VMV", "WCW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'A',
@@ -51,7 +51,7 @@ public class GregtechComponentAssembler {
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 }).getStackForm(1L));
 		GregtechItemList.Machine_HV_Component_Maker.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(987,
 				"basicmachine.componentmaker.tier.03", "Advanced Component Maker II", 3, "Components, Unite!",
-				Recipe_GT.Gregtech_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", false,
+				GTPP_Recipe.GTPP_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", false,
 				false, 0, "ASSEMBLER",
 				new Object[] { "ACA", "VMV", "WCW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'A',
@@ -60,7 +60,7 @@ public class GregtechComponentAssembler {
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 }).getStackForm(1L));
 		GregtechItemList.Machine_EV_Component_Maker.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(988,
 				"basicmachine.componentmaker.tier.04", "Advanced Component Maker III", 4, "Components, Unite!",
-				Recipe_GT.Gregtech_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", false,
+				GTPP_Recipe.GTPP_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", false,
 				false, 0, "ASSEMBLER",
 				new Object[] { "ACA", "VMV", "WCW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'A',
@@ -69,7 +69,7 @@ public class GregtechComponentAssembler {
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 }).getStackForm(1L));
 		GregtechItemList.Machine_IV_Component_Maker.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(989,
 				"basicmachine.componentmaker.tier.05", "Advanced Component Maker IV", 5, "Components, Unite!",
-				Recipe_GT.Gregtech_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", false,
+				GTPP_Recipe.GTPP_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", false,
 				false, 0, "ASSEMBLER",
 				new Object[] { "ACA", "VMV", "WCW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'A',
@@ -78,7 +78,7 @@ public class GregtechComponentAssembler {
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 }).getStackForm(1L));		
 		GregtechItemList.Machine_LuV_Component_Maker.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(31012,
 				"basicmachine.componentmaker.tier.06", "Advanced Component Maker V", 6, "Components, Unite!",
-				Recipe_GT.Gregtech_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 24000, 0, 1, "Assembler.png", "", false,
+				GTPP_Recipe.GTPP_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 24000, 0, 1, "Assembler.png", "", false,
 				false, 0, "ASSEMBLER",
 				new Object[] { "ACA", "VMV", "WCW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'A',
@@ -87,7 +87,7 @@ public class GregtechComponentAssembler {
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 }).getStackForm(1L));
 		GregtechItemList.Machine_ZPM_Component_Maker.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(31013,
 				"basicmachine.componentmaker.tier.07", "Advanced Component Maker VI", 7, "Components, Unite!",
-				Recipe_GT.Gregtech_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 32000, 0, 1, "Assembler.png", "", false,
+				GTPP_Recipe.GTPP_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 32000, 0, 1, "Assembler.png", "", false,
 				false, 0, "ASSEMBLER",
 				new Object[] { "ACA", "VMV", "WCW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'A',
@@ -96,7 +96,7 @@ public class GregtechComponentAssembler {
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 }).getStackForm(1L));
 		GregtechItemList.Machine_UV_Component_Maker.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(31014,
 				"basicmachine.componentmaker.tier.08", "Advanced Component Maker VII", 8, "Components, Unite!",
-				Recipe_GT.Gregtech_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 48000, 0, 1, "Assembler.png", "", false,
+				GTPP_Recipe.GTPP_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 48000, 0, 1, "Assembler.png", "", false,
 				false, 0, "ASSEMBLER",
 				new Object[] { "ACA", "VMV", "WCW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
 						GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'A',

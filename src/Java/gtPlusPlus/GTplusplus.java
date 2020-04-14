@@ -11,23 +11,15 @@ import java.util.Collection;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.util.FishPondFakeRecipe;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.Recipe_GT;
-import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.chunkloading.GTPP_ChunkManager;
 import gtPlusPlus.core.commands.CommandDebugChunks;
@@ -205,6 +197,7 @@ public class GTplusplus implements ActionListener {
 		//SprinklerHandler.registerModFerts();
 
 		BlockEventHandler.init();
+        GTPP_Recipe.reInit();
 
 		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Logger.INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
@@ -256,7 +249,15 @@ public class GTplusplus implements ActionListener {
 	public void onLoadComplete(FMLLoadCompleteEvent event) {
 		proxy.onLoadComplete(event);
 		generateGregtechRecipeMaps();
+		// Check our maps are untouched
+		GTPP_Recipe.checkRecipeModifications();
+		Logger.INFO("Passed verification checks.");
 	}
+
+    @Mod.EventHandler
+    public void onIDChangingEvent(FMLModIdMappingEvent aEvent) {
+        GTPP_Recipe.reInit();
+    }
 
 	public static void tryPatchTurbineTextures() {
 		if (enableAnimatedTurbines) {
@@ -315,9 +316,9 @@ public class GTplusplus implements ActionListener {
 			}
 		}
 
-		if (Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.size() < 1) {
-			for (GT_Recipe a : Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList) {
-				Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes_GT.add(a);
+		if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.size() < 1) {
+			for (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList) {
+				GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.add(a);
 			}
 		}
 
@@ -346,9 +347,9 @@ public class GTplusplus implements ActionListener {
 			}
 		}
 
-		if (Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.size() < 1) {
-			for (GT_Recipe a : Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes.mRecipeList) {
-				Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.add(a);
+		if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.size() < 1) {
+			for (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes.mRecipeList) {
+				GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.add(a);
 			}
 		}
 

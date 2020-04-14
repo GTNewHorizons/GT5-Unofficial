@@ -22,6 +22,7 @@ import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
+import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 
 public class ModTileEntities {
 
@@ -52,6 +53,12 @@ public class ModTileEntities {
 		if (LoadedMods.Thaumcraft){
 			
 		}
+		blacklistTilesFromAcceleration();
+	}
+	
+	private static void blacklistTilesFromAcceleration() {
+		Meta_GT_Proxy.setTileEntityClassAsBlacklistedInWorldAccelerator("gtPlusPlus.core.tileentities.general.TileEntityFishTrap");
+		Meta_GT_Proxy.setTileEntityClassAsBlacklistedInWorldAccelerator("gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest");
 	}
 
 }

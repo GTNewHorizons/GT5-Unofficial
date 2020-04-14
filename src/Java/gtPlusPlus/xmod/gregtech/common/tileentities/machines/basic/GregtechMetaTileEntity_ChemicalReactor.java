@@ -17,7 +17,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.slots.SlotChemicalPlantInput;

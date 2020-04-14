@@ -14,7 +14,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
+import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import net.minecraft.item.ItemStack;
 
@@ -62,7 +62,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipes() {
 		//Logger.WARNING("Fuel Count: "+Gregtech_Recipe_Map.sSemiFluidLiquidFuels.mRecipeList.size());
-		return Gregtech_Recipe_Map.sSemiFluidLiquidFuels;
+		return GTPP_Recipe_Map.sSemiFluidLiquidFuels;
 	}
 	
 	@Override

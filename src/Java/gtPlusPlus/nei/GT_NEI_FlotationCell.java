@@ -19,7 +19,7 @@ import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
+import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -41,7 +41,7 @@ extends TemplateRecipeHandler {
 	protected GT_Recipe_Map mRecipeMap;
 
 	public GT_NEI_FlotationCell() {
-		this.mRecipeMap = Gregtech_Recipe_Map.sFlotationCellRecipes;
+		this.mRecipeMap = GTPP_Recipe_Map.sFlotationCellRecipes;
 		this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), this.getRecipeMapName(), new Object[0]));
 		if (!NEI_GT_Config.sIsAdded) {
 			FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtechplusplus@" + this.getRecipeName() + "@" + this.getRecipeMapName());
@@ -50,8 +50,8 @@ extends TemplateRecipeHandler {
 		}
 	}
 
-	public List<Recipe_GT> getSortedRecipes() {
-		List<Recipe_GT> result = new ArrayList(this.mRecipeMap.mRecipeList);
+	public List<GTPP_Recipe> getSortedRecipes() {
+		List<GTPP_Recipe> result = new ArrayList(this.mRecipeMap.mRecipeList);
 		Collections.sort(result);
 		return result;
 	}
@@ -68,7 +68,7 @@ extends TemplateRecipeHandler {
 	@Override
 	public void loadCraftingRecipes(final String outputId, final Object... results) {
 		if (outputId.equals(getRecipeMapName())) {
-			for (Recipe_GT tRecipe : getSortedRecipes()) {
+			for (GTPP_Recipe tRecipe : getSortedRecipes()) {
 				if (!tRecipe.mHidden) {
 					this.arecipes.add(new CachedDefaultRecipe(tRecipe));
 				}
@@ -99,7 +99,7 @@ extends TemplateRecipeHandler {
 				}
 			}
 		}
-		for (Recipe_GT tRecipe : getSortedRecipes()) {
+		for (GTPP_Recipe tRecipe : getSortedRecipes()) {
 			if (!tRecipe.mHidden) {
 				CachedDefaultRecipe tNEIRecipe = new CachedDefaultRecipe(tRecipe);
 				for (ItemStack tStack : tResults) {
@@ -133,7 +133,7 @@ extends TemplateRecipeHandler {
 				}
 			}
 		}
-		for (Recipe_GT tRecipe : getSortedRecipes()) {
+		for (GTPP_Recipe tRecipe : getSortedRecipes()) {
 			if (!tRecipe.mHidden) {
 				CachedDefaultRecipe tNEIRecipe = new CachedDefaultRecipe(tRecipe);
 				for (ItemStack tStack : tInputs) {

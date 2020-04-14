@@ -16,7 +16,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -548,7 +548,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 
 		ItemStack[] mFishOutput = generateLoot(this.mMode);
 		mFishOutput = removeNulls(mFishOutput);
-		GT_Recipe g = new Recipe_GT(true, new ItemStack[] {}, mFishOutput, null, new int[] {}, aFluidInputs, mOutputFluids, 200, 16, 0);
+		GT_Recipe g = new GTPP_Recipe(true, new ItemStack[] {}, mFishOutput, null, new int[] {}, aFluidInputs, mOutputFluids, 200, 16, 0);
 		aMaxParallelRecipes = this.canBufferOutputs(g, aMaxParallelRecipes);
 		if (aMaxParallelRecipes == 0) {
 			log("No Space");

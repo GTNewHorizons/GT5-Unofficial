@@ -16,7 +16,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.helpers.GregtechPlusPlus_API.Multiblock_API;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.multi.SpecialMultiBehaviour;
@@ -94,7 +94,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase 
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return Recipe_GT.Gregtech_Recipe_Map.sFlotationCellRecipes;
+		return GTPP_Recipe.GTPP_Recipe_Map.sFlotationCellRecipes;
 	}
 
 	@Override

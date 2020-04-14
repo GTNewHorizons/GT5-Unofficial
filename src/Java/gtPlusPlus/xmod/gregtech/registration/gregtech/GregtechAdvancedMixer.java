@@ -6,7 +6,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -24,16 +24,16 @@ public class GregtechAdvancedMixer {
 	private static GT_Recipe_Map map = GT_Recipe.GT_Recipe_Map.sMixerRecipes;
 	
 	private static boolean generateMixerRecipeMap(){
-		if (Recipe_GT.Gregtech_Recipe_Map.sAdvancedMixerRecipes.mRecipeList.size() == 0){
+		if (GTPP_Recipe.GTPP_Recipe_Map.sAdvancedMixerRecipes.mRecipeList.size() == 0){
 			GT_Recipe_Map oldMap = GT_Recipe.GT_Recipe_Map.sMixerRecipes;
-			GT_Recipe_Map map = Recipe_GT.Gregtech_Recipe_Map.sAdvancedMixerRecipes;
+			GT_Recipe_Map map = GTPP_Recipe.GTPP_Recipe_Map.sAdvancedMixerRecipes;
 			final Collection<GT_Recipe> x = oldMap.mRecipeList;
 			//Logger.INFO("Generating " + map.mUnlocalizedName + " Recipes.");
 			for (final GT_Recipe g : x) {
-				Recipe_GT.Gregtech_Recipe_Map.sAdvancedMixerRecipes.add(g);
+				GTPP_Recipe.GTPP_Recipe_Map.sAdvancedMixerRecipes.add(g);
 			}
 
-			if (Recipe_GT.Gregtech_Recipe_Map.sAdvancedMixerRecipes.mRecipeList.size() > 0){
+			if (GTPP_Recipe.GTPP_Recipe_Map.sAdvancedMixerRecipes.mRecipeList.size() > 0){
 				return true;
 			}
 			else {

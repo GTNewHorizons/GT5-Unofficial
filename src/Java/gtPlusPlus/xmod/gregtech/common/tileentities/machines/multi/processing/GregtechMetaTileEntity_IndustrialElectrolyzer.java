@@ -75,7 +75,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes_GT;
+		return gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT;
 	}
 
 	@Override

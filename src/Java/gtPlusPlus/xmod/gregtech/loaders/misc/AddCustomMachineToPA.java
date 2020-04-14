@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.loaders.misc;
 
 import java.lang.reflect.Method;
 
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
@@ -43,8 +43,8 @@ public class AddCustomMachineToPA {
 	public static void register() {
 		
 		// Simple Washers
-		registerRecipeMapForID(767, Recipe_GT.Gregtech_Recipe_Map.sSimpleWasherRecipes);
-		registerRecipeMapBetweenRangeOfIDs(31017, 31020, Recipe_GT.Gregtech_Recipe_Map.sSimpleWasherRecipes);
+		registerRecipeMapForID(767, GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes);
+		registerRecipeMapBetweenRangeOfIDs(31017, 31020, GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes);
 		
 	}
 

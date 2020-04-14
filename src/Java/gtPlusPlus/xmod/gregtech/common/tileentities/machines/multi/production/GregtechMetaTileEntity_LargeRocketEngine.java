@@ -19,7 +19,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffl
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
@@ -174,7 +174,8 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 			freeFuelTicks = 0;
 		
 		//log("Running "+aircount);
-		final Collection<GT_Recipe> tRecipeList = Recipe_GT.Gregtech_Recipe_Map.sRocketFuels.mRecipeList;
+		log("looking at hatch");
+		final Collection<GT_Recipe> tRecipeList = GTPP_Recipe.GTPP_Recipe_Map.sRocketFuels.mRecipeList;
 		
 		
 		if (tFluids.size() > 0 && tRecipeList != null) {

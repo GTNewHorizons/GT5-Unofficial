@@ -59,7 +59,7 @@ public class FishPondFakeRecipe {
 	}
 
 	public static void addNewFishPondLoot(int circuit, ItemStack[] outputItems, int[] chances) {
-		GT_Recipe x = new GT_Recipe(
+		GTPP_Recipe x = new GTPP_Recipe(
 				true,
 				new ItemStack[]{CI.getNumberedCircuit(circuit)},
 				outputItems,
@@ -73,7 +73,7 @@ public class FishPondFakeRecipe {
 				);
 		if (x != null) {
 			Logger.INFO("Fishing ["+circuit+"]: "+ItemUtils.getArrayStackNames(outputItems));
-			Recipe_GT.Gregtech_Recipe_Map.sFishPondRecipes.addRecipe(x);
+			GTPP_Recipe.GTPP_Recipe_Map.sFishPondRecipes.addRecipe(x);
 		}
 	}	
 
