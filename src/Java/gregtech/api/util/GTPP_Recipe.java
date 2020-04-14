@@ -19,6 +19,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.NoConflictGTRecipeMap;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.data.AES;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.nei.GT_NEI_MultiBlockHandler;
@@ -34,30 +35,84 @@ import net.minecraftforge.fluids.FluidStack;
  */
 public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 
-	private final int mRecipeHash;
+	private final String mRecipeHash;
+	private final AutoMap<Integer> mHashMap = new AutoMap<Integer>();	
+	private static final AES mEncoder = new AES("RecipeChecking");
 	
 	public GTPP_Recipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecialItems, final int[] aChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
 		super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
 		//Logger.SPECIFIC_WARNING(this.getClass().getName()+" | [GregtechRecipe]", "Created new recipe instance for "+ItemUtils.getArrayStackNames(aInputs), 167);
 		mRecipeHash = getRecipeHash(this);
+		mHashMap.addAll(convertStringDataToInts(getEncodedRecipeData(this)));
 	}
 
 	public GTPP_Recipe(final ItemStack aInput1, final ItemStack aOutput1, final int aFuelValue, final int aType) {
 		this(aInput1, aOutput1, null, null, null, aFuelValue, aType);
 	}
 	
-	public static int getRecipeHash(GT_Recipe aRecipe) {
-		return aRecipe.hashCode();
+	private static AutoMap<Integer> convertStringDataToInts(AutoMap<String> aData){
+		AutoMap<Integer> aMap = new AutoMap<Integer>();
+		for (String string : aData) {
+			aMap.add(string.hashCode());
+		}
+		return aMap;
 	}
 	
-	public final void checkModified() {
+	private static AutoMap<String> getEncodedRecipeData(GTPP_Recipe aRecipe){
+		AutoMap<String> aData = new AutoMap<String>();
+		aData.add(mEncoder.encode(aRecipe.mRecipeHash));
+		aData.add(mEncoder.encode(""+aRecipe.mCanBeBuffered));
+		aData.add(mEncoder.encode(""+aRecipe.mHidden));
+		aData.add(mEncoder.encode(""+aRecipe.mEnabled));
+		aData.add(mEncoder.encode(""+aRecipe.mDuration));
+		aData.add(mEncoder.encode(""+aRecipe.mEUt));
+		aData.add(mEncoder.encode(""+aRecipe.mFakeRecipe));
+		aData.add(mEncoder.encode(""+aRecipe.mSpecialItems));
+		aData.add(mEncoder.encode(aRecipe.mChances.toString()));
+		aData.add(mEncoder.encode(aRecipe.mInputs.toString()));
+		aData.add(mEncoder.encode(aRecipe.mOutputs.toString()));
+		aData.add(mEncoder.encode(aRecipe.mFluidInputs.toString()));
+		aData.add(mEncoder.encode(aRecipe.mFluidOutputs.toString()));		
+		return aData;
+	}
+	
+	public static String getRecipeHash(GT_Recipe aRecipe) {	
+		String aEncoderString = mEncoder.encode(aRecipe.toString());
+		return aEncoderString;
+	}
+	
+	private final void checkModified() {
 		if (hasBeenModified()) {
 			CORE.crash("Someone has edited an internal GT++ recipe, which is no longer allowed. Please complain to whoever has done this, not Alkalus.");
 		}
 	}
 	
 	private final boolean hasBeenModified() {
-		return mRecipeHash != this.hashCode();
+		String aEncoderString = mEncoder.encode(this.toString());
+		boolean aBasicHashCheck = mRecipeHash.equals(aEncoderString);
+		if (!aBasicHashCheck) {
+			Logger.INFO("This Recipe Hash: "+aEncoderString);
+			Logger.INFO("Expected Hash Code: "+mRecipeHash);
+			return true;
+		}
+		AutoMap<Integer> aData = new AutoMap<Integer>();
+		aData.addAll(convertStringDataToInts(getEncodedRecipeData(this)));
+		long aHashTotal = 0;
+		long aExpectedHashTotal = 0;
+		for (int a : aData) {
+			aHashTotal += a;
+		}
+		for (int a : mHashMap) {
+			aExpectedHashTotal += a;
+		}
+		if (aHashTotal != aExpectedHashTotal) {
+			Logger.INFO("This Recipe Hash: "+aEncoderString);
+			Logger.INFO("Expected Hash Code: "+mRecipeHash);
+			Logger.INFO("This Recipe Hash: "+aHashTotal);
+			Logger.INFO("Expected Hash Code: "+aExpectedHashTotal);
+			return true;
+		}		
+		return false;
 	}
 
 	// aSpecialValue = EU per Liter! If there is no Liquid for this Object, then it gets multiplied with 1000!
@@ -162,6 +217,7 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 	
 	public final static void checkRecipeModifications() {
 		for (GTPP_Recipe aRecipe : GTPP_Recipe_Map_Internal.mHashedRecipes.values()) {
+			Logger.INFO("Checking recipe: "+aRecipe.hashCode());
 			aRecipe.checkModified();
 		}
 	}

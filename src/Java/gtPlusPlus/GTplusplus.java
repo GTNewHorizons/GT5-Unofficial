@@ -19,7 +19,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.util.*;
-import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map_Internal;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.chunkloading.GTPP_ChunkManager;
@@ -250,8 +249,7 @@ public class GTplusplus implements ActionListener {
 	public void onLoadComplete(FMLLoadCompleteEvent event) {
 		proxy.onLoadComplete(event);
 		generateGregtechRecipeMaps();
-		// Check our maps ar euntouched
-		Logger.INFO("Making sure that all GT++ recipes are untouched.");
+		// Check our maps are untouched
 		GTPP_Recipe.checkRecipeModifications();
 		Logger.INFO("Passed verification checks.");
 	}
