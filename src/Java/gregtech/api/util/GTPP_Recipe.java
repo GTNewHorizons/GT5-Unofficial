@@ -19,7 +19,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.NoConflictGTRecipeMap;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.data.AES;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.nei.GT_NEI_MultiBlockHandler;
@@ -36,8 +35,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 
 	private final String mRecipeHash;
-	private final AutoMap<Integer> mHashMap = new AutoMap<Integer>();	
-	private static final AES mEncoder = new AES("RecipeChecking");
+	private final AutoMap<Integer> mHashMap = new AutoMap<Integer>();
 	
 	public GTPP_Recipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecialItems, final int[] aChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
 		super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
@@ -60,24 +58,24 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 	
 	private static AutoMap<String> getEncodedRecipeData(GTPP_Recipe aRecipe){
 		AutoMap<String> aData = new AutoMap<String>();
-		aData.add(mEncoder.encode(aRecipe.mRecipeHash));
-		aData.add(mEncoder.encode(""+aRecipe.mCanBeBuffered));
-		aData.add(mEncoder.encode(""+aRecipe.mHidden));
-		aData.add(mEncoder.encode(""+aRecipe.mEnabled));
-		aData.add(mEncoder.encode(""+aRecipe.mDuration));
-		aData.add(mEncoder.encode(""+aRecipe.mEUt));
-		aData.add(mEncoder.encode(""+aRecipe.mFakeRecipe));
-		aData.add(mEncoder.encode(""+aRecipe.mSpecialItems));
-		aData.add(mEncoder.encode(aRecipe.mChances.toString()));
-		aData.add(mEncoder.encode(aRecipe.mInputs.toString()));
-		aData.add(mEncoder.encode(aRecipe.mOutputs.toString()));
-		aData.add(mEncoder.encode(aRecipe.mFluidInputs.toString()));
-		aData.add(mEncoder.encode(aRecipe.mFluidOutputs.toString()));		
+		aData.add(aRecipe.mRecipeHash);
+		aData.add(""+aRecipe.mCanBeBuffered);
+		aData.add(""+aRecipe.mHidden);
+		aData.add(""+aRecipe.mEnabled);
+		aData.add(""+aRecipe.mDuration);
+		aData.add(""+aRecipe.mEUt);
+		aData.add(""+aRecipe.mFakeRecipe);
+		aData.add(""+aRecipe.mSpecialItems);
+		aData.add(aRecipe.mChances.toString());
+		aData.add(aRecipe.mInputs.toString());
+		aData.add(aRecipe.mOutputs.toString());
+		aData.add(aRecipe.mFluidInputs.toString());
+		aData.add(aRecipe.mFluidOutputs.toString());		
 		return aData;
 	}
 	
 	public static String getRecipeHash(GT_Recipe aRecipe) {	
-		String aEncoderString = mEncoder.encode(aRecipe.toString());
+		String aEncoderString = aRecipe.toString();
 		return aEncoderString;
 	}
 	
@@ -88,7 +86,7 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 	}
 	
 	private final boolean hasBeenModified() {
-		String aEncoderString = mEncoder.encode(this.toString());
+		String aEncoderString = this.toString();
 		boolean aBasicHashCheck = mRecipeHash.equals(aEncoderString);
 		if (!aBasicHashCheck) {
 			Logger.INFO("This Recipe Hash: "+aEncoderString);
