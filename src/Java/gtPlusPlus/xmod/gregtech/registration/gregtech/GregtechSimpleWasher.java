@@ -49,9 +49,18 @@ public class GregtechSimpleWasher {
 			dustClean = GT_OreDictUnificator.get(OrePrefixes.dust, v, 1L);
 			dustDirty = GT_OreDictUnificator.get(OrePrefixes.dustImpure, v, 1L);
 			if (dustClean != null && dustDirty != null) {
-				GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.addRecipe(false, new ItemStack[] { dustDirty },
-						new ItemStack[] { dustClean }, null,
-						new FluidStack[] { FluidUtils.getFluidStack("water", 100) }, null, 5, 8, 0);
+				GTPP_Recipe aRecipe = new GTPP_Recipe(
+						false,
+						new ItemStack[] { dustDirty },
+						new ItemStack[] { dustClean },
+						null,
+						new int[] {},
+						new FluidStack[] { FluidUtils.getFluidStack("water", 100) },
+						new FluidStack[] {},
+						5,
+						8,
+						0); 
+				GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.addRecipe(aRecipe);
 			}
 		}	
 		
@@ -70,9 +79,18 @@ public class GregtechSimpleWasher {
 			crushedClean = GT_OreDictUnificator.get(OrePrefixes.crushedPurified, v, 1L);
 			crushedDirty = GT_OreDictUnificator.get(OrePrefixes.crushed, v, 1L);
 			if (crushedClean != null && crushedDirty != null) {
-				GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.addRecipe(false, new ItemStack[] { crushedDirty },
-						new ItemStack[] { crushedClean }, null,
-						new FluidStack[] { FluidUtils.getFluidStack("water", 100) }, null, 5, 8, 0);
+				GTPP_Recipe aRecipe = new GTPP_Recipe(
+						false,
+						new ItemStack[] { crushedDirty },
+						new ItemStack[] { crushedClean },
+						null,
+						new int[] {},
+						new FluidStack[] { FluidUtils.getFluidStack("water", 100) },
+						new FluidStack[] {},
+						5,
+						8,
+						0); 
+				GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.addRecipe(aRecipe);
 			}
 		}
 
