@@ -74,6 +74,9 @@ item.kekztech_crafting_item.14.name=YSZ Ceramic Plate
 item.kekztech_crafting_item.15.name=GDC Ceramic Plate
 item.kekztech_crafting_item.16.name=Item Server Blade
 
+item.kekztech_thaumiumreinforcedjarfilled_item.name=Thaumium Reinforced Jar
+item.kekztech_ichorjarfilled_item.name=Ichor Jar
+
 tile.kekztech_gdcceramicelectrolyteunit_block.name=GDC Ceramic Electrolyte Unit
 tile.kekztech_yszceramicelectrolyteunit_block.name=YSZ Ceramic Electrolyte Unit
 
@@ -95,4 +98,7 @@ tile.kekztech_itemproxyendpoint_block.name=Item Proxy Network Endpoint
 tile.kekztech_itemserverdrive_block.name=Item Server Drive
 tile.kekztech_itemserverrackcasing_block.name=Item Server Rack Casing
 tile.kekztech_itemserverioport_block.name=Item Server I/O Port
+
+tile.kekztech_thaumiumreinforcedjar_block.name=Thaumium Reinforced Jar
+tile.kekztech_ichorjar_block.name=Ichor Jar
 

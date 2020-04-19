@@ -2,6 +2,7 @@ package kekztech;
 
 import blocks.Block_ControlRod;
 import blocks.Block_GDCUnit;
+import blocks.Block_IchorJar;
 import blocks.Block_ItemProxyCable;
 import blocks.Block_ItemProxyEndpoint;
 import blocks.Block_ItemProxySource;
@@ -17,6 +18,7 @@ import blocks.Block_TFFTStorageFieldBlockT2;
 import blocks.Block_TFFTStorageFieldBlockT3;
 import blocks.Block_TFFTStorageFieldBlockT4;
 import blocks.Block_TFFTStorageFieldBlockT5;
+import blocks.Block_ThaumiumReinforcedJar;
 import blocks.Block_YSZUnit;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -34,6 +36,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import items.ErrorItem;
 import items.Item_Configurator;
+import items.Item_ThaumiumReinforcedJarFilled;
 import items.MetaItem_CraftingComponent;
 import items.MetaItem_ReactorComponent;
 import net.minecraft.item.ItemStack;
@@ -44,11 +47,13 @@ import tileentities.GTMTE_ItemServer;
 import tileentities.GTMTE_ModularNuclearReactor;
 import tileentities.GTMTE_SOFuelCellMK1;
 import tileentities.GTMTE_SOFuelCellMK2;
+import tileentities.TE_IchorJar;
 import tileentities.TE_ItemProxyCable;
 import tileentities.TE_ItemProxyEndpoint;
 import tileentities.TE_ItemProxySource;
 import tileentities.TE_ItemServerIOPort;
 import tileentities.TE_TFFTMultiHatch;
+import tileentities.TE_ThaumiumReinforcedJar;
 import util.Util;
 
 /**
@@ -87,6 +92,9 @@ public class KekzCore {
 		MetaItem_CraftingComponent.getInstance().registerItem();
 		Item_Configurator.getInstance().registerItem();
 		Items.registerOreDictNames();
+		
+		Item_ThaumiumReinforcedJarFilled.getInstance().registerItem();
+		
 		// Blocks
 		Block_YSZUnit.getInstance().registerBlock();
 		Block_GDCUnit.getInstance().registerBlock();
@@ -106,12 +114,19 @@ public class KekzCore {
 		Block_ItemProxyCable.getInstance().registerBlock();
 		Block_ItemProxySource.getInstance().registerBlock();
 		Block_ItemProxyEndpoint.getInstance().registerBlock();
+		
+		Block_ThaumiumReinforcedJar.getInstance().registerBlock();
+		Block_IchorJar.getInstance().registerBlock();
+		
 		// Register TileEntities
 		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");
 		GameRegistry.registerTileEntity(TE_ItemServerIOPort.class, "kekztech_itemserverioport_tile");
 		GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
 		GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
 		GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
+		
+		GameRegistry.registerTileEntity(TE_ThaumiumReinforcedJar.class, "kekztech_thaumiumreinforcedjar");
+		GameRegistry.registerTileEntity(TE_IchorJar.class, "kekztech_ichorjar");
 		
 		// Register guis
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
