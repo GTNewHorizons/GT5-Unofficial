@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.metaTileEntity.pipe;
+package com.github.technus.tectech.mechanics.pipe;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 

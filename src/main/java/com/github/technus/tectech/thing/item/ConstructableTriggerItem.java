@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.item;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.mechanics.constructible.IConstructable;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.util.Util.StructureBuilder;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 import static gregtech.api.GregTech_API.sBlockCasings1;
 import static net.minecraft.util.StatCollector.translateToLocal;

@@ -8,7 +8,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.List;
 
-import static com.github.technus.tectech.CommonValues.TEC_MARK_GENERAL;
+import static com.github.technus.tectech.util.CommonValues.TEC_MARK_GENERAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**

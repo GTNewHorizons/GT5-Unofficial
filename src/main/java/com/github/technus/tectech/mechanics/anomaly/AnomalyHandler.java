@@ -1,7 +1,7 @@
 package com.github.technus.tectech.mechanics.anomaly;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.data.ChunkDataHandler;

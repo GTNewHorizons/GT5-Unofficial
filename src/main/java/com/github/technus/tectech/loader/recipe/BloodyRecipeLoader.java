@@ -165,32 +165,32 @@ public class BloodyRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaPrimary_0.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"WWW", "WwW", "WWW",
-                        'W', OrePrefixes.wireGt02.get(Materials.RedstoneAlloy)});
+                        'W', OrePrefixes.wireGt02.get(Materials.Tin)});
         //Tesla Primary Coils T1
         GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaPrimary_1.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"WWW", "WwW", "WWW",
-                        'W', OrePrefixes.wireGt02.get(Materials.SuperconductorMV)});
+                        'W', OrePrefixes.wireGt02.get(Materials.Copper)});
         //Tesla Primary Coils T2
         GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaPrimary_2.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"WWW", "WwW", "WWW",
-                        'W', OrePrefixes.wireGt02.get(Materials.SuperconductorHV)});
+                        'W', OrePrefixes.wireGt02.get(Materials.Silver)});
         //Tesla Primary Coils T3
         GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaPrimary_3.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"WWW", "WwW", "WWW",
-                        'W', OrePrefixes.wireGt02.get(Materials.SuperconductorEV)});
+                        'W', OrePrefixes.wireGt02.get(Materials.Aluminium)});
         //Tesla Primary Coils T4
         GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaPrimary_4.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"WWW", "WwW", "WWW",
-                        'W', OrePrefixes.wireGt02.get(Materials.SuperconductorIV)});
+                        'W', OrePrefixes.wireGt02.get(Materials.Platinum)});
         //Tesla Primary Coils T5
         GT_ModHandler.addCraftingRecipe(CustomItemList.tM_TeslaPrimary_5.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"WWW", "WwW", "WWW",
-                        'W', OrePrefixes.wireGt02.get(Materials.SuperconductorLuV)});
+                        'W', OrePrefixes.wireGt02.get(Materials.Superconductor)});
 
         //endregion
 
@@ -1114,7 +1114,7 @@ public class BloodyRecipeLoader implements Runnable {
         }, Materials.Epoxid.getMolten(288), CustomItemList.teslaComponent.getWithDamage(1, 0), 320, 30);
         //Tesla Winding Components Ultimate
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 16),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NickelZincFerrite, 8),
         }, Materials.Epoxid.getMolten(576), CustomItemList.teslaComponent.getWithDamage(1, 1), 320, 7680);
 
@@ -1125,35 +1125,35 @@ public class BloodyRecipeLoader implements Runnable {
         //LV Tesla Capacitor
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 4),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 4),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 4),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 8),
         }, Materials.Epoxid.getMolten(72), CustomItemList.teslaCapacitor.getWithDamage(1, 0), 320, 30);
         //MV Tesla Capacitor
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Copper, 4),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 6),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 6),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 12),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 12),
         }, Materials.Epoxid.getMolten(144), CustomItemList.teslaCapacitor.getWithDamage(1, 1), 320, 120);
         //HV Tesla Capacitor
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 4),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 8),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 8),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 16),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 16),
         }, Materials.Epoxid.getMolten(216), CustomItemList.teslaCapacitor.getWithDamage(1, 2), 320, 480);
         //EV Tesla Capacitor
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 4),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 10),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 10),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 20),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 20),
         }, Materials.Epoxid.getMolten(288), CustomItemList.teslaCapacitor.getWithDamage(1, 3), 320, 1920);
         //IV Tesla Capacitor
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 4),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 12),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 12),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 24),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 24),
         }, Materials.Epoxid.getMolten(360), CustomItemList.teslaCapacitor.getWithDamage(1, 4), 320, 7680);
@@ -1208,19 +1208,19 @@ public class BloodyRecipeLoader implements Runnable {
 
         //LV Tesla Capacitor
         GT_Values.RA.addExtractorRecipe(CustomItemList.teslaCapacitor.getWithDamage(1, 0),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 4), 300, 2);
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 4), 300, 2);
         //MV Tesla Capacitor
         GT_Values.RA.addExtractorRecipe(CustomItemList.teslaCapacitor.getWithDamage(1, 1),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 6), 300, 2);
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 6), 300, 2);
         //HV Tesla Capacitor
         GT_Values.RA.addExtractorRecipe(CustomItemList.teslaCapacitor.getWithDamage(1, 2),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 8), 300, 2);
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 8), 300, 2);
         //EV Tesla Capacitor
         GT_Values.RA.addExtractorRecipe(CustomItemList.teslaCapacitor.getWithDamage(1, 3),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 10), 300, 2);
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 10), 300, 2);
         //IV Tesla Capacitor
         GT_Values.RA.addExtractorRecipe(CustomItemList.teslaCapacitor.getWithDamage(1, 4),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 12), 300, 2);
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 12), 300, 2);
 
         //endregion
 

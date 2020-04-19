@@ -1,5 +1,6 @@
-package com.github.technus.tectech.thing.metaTileEntity;
+package com.github.technus.tectech.mechanics.alignment;
 
+import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -15,31 +16,31 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
-public class RotationMessage implements IMessage {
+public class AlignmentMessage implements IMessage {
     int mPosX;
     int mPosY;
     int mPosZ;
     int mPosD;
-    int mRotF;
+    int mAlign;
 
-    public RotationMessage() {
+    public AlignmentMessage() {
     }
 
-    private RotationMessage(GT_MetaTileEntity_MultiblockBase_EM metaTile) {
+    private AlignmentMessage(GT_MetaTileEntity_MultiblockBase_EM metaTile) {
         IGregTechTileEntity base=metaTile.getBaseMetaTileEntity();
         mPosX=base.getXCoord();
         mPosY=base.getYCoord();
         mPosZ=base.getZCoord();
         mPosD=base.getWorld().provider.dimensionId;
-        mRotF=metaTile.getFrontRotation();
+        mAlign =metaTile.getExtendedFacing().getIndex();
     }
 
-    private RotationMessage(World world, int x,int y,int z, IFrontRotation front) {
+    private AlignmentMessage(World world, int x, int y, int z, IAlignment front) {
         mPosX=x;
         mPosY=y;
         mPosZ=z;
         mPosD=world.provider.dimensionId;
-        mRotF=front.getFrontRotation();
+        mAlign =front.getExtendedFacing().getIndex();
     }
 
     @Override
@@ -49,7 +50,7 @@ public class RotationMessage implements IMessage {
         mPosY = tTag.getInteger("posy");
         mPosZ = tTag.getInteger("posz");
         mPosD = tTag.getInteger("posd");
-        mRotF = tTag.getInteger("rotf");
+        mAlign = tTag.getInteger("rotf");
     }
 
     @Override
@@ -59,78 +60,78 @@ public class RotationMessage implements IMessage {
         tFXTag.setInteger("posy", mPosY);
         tFXTag.setInteger("posz", mPosZ);
         tFXTag.setInteger("posd", mPosD);
-        tFXTag.setInteger("rotf", mRotF);
+        tFXTag.setInteger("rotf", mAlign);
 
         ByteBufUtils.writeTag(pBuffer, tFXTag);
     }
 
-    public static class RotationQuery extends RotationMessage{
-        public RotationQuery() {
+    public static class AlignmentQuery extends AlignmentMessage {
+        public AlignmentQuery() {
         }
 
-        public RotationQuery(GT_MetaTileEntity_MultiblockBase_EM metaTile) {
+        public AlignmentQuery(GT_MetaTileEntity_MultiblockBase_EM metaTile) {
             super(metaTile);
         }
 
-        public RotationQuery(World world, int x,int y,int z, IFrontRotation front) {
+        public AlignmentQuery(World world, int x, int y, int z, IAlignment front) {
             super(world,x,y,z,front);
         }
     }
 
-    public static class RotationData extends RotationMessage{
-        public RotationData() {
+    public static class AlignmentData extends AlignmentMessage {
+        public AlignmentData() {
         }
 
-        private RotationData(RotationQuery query){
+        private AlignmentData(AlignmentQuery query){
             mPosX=query.mPosX;
             mPosY=query.mPosY;
             mPosZ=query.mPosZ;
             mPosD=query.mPosD;
-            mRotF=query.mRotF;
+            mAlign =query.mAlign;
         }
 
-        public RotationData(GT_MetaTileEntity_MultiblockBase_EM metaTile) {
+        public AlignmentData(GT_MetaTileEntity_MultiblockBase_EM metaTile) {
             super(metaTile);
         }
 
-        public RotationData(World world, int x,int y,int z, IFrontRotation front) {
+        public AlignmentData(World world, int x, int y, int z, IAlignment front) {
             super(world,x,y,z,front);
         }
     }
 
-    public static class ClientHandler extends AbstractClientMessageHandler<RotationData> {
+    public static class ClientHandler extends AbstractClientMessageHandler<AlignmentData> {
         @Override
-        public IMessage handleClientMessage(EntityPlayer pPlayer, RotationData pMessage, MessageContext pCtx) {
+        public IMessage handleClientMessage(EntityPlayer pPlayer, AlignmentData pMessage, MessageContext pCtx) {
             if(pPlayer.worldObj.provider.dimensionId==pMessage.mPosD){
                 TileEntity te=pPlayer.worldObj.getTileEntity(pMessage.mPosX,pMessage.mPosY,pMessage.mPosZ);
                 if(te instanceof IGregTechTileEntity){
                     IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if(meta instanceof IFrontRotation){
-                        ((IFrontRotation) meta).forceSetRotationDoRender((byte)pMessage.mRotF);
+                    if(meta instanceof IAlignment){
+                        ((IAlignment) meta).setExtendedFacing(ExtendedFacing.byIndex(pMessage.mAlign));
                     }
-                }else if (te instanceof IFrontRotation){
-                    ((IFrontRotation) te).forceSetRotationDoRender((byte)pMessage.mRotF);
+                }else if (te instanceof IAlignment){
+                    ((IAlignment) te).setExtendedFacing(ExtendedFacing.byIndex(pMessage.mAlign));
                 }
             }
             return null;
         }
     }
 
-    public static class ServerHandler extends AbstractServerMessageHandler<RotationQuery> {
+    public static class ServerHandler extends AbstractServerMessageHandler<AlignmentQuery> {
         @Override
-        public IMessage handleServerMessage(EntityPlayer pPlayer, RotationQuery pMessage, MessageContext pCtx) {
+        public IMessage handleServerMessage(EntityPlayer pPlayer, AlignmentQuery pMessage, MessageContext pCtx) {
             World world= DimensionManager.getWorld(pMessage.mPosD);
             if(world!=null) {
                 TileEntity te = world.getTileEntity(pMessage.mPosX, pMessage.mPosY, pMessage.mPosZ);
                 if (te instanceof IGregTechTileEntity) {
                     IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if (meta instanceof IFrontRotation) {
-                        pMessage.mRotF=((IFrontRotation) meta).getFrontRotation();
-                        return new RotationData(pMessage);
+                    if (meta instanceof IAlignment) {
+                        pMessage.mAlign =((IAlignment) meta).getExtendedFacing().getIndex();
+                        return new AlignmentData(pMessage);
                     }
-                } else if (te instanceof IFrontRotation) {
-                    pMessage.mRotF=((IFrontRotation) te).getFrontRotation();
-                    return new RotationData(pMessage);
+                } else if (te instanceof IAlignment) {
+                    pMessage.mAlign =((IAlignment) te).getExtendedFacing().getIndex();
+                    return new AlignmentData(pMessage);
                 }
             }
             return null;

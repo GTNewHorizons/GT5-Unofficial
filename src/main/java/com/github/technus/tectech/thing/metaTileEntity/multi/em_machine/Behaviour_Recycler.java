@@ -4,7 +4,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInsta
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 
-import static com.github.technus.tectech.CommonValues.V;
+import static com.github.technus.tectech.util.CommonValues.V;
 
 /**
  * Created by danie_000 on 24.12.2017.

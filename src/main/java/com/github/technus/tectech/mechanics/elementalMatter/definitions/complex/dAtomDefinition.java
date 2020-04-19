@@ -2,8 +2,8 @@ package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
-import com.github.technus.tectech.XSTR;
+import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.XSTR;
 import com.github.technus.tectech.compatibility.gtpp.GtppAtomLoader;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
@@ -25,7 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.*;
 
-import static com.github.technus.tectech.XSTR.XSTR_INSTANCE;
+import static com.github.technus.tectech.util.XSTR.XSTR_INSTANCE;
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition.getNbtTagCompound;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;

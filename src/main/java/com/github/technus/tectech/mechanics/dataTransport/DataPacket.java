@@ -1,6 +1,6 @@
 package com.github.technus.tectech.mechanics.dataTransport;
 
-import com.github.technus.tectech.Vec3pos;
+import com.github.technus.tectech.util.Vec3Impl;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.Collections;
@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public abstract class DataPacket<T>{
     private static final byte MAX_HISTORY = 64;
-    private Set<Vec3pos> trace = new LinkedHashSet<>();
+    private Set<Vec3Impl> trace = new LinkedHashSet<>();
 
     protected T content;
 
@@ -23,9 +23,9 @@ public abstract class DataPacket<T>{
     protected DataPacket(NBTTagCompound nbt) {
         content = contentFromNBT(nbt.getCompoundTag("qContent"));
         for (int i = 0; i < nbt.getByte("qHistory"); i++) {
-            trace.add(new Vec3pos(
+            trace.add(new Vec3Impl(
                     nbt.getInteger("qX" + i),
-                    nbt.getShort("qY" + i),
+                    nbt.getInteger("qY" + i),
                     nbt.getInteger("qZ" + i)
             ));
         }
@@ -39,10 +39,10 @@ public abstract class DataPacket<T>{
         }
         nbt.setByte("qHistory", (byte) trace.size());
         int i = 0;
-        for (Vec3pos v : trace) {
-            nbt.setInteger("qX" + i, v.x);
-            nbt.setShort("qY" + i, v.y);
-            nbt.setInteger("qZ" + i, v.z);
+        for (Vec3Impl v : trace) {
+            nbt.setInteger("qX" + i, v.get0());
+            nbt.setInteger("qY" + i, v.get1());
+            nbt.setInteger("qZ" + i, v.get2());
             i++;
         }
         return nbt;
@@ -54,7 +54,7 @@ public abstract class DataPacket<T>{
 
     protected abstract T unifyContentWith(T content);
 
-    public final boolean contains(Vec3pos v) {
+    public final boolean contains(Vec3Impl v) {
         return trace.contains(v);
     }
 
@@ -64,7 +64,7 @@ public abstract class DataPacket<T>{
 
     public abstract boolean extraCheck();
 
-    protected final DataPacket<T> unifyTrace(Vec3pos... positions) {
+    protected final DataPacket<T> unifyTrace(Vec3Impl... positions) {
         Collections.addAll(trace,positions);
         return (check() && extraCheck()) ? this : null;
     }
@@ -85,7 +85,7 @@ public abstract class DataPacket<T>{
         return null;
     }
 
-    public final T contentIfNotInTrace(Vec3pos pos) {
+    public final T contentIfNotInTrace(Vec3Impl pos) {
         if (trace.contains(pos)) {
             return null;
         }

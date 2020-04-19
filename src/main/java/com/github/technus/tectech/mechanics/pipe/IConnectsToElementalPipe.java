@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.metaTileEntity.pipe;
+package com.github.technus.tectech.mechanics.pipe;
 
 /**
  * Created by Tec on 26.02.2017.

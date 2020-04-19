@@ -3,9 +3,9 @@ package com.github.technus.tectech.loader;
 import com.github.technus.tectech.mechanics.data.ChunkDataMessage;
 import com.github.technus.tectech.mechanics.data.PlayerDataMessage;
 import com.github.technus.tectech.mechanics.data.RendererMessage;
-import com.github.technus.tectech.thing.metaTileEntity.RotationMessage;
+import com.github.technus.tectech.mechanics.alignment.AlignmentMessage;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.TextParametersMessage;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.PipeActivityMessage;
+import com.github.technus.tectech.mechanics.pipe.PipeActivityMessage;
 
 import static com.github.technus.tectech.Reference.MODID;
 
@@ -23,8 +23,8 @@ public class NetworkDispatcher extends eu.usrv.yamcore.network.PacketDispatcher 
         registerMessage(PipeActivityMessage.ServerHandler.class, PipeActivityMessage.PipeActivityQuery.class);
         registerMessage(PipeActivityMessage.ClientHandler.class, PipeActivityMessage.PipeActivityData.class);
 
-        registerMessage(RotationMessage.ServerHandler.class, RotationMessage.RotationQuery.class);
-        registerMessage(RotationMessage.ClientHandler.class, RotationMessage.RotationData.class);
+        registerMessage(AlignmentMessage.ServerHandler.class, AlignmentMessage.AlignmentQuery.class);
+        registerMessage(AlignmentMessage.ClientHandler.class, AlignmentMessage.AlignmentData.class);
 
         registerMessage(ChunkDataMessage.ServerHandler.class, ChunkDataMessage.ChunkDataQuery.class);
         registerMessage(ChunkDataMessage.ClientHandler.class, ChunkDataMessage.ChunkDataData.class);

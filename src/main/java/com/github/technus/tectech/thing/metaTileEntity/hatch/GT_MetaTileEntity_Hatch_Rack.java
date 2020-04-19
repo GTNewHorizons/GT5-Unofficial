@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Rack;
 import cpw.mods.fml.common.Loader;
@@ -28,8 +28,8 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.technus.tectech.CommonValues.MULTI_CHECK_AT;
-import static com.github.technus.tectech.Util.getUniqueIdentifier;
+import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
+import static com.github.technus.tectech.util.Util.getUniqueIdentifier;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;

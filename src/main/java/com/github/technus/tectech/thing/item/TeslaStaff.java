@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.item;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_Utility;

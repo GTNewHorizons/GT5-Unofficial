@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.data.RendererMessage;
 import com.github.technus.tectech.mechanics.data.ThaumSpark;
@@ -26,9 +26,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.Util.entriesSortedByValues;
-import static com.github.technus.tectech.Util.map;
+import static com.github.technus.tectech.util.CommonValues.V;
+import static com.github.technus.tectech.util.Util.entriesSortedByValues;
+import static com.github.technus.tectech.util.Util.map;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
 import static java.lang.Math.round;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -206,9 +206,9 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         IMetaTileEntity nodeInside = node.getMetaTileEntity();
         if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil) {
             GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
-            xR = (byte) (nodeTesla.posTop[0] - x);
-            yR = (byte) (nodeTesla.posTop[1] - y);
-            zR = (byte) (nodeTesla.posTop[2] - z);
+            xR = (byte) (nodeTesla.posTop.get0() - x);
+            yR = (byte) (nodeTesla.posTop.get1() - y);
+            zR = (byte) (nodeTesla.posTop.get2() - z);
         } else {
             xR = (byte) (node.getXCoord() - x);
             yR = (byte) (node.getYCoord() - y);

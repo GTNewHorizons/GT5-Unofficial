@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.mechanics.dataTransport.InventoryDataPacket;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToDataPipe;
+import com.github.technus.tectech.mechanics.pipe.IConnectsToDataPipe;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -20,7 +20,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.CommonValues.MOVE_AT;
+import static com.github.technus.tectech.util.CommonValues.MOVE_AT;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.*;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;

@@ -1,6 +1,6 @@
 package com.github.technus.tectech.mechanics.dataTransport;
 
-import com.github.technus.tectech.Vec3pos;
+import com.github.technus.tectech.util.Vec3Impl;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class QuantumDataPacket extends DataPacket<Long> {
@@ -34,7 +34,7 @@ public class QuantumDataPacket extends DataPacket<Long> {
         return this.content+content;
     }
 
-    public QuantumDataPacket unifyTraceWith(Vec3pos... positions) {
+    public QuantumDataPacket unifyTraceWith(Vec3Impl... positions) {
         return (QuantumDataPacket) super.unifyTrace(positions);
     }
 

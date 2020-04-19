@@ -1,6 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.mechanics.pipe.IActivePipe;
+import com.github.technus.tectech.mechanics.pipe.IConnectsToDataPipe;
+import com.github.technus.tectech.mechanics.pipe.PipeActivityMessage;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -31,7 +34,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 /**
  * Created by Tec on 26.02.2017.
  */
-public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConnectsToDataPipe,IActivePipe {
+public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConnectsToDataPipe, IActivePipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
     private static Textures.BlockIcons.CustomIcon EMbar,EMbarActive;
     public byte connectionCount = 0;
@@ -118,25 +121,16 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
+                if(TecTech.RANDOM.nextInt(15)==0) {
+                    NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                            aBaseMetaTileEntity.getXCoord(),
+                            aBaseMetaTileEntity.getYCoord(),
+                            aBaseMetaTileEntity.getZCoord(),
+                            256);
+                }
                 if(active){
-                    if(TecTech.RANDOM.nextInt(15)==0) {
-                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
-                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                                aBaseMetaTileEntity.getXCoord(),
-                                aBaseMetaTileEntity.getYCoord(),
-                                aBaseMetaTileEntity.getZCoord(),
-                                256);
-                    }
                     active=false;
-                }else if(getActive()){
-                    if(TecTech.RANDOM.nextInt(15)==0) {
-                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
-                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                                aBaseMetaTileEntity.getXCoord(),
-                                aBaseMetaTileEntity.getYCoord(),
-                                aBaseMetaTileEntity.getZCoord(),
-                                256);
-                    }
                 }
                 mConnections = 0;
                 connectionCount = 0;
@@ -275,9 +269,11 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     }
 
     @Override
-    public void setActive(boolean active) {
-        this.active=active;
-        getBaseMetaTileEntity().issueTextureUpdate();
+    public void setActive(boolean state) {
+        if(state!=active) {
+            active = state;
+            getBaseMetaTileEntity().issueTextureUpdate();
+        }
     }
 
     @Override

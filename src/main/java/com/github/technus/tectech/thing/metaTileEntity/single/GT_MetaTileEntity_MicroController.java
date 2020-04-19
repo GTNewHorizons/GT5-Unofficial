@@ -10,7 +10,7 @@ import com.github.technus.avrClone.memory.EepromMemory;
 import com.github.technus.avrClone.memory.RemovableMemory;
 import com.github.technus.avrClone.memory.program.ProgramMemory;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.mechanics.avr.SidedRedstone;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;

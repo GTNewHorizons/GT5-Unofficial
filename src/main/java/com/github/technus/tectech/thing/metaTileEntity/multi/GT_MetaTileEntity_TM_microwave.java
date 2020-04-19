@@ -1,10 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.Reference;
-import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.mechanics.constructible.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
+import com.github.technus.tectech.util.Vec3Impl;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -23,11 +24,12 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.github.technus.tectech.Util.StructureBuilderExtreme;
+import static com.github.technus.tectech.util.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.loader.MainLoader.microwaving;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static gregtech.api.GregTech_API.sBlockCasings4;
+import static net.minecraft.util.AxisAlignedBB.getBoundingBox;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -124,16 +126,14 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         timerValue.set(timerValue.get() + 1);
         remainingTime.set(timerSetting.get() - timerValue.get());
         IGregTechTileEntity mte = getBaseMetaTileEntity();
-        int[] xyzOffsets = getTranslatedOffsets(0, -1, 2);
-        double xPos = mte.getXCoord() + 0.5f + xyzOffsets[0];
-        double yPos = mte.getYCoord() + 0.5f + xyzOffsets[1];
-        double zPos = mte.getZCoord() + 0.5f + xyzOffsets[2];
-        AxisAlignedBB aabb = getBoundingBox(-2, -2, -2, 2, 2, 2).offset(xPos, yPos, zPos);
-        xyzOffsets = getTranslatedOffsets(0, -4, 0);
-        double[] xyzExpansion = getTranslatedOffsets(1.5, 0, 1.5);
-        for (int i = 0; i < 3; i++) {//gets ABS from translated to get expansion values
-            if (xyzExpansion[i] < 0) xyzExpansion[i] = -xyzExpansion[i];
-        }
+        Vec3Impl xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 2));
+        double xPos = mte.getXCoord() + 0.5f + xyzOffsets.get0();
+        double yPos = mte.getYCoord() + 0.5f + xyzOffsets.get1();
+        double zPos = mte.getZCoord() + 0.5f + xyzOffsets.get2();
+        AxisAlignedBB aabb = getBoundingBox(-2, -2, -2, 2, 2, 2)
+                .offset(xPos, yPos, zPos);
+        xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -4, 0));
+        Vec3Impl xyzExpansion = getExtendedFacing().getWorldOffset(new Vec3Impl(1, 0, 1)).abs();
         int power = (int) powerSetting.get();
         int damagingFactor =
                 Math.min(power >> 6, 8) +
@@ -169,8 +169,8 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                     }
                 }
             }
-            aabb.offset(xyzOffsets[0], xyzOffsets[1], xyzOffsets[2]);
-            aabb = aabb.expand(xyzExpansion[0], xyzExpansion[1], xyzExpansion[2]);
+            aabb.offset(xyzOffsets.get0(), xyzOffsets.get1(), xyzOffsets.get2());
+            aabb = aabb.expand(xyzExpansion.get0()*1.5, xyzExpansion.get1()*1.5, xyzExpansion.get2()*1.5);
             inside = false;
             damagingFactor >>= 1;
         } while (damagingFactor > 0);
@@ -206,7 +206,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][49], new TT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][49], new TT_RenderedExtendedFacingTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
         } else if (aSide == GT_Utility.getOppositeSide(aFacing)) {
             return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][49], aActive ? Textures.BlockIcons.casingTexturePages[0][52] : Textures.BlockIcons.casingTexturePages[0][53]};
         }
@@ -246,7 +246,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), this, hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
     }
 
     @Override

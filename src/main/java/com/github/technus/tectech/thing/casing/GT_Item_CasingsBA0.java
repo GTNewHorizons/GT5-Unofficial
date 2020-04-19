@@ -8,7 +8,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.List;
 
-import static com.github.technus.tectech.CommonValues.*;
+import static com.github.technus.tectech.util.CommonValues.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_Item_CasingsBA0 extends GT_Item_Casings_Abstract {

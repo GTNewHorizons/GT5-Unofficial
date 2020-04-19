@@ -1,4 +1,4 @@
-package com.github.technus.tectech;
+package com.github.technus.tectech.util;
 /*
   A subclass of java.util.random that implements the Xorshift random number
   generator

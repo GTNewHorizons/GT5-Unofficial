@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.metaTileEntity;
+package com.github.technus.tectech.mechanics.constructible;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.metaTileEntity.pipe;
+package com.github.technus.tectech.mechanics.pipe;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -105,7 +105,7 @@ public class PipeActivityMessage implements IMessage {
                 if(te instanceof IGregTechTileEntity){
                     IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
                     if(meta instanceof IActivePipe){
-                        ((IActivePipe) meta).setActive((byte)pMessage.mActive==1);
+                        ((IActivePipe) meta).setActive(pMessage.mActive==1);
                     }
                 }
             }

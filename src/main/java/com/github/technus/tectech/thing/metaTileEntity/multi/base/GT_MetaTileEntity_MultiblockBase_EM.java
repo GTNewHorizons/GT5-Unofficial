@@ -2,17 +2,19 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
-import com.github.technus.tectech.Vec3pos;
+import com.github.technus.tectech.mechanics.alignment.*;
+import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
+import com.github.technus.tectech.mechanics.alignment.enumerable.Flip;
+import com.github.technus.tectech.mechanics.alignment.enumerable.Rotation;
+import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.Vec3Impl;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
-import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
-import com.github.technus.tectech.thing.metaTileEntity.RotationMessage;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -31,23 +33,23 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.CommonValues.*;
-import static com.github.technus.tectech.Util.StructureCheckerExtreme;
-import static com.github.technus.tectech.Util.getTier;
+import static com.github.technus.tectech.util.CommonValues.*;
+import static com.github.technus.tectech.util.Util.StructureCheckerExtreme;
+import static com.github.technus.tectech.util.Util.getTier;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 
 /**
  * Created by danie_000 on 27.10.2016.
  */
-public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEntity_MultiBlockBase implements IFrontRotation {
+public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEntity_MultiBlockBase implements IAlignment {
     //region Client side variables (static - one per class)
 
     //Front icon holders - static so it is default one for my blocks
@@ -130,8 +132,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     private boolean explodedThisTick = false;
 
     //front rotation val
-    private byte frontRotation = 0;
-
+    private IAlignmentLimits alignmentLimits = AlignmentLimits.UNLIMITED;
+    private ExtendedFacing extendedFacing = ExtendedFacing.DEFAULT;
     //endregion
 
     protected GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
@@ -149,345 +151,46 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     //region SUPER STRUCT
-
     @Override
-    public boolean isFrontRotationValid(byte frontRotation, byte frontFacing) {
-        return true;
-    }
-
-    public boolean isFacingValid_EM(byte aFacing) {
-        return true;
+    public ExtendedFacing getExtendedFacing() {
+        return extendedFacing;
     }
 
     @Override
-    public void rotateAroundFrontPlane(boolean direction) {
-        if (direction) {
-            frontRotation++;
-            if (frontRotation > 3) frontRotation = 0;
-        } else {
-            frontRotation--;
-            if (frontRotation < 0) frontRotation = 3;
-        }
-        if (isFrontRotationValid(frontRotation, getBaseMetaTileEntity().getFrontFacing())) {
-            updateRotationOnClients();
-        } else {
-            rotateAroundFrontPlane(direction);
-        }
-    }
-
-    /**
-     * Gets AABB based on abc and not xyz, without offsetting to controller position!!!
-     *
-     * @param minA
-     * @param minB
-     * @param minC
-     * @param maxA
-     * @param maxB
-     * @param maxC
-     * @return
-     */
-    public final AxisAlignedBB getBoundingBox(double minA, double minB, double minC, double maxA, double maxB, double maxC) {
-        double[] offSetsMin = getTranslatedOffsets(minA, minB, minC);
-        double[] offSetsMax = getTranslatedOffsets(maxA, maxB, maxC);
-        for (int i = 0; i < 3; i++) {
-            if (offSetsMax[i] < offSetsMin[i]) {
-                double temp = offSetsMax[i];
-                offSetsMax[i] = offSetsMin[i];
-                offSetsMin[i] = temp;
+    public void setExtendedFacing(ExtendedFacing alignment) {
+        if(extendedFacing!=alignment){
+            extendedFacing=alignment;
+            IGregTechTileEntity base = getBaseMetaTileEntity();
+            if (getBaseMetaTileEntity().isServerSide()) {
+                NetworkDispatcher.INSTANCE.sendToAllAround(new AlignmentMessage.AlignmentData(this),
+                        base.getWorld().provider.dimensionId,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(), 512);
+            }else{
+                base.issueTextureUpdate();
             }
         }
-        return AxisAlignedBB.getBoundingBox(
-                offSetsMin[0], offSetsMin[1], offSetsMin[2],
-                offSetsMax[0], offSetsMax[1], offSetsMax[2]
-        );
     }
 
-    /**
-     * Translates relative axis coordinates abc to absolute axis coordinates xyz
-     * abc from the CONTROLLER!
-     *
-     * @param a
-     * @param b
-     * @param c
-     * @return
-     */
-    public final double[] getTranslatedOffsets(double a, double b, double c) {
-        double[] result = new double[3];
-        switch (getBaseMetaTileEntity().getFrontFacing() + (frontRotation << 3)) {
-            case 4:
-                result[0] = c;
-                result[2] = a;
-                result[1] = -b;
-                break;
-            case 12:
-                result[0] = c;
-                result[1] = -a;
-                result[2] = -b;
-                break;
-            case 20:
-                result[0] = c;
-                result[2] = -a;
-                result[1] = b;
-                break;
-            case 28:
-                result[0] = c;
-                result[1] = a;
-                result[2] = b;
-                break;
-
-            case 3:
-                result[0] = a;
-                result[2] = -c;
-                result[1] = -b;
-                break;
-            case 11:
-                result[1] = -a;
-                result[2] = -c;
-                result[0] = -b;
-                break;
-            case 19:
-                result[0] = -a;
-                result[2] = -c;
-                result[1] = b;
-                break;
-            case 27:
-                result[1] = a;
-                result[2] = -c;
-                result[0] = b;
-                break;
-
-            case 5:
-                result[0] = -c;
-                result[2] = -a;
-                result[1] = -b;
-                break;
-            case 13:
-                result[0] = -c;
-                result[1] = -a;
-                result[2] = b;
-                break;
-            case 21:
-                result[0] = -c;
-                result[2] = a;
-                result[1] = b;
-                break;
-            case 29:
-                result[0] = -c;
-                result[1] = a;
-                result[2] = -b;
-                break;
-
-            case 2:
-                result[0] = -a;
-                result[2] = c;
-                result[1] = -b;
-                break;
-            case 10:
-                result[1] = -a;
-                result[2] = c;
-                result[0] = b;
-                break;
-            case 18:
-                result[0] = a;
-                result[2] = c;
-                result[1] = b;
-                break;
-            case 26:
-                result[1] = a;
-                result[2] = c;
-                result[0] = -b;
-                break;
-            //Things get odd if the block faces up or down...
-            case 1:
-                result[0] = a;
-                result[2] = b;
-                result[1] = -c;
-                break;//similar to 3
-            case 9:
-                result[2] = a;
-                result[0] = -b;
-                result[1] = -c;
-                break;//similar to 3
-            case 17:
-                result[0] = -a;
-                result[2] = -b;
-                result[1] = -c;
-                break;//similar to 3
-            case 25:
-                result[2] = -a;
-                result[0] = b;
-                result[1] = -c;
-                break;//similar to 3
-
-            case 0:
-                result[0] = -a;
-                result[2] = b;
-                result[1] = c;
-                break;//similar to 2
-            case 8:
-                result[2] = a;
-                result[0] = b;
-                result[1] = c;
-                break;
-            case 16:
-                result[0] = a;
-                result[2] = -b;
-                result[1] = c;
-                break;
-            case 24:
-                result[2] = -a;
-                result[0] = -b;
-                result[0] = -b;
-                result[1] = +c;
-                break;
-        }
-        return result;
+    @Override
+    public IAlignmentLimits getAlignmentLimits() {
+        return alignmentLimits;
     }
 
-    public final int[] getTranslatedOffsets(int a, int b, int c) {
-        int[] result = new int[3];
-        switch (getBaseMetaTileEntity().getFrontFacing() + (frontRotation << 3)) {
-            case 4:
-                result[0] = c;
-                result[2] = a;
-                result[1] = -b;
-                break;
-            case 12:
-                result[0] = c;
-                result[1] = -a;
-                result[2] = -b;
-                break;
-            case 20:
-                result[0] = c;
-                result[2] = -a;
-                result[1] = b;
-                break;
-            case 28:
-                result[0] = c;
-                result[1] = a;
-                result[2] = b;
-                break;
-
-            case 3:
-                result[0] = a;
-                result[2] = -c;
-                result[1] = -b;
-                break;
-            case 11:
-                result[1] = -a;
-                result[2] = -c;
-                result[0] = -b;
-                break;
-            case 19:
-                result[0] = -a;
-                result[2] = -c;
-                result[1] = b;
-                break;
-            case 27:
-                result[1] = a;
-                result[2] = -c;
-                result[0] = b;
-                break;
-
-            case 5:
-                result[0] = -c;
-                result[2] = -a;
-                result[1] = -b;
-                break;
-            case 13:
-                result[0] = -c;
-                result[1] = -a;
-                result[2] = b;
-                break;
-            case 21:
-                result[0] = -c;
-                result[2] = a;
-                result[1] = b;
-                break;
-            case 29:
-                result[0] = -c;
-                result[1] = a;
-                result[2] = -b;
-                break;
-
-            case 2:
-                result[0] = -a;
-                result[2] = c;
-                result[1] = -b;
-                break;
-            case 10:
-                result[1] = -a;
-                result[2] = c;
-                result[0] = b;
-                break;
-            case 18:
-                result[0] = a;
-                result[2] = c;
-                result[1] = b;
-                break;
-            case 26:
-                result[1] = a;
-                result[2] = c;
-                result[0] = -b;
-                break;
-            //Things get odd if the block faces up or down...
-            case 1:
-                result[0] = a;
-                result[2] = b;
-                result[1] = -c;
-                break;//similar to 3
-            case 9:
-                result[2] = a;
-                result[0] = -b;
-                result[1] = -c;
-                break;//similar to 3
-            case 17:
-                result[0] = -a;
-                result[2] = -b;
-                result[1] = -c;
-                break;//similar to 3
-            case 25:
-                result[2] = -a;
-                result[0] = b;
-                result[1] = -c;
-                break;//similar to 3
-
-            case 0:
-                result[0] = -a;
-                result[2] = b;
-                result[1] = c;
-                break;//similar to 2
-            case 8:
-                result[2] = a;
-                result[0] = b;
-                result[1] = c;
-                break;
-            case 16:
-                result[0] = a;
-                result[2] = -b;
-                result[1] = c;
-                break;
-            case 24:
-                result[2] = -a;
-                result[0] = -b;
-                result[0] = -b;
-                result[1] = +c;
-                break;
-        }
-        return result;
+    @Override
+    public void setAlignmentLimits(IAlignmentLimits limits) {
+        alignmentLimits=limits;
     }
 
-    //can be used to check structures of multi-blocks larger than one chunk, but...
-    //ALL THE HATCHES AND THE CONTROLLER SHOULD BE IN ONE CHUNK OR IN LOADED CHUNKS
-    //@Deprecated
-    //public final boolean structureCheck_EM(
-    //        String[][] structure,//0-9 casing, +- air no air, a-z ignore
-    //        Block[] blockType,//use numbers 0-9 for casing types
-    //        byte[] blockMeta,//use numbers 0-9 for casing types
-    //        int horizontalOffset, int verticalOffset, int depthOffset) {
-    //    return StructureChecker(structure, blockType, blockMeta,
-    //            horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), !mMachine);
-    //}
+    @Override
+    public boolean isFacingValid(byte aFacing) {
+        return getAlignmentLimits()
+                .isNewExtendedFacingValid(getExtendedFacing().with(ForgeDirection.getOrientation(aFacing)));
+    }
+
+    @Override
+    public void onFacingChange() {
+        toolSetDirection(ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()));
+    }
 
     public final boolean structureCheck_EM(
             String[][] structure,//0-9 casing, +- air no air, a-z ignore
@@ -499,7 +202,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             byte[] blockMetaFallback,//use numbers 0-9 for casing types
             int horizontalOffset, int verticalOffset, int depthOffset) {
         return StructureCheckerExtreme(structure, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
-                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), this, !mMachine);
+                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), getExtendedFacing(), !mMachine);
     }
 
     //endregion
@@ -729,7 +432,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4]};
     }
@@ -904,7 +607,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      */
     protected long getAvailableData_EM() {
         long result = 0;
-        Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
+        Vec3Impl pos = new Vec3Impl(getBaseMetaTileEntity());
         for (GT_MetaTileEntity_Hatch_InputData in : eInputData) {
             if (in.q != null) {
                 Long value = in.q.contentIfNotInTrace(pos);
@@ -976,7 +679,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         aNBT.setByte("eCertainM", eCertainMode);
         aNBT.setByte("eCertainS", eCertainStatus);
         aNBT.setByte("eMinRepair", minRepairStatus);
-        aNBT.setByte("eRotation", frontRotation);
+        aNBT.setByte("eRotation", (byte)extendedFacing.getRotation().getIndex());
+        aNBT.setByte("eFlip", (byte)extendedFacing.getFlip().getIndex());
         aNBT.setBoolean("eParam", eParameters);
         aNBT.setBoolean("ePass", ePowerPass);
         aNBT.setBoolean("eVoid", eSafeVoid);
@@ -1066,7 +770,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         eCertainMode = aNBT.getByte("eCertainM");
         eCertainStatus = aNBT.getByte("eCertainS");
         minRepairStatus = aNBT.getByte("eMinRepair");
-        frontRotation = aNBT.getByte("eRotation");
+        extendedFacing=ExtendedFacing.of(
+                ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()),
+                Rotation.byIndex(aNBT.getByte("eRotation")),
+                Flip.byIndex(aNBT.getByte("eFlip")));
         eParameters = aNBT.getBoolean("eParam");
         ePowerPass = aNBT.getBoolean("ePass");
         eSafeVoid = aNBT.getBoolean("eVoid");
@@ -1265,40 +972,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //region internal
 
-    @Override
-    public final byte getFrontRotation() {
-        return frontRotation;
-    }
-
-    @Override
-    public final void forceSetRotationDoRender(byte rotation) {
-        frontRotation = rotation;
-        IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (base.isClientSide()) {
-            base.issueTextureUpdate();
-        }
-    }
-
-    protected final void updateRotationOnClients() {
-        if (getBaseMetaTileEntity().isServerSide()) {
-            IGregTechTileEntity base = getBaseMetaTileEntity();
-            NetworkDispatcher.INSTANCE.sendToAllAround(new RotationMessage.RotationData(this),
-                    base.getWorld().provider.dimensionId,
-                    base.getXCoord(),
-                    base.getYCoord(),
-                    base.getZCoord(),
-                    256);
-        }
-    }
-
-    @Override
-    public final boolean isFacingValid(byte aFacing) {
-        if (!isFrontRotationValid(frontRotation, aFacing)) {
-            rotateAroundFrontPlane(false);
-        }
-        return isFacingValid_EM(aFacing);
-    }
-
     /**
      * internal check machine
      *
@@ -1380,7 +1053,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
         if (getBaseMetaTileEntity().isClientSide()) {
-            NetworkDispatcher.INSTANCE.sendToServer(new RotationMessage.RotationQuery(this));
+            NetworkDispatcher.INSTANCE.sendToServer(new AlignmentMessage.AlignmentQuery(this));
         }
         onFirstTick_EM(aBaseMetaTileEntity);
     }

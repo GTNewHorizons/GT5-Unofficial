@@ -1,20 +1,21 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.data.RendererMessage;
 import com.github.technus.tectech.mechanics.data.ThaumSpark;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
-import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.mechanics.constructible.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TeslaCoil;
+import com.github.technus.tectech.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -28,17 +29,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
-import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.Util.*;
+import static com.github.technus.tectech.util.CommonValues.V;
+import static com.github.technus.tectech.util.Util.*;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsBA0;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static gregtech.api.enums.GT_Values.E;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
@@ -72,9 +72,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private byte oldOrientation = -1;
 
     //Coordinate Arrays
-    private int[][] scanPosOffsets = new int[10][3];
-    private int[] posZap = new int[3];//Power Transfer Origin
-    public int[] posTop = new int[3];//Lightning Origin
+    private final Vec3Impl[] scanPosOffsets = new Vec3Impl[10];
+    private Vec3Impl posZap = Vec3Impl.NULL_VECTOR;//Power Transfer Origin
+    public Vec3Impl posTop = Vec3Impl.NULL_VECTOR;//Lightning Origin
     //endregion
 
     //region structure
@@ -249,15 +249,15 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         return 1F;
     }
 
-    private void scanForTransmissionTargets(int[] coordsMin, int[] coordsMax) {
+    private void scanForTransmissionTargets(Vec3Impl coordsMin, Vec3Impl coordsMax) {
         //This makes sure the minimums are actually smaller than the maximums
-        int xMin = coordsMin[0] < coordsMax[0] ? coordsMin[0] : coordsMax[0];
-        int yMin = coordsMin[1] < coordsMax[1] ? coordsMin[1] : coordsMax[1];
-        int zMin = coordsMin[2] < coordsMax[2] ? coordsMin[2] : coordsMax[2];
+        int xMin = min(coordsMin.get0(), coordsMax.get0());
+        int yMin = min(coordsMin.get1(), coordsMax.get1());
+        int zMin = min(coordsMin.get2(), coordsMax.get2());
         //And vice versa
-        int xMax = coordsMin[0] > coordsMax[0] ? coordsMin[0] : coordsMax[0];
-        int yMax = coordsMin[1] > coordsMax[1] ? coordsMin[1] : coordsMax[1];
-        int zMax = coordsMin[2] > coordsMax[2] ? coordsMin[2] : coordsMax[2];
+        int xMax = max(coordsMin.get0(), coordsMax.get0());
+        int yMax = max(coordsMin.get1(), coordsMax.get1());
+        int zMax = max(coordsMin.get2(), coordsMax.get2());
 
         for (int xPos = xMin; xPos <= xMax; xPos++) {
             for (int yPos = yMin; yPos <= yMax; yPos++) {
@@ -266,12 +266,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                         continue;
                     }
                     IGregTechTileEntity node = getBaseMetaTileEntity().getIGregTechTileEntityOffset(xPos, yPos, zPos);
-                    if (node == null) {
-                        continue;
-                    }
-                    IMetaTileEntity nodeInside = node.getMetaTileEntity();
-                    if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil || nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
-                        eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(Math.pow(xPos, 2) + Math.pow(yPos, 2) + Math.pow(zPos, 2))));
+                    if (node != null) {
+                        IMetaTileEntity nodeInside = node.getMetaTileEntity();
+                        if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil ||
+                                nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() ||
+                                (node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
+                            eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(Math.pow(xPos, 2) + Math.pow(yPos, 2) + Math.pow(zPos, 2))));
+                        }
                     }
                 }
             }
@@ -280,13 +281,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     private void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
-        byte xR = (byte) (node.getXCoord() - posTop[0]);
-        byte yR = (byte) (node.getYCoord() - posTop[1]);
-        byte zR = (byte) (node.getZCoord() - posTop[2]);
+        byte xR = (byte) (node.getXCoord() - posTop.get0());
+        byte yR = (byte) (node.getYCoord() - posTop.get1());
+        byte zR = (byte) (node.getZCoord() - posTop.get2());
 
         int wID = mte.getWorld().provider.dimensionId;
 
-        sparkList.add(new ThaumSpark(posTop[0], posTop[1], posTop[2], xR, yR, zR, wID));
+        sparkList.add(new ThaumSpark(posTop.get0(), posTop.get1(), posTop.get2(), xR, yR, zR, wID));
     }
 
     @Override
@@ -303,9 +304,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         }
         eCapacitorHatches.clear();
 
-        int[] xyzOffsets;
-        xyzOffsets = getTranslatedOffsets(0, -1, 1);
-        mTier = iGregTechTileEntity.getMetaIDOffset(xyzOffsets[0], xyzOffsets[1], xyzOffsets[2]);
+        Vec3Impl xyzOffsets;
+
+        xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 1));
+        mTier = iGregTechTileEntity.getMetaIDOffset(xyzOffsets.get0(), xyzOffsets.get1(), xyzOffsets.get2());
 
         if (structureCheck_EM(shape, blockType, blockMetas[mTier], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 3, 16, 0) && eCapacitorHatches.size() > 0) {
             for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
@@ -315,37 +317,31 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             }
 
             //Only recalculate offsets on orientation or rotation change
-            if (oldRotation != getFrontRotation() || oldOrientation != iGregTechTileEntity.getFrontFacing()) {
-                oldRotation = getFrontRotation();
+            if (oldRotation != getExtendedFacing().ordinal() || oldOrientation != iGregTechTileEntity.getFrontFacing()) {
+                oldRotation = (byte) getExtendedFacing().ordinal();
                 oldOrientation = iGregTechTileEntity.getFrontFacing();
 
                 //Calculate coordinates of the middle bottom
-                xyzOffsets = getTranslatedOffsets(0, 0, 2);
-                posZap[0] = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
-                posZap[1] = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
-                posZap[2] = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
+                posZap = getExtendedFacing().getWorldOffset(new Vec3Impl(0, 0, 2)).add(getBaseMetaTileEntity());
 
                 //Calculate coordinates of the top sphere
-                xyzOffsets = getTranslatedOffsets(0, -14, 2);
-                posTop[0] = iGregTechTileEntity.getXCoord() + xyzOffsets[0];
-                posTop[1] = iGregTechTileEntity.getYCoord() + xyzOffsets[1];
-                posTop[2] = iGregTechTileEntity.getZCoord() + xyzOffsets[2];
+                posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -14, 2)).add(getBaseMetaTileEntity());
 
                 //Calculate offsets for scanning
-                scanPosOffsets[0] = getTranslatedOffsets(40, 0, 43);
-                scanPosOffsets[1] = getTranslatedOffsets(-40, -4, -37);
+                scanPosOffsets[0] = getExtendedFacing().getWorldOffset(new Vec3Impl(40, 0, 43));
+                scanPosOffsets[1] = getExtendedFacing().getWorldOffset(new Vec3Impl(-40, -4, -37));
 
-                scanPosOffsets[2] = getTranslatedOffsets(40, -5, 43);
-                scanPosOffsets[3] = getTranslatedOffsets(-40, -8, -37);
+                scanPosOffsets[2] = getExtendedFacing().getWorldOffset(new Vec3Impl(40, -5, 43));
+                scanPosOffsets[3] = getExtendedFacing().getWorldOffset(new Vec3Impl(-40, -8, -37));
 
-                scanPosOffsets[4] = getTranslatedOffsets(40, -9, 43);
-                scanPosOffsets[5] = getTranslatedOffsets(-40, -12, -37);
+                scanPosOffsets[4] = getExtendedFacing().getWorldOffset(new Vec3Impl(40, -9, 43));
+                scanPosOffsets[5] = getExtendedFacing().getWorldOffset(new Vec3Impl(-40, -12, -37));
 
-                scanPosOffsets[6] = getTranslatedOffsets(40, -13, 43);
-                scanPosOffsets[7] = getTranslatedOffsets(-40, -16, -37);
+                scanPosOffsets[6] = getExtendedFacing().getWorldOffset(new Vec3Impl(40, -13, 43));
+                scanPosOffsets[7] = getExtendedFacing().getWorldOffset(new Vec3Impl(-40, -16, -37));
 
-                scanPosOffsets[8] = getTranslatedOffsets(40, -17, 43);
-                scanPosOffsets[9] = getTranslatedOffsets(-40, -20, -37);
+                scanPosOffsets[8] = getExtendedFacing().getWorldOffset(new Vec3Impl(40, -17, 43));
+                scanPosOffsets[9] = getExtendedFacing().getWorldOffset(new Vec3Impl(-40, -20, -37));
             }
             return true;
         }
@@ -434,7 +430,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16 + 6], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16 + 6], new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][16 + 6]};
     }
@@ -612,9 +608,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                                     int tY = node.getYCoord();
                                     int tZ = node.getZCoord();
 
-                                    int tXN = posZap[0];
-                                    int tYN = posZap[1];
-                                    int tZN = posZap[2];
+                                    int tXN = posZap.get0();
+                                    int tYN = posZap.get1();
+                                    int tZN = posZap.get2();
 
                                     int tOffset = (int) Math.ceil(Math.sqrt(Math.pow(tX - tXN, 2) + Math.pow(tY - tYN, 2) + Math.pow(tZ - tZN, 2)));
                                     teslaCoil.eTeslaMap.put(mte, tOffset);
@@ -649,7 +645,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         //Power Limit Settings
         long outputVoltage;
         if (outputVoltageSetting.get() > 0) {
-            outputVoltage = Math.min(outputVoltageMax, (long) outputVoltageSetting.get());
+            outputVoltage = min(outputVoltageMax, (long) outputVoltageSetting.get());
         } else {
             outputVoltage = outputVoltageMax;
         }
@@ -657,7 +653,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         long outputCurrent;
         if (outputCurrentSetting.get() > 0) {
-            outputCurrent = Math.min(outputCurrentMax, (long) outputCurrentSetting.get());
+            outputCurrent = min(outputCurrentMax, (long) outputCurrentSetting.get());
         } else {
             outputCurrent = outputCurrentMax;
         }
@@ -826,7 +822,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMetas[(stackSize - 1) % 6], 3, 16, 0, getBaseMetaTileEntity(), this, hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMetas[(stackSize - 1) % 6], 3, 16, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
     }
 
     @Override

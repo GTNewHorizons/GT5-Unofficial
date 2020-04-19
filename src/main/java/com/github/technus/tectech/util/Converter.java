@@ -1,4 +1,4 @@
-package com.github.technus.tectech;
+package com.github.technus.tectech.util;
 
 import java.io.*;
 

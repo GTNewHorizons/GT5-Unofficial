@@ -15,7 +15,7 @@ import cpw.mods.fml.common.Loader;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import static com.github.technus.tectech.CommonValues.V;
+import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.thing.CustomItemList.*;
 
 /**

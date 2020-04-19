@@ -1,6 +1,6 @@
 package com.github.technus.tectech.mechanics.data;
 
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;

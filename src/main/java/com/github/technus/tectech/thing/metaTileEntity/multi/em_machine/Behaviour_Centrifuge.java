@@ -11,7 +11,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 
 import java.util.Arrays;
 
-import static com.github.technus.tectech.CommonValues.V;
+import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 

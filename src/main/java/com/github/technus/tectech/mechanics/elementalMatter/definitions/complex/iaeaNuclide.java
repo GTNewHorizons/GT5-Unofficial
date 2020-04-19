@@ -1,6 +1,6 @@
 package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex;
 
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
