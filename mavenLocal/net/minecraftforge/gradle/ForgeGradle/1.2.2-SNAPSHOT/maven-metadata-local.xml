@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>net.minecraftforge.gradle</groupId>
+  <artifactId>ForgeGradle</artifactId>
+  <version>1.2.2-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <localCopy>true</localCopy>
+    </snapshot>
+    <lastUpdated>20200419091233</lastUpdated>
+  </versioning>
+</metadata>

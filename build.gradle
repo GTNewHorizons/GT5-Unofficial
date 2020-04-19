@@ -1,5 +1,9 @@
 buildscript {
     repositories {
+        maven {
+            name = "mavenLocal"
+            url = "mavenLocal"
+        }
         mavenCentral()
         maven {
             name = "forge"
@@ -11,7 +15,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2.2-SNAPSHOT'
         classpath "de.undercouch:gradle-download-task:3.1.2"
     }
 }
@@ -19,6 +23,14 @@ buildscript {
 plugins {
     id 'org.ajoberstar.grgit' version '3.1.1'
 }
+
+file "build.properties" withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
+ext.set("minecraftVersion","${config.minecraft.version}-${config.forge.version}-${config.minecraft.version}")
 
 import de.undercouch.gradle.tasks.download.Download
 apply plugin: 'forge'
@@ -39,23 +51,14 @@ sourceSets {
     }
 }
 
-file "build.properties" withReader {
-    def prop = new Properties()
-    prop.load(it)
-    ext.config = new ConfigSlurper().parse prop
-}
-
 version = "${config.minecraft.version}-${config.tectech.version}"
 group = "com.github.technus"
 archivesBaseName = "TecTech"
 
-minecraft {
-    version = "${config.minecraft.version}-${config.forge.version}-${config.minecraft.version}"
-    runDir = "eclipse"
-
-    replaceIn "src/main/java/com/github/technus/tectech/auxiliary/Reference.java"
-    replace "GRADLETOKEN_VERSION", "${config.tectech.version}"
-}
+minecraft.version = ext.get("minecraftVersion")
+minecraft.runDir = "eclipse"
+minecraft.replaceIn "src/main/java/com/github/technus/tectech/auxiliary/Reference.java"
+minecraft.replace "GRADLETOKEN_VERSION", "${config.tectech.version}"
 
 configurations {
     provided
