@@ -26,9 +26,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Reference.MODID;
@@ -186,8 +184,9 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
         renders.add(render);
     }
 
-    public static ArrayList<IDataRender> getRenders(Util.ItemStack_NoNBT stack){
-        return RENDER_REGISTRY.get(stack);
+    public static List<IDataRender> getRenders(Util.ItemStack_NoNBT stack){
+        ArrayList<IDataRender> iDataRenders = RENDER_REGISTRY.get(stack);
+        return iDataRenders==null?Collections.emptyList():iDataRenders;
     }
 
     public interface IDataRender {
