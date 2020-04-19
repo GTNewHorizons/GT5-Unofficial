@@ -57,7 +57,7 @@ archivesBaseName = "TecTech"
 
 minecraft.version = ext.get("minecraftVersion")
 minecraft.runDir = "eclipse"
-minecraft.replaceIn "src/main/java/com/github/technus/tectech/auxiliary/Reference.java"
+minecraft.replaceIn "src/main/java/com/github/technus/tectech/Reference.java"
 minecraft.replace "GRADLETOKEN_VERSION", "${config.tectech.version}"
 
 configurations {
