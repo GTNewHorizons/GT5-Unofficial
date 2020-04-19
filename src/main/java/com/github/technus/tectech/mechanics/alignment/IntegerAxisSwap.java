@@ -1,6 +1,7 @@
 package com.github.technus.tectech.mechanics.alignment;
 
 import com.github.technus.tectech.util.Vec3Impl;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.mechanics.alignment.enumerable.Direction.getAxisVector;
@@ -38,6 +39,22 @@ public class IntegerAxisSwap {
                 forFirstAxis.get0()*point.get0()+forSecondAxis.get0()*point.get1()+forThirdAxis.get0()*point.get2(),
                 forFirstAxis.get1()*point.get0()+forSecondAxis.get1()*point.get1()+forThirdAxis.get1()*point.get2(),
                 forFirstAxis.get2()*point.get0()+forSecondAxis.get2()*point.get1()+forThirdAxis.get2()*point.get2()
+        );
+    }
+
+    public Vec3 translate(Vec3 point){
+        return Vec3.createVectorHelper(
+                forFirstAxis.get0()*point.xCoord +forFirstAxis.get1()*point.yCoord +forFirstAxis.get2()*point.zCoord,
+                forSecondAxis.get0()*point.xCoord+forSecondAxis.get1()*point.yCoord+forSecondAxis.get2()*point.zCoord,
+                forThirdAxis.get0()*point.xCoord +forThirdAxis.get1()*point.yCoord +forThirdAxis.get2()*point.zCoord
+        );
+    }
+
+    public Vec3 inverseTranslate(Vec3 point){
+        return Vec3.createVectorHelper(
+                forFirstAxis.get0()*point.xCoord+forSecondAxis.get0()*point.yCoord+forThirdAxis.get0()*point.zCoord,
+                forFirstAxis.get1()*point.xCoord+forSecondAxis.get1()*point.yCoord+forThirdAxis.get1()*point.zCoord,
+                forFirstAxis.get2()*point.xCoord+forSecondAxis.get2()*point.yCoord+forThirdAxis.get2()*point.zCoord
         );
     }
     

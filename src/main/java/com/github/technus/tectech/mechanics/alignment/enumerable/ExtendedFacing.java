@@ -3,6 +3,7 @@ package com.github.technus.tectech.mechanics.alignment.enumerable;
 import com.github.technus.tectech.mechanics.alignment.IAlignment;
 import com.github.technus.tectech.mechanics.alignment.IntegerAxisSwap;
 import com.github.technus.tectech.util.Vec3Impl;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.*;
@@ -292,6 +293,9 @@ public enum ExtendedFacing {
      * @param abcOffset A,B,C offset (facing relative  L-->R,U-->D,F-->B)
      * @return X,Y,Z offset in world
      */
+    public Vec3 getWorldOffset(Vec3 abcOffset) {
+        return integerAxisSwap.inverseTranslate(abcOffset);
+    }
     public Vec3Impl getWorldOffset(Vec3Impl abcOffset) {
         return integerAxisSwap.inverseTranslate(abcOffset);
     }
@@ -308,6 +312,9 @@ public enum ExtendedFacing {
      * @param xyzOffset X,Y,Z offset in world
      * @return A,B,C offset (facing relative  L-->R,U-->D,F-->B)
      */
+    public Vec3 getOffsetABC(Vec3 xyzOffset){
+        return integerAxisSwap.translate(xyzOffset);
+    }
     public Vec3Impl getOffsetABC(Vec3Impl xyzOffset){
         return integerAxisSwap.translate(xyzOffset);
     }
