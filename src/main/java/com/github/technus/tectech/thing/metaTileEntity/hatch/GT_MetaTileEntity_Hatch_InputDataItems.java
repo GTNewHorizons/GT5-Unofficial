@@ -166,7 +166,7 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        NBTTagCompound stacksTag=new NBTTagCompound();
+        NBTTagCompound stacksTag= aNBT.getCompoundTag("data_stacks");
         int count=stacksTag.getInteger("count");
         if(count>0){
             ArrayList<ItemStack> stacks=new ArrayList<>();
