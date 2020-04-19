@@ -26,9 +26,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Reference.MODID;
@@ -93,8 +91,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
             return DID_NOT_FIND_RECIPE;
         }
         ItemStack input=getInputAt(0);
-        ArrayList<IDataRender> renders=getRenders(new Util.ItemStack_NoNBT(input));
-        for(IDataRender render:renders){
+        for(IDataRender render:getRenders(new Util.ItemStack_NoNBT(input))){
             if(render.canRender(input,mTier)){
                 mOutputItems[0]=input.copy();
                 input.stackSize-=1;
@@ -186,8 +183,9 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
         renders.add(render);
     }
 
-    public static ArrayList<IDataRender> getRenders(Util.ItemStack_NoNBT stack){
-        return RENDER_REGISTRY.get(stack);
+    public static List<IDataRender> getRenders(Util.ItemStack_NoNBT stack){
+        ArrayList<IDataRender> iDataRenders = RENDER_REGISTRY.get(stack);
+        return iDataRenders==null?Collections.emptyList():iDataRenders;
     }
 
     public interface IDataRender {
