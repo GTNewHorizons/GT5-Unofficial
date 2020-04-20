@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.mechanics.alignment.IAlignment;
+import com.github.technus.tectech.mechanics.alignment.IAlignmentProvider;
 import com.github.technus.tectech.util.CommonValues;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -42,19 +43,21 @@ public final class FrontRotationTriggerItem extends Item {
         if (aPlayer instanceof EntityPlayerMP) {
             if (tTileEntity instanceof IGregTechTileEntity) {
                 IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                if (metaTE instanceof IAlignment) {
+                if (metaTE instanceof IAlignmentProvider) {
+                    IAlignment alignment = ((IAlignmentProvider) metaTE).getAlignment();
                     if(aPlayer.isSneaking()){
-                        ((IAlignment) metaTE).toolSetFlip(null);
+                        alignment.toolSetFlip(null);
                     }else {
-                        ((IAlignment) metaTE).toolSetRotation(null);
+                        alignment.toolSetRotation(null);
                     }
                     return true;
                 }
-            } else if (tTileEntity instanceof IAlignment) {
+            } else if (tTileEntity instanceof IAlignmentProvider) {
+                IAlignment alignment = ((IAlignmentProvider) tTileEntity).getAlignment();
                 if(aPlayer.isSneaking()){
-                    ((IAlignment) tTileEntity).toolSetFlip(null);
+                    alignment.toolSetFlip(null);
                 }else {
-                    ((IAlignment) tTileEntity).toolSetRotation(null);
+                    alignment.toolSetRotation(null);
                 }
                 return true;
             }

@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base.render;
 
-import com.github.technus.tectech.mechanics.alignment.IAlignment;
+import com.github.technus.tectech.mechanics.alignment.IAlignmentProvider;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IColorModulationContainer;
@@ -881,11 +881,13 @@ public class TT_RenderedExtendedFacingTexture implements ITexture,IColorModulati
             TileEntity te = w.getTileEntity(x, y, z);
             if (te instanceof IGregTechTileEntity) {
                 IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
-                if (meta instanceof IAlignment) {
-                    return ((IAlignment) meta).getExtendedFacing();
+                if (meta instanceof IAlignmentProvider) {
+                    return ((IAlignmentProvider) meta).getAlignment().getExtendedFacing();
                 }else{
                     return ExtendedFacing.of(ForgeDirection.getOrientation(meta.getBaseMetaTileEntity().getFrontFacing()));
                 }
+            } else if (te instanceof IAlignmentProvider) {
+                return ((IAlignmentProvider) te).getAlignment().getExtendedFacing();
             }
         }
         return ExtendedFacing.DEFAULT;

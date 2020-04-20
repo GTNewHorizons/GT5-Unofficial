@@ -183,8 +183,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public boolean isFacingValid(byte aFacing) {
-        return getAlignmentLimits()
-                .isNewExtendedFacingValid(getExtendedFacing().with(ForgeDirection.getOrientation(aFacing)));
+        return canSetToDirectionAny(ForgeDirection.getOrientation(aFacing));
     }
 
     @Override

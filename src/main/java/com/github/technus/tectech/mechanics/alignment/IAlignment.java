@@ -8,11 +8,24 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Arrays;
 
-public interface IAlignment extends IAlignmentLimits {
+public interface IAlignment extends IAlignmentLimits,IAlignmentProvider {
     int DIRECTIONS_COUNT= Direction.VALUES.length;
     int ROTATIONS_COUNT= Rotation.VALUES.length;
     int FLIPS_COUNT= Flip.VALUES.length;
     int STATES_COUNT = ExtendedFacing.VALUES.length;
+
+    ExtendedFacing getExtendedFacing();
+
+    void setExtendedFacing(ExtendedFacing alignment);
+
+    IAlignmentLimits getAlignmentLimits();
+
+    void setAlignmentLimits(IAlignmentLimits limits);
+
+    @Override
+    default IAlignment getAlignment(){
+        return this;
+    }
 
     static int getAlignmentIndex(ForgeDirection direction, Rotation rotation, Flip flip){
         return (direction.ordinal()*ROTATIONS_COUNT+rotation.getIndex())*FLIPS_COUNT+flip.getIndex();
@@ -42,14 +55,6 @@ public interface IAlignment extends IAlignmentLimits {
         setExtendedFacing(getExtendedFacing().with(flip));
     }
 
-    ExtendedFacing getExtendedFacing();
-
-    void setExtendedFacing(ExtendedFacing alignment);
-
-    IAlignmentLimits getAlignmentLimits();
-
-    void setAlignmentLimits(IAlignmentLimits limits);
-
     default boolean toolSetDirection(ForgeDirection direction){
         if(direction==null || direction==ForgeDirection.UNKNOWN){
             for (int i = 0,j=getDirection().ordinal()+1, valuesLength = Direction.VALUES.length; i < valuesLength; i++) {
@@ -71,6 +76,15 @@ public interface IAlignment extends IAlignmentLimits {
         if (isNewDirectionValid(direction)){
             setDirection(direction);
             return true;
+        }
+        return false;
+    }
+
+    default boolean canSetToDirectionAny(ForgeDirection direction){
+        for (ExtendedFacing extendedFacing : ExtendedFacing.FOR_FACING.get(direction)) {
+            if(isNewExtendedFacingValid(extendedFacing)){
+                return true;
+            }
         }
         return false;
     }
