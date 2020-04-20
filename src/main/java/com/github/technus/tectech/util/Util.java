@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -190,10 +191,9 @@ public final class Util {
         }
 
         IGregTechTileEntity igt;
-        IMetaTileEntity imt = aBaseMetaTileEntity.getMetaTileEntity();
 
-        int xyz[]=new int[3];
-        int abc[]=new int[3];
+        int[] xyz =new int[3];
+        int[] abc =new int[3];
         int pointer;
         int baseX = aBaseMetaTileEntity.getXCoord(),
                 baseZ = aBaseMetaTileEntity.getZCoord(),
@@ -336,10 +336,8 @@ public final class Util {
         }
 
         //TE Rotation
-
-
-        int xyz[]=new int[3];
-        int abc[]=new int[3];
+        int[] xyz =new int[3];
+        int[] abc =new int[3];
         int pointer;
         int
                 baseX = tileEntity.xCoord,
@@ -1045,7 +1043,7 @@ public final class Util {
                     String id1=player.getUniqueID().toString();
                     write(new File(dir, id1 + "."+extension),data);
                     write(new File(dir, id1 + "."+extension+"_bak"),data);
-                    String id2=UUID.nameUUIDFromBytes(player.getCommandSenderName().getBytes(forName("UTF-8"))).toString();
+                    String id2=UUID.nameUUIDFromBytes(player.getCommandSenderName().getBytes(StandardCharsets.UTF_8)).toString();
                     write(new File(dir, id2 + "."+extension),data);
                     write(new File(dir, id2 + "."+extension+"_bak"),data);
                 }
