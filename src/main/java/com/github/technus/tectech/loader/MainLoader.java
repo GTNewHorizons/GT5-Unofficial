@@ -121,7 +121,7 @@ public final class MainLoader {
     }
 
     public static void postLoad() {
-        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 5);
+        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 6);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
         if(Loader.isModLoaded(Reference.DREAMCRAFT)){
@@ -156,6 +156,10 @@ public final class MainLoader {
         progressBarPostLoad.step("Nerf blocks blast resistance");
         fixBlocks();
         TecTech.LOGGER.info("Blocks nerf done");
+
+        progressBarPostLoad.step("Initialize more constructable stuff");
+        new ConstructableLoader().run();
+        TecTech.LOGGER.info("Constructable initialized");
 
         ProgressManager.pop(progressBarPostLoad);
     }
