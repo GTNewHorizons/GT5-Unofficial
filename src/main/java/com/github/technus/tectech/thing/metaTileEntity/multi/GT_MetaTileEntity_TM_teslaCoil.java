@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import com.github.technus.tectech.mechanics.constructable.Structure;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
@@ -7,7 +8,7 @@ import com.github.technus.tectech.mechanics.data.RendererMessage;
 import com.github.technus.tectech.mechanics.data.ThaumSpark;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
-import com.github.technus.tectech.mechanics.constructible.IConstructable;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
@@ -821,8 +822,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMetas[(stackSize - 1) % 6], 3, 16, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        Structure.builder(shape, blockType, blockMetas[(stackSize.stackSize - 1) % 6], 3, 16, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
     }
 
     @Override

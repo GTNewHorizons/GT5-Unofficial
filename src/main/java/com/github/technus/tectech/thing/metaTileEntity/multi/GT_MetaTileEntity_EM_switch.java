@@ -1,9 +1,10 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import com.github.technus.tectech.mechanics.constructable.Structure;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
-import com.github.technus.tectech.mechanics.constructible.IConstructable;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
@@ -21,7 +22,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
 import static com.github.technus.tectech.util.CommonValues.V;
-import static com.github.technus.tectech.util.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -216,8 +216,8 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        Structure.builder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
     }
 
     @Override

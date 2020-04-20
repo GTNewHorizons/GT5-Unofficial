@@ -1,8 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import com.github.technus.tectech.mechanics.constructable.Structure;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.Reference;
-import com.github.technus.tectech.mechanics.constructible.IConstructable;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.Vec3Impl;
@@ -24,7 +25,6 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.github.technus.tectech.util.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.loader.MainLoader.microwaving;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
@@ -245,8 +245,8 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        Structure.builder(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
     }
 
     @Override

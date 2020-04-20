@@ -1,10 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import cofh.api.energy.IEnergyContainerItem;
+import com.github.technus.tectech.mechanics.constructable.Structure;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.constructible.IConstructable;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -22,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-import static com.github.technus.tectech.util.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -182,8 +182,8 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        Structure.builder(shape, blockType, blockMeta, 1, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
     }
 
     @Override

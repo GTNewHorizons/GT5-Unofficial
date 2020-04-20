@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.mechanics.constructible.IConstructable;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -121,7 +121,7 @@ public class GT_MetaTileEntity_TM_proccessingStack extends GT_MetaTileEntity_Mul
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
         //StructureBuilderExtreme(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), this, hintsOnly);
     }
 

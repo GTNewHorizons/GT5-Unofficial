@@ -1,5 +1,6 @@
 package com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi;
 
+import com.github.technus.tectech.mechanics.constructable.Structure;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition;
@@ -7,7 +8,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInsta
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
-import com.github.technus.tectech.mechanics.constructible.IConstructable;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_quantizer;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
@@ -24,7 +25,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.util.CommonValues.V;
-import static com.github.technus.tectech.util.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -127,7 +127,7 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
         IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
         int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
@@ -143,7 +143,7 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
                 iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord() + yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
             }
         }
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, iGregTechTileEntity, getExtendedFacing(), hintsOnly);
+        Structure.builder(shape, blockType, blockMeta, 1, 1, 0, iGregTechTileEntity, getExtendedFacing(), hintsOnly);
     }
 
     @Override

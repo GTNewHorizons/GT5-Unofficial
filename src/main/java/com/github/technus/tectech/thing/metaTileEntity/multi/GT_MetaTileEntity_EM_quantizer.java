@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import com.github.technus.tectech.mechanics.constructable.Structure;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
@@ -11,7 +12,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.transformations
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictQuantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.mechanics.constructible.IConstructable;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import cpw.mods.fml.relauncher.Side;
@@ -29,7 +30,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.util.CommonValues.V;
-import static com.github.technus.tectech.util.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.util.Util.isInputEqual;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
@@ -197,8 +197,8 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        Structure.builder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
     }
 
     @Override

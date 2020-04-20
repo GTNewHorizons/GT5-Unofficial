@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
+import com.github.technus.tectech.mechanics.constructable.Structure;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.Util;
@@ -20,7 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.github.technus.tectech.util.Util.StructureWriter;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -107,7 +107,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isAllowedToWork()) {
-            result = StructureWriter(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], false);
+            result = Structure.writer(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], false);
             for (String s : result) {
                 TecTech.LOGGER.info(s);
             }
@@ -117,7 +117,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        result = StructureWriter(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], true);
+        result = Structure.writer(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], true);
         for (String s : result) {
             TecTech.LOGGER.info(s);
         }

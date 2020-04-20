@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import com.github.technus.tectech.mechanics.constructable.Structure;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
@@ -7,7 +8,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElem
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.iExchangeInfo;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.mechanics.constructible.IConstructable;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
@@ -25,7 +26,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.util.CommonValues.V;
-import static com.github.technus.tectech.util.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refMass;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
@@ -148,8 +148,8 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        Structure.builder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
     }
 
     @Override

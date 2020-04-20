@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import com.github.technus.tectech.mechanics.constructable.Structure;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition;
@@ -13,7 +14,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
-import com.github.technus.tectech.mechanics.constructible.IConstructable;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
@@ -33,7 +34,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.HashMap;
 
-import static com.github.technus.tectech.util.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -665,7 +665,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
         IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
         int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
@@ -681,10 +681,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                 iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord() + yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
             }
         }
-        if ((stackSize & 1) == 1) {
-            StructureBuilderExtreme(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity, getExtendedFacing(), hintsOnly);
+        if ((stackSize.stackSize & 1) == 1) {
+            Structure.builder(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity, getExtendedFacing(), hintsOnly);
         } else {
-            StructureBuilderExtreme(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity, getExtendedFacing(), hintsOnly);
+            Structure.builder(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity, getExtendedFacing(), hintsOnly);
         }
     }
 

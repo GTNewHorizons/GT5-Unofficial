@@ -1,15 +1,15 @@
 package com.github.technus.tectech.thing.item;
 
+import com.github.technus.tectech.mechanics.alignment.IAlignment;
+import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
+import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.constructible.IConstructable;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
-import net.minecraft.block.Block;
+import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -18,14 +18,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.HashMap;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.util.Util.StructureBuilder;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
-import static gregtech.api.GregTech_API.sBlockCasings1;
+import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.MULTIBLOCK_MAP;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -33,8 +32,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  */
 public final class ConstructableTriggerItem extends Item {
     public static ConstructableTriggerItem INSTANCE;
-
-    private static HashMap<String, IMultiblockInfoContainer> multiblockMap= new HashMap<>();
 
     private ConstructableTriggerItem() {
         setUnlocalizedName("em.constructable");
@@ -54,14 +51,28 @@ public final class ConstructableTriggerItem extends Item {
                 if (tTileEntity instanceof IGregTechTileEntity) {
                     IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                     if (metaTE instanceof IConstructable) {
-                        ((IConstructable) metaTE).construct(aStack.stackSize, false);
-                    } else if (multiblockMap.containsKey(metaTE.getClass().getCanonicalName())) {
-                        multiblockMap.get(metaTE.getClass().getCanonicalName()).construct(aStack.stackSize, false, tTileEntity, ((IGregTechTileEntity) tTileEntity).getFrontFacing());
+                        ((IConstructable) metaTE).construct(aStack, false);
+                    } else if (MULTIBLOCK_MAP.containsKey(metaTE.getClass().getCanonicalName())) {
+                        IMultiblockInfoContainer iMultiblockInfoContainer = MULTIBLOCK_MAP.get(metaTE.getClass().getCanonicalName());
+                        if(metaTE instanceof IAlignment){
+                            iMultiblockInfoContainer.construct(aStack, false, tTileEntity, (
+                                    (IAlignment) metaTE).getExtendedFacing());
+                        }else {
+                            iMultiblockInfoContainer.construct(aStack, false, tTileEntity,
+                                    ExtendedFacing.of(ForgeDirection.getOrientation(((IGregTechTileEntity) tTileEntity).getFrontFacing())));
+                        }
                     }
                 } else if (tTileEntity instanceof IConstructable) {
-                    ((IConstructable) tTileEntity).construct(aStack.stackSize, false);
-                } else if (multiblockMap.containsKey(tTileEntity.getClass().getCanonicalName())) {
-                    multiblockMap.get(tTileEntity.getClass().getCanonicalName()).construct(aStack.stackSize, false, tTileEntity, aSide);
+                    ((IConstructable) tTileEntity).construct(aStack, false);
+                } else if (MULTIBLOCK_MAP.containsKey(tTileEntity.getClass().getCanonicalName())) {
+                    IMultiblockInfoContainer iMultiblockInfoContainer = MULTIBLOCK_MAP.get(tTileEntity.getClass().getCanonicalName());
+                    if(tTileEntity instanceof IAlignment){
+                        iMultiblockInfoContainer.construct(aStack, false, tTileEntity,
+                                ((IAlignment) tTileEntity).getExtendedFacing());
+                    }else {
+                        iMultiblockInfoContainer.construct(aStack, false, tTileEntity,
+                                ExtendedFacing.of(ForgeDirection.getOrientation(aSide)));
+                    }
                 }
             }
             return true;
@@ -70,21 +81,35 @@ public final class ConstructableTriggerItem extends Item {
                 if(tTileEntity instanceof IGregTechTileEntity) {
                     IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                     if (metaTE instanceof IConstructable) {
-                        ((IConstructable) metaTE).construct(aStack.stackSize, true);
+                        ((IConstructable) metaTE).construct(aStack, true);
                         TecTech.proxy.printInchat(((IConstructable) metaTE).getStructureDescription(aStack.stackSize));
                         return false;
-                    } else if(multiblockMap.containsKey(metaTE.getClass().getCanonicalName())){
-                        multiblockMap.get(metaTE.getClass().getCanonicalName()).construct(aStack.stackSize,true,tTileEntity,((IGregTechTileEntity) tTileEntity).getFrontFacing());
-                        TecTech.proxy.printInchat(multiblockMap.get(metaTE.getClass().getCanonicalName()).getDescription(aStack.stackSize));
+                    } else if(MULTIBLOCK_MAP.containsKey(metaTE.getClass().getCanonicalName())){
+                        IMultiblockInfoContainer iMultiblockInfoContainer = MULTIBLOCK_MAP.get(metaTE.getClass().getCanonicalName());
+                        if(metaTE instanceof IAlignment){
+                            iMultiblockInfoContainer.construct(aStack, true, tTileEntity, (
+                                    (IAlignment) metaTE).getExtendedFacing());
+                        }else {
+                            iMultiblockInfoContainer.construct(aStack, true, tTileEntity,
+                                    ExtendedFacing.of(ForgeDirection.getOrientation(((IGregTechTileEntity) tTileEntity).getFrontFacing())));
+                        }
+                        TecTech.proxy.printInchat(MULTIBLOCK_MAP.get(metaTE.getClass().getCanonicalName()).getDescription(aStack.stackSize));
                         return false;
                     }
                 } else if(tTileEntity instanceof IConstructable){
-                    ((IConstructable) tTileEntity).construct(aStack.stackSize,true);
+                    ((IConstructable) tTileEntity).construct(aStack,true);
                     TecTech.proxy.printInchat(((IConstructable) tTileEntity).getStructureDescription(aStack.stackSize));
                     return false;
-                } else if(multiblockMap.containsKey(tTileEntity.getClass().getCanonicalName())){
-                    multiblockMap.get(tTileEntity.getClass().getCanonicalName()).construct(aStack.stackSize,true,tTileEntity, aSide);
-                    TecTech.proxy.printInchat(multiblockMap.get(tTileEntity.getClass().getCanonicalName()).getDescription(aStack.stackSize));
+                } else if(MULTIBLOCK_MAP.containsKey(tTileEntity.getClass().getCanonicalName())){
+                    IMultiblockInfoContainer iMultiblockInfoContainer = MULTIBLOCK_MAP.get(tTileEntity.getClass().getCanonicalName());
+                    if(tTileEntity instanceof IAlignment){
+                        iMultiblockInfoContainer.construct(aStack, true, tTileEntity,
+                                ((IAlignment) tTileEntity).getExtendedFacing());
+                    }else {
+                        iMultiblockInfoContainer.construct(aStack, true, tTileEntity,
+                                ExtendedFacing.of(ForgeDirection.getOrientation(aSide)));
+                    }
+                    TecTech.proxy.printInchat(MULTIBLOCK_MAP.get(tTileEntity.getClass().getCanonicalName()).getDescription(aStack.stackSize));
                     return false;
                 }
             //} else {
@@ -122,47 +147,5 @@ public final class ConstructableTriggerItem extends Item {
     public static void run() {
         INSTANCE = new ConstructableTriggerItem();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
-
-        registerMetaClass(GT_MetaTileEntity_ElectricBlastFurnace.class, new IMultiblockInfoContainer() {
-            //region Structure
-            private final String[][] shape = new String[][]{
-                    {"000","\"\"\"","\"\"\""," . ",},
-                    {"0!0","\"A\"","\"A\"","   ",},
-                    {"000","\"\"\"","\"\"\"","   ",},
-            };
-            private final Block[] blockType = new Block[]{sBlockCasings1};
-            private final byte[] blockMeta = new byte[]{11};
-            private final String[] desc=new String[]{
-                    EnumChatFormatting.AQUA+"Hint Details:",
-                    "1 - Classic Hatches or Heat Proof Casing",
-                    "2 - Muffler Hatch",
-                    "3 - Coil blocks"
-            };
-            //endregion
-
-            @Override
-            public void construct(int stackSize, boolean hintsOnly, TileEntity tileEntity, int aSide) {
-                StructureBuilder(shape, blockType, blockMeta, 1, 3, 0, tileEntity, aSide, hintsOnly);
-            }
-
-            @Override
-            public String[] getDescription(int stackSize) {
-                return desc;
-            }
-        });
-    }
-
-    public interface IMultiblockInfoContainer {
-        void construct(int stackSize, boolean hintsOnly, TileEntity tileEntity, int aSide);
-        @SideOnly(Side.CLIENT)
-        String[] getDescription(int stackSize);
-    }
-
-    public static void registerTileClass(Class<? extends TileEntity> clazz, IMultiblockInfoContainer info){
-        multiblockMap.put(clazz.getCanonicalName(),info);
-    }
-
-    public static void registerMetaClass(Class<? extends IMetaTileEntity> clazz, IMultiblockInfoContainer info){
-        multiblockMap.put(clazz.getCanonicalName(),info);
     }
 }

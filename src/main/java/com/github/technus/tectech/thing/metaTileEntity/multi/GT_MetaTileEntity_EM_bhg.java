@@ -1,8 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import com.github.technus.tectech.mechanics.constructable.Structure;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.mechanics.constructible.IConstructable;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
@@ -17,7 +18,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.github.technus.tectech.util.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -297,11 +297,11 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        if ((stackSize & 1) == 1) {
-            StructureBuilderExtreme(shape, blockType, blockMeta, 16, 16, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        if ((stackSize.stackSize & 1) == 1) {
+            Structure.builder(shape, blockType, blockMeta, 16, 16, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         } else {
-            StructureBuilderExtreme(shape2, blockType2, blockMeta2, 16, 16, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+            Structure.builder(shape2, blockType2, blockMeta2, 16, 16, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         }
     }
 

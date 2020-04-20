@@ -6,6 +6,7 @@ import com.github.technus.tectech.mechanics.alignment.*;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Flip;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Rotation;
+import com.github.technus.tectech.mechanics.constructable.Structure;
 import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.util.Vec3Impl;
 import com.github.technus.tectech.loader.NetworkDispatcher;
@@ -41,7 +42,6 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.util.CommonValues.*;
-import static com.github.technus.tectech.util.Util.StructureCheckerExtreme;
 import static com.github.technus.tectech.util.Util.getTier;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
@@ -200,7 +200,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             Block[] blockTypeFallback,//use numbers 0-9 for casing types
             byte[] blockMetaFallback,//use numbers 0-9 for casing types
             int horizontalOffset, int verticalOffset, int depthOffset) {
-        return StructureCheckerExtreme(structure, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
+        return Structure.checker(structure, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
                 horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), getExtendedFacing(), !mMachine);
     }
 
