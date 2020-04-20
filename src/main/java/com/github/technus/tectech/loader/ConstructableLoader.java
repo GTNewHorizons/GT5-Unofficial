@@ -16,7 +16,7 @@ public class ConstructableLoader implements Runnable {
 
     @Override
     public void run() {
-        registerMetaClass(GT_MetaTileEntity_ElectricBlastFurnace .class, new IMultiblockInfoContainer() {
+        registerMetaClass(GT_MetaTileEntity_ElectricBlastFurnace.class, new IMultiblockInfoContainer() {
             //region Structure
             private final String[][] shape = new String[][]{
                     {"000","\"\"\"","\"\"\""," . ",},
