@@ -2,11 +2,10 @@ package blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import kekztech.KekzCore;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 
-public class Block_TFFTCasing extends Block {
+public class Block_TFFTCasing extends BaseGTUpdateableBlock {
 	
 	private static Block_TFFTCasing instance = new Block_TFFTCasing();
 	

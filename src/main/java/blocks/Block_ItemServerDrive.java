@@ -3,13 +3,12 @@ package blocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 import itemBlocks.IB_ItemServerDrive;
 import kekztech.KekzCore;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.IIcon;
 
-public class Block_ItemServerDrive extends Block{
+public class Block_ItemServerDrive extends BaseGTUpdateableBlock{
 
 	private static Block_ItemServerDrive instance = new Block_ItemServerDrive();
 	

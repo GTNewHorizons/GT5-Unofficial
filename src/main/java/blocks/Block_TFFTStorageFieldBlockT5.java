@@ -3,11 +3,10 @@ package blocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 import itemBlocks.IB_TFFTStorageFieldBlockT5;
 import kekztech.KekzCore;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 
-public class Block_TFFTStorageFieldBlockT5 extends Block {
+public class Block_TFFTStorageFieldBlockT5 extends BaseGTUpdateableBlock {
 	
 	private static Block_TFFTStorageFieldBlockT5 instance = new Block_TFFTStorageFieldBlockT5();
 	

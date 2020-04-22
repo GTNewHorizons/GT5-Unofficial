@@ -3,14 +3,13 @@ package blocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 import itemBlocks.IB_ItemServerIOPort;
 import kekztech.KekzCore;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import tileentities.TE_ItemServerIOPort;
 
-public class Block_ItemServerIOPort extends BlockContainer {
+public class Block_ItemServerIOPort extends BaseGTUpdateableBlock {
 
 	private static Block_ItemServerIOPort instance = new Block_ItemServerIOPort();
 		
@@ -32,9 +31,14 @@ public class Block_ItemServerIOPort extends BlockContainer {
 		super.setResistance(6.0f);
 		GameRegistry.registerBlock(getInstance(), IB_ItemServerIOPort.class, blockName);
 	}
-	
+
 	@Override
-	public TileEntity createNewTileEntity(World world, int p_149915_2_) {
+	public boolean hasTileEntity(int metadata) {
+		return true;
+	}
+
+	@Override
+	public TileEntity createTileEntity(World world, int metadata) {
 		return new TE_ItemServerIOPort();
 	}
 	
