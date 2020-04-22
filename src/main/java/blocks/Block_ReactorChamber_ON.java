@@ -2,11 +2,10 @@ package blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import kekztech.KekzCore;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 
-public class Block_ReactorChamber_ON extends Block {
+public class Block_ReactorChamber_ON extends BaseGTUpdateableBlock {
 	
 	private static Block_ReactorChamber_ON instance = new Block_ReactorChamber_ON();
 	
