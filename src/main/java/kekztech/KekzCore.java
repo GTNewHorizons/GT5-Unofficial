@@ -326,7 +326,7 @@ public class KekzCore {
 				400, 4098);
 		final ItemStack[] tfftstoragefield5 = {
 				GT_Utility.getIntegratedCircuit(6),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 4),
 				GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.HSSS, 1),
 				GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Enderium, 1),
 				ItemList.Field_Generator_EV.get(1L),

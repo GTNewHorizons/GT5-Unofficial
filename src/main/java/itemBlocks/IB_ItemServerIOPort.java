@@ -16,6 +16,7 @@ public class IB_ItemServerIOPort extends ItemBlock {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean advancedTooltips) {
+		lines.add("[W.I.P - Probably doesn't work]");
 		lines.add("I/O Port for interfacing with an Item Server.");
 	}
 }

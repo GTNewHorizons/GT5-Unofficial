@@ -58,7 +58,8 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public String[] getDescription() {
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-		b.addInfo("High-Tech item storage!")
+		b.addInfo("[W.I.P - Probably doesn't work]")
+				.addInfo("High-Tech item storage!")
 				.addInfo("Variable length: Slices 2-4 can be repeated as long as the total length does not exceed 16 blocks.")
 				.addInfo("Each slice offers storage for 128 item types")
 				.addInfo("Storage capacity per item depends on the controller configuration.")
@@ -351,7 +352,9 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 		ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
 		ll.add("Per-Item Capacity: " + mih.getPerTypeCapacity());
 		ll.add("Item-Type Capacity: " + BASE_ITEM_TYPES_PER_SLICE * sliceCount);
-		ll.add("Running Cost: " + -(super.mEUt) + "EU/t");
+		ll.add("Running Cost: "
+				// mEUt does not naturally reflect efficiency status. Do that here.
+				+ ((-super.mEUt) * 10000 / Math.max(1000, super.mEfficiency)) + "EU/t");
 		ll.add("Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus()) 
 				? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET 
 						: EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
