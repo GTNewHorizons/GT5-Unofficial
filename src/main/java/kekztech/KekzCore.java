@@ -133,7 +133,7 @@ public class KekzCore {
 	}
 	
 	@Mod.EventHandler
-	public void init(FMLInitializationEvent event	) {
+	public void init(FMLInitializationEvent event) {
 		// Multiblock controllers
 		sofc1 = new GTMTE_SOFuelCellMK1(13101, "multimachine.fuelcellmk1", "Solid-Oxide Fuel Cell Mk I");
 		sofc2 = new GTMTE_SOFuelCellMK2(13102, "multimachine.fuelcellmk2", "Solid-Oxide Fuel Cell Mk II");

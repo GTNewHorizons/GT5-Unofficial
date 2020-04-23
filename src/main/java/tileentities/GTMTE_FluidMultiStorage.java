@@ -46,6 +46,8 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 
 	private int runningCost = 0;
 	private boolean doVoidExcess = false;
+	
+	private byte fluidSelector = 0;
 
 	public GTMTE_FluidMultiStorage(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -115,7 +117,11 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		super.mEfficiencyIncrease = 10000;
 		super.mEUt = runningCost;
 		super.mMaxProgresstime = 10;
-
+		
+		if(guiSlotItem != null && guiSlotItem.getUnlocalizedName().equals("gt.integrated_circuit")) {
+			this.fluidSelector = (byte) guiSlotItem.getItemDamage();
+		}
+		
 		// If there are no basic I/O hatches, let multi hatches handle it and skip a lot of code!
 		if (multiHatches.size() > 0 && super.mInputHatches.size() == 0 && super.mOutputHatches.size() == 0) {
 			return true;
@@ -143,8 +149,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 
 		// Push out fluids
 		if (guiSlotItem != null && guiSlotItem.getUnlocalizedName().equals("gt.integrated_circuit")) {
-			final int config = guiSlotItem.getItemDamage();
-			final FluidStack storedFluid = mfh.getFluid(config);
+			final FluidStack storedFluid = mfh.getFluid(fluidSelector);
 			// Sum available output capacity
 			int possibleOutput = 0;
 			for (GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
@@ -159,7 +164,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 			// Output as much as possible
 			final FluidStack tempStack = storedFluid.copy();
 			tempStack.amount = possibleOutput;
-			tempStack.amount = mfh.pullFluid(tempStack, config, true);
+			tempStack.amount = mfh.pullFluid(tempStack, fluidSelector, true);
 			super.addOutput(tempStack);
 
 		} else {
@@ -193,6 +198,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 
 		if (mfh != null) {
 			mfh.setLock(!super.getBaseMetaTileEntity().isActive());
+			mfh.setFluidSelector(fluidSelector);
 		}
 	}
 

@@ -19,7 +19,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 	
-	private static final int OUTPUT_SPEED = 100; // L/s
+	private static final int OUTPUT_SPEED = 1000; // L/s
 	
 	private MultiFluidHandler mfh;
 	private int tickCounter = 0;
@@ -126,9 +126,12 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 		if(mfh != null) {
 			final FluidStack drain = mfh.getFluid(0);
 			if(drain != null) {
+				// If there's no integrated circuit in the TFFT controller, output slot 0
+				final byte selectedSlot = (mfh.getSelectedFluid() == -1) ? 0 : mfh.getSelectedFluid();
+				
 				return new FluidStack(
 						drain.getFluid(), 
-						mfh.pullFluid(new FluidStack(drain.getFluid(), maxDrain), 0, doDrain)
+						mfh.pullFluid(new FluidStack(drain.getFluid(), maxDrain), selectedSlot, doDrain)
 						);			
 			}
 		}

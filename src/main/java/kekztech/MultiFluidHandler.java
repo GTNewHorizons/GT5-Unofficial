@@ -15,6 +15,7 @@ public class MultiFluidHandler {
 	private int capacityPerFluid;
 	
 	private boolean locked = true;
+	private byte fluidSelector = -1;
 	
 	public MultiFluidHandler() {
 		
@@ -37,6 +38,26 @@ public class MultiFluidHandler {
 	 */
 	public void setLock(boolean state) {
 		locked = state;
+	}
+	
+	/**
+	 * Used to tell the MFH if a fluid is selected by
+	 * an Integrated Circuit in the controller.
+	 * 
+	 * @param fluidSelector
+	 * 				Selected fluid or -1 if no fluid is selected
+	 */
+	public void setFluidSelector(byte fluidSelector) {
+		this.fluidSelector = fluidSelector;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * 				Selected fluid or -1 if no fluid is selected
+	 */
+	public byte getSelectedFluid() {
+		return fluidSelector;
 	}
 	
 	public boolean contains(FluidStack fluid) {
