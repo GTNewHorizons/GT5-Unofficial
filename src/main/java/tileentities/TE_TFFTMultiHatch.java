@@ -24,14 +24,23 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 	
 	private MultiFluidHandler mfh;
 	private int tickCounter = 0;
+	private boolean autoOutput = false;
 	
 	public void setMultiFluidHandler(MultiFluidHandler mfh) {
 		System.out.println("Set MFH");
 		this.mfh = mfh;
 	}
 	
+	public void toggleAutoOutput() {
+		autoOutput = autoOutput ? false : true;
+	}
+	
 	@Override
 	public void updateEntity() {
+		if(!autoOutput) {
+			return;
+		}
+		
 		tickCounter++;
 		if(tickCounter >= 20 && mfh != null) {
 			
