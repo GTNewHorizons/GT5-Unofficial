@@ -1,5 +1,6 @@
 package tileentities;
 
+import java.util.Iterator;
 import java.util.List;
 
 import blocks.Block_TFFTStorageFieldBlockT1;
@@ -19,7 +20,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 	
-	private static final int OUTPUT_SPEED = 1000; // L/s
+	private static final int OUTPUT_PER_SECOND = 1000; // L/s
 	
 	private MultiFluidHandler mfh;
 	private int tickCounter = 0;
@@ -32,7 +33,7 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 	@Override
 	public void updateEntity() {
 		tickCounter++;
-		if(tickCounter == 100 && mfh != null) {
+		if(tickCounter >= 20 && mfh != null) {
 			
 			final ForgeDirection d = getOutwardsFacingDirection();
 			if(d == ForgeDirection.UNKNOWN) {
@@ -47,30 +48,34 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 				
 				final IFluidHandler fh = (IFluidHandler) t;
 				
-				System.out.println("Found connecting tank");
-				
 				// Cycle through fluids
-				for(FluidStack volume : mfh.getFluids()) {
+				final Iterator<FluidStack> volumes = mfh.getFluids().iterator();
+				while(volumes.hasNext()) {
+					final FluidStack volume = volumes.next();
+					
+					// Remember for later
+					final int oVolume = volume.amount;
 					
 					// Use API methods
 					if(fh.canFill(d.getOpposite(), volume.getFluid())) {
-						System.out.println("Can fill " + volume.getLocalizedName());
 						
 						// Test how much can be output
 						final FluidStack copy = volume.copy();
-						copy.amount = Math.min(volume.amount, OUTPUT_SPEED);
+						copy.amount = Math.min(copy.amount, OUTPUT_PER_SECOND);
 												
 						final int drawn = mfh.pullFluid(copy, false);
 						copy.amount = drawn;
 						
-						System.out.println("Can output " + copy.amount + "L of" + copy.getLocalizedName());
-						
 						// Test how much can be filled (and fill if possible)
-						final int filled = fh.fill(d.getOpposite(), copy, true);
-						copy.amount = Math.min(drawn, filled);
-						
+						copy.amount = fh.fill(d.getOpposite(), copy, true);
+												
 						// Actually deplete storage
 						mfh.pullFluid(copy, true);
+						
+						// Prevent ConcurrentModificationException
+						if(copy.amount >= oVolume) {
+							break;
+						}
 					}
 				}
 			}
@@ -110,7 +115,9 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 	}
 	
 	/**
-     * Drains fluid out of 0th internal tank.
+     * Drains fluid out of 0th internal tank. 
+     * If the TFFT Controller contains an Integrated Circuit, drain fluid
+     * from the slot equal to the circuit configuration.
      * 
      * @param from
      *            Orientation the fluid is drained to.
