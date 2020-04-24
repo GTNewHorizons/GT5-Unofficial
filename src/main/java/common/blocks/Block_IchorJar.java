@@ -44,7 +44,7 @@ public class Block_IchorJar extends BlockJar {
 		super.iconJarSide = ir.registerIcon("kekztech:ichor_jar_side");
 		super.iconJarTop = ir.registerIcon("kekztech:ichor_jar_top");
 		super.iconJarTopVoid = ir.registerIcon("kekztech:ichor_jar_top_void");
-		super.iconJarSideVoid = ir.registerIcon("kekztech:jar_side_void");
+		super.iconJarSideVoid = ir.registerIcon("kekztech:ichor_jar_side_void");
 		super.iconJarBottom = ir.registerIcon("kekztech:ichor_jar_bottom");
 	}
 	
