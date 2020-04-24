@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class Gui_ItemProxyEndpoint extends GuiContainer {
 	
-	private final ResourceLocation texture = new ResourceLocation(KekzCore.MODID, "textures/gui/ItemTech1by1.png");
+	private final ResourceLocation texture = new ResourceLocation(KekzCore.MODID, "textures/gui/ItemTechReceiverNode.png");
 	
 	private final InventoryPlayer inventory;
 	private final IInventory te;

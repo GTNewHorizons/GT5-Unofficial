@@ -90,7 +90,7 @@ public class KekzCore {
 		ErrorItem.getInstance().registerItem();
 		MetaItem_ReactorComponent.getInstance().registerItem();
 		MetaItem_CraftingComponent.getInstance().registerItem();
-		Item_Configurator.getInstance().registerItem();
+		//Item_Configurator.getInstance().registerItem();
 		Items.registerOreDictNames();
 		
 		Item_ThaumiumReinforcedJarFilled.getInstance().registerItem();
@@ -111,9 +111,9 @@ public class KekzCore {
 		//Block_ItemServerDrive.getInstance().registerBlock();
 		//Block_ItemServerRackCasing.getInstance().registerBlock();
 		//Block_ItemServerIOPort.getInstance().registerBlock();
-		Block_ItemProxyCable.getInstance().registerBlock();
-		Block_ItemProxySource.getInstance().registerBlock();
-		Block_ItemProxyEndpoint.getInstance().registerBlock();
+		//Block_ItemProxyCable.getInstance().registerBlock();
+		//Block_ItemProxySource.getInstance().registerBlock();
+		//Block_ItemProxyEndpoint.getInstance().registerBlock();
 		
 		Block_ThaumiumReinforcedJar.getInstance().registerBlock();
 		Block_IchorJar.getInstance().registerBlock();
@@ -121,9 +121,9 @@ public class KekzCore {
 		// Register TileEntities
 		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");
 		//GameRegistry.registerTileEntity(TE_ItemServerIOPort.class, "kekztech_itemserverioport_tile");
-		GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
-		GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
-		GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
+		//GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
+		//GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
+		//GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
 		
 		GameRegistry.registerTileEntity(TE_ThaumiumReinforcedJar.class, "kekztech_thaumiumreinforcedjar");
 		GameRegistry.registerTileEntity(TE_IchorJar.class, "kekztech_ichorjar");
@@ -141,7 +141,7 @@ public class KekzCore {
 		fms = new GTMTE_FluidMultiStorage(13104, "multimachine.tf_fluidtank", "T.F.F.T");
 		//is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");	
 		// Register renderer
-		ConduitRenderer.getInstance().registerRenderer();
+		//ConduitRenderer.getInstance().registerRenderer();
 	}
 	
 	@Mod.EventHandler
