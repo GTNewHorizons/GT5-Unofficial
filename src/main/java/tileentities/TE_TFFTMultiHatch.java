@@ -37,12 +37,12 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 	
 	@Override
 	public void updateEntity() {
-		if(!autoOutput) {
+		if(!autoOutput || mfh == null) {
 			return;
 		}
 		
 		tickCounter++;
-		if(tickCounter >= 20 && mfh != null) {
+		if(tickCounter >= 20) {
 			
 			final ForgeDirection d = getOutwardsFacingDirection();
 			if(d == ForgeDirection.UNKNOWN) {

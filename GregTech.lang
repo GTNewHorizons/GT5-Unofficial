@@ -991,6 +991,7 @@ languagefile {
     S:TileEntity_DESCRIPTION_13105_Index_0=High-Tech item storage!
     S:TileEntity_DESCRIPTION_13105_Index_1=Variable length: Slices 2-4 can be repeated as long as the total length does not exceed 16 blocks.
     S:TileEntity_DESCRIPTION_13105_Index_10=Created by Kekzdealer
+    S:TileEntity_DESCRIPTION_13105_Index_11=Created by Kekzdealer
     S:TileEntity_DESCRIPTION_13105_Index_2=Each slices offers storage for 128 item types
     S:TileEntity_DESCRIPTION_13105_Index_3=Storage capacity per item depends on the controller configuration.
     S:TileEntity_DESCRIPTION_13105_Index_4=Insert an Integrated Circuit into the controller with your desired configuration.
