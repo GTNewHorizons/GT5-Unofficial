@@ -170,7 +170,7 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 		
 		// Front slice
 		for(int X = -1; X <= 1; X++) {
-			for(int Y = 0; Y < 5; Y++) {
+			for(int Y = 0; Y <= 4; Y++) {
 				if(X == 0 && Y == 0) {
 					continue; // is controller
 				}
@@ -183,9 +183,9 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 				if(!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
 						&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 					
-					// If it's not a hatch, is it the right casing for this machine?
+					// Is casing or IO port?
 					if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
-						// is casing
+						// Is casing, but there's no casing requirements
 					} else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IO_PORT) {
 						final TE_ItemServerIOPort port = 
 								(TE_ItemServerIOPort) thisController.getWorld().getTileEntity(
@@ -205,22 +205,22 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 		}
 		
 		// Check slices
-		int slicesFound = 0;
-		int zOffset = -1;
+		int segmentsFound = 0;
+		int zOffset = -1; // -1 is the first slice after the front one. It goes in negative direction.
 		
-		while(slicesFound < 5) {
-			if(checkSlice(thisController, forgeDirection, zOffset)) {
-				slicesFound++;
-				zOffset -= 3;
+		while(segmentsFound < 5) {
+			if(checkSegment(thisController, forgeDirection, zOffset)) {
+				segmentsFound++;
+				zOffset -= 3; // Each segment is 3 blocks long, so progress Z by -3
 				
-				System.out.println("Item Server slice approved: " + slicesFound);
+				System.out.println("Item Server segment approved: " + segmentsFound);
 			} else {
-				System.out.println("Item Server slice rejected: " + slicesFound + 1);
+				System.out.println("Item Server segment rejected: " + (segmentsFound + 1));
 				break;
 			}
 		}
 		
-		if(slicesFound < 1) {
+		if(segmentsFound < 1) {
 			System.out.println("At least one slice required for storage");
 			formationChecklist = false;
 		}
@@ -236,11 +236,11 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 		}
 		
 		if(formationChecklist) {
-			sliceCount = slicesFound;
+			sliceCount = segmentsFound;
 			
 			if(mih == null) {
 				mih = new MultiItemHandler();
-				mih.setItemTypeCapacity(slicesFound * BASE_ITEM_TYPES_PER_SLICE);
+				mih.setItemTypeCapacity(segmentsFound * BASE_ITEM_TYPES_PER_SLICE);
 			}
 			System.out.println("Configuring " + ioPorts.size() + " ports");
 			for(TE_ItemServerIOPort port : ioPorts) {
@@ -251,9 +251,9 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 		return formationChecklist;
 	}
 	
-	public boolean checkSlice(IGregTechTileEntity thisController, Vector3ic forgeDirection, int zOffset) {
+	public boolean checkSegment(IGregTechTileEntity thisController, Vector3ic forgeDirection, int zOffset) {
 		boolean formationChecklist = true;
-		
+		// Slice by slice
 		for(int Z = 0; Z >= -2; Z--) {
 			// Is not back slice
 			if(Z != -2) {
@@ -263,19 +263,16 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 					for(int Y = 0; Y <= 4; Y++) {
 						final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, zOffset + Z);
 						
-						// Server rack roof is casings
+						// Server rack roof
 						if(Y == 4) {
-							// Get next TE
-							
-							IGregTechTileEntity currentTE = 
+							final IGregTechTileEntity currentTE = 
 									thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 							
 							if(!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
 									&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-								
-								// If it's not a hatch, is it the right casing for this machine?
+								// Is casing or IO port?
 								if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
-									// is casing
+									// Is casing, but there's no casing requirements
 								} else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IO_PORT) {
 									final TE_ItemServerIOPort port = 
 											(TE_ItemServerIOPort) thisController.getWorld().getTileEntity(
@@ -314,17 +311,15 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 				for(int X = -1; X <= 1; X++) {
 					for(int Y = 0; Y <= 4; Y++) {
 						
-						// Get next TE
 						final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, zOffset + Z);
 						IGregTechTileEntity currentTE = 
 								thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 						
 						if(!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
 								&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-							
-							// If it's not a hatch, is it the right casing for this machine?
+							// Is casing or IO port?
 							if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
-								// is casing
+								// Is casing, but there's no casing requirements
 							} else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IO_PORT) {
 								final TE_ItemServerIOPort port = 
 										(TE_ItemServerIOPort) thisController.getWorld().getTileEntity(
