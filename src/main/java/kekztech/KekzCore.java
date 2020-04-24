@@ -108,9 +108,9 @@ public class KekzCore {
 		Block_ReactorChamber_OFF.getInstance().registerBlock();
 		Block_ReactorChamber_ON.getInstance().registerBlock();
 		Block_ControlRod.getInstance().registerBlock();
-		Block_ItemServerDrive.getInstance().registerBlock();
-		Block_ItemServerRackCasing.getInstance().registerBlock();
-		Block_ItemServerIOPort.getInstance().registerBlock();
+		//Block_ItemServerDrive.getInstance().registerBlock();
+		//Block_ItemServerRackCasing.getInstance().registerBlock();
+		//Block_ItemServerIOPort.getInstance().registerBlock();
 		Block_ItemProxyCable.getInstance().registerBlock();
 		Block_ItemProxySource.getInstance().registerBlock();
 		Block_ItemProxyEndpoint.getInstance().registerBlock();
@@ -120,7 +120,7 @@ public class KekzCore {
 		
 		// Register TileEntities
 		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");
-		GameRegistry.registerTileEntity(TE_ItemServerIOPort.class, "kekztech_itemserverioport_tile");
+		//GameRegistry.registerTileEntity(TE_ItemServerIOPort.class, "kekztech_itemserverioport_tile");
 		GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
 		GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
 		GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
@@ -139,7 +139,7 @@ public class KekzCore {
 		sofc2 = new GTMTE_SOFuelCellMK2(13102, "multimachine.fuelcellmk2", "Solid-Oxide Fuel Cell Mk II");
 		mdr = new GTMTE_ModularNuclearReactor(13103, "multimachine.nuclearreactor", "Nuclear Reactor");
 		fms = new GTMTE_FluidMultiStorage(13104, "multimachine.tf_fluidtank", "T.F.F.T");
-		is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");	
+		//is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");	
 		// Register renderer
 		ConduitRenderer.getInstance().registerRenderer();
 	}

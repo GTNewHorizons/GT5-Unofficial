@@ -27,15 +27,15 @@ import util.Vector3ic;
 
 public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 	
-	private static final int BASE_SLICE_ENERGY_COST = 1;
+	private static final int BASE_SEGMENT_ENERGY_COST = 1;
 	private static final int BASE_PER_ITEM_CAPACITY = 1024;
-	private static final int BASE_ITEM_TYPES_PER_SLICE = 128;
+	private static final int BASE_ITEM_TYPES_PER_SEGMENT = 4;
 	
 	private final Block_ItemServerDrive DRIVE = Block_ItemServerDrive.getInstance();
 	private final Block_ItemServerRackCasing CASING = Block_ItemServerRackCasing.getInstance();
 	private final Block_ItemServerIOPort IO_PORT = Block_ItemServerIOPort.getInstance();
 	private final String ALU_FRAME_BOX_NAME = "gt.blockmachines";
-	private final int ALU_FRAME_BOX_META = 6;//4115;
+	private final int ALU_FRAME_BOX_META = 6;
 	private final int CASING_TEXTURE_ID = 176;
 	
 	private MultiItemHandler mih;
@@ -61,7 +61,7 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 		b.addInfo("[W.I.P - Probably doesn't work]")
 				.addInfo("High-Tech item storage!")
 				.addInfo("Variable length: Slices 2-4 can be repeated as long as the total length does not exceed 16 blocks.")
-				.addInfo("Each slice offers storage for 128 item types")
+				.addInfo("Each segment offers storage for 128 item types")
 				.addInfo("Storage capacity per item depends on the controller configuration.")
 				.addInfo("Insert an Integrated Circuit into the controller with your desired configuration.")
 				.addInfo("The base configuration (0) is 1024 items per type. For each higher level, the capacity quadruples.")
@@ -112,7 +112,7 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 				
 		this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
 		this.mEfficiencyIncrease = 10000;
-		this.mEUt = (int) -(BASE_SLICE_ENERGY_COST * sliceCount * Math.pow(2, config));
+		this.mEUt = (int) -(BASE_SEGMENT_ENERGY_COST * sliceCount * Math.pow(2, config));
 		super.mMaxProgresstime = 20;
 		
 		mih.setPerTypeCapacity((int) (BASE_PER_ITEM_CAPACITY * Math.pow(4, config)));
@@ -200,10 +200,6 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 			}
 		}
 		
-		if(formationChecklist) {
-			System.out.println("Item Server front slice approved");
-		}
-		
 		// Check slices
 		int segmentsFound = 0;
 		int zOffset = -1; // -1 is the first slice after the front one. It goes in negative direction.
@@ -240,7 +236,7 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 			
 			if(mih == null) {
 				mih = new MultiItemHandler();
-				mih.setItemTypeCapacity(segmentsFound * BASE_ITEM_TYPES_PER_SLICE);
+				mih.setItemTypeCapacity(segmentsFound * BASE_ITEM_TYPES_PER_SEGMENT);
 			}
 			System.out.println("Configuring " + ioPorts.size() + " ports");
 			for(TE_ItemServerIOPort port : ioPorts) {
@@ -290,10 +286,6 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 						else if(Y <= 3 && X == 0) {
 							if(!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(ALU_FRAME_BOX_NAME))
 									|| !(thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == ALU_FRAME_BOX_META)) {
-								System.out.println("Rejected Frame box: " 
-										+ thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
-										+ ":"
-										+ thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()));
 								formationChecklist = false;
 							}
 						}
@@ -346,7 +338,7 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 		
 		ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
 		ll.add("Per-Item Capacity: " + mih.getPerTypeCapacity());
-		ll.add("Item-Type Capacity: " + BASE_ITEM_TYPES_PER_SLICE * sliceCount);
+		ll.add("Item-Type Capacity: " + BASE_ITEM_TYPES_PER_SEGMENT * sliceCount);
 		ll.add("Running Cost: "
 				// mEUt does not naturally reflect efficiency status. Do that here.
 				+ ((-super.mEUt) * 10000 / Math.max(1000, super.mEfficiency)) + "EU/t");

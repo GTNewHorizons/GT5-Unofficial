@@ -10,9 +10,22 @@ public class TE_ItemServerIOPort extends TileEntity implements ISidedInventory {
 	
 	private MultiItemHandler mih;
 	
+	private int tickCounter = 0;
+	
 	public void setMultiItemHandler(MultiItemHandler mih) {
 		this.mih = mih;
-		System.out.println("MIH set");
+	}
+	
+	@Override
+	public void updateEntity() {
+		if(mih != null) {
+			
+			tickCounter++;
+			if(tickCounter >= 40) {
+				mih.debugPrint();
+				tickCounter = 0;
+			}
+		}
 	}
 	
 	@Override

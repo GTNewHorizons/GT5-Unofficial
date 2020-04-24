@@ -1,5 +1,8 @@
 package kekztech;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
 public class MultiItemHandler {
@@ -14,6 +17,19 @@ public class MultiItemHandler {
 		
 	}
 	
+	public List<String> debugPrint() {
+		if(items == null) {
+			return new ArrayList<String>();
+		}
+		final ArrayList<String> slots = new ArrayList<>();
+		
+		for(int i = 0; i < items.length; i++) {
+			slots.add("Slot " + i + " contains " + items[i].stackSize + " " + items[i].getDisplayName());
+		}
+		
+		return slots;
+	}
+	
 	/** 
 	 * Adapts the internal storage to structure changes.
 	 * In the event of structure down-sizing, all excess items
@@ -22,6 +38,7 @@ public class MultiItemHandler {
 	 * @param itemTypeCapacity
 	 */
 	public void setItemTypeCapacity(int itemTypeCapacity) {
+		System.out.println("Configuring type capacity");
 		if(items.length > itemTypeCapacity) {
 			// Generate new smaller backing array
 			final ItemStack[] newItems = new ItemStack[itemTypeCapacity];

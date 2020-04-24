@@ -27,7 +27,6 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 	private boolean autoOutput = false;
 	
 	public void setMultiFluidHandler(MultiFluidHandler mfh) {
-		System.out.println("Set MFH");
 		this.mfh = mfh;
 	}
 	
