@@ -2,7 +2,7 @@ package itemBlocks;
 
 import java.util.List;
 
-import blocks.Block_TFFTStorageFieldBlockT1;
+import common.blocks.Block_TFFTStorageFieldBlockT1;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;

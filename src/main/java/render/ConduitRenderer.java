@@ -1,5 +1,6 @@
 package render;
 
+import common.tileentities.TE_ItemProxyCable;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
@@ -9,7 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
-import tileentities.TE_ItemProxyCable;
 
 public class ConduitRenderer implements ISimpleBlockRenderingHandler {
 	
