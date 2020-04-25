@@ -71,8 +71,8 @@ public class FluidColors {
             fluidColors.put(Materials.Tin.getMolten(0).getFluid().getID(), new short[]{0xE7, 0xE7, 0xE4});
             fluidColors.put(Materials.Copper.getMolten(0).getFluid().getID(), new short[]{0xFF, 0x7F, 0x24});
             fluidColors.put(FluidRegistry.getFluid("fluorine").getID(), new short[]{0x99, 0xC1, 0xAD});
-            fluidColors.put(FluidRegistry.getFluid("hydrofluoricacid_gt5u").getID(), new short[]{0x00, 0xCE, 0xD1});
-            fluidColors.put(FluidRegistry.getFluid("phosphoricacid_gt5u").getID(), new short[]{0xEE, 0x76, 0x00});
+            fluidColors.put(FluidRegistry.getFluid("hydrofluoricacid").getID(), new short[]{0x00, 0xCE, 0xD1});
+            fluidColors.put(Materials.PhosphoricAcid.mFluid.getID(), new short[]{0xEE, 0x76, 0x00});
 
             //possible nulls
             fluidColors.put(Materials.LiquidAir.mFluid.getID(), new short[]{0x99, 0x99, 0xEA});
