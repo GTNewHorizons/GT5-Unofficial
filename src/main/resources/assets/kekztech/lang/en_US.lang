@@ -106,5 +106,8 @@ tile.kekztech_ichorjar_block.name=Ichor Jar
 item.kekztech_ichorjarfilled_item.name=Ichor Jar with Essentia
 item.kekztech_ichorjarfilled_item.void.name=Ichor Void Jar with Essentia
 
-research_page.THAUMIUMREINFORCEDJAR=Lorem ipsum
-research_page.ICHORJAR=Lorem ipsum
+tc.research_name.THAUMIUMREINFORCEDJAR=Thaumium Reinforced Jars
+kekztech.research_page.THAUMIUMREINFORCEDJAR=You have heard your fellow Thaumaturges talk about the benefits of digitized Essentia Storage.<BR><BR> Storing enough Essentia for your advanced infusions has indeed been an issue for you too, however those jars are simply too pleasing to look at to even consider the idea of replacing them with some compact technological construct.<BR><BR>Thanks to this new discovery, you have managed to quadruple the capacity of your jars by improving them with a thick Thaumium lining. This should buy you some more time to come up with a better solution. You imagine that you could get even more out of your jars if only you had some kind of material harder then even diamond or any of the other magical metal you have seen so far. 
+tc.research_name.ICHORJAR=Ichor Jars
+kekztech.research_page.ICHORJAR=This is it!<BR><BR>By infusing a jar with just a single piece of Ichor you have created something to rival digitized Essentia storage without sacrificing any of the beauty that your array of warded jars offer.<BR><BR>Ichor Jars can hold an astounding 4096 Essentia and fit nicely into your recently aquired set of Ichor based achievements.  
+

@@ -31,9 +31,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
-
-	private final static String glassNameAE2 = "tile.appliedenergistics2.BlockQuartzGlass";
-	private final static String glassNameStained = "tile.stainedGlass";
+	
+	private final static String glassNameIC2Reinforced = "blockAlloyGlass";
 	private final static Block CASING = Blocks.tfftCasing;
 	private final static Block_TFFTStorageFieldBlockT1 STORAGE_FIELD1 = (Block_TFFTStorageFieldBlockT1) Blocks.tfftStorageField1;
 	private final static Block_TFFTStorageFieldBlockT2 STORAGE_FIELD2 = (Block_TFFTStorageFieldBlockT2) Blocks.tfftStorageField2;
@@ -355,8 +354,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 
 					// Corner allows only glass or casings
 					if (X == -2 && Y == -2 || X == 2 && Y == 2 || X == -2 && Y == 2 || X == 2 && Y == -2) {
-						if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameAE2)
-								|| thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameStained)
+						if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameIC2Reinforced)
 								|| thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)) {
 							formationChecklist = false; // do nothing yet
 						}
@@ -378,8 +376,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 												thisController.getYCoord() + offset.y(),
 												thisController.getZCoord() + offset.z());
 								multiHatches.add(mh);
-							} else if (!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameAE2)
-									&& !thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameStained)) {
+							} else if (!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameIC2Reinforced)) {
 								formationChecklist = false;
 							}
 						}

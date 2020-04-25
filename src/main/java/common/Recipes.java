@@ -37,7 +37,7 @@ public class Recipes {
 		registerRecipes_SOFC();
 		registerRecipes_Nuclear();
 		//registerRecipes_ItemServer();
-		//registerRecipes_Jars();
+		registerRecipes_Jars();
 		
 		System.out.println("Finished registering recipes");
 	}
@@ -373,28 +373,22 @@ public class Recipes {
 	}
 	
 	private static void registerRecipes_Jars() {
-		final Object[] recipe_jarthaumiumreinforced = {
-			"PJP", "JCJ", "PJP",
-			'P', OrePrefixes.plateDense.get(Materials.Thaumium),
-			'J', ItemApi.getBlock("blockJar", 0),
-			'C', GameRegistry.makeItemStack("Thaumcraft:ItemResource", 15, 1, null)
-		};
-		final AspectList aspects_jarthaumiumreinforced = new AspectList()
-				.add(Aspect.ORDER, 80)
-				.add(Aspect.WATER, 80)
-				.add(Aspect.AIR, 10);
-		arcaneRecipes.put("THAUMIUMREINFORCEDJAR", 
-				ThaumcraftApi.addArcaneCraftingRecipe("THAUMIUMREINFORCEDJAR", new ItemStack(Blocks.jarThaumiumReinforced, 1), 
-				aspects_jarthaumiumreinforced, recipe_jarthaumiumreinforced));
 		
 		final ItemStack[] recipe_jarichor = {
-				GameRegistry.makeItemStack("ThaumicTinkerer:KamiResource", 0, 1, null),
-				GameRegistry.makeItemStack("ThaumicTinkerer:KamiResource", 6, 1, null),
-				GameRegistry.makeItemStack("Thaumcraft:EldritchObject", 3, 0, null),
-				GameRegistry.makeItemStack("ThaumicTinkerer:KamiResource", 7, 1, null)
+				GT_ModHandler.getModItem("ThaumicTinkerer", "kamiResource", 1, 0),
+				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
+				new ItemStack(net.minecraft.init.Blocks.glass_pane),
+				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
+				new ItemStack(net.minecraft.init.Blocks.glass_pane),
+				GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Diamond, 1),
+				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
+				new ItemStack(net.minecraft.init.Blocks.glass_pane),
+				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
+				new ItemStack(net.minecraft.init.Blocks.glass_pane),
 		};
 		final AspectList aspects_jarichor = new AspectList()
 				.add(Aspect.ARMOR, 256)
+				.add(Aspect.ELDRITCH, 128)
 				.add(Aspect.ORDER, 128)
 				.add(Aspect.WATER, 128)
 				.add(Aspect.GREED, 64)
@@ -402,8 +396,30 @@ public class Recipes {
 				.add(Aspect.AIR, 32);
 		infusionRecipes.put("ICHORJAR", 
 				ThaumcraftApi.addInfusionCraftingRecipe("ICHORJAR", new ItemStack(Blocks.jarIchor, 1), 
-				20, aspects_jarichor, ItemApi.getBlock("blockJar", 0), recipe_jarichor));
+				15, aspects_jarichor, ItemApi.getBlock("blockJar", 0), recipe_jarichor));
+		
+		final ItemStack[] recipe_jarthaumiumreinforced = {
+				GameRegistry.makeItemStack("Thaumcraft:ItemResource", 15, 0, null),
+				GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
+				new ItemStack(net.minecraft.init.Blocks.glass_pane),
+				GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
+				new ItemStack(net.minecraft.init.Blocks.glass_pane),
+				GameRegistry.makeItemStack("Thaumcraft:ItemResource", 15, 0, null), 
+				GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
+				new ItemStack(net.minecraft.init.Blocks.glass_pane),
+				GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
+				new ItemStack(net.minecraft.init.Blocks.glass_pane),
+			};
+		final AspectList aspects_jarthaumiumreinforced = new AspectList()
+				.add(Aspect.ARMOR, 64)
+				.add(Aspect.ORDER, 32)
+				.add(Aspect.WATER, 32)
+				.add(Aspect.GREED, 16)
+				.add(Aspect.VOID, 16)
+				.add(Aspect.AIR, 8);
+		infusionRecipes.put("THAUMIUMREINFORCEDJAR", 
+				ThaumcraftApi.addInfusionCraftingRecipe("THAUMIUMREINFORCEDJAR", new ItemStack(Blocks.jarThaumiumReinforced, 1), 
+						5, aspects_jarthaumiumreinforced, ItemApi.getBlock("blockJar",  0), recipe_jarthaumiumreinforced));
 	}
-	
 	
 }

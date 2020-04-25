@@ -35,6 +35,8 @@ import thaumcraft.api.research.ResearchPage;
 		dependencies =
 			  "required-after:IC2; "
 			+ "required-after:gregtech;"
+			+ "required-after:Thaumcraft;"
+			+ "required-after:ThaumicTinkerer;"
 			+ "after:bartworks"
 		)
 public class KekzCore {
@@ -100,7 +102,7 @@ public class KekzCore {
 		final ResearchItem jar_thaumiumreinforced = new ResearchItem("THAUMIUMREINFORCEDJAR", "ALCHEMY", new AspectList(), 3, -4, 2, new ItemStack(Blocks.jarThaumiumReinforced, 1));
 		jar_thaumiumreinforced.setPages(new ResearchPage[] {
 			new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR"),
-			new ResearchPage(Recipes.arcaneRecipes.get("THAUMIUMREINFORCEDJAR"))
+			new ResearchPage(Recipes.infusionRecipes.get("THAUMIUMREINFORCEDJAR"))
 		});
 		jar_thaumiumreinforced.setParents(new String[] {"JARLABEL"});
 		jar_thaumiumreinforced.registerResearchItem();
