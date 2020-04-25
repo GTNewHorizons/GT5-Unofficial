@@ -11,6 +11,5 @@
 	<classpathentry kind="lib" path="libs/joml-1.9.18.jar"/>
 	<classpathentry kind="lib" path="libs/CodeChickenCore-1.7.10-1.0.7.47-dev.jar"/>
 	<classpathentry kind="lib" path="libs/Thaumcraft-1.7.10-4.2.3.5-deobf.jar" sourcepath="libs/Thaumcraft-1.7.10-4.2.3.5-deobf-src.zip"/>
-	<classpathentry kind="lib" path="libs/ThaumicTinkerer-1.7.10 2.5-1.7.10-555-deobf.jar" sourcepath="libs/ThaumicTinkerer-1.7.10 2.5-1.7.10-555-deobf-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
