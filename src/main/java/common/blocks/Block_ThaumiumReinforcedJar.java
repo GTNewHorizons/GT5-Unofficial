@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.tileentities.TE_ThaumiumReinforcedJar;
+import common.tileentities.TE_ThaumiumReinforcedVoidJar;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,7 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.BlockJar;
-import thaumcraft.common.tiles.TileJarFillableVoid;
 
 public class Block_ThaumiumReinforcedJar extends BlockJar {
 	
@@ -61,7 +61,7 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 		if(meta == 0) {
 			return new TE_ThaumiumReinforcedJar();
 		} else if (meta == 3) {
-			return new TileJarFillableVoid();
+			return new TE_ThaumiumReinforcedVoidJar();
 		} else {
 			return null;
 		}
@@ -81,7 +81,7 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 				drop = new ItemStack(this);
 			}
 			// If is void jar, set meta
-			if(te instanceof TileJarFillableVoid) {
+			if(te instanceof TE_ThaumiumReinforcedVoidJar) {
 				drop.setItemDamage(3);
 			}
 			// Non empty, generate filled jar item with contents
@@ -100,5 +100,4 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 		}
 		return drops;
 	}
-	
 }
