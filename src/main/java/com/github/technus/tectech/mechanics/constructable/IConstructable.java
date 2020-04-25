@@ -11,6 +11,6 @@ public interface IConstructable {
     void construct(ItemStack stackSize, boolean hintsOnly);
 
     @SideOnly(Side.CLIENT)
-    String[] getStructureDescription(int stackSize);
+    String[] getStructureDescription(ItemStack stackSize);
 }
 

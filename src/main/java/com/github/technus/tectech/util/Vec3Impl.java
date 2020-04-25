@@ -20,20 +20,6 @@ public class Vec3Impl implements Comparable<Vec3Impl> {
         this(baseMetaTileEntity.getXCoord(),baseMetaTileEntity.getYCoord(),baseMetaTileEntity.getZCoord());
     }
 
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        } else if (o instanceof Vec3Impl) {
-            Vec3Impl vec3i = (Vec3Impl)o;
-            return val0 == vec3i.val0 && val1 == vec3i.val1 && val2 == vec3i.val2;
-        }
-        return false;
-    }
-
-    public int hashCode() {
-        return (val1 + val2 * 31) * 31 + val0;
-    }
-
     public int compareTo(Vec3Impl o) {
         return val1 == o.val1 ? val2 == o.val2 ? val0 - o.val0 : val2 - o.val2 : val1 - o.val1;
     }
@@ -142,5 +128,19 @@ public class Vec3Impl implements Comparable<Vec3Impl> {
 
     public Vec3Impl abs() {
         return new Vec3Impl(Math.abs(val0),Math.abs(val1),Math.abs(val2));
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (o instanceof Vec3Impl) {
+            Vec3Impl vec3i = (Vec3Impl)o;
+            return val0 == vec3i.val0 && val1 == vec3i.val1 && val2 == vec3i.val2;
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        return (val1 + val2 * 31) * 31 + val0;
     }
 }

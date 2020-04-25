@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
-import com.github.technus.tectech.mechanics.constructable.Structure;
+import com.github.technus.tectech.mechanics.structure.IHatchAdder;
+import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.Util;
@@ -354,7 +355,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public String[] getStructureDescription(int stackSize) {
+    public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
 }

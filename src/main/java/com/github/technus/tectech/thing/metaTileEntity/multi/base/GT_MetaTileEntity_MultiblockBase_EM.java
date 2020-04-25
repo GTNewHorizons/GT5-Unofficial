@@ -6,7 +6,9 @@ import com.github.technus.tectech.mechanics.alignment.*;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Flip;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Rotation;
-import com.github.technus.tectech.mechanics.constructable.Structure;
+import com.github.technus.tectech.mechanics.structure.IHatchAdder;
+import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
+import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.util.Vec3Impl;
 import com.github.technus.tectech.loader.NetworkDispatcher;
@@ -191,6 +193,27 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         toolSetDirection(ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()));
     }
 
+    /**
+     * Gets structure
+     * @return STATIC INSTANCE OF STRUCTURE
+     */
+    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM(){
+        throw new NoSuchMethodError("Implement it as STATIC INSTANCE");
+    }
+
+    @SuppressWarnings("unchecked")
+    private IStructureDefinition<GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM_Internal(){
+        return (IStructureDefinition<GT_MetaTileEntity_MultiblockBase_EM>)getStructure_EM();
+    }
+
+    public final boolean structureCheck_EM(String piece,int horizontalOffset, int verticalOffset, int depthOffset) {
+        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        return getStructure_EM_Internal().check(this,piece, baseMetaTileEntity.getWorld(),getExtendedFacing(),
+                baseMetaTileEntity.getXCoord(),baseMetaTileEntity.getYCoord(),baseMetaTileEntity.getZCoord(),
+                horizontalOffset,verticalOffset,depthOffset,!mMachine);
+    }
+
+    @Deprecated
     public final boolean structureCheck_EM(
             String[][] structure,//0-9 casing, +- air no air, a-z ignore
             Block[] blockType,//use numbers 0-9 for casing types

@@ -12,7 +12,6 @@ import static com.github.technus.tectech.mechanics.alignment.IAlignment.FLIPS_CO
 import static com.github.technus.tectech.mechanics.alignment.IAlignment.ROTATIONS_COUNT;
 import static java.lang.Math.abs;
 import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.toMap;
 
 public enum ExtendedFacing {
@@ -144,32 +143,32 @@ public enum ExtendedFacing {
         switch (direction){
             case DOWN:
                 a= ForgeDirection.WEST;
-                b= ForgeDirection.NORTH;
+                b= ForgeDirection.SOUTH;
                 c= ForgeDirection.UP;
                 break;
             case UP:
                 a= ForgeDirection.EAST;
-                b= ForgeDirection.NORTH;
+                b= ForgeDirection.SOUTH;
                 c= ForgeDirection.DOWN;
                 break;
             case NORTH:
                 a= ForgeDirection.WEST;
-                b= ForgeDirection.UP;
+                b= ForgeDirection.DOWN;
                 c= ForgeDirection.SOUTH;
                 break;
             case SOUTH:
                 a= ForgeDirection.EAST;
-                b= ForgeDirection.UP;
+                b= ForgeDirection.DOWN;
                 c= ForgeDirection.NORTH;
                 break;
             case WEST:
                 a= ForgeDirection.SOUTH;
-                b= ForgeDirection.UP;
+                b= ForgeDirection.DOWN;
                 c= ForgeDirection.EAST;
                 break;
             case EAST:
                 a= ForgeDirection.NORTH;
-                b= ForgeDirection.UP;
+                b= ForgeDirection.DOWN;
                 c= ForgeDirection.WEST;
                 break;
             default:throw new RuntimeException("Is impossible...");
@@ -187,7 +186,7 @@ public enum ExtendedFacing {
             default:throw new RuntimeException("Even more impossible...");
         }
         switch (rotation) {
-            case COUNTER_CLOCKWISE: {
+            case CLOCKWISE: {
                 ForgeDirection _a=a;
                 a =b;
                 b =_a.getOpposite();
@@ -197,7 +196,7 @@ public enum ExtendedFacing {
                 a=a.getOpposite();
                 b=b.getOpposite();
                 break;
-            case CLOCKWISE: {
+            case COUNTER_CLOCKWISE: {
                 ForgeDirection _a=a;
                 a =b.getOpposite();
                 b =_a;
