@@ -20,11 +20,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofHatchAdder;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sHintCasingsTT;
 import static gregtech.api.GregTech_API.sBlockCasings1;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -45,7 +45,10 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
                             {"111", "111", "111",},
                     })
                     .addElement('0', ofBlock(sBlockCasings1,15))
-                    .addElement('1', trafo->ofHatchAdder(trafo::addEnergyIOToMachineList,textureOffset,sBlockCasingsTT,0))
+                    .addElement('1', ofProviderChain(
+                            trafo->ofHatchAdder(trafo::addEnergyIOToMachineList,textureOffset,sHintCasingsTT,0),
+                            ofBlock(sBlockCasingsTT,0)
+                    ))
                     .build();
 
     @Override

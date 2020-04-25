@@ -13,14 +13,51 @@ import net.minecraft.world.World;
 
 import java.util.*;
 
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sHintCasingsTT;
+
 public class StructureUtility {
     private static final String NICE_CHARS ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_=|[]{};:'<>,./?";
     @SuppressWarnings("rawtypes")
     private static final Map<Vec3Impl,IStructureNavigate> STEP = new HashMap<>();
     @SuppressWarnings("rawtypes")
-    private static final IStructureElement AIR= (t, world, x, y, z) -> world.getBlock(x, y, z).getMaterial() == Material.air;
+    private static final IStructureElement AIR= new IStructureElement() {
+        @Override
+        public boolean check(Object t, World world, int x, int y, int z) {
+            return world.getBlock(x, y, z).getMaterial() == Material.air;
+        }
+
+        @Override
+        public boolean spawnHint(Object o, World world, int x, int y, int z) {
+            TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,13);
+            return true;
+        }
+    };
     @SuppressWarnings("rawtypes")
-    private static final IStructureElement NOT_AIR= (t, world, x, y, z) -> world.getBlock(x, y, z).getMaterial() != Material.air;
+    private static final IStructureElement NOT_AIR= new IStructureElement() {
+        @Override
+        public boolean check(Object t, World world, int x, int y, int z) {
+            return world.getBlock(x, y, z).getMaterial() != Material.air;
+        }
+
+        @Override
+        public boolean spawnHint(Object o, World world, int x, int y, int z) {
+            TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,14);
+            return true;
+        }
+    };
+    @SuppressWarnings("rawtypes")
+    private static final IStructureElement ERROR= new IStructureElement() {
+        @Override
+        public boolean check(Object t, World world, int x, int y, int z) {
+            return false;
+        }
+
+        @Override
+        public boolean spawnHint(Object o, World world, int x, int y, int z) {
+            TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,15);
+            return true;
+        }
+    };
 
     private StructureUtility(){
 
@@ -34,6 +71,11 @@ public class StructureUtility {
     @SuppressWarnings("unchecked")
     public static <T> IStructureElement<T> notAir(){
         return NOT_AIR;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> IStructureElement<T> error(){
+        return ERROR;
     }
 
     /**
@@ -277,6 +319,7 @@ public class StructureUtility {
         };
     }
 
+    @SafeVarargs
     public static <T> IStructureFallback<T> ofElementChain(IStructureElement<T>... elementChain){
         if(elementChain==null || elementChain.length==0){
             throw new IllegalArgumentException();
@@ -289,6 +332,7 @@ public class StructureUtility {
         return () -> elementChain;
     }
 
+    @SafeVarargs
     public static <T> IStructureFallbackProvider<T> ofProviderChain(IStructureElementProvider<T>... elementChain){
         if(elementChain==null || elementChain.length==0){
             throw new IllegalArgumentException();
