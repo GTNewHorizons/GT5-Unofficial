@@ -2,20 +2,6 @@ package kekztech;
 
 import common.Blocks;
 import common.Recipes;
-import common.blocks.Block_ControlRod;
-import common.blocks.Block_GDCUnit;
-import common.blocks.Block_IchorJar;
-import common.blocks.Block_ReactorChamber_OFF;
-import common.blocks.Block_ReactorChamber_ON;
-import common.blocks.Block_TFFTCasing;
-import common.blocks.Block_TFFTMultiHatch;
-import common.blocks.Block_TFFTStorageFieldBlockT1;
-import common.blocks.Block_TFFTStorageFieldBlockT2;
-import common.blocks.Block_TFFTStorageFieldBlockT3;
-import common.blocks.Block_TFFTStorageFieldBlockT4;
-import common.blocks.Block_TFFTStorageFieldBlockT5;
-import common.blocks.Block_ThaumiumReinforcedJar;
-import common.blocks.Block_YSZUnit;
 import common.tileentities.GTMTE_FluidMultiStorage;
 import common.tileentities.GTMTE_ItemServer;
 import common.tileentities.GTMTE_ModularNuclearReactor;
@@ -34,6 +20,10 @@ import items.ErrorItem;
 import items.Item_ThaumiumReinforcedJarFilled;
 import items.MetaItem_CraftingComponent;
 import items.MetaItem_ReactorComponent;
+import net.minecraft.item.ItemStack;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.research.ResearchItem;
+import thaumcraft.api.research.ResearchPage;
 
 /**
  * My GT-Meta-IDs are: 13101 - 13500
@@ -51,7 +41,7 @@ public class KekzCore {
 	
 	public static final String NAME = "KekzTech";
 	public static final String MODID = "kekztech";
-	public static final String VERSION = "0.2.3";
+	public static final String VERSION = "0.3";
 	
 	@Mod.Instance("kekztech")
 	public static KekzCore instance;
@@ -105,6 +95,22 @@ public class KekzCore {
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		Recipes.init();
+		
+		// Thaumcraft research
+		final ResearchItem jar_thaumiumreinforced = new ResearchItem("THAUMIUMREINFORCEDJAR", "ALCHEMY", new AspectList(), 3, -4, 2, new ItemStack(Blocks.jarThaumiumReinforced, 1));
+		jar_thaumiumreinforced.setPages(new ResearchPage[] {
+			new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR"),
+			new ResearchPage(Recipes.arcaneRecipes.get("THAUMIUMREINFORCEDJAR"))
+		});
+		jar_thaumiumreinforced.setParents(new String[] {"JARLABEL"});
+		jar_thaumiumreinforced.registerResearchItem();
+		
+		final ResearchItem jar_ichor = new ResearchItem("ICHORJAR", "ALCHEMY", new AspectList(), 2, -5, 3, new ItemStack(Blocks.jarIchor, 1));
+		jar_ichor.setPages(new ResearchPage[] {
+			new ResearchPage("kekztech.research_page.ICHORJAR"),
+			new ResearchPage(Recipes.infusionRecipes.get("ICHORJAR"))
+		});
+		jar_ichor.setParents(new String[] {"THAUMIUMREINFORCEDJAR"});
+		jar_ichor.registerResearchItem();
 	}
-	
 }

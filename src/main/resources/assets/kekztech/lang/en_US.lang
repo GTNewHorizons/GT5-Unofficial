@@ -106,3 +106,5 @@ tile.kekztech_ichorjar_block.name=Ichor Jar
 item.kekztech_ichorjarfilled_item.name=Ichor Jar with Essentia
 item.kekztech_ichorjarfilled_item.void.name=Ichor Void Jar with Essentia
 
+research_page.THAUMIUMREINFORCEDJAR=Lorem ipsum
+research_page.ICHORJAR=Lorem ipsum

@@ -1,6 +1,9 @@
 package common;
 
+import java.util.HashMap;
+
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -14,9 +17,18 @@ import kekztech.Items;
 import kekztech.KekzCore;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
+import thaumcraft.api.ItemApi;
+import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.crafting.IArcaneRecipe;
+import thaumcraft.api.crafting.InfusionRecipe;
 import util.Util;
 
 public class Recipes {
+	
+	public static final HashMap<String, IArcaneRecipe> arcaneRecipes = new HashMap<>();
+	public static final HashMap<String, InfusionRecipe> infusionRecipes = new HashMap<>();
 	
 	public static void init() {
 		System.out.println("Registering recipes...");
@@ -25,6 +37,7 @@ public class Recipes {
 		registerRecipes_SOFC();
 		registerRecipes_Nuclear();
 		//registerRecipes_ItemServer();
+		//registerRecipes_Jars();
 		
 		System.out.println("Finished registering recipes");
 	}
@@ -358,4 +371,39 @@ public class Recipes {
 					new ItemStack(Blocks.itemServerDrive, 1), 
 					200, 7680);
 	}
+	
+	private static void registerRecipes_Jars() {
+		final Object[] recipe_jarthaumiumreinforced = {
+			"PJP", "JCJ", "PJP",
+			'P', OrePrefixes.plateDense.get(Materials.Thaumium),
+			'J', ItemApi.getBlock("blockJar", 0),
+			'C', GameRegistry.makeItemStack("Thaumcraft:ItemResource", 15, 1, null)
+		};
+		final AspectList aspects_jarthaumiumreinforced = new AspectList()
+				.add(Aspect.ORDER, 80)
+				.add(Aspect.WATER, 80)
+				.add(Aspect.AIR, 10);
+		arcaneRecipes.put("THAUMIUMREINFORCEDJAR", 
+				ThaumcraftApi.addArcaneCraftingRecipe("THAUMIUMREINFORCEDJAR", new ItemStack(Blocks.jarThaumiumReinforced, 1), 
+				aspects_jarthaumiumreinforced, recipe_jarthaumiumreinforced));
+		
+		final ItemStack[] recipe_jarichor = {
+				GameRegistry.makeItemStack("ThaumicTinkerer:KamiResource", 0, 1, null),
+				GameRegistry.makeItemStack("ThaumicTinkerer:KamiResource", 6, 1, null),
+				GameRegistry.makeItemStack("Thaumcraft:EldritchObject", 3, 0, null),
+				GameRegistry.makeItemStack("ThaumicTinkerer:KamiResource", 7, 1, null)
+		};
+		final AspectList aspects_jarichor = new AspectList()
+				.add(Aspect.ARMOR, 256)
+				.add(Aspect.ORDER, 128)
+				.add(Aspect.WATER, 128)
+				.add(Aspect.GREED, 64)
+				.add(Aspect.VOID, 64)
+				.add(Aspect.AIR, 32);
+		infusionRecipes.put("ICHORJAR", 
+				ThaumcraftApi.addInfusionCraftingRecipe("ICHORJAR", new ItemStack(Blocks.jarIchor, 1), 
+				20, aspects_jarichor, ItemApi.getBlock("blockJar", 0), recipe_jarichor));
+	}
+	
+	
 }
