@@ -80,6 +80,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
                 char ch = builder.charAt(i);
                 if(ch ==' ' || ch =='.'){
                     builder.setCharAt(i,A);
+                    ch=A;
                 }
                 if(ch==A){
                     a++;
@@ -138,8 +139,8 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
                 Map<String, IStructureElementProvider<T>[]> map = new HashMap<>();
                 shapes.forEach((key, value) -> {
                     IStructureElementProvider<T>[] compiled = new IStructureElementProvider[value.length()];
-                    for (char i = 0; i < compiled.length; i++) {
-                        compiled[i] = this.elements.get(i);
+                    for (int i = 0; i < value.length(); i++) {
+                        compiled[i] = elements.get(value.charAt(i));
                     }
                     map.put(key, compiled);
                 });
