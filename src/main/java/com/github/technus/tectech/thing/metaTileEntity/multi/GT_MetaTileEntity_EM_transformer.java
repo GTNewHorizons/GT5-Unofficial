@@ -155,7 +155,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+        structureBuild_EM("main", 1, 1, 0, hintsOnly);
     }
 
     @Override

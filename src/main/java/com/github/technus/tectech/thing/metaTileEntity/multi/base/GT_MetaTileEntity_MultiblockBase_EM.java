@@ -213,6 +213,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 horizontalOffset,verticalOffset,depthOffset,!mMachine);
     }
 
+    public final boolean structureBuild_EM(String piece,int horizontalOffset, int verticalOffset, int depthOffset,boolean hintsOnly) {
+        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        return getStructure_EM_Internal().buildOrHints(this,piece, baseMetaTileEntity.getWorld(),getExtendedFacing(),
+                baseMetaTileEntity.getXCoord(),baseMetaTileEntity.getYCoord(),baseMetaTileEntity.getZCoord(),
+                horizontalOffset,verticalOffset,depthOffset,hintsOnly);
+    }
+
     @Deprecated
     public final boolean structureCheck_EM(
             String[][] structure,//0-9 casing, +- air no air, a-z ignore
