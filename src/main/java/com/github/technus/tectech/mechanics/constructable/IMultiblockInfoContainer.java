@@ -26,5 +26,5 @@ public interface IMultiblockInfoContainer {
     void construct(ItemStack stackSize, boolean hintsOnly, TileEntity tileEntity, ExtendedFacing aSide);
 
     @SideOnly(Side.CLIENT)
-    String[] getDescription(int stackSize);
+    String[] getDescription(ItemStack stackSize);
 }

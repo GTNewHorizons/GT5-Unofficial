@@ -1,15 +1,14 @@
 package com.github.technus.tectech.thing.item;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.alignment.IAlignment;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -82,7 +81,7 @@ public final class ConstructableTriggerItem extends Item {
                     IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                     if (metaTE instanceof IConstructable) {
                         ((IConstructable) metaTE).construct(aStack, true);
-                        TecTech.proxy.printInchat(((IConstructable) metaTE).getStructureDescription(aStack.stackSize));
+                        TecTech.proxy.printInchat(((IConstructable) metaTE).getStructureDescription(aStack));
                         return false;
                     } else if(MULTIBLOCK_MAP.containsKey(metaTE.getClass().getCanonicalName())){
                         IMultiblockInfoContainer iMultiblockInfoContainer = MULTIBLOCK_MAP.get(metaTE.getClass().getCanonicalName());
@@ -93,12 +92,12 @@ public final class ConstructableTriggerItem extends Item {
                             iMultiblockInfoContainer.construct(aStack, true, tTileEntity,
                                     ExtendedFacing.of(ForgeDirection.getOrientation(((IGregTechTileEntity) tTileEntity).getFrontFacing())));
                         }
-                        TecTech.proxy.printInchat(MULTIBLOCK_MAP.get(metaTE.getClass().getCanonicalName()).getDescription(aStack.stackSize));
+                        TecTech.proxy.printInchat(MULTIBLOCK_MAP.get(metaTE.getClass().getCanonicalName()).getDescription(aStack));
                         return false;
                     }
                 } else if(tTileEntity instanceof IConstructable){
                     ((IConstructable) tTileEntity).construct(aStack,true);
-                    TecTech.proxy.printInchat(((IConstructable) tTileEntity).getStructureDescription(aStack.stackSize));
+                    TecTech.proxy.printInchat(((IConstructable) tTileEntity).getStructureDescription(aStack));
                     return false;
                 } else if(MULTIBLOCK_MAP.containsKey(tTileEntity.getClass().getCanonicalName())){
                     IMultiblockInfoContainer iMultiblockInfoContainer = MULTIBLOCK_MAP.get(tTileEntity.getClass().getCanonicalName());
@@ -109,7 +108,7 @@ public final class ConstructableTriggerItem extends Item {
                         iMultiblockInfoContainer.construct(aStack, true, tTileEntity,
                                 ExtendedFacing.of(ForgeDirection.getOrientation(aSide)));
                     }
-                    TecTech.proxy.printInchat(MULTIBLOCK_MAP.get(tTileEntity.getClass().getCanonicalName()).getDescription(aStack.stackSize));
+                    TecTech.proxy.printInchat(MULTIBLOCK_MAP.get(tTileEntity.getClass().getCanonicalName()).getDescription(aStack));
                     return false;
                 }
             //} else {

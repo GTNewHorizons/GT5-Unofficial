@@ -1,26 +1,27 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.mechanics.constructable.Structure;
-import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
+import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
+import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
+import com.github.technus.tectech.util.CommonValues;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofHatchAdder;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -32,21 +33,25 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  */
 public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region structure
-    private static final String[][] shape = new String[][]{
-            {"   ", " . ", "   ",},
-            {"   ", " 0 ", "   ",},
-            {"   ", "   ", "   ",},
-    };
-    private static final Block[] blockType = new Block[]{sBlockCasings1};
-    private static final byte[] blockMeta = new byte[]{15};
-    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addEnergyIOToMachineList};
-    private static final short[] casingTextures = new short[]{textureOffset};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.transformer.hint"),//1 - Energy IO Hatches or High Power Casing
     };
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_transformer> STRUCTURE_DEFINITION =
+            StructureDefinition.<GT_MetaTileEntity_EM_transformer>builder()
+                    .addShape("main",new String[][]{
+                            {"111", "1.1", "111",},
+                            {"111", "101", "111",},
+                            {"111", "111", "111",},
+                    })
+                    .addElement('0', ofBlock(sBlockCasings1,15))
+                    .addElement('1', trafo->ofHatchAdder(trafo::addEnergyIOToMachineList,textureOffset,sBlockCasingsTT,0))
+                    .build();
+
+    @Override
+    public IStructureDefinition<GT_MetaTileEntity_EM_transformer> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
+    }
     //endregion
 
     public GT_MetaTileEntity_EM_transformer(int aID, String aName, String aNameRegional) {
@@ -78,7 +83,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+        return structureCheck_EM("main", 1, 1, 0);
     }
 
     @Override
@@ -150,11 +155,11 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        Structure.builder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+        //Structure.builder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
     }
 
     @Override
-    public String[] getStructureDescription(int stackSize) {
+    public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
 }

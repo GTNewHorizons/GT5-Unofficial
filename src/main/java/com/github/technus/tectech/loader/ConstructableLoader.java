@@ -2,7 +2,7 @@ package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.constructable.Structure;
+import com.github.technus.tectech.mechanics.structure.Structure;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -39,7 +39,7 @@ public class ConstructableLoader implements Runnable {
             }
 
             @Override
-            public String[] getDescription(int stackSize) {
+            public String[] getDescription(ItemStack stackSize) {
                 return desc;
             }
         });
