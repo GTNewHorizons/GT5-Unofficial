@@ -3,33 +3,35 @@ package common.blocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 import itemBlocks.IB_TFFTStorageFieldBlockT2;
 import kekztech.KekzCore;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 
 public class Block_TFFTStorageFieldBlockT2 extends BaseGTUpdateableBlock {
 	
-	private static Block_TFFTStorageFieldBlockT2 instance = new Block_TFFTStorageFieldBlockT2();
+	private static Block_TFFTStorageFieldBlockT2 instance;
 	
 	private Block_TFFTStorageFieldBlockT2() {
-		// I am a singleton
 		super(Material.iron);
-	}
-	
-	public static Block_TFFTStorageFieldBlockT2 getInstance() {
-		return instance;
 	}
 	
 	public static int getCapacity() {
 		return 4000000;
 	}
 	
-	public void registerBlock() {
+	public static Block registerBlock() {
+		if(instance == null) {
+			instance = new Block_TFFTStorageFieldBlockT2();
+		}
+		
 		final String blockName = "kekztech_tfftstoragefieldblock2_block";
-		super.setBlockName(blockName);
-		super.setCreativeTab(CreativeTabs.tabMisc);
-		super.setBlockTextureName(KekzCore.MODID + ":" + "TFFTStorageFieldBlock2");
-		super.setHardness(5.0f);
-		super.setResistance(6.0f);
-		GameRegistry.registerBlock(getInstance(), IB_TFFTStorageFieldBlockT2.class, blockName);
+		instance.setBlockName(blockName);
+		instance.setCreativeTab(CreativeTabs.tabMisc);
+		instance.setBlockTextureName(KekzCore.MODID + ":" + "TFFTStorageFieldBlock2");
+		instance.setHardness(5.0f);
+		instance.setResistance(6.0f);
+		GameRegistry.registerBlock(instance, IB_TFFTStorageFieldBlockT2.class, blockName);
+		
+		return instance;
 	} 
 }

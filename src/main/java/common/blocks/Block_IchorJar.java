@@ -9,6 +9,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import items.Item_IchorJarFilled;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -21,20 +22,22 @@ import thaumcraft.common.blocks.BlockJar;
 
 public class Block_IchorJar extends BlockJar {
 	
-	private static Block_IchorJar instance = new Block_IchorJar();
+	private static Block_IchorJar instance;
 	
 	private Block_IchorJar() {
 		super();
 	}
 	
-	public static Block_IchorJar getInstance() {
-		return instance;
-	}
-	
-	public void registerBlock() {
+	public static Block registerBlock() {
+		if(instance == null) {
+			instance = new Block_IchorJar();
+		}
+		
 		final String blockName = "kekztech_ichorjar_block";
-		super.setBlockName(blockName);
-		GameRegistry.registerBlock(getInstance(), blockName);
+		instance.setBlockName(blockName);
+		GameRegistry.registerBlock(instance, blockName);
+		
+		return instance;
 	}
 	
 	@Override

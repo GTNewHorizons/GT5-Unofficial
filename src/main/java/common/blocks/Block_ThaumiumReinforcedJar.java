@@ -9,6 +9,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import items.Item_ThaumiumReinforcedJarFilled;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -21,20 +22,22 @@ import thaumcraft.common.blocks.BlockJar;
 
 public class Block_ThaumiumReinforcedJar extends BlockJar {
 	
-	private static Block_ThaumiumReinforcedJar instance = new Block_ThaumiumReinforcedJar();
+	private static Block_ThaumiumReinforcedJar instance;
 	
 	private Block_ThaumiumReinforcedJar() {
 		super();
 	}
 	
-	public static Block_ThaumiumReinforcedJar getInstance() {
-		return instance;
-	}
-	
-	public void registerBlock() {
+	public static Block registerBlock() {
+		if(instance == null) {
+			instance = new Block_ThaumiumReinforcedJar();
+		}
+		
 		final String blockName = "kekztech_thaumiumreinforcedjar_block";
-		super.setBlockName(blockName);
-		GameRegistry.registerBlock(getInstance(), blockName);
+		instance.setBlockName(blockName);
+		GameRegistry.registerBlock(instance, blockName);
+		
+		return instance;
 	}
 	
 	@Override

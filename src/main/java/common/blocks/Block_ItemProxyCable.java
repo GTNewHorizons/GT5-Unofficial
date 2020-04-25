@@ -4,32 +4,34 @@ import common.tileentities.TE_ItemProxyCable;
 import cpw.mods.fml.common.registry.GameRegistry;
 import itemBlocks.IB_ItemProxyCable;
 import kekztech.KekzCore;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class Block_ItemProxyCable extends BlockContainer {
+public class Block_ItemProxyCable extends Block {
 	
-	private static Block_ItemProxyCable instance = new Block_ItemProxyCable();
+	private static Block_ItemProxyCable instance;
 	
 	private Block_ItemProxyCable() {
 		super(Material.glass);
 	}
 	
-	public static Block_ItemProxyCable getInstance() {
-		return instance;
-	}
-	
-	public void registerBlock() {
+	public static Block registerBlock() {
+		if(instance == null) {
+			instance = new Block_ItemProxyCable();
+		}
+		
 		final String blockName = "kekztech_itemproxycable_block";
-		super.setBlockName(blockName);
-		super.setCreativeTab(CreativeTabs.tabMisc);
-		super.setBlockTextureName(KekzCore.MODID + ":" + "TFFTCasing");
-		super.setHardness(3.0f);
-		super.setResistance(2.0f);
-		GameRegistry.registerBlock(getInstance(), IB_ItemProxyCable.class, blockName);
+		instance.setBlockName(blockName);
+		instance.setCreativeTab(CreativeTabs.tabMisc);
+		instance.setBlockTextureName(KekzCore.MODID + ":" + "TFFTCasing");
+		instance.setHardness(3.0f);
+		instance.setResistance(2.0f);
+		GameRegistry.registerBlock(instance, IB_ItemProxyCable.class, blockName);
+		
+		return instance;
 	}
 	
 	@Override
@@ -38,8 +40,13 @@ public class Block_ItemProxyCable extends BlockContainer {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world, int p_149915_2_) {
+	public TileEntity createTileEntity(World world, int p_149915_2_) {
 		return new TE_ItemProxyCable();
+	}
+
+	@Override
+	public boolean hasTileEntity(int metadata) {
+		return true;
 	}
 
 }

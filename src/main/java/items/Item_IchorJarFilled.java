@@ -1,11 +1,10 @@
 package items;
 
-import common.blocks.Block_IchorJar;
+import common.Blocks;
 import common.tileentities.TE_IchorJar;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -37,10 +36,10 @@ public class Item_IchorJarFilled extends ItemJarFilled {
 			float par8, float par9, float par10) {
 		
 		final Block block = world.getBlock(x, y, z);
-		if(block == Blocks.snow_layer && (world.getBlockMetadata(x, y, z) & 7) < 1) {
+		if(block == net.minecraft.init.Blocks.snow_layer && (world.getBlockMetadata(x, y, z) & 7) < 1) {
 			side = 1;
-		} else if(block != Blocks.vine && block != Blocks.tallgrass 
-				&& block != Blocks.deadbush && !block.isReplaceable(world, x, y, z)) {
+		} else if(block != net.minecraft.init.Blocks.vine && block != net.minecraft.init.Blocks.tallgrass 
+				&& block != net.minecraft.init.Blocks.deadbush && !block.isReplaceable(world, x, y, z)) {
 			// Displace target location if original target can't be replaced
 			if(side == 0) {
 				y--;
@@ -66,10 +65,10 @@ public class Item_IchorJarFilled extends ItemJarFilled {
 			return false;
 		} else if(!player.canPlayerEdit(x, y, z, side, stack)) {
 			return false;
-		} else if(world.canPlaceEntityOnSide(Block_IchorJar.getInstance(), x, y, z, 
+		} else if(world.canPlaceEntityOnSide(Blocks.jarIchor, x, y, z, 
 				false, side, player, stack)) {
 			
-			final Block jar = Block_IchorJar.getInstance();
+			final Block jar = Blocks.jarIchor;
 			final int meta = this.getMetadata(stack.getItemDamage());
 			final int idk = block.onBlockPlaced(world, x, y, z, side, par8, par9, par10, meta);
 			
@@ -105,12 +104,12 @@ public class Item_IchorJarFilled extends ItemJarFilled {
 	@Override
 	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
 			float hitX, float hitY, float hitZ, int metadata) {
-		if (!world.setBlock(x, y, z, Block_IchorJar.getInstance(), metadata, 3)) {
+		if (!world.setBlock(x, y, z, Blocks.jarIchor, metadata, 3)) {
 			return false;
 		} else {
-			if (world.getBlock(x, y, z) == Block_IchorJar.getInstance()) {
-				Block_IchorJar.getInstance().onBlockPlacedBy(world, x, y, z, player, stack);
-				Block_IchorJar.getInstance().onPostBlockPlaced(world, x, y, z, metadata);
+			if (world.getBlock(x, y, z) == Blocks.jarIchor) {
+				Blocks.jarIchor.onBlockPlacedBy(world, x, y, z, player, stack);
+				Blocks.jarIchor.onPostBlockPlaced(world, x, y, z, metadata);
 			}
 
 			return true;

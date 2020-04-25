@@ -3,6 +3,7 @@ package common.blocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 import itemBlocks.IB_ItemServerDrive;
 import kekztech.KekzCore;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -10,26 +11,27 @@ import net.minecraft.util.IIcon;
 
 public class Block_ItemServerDrive extends BaseGTUpdateableBlock{
 
-	private static Block_ItemServerDrive instance = new Block_ItemServerDrive();
+	private static Block_ItemServerDrive instance;
 	
 	private IIcon[] faces = new IIcon[6];
 	
 	private Block_ItemServerDrive() {
-		// I am a singleton
 		super(Material.iron);
 	}
 	
-	public static Block_ItemServerDrive getInstance() {
-		return instance;
-	}
-	
-	public void registerBlock() {
+	public static Block registerBlock() {
+		if(instance == null) {
+			instance = new Block_ItemServerDrive();
+		}
+		
 		final String blockName = "kekztech_itemserverdrive_block";
-		super.setBlockName(blockName);
-		super.setCreativeTab(CreativeTabs.tabMisc);
-		super.setHardness(5.0f);
-		super.setResistance(6.0f);
-		GameRegistry.registerBlock(getInstance(), IB_ItemServerDrive.class, blockName);
+		instance.setBlockName(blockName);
+		instance.setCreativeTab(CreativeTabs.tabMisc);
+		instance.setHardness(5.0f);
+		instance.setResistance(6.0f);
+		GameRegistry.registerBlock(instance, IB_ItemServerDrive.class, blockName);
+		
+		return instance;
 	}
 	
 	@Override

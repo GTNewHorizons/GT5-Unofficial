@@ -1,5 +1,6 @@
 package kekztech;
 
+import common.Blocks;
 import common.Recipes;
 import common.blocks.Block_ControlRod;
 import common.blocks.Block_GDCUnit;
@@ -73,28 +74,7 @@ public class KekzCore {
 		
 		Item_ThaumiumReinforcedJarFilled.getInstance().registerItem();
 		
-		// Blocks
-		Block_YSZUnit.getInstance().registerBlock();
-		Block_GDCUnit.getInstance().registerBlock();
-		Block_TFFTCasing.getInstance().registerBlock();
-		Block_TFFTStorageFieldBlockT1.getInstance().registerBlock();
-		Block_TFFTStorageFieldBlockT2.getInstance().registerBlock();
-		Block_TFFTStorageFieldBlockT3.getInstance().registerBlock();
-		Block_TFFTStorageFieldBlockT4.getInstance().registerBlock();
-		Block_TFFTStorageFieldBlockT5.getInstance().registerBlock();
-		Block_TFFTMultiHatch.getInstance().registerBlock();
-		Block_ReactorChamber_OFF.getInstance().registerBlock();
-		Block_ReactorChamber_ON.getInstance().registerBlock();
-		Block_ControlRod.getInstance().registerBlock();
-		//Block_ItemServerDrive.getInstance().registerBlock();
-		//Block_ItemServerRackCasing.getInstance().registerBlock();
-		//Block_ItemServerIOPort.getInstance().registerBlock();
-		//Block_ItemProxyCable.getInstance().registerBlock();
-		//Block_ItemProxySource.getInstance().registerBlock();
-		//Block_ItemProxyEndpoint.getInstance().registerBlock();
-		
-		Block_ThaumiumReinforcedJar.getInstance().registerBlock();
-		Block_IchorJar.getInstance().registerBlock();
+		Blocks.init();
 		
 		// Register TileEntities
 		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");

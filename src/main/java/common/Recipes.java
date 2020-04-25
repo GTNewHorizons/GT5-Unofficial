@@ -1,19 +1,5 @@
 package common;
 
-import common.blocks.Block_ControlRod;
-import common.blocks.Block_GDCUnit;
-import common.blocks.Block_ItemServerDrive;
-import common.blocks.Block_ItemServerIOPort;
-import common.blocks.Block_ItemServerRackCasing;
-import common.blocks.Block_ReactorChamber_OFF;
-import common.blocks.Block_TFFTCasing;
-import common.blocks.Block_TFFTMultiHatch;
-import common.blocks.Block_TFFTStorageFieldBlockT1;
-import common.blocks.Block_TFFTStorageFieldBlockT2;
-import common.blocks.Block_TFFTStorageFieldBlockT3;
-import common.blocks.Block_TFFTStorageFieldBlockT4;
-import common.blocks.Block_TFFTStorageFieldBlockT5;
-import common.blocks.Block_YSZUnit;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -33,10 +19,14 @@ import util.Util;
 public class Recipes {
 	
 	public static void init() {
+		System.out.println("Registering recipes...");
+		
 		registerRecipes_TFFT();
 		registerRecipes_SOFC();
 		registerRecipes_Nuclear();
 		//registerRecipes_ItemServer();
+		
+		System.out.println("Finished registering recipes");
 	}
 	
 	private static void registerRecipes_TFFT() {
@@ -62,7 +52,7 @@ public class Recipes {
 			GT_Values.RA.addAssemblerRecipe(
 					tfftcasing, 
 					FluidRegistry.getFluidStack("molten.polytetrafluoroethylene", 144),
-					new ItemStack(Block_TFFTCasing.getInstance(), 1), 
+					new ItemStack(Blocks.tfftCasing, 1), 
 					200, 256);
 			final ItemStack[] tfftstoragefield1 = {
 				GT_Utility.getIntegratedCircuit(6),
@@ -74,7 +64,7 @@ public class Recipes {
 			GT_Values.RA.addAssemblerRecipe(
 					tfftstoragefield1, 
 					FluidRegistry.getFluidStack("molten.glass", 144),
-					new ItemStack(Block_TFFTStorageFieldBlockT1.getInstance(), 1), 
+					new ItemStack(Blocks.tfftStorageField1, 1), 
 					200, 256);
 			final ItemStack[] tfftstoragefield2 = {
 					GT_Utility.getIntegratedCircuit(6),
@@ -86,7 +76,7 @@ public class Recipes {
 			GT_Values.RA.addAssemblerRecipe(
 					tfftstoragefield2, 
 					FluidRegistry.getFluidStack("molten.plastic", 576),
-					new ItemStack(Block_TFFTStorageFieldBlockT2.getInstance(), 1), 
+					new ItemStack(Blocks.tfftStorageField2, 1), 
 					200, 480);
 			final ItemStack[] tfftstoragefield3 = {
 					GT_Utility.getIntegratedCircuit(6),
@@ -99,7 +89,7 @@ public class Recipes {
 			GT_Values.RA.addAssemblerRecipe(
 					tfftstoragefield3, 
 					FluidRegistry.getFluidStack("molten.epoxid", 576),
-					new ItemStack(Block_TFFTStorageFieldBlockT3.getInstance(), 1), 
+					new ItemStack(Blocks.tfftStorageField3, 1), 
 					300, 1920);
 			final ItemStack[] tfftstoragefield4 = {
 					GT_Utility.getIntegratedCircuit(6),
@@ -112,7 +102,7 @@ public class Recipes {
 			GT_Values.RA.addAssemblerRecipe(
 					tfftstoragefield4, 
 					FluidRegistry.getFluidStack("molten.epoxid", 1152),
-					new ItemStack(Block_TFFTStorageFieldBlockT4.getInstance(), 1), 
+					new ItemStack(Blocks.tfftStorageField4, 1), 
 					400, 4098);
 			final ItemStack[] tfftstoragefield5 = {
 					GT_Utility.getIntegratedCircuit(6),
@@ -125,7 +115,7 @@ public class Recipes {
 			GT_Values.RA.addAssemblerRecipe(
 					tfftstoragefield5, 
 					FluidRegistry.getFluidStack("molten.epoxid", 1152),
-					new ItemStack(Block_TFFTStorageFieldBlockT5.getInstance(), 1), 
+					new ItemStack(Blocks.tfftStorageField5, 1), 
 					400, 6147);
 			final Object[] multi_hatch = {
 					"PRP", "UFU", "PRP",
@@ -134,7 +124,7 @@ public class Recipes {
 					'U', ItemList.Electric_Pump_IV.get(1L),
 					'F', ItemList.Field_Generator_HV.get(1L)
 			};		
-			GT_ModHandler.addCraftingRecipe(new ItemStack(Block_TFFTMultiHatch.getInstance()), multi_hatch);
+			GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.tfftMultiHatch), multi_hatch);
 	}
 	
 	private static void registerRecipes_SOFC() {
@@ -174,7 +164,7 @@ public class Recipes {
 		GT_Values.RA.addAssemblerRecipe(
 				yszUnit, 
 				Materials.Hydrogen.getGas(4000), 
-				new ItemStack(Block_YSZUnit.getInstance(), 1), 
+				new ItemStack(Blocks.yszUnit, 1), 
 				1200, 480);
 		final ItemStack[] gdcUnit = {
 				GT_Utility.getIntegratedCircuit(6),
@@ -186,7 +176,7 @@ public class Recipes {
 		GT_Values.RA.addAssemblerRecipe(
 				gdcUnit, 
 				Materials.Hydrogen.getGas(16000), 
-				new ItemStack(Block_GDCUnit.getInstance(), 1), 
+				new ItemStack(Blocks.gdcUnit, 1), 
 				2400, 1920);
 		
 		// Items
@@ -246,7 +236,7 @@ public class Recipes {
 		GT_Values.RA.addAssemblerRecipe(
 				controlrod, 
 				null,
-				new ItemStack(Block_ControlRod.getInstance(), 1), 
+				new ItemStack(Blocks.reactorControlRod, 1), 
 				800, 480);
 		final ItemStack[] reactorchamber = {
 				GT_Utility.getIntegratedCircuit(6),
@@ -258,7 +248,7 @@ public class Recipes {
 		GT_Values.RA.addAssemblerRecipe(
 				reactorchamber, 
 				FluidRegistry.getFluidStack("wet.concrete", 144),
-				new ItemStack(Block_ReactorChamber_OFF.getInstance(), 1), 
+				new ItemStack(Blocks.reactorChamberOFF, 1), 
 				1600, 480);
 		
 		// Items
@@ -332,10 +322,10 @@ public class Recipes {
 				'C', GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Platinum, 1),
 				'F', GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1),
 		};
-		GT_ModHandler.addCraftingRecipe(new ItemStack(Block_ItemServerRackCasing.getInstance()), is_rack_recipe);
+		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.itemServerRackCasing), is_rack_recipe);
 		final ItemStack[] is_ioport = {
 				GT_Utility.getIntegratedCircuit(6),
-				new ItemStack(Block_ItemServerRackCasing.getInstance()),
+				new ItemStack(Blocks.itemServerRackCasing),
 				GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Platinum, 16),
 				GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Platinum, 2),
 				ItemList.Field_Generator_HV.get(1L),
@@ -344,7 +334,7 @@ public class Recipes {
 			GT_Values.RA.addAssemblerRecipe(
 					is_ioport, 
 					FluidRegistry.getFluidStack("molten.polytetrafluoroethylene", 144),
-					new ItemStack(Block_ItemServerIOPort.getInstance(), 1), 
+					new ItemStack(Blocks.itemServerIOPort, 1), 
 					200, 7680);
 		final Object[] is_blade = {
 				"CRC", "CMC", "HPH",
@@ -365,7 +355,7 @@ public class Recipes {
 			GT_Values.RA.addAssemblerRecipe(
 					is_drive, 
 					FluidRegistry.getFluidStack("molten.polyethylene", 1152),
-					new ItemStack(Block_ItemServerDrive.getInstance(), 1), 
+					new ItemStack(Blocks.itemServerDrive, 1), 
 					200, 7680);
 	}
 }

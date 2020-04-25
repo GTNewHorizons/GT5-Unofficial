@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import org.lwjgl.input.Keyboard;
 
+import common.Blocks;
 import common.blocks.Block_ItemServerDrive;
 import common.blocks.Block_ItemServerIOPort;
 import common.blocks.Block_ItemServerRackCasing;
@@ -31,9 +32,9 @@ public class GTMTE_ItemServer extends GT_MetaTileEntity_MultiBlockBase {
 	private static final int BASE_PER_ITEM_CAPACITY = 1024;
 	private static final int BASE_ITEM_TYPES_PER_SEGMENT = 4;
 	
-	private final Block_ItemServerDrive DRIVE = Block_ItemServerDrive.getInstance();
-	private final Block_ItemServerRackCasing CASING = Block_ItemServerRackCasing.getInstance();
-	private final Block_ItemServerIOPort IO_PORT = Block_ItemServerIOPort.getInstance();
+	private final Block_ItemServerDrive DRIVE = (Block_ItemServerDrive) Blocks.itemServerDrive;
+	private final Block_ItemServerRackCasing CASING = (Block_ItemServerRackCasing) Blocks.itemServerRackCasing;
+	private final Block_ItemServerIOPort IO_PORT = (Block_ItemServerIOPort) Blocks.itemServerIOPort;
 	private final String ALU_FRAME_BOX_NAME = "gt.blockmachines";
 	private final int ALU_FRAME_BOX_META = 6;
 	private final int CASING_TEXTURE_ID = 176;

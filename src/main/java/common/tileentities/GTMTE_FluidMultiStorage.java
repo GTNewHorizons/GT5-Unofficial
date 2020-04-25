@@ -21,6 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
+import common.Blocks;
 import common.blocks.*;
 import util.MultiBlockTooltipBuilder;
 import util.Vector3i;
@@ -33,13 +34,13 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 
 	private final static String glassNameAE2 = "tile.appliedenergistics2.BlockQuartzGlass";
 	private final static String glassNameStained = "tile.stainedGlass";
-	private final static Block CASING = Block_TFFTCasing.getInstance();
-	private final static Block_TFFTStorageFieldBlockT1 STORAGE_FIELD1 = Block_TFFTStorageFieldBlockT1.getInstance();
-	private final static Block_TFFTStorageFieldBlockT2 STORAGE_FIELD2 = Block_TFFTStorageFieldBlockT2.getInstance();
-	private final static Block_TFFTStorageFieldBlockT3 STORAGE_FIELD3 = Block_TFFTStorageFieldBlockT3.getInstance();
-	private final static Block_TFFTStorageFieldBlockT4 STORAGE_FIELD4 = Block_TFFTStorageFieldBlockT4.getInstance();
-	private final static Block_TFFTStorageFieldBlockT5 STORAGE_FIELD5 = Block_TFFTStorageFieldBlockT5.getInstance();
-	private final static Block MULTI_HATCH = Block_TFFTMultiHatch.getInstance();
+	private final static Block CASING = Blocks.tfftCasing;
+	private final static Block_TFFTStorageFieldBlockT1 STORAGE_FIELD1 = (Block_TFFTStorageFieldBlockT1) Blocks.tfftStorageField1;
+	private final static Block_TFFTStorageFieldBlockT2 STORAGE_FIELD2 = (Block_TFFTStorageFieldBlockT2) Blocks.tfftStorageField2;
+	private final static Block_TFFTStorageFieldBlockT3 STORAGE_FIELD3 = (Block_TFFTStorageFieldBlockT3) Blocks.tfftStorageField3;
+	private final static Block_TFFTStorageFieldBlockT4 STORAGE_FIELD4 = (Block_TFFTStorageFieldBlockT4) Blocks.tfftStorageField4;
+	private final static Block_TFFTStorageFieldBlockT5 STORAGE_FIELD5 = (Block_TFFTStorageFieldBlockT5) Blocks.tfftStorageField5;
+	private final static Block MULTI_HATCH = Blocks.tfftMultiHatch;
 	private final static int CASING_TEXTURE_ID = 176;
 
 	private MultiFluidHandler mfh;

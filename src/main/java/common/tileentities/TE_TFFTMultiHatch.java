@@ -3,11 +3,7 @@ package common.tileentities;
 import java.util.Iterator;
 import java.util.List;
 
-import common.blocks.Block_TFFTStorageFieldBlockT1;
-import common.blocks.Block_TFFTStorageFieldBlockT2;
-import common.blocks.Block_TFFTStorageFieldBlockT3;
-import common.blocks.Block_TFFTStorageFieldBlockT4;
-import common.blocks.Block_TFFTStorageFieldBlockT5;
+import common.Blocks;
 import kekztech.MultiFluidHandler;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
@@ -101,11 +97,11 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 			
 			final Block b = this.getWorldObj().getBlock(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
 			if(b != null && (
-					b.equals(Block_TFFTStorageFieldBlockT1.getInstance())
-					|| b.equals(Block_TFFTStorageFieldBlockT2.getInstance())
-					|| b.equals(Block_TFFTStorageFieldBlockT3.getInstance())
-					|| b.equals(Block_TFFTStorageFieldBlockT4.getInstance())
-					|| b.equals(Block_TFFTStorageFieldBlockT5.getInstance()))) {
+					b.equals(Blocks.tfftStorageField1)
+					|| b.equals(Blocks.tfftStorageField2)
+					|| b.equals(Blocks.tfftStorageField3)
+					|| b.equals(Blocks.tfftStorageField4)
+					|| b.equals(Blocks.tfftStorageField5))) {
 				return direction.getOpposite();
 			}
 		}

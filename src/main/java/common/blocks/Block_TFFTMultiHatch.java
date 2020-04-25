@@ -7,6 +7,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import itemBlocks.IB_TFFTMultiHatch;
 import kekztech.KekzCore;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,24 +16,26 @@ import net.minecraft.world.World;
 
 public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 	
-	private static Block_TFFTMultiHatch instance = new Block_TFFTMultiHatch();
+	private static Block_TFFTMultiHatch instance;
 	
 	private Block_TFFTMultiHatch() {
 		super(Material.iron);
 	}
 	
-	public static Block_TFFTMultiHatch getInstance() {
-		return instance;
-	}
-	
-	public void registerBlock() {
+	public static Block registerBlock() {
+		if(instance == null) {
+			instance = new Block_TFFTMultiHatch();
+		}
+		
 		final String blockName = "kekztech_tfftmultihatch_block";
-		super.setBlockName(blockName);
-		super.setCreativeTab(CreativeTabs.tabMisc);
-		super.setBlockTextureName(KekzCore.MODID + ":" + "TFFTMultiHatch");
-		super.setHardness(5.0f);
-		super.setResistance(6.0f);
-		GameRegistry.registerBlock(getInstance(), IB_TFFTMultiHatch.class, blockName);
+		instance.setBlockName(blockName);
+		instance.setCreativeTab(CreativeTabs.tabMisc);
+		instance.setBlockTextureName(KekzCore.MODID + ":" + "TFFTMultiHatch");
+		instance.setHardness(5.0f);
+		instance.setResistance(6.0f);
+		GameRegistry.registerBlock(instance, IB_TFFTMultiHatch.class, blockName);
+		
+		return instance;
 	}
 
 	@Override

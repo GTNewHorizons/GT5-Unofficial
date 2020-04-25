@@ -6,7 +6,7 @@ import itemBlocks.IB_ItemProxySource;
 import items.Item_Configurator;
 import kekztech.GuiHandler;
 import kekztech.KekzCore;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,26 +15,28 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class Block_ItemProxySource extends BlockContainer {
+public class Block_ItemProxySource extends Block {
 	
-	private static Block_ItemProxySource instance = new Block_ItemProxySource();
+	private static Block_ItemProxySource instance;
 	
 	private Block_ItemProxySource() {
 		super(Material.glass);
 	}
 	
-	public static Block_ItemProxySource getInstance() {
-		return instance;
-	}
-	
-	public void registerBlock() {
+	public static Block registerBlock() {
+		if(instance == null) {
+			instance = new Block_ItemProxySource();
+		}
+		
 		final String blockName = "kekztech_itemproxysource_block";
-		super.setBlockName(blockName);
-		super.setCreativeTab(CreativeTabs.tabMisc);
-		super.setBlockTextureName(KekzCore.MODID + ":" + "ItemProxySource");
-		super.setHardness(3.0f);
-		super.setResistance(2.0f);
-		GameRegistry.registerBlock(getInstance(), IB_ItemProxySource.class, blockName);
+		instance.setBlockName(blockName);
+		instance.setCreativeTab(CreativeTabs.tabMisc);
+		instance.setBlockTextureName(KekzCore.MODID + ":" + "ItemProxySource");
+		instance.setHardness(3.0f);
+		instance.setResistance(2.0f);
+		GameRegistry.registerBlock(instance, IB_ItemProxySource.class, blockName);
+		
+		return instance;
 	}
 	
 	@Override
@@ -62,8 +64,13 @@ public class Block_ItemProxySource extends BlockContainer {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world, int p_149915_2_) {
+	public TileEntity createTileEntity(World world, int p_149915_2_) {
 		return new TE_ItemProxySource();
+	}
+
+	@Override
+	public boolean hasTileEntity(int metadata) {
+		return true;
 	}
 
 }

@@ -3,13 +3,10 @@ package common.tileentities;
 import org.joml.Vector3i;
 import org.lwjgl.input.Keyboard;
 
-import common.blocks.Block_ControlRod;
-import common.blocks.Block_ReactorChamber_OFF;
-import common.blocks.Block_ReactorChamber_ON;
+import common.Blocks;
 import container.GUIContainer_ModularNuclearReactor;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -27,9 +24,9 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 	private final int CASING_META = 12;
 	private final int CASING_TEXTURE_ID = 44;
 	
-	private final Block CHAMBER_OFF = Block_ReactorChamber_OFF.getInstance();
-	private final Block CHAMBER_ON = Block_ReactorChamber_ON.getInstance();
-	private final Block CONTROL_ROD = Block_ControlRod.getInstance();
+	private final Block CHAMBER_OFF = Blocks.reactorChamberOFF;
+	private final Block CHAMBER_ON = Blocks.reactorChamberON;
+	private final Block CONTROL_ROD = Blocks.reactorControlRod;
 	
 	private boolean euMode = true;
 	

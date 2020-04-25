@@ -8,7 +8,7 @@ import itemBlocks.IB_ItemProxyEndpoint;
 import items.Item_Configurator;
 import kekztech.GuiHandler;
 import kekztech.KekzCore;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,26 +16,28 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class Block_ItemProxyEndpoint extends BlockContainer {
+public class Block_ItemProxyEndpoint extends Block {
 	
-	private static Block_ItemProxyEndpoint instance = new Block_ItemProxyEndpoint();
+	private static Block_ItemProxyEndpoint instance;
 	
 	private Block_ItemProxyEndpoint() {
 		super(Material.glass);
 	}
 	
-	public static Block_ItemProxyEndpoint getInstance() {
-		return instance;
-	}
-	
-	public void registerBlock() {
+	public static Block registerBlock() {
+		if(instance == null) {
+			instance = new Block_ItemProxyEndpoint();
+		}
+		
 		final String blockName = "kekztech_itemproxyendpoint_block";
-		super.setBlockName(blockName);
-		super.setCreativeTab(CreativeTabs.tabMisc);
-		super.setBlockTextureName(KekzCore.MODID + ":" + "ItemProxyEndpoint");
-		super.setHardness(3.0f);
-		super.setResistance(2.0f);
-		GameRegistry.registerBlock(getInstance(), IB_ItemProxyEndpoint.class, blockName);
+		instance.setBlockName(blockName);
+		instance.setCreativeTab(CreativeTabs.tabMisc);
+		instance.setBlockTextureName(KekzCore.MODID + ":" + "ItemProxyEndpoint");
+		instance.setHardness(3.0f);
+		instance.setResistance(2.0f);
+		GameRegistry.registerBlock(instance, IB_ItemProxyEndpoint.class, blockName);
+		
+		return instance;
 	}
 	
 	@Override
@@ -62,8 +64,13 @@ public class Block_ItemProxyEndpoint extends BlockContainer {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world, int p_149915_2_) {
+	public TileEntity createTileEntity(World world, int p_149915_2_) {
 		return new TE_ItemProxyEndpoint();
+	}
+
+	@Override
+	public boolean hasTileEntity(int metadata) {
+		return true;
 	}
 
 }

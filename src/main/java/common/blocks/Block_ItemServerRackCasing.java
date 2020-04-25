@@ -3,30 +3,32 @@ package common.blocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 import itemBlocks.IB_ItemServerRackCasing;
 import kekztech.KekzCore;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 
 public class Block_ItemServerRackCasing extends BaseGTUpdateableBlock {
 
-	private static Block_ItemServerRackCasing instance = new Block_ItemServerRackCasing();
+	private static Block_ItemServerRackCasing instance;
 		
 	private Block_ItemServerRackCasing() {
-		// I am a singleton
 		super(Material.iron);
 	}
 	
-	public static Block_ItemServerRackCasing getInstance() {
-		return instance;
-	}
-	
-	public void registerBlock() {
+	public static Block registerBlock() {
+		if(instance == null) {
+			instance = new Block_ItemServerRackCasing();
+		}
+		
 		final String blockName = "kekztech_itemserverrackcasing_block";
-		super.setBlockName(blockName);
-		super.setCreativeTab(CreativeTabs.tabMisc);
-		super.setBlockTextureName(KekzCore.MODID + ":" + "ItemServerRackCasing");
-		super.setHardness(5.0f);
-		super.setResistance(6.0f);
-		GameRegistry.registerBlock(getInstance(), IB_ItemServerRackCasing.class, blockName);
+		instance.setBlockName(blockName);
+		instance.setCreativeTab(CreativeTabs.tabMisc);
+		instance.setBlockTextureName(KekzCore.MODID + ":" + "ItemServerRackCasing");
+		instance.setHardness(5.0f);
+		instance.setResistance(6.0f);
+		GameRegistry.registerBlock(instance, IB_ItemServerRackCasing.class, blockName);
+		
+		return instance;
 	}
 	
 }

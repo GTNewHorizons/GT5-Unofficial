@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import org.lwjgl.input.Keyboard;
 
-import common.blocks.Block_YSZUnit;
+import common.Blocks;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -230,7 +230,7 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_MultiBlockBase {
 					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 					if(X == 0 && Y == 0) {
 						if(!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
-								.equals(Block_YSZUnit.getInstance().getUnlocalizedName())) {
+								.equals(Blocks.yszUnit.getUnlocalizedName())) {
 							formationChecklist = false;
 						}
 						continue;
