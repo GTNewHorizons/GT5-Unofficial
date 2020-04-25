@@ -76,6 +76,73 @@ public class StructureUtility {
     @SuppressWarnings("unchecked")
     public static <T> IStructureElement<T> error(){
         return ERROR;
+    }    /**
+     * Does not allow Block duplicates (with different meta)
+     */
+    public static <T> IStructureElement<T> ofHintFlat(Map<Block, Integer> blocsMap,Block hintBlock,int hintMeta){
+        if(blocsMap==null || blocsMap.isEmpty() || hintBlock==null){
+            throw new IllegalArgumentException();
+        }
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                return blocsMap.getOrDefault(world.getBlock(x, y, z), -1) == world.getBlockMetadata(x, y, z);
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z) {
+                TecTech.proxy.hint_particle(world,x,y,z,hintBlock,hintMeta);
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Allows block duplicates (with different meta)
+     */
+    public static <T> IStructureElement<T> ofHint(Map<Block, Set<Integer>> blocsMap,Block hintBlock,int hintMeta){
+        if(blocsMap==null || blocsMap.isEmpty() || hintBlock==null){
+            throw new IllegalArgumentException();
+        }
+        for (Set<Integer> value : blocsMap.values()) {
+            if(value.isEmpty()){
+                throw new IllegalArgumentException();
+            }
+        }
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                return blocsMap.getOrDefault(world.getBlock(x, y, z), Collections.emptySet()).contains(world.getBlockMetadata(x, y, z));
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z) {
+                TecTech.proxy.hint_particle(world,x,y,z,hintBlock,hintMeta);
+                return true;
+            }
+        };
+    }
+
+    public static <T> IStructureElement<T> ofHint(Block block, int meta,Block hintBlock,int hintMeta){
+        if(block==null || hintBlock==null){
+            throw new IllegalArgumentException();
+        }
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                return block == world.getBlock(x, y, z) && meta == world.getBlockMetadata(x, y, z);
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z) {
+                TecTech.proxy.hint_particle(world,x,y,z,hintBlock,hintMeta);
+                return true;
+            }
+        };
+    }
+
+    public static <T> IStructureElement<T> ofHint(Block block, int meta){
+        return ofHint(block, meta,block,meta);
     }
 
     /**
