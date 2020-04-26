@@ -6,17 +6,16 @@ import com.github.technus.tectech.mechanics.structure.Structure;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.*;
+import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static gregtech.api.GregTech_API.sBlockCasings1;
 
 public class ConstructableLoader implements Runnable {
 
     @Override
     public void run() {
-        registerMetaClass(GT_MetaTileEntity_ElectricBlastFurnace.class, new IMultiblockInfoContainer() {
+        registerMetaClass(GT_MetaTileEntity_ElectricBlastFurnace.class, new IMultiblockInfoContainer<GT_MetaTileEntity_ElectricBlastFurnace>() {
             //region Structure
             private final String[][] shape = new String[][]{
                     {"000","\"\"\"","\"\"\""," . ",},
@@ -34,8 +33,9 @@ public class ConstructableLoader implements Runnable {
             //endregion
 
             @Override
-            public void construct(ItemStack stackSize, boolean hintsOnly, TileEntity tileEntity, ExtendedFacing aSide) {
-                Structure.builder(shape, blockType, blockMeta, 1, 3, 0, tileEntity, aSide, hintsOnly);
+            public void construct(ItemStack stackSize, boolean hintsOnly, GT_MetaTileEntity_ElectricBlastFurnace tileEntity, ExtendedFacing aSide) {
+                Structure.builder(shape, blockType, blockMeta, 1, 3, 0,
+                        tileEntity.getBaseMetaTileEntity(), aSide, hintsOnly);
             }
 
             @Override

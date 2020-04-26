@@ -23,7 +23,6 @@ import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.MULTIBLOCK_MAP;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -51,20 +50,20 @@ public final class ConstructableTriggerItem extends Item {
                     IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                     if (metaTE instanceof IConstructable) {
                         ((IConstructable) metaTE).construct(aStack, false);
-                    } else if (MULTIBLOCK_MAP.containsKey(metaTE.getClass().getCanonicalName())) {
-                        IMultiblockInfoContainer iMultiblockInfoContainer = MULTIBLOCK_MAP.get(metaTE.getClass().getCanonicalName());
+                    } else if (IMultiblockInfoContainer.contains(metaTE.getClass())) {
+                        IMultiblockInfoContainer<IMetaTileEntity> iMultiblockInfoContainer =IMultiblockInfoContainer.get(metaTE.getClass());
                         if(metaTE instanceof IAlignment){
-                            iMultiblockInfoContainer.construct(aStack, false, tTileEntity, (
+                            iMultiblockInfoContainer.construct(aStack, false, metaTE, (
                                     (IAlignment) metaTE).getExtendedFacing());
                         }else {
-                            iMultiblockInfoContainer.construct(aStack, false, tTileEntity,
+                            iMultiblockInfoContainer.construct(aStack, false, metaTE,
                                     ExtendedFacing.of(ForgeDirection.getOrientation(((IGregTechTileEntity) tTileEntity).getFrontFacing())));
                         }
                     }
                 } else if (tTileEntity instanceof IConstructable) {
                     ((IConstructable) tTileEntity).construct(aStack, false);
-                } else if (MULTIBLOCK_MAP.containsKey(tTileEntity.getClass().getCanonicalName())) {
-                    IMultiblockInfoContainer iMultiblockInfoContainer = MULTIBLOCK_MAP.get(tTileEntity.getClass().getCanonicalName());
+                } else if (IMultiblockInfoContainer.contains(tTileEntity.getClass())) {
+                    IMultiblockInfoContainer<TileEntity> iMultiblockInfoContainer =IMultiblockInfoContainer.get(tTileEntity.getClass());
                     if(tTileEntity instanceof IAlignment){
                         iMultiblockInfoContainer.construct(aStack, false, tTileEntity,
                                 ((IAlignment) tTileEntity).getExtendedFacing());
@@ -83,24 +82,24 @@ public final class ConstructableTriggerItem extends Item {
                         ((IConstructable) metaTE).construct(aStack, true);
                         TecTech.proxy.printInchat(((IConstructable) metaTE).getStructureDescription(aStack));
                         return false;
-                    } else if(MULTIBLOCK_MAP.containsKey(metaTE.getClass().getCanonicalName())){
-                        IMultiblockInfoContainer iMultiblockInfoContainer = MULTIBLOCK_MAP.get(metaTE.getClass().getCanonicalName());
+                    } else if(IMultiblockInfoContainer.contains(metaTE.getClass())){
+                        IMultiblockInfoContainer<IMetaTileEntity> iMultiblockInfoContainer =IMultiblockInfoContainer.get(metaTE.getClass());
                         if(metaTE instanceof IAlignment){
-                            iMultiblockInfoContainer.construct(aStack, true, tTileEntity, (
-                                    (IAlignment) metaTE).getExtendedFacing());
+                            iMultiblockInfoContainer.construct(aStack, true, metaTE,
+                                    ((IAlignment) metaTE).getExtendedFacing());
                         }else {
-                            iMultiblockInfoContainer.construct(aStack, true, tTileEntity,
+                            iMultiblockInfoContainer.construct(aStack, true, metaTE,
                                     ExtendedFacing.of(ForgeDirection.getOrientation(((IGregTechTileEntity) tTileEntity).getFrontFacing())));
                         }
-                        TecTech.proxy.printInchat(MULTIBLOCK_MAP.get(metaTE.getClass().getCanonicalName()).getDescription(aStack));
+                        TecTech.proxy.printInchat(IMultiblockInfoContainer.get(metaTE.getClass()).getDescription(aStack));
                         return false;
                     }
                 } else if(tTileEntity instanceof IConstructable){
                     ((IConstructable) tTileEntity).construct(aStack,true);
                     TecTech.proxy.printInchat(((IConstructable) tTileEntity).getStructureDescription(aStack));
                     return false;
-                } else if(MULTIBLOCK_MAP.containsKey(tTileEntity.getClass().getCanonicalName())){
-                    IMultiblockInfoContainer iMultiblockInfoContainer = MULTIBLOCK_MAP.get(tTileEntity.getClass().getCanonicalName());
+                } else if(IMultiblockInfoContainer.contains(tTileEntity.getClass())){
+                    IMultiblockInfoContainer<TileEntity> iMultiblockInfoContainer = IMultiblockInfoContainer.get(tTileEntity.getClass());
                     if(tTileEntity instanceof IAlignment){
                         iMultiblockInfoContainer.construct(aStack, true, tTileEntity,
                                 ((IAlignment) tTileEntity).getExtendedFacing());
@@ -108,7 +107,7 @@ public final class ConstructableTriggerItem extends Item {
                         iMultiblockInfoContainer.construct(aStack, true, tTileEntity,
                                 ExtendedFacing.of(ForgeDirection.getOrientation(aSide)));
                     }
-                    TecTech.proxy.printInchat(MULTIBLOCK_MAP.get(tTileEntity.getClass().getCanonicalName()).getDescription(aStack));
+                    TecTech.proxy.printInchat(IMultiblockInfoContainer.get(tTileEntity.getClass()).getDescription(aStack));
                     return false;
                 }
             //} else {
