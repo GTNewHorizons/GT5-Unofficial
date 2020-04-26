@@ -1,6 +1,7 @@
 package common.blocks;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import common.tileentities.TE_ThaumiumReinforcedJar;
@@ -11,6 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -21,7 +23,7 @@ import thaumcraft.common.config.ConfigBlocks;
 
 public class Block_ThaumiumReinforcedJar extends BlockJar {
 	
-	private static Block_ThaumiumReinforcedJar instance;
+	private static Block_ThaumiumReinforcedJar instance = new Block_ThaumiumReinforcedJar();
 	
 	private Block_ThaumiumReinforcedJar() {
 		super();
@@ -31,10 +33,6 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 	}
 	
 	public static Block registerBlock() {
-		if(instance == null) {
-			instance = new Block_ThaumiumReinforcedJar();
-		}
-		
 		final String blockName = "kekztech_thaumiumreinforcedjar_block";
 		instance.setBlockName(blockName);
 		GameRegistry.registerBlock(instance, blockName);
@@ -63,12 +61,10 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 	
 	@Override
 	public TileEntity createTileEntity(World world, int meta) {
-		if(meta == 0) {
-			return new TE_ThaumiumReinforcedJar();
-		} else if (meta == 3) {
+		if(meta == 3) {
 			return new TE_ThaumiumReinforcedVoidJar();
 		} else {
-			return null;
+			return new TE_ThaumiumReinforcedJar();
 		}
 	}
 	
@@ -76,12 +72,13 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 	public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if(te != null && te instanceof TE_ThaumiumReinforcedJar) {
-			if(((TE_ThaumiumReinforcedJar) te).amount > 0) {
+			final TE_ThaumiumReinforcedJar ite = (TE_ThaumiumReinforcedJar) te;
+			if(ite.amount > 0) {
 				// Create a small explosion in the center of the block (TNT has strength 4.0F)
 				world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, 1.0F, false);
 				
 				// Place some Flux in the area
-				final int limit = ((TE_ThaumiumReinforcedJar) te).amount / 16;
+				final int limit = ite.amount / 16;
 				int created = 0;
 				for(int i = 0; i < 50; i++) {
 					final int xf = x + world.rand.nextInt(4) - world.rand.nextInt(4);
@@ -107,9 +104,11 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 	
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
-		final ArrayList<ItemStack> drops = new ArrayList<>();
-		drops.add(new ItemStack(this, 1, (meta == 3) ? 3 : 0));
-		return drops;
+		return new ArrayList<>(Collections.singleton(new ItemStack(this, 1, (meta == 3) ? 3 : 0)));
+	}
+
+	@Override
+	public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer) {
 	}
 	
 	@Override

@@ -61,12 +61,10 @@ public class Block_IchorJar extends BlockJar {
 	
 	@Override
 	public TileEntity createTileEntity(World world, int meta) {
-		if(meta == 0) {
-			return new TE_IchorJar();
-		} else if (meta == 3) {
+		if(meta == 3) {
 			return new TE_IchorVoidJar();
 		} else {
-			return null;
+			return new TE_IchorJar();
 		}
 	}
 	
@@ -74,7 +72,7 @@ public class Block_IchorJar extends BlockJar {
 	public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if(te instanceof TE_IchorJar) {
-			TE_IchorJar ite = (TE_IchorJar) te;
+			final TE_IchorJar ite = (TE_IchorJar) te;
 			if(ite.amount > 0) {
 				// Create a decent explosion in the center of the block (TNT has strength 4.0F)
 				world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, 6.0F, false);
