@@ -1140,12 +1140,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     }
                 }
 
-                for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eOutputData) {
+                for (GT_MetaTileEntity_Hatch_DataConnector<?> hatch_data : eOutputData) {
                     if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch_data)) {
                         hatch_data.id = -1;
                     }
                 }
-                for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eInputData) {
+                for (GT_MetaTileEntity_Hatch_DataConnector<?> hatch_data : eInputData) {
                     if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch_data)) {
                         hatch_data.id = -1;
                     }
@@ -1209,13 +1209,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     }
 
                     id = 1;
-                    for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eOutputData) {
+                    for (GT_MetaTileEntity_Hatch_DataConnector<?> hatch_data : eOutputData) {
                         if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch_data)) {
                             hatch_data.id = id++;
                         }
                     }
                     id = 1;
-                    for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eInputData) {
+                    for (GT_MetaTileEntity_Hatch_DataConnector<?> hatch_data : eInputData) {
                         if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch_data)) {
                             hatch_data.id = id++;
                         }
