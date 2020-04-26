@@ -4,7 +4,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public interface ITileAdder<T> {
     /**
-     * Callback to add hatch
+     * Callback to add hatch, needs to check if tile is valid (and add it)
      * @param tileEntity tile
      * @return managed to add hatch (structure still valid)
      */
