@@ -60,16 +60,16 @@ public interface IStructureDefinition<T> {
         if(checkBlocksIfNotNullForceCheckAllIfTrue!=null){
             if(checkBlocksIfNotNullForceCheckAllIfTrue){
                 for (IStructureElement<T> element : elements) {
-                    extendedFacing.getWorldOffset(abc, xyz);
-                    xyz[0] += basePositionX;
-                    xyz[1] += basePositionY;
-                    xyz[2] += basePositionZ;
-
                     if(element.isNavigating()) {
                         abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
                         abc[1] = (element.resetB() ? basePositionA : abc[1]) + element.getStepB();
                         abc[2] = (element.resetC() ? basePositionA : abc[2]) + element.getStepC();
                     }else {
+                        extendedFacing.getWorldOffset(abc, xyz);
+                        xyz[0] += basePositionX;
+                        xyz[1] += basePositionY;
+                        xyz[2] += basePositionZ;
+
                         if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
                             if(!element.check(object, world, xyz[0], xyz[1], xyz[2])){
                                 return false;
@@ -82,16 +82,16 @@ public interface IStructureDefinition<T> {
                 }
             } else {
                 for (IStructureElement<T> element : elements) {
-                    extendedFacing.getWorldOffset(abc, xyz);
-                    xyz[0] += basePositionX;
-                    xyz[1] += basePositionY;
-                    xyz[2] += basePositionZ;
-
                     if(element.isNavigating()) {
                         abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
                         abc[1] = (element.resetB() ? basePositionA : abc[1]) + element.getStepB();
                         abc[2] = (element.resetC() ? basePositionA : abc[2]) + element.getStepC();
                     }else {
+                        extendedFacing.getWorldOffset(abc, xyz);
+                        xyz[0] += basePositionX;
+                        xyz[1] += basePositionY;
+                        xyz[2] += basePositionZ;
+
                         if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
                             if(!element.check(object, world, xyz[0], xyz[1], xyz[2])){
                                 return false;
@@ -104,16 +104,16 @@ public interface IStructureDefinition<T> {
         }else {
             if(hintsOnly) {
                 for (IStructureElement<T> element : elements) {
-                    extendedFacing.getWorldOffset(abc, xyz);
-                    xyz[0] += basePositionX;
-                    xyz[1] += basePositionY;
-                    xyz[2] += basePositionZ;
-
                     if(element.isNavigating()) {
                         abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
                         abc[1] = (element.resetB() ? basePositionA : abc[1]) + element.getStepB();
                         abc[2] = (element.resetC() ? basePositionA : abc[2]) + element.getStepC();
                     }else {
+                        extendedFacing.getWorldOffset(abc, xyz);
+                        xyz[0] += basePositionX;
+                        xyz[1] += basePositionY;
+                        xyz[2] += basePositionZ;
+
                         if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
                             element.spawnHint(object, world, xyz[0], xyz[1], xyz[2]);
                         }
@@ -122,16 +122,16 @@ public interface IStructureDefinition<T> {
                 }
             } else {
                 for (IStructureElement<T> element : elements) {
-                    extendedFacing.getWorldOffset(abc, xyz);
-                    xyz[0] += basePositionX;
-                    xyz[1] += basePositionY;
-                    xyz[2] += basePositionZ;
-
                     if(element.isNavigating()) {
                         abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
                         abc[1] = (element.resetB() ? basePositionA : abc[1]) + element.getStepB();
                         abc[2] = (element.resetC() ? basePositionA : abc[2]) + element.getStepC();
                     }else {
+                        extendedFacing.getWorldOffset(abc, xyz);
+                        xyz[0] += basePositionX;
+                        xyz[1] += basePositionY;
+                        xyz[2] += basePositionZ;
+
                         if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
                             element.placeBlock(object, world, xyz[0], xyz[1], xyz[2]);
                         }
