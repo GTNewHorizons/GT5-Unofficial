@@ -151,6 +151,22 @@ public class StructureUtility {
         return ofHint(block, meta,block,meta);
     }
 
+    public static <T> IStructureElement<T> ofHintOnly(int dots){
+        int meta=dots-1;
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                return false;
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z) {
+                TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,meta);
+                return true;
+            }
+        };
+    }
+
     public static <T> IStructureElement<T> ofHintAdder(IBlockAdder<T> iBlockAdder, Block hintBlock, int hintMeta){
         if(iBlockAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();

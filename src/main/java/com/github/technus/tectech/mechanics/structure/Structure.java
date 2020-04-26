@@ -9,7 +9,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -154,26 +153,10 @@ public class Structure {
                                   byte[] blockMeta,//use numbers 0-9 for casing types
                                   int horizontalOffset, int verticalOffset, int depthOffset,
                                   IGregTechTileEntity tileEntity, ExtendedFacing extendedFacing, boolean hintsOnly) {
-        return builder(structure, blockType, blockMeta, horizontalOffset, verticalOffset, depthOffset,
-                tileEntity.getWorld(), tileEntity.getXCoord(), tileEntity.getYCoord(), tileEntity.getZCoord(),
-                extendedFacing, hintsOnly);
-    }
-
-    public static boolean builder(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR+1 blocks
-                                  Block[] blockType,//use numbers 0-9 for casing types
-                                  byte[] blockMeta,//use numbers 0-9 for casing types
-                                  int horizontalOffset, int verticalOffset, int depthOffset,
-                                  TileEntity tileEntity, ExtendedFacing extendedFacing, boolean hintsOnly) {
-        return builder(structure, blockType, blockMeta, horizontalOffset, verticalOffset, depthOffset,
-                tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord,
-                extendedFacing, hintsOnly);
-    }
-
-    public static boolean builder(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR+1 blocks
-                                  Block[] blockType,//use numbers 0-9 for casing types
-                                  byte[] blockMeta,//use numbers 0-9 for casing types
-                                  int horizontalOffset, int verticalOffset, int depthOffset,
-                                  World world, int baseX, int baseY, int baseZ, ExtendedFacing extendedFacing, boolean hintsOnly) {
+        World world=tileEntity.getWorld();
+        int baseX=tileEntity.getXCoord();
+        int baseY=tileEntity.getYCoord();
+        int baseZ=tileEntity.getZCoord();
         if (world == null || (!world.isRemote && hintsOnly)) {
             return false;
         }

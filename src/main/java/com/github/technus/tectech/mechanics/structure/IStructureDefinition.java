@@ -62,8 +62,8 @@ public interface IStructureDefinition<T> {
                 for (IStructureElement<T> element : elements) {
                     if(element.isNavigating()) {
                         abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
-                        abc[1] = (element.resetB() ? basePositionA : abc[1]) + element.getStepB();
-                        abc[2] = (element.resetC() ? basePositionA : abc[2]) + element.getStepC();
+                        abc[1] = (element.resetB() ? basePositionB : abc[1]) + element.getStepB();
+                        abc[2] = (element.resetC() ? basePositionC : abc[2]) + element.getStepC();
                     }else {
                         extendedFacing.getWorldOffset(abc, xyz);
                         xyz[0] += basePositionX;
@@ -84,8 +84,8 @@ public interface IStructureDefinition<T> {
                 for (IStructureElement<T> element : elements) {
                     if(element.isNavigating()) {
                         abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
-                        abc[1] = (element.resetB() ? basePositionA : abc[1]) + element.getStepB();
-                        abc[2] = (element.resetC() ? basePositionA : abc[2]) + element.getStepC();
+                        abc[1] = (element.resetB() ? basePositionB : abc[1]) + element.getStepB();
+                        abc[2] = (element.resetC() ? basePositionC : abc[2]) + element.getStepC();
                     }else {
                         extendedFacing.getWorldOffset(abc, xyz);
                         xyz[0] += basePositionX;
@@ -106,8 +106,8 @@ public interface IStructureDefinition<T> {
                 for (IStructureElement<T> element : elements) {
                     if(element.isNavigating()) {
                         abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
-                        abc[1] = (element.resetB() ? basePositionA : abc[1]) + element.getStepB();
-                        abc[2] = (element.resetC() ? basePositionA : abc[2]) + element.getStepC();
+                        abc[1] = (element.resetB() ? basePositionB : abc[1]) + element.getStepB();
+                        abc[2] = (element.resetC() ? basePositionC : abc[2]) + element.getStepC();
                     }else {
                         extendedFacing.getWorldOffset(abc, xyz);
                         xyz[0] += basePositionX;
@@ -124,8 +124,8 @@ public interface IStructureDefinition<T> {
                 for (IStructureElement<T> element : elements) {
                     if(element.isNavigating()) {
                         abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
-                        abc[1] = (element.resetB() ? basePositionA : abc[1]) + element.getStepB();
-                        abc[2] = (element.resetC() ? basePositionA : abc[2]) + element.getStepC();
+                        abc[1] = (element.resetB() ? basePositionB : abc[1]) + element.getStepB();
+                        abc[2] = (element.resetC() ? basePositionC : abc[2]) + element.getStepC();
                     }else {
                         extendedFacing.getWorldOffset(abc, xyz);
                         xyz[0] += basePositionX;

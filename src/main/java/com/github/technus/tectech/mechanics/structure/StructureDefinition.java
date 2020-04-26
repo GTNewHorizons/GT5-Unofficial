@@ -1,5 +1,7 @@
 package com.github.technus.tectech.mechanics.structure;
 
+import com.github.technus.tectech.util.Vec3Impl;
+
 import java.util.*;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
@@ -28,10 +30,12 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
         private static final char B='\uB000';
         private static final char C='\uC000';
         private static final char D='\uD000';
+        private final Map<Vec3Impl,Character> navigates;
         private final Map<Character, IStructureElement<T>> elements;
         private final Map<String, String> shapes;
 
         private Builder() {
+            navigates=new HashMap<>();
             elements = new HashMap<>();
             shapes = new HashMap<>();
         }
@@ -42,6 +46,79 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
 
         public Map<String, String> getShapes() {
             return shapes;
+        }
+
+        @Deprecated
+        public Builder<T> addShapeOldApi(String name, String[][] structurePiece) {
+            StringBuilder builder = new StringBuilder();
+            if (structurePiece.length > 0) {
+                for (String[] strings : structurePiece) {
+                    if (strings.length > 0) {
+                        for (String string : strings) {
+                            for (int i = 0; i < string.length(); i++) {
+                                char ch = string.charAt(i);
+                                if(ch<' '){
+                                    for (int c = 0; c < ch; c++) {
+                                        builder.append(B);
+                                    }
+                                }else if(ch>'@'){
+                                    for (int c = '@'; c < ch; c++) {
+                                        builder.append(A);
+                                    }
+                                }else{
+                                    builder.append(ch);
+                                }
+                            }
+                            builder.append(B);
+                        }
+                        builder.setLength(builder.length() - 1);
+                    }
+                    builder.append(C);
+                }
+                builder.setLength(builder.length() - 1);
+            }
+            int a=0,b=0,c=0;
+            char d=D;
+            for (int i = 0; i < builder.length(); i++) {
+                char ch = builder.charAt(i);
+                if(ch =='.'){
+                    builder.setCharAt(i,A);
+                    ch=A;
+                }
+                if(ch==A){
+                    a++;
+                }else if(ch==B){
+                    a=0;
+                    b++;
+                }else if(ch==C){
+                    a=0;
+                    b=0;
+                    c++;
+                }else if(a!=0 || b!=0 || c!=0){
+                    Vec3Impl vec3 = new Vec3Impl(a, b, c);
+                    Character navigate = navigates.get(vec3);
+                    if(navigate==null){
+                        navigate=d++;
+                        navigates.put(vec3,navigate);
+                        addElement(navigate,step(vec3));
+                    }
+                    builder.setCharAt(i-1,navigate);
+                    a=0;
+                    b=0;
+                    c=0;
+                }
+            }
+
+            String built = builder.toString().replaceAll("[\\uA000\\uB000\\uC000]","");
+
+            if(built.contains("+")){
+                addElement('+',notAir());
+            }
+            if (built.contains("-")) {
+                addElement('-', isAir());
+            }
+            shapes.put(name, built);
+            return this;
         }
 
         /**
@@ -92,8 +169,14 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
                     b=0;
                     c++;
                 }else if(a!=0 || b!=0 || c!=0){
-                    builder.setCharAt(i-1,d);
-                    addElement(d,step(a,b,c));
+                    Vec3Impl vec3 = new Vec3Impl(a, b, c);
+                    Character navigate = navigates.get(vec3);
+                    if(navigate==null){
+                        navigate=d++;
+                        navigates.put(vec3,navigate);
+                        addElement(navigate,step(vec3));
+                    }
+                    builder.setCharAt(i-1,navigate);
                     a=0;
                     b=0;
                     c=0;
@@ -114,7 +197,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
         }
 
         public Builder<T> addElement(Character name, IStructureElement<T> structurePiece) {
-            elements.put(name, structurePiece);
+            elements.putIfAbsent(name, structurePiece);
             return this;
         }
 
@@ -128,7 +211,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
 
         @SuppressWarnings("unchecked")
         private Map<String, IStructureElement<T>[]> compileMap() {
-            List<Integer> mising = new ArrayList<>();
+            Set<Integer> mising = new HashSet<>();
             shapes.values().stream().map(CharSequence::chars).forEach(intStream -> intStream.forEach(c -> {
                 IStructureElement<T> iStructureElement = elements.get((char) c);
                 if (iStructureElement == null) {
