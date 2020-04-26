@@ -12,14 +12,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.regex.Pattern;
-
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
 @Deprecated
 public class Structure {
-    private static final Pattern MATCH_E = Pattern.compile("(E,(E,)+)");
-
     private Structure(){}
 
     @SafeVarargs
