@@ -2,6 +2,9 @@ package com.github.technus.tectech.mechanics.structure;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
+import com.github.technus.tectech.mechanics.structure.adders.IBlockAdder;
+import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
+import com.github.technus.tectech.mechanics.structure.adders.ITileAdder;
 import com.github.technus.tectech.util.Vec3Impl;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -148,7 +151,7 @@ public class StructureUtility {
         return ofHint(block, meta,block,meta);
     }
 
-    public static <T> IStructureElement<T> ofHintAdder(IBlockAdder<T> iBlockAdder,Block hintBlock,int hintMeta){
+    public static <T> IStructureElement<T> ofHintAdder(IBlockAdder<T> iBlockAdder, Block hintBlock, int hintMeta){
         if(iBlockAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();
         }
@@ -278,7 +281,7 @@ public class StructureUtility {
     }
 
 
-    public static <T> IStructureElement<T> ofTileAdder(ITileAdder<T> iTileAdder,Block hintBlock,int hintMeta){
+    public static <T> IStructureElement<T> ofTileAdder(ITileAdder<T> iTileAdder, Block hintBlock, int hintMeta){
         if(iTileAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();
         }

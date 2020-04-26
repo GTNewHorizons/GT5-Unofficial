@@ -1,4 +1,4 @@
-package com.github.technus.tectech.mechanics.structure;
+package com.github.technus.tectech.mechanics.structure.adders;
 
 import net.minecraft.tileentity.TileEntity;
 
