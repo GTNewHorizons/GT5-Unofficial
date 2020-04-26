@@ -65,20 +65,19 @@ public interface IStructureDefinition<T> {
                     xyz[1] += basePositionY;
                     xyz[2] += basePositionZ;
 
-                    if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
-                        if(!element.check(object, world, xyz[0], xyz[1], xyz[2])){
-                            return false;
-                        }
-                    }else {
-                        return false;
-                    }
-
                     if(element instanceof IStructureNavigate) {
                         IStructureNavigate<T> navigate=(IStructureNavigate<T>)element;
                         abc[0] = (navigate.resetA() ? basePositionA : abc[0]) + navigate.getStepA();
                         abc[1] = (navigate.resetB() ? basePositionA : abc[1]) + navigate.getStepB();
                         abc[2] = (navigate.resetC() ? basePositionA : abc[2]) + navigate.getStepC();
                     }else {
+                        if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
+                            if(!element.check(object, world, xyz[0], xyz[1], xyz[2])){
+                                return false;
+                            }
+                        }else {
+                            return false;
+                        }
                         abc[0]+=1;
                     }
                 }
@@ -89,18 +88,17 @@ public interface IStructureDefinition<T> {
                     xyz[1] += basePositionY;
                     xyz[2] += basePositionZ;
 
-                    if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
-                        if(!element.check(object, world, xyz[0], xyz[1], xyz[2])){
-                            return false;
-                        }
-                    }
-
                     if(element instanceof IStructureNavigate) {
                         IStructureNavigate<T> navigate=(IStructureNavigate<T>)element;
                         abc[0] = (navigate.resetA() ? basePositionA : abc[0]) + navigate.getStepA();
                         abc[1] = (navigate.resetB() ? basePositionA : abc[1]) + navigate.getStepB();
                         abc[2] = (navigate.resetC() ? basePositionA : abc[2]) + navigate.getStepC();
                     }else {
+                        if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
+                            if(!element.check(object, world, xyz[0], xyz[1], xyz[2])){
+                                return false;
+                            }
+                        }
                         abc[0]+=1;
                     }
                 }
@@ -113,16 +111,15 @@ public interface IStructureDefinition<T> {
                     xyz[1] += basePositionY;
                     xyz[2] += basePositionZ;
 
-                    if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
-                        element.spawnHint(object, world, xyz[0], xyz[1], xyz[2]);
-                    }
-
                     if(element instanceof IStructureNavigate) {
                         IStructureNavigate<T> navigate=(IStructureNavigate<T>)element;
                         abc[0] = (navigate.resetA() ? basePositionA : abc[0]) + navigate.getStepA();
                         abc[1] = (navigate.resetB() ? basePositionA : abc[1]) + navigate.getStepB();
                         abc[2] = (navigate.resetC() ? basePositionA : abc[2]) + navigate.getStepC();
                     }else {
+                        if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
+                            element.spawnHint(object, world, xyz[0], xyz[1], xyz[2]);
+                        }
                         abc[0]+=1;
                     }
                 }
@@ -133,16 +130,15 @@ public interface IStructureDefinition<T> {
                     xyz[1] += basePositionY;
                     xyz[2] += basePositionZ;
 
-                    if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
-                        element.placeBlock(object, world, xyz[0], xyz[1], xyz[2]);
-                    }
-
                     if(element instanceof IStructureNavigate) {
                         IStructureNavigate<T> navigate=(IStructureNavigate<T>)element;
                         abc[0] = (navigate.resetA() ? basePositionA : abc[0]) + navigate.getStepA();
                         abc[1] = (navigate.resetB() ? basePositionA : abc[1]) + navigate.getStepB();
                         abc[2] = (navigate.resetC() ? basePositionA : abc[2]) + navigate.getStepC();
                     }else {
+                        if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
+                            element.placeBlock(object, world, xyz[0], xyz[1], xyz[2]);
+                        }
                         abc[0]+=1;
                     }
                 }
