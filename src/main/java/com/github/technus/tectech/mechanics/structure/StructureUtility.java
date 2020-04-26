@@ -316,13 +316,36 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> onCheckPass(Consumer<T> onCheckPass, IStructureElement<T> element){
+    public static <T> IStructureElement<T> onElementPass(Consumer<T> onCheckPass, IStructureElement<T> element){
         return new IStructureElement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 boolean check = element.check(t, world, x, y, z);
                 if(check){
                     onCheckPass.accept(t);
+                }
+                return check;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z) {
+                return element.placeBlock(t, world, x, y, z);
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z) {
+                return element.spawnHint(t, world, x, y, z);
+            }
+        };
+    }
+
+    public static <T> IStructureElement<T> onElementFail(Consumer<T> onFail, IStructureElement<T> element){
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                boolean check = element.check(t, world, x, y, z);
+                if(!check){
+                    onFail.accept(t);
                 }
                 return check;
             }
