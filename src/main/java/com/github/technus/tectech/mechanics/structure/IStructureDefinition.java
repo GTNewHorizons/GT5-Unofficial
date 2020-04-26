@@ -73,9 +73,14 @@ public interface IStructureDefinition<T> {
                         return false;
                     }
 
-                    abc[0] =(element.resetA()?basePositionA:abc[0])+element.getStepA();
-                    abc[1] =(element.resetB()?basePositionA:abc[1])+element.getStepB();
-                    abc[2] =(element.resetC()?basePositionA:abc[2])+element.getStepC();
+                    if(element instanceof IStructureNavigate) {
+                        IStructureNavigate<T> navigate=(IStructureNavigate<T>)element;
+                        abc[0] = (navigate.resetA() ? basePositionA : abc[0]) + navigate.getStepA();
+                        abc[1] = (navigate.resetB() ? basePositionA : abc[1]) + navigate.getStepB();
+                        abc[2] = (navigate.resetC() ? basePositionA : abc[2]) + navigate.getStepC();
+                    }else {
+                        abc[0]+=1;
+                    }
                 }
             } else {
                 for (IStructureElement<T> element : elements) {
@@ -90,9 +95,14 @@ public interface IStructureDefinition<T> {
                         }
                     }
 
-                    abc[0] =(element.resetA()?basePositionA:abc[0])+element.getStepA();
-                    abc[1] =(element.resetB()?basePositionA:abc[1])+element.getStepB();
-                    abc[2] =(element.resetC()?basePositionA:abc[2])+element.getStepC();
+                    if(element instanceof IStructureNavigate) {
+                        IStructureNavigate<T> navigate=(IStructureNavigate<T>)element;
+                        abc[0] = (navigate.resetA() ? basePositionA : abc[0]) + navigate.getStepA();
+                        abc[1] = (navigate.resetB() ? basePositionA : abc[1]) + navigate.getStepB();
+                        abc[2] = (navigate.resetC() ? basePositionA : abc[2]) + navigate.getStepC();
+                    }else {
+                        abc[0]+=1;
+                    }
                 }
             }
         }else {
@@ -107,9 +117,14 @@ public interface IStructureDefinition<T> {
                         element.spawnHint(object, world, xyz[0], xyz[1], xyz[2]);
                     }
 
-                    abc[0] =(element.resetA()?basePositionA:abc[0])+element.getStepA();
-                    abc[1] =(element.resetB()?basePositionA:abc[1])+element.getStepB();
-                    abc[2] =(element.resetC()?basePositionA:abc[2])+element.getStepC();
+                    if(element instanceof IStructureNavigate) {
+                        IStructureNavigate<T> navigate=(IStructureNavigate<T>)element;
+                        abc[0] = (navigate.resetA() ? basePositionA : abc[0]) + navigate.getStepA();
+                        abc[1] = (navigate.resetB() ? basePositionA : abc[1]) + navigate.getStepB();
+                        abc[2] = (navigate.resetC() ? basePositionA : abc[2]) + navigate.getStepC();
+                    }else {
+                        abc[0]+=1;
+                    }
                 }
             } else {
                 for (IStructureElement<T> element : elements) {
@@ -122,9 +137,14 @@ public interface IStructureDefinition<T> {
                         element.placeBlock(object, world, xyz[0], xyz[1], xyz[2]);
                     }
 
-                    abc[0] =(element.resetA()?basePositionA:abc[0])+element.getStepA();
-                    abc[1] =(element.resetB()?basePositionA:abc[1])+element.getStepB();
-                    abc[2] =(element.resetC()?basePositionA:abc[2])+element.getStepC();
+                    if(element instanceof IStructureNavigate) {
+                        IStructureNavigate<T> navigate=(IStructureNavigate<T>)element;
+                        abc[0] = (navigate.resetA() ? basePositionA : abc[0]) + navigate.getStepA();
+                        abc[1] = (navigate.resetB() ? basePositionA : abc[1]) + navigate.getStepB();
+                        abc[2] = (navigate.resetC() ? basePositionA : abc[2]) + navigate.getStepC();
+                    }else {
+                        abc[0]+=1;
+                    }
                 }
             }
         }
