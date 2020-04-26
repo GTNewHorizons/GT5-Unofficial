@@ -45,8 +45,8 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
                             {"111", "111", "111",},
                     })
                     .addElement('0', ofBlock(sBlockCasings1,15))
-                    .addElement('1', ofProviderChain(
-                            trafo->ofHatchAdder(trafo::addEnergyIOToMachineList,textureOffset,sHintCasingsTT,0),
+                    .addElement('1', ofElementChain(
+                            ofHatchAdder(GT_MetaTileEntity_EM_transformer::addEnergyIOToMachineList,textureOffset,sHintCasingsTT,0),
                             ofBlock(sBlockCasingsTT,0)
                     ))
                     .build();

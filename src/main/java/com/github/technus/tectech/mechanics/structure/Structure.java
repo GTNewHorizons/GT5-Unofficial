@@ -3,6 +3,7 @@ package com.github.technus.tectech.mechanics.structure;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

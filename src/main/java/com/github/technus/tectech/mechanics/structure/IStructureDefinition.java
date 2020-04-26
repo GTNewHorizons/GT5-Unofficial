@@ -9,7 +9,7 @@ public interface IStructureDefinition<T> {
      * @param name same name as for other methods here
      * @return the array of elements to process
      */
-    IStructureElementProvider<T>[] getElementsFor(String name);
+    IStructureElement<T>[] getElementsFor(String name);
 
     default boolean check(T object,String piece, World world, ExtendedFacing extendedFacing,
                           int basePositionX, int basePositionY, int basePositionZ,
@@ -41,7 +41,7 @@ public interface IStructureDefinition<T> {
                 basePositionA, basePositionB, basePositionC,hintsOnly,null);
     }
 
-    static <T> boolean iterate(T object, IStructureElementProvider<T>[] elements, World world, ExtendedFacing extendedFacing,
+    static <T> boolean iterate(T object, IStructureElement<T>[] elements, World world, ExtendedFacing extendedFacing,
                                int basePositionX, int basePositionY, int basePositionZ,
                                int basePositionA, int basePositionB, int basePositionC,
                                boolean hintsOnly, Boolean checkBlocksIfNotNullForceCheckAllIfTrue){
@@ -59,8 +59,7 @@ public interface IStructureDefinition<T> {
 
         if(checkBlocksIfNotNullForceCheckAllIfTrue!=null){
             if(checkBlocksIfNotNullForceCheckAllIfTrue){
-                for (IStructureElementProvider<T> elementProvider : elements) {
-                    IStructureElement<T> element=elementProvider.getStructureElement(object);
+                for (IStructureElement<T> element : elements) {
                     extendedFacing.getWorldOffset(abc, xyz);
                     xyz[0] += basePositionX;
                     xyz[1] += basePositionY;
@@ -79,8 +78,7 @@ public interface IStructureDefinition<T> {
                     abc[2] =(element.resetC()?basePositionA:abc[2])+element.getStepC();
                 }
             } else {
-                for (IStructureElementProvider<T> elementProvider : elements) {
-                    IStructureElement<T> element=elementProvider.getStructureElement(object);
+                for (IStructureElement<T> element : elements) {
                     extendedFacing.getWorldOffset(abc, xyz);
                     xyz[0] += basePositionX;
                     xyz[1] += basePositionY;
@@ -99,8 +97,7 @@ public interface IStructureDefinition<T> {
             }
         }else {
             if(hintsOnly) {
-                for (IStructureElementProvider<T> elementProvider : elements) {
-                    IStructureElement<T> element=elementProvider.getStructureElement(object);
+                for (IStructureElement<T> element : elements) {
                     extendedFacing.getWorldOffset(abc, xyz);
                     xyz[0] += basePositionX;
                     xyz[1] += basePositionY;
@@ -115,8 +112,7 @@ public interface IStructureDefinition<T> {
                     abc[2] =(element.resetC()?basePositionA:abc[2])+element.getStepC();
                 }
             } else {
-                for (IStructureElementProvider<T> elementProvider : elements) {
-                    IStructureElement<T> element=elementProvider.getStructureElement(object);
+                for (IStructureElement<T> element : elements) {
                     extendedFacing.getWorldOffset(abc, xyz);
                     xyz[0] += basePositionX;
                     xyz[1] += basePositionY;

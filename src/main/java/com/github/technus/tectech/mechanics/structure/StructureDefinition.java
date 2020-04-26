@@ -6,18 +6,18 @@ import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
 public class StructureDefinition<T> implements IStructureDefinition<T> {
-    private final Map<Character, IStructureElementProvider<T>> elements;
+    private final Map<Character, IStructureElement<T>> elements;
     private final Map<String, String> shapes;
-    private final Map<String, IStructureElementProvider<T>[]> compiled;
+    private final Map<String, IStructureElement<T>[]> compiled;
 
     public static <B> Builder<B> builder() {
         return new Builder<>();
     }
 
     private StructureDefinition(
-            Map<Character, IStructureElementProvider<T>> elements,
+            Map<Character, IStructureElement<T>> elements,
             Map<String, String> shapes,
-            Map<String, IStructureElementProvider<T>[]> compiled) {
+            Map<String, IStructureElement<T>[]> compiled) {
         this.elements =elements;
         this.shapes=shapes;
         this.compiled =compiled;
@@ -28,7 +28,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
         private static final char B='\uB000';
         private static final char C='\uC000';
         private static final char D='\uD000';
-        private final Map<Character, IStructureElementProvider<T>> elements;
+        private final Map<Character, IStructureElement<T>> elements;
         private final Map<String, String> shapes;
 
         private Builder() {
@@ -36,7 +36,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
             shapes = new HashMap<>();
         }
 
-        public Map<Character, IStructureElementProvider<T>> getElements() {
+        public Map<Character, IStructureElement<T>> getElements() {
             return elements;
         }
 
@@ -113,7 +113,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
             return this;
         }
 
-        public Builder<T> addElement(Character name, IStructureElementProvider<T> structurePiece) {
+        public Builder<T> addElement(Character name, IStructureElement<T> structurePiece) {
             elements.put(name, structurePiece);
             return this;
         }
@@ -127,18 +127,18 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
         }
 
         @SuppressWarnings("unchecked")
-        private Map<String, IStructureElementProvider<T>[]> compileMap() {
+        private Map<String, IStructureElement<T>[]> compileMap() {
             List<Integer> mising = new ArrayList<>();
             shapes.values().stream().map(CharSequence::chars).forEach(intStream -> intStream.forEach(c -> {
-                IStructureElementProvider<T> iStructureElement = elements.get((char) c);
+                IStructureElement<T> iStructureElement = elements.get((char) c);
                 if (iStructureElement == null) {
                     mising.add(c);
                 }
             }));
             if (mising.isEmpty()) {
-                Map<String, IStructureElementProvider<T>[]> map = new HashMap<>();
+                Map<String, IStructureElement<T>[]> map = new HashMap<>();
                 shapes.forEach((key, value) -> {
-                    IStructureElementProvider<T>[] compiled = new IStructureElementProvider[value.length()];
+                    IStructureElement<T>[] compiled = new IStructureElement[value.length()];
                     for (int i = 0; i < value.length(); i++) {
                         compiled[i] = elements.get(value.charAt(i));
                     }
@@ -152,7 +152,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
         }
     }
 
-    public Map<Character, IStructureElementProvider<T>> getElements(){
+    public Map<Character, IStructureElement<T>> getElements(){
         return elements;
     }
 
@@ -160,12 +160,12 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
         return shapes;
     }
 
-    public Map<String, IStructureElementProvider<T>[]> getCompiled() {
+    public Map<String, IStructureElement<T>[]> getCompiled() {
         return compiled;
     }
 
     @Override
-    public IStructureElementProvider<T>[] getElementsFor(String name) {
+    public IStructureElement<T>[] getElementsFor(String name) {
         return compiled.get(name);
     }
 }

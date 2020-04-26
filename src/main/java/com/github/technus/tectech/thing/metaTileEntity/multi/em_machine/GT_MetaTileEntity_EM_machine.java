@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
-import com.github.technus.tectech.mechanics.structure.IHatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;

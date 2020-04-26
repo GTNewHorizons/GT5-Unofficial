@@ -232,14 +232,14 @@ public class StructureUtility {
         return ofBlock(block, meta,block,meta);
     }
 
-    public static <T> IStructureElement<T> ofBlockAdder(IBlockAdder iBlockAdder,Block hintBlock,int hintMeta){
+    public static <T> IStructureElement<T> ofBlockAdder(IBlockAdder<T> iBlockAdder,Block hintBlock,int hintMeta){
         if(iBlockAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();
         }
         return new IStructureElement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
-                return iBlockAdder.apply(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
+                return iBlockAdder.apply(t,world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
             }
 
             @Override
@@ -256,7 +256,7 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> ofTileAdder(ITileAdder iTileAdder,Block hintBlock,int hintMeta){
+    public static <T> IStructureElement<T> ofTileAdder(ITileAdder<T> iTileAdder,Block hintBlock,int hintMeta){
         if(iTileAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();
         }
@@ -264,7 +264,7 @@ public class StructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
-                return tileEntity instanceof IGregTechTileEntity && iTileAdder.apply(tileEntity);
+                return tileEntity instanceof IGregTechTileEntity && iTileAdder.apply(t,tileEntity);
             }
 
             @Override
@@ -275,7 +275,7 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> ofHatchAdder(IHatchAdder iHatchAdder, Short textureIndex,Block hintBlock,int hintMeta){
+    public static <T> IStructureElement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, Short textureIndex, Block hintBlock, int hintMeta){
         if(iHatchAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();
         }
@@ -283,7 +283,7 @@ public class StructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
-                return tileEntity instanceof IGregTechTileEntity && iHatchAdder.apply((IGregTechTileEntity) tileEntity, textureIndex);
+                return tileEntity instanceof IGregTechTileEntity && iHatchAdder.apply(t,(IGregTechTileEntity) tileEntity, textureIndex);
             }
 
             @Override
@@ -391,20 +391,7 @@ public class StructureUtility {
         if(elementChain==null || elementChain.length==0){
             throw new IllegalArgumentException();
         }
-        for (IStructureElementProvider<T> iStructureElement : elementChain) {
-            if(iStructureElement==null){
-                throw new IllegalArgumentException();
-            }
-        }
-        return () -> elementChain;
-    }
-
-    @SafeVarargs
-    public static <T> IStructureFallbackProvider<T> ofProviderChain(IStructureElementProvider<T>... elementChain){
-        if(elementChain==null || elementChain.length==0){
-            throw new IllegalArgumentException();
-        }
-        for (IStructureElementProvider<T> iStructureElement : elementChain) {
+        for (IStructureElement<T> iStructureElement : elementChain) {
             if(iStructureElement==null){
                 throw new IllegalArgumentException();
             }

@@ -6,7 +6,6 @@ import com.github.technus.tectech.mechanics.alignment.*;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Flip;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Rotation;
-import com.github.technus.tectech.mechanics.structure.IHatchAdder;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.util.Util;
