@@ -94,6 +94,7 @@ key_Baubles Inventory:48
 key_Change Wand Focus:33
 key_Activate Hover Harness:35
 key_Misc Wand Toggle:34
+key_ttmisc.toggleArmor:22
 key_Glider Toggle:34
 key_Sound Locator:38
 key_Night Vision:25

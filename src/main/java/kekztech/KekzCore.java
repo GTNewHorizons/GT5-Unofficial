@@ -101,8 +101,9 @@ public class KekzCore {
 		// Thaumcraft research
 		final ResearchItem jar_thaumiumreinforced = new ResearchItem("THAUMIUMREINFORCEDJAR", "ALCHEMY", new AspectList(), 3, -4, 2, new ItemStack(Blocks.jarThaumiumReinforced, 1));
 		jar_thaumiumreinforced.setPages(new ResearchPage[] {
-			new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR"),
-			new ResearchPage(Recipes.infusionRecipes.get("THAUMIUMREINFORCEDJAR"))
+			new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.0"),
+			new ResearchPage(Recipes.infusionRecipes.get("THAUMIUMREINFORCEDJAR")),
+			new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.1")
 		});
 		jar_thaumiumreinforced.setParents(new String[] {"JARLABEL"});
 		jar_thaumiumreinforced.registerResearchItem();

@@ -399,12 +399,12 @@ public class Recipes {
 				15, aspects_jarichor, ItemApi.getBlock("blockJar", 0), recipe_jarichor));
 		
 		final ItemStack[] recipe_jarthaumiumreinforced = {
-				GameRegistry.makeItemStack("Thaumcraft:ItemResource", 15, 0, null),
+				GameRegistry.makeItemStack("Thaumcraft:ItemResource", 15, 1, null),
 				GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
 				new ItemStack(net.minecraft.init.Blocks.glass_pane),
 				GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
 				new ItemStack(net.minecraft.init.Blocks.glass_pane),
-				GameRegistry.makeItemStack("Thaumcraft:ItemResource", 15, 0, null), 
+				GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1), 
 				GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
 				new ItemStack(net.minecraft.init.Blocks.glass_pane),
 				GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),

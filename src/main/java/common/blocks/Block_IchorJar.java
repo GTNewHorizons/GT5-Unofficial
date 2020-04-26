@@ -8,17 +8,16 @@ import common.tileentities.TE_IchorVoidJar;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import items.Item_IchorJarFilled;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.BlockJar;
+import thaumcraft.common.config.ConfigBlocks;
 
 public class Block_IchorJar extends BlockJar {
 	
@@ -26,6 +25,9 @@ public class Block_IchorJar extends BlockJar {
 	
 	private Block_IchorJar() {
 		super();
+		
+		super.setHardness(20.0F);
+		super.setResistance(3.0f);
 	}
 	
 	public static Block registerBlock() {
@@ -71,36 +73,47 @@ public class Block_IchorJar extends BlockJar {
 	}
 	
 	@Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
-		final ArrayList<ItemStack> drops = new ArrayList<>();
-		
-		ItemStack drop;
-		
+	public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if(te != null && te instanceof TE_IchorJar) {
-			drop = new ItemStack(Item_IchorJarFilled.getInstance());
-			// Empty and no label
-			if(((TE_IchorJar) te).amount <= 0 && ((TE_IchorJar) te).aspectFilter == null) {
-				drop = new ItemStack(this);
-			}
-			// If is void jar, set meta
-			if(te instanceof TE_IchorVoidJar) {
-				drop.setItemDamage(3);
-			}
-			// Non empty, generate filled jar item with contents
 			if(((TE_IchorJar) te).amount > 0) {
-				((Item_IchorJarFilled) drop.getItem()).setAspects(drop,
-						(new AspectList()).add(((TE_IchorJar) te).aspect, ((TE_IchorJar) te).amount));
-			}
-			// has label
-			if(((TE_IchorJar) te).aspectFilter != null) {
-				if(!drop.hasTagCompound()) {
-					drop.setTagCompound(new NBTTagCompound());
+				// Create a decent explosion in the center of the block (TNT has strength 4.0F)
+				world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, 6.0F, false);
+				
+				// Place a lot of Flux in the area
+				final int limit = ((TE_IchorJar) te).amount / 16;
+				int created = 0;
+				for(int i = 0; i < 200; i++) {
+					final int xf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
+					final int yf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
+					final int zf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
+					if(world.isAirBlock(xf, yf, zf)) {
+						if(yf > y) {
+							world.setBlock(xf, yf, zf, ConfigBlocks.blockFluxGas, 8, 3);
+						} else {
+							world.setBlock(xf, yf, zf, ConfigBlocks.blockFluxGoo, 8, 3);
+						}
+						
+						if(created++ > limit) {
+							break;
+						}
+					}
 				}
-				drop.stackTagCompound.setString("AspectFilter", ((TE_IchorJar) te).aspectFilter.getTag());
 			}
-			drops.add(drop);
 		}
+		
+		super.breakBlock(world, x, y, z, par5, par6);
+	}
+	
+	@Override
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
+		final ArrayList<ItemStack> drops = new ArrayList<>();
+		drops.add(new ItemStack(this, 1, (meta == 3) ? 3 : 0));
 		return drops;
+	}
+	
+	@Override
+	public boolean canDropFromExplosion(Explosion e) {
+		return false;
 	}
 }
