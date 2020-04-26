@@ -148,7 +148,7 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
                 CommonValues.TEC_MARK_GENERAL,
                 translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.0"),//Shit genny broke!
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.1"),//Infinite Producer/Consumer
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.1")//Since i wanted one...
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.2")//Since i wanted one?
         };
     }
 
