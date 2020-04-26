@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sHintCasingsTT;
 
@@ -76,7 +77,9 @@ public class StructureUtility {
     @SuppressWarnings("unchecked")
     public static <T> IStructureElement<T> error(){
         return ERROR;
-    }    /**
+    }
+
+    /**
      * Does not allow Block duplicates (with different meta)
      */
     public static <T> IStructureElement<T> ofHintFlat(Map<Block, Integer> blocsMap,Block hintBlock,int hintMeta){
@@ -143,6 +146,24 @@ public class StructureUtility {
 
     public static <T> IStructureElement<T> ofHint(Block block, int meta){
         return ofHint(block, meta,block,meta);
+    }
+
+    public static <T> IStructureElement<T> ofHintAdder(IBlockAdder<T> iBlockAdder,Block hintBlock,int hintMeta){
+        if(iBlockAdder==null ||hintBlock==null){
+            throw new IllegalArgumentException();
+        }
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                return iBlockAdder.apply(t,world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z) {
+                TecTech.proxy.hint_particle(world,x,y,z,hintBlock,hintMeta);
+                return true;
+            }
+        };
     }
 
     /**
@@ -256,6 +277,7 @@ public class StructureUtility {
         };
     }
 
+
     public static <T> IStructureElement<T> ofTileAdder(ITileAdder<T> iTileAdder,Block hintBlock,int hintMeta){
         if(iTileAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();
@@ -290,6 +312,29 @@ public class StructureUtility {
             public boolean spawnHint(T t, World world, int x, int y, int z) {
                 TecTech.proxy.hint_particle(world,x,y,z,hintBlock,hintMeta);
                 return true;
+            }
+        };
+    }
+
+    public static <T> IStructureElement<T> onCheckPass(Consumer<T> onCheckPass, IStructureElement<T> element){
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                boolean check = element.check(t, world, x, y, z);
+                if(check){
+                    onCheckPass.accept(t);
+                }
+                return check;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z) {
+                return element.placeBlock(t, world, x, y, z);
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z) {
+                return element.spawnHint(t, world, x, y, z);
             }
         };
     }

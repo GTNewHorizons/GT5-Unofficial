@@ -47,9 +47,10 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
                     .addElement('0', ofBlock(sBlockCasings1,15))
                     .addElement('1', ofElementChain(
                             ofHatchAdder(GT_MetaTileEntity_EM_transformer::addEnergyIOToMachineList,textureOffset,sHintCasingsTT,0),
-                            ofBlock(sBlockCasingsTT,0)
+                            onCheckPass(t->t.casingCount++,ofBlock(sBlockCasingsTT,0))
                     ))
                     .build();
+    private int casingCount=0;
 
     @Override
     public IStructureDefinition<GT_MetaTileEntity_EM_transformer> getStructure_EM() {
@@ -86,7 +87,8 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM("main", 1, 1, 0);
+        casingCount=0;
+        return structureCheck_EM("main", 1, 1, 0) && casingCount>=5;
     }
 
     @Override
