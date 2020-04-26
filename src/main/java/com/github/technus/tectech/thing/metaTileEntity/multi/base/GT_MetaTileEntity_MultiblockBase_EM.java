@@ -2,21 +2,25 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.alignment.*;
+import com.github.technus.tectech.loader.NetworkDispatcher;
+import com.github.technus.tectech.mechanics.alignment.AlignmentLimits;
+import com.github.technus.tectech.mechanics.alignment.AlignmentMessage;
+import com.github.technus.tectech.mechanics.alignment.IAlignment;
+import com.github.technus.tectech.mechanics.alignment.IAlignmentLimits;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Flip;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Rotation;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.Structure;
-import com.github.technus.tectech.util.Util;
-import com.github.technus.tectech.util.Vec3Impl;
-import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.structure.IHatchAdder;
+import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
+import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
+import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -42,10 +46,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.util.CommonValues.*;
-import static com.github.technus.tectech.util.Util.getTier;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
+import static com.github.technus.tectech.util.CommonValues.*;
+import static com.github.technus.tectech.util.Util.getTier;
 
 /**
  * Created by danie_000 on 27.10.2016.
@@ -220,17 +224,18 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     @Deprecated
-    public final boolean structureCheck_EM(
+    @SuppressWarnings("unchecked")
+    public final <T extends GT_MetaTileEntity_MultiblockBase_EM> boolean structureCheck_EM(
             String[][] structure,//0-9 casing, +- air no air, a-z ignore
             Block[] blockType,//use numbers 0-9 for casing types
             byte[] blockMeta,//use numbers 0-9 for casing types
-            IHatchAdder[] addingMethods,
+            IHatchAdder<T>[] addingMethods,
             short[] casingTextures,
             Block[] blockTypeFallback,//use numbers 0-9 for casing types
             byte[] blockMetaFallback,//use numbers 0-9 for casing types
             int horizontalOffset, int verticalOffset, int depthOffset) {
         return Structure.checker(structure, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
-                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), getExtendedFacing(), !mMachine);
+                horizontalOffset, verticalOffset, depthOffset, (T)this, getExtendedFacing(), !mMachine);
     }
 
     //endregion

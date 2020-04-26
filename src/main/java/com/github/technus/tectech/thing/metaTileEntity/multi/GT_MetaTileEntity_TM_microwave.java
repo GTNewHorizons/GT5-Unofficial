@@ -1,12 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
-import com.github.technus.tectech.mechanics.structure.Structure;
-import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
+import com.github.technus.tectech.mechanics.structure.IHatchAdder;
+import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Vec3Impl;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import static com.github.technus.tectech.loader.MainLoader.microwaving;
+import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static gregtech.api.GregTech_API.sBlockCasings4;
@@ -53,7 +54,8 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     private static final Block[] blockType = new Block[]{sBlockCasings4};
     private static final byte[] blockMeta = new byte[]{1};
 
-    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList};
+    private static final IHatchAdder<GT_MetaTileEntity_TM_microwave>[] addingMethods = adders(
+            GT_MetaTileEntity_TM_microwave::addClassicToMachineList);
     private static final short[] casingTextures = new short[]{49};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasings4};
     private static final byte[] blockMetaFallback = new byte[]{1};

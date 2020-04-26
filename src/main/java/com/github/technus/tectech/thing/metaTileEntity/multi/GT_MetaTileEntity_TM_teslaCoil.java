@@ -1,22 +1,25 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
-import com.github.technus.tectech.mechanics.structure.Structure;
-import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.data.RendererMessage;
 import com.github.technus.tectech.mechanics.data.ThaumSpark;
+import com.github.technus.tectech.mechanics.structure.IHatchAdder;
+import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TeslaCoil;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -31,13 +34,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
-import static com.github.technus.tectech.util.CommonValues.V;
-import static com.github.technus.tectech.util.Util.*;
+import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsBA0;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.github.technus.tectech.util.CommonValues.V;
+import static com.github.technus.tectech.util.Util.entriesSortedByValues;
+import static com.github.technus.tectech.util.Util.map;
 import static gregtech.api.enums.GT_Values.E;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -97,7 +105,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static final byte[] blockMetaT4 = new byte[]{7, 4, 6, 8};
     private static final byte[] blockMetaT5 = new byte[]{7, 5, 6, 8};
     private static final byte[][] blockMetas = new byte[][]{blockMetaT0, blockMetaT1, blockMetaT2, blockMetaT3, blockMetaT4, blockMetaT5};
-    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addCapacitorToMachineList, this::addFrameToMachineList};
+    private static final IHatchAdder<GT_MetaTileEntity_TM_teslaCoil>[] addingMethods = adders(
+            GT_MetaTileEntity_TM_teslaCoil::addCapacitorToMachineList,
+            GT_MetaTileEntity_TM_teslaCoil::addFrameToMachineList);
     private static final short[] casingTextures = new short[]{(texturePage << 7) + 16 + 6, 0};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsBA0, null};
     private static final byte[] blockMetaFallback = new byte[]{6, 0};

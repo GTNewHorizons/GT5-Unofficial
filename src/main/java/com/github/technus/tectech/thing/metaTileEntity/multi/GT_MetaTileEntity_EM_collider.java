@@ -1,11 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
-import com.github.technus.tectech.mechanics.structure.Structure;
-import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalMutableDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
@@ -13,12 +11,17 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElem
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition;
+import com.github.technus.tectech.mechanics.structure.IHatchAdder;
+import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
+import com.github.technus.tectech.util.CommonValues;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -35,6 +38,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.HashMap;
 
+import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -329,11 +333,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     };
     private static final byte[] blockMeta1 = new byte[]{4, 7, 4, 0, 4, 8};
     private static final byte[] blockMeta2 = new byte[]{4, 7, 5, 0, 6, 9};
-    private final IHatchAdder[] addingMethods = new IHatchAdder[]{
-            this::addClassicToMachineList,
-            this::addElementalInputToMachineList,
-            this::addElementalOutputToMachineList,
-            this::addElementalMufflerToMachineList};
+    private static final IHatchAdder<GT_MetaTileEntity_EM_collider>[] addingMethods = adders(
+            GT_MetaTileEntity_EM_collider::addClassicToMachineList,
+            GT_MetaTileEntity_EM_collider::addElementalInputToMachineList,
+            GT_MetaTileEntity_EM_collider::addElementalOutputToMachineList,
+            GT_MetaTileEntity_EM_collider::addElementalMufflerToMachineList);
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};

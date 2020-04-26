@@ -3,7 +3,7 @@ package com.github.technus.tectech.mechanics.structure;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -22,20 +22,26 @@ public class Structure {
 
     private Structure(){}
 
+    @SafeVarargs
+    public static <T> IHatchAdder<T>[] adders(IHatchAdder<T>... iHatchAdder){
+        return iHatchAdder;
+    }
+
     //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
     //This only checks for REGULAR BLOCKS!
-    public static boolean checker(
+    public static <T extends IMetaTileEntity> boolean checker(
             String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR-1 blocks
             Block[] blockType,//use numbers 0-9 for casing types
             byte[] blockMeta,//use numbers 0-9 for casing types
-            IHatchAdder[] addingMethods,
+            IHatchAdder<T>[] addingMethods,
             short[] casingTextures,
             Block[] blockTypeFallback,//use numbers 0-9 for casing types
             byte[] blockMetaFallback,//use numbers 0-9 for casing types
             int horizontalOffset, int verticalOffset, int depthOffset,
-            IGregTechTileEntity aBaseMetaTileEntity,
+            T metaTile,
             ExtendedFacing extendedFacing,
             boolean forceCheck) {
+        IGregTechTileEntity aBaseMetaTileEntity = metaTile.getBaseMetaTileEntity();
         World world = aBaseMetaTileEntity.getWorld();
         if (world.isRemote) {
             return false;
@@ -117,7 +123,7 @@ public class Structure {
                                         }
                                     } else if ((pointer = block - ' ') >= 0) {
                                         igt = aBaseMetaTileEntity.getIGregTechTileEntity(xyz[0], xyz[1], xyz[2]);
-                                        if (igt == null || !addingMethods[pointer].apply(igt, casingTextures[pointer])) {
+                                        if (igt == null || !addingMethods[pointer].apply(metaTile,igt, casingTextures[pointer])) {
                                             if (world.getBlock(xyz[0], xyz[1], xyz[2]) != blockTypeFallback[pointer]) {
                                                 if (DEBUG_MODE) {
                                                     TecTech.LOGGER.info("Fallback-struct-block-error " + xyz[0] + ' ' + xyz[1] + ' ' + xyz[2] + " / " + abc[0] + ' ' + abc[1] + ' ' + abc[2] + " / " + world.getBlock(xyz[0], xyz[1], xyz[2]).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
