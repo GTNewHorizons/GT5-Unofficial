@@ -28,7 +28,7 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 	private Block_ThaumiumReinforcedJar() {
 		super();
 		
-		super.setHardness(8.0F);
+		super.setHardness(6.0F);
 		super.setResistance(6.0F);
 	}
 	

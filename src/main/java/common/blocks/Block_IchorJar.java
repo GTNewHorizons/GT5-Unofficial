@@ -28,7 +28,7 @@ public class Block_IchorJar extends BlockJar {
 	private Block_IchorJar() {
 		super();
 		
-		super.setHardness(20.0F);
+		super.setHardness(12.0F);
 		super.setResistance(3.0f);
 	}
 
