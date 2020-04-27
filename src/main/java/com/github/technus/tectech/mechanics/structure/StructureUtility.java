@@ -85,7 +85,7 @@ public class StructureUtility {
     /**
      * Does not allow Block duplicates (with different meta)
      */
-    public static <T> IStructureElement<T> ofHintFlat(Map<Block, Integer> blocsMap,Block hintBlock,int hintMeta){
+    public static <T> IStructureElement<T> ofBlocksFlatHint(Map<Block, Integer> blocsMap,Block hintBlock,int hintMeta){
         if(blocsMap==null || blocsMap.isEmpty() || hintBlock==null){
             throw new IllegalArgumentException();
         }
@@ -106,7 +106,7 @@ public class StructureUtility {
     /**
      * Allows block duplicates (with different meta)
      */
-    public static <T> IStructureElement<T> ofHint(Map<Block, Set<Integer>> blocsMap,Block hintBlock,int hintMeta){
+    public static <T> IStructureElement<T> ofBlocksMapHint(Map<Block, Set<Integer>> blocsMap,Block hintBlock,int hintMeta){
         if(blocsMap==null || blocsMap.isEmpty() || hintBlock==null){
             throw new IllegalArgumentException();
         }
@@ -129,7 +129,7 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> ofHint(Block block, int meta,Block hintBlock,int hintMeta){
+    public static <T> IStructureElement<T> ofBlockHint(Block block, int meta,Block hintBlock,int hintMeta){
         if(block==null || hintBlock==null){
             throw new IllegalArgumentException();
         }
@@ -147,11 +147,11 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> ofHint(Block block, int meta){
-        return ofHint(block, meta,block,meta);
+    public static <T> IStructureElement<T> ofBlockHint(Block block, int meta){
+        return ofBlockHint(block, meta,block,meta);
     }
 
-    public static <T> IStructureElement<T> ofHintOnly(int dots){
+    public static <T> IStructureElement<T> ofHint(int dots){
         int meta=dots-1;
         return new IStructureElement<T>() {
             @Override
@@ -167,7 +167,7 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> ofHintAdder(IBlockAdder<T> iBlockAdder, Block hintBlock, int hintMeta){
+    public static <T> IStructureElement<T> ofBlockAdderHint(IBlockAdder<T> iBlockAdder, Block hintBlock, int hintMeta){
         if(iBlockAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();
         }
@@ -215,7 +215,7 @@ public class StructureUtility {
     /**
      * Allows block duplicates (with different meta)
      */
-    public static <T> IStructureElement<T> ofBlocks(Map<Block, Set<Integer>> blocsMap,Block hintBlock,int hintMeta){
+    public static <T> IStructureElement<T> ofBlocskMap(Map<Block, Set<Integer>> blocsMap,Block hintBlock,int hintMeta){
         if(blocsMap==null || blocsMap.isEmpty() || hintBlock==null){
             throw new IllegalArgumentException();
         }
@@ -296,7 +296,6 @@ public class StructureUtility {
         };
     }
 
-
     public static <T> IStructureElement<T> ofTileAdder(ITileAdder<T> iTileAdder, Block hintBlock, int hintMeta){
         if(iTileAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();
@@ -316,6 +315,52 @@ public class StructureUtility {
         };
     }
 
+    public static <T> IStructureElement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, Short textureIndex, int dots){
+        int meta=dots-1;
+        if(iHatchAdder==null){
+            throw new IllegalArgumentException();
+        }
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                return tileEntity instanceof IGregTechTileEntity && iHatchAdder.apply(t,(IGregTechTileEntity) tileEntity, textureIndex);
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z) {
+                TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,meta);
+                return true;
+            }
+        };
+    }
+
+    public static <T> IStructureElement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, Short textureIndex, int dots, Block placeCasing,int placeCasingMeta){
+        int meta=dots-1;
+        if(iHatchAdder==null){
+            throw new IllegalArgumentException();
+        }
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                return tileEntity instanceof IGregTechTileEntity && iHatchAdder.apply(t,(IGregTechTileEntity) tileEntity, textureIndex);
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z) {
+                TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,meta);
+                return true;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z) {
+                world.setBlock(x,y,z,placeCasing,placeCasingMeta,2);
+                return true;
+            }
+        };
+    }
+
     public static <T> IStructureElement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, Short textureIndex, Block hintBlock, int hintMeta){
         if(iHatchAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();
@@ -330,6 +375,31 @@ public class StructureUtility {
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z) {
                 TecTech.proxy.hint_particle(world,x,y,z,hintBlock,hintMeta);
+                return true;
+            }
+        };
+    }
+
+    public static <T> IStructureElement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, Short textureIndex, Block hintBlock, int hintMeta, Block placeCasing,int placeCasingMeta){
+        if(iHatchAdder==null ||hintBlock==null){
+            throw new IllegalArgumentException();
+        }
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                return tileEntity instanceof IGregTechTileEntity && iHatchAdder.apply(t,(IGregTechTileEntity) tileEntity, textureIndex);
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z) {
+                TecTech.proxy.hint_particle(world,x,y,z,hintBlock,hintMeta);
+                return true;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z) {
+                world.setBlock(x,y,z,placeCasing,placeCasingMeta,2);
                 return true;
             }
         };
@@ -381,8 +451,12 @@ public class StructureUtility {
         };
     }
 
+    public static <T> IStructureNavigate<T> step(int a,int b, int c){
+        return step(new Vec3Impl(a,b,c));
+    }
+
     @SuppressWarnings("unchecked")
-    static <T> IStructureNavigate<T> step(Vec3Impl step){
+    public static <T> IStructureNavigate<T> step(Vec3Impl step){
         if(step==null || step.get0()<0 || step.get1()<0 || step.get2()<0){
             throw new IllegalArgumentException();
         }
@@ -395,10 +469,6 @@ public class StructureUtility {
                 return stepA(vec3.get0(), vec3.get1(), vec3.get2());
             }
         });
-    }
-
-    static <T> IStructureNavigate<T> step(int a,int b, int c){
-        return step(new Vec3Impl(a,b,c));
     }
 
     private static <T> IStructureNavigate<T> stepA(int a,int b, int c){

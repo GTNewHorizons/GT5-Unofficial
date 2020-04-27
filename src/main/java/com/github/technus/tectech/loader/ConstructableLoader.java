@@ -11,7 +11,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofHintOnly;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofHint;
 import static gregtech.api.GregTech_API.sBlockCasings1;
 
 public class ConstructableLoader implements Runnable {
@@ -28,9 +28,9 @@ public class ConstructableLoader implements Runnable {
                                     {"000","\"\"\"","\"\"\"","   ",},
                             })
                             .addElement('0', ofBlock(sBlockCasings1,11))
-                            .addElement('\"', ofHintOnly(3))
-                            .addElement('!', ofHintOnly(2))
-                            .addElement(' ', ofHintOnly(1))
+                            .addElement('\"', ofHint(3))
+                            .addElement('!', ofHint(2))
+                            .addElement(' ', ofHint(1))
                             .build();
             private final String[] desc=new String[]{
                     EnumChatFormatting.AQUA+"Hint Details:",
