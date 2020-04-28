@@ -378,11 +378,13 @@ public class Recipes {
 				GT_ModHandler.getModItem("ThaumicTinkerer", "kamiResource", 1, 0),
 				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
 				new ItemStack(net.minecraft.init.Blocks.glass_pane),
+				GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 1),
 				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
 				new ItemStack(net.minecraft.init.Blocks.glass_pane),
 				GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Diamond, 1),
 				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
 				new ItemStack(net.minecraft.init.Blocks.glass_pane),
+				GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 1),
 				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
 				new ItemStack(net.minecraft.init.Blocks.glass_pane),
 		};
