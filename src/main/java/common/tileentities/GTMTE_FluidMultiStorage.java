@@ -77,9 +77,9 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 				.addSeparator()
 				.beginStructureBlock(5, 9, 5)
 				.addController("Top Center")
-				.addEnergyHatch("Any top or bottom casing")
-				.addOtherStructurePart("Inner 3x7x3 tube", "Storage Field Blocks")
-				.addOtherStructurePart("Outer 5x7x5 glass shell", "AE2 Quartz Glass of Vanilla Stained Glass")
+				.addEnergyHatch("Any top or bottom casing, has to touch storage field")
+				.addOtherStructurePart("Inner 3x7x3 pillar", "Storage Field Blocks")
+				.addOtherStructurePart("Outer 5x7x5 glass shell", "IC2 Reinforced Glass")
 				.addMaintenanceHatch("Instead of any casing or glass, has to touch storage field.")
 				.addIOHatches("Instead of any casing or glass, have to touch storage field. True for the Multi-Hatch as well.")
 				.signAndFinalize("Kekzdealer");
