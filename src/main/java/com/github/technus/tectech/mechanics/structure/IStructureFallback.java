@@ -1,5 +1,6 @@
 package com.github.technus.tectech.mechanics.structure;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 /**
@@ -19,9 +20,9 @@ public interface IStructureFallback<T> extends IStructureElement<T> {
     }
 
     @Override
-    default boolean spawnHint(T t, World world, int x, int y, int z) {
+    default boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
         for (IStructureElement<T> fallback : fallbacks()) {
-            if (fallback.spawnHint(t, world, x, y, z)) {
+            if (fallback.spawnHint(t, world, x, y, z, trigger)) {
                 return true;
             }
         }
@@ -29,9 +30,9 @@ public interface IStructureFallback<T> extends IStructureElement<T> {
     }
 
     @Override
-    default boolean placeBlock(T t, World world, int x, int y, int z) {
+    default boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
         for (IStructureElement<T> fallback : fallbacks()) {
-            if (fallback.placeBlock(t, world, x, y, z)) {
+            if (fallback.placeBlock(t, world, x, y, z, trigger)) {
                 return true;
             }
         }

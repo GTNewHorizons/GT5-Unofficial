@@ -11,8 +11,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElem
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
-import com.github.technus.tectech.mechanics.structure.Structure;
+import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
+import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
@@ -28,8 +28,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,7 +36,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.HashMap;
 
-import static com.github.technus.tectech.mechanics.structure.Structure.adders;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -300,47 +298,49 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     //region structure
     //use multi A energy inputs, use less power the longer it runs
-    private static final String[][] shape = new String[][]{
-            {"I0A0A0", "I00000", "I0A0A0",},
-            {"H0000000", "G001111100", "H0000000",},
-            {"F22223332222", "F41155555114", "F22223332222",},
-            {"E2000000000002", "E4155111115514", "E2000000000002",},
-            {"D20000E00002", "D41511E11514", "D20000E00002",},
-            {"C2000I0002", "C4151I1514", "C2000I0002",},
-            {"B2000K0002", "B4151K1514", "B2000K0002",},
-            {"B200M002", "A0151M1510", "B200M002",},
-            {"A0200M0020", "A0151M1510", "A0200M0020",},
-            {"0020O0200", "0151O1510", "0020O0200",},
-            {"A030O030", "0151O1510", "A030O030",},
-            {"0030O0300", "0151O1510", "0030O0300",},
-            {"A030O030", "0151O1510", "A030O030",},
-            {"0020O0200", "0151O1510", "0020O0200",},
-            {"A0200M0020", "A0151M1510", "A0200M0020",},
-            {"B200M002", "A0151M1510", "B200M002",},
-            {"B2000K0002", "B4151K1514", "B2000K0002",},
-            {"C2000I0002", "C4151I1514", "C2000I0002",},
-            {"D200002   200002", "D415112 . 211514", "D200002   200002",},
-            {"E20!!22222!!02", "E4155111115514", "E20!!22222!!02",},
-            {"F2222#\"#2222", "F41155555114", "F2222#\"#2222",},
-    };
-    private static final Block[] blockType = new Block[]{
-            sBlockCasingsTT,
-            sBlockCasingsTT,
-            sBlockCasingsTT,
-            QuantumGlassBlock.INSTANCE,
-            sBlockCasingsTT,
-            sBlockCasingsTT
-    };
-    private static final byte[] blockMeta1 = new byte[]{4, 7, 4, 0, 4, 8};
-    private static final byte[] blockMeta2 = new byte[]{4, 7, 5, 0, 6, 9};
-    private static final IHatchAdder<GT_MetaTileEntity_EM_collider>[] addingMethods = adders(
-            GT_MetaTileEntity_EM_collider::addClassicToMachineList,
-            GT_MetaTileEntity_EM_collider::addElementalInputToMachineList,
-            GT_MetaTileEntity_EM_collider::addElementalOutputToMachineList,
-            GT_MetaTileEntity_EM_collider::addElementalMufflerToMachineList);
-    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION= StructureDefinition
+            .<GT_MetaTileEntity_EM_collider>builder()
+            .addShapeOldApi("main",new String[][]{
+                    {"I0A0A0", "I00000", "I0A0A0",},
+                    {"H0000000", "G001111100", "H0000000",},
+                    {"F22223332222", "F41155555114", "F22223332222",},
+                    {"E2000000000002", "E4155111115514", "E2000000000002",},
+                    {"D20000E00002", "D41511E11514", "D20000E00002",},
+                    {"C2000I0002", "C4151I1514", "C2000I0002",},
+                    {"B2000K0002", "B4151K1514", "B2000K0002",},
+                    {"B200M002", "A0151M1510", "B200M002",},
+                    {"A0200M0020", "A0151M1510", "A0200M0020",},
+                    {"0020O0200", "0151O1510", "0020O0200",},
+                    {"A030O030", "0151O1510", "A030O030",},
+                    {"0030O0300", "0151O1510", "0030O0300",},
+                    {"A030O030", "0151O1510", "A030O030",},
+                    {"0020O0200", "0151O1510", "0020O0200",},
+                    {"A0200M0020", "A0151M1510", "A0200M0020",},
+                    {"B200M002", "A0151M1510", "B200M002",},
+                    {"B2000K0002", "B4151K1514", "B2000K0002",},
+                    {"C2000I0002", "C4151I1514", "C2000I0002",},
+                    {"D200002&&&200002", "D415112&.&211514", "D200002&&&200002",},
+                    {"E20!!22222!!02", "E4155111115514", "E20!!22222!!02",},
+                    {"F2222#$#2222", "F41155555114", "F2222#$#2222",},
+            })
+            .addElement('0', ofBlock(sBlockCasingsTT,4))
+            .addElement('1', ofBlock(sBlockCasingsTT,7))
+            .addElement('2', defer(t->(int)t.eTier,(t,item)->(item.stackSize%2)+1,
+                    error(),ofBlock(sBlockCasingsTT,4),ofBlock(sBlockCasingsTT,5)))
+            .addElement('3', ofBlock(QuantumGlassBlock.INSTANCE,0))
+            .addElement('4', defer(t->(int)t.eTier,(t,item)->(item.stackSize%2)+1,
+                    error(),ofBlock(sBlockCasingsTT,4),ofBlock(sBlockCasingsTT,6)))
+            .addElement('5', defer(t->(int)t.eTier,(t,item)->(item.stackSize%2)+1,
+                    error(),ofBlock(sBlockCasingsTT,8),ofBlock(sBlockCasingsTT,9)))
+            .addElement('&', ofHatchAdder(GT_MetaTileEntity_EM_collider::addClassicToMachineList,
+                    textureOffset,1,sBlockCasingsTT,0))
+            .addElement('!', ofHatchAdder(GT_MetaTileEntity_EM_collider::addElementalInputToMachineList,
+                    textureOffset + 4,2,sBlockCasingsTT,4))
+            .addElement('$', ofHatchAdder(GT_MetaTileEntity_EM_collider::addElementalOutputToMachineList,
+                    textureOffset + 4,3,sBlockCasingsTT,4))
+            .addElement('#', ofHatchAdder(GT_MetaTileEntity_EM_collider::addElementalMufflerToMachineList,
+                    textureOffset + 4,4,sBlockCasingsTT,4))
+            .build();
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.collider.hint.0"),//1 - Classic Hatches or High Power Casing
@@ -349,6 +349,12 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             translateToLocal("gt.blockmachines.multimachine.em.collider.hint.3"),//4 - Elemental Overflow Hatches or Molecular Casing
             translateToLocal("gt.blockmachines.multimachine.em.collider.hint.4"),//General - Another Controller facing opposite direction
     };
+
+    @Override
+    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
+    }
+
     //endregion
 
     public GT_MetaTileEntity_EM_collider(int aID, String aName, String aNameRegional) {
@@ -470,20 +476,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             eTier = 0;
             return false;
         }
-
-        boolean test;
-        switch (eTier) {
-            case 1:
-                test = structureCheck_EM(shape, blockType, blockMeta1, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 11, 1, 18);
-                break;
-            case 2:
-                test = structureCheck_EM(shape, blockType, blockMeta2, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 11, 1, 18);
-                break;
-            default:
-                eTier = 0;
-                return false;
-        }
-        if (test) {
+        if (structureCheck_EM("main",11, 1, 18)) {
             return true;
         }
         eTier = 0;
@@ -681,16 +674,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                     iGregTechTileEntity.getYCoord() + yDir,
                     iGregTechTileEntity.getZCoord() + zDir,
                     TT_Container_Casings.sHintCasingsTT, 12);
-        } else {
-            if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir).getMaterial() == Material.air) {
-                iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord() + yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
-            }
         }
-        if ((stackSize.stackSize & 1) == 1) {
-            Structure.builder(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity, getExtendedFacing(), hintsOnly);
-        } else {
-            Structure.builder(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity, getExtendedFacing(), hintsOnly);
-        }
+        structureBuild_EM("main",11, 1, 18,hintsOnly, stackSize);
     }
 
     @Override

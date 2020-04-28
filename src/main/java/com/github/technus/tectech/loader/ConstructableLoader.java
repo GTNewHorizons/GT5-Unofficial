@@ -43,9 +43,9 @@ public class ConstructableLoader implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GT_MetaTileEntity_ElectricBlastFurnace tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
-                        base.getXCoord(),base.getYCoord(),base.getZCoord(),
-                        1, 3, 0,hintsOnly);
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(),
+                        aSide, base.getXCoord(), base.getYCoord(),
+                        base.getZCoord(), 1, 3, 0, hintsOnly);
             }
 
             @Override

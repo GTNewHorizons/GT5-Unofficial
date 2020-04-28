@@ -1,6 +1,7 @@
 package com.github.technus.tectech.mechanics.structure;
 
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public interface IStructureDefinition<T> {
@@ -9,39 +10,39 @@ public interface IStructureDefinition<T> {
      * @param name same name as for other methods here
      * @return the array of elements to process
      */
-    IStructureElement<T>[] getElementsFor(String name);
+    IStructureElement<T>[] getStructureFor(String name);
 
     default boolean check(T object,String piece, World world, ExtendedFacing extendedFacing,
                           int basePositionX, int basePositionY, int basePositionZ,
                           int basePositionA, int basePositionB, int basePositionC,
                           boolean forceCheckAllBlocks){
-        return iterate(object,getElementsFor(piece), world, extendedFacing, basePositionX, basePositionY, basePositionZ,
+        return iterate(object, null, getStructureFor(piece), world, extendedFacing, basePositionX, basePositionY, basePositionZ,
                 basePositionA, basePositionB, basePositionC,false,forceCheckAllBlocks);
     }
 
-    default boolean hints(T object,String piece, World world, ExtendedFacing extendedFacing,
+    default boolean hints(T object, ItemStack trigger,String piece, World world, ExtendedFacing extendedFacing,
                           int basePositionX, int basePositionY, int basePositionZ,
                           int basePositionA, int basePositionB, int basePositionC) {
-        return iterate(object,getElementsFor(piece), world, extendedFacing, basePositionX, basePositionY, basePositionZ,
+        return iterate(object, trigger, getStructureFor(piece), world, extendedFacing, basePositionX, basePositionY, basePositionZ,
                 basePositionA, basePositionB, basePositionC,true,null);
     }
 
-    default boolean build(T object,String piece, World world, ExtendedFacing extendedFacing,
+    default boolean build(T object, ItemStack trigger,String piece, World world, ExtendedFacing extendedFacing,
                           int basePositionX, int basePositionY, int basePositionZ,
                           int basePositionA, int basePositionB, int basePositionC) {
-        return iterate(object,getElementsFor(piece), world, extendedFacing, basePositionX, basePositionY, basePositionZ,
+        return iterate(object, trigger, getStructureFor(piece), world, extendedFacing, basePositionX, basePositionY, basePositionZ,
                 basePositionA, basePositionB, basePositionC,false,null);
     }
 
-    default boolean buildOrHints(T object,String piece, World world, ExtendedFacing extendedFacing,
+    default boolean buildOrHints(T object, ItemStack trigger,String piece, World world, ExtendedFacing extendedFacing,
                                  int basePositionX, int basePositionY, int basePositionZ,
                                  int basePositionA, int basePositionB, int basePositionC,
                                  boolean hintsOnly){
-        return iterate(object,getElementsFor(piece), world, extendedFacing, basePositionX, basePositionY, basePositionZ,
+        return iterate(object, trigger, getStructureFor(piece), world, extendedFacing, basePositionX, basePositionY, basePositionZ,
                 basePositionA, basePositionB, basePositionC,hintsOnly,null);
     }
 
-    static <T> boolean iterate(T object, IStructureElement<T>[] elements, World world, ExtendedFacing extendedFacing,
+    static <T> boolean iterate(T object, ItemStack trigger, IStructureElement<T>[] elements, World world, ExtendedFacing extendedFacing,
                                int basePositionX, int basePositionY, int basePositionZ,
                                int basePositionA, int basePositionB, int basePositionC,
                                boolean hintsOnly, Boolean checkBlocksIfNotNullForceCheckAllIfTrue){
@@ -115,7 +116,7 @@ public interface IStructureDefinition<T> {
                         xyz[2] += basePositionZ;
 
                         if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
-                            element.spawnHint(object, world, xyz[0], xyz[1], xyz[2]);
+                            element.spawnHint(object, world, xyz[0], xyz[1], xyz[2], trigger);
                         }
                         abc[0]+=1;
                     }
@@ -133,7 +134,7 @@ public interface IStructureDefinition<T> {
                         xyz[2] += basePositionZ;
 
                         if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
-                            element.placeBlock(object, world, xyz[0], xyz[1], xyz[2]);
+                            element.placeBlock(object, world, xyz[0], xyz[1], xyz[2], trigger);
                         }
                         abc[0]+=1;
                     }

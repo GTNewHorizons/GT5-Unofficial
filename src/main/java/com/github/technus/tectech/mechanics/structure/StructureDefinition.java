@@ -10,7 +10,7 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 public class StructureDefinition<T> implements IStructureDefinition<T> {
     private final Map<Character, IStructureElement<T>> elements;
     private final Map<String, String> shapes;
-    private final Map<String, IStructureElement<T>[]> compiled;
+    private final Map<String, IStructureElement<T>[]> structures;
 
     public static <B> Builder<B> builder() {
         return new Builder<>();
@@ -19,10 +19,10 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
     private StructureDefinition(
             Map<Character, IStructureElement<T>> elements,
             Map<String, String> shapes,
-            Map<String, IStructureElement<T>[]> compiled) {
+            Map<String, IStructureElement<T>[]> structures) {
         this.elements =elements;
         this.shapes=shapes;
-        this.compiled =compiled;
+        this.structures = structures;
     }
 
     public static class Builder<T> {
@@ -48,6 +48,14 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
             return shapes;
         }
 
+        /**
+         * Casings go: 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
+         * <br/>
+         * HatchAdders go: space ! " # $ % & ' ( ) *
+         * @param name
+         * @param structurePiece
+         * @return
+         */
         @Deprecated
         public Builder<T> addShapeOldApi(String name, String[][] structurePiece) {
             StringBuilder builder = new StringBuilder();
@@ -202,15 +210,46 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
         }
 
         public IStructureDefinition<T> build() {
+            Map<String, IStructureElement<T>[]> structures = compileStructureMap();
             if(DEBUG_MODE){
-                return new StructureDefinition<>(new HashMap<>(elements), new HashMap<>(shapes), compileMap());
+                return new StructureDefinition<>(new HashMap<>(elements), new HashMap<>(shapes), structures);
             }else {
-                return compileMap()::get;
+                return structures::get;
             }
         }
 
         @SuppressWarnings("unchecked")
-        private Map<String, IStructureElement<T>[]> compileMap() {
+        private Map<String, IStructureElement<T>[]> compileElementSetMap() {
+            Set<Integer> mising = new HashSet<>();
+            shapes.values().stream().map(CharSequence::chars).forEach(intStream -> intStream.forEach(c -> {
+                IStructureElement<T> iStructureElement = elements.get((char) c);
+                if (iStructureElement == null) {
+                    mising.add(c);
+                }
+            }));
+            if (mising.isEmpty()) {
+                Map<String, IStructureElement<T>[]> map = new HashMap<>();
+                shapes.forEach((key, value) -> {
+                    Set<Character> chars=new HashSet<>();
+                    for (char c : value.toCharArray()) {
+                        chars.add(c);
+                    }
+                    IStructureElement<T>[] compiled = new IStructureElement[chars.size()];
+                    int i=0;
+                    for (Character aChar : chars) {
+                        compiled[i++]=elements.get(aChar);
+                    }
+                    map.put(key, compiled);
+                });
+                return map;
+            } else {
+                throw new RuntimeException("Missing Structure Element bindings for (chars as integers): " +
+                        Arrays.toString(mising.toArray()));
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        private Map<String, IStructureElement<T>[]> compileStructureMap() {
             Set<Integer> mising = new HashSet<>();
             shapes.values().stream().map(CharSequence::chars).forEach(intStream -> intStream.forEach(c -> {
                 IStructureElement<T> iStructureElement = elements.get((char) c);
@@ -243,12 +282,12 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
         return shapes;
     }
 
-    public Map<String, IStructureElement<T>[]> getCompiled() {
-        return compiled;
+    public Map<String, IStructureElement<T>[]> getStructures() {
+        return structures;
     }
 
     @Override
-    public IStructureElement<T>[] getElementsFor(String name) {
-        return compiled.get(name);
+    public IStructureElement<T>[] getStructureFor(String name) {
+        return structures.get(name);
     }
 }
