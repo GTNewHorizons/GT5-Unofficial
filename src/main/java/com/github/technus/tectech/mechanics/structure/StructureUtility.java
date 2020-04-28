@@ -390,6 +390,34 @@ public class StructureUtility {
         };
     }
 
+    public static <T> IStructureElement<T> ofHatchAdderOptional(IHatchAdder<T> iHatchAdder, int textureIndex, int dots, Block placeCasing,int placeCasingMeta){
+        int meta=dots-1;
+        if(iHatchAdder==null){
+            throw new IllegalArgumentException();
+        }
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                return tileEntity instanceof IGregTechTileEntity &&
+                        (iHatchAdder.apply(t,(IGregTechTileEntity) tileEntity, (short)textureIndex) ||
+                                (world.getBlock(x,y,z)==placeCasing&&world.getBlockMetadata(x,y,z)==placeCasingMeta));
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,meta);
+                return true;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                world.setBlock(x,y,z,placeCasing,placeCasingMeta,2);
+                return true;
+            }
+        };
+    }
+
     public static <T> IStructureElement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, int textureIndex, Block hintBlock, int hintMeta){
         if(iHatchAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();
@@ -418,6 +446,33 @@ public class StructureUtility {
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 return tileEntity instanceof IGregTechTileEntity && iHatchAdder.apply(t,(IGregTechTileEntity) tileEntity, (short)textureIndex);
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TecTech.proxy.hint_particle(world,x,y,z,hintBlock,hintMeta);
+                return true;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                world.setBlock(x,y,z,placeCasing,placeCasingMeta,2);
+                return true;
+            }
+        };
+    }
+
+    public static <T> IStructureElement<T> ofHatchAdderOptional(IHatchAdder<T> iHatchAdder, int textureIndex, Block hintBlock, int hintMeta, Block placeCasing,int placeCasingMeta){
+        if(iHatchAdder==null ||hintBlock==null){
+            throw new IllegalArgumentException();
+        }
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                return tileEntity instanceof IGregTechTileEntity &&
+                        (iHatchAdder.apply(t,(IGregTechTileEntity) tileEntity, (short)textureIndex) ||
+                                (world.getBlock(x,y,z)==placeCasing&&world.getBlockMetadata(x,y,z)==placeCasingMeta));
             }
 
             @Override
