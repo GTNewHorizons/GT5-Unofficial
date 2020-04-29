@@ -45,7 +45,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
                             {"111", "111", "111",},
                     })
                     .addElement('0', ofBlock(sBlockCasings1,15))
-                    .addElement('1', ofElementChain(
+                    .addElement('1', ofChain(
                             ofHatchAdder(GT_MetaTileEntity_EM_transformer::addEnergyIOToMachineList,textureOffset,sHintCasingsTT,0),
                             onElementPass(t->t.casingCount++,ofBlock(sBlockCasingsTT,0))
                     ))

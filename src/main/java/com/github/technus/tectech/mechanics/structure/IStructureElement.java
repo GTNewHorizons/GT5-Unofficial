@@ -9,13 +9,9 @@ import net.minecraft.world.World;
 public interface IStructureElement<T> {
     boolean check(T t,World world,int x,int y,int z);
 
-    default boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger){
-        return false;
-    }
+    boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger);
 
-    default boolean placeBlock(T t,World world,int x,int y,int z, ItemStack trigger){
-        return false;
-    }
+    boolean placeBlock(T t,World world,int x,int y,int z, ItemStack trigger);
 
     default int getStepA(){
         return 1;

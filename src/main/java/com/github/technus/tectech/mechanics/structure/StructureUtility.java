@@ -39,6 +39,12 @@ public class StructureUtility {
             TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,13);
             return true;
         }
+
+        @Override
+        public boolean placeBlock(Object o, World world, int x, int y, int z, ItemStack trigger) {
+            world.setBlock(x,y,z,Blocks.air,0,2);
+            return false;
+        }
     };
     @SuppressWarnings("rawtypes")
     private static final IStructureElement NOT_AIR= new IStructureElement() {
@@ -52,6 +58,12 @@ public class StructureUtility {
             TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,14);
             return true;
         }
+
+        @Override
+        public boolean placeBlock(Object o, World world, int x, int y, int z, ItemStack trigger) {
+            world.setBlock(x,y,z,sHintCasingsTT,14,2);
+            return true;
+        }
     };
     @SuppressWarnings("rawtypes")
     private static final IStructureElement ERROR= new IStructureElement() {
@@ -63,6 +75,11 @@ public class StructureUtility {
         @Override
         public boolean spawnHint(Object o, World world, int x, int y, int z, ItemStack trigger) {
             TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,15);
+            return true;
+        }
+
+        @Override
+        public boolean placeBlock(Object o, World world, int x, int y, int z, ItemStack trigger) {
             return true;
         }
     };
@@ -81,19 +98,48 @@ public class StructureUtility {
         return NOT_AIR;
     }
 
+    /**
+     * Check returns false.
+     * Placement is always handled by this and does nothing.
+     * Makes little to no use it in  fallback chain.
+     * @param <T>
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static <T> IStructureElement<T> error(){
         return ERROR;
     }
 
     /**
+     * Check always returns: true.
+     * @param dots
+     * @param <T>
+     * @return
+     */
+    public static <T> IStructureElementNoPlacement<T> ofHint(int dots){
+        int meta=dots-1;
+        return new IStructureElementNoPlacement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                return true;
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TecTech.proxy.hint_particle(world, x, y, z, sHintCasingsTT, meta);
+                return false;
+            }
+        };
+    }
+
+    /**
      * Does not allow Block duplicates (with different meta)
      */
-    public static <T> IStructureElement<T> ofBlocksFlatHint(Map<Block, Integer> blocsMap,Block hintBlock,int hintMeta){
+    public static <T> IStructureElementNoPlacement<T> ofBlocksFlatHint(Map<Block, Integer> blocsMap, Block hintBlock, int hintMeta){
         if(blocsMap==null || blocsMap.isEmpty() || hintBlock==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementNoPlacement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return blocsMap.getOrDefault(world.getBlock(x, y, z), -1) == world.getBlockMetadata(x, y, z);
@@ -110,7 +156,7 @@ public class StructureUtility {
     /**
      * Allows block duplicates (with different meta)
      */
-    public static <T> IStructureElement<T> ofBlocksMapHint(Map<Block, Set<Integer>> blocsMap,Block hintBlock,int hintMeta){
+    public static <T> IStructureElementNoPlacement<T> ofBlocksMapHint(Map<Block, Set<Integer>> blocsMap, Block hintBlock, int hintMeta){
         if(blocsMap==null || blocsMap.isEmpty() || hintBlock==null){
             throw new IllegalArgumentException();
         }
@@ -119,7 +165,7 @@ public class StructureUtility {
                 throw new IllegalArgumentException();
             }
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementNoPlacement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return blocsMap.getOrDefault(world.getBlock(x, y, z), Collections.emptySet()).contains(world.getBlockMetadata(x, y, z));
@@ -133,11 +179,11 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> ofBlockHint(Block block, int meta,Block hintBlock,int hintMeta){
+    public static <T> IStructureElementNoPlacement<T> ofBlockHint(Block block, int meta,Block hintBlock,int hintMeta){
         if(block==null || hintBlock==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementNoPlacement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return block == world.getBlock(x, y, z) && meta == world.getBlockMetadata(x, y, z);
@@ -151,31 +197,15 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> ofBlockHint(Block block, int meta){
+    public static <T> IStructureElementNoPlacement<T> ofBlockHint(Block block, int meta){
         return ofBlockHint(block, meta,block,meta);
     }
 
-    public static <T> IStructureElement<T> ofHint(int dots){
-        int meta=dots-1;
-        return new IStructureElement<T>() {
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return false;
-            }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,meta);
-                return true;
-            }
-        };
-    }
-
-    public static <T> IStructureElement<T> ofBlockAdderHint(IBlockAdder<T> iBlockAdder, Block hintBlock, int hintMeta){
+    public static <T> IStructureElementNoPlacement<T> ofBlockAdderHint(IBlockAdder<T> iBlockAdder, Block hintBlock, int hintMeta){
         if(iBlockAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementNoPlacement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return iBlockAdder.apply(t,world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
@@ -192,8 +222,8 @@ public class StructureUtility {
     /**
      * Does not allow Block duplicates (with different meta)
      */
-    public static <T> IStructureElement<T> ofBlocksFlat(Map<Block, Integer> blocsMap,Block hintBlock,int hintMeta){
-        if(blocsMap==null || blocsMap.isEmpty() || hintBlock==null){
+    public static <T> IStructureElement<T> ofBlocksFlat(Map<Block, Integer> blocsMap,Block defaultBlock,int defaultMeta){
+        if(blocsMap==null || blocsMap.isEmpty() || defaultBlock==null){
             throw new IllegalArgumentException();
         }
         return new IStructureElement<T>() {
@@ -204,13 +234,13 @@ public class StructureUtility {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x,y,z,hintBlock,hintMeta,2);
+                world.setBlock(x,y,z,defaultBlock,defaultMeta,2);
                 return true;
             }
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TecTech.proxy.hint_particle(world,x,y,z,hintBlock,hintMeta);
+                TecTech.proxy.hint_particle(world,x,y,z,defaultBlock,defaultMeta);
                 return true;
             }
         };
@@ -219,8 +249,8 @@ public class StructureUtility {
     /**
      * Allows block duplicates (with different meta)
      */
-    public static <T> IStructureElement<T> ofBlocskMap(Map<Block, Set<Integer>> blocsMap,Block hintBlock,int hintMeta){
-        if(blocsMap==null || blocsMap.isEmpty() || hintBlock==null){
+    public static <T> IStructureElement<T> ofBlocksMap(Map<Block, Set<Integer>> blocsMap, Block defaultBlock, int defaultMeta){
+        if(blocsMap==null || blocsMap.isEmpty() || defaultBlock==null){
             throw new IllegalArgumentException();
         }
         for (Set<Integer> value : blocsMap.values()) {
@@ -236,20 +266,20 @@ public class StructureUtility {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x,y,z,hintBlock,hintMeta,2);
+                world.setBlock(x,y,z,defaultBlock,defaultMeta,2);
                 return true;
             }
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TecTech.proxy.hint_particle(world,x,y,z,hintBlock,hintMeta);
+                TecTech.proxy.hint_particle(world,x,y,z,defaultBlock,defaultMeta);
                 return true;
             }
         };
     }
 
-    public static <T> IStructureElement<T> ofBlock(Block block, int meta,Block hintBlock,int hintMeta){
-        if(block==null || hintBlock==null){
+    public static <T> IStructureElement<T> ofBlock(Block block, int meta,Block defaultBlock,int defaultMeta){
+        if(block==null || defaultBlock==null){
             throw new IllegalArgumentException();
         }
         return new IStructureElement<T>() {
@@ -260,13 +290,13 @@ public class StructureUtility {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x,y,z,hintBlock,hintMeta,2);
+                world.setBlock(x,y,z,defaultBlock,defaultMeta,2);
                 return true;
             }
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TecTech.proxy.hint_particle(world,x,y,z,hintBlock,hintMeta);
+                TecTech.proxy.hint_particle(world,x,y,z,defaultBlock,defaultMeta);
                 return true;
             }
         };
@@ -276,8 +306,8 @@ public class StructureUtility {
         return ofBlock(block, meta,block,meta);
     }
 
-    public static <T> IStructureElement<T> ofBlockAdder(IBlockAdder<T> iBlockAdder,Block hintBlock,int hintMeta){
-        if(iBlockAdder==null ||hintBlock==null){
+    public static <T> IStructureElement<T> ofBlockAdder(IBlockAdder<T> iBlockAdder,Block defaultBlock,int defaultMeta){
+        if(iBlockAdder==null ||defaultBlock==null){
             throw new IllegalArgumentException();
         }
         return new IStructureElement<T>() {
@@ -288,48 +318,27 @@ public class StructureUtility {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x,y,z,hintBlock,hintMeta,2);
+                world.setBlock(x,y,z,defaultBlock,defaultMeta,2);
                 return true;
             }
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TecTech.proxy.hint_particle(world,x,y,z,hintBlock,hintMeta);
+                TecTech.proxy.hint_particle(world,x,y,z,defaultBlock,defaultMeta);
                 return true;
             }
         };
     }
 
     public static <T> IStructureElement<T> ofBlockAdder(IBlockAdder<T> iBlockAdder,int dots){
-        int meta=dots-1;
-        if(iBlockAdder==null ){
-            throw new IllegalArgumentException();
-        }
-        return new IStructureElement<T>() {
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return iBlockAdder.apply(t,world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x,y,z,sHintCasingsTT,meta,2);
-                return true;
-            }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,meta);
-                return true;
-            }
-        };
+        return ofBlockAdder(iBlockAdder,sHintCasingsTT,dots-1);
     }
 
-    public static <T> IStructureElement<T> ofTileAdder(ITileAdder<T> iTileAdder, Block hintBlock, int hintMeta){
+    public static <T> IStructureElementNoPlacement<T> ofTileAdder(ITileAdder<T> iTileAdder, Block hintBlock, int hintMeta){
         if(iTileAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementNoPlacement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
@@ -344,85 +353,15 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, int textureIndex, int dots){
-        int meta=dots-1;
-        if(iHatchAdder==null){
-            throw new IllegalArgumentException();
-        }
-        return new IStructureElement<T>() {
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                TileEntity tileEntity = world.getTileEntity(x, y, z);
-                return tileEntity instanceof IGregTechTileEntity && iHatchAdder.apply(t,(IGregTechTileEntity) tileEntity, (short)textureIndex);
-            }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,meta);
-                return true;
-            }
-        };
+    public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, int textureIndex, int dots){
+        return ofHatchAdder(iHatchAdder, textureIndex,sHintCasingsTT, dots-1);
     }
 
-    public static <T> IStructureElement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, int textureIndex, int dots, Block placeCasing,int placeCasingMeta){
-        int meta=dots-1;
-        if(iHatchAdder==null){
-            throw new IllegalArgumentException();
-        }
-        return new IStructureElement<T>() {
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                TileEntity tileEntity = world.getTileEntity(x, y, z);
-                return tileEntity instanceof IGregTechTileEntity && iHatchAdder.apply(t,(IGregTechTileEntity) tileEntity, (short)textureIndex);
-            }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,meta);
-                return true;
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x,y,z,placeCasing,placeCasingMeta,2);
-                return true;
-            }
-        };
-    }
-
-    public static <T> IStructureElement<T> ofHatchAdderOptional(IHatchAdder<T> iHatchAdder, int textureIndex, int dots, Block placeCasing,int placeCasingMeta){
-        int meta=dots-1;
-        if(iHatchAdder==null){
-            throw new IllegalArgumentException();
-        }
-        return new IStructureElement<T>() {
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                TileEntity tileEntity = world.getTileEntity(x, y, z);
-                return tileEntity instanceof IGregTechTileEntity &&
-                        (iHatchAdder.apply(t,(IGregTechTileEntity) tileEntity, (short)textureIndex) ||
-                                (world.getBlock(x,y,z)==placeCasing&&world.getBlockMetadata(x,y,z)==placeCasingMeta));
-            }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TecTech.proxy.hint_particle(world,x,y,z,sHintCasingsTT,meta);
-                return true;
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x,y,z,placeCasing,placeCasingMeta,2);
-                return true;
-            }
-        };
-    }
-
-    public static <T> IStructureElement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, int textureIndex, Block hintBlock, int hintMeta){
+    public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, int textureIndex, Block hintBlock, int hintMeta){
         if(iHatchAdder==null ||hintBlock==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementNoPlacement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
@@ -435,6 +374,10 @@ public class StructureUtility {
                 return true;
             }
         };
+    }
+
+    public static <T> IStructureElement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, int textureIndex, int dots, Block placeCasing,int placeCasingMeta){
+        return ofHatchAdder(iHatchAdder, textureIndex,sHintCasingsTT, dots-1, placeCasing, placeCasingMeta);
     }
 
     public static <T> IStructureElement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, int textureIndex, Block hintBlock, int hintMeta, Block placeCasing,int placeCasingMeta){
@@ -460,6 +403,10 @@ public class StructureUtility {
                 return true;
             }
         };
+    }
+
+    public static <T> IStructureElement<T> ofHatchAdderOptional(IHatchAdder<T> iHatchAdder, int textureIndex, int dots, Block placeCasing,int placeCasingMeta){
+        return ofHatchAdderOptional(iHatchAdder, textureIndex, sHintCasingsTT, dots-1, placeCasing, placeCasingMeta);
     }
 
     public static <T> IStructureElement<T> ofHatchAdderOptional(IHatchAdder<T> iHatchAdder, int textureIndex, Block hintBlock, int hintMeta, Block placeCasing,int placeCasingMeta){
@@ -489,7 +436,7 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> onElementPass(Consumer<T> onCheckPass, IStructureElement<T> element){
+    public static <B extends IStructureElement<T>,T> IStructureElement<T> onElementPass(Consumer<T> onCheckPass, B element){
         return new IStructureElement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
@@ -512,7 +459,7 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> onElementFail(Consumer<T> onFail, IStructureElement<T> element){
+    public static <B extends IStructureElement<T>,T> IStructureElement<T> onElementFail(Consumer<T> onFail, B element){
         return new IStructureElement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
@@ -535,8 +482,16 @@ public class StructureUtility {
         };
     }
 
+
+    /**
+     * Take care while chaining, as it will try to call every structure element until it returns true.
+     * If none does it will finally return false.
+     * @param elementChain
+     * @param <T>
+     * @return
+     */
     @SafeVarargs
-    public static <T> IStructureFallback<T> ofElementChain(IStructureElement<T>... elementChain){
+    public static <T> IStructureElementChain<T> ofChain(IStructureElement<T>... elementChain){
         if(elementChain==null || elementChain.length==0){
             throw new IllegalArgumentException();
         }
@@ -548,11 +503,23 @@ public class StructureUtility {
         return () -> elementChain;
     }
 
-    public static <T> IStructureElement<T> defer(Supplier<IStructureElement<T>> to){
+    /**
+     * Take care while chaining, as it will try to call every structure element until it returns true.
+     * If none does it will finally return false.
+     * @param elementChain
+     * @param <T>
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> IStructureElementChain<T> ofChain(List<IStructureElement<T>> elementChain){
+        return ofChain(elementChain.toArray(new IStructureElement[0]));
+    }
+
+    public static <T> IStructureElementDeferred<T> defer(Supplier<IStructureElement<T>> to){
         if(to==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementDeferred<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return to.get().check(t, world, x, y, z);
@@ -570,11 +537,11 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> defer(Function<T,IStructureElement<T>> to){
+    public static <T> IStructureElementDeferred<T> defer(Function<T,IStructureElement<T>> to){
         if(to==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementDeferred<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return to.apply(t).check(t, world, x, y, z);
@@ -592,11 +559,11 @@ public class StructureUtility {
         };
     }
 
-    public static <T,K> IStructureElement<T> defer(Function<T,K> keyExtractor,Map<K,IStructureElement<T>> map){
+    public static <T,K> IStructureElementDeferred<T> defer(Function<T,K> keyExtractor,Map<K,IStructureElement<T>> map){
         if(keyExtractor==null||map==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementDeferred<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return map.get(keyExtractor.apply(t)).check(t, world, x, y, z);
@@ -614,11 +581,11 @@ public class StructureUtility {
         };
     }
 
-    public static <T,K> IStructureElement<T> defer(Function<T,K> keyExtractor,Map<K,IStructureElement<T>> map,IStructureElement<T> defaultElem){
+    public static <T,K> IStructureElementDeferred<T> defer(Function<T,K> keyExtractor,Map<K,IStructureElement<T>> map,IStructureElement<T> defaultElem){
         if(keyExtractor==null||map==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementDeferred<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return map.getOrDefault(keyExtractor.apply(t),defaultElem).check(t, world, x, y, z);
@@ -637,11 +604,11 @@ public class StructureUtility {
     }
 
     @SafeVarargs
-    public static <T> IStructureElement<T> defer(Function<T,Integer> keyExtractor, IStructureElement<T>... array){
+    public static <T> IStructureElementDeferred<T> defer(Function<T,Integer> keyExtractor, IStructureElement<T>... array){
         if(keyExtractor==null||array==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementDeferred<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return array[keyExtractor.apply(t)].check(t, world, x, y, z);
@@ -659,33 +626,16 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> defer(Function<T,Integer> keyExtractor,List<IStructureElement<T>> array){
-        if(keyExtractor==null||array==null){
-            throw new IllegalArgumentException();
-        }
-        return new IStructureElement<T>() {
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return array.get(keyExtractor.apply(t)).check(t, world, x, y, z);
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return array.get(keyExtractor.apply(t)).placeBlock(t, world, x, y, z, trigger);
-            }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return array.get(keyExtractor.apply(t)).spawnHint(t, world, x, y, z, trigger);
-            }
-        };
+    @SuppressWarnings("unchecked")
+    public static <T> IStructureElementDeferred<T> defer(Function<T,Integer> keyExtractor,List<IStructureElement<T>> array){
+        return defer(keyExtractor, array.toArray(new IStructureElement[0]));
     }
 
-    public static <T> IStructureElement<T> defer(BiFunction<T,ItemStack,IStructureElement<T>> to){
+    public static <T> IStructureElementDeferred<T> defer(BiFunction<T,ItemStack,IStructureElement<T>> to){
         if(to==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementDeferred<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return to.apply(t,null).check(t, world, x, y, z);
@@ -703,11 +653,11 @@ public class StructureUtility {
         };
     }
 
-    public static <T,K> IStructureElement<T> defer(BiFunction<T,ItemStack,K> keyExtractor,Map<K,IStructureElement<T>> map){
+    public static <T,K> IStructureElementDeferred<T> defer(BiFunction<T,ItemStack,K> keyExtractor,Map<K,IStructureElement<T>> map){
         if(keyExtractor==null||map==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementDeferred<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return map.get(keyExtractor.apply(t,null)).check(t, world, x, y, z);
@@ -725,11 +675,11 @@ public class StructureUtility {
         };
     }
 
-    public static <T,K> IStructureElement<T> defer(BiFunction<T,ItemStack,K> keyExtractor,Map<K,IStructureElement<T>> map,IStructureElement<T> defaultElem){
+    public static <T,K> IStructureElementDeferred<T> defer(BiFunction<T,ItemStack,K> keyExtractor,Map<K,IStructureElement<T>> map,IStructureElement<T> defaultElem){
         if(keyExtractor==null||map==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementDeferred<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return map.getOrDefault(keyExtractor.apply(t,null),defaultElem).check(t, world, x, y, z);
@@ -748,11 +698,11 @@ public class StructureUtility {
     }
 
     @SafeVarargs
-    public static <T> IStructureElement<T> defer(BiFunction<T,ItemStack,Integer> keyExtractor, IStructureElement<T>... array){
+    public static <T> IStructureElementDeferred<T> defer(BiFunction<T,ItemStack,Integer> keyExtractor, IStructureElement<T>... array){
         if(keyExtractor==null||array==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementDeferred<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return array[keyExtractor.apply(t,null)].check(t, world, x, y, z);
@@ -770,33 +720,16 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> defer(BiFunction<T,ItemStack,Integer> keyExtractor, List<IStructureElement<T>> array){
-        if(keyExtractor==null||array==null){
-            throw new IllegalArgumentException();
-        }
-        return new IStructureElement<T>() {
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return array.get(keyExtractor.apply(t,null)).check(t, world, x, y, z);
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return array.get(keyExtractor.apply(t,trigger)).placeBlock(t, world, x, y, z, trigger);
-            }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return array.get(keyExtractor.apply(t,trigger)).spawnHint(t, world, x, y, z, trigger);
-            }
-        };
+    @SuppressWarnings("unchecked")
+    public static <T> IStructureElementDeferred<T> defer(BiFunction<T,ItemStack,Integer> keyExtractor, List<IStructureElement<T>> array){
+        return defer(keyExtractor, array.toArray(new IStructureElement[0]));
     }
 
-    public static <T> IStructureElement<T> defer(Function<T,IStructureElement<T>> toCheck, BiFunction<T,ItemStack,IStructureElement<T>> to){
+    public static <T> IStructureElementDeferred<T> defer(Function<T,IStructureElement<T>> toCheck, BiFunction<T,ItemStack,IStructureElement<T>> to){
         if(to==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementDeferred<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return toCheck.apply(t).check(t, world, x, y, z);
@@ -814,11 +747,11 @@ public class StructureUtility {
         };
     }
 
-    public static <T,K> IStructureElement<T> defer(Function<T,K> keyExtractorCheck,BiFunction<T,ItemStack,K> keyExtractor,Map<K,IStructureElement<T>> map){
+    public static <T,K> IStructureElementDeferred<T> defer(Function<T,K> keyExtractorCheck,BiFunction<T,ItemStack,K> keyExtractor,Map<K,IStructureElement<T>> map){
         if(keyExtractor==null||map==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementDeferred<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return map.get(keyExtractorCheck.apply(t)).check(t, world, x, y, z);
@@ -836,11 +769,11 @@ public class StructureUtility {
         };
     }
 
-    public static <T,K> IStructureElement<T> defer(Function<T,K> keyExtractorCheck,BiFunction<T,ItemStack,K> keyExtractor,Map<K,IStructureElement<T>> map,IStructureElement<T> defaultElem){
+    public static <T,K> IStructureElementDeferred<T> defer(Function<T,K> keyExtractorCheck,BiFunction<T,ItemStack,K> keyExtractor,Map<K,IStructureElement<T>> map,IStructureElement<T> defaultElem){
         if(keyExtractor==null||map==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementDeferred<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return map.getOrDefault(keyExtractorCheck.apply(t),defaultElem).check(t, world, x, y, z);
@@ -859,11 +792,11 @@ public class StructureUtility {
     }
 
     @SafeVarargs
-    public static <T> IStructureElement<T> defer(Function<T,Integer> keyExtractorCheck,BiFunction<T,ItemStack,Integer> keyExtractor, IStructureElement<T>... array){
+    public static <T> IStructureElementDeferred<T> defer(Function<T,Integer> keyExtractorCheck,BiFunction<T,ItemStack,Integer> keyExtractor, IStructureElement<T>... array){
         if(keyExtractor==null||array==null){
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElementDeferred<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 return array[keyExtractorCheck.apply(t)].check(t, world, x, y, z);
@@ -881,26 +814,9 @@ public class StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> defer(Function<T,Integer> keyExtractorCheck,BiFunction<T,ItemStack,Integer> keyExtractor, List<IStructureElement<T>> array){
-        if(keyExtractor==null||array==null){
-            throw new IllegalArgumentException();
-        }
-        return new IStructureElement<T>() {
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return array.get(keyExtractorCheck.apply(t)).check(t, world, x, y, z);
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return array.get(keyExtractor.apply(t,trigger)).placeBlock(t, world, x, y, z, trigger);
-            }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return array.get(keyExtractor.apply(t,trigger)).spawnHint(t, world, x, y, z, trigger);
-            }
-        };
+    @SuppressWarnings("unchecked")
+    public static <T> IStructureElementDeferred<T> defer(Function<T,Integer> keyExtractorCheck,BiFunction<T,ItemStack,Integer> keyExtractor, List<IStructureElement<T>> array){
+        return defer(keyExtractorCheck, keyExtractor, array.toArray(new IStructureElement[0]));
     }
 
     public static <T> IStructureNavigate<T> step(int a,int b, int c){
@@ -996,7 +912,7 @@ public class StructureUtility {
     }
 
     /**
-     * Use only to get pseudo code...
+     * Used only to get pseudo code in structure writer...
      * @param world
      * @return
      */
