@@ -1,4 +1,4 @@
-package container;
+package common.container;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;

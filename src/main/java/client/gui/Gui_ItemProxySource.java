@@ -1,7 +1,8 @@
-package container;
+package client.gui;
 
 import org.lwjgl.opengl.GL11;
 
+import common.container.Container_ItemProxySource;
 import kekztech.KekzCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -12,15 +13,15 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class Gui_ItemProxyEndpoint extends GuiContainer {
+public class Gui_ItemProxySource extends GuiContainer {
 	
-	private final ResourceLocation texture = new ResourceLocation(KekzCore.MODID, "textures/gui/ItemTechReceiverNode.png");
+	private final ResourceLocation texture = new ResourceLocation(KekzCore.MODID, "textures/gui/ItemTech4by4.png");
 	
 	private final InventoryPlayer inventory;
 	private final IInventory te;
 	
-	public Gui_ItemProxyEndpoint(TileEntity te, EntityPlayer player) {
-		super(new Container_ItemProxyEndpoint(te, player));
+	public Gui_ItemProxySource(TileEntity te, EntityPlayer player) {
+		super(new Container_ItemProxySource(te, player));
 		inventory = player.inventory;
 		this.te = (IInventory) te;
 		

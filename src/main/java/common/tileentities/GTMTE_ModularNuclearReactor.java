@@ -3,8 +3,8 @@ package common.tileentities;
 import org.joml.Vector3i;
 import org.lwjgl.input.Keyboard;
 
+import client.gui.GUIContainer_ModularNuclearReactor;
 import common.Blocks;
-import container.GUIContainer_ModularNuclearReactor;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;

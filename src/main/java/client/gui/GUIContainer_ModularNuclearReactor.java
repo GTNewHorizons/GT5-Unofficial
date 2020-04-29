@@ -1,7 +1,8 @@
-package container;
+package client.gui;
 
 import org.lwjgl.opengl.GL11;
 
+import common.container.Container_ModularNuclearReactor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import kekztech.KekzCore;
 import net.minecraft.client.Minecraft;
