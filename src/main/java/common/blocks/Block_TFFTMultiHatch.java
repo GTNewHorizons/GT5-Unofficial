@@ -57,6 +57,9 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 				if(te != null && te instanceof TE_TFFTMultiHatch) {
 					((TE_TFFTMultiHatch) te).toggleAutoOutput();
 					GT_Utility.sendSoundToPlayers(world, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, x, y, z);
+					// Give chat feedback
+					GT_Utility.sendChatToPlayer(player, ((TE_TFFTMultiHatch) te).isOutputting() ? "Auto-output enabled" : "Auto-output disabled");
+					
 				}
 			}
 			return true;

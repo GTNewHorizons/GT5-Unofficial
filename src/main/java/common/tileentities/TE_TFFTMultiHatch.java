@@ -30,6 +30,10 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 		autoOutput = autoOutput ? false : true;
 	}
 	
+	public boolean isOutputting() {
+		return autoOutput;
+	}
+	
 	@Override
 	public void updateEntity() {
 		if(!autoOutput || mfh == null) {
