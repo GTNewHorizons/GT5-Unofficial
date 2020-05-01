@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sHintCasingsTT;
 
 public class StructureUtility {
-    private static final String NICE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_=|[]{};:'<>,./?";
+    private static final String NICE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz=|!@#$%&()[]{};:<>/?_,.*^'`";
     @SuppressWarnings("rawtypes")
     private static final Map<Vec3Impl, IStructureNavigate> STEP = new HashMap<>();
     @SuppressWarnings("rawtypes")

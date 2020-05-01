@@ -325,12 +325,12 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             })
             .addElement('0', ofBlock(sBlockCasingsTT,4))
             .addElement('1', ofBlock(sBlockCasingsTT,7))
-            .addElement('2', defer(t->(int)t.eTier,(t,item)->(item.stackSize&1)+1,
+            .addElement('2', defer(t->(int)t.eTier,(t,item)->2-(item.stackSize&1),
                     error(),ofBlock(sBlockCasingsTT,4),ofBlock(sBlockCasingsTT,5)))
             .addElement('3', ofBlock(QuantumGlassBlock.INSTANCE,0))
-            .addElement('4', defer(t->(int)t.eTier,(t,item)->(item.stackSize&1)+1,
+            .addElement('4', defer(t->(int)t.eTier,(t,item)->2-(item.stackSize&1),
                     error(),ofBlock(sBlockCasingsTT,4),ofBlock(sBlockCasingsTT,6)))
-            .addElement('5', defer(t->(int)t.eTier,(t,item)->(item.stackSize&1)+1,
+            .addElement('5', defer(t->(int)t.eTier,(t,item)->2-(item.stackSize&1),
                     error(),ofBlock(sBlockCasingsTT,8),ofBlock(sBlockCasingsTT,9)))
             .addElement('&', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addClassicToMachineList,
                     textureOffset,1,sBlockCasingsTT,0))

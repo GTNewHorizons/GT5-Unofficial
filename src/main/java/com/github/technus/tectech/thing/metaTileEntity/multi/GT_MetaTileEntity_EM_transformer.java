@@ -40,7 +40,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     private static final IStructureDefinition<GT_MetaTileEntity_EM_transformer> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_EM_transformer>builder()
                     .addShape("main",new String[][]{
-                            {"111", "1.1", "111",},
+                            {"111", "1~1", "111",},
                             {"111", "101", "111",},
                             {"111", "111", "111",},
                     })

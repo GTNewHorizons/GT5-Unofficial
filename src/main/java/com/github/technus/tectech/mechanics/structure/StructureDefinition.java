@@ -1,6 +1,5 @@
 package com.github.technus.tectech.mechanics.structure;
 
-import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.Vec3Impl;
 
 import java.util.*;
@@ -62,55 +61,35 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
             StringBuilder builder = new StringBuilder();
             if (structurePiece.length > 0) {
                 for (String[] strings : structurePiece) {
-
-
                     if (strings.length > 0) {
                         for (String string : strings) {
-
-
                             for (int i = 0; i < string.length(); i++) {
                                 char ch = string.charAt(i);
                                 if(ch<' '){
-                                    for (int c = 0; c < ch; c++) {
+                                    for (int b = 0; b < ch; b++) {
                                         builder.append(B);
                                     }
                                 }else if(ch>'@'){
-                                    for (int c = '@'; c < ch; c++) {
+                                    for (int a = '@'; a < ch; a++) {
                                         builder.append(A);
                                     }
+                                }else if(ch=='.'){
+                                    builder.append(A);
                                 }else{
                                     builder.append(ch);
                                 }
                             }
-
-
                             builder.append(B);
                         }
                         builder.setLength(builder.length() - 1);
                     }
-
-
                     builder.append(C);
                 }
                 builder.setLength(builder.length() - 1);
             }
-            if(DEBUG_MODE){
-                Exception exception = new Exception();
-                exception.getStackTrace();
-
-                TecTech.LOGGER.info("Structure shape normal:");
-
-
-                TecTech.LOGGER.info("Structure shape transposed:");
-
-            }
             int a=0,b=0,c=0;
             for (int i = 0; i < builder.length(); i++) {
                 char ch = builder.charAt(i);
-                if(ch =='.'){
-                    builder.setCharAt(i,A);
-                    ch=A;
-                }
                 if(ch==A){
                     a++;
                 }else if(ch==B){
@@ -151,7 +130,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
          * Adds shape
          * +- is air/no air checks
          * space bar is skip
-         * . is also skip (but marks controller position, optional and logically it is a space...)
+         * ~ is also skip (but marks controller position, optional and logically it is a space...)
          * rest needs to be defined
          *
          * next char is next block(a)
@@ -180,7 +159,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
             int a=0,b=0,c=0;
             for (int i = 0; i < builder.length(); i++) {
                 char ch = builder.charAt(i);
-                if(ch ==' ' || ch =='.'){
+                if(ch ==' ' || ch =='~'){
                     builder.setCharAt(i,A);
                     ch=A;
                 }
