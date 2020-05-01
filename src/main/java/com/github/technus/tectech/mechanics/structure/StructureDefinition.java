@@ -1,5 +1,6 @@
 package com.github.technus.tectech.mechanics.structure;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.Vec3Impl;
 
 import java.util.*;
@@ -29,7 +30,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
         private static final char A='\uA000';
         private static final char B='\uB000';
         private static final char C='\uC000';
-        private static final char D='\uD000';
+        private char d ='\uD000';
         private final Map<Vec3Impl,Character> navigates;
         private final Map<Character, IStructureElement<T>> elements;
         private final Map<String, String> shapes;
@@ -61,8 +62,12 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
             StringBuilder builder = new StringBuilder();
             if (structurePiece.length > 0) {
                 for (String[] strings : structurePiece) {
+
+
                     if (strings.length > 0) {
                         for (String string : strings) {
+
+
                             for (int i = 0; i < string.length(); i++) {
                                 char ch = string.charAt(i);
                                 if(ch<' '){
@@ -77,16 +82,29 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
                                     builder.append(ch);
                                 }
                             }
+
+
                             builder.append(B);
                         }
                         builder.setLength(builder.length() - 1);
                     }
+
+
                     builder.append(C);
                 }
                 builder.setLength(builder.length() - 1);
             }
+            if(DEBUG_MODE){
+                Exception exception = new Exception();
+                exception.getStackTrace();
+
+                TecTech.LOGGER.info("Structure shape normal:");
+
+
+                TecTech.LOGGER.info("Structure shape transposed:");
+
+            }
             int a=0,b=0,c=0;
-            char d=D;
             for (int i = 0; i < builder.length(); i++) {
                 char ch = builder.charAt(i);
                 if(ch =='.'){
@@ -106,7 +124,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
                     Vec3Impl vec3 = new Vec3Impl(a, b, c);
                     Character navigate = navigates.get(vec3);
                     if(navigate==null){
-                        navigate=d++;
+                        navigate= d++;
                         navigates.put(vec3,navigate);
                         addElement(navigate,step(vec3));
                     }
@@ -137,8 +155,8 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
          * rest needs to be defined
          *
          * next char is next block(a)
-         * next string is next line(a,b)
-         * next string[] is next slice(a,b,c)
+         * next string is next line(b)
+         * next string[] is next slice(c)
          *
          * char A000-FFFF range is reserved for generated skips
          * @param name unlocalized/code name
@@ -160,7 +178,6 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
                 builder.setLength(builder.length() - 1);
             }
             int a=0,b=0,c=0;
-            char d=D;
             for (int i = 0; i < builder.length(); i++) {
                 char ch = builder.charAt(i);
                 if(ch ==' ' || ch =='.'){
@@ -188,7 +205,6 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
                     a=0;
                     b=0;
                     c=0;
-                    d++;
                 }
             }
 
@@ -220,14 +236,14 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
 
         @SuppressWarnings("unchecked")
         private Map<String, IStructureElement<T>[]> compileElementSetMap() {
-            Set<Integer> mising = new HashSet<>();
+            Set<Integer> missing = new HashSet<>();
             shapes.values().stream().map(CharSequence::chars).forEach(intStream -> intStream.forEach(c -> {
                 IStructureElement<T> iStructureElement = elements.get((char) c);
                 if (iStructureElement == null) {
-                    mising.add(c);
+                    missing.add(c);
                 }
             }));
-            if (mising.isEmpty()) {
+            if (missing.isEmpty()) {
                 Map<String, IStructureElement<T>[]> map = new HashMap<>();
                 shapes.forEach((key, value) -> {
                     Set<Character> chars=new HashSet<>();
@@ -244,7 +260,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
                 return map;
             } else {
                 throw new RuntimeException("Missing Structure Element bindings for (chars as integers): " +
-                        Arrays.toString(mising.toArray()));
+                        Arrays.toString(missing.toArray()));
             }
         }
 

@@ -115,9 +115,8 @@ public interface IStructureDefinition<T> {
                         xyz[1] += basePositionY;
                         xyz[2] += basePositionZ;
 
-                        if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
-                            element.spawnHint(object, world, xyz[0], xyz[1], xyz[2], trigger);
-                        }
+                        element.spawnHint(object, world, xyz[0], xyz[1], xyz[2], trigger);
+
                         abc[0]+=1;
                     }
                 }

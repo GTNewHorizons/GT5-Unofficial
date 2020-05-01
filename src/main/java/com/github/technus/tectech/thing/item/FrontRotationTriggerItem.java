@@ -1,19 +1,13 @@
 package com.github.technus.tectech.thing.item;
 
-import com.github.technus.tectech.mechanics.alignment.IAlignment;
-import com.github.technus.tectech.mechanics.alignment.IAlignmentProvider;
+import com.github.technus.tectech.mechanics.alignment.AlignmentUtility;
 import com.github.technus.tectech.util.CommonValues;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.List;
 
@@ -36,33 +30,7 @@ public final class FrontRotationTriggerItem extends Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if(tTileEntity==null || aPlayer instanceof FakePlayer) {
-            return aPlayer instanceof EntityPlayerMP;
-        }
-        if (aPlayer instanceof EntityPlayerMP) {
-            if (tTileEntity instanceof IGregTechTileEntity) {
-                IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                if (metaTE instanceof IAlignmentProvider) {
-                    IAlignment alignment = ((IAlignmentProvider) metaTE).getAlignment();
-                    if(aPlayer.isSneaking()){
-                        alignment.toolSetFlip(null);
-                    }else {
-                        alignment.toolSetRotation(null);
-                    }
-                    return true;
-                }
-            } else if (tTileEntity instanceof IAlignmentProvider) {
-                IAlignment alignment = ((IAlignmentProvider) tTileEntity).getAlignment();
-                if(aPlayer.isSneaking()){
-                    alignment.toolSetFlip(null);
-                }else {
-                    alignment.toolSetRotation(null);
-                }
-                return true;
-            }
-        }
-        return false;
+        return AlignmentUtility.handle(aPlayer,aWorld,aX,aY,aZ);
     }
 
     @Override
