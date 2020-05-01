@@ -119,11 +119,24 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
                     ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
                     aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(),
                     numbers[0], numbers[1], numbers[2],
-                    numbers[3], numbers[4], numbers[5]);
+                    numbers[3], numbers[4], numbers[5],false);
             TecTech.LOGGER.info(pseudoJavaCode);
             result = pseudoJavaCode.split("\\n");
             aBaseMetaTileEntity.disableWorking();
         }
+    }
+
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
+        String pseudoJavaCode = StructureUtility.getPseudoJavaCode(aBaseMetaTileEntity.getWorld(),
+                ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
+                aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(),
+                numbers[0], numbers[1], numbers[2],
+                numbers[3], numbers[4], numbers[5],true);
+        TecTech.LOGGER.info(pseudoJavaCode);
+        result = pseudoJavaCode.split("\\n");
+        aBaseMetaTileEntity.disableWorking();
     }
 
     @Override
