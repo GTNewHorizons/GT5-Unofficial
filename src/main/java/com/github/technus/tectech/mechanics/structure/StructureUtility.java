@@ -158,6 +158,29 @@ public class StructureUtility {
     }
 
     /**
+     * Check always returns: true.
+     *
+     * @param icons
+     * @param RGBa
+     * @param <T>
+     * @return
+     */
+    public static <T> IStructureElementNoPlacement<T> ofHint(IIcon[] icons,short[] RGBa) {
+        return new IStructureElementNoPlacement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                return true;
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TecTech.proxy.hint_particle_tinted(world, x, y, z, icons,RGBa);
+                return false;
+            }
+        };
+    }
+
+    /**
      * Does not allow Block duplicates (with different meta)
      */
     public static <T> IStructureElementNoPlacement<T> ofBlocksFlatHint(Map<Block, Integer> blocsMap, Block hintBlock, int hintMeta) {

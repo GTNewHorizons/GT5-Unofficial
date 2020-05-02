@@ -14,6 +14,8 @@ import net.minecraft.world.WorldServer;
 public class CommonProxy implements IGuiHandler {
     public void registerRenderInfo() {}
 
+    public void hint_particle_tinted(World w,int x, int y, int z, IIcon[] icons,short[] RGBa){}
+    public void hint_particle_tinted(World w,int x, int y, int z, Block block, int meta,short[] RGBa){}
     public void hint_particle(World w,int x, int y, int z, IIcon[] icons){}
     public void hint_particle(World w,int x, int y, int z, Block block, int meta){}
     public void em_particle(IGregTechTileEntity aMuffler, byte facing) {}//CUTE!
