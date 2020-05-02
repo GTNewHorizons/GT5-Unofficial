@@ -7,12 +7,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
 public class CommonProxy implements IGuiHandler {
     public void registerRenderInfo() {}
 
+    public void hint_particle(World w,int x, int y, int z, IIcon[] icons){}
     public void hint_particle(World w,int x, int y, int z, Block block, int meta){}
     public void em_particle(IGregTechTileEntity aMuffler, byte facing) {}//CUTE!
     public void pollutor_particle(IGregTechTileEntity aPollutor, byte facing) {}//CUTE!

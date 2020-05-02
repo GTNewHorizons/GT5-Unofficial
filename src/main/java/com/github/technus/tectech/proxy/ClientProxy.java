@@ -24,6 +24,7 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -43,6 +44,15 @@ public class ClientProxy extends CommonProxy {
         if(Loader.isModLoaded("openmodularturrets")) {
             new TT_turret_loader().run();
         }
+    }
+
+    @Override
+    public void hint_particle(World w,int x, int y, int z, IIcon[] icons) {
+        Minecraft.getMinecraft().effectRenderer.addEffect(new BlockHint(w,x,y,z,icons));
+
+        EntityFX particle = new WeightlessParticleFX(w, x + TecTech.RANDOM.nextFloat() * 0.5F, y + TecTech.RANDOM.nextFloat() * 0.5F, z + TecTech.RANDOM.nextFloat() * 0.5F, 0, 0, 0);
+        particle.setRBGColorF(0, 0.6F * TecTech.RANDOM.nextFloat(), 0.8f);
+        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
 
     @Override

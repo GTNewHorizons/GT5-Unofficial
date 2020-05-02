@@ -13,6 +13,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -129,6 +130,28 @@ public class StructureUtility {
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 TecTech.proxy.hint_particle(world, x, y, z, sHintCasingsTT, meta);
+                return false;
+            }
+        };
+    }
+
+    /**
+     * Check always returns: true.
+     *
+     * @param icons
+     * @param <T>
+     * @return
+     */
+    public static <T> IStructureElementNoPlacement<T> ofHint(IIcon[] icons) {
+        return new IStructureElementNoPlacement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                return true;
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TecTech.proxy.hint_particle(world, x, y, z, icons);
                 return false;
             }
         };

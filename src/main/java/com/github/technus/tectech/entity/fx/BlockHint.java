@@ -19,6 +19,25 @@ public class BlockHint extends EntityFX {
         this(world,0,0,0, Blocks.stone,0);
     }
 
+    /**
+     *
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param icons DOWN, UP, NORTH, SOUTH, WEST, EAST
+     */
+    public BlockHint(World world, int x, int y, int z, IIcon[] icons) {
+        super(world, x + .25, y + .5, z + .25);
+        particleGravity = 0;
+        prevPosX = posX;
+        prevPosY = posY;
+        prevPosZ = posZ;
+        noClip = true;
+        particleMaxAge = 2000 + TecTech.RANDOM.nextInt(200);
+        this.icons=icons;
+    }
+
     public BlockHint(World world, int x, int y, int z, Block block, int meta) {
         super(world, x+.25, y+.5, z+.25);
         particleGravity = 0;
