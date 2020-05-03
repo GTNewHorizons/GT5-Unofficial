@@ -157,7 +157,7 @@ public final class MainLoader {
         fixBlocks();
         TecTech.LOGGER.info("Blocks nerf done");
 
-        progressBarPostLoad.step("Initialize more constructable stuff");
+        progressBarPostLoad.step("Constructable stuff");
         new ConstructableLoader().run();
         TecTech.LOGGER.info("Constructable initialized");
 

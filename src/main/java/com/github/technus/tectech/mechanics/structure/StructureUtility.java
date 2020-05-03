@@ -142,7 +142,7 @@ public class StructureUtility {
      * @param <T>
      * @return
      */
-    public static <T> IStructureElementNoPlacement<T> ofHint(IIcon[] icons) {
+    public static <T> IStructureElementNoPlacement<T> ofHintDeferred(Supplier<IIcon[]> icons) {
         return new IStructureElementNoPlacement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
@@ -151,7 +151,7 @@ public class StructureUtility {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TecTech.proxy.hint_particle(world, x, y, z, icons);
+                TecTech.proxy.hint_particle(world, x, y, z, icons.get());
                 return false;
             }
         };
@@ -165,7 +165,7 @@ public class StructureUtility {
      * @param <T>
      * @return
      */
-    public static <T> IStructureElementNoPlacement<T> ofHint(IIcon[] icons,short[] RGBa) {
+    public static <T> IStructureElementNoPlacement<T> ofHintDeferred(Supplier<IIcon[]> icons,short[] RGBa) {
         return new IStructureElementNoPlacement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
@@ -174,7 +174,7 @@ public class StructureUtility {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TecTech.proxy.hint_particle_tinted(world, x, y, z, icons,RGBa);
+                TecTech.proxy.hint_particle_tinted(world, x, y, z, icons.get(),RGBa);
                 return false;
             }
         };
