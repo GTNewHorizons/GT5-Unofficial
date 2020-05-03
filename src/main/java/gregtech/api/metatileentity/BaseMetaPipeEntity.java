@@ -462,6 +462,12 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
+    public void receiveCoverData(byte coverSide, int coverID, int coverData) {
+        if ((coverSide >= 0 && coverSide < 6) && (mCoverSides[coverSide] == coverID))
+            setCoverDataAtSide(coverSide, coverData);
+    }
+
+    @Override
     public byte getStrongestRedstone() {
         return (byte) Math.max(getInternalInputRedstoneSignal((byte) 0), Math.max(getInternalInputRedstoneSignal((byte) 1), Math.max(getInternalInputRedstoneSignal((byte) 2), Math.max(getInternalInputRedstoneSignal((byte) 3), Math.max(getInternalInputRedstoneSignal((byte) 4), getInternalInputRedstoneSignal((byte) 5))))));
     }
@@ -798,6 +804,15 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         return hasValidMetaTileEntity() && !isDead;
     }
 
+    public boolean shouldDisplayWrenchGrid(ItemStack heldItem, byte side) {
+        return (getCoverIDAtSide(side) == 0) && (
+                 GT_Utility.isStackInList(heldItem, GregTech_API.sCovers.keySet()) ||
+                 GT_Utility.isStackInList(heldItem, GregTech_API.sCrowbarList) ||
+                 GT_Utility.isStackInList(heldItem, GregTech_API.sWireCutterList) ||
+                 GT_Utility.isStackInList(heldItem, GregTech_API.sScrewdriverList) ||
+                 GT_Utility.isStackInList(heldItem, GregTech_API.sSolderingToolList));
+    }
+
     @Override
     public void doExplosion(long aAmount) {
         if (canAccessData()) {
@@ -826,7 +841,14 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
         if (isClientSide()) {
-            if (getCoverBehaviorAtSide(aSide).onCoverRightclickClient(aSide, this, aPlayer, aX, aY, aZ)) return true;
+            byte tSide = aSide;
+            ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+
+            if (shouldDisplayWrenchGrid(tCurrentItem, aSide)) {
+                tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
+            }
+
+            if (getCoverBehaviorAtSide(tSide).onCoverRightclickClient(tSide, this, aPlayer, aX, aY, aZ)) return true;
         }
         if (isServerSide()) {
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();

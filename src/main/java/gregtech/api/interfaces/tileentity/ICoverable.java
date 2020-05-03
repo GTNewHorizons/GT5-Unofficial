@@ -41,4 +41,9 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      * Sends 6 Integers to Client + causes @issueTextureUpdate()
      */
     void issueCoverUpdate(byte aSide);
+
+    /**
+     * Receiving a packet with cover data.
+     */
+    void receiveCoverData(byte coverSide, int coverID, int coverData);
 }

@@ -782,6 +782,12 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
+    public void receiveCoverData(byte coverSide, int coverID, int coverData) {
+        if ((coverSide >= 0 && coverSide < 6) && (mCoverSides[coverSide] == coverID))
+            setCoverDataAtSide(coverSide, coverData);
+    }
+
+    @Override
     public byte getStrongestRedstone() {
         return (byte) Math.max(getInternalInputRedstoneSignal((byte) 0), Math.max(getInternalInputRedstoneSignal((byte) 1), Math.max(getInternalInputRedstoneSignal((byte) 2), Math.max(getInternalInputRedstoneSignal((byte) 3), Math.max(getInternalInputRedstoneSignal((byte) 4), getInternalInputRedstoneSignal((byte) 5))))));
     }
@@ -1312,6 +1318,15 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         return (mMuffler ? 1 : 0) + (mLockUpgrade ? 1 : 0) + (mSteamConverter ? 1 : 0) + mOtherUpgrades;
     }
 
+    public boolean shouldDisplayWrenchGrid(ItemStack heldItem, byte side) {
+        return (getCoverIDAtSide(side) == 0) && (
+                GT_Utility.isStackInList(heldItem, GregTech_API.sCovers.keySet()) ||
+                GT_Utility.isStackInList(heldItem, GregTech_API.sCrowbarList) ||
+                GT_Utility.isStackInList(heldItem, GregTech_API.sWireCutterList) ||
+                GT_Utility.isStackInList(heldItem, GregTech_API.sScrewdriverList) ||
+                GT_Utility.isStackInList(heldItem, GregTech_API.sSolderingToolList));
+    }
+
     @Override
     public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
         if (isClientSide()) {
@@ -1397,10 +1412,11 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                         return true;
                     }
 
-                    if (getCoverIDAtSide(aSide) == 0) {
+                    byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
+                    if (getCoverIDAtSide(tSide) == 0) {
                         if (GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))) {
-                            if (GregTech_API.getCoverBehavior(tCurrentItem).isCoverPlaceable(aSide, new GT_ItemStack(tCurrentItem), this) && mMetaTileEntity.allowCoverOnSide(aSide, new GT_ItemStack(tCurrentItem))) {
-                                setCoverItemAtSide(aSide, tCurrentItem);
+                            if (GregTech_API.getCoverBehavior(tCurrentItem).isCoverPlaceable(tSide, new GT_ItemStack(tCurrentItem), this) && mMetaTileEntity.allowCoverOnSide(aSide, new GT_ItemStack(tCurrentItem))) {
+                                setCoverItemAtSide(tSide, tCurrentItem);
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                                 GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
                             }
@@ -1410,7 +1426,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                         if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCrowbarList)) {
                             if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                                 GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(0), 1.0F, -1, xCoord, yCoord, zCoord);
-                                dropCover(aSide, aSide, false);
+                                dropCover(tSide, aSide, false);
                             }
                             return true;
                         }

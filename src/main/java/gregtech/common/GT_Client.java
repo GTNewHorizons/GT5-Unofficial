@@ -446,7 +446,7 @@ public class GT_Client extends GT_Proxy
             TileEntity aTileEntity = aEvent.player.worldObj.getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
             try {
                 Class.forName("codechicken.lib.vec.Rotation");
-                if (((aTileEntity instanceof BaseMetaPipeEntity)) && (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0) && ((GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCovers.keySet())) || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCrowbarList)) || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWireCutterList)) || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sScrewdriverList))|| GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSolderingToolList))) {
+                if ((aTileEntity instanceof BaseMetaPipeEntity) &&  ((BaseMetaPipeEntity) aTileEntity).shouldDisplayWrenchGrid(aEvent.currentItem, (byte) aEvent.target.sideHit)) {
                     drawGrid(aEvent);
                     return;
                 }
