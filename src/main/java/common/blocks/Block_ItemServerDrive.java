@@ -1,7 +1,7 @@
 package common.blocks;
 
+import common.itemBlocks.IB_ItemServerDrive;
 import cpw.mods.fml.common.registry.GameRegistry;
-import itemBlocks.IB_ItemServerDrive;
 import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

@@ -1,8 +1,8 @@
 package common.blocks;
 
+import common.itemBlocks.IB_ItemServerIOPort;
 import common.tileentities.TE_ItemServerIOPort;
 import cpw.mods.fml.common.registry.GameRegistry;
-import itemBlocks.IB_ItemServerIOPort;
 import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

@@ -1,7 +1,7 @@
 package common.blocks;
 
+import common.itemBlocks.IB_TFFTStorageFieldBlockT5;
 import cpw.mods.fml.common.registry.GameRegistry;
-import itemBlocks.IB_TFFTStorageFieldBlockT5;
 import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

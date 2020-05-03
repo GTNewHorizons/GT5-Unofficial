@@ -2,9 +2,9 @@ package common.blocks;
 
 import java.util.UUID;
 
+import common.itemBlocks.IB_ItemProxyEndpoint;
 import common.tileentities.TE_ItemProxyEndpoint;
 import cpw.mods.fml.common.registry.GameRegistry;
-import itemBlocks.IB_ItemProxyEndpoint;
 import items.Item_Configurator;
 import kekztech.GuiHandler;
 import kekztech.KekzCore;

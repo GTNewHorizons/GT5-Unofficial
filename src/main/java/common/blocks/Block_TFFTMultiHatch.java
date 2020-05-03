@@ -1,11 +1,11 @@
 package common.blocks;
 
+import common.itemBlocks.IB_TFFTMultiHatch;
 import common.tileentities.TE_TFFTMultiHatch;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import itemBlocks.IB_TFFTMultiHatch;
 import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

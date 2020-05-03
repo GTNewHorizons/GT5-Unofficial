@@ -99,10 +99,12 @@ tile.kekztech_itemserverdrive_block.name=Item Server Drive
 tile.kekztech_itemserverrackcasing_block.name=Item Server Rack Casing
 tile.kekztech_itemserverioport_block.name=Item Server I/O Port
 
-tile.kekztech_thaumiumreinforcedjar_block.name=Thaumium Reinforced Jar
+tile.kekztech_thaumiumreinforcedjar_block.0.name=Thaumium Reinforced Jar
+tile.kekztech_thaumiumreinforcedjar_block.1.name=Thaumium Reinforced Jar
 item.kekztech_thaumiumreinforcedjarfilled_item.name=Thaumium Reinforced Jar with Essentia
 item.kekztech_thaumiumreinforcedjarfilled_item.void.name=Thaumium Reinforced Void Jar with Essentia
-tile.kekztech_ichorjar_block.name=Ichor Jar
+tile.kekztech_ichorjar_block.0.name=Ichor Jar
+tile.kekztech_ichorjar_block.1.name=Ichor Void Jar
 item.kekztech_ichorjarfilled_item.name=Ichor Jar with Essentia
 item.kekztech_ichorjarfilled_item.void.name=Ichor Void Jar with Essentia
 
@@ -112,3 +114,10 @@ kekztech.research_page.THAUMIUMREINFORCEDJAR.1=Compressing this much Essentia in
 tc.research_name.ICHORJAR=Ichor Jars
 kekztech.research_page.ICHORJAR=This is it!<BR><BR>By infusing a jar with just a single piece of Ichor you have created something to rival digitized Essentia storage without sacrificing any of the beauty of Warded Jars.<BR><BR>Ichor Jars can hold an astounding 4096 Essentia and fit nicely into your recently aquired set of Ichor based achievements.<BR><BR>You definitely don't want to disturb these jars. Luckily Ichor is resilient enough to make accidentially destroying one unlikely.  
 
+tile.kekztech_lapotronicenergyunit_block.0.name=Lapotronic Super Capacitor Casing
+tile.kekztech_lapotronicenergyunit_block.1.name=Lapotronic Capacitor (IV)
+tile.kekztech_lapotronicenergyunit_block.2.name=Lapotronic Capacitor (LuV)
+tile.kekztech_lapotronicenergyunit_block.3.name=Lapotronic Capacitor (ZPM)
+tile.kekztech_lapotronicenergyunit_block.4.name=Lapotronic Capacitor (UV)
+tile.kekztech_lapotronicenergyunit_block.5.name=Ultimate Capacitor
+tile.kekztech_lapotronicenergyunit_block.6.name=Really Ultimate Capacitor

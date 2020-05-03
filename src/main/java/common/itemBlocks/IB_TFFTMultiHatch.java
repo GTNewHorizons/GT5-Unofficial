@@ -1,4 +1,4 @@
-package itemBlocks;
+package common.itemBlocks;
 
 import java.util.List;
 

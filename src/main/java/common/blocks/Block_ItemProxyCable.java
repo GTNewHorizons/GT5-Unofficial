@@ -1,8 +1,8 @@
 package common.blocks;
 
+import common.itemBlocks.IB_ItemProxyCable;
 import common.tileentities.TE_ItemProxyCable;
 import cpw.mods.fml.common.registry.GameRegistry;
-import itemBlocks.IB_ItemProxyCable;
 import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

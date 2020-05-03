@@ -9,6 +9,7 @@ import common.blocks.Block_ItemProxySource;
 import common.blocks.Block_ItemServerDrive;
 import common.blocks.Block_ItemServerIOPort;
 import common.blocks.Block_ItemServerRackCasing;
+import common.blocks.Block_LapotronicEnergyUnit;
 import common.blocks.Block_ReactorChamber_OFF;
 import common.blocks.Block_ReactorChamber_ON;
 import common.blocks.Block_TFFTCasing;
@@ -50,6 +51,8 @@ public class Blocks {
 	public static Block jarThaumiumReinforced;
 	public static Block jarIchor;
 	
+	public static Block lscLapotronicEnergyUnit;
+	
 	public static void init() {
 		System.out.println("Registering blocks...");
 		
@@ -59,6 +62,7 @@ public class Blocks {
 		//registerBlocks_ItemServer();
 		//registerBlocks_ItemProxy();
 		registerBlocks_Jars();
+		registerBlocks_LSC();
 		
 		System.out.println("Finished registering blocks");
 	}
@@ -99,5 +103,9 @@ public class Blocks {
 	private static void registerBlocks_Jars() {
 		jarThaumiumReinforced = Block_ThaumiumReinforcedJar.registerBlock();
 		jarIchor = Block_IchorJar.registerBlock();
+	}
+	
+	private static void registerBlocks_LSC() {
+		lscLapotronicEnergyUnit = Block_LapotronicEnergyUnit.registerBlock();
 	}
 }

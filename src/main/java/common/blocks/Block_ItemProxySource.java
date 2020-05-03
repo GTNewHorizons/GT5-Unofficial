@@ -1,8 +1,8 @@
 package common.blocks;
 
+import common.itemBlocks.IB_ItemProxySource;
 import common.tileentities.TE_ItemProxySource;
 import cpw.mods.fml.common.registry.GameRegistry;
-import itemBlocks.IB_ItemProxySource;
 import items.Item_Configurator;
 import kekztech.GuiHandler;
 import kekztech.KekzCore;

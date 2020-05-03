@@ -8,8 +8,8 @@ import net.minecraft.world.World;
 
 public abstract class BaseGTUpdateableBlock extends Block {
 
-    protected BaseGTUpdateableBlock(Material p_i45394_1_) {
-        super(p_i45394_1_);
+    protected BaseGTUpdateableBlock(Material material) {
+        super(material);
         GregTech_API.registerMachineBlock(this, -1);
     }
 
