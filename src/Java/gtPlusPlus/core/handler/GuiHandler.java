@@ -5,19 +5,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
-import gtPlusPlus.core.container.Container_BackpackBase;
-import gtPlusPlus.core.container.Container_CircuitProgrammer;
-import gtPlusPlus.core.container.Container_DecayablesChest;
-import gtPlusPlus.core.container.Container_FishTrap;
-import gtPlusPlus.core.container.Container_Grindle;
-import gtPlusPlus.core.container.Container_ModularityTable;
-import gtPlusPlus.core.container.Container_PestKiller;
-import gtPlusPlus.core.container.Container_ProjectTable;
-import gtPlusPlus.core.container.Container_RoundRobinator;
-import gtPlusPlus.core.container.Container_SuperJukebox;
-import gtPlusPlus.core.container.Container_TradeTable;
-import gtPlusPlus.core.container.Container_Workbench;
-import gtPlusPlus.core.container.Container_WorkbenchAdvanced;
+import gtPlusPlus.core.container.*;
 import gtPlusPlus.core.container.box.LunchBoxContainer;
 import gtPlusPlus.core.container.box.MagicBagContainer;
 import gtPlusPlus.core.container.box.ToolBoxContainer;
@@ -28,17 +16,7 @@ import gtPlusPlus.core.gui.item.GuiBaseGrindle;
 import gtPlusPlus.core.gui.item.box.LunchBoxGui;
 import gtPlusPlus.core.gui.item.box.MagicBagGui;
 import gtPlusPlus.core.gui.item.box.ToolBoxGui;
-import gtPlusPlus.core.gui.machine.GUI_CircuitProgrammer;
-import gtPlusPlus.core.gui.machine.GUI_DecayablesChest;
-import gtPlusPlus.core.gui.machine.GUI_FishTrap;
-import gtPlusPlus.core.gui.machine.GUI_ModularityTable;
-import gtPlusPlus.core.gui.machine.GUI_PestKiller;
-import gtPlusPlus.core.gui.machine.GUI_ProjectTable;
-import gtPlusPlus.core.gui.machine.GUI_RoundRobinator;
-import gtPlusPlus.core.gui.machine.GUI_SuperJukebox;
-import gtPlusPlus.core.gui.machine.GUI_TradeTable;
-import gtPlusPlus.core.gui.machine.GUI_Workbench;
-import gtPlusPlus.core.gui.machine.GUI_WorkbenchAdvanced;
+import gtPlusPlus.core.gui.machine.*;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.inventories.BaseInventoryGrindle;
@@ -46,9 +24,7 @@ import gtPlusPlus.core.inventories.box.LunchBoxInventory;
 import gtPlusPlus.core.inventories.box.MagicBagInventory;
 import gtPlusPlus.core.inventories.box.ToolBoxInventory;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
-import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
-import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
-import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
+import gtPlusPlus.core.tileentities.general.*;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
@@ -79,6 +55,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI14 = 13; // Super Jukebox
 	public static final int GUI15 = 14; // Pest Killer
 	public static final int GUI16 = 15; // Round-Robinator
+	public static final int GUI17 = 16; // Egg Box
 
 	public static void init() {
 
@@ -129,6 +106,8 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_PestKiller(player.inventory, (TileEntityPestKiller) te);
 			}  else if (ID == GUI16) {
 				return new Container_RoundRobinator(player.inventory, (TileEntityRoundRobinator) te);
+			}  else if (ID == GUI17) {
+				return new Container_EggBox(player.inventory, (TileEntityEggBox) te);
 			} 
 		}
 
@@ -191,6 +170,8 @@ public class GuiHandler implements IGuiHandler {
 				return new GUI_PestKiller(player.inventory, (TileEntityPestKiller) te);
 			}  else if (ID == GUI16) {
 				return new GUI_RoundRobinator(player.inventory, (TileEntityRoundRobinator) te);
+			}  else if (ID == GUI17) {
+				return new GUI_EggBox(player.inventory, (TileEntityEggBox) te);
 			} 
 		}
 

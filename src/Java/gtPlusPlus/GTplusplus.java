@@ -32,6 +32,8 @@ import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.handler.events.MissingMappingsEvent;
+import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.general.ItemGiantEgg;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
@@ -196,6 +198,7 @@ public class GTplusplus implements ActionListener {
 		Core_Manager.postInit();
 		//SprinklerHandler.registerModFerts();
 
+		ItemGiantEgg.postInit(ModItems.itemBigEgg);
 		BlockEventHandler.init();
         GTPP_Recipe.reInit();
 

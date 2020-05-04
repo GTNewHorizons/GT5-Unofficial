@@ -51,7 +51,10 @@ public class ItemBlockBasicTile extends ItemBlock {
 			list.add("Use either Formaldehyde or Hydrogen cyanide");
 			list.add("Be weary of your neighbours");
 		} 
-		else if (this.mID == 7) {
+		else if (this.mID == 7) { // Egg Box
+			list.add("A box for holding big eggs");
+			list.add("Items which decay will tick while inside");
+			list.add("Place with right click");
 
 		} 
 		else if (this.mID == 8){

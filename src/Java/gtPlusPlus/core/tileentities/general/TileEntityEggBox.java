@@ -1,8 +1,8 @@
 package gtPlusPlus.core.tileentities.general;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.inventories.Inventory_DecayablesChest;
-import gtPlusPlus.core.item.materials.DustDecayable;
+import gtPlusPlus.core.inventories.Inventory_EggBox;
+import gtPlusPlus.core.item.general.ItemGiantEgg;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -11,20 +11,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class TileEntityDecayablesChest extends TileEntity implements ISidedInventory {
+public class TileEntityEggBox extends TileEntity implements ISidedInventory {
 
-	private final Inventory_DecayablesChest inventoryContents;
+	private final Inventory_EggBox inventoryContents;
 
 	/** Determines if the check for adjacent chests has taken place. */
 	public boolean adjacentChestChecked;
 	/** Contains the chest tile located adjacent to this one (if any) */
-	public TileEntityDecayablesChest adjacentChestZNeg;
+	public TileEntityEggBox adjacentChestZNeg;
 	/** Contains the chest tile located adjacent to this one (if any) */
-	public TileEntityDecayablesChest adjacentChestXPos;
+	public TileEntityEggBox adjacentChestXPos;
 	/** Contains the chest tile located adjacent to this one (if any) */
-	public TileEntityDecayablesChest adjacentChestXNeg;
+	public TileEntityEggBox adjacentChestXNeg;
 	/** Contains the chest tile located adjacent to this one (if any) */
-	public TileEntityDecayablesChest adjacentChestZPos;
+	public TileEntityEggBox adjacentChestZPos;
 	/** The current angle of the lid (between 0 and 1) */
 	public float lidAngle;
 	/** The angle of the lid last tick */
@@ -37,11 +37,11 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 	private int cachedChestType;
 	private int tickCount = 0;
 
-	public TileEntityDecayablesChest() {
-		this.inventoryContents = new Inventory_DecayablesChest();
+	public TileEntityEggBox() {
+		this.inventoryContents = new Inventory_EggBox();
 	}
 
-	public Inventory_DecayablesChest getInventory() {
+	public Inventory_EggBox getInventory() {
 		return this.inventoryContents;
 	}
 
@@ -67,8 +67,8 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 						if (inv == null) {
 							continue;
 						}
-						if (inv.getItem() instanceof DustDecayable) {
-							DustDecayable D = (DustDecayable) inv.getItem();
+						if (inv.getItem() instanceof ItemGiantEgg) {
+							ItemGiantEgg D = (ItemGiantEgg) inv.getItem();
 							tryUpdateDecayable(D, inv, this.worldObj);
 						}
 					}
@@ -80,7 +80,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 		}
 	}
 
-	public void tryUpdateDecayable(final DustDecayable b, ItemStack iStack, final World world) {
+	public void tryUpdateDecayable(final ItemGiantEgg d, ItemStack iStack, final World world) {
 		if (world == null || iStack == null) {
 			return;
 		}
@@ -90,21 +90,21 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 
 		boolean a1, a2;
 		int u = 0;
-		a1 = b.isTicking(world, iStack);
+		a1 = d.isTicking(world, iStack);
 		a2 = false;
 		int SECONDS_TO_PROCESS = 1;
 		while (u < (20 * SECONDS_TO_PROCESS)) {
 			if (!a1) {
 				break;
 			}
-			a1 = b.isTicking(world, iStack);
-			a2 = b.tickItemTag(world, iStack);
+			a1 = d.isTicking(world, iStack);
+			a2 = d.tickItemTag(world, iStack);
 			u++;
 		}
-		Logger.MACHINE_INFO("| "+b.getUnlocalizedName()+" | "+a1+"/"+a2);
+		Logger.MACHINE_INFO("| "+d.getUnlocalizedName()+" | "+a1+"/"+a2);
 
 		if (!a1 && !a2) {
-			ItemStack replacement = ItemUtils.getSimpleStack(b.getDecayResult());
+			ItemStack replacement = ItemUtils.getSimpleStack(d.getHatchResult(), 1);
 			replacement.stackSize = 1;
 			//iStack = replacement.copy();
 			for (int fff = 0; fff < this.inventoryContents.getSizeInventory(); fff++) {
@@ -249,7 +249,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.DecayablesChest";
+		return this.hasCustomInventoryName() ? this.customName : "container.EggBox";
 	}
 
 	@Override

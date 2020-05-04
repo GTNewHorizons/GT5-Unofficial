@@ -60,6 +60,7 @@ import gtPlusPlus.core.item.general.capture.ItemEntityCatcher;
 import gtPlusPlus.core.item.general.chassis.ItemBoilerChassis;
 import gtPlusPlus.core.item.general.chassis.ItemDehydratorCoil;
 import gtPlusPlus.core.item.general.chassis.ItemDehydratorCoilWire;
+import gtPlusPlus.core.item.general.spawn.ItemCustomSpawnEgg;
 import gtPlusPlus.core.item.general.throwables.ItemHydrofluoricAcidPotion;
 import gtPlusPlus.core.item.general.throwables.ItemSulfuricAcidPotion;
 import gtPlusPlus.core.item.general.throwables.ItemThrowableBomb;
@@ -111,7 +112,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 public final class ModItems {
 
-
 	public static ToolMaterial STABALLOY = EnumHelper.addToolMaterial("Staballoy", 3, 2500, 7, 1.0F, 18);
 	
 	public static Item ZZZ_Empty;
@@ -120,7 +120,7 @@ public final class ModItems {
 
 	public static Item itemAlkalusDisk;
 	public static Item itemDebugShapeSpawner;
-	public static Item itemBaseSpawnEgg;
+	public static ItemCustomSpawnEgg itemCustomSpawnEgg;
 
 	//EnderIO
 	public static Item itemPlateSoularium;
@@ -317,7 +317,7 @@ public final class ModItems {
 	public static Item dustDecayedRadium226;
 	public static Item dustRadium226;
 	
-	public static Item itemBigEgg;
+	public static ItemGiantEgg itemBigEgg;
 
 	public static GregtechPump toolGregtechPump;
 
@@ -384,9 +384,10 @@ public final class ModItems {
 		itemDebugScanner = new DebugScanner();
 		
 		itemAlkalusDisk = new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, 1, 0, "Unknown Use", EnumRarity.rare, EnumChatFormatting.AQUA, false, null);
-		itemBigEgg = new ItemGiantEgg("itemBigEgg", "Ginourmous Chicken Egg", tabMisc, 64, 0, "I had best try disassemble this.. for science!", "fuelLargeChickenEgg", 5000, 0).setTextureName(CORE.MODID + ":itemBigEgg");
+		itemBigEgg = new ItemGiantEgg();
 		itemGenericToken = new ItemGenericToken();
 		itemDummyResearch = new ItemDummyResearch();
+		itemCustomSpawnEgg = new ItemCustomSpawnEgg();
 		
 		//Debug Loading
 		if (CORE_Preloader.DEBUG_MODE){

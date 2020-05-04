@@ -1,8 +1,8 @@
 package gtPlusPlus.core.container;
 
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.inventories.Inventory_DecayablesChest;
-import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
+import gtPlusPlus.core.inventories.Inventory_EggBox;
+import gtPlusPlus.core.tileentities.general.TileEntityEggBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -10,10 +10,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class Container_DecayablesChest extends Container {
+public class Container_EggBox extends Container {
 
-	protected TileEntityDecayablesChest tile_entity;
-	public final Inventory_DecayablesChest inventoryChest;
+	protected TileEntityEggBox tile_entity;
+	public final Inventory_EggBox inventoryChest;
 
 	private final World worldObj;
 	private final int posX;
@@ -28,7 +28,7 @@ public class Container_DecayablesChest extends Container {
 
 	private final int[] slotStorage = new int[15];
 
-	public Container_DecayablesChest(final InventoryPlayer inventory, final TileEntityDecayablesChest te) {
+	public Container_EggBox(final InventoryPlayer inventory, final TileEntityEggBox te) {
 		this.tile_entity = te;
 		this.inventoryChest = te.getInventory();
         te.openInventory();
@@ -84,7 +84,7 @@ public class Container_DecayablesChest extends Container {
 
 	@Override
 	public boolean canInteractWith(final EntityPlayer par1EntityPlayer) {
-		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockDecayablesChest) {
+		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockEggBox) {
 			return false;
 		}
 

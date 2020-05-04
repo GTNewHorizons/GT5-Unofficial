@@ -17,6 +17,7 @@ import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntitySulfuricAcidPotion;
 import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
+import gtPlusPlus.core.item.general.spawn.ItemCustomSpawnEgg;
 import gtPlusPlus.core.util.Utils;
 
 public class InternalEntityRegistry {
@@ -28,7 +29,6 @@ public class InternalEntityRegistry {
 		
         //EntityRegistry.registerGlobalEntityID(EntityPrimedMiningExplosive.class, "MiningCharge", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(0, 0, 0), Utils.rgbtoHexValue(125, 125, 125));
         EntityRegistry.registerModEntity(EntityPrimedMiningExplosive.class, "MiningCharge", mEntityID++, GTplusplus.instance, 64, 20, true);
-        
 
         //EntityRegistry.registerGlobalEntityID(EntitySulfuricAcidPotion.class, "throwablePotionSulfuric", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(200, 0, 200), Utils.rgbtoHexValue(125, 125, 125));
         EntityRegistry.registerModEntity(EntitySulfuricAcidPotion.class, "throwablePotionSulfuric", mEntityID++, GTplusplus.instance, 64, 20, true);
@@ -44,11 +44,11 @@ public class InternalEntityRegistry {
 
         //EntityRegistry.registerGlobalEntityID(EntityStaballoyConstruct.class, "constructStaballoy", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(0, 75, 0), Utils.rgbtoHexValue(50, 220, 50));
         EntityRegistry.registerModEntity(EntityStaballoyConstruct.class, "constructStaballoy", mEntityID++, GTplusplus.instance, 64, 20, true);
-        
+        ItemCustomSpawnEgg.registerEntityForSpawnEgg(0, "constructStaballoy", Utils.rgbtoHexValue(20, 200, 20), Utils.rgbtoHexValue(20, 20, 20));
 
         //EntityRegistry.registerGlobalEntityID(EntitySickBlaze.class, "sickBlaze", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(0, 75, 0), Utils.rgbtoHexValue(75, 175, 75));
         EntityRegistry.registerModEntity(EntitySickBlaze.class, "sickBlaze", mEntityID++, GTplusplus.instance, 64, 20, true);
-       
+        ItemCustomSpawnEgg.registerEntityForSpawnEgg(1, "sickBlaze", Utils.rgbtoHexValue(40, 180, 40), Utils.rgbtoHexValue(75, 75, 75));
 
         //EntityRegistry.registerGlobalEntityID(EntityTeslaTowerLightning.class, "plasmaBolt", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(255, 0, 0), Utils.rgbtoHexValue(125, 125, 125));
         EntityRegistry.registerModEntity(EntityTeslaTowerLightning.class, "plasmaBolt", mEntityID++, GTplusplus.instance, 64, 5, true);
@@ -61,8 +61,10 @@ public class InternalEntityRegistry {
          * Globals, which generate spawn eggs. (Currently required for Giant chicken spawning)
          */
         
-        EntityRegistry.registerGlobalEntityID(EntityGiantChickenBase.class, "bigChickenFriendly", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(255, 0, 0), Utils.rgbtoHexValue(175, 175, 175));
-        EntityRegistry.registerGlobalEntityID(EntityBatKing.class, "batKing", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(175, 175, 0), Utils.rgbtoHexValue(0, 175, 175));
+        EntityRegistry.registerModEntity(EntityGiantChickenBase.class, "bigChickenFriendly", mEntityID++, GTplusplus.instance, 64, 20, true);
+        ItemCustomSpawnEgg.registerEntityForSpawnEgg(2, "bigChickenFriendly", Utils.rgbtoHexValue(255, 0, 0), Utils.rgbtoHexValue(175, 175, 175));
+        EntityRegistry.registerModEntity(EntityBatKing.class, "batKing", mEntityID++, GTplusplus.instance, 64, 20, true);
+        ItemCustomSpawnEgg.registerEntityForSpawnEgg(3, "batKing", Utils.rgbtoHexValue(175, 175, 0), Utils.rgbtoHexValue(0, 175, 175));
         //EntityRegistry.registerModEntity(EntityGiantChickenBase.class, "bigChickenFriendly", mEntityID++, GTplusplus.instance, 64, 20, true);
         
         
@@ -71,9 +73,13 @@ public class InternalEntityRegistry {
         
         //Australia
         EntityRegistry.registerModEntity(EntityAustralianSpiderBase.class, "AusSpider", mEntityID++, GTplusplus.instance, 64, 20, true);
+        ItemCustomSpawnEgg.registerEntityForSpawnEgg(30, "AusSpider", Utils.rgbtoHexValue(125, 0, 125), Utils.rgbtoHexValue(175, 175, 175));
         EntityRegistry.registerModEntity(EntityBoar.class, "AusBoar", mEntityID++, GTplusplus.instance, 64, 20, true);
+        ItemCustomSpawnEgg.registerEntityForSpawnEgg(31, "AusBoar", Utils.rgbtoHexValue(75, 75, 0), Utils.rgbtoHexValue(175, 175, 75));
         EntityRegistry.registerModEntity(EntityDingo.class, "AusDingo", mEntityID++, GTplusplus.instance, 64, 20, true);
+        ItemCustomSpawnEgg.registerEntityForSpawnEgg(32, "AusDingo", Utils.rgbtoHexValue(175, 125, 0), Utils.rgbtoHexValue(175, 75, 175));
         EntityRegistry.registerModEntity(EntityOctopus.class, "AusOctopus", mEntityID++, GTplusplus.instance, 32, 20, true);
+        ItemCustomSpawnEgg.registerEntityForSpawnEgg(33, "AusOctopus", Utils.rgbtoHexValue(150, 50, 150), Utils.rgbtoHexValue(75, 175, 175));
         //EntityRegistry.registerGlobalEntityID(EntityAustralianSpiderBase.class, "AusSpider", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(255, 0, 0), Utils.rgbtoHexValue(175, 175, 175));
         //EntityRegistry.registerGlobalEntityID(EntityBoar.class, "AusBoar", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(255, 0, 0), Utils.rgbtoHexValue(175, 175, 175));
         //EntityRegistry.registerGlobalEntityID(EntityDingo.class, "AusDingo", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(255, 0, 0), Utils.rgbtoHexValue(175, 175, 175));

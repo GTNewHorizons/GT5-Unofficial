@@ -13,19 +13,7 @@ import gtPlusPlus.core.block.general.PlayerDoors;
 import gtPlusPlus.core.block.general.antigrief.BlockWitherProof;
 import gtPlusPlus.core.block.general.redstone.BlockGenericRedstoneDetector;
 import gtPlusPlus.core.block.general.redstone.BlockGenericRedstoneTest;
-import gtPlusPlus.core.block.machine.CircuitProgrammer;
-import gtPlusPlus.core.block.machine.DecayablesChest;
-import gtPlusPlus.core.block.machine.FishTrap;
-import gtPlusPlus.core.block.machine.HeliumGenerator;
-import gtPlusPlus.core.block.machine.Machine_ModularityTable;
-import gtPlusPlus.core.block.machine.Machine_PestKiller;
-import gtPlusPlus.core.block.machine.Machine_PooCollector;
-import gtPlusPlus.core.block.machine.Machine_ProjectTable;
-import gtPlusPlus.core.block.machine.Machine_RoundRobinator;
-import gtPlusPlus.core.block.machine.Machine_SuperJukebox;
-import gtPlusPlus.core.block.machine.Machine_TradeTable;
-import gtPlusPlus.core.block.machine.Machine_Workbench;
-import gtPlusPlus.core.block.machine.Machine_WorkbenchAdvanced;
+import gtPlusPlus.core.block.machine.*;
 import gtPlusPlus.core.block.machine.bedrock.Mining_Head_Fake;
 import gtPlusPlus.core.block.machine.bedrock.Mining_Pipe_Fake;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
@@ -44,6 +32,7 @@ public final class ModBlocks {
 	public static Block blockWorkbench;
 	public static Block blockWorkbenchAdvanced;
 	public static Block blockDecayablesChest;
+	public static Block blockEggBox;
 	
 	//Blocks
 	//public static Block blockBloodSteel;
@@ -137,8 +126,9 @@ public final class ModBlocks {
 		blockFakeMiningHead = new Mining_Head_Fake();
 		
 		blockCircuitProgrammer = new CircuitProgrammer();
-		
+
 		blockDecayablesChest = new DecayablesChest();
+		blockEggBox = new EggBox();
 		
 		blockPlayerDoorWooden = new PlayerDoors(Material.wood, "door_wood", true);
 		blockPlayerDoorIron = new PlayerDoors(Material.iron, "door_iron", true);

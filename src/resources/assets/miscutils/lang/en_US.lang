@@ -3180,3 +3180,12 @@ item.FrothPyropeflotation.name=Pyrope Flotation Froth Cell
 
 //Added 13/04/20
 item.T3RecipeSelector.name=Programmed Breakthrough Circuit
+
+//Added 03/05/20
+entity.miscutils.batKing.name=Spectral Bat
+entity.miscutils.bigChickenFriendly.name=Giant Chicken
+entity.miscutils.AusDingo.name=Dingo
+entity.miscutils.AusBoar.name=Wild Boar
+entity.miscutils.AusSpider.name=Forest Spider
+entity.miscutils.AusOctopus.name=Octopus
+container.EggBox=Egg Hatching Box
