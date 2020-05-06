@@ -58,6 +58,21 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehavior {
 
     }
 
+    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        int aFilterMode = aCoverVariable & 7;
+        aCoverVariable ^= aFilterMode;
+        aFilterMode = (aFilterMode + (aPlayer.isSneaking()? -1 : 1)) % 8;
+        if (aFilterMode < 0) {
+            aFilterMode = 7;
+        }
+
+        GT_Utility.sendChatToPlayer(aPlayer, getFilterMode(aFilterMode));
+
+        aCoverVariable|=aFilterMode;
+
+        return aCoverVariable;
+    }
+
     public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         //GT_FML_LOGGER.info("rightclick");
         if (
@@ -154,8 +169,8 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehavior {
         private final int coverID;
         private int coverVariable;
         private final ICoverable tile;
-        private GT_GuiFakeItemButton fakeItemButton;
-        protected String header, filterString;
+        private GT_GuiFakeItemButton fluidFilterButton;
+        protected String fluidFilterName;
 
         private final static int startX = 10;
         private final static int startY = 25;
@@ -164,24 +179,21 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehavior {
 
         public GT_FluidFilterGUICover(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
         {
+            super(176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
             this.tile = aTileEntity;
 
-            ItemStack item = GT_Utility.intToStack(aCoverID);
-            this.header = (item != null) ? item.getDisplayName() : "";
-
             GT_GuiIconButton b;
-            b = new GT_GuiIconButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.EXPORT).setTooltipText(trans("043","Filter Input"));
-            b = new GT_GuiIconButton(this, 1, startX + spaceX*1, startY+spaceY*0, GT_GuiIcon.IMPORT).setTooltipText(trans("044","Filter Output"));
-            b = new GT_GuiIconButton(this, 2, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.BLOCK_INPUT).setTooltipText(trans("219", "Block Output"));
-            b = new GT_GuiIconButton(this, 3, startX + spaceX*1, startY+spaceY*2, GT_GuiIcon.ALLOW_INPUT).setTooltipText(trans("220", "Allow Output"));
-            b = new GT_GuiIconButton(this, 4, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.WHITELIST).setTooltipText(trans("045","Whitelist Fluid"));
-            b = new GT_GuiIconButton(this, 5, startX + spaceX*1, startY+spaceY*1, GT_GuiIcon.BLACKLIST).setTooltipText(trans("046","Blacklist Fluid"));
+            b = new GT_GuiIconButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.EXPORT).setTooltipText(trans("232","Filter Input"));
+            b = new GT_GuiIconButton(this, 1, startX + spaceX*1, startY+spaceY*0, GT_GuiIcon.IMPORT).setTooltipText(trans("233","Filter Output"));
+            b = new GT_GuiIconButton(this, 2, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.BLOCK_INPUT).setTooltipText(trans("234", "Block Output"));
+            b = new GT_GuiIconButton(this, 3, startX + spaceX*1, startY+spaceY*2, GT_GuiIcon.ALLOW_INPUT).setTooltipText(trans("235", "Allow Output"));
+            b = new GT_GuiIconButton(this, 4, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.WHITELIST).setTooltipText(trans("236","Whitelist Fluid"));
+            b = new GT_GuiIconButton(this, 5, startX + spaceX*1, startY+spaceY*1, GT_GuiIcon.BLACKLIST).setTooltipText(trans("237","Blacklist Fluid"));
 
-            new GT_GuiFakeItemButton(this, 5, 5, null).setItem(item);
-            fakeItemButton = new GT_GuiFakeItemButton(this, startX, startY+spaceY*3+2, GT_GuiIcon.SLOT_DARKGRAY);
+            fluidFilterButton = new GT_GuiFakeItemButton(this, startX, startY+spaceY*3+2, GT_GuiIcon.SLOT_DARKGRAY);
         }
 
         private int getNewCoverVariable(int id) {
@@ -217,11 +229,11 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehavior {
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            this.fontRendererObj.drawString(header, 25, 9, 0xFF222222);
-            this.fontRendererObj.drawString(trans("016","Filter Direction" ),   startX + spaceX*2, 3+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(trans("223", "Filter Type"),        startX + spaceX*2, 3+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(trans("017","Block Flow"),          startX + spaceX*2, 3+startY+spaceY*2, 0xFF555555);
-            this.fontRendererObj.drawSplitString(filterString,                                startX + spaceX+3, 4+startY+spaceY*3, gui_width-40 , 0xFF222222);
+            super.drawExtras(mouseX, mouseY, parTicks);
+            this.fontRendererObj.drawString(trans("238","Filter Direction" ),   startX + spaceX*2, 3+startY+spaceY*0, 0xFF555555);
+            this.fontRendererObj.drawString(trans("239", "Filter Type"),        startX + spaceX*2, 3+startY+spaceY*1, 0xFF555555);
+            this.fontRendererObj.drawString(trans("240","Block Flow"),          startX + spaceX*2, 3+startY+spaceY*2, 0xFF555555);
+            this.fontRendererObj.drawSplitString(fluidFilterName,                                startX + spaceX+3, 4+startY+spaceY*3, gui_width-40 , 0xFF222222);
         }
 
         @Override
@@ -260,13 +272,13 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehavior {
             if (f != null) {
                 ItemStack item = GT_Utility.getFluidDisplayStack(f);
                 if (item != null) {
-                    fakeItemButton.setItem(item);
-                    filterString = item.getDisplayName();
+                    fluidFilterButton.setItem(item);
+                    fluidFilterName = item.getDisplayName();
                     return;
                 }
             }
-            fakeItemButton.setItem(null);
-            filterString = trans("224", "Filter Empty");
+            fluidFilterButton.setItem(null);
+            fluidFilterName = trans("224", "Filter Empty");
         }
     }
 }

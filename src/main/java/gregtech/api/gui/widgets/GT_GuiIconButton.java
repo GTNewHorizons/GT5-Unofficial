@@ -56,7 +56,7 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
             int x = xPosition;
             int y = yPosition;
             if(!this.field_146123_n) {
-                GL11.glColor4f(160F/255F, 170F/255F, 1, 1);
+                GL11.glColor4f(200F/255F, 210F/255F, 1, 1);
             }
             else
                 GL11.glColor4f(1, 1, 1, 1);

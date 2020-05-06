@@ -2,7 +2,6 @@ package gregtech.common.covers;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
@@ -11,7 +10,7 @@ import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,19 +19,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class GT_Cover_Pump
         extends GT_CoverBehavior{
     public final int mTransferRate;
-
-    //  {"006", "Export"},
-    //  {"007", "Import"},
-    //  {"008", "Export (conditional)"},
-    //  {"009", "Import (conditional)"},
-    //  {"010", "Export (invert cond)"},
-    //  {"011", "Import (invert cond)"},
-    //  {"012", "Export allow Input"},
-    //  {"013", "Import allow Output"},
-    //  {"014", "Export allow Input (conditional)"},
-    //  {"015", "Import allow Output (conditional)"},
-    //  {"016", "Export allow Input (invert cond)"},
-    //  {"017", "Import allow Output (invert cond)"},
 
     public GT_Cover_Pump(int aTransferRate) {
         this.mTransferRate = aTransferRate;
@@ -83,6 +69,26 @@ public class GT_Cover_Pump
                     }
                 }
             }
+        }
+        return aCoverVariable;
+    }
+
+    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % 12;
+        if(aCoverVariable <0){aCoverVariable = 11;}
+        switch(aCoverVariable) {
+        case 0: GT_Utility.sendChatToPlayer(aPlayer, trans("006", "Export")); break;
+        case 1: GT_Utility.sendChatToPlayer(aPlayer, trans("007", "Import")); break;
+        case 2: GT_Utility.sendChatToPlayer(aPlayer, trans("008", "Export (conditional)")); break;
+        case 3: GT_Utility.sendChatToPlayer(aPlayer, trans("009", "Import (conditional)")); break;
+        case 4: GT_Utility.sendChatToPlayer(aPlayer, trans("010", "Export (invert cond)")); break;
+        case 5: GT_Utility.sendChatToPlayer(aPlayer, trans("011", "Import (invert cond)")); break;
+        case 6: GT_Utility.sendChatToPlayer(aPlayer, trans("012", "Export allow Input")); break;
+        case 7: GT_Utility.sendChatToPlayer(aPlayer, trans("013", "Import allow Output")); break;
+        case 8: GT_Utility.sendChatToPlayer(aPlayer, trans("014", "Export allow Input (conditional)")); break;
+        case 9: GT_Utility.sendChatToPlayer(aPlayer, trans("015", "Import allow Output (conditional)")); break;
+        case 10: GT_Utility.sendChatToPlayer(aPlayer, trans("016", "Export allow Input (invert cond)")); break;
+        case 11: GT_Utility.sendChatToPlayer(aPlayer, trans("017", "Import allow Output (invert cond)")); break;
         }
         return aCoverVariable;
     }
@@ -156,7 +162,6 @@ public class GT_Cover_Pump
         private final int coverID;
         private int coverVariable;
         private final ICoverable tile;
-        protected String header;
 
         private final static int startX = 10;
         private final static int startY = 25;
@@ -164,31 +169,28 @@ public class GT_Cover_Pump
         private final static int spaceY = 18;
 
         public GT_PumpGUICover(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+            super(176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
             this.tile = aTileEntity;
 
-            ItemStack item = GT_Utility.intToStack(aCoverID);
-            this.header = (item != null) ? item.getDisplayName() : "";
-            new GT_GuiFakeItemButton(this, 5, 5, null).setItem(item);
-
             GT_GuiIconButton b;
             b = new GT_GuiIconButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.EXPORT).setTooltipText(trans("006","Export"));
             b = new GT_GuiIconButton(this, 1, startX + spaceX*1, startY+spaceY*0, GT_GuiIcon.IMPORT).setTooltipText(trans("007","Import"));
-            b = new GT_GuiIconButton(this, 2, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.CHECKMARK).setTooltipText(trans("008","Ignore"));
-            b = new GT_GuiIconButton(this, 3, startX + spaceX*1, startY+spaceY*1, GT_GuiIcon.REDSTONE_ON).setTooltipText(trans("009","Conditional"));
-            b = new GT_GuiIconButton(this, 4, startX + spaceX*2, startY+spaceY*1, GT_GuiIcon.REDSTONE_OFF).setTooltipText(trans("010","Invert Condition"));
-            b = new GT_GuiIconButton(this, 5, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.ALLOW_INPUT).setTooltipText(trans("011","Allow Input"));
-            b = new GT_GuiIconButton(this, 6, startX + spaceX*1, startY+spaceY*2, GT_GuiIcon.BLOCK_INPUT).setTooltipText(trans("012","Block Input"));
+            b = new GT_GuiIconButton(this, 2, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.CHECKMARK).setTooltipText(trans("224","Ignore"));
+            b = new GT_GuiIconButton(this, 3, startX + spaceX*1, startY+spaceY*1, GT_GuiIcon.REDSTONE_ON).setTooltipText(trans("225","Conditional"));
+            b = new GT_GuiIconButton(this, 4, startX + spaceX*2, startY+spaceY*1, GT_GuiIcon.REDSTONE_OFF).setTooltipText(trans("226","Invert Condition"));
+            b = new GT_GuiIconButton(this, 5, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.ALLOW_INPUT).setTooltipText(trans("227","Allow Input"));
+            b = new GT_GuiIconButton(this, 6, startX + spaceX*1, startY+spaceY*2, GT_GuiIcon.BLOCK_INPUT).setTooltipText(trans("228","Block Input"));
         }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            this.fontRendererObj.drawString(header, 25, 9, 0xFF222222);
-            this.fontRendererObj.drawString(trans("013","Import/Export" ),  startX + spaceX*3, 3+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(trans("014","Conditional"),     startX + spaceX*3, 3+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(trans("015", "Enable Input"),   startX + spaceX*3, 3+startY+spaceY*2, 0xFF555555);
+            super.drawExtras(mouseX, mouseY, parTicks);
+            this.fontRendererObj.drawString(trans("229","Import/Export" ),  startX + spaceX*3, 3+startY+spaceY*0, 0xFF555555);
+            this.fontRendererObj.drawString(trans("230","Conditional"),     startX + spaceX*3, 3+startY+spaceY*1, 0xFF555555);
+            this.fontRendererObj.drawString(trans("231", "Enable Input"),   startX + spaceX*3, 3+startY+spaceY*2, 0xFF555555);
         }
 
         @Override

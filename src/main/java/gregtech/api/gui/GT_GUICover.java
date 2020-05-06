@@ -1,6 +1,7 @@
 package gregtech.api.gui;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
 import gregtech.api.gui.widgets.GT_GuiTooltipManager;
 import gregtech.api.gui.widgets.GT_GuiTooltipManager.GT_IToolTipRenderer;
@@ -10,6 +11,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -26,15 +28,20 @@ public abstract class GT_GUICover extends GuiScreen implements GT_IToolTipRender
     protected int guiTop, guiLeft;
     protected boolean drawButtons = true;
     private GuiButton selectedButton;
+    public String header;
+    public GT_GuiFakeItemButton headerIcon;
+
 
     protected List<IGuiElement> elements = new ArrayList<>();
 
     public GT_GUICover() {
     }
 
-    public GT_GUICover(int width, int height) {
+    public GT_GUICover(int width, int height, ItemStack cover) {
         this.gui_width = width;
         this.gui_height = height;
+        this.header = (cover != null) ? cover.getDisplayName() : "";
+        this.headerIcon = new GT_GuiFakeItemButton(this, 5, 5, null).setItem(cover);
     }
 
     @Override
@@ -98,7 +105,9 @@ public abstract class GT_GUICover extends GuiScreen implements GT_IToolTipRender
         drawTexturedModalRect(guiLeft, guiTop, 0,0, gui_width, gui_height);
     }
 
-    public void drawExtras(int mouseX, int mouseY, float parTicks) {}
+    public void drawExtras(int mouseX, int mouseY, float parTicks) {
+        this.fontRendererObj.drawString(header, 25, 9, 0xFF222222);
+    }
 
     @Override
     public boolean doesGuiPauseGame()

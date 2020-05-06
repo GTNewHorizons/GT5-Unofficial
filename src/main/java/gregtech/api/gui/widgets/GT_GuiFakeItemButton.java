@@ -26,8 +26,9 @@ public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
         gui.addElement(this);
     }
 
-    public void setItem(ItemStack i) {
+    public GT_GuiFakeItemButton setItem(ItemStack i) {
         item = i;
+        return this;
     }
 
     public ItemStack getItem(){

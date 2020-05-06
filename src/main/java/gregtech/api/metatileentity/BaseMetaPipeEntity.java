@@ -32,6 +32,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -804,15 +805,6 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         return hasValidMetaTileEntity() && !isDead;
     }
 
-    public boolean shouldDisplayWrenchGrid(ItemStack heldItem, byte side) {
-        return (getCoverIDAtSide(side) == 0) && (
-                 GT_Utility.isStackInList(heldItem, GregTech_API.sCovers.keySet()) ||
-                 GT_Utility.isStackInList(heldItem, GregTech_API.sCrowbarList) ||
-                 GT_Utility.isStackInList(heldItem, GregTech_API.sWireCutterList) ||
-                 GT_Utility.isStackInList(heldItem, GregTech_API.sScrewdriverList) ||
-                 GT_Utility.isStackInList(heldItem, GregTech_API.sSolderingToolList));
-    }
-
     @Override
     public void doExplosion(long aAmount) {
         if (canAccessData()) {
@@ -841,14 +833,13 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
         if (isClientSide()) {
-            byte tSide = aSide;
-            ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-
-            if (shouldDisplayWrenchGrid(tCurrentItem, aSide)) {
-                tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
+            //Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
+            if (aPlayer.isSneaking()) {
+                byte tSide = (getCoverIDAtSide(aSide) == 0) ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ) : aSide;
+                return (getCoverBehaviorAtSide(tSide).hasCoverGUI());
+            } else if (getCoverBehaviorAtSide(aSide).onCoverRightclickClient(aSide, this, aPlayer, aX, aY, aZ)) {
+                return true;
             }
-
-            if (getCoverBehaviorAtSide(tSide).onCoverRightclickClient(tSide, this, aPlayer, aX, aY, aZ)) return true;
         }
         if (isServerSide()) {
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
@@ -944,6 +935,10 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 }
             }
+            else if (aPlayer.isSneaking()) { //Sneak click, no tool -> open cover config if possible.
+                aSide = (getCoverIDAtSide(aSide) == 0) ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ) : aSide;
+                return getCoverIDAtSide(aSide) > 0 && getCoverBehaviorAtSide(aSide).onCoverShiftRightclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this, aPlayer);
+            }
 
             if (getCoverBehaviorAtSide(aSide).onCoverRightclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this, aPlayer, aX, aY, aZ))
                 return true;
@@ -953,7 +948,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             return false;
 
         try {
-            if (hasValidMetaTileEntity()) return mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ);
+            if (!aPlayer.isSneaking() && hasValidMetaTileEntity()) return mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ);
         } catch (Throwable e) {
             GT_Log.err.println("Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);

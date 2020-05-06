@@ -1318,19 +1318,17 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         return (mMuffler ? 1 : 0) + (mLockUpgrade ? 1 : 0) + (mSteamConverter ? 1 : 0) + mOtherUpgrades;
     }
 
-    public boolean shouldDisplayWrenchGrid(ItemStack heldItem, byte side) {
-        return (getCoverIDAtSide(side) == 0) && (
-                GT_Utility.isStackInList(heldItem, GregTech_API.sCovers.keySet()) ||
-                GT_Utility.isStackInList(heldItem, GregTech_API.sCrowbarList) ||
-                GT_Utility.isStackInList(heldItem, GregTech_API.sWireCutterList) ||
-                GT_Utility.isStackInList(heldItem, GregTech_API.sScrewdriverList) ||
-                GT_Utility.isStackInList(heldItem, GregTech_API.sSolderingToolList));
-    }
-
     @Override
     public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
         if (isClientSide()) {
-            if (getCoverBehaviorAtSide(aSide).onCoverRightclickClient(aSide, this, aPlayer, aX, aY, aZ)) return true;
+            //Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
+            if (aPlayer.isSneaking()) {
+                byte tSide = (getCoverIDAtSide(aSide) == 0) ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ) : aSide;
+                return (getCoverBehaviorAtSide(tSide).hasCoverGUI());
+            } else if (getCoverBehaviorAtSide(aSide).onCoverRightclickClient(aSide, this, aPlayer, aX, aY, aZ)) {
+                return true;
+            }
+
             if (!getCoverBehaviorAtSide(aSide).isGUIClickable(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this))
                 return false;
         }
@@ -1415,7 +1413,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
                     if (getCoverIDAtSide(tSide) == 0) {
                         if (GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))) {
-                            if (GregTech_API.getCoverBehavior(tCurrentItem).isCoverPlaceable(tSide, new GT_ItemStack(tCurrentItem), this) && mMetaTileEntity.allowCoverOnSide(aSide, new GT_ItemStack(tCurrentItem))) {
+                            if (GregTech_API.getCoverBehavior(tCurrentItem).isCoverPlaceable(tSide, new GT_ItemStack(tCurrentItem), this) && mMetaTileEntity.allowCoverOnSide(tSide, new GT_ItemStack(tCurrentItem))) {
                                 setCoverItemAtSide(tSide, tCurrentItem);
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                                 GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
@@ -1432,6 +1430,10 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                         }
                     }
                 }
+                else if (aPlayer.isSneaking()) { //Sneak click, no tool -> open cover config if possible.
+                    aSide = (getCoverIDAtSide(aSide) == 0) ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ) : aSide;
+                    return getCoverIDAtSide(aSide) > 0 && getCoverBehaviorAtSide(aSide).onCoverShiftRightclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this, aPlayer);
+                }
 
                 if (getCoverBehaviorAtSide(aSide).onCoverRightclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this, aPlayer, aX, aY, aZ))
                     return true;
@@ -1439,7 +1441,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                 if (!getCoverBehaviorAtSide(aSide).isGUIClickable(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this))
                     return false;
 
-                if (isUpgradable() && aPlayer.inventory.getCurrentItem() != null) {/*
+                if (isUpgradable() && tCurrentItem != null) {/*
                     if (ItemList.Upgrade_SteamEngine.isStackEqual(aPlayer.inventory.getCurrentItem())) {
 						if (addSteamEngineUpgrade()) {
 							GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(3), 1.0F, -1, xCoord, yCoord, zCoord);
@@ -1469,13 +1471,13 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         }
 
         try {
-            if (hasValidMetaTileEntity()) return mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ);
+            if (!aPlayer.isSneaking() && hasValidMetaTileEntity()) return mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ);
         } catch (Throwable e) {
             GT_Log.err.println("Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);
         }
 
-        return true;
+        return false;
     }
 
     @Override

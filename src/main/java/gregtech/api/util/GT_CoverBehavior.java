@@ -46,14 +46,18 @@ public abstract class GT_CoverBehavior {
      * return the new Value of the Cover Variable
      */
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!hasCoverGUI())
-            return aCoverVariable;
-
-        if(aPlayer instanceof EntityPlayerMP) {
-            GT_Values.NW.sendToPlayer(new GT_Packet_TileEntityCoverGUI(aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer), (EntityPlayerMP) aPlayer);
-        }
-
         return aCoverVariable;
+    }
+
+    /**
+     * Called when someone shift-rightclicks this Cover with no tool. Doesn't call @onCoverRightclick in this Case.
+     */
+    public boolean onCoverShiftRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
+        if(hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
+            GT_Values.NW.sendToPlayer(new GT_Packet_TileEntityCoverGUI(aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer), (EntityPlayerMP) aPlayer);
+            return true;
+        }
+        return false;
     }
 
     public boolean hasCoverGUI() {
