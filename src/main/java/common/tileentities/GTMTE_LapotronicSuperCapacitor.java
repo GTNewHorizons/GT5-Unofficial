@@ -197,33 +197,51 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 		}
 		
-		
+		return formationChecklist;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	@Override
+	public int getMaxEfficiency(ItemStack stack) {
+		return 10000;
+	}
+
+	@Override
+	public int getPollutionPerTick(ItemStack stack) {
+		return 0;
+	}
+
+	@Override
+	public int getDamageToComponent(ItemStack stack) {
+		return 0;
+	}
+
+	@Override
+	public boolean explodesOnComponentBreak(ItemStack stack) {
+		return false;
+	}
 	
 }
