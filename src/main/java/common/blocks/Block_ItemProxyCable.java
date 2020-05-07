@@ -16,17 +16,13 @@ import render.ConduitRenderer;
 
 public class Block_ItemProxyCable extends Block {
 	
-	private static Block_ItemProxyCable instance;
+	private static Block_ItemProxyCable instance = new Block_ItemProxyCable();
 	
 	private Block_ItemProxyCable() {
 		super(Material.glass);
 	}
 	
 	public static Block registerBlock() {
-		if(instance == null) {
-			instance = new Block_ItemProxyCable();
-		}
-		
 		final String blockName = "kekztech_itemproxycable_block";
 		instance.setBlockName(blockName);
 		instance.setCreativeTab(CreativeTabs.tabMisc);

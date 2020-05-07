@@ -12,17 +12,13 @@ import net.minecraft.world.World;
 
 public class Block_ItemServerIOPort extends BaseGTUpdateableBlock {
 
-	private static Block_ItemServerIOPort instance;
+	private static Block_ItemServerIOPort instance = new Block_ItemServerIOPort();
 		
 	private Block_ItemServerIOPort() {
 		super(Material.iron);
 	}
 	
 	public static Block registerBlock() {
-		if(instance == null) {
-			instance = new Block_ItemServerIOPort();
-		}
-		
 		final String blockName = "kekztech_itemserverioport_block";
 		instance.setBlockName(blockName);
 		instance.setCreativeTab(CreativeTabs.tabMisc);

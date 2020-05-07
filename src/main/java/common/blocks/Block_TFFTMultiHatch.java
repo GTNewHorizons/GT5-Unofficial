@@ -16,17 +16,13 @@ import net.minecraft.world.World;
 
 public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 	
-	private static Block_TFFTMultiHatch instance;
+	private static Block_TFFTMultiHatch instance = new Block_TFFTMultiHatch();
 	
 	private Block_TFFTMultiHatch() {
 		super(Material.iron);
 	}
 	
 	public static Block registerBlock() {
-		if(instance == null) {
-			instance = new Block_TFFTMultiHatch();
-		}
-		
 		final String blockName = "kekztech_tfftmultihatch_block";
 		instance.setBlockName(blockName);
 		instance.setCreativeTab(CreativeTabs.tabMisc);
@@ -54,9 +50,9 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 		if (GT_Utility.isStackInList(player.getHeldItem(), GregTech_API.sScrewdriverList)) {
 			if (GT_ModHandler.damageOrDechargeItem(player.getHeldItem(), 1, 200, player)) {
 				final TileEntity te = world.getTileEntity(x, y, z);
-				if(te != null && te instanceof TE_TFFTMultiHatch) {
+				if(te instanceof TE_TFFTMultiHatch) {
 					((TE_TFFTMultiHatch) te).toggleAutoOutput();
-					GT_Utility.sendSoundToPlayers(world, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, x, y, z);
+					GT_Utility.sendSoundToPlayers(world, GregTech_API.sSoundList.get(100), 1.0F, -1.0F, x, y, z);
 					// Give chat feedback
 					GT_Utility.sendChatToPlayer(player, ((TE_TFFTMultiHatch) te).isOutputting() ? "Auto-output enabled" : "Auto-output disabled");
 					

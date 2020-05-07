@@ -8,17 +8,13 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class Block_YSZUnit extends BaseGTUpdateableBlock {
 	
-	private static Block_YSZUnit instance;
+	private static Block_YSZUnit instance = new Block_YSZUnit();
 	
 	private Block_YSZUnit() {
 		super(Material.iron);
 	}
 	
 	public static Block registerBlock() {
-		if(instance == null) {
-			instance = new Block_YSZUnit();
-		}
-		
 		final String blockName = "kekztech_yszceramicelectrolyteunit_block";
 		instance.setBlockName(blockName);
 		instance.setCreativeTab(CreativeTabs.tabMisc);

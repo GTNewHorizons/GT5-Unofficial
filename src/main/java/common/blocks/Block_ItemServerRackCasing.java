@@ -9,17 +9,13 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class Block_ItemServerRackCasing extends BaseGTUpdateableBlock {
 
-	private static Block_ItemServerRackCasing instance;
+	private static Block_ItemServerRackCasing instance = new Block_ItemServerRackCasing();
 		
 	private Block_ItemServerRackCasing() {
 		super(Material.iron);
 	}
 	
 	public static Block registerBlock() {
-		if(instance == null) {
-			instance = new Block_ItemServerRackCasing();
-		}
-		
 		final String blockName = "kekztech_itemserverrackcasing_block";
 		instance.setBlockName(blockName);
 		instance.setCreativeTab(CreativeTabs.tabMisc);

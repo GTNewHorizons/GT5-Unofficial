@@ -11,7 +11,7 @@ import net.minecraft.util.IIcon;
 
 public class Block_ItemServerDrive extends BaseGTUpdateableBlock{
 
-	private static Block_ItemServerDrive instance;
+	private static Block_ItemServerDrive instance = new Block_ItemServerDrive();
 	
 	private IIcon[] faces = new IIcon[6];
 	
@@ -20,10 +20,6 @@ public class Block_ItemServerDrive extends BaseGTUpdateableBlock{
 	}
 	
 	public static Block registerBlock() {
-		if(instance == null) {
-			instance = new Block_ItemServerDrive();
-		}
-		
 		final String blockName = "kekztech_itemserverdrive_block";
 		instance.setBlockName(blockName);
 		instance.setCreativeTab(CreativeTabs.tabMisc);

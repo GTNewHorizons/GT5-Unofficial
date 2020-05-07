@@ -8,17 +8,13 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class Block_ControlRod extends BaseGTUpdateableBlock {
 	
-	private static Block_ControlRod instance;
+	private static final Block_ControlRod instance = new Block_ControlRod();
 	
 	private Block_ControlRod() {
 		super(Material.iron);
 	}
 	
 	public static Block registerBlock() {
-		if(instance == null) {
-			instance = new Block_ControlRod();
-		}
-		
 		final String blockName = "kekztech_controlrod_block";
 		instance.setBlockName(blockName);
 		instance.setCreativeTab(CreativeTabs.tabMisc);

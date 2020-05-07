@@ -17,17 +17,13 @@ import net.minecraft.world.World;
 
 public class Block_ItemProxySource extends Block {
 	
-	private static Block_ItemProxySource instance;
+	private static Block_ItemProxySource instance = new Block_ItemProxySource();
 	
 	private Block_ItemProxySource() {
 		super(Material.glass);
 	}
 	
 	public static Block registerBlock() {
-		if(instance == null) {
-			instance = new Block_ItemProxySource();
-		}
-		
 		final String blockName = "kekztech_itemproxysource_block";
 		instance.setBlockName(blockName);
 		instance.setCreativeTab(CreativeTabs.tabMisc);
@@ -46,7 +42,7 @@ public class Block_ItemProxySource extends Block {
 		}
 		
 		final TileEntity te = world.getTileEntity(x, y, z);
-		if(te != null && te instanceof TE_ItemProxySource) {
+		if(te instanceof TE_ItemProxySource) {
 			final TE_ItemProxySource source = (TE_ItemProxySource) te;
 			if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof Item_Configurator) {
 				

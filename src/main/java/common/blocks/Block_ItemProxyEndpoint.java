@@ -18,17 +18,13 @@ import net.minecraft.world.World;
 
 public class Block_ItemProxyEndpoint extends Block {
 	
-	private static Block_ItemProxyEndpoint instance;
+	private static Block_ItemProxyEndpoint instance = new Block_ItemProxyEndpoint();
 	
 	private Block_ItemProxyEndpoint() {
 		super(Material.glass);
 	}
 	
 	public static Block registerBlock() {
-		if(instance == null) {
-			instance = new Block_ItemProxyEndpoint();
-		}
-		
 		final String blockName = "kekztech_itemproxyendpoint_block";
 		instance.setBlockName(blockName);
 		instance.setCreativeTab(CreativeTabs.tabMisc);
@@ -47,7 +43,7 @@ public class Block_ItemProxyEndpoint extends Block {
 		}
 		
 		final TileEntity te = world.getTileEntity(x, y, z);
-		if(te != null && te instanceof TE_ItemProxyEndpoint) {
+		if(te instanceof TE_ItemProxyEndpoint) {
 			final TE_ItemProxyEndpoint endpoint = (TE_ItemProxyEndpoint) te;
 			if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof Item_Configurator) {
 				

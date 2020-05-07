@@ -8,17 +8,13 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class Block_ReactorChamber_ON extends BaseGTUpdateableBlock {
 	
-	private static Block_ReactorChamber_ON instance;
+	private static Block_ReactorChamber_ON instance = new Block_ReactorChamber_ON();
 	
 	private Block_ReactorChamber_ON() {
 		super(Material.iron);
 	}
 	
 	public static Block registerBlock() {
-		if(instance == null) {
-			instance = new Block_ReactorChamber_ON();
-		}
-		
 		final String blockName = "kekztech_reactorchamberon_block";
 		instance.setBlockName(blockName);
 		instance.setCreativeTab(CreativeTabs.tabMisc);

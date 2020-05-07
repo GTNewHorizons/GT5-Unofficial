@@ -200,18 +200,15 @@ public class MultiFluidHandler {
 	 * @return Amount of fluid that was (or would have been, if simulated) pulled.
 	 */
 	public int pullFluid(FluidStack pull, boolean doPull) {
-		if(locked) {
-			return 0;
-		}
-		if(!contains(pull)) {
+		if (locked || !contains(pull)) {
 			return 0;
 		} else {
 			final FluidStack src = fluids.get(fluids.indexOf(pull));
 			final int rec = Math.min(pull.amount, src.amount);
-			if(doPull) {
+			if (doPull) {
 				src.amount -= rec;
 			}
-			if(src.amount == 0) {
+			if (src.amount == 0) {
 				fluids.remove(src);
 			}
 			return rec;
@@ -239,13 +236,13 @@ public class MultiFluidHandler {
 		if(!fluids.get(slot).equals(pull)) {
 			return 0;
 		} else {
-			final FluidStack pulled = fluids.get(slot);
-			final int rec = Math.min(pull.amount, pulled.amount);
+			final FluidStack src = fluids.get(slot);
+			final int rec = Math.min(pull.amount, src.amount);
 			if(doPull) {
-				pulled.amount -= rec;
+				src.amount -= rec;
 			}
-			if(pulled.amount == 0) {
-				fluids.remove(pulled);
+			if(src.amount == 0) {
+				fluids.remove(src);
 			}
 			return rec;
 		}

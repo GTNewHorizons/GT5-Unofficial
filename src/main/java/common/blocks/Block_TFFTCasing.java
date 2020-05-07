@@ -8,17 +8,13 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class Block_TFFTCasing extends BaseGTUpdateableBlock {
 	
-	private static Block_TFFTCasing instance;
+	private static Block_TFFTCasing instance = new Block_TFFTCasing();
 	
 	private Block_TFFTCasing() {
 		super(Material.iron);
 	}
 	
 	public static Block registerBlock() {
-		if(instance == null) {
-			instance = new Block_TFFTCasing();
-		}
-		
 		final String blockName = "kekztech_tfftcasingblock_block";
 		instance.setBlockName(blockName);
 		instance.setCreativeTab(CreativeTabs.tabMisc);
