@@ -57,7 +57,7 @@ public class KekzCore {
 		ErrorItem.getInstance().registerItem();
 		MetaItem_ReactorComponent.getInstance().registerItem();
 		MetaItem_CraftingComponent.getInstance().registerItem();
-		Item_Configurator.getInstance().registerItem();
+		//Item_Configurator.getInstance().registerItem();
 		Items.registerOreDictNames();
 		
 		Item_ThaumiumReinforcedJarFilled.getInstance().registerItem();
@@ -87,7 +87,7 @@ public class KekzCore {
 		fms = new GTMTE_FluidMultiStorage(13104, "multimachine.tf_fluidtank", "T.F.F.T");
 		//is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");	
 		// Register renderer
-		RenderingRegistry.registerBlockHandler(ConduitRenderer.getInstance());
+		//RenderingRegistry.registerBlockHandler(ConduitRenderer.getInstance());
 	}
 	
 	@Mod.EventHandler
