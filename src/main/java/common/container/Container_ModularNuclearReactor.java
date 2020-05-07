@@ -43,36 +43,27 @@ public class Container_ModularNuclearReactor extends Container {
 		nextSlotID++;
 		return nextSlotID - 1;
 	}
-	
+
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slotRaw)
-    {
+    public ItemStack transferStackInSlot(EntityPlayer player, int slotRaw) {
         ItemStack stack = null;
-        Slot slot = (Slot)inventorySlots.get(slotRaw);
- 
-        if (slot != null && slot.getHasStack())
-        {
-            ItemStack stackInSlot = slot.getStack();
+        final Slot slot = (Slot) inventorySlots.get(slotRaw);
+
+        if (slot != null && slot.getHasStack()) {
+            final ItemStack stackInSlot = slot.getStack();
             stack = stackInSlot.copy();
- 
-            if (slotRaw < 3 * 9)
-            {
-                if (!mergeItemStack(stackInSlot, 3 * 9, inventorySlots.size(), true))
-                {
+
+            if (slotRaw < 3 * 9) {
+                if (!mergeItemStack(stackInSlot, 3 * 9, inventorySlots.size(), true)) {
                     return null;
                 }
-            }
-            else if (!mergeItemStack(stackInSlot, 0, 3 * 9, false))
-            {
+            } else if (!mergeItemStack(stackInSlot, 0, 3 * 9, false)) {
                 return null;
             }
- 
-            if (stackInSlot.stackSize == 0)
-            {
-                slot.putStack((ItemStack)null);
-            }
-            else
-            {
+
+            if (stackInSlot.stackSize == 0) {
+                slot.putStack(null);
+            } else {
                 slot.onSlotChanged();
             }
         }
