@@ -1,11 +1,7 @@
-# Compiled class file
-*.class
-
 # Log file
 *.log
 
 # Package Files #
-#*.jar
 *.log.gz
 *.war
 *.nar
@@ -14,19 +10,26 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# java related things
 hs_err_pid*
-
+*.class
 /bin/
-/logs/
+
+# gradle related things
 /build/
+/.gradle
+/.gradle/*
+.gradle
+
+# minecraft related things
+options.txt
+usernamecache.json
+/logs/
 /crash-reports/
 /saves/
 /config/
 
-/.gradle
-/.gradle/*
-.gradle
+# other stuff
 eclipse/
 eclipse/*
 out/
