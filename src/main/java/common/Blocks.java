@@ -60,7 +60,7 @@ public class Blocks {
 		registerBlocks_TFFT();
 		registerBlocks_Nuclear();
 		//registerBlocks_ItemServer();
-		//registerBlocks_ItemProxy();
+		registerBlocks_ItemProxy();
 		registerBlocks_Jars();
 		registerBlocks_LSC();
 		

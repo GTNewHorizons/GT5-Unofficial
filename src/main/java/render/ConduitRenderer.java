@@ -10,12 +10,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.lwjgl.opengl.GL11;
 
 public class ConduitRenderer implements ISimpleBlockRenderingHandler {
 	
+	public static final int RID = RenderingRegistry.getNextAvailableRenderId();
 	private static final ConduitRenderer instance = new ConduitRenderer();
-	private final int renderID = RenderingRegistry.getNextAvailableRenderId();
-	
+
 	private ConduitRenderer() {
 		
 	}
@@ -23,25 +24,44 @@ public class ConduitRenderer implements ISimpleBlockRenderingHandler {
 	public static ConduitRenderer getInstance() {
 		return instance;
 	}
-	
-	public void registerRenderer() {
-		RenderingRegistry.registerBlockHandler(this);
-	}
-	
-	@Override
-	public int getRenderId() {
-		return renderID;
-	}
 
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-
+		Tessellator tessellator = Tessellator.instance;
+		block.setBlockBoundsForItemRender();
+		renderer.setRenderBoundsFromBlock(block);
+		GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, -1.0F, 0.0F);
+		renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 0, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 1.0F, 0.0F);
+		renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 1, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 0.0F, -1.0F);
+		renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 2, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 0.0F, 1.0F);
+		renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 3, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+		renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 4, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(1.0F, 0.0F, 0.0F);
+		renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 5, metadata));
+		tessellator.draw();
+		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 	}
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
 			RenderBlocks renderer) {
-		System.out.println("custom renderer");
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if(te instanceof TE_ItemProxyCable) {
 			final TE_ItemProxyCable cable = (TE_ItemProxyCable) te;
@@ -62,7 +82,6 @@ public class ConduitRenderer implements ISimpleBlockRenderingHandler {
 			IIcon icon = block.getIcon(0, 0);
 			// South face
 			if(cable.isConnected(ForgeDirection.SOUTH)) {
-				System.out.println("tesselating");
 				f.addVertexWithUV(x + space + thickness, y + space, z + 1, icon.getMaxU(), icon.getMaxV());
 				f.addVertexWithUV(x + space + thickness, y + space + thickness, z + 1, icon.getMaxU(), icon.getMinV());
 				f.addVertexWithUV(x + space, y + space + thickness, z + 1, icon.getMinU(), icon.getMinV());
@@ -77,7 +96,12 @@ public class ConduitRenderer implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public boolean shouldRender3DInInventory(int modelId) {
-		return false;
+		return true;
 	}
-	
+
+	@Override
+	public int getRenderId() {
+		return ConduitRenderer.RID;
+	}
+
 }
