@@ -231,15 +231,6 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		return offset;
 	}
 
-	/**
-	 * Checks structural integrity and registers machine parts.
-	 * Appears to often not run but can be jump started by forcing a block update on the controller.
-	 * (Place a piece of dirt on the front face and remove it again. Dirty fix lol.)
-	 *
-	 * @param thisController Object reference to this controller block's Tile Entity.
-	 * @param guiSlotItem    References the item stack that can be placed in that GUI slot
-	 *                       in the top right.
-	 */
 	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
 		// Figure out the vector for the direction the back face of the controller is facing
@@ -426,12 +417,10 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		}
 
 		if (this.mEnergyHatches.size() < 1) {
-			System.out.println("At least one energy hatch is required!");
 			formationChecklist = false;
 		}
 
 		if (this.mMaintenanceHatches.size() < 1) {
-			System.out.println("You need a maintenance hatch to do maintenance.");
 			formationChecklist = false;
 		}
 
