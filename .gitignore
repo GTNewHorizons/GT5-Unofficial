@@ -19,10 +19,10 @@ hs_err_pid*
 
 /bin/
 /logs/
-
 /build/
 /crash-reports/
 /saves/
+
 /.gradle
 /.gradle/*
 .gradle
