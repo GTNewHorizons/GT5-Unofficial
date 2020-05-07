@@ -2,25 +2,19 @@ package kekztech;
 
 import common.Blocks;
 import common.Recipes;
-import common.tileentities.GTMTE_FluidMultiStorage;
-import common.tileentities.GTMTE_ItemServer;
-import common.tileentities.GTMTE_ModularNuclearReactor;
-import common.tileentities.GTMTE_SOFuelCellMK1;
-import common.tileentities.GTMTE_SOFuelCellMK2;
-import common.tileentities.TE_IchorJar;
-import common.tileentities.TE_TFFTMultiHatch;
-import common.tileentities.TE_ThaumiumReinforcedJar;
+import common.tileentities.*;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import items.ErrorItem;
-import items.Item_ThaumiumReinforcedJarFilled;
-import items.MetaItem_CraftingComponent;
-import items.MetaItem_ReactorComponent;
+import items.*;
 import net.minecraft.item.ItemStack;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import render.ConduitRenderer;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
@@ -44,7 +38,9 @@ public class KekzCore {
 	public static final String NAME = "KekzTech";
 	public static final String MODID = "kekztech";
 	public static final String VERSION = "0.3";
-	
+
+	public static final Logger LOGGER = LogManager.getLogger(NAME);
+
 	@Mod.Instance("kekztech")
 	public static KekzCore instance;
 
@@ -61,7 +57,7 @@ public class KekzCore {
 		ErrorItem.getInstance().registerItem();
 		MetaItem_ReactorComponent.getInstance().registerItem();
 		MetaItem_CraftingComponent.getInstance().registerItem();
-		//Item_Configurator.getInstance().registerItem();
+		Item_Configurator.getInstance().registerItem();
 		Items.registerOreDictNames();
 		
 		Item_ThaumiumReinforcedJarFilled.getInstance().registerItem();
@@ -70,10 +66,10 @@ public class KekzCore {
 		
 		// Register TileEntities
 		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");
-		//GameRegistry.registerTileEntity(TE_ItemServerIOPort.class, "kekztech_itemserverioport_tile");
-		//GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
-		//GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
-		//GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
+		GameRegistry.registerTileEntity(TE_ItemServerIOPort.class, "kekztech_itemserverioport_tile");
+		GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
+		GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
+		GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
 		
 		GameRegistry.registerTileEntity(TE_ThaumiumReinforcedJar.class, "kekztech_thaumiumreinforcedjar");
 		GameRegistry.registerTileEntity(TE_IchorJar.class, "kekztech_ichorjar");
@@ -91,7 +87,7 @@ public class KekzCore {
 		fms = new GTMTE_FluidMultiStorage(13104, "multimachine.tf_fluidtank", "T.F.F.T");
 		//is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");	
 		// Register renderer
-		//ConduitRenderer.getInstance().registerRenderer();
+		RenderingRegistry.registerBlockHandler(ConduitRenderer.getInstance());
 	}
 	
 	@Mod.EventHandler
@@ -100,20 +96,20 @@ public class KekzCore {
 		
 		// Thaumcraft research
 		final ResearchItem jar_thaumiumreinforced = new ResearchItem("THAUMIUMREINFORCEDJAR", "ALCHEMY", new AspectList(), 3, -4, 2, new ItemStack(Blocks.jarThaumiumReinforced, 1));
-		jar_thaumiumreinforced.setPages(new ResearchPage[] {
+		jar_thaumiumreinforced.setPages(
 			new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.0"),
 			new ResearchPage(Recipes.infusionRecipes.get("THAUMIUMREINFORCEDJAR")),
 			new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.1")
-		});
-		jar_thaumiumreinforced.setParents(new String[] {"JARLABEL"});
+		);
+		jar_thaumiumreinforced.setParents("JARLABEL");
 		jar_thaumiumreinforced.registerResearchItem();
 		
 		final ResearchItem jar_ichor = new ResearchItem("ICHORJAR", "ALCHEMY", new AspectList(), 2, -5, 3, new ItemStack(Blocks.jarIchor, 1));
-		jar_ichor.setPages(new ResearchPage[] {
+		jar_ichor.setPages(
 			new ResearchPage("kekztech.research_page.ICHORJAR"),
 			new ResearchPage(Recipes.infusionRecipes.get("ICHORJAR"))
-		});
-		jar_ichor.setParents(new String[] {"THAUMIUMREINFORCEDJAR"});
+		);
+		jar_ichor.setParents("THAUMIUMREINFORCEDJAR");
 		jar_ichor.registerResearchItem();
 	}
 }
