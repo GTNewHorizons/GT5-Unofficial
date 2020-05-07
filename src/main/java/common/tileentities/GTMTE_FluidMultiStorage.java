@@ -47,7 +47,6 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 
 	private int runningCost = 0;
 	private boolean doVoidExcess = false;
-	
 	private byte fluidSelector = 0;
 
 	public GTMTE_FluidMultiStorage(int aID, String aName, String aNameRegional) {
@@ -68,7 +67,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
 		b.addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
 				.addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
-				.addInfo("Rightclicking the controller with a screwdriver will turn on excess voiding.")
+				.addInfo("Right clicking the controller with a screwdriver will turn on excess voiding.")
 				.addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
 				.addSeparator()
 				.addInfo("Note on hatch locking:")
@@ -139,13 +138,6 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 				toDeplete.amount = pushed;
 				super.depleteInput(toDeplete);
 			}
-
-			// Void excess if that is turned on
-			if (doVoidExcess) {
-				for (GT_MetaTileEntity_Hatch_Input inputHatch : super.mInputHatches) {
-					inputHatch.setDrainableStack(null);
-				}
-			}
 		}
 
 		// Push out fluids
@@ -200,6 +192,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		if (mfh != null) {
 			mfh.setLock(!super.getBaseMetaTileEntity().isActive());
 			mfh.setFluidSelector(fluidSelector);
+			mfh.setDoVoidExcess(doVoidExcess);
 		}
 	}
 

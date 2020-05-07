@@ -27,7 +27,7 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 	}
 	
 	public void toggleAutoOutput() {
-		autoOutput = autoOutput ? false : true;
+		autoOutput = !autoOutput;
 	}
 	
 	public boolean isOutputting() {
@@ -52,7 +52,7 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 					this.yCoord + d.offsetY, 
 					this.zCoord + d.offsetZ);
 			
-			if(t != null && t instanceof IFluidHandler) {
+			if(t instanceof IFluidHandler) {
 				
 				final IFluidHandler fh = (IFluidHandler) t;
 				
@@ -71,8 +71,8 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 						final FluidStack copy = volume.copy();
 						copy.amount = Math.min(copy.amount, OUTPUT_PER_SECOND);
 												
-						final int drawn = mfh.pullFluid(copy, false);
-						copy.amount = drawn;
+						// How much is drawn
+						copy.amount = mfh.pullFluid(copy, false);
 						
 						// Test how much can be filled (and fill if possible)
 						copy.amount = fh.fill(d.getOpposite(), copy, true);
@@ -141,7 +141,7 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 		if(mfh != null) {
 			final FluidStack drain = mfh.getFluid(0);
 			if(drain != null) {
-				// If there's no integrated circuit in the TFFT controller, output slot 0
+				// If there's no integrated circuit in the T.F.F.T. controller, output slot 0
 				final byte selectedSlot = (mfh.getSelectedFluid() == -1) ? 0 : mfh.getSelectedFluid();
 				
 				return new FluidStack(
@@ -155,12 +155,12 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		return (mfh != null) ? mfh.couldPush(new FluidStack(fluid, 1)) : false; 
+		return (mfh != null) && mfh.couldPush(new FluidStack(fluid, 1));
 	}
 
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		return (mfh != null) ? mfh.contains(new FluidStack(fluid, 1)) : false; 
+		return (mfh != null) && mfh.contains(new FluidStack(fluid, 1));
 	}
 
 	@Override

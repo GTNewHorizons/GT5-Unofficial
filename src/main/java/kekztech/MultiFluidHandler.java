@@ -15,6 +15,7 @@ public class MultiFluidHandler {
 	private int capacityPerFluid;
 	
 	private boolean locked = true;
+	private boolean doVoidExcess = false;
 	private byte fluidSelector = -1;
 	
 	public MultiFluidHandler() {
@@ -39,7 +40,9 @@ public class MultiFluidHandler {
 	public void setLock(boolean state) {
 		locked = state;
 	}
-	
+
+	public void setDoVoidExcess(boolean doVoidExcess) { this.doVoidExcess = doVoidExcess; }
+
 	/**
 	 * Used to tell the MFH if a fluid is selected by
 	 * an Integrated Circuit in the controller.
@@ -69,7 +72,7 @@ public class MultiFluidHandler {
 	}
 	
 	public List<FluidStack> getFluids(){
-		return (!locked) ? fluids : new ArrayList<FluidStack>();
+		return (!locked) ? fluids : new ArrayList<>();
 	}
 	
 	public FluidStack getFluid(int slot) {
@@ -131,24 +134,25 @@ public class MultiFluidHandler {
 			return 0;
 		}
 		if(fluids.size() == MAX_DISTINCT_FLUIDS && !contains(push)) {
+			// Already contains 25 fluids and this isn't one of them
 			return 0;
 		} else if (fluids.size() < MAX_DISTINCT_FLUIDS && !contains(push)) {
 			// Add new fluid
-			final int remcap = getCapacity();
-			final int fit = Math.min(remcap, push.amount);
+			final int fit = Math.min(getCapacity(), push.amount);
 			if(doPush) {
 				fluids.add(new FluidStack(push.getFluid(), fit));	
 			}
-			return fit;
+			// If doVoidExcess, pretend all of it fit
+			return doVoidExcess ? push.amount : fit;
 		} else {
 			// Add to existing fluid
-			final FluidStack fs = fluids.get(fluids.indexOf(push));
-			final int remcap = getCapacity() - fs.amount;
-			final int fit = Math.min(remcap, push.amount);
+			final FluidStack existing = fluids.get(fluids.indexOf(push));
+			final int fit = Math.min(getCapacity() - existing.amount, push.amount);
 			if(doPush) {
-				fs.amount += fit;				
+				existing.amount += fit;
 			}
-			return fit;
+			// If doVoidExcess, pretend all of it fit
+			return doVoidExcess ? push.amount : fit;
 		}
 	}
 	
@@ -168,18 +172,21 @@ public class MultiFluidHandler {
 			return 0;
 		}
 		if(slot < 0 || slot >= MAX_DISTINCT_FLUIDS) {
+			// Invalid slot
 			return 0;
 		}
-		if(!fluids.get(slot).equals(push)) {
+		if((fluids.get(slot) != null) && !fluids.get(slot).equals(push)) {
+			// Selected slot is taken by a non-matching fluid
 			return 0;
 		} else {
-			final FluidStack fs = fluids.get(slot);
-			final int remcap = getCapacity() - fs.amount;
-			final int fit = Math.min(remcap, push.amount);
+			// Add to existing fluid
+			final FluidStack existing = fluids.get(slot);
+			final int fit = Math.min(getCapacity() - existing.amount, push.amount);
 			if(doPush) {
-				fs.amount += fit;				
+				existing.amount += fit;
 			}
-			return fit;
+			// If doVoidExcess, pretend all of it fit
+			return doVoidExcess ? push.amount : fit;
 		}
 	}
 	
@@ -260,7 +267,7 @@ public class MultiFluidHandler {
 			return Math.min(getCapacity(), push.amount) > 0;
 		} else {
 			final int remcap = getCapacity() - fluids.get(fluids.indexOf(push)).amount;
-			return Math.min(remcap, push.amount) > 0;
+			return doVoidExcess ? true : (Math.min(remcap, push.amount) > 0);
 		}
 	}
 }
