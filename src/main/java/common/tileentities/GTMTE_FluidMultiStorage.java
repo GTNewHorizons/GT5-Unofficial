@@ -76,11 +76,11 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 				.addSeparator()
 				.beginStructureBlock(5, 9, 5)
 				.addController("Top Center")
-				.addEnergyHatch("Any top or bottom casing, has to touch storage field")
-				.addOtherStructurePart("Inner 3x7x3 pillar", "Storage Field Blocks")
+				.addEnergyHatch("Any top or bottom casing")
+				.addOtherStructurePart("Inner 3x7x3 solid pillar", "Storage Field Blocks")
 				.addOtherStructurePart("Outer 5x7x5 glass shell", "IC2 Reinforced Glass")
-				.addMaintenanceHatch("Instead of any casing or glass, has to touch storage field.")
-				.addIOHatches("Instead of any casing or glass, have to touch storage field. True for the Multi-Hatch as well.")
+				.addMaintenanceHatch("Any top or bottom casing")
+				.addIOHatches("Instead of any casing or glass, have to touch storage field.")
 				.signAndFinalize("Kekzdealer");
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return b.getInformation();
@@ -240,22 +240,22 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
 		);
 		int minCasingAmount = 20;
-		boolean formationChecklist = true; // if this is still true at the end, machine is good to go :)
+		boolean formationChecklist = true; // If this is still true at the end, machine is good to go :)
 		float runningCostAcc = 0;
 		double fluidCapacityAcc = 0;
 
 		multiHatches.clear();
 
-		// Front slice
+		// Front segment
 		for (int X = -2; X <= 2; X++) {
 			for (int Y = -2; Y <= 2; Y++) {
 				if (X == 0 && Y == 0) {
-					continue; // is controller
+					continue; // Skip controller
 				}
 
 				// Get next TE
 				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
-				IGregTechTileEntity currentTE =
+				final IGregTechTileEntity currentTE =
 						thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 
 				// Fluid hatches should touch the storage field. 
@@ -266,7 +266,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 							&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
-						Block b = thisController.getBlockOffset(offset.x(), offset.y(), offset.z());
+						final Block b = thisController.getBlockOffset(offset.x(), offset.y(), offset.z());
 
 						// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
 						// Also check for multi hatch
@@ -300,7 +300,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 			}
 		}
 
-		// Middle three slices
+		// Middle seven long segment
 		for (int X = -2; X <= 2; X++) {
 			for (int Y = -2; Y <= 2; Y++) {
 				for (int Z = -1; Z >= -7; Z--) {
@@ -333,14 +333,13 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 					}
 
 					// Get next TE
-					IGregTechTileEntity currentTE =
-							thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());// x, y ,z
+					final IGregTechTileEntity currentTE =
+							thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 
-					// Corner allows only glass or casings
+					// Corner allows only glass
 					if (X == -2 && Y == -2 || X == 2 && Y == 2 || X == -2 && Y == 2 || X == 2 && Y == -2) {
-						if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameIC2Reinforced)
-								|| thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)) {
-							formationChecklist = false; // do nothing yet
+						if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameIC2Reinforced))) {
+							formationChecklist = false;
 						}
 					} else {
 						// Tries to add TE as either of those kinds of hatches.
@@ -369,12 +368,12 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 			}
 		}
 
-		// Back slice
+		// Back segment
 		for (int X = -2; X <= 2; X++) {
 			for (int Y = -2; Y <= 2; Y++) {
 				// Get next TE
 				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -8);
-				IGregTechTileEntity currentTE =
+				final IGregTechTileEntity currentTE =
 						thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 
 				// Fluid hatches should touch the storage field. 
