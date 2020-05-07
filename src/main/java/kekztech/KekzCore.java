@@ -3,18 +3,19 @@ package kekztech;
 import common.Blocks;
 import common.Recipes;
 import common.tileentities.*;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import items.*;
+import items.ErrorItem;
+import items.Item_ThaumiumReinforcedJarFilled;
+import items.MetaItem_CraftingComponent;
+import items.MetaItem_ReactorComponent;
 import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import render.ConduitRenderer;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
@@ -95,21 +96,23 @@ public class KekzCore {
 		Recipes.init();
 		
 		// Thaumcraft research
-		final ResearchItem jar_thaumiumreinforced = new ResearchItem("THAUMIUMREINFORCEDJAR", "ALCHEMY", new AspectList(), 3, -4, 2, new ItemStack(Blocks.jarThaumiumReinforced, 1));
-		jar_thaumiumreinforced.setPages(
-			new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.0"),
-			new ResearchPage(Recipes.infusionRecipes.get("THAUMIUMREINFORCEDJAR")),
-			new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.1")
-		);
-		jar_thaumiumreinforced.setParents("JARLABEL");
-		jar_thaumiumreinforced.registerResearchItem();
+		final ResearchItem jar_thaumiumreinforced = new ResearchItem("THAUMIUMREINFORCEDJAR", "ALCHEMY", new AspectList(), 3, -4, 2, new ItemStack(Blocks.jarThaumiumReinforced, 1))
+			.setPages(
+				new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.0"),
+				new ResearchPage(Recipes.infusionRecipes.get("THAUMIUMREINFORCEDJAR")),
+				new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.1")
+			)
+			.setConcealed()
+			.setParents("JARLABEL")
+			.registerResearchItem();
 		
-		final ResearchItem jar_ichor = new ResearchItem("ICHORJAR", "ALCHEMY", new AspectList(), 2, -5, 3, new ItemStack(Blocks.jarIchor, 1));
-		jar_ichor.setPages(
-			new ResearchPage("kekztech.research_page.ICHORJAR"),
-			new ResearchPage(Recipes.infusionRecipes.get("ICHORJAR"))
-		);
-		jar_ichor.setParents("THAUMIUMREINFORCEDJAR");
-		jar_ichor.registerResearchItem();
+		final ResearchItem jar_ichor = new ResearchItem("ICHORJAR", "ALCHEMY", new AspectList(), 2, -5, 3, new ItemStack(Blocks.jarIchor, 1))
+			.setPages(
+				new ResearchPage("kekztech.research_page.ICHORJAR"),
+				new ResearchPage(Recipes.infusionRecipes.get("ICHORJAR"))
+			)
+			.setConcealed()
+			.setParents("THAUMIUMREINFORCEDJAR")
+			.registerResearchItem();
 	}
 }

@@ -31,15 +31,15 @@ public class Recipes {
 	public static final HashMap<String, InfusionRecipe> infusionRecipes = new HashMap<>();
 	
 	public static void init() {
-		System.out.println("Registering recipes...");
+		KekzCore.LOGGER.info("Registering recipes...");
 		
 		registerRecipes_TFFT();
 		registerRecipes_SOFC();
 		registerRecipes_Nuclear();
 		//registerRecipes_ItemServer();
 		registerRecipes_Jars();
-		
-		System.out.println("Finished registering recipes");
+
+		KekzCore.LOGGER.info("Finished registering recipes");
 	}
 	
 	private static void registerRecipes_TFFT() {

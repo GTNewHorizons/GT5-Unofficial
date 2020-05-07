@@ -21,6 +21,7 @@ import common.blocks.Block_TFFTStorageFieldBlockT4;
 import common.blocks.Block_TFFTStorageFieldBlockT5;
 import common.blocks.Block_ThaumiumReinforcedJar;
 import common.blocks.Block_YSZUnit;
+import kekztech.KekzCore;
 import net.minecraft.block.Block;
 
 public class Blocks {
@@ -54,7 +55,7 @@ public class Blocks {
 	public static Block lscLapotronicEnergyUnit;
 	
 	public static void init() {
-		System.out.println("Registering blocks...");
+		KekzCore.LOGGER.info("Registering blocks...");
 		
 		registerBlocks_SOFC();
 		registerBlocks_TFFT();
@@ -63,8 +64,8 @@ public class Blocks {
 		//registerBlocks_ItemProxy();
 		registerBlocks_Jars();
 		registerBlocks_LSC();
-		
-		System.out.println("Finished registering blocks");
+
+		KekzCore.LOGGER.info("Finished registering blocks");
 	}
 	
 	private static void registerBlocks_SOFC() {
