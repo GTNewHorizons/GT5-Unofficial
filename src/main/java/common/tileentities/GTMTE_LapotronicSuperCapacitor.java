@@ -19,21 +19,23 @@ import util.MultiBlockTooltipBuilder;
 import util.Vector3i;
 import util.Vector3ic;
 
+import java.math.BigInteger;
+
 public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlockBase {
 	
 	private final static String glassNameIC2Reinforced = "blockAlloyGlass";
 	private static final Block LSC_PART = Blocks.lscLapotronicEnergyUnit;
 	private static final int CASING_META = 0;
 	private static final int CASING_TEXTURE_ID = 82;
-	
+
+	private BigInteger capacity = BigInteger.ZERO;
+
 	public GTMTE_LapotronicSuperCapacitor(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		
 	}
 
 	public GTMTE_LapotronicSuperCapacitor(String aName) {
 		super(aName);
-		
 	}
 	
 	@Override
@@ -45,13 +47,14 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	public String[] getDescription() {
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
 		b.addInfo("LapotronicTM Multi-block power storage")
+				.addInfo("Modular height of 4 to 18 blocks.")
 				.addSeparator()
-				.beginStructureBlock(5, 4-18, 5)
+				.beginStructureBlock(5, 4, 5)
 				.addController("Front Bottom Center")
 				.addDynamoHatch("Instead of any casing")
 				.addEnergyHatch("Instead of any casing")
-				.addOtherStructurePart("Lapotronic Capacitor Base", "At least 17x, 5x2x5 base")
-				.addOtherStructurePart("Lapotronic Capacitor, (Really) Ultimate Capacitor", "9-135x, Center 3x1-15x3 above base")
+				.addOtherStructurePart("Lapotronic Capacitor Base", "5x2x5 base (at least 17x)")
+				.addOtherStructurePart("Lapotronic Capacitor, (Really) Ultimate Capacitor", "Center 3x(1-15)x3 above base (9-135 blocks)")
 				.addOtherStructurePart("Glass?", "41-265x, Encase capacitor pillar")
 				.addMaintenanceHatch("Instead of any casing")
 				.signAndFinalize("Kekzdealer");
@@ -134,21 +137,22 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				);
 		int minCasingAmount = 17; 
 		boolean formationChecklist = true; // if this is still true at the end, machine is good to go :)
-		
+
+		// Capacitor base
 		for(int X = -2; X <= 2; X++) {
 			for(int Y = 0; Y <= 1; Y++) {
 				for(int Z = -1; Z <= 4; Z++) {
 					if(X == 0 && Y == 0) {
-						continue; // is controller
+						continue; // Skip controller
 					}
 					
 					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-					IGregTechTileEntity currentTE = 
+					final IGregTechTileEntity currentTE =
 							thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 					
 					// Tries to add TE as either of those kinds of hatches.
-					// The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
-					if (   !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID) 
+					// The number is the texture index number for the texture that needs to be painted over the hatch texture
+					if (   !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
 						&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
 						&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 						
@@ -164,27 +168,34 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				}
 			}
 		}
-		
-		int firstGlassHeight = 3; // Initialize to minimum height
+
+		// Capacitor units
+		int firstGlassHeight = 3; // Initialize at basic height (-1 because it's an offset)
 		for(int X = -1; X <= 1; X++) {
-			for(int Y = 2; Y <= 17; Y++) {
-				for(int Z = 0; Z <= 2; Z++) {
+			for(int Z = 0; Z <= 2; Z++) {
+				// Y has to be the innermost loop to properly deal with the dynamic height.
+				// This way each "pillar" of capacitors is checked from bottom to top until it hits glass.
+				for(int Y = 2; Y <= 17; Y++) {
 					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-					
-					if(!((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART) 
-								&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) > 0))) {
-						
-						// If there's glass instead, terminate and remember the height
-						if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameIC2Reinforced)){
-							firstGlassHeight = Y;
-						} else {
-							formationChecklist = false;
+
+					final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
+					if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART && (meta > 0)) {
+						// Add capacity
+						if(meta <= 4){
+							final long c = (long) (100000000L * Math.pow(10, meta - 1));
+							capacity = capacity.add(BigInteger.valueOf(c));
+						} else if(meta <= 6){
+							capacity = capacity.add(BigInteger.valueOf(Long.MAX_VALUE));
 						}
+					} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameIC2Reinforced)){
+						firstGlassHeight = Y;
+					} else {
+						formationChecklist = false;
 					}
 				}
 			}
 		}
-		
+		// ------------ WENT TO BED HERE ----------------
 		for(int X = -2; X <= 2; X++) {
 			for(int Y = 2; Y <= firstGlassHeight; Y++) {
 				for(int Z = -1; Z <= 4; Z++) {
