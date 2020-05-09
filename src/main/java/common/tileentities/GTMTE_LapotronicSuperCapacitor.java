@@ -14,7 +14,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynam
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -34,7 +33,7 @@ import java.util.Arrays;
 
 public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlockBase {
 	
-	private final static String glassNameIC2Reinforced = "BW_GlasBlocks";
+	private final static String glassNameBorosilicate = "BW_GlasBlocks";
 	private static final Block LSC_PART = Blocks.lscLapotronicEnergyUnit;
 	private static final int CASING_META = 0;
 	private static final int CASING_TEXTURE_ID = 62;
@@ -223,7 +222,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 							capacity = capacity.add(BigInteger.valueOf(Long.MAX_VALUE));
 						}
 						capacitors[meta - 1]++;
-					} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameIC2Reinforced)){
+					} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)){
 						firstGlassHeight = Y;
 						break;
 					} else {
@@ -242,7 +241,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					// Check only outer ring, except when on roof height
 					if(Y < firstGlassHeight){
 						if((X == -2 || X == 2) && (Z == -1 || Z == 4)){
-							if(!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameIC2Reinforced)){
+							if(!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)){
 								formationChecklist = false;
 							} else {
 								final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
@@ -254,7 +253,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 							}
 						}
 					} else {
-						if (!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameIC2Reinforced)) {
+						if (!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)) {
 							formationChecklist = false;
 						}
 					}
