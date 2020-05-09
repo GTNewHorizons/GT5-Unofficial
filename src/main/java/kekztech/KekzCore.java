@@ -47,10 +47,10 @@ public class KekzCore {
 
 	public static GTMTE_SOFuelCellMK1 sofc1;
 	public static GTMTE_SOFuelCellMK2 sofc2;
-	@SuppressWarnings("unused")
 	public static GTMTE_ModularNuclearReactor mdr;
 	public static GTMTE_FluidMultiStorage fms;
 	public static GTMTE_ItemServer is;
+	public static GTMTE_LapotronicSuperCapacitor lsc;
 	
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -86,7 +86,8 @@ public class KekzCore {
 		sofc2 = new GTMTE_SOFuelCellMK2(13102, "multimachine.fuelcellmk2", "Solid-Oxide Fuel Cell Mk II");
 		mdr = new GTMTE_ModularNuclearReactor(13103, "multimachine.nuclearreactor", "Nuclear Reactor");
 		fms = new GTMTE_FluidMultiStorage(13104, "multimachine.tf_fluidtank", "T.F.F.T");
-		//is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");	
+		//is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");
+        lsc = new GTMTE_LapotronicSuperCapacitor(13106, "multimachine.supercapacitor", "Lapotronic Supercapacitor");
 		// Register renderer
 		//RenderingRegistry.registerBlockHandler(ConduitRenderer.getInstance());
 	}
