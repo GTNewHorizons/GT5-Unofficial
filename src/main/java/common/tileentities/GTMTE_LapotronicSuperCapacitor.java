@@ -1,5 +1,7 @@
 package common.tileentities;
 
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import common.Blocks;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -7,6 +9,7 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
@@ -40,6 +43,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	private static final BigDecimal PASSIVE_DISCHARGE_FACTOR_PER_TICK =
 			BigDecimal.valueOf(0.01D / 1728000.0D); // The magic number is ticks per 24 hours
 
+	private final ArrayList<GT_MetaTileEntity_Hatch_EnergyMulti> mEnergyHatchesTT = new ArrayList<>();
+	private final ArrayList<GT_MetaTileEntity_Hatch_DynamoMulti> mDynamoHatchesTT = new ArrayList<>();
 	// Count the amount of capacitors of each tier in each slot (translate with meta - 1)
 	private final int[] capacitors = new int[6];
 	private BigInteger capacity = BigInteger.ZERO;
@@ -165,6 +170,9 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		int firstGlassMeta = -1;
 		// Reset capacitor counts
 		Arrays.fill(capacitors, 0);
+		// Clear TT hatches
+		mEnergyHatchesTT.clear();
+		mDynamoHatchesTT.clear();
 
 		// Capacitor base
 		for(int Y = 0; Y <= 1; Y++) {
@@ -181,8 +189,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					// Tries to add TE as either of those kinds of hatches.
 					// The number is the texture index number for the texture that needs to be painted over the hatch texture
 					if (   !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addDynamoToMachineList(currentTE, CASING_TEXTURE_ID)) {
+						&& !this.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+						&& !this.addDynamoToMachineList(currentTE, CASING_TEXTURE_ID)) {
 						
 						// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
 						if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART) 
@@ -285,8 +293,48 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	}
 
 	@Override
+	public boolean addEnergyInputToMachineList(IGregTechTileEntity te, int aBaseCasingIndex) {
+		if (te == null) {
+			return false;
+		} else {
+			final IMetaTileEntity mte = te.getMetaTileEntity();
+			if (mte instanceof GT_MetaTileEntity_Hatch_Energy) {
+				// Add GT hatches
+				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
+				return super.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) mte);
+			} else if(mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti){
+				// Add TT hatches
+				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
+				return mEnergyHatchesTT.add((GT_MetaTileEntity_Hatch_EnergyMulti) mte);
+			} else {
+				return false;
+			}
+		}
+	}
+
+	@Override
+	public boolean addDynamoToMachineList(IGregTechTileEntity te, int aBaseCasingIndex) {
+		if (te == null) {
+			return false;
+		} else {
+			final IMetaTileEntity mte = te.getMetaTileEntity();
+			if (mte instanceof GT_MetaTileEntity_Hatch_Dynamo) {
+				// Add GT hatches
+				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
+				return super.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) mte);
+			} else if(mte instanceof GT_MetaTileEntity_Hatch_DynamoMulti){
+				// Add TT hatches
+				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
+				return mDynamoHatchesTT.add((GT_MetaTileEntity_Hatch_DynamoMulti) mte);
+			} else {
+				return false;
+			}
+		}
+	}
+
+	@Override
 	public boolean onRunningTick(ItemStack stack){
-		// Draw energy
+		// Draw energy from GT hatches
 		for(GT_MetaTileEntity_Hatch_Energy eHatch : super.mEnergyHatches) {
 			if(eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
 				continue;
@@ -299,8 +347,33 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				stored = stored.add(BigInteger.valueOf(power));
 			}
 		}
-		// Output energy
+		// Output energy to GT hatches
 		for(GT_MetaTileEntity_Hatch_Dynamo eDynamo : super.mDynamoHatches){
+			if(eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()){
+				continue;
+			}
+			final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) <= 0) ? stored : MAX_LONG;
+			final long power = Math.min(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut(), remStoredLimited.longValue());
+			if(eDynamo.getEUVar() <= eDynamo.maxEUStore() - power) {
+				eDynamo.setEUVar(eDynamo.getEUVar() + power);
+				stored = stored.subtract(BigInteger.valueOf(power));
+			}
+		}
+		// Draw energy from TT hatches
+		for(GT_MetaTileEntity_Hatch_EnergyMulti eHatch : mEnergyHatchesTT) {
+			if(eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
+				continue;
+			}
+			final BigInteger remcapActual = capacity.subtract(stored);
+			final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) <= 0) ? remcapActual : MAX_LONG;
+			final long power = Math.min(eHatch.maxEUInput() * eHatch.maxAmperesIn(), recampLimited.longValue());
+			if(power <= eHatch.getEUVar()) {
+				eHatch.setEUVar(eHatch.getEUVar() - power);
+				stored = stored.add(BigInteger.valueOf(power));
+			}
+		}
+		// Output energy to TT hatches
+		for(GT_MetaTileEntity_Hatch_DynamoMulti eDynamo : mDynamoHatchesTT){
 			if(eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()){
 				continue;
 			}

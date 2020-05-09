@@ -28,8 +28,9 @@ import thaumcraft.api.research.ResearchPage;
  */
 @Mod(modid = KekzCore.MODID, name = KekzCore.NAME, version = KekzCore.VERSION, 
 		dependencies =
-			  "required-after:IC2; "
+			  "required-after:IC2;"
 			+ "required-after:gregtech;"
+			+ "required-after:tectech;"
 			+ "required-after:Thaumcraft;"
 			+ "required-after:ThaumicTinkerer;"
 			+ "after:bartworks"
