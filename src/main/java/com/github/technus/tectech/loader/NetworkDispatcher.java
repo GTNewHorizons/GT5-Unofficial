@@ -2,7 +2,7 @@ package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.mechanics.data.ChunkDataMessage;
 import com.github.technus.tectech.mechanics.data.PlayerDataMessage;
-import com.github.technus.tectech.mechanics.data.RendererMessage;
+import com.github.technus.tectech.mechanics.spark.RendererMessage;
 import com.github.technus.tectech.mechanics.alignment.AlignmentMessage;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.TextParametersMessage;
 import com.github.technus.tectech.mechanics.pipe.PipeActivityMessage;

@@ -1,4 +1,4 @@
-package com.github.technus.tectech.mechanics.data;
+package com.github.technus.tectech.mechanics.spark;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
