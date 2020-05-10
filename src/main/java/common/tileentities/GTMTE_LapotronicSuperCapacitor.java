@@ -14,6 +14,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynam
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -242,18 +243,25 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					if(Y < firstGlassHeight){
 						if((X == -2 || X == 2) && (Z == -1 || Z == 4)){
 							if(!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)){
+								final String badName = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
+								KekzCore.LOGGER.info("Bad block in LSC glass shell: " + badName);
+								KekzCore.LOGGER.info("At offset: Y=" + offset.y() + ", X=" + offset.x() + ", Z=" + offset.z());
 								formationChecklist = false;
 							} else {
 								final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
 								if(firstGlassMeta == -1){
 									firstGlassMeta = meta;
 								} else if(meta != firstGlassMeta){
+									KekzCore.LOGGER.info("No glass mixing allowed in LSC!");
 									formationChecklist = false;
 								}
 							}
 						}
 					} else {
 						if (!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)) {
+							final String badName = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
+							KekzCore.LOGGER.info("Bad block in LSC glass shell: " + badName);
+							KekzCore.LOGGER.info("At offset: Y=" + offset.y() + ", X=" + offset.x() + ", Z=" + offset.z());
 							formationChecklist = false;
 						}
 					}
@@ -270,6 +278,11 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		for(int highestCapacitor = capacitors.length - 1; highestCapacitor >= 0; highestCapacitor--){
 			if(capacitors[highestCapacitor] > 0){
 				formationChecklist = firstGlassMeta >= capacitors[highestCapacitor] - 2;
+				if(!formationChecklist){
+					KekzCore.LOGGER.info("LSC Glass is not of correct tier");
+					KekzCore.LOGGER.info("Highest capacitor tier (0 is IV): " + highestCapacitor);
+					KekzCore.LOGGER.info("Glass tier (0 is HV): " +firstGlassMeta);
+				}
 			}
 		}
 

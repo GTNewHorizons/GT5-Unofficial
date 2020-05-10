@@ -1,5 +1,7 @@
 package common;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import cpw.mods.fml.common.Loader;
@@ -10,6 +12,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import items.ErrorItem;
 import items.MetaItem_CraftingComponent;
@@ -38,10 +41,24 @@ public class Recipes {
 		registerRecipes_Nuclear();
 		//registerRecipes_ItemServer();
 		registerRecipes_Jars();
+		registerRecipes_LSC();
 
 		KekzCore.LOGGER.info("Finished registering recipes");
 	}
-	
+
+	private static void lapoCapacitorRecipeAdder(GT_Recipe.GT_Recipe_AssemblyLine baseRecipe, Materials boxMaterial, ItemStack result) {
+		final ArrayList<ItemStack> baseInputs = (ArrayList<ItemStack>) Arrays.asList(baseRecipe.mInputs);
+		if(baseInputs.size() <= 14){
+			baseInputs.add(GT_OreDictUnificator.get(OrePrefixes.frameGt, boxMaterial, 4));
+			baseInputs.add(GT_OreDictUnificator.get(OrePrefixes.screw, boxMaterial, 24));
+
+			GT_Values.RA.addAssemblylineRecipe(baseRecipe.mResearchItem, baseRecipe.mResearchTime,
+					Util.toItemStackArray(baseInputs), baseRecipe.mFluidInputs, result,
+					baseRecipe.mDuration * 2, baseRecipe.mEUt);
+			KekzCore.LOGGER.info("Successfully extended Lapotronic Battery recipe for Lapotronic Capacitor of tier " + result.getItemDamage());
+		}
+	}
+
 	private static void registerRecipes_TFFT() {
 		
 		// Controller
@@ -423,5 +440,56 @@ public class Recipes {
 				ThaumcraftApi.addInfusionCraftingRecipe("THAUMIUMREINFORCEDJAR", new ItemStack(Blocks.jarThaumiumReinforced, 1), 
 						5, aspects_jarthaumiumreinforced, ItemApi.getBlock("blockJar",  0), recipe_jarthaumiumreinforced));
 	}
-	
+
+	private static void registerRecipes_LSC(){
+
+		// Controller
+		final ItemStack filledLapoCrystal = GT_ModHandler.getIC2Item("itemBatLamaCrystal", 1, 1);
+		filledLapoCrystal.getTagCompound().setInteger("charge", 10000000);
+		final Object[] lsc_recipe = {
+				"LPL", "CBC", "LPL",
+				'L', filledLapoCrystal,
+				'P', ItemList.Circuit_Chip_PIC.get(1L),
+				'C', OrePrefixes.circuit.get(Materials.Master)
+				'B', new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0),
+		};
+		GT_ModHandler.addCraftingRecipe(KekzCore.lsc.getStackForm(1), lsc_recipe);
+
+		KekzCore.LOGGER.info("Reading Assembly Line recipes from GregTech recipe map");
+
+		for(GT_Recipe.GT_Recipe_AssemblyLine ar : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+			if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_LapotronicOrb2.get(1L))) {
+				// LuV Lapo Orb
+				lapoCapacitorRecipeAdder(ar, Materials.Osmiridium, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2));
+			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_Module.get(1L))) {
+				// ZPM Lapo Orb
+				lapoCapacitorRecipeAdder(ar, Materials.NaquadahAlloy, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3));
+			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_Cluster.get(1L))) {
+				// UV Lapo Orb
+				lapoCapacitorRecipeAdder(ar, Materials.Neutronium, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4));
+			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList..get(1L))) {
+				// Ultimate Battery
+				// TODO change material to Cosmic Neutronium
+				lapoCapacitorRecipeAdder(ar, Materials.Neutronium, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5));
+			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_LapotronicOrb2.get(1L))) {
+				// Really Ultimate Battery
+				// TODO change material to Infinity
+				lapoCapacitorRecipeAdder(ar, Materials.Neutronium, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6));
+			}
+		}
+
+		// Blocks
+		final Object[] lcIV_recipe = {
+				"SLS", "LOL", "SLS",
+				'S', OrePrefixes.screw.get(Materials.Lapis),
+				'L', OrePrefixes.plate.get(Materials.Lapis),
+				'O', ItemList.Energy_LapotronicOrb.get(1L)
+		};
+		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), lcIV_recipe);
+		// Make sure the recipe doesn't exceed 16 slots
+		if(lcLuV_recipeBase.size() <= 14)
+
+
+		GT_Values.RA.addAssemblylineRecipe();
+	}
 }
