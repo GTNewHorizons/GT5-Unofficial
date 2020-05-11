@@ -18,6 +18,7 @@ import kekztech.Items;
 import kekztech.KekzCore;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import thaumcraft.api.ItemApi;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
@@ -476,8 +477,47 @@ public class Recipes {
 
 		KekzCore.LOGGER.info("Reading Assembly Line recipes from GregTech recipe map");
 		GT_Recipe.GT_Recipe_AssemblyLine arLuV = null;
-		GT_Recipe.GT_Recipe_AssemblyLine arZPM = null;
-		GT_Recipe.GT_Recipe_AssemblyLine arUV = null;
+		// Next two are hardcoded because my code can't find them
+		GT_Recipe.GT_Recipe_AssemblyLine arZPM = new GT_Recipe.GT_Recipe_AssemblyLine(
+				ItemList.Energy_LapotronicOrb2.get(1L), 288000, new ItemStack[] {
+				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 16L),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
+				ItemList.Energy_LapotronicOrb2.get(8L),
+				ItemList.Field_Generator_LuV.get(2),
+				ItemList.Circuit_Wafer_SoC2.get(64),
+				ItemList.Circuit_Wafer_SoC2.get(64),
+				ItemList.Circuit_Parts_DiodeASMD.get(8),
+				GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32)
+		},
+				new FluidStack[] {
+						Materials.SolderingAlloy.getMolten(2880),
+						new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)
+				},
+				ItemList.Energy_Module.get(1), 2000, 100000
+		);
+		GT_Recipe.GT_Recipe_AssemblyLine arUV = new GT_Recipe.GT_Recipe_AssemblyLine(
+				ItemList.Energy_Module.get(1L), 288000, new ItemStack[] {
+				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 32L),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 1),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 1),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 1),
+				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 1),
+				ItemList.Energy_Module.get(8L),
+				ItemList.Field_Generator_ZPM.get(2),
+				ItemList.Circuit_Wafer_HPIC.get(64),
+				ItemList.Circuit_Wafer_HPIC.get(64),
+				ItemList.Circuit_Parts_DiodeASMD.get(16),
+				GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32)
+		},
+				new FluidStack[] {
+						Materials.SolderingAlloy.getMolten(2880),
+						new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)
+				},
+				ItemList.Energy_Cluster.get(1), 2000, 200000
+		);
 		GT_Recipe.GT_Recipe_AssemblyLine arU = null;
 		GT_Recipe.GT_Recipe_AssemblyLine arRU = null;
 		for(GT_Recipe.GT_Recipe_AssemblyLine ar : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
@@ -486,10 +526,10 @@ public class Recipes {
 				arLuV = ar;
 			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_Module.get(1L), true)) {
 				// ZPM Lapo Orb
-				arZPM = ar;
+				KekzCore.LOGGER.info("Found matching recipe for Energy Module?");
 			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_Cluster.get(1L), true)) {
 				// UV Lapo Orb
-				arUV = ar;
+				KekzCore.LOGGER.info("Found matching recipe for Energy Cluster?");
 			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.ZPM2.get(1L), true)) {
 				// Ultimate Battery
 				arU = ar;
