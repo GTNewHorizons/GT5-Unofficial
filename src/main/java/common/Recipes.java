@@ -1,7 +1,9 @@
 package common;
 
+import com.github.technus.tectech.thing.CustomItemList;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -44,14 +46,14 @@ public class Recipes {
 		KekzCore.LOGGER.info("Finished registering recipes");
 	}
 
-	private static void lapoCapacitorRecipeAdder(GT_Recipe.GT_Recipe_AssemblyLine baseRecipe, Materials boxMaterial, ItemStack result) {
+	private static void lapoCapacitorRecipeAdder(GT_Recipe.GT_Recipe_AssemblyLine baseRecipe, Materials boxMaterial, ItemStack newResearchTrigger, ItemStack result) {
 		if(baseRecipe != null) {
 			final ArrayList<ItemStack> baseInputs = new ArrayList<>(Arrays.asList(baseRecipe.mInputs));
 			if(baseInputs.size() <= 14){
 				baseInputs.add(GT_OreDictUnificator.get(OrePrefixes.frameGt, boxMaterial, 4));
 				baseInputs.add(GT_OreDictUnificator.get(OrePrefixes.screw, boxMaterial, 24));
 
-				GT_Values.RA.addAssemblylineRecipe(baseRecipe.mResearchItem, baseRecipe.mResearchTime,
+				GT_Values.RA.addAssemblylineRecipe(newResearchTrigger, baseRecipe.mResearchTime,
 						Util.toItemStackArray(baseInputs), baseRecipe.mFluidInputs, result,
 						baseRecipe.mDuration * 2, baseRecipe.mEUt);
 				KekzCore.LOGGER.info("Successfully extended Lapotronic Battery recipe for Lapotronic Capacitor of tier " + result.getItemDamage());
@@ -479,30 +481,61 @@ public class Recipes {
 		GT_Recipe.GT_Recipe_AssemblyLine arU = null;
 		GT_Recipe.GT_Recipe_AssemblyLine arRU = null;
 		for(GT_Recipe.GT_Recipe_AssemblyLine ar : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
-			if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_LapotronicOrb2.get(1L))) {
+			if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_LapotronicOrb2.get(1L), true)) {
 				// LuV Lapo Orb
 				arLuV = ar;
-			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_Module.get(1L))) {
+			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_Module.get(1L), true)) {
 				// ZPM Lapo Orb
 				arZPM = ar;
-			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_Cluster.get(1L))) {
+			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_Cluster.get(1L), true)) {
 				// UV Lapo Orb
 				arUV = ar;
-			} /*else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_LapotronicOrb2.get(1L))) {
+			} else if(GT_Utility.areStacksEqual(GT_ModHandler.getModItem("gregtech", "gt.metaitem.01", 1, 32605), ar.mOutput, true)) {
 				// Ultimate Battery
 				arU = ar;
-			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_LapotronicOrb2.get(1L))) {
+			} else if(GT_Utility.areStacksEqual(GT_ModHandler.getModItem("gregtech", "metaitem.01", 1, 32609), ar.mOutput, true)) {
 				// Really Ultimate Battery
 				arRU = ar;
-			}*/
+			}
 		}
-		lapoCapacitorRecipeAdder(arLuV, Materials.Osmiridium, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2));
-		lapoCapacitorRecipeAdder(arZPM, Materials.NaquadahAlloy, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3));
-		lapoCapacitorRecipeAdder(arUV, Materials.Neutronium, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4));
+		lapoCapacitorRecipeAdder(arLuV, Materials.Osmiridium,
+				GT_OreDictUnificator.get(OrePrefixes.block, Materials.Lapis, 1),
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2));
+		lapoCapacitorRecipeAdder(arZPM, Materials.NaquadahAlloy,
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2),
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3));
+		lapoCapacitorRecipeAdder(arUV, Materials.Neutronium,
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3),
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4));
 		// TODO change material to Cosmic Neutronium
-		lapoCapacitorRecipeAdder(arU, Materials.Neutronium, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5));
+		lapoCapacitorRecipeAdder(arU, Materials.Neutronium,
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5));
 		// TODO change material to Infinity
-		lapoCapacitorRecipeAdder(arRU, Materials.Neutronium, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6));
+		lapoCapacitorRecipeAdder(arRU, Materials.Neutronium,
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6));
 
+		// Capacitor recycling
+		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
+				ItemList.Energy_LapotronicOrb.get(1L),
+				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 24),
+				1200, 32);
+		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
+				ItemList.Energy_LapotronicOrb2.get(1L),
+				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24),
+				1200, 32);
+		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
+				ItemList.Energy_Module.get(1L),
+				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 24),
+				1200, 32);
+		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
+				ItemList.Energy_Cluster.get(1L),
+				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24),
+				1200, 32);
+		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
+				ItemList.Energy_LapotronicOrb.get(1L), null, 1200, 32);
+		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
+				ItemList.Energy_LapotronicOrb.get(1L), null, 1200, 32);
 	}
 }
