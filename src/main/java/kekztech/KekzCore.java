@@ -34,7 +34,8 @@ import thaumcraft.api.research.ResearchPage;
 			+ "required-after:tectech;"
 			+ "required-after:Thaumcraft;"
 			+ "required-after:ThaumicTinkerer;"
-			+ "after:bartworks"
+			+ "after:bartworks;"
+			+ "after:dreamcraft"
 		)
 public class KekzCore {
 	

@@ -275,13 +275,15 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 
 		// Make sure glass tier is T-2 of the highest tier capacitor in the structure
 		// Count down from the highest tier until an entry is found
+		// Borosilicate glass after 5 are just recolours of 0
+		final int colourCorrectedMeta = firstGlassMeta > 5 ? 0 : firstGlassMeta;
 		for(int highestCapacitor = capacitors.length - 1; highestCapacitor >= 0; highestCapacitor--){
 			if(capacitors[highestCapacitor] > 0){
-				if(!(firstGlassMeta >= capacitors[highestCapacitor])){
+				if(!(colourCorrectedMeta >= capacitors[highestCapacitor])){
 					formationChecklist = false;
 					KekzCore.LOGGER.info("LSC Glass is not of correct tier");
 					KekzCore.LOGGER.info("Highest capacitor tier (0 is IV): " + highestCapacitor);
-					KekzCore.LOGGER.info("Glass tier (0 is HV): " +firstGlassMeta);
+					KekzCore.LOGGER.info("Glass tier (0 is HV): " +colourCorrectedMeta);
 				}
 				break;
 			}
