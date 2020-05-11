@@ -19,6 +19,7 @@ import items.MetaItem_CraftingComponent;
 import kekztech.Items;
 import kekztech.KekzCore;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import thaumcraft.api.ItemApi;
 import thaumcraft.api.ThaumcraftApi;
@@ -444,19 +445,33 @@ public class Recipes {
 	private static void registerRecipes_LSC(){
 
 		// Controller
-		final ItemStack filledLapoCrystal = GT_ModHandler.getIC2Item("itemBatLamaCrystal", 1, 1);
-		filledLapoCrystal.getTagCompound().setInteger("charge", 10000000);
 		final Object[] lsc_recipe = {
 				"LPL", "CBC", "LPL",
-				'L', filledLapoCrystal,
+				'L', ItemList.IC2_LapotronCrystal.getWithCharge(1L, 10000000),
 				'P', ItemList.Circuit_Chip_PIC.get(1L),
 				'C', OrePrefixes.circuit.get(Materials.Master),
 				'B', new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0),
 		};
 		GT_ModHandler.addCraftingRecipe(KekzCore.lsc.getStackForm(1), lsc_recipe);
 
-		KekzCore.LOGGER.info("Reading Assembly Line recipes from GregTech recipe map");
+		// Blocks
+		final Object[] lcBase_recipe = {
+				"WBW", "RLR", "WBW",
+				'W', OrePrefixes.plate.get(Materials.Tantalum),
+				'B', OrePrefixes.frameGt.get(Materials.TungstenSteel),
+				'R', OrePrefixes.stickLong.get(Materials.TungstenSteel),
+				'L', OrePrefixes.block.get(Materials.Lapis)
+		};
+		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0), lcBase_recipe);
+		final Object[] lcIV_recipe = {
+				"SLS", "LOL", "SLS",
+				'S', OrePrefixes.screw.get(Materials.Lapis),
+				'L', OrePrefixes.plate.get(Materials.Lapis),
+				'O', ItemList.Energy_LapotronicOrb.get(1L)
+		};
+		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), lcIV_recipe);
 
+		KekzCore.LOGGER.info("Reading Assembly Line recipes from GregTech recipe map");
 		for(GT_Recipe.GT_Recipe_AssemblyLine ar : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
 			if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_LapotronicOrb2.get(1L))) {
 				// LuV Lapo Orb
@@ -478,14 +493,6 @@ public class Recipes {
 			}*/
 		}
 
-		// Blocks
-		final Object[] lcIV_recipe = {
-				"SLS", "LOL", "SLS",
-				'S', OrePrefixes.screw.get(Materials.Lapis),
-				'L', OrePrefixes.plate.get(Materials.Lapis),
-				'O', ItemList.Energy_LapotronicOrb.get(1L)
-		};
-		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), lcIV_recipe);
 
 	}
 }
