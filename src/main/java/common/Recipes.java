@@ -490,10 +490,10 @@ public class Recipes {
 			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_Cluster.get(1L), true)) {
 				// UV Lapo Orb
 				arUV = ar;
-			} else if(GT_Utility.areStacksEqual(GT_ModHandler.getModItem("gregtech", "gt.metaitem.01", 1, 32605), ar.mOutput, true)) {
+			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.ZPM2.get(1L), true)) {
 				// Ultimate Battery
 				arU = ar;
-			} else if(GT_Utility.areStacksEqual(GT_ModHandler.getModItem("gregtech", "metaitem.01", 1, 32609), ar.mOutput, true)) {
+			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.ZPM3.get(1L), true)) {
 				// Really Ultimate Battery
 				arRU = ar;
 			}
@@ -532,11 +532,11 @@ public class Recipes {
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24),
 				1200, 32);
 		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
-				ItemList.Energy_LapotronicOrb.get(1L),
+				ItemList.ZPM2.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
 				1200, 32);
 		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
-				ItemList.Energy_LapotronicOrb.get(1L),
+				ItemList.ZPM3.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 24),
 				1200, 32);
 	}

@@ -123,7 +123,7 @@ public class KekzCore {
 				.add(Aspect.VOID, 5);
 		final ResearchItem jar_ichor = new ResearchItem("ICHORJAR", "ALCHEMY", aspects_jarichor, 2, -5, 3, new ItemStack(Blocks.jarIchor, 1))
 			.setPages(
-				new ResearchPage("kekztech.research_page.ICHORJAR"),
+				new ResearchPage("kekztech.research_page.ICHORJAR.0"),
 				new ResearchPage(Recipes.infusionRecipes.get("ICHORJAR"))
 			)
 			.setConcealed()
