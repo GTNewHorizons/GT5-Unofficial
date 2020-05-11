@@ -16,6 +16,7 @@ import items.MetaItem_ReactorComponent;
 import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
@@ -98,6 +99,11 @@ public class KekzCore {
 		Recipes.init();
 		
 		// Thaumcraft research
+		final AspectList aspects_jarthaumiumreinforced = new AspectList()
+				.add(Aspect.ARMOR, 3)
+				.add(Aspect.WATER, 3)
+				.add(Aspect.GREED, 3)
+				.add(Aspect.VOID, 3)
 		final ResearchItem jar_thaumiumreinforced = new ResearchItem("THAUMIUMREINFORCEDJAR", "ALCHEMY", new AspectList(), 3, -4, 2, new ItemStack(Blocks.jarThaumiumReinforced, 1))
 			.setPages(
 				new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.0"),
@@ -107,8 +113,14 @@ public class KekzCore {
 			.setConcealed()
 			.setParents("JARLABEL")
 			.registerResearchItem();
-		
-		final ResearchItem jar_ichor = new ResearchItem("ICHORJAR", "ALCHEMY", new AspectList(), 2, -5, 3, new ItemStack(Blocks.jarIchor, 1))
+
+		final AspectList aspects_jarichor = new AspectList()
+				.add(Aspect.ARMOR, 3)
+				.add(Aspect.ELDRITCH, 3)
+				.add(Aspect.WATER, 3)
+				.add(Aspect.GREED, 5)
+				.add(Aspect.VOID, 5);
+		final ResearchItem jar_ichor = new ResearchItem("ICHORJAR", "ALCHEMY", aspects_jarichor, 2, -5, 3, new ItemStack(Blocks.jarIchor, 1))
 			.setPages(
 				new ResearchPage("kekztech.research_page.ICHORJAR"),
 				new ResearchPage(Recipes.infusionRecipes.get("ICHORJAR"))

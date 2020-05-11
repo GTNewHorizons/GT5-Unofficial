@@ -467,7 +467,7 @@ public class Recipes {
 			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_Cluster.get(1L))) {
 				// UV Lapo Orb
 				lapoCapacitorRecipeAdder(ar, Materials.Neutronium, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4));
-			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList..get(1L))) {
+			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.get(1L))) {
 				// Ultimate Battery
 				// TODO change material to Cosmic Neutronium
 				lapoCapacitorRecipeAdder(ar, Materials.Neutronium, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5));
