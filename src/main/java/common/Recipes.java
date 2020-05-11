@@ -450,7 +450,7 @@ public class Recipes {
 				"LPL", "CBC", "LPL",
 				'L', filledLapoCrystal,
 				'P', ItemList.Circuit_Chip_PIC.get(1L),
-				'C', OrePrefixes.circuit.get(Materials.Master)
+				'C', OrePrefixes.circuit.get(Materials.Master),
 				'B', new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0),
 		};
 		GT_ModHandler.addCraftingRecipe(KekzCore.lsc.getStackForm(1), lsc_recipe);
@@ -467,7 +467,7 @@ public class Recipes {
 			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_Cluster.get(1L))) {
 				// UV Lapo Orb
 				lapoCapacitorRecipeAdder(ar, Materials.Neutronium, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4));
-			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.get(1L))) {
+			} /*else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.get(1L))) {
 				// Ultimate Battery
 				// TODO change material to Cosmic Neutronium
 				lapoCapacitorRecipeAdder(ar, Materials.Neutronium, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5));
@@ -475,7 +475,7 @@ public class Recipes {
 				// Really Ultimate Battery
 				// TODO change material to Infinity
 				lapoCapacitorRecipeAdder(ar, Materials.Neutronium, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6));
-			}
+			}*/
 		}
 
 		// Blocks
@@ -486,10 +486,6 @@ public class Recipes {
 				'O', ItemList.Energy_LapotronicOrb.get(1L)
 		};
 		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), lcIV_recipe);
-		// Make sure the recipe doesn't exceed 16 slots
-		if(lcLuV_recipeBase.size() <= 14)
 
-
-		GT_Values.RA.addAssemblylineRecipe();
 	}
 }

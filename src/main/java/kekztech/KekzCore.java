@@ -63,16 +63,16 @@ public class KekzCore {
 		//Item_Configurator.getInstance().registerItem();
 		Items.registerOreDictNames();
 		
-		Item_ThaumiumReinforcedJarFilled.getInstance().registerItem();
+		//Item_ThaumiumReinforcedJarFilled.getInstance().registerItem();
 		
 		Blocks.init();
 		
 		// Register TileEntities
 		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");
-		GameRegistry.registerTileEntity(TE_ItemServerIOPort.class, "kekztech_itemserverioport_tile");
-		GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
-		GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
-		GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
+		//GameRegistry.registerTileEntity(TE_ItemServerIOPort.class, "kekztech_itemserverioport_tile");
+		//GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
+		//GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
+		//GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
 		
 		GameRegistry.registerTileEntity(TE_ThaumiumReinforcedJar.class, "kekztech_thaumiumreinforcedjar");
 		GameRegistry.registerTileEntity(TE_IchorJar.class, "kekztech_ichorjar");
@@ -103,7 +103,7 @@ public class KekzCore {
 				.add(Aspect.ARMOR, 3)
 				.add(Aspect.WATER, 3)
 				.add(Aspect.GREED, 3)
-				.add(Aspect.VOID, 3)
+				.add(Aspect.VOID, 3);
 		final ResearchItem jar_thaumiumreinforced = new ResearchItem("THAUMIUMREINFORCEDJAR", "ALCHEMY", new AspectList(), 3, -4, 2, new ItemStack(Blocks.jarThaumiumReinforced, 1))
 			.setPages(
 				new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.0"),
