@@ -563,19 +563,19 @@ public class Recipes {
 				ItemList.Energy_LapotronicOrb2.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24),
 				1200, 32);
-		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2),
+		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3),
 				ItemList.Energy_Module.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 24),
 				1200, 32);
-		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3),
+		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
 				ItemList.Energy_Cluster.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24),
 				1200, 32);
-		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
+		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
 				ItemList.ZPM2.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
 				1200, 32);
-		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
+		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6),
 				ItemList.ZPM3.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 24),
 				1200, 32);
