@@ -277,7 +277,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		// Count down from the highest tier until an entry is found
 		for(int highestCapacitor = capacitors.length - 1; highestCapacitor >= 0; highestCapacitor--){
 			if(capacitors[highestCapacitor] > 0){
-				formationChecklist = firstGlassMeta >= capacitors[highestCapacitor] - 2;
+				formationChecklist = firstGlassMeta >= capacitors[highestCapacitor];
 				if(!formationChecklist){
 					KekzCore.LOGGER.info("LSC Glass is not of correct tier");
 					KekzCore.LOGGER.info("Highest capacitor tier (0 is IV): " + highestCapacitor);

@@ -104,7 +104,7 @@ public class KekzCore {
 				.add(Aspect.WATER, 3)
 				.add(Aspect.GREED, 3)
 				.add(Aspect.VOID, 3);
-		final ResearchItem jar_thaumiumreinforced = new ResearchItem("THAUMIUMREINFORCEDJAR", "ALCHEMY", new AspectList(), 3, -4, 2, new ItemStack(Blocks.jarThaumiumReinforced, 1))
+		final ResearchItem jar_thaumiumreinforced = new ResearchItem("THAUMIUMREINFORCEDJAR", "ALCHEMY", aspects_jarthaumiumreinforced, 3, -4, 2, new ItemStack(Blocks.jarThaumiumReinforced, 1))
 			.setPages(
 				new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.0"),
 				new ResearchPage(Recipes.infusionRecipes.get("THAUMIUMREINFORCEDJAR")),
