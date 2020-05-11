@@ -507,12 +507,10 @@ public class Recipes {
 		lapoCapacitorRecipeAdder(arUV, Materials.Neutronium,
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3),
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4));
-		// TODO change material to Cosmic Neutronium
-		lapoCapacitorRecipeAdder(arU, Materials.Neutronium,
+		lapoCapacitorRecipeAdder(arU, Materials.CosmicNeutronium,
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5));
-		// TODO change material to Infinity
-		lapoCapacitorRecipeAdder(arRU, Materials.Neutronium,
+		lapoCapacitorRecipeAdder(arRU, Materials.Infinity,
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6));
 
@@ -534,8 +532,12 @@ public class Recipes {
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24),
 				1200, 32);
 		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
-				ItemList.Energy_LapotronicOrb.get(1L), null, 1200, 32);
+				ItemList.Energy_LapotronicOrb.get(1L),
+				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
+				1200, 32);
 		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
-				ItemList.Energy_LapotronicOrb.get(1L), null, 1200, 32);
+				ItemList.Energy_LapotronicOrb.get(1L),
+				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 24),
+				1200, 32);
 	}
 }
