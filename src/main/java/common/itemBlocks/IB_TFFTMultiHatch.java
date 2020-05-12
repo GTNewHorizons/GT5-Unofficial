@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 public class IB_TFFTMultiHatch extends ItemBlock {
 	
@@ -13,12 +14,12 @@ public class IB_TFFTMultiHatch extends ItemBlock {
 		super(block);
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"unchecked"})
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean advancedTooltips) {
-		lines.add("Special hatch for the T.F.F.T");
-		lines.add("Allows for automated interaction with all stored fluids in a single place");
-		lines.add("Right-click with screwdriver to activate auto-output");
-		lines.add("Auto-output will try to output fluids into adjacent tanks at a rate of 1000L/s per fluid");
+		lines.add(StatCollector.translateToLocal("tile.kekztech_tfftmultihatch_block.0.desc"));
+		lines.add(StatCollector.translateToLocal("tile.kekztech_tfftmultihatch_block.1.desc"));
+		lines.add(StatCollector.translateToLocal("tile.kekztech_tfftmultihatch_block.2.desc"));
+		lines.add(StatCollector.translateToLocal("tile.kekztech_tfftmultihatch_block.3.desc"));
 	}
 }

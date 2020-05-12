@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 public class IB_LapotronicEnergyUnit extends ItemBlock {
 	
@@ -26,7 +27,7 @@ public class IB_LapotronicEnergyUnit extends ItemBlock {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean advancedTooltips) {
-		lines.add("Part of the Lapotronic Super Capacitor");
+		lines.add(StatCollector.translateToLocal("tile.kekztech_lapotronicenergyunit_block.desc"));
 		switch(stack.getItemDamage()) {
 		case 1: lines.add("Capacity: 100,000,000 EU"); break;
 		case 2: lines.add("Capacity: 1,000,000,000 EU"); break;

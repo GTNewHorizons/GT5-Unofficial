@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 public class IB_ItemProxyCable extends ItemBlock {
 
@@ -13,10 +14,9 @@ public class IB_ItemProxyCable extends ItemBlock {
 		super(block);
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"unchecked"})
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean advancedTooltips) {
-		lines.add("Connects Item Distribution Nodes");
-		lines.add("Wired networks do not require a controller");
+		lines.add(StatCollector.translateToLocal("tile.kekztech_itemproxycable_block.0.desc"));
 	}
 }

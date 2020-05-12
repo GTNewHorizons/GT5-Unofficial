@@ -94,24 +94,38 @@ item.kekztech_crafting_item.15.name=GDC Ceramic Plate
 # -------- TFFT: Structure Blocks
 tile.kekztech_tfftcasingblock_block.name=T.F.F.T Casing
 tile.kekztech_tfftstoragefieldblock1_block.name=T.F.F.T Storage Field Block (Tier I)
+tile.kekztech_tfftstoragefieldblock1_block.0.desc=This is not a fluid tank
 tile.kekztech_tfftstoragefieldblock2_block.name=T.F.F.T Storage Field Block (Tier II)
 tile.kekztech_tfftstoragefieldblock3_block.name=T.F.F.T Storage Field Block (Tier III)
 tile.kekztech_tfftstoragefieldblock4_block.name=T.F.F.T Storage Field Block (Tier IV)
 tile.kekztech_tfftstoragefieldblock5_block.name=T.F.F.T Storage Field Block (Tier V)
 tile.kekztech_tfftmultihatch_block.name=T.F.F.T Multi-Fluid I/O Hatch
+tile.kekztech_tfftmultihatch_block.0.desc=Special hatch for the T.F.F.T
+tile.kekztech_tfftmultihatch_block.1.desc=Allows for automated interaction with all stored fluids in a single place
+tile.kekztech_tfftmultihatch_block.2.desc=Right-click with screwdriver to activate auto-output
+tile.kekztech_tfftmultihatch_block.3.desc=Auto-output will try to output fluids into adjacent tanks at a rate of 1000L/s per fluid
 
 # -------- Item Server: Structure Blocks
 tile.kekztech_itemserverdrive_block.name=Item Server Drive
+tile.kekztech_itemserverdrive_block.0.desc=Item Server Storage Drive
 tile.kekztech_itemserverrackcasing_block.name=Item Server Rack Casing
+tile.kekztech_itemserverrackcasing_block.0.desc=Shiny new server rack
 tile.kekztech_itemserverioport_block.name=Item Server I/O Port
+tile.kekztech_itemserverioport_block.0.desc=I/O Port for interfacing with an Item Server
 
 # -------- Item Server: Crafting Components
 item.kekztech_crafting_item.16.name=Item Server Blade
 
 # -------- Item Proxy: Structure Blocks
 tile.kekztech_itemproxycable_block.name=Item Proxy Network Cable
+tile.kekztech_itemproxycable_block.0.desc=Connects Item Proxy Nodes
 tile.kekztech_itemproxysource_block.name=Item Proxy Network Source
+tile:kekztech_itemproxysource_block.0.desc=Point to an inventory to act as source for the item proxy network
+tile:kekztech_itemproxysource_block.1.desc=Insert an Integrated Circuit to set the network channel
+tile:kekztech_itemproxysource_block.2.desc=Only one source can use one channel on the same network
 tile.kekztech_itemproxyendpoint_block.name=Item Proxy Network Endpoint
+tile.kekztech_itemproxyendpoint_block.0.desc=Point the marked side to where you want to provide an inventory proxy to
+tile.kekztech_itemproxyendpoint_block.1.desc=Insert an Integrated Circuit to set the network channel
 
 # -------- Lapotronic Super Capacitor: Structure Blocks
 tile.kekztech_lapotronicenergyunit_block.0.name=Lapotronic Super Capacitor Casing
@@ -121,6 +135,7 @@ tile.kekztech_lapotronicenergyunit_block.3.name=Lapotronic Capacitor (ZPM)
 tile.kekztech_lapotronicenergyunit_block.4.name=Lapotronic Capacitor (UV)
 tile.kekztech_lapotronicenergyunit_block.5.name=Ultimate Capacitor (UHV)
 tile.kekztech_lapotronicenergyunit_block.6.name=Really Ultimate Capacitor (UEV)
+tile.kekztech_lapotronicenergyunit_block.desc=Part of the Lapotronic Super Capacitor
 
 # -------- Thaumium Reinforced Jar: Block
 tile.kekztech_thaumiumreinforcedjar_block.0.name=Thaumium Reinforced Jar
