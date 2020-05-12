@@ -378,7 +378,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				continue;
 			}
 			final BigInteger remcapActual = capacity.subtract(stored);
-			final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) <= 0) ? remcapActual : MAX_LONG;
+			final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) > 0) ? remcapActual : MAX_LONG;
 			final long power = Math.min(eHatch.maxEUInput() * eHatch.maxAmperesIn(), recampLimited.longValue());
 			if(power <= eHatch.getEUVar()) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
@@ -390,7 +390,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()){
 				continue;
 			}
-			final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) <= 0) ? stored : MAX_LONG;
+			final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) > 0) ? stored : MAX_LONG;
 			final long power = Math.min(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut(), remStoredLimited.longValue());
 			if(eDynamo.getEUVar() <= eDynamo.maxEUStore() - power) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
@@ -403,7 +403,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				continue;
 			}
 			final BigInteger remcapActual = capacity.subtract(stored);
-			final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) <= 0) ? remcapActual : MAX_LONG;
+			final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) > 0) ? remcapActual : MAX_LONG;
 			final long power = Math.min(eHatch.maxEUInput() * eHatch.maxAmperesIn(), recampLimited.longValue());
 			if(power <= eHatch.getEUVar()) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
@@ -415,7 +415,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()){
 				continue;
 			}
-			final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) <= 0) ? stored : MAX_LONG;
+			final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) > 0) ? stored : MAX_LONG;
 			final long power = Math.min(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut(), remStoredLimited.longValue());
 			if(eDynamo.getEUVar() <= eDynamo.maxEUStore() - power) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
@@ -428,7 +428,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				continue;
 			}
 			final BigInteger remcapActual = capacity.subtract(stored);
-			final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) <= 0) ? remcapActual : MAX_LONG;
+			final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) > 0) ? remcapActual : MAX_LONG;
 			final long power = Math.min(eHatch.maxEUInput() * eHatch.maxAmperesIn(), recampLimited.longValue());
 			if(power <= eHatch.getEUVar()) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
@@ -440,7 +440,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()){
 				continue;
 			}
-			final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) <= 0) ? stored : MAX_LONG;
+			final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) > 0) ? stored : MAX_LONG;
 			final long power = Math.min(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut(), remStoredLimited.longValue());
 			if(eDynamo.getEUVar() <= eDynamo.maxEUStore() - power) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
