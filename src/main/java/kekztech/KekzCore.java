@@ -81,6 +81,12 @@ public class KekzCore {
 		
 		// Register guis
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+
+		// Blacklist this research from being a requirement to unlock kami
+		KekzCore.LOGGER.info("Blacklisting research THAUMIUMREINFORCEDJAR from /iskamiunlocked");
+		KamiResearchItem.Blacklist.add("THAUMIUMREINFORCEDJAR");
+		KekzCore.LOGGER.info("Blacklisting research ICHORJAR from /iskamiunlocked");
+		KamiResearchItem.Blacklist.add("ICHORJAR");
 	}
 	
 	@Mod.EventHandler
@@ -115,8 +121,6 @@ public class KekzCore {
 			.setConcealed()
 			.setParents("JARLABEL")
 			.registerResearchItem();
-		// Blacklist this research from being a requirement to unlock kami
-		KamiResearchItem.Blacklist.add("THAUMIUMREINFORCEDJAR");
 
 		final AspectList aspects_jarichor = new AspectList()
 				.add(Aspect.ARMOR, 3)
