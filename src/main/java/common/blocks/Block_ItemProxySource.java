@@ -30,6 +30,7 @@ public class Block_ItemProxySource extends Block {
 		instance.setBlockTextureName(KekzCore.MODID + ":" + "ItemProxySource");
 		instance.setHardness(3.0f);
 		instance.setResistance(2.0f);
+		instance.setHarvestLevel("wrench", 2);
 		GameRegistry.registerBlock(instance, IB_ItemProxySource.class, blockName);
 		
 		return instance;

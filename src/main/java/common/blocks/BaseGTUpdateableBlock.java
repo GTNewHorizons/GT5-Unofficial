@@ -19,6 +19,7 @@ public abstract class BaseGTUpdateableBlock extends Block {
     protected BaseGTUpdateableBlock(Material material) {
         super(material);
         GregTech_API.registerMachineBlock(this, -1);
+        super.setHarvestLevel("wrench", 2);
     }
 
     @Override

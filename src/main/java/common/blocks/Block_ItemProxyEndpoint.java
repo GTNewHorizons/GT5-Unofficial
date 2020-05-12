@@ -31,6 +31,7 @@ public class Block_ItemProxyEndpoint extends Block {
 		instance.setBlockTextureName(KekzCore.MODID + ":" + "ItemProxyEndpoint");
 		instance.setHardness(3.0f);
 		instance.setResistance(2.0f);
+		instance.setHarvestLevel("wrench", 2);
 		GameRegistry.registerBlock(instance, IB_ItemProxyEndpoint.class, blockName);
 		
 		return instance;
