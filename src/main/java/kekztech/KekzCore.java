@@ -20,6 +20,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
+import thaumic.tinkerer.common.research.KamiResearchItem;
 
 /**
  * My GT-Meta-IDs are: 13101 - 13500
@@ -114,6 +115,8 @@ public class KekzCore {
 			.setConcealed()
 			.setParents("JARLABEL")
 			.registerResearchItem();
+		// Blacklist this research from being a requirement to unlock kami
+		KamiResearchItem.Blacklist.add("THAUMIUMREINFORCEDJAR");
 
 		final AspectList aspects_jarichor = new AspectList()
 				.add(Aspect.ARMOR, 3)
@@ -128,6 +131,7 @@ public class KekzCore {
 			)
 			.setConcealed()
 			.setParents("THAUMIUMREINFORCEDJAR")
+			.setParentsHidden("ICHOR")
 			.registerResearchItem();
 	}
 }
