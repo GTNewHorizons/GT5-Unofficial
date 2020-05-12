@@ -29,6 +29,9 @@ usernamecache.json
 /saves/
 /config/
 
+# intellij related things
+.idea/dictionaries/*
+
 # other stuff
 eclipse/
 eclipse/*
