@@ -455,7 +455,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
 		ll.add("Used Capacity: " + NumberFormat.getNumberInstance().format(stored) + "EU");
 		ll.add("Total Capacity: " + NumberFormat.getNumberInstance().format(capacity) + "EU");
-		ll.add("Running Cost: " + NumberFormat.getNumberInstance().format(passiveDischargeAmount) + "EU/t");
+		ll.add("Passive Loss: " + NumberFormat.getNumberInstance().format(passiveDischargeAmount) + "EU/t");
 		ll.add("Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
 				? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
 				: EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
