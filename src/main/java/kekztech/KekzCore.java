@@ -2,6 +2,7 @@ package kekztech;
 
 import common.Blocks;
 import common.Recipes;
+import common.Researches;
 import common.tileentities.*;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -10,17 +11,10 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import items.ErrorItem;
-import items.Item_ThaumiumReinforcedJarFilled;
 import items.MetaItem_CraftingComponent;
 import items.MetaItem_ReactorComponent;
-import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.ResearchPage;
-import thaumic.tinkerer.common.research.KamiResearchItem;
 
 /**
  * My GT-Meta-IDs are: 13101 - 13500
@@ -67,7 +61,7 @@ public class KekzCore {
 		
 		//Item_ThaumiumReinforcedJarFilled.getInstance().registerItem();
 		
-		Blocks.init();
+		Blocks.preInit();
 		
 		// Register TileEntities
 		GameRegistry.registerTileEntity(TE_TFFTMultiHatch.class, "kekztech_tfftmultihatch_tile");
@@ -82,11 +76,7 @@ public class KekzCore {
 		// Register guis
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
-		// Blacklist this research from being a requirement to unlock kami
-		KekzCore.LOGGER.info("Blacklisting research THAUMIUMREINFORCEDJAR from /iskamiunlocked");
-		KamiResearchItem.Blacklist.add("THAUMIUMREINFORCEDJAR");
-		KekzCore.LOGGER.info("Blacklisting research ICHORJAR from /iskamiunlocked");
-		KamiResearchItem.Blacklist.add("ICHORJAR");
+		Researches.preInit();
 	}
 	
 	@Mod.EventHandler
@@ -104,38 +94,7 @@ public class KekzCore {
 	
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		Recipes.init();
-		
-		// Thaumcraft research
-		final AspectList aspects_jarthaumiumreinforced = new AspectList()
-				.add(Aspect.ARMOR, 3)
-				.add(Aspect.WATER, 3)
-				.add(Aspect.GREED, 3)
-				.add(Aspect.VOID, 3);
-		final ResearchItem jar_thaumiumreinforced = new ResearchItem("THAUMIUMREINFORCEDJAR", "ALCHEMY", aspects_jarthaumiumreinforced, 3, -4, 2, new ItemStack(Blocks.jarThaumiumReinforced, 1))
-			.setPages(
-				new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.0"),
-				new ResearchPage(Recipes.infusionRecipes.get("THAUMIUMREINFORCEDJAR")),
-				new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.1")
-			)
-			.setConcealed()
-			.setParents("JARLABEL")
-			.registerResearchItem();
-
-		final AspectList aspects_jarichor = new AspectList()
-				.add(Aspect.ARMOR, 3)
-				.add(Aspect.ELDRITCH, 3)
-				.add(Aspect.WATER, 3)
-				.add(Aspect.GREED, 5)
-				.add(Aspect.VOID, 5);
-		final ResearchItem jar_ichor = new ResearchItem("ICHORJAR", "ALCHEMY", aspects_jarichor, 2, -5, 3, new ItemStack(Blocks.jarIchor, 1))
-			.setPages(
-				new ResearchPage("kekztech.research_page.ICHORJAR.0"),
-				new ResearchPage(Recipes.infusionRecipes.get("ICHORJAR"))
-			)
-			.setConcealed()
-			.setParents("THAUMIUMREINFORCEDJAR")
-			.setParentsHidden("ICHOR")
-			.registerResearchItem();
+		Recipes.postInit();
+		Researches.postInit();
 	}
 }

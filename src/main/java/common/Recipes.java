@@ -34,7 +34,7 @@ public class Recipes {
 
 	public static final HashMap<String, InfusionRecipe> infusionRecipes = new HashMap<>();
 	
-	public static void init() {
+	public static void postInit() {
 		KekzCore.LOGGER.info("Registering recipes...");
 		
 		registerRecipes_TFFT();

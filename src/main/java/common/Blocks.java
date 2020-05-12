@@ -54,7 +54,7 @@ public class Blocks {
 	
 	public static Block lscLapotronicEnergyUnit;
 	
-	public static void init() {
+	public static void preInit() {
 		KekzCore.LOGGER.info("Registering blocks...");
 		
 		registerBlocks_SOFC();

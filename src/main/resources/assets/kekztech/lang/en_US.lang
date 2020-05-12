@@ -133,7 +133,7 @@ item.kekztech_thaumiumreinforcedjarfilled_item.void.name=Thaumium Reinforced Voi
 # -------- Thaumium Reinforced Jar: Research
 # This is the name of the research
 tc.research_name.THAUMIUMREINFORCEDJAR=Thaumium Reinforced Jars
-# This is the subtext for the research note
+# This is the subtext for the research note (I think)
 kekztech.research_page.THAUMIUMREINFORCEDJAR=Slightly better jars
 # Lore text for the research pages
 kekztech.research_page.THAUMIUMREINFORCEDJAR.0=You have heard your fellow Thaumaturges talk about the benefits of digitized Essentia Storage.<BR><BR>Storing enough Essentia for your advanced infusions has indeed been an issue for you too. However those jars are simply too pleasing to look at to even consider the idea of replacing them with some compact technological construct.<BR><BR>Thanks to this new discovery, you have managed to quadruple the capacity of your jars by improving them with a thick Thaumium lining. This should buy you some more time to come up with a better solution.
