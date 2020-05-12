@@ -153,9 +153,14 @@ public final class MainLoader {
         registerExtraHazmats();
         TecTech.LOGGER.info("Hazmat additions done");
 
-        progressBarPostLoad.step("Nerf blocks blast resistance");
-        fixBlocks();
-        TecTech.LOGGER.info("Blocks nerf done");
+        if (!configTecTech.DISABLE_BLOCK_HARDNESS_NERF) {
+            progressBarPostLoad.step("Nerf blocks blast resistance");
+            fixBlocks();
+            TecTech.LOGGER.info("Blocks nerf done");
+        } else {
+            progressBarPostLoad.step("Do not nerf blocks blast resistance");
+            TecTech.LOGGER.info("Blocks were not nerfed");
+        }
 
         progressBarPostLoad.step("Constructable stuff");
         new ConstructableLoader().run();
