@@ -218,7 +218,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		// Capacitor units
 		int firstGlassHeight = 3; // Initialize at basic height (-1 because it's an offset)
 		for(int X = -1; X <= 1; X++) {
-			for(int Z = -1; Z >= -2; Z--) {
+			for(int Z = -1; Z >= -3; Z--) {
 				// Y has to be the innermost loop to properly deal with the dynamic height.
 				// This way each "pillar" of capacitors is checked from bottom to top until it hits glass.
 				for(int Y = 2; Y <= 17; Y++) {
@@ -232,7 +232,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 							tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
 							capacity = capacity.add(BigInteger.valueOf(c));
 						} else if(meta <= 6){
-							tempCapacity = tempCapacity.add(BigInteger.valueOf((long) (100000000L * Math.pow(10, 4))));
+							tempCapacity = tempCapacity.add(BigInteger.valueOf((long) (100000000L * Math.pow(10, 3))));
 							capacity = capacity.add(MAX_LONG);
 						}
 						capacitors[meta - 1]++;
