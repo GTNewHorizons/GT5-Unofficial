@@ -79,6 +79,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				.addSeparator()
 				.addInfo("Glass shell has to be Tier - 2 of the highest capacitor tier")
 				.addInfo("UV-Tier glass required for TecTech Laser Hatches")
+				.addInfo("KNOWN BUG: Laser Dynamo Tunnels don't output")
 				.addInfo("Modular height of 4 to 18 blocks.")
 				.addSeparator()
 				.beginStructureBlock(5, 4, 5)
