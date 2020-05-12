@@ -182,6 +182,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		mDynamoHatchesTT.clear();
 		mEnergyTunnelsTT.clear();
 		mDynamoTunnelsTT.clear();
+		// Temp var for loss calculation
+		BigInteger tempCapacity = BigInteger.ZERO;
 
 		// Capacitor base
 		for(int Y = 0; Y <= 1; Y++) {
@@ -227,9 +229,11 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 						// Add capacity
 						if(meta <= 4){
 							final long c = (long) (100000000L * Math.pow(10, meta - 1));
+							tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
 							capacity = capacity.add(BigInteger.valueOf(c));
 						} else if(meta <= 6){
-							capacity = capacity.add(BigInteger.valueOf(Long.MAX_VALUE));
+							tempCapacity = tempCapacity.add(BigInteger.valueOf((long) (100000000L * Math.pow(10, 4))));
+							capacity = capacity.add(MAX_LONG);
 						}
 						capacitors[meta - 1]++;
 					} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)){
@@ -313,7 +317,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 		}
 		// Calculate how much energy to void each tick
-		passiveDischargeAmount = new BigDecimal(capacity).multiply(PASSIVE_DISCHARGE_FACTOR_PER_TICK).toBigInteger();
+		passiveDischargeAmount = new BigDecimal(tempCapacity).multiply(PASSIVE_DISCHARGE_FACTOR_PER_TICK).toBigInteger();
 
 		return formationChecklist;
 	}
@@ -328,14 +332,14 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				// Add GT hatches
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return super.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) mte);
-			} else if(mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
-				// Add TT hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return mEnergyHatchesTT.add((GT_MetaTileEntity_Hatch_EnergyMulti) mte);
 			} else if(mte instanceof  GT_MetaTileEntity_Hatch_EnergyTunnel) {
 				// Add TT Laser hatches
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return mEnergyTunnelsTT.add((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
+			} else if(mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
+				// Add TT hatches
+				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
+				return mEnergyHatchesTT.add((GT_MetaTileEntity_Hatch_EnergyMulti) mte);
 			} else {
 				return false;
 			}
@@ -352,14 +356,14 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				// Add GT hatches
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return super.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) mte);
-			} else if(mte instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
-				// Add TT hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return mDynamoHatchesTT.add((GT_MetaTileEntity_Hatch_DynamoMulti) mte);
 			} else if(mte instanceof  GT_MetaTileEntity_Hatch_DynamoTunnel) {
 				// Add TT Laser hatches
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return mDynamoTunnelsTT.add((GT_MetaTileEntity_Hatch_DynamoTunnel) mte);
+			} else if(mte instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
+				// Add TT hatches
+				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
+				return mDynamoHatchesTT.add((GT_MetaTileEntity_Hatch_DynamoMulti) mte);
 			} else {
 				return false;
 			}
