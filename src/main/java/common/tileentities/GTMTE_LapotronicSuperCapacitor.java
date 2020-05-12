@@ -1,7 +1,9 @@
 package common.tileentities;
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import common.Blocks;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -31,6 +33,8 @@ import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlockBase {
 	
@@ -43,8 +47,10 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	private static final BigDecimal PASSIVE_DISCHARGE_FACTOR_PER_TICK =
 			BigDecimal.valueOf(0.01D / 1728000.0D); // The magic number is ticks per 24 hours
 
-	private final ArrayList<GT_MetaTileEntity_Hatch_EnergyMulti> mEnergyHatchesTT = new ArrayList<>();
-	private final ArrayList<GT_MetaTileEntity_Hatch_DynamoMulti> mDynamoHatchesTT = new ArrayList<>();
+	private final Set<GT_MetaTileEntity_Hatch_EnergyMulti> mEnergyHatchesTT = new HashSet<>();
+	private final Set<GT_MetaTileEntity_Hatch_DynamoMulti> mDynamoHatchesTT = new HashSet<>();
+	private final Set<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
+	private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
 	// Count the amount of capacitors of each tier in each slot (translate with meta - 1)
 	private final int[] capacitors = new int[6];
 	private BigInteger capacity = BigInteger.ZERO;
@@ -73,6 +79,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				.addInfo("purpose of passive loss calculation. The full capacity is counted towards the actual power capacity.")
 				.addSeparator()
 				.addInfo("Glass shell has to be Tier - 2 of the highest capacitor tier")
+				.addInfo("UV-Tier glass required for TecTech Laser Hatches")
 				.addInfo("Modular height of 4 to 18 blocks.")
 				.addSeparator()
 				.beginStructureBlock(5, 4, 5)
@@ -173,6 +180,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		// Clear TT hatches
 		mEnergyHatchesTT.clear();
 		mDynamoHatchesTT.clear();
+		mEnergyTunnelsTT.clear();
+		mDynamoTunnelsTT.clear();
 
 		// Capacitor base
 		for(int Y = 0; Y <= 1; Y++) {
@@ -244,15 +253,12 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 						if((X == -2 || X == 2) && (Z == -1 || Z == 4)){
 							if(!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)){
 								final String badName = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
-								KekzCore.LOGGER.info("Bad block in LSC glass shell: " + badName);
-								KekzCore.LOGGER.info("At offset: Y=" + offset.y() + ", X=" + offset.x() + ", Z=" + offset.z());
 								formationChecklist = false;
 							} else {
 								final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
 								if(firstGlassMeta == -1){
 									firstGlassMeta = meta;
 								} else if(meta != firstGlassMeta){
-									KekzCore.LOGGER.info("No glass mixing allowed in LSC!");
 									formationChecklist = false;
 								}
 							}
@@ -260,8 +266,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					} else {
 						if (!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)) {
 							final String badName = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
-							KekzCore.LOGGER.info("Bad block in LSC glass shell: " + badName);
-							KekzCore.LOGGER.info("At offset: Y=" + offset.y() + ", X=" + offset.x() + ", Z=" + offset.z());
 							formationChecklist = false;
 						}
 					}
@@ -281,12 +285,19 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(capacitors[highestCapacitor] > 0){
 				if(colourCorrectedMeta < highestCapacitor){
 					formationChecklist = false;
-					KekzCore.LOGGER.info("LSC Glass is not of high enough tier");
-					KekzCore.LOGGER.info("Highest capacitor tier (0 is IV): " + highestCapacitor);
-					KekzCore.LOGGER.info("Glass tier (0 is HV): " +colourCorrectedMeta);
 				}
 				break;
 			}
+		}
+
+		// Glass has to be at least UV-tier to allow TT Laser hatches
+		if(colourCorrectedMeta < 5) {
+			if(mEnergyTunnelsTT.size() > 0 || mDynamoTunnelsTT.size() > 0) {
+				formationChecklist = false;
+			}
+			mEnergyTunnelsTT.clear();
+			mDynamoTunnelsTT.clear();
+
 		}
 
 		// Calculate total capacity
@@ -317,10 +328,14 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				// Add GT hatches
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return super.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) mte);
-			} else if(mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti){
+			} else if(mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
 				// Add TT hatches
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return mEnergyHatchesTT.add((GT_MetaTileEntity_Hatch_EnergyMulti) mte);
+			} else if(mte instanceof  GT_MetaTileEntity_Hatch_EnergyTunnel) {
+				// Add TT Laser hatches
+				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
+				return mEnergyTunnelsTT.add((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
 			} else {
 				return false;
 			}
@@ -337,10 +352,14 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				// Add GT hatches
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return super.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) mte);
-			} else if(mte instanceof GT_MetaTileEntity_Hatch_DynamoMulti){
+			} else if(mte instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
 				// Add TT hatches
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return mDynamoHatchesTT.add((GT_MetaTileEntity_Hatch_DynamoMulti) mte);
+			} else if(mte instanceof  GT_MetaTileEntity_Hatch_DynamoTunnel) {
+				// Add TT Laser hatches
+				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
+				return mDynamoTunnelsTT.add((GT_MetaTileEntity_Hatch_DynamoTunnel) mte);
 			} else {
 				return false;
 			}
@@ -389,6 +408,31 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		}
 		// Output energy to TT hatches
 		for(GT_MetaTileEntity_Hatch_DynamoMulti eDynamo : mDynamoHatchesTT){
+			if(eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()){
+				continue;
+			}
+			final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) <= 0) ? stored : MAX_LONG;
+			final long power = Math.min(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut(), remStoredLimited.longValue());
+			if(eDynamo.getEUVar() <= eDynamo.maxEUStore() - power) {
+				eDynamo.setEUVar(eDynamo.getEUVar() + power);
+				stored = stored.subtract(BigInteger.valueOf(power));
+			}
+		}
+		// Draw energy from TT Laser hatches
+		for(GT_MetaTileEntity_Hatch_EnergyTunnel eHatch : mEnergyTunnelsTT) {
+			if(eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
+				continue;
+			}
+			final BigInteger remcapActual = capacity.subtract(stored);
+			final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) <= 0) ? remcapActual : MAX_LONG;
+			final long power = Math.min(eHatch.maxEUInput() * eHatch.maxAmperesIn(), recampLimited.longValue());
+			if(power <= eHatch.getEUVar()) {
+				eHatch.setEUVar(eHatch.getEUVar() - power);
+				stored = stored.add(BigInteger.valueOf(power));
+			}
+		}
+		// Output energy to TT Laser hatches
+		for(GT_MetaTileEntity_Hatch_DynamoTunnel eDynamo : mDynamoTunnelsTT){
 			if(eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()){
 				continue;
 			}
