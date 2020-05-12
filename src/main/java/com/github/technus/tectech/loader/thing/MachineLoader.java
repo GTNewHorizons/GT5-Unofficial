@@ -198,139 +198,139 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
 
         eM_energyTunnel1_IV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15130, "hatch.energytunnel1.tier.05", "IV 256A/s Laser Target Hatch", 5, 256).getStackForm(1L));
+                15130, "hatch.energytunnel1.tier.05", "IV 256A/t Laser Target Hatch", 5, 256).getStackForm(1L));
         eM_energyTunnel2_IV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15140, "hatch.energytunnel2.tier.05", "IV 1024A/s Laser Target Hatch", 5, 1024).getStackForm(1L));
+                15140, "hatch.energytunnel2.tier.05", "IV 1024A/t Laser Target Hatch", 5, 1024).getStackForm(1L));
         eM_energyTunnel3_IV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15150, "hatch.energytunnel3.tier.05", "IV 4096A/s Laser Target Hatch", 5, 4096).getStackForm(1L));
+                15150, "hatch.energytunnel3.tier.05", "IV 4096A/t Laser Target Hatch", 5, 4096).getStackForm(1L));
         eM_energyTunnel4_IV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15160, "hatch.energytunnel4.tier.05", "IV 16384A/s Laser Target Hatch", 5, 16384).getStackForm(1L));
+                15160, "hatch.energytunnel4.tier.05", "IV 16384A/t Laser Target Hatch", 5, 16384).getStackForm(1L));
         eM_energyTunnel5_IV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15170, "hatch.energytunnel5.tier.05", "IV 65536A/s Laser Target Hatch", 5, 65536).getStackForm(1L));
+                15170, "hatch.energytunnel5.tier.05", "IV 65536A/t Laser Target Hatch", 5, 65536).getStackForm(1L));
         eM_energyTunnel6_IV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15180, "hatch.energytunnel6.tier.05", "IV 262144A/s Laser Target Hatch", 5, 262144).getStackForm(1L));
+                15180, "hatch.energytunnel6.tier.05", "IV 262144A/t Laser Target Hatch", 5, 262144).getStackForm(1L));
         eM_energyTunnel7_IV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15190, "hatch.energytunnel7.tier.05", "IV 1048576A/s Laser Target Hatch", 5, 1048576).getStackForm(1L));
+                15190, "hatch.energytunnel7.tier.05", "IV 1048576A/t Laser Target Hatch", 5, 1048576).getStackForm(1L));
 
         eM_energyTunnel1_LuV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15131, "hatch.energytunnel1.tier.06", "LuV 256A/s Laser Target Hatch", 6, 256).getStackForm(1L));
+                15131, "hatch.energytunnel1.tier.06", "LuV 256A/t Laser Target Hatch", 6, 256).getStackForm(1L));
         eM_energyTunnel2_LuV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15141, "hatch.energytunnel2.tier.06", "LuV 1024A/s Laser Target Hatch", 6, 1024).getStackForm(1L));
+                15141, "hatch.energytunnel2.tier.06", "LuV 1024A/t Laser Target Hatch", 6, 1024).getStackForm(1L));
         eM_energyTunnel3_LuV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15151, "hatch.energytunnel3.tier.06", "LuV 4096A/s Laser Target Hatch", 6, 4096).getStackForm(1L));
+                15151, "hatch.energytunnel3.tier.06", "LuV 4096A/t Laser Target Hatch", 6, 4096).getStackForm(1L));
         eM_energyTunnel4_LuV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15161, "hatch.energytunnel4.tier.06", "LuV 16384A/s Laser Target Hatch", 6, 16384).getStackForm(1L));
+                15161, "hatch.energytunnel4.tier.06", "LuV 16384A/t Laser Target Hatch", 6, 16384).getStackForm(1L));
         eM_energyTunnel5_LuV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15171, "hatch.energytunnel5.tier.06", "LuV 65536A/s Laser Target Hatch", 6, 65536).getStackForm(1L));
+                15171, "hatch.energytunnel5.tier.06", "LuV 65536A/t Laser Target Hatch", 6, 65536).getStackForm(1L));
         eM_energyTunnel6_LuV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15181, "hatch.energytunnel6.tier.06", "LuV 262144A/s Laser Target Hatch", 6, 262144).getStackForm(1L));
+                15181, "hatch.energytunnel6.tier.06", "LuV 262144A/t Laser Target Hatch", 6, 262144).getStackForm(1L));
         eM_energyTunnel7_LuV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15191, "hatch.energytunnel7.tier.06", "LuV 1048576A/s Laser Target Hatch", 6, 1048576).getStackForm(1L));
+                15191, "hatch.energytunnel7.tier.06", "LuV 1048576A/t Laser Target Hatch", 6, 1048576).getStackForm(1L));
 
         eM_energyTunnel1_ZPM.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15132, "hatch.energytunnel1.tier.07", "ZPM 256A/s Laser Target Hatch", 7, 256).getStackForm(1L));
+                15132, "hatch.energytunnel1.tier.07", "ZPM 256A/t Laser Target Hatch", 7, 256).getStackForm(1L));
         eM_energyTunnel2_ZPM.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15142, "hatch.energytunnel2.tier.07", "ZPM 1024A/s Laser Target Hatch", 7, 1024).getStackForm(1L));
+                15142, "hatch.energytunnel2.tier.07", "ZPM 1024A/t Laser Target Hatch", 7, 1024).getStackForm(1L));
         eM_energyTunnel3_ZPM.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15152, "hatch.energytunnel3.tier.07", "ZPM 4096A/s Laser Target Hatch", 7, 4096).getStackForm(1L));
+                15152, "hatch.energytunnel3.tier.07", "ZPM 4096A/t Laser Target Hatch", 7, 4096).getStackForm(1L));
         eM_energyTunnel4_ZPM.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15162, "hatch.energytunnel4.tier.07", "ZPM 16384A/s Laser Target Hatch", 7, 16384).getStackForm(1L));
+                15162, "hatch.energytunnel4.tier.07", "ZPM 16384A/t Laser Target Hatch", 7, 16384).getStackForm(1L));
         eM_energyTunnel5_ZPM.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15172, "hatch.energytunnel5.tier.07", "ZPM 65536A/s Laser Target Hatch", 7, 65536).getStackForm(1L));
+                15172, "hatch.energytunnel5.tier.07", "ZPM 65536A/t Laser Target Hatch", 7, 65536).getStackForm(1L));
         eM_energyTunnel6_ZPM.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15182, "hatch.energytunnel6.tier.07", "ZPM 262144A/s Laser Target Hatch", 7, 262144).getStackForm(1L));
+                15182, "hatch.energytunnel6.tier.07", "ZPM 262144A/t Laser Target Hatch", 7, 262144).getStackForm(1L));
         eM_energyTunnel7_ZPM.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15192, "hatch.energytunnel7.tier.07", "ZPM 1048576A/s Laser Target Hatch", 7, 1048576).getStackForm(1L));
+                15192, "hatch.energytunnel7.tier.07", "ZPM 1048576A/t Laser Target Hatch", 7, 1048576).getStackForm(1L));
 
         eM_energyTunnel1_UV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15133, "hatch.energytunnel1.tier.08", "UV 256A/s Laser Target Hatch", 8, 256).getStackForm(1L));
+                15133, "hatch.energytunnel1.tier.08", "UV 256A/t Laser Target Hatch", 8, 256).getStackForm(1L));
         eM_energyTunnel2_UV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15143, "hatch.energytunnel2.tier.08", "UV 1024A/s Laser Target Hatch", 8, 1024).getStackForm(1L));
+                15143, "hatch.energytunnel2.tier.08", "UV 1024A/t Laser Target Hatch", 8, 1024).getStackForm(1L));
         eM_energyTunnel3_UV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15153, "hatch.energytunnel3.tier.08", "UV 4096A/s Laser Target Hatch", 8, 4096).getStackForm(1L));
+                15153, "hatch.energytunnel3.tier.08", "UV 4096A/t Laser Target Hatch", 8, 4096).getStackForm(1L));
         eM_energyTunnel4_UV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15163, "hatch.energytunnel4.tier.08", "UV 16384A/s Laser Target Hatch", 8, 16384).getStackForm(1L));
+                15163, "hatch.energytunnel4.tier.08", "UV 16384A/t Laser Target Hatch", 8, 16384).getStackForm(1L));
         eM_energyTunnel5_UV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15173, "hatch.energytunnel5.tier.08", "UV 65536A/s Laser Target Hatch", 8, 65536).getStackForm(1L));
+                15173, "hatch.energytunnel5.tier.08", "UV 65536A/t Laser Target Hatch", 8, 65536).getStackForm(1L));
         eM_energyTunnel6_UV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15183, "hatch.energytunnel6.tier.08", "UV 262144A/s Laser Target Hatch", 8, 262144).getStackForm(1L));
+                15183, "hatch.energytunnel6.tier.08", "UV 262144A/t Laser Target Hatch", 8, 262144).getStackForm(1L));
         eM_energyTunnel7_UV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15193, "hatch.energytunnel7.tier.08", "UV 1048576A/s Laser Target Hatch", 8, 1048576).getStackForm(1L));
+                15193, "hatch.energytunnel7.tier.08", "UV 1048576A/t Laser Target Hatch", 8, 1048576).getStackForm(1L));
 
         eM_energyTunnel1_UHV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15134, "hatch.energytunnel1.tier.09", "UHV 256A/s Laser Target Hatch", 9, 256).getStackForm(1L));
+                15134, "hatch.energytunnel1.tier.09", "UHV 256A/t Laser Target Hatch", 9, 256).getStackForm(1L));
         eM_energyTunnel2_UHV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15144, "hatch.energytunnel2.tier.09", "UHV 1024A/s Laser Target Hatch", 9, 1024).getStackForm(1L));
+                15144, "hatch.energytunnel2.tier.09", "UHV 1024A/t Laser Target Hatch", 9, 1024).getStackForm(1L));
         eM_energyTunnel3_UHV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15154, "hatch.energytunnel3.tier.09", "UHV 4096A/s Laser Target Hatch", 9, 4096).getStackForm(1L));
+                15154, "hatch.energytunnel3.tier.09", "UHV 4096A/t Laser Target Hatch", 9, 4096).getStackForm(1L));
         eM_energyTunnel4_UHV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15164, "hatch.energytunnel4.tier.09", "UHV 16384A/s Laser Target Hatch", 9, 16384).getStackForm(1L));
+                15164, "hatch.energytunnel4.tier.09", "UHV 16384A/t Laser Target Hatch", 9, 16384).getStackForm(1L));
         eM_energyTunnel5_UHV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15174, "hatch.energytunnel5.tier.09", "UHV 65536A/s Laser Target Hatch", 9, 65536).getStackForm(1L));
+                15174, "hatch.energytunnel5.tier.09", "UHV 65536A/t Laser Target Hatch", 9, 65536).getStackForm(1L));
         eM_energyTunnel6_UHV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15184, "hatch.energytunnel6.tier.09", "UHV 262144A/s Laser Target Hatch", 9, 262144).getStackForm(1L));
+                15184, "hatch.energytunnel6.tier.09", "UHV 262144A/t Laser Target Hatch", 9, 262144).getStackForm(1L));
         eM_energyTunnel7_UHV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15194, "hatch.energytunnel7.tier.09", "UHV 1048576A/s Laser Target Hatch", 9, 1048576).getStackForm(1L));
+                15194, "hatch.energytunnel7.tier.09", "UHV 1048576A/t Laser Target Hatch", 9, 1048576).getStackForm(1L));
 
         eM_energyTunnel1_UEV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15135, "hatch.energytunnel1.tier.10", "UEV 256A/s Laser Target Hatch", 10, 256).getStackForm(1L));
+                15135, "hatch.energytunnel1.tier.10", "UEV 256A/t Laser Target Hatch", 10, 256).getStackForm(1L));
         eM_energyTunnel2_UEV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15145, "hatch.energytunnel2.tier.10", "UEV 1024A/s Laser Target Hatch", 10, 1024).getStackForm(1L));
+                15145, "hatch.energytunnel2.tier.10", "UEV 1024A/t Laser Target Hatch", 10, 1024).getStackForm(1L));
         eM_energyTunnel3_UEV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15155, "hatch.energytunnel3.tier.10", "UEV 4096A/s Laser Target Hatch", 10, 4096).getStackForm(1L));
+                15155, "hatch.energytunnel3.tier.10", "UEV 4096A/t Laser Target Hatch", 10, 4096).getStackForm(1L));
         eM_energyTunnel4_UEV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15165, "hatch.energytunnel4.tier.10", "UEV 16384A/s Laser Target Hatch", 10, 16384).getStackForm(1L));
+                15165, "hatch.energytunnel4.tier.10", "UEV 16384A/t Laser Target Hatch", 10, 16384).getStackForm(1L));
         eM_energyTunnel5_UEV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15175, "hatch.energytunnel5.tier.10", "UEV 65536A/s Laser Target Hatch", 10, 65536).getStackForm(1L));
+                15175, "hatch.energytunnel5.tier.10", "UEV 65536A/t Laser Target Hatch", 10, 65536).getStackForm(1L));
         eM_energyTunnel6_UEV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15185, "hatch.energytunnel6.tier.10", "UEV 262144A/s Laser Target Hatch", 10, 262144).getStackForm(1L));
+                15185, "hatch.energytunnel6.tier.10", "UEV 262144A/t Laser Target Hatch", 10, 262144).getStackForm(1L));
         eM_energyTunnel7_UEV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15195, "hatch.energytunnel7.tier.10", "UEV 1048576A/s Laser Target Hatch", 10, 1048576).getStackForm(1L));
+                15195, "hatch.energytunnel7.tier.10", "UEV 1048576A/t Laser Target Hatch", 10, 1048576).getStackForm(1L));
 
         eM_energyTunnel1_UIV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15136, "hatch.energytunnel1.tier.11", "UIV 256A/s Laser Target Hatch", 11, 256).getStackForm(1L));
+                15136, "hatch.energytunnel1.tier.11", "UIV 256A/t Laser Target Hatch", 11, 256).getStackForm(1L));
         eM_energyTunnel2_UIV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15146, "hatch.energytunnel2.tier.11", "UIV 1024A/s Laser Target Hatch", 11, 1024).getStackForm(1L));
+                15146, "hatch.energytunnel2.tier.11", "UIV 1024A/t Laser Target Hatch", 11, 1024).getStackForm(1L));
         eM_energyTunnel3_UIV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15156, "hatch.energytunnel3.tier.11", "UIV 4096A/s Laser Target Hatch", 11, 4096).getStackForm(1L));
+                15156, "hatch.energytunnel3.tier.11", "UIV 4096A/t Laser Target Hatch", 11, 4096).getStackForm(1L));
         eM_energyTunnel4_UIV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15166, "hatch.energytunnel4.tier.11", "UIV 16384A/s Laser Target Hatch", 11, 16384).getStackForm(1L));
+                15166, "hatch.energytunnel4.tier.11", "UIV 16384A/t Laser Target Hatch", 11, 16384).getStackForm(1L));
         eM_energyTunnel5_UIV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15176, "hatch.energytunnel5.tier.11", "UIV 65536A/s Laser Target Hatch", 11, 65536).getStackForm(1L));
+                15176, "hatch.energytunnel5.tier.11", "UIV 65536A/t Laser Target Hatch", 11, 65536).getStackForm(1L));
         eM_energyTunnel6_UIV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15186, "hatch.energytunnel6.tier.11", "UIV 262144A/s Laser Target Hatch", 11, 262144).getStackForm(1L));
+                15186, "hatch.energytunnel6.tier.11", "UIV 262144A/t Laser Target Hatch", 11, 262144).getStackForm(1L));
         eM_energyTunnel7_UIV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15196, "hatch.energytunnel7.tier.11", "UIV 1048576A/s Laser Target Hatch", 11, 1048576).getStackForm(1L));
+                15196, "hatch.energytunnel7.tier.11", "UIV 1048576A/t Laser Target Hatch", 11, 1048576).getStackForm(1L));
 
         eM_energyTunnel1_UMV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15137, "hatch.energytunnel1.tier.12", "UMV 256A/s Laser Target Hatch", 12, 256).getStackForm(1L));
+                15137, "hatch.energytunnel1.tier.12", "UMV 256A/t Laser Target Hatch", 12, 256).getStackForm(1L));
         eM_energyTunnel2_UMV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15147, "hatch.energytunnel2.tier.12", "UMV 1024A/s Laser Target Hatch", 12, 1024).getStackForm(1L));
+                15147, "hatch.energytunnel2.tier.12", "UMV 1024A/t Laser Target Hatch", 12, 1024).getStackForm(1L));
         eM_energyTunnel3_UMV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15157, "hatch.energytunnel3.tier.12", "UMV 4096A/s Laser Target Hatch", 12, 4096).getStackForm(1L));
+                15157, "hatch.energytunnel3.tier.12", "UMV 4096A/t Laser Target Hatch", 12, 4096).getStackForm(1L));
         eM_energyTunnel4_UMV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15167, "hatch.energytunnel4.tier.12", "UMV 16384A/s Laser Target Hatch", 12, 16384).getStackForm(1L));
+                15167, "hatch.energytunnel4.tier.12", "UMV 16384A/t Laser Target Hatch", 12, 16384).getStackForm(1L));
         eM_energyTunnel5_UMV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15177, "hatch.energytunnel5.tier.12", "UMV 65536A/s Laser Target Hatch", 12, 65536).getStackForm(1L));
+                15177, "hatch.energytunnel5.tier.12", "UMV 65536A/t Laser Target Hatch", 12, 65536).getStackForm(1L));
         eM_energyTunnel6_UMV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15187, "hatch.energytunnel6.tier.12", "UMV 262144A/s Laser Target Hatch", 12, 262144).getStackForm(1L));
+                15187, "hatch.energytunnel6.tier.12", "UMV 262144A/t Laser Target Hatch", 12, 262144).getStackForm(1L));
         eM_energyTunnel7_UMV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15197, "hatch.energytunnel7.tier.12", "UMV 1048576A/s Laser Target Hatch", 12, 1048576).getStackForm(1L));
+                15197, "hatch.energytunnel7.tier.12", "UMV 1048576A/t Laser Target Hatch", 12, 1048576).getStackForm(1L));
 
         eM_energyTunnel1_UXV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15138, "hatch.energytunnel1.tier.13", "UXV 256A/s Laser Target Hatch", 13, 256).getStackForm(1L));
+                15138, "hatch.energytunnel1.tier.13", "UXV 256A/t Laser Target Hatch", 13, 256).getStackForm(1L));
         eM_energyTunnel2_UXV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15148, "hatch.energytunnel2.tier.13", "UXV 1024A/s Laser Target Hatch", 13, 1024).getStackForm(1L));
+                15148, "hatch.energytunnel2.tier.13", "UXV 1024A/t Laser Target Hatch", 13, 1024).getStackForm(1L));
         eM_energyTunnel3_UXV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15158, "hatch.energytunnel3.tier.13", "UXV 4096A/s Laser Target Hatch", 13, 4096).getStackForm(1L));
+                15158, "hatch.energytunnel3.tier.13", "UXV 4096A/t Laser Target Hatch", 13, 4096).getStackForm(1L));
         eM_energyTunnel4_UXV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15168, "hatch.energytunnel4.tier.13", "UXV 16384A/s Laser Target Hatch", 13, 16384).getStackForm(1L));
+                15168, "hatch.energytunnel4.tier.13", "UXV 16384A/t Laser Target Hatch", 13, 16384).getStackForm(1L));
         eM_energyTunnel5_UXV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15178, "hatch.energytunnel5.tier.13", "UXV 65536A/s Laser Target Hatch", 13, 65536).getStackForm(1L));
+                15178, "hatch.energytunnel5.tier.13", "UXV 65536A/t Laser Target Hatch", 13, 65536).getStackForm(1L));
         eM_energyTunnel6_UXV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15188, "hatch.energytunnel6.tier.13", "UXV 262144A/s Laser Target Hatch", 13, 262144).getStackForm(1L));
+                15188, "hatch.energytunnel6.tier.13", "UXV 262144A/t Laser Target Hatch", 13, 262144).getStackForm(1L));
         eM_energyTunnel7_UXV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15198, "hatch.energytunnel7.tier.13", "UXV 1048576A/s Laser Target Hatch", 13, 1048576).getStackForm(1L));
+                15198, "hatch.energytunnel7.tier.13", "UXV 1048576A/t Laser Target Hatch", 13, 1048576).getStackForm(1L));
         eM_energyTunnel9001.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
                 15199, "hatch.energytunnel.tier.14", "Legendary Laser Target Hatch", 14, (int) V[14]).getStackForm(1L));
 
@@ -406,139 +406,139 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
 
         eM_dynamoTunnel1_IV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15230, "hatch.dynamotunnel1.tier.05", "IV 256A/s Laser Source Hatch", 5, 256).getStackForm(1L));
+                15230, "hatch.dynamotunnel1.tier.05", "IV 256A/t Laser Source Hatch", 5, 256).getStackForm(1L));
         eM_dynamoTunnel2_IV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15240, "hatch.dynamotunnel2.tier.05", "IV 1024A/s Laser Source Hatch", 5, 1024).getStackForm(1L));
+                15240, "hatch.dynamotunnel2.tier.05", "IV 1024A/t Laser Source Hatch", 5, 1024).getStackForm(1L));
         eM_dynamoTunnel3_IV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15250, "hatch.dynamotunnel3.tier.05", "IV 4096A/s Laser Source Hatch", 5, 4096).getStackForm(1L));
+                15250, "hatch.dynamotunnel3.tier.05", "IV 4096A/t Laser Source Hatch", 5, 4096).getStackForm(1L));
         eM_dynamoTunnel4_IV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15260, "hatch.dynamotunnel4.tier.05", "IV 16384A/s Laser Source Hatch", 5, 16384).getStackForm(1L));
+                15260, "hatch.dynamotunnel4.tier.05", "IV 16384A/t Laser Source Hatch", 5, 16384).getStackForm(1L));
         eM_dynamoTunnel5_IV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15270, "hatch.dynamotunnel5.tier.05", "IV 65536A/s Laser Source Hatch", 5, 65536).getStackForm(1L));
+                15270, "hatch.dynamotunnel5.tier.05", "IV 65536A/t Laser Source Hatch", 5, 65536).getStackForm(1L));
         eM_dynamoTunnel6_IV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15280, "hatch.dynamotunnel6.tier.05", "IV 262144A/s Laser Source Hatch", 5, 262144).getStackForm(1L));
+                15280, "hatch.dynamotunnel6.tier.05", "IV 262144A/t Laser Source Hatch", 5, 262144).getStackForm(1L));
         eM_dynamoTunnel7_IV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15290, "hatch.dynamotunnel7.tier.05", "IV 1048576A/s Laser Source Hatch", 5, 1048576).getStackForm(1L));
+                15290, "hatch.dynamotunnel7.tier.05", "IV 1048576A/t Laser Source Hatch", 5, 1048576).getStackForm(1L));
 
         eM_dynamoTunnel1_LuV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15231, "hatch.dynamotunnel1.tier.06", "LuV 256A/s Laser Source Hatch", 6, 256).getStackForm(1L));
+                15231, "hatch.dynamotunnel1.tier.06", "LuV 256A/t Laser Source Hatch", 6, 256).getStackForm(1L));
         eM_dynamoTunnel2_LuV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15241, "hatch.dynamotunnel2.tier.06", "LuV 1024A/s Laser Source Hatch", 6, 1024).getStackForm(1L));
+                15241, "hatch.dynamotunnel2.tier.06", "LuV 1024A/t Laser Source Hatch", 6, 1024).getStackForm(1L));
         eM_dynamoTunnel3_LuV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15251, "hatch.dynamotunnel3.tier.06", "LuV 4096A/s Laser Source Hatch", 6, 4096).getStackForm(1L));
+                15251, "hatch.dynamotunnel3.tier.06", "LuV 4096A/t Laser Source Hatch", 6, 4096).getStackForm(1L));
         eM_dynamoTunnel4_LuV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15261, "hatch.dynamotunnel4.tier.06", "LuV 16384A/s Laser Source Hatch", 6, 16384).getStackForm(1L));
+                15261, "hatch.dynamotunnel4.tier.06", "LuV 16384A/t Laser Source Hatch", 6, 16384).getStackForm(1L));
         eM_dynamoTunnel5_LuV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15271, "hatch.dynamotunnel5.tier.06", "LuV 65536A/s Laser Source Hatch", 6, 65536).getStackForm(1L));
+                15271, "hatch.dynamotunnel5.tier.06", "LuV 65536A/t Laser Source Hatch", 6, 65536).getStackForm(1L));
         eM_dynamoTunnel6_LuV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15281, "hatch.dynamotunnel6.tier.06", "LuV 262144A/s Laser Source Hatch", 6, 262144).getStackForm(1L));
+                15281, "hatch.dynamotunnel6.tier.06", "LuV 262144A/t Laser Source Hatch", 6, 262144).getStackForm(1L));
         eM_dynamoTunnel7_LuV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15291, "hatch.dynamotunnel7.tier.06", "LuV 1048576A/s Laser Source Hatch", 6, 1048576).getStackForm(1L));
+                15291, "hatch.dynamotunnel7.tier.06", "LuV 1048576A/t Laser Source Hatch", 6, 1048576).getStackForm(1L));
 
         eM_dynamoTunnel1_ZPM.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15232, "hatch.dynamotunnel1.tier.07", "ZPM 256A/s Laser Source Hatch", 7, 256).getStackForm(1L));
+                15232, "hatch.dynamotunnel1.tier.07", "ZPM 256A/t Laser Source Hatch", 7, 256).getStackForm(1L));
         eM_dynamoTunnel2_ZPM.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15242, "hatch.dynamotunnel2.tier.07", "ZPM 1024A/s Laser Source Hatch", 7, 1024).getStackForm(1L));
+                15242, "hatch.dynamotunnel2.tier.07", "ZPM 1024A/t Laser Source Hatch", 7, 1024).getStackForm(1L));
         eM_dynamoTunnel3_ZPM.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15252, "hatch.dynamotunnel3.tier.07", "ZPM 4096A/s Laser Source Hatch", 7, 4096).getStackForm(1L));
+                15252, "hatch.dynamotunnel3.tier.07", "ZPM 4096A/t Laser Source Hatch", 7, 4096).getStackForm(1L));
         eM_dynamoTunnel4_ZPM.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15262, "hatch.dynamotunnel4.tier.07", "ZPM 16384A/s Laser Source Hatch", 7, 16384).getStackForm(1L));
+                15262, "hatch.dynamotunnel4.tier.07", "ZPM 16384A/t Laser Source Hatch", 7, 16384).getStackForm(1L));
         eM_dynamoTunnel5_ZPM.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15272, "hatch.dynamotunnel5.tier.07", "ZPM 65536A/s Laser Source Hatch", 7, 65536).getStackForm(1L));
+                15272, "hatch.dynamotunnel5.tier.07", "ZPM 65536A/t Laser Source Hatch", 7, 65536).getStackForm(1L));
         eM_dynamoTunnel6_ZPM.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15282, "hatch.dynamotunnel6.tier.07", "ZPM 262144A/s Laser Source Hatch", 7, 262144).getStackForm(1L));
+                15282, "hatch.dynamotunnel6.tier.07", "ZPM 262144A/t Laser Source Hatch", 7, 262144).getStackForm(1L));
         eM_dynamoTunnel7_ZPM.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15292, "hatch.dynamotunnel7.tier.07", "ZPM 1048576A/s Laser Source Hatch", 7, 1048576).getStackForm(1L));
+                15292, "hatch.dynamotunnel7.tier.07", "ZPM 1048576A/t Laser Source Hatch", 7, 1048576).getStackForm(1L));
 
         eM_dynamoTunnel1_UV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15233, "hatch.dynamotunnel1.tier.08", "UV 256A/s Laser Source Hatch", 8, 256).getStackForm(1L));
+                15233, "hatch.dynamotunnel1.tier.08", "UV 256A/t Laser Source Hatch", 8, 256).getStackForm(1L));
         eM_dynamoTunnel2_UV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15243, "hatch.dynamotunnel2.tier.08", "UV 1024A/s Laser Source Hatch", 8, 1024).getStackForm(1L));
+                15243, "hatch.dynamotunnel2.tier.08", "UV 1024A/t Laser Source Hatch", 8, 1024).getStackForm(1L));
         eM_dynamoTunnel3_UV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15253, "hatch.dynamotunnel3.tier.08", "UV 4096A/s Laser Source Hatch", 8, 4096).getStackForm(1L));
+                15253, "hatch.dynamotunnel3.tier.08", "UV 4096A/t Laser Source Hatch", 8, 4096).getStackForm(1L));
         eM_dynamoTunnel4_UV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15263, "hatch.dynamotunnel4.tier.08", "UV 16384A/s Laser Source Hatch", 8, 16384).getStackForm(1L));
+                15263, "hatch.dynamotunnel4.tier.08", "UV 16384A/t Laser Source Hatch", 8, 16384).getStackForm(1L));
         eM_dynamoTunnel5_UV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15273, "hatch.dynamotunnel5.tier.08", "UV 65536A/s Laser Source Hatch", 8, 65536).getStackForm(1L));
+                15273, "hatch.dynamotunnel5.tier.08", "UV 65536A/t Laser Source Hatch", 8, 65536).getStackForm(1L));
         eM_dynamoTunnel6_UV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15283, "hatch.dynamotunnel6.tier.08", "UV 262144A/s Laser Source Hatch", 8, 262144).getStackForm(1L));
+                15283, "hatch.dynamotunnel6.tier.08", "UV 262144A/t Laser Source Hatch", 8, 262144).getStackForm(1L));
         eM_dynamoTunnel7_UV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15293, "hatch.dynamotunnel7.tier.08", "UV 1048576A/s Laser Source Hatch", 8, 1048576).getStackForm(1L));
+                15293, "hatch.dynamotunnel7.tier.08", "UV 1048576A/t Laser Source Hatch", 8, 1048576).getStackForm(1L));
 
         eM_dynamoTunnel1_UHV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15234, "hatch.dynamotunnel1.tier.09", "UHV 256A/s Laser Source Hatch", 9, 256).getStackForm(1L));
+                15234, "hatch.dynamotunnel1.tier.09", "UHV 256A/t Laser Source Hatch", 9, 256).getStackForm(1L));
         eM_dynamoTunnel2_UHV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15244, "hatch.dynamotunnel2.tier.09", "UHV 1024A/s Laser Source Hatch", 9, 1024).getStackForm(1L));
+                15244, "hatch.dynamotunnel2.tier.09", "UHV 1024A/t Laser Source Hatch", 9, 1024).getStackForm(1L));
         eM_dynamoTunnel3_UHV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15254, "hatch.dynamotunnel3.tier.09", "UHV 4096A/s Laser Source Hatch", 9, 4096).getStackForm(1L));
+                15254, "hatch.dynamotunnel3.tier.09", "UHV 4096A/t Laser Source Hatch", 9, 4096).getStackForm(1L));
         eM_dynamoTunnel4_UHV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15264, "hatch.dynamotunnel4.tier.09", "UHV 16384A/s Laser Source Hatch", 9, 16384).getStackForm(1L));
+                15264, "hatch.dynamotunnel4.tier.09", "UHV 16384A/t Laser Source Hatch", 9, 16384).getStackForm(1L));
         eM_dynamoTunnel5_UHV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15274, "hatch.dynamotunnel5.tier.09", "UHV 65536A/s Laser Source Hatch", 9, 65536).getStackForm(1L));
+                15274, "hatch.dynamotunnel5.tier.09", "UHV 65536A/t Laser Source Hatch", 9, 65536).getStackForm(1L));
         eM_dynamoTunnel6_UHV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15284, "hatch.dynamotunnel6.tier.09", "UHV 262144A/s Laser Source Hatch", 9, 262144).getStackForm(1L));
+                15284, "hatch.dynamotunnel6.tier.09", "UHV 262144A/t Laser Source Hatch", 9, 262144).getStackForm(1L));
         eM_dynamoTunnel7_UHV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15294, "hatch.dynamotunnel7.tier.09", "UHV 1048576A/s Laser Source Hatch", 9, 1048576).getStackForm(1L));
+                15294, "hatch.dynamotunnel7.tier.09", "UHV 1048576A/t Laser Source Hatch", 9, 1048576).getStackForm(1L));
 
         eM_dynamoTunnel1_UEV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15235, "hatch.dynamotunnel1.tier.10", "UEV 256A/s Laser Source Hatch", 10, 256).getStackForm(1L));
+                15235, "hatch.dynamotunnel1.tier.10", "UEV 256A/t Laser Source Hatch", 10, 256).getStackForm(1L));
         eM_dynamoTunnel2_UEV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15245, "hatch.dynamotunnel2.tier.10", "UEV 1024A/s Laser Source Hatch", 10, 1024).getStackForm(1L));
+                15245, "hatch.dynamotunnel2.tier.10", "UEV 1024A/t Laser Source Hatch", 10, 1024).getStackForm(1L));
         eM_dynamoTunnel3_UEV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15255, "hatch.dynamotunnel3.tier.10", "UEV 4096A/s Laser Source Hatch", 10, 4096).getStackForm(1L));
+                15255, "hatch.dynamotunnel3.tier.10", "UEV 4096A/t Laser Source Hatch", 10, 4096).getStackForm(1L));
         eM_dynamoTunnel4_UEV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15265, "hatch.dynamotunnel4.tier.10", "UEV 16384A/s Laser Source Hatch", 10, 16384).getStackForm(1L));
+                15265, "hatch.dynamotunnel4.tier.10", "UEV 16384A/t Laser Source Hatch", 10, 16384).getStackForm(1L));
         eM_dynamoTunnel5_UEV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15275, "hatch.dynamotunnel5.tier.10", "UEV 65536A/s Laser Source Hatch", 10, 65536).getStackForm(1L));
+                15275, "hatch.dynamotunnel5.tier.10", "UEV 65536A/t Laser Source Hatch", 10, 65536).getStackForm(1L));
         eM_dynamoTunnel6_UEV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15285, "hatch.dynamotunnel6.tier.10", "UEV 262144A/s Laser Source Hatch", 10, 262144).getStackForm(1L));
+                15285, "hatch.dynamotunnel6.tier.10", "UEV 262144A/t Laser Source Hatch", 10, 262144).getStackForm(1L));
         eM_dynamoTunnel7_UEV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15295, "hatch.dynamotunnel7.tier.10", "UEV 1048576A/s Laser Source Hatch", 10, 1048576).getStackForm(1L));
+                15295, "hatch.dynamotunnel7.tier.10", "UEV 1048576A/t Laser Source Hatch", 10, 1048576).getStackForm(1L));
 
         eM_dynamoTunnel1_UIV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15236, "hatch.dynamotunnel1.tier.11", "UIV 256A/s Laser Source Hatch", 11, 256).getStackForm(1L));
+                15236, "hatch.dynamotunnel1.tier.11", "UIV 256A/t Laser Source Hatch", 11, 256).getStackForm(1L));
         eM_dynamoTunnel2_UIV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15246, "hatch.dynamotunnel2.tier.11", "UIV 1024A/s Laser Source Hatch", 11, 1024).getStackForm(1L));
+                15246, "hatch.dynamotunnel2.tier.11", "UIV 1024A/t Laser Source Hatch", 11, 1024).getStackForm(1L));
         eM_dynamoTunnel3_UIV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15256, "hatch.dynamotunnel3.tier.11", "UIV 4096A/s Laser Source Hatch", 11, 4096).getStackForm(1L));
+                15256, "hatch.dynamotunnel3.tier.11", "UIV 4096A/t Laser Source Hatch", 11, 4096).getStackForm(1L));
         eM_dynamoTunnel4_UIV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15266, "hatch.dynamotunnel4.tier.11", "UIV 16384A/s Laser Source Hatch", 11, 16384).getStackForm(1L));
+                15266, "hatch.dynamotunnel4.tier.11", "UIV 16384A/t Laser Source Hatch", 11, 16384).getStackForm(1L));
         eM_dynamoTunnel5_UIV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15276, "hatch.dynamotunnel5.tier.11", "UIV 65536A/s Laser Source Hatch", 11, 65536).getStackForm(1L));
+                15276, "hatch.dynamotunnel5.tier.11", "UIV 65536A/t Laser Source Hatch", 11, 65536).getStackForm(1L));
         eM_dynamoTunnel6_UIV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15286, "hatch.dynamotunnel6.tier.11", "UIV 262144A/s Laser Source Hatch", 11, 262144).getStackForm(1L));
+                15286, "hatch.dynamotunnel6.tier.11", "UIV 262144A/t Laser Source Hatch", 11, 262144).getStackForm(1L));
         eM_dynamoTunnel7_UIV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15296, "hatch.dynamotunnel7.tier.11", "UIV 1048576A/s Laser Source Hatch", 11, 1048576).getStackForm(1L));
+                15296, "hatch.dynamotunnel7.tier.11", "UIV 1048576A/t Laser Source Hatch", 11, 1048576).getStackForm(1L));
 
         eM_dynamoTunnel1_UMV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15237, "hatch.dynamotunnel1.tier.12", "UMV 256A/s Laser Source Hatch", 12, 256).getStackForm(1L));
+                15237, "hatch.dynamotunnel1.tier.12", "UMV 256A/t Laser Source Hatch", 12, 256).getStackForm(1L));
         eM_dynamoTunnel2_UMV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15247, "hatch.dynamotunnel2.tier.12", "UMV 1024A/s Laser Source Hatch", 12, 1024).getStackForm(1L));
+                15247, "hatch.dynamotunnel2.tier.12", "UMV 1024A/t Laser Source Hatch", 12, 1024).getStackForm(1L));
         eM_dynamoTunnel3_UMV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15257, "hatch.dynamotunnel3.tier.12", "UMV 4096A/s Laser Source Hatch", 12, 4096).getStackForm(1L));
+                15257, "hatch.dynamotunnel3.tier.12", "UMV 4096A/t Laser Source Hatch", 12, 4096).getStackForm(1L));
         eM_dynamoTunnel4_UMV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15267, "hatch.dynamotunnel4.tier.12", "UMV 16384A/s Laser Source Hatch", 12, 16384).getStackForm(1L));
+                15267, "hatch.dynamotunnel4.tier.12", "UMV 16384A/t Laser Source Hatch", 12, 16384).getStackForm(1L));
         eM_dynamoTunnel5_UMV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15277, "hatch.dynamotunnel5.tier.12", "UMV 65536A/s Laser Source Hatch", 12, 65536).getStackForm(1L));
+                15277, "hatch.dynamotunnel5.tier.12", "UMV 65536A/t Laser Source Hatch", 12, 65536).getStackForm(1L));
         eM_dynamoTunnel6_UMV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15287, "hatch.dynamotunnel6.tier.12", "UMV 262144A/s Laser Source Hatch", 12, 262144).getStackForm(1L));
+                15287, "hatch.dynamotunnel6.tier.12", "UMV 262144A/t Laser Source Hatch", 12, 262144).getStackForm(1L));
         eM_dynamoTunnel7_UMV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15297, "hatch.dynamotunnel7.tier.12", "UMV 1048576A/s Laser Source Hatch", 12, 1048576).getStackForm(1L));
+                15297, "hatch.dynamotunnel7.tier.12", "UMV 1048576A/t Laser Source Hatch", 12, 1048576).getStackForm(1L));
 
         eM_dynamoTunnel1_UXV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15238, "hatch.dynamotunnel1.tier.13", "UXV 256A/s Laser Source Hatch", 13, 256).getStackForm(1L));
+                15238, "hatch.dynamotunnel1.tier.13", "UXV 256A/t Laser Source Hatch", 13, 256).getStackForm(1L));
         eM_dynamoTunnel2_UXV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15248, "hatch.dynamotunnel2.tier.13", "UXV 1024A/s Laser Source Hatch", 13, 1024).getStackForm(1L));
+                15248, "hatch.dynamotunnel2.tier.13", "UXV 1024A/t Laser Source Hatch", 13, 1024).getStackForm(1L));
         eM_dynamoTunnel3_UXV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15258, "hatch.dynamotunnel3.tier.13", "UXV 4096A/s Laser Source Hatch", 13, 4096).getStackForm(1L));
+                15258, "hatch.dynamotunnel3.tier.13", "UXV 4096A/t Laser Source Hatch", 13, 4096).getStackForm(1L));
         eM_dynamoTunnel4_UXV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15268, "hatch.dynamotunnel4.tier.13", "UXV 16384A/s Laser Source Hatch", 13, 16384).getStackForm(1L));
+                15268, "hatch.dynamotunnel4.tier.13", "UXV 16384A/t Laser Source Hatch", 13, 16384).getStackForm(1L));
         eM_dynamoTunnel5_UXV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15278, "hatch.dynamotunnel5.tier.13", "UXV 65536A/s Laser Source Hatch", 13, 65536).getStackForm(1L));
+                15278, "hatch.dynamotunnel5.tier.13", "UXV 65536A/t Laser Source Hatch", 13, 65536).getStackForm(1L));
         eM_dynamoTunnel6_UXV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15288, "hatch.dynamotunnel6.tier.13", "UXV 262144A/s Laser Source Hatch", 13, 262144).getStackForm(1L));
+                15288, "hatch.dynamotunnel6.tier.13", "UXV 262144A/t Laser Source Hatch", 13, 262144).getStackForm(1L));
         eM_dynamoTunnel7_UXV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15298, "hatch.dynamotunnel7.tier.13", "UXV 1048576A/s Laser Source Hatch", 13, 1048576).getStackForm(1L));
+                15298, "hatch.dynamotunnel7.tier.13", "UXV 1048576A/t Laser Source Hatch", 13, 1048576).getStackForm(1L));
         eM_dynamoTunnel9001.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
                 15299, "hatch.dynamotunnel.tier.14", "Legendary Laser Source Hatch", 14, (int) V[14]).getStackForm(1L));
 

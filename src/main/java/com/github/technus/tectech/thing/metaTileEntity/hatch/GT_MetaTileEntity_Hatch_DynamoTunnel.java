@@ -148,13 +148,12 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
                             return;
                         } else if (maxEUOutput() == ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).maxEUInput()) {
                             long diff = Math.min(
-                                    Amperes * 20,
+                                    Amperes * 20L * maxEUOutput(),
                                     Math.min(
                                             ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).maxEUStore() -
                                                     aMetaTileEntity.getBaseMetaTileEntity().getStoredEU(),
-                                            maxEUStore() - aBaseMetaTileEntity.getStoredEU()
-                                    ) / maxEUOutput()
-                            ) * maxEUOutput();
+                                            aBaseMetaTileEntity.getStoredEU()
+                                    ));
 
                             setEUVar(aBaseMetaTileEntity.getStoredEU() - diff);
 
