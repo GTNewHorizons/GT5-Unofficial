@@ -331,7 +331,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				return super.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) mte);
 			} else if(mte instanceof  GT_MetaTileEntity_Hatch_EnergyTunnel) {
 				// Add TT Laser hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return mEnergyTunnelsTT.add((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
 			} else if(mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
 				// Add TT hatches
@@ -355,7 +354,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				return super.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) mte);
 			} else if(mte instanceof  GT_MetaTileEntity_Hatch_DynamoTunnel) {
 				// Add TT Laser hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return mDynamoTunnelsTT.add((GT_MetaTileEntity_Hatch_DynamoTunnel) mte);
 			} else if(mte instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
 				// Add TT hatches
