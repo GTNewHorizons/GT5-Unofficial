@@ -332,7 +332,7 @@ public class MachineLoader implements Runnable {
         eM_energyTunnel7_UXV.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
                 15198, "hatch.energytunnel7.tier.13", "UXV 1048576A/t Laser Target Hatch", 13, 1048576).getStackForm(1L));
         eM_energyTunnel9001.set(new GT_MetaTileEntity_Hatch_EnergyTunnel(
-                15199, "hatch.energytunnel.tier.14", "Legendary Laser Target Hatch", 14, (int) V[14]).getStackForm(1L));
+                15199, "hatch.energytunnel.tier.14", "Legendary Laser Target Hatch", 13, (int) V[13]).getStackForm(1L));
 
         // ===================================================================================================
         // Multi AMP Power OUTPUTS
@@ -540,7 +540,7 @@ public class MachineLoader implements Runnable {
         eM_dynamoTunnel7_UXV.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
                 15298, "hatch.dynamotunnel7.tier.13", "UXV 1048576A/t Laser Source Hatch", 13, 1048576).getStackForm(1L));
         eM_dynamoTunnel9001.set(new GT_MetaTileEntity_Hatch_DynamoTunnel(
-                15299, "hatch.dynamotunnel.tier.14", "Legendary Laser Source Hatch", 14, (int) V[14]).getStackForm(1L));
+                15299, "hatch.dynamotunnel.tier.14", "Legendary Laser Source Hatch", 13, (int) V[13]).getStackForm(1L));
 
         // ===================================================================================================
         // MULTIBLOCKS

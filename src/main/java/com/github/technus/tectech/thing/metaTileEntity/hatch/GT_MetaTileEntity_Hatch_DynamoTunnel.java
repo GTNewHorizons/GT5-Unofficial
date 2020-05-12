@@ -78,7 +78,7 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
 
     @Override
     public long maxEUStore() {
-        return 512L + V[mTier] * 4L * Amperes;
+        return V[mTier] * 24L * Amperes;
     }
 
     @Override
