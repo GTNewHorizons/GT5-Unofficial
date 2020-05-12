@@ -16,7 +16,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynam
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -256,7 +255,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					if(Y < firstGlassHeight){
 						if((X == -2 || X == 2) && (Z == -1 || Z == 4)){
 							if(!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)){
-								final String badName = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
 								formationChecklist = false;
 							} else {
 								final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
@@ -269,7 +267,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 						}
 					} else {
 						if (!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)) {
-							final String badName = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
 							formationChecklist = false;
 						}
 					}
