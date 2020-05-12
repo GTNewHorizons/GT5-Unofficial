@@ -1,5 +1,23 @@
 item.kekztech_error_item.name=KekzTech Error Coin
 
+# -------- Multiblock Tooltip Builder Keywords
+# -------- Context can be found in the class util.MultiBlockTooltipBuilder
+mbdesc.beginStructureBlock.Dimensions=Dimensions
+mbdesc.beginStructureBlock.Structure=Structure
+mbdesc.addController.Controller=Controller
+mbdesc.addCasing.atleast=(at least)
+mbdesc.addEnergyHatch.EnergyHatch=Energy Hatch
+mbdesc.addDynamoHatch.DynamoHatch=Dynamo Hatch
+mbdesc.addMaintenanceHatch.MaintenanceHatch=Maintenance Hatch
+mbdesc.addIOHatches.IOHatches=I/O Hatches
+mbdesc.addInputBus.InputBus=Input Bus/ses
+mbdesc.addInputHatch.InputHatch=Input Hatch/es
+mbdesc.addOutputBus.OutputBus=Output Bus/ses
+mbdesc.addOutputHatch.OutputHatch=Output Hatch/es
+mbdesc.signAndFinalize.Hold=Hold
+mbdesc.signAndFinalize.todisplay=to display structure guidelines
+mbdesc.signAndFinalize.createdby=Created by
+
 # -------- Reactor: Structure Blocks
 tile.kekztech_controlrod_block.name=Nuclear Reactor Control Rod
 tile.kekztech_reactorchamberoff_block.name=Nuclear Reactor Chamber (OFF)

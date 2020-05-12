@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 /**
  * Have you ever felt like your tooltips just aren't enterprise enough? Use this!
@@ -14,22 +15,42 @@ import net.minecraft.util.EnumChatFormatting;
 public class MultiBlockTooltipBuilder {
 	
 	private static final String TAB = "   ";
+	private static final String COLON = ": ";
 	
 	private final List<String> iLines;
 	private final List<String> sLines;
 	
 	private String[] iArray;
 	private String[] sArray;
-	
+
+	// Localized keywords
+	private static final String KW_dimensions = StatCollector.translateToLocal("mbdesc.beginStructureBlock.Dimensions");
+	private static final String KW_structure = StatCollector.translateToLocal("mbdesc.beginStructureBlock.Structure");
+	private static final String KW_controller = StatCollector.translateToLocal("mbdesc.addController.Controller");
+	private static final String KW_atleast = StatCollector.translateToLocal("mbdesc.addCasing.atleast");
+	private static final String KW_energyhatch = StatCollector.translateToLocal("mbdesc.addEnergyHatch.EnergyHatch");
+	private static final String KW_dynamohatch = StatCollector.translateToLocal("mbdesc.addDynamoHatch.DynamoHatch");
+	private static final String KW_maintenancehatch = StatCollector.translateToLocal("mbdesc.addMaintenanceHatch.MaintenanceHatch");
+	private static final String KW_iohatches = StatCollector.translateToLocal("mbdesc.addIOHatches.IOHatches");
+	private static final String KW_inputbus = StatCollector.translateToLocal("mbdesc.addInputBus.InputBus");
+	private static final String KW_inputhatch = StatCollector.translateToLocal("mbdesc.addInputHatch.InputHatch");
+	private static final String KW_outputbus = StatCollector.translateToLocal("mbdesc.addOutputBus.OutputBus");
+	private static final String KW_outputhatch = StatCollector.translateToLocal("mbdesc.addOutputHatch.OutputHatch");
+	private static final String KW_hold = StatCollector.translateToLocal("mbdesc.signAndFinalize.Hold");
+	private static final String KW_todisplay = StatCollector.translateToLocal("mbdesc.signAndFinalize.todisplay");
+	private static final String KW_createdby = StatCollector.translateToLocal("mbdesc.signAndFinalize.createdby");
+
 	public MultiBlockTooltipBuilder() {
 		iLines = new LinkedList<>();
 		sLines = new LinkedList<>();
+
+
 	}
 	
 	/**
 	 * Add a basic line of information about this structure
 	 * 
-	 * @param line
+	 * @param info
 	 * 				The line to be added.
 	 * @return Instance this method was called on.
 	 */
@@ -62,58 +83,58 @@ public class MultiBlockTooltipBuilder {
 	 * @return Instance this method was called on.
 	 */
 	public MultiBlockTooltipBuilder beginStructureBlock(int w, int h, int l) {
-		sLines.add("Dimensions: " + w + "x" + h + "x" + l + " (WxHxL)");
-		sLines.add("Structure:");
+		sLines.add(KW_dimensions + COLON + w + "x" + h + "x" + l + " (WxHxL)");
+		sLines.add(KW_structure + COLON);
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addController(String info) {
-		sLines.add(TAB + "Controller: " + info);
+		sLines.add(TAB + KW_controller + COLON + info);
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addCasingInfo(String casingName, int minCount) {
-		sLines.add(TAB + minCount +"x " + casingName + " (at least)");
+		sLines.add(TAB + minCount +"x " + casingName + " " + KW_atleast);
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addEnergyHatch(String info) {
-		sLines.add(TAB + "Energy Hatch: " + info);
+		sLines.add(TAB + KW_energyhatch + COLON + info);
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addDynamoHatch(String info) {
-		sLines.add(TAB + "Dynamo Hatch: " + info);
+		sLines.add(TAB + KW_dynamohatch + COLON + info);
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addMaintenanceHatch(String info) {
-		sLines.add(TAB + "Maintenance Hatch: " + info);
+		sLines.add(TAB + KW_maintenancehatch + COLON + info);
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addIOHatches(String info) {
-		sLines.add(TAB + "I/O Hatches: " + info);
+		sLines.add(TAB + KW_iohatches + COLON + info);
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addInputBus(String info) {
-		sLines.add(TAB + "Input Bus/ses: " + info);
+		sLines.add(TAB + KW_inputbus + COLON + info);
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addInputHatch(String info) {
-		sLines.add(TAB + "Input Hatch/es: " + info);
+		sLines.add(TAB + KW_inputhatch + COLON + info);
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addOutputBus(String info) {
-		sLines.add(TAB + "Output Bus/ses: " + info);
+		sLines.add(TAB + KW_outputbus + COLON + info);
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addOutputHatch(String info) {
-		sLines.add(TAB + "Output Hatch/es: " + info);
+		sLines.add(TAB + KW_outputhatch + COLON + info);
 		return this;
 	}
 	
@@ -127,7 +148,7 @@ public class MultiBlockTooltipBuilder {
 	 * @return Instance this method was called on.
 	 */
 	public MultiBlockTooltipBuilder addOtherStructurePart(String name, String info) {
-		sLines.add(TAB + name + ": " + info);
+		sLines.add(TAB + name + COLON + info);
 		return this;
 	}
 	
@@ -138,12 +159,10 @@ public class MultiBlockTooltipBuilder {
 	 * 
 	 * @param author
 	 * 				Name of the creator of this Machine
-	 * 
-	 * @return The result of all build calls.
 	 */
 	public void signAndFinalize(String author) {
-		iLines.add("Hold " + EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to display structure guidelines");
-		iLines.add("Created by " + author);
+		iLines.add(KW_hold + " " + EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " " + KW_todisplay);
+		iLines.add(KW_createdby + " " + author);
 		iArray = new String[iLines.size()];
 		sArray = new String[sLines.size()];
 		iLines.toArray(iArray);
