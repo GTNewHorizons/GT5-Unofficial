@@ -428,9 +428,9 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 			final BigInteger remcapActual = capacity.subtract(stored);
 			final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) > 0) ? remcapActual : MAX_LONG;
-			final long power = Math.min(eHatch.maxEUInput() * eHatch.maxAmperesIn(), recampLimited.longValue());
+			final long ttLaserWattage = eHatch.maxEUInput() * eHatch.Amperes - (eHatch.Amperes / 20);
+			final long power = Math.min(ttLaserWattage, recampLimited.longValue());
 			if(power <= eHatch.getEUVar()) {
-				KekzCore.LOGGER.info("Tried to take " + power + "EU from a Laser Target Hatch");
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
 			}
@@ -441,9 +441,9 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				continue;
 			}
 			final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) > 0) ? stored : MAX_LONG;
-			final long power = Math.min(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut(), remStoredLimited.longValue());
+			final long ttLaserWattage = eDynamo.maxEUOutput() * eDynamo.Amperes - (eDynamo.Amperes / 20);
+			final long power = Math.min(ttLaserWattage, remStoredLimited.longValue());
 			if(eDynamo.getEUVar() <= eDynamo.maxEUStore() - power) {
-				KekzCore.LOGGER.info("Tried to inject " + power + "EU into a Laser Source Hatch");
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
 				stored = stored.subtract(BigInteger.valueOf(power));
 			}
