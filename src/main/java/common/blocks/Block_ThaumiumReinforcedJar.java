@@ -1,5 +1,6 @@
 package common.blocks;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,14 +13,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.BlockJar;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.config.ConfigItems;
 
 public class Block_ThaumiumReinforcedJar extends BlockJar {
 	
@@ -78,7 +84,6 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 			final TE_ThaumiumReinforcedVoidJar ite = (TE_ThaumiumReinforcedVoidJar) te;
 			breakBlockWarpy(world, x, y, z, ite.amount, 50, 1.0F);
 		}
-		
 		super.breakBlock(world, x, y, z, par5, par6);
 	}
 
@@ -111,7 +116,29 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 	
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
-		return new ArrayList<>(Collections.singleton(new ItemStack(this, 1, (meta == 3) ? 3 : 0)));
+		final ArrayList<ItemStack> drops = new ArrayList<>();
+		drops.add(new ItemStack(this, 1, (meta == 3) ? 3 : 0));
+		final TileEntity te = world.getTileEntity(x, y, z);
+		if(te instanceof  TE_ThaumiumReinforcedJar) {
+			final TE_ThaumiumReinforcedJar ite = (TE_ThaumiumReinforcedJar) te;
+			if(ite.aspectFilter != null){
+				final ItemStack droppedLabel = new ItemStack(ConfigItems.itemResource, 1, 13);
+				droppedLabel.setTagCompound(new NBTTagCompound());
+				final AspectList aspect = new AspectList().add(ite.aspectFilter,0);
+				aspect.writeToNBT(droppedLabel.getTagCompound());
+				drops.add(droppedLabel);
+			}
+		} else if(te instanceof  TE_ThaumiumReinforcedVoidJar) {
+			final TE_ThaumiumReinforcedVoidJar ite = (TE_ThaumiumReinforcedVoidJar) te;
+			if(ite.aspectFilter != null) {
+				final ItemStack droppedLabel = new ItemStack(ConfigItems.itemResource, 1, 13);
+				droppedLabel.setTagCompound(new NBTTagCompound());
+				final AspectList aspect = new AspectList().add(ite.aspectFilter,0);
+				aspect.writeToNBT(droppedLabel.getTagCompound());
+				drops.add(droppedLabel);
+			}
+		}
+		return drops;
 	}
 
 	@Override
