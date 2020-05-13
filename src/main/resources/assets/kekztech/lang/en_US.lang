@@ -164,7 +164,7 @@ tile.kekztech_thaumiumreinforcedjar_block.name=Thaumium Reinforced Jar
 # This is the name of the research
 tc.research_name.THAUMIUMREINFORCEDJAR=Thaumium Reinforced Jars
 # This is the subtext for the research note (I think)
-kekztech.research_page.THAUMIUMREINFORCEDJAR=Slightly better jars
+tc.research_text.THAUMIUMREINFORCEDJAR=Slightly better jars
 # Lore text for the research pages
 kekztech.research_page.THAUMIUMREINFORCEDJAR.0=You have heard your fellow Thaumaturges talk about the benefits of digitized Essentia Storage.<BR><BR>Storing enough Essentia for your advanced infusions has indeed been an issue for you too. However those jars are simply too pleasing to look at to even consider the idea of replacing them with some compact technological construct.<BR><BR>Thanks to this new discovery, you have managed to quadruple the capacity of your jars by improving them with a thick Thaumium lining. This should buy you some more time to come up with a better solution.
 kekztech.research_page.THAUMIUMREINFORCEDJAR.1=Compressing this much Essentia in such a tiny space causes some volatility. Picking up reinforced jars is probably a bad idea...<BR><BR>You imagine that you could get even more out of your jars if only you had some kind of material harder than even diamond or any of the other magical metal you have seen so far.
@@ -176,5 +176,5 @@ tile.kekztech_ichorjar_block.name=Ichor Jar
 
 # -------- Ichor Jar: Research
 tc.research_name.ICHORJAR=Ichor Jars
-kekztech.research_page.ICHORJAR=Much better jars
+tc.research_text.ICHORJAR=Much better jars
 kekztech.research_page.ICHORJAR.0=This is it!<BR><BR>By infusing a jar with just a single piece of Ichor you have created something to rival digitized Essentia storage without sacrificing any of the beauty of Warded Jars.<BR><BR>Ichor Jars can hold an astounding 4096 Essentia and fit nicely into your recently aquired set of Ichor based achievements.<BR><BR>You definitely don't want to disturb these jars. Luckily Ichor is resilient enough to make accidentially destroying one unlikely.
