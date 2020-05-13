@@ -59,8 +59,6 @@ public class KekzCore {
 		//Item_Configurator.getInstance().registerItem();
 		Items.registerOreDictNames();
 		
-		//Item_ThaumiumReinforcedJarFilled.getInstance().registerItem();
-		
 		Blocks.preInit();
 		
 		// Register TileEntities

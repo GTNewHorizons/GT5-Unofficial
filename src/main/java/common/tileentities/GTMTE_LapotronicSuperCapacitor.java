@@ -16,6 +16,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynam
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -292,6 +293,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 		}
 
+		KekzCore.LOGGER.info("Found " + mDynamoTunnelsTT.size() + "Laser Source Hatches");
+		KekzCore.LOGGER.info("Found " + mEnergyTunnelsTT.size() + "Laser Target Hatches");
 		// Glass has to be at least UV-tier to allow TT Laser hatches
 		if(colourCorrectedMeta < 5) {
 			if(mEnergyTunnelsTT.size() > 0 || mDynamoTunnelsTT.size() > 0) {
@@ -427,6 +430,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) > 0) ? remcapActual : MAX_LONG;
 			final long power = Math.min(eHatch.maxEUInput() * eHatch.maxAmperesIn(), recampLimited.longValue());
 			if(power <= eHatch.getEUVar()) {
+				KekzCore.LOGGER.info("Tried to take " + power + "EU from a Laser Target Hatch");
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
 			}
@@ -439,6 +443,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) > 0) ? stored : MAX_LONG;
 			final long power = Math.min(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut(), remStoredLimited.longValue());
 			if(eDynamo.getEUVar() <= eDynamo.maxEUStore() - power) {
+				KekzCore.LOGGER.info("Tried to inject " + power + "EU into a Laser Source Hatch");
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
 				stored = stored.subtract(BigInteger.valueOf(power));
 			}

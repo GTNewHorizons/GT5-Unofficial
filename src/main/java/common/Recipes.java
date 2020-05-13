@@ -557,7 +557,7 @@ public class Recipes {
 		// Capacitor recycling
 		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
 				ItemList.Energy_LapotronicOrb.get(1L),
-				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 24),
+				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Lapis, 4),
 				1200, 32);
 		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2),
 				ItemList.Energy_LapotronicOrb2.get(1L),

@@ -53,7 +53,7 @@ public class Block_IchorJar extends BlockJar {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"unchecked"})
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
 		par3List.add(new ItemStack(par1, 1, 0)); // Normal jar
 		par3List.add(new ItemStack(par1, 1, 3)); // Void jar
@@ -73,33 +73,39 @@ public class Block_IchorJar extends BlockJar {
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if(te instanceof TE_IchorJar) {
 			final TE_IchorJar ite = (TE_IchorJar) te;
-			if(ite.amount > 0) {
-				// Create a decent explosion in the center of the block (TNT has strength 4.0F)
-				world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, 6.0F, false);
-				
-				// Place a lot of Flux in the area
-				final int limit = ite.amount / 16;
-				int created = 0;
-				for(int i = 0; i < 200; i++) {
-					final int xf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
-					final int yf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
-					final int zf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
-					if(world.isAirBlock(xf, yf, zf)) {
-						if(yf > y) {
-							world.setBlock(xf, yf, zf, ConfigBlocks.blockFluxGas, 8, 3);
-						} else {
-							world.setBlock(xf, yf, zf, ConfigBlocks.blockFluxGoo, 8, 3);
-						}
-						
-						if(created++ > limit) {
-							break;
-						}
+			breakBlockWarpy(world, x, y, z, ite.amount, 200, 6.0F);
+		} else if(te instanceof  TE_IchorVoidJar) {
+			final TE_IchorVoidJar ite = (TE_IchorVoidJar) te;
+			breakBlockWarpy(world, x, y, z, ite.amount, 200, 6.0F);
+		}
+		super.breakBlock(world, x, y, z, par5, par6);
+	}
+
+	private void breakBlockWarpy(World world, int x, int y, int z, int fillAmount, int iterations, float explosionStrength){
+		if(fillAmount > 0) {
+			// Create a decent explosion in the center of the block (TNT has strength 4.0F)
+			world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, explosionStrength, false);
+
+			// Place a lot of Flux in the area
+			final int limit = fillAmount / 16;
+			int created = 0;
+			for(int i = 0; i < iterations; i++) {
+				final int xf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
+				final int yf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
+				final int zf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
+				if(world.isAirBlock(xf, yf, zf)) {
+					if(yf > y) {
+						world.setBlock(xf, yf, zf, ConfigBlocks.blockFluxGas, 8, 3);
+					} else {
+						world.setBlock(xf, yf, zf, ConfigBlocks.blockFluxGoo, 8, 3);
+					}
+
+					if(created++ > limit) {
+						break;
 					}
 				}
 			}
 		}
-		
-		super.breakBlock(world, x, y, z, par5, par6);
 	}
 
 	@Override

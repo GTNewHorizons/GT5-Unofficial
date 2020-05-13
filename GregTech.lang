@@ -3562,6 +3562,7 @@ languagefile {
     S:TileEntity_DESCRIPTION_13106_Index_0=LapotronicTM Multi-block power storage
     S:TileEntity_DESCRIPTION_13106_Index_1=Modular height of 4 to 18 blocks.
     S:TileEntity_DESCRIPTION_13106_Index_10=Created by Kekzdealer
+    S:TileEntity_DESCRIPTION_13106_Index_11=Created by Kekzdealer
     S:TileEntity_DESCRIPTION_13106_Index_2=-----------------------------------------
     S:TileEntity_DESCRIPTION_13106_Index_3=Hold §l[LSHIFT]§r§7 to display structure guidelines
     S:TileEntity_DESCRIPTION_13106_Index_4=Created by Kekzdealer

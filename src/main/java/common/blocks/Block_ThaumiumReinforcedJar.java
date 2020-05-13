@@ -53,7 +53,7 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"unchecked"})
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
 		par3List.add(new ItemStack(par1, 1, 0)); // Normal jar
 		par3List.add(new ItemStack(par1, 1, 3)); // Void jar
@@ -71,35 +71,42 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
 		final TileEntity te = world.getTileEntity(x, y, z);
-		if(te != null && te instanceof TE_ThaumiumReinforcedJar) {
+		if(te instanceof TE_ThaumiumReinforcedJar) {
 			final TE_ThaumiumReinforcedJar ite = (TE_ThaumiumReinforcedJar) te;
-			if(ite.amount > 0) {
-				// Create a small explosion in the center of the block (TNT has strength 4.0F)
-				world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, 1.0F, false);
-				
-				// Place some Flux in the area
-				final int limit = ite.amount / 16;
-				int created = 0;
-				for(int i = 0; i < 50; i++) {
-					final int xf = x + world.rand.nextInt(4) - world.rand.nextInt(4);
-					final int yf = x + world.rand.nextInt(4) - world.rand.nextInt(4);
-					final int zf = x + world.rand.nextInt(4) - world.rand.nextInt(4);
-					if(world.isAirBlock(xf, yf, zf)) {
-						if(yf > y) {
-							world.setBlock(xf, yf, zf, ConfigBlocks.blockFluxGas, 8, 3);
-						} else {
-							world.setBlock(xf, yf, zf, ConfigBlocks.blockFluxGoo, 8, 3);
-						}
-						
-						if(created++ > limit) {
-							break;
-						}
+			breakBlockWarpy(world, x, y, z, ite.amount, 50, 1.0F);
+		} else if(te instanceof  TE_ThaumiumReinforcedVoidJar) {
+			final TE_ThaumiumReinforcedVoidJar ite = (TE_ThaumiumReinforcedVoidJar) te;
+			breakBlockWarpy(world, x, y, z, ite.amount, 50, 1.0F);
+		}
+		
+		super.breakBlock(world, x, y, z, par5, par6);
+	}
+
+	private void breakBlockWarpy(World world, int x, int y, int z, int fillAmount, int iterations, float explosionStrength){
+		if(fillAmount > 0) {
+			// Create a decent explosion in the center of the block (TNT has strength 4.0F)
+			world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, explosionStrength, false);
+
+			// Place a lot of Flux in the area
+			final int limit = fillAmount / 16;
+			int created = 0;
+			for(int i = 0; i < iterations; i++) {
+				final int xf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
+				final int yf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
+				final int zf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
+				if(world.isAirBlock(xf, yf, zf)) {
+					if(yf > y) {
+						world.setBlock(xf, yf, zf, ConfigBlocks.blockFluxGas, 8, 3);
+					} else {
+						world.setBlock(xf, yf, zf, ConfigBlocks.blockFluxGoo, 8, 3);
+					}
+
+					if(created++ > limit) {
+						break;
 					}
 				}
 			}
 		}
-		
-		super.breakBlock(world, x, y, z, par5, par6);
 	}
 	
 	@Override
