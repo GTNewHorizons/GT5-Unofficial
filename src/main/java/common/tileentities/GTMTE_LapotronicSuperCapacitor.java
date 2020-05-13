@@ -252,22 +252,26 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			for(int X = -2; X <= 2; X++) {
 				for(int Z = 0; Z >= -4; Z--) {
 					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
+					final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
 					// Check only outer ring, except when on roof height
 					if(Y < firstGlassHeight){
-						if((X == -2 || X == 2) && (Z == -1 || Z == 4)){
-							if(!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)){
-								formationChecklist = false;
-							} else {
-								final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
-								if(firstGlassMeta == -1){
+						if((X == -2 || X == 2) && (Z == -1 || Z == 4)) {
+							if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)) {
+								if(firstGlassMeta == -1) {
 									firstGlassMeta = meta;
-								} else if(meta != firstGlassMeta){
+								} else if(meta != firstGlassMeta) {
 									formationChecklist = false;
 								}
+							} else {
+								formationChecklist = false;
 							}
 						}
 					} else {
 						if (!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)) {
+							if(meta != firstGlassMeta) {
+								formationChecklist = false;
+							}
+						} else {
 							formationChecklist = false;
 						}
 					}
