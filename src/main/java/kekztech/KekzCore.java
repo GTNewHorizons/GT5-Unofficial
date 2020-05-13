@@ -36,7 +36,7 @@ public class KekzCore {
 	
 	public static final String NAME = "KekzTech";
 	public static final String MODID = "kekztech";
-	public static final String VERSION = "0.4.2";
+	public static final String VERSION = "0.4.3";
 
 	public static final Logger LOGGER = LogManager.getLogger(NAME);
 
