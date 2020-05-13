@@ -156,8 +156,9 @@ tile.kekztech_lapotronicenergyunit_block.6.name=Really Ultimate Capacitor (UEV)
 tile.kekztech_lapotronicenergyunit_block.desc=Part of the Lapotronic Super Capacitor
 
 # -------- Thaumium Reinforced Jar: Block
-tile.kekztech_thaumiumreinforcedjar_block.0.name=Thaumium Reinforced Jar
-tile.kekztech_thaumiumreinforcedjar_block.3.name=Thaumium Reinforced Void Jar
+tile.kekztech_thaumiumreinforcedjar_block.name=Thaumium Reinforced Jar
+# Disabled because of unknown bug
+# tile.kekztech_thaumiumreinforcedjar_block.3.name=Thaumium Reinforced Void Jar
 
 # -------- Thaumium Reinforced Jar: Research
 # This is the name of the research
@@ -169,8 +170,9 @@ kekztech.research_page.THAUMIUMREINFORCEDJAR.0=You have heard your fellow Thauma
 kekztech.research_page.THAUMIUMREINFORCEDJAR.1=Compressing this much Essentia in such a tiny space causes some volatility. Picking up reinforced jars is probably a bad idea...<BR><BR>You imagine that you could get even more out of your jars if only you had some kind of material harder than even diamond or any of the other magical metal you have seen so far.
 
 # -------- Ichor Jar: Block
-tile.kekztech_ichorjar_block.0.name=Ichor Jar
-tile.kekztech_ichorjar_block.3.name=Ichor Void Jar
+tile.kekztech_ichorjar_block.name=Ichor Jar
+# Disabled because of unknown bug
+# tile.kekztech_ichorjar_block.3.name=Ichor Void Jar
 
 # -------- Ichor Jar: Research
 tc.research_name.ICHORJAR=Ichor Jars
