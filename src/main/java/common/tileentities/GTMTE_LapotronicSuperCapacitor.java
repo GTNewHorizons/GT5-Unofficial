@@ -210,6 +210,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 							minCasingAmount--;
 						} else {
 							formationChecklist = false;
+							break;
 						}
 					}
 				}
@@ -252,27 +253,30 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			for(int X = -2; X <= 2; X++) {
 				for(int Z = 0; Z >= -4; Z--) {
 					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
+					final String blockNameAt = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
 					final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
 					// Check only outer ring, except when on roof height
-					if(Y < firstGlassHeight){
-						if((X == -2 || X == 2) && (Z == -1 || Z == 4)) {
-							if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)) {
-								if(firstGlassMeta == -1) {
-									firstGlassMeta = meta;
-								} else if(meta != firstGlassMeta) {
-									formationChecklist = false;
-								}
-							} else {
+					if((Y < firstGlassHeight) && (X == -2 || X == 2) && (Z == -1 || Z == 4)){
+						if(glassNameBorosilicate.equals(blockNameAt)) {
+							if(firstGlassMeta == -1) {
+								firstGlassMeta = meta;
+							} else if(meta != firstGlassMeta) {
 								formationChecklist = false;
-							}
-						}
-					} else {
-						if (!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)) {
-							if(meta != firstGlassMeta) {
-								formationChecklist = false;
+								break;
 							}
 						} else {
 							formationChecklist = false;
+							break;
+						}
+					} else {
+						if (glassNameBorosilicate.equals(blockNameAt)) {
+							if(meta != firstGlassMeta) {
+								formationChecklist = false;
+								break;
+							}
+						} else {
+							formationChecklist = false;
+							break;
 						}
 					}
 				}
@@ -296,8 +300,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 		}
 
-		KekzCore.LOGGER.info("Found " + mDynamoTunnelsTT.size() + "Laser Source Hatches");
-		KekzCore.LOGGER.info("Found " + mEnergyTunnelsTT.size() + "Laser Target Hatches");
 		// Glass has to be at least UV-tier to allow TT Laser hatches
 		if(colourCorrectedMeta < 5) {
 			if(mEnergyTunnelsTT.size() > 0 || mDynamoTunnelsTT.size() > 0) {

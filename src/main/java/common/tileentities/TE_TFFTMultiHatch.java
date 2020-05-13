@@ -179,14 +179,18 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
-		
+
+		nbt.setBoolean("autoOutput", autoOutput);
+
 		super.writeToNBT(nbt);
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
-		
+
+		autoOutput = nbt.getBoolean("autoOutput");
+
 		super.readFromNBT(nbt);
 	}
 	
