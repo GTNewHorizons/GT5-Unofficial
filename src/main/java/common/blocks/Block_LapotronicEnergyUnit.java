@@ -29,8 +29,6 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 	private IIcon iconLapoUVTop;
 	private IIcon iconUltimateSide;
 	private IIcon iconUltimateTop;
-	private IIcon iconReallyUltimateSide;
-	private IIcon iconReallyUltimateTop;
 	
 	private Block_LapotronicEnergyUnit() {
 		super(Material.iron);
@@ -63,12 +61,10 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 		
 		iconUltimateSide = ir.registerIcon("kekztech:UltimateEnergyUnit_side");
 		iconUltimateTop = ir.registerIcon("kekztech:UltimateEnergyUnit_top");
-		iconReallyUltimateSide = ir.registerIcon("kekztech:ReallyUltimateEnergyUnit_side");
-		iconReallyUltimateTop = ir.registerIcon("kekztech:ReallyUltimateEnergyUnit_top");
 	}
 	
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"unchecked" })
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
 		// Multi casing
 		par3List.add(new ItemStack(par1, 1, 0));
@@ -77,9 +73,8 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 		par3List.add(new ItemStack(par1, 1, 2));
 		par3List.add(new ItemStack(par1, 1, 3));
 		par3List.add(new ItemStack(par1, 1, 4));
-		// Ultimate batteries
+		// Ultimate battery
 		par3List.add(new ItemStack(par1, 1, 5));
-		par3List.add(new ItemStack(par1, 1, 6));
 	}
 	
 	@Override
@@ -91,7 +86,6 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 		case 3: return (side < 2) ? iconLapoZPMTop : iconLapoZPMSide;
 		case 4: return (side < 2) ? iconLapoUVTop : iconLapoUVSide;
 		case 5: return (side < 2) ? iconUltimateTop : iconUltimateSide;
-		case 6: return (side < 2) ? iconReallyUltimateTop : iconReallyUltimateSide;
 		default: return iconUltimateTop;
 		}
 	}

@@ -51,7 +51,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	private final Set<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
 	private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
 	// Count the amount of capacitors of each tier in each slot (translate with meta - 1)
-	private final int[] capacitors = new int[6];
+	private final int[] capacitors = new int[5];
 	private BigInteger capacity = BigInteger.ZERO;
 	private BigInteger stored = BigInteger.ZERO;
 	private BigInteger passiveDischargeAmount = BigInteger.ZERO;
@@ -232,7 +232,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 							final long c = (long) (100000000L * Math.pow(10, meta - 1));
 							tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
 							capacity = capacity.add(BigInteger.valueOf(c));
-						} else if(meta <= 6){
+						} else if(meta <= 5){
 							tempCapacity = tempCapacity.add(BigInteger.valueOf((long) (100000000L * Math.pow(10, 3))));
 							capacity = capacity.add(MAX_LONG);
 						}
