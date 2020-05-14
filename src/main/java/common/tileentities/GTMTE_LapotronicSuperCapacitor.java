@@ -210,7 +210,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 							minCasingAmount--;
 						} else {
 							formationChecklist = false;
-							break;
 						}
 					}
 				}
@@ -242,7 +241,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 						break;
 					} else {
 						formationChecklist = false;
-						break;
 					}
 				}
 			}
@@ -256,27 +254,25 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					final String blockNameAt = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
 					final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
 					// Check only outer ring, except when on roof height
-					if((Y < firstGlassHeight) && (X == -2 || X == 2) && (Z == -1 || Z == 4)){
-						if(glassNameBorosilicate.equals(blockNameAt)) {
-							if(firstGlassMeta == -1) {
-								firstGlassMeta = meta;
-							} else if(meta != firstGlassMeta) {
+					if((Y < firstGlassHeight)){
+						if(X == -2 || X == 2 || Z == 0 || Z == 4){
+							if(glassNameBorosilicate.equals(blockNameAt)) {
+								if(firstGlassMeta == -1) {
+									firstGlassMeta = meta;
+								} else if(meta != firstGlassMeta) {
+									formationChecklist = false;
+								}
+							} else {
 								formationChecklist = false;
-								break;
 							}
-						} else {
-							formationChecklist = false;
-							break;
 						}
 					} else {
 						if (glassNameBorosilicate.equals(blockNameAt)) {
 							if(meta != firstGlassMeta) {
 								formationChecklist = false;
-								break;
 							}
 						} else {
 							formationChecklist = false;
-							break;
 						}
 					}
 				}
