@@ -32,6 +32,7 @@ public class Researches {
                 .setPages(
                         new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.0"),
                         new ResearchPage(Recipes.infusionRecipes.get("THAUMIUMREINFORCEDJAR")),
+                        new ResearchPage(Recipes.infusionRecipes.get("THAUMIUMREINFORCEDVOIDJAR")),
                         new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.1")
                 )
                 .setConcealed()
@@ -48,7 +49,8 @@ public class Researches {
         final ResearchItem jar_ichor = new ResearchItem("ICHORJAR", "ALCHEMY", aspects_jarichor, 2, -5, 3, new ItemStack(Blocks.jarIchor, 1))
                 .setPages(
                         new ResearchPage("kekztech.research_page.ICHORJAR.0"),
-                        new ResearchPage(Recipes.infusionRecipes.get("ICHORJAR"))
+                        new ResearchPage(Recipes.infusionRecipes.get("ICHORJAR")),
+                        new ResearchPage(Recipes.infusionRecipes.get("ICHORVOIDJAR"))
                 )
                 .setConcealed()
                 .setParents("THAUMIUMREINFORCEDJAR")
