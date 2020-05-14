@@ -1,8 +1,13 @@
 package com.github.technus.tectech.mechanics.structure;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import java.util.Arrays;
+
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
 public interface IStructureDefinition<T> {
     /**
@@ -73,9 +78,17 @@ public interface IStructureDefinition<T> {
 
                         if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
                             if(!element.check(object, world, xyz[0], xyz[1], xyz[2])){
+                                if(DEBUG_MODE){
+                                    TecTech.LOGGER.info("Multi ["+basePositionX+", "+basePositionY+", "+basePositionZ+"] failed @ "+
+                                            Arrays.toString(xyz)+" "+Arrays.toString(abc));
+                                }
                                 return false;
                             }
-                        }else {
+                        } else {
+                            if(DEBUG_MODE){
+                                TecTech.LOGGER.info("Multi ["+basePositionX+", "+basePositionY+", "+basePositionZ+"] !blockExists @ "+
+                                        Arrays.toString(xyz)+" "+Arrays.toString(abc));
+                            }
                             return false;
                         }
                         abc[0]+=1;
@@ -95,7 +108,16 @@ public interface IStructureDefinition<T> {
 
                         if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
                             if(!element.check(object, world, xyz[0], xyz[1], xyz[2])){
+                                if(DEBUG_MODE){
+                                    TecTech.LOGGER.info("Multi ["+basePositionX+", "+basePositionY+", "+basePositionZ+"] failed @ "+
+                                            Arrays.toString(xyz)+" "+Arrays.toString(abc));
+                                }
                                 return false;
+                            }
+                        } else {
+                            if(DEBUG_MODE){
+                                TecTech.LOGGER.info("Multi ["+basePositionX+", "+basePositionY+", "+basePositionZ+"] !blockExists @ "+
+                                        Arrays.toString(xyz)+" "+Arrays.toString(abc));
                             }
                         }
                         abc[0]+=1;

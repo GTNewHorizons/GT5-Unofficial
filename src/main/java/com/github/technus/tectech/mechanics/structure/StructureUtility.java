@@ -112,6 +112,8 @@ public class StructureUtility {
         return ERROR;
     }
 
+    //region hint only
+
     /**
      * Check always returns: true.
      *
@@ -179,6 +181,10 @@ public class StructureUtility {
             }
         };
     }
+
+    //endregion
+
+    //region block
 
     /**
      * Does not allow Block duplicates (with different meta)
@@ -354,6 +360,10 @@ public class StructureUtility {
         return ofBlock(block, meta, block, meta);
     }
 
+    //endregion
+
+    //region adders
+
     public static <T> IStructureElement<T> ofBlockAdder(IBlockAdder<T> iBlockAdder, Block defaultBlock, int defaultMeta) {
         if (iBlockAdder == null || defaultBlock == null) {
             throw new IllegalArgumentException();
@@ -436,9 +446,9 @@ public class StructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
-                return tileEntity instanceof IGregTechTileEntity &&
-                        (iHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) textureIndex) ||
-                                (world.getBlock(x, y, z) == placeCasing && world.getBlockMetadata(x, y, z) == placeCasingMeta));
+                return (tileEntity instanceof IGregTechTileEntity &&
+                        iHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) textureIndex)) ||
+                                (world.getBlock(x, y, z) == placeCasing && world.getBlockMetadata(x, y, z) == placeCasingMeta);
             }
 
             @Override
@@ -454,6 +464,10 @@ public class StructureUtility {
             }
         };
     }
+
+    //endregion
+
+    //region side effects
 
     public static <B extends IStructureElement<T>, T> IStructureElement<T> onElementPass(Consumer<T> onCheckPass, B element) {
         return new IStructureElement<T>() {
@@ -501,6 +515,7 @@ public class StructureUtility {
         };
     }
 
+    //endregion
 
     /**
      * Take care while chaining, as it will try to call every structure element until it returns true.
@@ -535,6 +550,8 @@ public class StructureUtility {
     public static <T> IStructureElementChain<T> ofChain(List<IStructureElement<T>> elementChain) {
         return ofChain(elementChain.toArray(new IStructureElement[0]));
     }
+
+    //region defer
 
     public static <T> IStructureElementDeferred<T> defer(Supplier<IStructureElement<T>> to) {
         if (to == null) {
@@ -840,10 +857,26 @@ public class StructureUtility {
         return defer(keyExtractorCheck, keyExtractor, array.toArray(new IStructureElement[0]));
     }
 
+    //endregion
+
+    /**
+     * Used internally, to generate skips for structure definitions
+     * @param a
+     * @param b
+     * @param c
+     * @param <T>
+     * @return
+     */
     public static <T> IStructureNavigate<T> step(int a, int b, int c) {
         return step(new Vec3Impl(a, b, c));
     }
 
+    /**
+     * Used internally, to generate skips for structure definitions
+     * @param step
+     * @param <T>
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static <T> IStructureNavigate<T> step(Vec3Impl step) {
         if (step == null || step.get0() < 0 || step.get1() < 0 || step.get2() < 0) {
