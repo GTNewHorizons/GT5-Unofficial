@@ -378,7 +378,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				continue;
 			}
 			final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
-			if(power <= eHatch.getEUVar()) {
+			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
 			}
@@ -389,7 +389,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				continue;
 			}
 			final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
-			if(eDynamo.getEUVar() <= eDynamo.maxEUStore() - power) {
+			if(power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
 				stored = stored.subtract(BigInteger.valueOf(power));
 			}
@@ -400,7 +400,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				continue;
 			}
 			final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
-			if(power <= eHatch.getEUVar()) {
+			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
 			}
@@ -411,7 +411,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				continue;
 			}
 			final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
-			if(eDynamo.getEUVar() <= eDynamo.maxEUStore() - power) {
+			if(power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
 				stored = stored.subtract(BigInteger.valueOf(power));
 			}
@@ -423,7 +423,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 			final long ttLaserWattage = eHatch.maxEUInput() * eHatch.Amperes - (eHatch.Amperes / 20);
 			final long power = getPowerToDraw(ttLaserWattage);
-			if(power <= eHatch.getEUVar()) {
+			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
 			}
@@ -435,7 +435,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 			final long ttLaserWattage = eDynamo.maxEUOutput() * eDynamo.Amperes - (eDynamo.Amperes / 20);
 			final long power = getPowerToPush(ttLaserWattage);
-			if(eDynamo.getEUVar() <= eDynamo.maxEUStore() - power) {
+			if(power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
 				stored = stored.subtract(BigInteger.valueOf(power));
 			}
