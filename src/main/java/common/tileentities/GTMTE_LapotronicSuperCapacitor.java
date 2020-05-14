@@ -320,7 +320,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		}
 		// Calculate how much energy to void each tick
 		passiveDischargeAmount = new BigDecimal(tempCapacity).multiply(PASSIVE_DISCHARGE_FACTOR_PER_TICK).toBigInteger();
-
+		passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
 		return formationChecklist;
 	}
 
@@ -442,16 +442,25 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		}
 		// Loose some energy
 		// Recalculate if the repair status changed
-		final int repairStatus = super.getRepairStatus();
-		if(repairStatus != repairStatusCache) {
-			repairStatusCache = repairStatus;
-			passiveDischargeAmount = new BigDecimal(passiveDischargeAmount)
-					.multiply(BigDecimal.valueOf(1.0D + 0.2D * repairStatus)).toBigInteger();
+		if(super.getRepairStatus() != repairStatusCache) {
+			passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
 		}
 		stored = stored.subtract(passiveDischargeAmount);
 		stored = (stored.compareTo(BigInteger.ZERO) <= 0) ? BigInteger.ZERO : stored;
 
 		return true;
+	}
+
+	/**
+	 * To be called whenever the maintenance status changes or the capacity was recalculated
+	 * @param repairStatus
+	 * 		This machine's repair status
+	 * @return new BigInteger instance for passiveDischargeAmount
+	 */
+	private BigInteger recalculateLossWithMaintenance(int repairStatus) {
+		repairStatusCache = repairStatus;
+		return new BigDecimal(passiveDischargeAmount)
+				.multiply(BigDecimal.valueOf(1.0D + 0.2D * repairStatus)).toBigInteger();
 	}
 
 	/**
