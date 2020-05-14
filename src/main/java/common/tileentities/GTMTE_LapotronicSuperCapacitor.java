@@ -55,6 +55,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	private BigInteger capacity = BigInteger.ZERO;
 	private BigInteger stored = BigInteger.ZERO;
 	private BigInteger passiveDischargeAmount = BigInteger.ZERO;
+	private int repairStatusCache = 0;
 
 	public GTMTE_LapotronicSuperCapacitor(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -444,6 +445,13 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 		}
 		// Loose some energy
+		// Recalculate if the repair status changed
+		final int repairStatus = super.getRepairStatus();
+		if(repairStatus != repairStatusCache) {
+			repairStatusCache = repairStatus;
+			passiveDischargeAmount = new BigDecimal(passiveDischargeAmount)
+					.multiply(BigDecimal.valueOf(1.0D + 0.2D * repairStatus)).toBigInteger();
+		}
 		stored = stored.subtract(passiveDischargeAmount);
 		stored = (stored.compareTo(BigInteger.ZERO) <= 0) ? BigInteger.ZERO : stored;
 
