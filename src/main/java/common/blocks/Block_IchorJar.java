@@ -1,5 +1,6 @@
 package common.blocks;
 
+import common.itemBlocks.IB_IchorJar;
 import common.tileentities.TE_IchorJar;
 import common.tileentities.TE_IchorVoidJar;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -35,7 +36,7 @@ public class Block_IchorJar extends BlockJar {
 	public static Block registerBlock() {
 		final String blockName = "kekztech_ichorjar_block";
 		INSTANCE.setBlockName(blockName);
-		GameRegistry.registerBlock(INSTANCE, blockName);
+		GameRegistry.registerBlock(INSTANCE, IB_IchorJar.class, blockName);
 		
 		return INSTANCE;
 	}

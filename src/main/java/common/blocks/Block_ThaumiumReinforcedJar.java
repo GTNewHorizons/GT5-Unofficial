@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import common.itemBlocks.IB_ThaumiumReinforcedJar;
 import common.tileentities.TE_ThaumiumReinforcedJar;
 import common.tileentities.TE_ThaumiumReinforcedVoidJar;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -41,7 +42,7 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 	public static Block registerBlock() {
 		final String blockName = "kekztech_thaumiumreinforcedjar_block";
 		instance.setBlockName(blockName);
-		GameRegistry.registerBlock(instance, blockName);
+		GameRegistry.registerBlock(instance, IB_ThaumiumReinforcedJar.class, blockName);
 		
 		return instance;
 	}
