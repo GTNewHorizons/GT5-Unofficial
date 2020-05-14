@@ -75,7 +75,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
 		b.addInfo("Power storage structure!")
 				.addInfo("Looses energy equal to 1% of the total capacity every 24 hours.")
-				.addInfo("EXCEPTION: (Really) Ultimate Capacitors only count as Lapotronic Capacitors (UV) for the")
+				.addInfo("EXCEPTION: Ultimate Capacitors only count as Lapotronic Capacitors (UV) for the")
 				.addInfo("purpose of passive loss calculation. The full capacity is counted towards the actual power capacity.")
 				.addSeparator()
 				.addInfo("Glass shell has to be Tier - 2 of the highest capacitor tier")

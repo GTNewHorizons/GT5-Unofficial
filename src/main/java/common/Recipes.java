@@ -417,7 +417,7 @@ public class Recipes {
 				.add(Aspect.VOID, 64)
 				.add(Aspect.AIR, 32);
 		infusionRecipes.put("ICHORJAR", 
-				ThaumcraftApi.addInfusionCraftingRecipe("ICHORJAR", new ItemStack(Blocks.jarIchor, 1), 
+				ThaumcraftApi.addInfusionCraftingRecipe("ICHORJAR", new ItemStack(Blocks.jarIchor, 1, 0),
 				15, aspects_jarichor, ItemApi.getBlock("blockJar", 0), recipe_jarichor));
 		
 		final ItemStack[] recipe_jarthaumiumreinforced = {
@@ -440,7 +440,7 @@ public class Recipes {
 				.add(Aspect.VOID, 16)
 				.add(Aspect.AIR, 8);
 		infusionRecipes.put("THAUMIUMREINFORCEDJAR", 
-				ThaumcraftApi.addInfusionCraftingRecipe("THAUMIUMREINFORCEDJAR", new ItemStack(Blocks.jarThaumiumReinforced, 1), 
+				ThaumcraftApi.addInfusionCraftingRecipe("THAUMIUMREINFORCEDJAR", new ItemStack(Blocks.jarThaumiumReinforced, 1, 0),
 						5, aspects_jarthaumiumreinforced, ItemApi.getBlock("blockJar",  0), recipe_jarthaumiumreinforced));
 	}
 
