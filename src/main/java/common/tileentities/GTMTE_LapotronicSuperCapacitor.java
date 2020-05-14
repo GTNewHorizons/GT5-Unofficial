@@ -16,7 +16,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynam
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -381,9 +380,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
 				continue;
 			}
-			final BigInteger remcapActual = capacity.subtract(stored);
-			final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) > 0) ? remcapActual : MAX_LONG;
-			final long power = Math.min(eHatch.maxEUInput() * eHatch.maxAmperesIn(), recampLimited.longValue());
+			final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
 			if(power <= eHatch.getEUVar()) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
@@ -394,8 +391,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()){
 				continue;
 			}
-			final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) > 0) ? stored : MAX_LONG;
-			final long power = Math.min(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut(), remStoredLimited.longValue());
+			final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
 			if(eDynamo.getEUVar() <= eDynamo.maxEUStore() - power) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
 				stored = stored.subtract(BigInteger.valueOf(power));
@@ -406,9 +402,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
 				continue;
 			}
-			final BigInteger remcapActual = capacity.subtract(stored);
-			final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) > 0) ? remcapActual : MAX_LONG;
-			final long power = Math.min(eHatch.maxEUInput() * eHatch.maxAmperesIn(), recampLimited.longValue());
+			final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
 			if(power <= eHatch.getEUVar()) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
@@ -419,8 +413,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()){
 				continue;
 			}
-			final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) > 0) ? stored : MAX_LONG;
-			final long power = Math.min(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut(), remStoredLimited.longValue());
+			final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
 			if(eDynamo.getEUVar() <= eDynamo.maxEUStore() - power) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
 				stored = stored.subtract(BigInteger.valueOf(power));
@@ -431,10 +424,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
 				continue;
 			}
-			final BigInteger remcapActual = capacity.subtract(stored);
-			final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) > 0) ? remcapActual : MAX_LONG;
 			final long ttLaserWattage = eHatch.maxEUInput() * eHatch.Amperes - (eHatch.Amperes / 20);
-			final long power = Math.min(ttLaserWattage, recampLimited.longValue());
+			final long power = getPowerToDraw(ttLaserWattage);
 			if(power <= eHatch.getEUVar()) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
@@ -445,9 +436,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()){
 				continue;
 			}
-			final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) > 0) ? stored : MAX_LONG;
 			final long ttLaserWattage = eDynamo.maxEUOutput() * eDynamo.Amperes - (eDynamo.Amperes / 20);
-			final long power = Math.min(ttLaserWattage, remStoredLimited.longValue());
+			final long power = getPowerToPush(ttLaserWattage);
 			if(eDynamo.getEUVar() <= eDynamo.maxEUStore() - power) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
 				stored = stored.subtract(BigInteger.valueOf(power));
@@ -458,6 +448,29 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		stored = (stored.compareTo(BigInteger.ZERO) <= 0) ? BigInteger.ZERO : stored;
 
 		return true;
+	}
+
+	/**
+	 * Calculate how much EU to draw from an Energy Hatch
+	 * @param hatchWatts
+	 * 		Hatch amperage * voltage
+	 * @return EU amount
+	 */
+	private long getPowerToDraw(long hatchWatts){
+		final BigInteger remcapActual = capacity.subtract(stored);
+		final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) > 0) ? remcapActual : MAX_LONG;
+		return Math.min(hatchWatts, recampLimited.longValue());
+	}
+
+	/**
+	 * Calculate how much EU to push into a Dynamo Hatch
+	 * @param hatchWatts
+	 * 		Hatch amperage * voltage
+	 * @return EU amount
+	 */
+	private long getPowerToPush(long hatchWatts){
+		final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) > 0) ? stored : MAX_LONG;
+		return Math.min(hatchWatts, remStoredLimited.longValue());
 	}
 
 	@Override
