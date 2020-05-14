@@ -519,7 +519,6 @@ public class Recipes {
 				ItemList.Energy_Cluster.get(1), 2000, 200000
 		);
 		GT_Recipe.GT_Recipe_AssemblyLine arU = null;
-		GT_Recipe.GT_Recipe_AssemblyLine arRU = null;
 		for(GT_Recipe.GT_Recipe_AssemblyLine ar : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
 			if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_LapotronicOrb2.get(1L), true)) {
 				// LuV Lapo Orb
@@ -533,9 +532,6 @@ public class Recipes {
 			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.ZPM2.get(1L), true)) {
 				// Ultimate Battery
 				arU = ar;
-			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.ZPM3.get(1L), true)) {
-				// Really Ultimate Battery
-				arRU = ar;
 			}
 		}
 		lapoCapacitorRecipeAdder(arLuV, Materials.Osmiridium,
@@ -550,9 +546,6 @@ public class Recipes {
 		lapoCapacitorRecipeAdder(arU, Materials.CosmicNeutronium,
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5));
-		lapoCapacitorRecipeAdder(arRU, Materials.Infinity,
-				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
-				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6));
 
 		// Capacitor recycling
 		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
@@ -574,10 +567,6 @@ public class Recipes {
 		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
 				ItemList.ZPM2.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
-				1200, 32);
-		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6),
-				ItemList.ZPM3.get(1L),
-				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 24),
 				1200, 32);
 	}
 }
