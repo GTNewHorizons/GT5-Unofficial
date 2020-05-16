@@ -9,14 +9,20 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.BlockJar;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.items.ItemEssence;
+import thaumcraft.common.tiles.TileJarFillable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,7 +74,98 @@ public class Block_IchorJar extends BlockJar {
 			return new TE_IchorJar();
 		}
 	}
-	
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float f1, float f2, float f3) {
+		// Call parent method to handle jar emptying, labels stuff etc
+		super.onBlockActivated(world, x, y, z, player, side, f1, f2, f3);
+		// Interact with Essentia Phials if the player holds one
+		final ItemStack heldItem = player.getHeldItem();
+		if(heldItem != null && heldItem.getItem() == ConfigItems.itemEssence) {
+			final TileEntity te = world.getTileEntity(x, y, z);
+			if(te instanceof TE_IchorJar) {
+				return dealWithPhial(world, player, x, y, z);
+			} else if(te instanceof TE_IchorVoidJar) {
+				return dealWithPhial(world, player, x, y, z);
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Handle compatibility with Essentia Phials
+	 * @param world
+	 * 			Pass through from onBlockActivated()
+	 * @param player
+	 * 			Pass through from onBlockActivated()
+	 * @param x
+	 * 			Pass through from onBlockActivated()
+	 * @param y
+	 * 			Pass through from onBlockActivated()
+	 * @param z
+	 * 			Pass through from onBlockActivated()
+	 * @return Not sure tbh
+	 */
+	private boolean dealWithPhial(World world, EntityPlayer player, int x, int y, int z) {
+		final TileJarFillable jarTE = (TileJarFillable) world.getTileEntity(x, y, z);
+		final ItemStack heldItem = player.getHeldItem();
+		// Check whether to fill or to drain the phial
+		if(heldItem.getItemDamage() == 0) {
+			if(jarTE.amount >= 8){
+				if (world.isRemote) {
+					player.swingItem();
+					return false;
+				}
+
+				final Aspect jarAspect = Aspect.getAspect(jarTE.aspect.getTag());
+				if(jarTE.takeFromContainer(jarAspect, 8)) {
+					// Take an empty phial from the player's inventory
+					heldItem.stackSize--;
+					// Fill a new phial
+					final ItemStack filledPhial = new ItemStack(ConfigItems.itemEssence, 1, 1);
+					final AspectList phialContent = new AspectList().add(jarAspect, 8);
+					((ItemEssence) ConfigItems.itemEssence).setAspects(filledPhial, phialContent);
+					// Drop on ground if there's no inventory space
+					if (!player.inventory.addItemStackToInventory(filledPhial)) {
+						world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, filledPhial));
+					}
+
+					world.playSoundAtEntity(player, "game.neutral.swim", 0.25F, 1.0F);
+					player.inventoryContainer.detectAndSendChanges();
+					return true;
+				}
+			}
+		} else {
+			final AspectList phialContent = ((ItemEssence) ConfigItems.itemEssence).getAspects(heldItem);
+			if(phialContent != null && phialContent.size() == 1) {
+				final Aspect phialAspect = phialContent.getAspects()[0];
+				if(jarTE.amount + 8 <= jarTE.maxAmount && jarTE.doesContainerAccept(phialAspect)) {
+					if (world.isRemote) {
+						player.swingItem();
+						return false;
+					}
+
+					if(jarTE.addToContainer(phialAspect, 8) == 0) {
+						world.markBlockForUpdate(x, y, z);
+						jarTE.markDirty();
+						heldItem.stackSize--;
+						// Drop on ground if there's no inventory space
+						if (!player.inventory.addItemStackToInventory(new ItemStack(ConfigItems.itemEssence, 1, 0))) {
+							world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, new ItemStack(ConfigItems.itemEssence, 1, 0)));
+						}
+
+						world.playSoundAtEntity(player, "game.neutral.swim", 0.25F, 1.0F);
+						player.inventoryContainer.detectAndSendChanges();
+						return true;
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
 		final TileEntity te = world.getTileEntity(x, y, z);

@@ -1,10 +1,5 @@
 package common.blocks;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import common.itemBlocks.IB_ThaumiumReinforcedJar;
 import common.tileentities.TE_ThaumiumReinforcedJar;
 import common.tileentities.TE_ThaumiumReinforcedVoidJar;
@@ -22,15 +17,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.BlockJar;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.items.ItemEssence;
+import thaumcraft.common.tiles.TileJarFillable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Block_ThaumiumReinforcedJar extends BlockJar {
 	
-	private static Block_ThaumiumReinforcedJar instance = new Block_ThaumiumReinforcedJar();
+	private static final Block_ThaumiumReinforcedJar instance = new Block_ThaumiumReinforcedJar();
 	
 	private Block_ThaumiumReinforcedJar() {
 		super();
@@ -114,13 +114,104 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 			}
 		}
 	}
-	
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float f1, float f2, float f3) {
+		// Call parent method to handle jar emptying, labels stuff etc
+		super.onBlockActivated(world, x, y, z, player, side, f1, f2, f3);
+		// Interact with Essentia Phials if the player holds one
+		final ItemStack heldItem = player.getHeldItem();
+		if(heldItem != null && heldItem.getItem() == ConfigItems.itemEssence) {
+			final TileEntity te = world.getTileEntity(x, y, z);
+			if(te instanceof TE_ThaumiumReinforcedJar) {
+				return dealWithPhial(world, player, x, y, z);
+			} else if(te instanceof  TE_ThaumiumReinforcedVoidJar) {
+				return dealWithPhial(world, player, x, y, z);
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Handle compatibility with Essentia Phials
+	 * @param world
+	 * 			Pass through from onBlockActivated()
+	 * @param player
+	 * 			Pass through from onBlockActivated()
+	 * @param x
+	 * 			Pass through from onBlockActivated()
+	 * @param y
+	 * 			Pass through from onBlockActivated()
+	 * @param z
+	 * 			Pass through from onBlockActivated()
+	 * @return Not sure tbh
+	 */
+	private boolean dealWithPhial(World world, EntityPlayer player, int x, int y, int z) {
+		final TileJarFillable kte = (TileJarFillable) world.getTileEntity(x, y, z);
+		final ItemStack heldItem = player.getHeldItem();
+		// Check whether to fill or to drain the phial
+		if(heldItem.getItemDamage() == 0) {
+			if(kte.amount >= 8){
+				if (world.isRemote) {
+					player.swingItem();
+					return false;
+				}
+
+				final Aspect jarAspect = Aspect.getAspect(kte.aspect.getTag());
+				if(kte.takeFromContainer(jarAspect, 8)) {
+					// Take an empty phial from the player's inventory
+					heldItem.stackSize--;
+					// Fill a new phial
+					final ItemStack filledPhial = new ItemStack(ConfigItems.itemEssence, 1, 1);
+					final AspectList phialContent = new AspectList().add(jarAspect, 8);
+					((ItemEssence) ConfigItems.itemEssence).setAspects(filledPhial, phialContent);
+					// Drop on ground if there's no inventory space
+					if (!player.inventory.addItemStackToInventory(filledPhial)) {
+						world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, filledPhial));
+					}
+
+					world.playSoundAtEntity(player, "game.neutral.swim", 0.25F, 1.0F);
+					player.inventoryContainer.detectAndSendChanges();
+					return true;
+				}
+			}
+		} else {
+			final AspectList phialContent = ((ItemEssence) ConfigItems.itemEssence).getAspects(heldItem);
+			if(phialContent != null && phialContent.size() == 1) {
+				final Aspect phialAspect = phialContent.getAspects()[0];
+				if(kte.amount + 8 <= kte.maxAmount && kte.doesContainerAccept(phialAspect)) {
+					if (world.isRemote) {
+						player.swingItem();
+						return false;
+					}
+
+					if(kte.addToContainer(phialAspect, 8) == 0) {
+						world.markBlockForUpdate(x, y, z);
+						kte.markDirty();
+						heldItem.stackSize--;
+						// Drop on ground if there's no inventory space
+						if (!player.inventory.addItemStackToInventory(new ItemStack(ConfigItems.itemEssence, 1, 0))) {
+							world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, new ItemStack(ConfigItems.itemEssence, 1, 0)));
+						}
+
+						world.playSoundAtEntity(player, "game.neutral.swim", 0.25F, 1.0F);
+						player.inventoryContainer.detectAndSendChanges();
+						return true;
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
 		final ArrayList<ItemStack> drops = new ArrayList<>();
 		drops.add(new ItemStack(this, 1, (meta == 3) ? 3 : 0));
 		final TileEntity te = world.getTileEntity(x, y, z);
-		if(te instanceof  TE_ThaumiumReinforcedJar) {
+		if(te instanceof TE_ThaumiumReinforcedJar) {
 			final TE_ThaumiumReinforcedJar ite = (TE_ThaumiumReinforcedJar) te;
 			if(ite.aspectFilter != null){
 				final ItemStack droppedLabel = new ItemStack(ConfigItems.itemResource, 1, 13);
@@ -129,7 +220,7 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 				aspect.writeToNBT(droppedLabel.getTagCompound());
 				drops.add(droppedLabel);
 			}
-		} else if(te instanceof  TE_ThaumiumReinforcedVoidJar) {
+		} else if(te instanceof TE_ThaumiumReinforcedVoidJar) {
 			final TE_ThaumiumReinforcedVoidJar ite = (TE_ThaumiumReinforcedVoidJar) te;
 			if(ite.aspectFilter != null) {
 				final ItemStack droppedLabel = new ItemStack(ConfigItems.itemResource, 1, 13);
