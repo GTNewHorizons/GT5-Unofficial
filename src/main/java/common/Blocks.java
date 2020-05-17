@@ -1,26 +1,6 @@
 package common;
 
-import common.blocks.Block_ControlRod;
-import common.blocks.Block_GDCUnit;
-import common.blocks.Block_IchorJar;
-import common.blocks.Block_ItemProxyCable;
-import common.blocks.Block_ItemProxyEndpoint;
-import common.blocks.Block_ItemProxySource;
-import common.blocks.Block_ItemServerDrive;
-import common.blocks.Block_ItemServerIOPort;
-import common.blocks.Block_ItemServerRackCasing;
-import common.blocks.Block_LapotronicEnergyUnit;
-import common.blocks.Block_ReactorChamber_OFF;
-import common.blocks.Block_ReactorChamber_ON;
-import common.blocks.Block_TFFTCasing;
-import common.blocks.Block_TFFTMultiHatch;
-import common.blocks.Block_TFFTStorageFieldBlockT1;
-import common.blocks.Block_TFFTStorageFieldBlockT2;
-import common.blocks.Block_TFFTStorageFieldBlockT3;
-import common.blocks.Block_TFFTStorageFieldBlockT4;
-import common.blocks.Block_TFFTStorageFieldBlockT5;
-import common.blocks.Block_ThaumiumReinforcedJar;
-import common.blocks.Block_YSZUnit;
+import common.blocks.*;
 import kekztech.KekzCore;
 import net.minecraft.block.Block;
 
@@ -53,6 +33,8 @@ public class Blocks {
 	public static Block jarIchor;
 	
 	public static Block lscLapotronicEnergyUnit;
+
+	public static Block spaceElevatorStructure;
 	
 	public static void preInit() {
 		KekzCore.LOGGER.info("Registering blocks...");
@@ -64,6 +46,7 @@ public class Blocks {
 		//registerBlocks_ItemProxy();
 		registerBlocks_Jars();
 		registerBlocks_LSC();
+		registerBlocks_SpaceElevator();
 
 		KekzCore.LOGGER.info("Finished registering blocks");
 	}
@@ -109,4 +92,9 @@ public class Blocks {
 	private static void registerBlocks_LSC() {
 		lscLapotronicEnergyUnit = Block_LapotronicEnergyUnit.registerBlock();
 	}
+
+	private static void registerBlocks_SpaceElevator() {
+		spaceElevatorStructure = Block_SpaceElevator.registerBlock();
+	}
+
 }

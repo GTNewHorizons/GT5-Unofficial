@@ -1,5 +1,6 @@
 package common.tileentities;
 
+import common.Blocks;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
@@ -25,9 +26,10 @@ import java.util.ArrayList;
 
 public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
-    private static final int CASING_TEXTURE_ID = 16; // Solid Steel Casing
-    private static final Block CASING_BLOCK = GregTech_API.sBlockCasings2;
-    private static final int CASING_META = 0;
+    private static final Block BASE_BLOCK = Blocks.spaceElevatorStructure;
+    private static final int BASE_META = 0;
+    private static final int COIL_HOLDER_META = 1;
+    private static final int HATCH_OVERLAY_ID = 16;
 
     private long lastLaunchEUCost = 0;
 
@@ -140,12 +142,12 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
                 // Tries to add TE as either of those kinds of hatches.
                 // The number is the texture index number for the texture that needs to be painted over the hatch texture
-                if (   !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !this.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                if (   !super.addMaintenanceToMachineList(currentTE, HATCH_OVERLAY_ID)
+                        && !this.addEnergyInputToMachineList(currentTE, HATCH_OVERLAY_ID)) {
 
                     // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-                    if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING_BLOCK)
-                            && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+                    if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == BASE_BLOCK)
+                            && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == BASE_META)) {
                         // Seems to be valid casing. Decrement counter.
                         minCasingAmount--;
                     } else {
@@ -155,6 +157,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
             }
         }
         KekzCore.LOGGER.info("Space Elevator Base accepted");
+        // Capacitor banks
+
         // Anchor
 
         // Coil holders
