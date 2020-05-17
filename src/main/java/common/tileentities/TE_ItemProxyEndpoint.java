@@ -124,7 +124,7 @@ public class TE_ItemProxyEndpoint extends TileEntity implements ISidedInventory 
 
 	@Override
 	public String getInventoryName() {
-		return (proxyInventory != null) ? "Connected Proxy" : "Untethered Proxy";
+		return (proxyInventory != null) ? "Connected: " + proxyInventory.getInventoryName() : "Untethered Proxy";
 	}
 
 	@Override

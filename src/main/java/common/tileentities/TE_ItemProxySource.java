@@ -77,7 +77,7 @@ public class TE_ItemProxySource extends TileEntity implements IInventory {
 
 	@Override
 	public String getInventoryName() {
-		return "Item Proxy Network Source";
+		return "Item Proxy Source";
 	}
 
 	@Override
