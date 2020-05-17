@@ -19,7 +19,7 @@ apply plugin: 'forge'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-version = "0.4.4.a"
+version = "0.4.5"
 group= "kekztech" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "kekztech"
 
