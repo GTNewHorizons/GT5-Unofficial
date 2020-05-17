@@ -41,6 +41,7 @@ public class Recipes {
 		//registerRecipes_ItemServer();
 		registerRecipes_Jars();
 		registerRecipes_LSC();
+		registerRecipes_SpaceElevator();
 
 		KekzCore.LOGGER.info("Finished registering recipes");
 	}
@@ -591,5 +592,31 @@ public class Recipes {
 				ItemList.ZPM2.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
 				1200, 32);
+	}
+
+	private static void registerRecipes_SpaceElevator() {
+		// Controller
+		final Object[] se_recipe = {
+				"BCB", "CPC", "BCB",
+				'B', new ItemStack(Blocks.spaceElevatorStructure, 1, 0),
+				'C', OrePrefixes.cableGt16.get(Materials.Aluminium),
+				'P', OrePrefixes.circuit.get(Materials.Master)
+		};
+		GT_ModHandler.addCraftingRecipe(KekzCore.se.getStackForm(1), se_recipe);
+		// Blocks
+		final Object[] seBase_recipe = {
+				"DRD", "RCR", "DRD",
+				'D', OrePrefixes.plate.get(Materials.DarkSteel),
+				'R', OrePrefixes.stick.get(Materials.Steel),
+				'C', OrePrefixes.block.get(Materials.Concrete),
+		};
+		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.spaceElevatorStructure, 1, 0), seBase_recipe);
+		final Object[] seCoilHolder_recipe = {
+				"DRD", "RCR", "DRD",
+				'D', OrePrefixes.plate.get(Materials.DarkSteel),
+				'R', OrePrefixes.ring.get(Materials.Steel),
+				'C', OrePrefixes.cableGt01.get(Materials.Aluminium)
+		};
+		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.spaceElevatorStructure, 1, 1), seCoilHolder_recipe);
 	}
 }

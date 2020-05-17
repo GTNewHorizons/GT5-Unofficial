@@ -179,4 +179,4 @@ kekztech.research_page.ICHORJAR.0=This is it!<BR><BR>By infusing a jar with just
 # -------- Space Elevator: Block
 tile.kekztech_spaceelevator_block.0.name=Space Elevator Base
 tile.kekztech_spaceelevator_block.1.name=Space Elevator Coil Holder
-tile.kekztech_spaceelevator_block.desc="Part of the Space Elevator Base Station
+tile.kekztech_spaceelevator_block.desc=Part of the Space Elevator Base Station
