@@ -161,7 +161,7 @@ tile.kekztech_thaumiumreinforcedjar_block.3.name=Thaumium Reinforced Void Jar
 # -------- Thaumium Reinforced Jar: Research
 # This is the name of the research
 tc.research_name.THAUMIUMREINFORCEDJAR=Thaumium Reinforced Jars
-# This is the subtext for the research note (I think)
+# This is the subtext for the research note
 tc.research_text.THAUMIUMREINFORCEDJAR=Slightly better jars
 # Lore text for the research pages
 kekztech.research_page.THAUMIUMREINFORCEDJAR.0=You have heard your fellow Thaumaturges talk about the benefits of digitized Essentia Storage.<BR><BR>Storing enough Essentia for your advanced infusions has indeed been an issue for you too. However those jars are simply too pleasing to look at to even consider the idea of replacing them with some compact technological construct.<BR><BR>Thanks to this new discovery, you have managed to quadruple the capacity of your jars by improving them with a thick Thaumium lining. This should buy you some more time to come up with a better solution.
@@ -175,3 +175,8 @@ tile.kekztech_ichorjar_block.3.name=Ichor Void Jar
 tc.research_name.ICHORJAR=Ichor Jars
 tc.research_text.ICHORJAR=Much better jars
 kekztech.research_page.ICHORJAR.0=This is it!<BR><BR>By infusing a jar with just a single piece of Ichor you have created something to rival digitized Essentia storage without sacrificing any of the beauty of Warded Jars.<BR><BR>Ichor Jars can hold an astounding 4096 Essentia and fit nicely into your recently aquired set of Ichor based achievements.<BR><BR>You definitely don't want to disturb these jars. Luckily Ichor is resilient enough to make accidentially destroying one unlikely.
+
+# -------- Space Elevator: Block
+tile.kekztech_spaceelevator_block.0.name=Space Elevator Base
+tile.kekztech_spaceelevator_block.1.name=Space Elevator Coil Holder
+tile.kekztech_spaceelevator_block.desc="Part of the Space Elevator Base Station

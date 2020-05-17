@@ -3571,6 +3571,13 @@ languagefile {
     S:TileEntity_DESCRIPTION_13106_Index_7=Hold §l[LSHIFT]§r§7 to display structure guidelines
     S:TileEntity_DESCRIPTION_13106_Index_8=Created by Kekzdealer
     S:TileEntity_DESCRIPTION_13106_Index_9=Created by Kekzdealer
+    S:TileEntity_DESCRIPTION_13107_Index_0=Access for your Space Station!
+    S:TileEntity_DESCRIPTION_13107_Index_1=Check out the wiki on my github if you are having trouble with the structure
+    S:TileEntity_DESCRIPTION_13107_Index_2=Regenerative Breaking will recover up to X% of the energy spent on launch
+    S:TileEntity_DESCRIPTION_13107_Index_3=Energy recovered depends on coil tier: +10% per coil tier, up to 90%
+    S:TileEntity_DESCRIPTION_13107_Index_4=-----------------------------------------
+    S:TileEntity_DESCRIPTION_13107_Index_5=Hold §l[LSHIFT]§r§7 to display structure guidelines
+    S:TileEntity_DESCRIPTION_13107_Index_6=Created by Kekzdealer
     S:TileEntity_DESCRIPTION_1310_Index_0=Max Voltage:  %s
     S:TileEntity_DESCRIPTION_1310_Index_1=Max Amperage:  %s
     S:TileEntity_DESCRIPTION_1310_Index_2=Loss/Meter/Ampere:  %s EU-Volt
@@ -13244,6 +13251,7 @@ languagefile {
     S:gt.blockmachines.multimachine.oredrill4.name=Ore Drilling Plant IV
     S:gt.blockmachines.multimachine.processingarray.name=Processing Array
     S:gt.blockmachines.multimachine.pyro.name=Pyrolyse Oven
+    S:gt.blockmachines.multimachine.spaceelevator.name=Space Elevator
     S:gt.blockmachines.multimachine.supercapacitor.name=Lapotronic Supercapacitor
     S:gt.blockmachines.multimachine.telsatower.name=Tesla's Last Testament
     S:gt.blockmachines.multimachine.tf_fluidtank.name=T.F.F.T
