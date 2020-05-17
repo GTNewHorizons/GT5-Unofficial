@@ -10,7 +10,8 @@ public class TE_ItemProxyCable extends TileEntity {
 	private String idCache = null;
 	
 	public TE_ItemProxyCable() {
-		connections = 63; // set all connections active until I have something actually control connections
+		connections = 63;
+		this.setConnection(ForgeDirection.DOWN, true);
 	}
 	
 	public static float getThickness() {
