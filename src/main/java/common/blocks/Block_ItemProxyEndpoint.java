@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class Block_ItemProxyEndpoint extends Block {
 	
-	private static Block_ItemProxyEndpoint instance = new Block_ItemProxyEndpoint();
+	private static final Block_ItemProxyEndpoint instance = new Block_ItemProxyEndpoint();
 	
 	private Block_ItemProxyEndpoint() {
 		super(Material.glass);
@@ -45,19 +45,11 @@ public class Block_ItemProxyEndpoint extends Block {
 		
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if(te instanceof TE_ItemProxyEndpoint) {
-			final TE_ItemProxyEndpoint endpoint = (TE_ItemProxyEndpoint) te;
-			if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof Item_Configurator) {
-				
-				final ItemStack held = player.inventory.getCurrentItem();
-				if(held.hasTagCompound() && held.getTagCompound().hasKey("config")) {
-					endpoint.setChannel(UUID.fromString(held.getTagCompound().getString("config")));
-				}
-			} else {
-				player.openGui(KekzCore.instance, GuiHandler.ITEM_PROXY_ENDPOINT, world, x, y, z);				
-			}
+			player.openGui(KekzCore.instance, GuiHandler.ITEM_PROXY_ENDPOINT, world, x, y, z);
 			return true;
+		} else {
+			return false;
 		}
-		return false;
 	}
 	
 	@Override

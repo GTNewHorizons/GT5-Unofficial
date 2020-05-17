@@ -3,21 +3,18 @@ package common.blocks;
 import common.itemBlocks.IB_ItemProxySource;
 import common.tileentities.TE_ItemProxySource;
 import cpw.mods.fml.common.registry.GameRegistry;
-import items.Item_Configurator;
 import kekztech.GuiHandler;
 import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class Block_ItemProxySource extends Block {
 	
-	private static Block_ItemProxySource instance = new Block_ItemProxySource();
+	private static final Block_ItemProxySource instance = new Block_ItemProxySource();
 	
 	private Block_ItemProxySource() {
 		super(Material.glass);
@@ -44,20 +41,11 @@ public class Block_ItemProxySource extends Block {
 		
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if(te instanceof TE_ItemProxySource) {
-			final TE_ItemProxySource source = (TE_ItemProxySource) te;
-			if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof Item_Configurator) {
-				
-				final NBTTagCompound configNBT = new NBTTagCompound();
-				configNBT.setString("config", source.getChannel().toString());
-				final ItemStack held = player.inventory.getCurrentItem();
-				held.setTagCompound(configNBT);
-				
-			} else {
-				player.openGui(KekzCore.instance, GuiHandler.ITEM_PROXY_SOURCE, world, x, y, z);				
-			}
+			player.openGui(KekzCore.instance, GuiHandler.ITEM_PROXY_SOURCE, world, x, y, z);
 			return true;
+		} else {
+			return false;
 		}
-		return false;
 	}
 	
 	@Override

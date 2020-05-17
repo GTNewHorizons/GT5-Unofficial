@@ -8,12 +8,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public class TE_ItemProxySource extends TileEntity implements IInventory {
-	
-	private final UUID channel = UUID.randomUUID();
+
 	private ItemStack[] slots = new ItemStack[16];
-	
-	public UUID getChannel() {
-		return channel;
+	private String idCache = null;
+
+	/**
+	 * Builds a simple unique identifier for this TileEntity by appending
+	 * the x, y, and z coordinates in a string.
+	 *
+	 * @return unique identifier for this TileEntity
+	 */
+	public String getIdentifier() {
+		if(idCache == null) {
+			idCache = "" + super.xCoord + super.yCoord + super.zCoord;
+			return idCache;
+		} else {
+			return idCache;
+		}
 	}
 
 	@Override

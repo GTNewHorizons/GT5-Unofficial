@@ -1,7 +1,6 @@
 package common.tileentities;
 
 import java.util.HashSet;
-import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -11,45 +10,33 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TE_ItemProxyEndpoint extends TileEntity implements ISidedInventory {
-	
-	private UUID channel = null;
-	private int subChannel = -1;
+
+	private byte channel = -1;
 	private IInventory proxyInventory = null;
 	private int tickCounter = 0;
-	private ItemStack[] slots = new ItemStack[2];
-	
-	public void setChannel(UUID channel) {
+
+	public TE_ItemProxyEndpoint() {
+		channel = 0;
+	}
+
+	public void setChannel(byte channel) {
 		this.channel = channel;
 	}
-	
-	public void setSubChannel(int subChannel) {
-		this.subChannel = subChannel;
-	}
+
+	public int getChannel() { return channel; }
 	
 	@Override
 	public void updateEntity() {
 		if(tickCounter == 20) {
-			
-			if(slots[1] == null || !slots[1].getUnlocalizedName().equals("gt.integrated_circuit") || slots[1].getItemDamage() >= 16) {
-				setSubChannel(-1);
-			}
-			
-			if(slots[1] != null && slots[1].getUnlocalizedName().equals("gt.integrated_circuit") && slots[1].getItemDamage() < 16) {
-				setSubChannel(slots[1].getItemDamage());
-			}
-			
-			if(channel != null && subChannel != -1) {
-				TE_ItemProxySource source = searchSource(channel);
-				if(source != null) {
-					proxyInventory = source;		
-				}
+			if(channel != -1) {
+				proxyInventory = searchSource();
 			}
 			tickCounter = 0;				
 		}
 		tickCounter++;
 	}
 	
-	public TE_ItemProxySource searchSource(UUID channel) {
+	private TE_ItemProxySource searchSource() {
 		
 		final HashSet<TE_ItemProxySource> sources = new HashSet<>();
 		final HashSet<String> visited = new HashSet<>();
@@ -62,7 +49,7 @@ public class TE_ItemProxyEndpoint extends TileEntity implements ISidedInventory 
 			if(te instanceof TE_ItemProxyCable) {
 				final TE_ItemProxyCable cable = (TE_ItemProxyCable) te;
 				if(cable.isConnected(next.getOpposite())) {
-					searchSourceRecursive(sources, visited, next.getOpposite(), cable, channel);					
+					searchSourceRecursive(sources, visited, next.getOpposite(), cable);
 				}
 			}
 		}
@@ -76,30 +63,24 @@ public class TE_ItemProxyEndpoint extends TileEntity implements ISidedInventory 
 	}
 	
 	private void searchSourceRecursive(HashSet<TE_ItemProxySource> sources, HashSet<String> visited, 
-			ForgeDirection from, TE_ItemProxyCable nextTarget, UUID channel) {
+			ForgeDirection from, TE_ItemProxyCable nextTarget) {
 		
-		if(visited.contains(nextTarget.getIdentifier())) {
-			return;
-		} else {
+		if(!visited.contains(nextTarget.getIdentifier())) {
 			visited.add(nextTarget.getIdentifier());
-			
+
 			for(ForgeDirection next : ForgeDirection.VALID_DIRECTIONS) {
-				if(next == from || !nextTarget.isConnected(next)) {
-					continue;
-				}
-				final TileEntity te = super.getWorldObj().getTileEntity(
-						nextTarget.xCoord + next.offsetX, 
-						nextTarget.yCoord + next.offsetY, 
-						nextTarget.zCoord + next.offsetZ);
-				if(te instanceof TE_ItemProxyCable) {
-					final TE_ItemProxyCable cable = (TE_ItemProxyCable) te;
-					if(cable.isConnected(next.getOpposite())) {
-						searchSourceRecursive(sources, visited, next.getOpposite(), cable, channel);					
-					}
-				} else if (te instanceof TE_ItemProxySource) {
-					final TE_ItemProxySource source = (TE_ItemProxySource) te;
-					if(source.getChannel().equals(channel)) {
-						sources.add((TE_ItemProxySource) te);						
+				if(next != from) {
+					final TileEntity te = super.getWorldObj().getTileEntity(
+							nextTarget.xCoord + next.offsetX,
+							nextTarget.yCoord + next.offsetY,
+							nextTarget.zCoord + next.offsetZ);
+					if(te instanceof TE_ItemProxyCable) {
+						final TE_ItemProxyCable cable = (TE_ItemProxyCable) te;
+						if(cable.isConnected(next.getOpposite())) {
+							searchSourceRecursive(sources, visited, next.getOpposite(), cable);
+						}
+					} else if (te instanceof TE_ItemProxySource) {
+						sources.add((TE_ItemProxySource) te);
 					}
 				}
 			}
@@ -108,41 +89,36 @@ public class TE_ItemProxyEndpoint extends TileEntity implements ISidedInventory 
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return 1;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		if(slot == 0) {
-			return (proxyInventory != null) ? proxyInventory.getStackInSlot(subChannel) : null;
+		if(proxyInventory != null && slot == 0) {
+			return proxyInventory.getStackInSlot(channel);
 		} else {
-			return slots[slot];
+			return null;
 		}
 	}
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		if(slot == 0) {
-			return (proxyInventory != null) ? proxyInventory.decrStackSize(subChannel, amount) : null;	
+		if(proxyInventory != null && slot == 0) {
+			return proxyInventory.decrStackSize(channel, amount);
 		} else {
-			final ItemStack copy = slots[1].copy();
-			slots[1] = null;
-			super.markDirty();
-			return copy;
+			return null;
 		}
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
-		return (proxyInventory != null) ? proxyInventory.getStackInSlotOnClosing(subChannel) : null;
+		return (proxyInventory != null) ? proxyInventory.getStackInSlotOnClosing(channel) : null;
 	}
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack itemStack) {
-		if(slot == 0 && proxyInventory != null) {
-			proxyInventory.setInventorySlotContents(subChannel, itemStack);						
-		} else {
-			slots[slot] = itemStack;
+		if(proxyInventory != null && slot == 0) {
+			proxyInventory.setInventorySlotContents(channel, itemStack);
 		}
 	}
 
@@ -158,7 +134,7 @@ public class TE_ItemProxyEndpoint extends TileEntity implements ISidedInventory 
 
 	@Override
 	public int getInventoryStackLimit() {
-		return (proxyInventory != null) ? proxyInventory.getInventoryStackLimit() : 1;
+		return (proxyInventory != null) ? proxyInventory.getInventoryStackLimit() : 0;
 	}
 
 	@Override
@@ -178,17 +154,16 @@ public class TE_ItemProxyEndpoint extends TileEntity implements ISidedInventory 
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-		if(slot == 0 && proxyInventory != null) {
-			return proxyInventory.isItemValidForSlot(subChannel, itemStack);
+		if(proxyInventory != null && slot == 0) {
+			return proxyInventory.isItemValidForSlot(channel, itemStack);
 		} else {
-			return itemStack != null && itemStack.getUnlocalizedName().equals("gt.integrated_circuit");
+			return false;
 		}
 	}
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		final int[] as = {0};
-		return as;
+		return new int[]{0};
 	}
 	
 	@Override
@@ -198,7 +173,7 @@ public class TE_ItemProxyEndpoint extends TileEntity implements ISidedInventory 
 	
 	@Override
 	public boolean canExtractItem(int slot, ItemStack itemStack, int side) {
-		return (slot == 0) ? true : false;
+		return slot == 0;
 	}
 	
 }
