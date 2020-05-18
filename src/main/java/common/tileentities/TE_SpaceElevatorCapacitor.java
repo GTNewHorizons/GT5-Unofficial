@@ -5,7 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 public class TE_SpaceElevatorCapacitor extends TileEntity {
 
     private float chargeLevel = 0.0F;
-    private boolean isDamaged = false;
+    private boolean isDamaged = true;
 
     /**
      * Called by {@link GTMTE_SpaceElevator} while charging

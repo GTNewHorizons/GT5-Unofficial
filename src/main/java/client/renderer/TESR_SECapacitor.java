@@ -9,14 +9,12 @@ import net.minecraft.util.ResourceLocation;
 
 public class TESR_SECapacitor extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation capSide = new ResourceLocation(KekzCore.MODID, "textures/blocks/SpaceElevatorCapacitor_side_fullbase.png");
+    private static final ResourceLocation capSide = new ResourceLocation(KekzCore.MODID, "textures/blocks/SpaceElevatorCapacitor_side_renderbase.png");
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
         final Tessellator tessellator = Tessellator.instance;
         final TE_SpaceElevatorCapacitor teCap = (TE_SpaceElevatorCapacitor) te;
-        // Scale saturation, rounding up
-        final int sat = (int) Math.ceil(teCap.getChargeLevel() * 255);
         // Setup vertices
         final double fbr_x = x + 1;
         final double fbr_z = z + 1;
@@ -41,9 +39,12 @@ public class TESR_SECapacitor extends TileEntitySpecialRenderer {
         tessellator.startDrawingQuads();
         // Render the caps as red if there are maintenance issues
         if(teCap.isDamaged()) {
-            tessellator.setColorRGBA(255, 0, 0, 255);
+            final float wave = (float) Math.abs(Math.sin((te.getWorldObj().getTotalWorldTime() + partialTick) / 20.0D));
+            final int redSat = 64 + (int) Math.ceil(191 * wave);
+            tessellator.setColorRGBA(redSat, 0, 0, 255);
         } else {
-            tessellator.setColorRGBA(sat, sat, sat, 255);
+            final int sat = (int) Math.ceil(teCap.getChargeLevel() * 255);
+            tessellator.setColorRGBA(0, 0, sat, 255);
         }
         tessellator.setBrightness(255);
         // (DOWN and UP faces are not rendered as they will not ever be visible in the Space Elevator structure)
