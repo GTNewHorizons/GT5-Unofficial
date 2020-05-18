@@ -14,10 +14,9 @@ public class TESR_SECapacitor extends TileEntitySpecialRenderer {
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
         final Tessellator tessellator = Tessellator.instance;
-        // Clamp saturation to a minimum of 40% and scale, rounding up
-        final int sat = (int) Math.ceil(
-                255 * Math.max(((TE_SpaceElevatorCapacitor) te).getChargeLevel(), 0.4F)
-        );
+        final TE_SpaceElevatorCapacitor teCap = (TE_SpaceElevatorCapacitor) te;
+        // Scale saturation, rounding up
+        final int sat = (int) Math.ceil(teCap.getChargeLevel() * 255);
         // Setup vertices
         final double fbr_x = x + 1;
         final double fbr_z = z + 1;
@@ -40,7 +39,12 @@ public class TESR_SECapacitor extends TileEntitySpecialRenderer {
 
         // Prepare Tessellator
         tessellator.startDrawingQuads();
-        tessellator.setColorRGBA(sat, sat, sat, 255);
+        // Render the caps as red if there are maintenance issues
+        if(teCap.isDamaged()) {
+            tessellator.setColorRGBA(255, 0, 0, 255);
+        } else {
+            tessellator.setColorRGBA(sat, sat, sat, 255);
+        }
         tessellator.setBrightness(255);
         // (DOWN and UP faces are not rendered as they will not ever be visible in the Space Elevator structure)
         // NORTH
