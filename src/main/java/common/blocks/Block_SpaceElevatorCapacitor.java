@@ -1,13 +1,18 @@
 package common.blocks;
 
-import common.itemBlocks.IB_SpaceElevator;
+import common.itemBlocks.IB_SpaceElevatorCapacitor;
+import common.tileentities.TE_SpaceElevatorCapacitor;
 import cpw.mods.fml.common.registry.GameRegistry;
-import kekztech.KekzCore;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class Block_SpaceElevatorCapacitor extends BaseGTUpdateableBlock {
 
@@ -26,7 +31,7 @@ public class Block_SpaceElevatorCapacitor extends BaseGTUpdateableBlock {
         INSTANCE.setCreativeTab(CreativeTabs.tabMisc);
         INSTANCE.setHardness(5.0f);
         INSTANCE.setResistance(3.0f);
-        GameRegistry.registerBlock(INSTANCE, blockName);
+        GameRegistry.registerBlock(INSTANCE, IB_SpaceElevatorCapacitor.class, blockName);
 
         return INSTANCE;
     }
@@ -40,6 +45,32 @@ public class Block_SpaceElevatorCapacitor extends BaseGTUpdateableBlock {
     @Override
     public IIcon getIcon(int side, int meta) {
         return (side < 2) ? this.top : this.side;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, int p_149915_2_) {
+        return new TE_SpaceElevatorCapacitor();
+    }
+
+    @Override
+    public boolean hasTileEntity(int metadata) {
+        return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getRenderBlockPass() {
+        return 0;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+        return false;
     }
 
     @Override

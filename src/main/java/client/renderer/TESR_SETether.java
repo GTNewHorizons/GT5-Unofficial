@@ -1,7 +1,5 @@
 package client.renderer;
 
-import common.tileentities.TE_SpaceElevatorCapacitor;
-import common.tileentities.TE_SpaceElevatorTether;
 import kekztech.KekzCore;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
