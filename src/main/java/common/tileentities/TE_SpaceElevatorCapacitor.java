@@ -5,9 +5,10 @@ import net.minecraft.tileentity.TileEntity;
 public class TE_SpaceElevatorCapacitor extends TileEntity {
 
     private float chargeLevel = 0.0F;
+    private boolean isDamaged = false;
 
     /**
-     * Called by the space elevator controller while charging
+     * Called by {@link GTMTE_SpaceElevator} while charging
      * @param charge
      *              Current elevator charge
      * @param maxCharge
@@ -18,7 +19,7 @@ public class TE_SpaceElevatorCapacitor extends TileEntity {
     }
 
     /**
-     * Called by this block's renderer to calculate the block's colour saturation
+     * Called by {@link client.renderer.TESR_SECapacitor} to calculate the block's colour saturation
      * @return
      *          Charge level from 0.0F to 1.0F
      */
@@ -27,19 +28,27 @@ public class TE_SpaceElevatorCapacitor extends TileEntity {
     }
 
     /**
-     * Called by the space elevator in case of power loss
+     * Called by {@link GTMTE_SpaceElevator} in case of power loss
      */
     public void resetChargeLevel() {
         chargeLevel = 0.0F;
     }
 
-    long tickCounter = 0;
-    @Override
-    public void updateEntity() {
-        if(tickCounter == 20){
-            chargeLevel = Float.compare(chargeLevel, 0.0F) == 0 ? 1.0F : 0.0F;
-            tickCounter = 0;
-        }
-        tickCounter++;
+    /**
+     * Called by {@link GTMTE_SpaceElevator} in case of maintenance issues
+     * @param isDamaged
+     *            has maintenance issue
+     */
+    public void setIsDamaged(boolean isDamaged) {
+        this.isDamaged = isDamaged;
+    }
+
+    /**
+     * Called by {@link client.renderer.TESR_SECapacitor} to check whether the block should be rendered red
+     * @return
+     *          should be rendered red
+     */
+    public boolean isDamaged() {
+        return isDamaged;
     }
 }
