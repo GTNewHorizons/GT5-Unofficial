@@ -1,6 +1,7 @@
 package kekztech;
 
-import client.renderer.TetherRenderer;
+import client.renderer.TESR_SECapacitor;
+import client.renderer.TESR_SETether;
 import common.Blocks;
 import common.Recipes;
 import common.Researches;
@@ -76,7 +77,8 @@ public class KekzCore {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
 		// Register TESR
-		ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorTether.class, new TetherRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorTether.class, new TESR_SETether());
+		ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorCapacitor.class, new TESR_SECapacitor());
 
 		Researches.preInit();
 	}

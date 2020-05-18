@@ -12,14 +12,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class ConduitRenderer implements ISimpleBlockRenderingHandler {
 	
 	public static final int RID = RenderingRegistry.getNextAvailableRenderId();
-	private static final ConduitRenderer instance = new ConduitRenderer();
+	private static final ConduitRenderer INSTANCE = new ConduitRenderer();
 
 	private ConduitRenderer() {
 		
 	}
 	
 	public static ConduitRenderer getInstance() {
-		return instance;
+		return INSTANCE;
 	}
 
 	@Override
