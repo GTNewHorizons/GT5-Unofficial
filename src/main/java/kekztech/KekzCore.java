@@ -1,9 +1,11 @@
 package kekztech;
 
+import client.renderer.TetherRenderer;
 import common.Blocks;
 import common.Recipes;
 import common.Researches;
 import common.tileentities.*;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -67,12 +69,14 @@ public class KekzCore {
 		GameRegistry.registerTileEntity(TE_ItemProxyCable.class, "kekztech_itemproxycable_tile");
 		GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
 		GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
-		
 		GameRegistry.registerTileEntity(TE_ThaumiumReinforcedJar.class, "kekztech_thaumiumreinforcedjar");
 		GameRegistry.registerTileEntity(TE_IchorJar.class, "kekztech_ichorjar");
 		
 		// Register guis
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+
+		// Register TESR
+		ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorTether.class, new TetherRenderer());
 
 		Researches.preInit();
 	}

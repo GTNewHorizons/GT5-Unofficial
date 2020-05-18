@@ -2,7 +2,6 @@ package common.blocks;
 
 import common.itemBlocks.IB_ItemProxyCable;
 import common.tileentities.TE_ItemProxyCable;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,7 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import render.ConduitRenderer;
+import client.renderer.ConduitRenderer;
 
 public class Block_ItemProxyCable extends Block {
 	
@@ -57,10 +56,7 @@ public class Block_ItemProxyCable extends Block {
 
 	@Override
 	public int getRenderType() {
-		if (FMLCommonHandler.instance().getSide().isClient()) {
-			return ConduitRenderer.RID;
-		} else
-			return 0;
+		return ConduitRenderer.RID;
 	}
 
 	@Override

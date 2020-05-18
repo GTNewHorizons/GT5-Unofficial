@@ -35,6 +35,8 @@ public class Blocks {
 	public static Block lscLapotronicEnergyUnit;
 
 	public static Block spaceElevatorStructure;
+	public static Block spaceElevatorCapacitor;
+	public static Block spaceElevatorTether;
 	
 	public static void preInit() {
 		KekzCore.LOGGER.info("Registering blocks...");
@@ -95,6 +97,8 @@ public class Blocks {
 
 	private static void registerBlocks_SpaceElevator() {
 		spaceElevatorStructure = Block_SpaceElevator.registerBlock();
+		spaceElevatorCapacitor = Block_SpaceElevatorCapacitor.registerBlock();
+		spaceElevatorTether = Block_SpaceElevatorTether.registerBlock();
 	}
 
 }

@@ -29,7 +29,6 @@ public class Block_SpaceElevator extends BaseGTUpdateableBlock {
         final String blockName = "kekztech_spaceelevator_block";
         INSTANCE.setBlockName(blockName);
         INSTANCE.setCreativeTab(CreativeTabs.tabMisc);
-        INSTANCE.setBlockTextureName(KekzCore.MODID + ":" + "ControlRod");
         INSTANCE.setHardness(7.0f);
         INSTANCE.setResistance(10.0f);
         GameRegistry.registerBlock(INSTANCE, IB_SpaceElevator.class, blockName);
@@ -39,8 +38,8 @@ public class Block_SpaceElevator extends BaseGTUpdateableBlock {
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
-        baseTop = ir.registerIcon("kekztech:SpaceElevatorBase_side");
-        baseSide = ir.registerIcon("kekztech:SpaceElevatorBase_top");
+        baseTop = ir.registerIcon("kekztech:SpaceElevatorBase_top");
+        baseSide = ir.registerIcon("kekztech:SpaceElevatorBase_side");
         coilHolder = ir.registerIcon("kekztech:CoilHolder");
     }
 
@@ -53,9 +52,10 @@ public class Block_SpaceElevator extends BaseGTUpdateableBlock {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        switch(meta) {
-            case 0: return (side < 2) ? baseTop : baseSide;
-            default: return coilHolder;
+        if(meta == 0) {
+            return (side < 2) ? baseTop : baseSide;
+        } else {
+            return coilHolder;
         }
     }
 }
