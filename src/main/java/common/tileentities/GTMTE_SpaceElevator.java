@@ -1,7 +1,6 @@
 package common.tileentities;
 
 import common.Blocks;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -10,11 +9,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
@@ -23,14 +22,27 @@ import util.Vector3i;
 import util.Vector3ic;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
     private static final Block BASE_BLOCK = Blocks.spaceElevatorStructure;
+    private static final Block CAP_BLOCK = Blocks.spaceElevatorCapacitor;
+    private static final Block TETHER_BLOCK = Blocks.spaceElevatorTether;
     private static final int BASE_META = 0;
     private static final int COIL_HOLDER_META = 1;
+    private final static String glassNameBorosilicate = "BW_GlasBlocks";
     private static final int HATCH_OVERLAY_ID = 16;
 
+    // Scan positions for capacitor banks
+    // Start with top left bank, clockwise
+    // Start with top middle pillar within bank, clockwise, middle last
+    private static final int[] bankOffsetsX = {-7, 5, 5, -7};
+    private static final int[] bankOffsetsY = {-7, -7, 5, 5};
+    private static final int[] scanOffsetsX = {1, 2, 1, 0, 1};
+    private static final int[] scanOffsetsY = {0, 1, 2, 1, 1};
+
+    private final HashSet<TE_SpaceElevatorCapacitor> capacitors = new HashSet<>();
     private long lastLaunchEUCost = 0;
 
     public GTMTE_SpaceElevator(int aID, String aName, String aNameRegional) {
@@ -101,7 +113,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
-        final Vector3i offset = new Vector3i();
+        final Vector3i offset = new Vector3i(0, 0, 0);
         // either direction on y-axis
         if (forgeDirection.y() == -1) {
             offset.x = x;
@@ -131,12 +143,12 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
         // Base floor
         for(int X = -7; X <= 7; X++){
-            for(int Z = -7; Z <= 7; Z++){
-                if(X == 0 && Z == 0){
+            for(int Y = -7; Y <= 7; Y++){
+                if(X == 0 && Y == 0){
                     continue; // Skip controller
                 }
 
-                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, 0, Z);
+                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
                 final IGregTechTileEntity currentTE =
                         thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 
@@ -156,9 +168,43 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
                 }
             }
         }
-        KekzCore.LOGGER.info("Space Elevator Base accepted");
+        System.out.println("");
         // Capacitor banks
-
+        for(int bank = 0; bank < 4; bank++) {
+            for(int Z = 1; Z <= 5; Z++) {
+                for(int scan = 0; scan < 5; scan++){
+                    final Vector3ic offset = rotateOffsetVector(forgeDirection,
+                            bankOffsetsX[bank] + scanOffsetsX[scan],
+                            bankOffsetsY[bank] + scanOffsetsY[scan],
+                            Z);
+                    if(Z == 1 || Z == 5) {
+                        // Check for casings
+                        if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == BASE_BLOCK
+                                && thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == BASE_META) {
+                            minCasingAmount--;
+                        } else {
+                            formationChecklist = false;
+                        }
+                    } else {
+                        if(scan == 4){
+                            // Check for capacitors
+                            final TileEntity te = thisController.getTileEntityOffset(offset.x(), offset.y(), offset.z());
+                            if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CAP_BLOCK
+                                    &&  te instanceof  TE_SpaceElevatorCapacitor) {
+                                capacitors.add((TE_SpaceElevatorCapacitor) te);
+                            } else {
+                                formationChecklist = false;
+                            }
+                        } else {
+                            // Check for Glass
+                            if(!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)) {
+                                formationChecklist = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         // Anchor
 
         // Coil holders
