@@ -55,6 +55,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	private BigInteger capacity = BigInteger.ZERO;
 	private BigInteger stored = BigInteger.ZERO;
 	private BigInteger passiveDischargeAmount = BigInteger.ZERO;
+	private BigInteger intputLastTick = BigInteger.ZERO;
+	private BigInteger outputLastTick = BigInteger.ZERO;
 	private int repairStatusCache = 0;
 
 	public GTMTE_LapotronicSuperCapacitor(int aID, String aName, String aNameRegional) {
@@ -372,6 +374,10 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public boolean onRunningTick(ItemStack stack){
+		// Reset I/O cache
+		intputLastTick = BigInteger.ZERO;
+		outputLastTick = BigInteger.ZERO;
+
 		// Draw energy from GT hatches
 		for(GT_MetaTileEntity_Hatch_Energy eHatch : super.mEnergyHatches) {
 			if(eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
@@ -381,6 +387,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
+				intputLastTick = intputLastTick.add(BigInteger.valueOf(power));
 			}
 		}
 		// Output energy to GT hatches
@@ -392,6 +399,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
 				stored = stored.subtract(BigInteger.valueOf(power));
+				outputLastTick = outputLastTick.add(BigInteger.valueOf(power));
 			}
 		}
 		// Draw energy from TT hatches
@@ -403,6 +411,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
+				intputLastTick = intputLastTick.add(BigInteger.valueOf(power));
 			}
 		}
 		// Output energy to TT hatches
@@ -414,6 +423,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
 				stored = stored.subtract(BigInteger.valueOf(power));
+				outputLastTick = outputLastTick.add(BigInteger.valueOf(power));
 			}
 		}
 		// Draw energy from TT Laser hatches
@@ -426,6 +436,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
+				intputLastTick = intputLastTick.add(BigInteger.valueOf(power));
 			}
 		}
 		// Output energy to TT Laser hatches
@@ -438,6 +449,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
 				stored = stored.subtract(BigInteger.valueOf(power));
+				outputLastTick = outputLastTick.add(BigInteger.valueOf(power));
 			}
 		}
 		// Loose some energy
@@ -493,6 +505,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		ll.add("Used Capacity: " + NumberFormat.getNumberInstance().format(stored) + "EU");
 		ll.add("Total Capacity: " + NumberFormat.getNumberInstance().format(capacity) + "EU");
 		ll.add("Passive Loss: " + NumberFormat.getNumberInstance().format(passiveDischargeAmount) + "EU/t");
+		ll.add("EU IN: " + NumberFormat.getNumberInstance().format(intputLastTick) + "EU/t");
+		ll.add("EU OUT: " + NumberFormat.getNumberInstance().format(outputLastTick) + "EU/t");
 		ll.add("Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
 				? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
 				: EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
