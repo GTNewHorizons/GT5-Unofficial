@@ -63,6 +63,8 @@ public class UniversalTeleportType implements ITeleportType {
 
     @Override
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket) {
+        if (ridingAutoRocket)
+            return;
         if ((player != null) && (GCPlayerStats.get(player).teleportCooldown <= 0)) {
             if (player.capabilities.isFlying) {
                 player.capabilities.isFlying = false;
