@@ -1,9 +1,9 @@
 package kekztech;
 
-import container.Container_ItemProxyEndpoint;
-import container.Container_ItemProxySource;
-import container.Gui_ItemProxyEndpoint;
-import container.Gui_ItemProxySource;
+import client.gui.Gui_ItemProxyEndpoint;
+import client.gui.Gui_ItemProxySource;
+import common.container.Container_ItemProxyEndpoint;
+import common.container.Container_ItemProxySource;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
