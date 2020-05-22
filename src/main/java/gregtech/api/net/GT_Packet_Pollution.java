@@ -1,10 +1,10 @@
 package gregtech.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import gregtech.common.GT_Pollution;
 import net.minecraft.world.IBlockAccess;
+
+import java.nio.ByteBuffer;
 
 public class GT_Packet_Pollution extends GT_Packet {
     private int mPollution;
@@ -20,9 +20,10 @@ public class GT_Packet_Pollution extends GT_Packet {
 
     @Override
     public byte[] encode() {
-        ByteArrayDataOutput tOut = ByteStreams.newDataOutput(4);
-        tOut.writeInt(mPollution);
-        return tOut.toByteArray();
+        return ByteBuffer
+                .allocate(4)
+                .putInt(mPollution)
+                .array();
     }
 
     @Override

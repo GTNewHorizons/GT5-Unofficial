@@ -262,11 +262,43 @@ public class GT_Pollution {
 		return dataMap.get(ch.getChunkCoordIntPair())[GTPOLLUTION];
 	}
 
-	public static int getPollution(ChunkCoordIntPair aCh, int aDim){
-		if(!GT_Mod.gregtechproxy.mPollution)return 0;
-		HashMap<ChunkCoordIntPair,int[]> dataMap=dimensionWiseChunkData.get(aDim);
-		if(dataMap==null || dataMap.get(aCh)==null) return 0;
+	public static int getPollution(ChunkCoordIntPair aCh, int aDim) {
+		if (!GT_Mod.gregtechproxy.mPollution)
+			return 0;
+		HashMap<ChunkCoordIntPair, int[]> dataMap = dimensionWiseChunkData.get(aDim);
+		if (dataMap == null || dataMap.get(aCh) == null)
+			return 0;
 		return dataMap.get(aCh)[GTPOLLUTION];
+	}
+
+	public static int getLocalPollutionForRendering(ChunkCoordIntPair aCh, int aDim, double posX, double posZ) {
+		final int SOUTHEAST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos + 1,aCh.chunkXPos + 1), aDim);
+		final int SOUTH = getPollution(new ChunkCoordIntPair(aCh.chunkXPos,aCh.chunkXPos + 1), aDim);
+		final int SOUTHWEST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos - 1,aCh.chunkXPos + 1), aDim);
+		final int WEST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos - 1,aCh.chunkXPos), aDim);
+		final int NORTHWEST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos - 1,aCh.chunkXPos - 1), aDim);
+		final int NORTH = getPollution(new ChunkCoordIntPair(aCh.chunkXPos,aCh.chunkXPos - 1), aDim);
+		final int NORTHEAST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos + 1,aCh.chunkXPos - 1), aDim);
+		final int EAST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos + 1,aCh.chunkXPos), aDim);
+		final int MIDDLE = getPollution(aCh, aDim);
+		int cX = (int) (posX % 15);
+		int cZ = (int) (posZ % 15);
+		long pollution = (
+					 SOUTH * (15-cX)
+				   + EAST * (15-cZ)
+				   + NORTH * cX
+				   + WEST * cZ
+		);
+		pollution += MIDDLE * Math.max(cX - 7 + cZ - 7, 0);
+		pollution += (
+				     SOUTHEAST * (15 - cX + 15 - cZ)
+				   + SOUTHWEST * (15 - cX + cZ)
+				   + NORTHWEST * (cX + cZ)
+				   + NORTHEAST * (cX + 15-cZ)
+		);
+		pollution /= 9;
+		pollution /= 15;
+		return (int) pollution;
 	}
 	
 	//Add compatibility with old code

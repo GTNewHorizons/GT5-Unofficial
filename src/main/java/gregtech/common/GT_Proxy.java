@@ -1491,9 +1491,17 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 }
             }
             if (aEvent.player.ticksExisted % 10 == 0) {
-        	int tPollution = 0;
-        	tPollution = GT_Pollution.getPollution(new ChunkCoordIntPair(aEvent.player.chunkCoordX,aEvent.player.chunkCoordZ), aEvent.player.dimension);
-        	if(aEvent.player instanceof EntityPlayerMP)GT_Values.NW.sendToPlayer(new GT_Packet_Pollution(tPollution), (EntityPlayerMP) aEvent.player);
+                int tPollution = 0;
+
+                tPollution = GT_Pollution.getLocalPollutionForRendering(
+                        new ChunkCoordIntPair(aEvent.player.chunkCoordX, aEvent.player.chunkCoordZ),
+                        aEvent.player.dimension,
+                        aEvent.player.posX,
+                        aEvent.player.posZ
+                );
+
+                if (aEvent.player instanceof EntityPlayerMP)
+                    GT_Values.NW.sendToPlayer(new GT_Packet_Pollution(tPollution), (EntityPlayerMP) aEvent.player);
             }
         }
     }
