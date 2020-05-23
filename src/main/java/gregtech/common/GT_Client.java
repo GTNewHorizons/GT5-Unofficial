@@ -34,8 +34,6 @@ import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.opengl.GL11;
 
@@ -246,54 +244,6 @@ public class GT_Client extends GT_Proxy
 
     private static void drawGrid(DrawBlockHighlightEvent aEvent) {
         drawGrid(aEvent, false);
-    }
-
-    //TODO less bad
-    @SubscribeEvent
-    public void manipulateDensity(EntityViewRenderEvent.FogDensity event) {
-        if (GT_Pollution.mPlayerPollution > (GT_Mod.gregtechproxy.mPollutionSmogLimit)) {
-            event.density = (0.15f * (Math.min(GT_Pollution.mPlayerPollution / ((float) GT_Mod.gregtechproxy.mPollutionSourRainLimit), 1.0f))) + 0.1f;
-            event.setCanceled(true);
-        }
-    }
-
-    private static float curveActivateColor(float max) {
-        double player = GT_Pollution.mPlayerPollution;
-        double limit = GT_Mod.gregtechproxy.mPollutionSmogLimit;
-        double current = player/limit * max;
-        return (float) Math.min(current, max) / 255f;
-    }
-
-    @SubscribeEvent
-    public void manipulateColor(EntityViewRenderEvent.FogColors event) {
-        if (!(event.entity instanceof EntityPlayer))
-            return;
-        if (GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit) {
-            event.red = curveActivateColor(140f);
-            event.green = curveActivateColor(80f);
-            event.blue = curveActivateColor(40f);
-        }
-    }
-
-    @SubscribeEvent
-    public void manipulateGrassColor(BiomeEvent.GetGrassColor event) {
-    	if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit) {
-            event.newColor = 0xD2691E;
-    	}
-    }
-
-    @SubscribeEvent
-    public void manipulateWaterColor(BiomeEvent.GetWaterColor event) {
-    	if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit) {
-            event.newColor = 0x556B2F;
-    	}
-    }
-
-    @SubscribeEvent
-    public void manipulateFoliageColor(BiomeEvent.GetFoliageColor event) {
-    	if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit) {
-            event.newColor = 0xCD853F;
-    	}
     }
 
     public boolean isServerSide() {

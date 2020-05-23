@@ -30,6 +30,7 @@ import gregtech.common.gui.GT_GUIContainerVolumetricFlask;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.armor.ModularArmor_Item;
 import gregtech.common.items.armor.gui.*;
+import gregtech.common.render.GT_PollutionRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -226,6 +227,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.ORE_GEN_BUS.register(this);
         FMLCommonHandler.instance().bus().register(this);
+        new GT_PollutionRenderer();
         GregTech_API.sThaumcraftCompat = (IThaumcraftCompat) GT_Utility.callConstructor("gregtech.common.GT_ThaumcraftCompat", 0, null, GT_Values.D1,
                 new Object[0]);
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
@@ -1333,6 +1335,19 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @SubscribeEvent
     public void onPlayerTickEventServer(TickEvent.PlayerTickEvent aEvent) {
+        if ((aEvent.side.isServer()) && (aEvent.phase == TickEvent.Phase.START) && (!aEvent.player.isDead)) {
+            int tPollution = 0;
+
+            tPollution = GT_Pollution.getLocalPollutionForRendering(
+                    new ChunkCoordIntPair(aEvent.player.chunkCoordX, aEvent.player.chunkCoordZ),
+                    aEvent.player.dimension,
+                    aEvent.player.posX,
+                    aEvent.player.posZ
+            );
+
+            if (aEvent.player instanceof EntityPlayerMP)
+                GT_Values.NW.sendToPlayer(new GT_Packet_Pollution(tPollution), (EntityPlayerMP) aEvent.player);
+        }
         if ((aEvent.side.isServer()) && (aEvent.phase == TickEvent.Phase.END) && (!aEvent.player.isDead)) {
             if ((aEvent.player.ticksExisted % 200 == 0) && (aEvent.player.capabilities.allowEdit) && (!aEvent.player.capabilities.isCreativeMode)
                     && (this.mSurvivalIntoAdventure)) {
@@ -1489,19 +1504,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 if (tHungerEffect) {
                     aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
                 }
-            }
-            if (aEvent.player.ticksExisted % 10 == 0) {
-                int tPollution = 0;
-
-                tPollution = GT_Pollution.getLocalPollutionForRendering(
-                        new ChunkCoordIntPair(aEvent.player.chunkCoordX, aEvent.player.chunkCoordZ),
-                        aEvent.player.dimension,
-                        aEvent.player.posX,
-                        aEvent.player.posZ
-                );
-
-                if (aEvent.player instanceof EntityPlayerMP)
-                    GT_Values.NW.sendToPlayer(new GT_Packet_Pollution(tPollution), (EntityPlayerMP) aEvent.player);
             }
         }
     }

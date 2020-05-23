@@ -272,29 +272,30 @@ public class GT_Pollution {
 	}
 
 	public static int getLocalPollutionForRendering(ChunkCoordIntPair aCh, int aDim, double posX, double posZ) {
-		final int SOUTHEAST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos + 1,aCh.chunkXPos + 1), aDim);
-		final int SOUTH = getPollution(new ChunkCoordIntPair(aCh.chunkXPos,aCh.chunkXPos + 1), aDim);
-		final int SOUTHWEST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos - 1,aCh.chunkXPos + 1), aDim);
-		final int WEST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos - 1,aCh.chunkXPos), aDim);
-		final int NORTHWEST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos - 1,aCh.chunkXPos - 1), aDim);
-		final int NORTH = getPollution(new ChunkCoordIntPair(aCh.chunkXPos,aCh.chunkXPos - 1), aDim);
-		final int NORTHEAST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos + 1,aCh.chunkXPos - 1), aDim);
-		final int EAST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos + 1,aCh.chunkXPos), aDim);
+		final int SOUTHEAST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos + 1,aCh.chunkZPos + 1), aDim);
+		final int SOUTH = getPollution(new ChunkCoordIntPair(aCh.chunkXPos,aCh.chunkZPos + 1), aDim);
+		final int SOUTHWEST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos - 1,aCh.chunkZPos + 1), aDim);
+		final int WEST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos - 1,aCh.chunkZPos), aDim);
+		final int NORTHWEST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos - 1,aCh.chunkZPos - 1), aDim);
+		final int NORTH = getPollution(new ChunkCoordIntPair(aCh.chunkXPos,aCh.chunkZPos - 1), aDim);
+		final int NORTHEAST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos + 1,aCh.chunkZPos - 1), aDim);
+		final int EAST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos + 1,aCh.chunkZPos), aDim);
 		final int MIDDLE = getPollution(aCh, aDim);
-		int cX = (int) (posX % 15);
-		int cZ = (int) (posZ % 15);
+
+		int cX = (int) Math.abs(posX % 15);
+		int cZ = (int) Math.abs(posZ % 15);
 		long pollution = (
-					 SOUTH * (15-cX)
-				   + EAST * (15-cZ)
-				   + NORTH * cX
-				   + WEST * cZ
-		);
-		pollution += MIDDLE * Math.max(cX - 7 + cZ - 7, 0);
-		pollution += (
-				     SOUTHEAST * (15 - cX + 15 - cZ)
-				   + SOUTHWEST * (15 - cX + cZ)
-				   + NORTHWEST * (cX + cZ)
-				   + NORTHEAST * (cX + 15-cZ)
+					 SOUTH * (15 - cZ)
+				   + EAST * (15 - cX)
+				   + NORTH * cZ
+				   + WEST * cX
+				)
+				+ MIDDLE * 15 - Math.abs(cX - 7 + cZ - 7)
+				+ (
+					 (SOUTHEAST * (15 - cX + 15 - cZ) / 2)
+				   + (SOUTHWEST * (cX + 15 - cZ) / 2)
+				   + (NORTHWEST * (cX + cZ) / 2)
+				   + (NORTHEAST * (15 - cX + cZ) / 2)
 		);
 		pollution /= 9;
 		pollution /= 15;
