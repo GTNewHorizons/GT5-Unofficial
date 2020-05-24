@@ -11,7 +11,6 @@ import net.minecraft.util.ChunkCoordinates;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -50,20 +49,17 @@ public final class GT_Command extends CommandBase {
     @Override
     public List addTabCompletionOptions(ICommandSender sender, String[] ss) {
         List<String> l = new ArrayList<>();
-        Stream<String> keywords = Arrays.stream(new String[]{"toggle", "chunks", "pollution"});
         String test = ss.length == 0 ? "" : ss[0].trim();
-        if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || keywords.anyMatch(s -> s.startsWith(test)))) {
-            keywords.forEach(s -> {
-                if (test.isEmpty() || s.startsWith(test))
-                    l.add(s);
-            });
+        if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || Stream.of("toggle", "chunks", "pollution").anyMatch(s -> s.startsWith(test)))) {
+            Stream.of("toggle", "chunks", "pollution")
+                    .filter(s -> test.isEmpty() || s.startsWith(test))
+                    .forEach(l::add);
         } else if (test.equals("toggle")) {
-            String test1 = ss.length == 1 ? "" : ss[1].trim();
-            Arrays.stream(new String[]{"D1", "D2", "debugCleanroom", "debugDriller", "debugBlockPump", "debugBlockMiner", "debugWorldGen", "debugEntityCramming",
-                                       "debugOrevein", "debugSmallOres", "debugStones", "debugChunkloaders"}).forEach(s -> {
-                if (test1.isEmpty() || s.startsWith(test1))
-                    l.add(s);
-            });
+            String test1 = ss[1].trim();
+            Stream.of("D1", "D2", "debugCleanroom", "debugDriller", "debugBlockPump", "debugBlockMiner", "debugWorldGen", "debugEntityCramming",
+                                       "debugOrevein", "debugSmallOres", "debugStones", "debugChunkloaders")
+                    .filter(s -> test1.isEmpty() || s.startsWith(test1))
+                    .forEach(l::add);
         }
         return l;
     }
@@ -99,7 +95,7 @@ public final class GT_Command extends CommandBase {
                 break;
             case "pollution": {
                 ChunkCoordinates coordinates = sender.getPlayerCoordinates();
-                int amount = (strings.length < 2) ? GT_Mod.gregtechproxy.mPollutionSmogLimit : Integer.parseInt(strings[2]);
+                int amount = (strings.length < 2) ? GT_Mod.gregtechproxy.mPollutionSmogLimit : Integer.parseInt(strings[1]);
                 GT_Pollution.addPollution(sender
                                 .getEntityWorld()
                                 .getChunkFromBlockCoords(

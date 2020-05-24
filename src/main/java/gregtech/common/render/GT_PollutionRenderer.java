@@ -24,8 +24,15 @@ public class GT_PollutionRenderer {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void manipulateDensity(EntityViewRenderEvent.FogDensity event) {
-        event.density = Math.max(event.density, (float) (getCurrentPollutionRenderRatio() * (0.15D * getCurrentSourRainRenderRatio() + 0.1D)));
-        event.setCanceled(true);
+        double curr = getCurrentPollutionRenderRatio();
+        if (event.density != 0.1f || curr > 0D) {
+            float newDensity =  (float) (curr * (0.15D * getCurrentSourRainRenderRatio() + 0.1D));
+            if (event.density != 0.1f)
+                event.density = Math.max(event.density, newDensity);
+            else
+                event.density = newDensity;
+            event.setCanceled(true);
+        }
     }
 
     private static float curveActivateColor(float max) {
