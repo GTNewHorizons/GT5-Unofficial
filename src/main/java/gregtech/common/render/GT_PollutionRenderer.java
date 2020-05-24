@@ -24,7 +24,7 @@ public class GT_PollutionRenderer {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void manipulateDensity(EntityViewRenderEvent.FogDensity event) {
-        event.density = (float) (getCurrentPollutionRenderRatio() * (0.15D * getCurrentSourRainRenderRatio() + 0.1D));
+        event.density = Math.max(event.density, (float) (getCurrentPollutionRenderRatio() * (0.15D * getCurrentSourRainRenderRatio() + 0.1D)));
         event.setCanceled(true);
     }
 

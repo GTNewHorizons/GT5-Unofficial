@@ -24,10 +24,10 @@ public final class GT_Command extends CommandBase {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "Usage: gt <subcommand>. Valid subcommands are: toggle, chunks.";
+        return "Usage: gt <subcommand>. Valid subcommands are: toggle, chunks, pollution.";
     }
     private void printHelp(ICommandSender sender) {
-        sender.addChatMessage(new ChatComponentText("Usage: gt <toggle|chunks>"));
+        sender.addChatMessage(new ChatComponentText("Usage: gt <toggle|chunks|pollution>"));
         sender.addChatMessage(new ChatComponentText("\"toggle D1\" - toggles general.Debug (D1)"));
         sender.addChatMessage(new ChatComponentText("\"toggle D2\" - toggles general.Debug2 (D2)"));
         sender.addChatMessage(new ChatComponentText("\"toggle debugCleanroom\" - toggles cleanroom debug log"));
@@ -41,12 +41,16 @@ public final class GT_Command extends CommandBase {
         sender.addChatMessage(new ChatComponentText("\"toggle debugStones\" - toggles worldgen stones debug"));
         sender.addChatMessage(new ChatComponentText("\"toggle debugChunkloaders\" - toggles chunkloaders debug"));
         sender.addChatMessage(new ChatComponentText("\"chunks\" - print a list of the force loaded chunks"));
+        sender.addChatMessage(new ChatComponentText(
+                "\"pollution <amount>\" - adds the <amount> of the pollution to the current chunk, " +
+                "\n if <amount> isnt specified, will add" + GT_Mod.gregtechproxy.mPollutionSmogLimit + "gibbl."
+                ));
     }
 
     @Override
     public List addTabCompletionOptions(ICommandSender sender, String[] ss) {
         List<String> l = new ArrayList<>();
-        Stream<String> keywords = Arrays.stream(new String[]{"toggle", "chunks"});
+        Stream<String> keywords = Arrays.stream(new String[]{"toggle", "chunks", "pollution"});
         String test = ss.length == 0 ? "" : ss[0].trim();
         if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || keywords.anyMatch(s -> s.startsWith(test)))) {
             keywords.forEach(s -> {
@@ -93,7 +97,7 @@ public final class GT_Command extends CommandBase {
                 GT_ChunkManager.printTickets();
                 sender.addChatMessage(new ChatComponentText("Forced chunks logged to GregTech.log"));
                 break;
-            case "pollution":{
+            case "pollution": {
                 ChunkCoordinates coordinates = sender.getPlayerCoordinates();
                 int amount = (strings.length < 2) ? GT_Mod.gregtechproxy.mPollutionSmogLimit : Integer.parseInt(strings[2]);
                 GT_Pollution.addPollution(sender
@@ -104,8 +108,8 @@ public final class GT_Command extends CommandBase {
                                 ),
                         amount
                 );
+                break;
             }
-
             default:
                 printHelp(sender);
         }
