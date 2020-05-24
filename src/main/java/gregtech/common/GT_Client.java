@@ -55,7 +55,7 @@ public class GT_Client extends GT_Proxy
         });
     }
 
-    private final HashSet mCapeList = new HashSet();
+    private final HashSet<String> mCapeList = new HashSet<>();
     private final GT_CapeRenderer mCapeRenderer;
     private final List mPosR;
     private final List mPosG;
@@ -127,6 +127,7 @@ public class GT_Client extends GT_Proxy
         mMoltenNegB = Arrays.asList(new Materials[]{
                 Materials.InfusedEntropy
         });
+        new GT_PollutionRenderer();
     }
 
 

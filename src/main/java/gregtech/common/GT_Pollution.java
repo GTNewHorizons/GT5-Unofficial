@@ -16,6 +16,7 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -284,22 +285,30 @@ public class GT_Pollution {
 
 		int cX = (int) Math.abs(posX % 15);
 		int cZ = (int) Math.abs(posZ % 15);
-		long pollution = (
-					 SOUTH * (15 - cZ)
-				   + EAST * (15 - cX)
-				   + NORTH * cZ
-				   + WEST * cX
-				)
-				+ MIDDLE * 15 - Math.abs(cX - 7 + cZ - 7)
-				+ (
-					 (SOUTHEAST * (15 - cX + 15 - cZ) / 2)
-				   + (SOUTHWEST * (cX + 15 - cZ) / 2)
-				   + (NORTHWEST * (cX + cZ) / 2)
-				   + (NORTHEAST * (15 - cX + cZ) / 2)
-		);
-		pollution /= 9;
-		pollution /= 15;
-		return (int) pollution;
+
+		//We are using big ints here cause longs would overflow at a point!
+		BigInteger S = new BigInteger(""+ (SOUTH * (15 - cZ)));
+		BigInteger E = new BigInteger(""+ (EAST * (15 - cX)));
+		BigInteger N = new BigInteger(""+ (NORTH * cZ));
+		BigInteger W = new BigInteger(""+ (WEST * cX));
+		BigInteger M = new BigInteger(""+ (MIDDLE * 15 - Math.abs(cX - 7 + cZ - 7)));
+		BigInteger SE = new BigInteger(""+ (SOUTHEAST * (15 - cX + 15 - cZ) / 2));
+		BigInteger NE = new BigInteger(""+ (NORTHEAST * (15 - cX + cZ) / 2));
+		BigInteger NW = new BigInteger(""+ (NORTHWEST * (cX + cZ) / 2));
+		BigInteger SW = new BigInteger(""+ (SOUTHWEST * (cX + 15 - cZ) / 2));
+		return Integer.parseInt(
+				S
+				.add(E)
+				.add(N)
+				.add(W)
+				.add(M)
+				.add(SE)
+				.add(NE)
+				.add(NW)
+				.add(SW)
+				.divide(new BigInteger("9"))
+				.divide(new BigInteger("15"))
+				.toString());
 	}
 	
 	//Add compatibility with old code

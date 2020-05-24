@@ -5,6 +5,7 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.common.GT_Pollution;
 import net.minecraft.client.Minecraft;
@@ -13,7 +14,9 @@ import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 
+@SideOnly(Side.CLIENT)
 public class GT_PollutionRenderer {
+
     public GT_PollutionRenderer() {
         MinecraftForge.EVENT_BUS.register(this);
         FMLCommonHandler.instance().bus().register(this);
@@ -21,10 +24,8 @@ public class GT_PollutionRenderer {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void manipulateDensity(EntityViewRenderEvent.FogDensity event) {
-        if (GT_Pollution.mPlayerPollution > (GT_Mod.gregtechproxy.mPollutionSmogLimit)) {
-            event.density = (0.15f * (Math.min(GT_Pollution.mPlayerPollution / ((float) GT_Mod.gregtechproxy.mPollutionSourRainLimit), 1.0f))) + 0.1f;
-            event.setCanceled(true);
-        }
+        event.density = (float) (getCurrentPollutionRenderRatio() * (0.15D * getCurrentSourRainRenderRatio() + 0.1D));
+        event.setCanceled(true);
     }
 
     private static float curveActivateColor(float max) {
@@ -37,6 +38,12 @@ public class GT_PollutionRenderer {
         event.red = curveActivateColor(140f);
         event.green = curveActivateColor(80f);
         event.blue = curveActivateColor(40f);
+    }
+
+    private static double getCurrentSourRainRenderRatio() {
+        double player = GT_Pollution.mPlayerPollution;
+        double limit = GT_Mod.gregtechproxy.mPollutionSourRainLimit;
+        return Math.min(1D, Math.max(player/limit, 0D));
     }
 
     private static double getCurrentPollutionRenderRatio() {
@@ -85,8 +92,11 @@ public class GT_PollutionRenderer {
             Minecraft mc = Minecraft.getMinecraft();
             EntityClientPlayerMP player = mc.thePlayer;
             double x = player.posX, z = player.posZ;
-            double renderDistanceBlocks = mc.gameSettings.renderDistanceChunks * 16D;
 
+            //We want to overshoot here to really trigger new render, even on the farest away chunks!
+            double renderDistanceBlocks = (mc.gameSettings.renderDistanceChunks + 2) * 16D;
+
+            //May be a bit crude, but should do the job on *every* height.
             player.worldObj.markBlockRangeForRenderUpdate((int) (x - renderDistanceBlocks), 0, (int) (z - renderDistanceBlocks),
                     (int) (x + renderDistanceBlocks), 256, (int) (z + renderDistanceBlocks));
         }
