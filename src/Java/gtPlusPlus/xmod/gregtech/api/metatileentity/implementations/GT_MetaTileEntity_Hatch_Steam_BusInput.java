@@ -24,7 +24,8 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
 		super(aID, aName, aNameRegional, aTier, getSlots(aTier), new String[]{
 				"Item Input for Steam Multiblocks",
 				"Shift + right click with screwdriver to toggle automatic item shuffling",
-				"Capacity: 4 stacks"});
+				"Capacity: 4 stacks",
+				"Does not work with non-steam multiblocks"});
 	}
 
 	public GT_MetaTileEntity_Hatch_Steam_BusInput(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
