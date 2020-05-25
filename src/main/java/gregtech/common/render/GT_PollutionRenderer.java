@@ -35,16 +35,23 @@ public class GT_PollutionRenderer {
         }
     }
 
-    private static float curveActivateColor(float max) {
-        double current = getCurrentPollutionRenderRatio() * max;
-        return (float) Math.min(current, max) / 255f;
-    }
-
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void manipulateColor(EntityViewRenderEvent.FogColors event) {
-        event.red = curveActivateColor(140f);
-        event.green = curveActivateColor(80f);
-        event.blue = curveActivateColor(40f);
+        float[] nucolor = curveColorArray(
+                new float[]{
+                        event.red,
+                        event.green,
+                        event.blue
+                },
+                new float[]{
+                        0.546875f,
+                        0.3125f,
+                        0.15625f
+                }
+        );
+        event.red = nucolor[0];
+        event.green = nucolor[1];
+        event.blue = nucolor[2];
     }
 
     private static double getCurrentSourRainRenderRatio() {
@@ -59,15 +66,34 @@ public class GT_PollutionRenderer {
         return Math.min(1D, Math.max(player/limit, 0D));
     }
 
-    private static int curveIntegerColor(int originalColor, int newColor) {
-        short[] originalColorsSplit = splitColorToRBGArray(originalColor);
-        short[] newColorsSplit = splitColorToRBGArray(newColor);
+    private static short[] curveColorArray(short[] originalColorsSplit, short[] newColorsSplit){
         double y = getCurrentPollutionRenderRatio();
-        short[] color = {
-                (short) ((1D-y) * originalColorsSplit[0] + y * newColorsSplit[0]),
-                (short) ((1D-y) * originalColorsSplit[1] + y * newColorsSplit[1]),
-                (short) ((1D-y) * originalColorsSplit[2] + y * newColorsSplit[2])
+        return new short[] {
+                (short) ((1D-y) * (double) originalColorsSplit[0] + y * (double) newColorsSplit[0]),
+                (short) ((1D-y) * (double) originalColorsSplit[1] + y * (double) newColorsSplit[1]),
+                (short) ((1D-y) * (double) originalColorsSplit[2] + y * (double) newColorsSplit[2])
         };
+    }
+
+    private static float[] curveColorArray(float[] originalColorsSplit, float[] newColorsSplit){
+        double y = getCurrentPollutionRenderRatio();
+        return new float[] {
+                (float) ((1D-y) * (double) originalColorsSplit[0] + y * (double) newColorsSplit[0]),
+                (float) ((1D-y) * (double) originalColorsSplit[1] + y * (double) newColorsSplit[1]),
+                (float) ((1D-y) * (double) originalColorsSplit[2] + y * (double) newColorsSplit[2])
+        };
+    }
+
+    private static int curveIntegerColor(int originalColor, int newColor) {
+        return makeIntColorFromRBGArray(
+                curveColorArray(
+                        splitColorToRBGArray(originalColor),
+                        splitColorToRBGArray(newColor)
+                )
+        );
+    }
+
+    public static int makeIntColorFromRBGArray(short[] color) {
         return ((color[0] & 0xff) << 16) | ((color[1] & 0xff) << 8) | (color[2] & 0xff);
     }
 
