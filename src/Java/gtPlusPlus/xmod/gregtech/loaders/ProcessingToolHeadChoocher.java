@@ -56,7 +56,7 @@ public class ProcessingToolHeadChoocher implements Interface_OreRecipeRegistrato
 					final ItemStack hammerhead = GT_OreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial, 1L);
 
 					if ((null != plate) && (null != ingot) && (null != hammerhead) && (null != longrod) && (null != screw)){
-						RecipeUtils.recipeBuilder(
+						RecipeUtils.addShapedRecipe(
 								hammerhead, ToolDictNames.craftingToolScrewdriver.name(), plate,
 								ingot, plate, plate,
 								longrod, screw, null,

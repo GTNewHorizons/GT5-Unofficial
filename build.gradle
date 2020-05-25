@@ -145,7 +145,8 @@ dependencies {
     
     
     //compile files('libs/gregtech-5.08.33-dev.jar')
-    compile files('libs/gregtech-5.09.31-dev.jar')
+    //compile files('libs/gregtech-5.09.31-dev.jar')
+    compile files('libs/gregtech-5.09.33-dev.jar')
 
     provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"  
     //compile "ic2:IC2Classic:1.2.1.8:dev" - Does not mirror internal class structure or visibility of IC2, won't ever compile.

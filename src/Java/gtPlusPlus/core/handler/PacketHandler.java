@@ -1,69 +1,91 @@
 package gtPlusPlus.core.handler;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.*;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
-
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.network.handler.AbstractClientMessageHandler;
+import gtPlusPlus.core.network.packet.AbstractPacket;
+import gtPlusPlus.core.network.packet.Packet_VolumetricFlaskGui;
+import gtPlusPlus.core.network.packet.Packet_VolumetricFlaskGui2;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
-import io.netty.buffer.ByteBuf;
-
 public class PacketHandler {
+	
+	private static byte packetId = 0;
 
-	public static SimpleNetworkWrapper packetLightning;
-	
-	public PacketHandler(){
-		packetLightning = NetworkRegistry.INSTANCE.newSimpleChannel("gtpp_Lightning");
-		packetLightning.registerMessage(Packet_Lightning_Handler.class, Packet_Lightning.class, 0, Side.SERVER);
+	private static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(CORE.MODID);
+
+	public static final void init() {		
+		registerMessage(Packet_VolumetricFlaskGui.class, Packet_VolumetricFlaskGui.class);	
+		registerMessage(Packet_VolumetricFlaskGui2.class, Packet_VolumetricFlaskGui2.class);	
 	}
-	
-	
-	
 	
 	/**
-	 * Internal Packet Handlers
-	 * @author Alkalus
-	 *
+	 * Registers a message and message handler
 	 */
+	private static final void registerMessage(Class handlerClass, Class messageClass) {
+		Side side = AbstractClientMessageHandler.class.isAssignableFrom(handlerClass) ? Side.CLIENT : Side.SERVER;
+		registerMessage(handlerClass, messageClass, side);
+	}
 	
-	private class Packet_Lightning implements IMessage{
-
-		public void sendTo(IMessage msg, EntityPlayerMP player){
-			packetLightning.sendTo(msg, player);
+	private static final void registerMessage(Class handlerClass, Class messageClass, Side side) {
+		INSTANCE.registerMessage(handlerClass, messageClass, packetId++, side);
+		if (AbstractPacket.class.isInstance(messageClass.getClass())) {
+			AbstractPacket aPacket = ReflectionUtils.createNewInstanceFromConstructor(ReflectionUtils.getConstructor(messageClass, new Class[] {}), new Object[] {});
+			if (aPacket != null) {
+				Logger.INFO("Registered Packet: "+aPacket.getPacketName());			
+			}
 		}
-		
-		public void sendToServer(String string){
-			packetLightning.sendToServer(new Packet_Lightning(string));
-		}		
-		
-		 private String text;
-
-		    public Packet_Lightning(String text) {
-		        this.text = text;
-		    }
-
-		    @Override
-		    public void fromBytes(ByteBuf buf) {
-		        text = ByteBufUtils.readUTF8String(buf); // this class is very useful in general for writing more complex objects
-		    }
-
-		    @Override
-		    public void toBytes(ByteBuf buf) {
-		        ByteBufUtils.writeUTF8String(buf, text);
-		    }
-		
 	}
-	
-	private class Packet_Lightning_Handler implements IMessageHandler<Packet_Lightning, IMessage>{
 
-		@Override
-        public IMessage onMessage(Packet_Lightning message, MessageContext ctx) {
-            System.out.println(String.format("Received %s from %s", message.text, ctx.getServerHandler().playerEntity.getDisplayName()));
-            return null; // no response in this case
-        }
-		
+	/**
+	 * Send this message to the specified player.
+	 * See {@link SimpleNetworkWrapper#sendTo(IMessage, EntityPlayerMP)}
+	 */
+	public static final void sendTo(IMessage message, EntityPlayerMP player) {
+		INSTANCE.sendTo(message, player);
 	}
-	
-	
+
+	/**
+	 * Send this message to everyone within a certain range of a point.
+	 * See {@link SimpleNetworkWrapper#sendToDimension(IMessage, NetworkRegistry.TargetPoint)}
+	 */
+	public static final void sendToAllAround(IMessage message, NetworkRegistry.TargetPoint point) {
+		INSTANCE.sendToAllAround(message, point);
+	}
+
+	/**
+	 * Sends a message to everyone within a certain range of the coordinates in the same dimension.
+	 */
+	public static final void sendToAllAround(IMessage message, int dimension, double x, double y, double z, double range) {
+		sendToAllAround(message, new NetworkRegistry.TargetPoint(dimension, x, y, z, range));
+		}
+
+	/**
+	 * Sends a message to everyone within a certain range of the player provided.
+	 */
+	public static final void sendToAllAround(IMessage message, EntityPlayer player, double range) {
+		sendToAllAround(message, player.worldObj.provider.dimensionId, player.posX, player.posY, player.posZ, range);
+	}
+
+	/**
+	 * Send this message to everyone within the supplied dimension.
+	 * See {@link SimpleNetworkWrapper#sendToDimension(IMessage, int)}
+	 */
+	public static final void sendToDimension(IMessage message, int dimensionId) {
+		INSTANCE.sendToDimension(message, dimensionId);
+	}
+
+	/**
+	 * Send this message to the server.
+	 * See {@link SimpleNetworkWrapper#sendToServer(IMessage)}
+	 */
+	public static final void sendToServer(IMessage message) {
+		INSTANCE.sendToServer(message);
+	}
 }

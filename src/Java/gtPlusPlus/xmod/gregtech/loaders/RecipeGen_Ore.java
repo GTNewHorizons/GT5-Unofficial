@@ -462,19 +462,19 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 		/**
 		 * Shaped Crafting
 		 */			
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				CI.craftingToolHammer_Hard, null, null,
 				material.getCrushedPurified(1), null, null,
 				null, null, null,
 				material.getDustPurified(1));
 
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				CI.craftingToolHammer_Hard, null, null,
 				material.getCrushed(1), null, null,
 				null, null, null,
 				material.getDustImpure(1));
 
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				CI.craftingToolHammer_Hard, null, null,
 				material.getCrushedCentrifuged(1), null, null,
 				null, null, null,
@@ -486,7 +486,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 		final ItemStack smallDust = material.getSmallDust(1);
 		final ItemStack tinyDust = material.getTinyDust(1);
 
-		if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.addShapedRecipe(
 				tinyDust,	tinyDust, tinyDust,
 				tinyDust, tinyDust, tinyDust,
 				tinyDust, tinyDust, tinyDust,
@@ -497,7 +497,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 			Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
-		if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.addShapedRecipe(
 				normalDust, null, null,
 				null, null, null,
 				null, null, null,
@@ -509,7 +509,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 		}
 
 
-		if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.addShapedRecipe(
 				smallDust, smallDust, null,
 				smallDust, smallDust, null,
 				null, null, null,
@@ -521,7 +521,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 		}
 
 
-		if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.addShapedRecipe(
 				null, normalDust, null,
 				null, null, null,
 				null, null, null,

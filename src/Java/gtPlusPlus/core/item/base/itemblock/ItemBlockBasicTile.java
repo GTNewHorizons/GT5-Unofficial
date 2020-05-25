@@ -53,12 +53,9 @@ public class ItemBlockBasicTile extends ItemBlock {
 		} 
 		else if (this.mID == 7) { // Egg Box
 			list.add("A box for holding big eggs");
-			list.add("Items which decay will tick while inside");
-			list.add("Place with right click");
-
 		} 
-		else if (this.mID == 8){
-			
+		else if (this.mID == 8){ // Volumetric Flask Setter
+			list.add("Easy Flask Configuration");
 		}
 		else if (this.mID == 9){
 			

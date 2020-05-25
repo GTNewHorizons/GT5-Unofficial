@@ -31,11 +31,7 @@ public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, R
 			if (aMaterial != Materials.Rubber) {
 				if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
 						&& (!aMaterial.contains(SubTag.NO_SMASHING))) {
-					GT_ModHandler.addCraftingRecipe(
-							MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(16, 1, aMaterial, aMaterial, null),
-							GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
-							new Object[] { "IhI", "III", " I ", Character.valueOf('I'),
-									OrePrefixes.ingot.get(aMaterial) });
+					
 				}
 			}
 		}

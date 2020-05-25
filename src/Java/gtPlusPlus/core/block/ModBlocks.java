@@ -17,6 +17,8 @@ import gtPlusPlus.core.block.machine.*;
 import gtPlusPlus.core.block.machine.bedrock.Mining_Head_Fake;
 import gtPlusPlus.core.block.machine.bedrock.Mining_Pipe_Fake;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
@@ -25,6 +27,7 @@ public final class ModBlocks {
 
 	public static Block blockRoundRobinator;
 	public static Block blockCircuitProgrammer;
+	public static Block blockVolumetricFlaskSetter;
 	public static Block blockFakeMiningPipe;
 	public static Block blockFakeMiningHead;
 	
@@ -144,7 +147,11 @@ public final class ModBlocks {
 		blockPestKiller = new Machine_PestKiller();
 		
 		blockRoundRobinator = new Machine_RoundRobinator();
-
+		
+		if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
+			blockVolumetricFlaskSetter = new VolumetricFlaskSetter();
+		}
+			
 		new BlockGenericRedstoneDetector();
 		new BlockGenericRedstoneTest();
 

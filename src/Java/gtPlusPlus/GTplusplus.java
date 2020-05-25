@@ -28,6 +28,7 @@ import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.ConfigHandler;
 import gtPlusPlus.core.handler.BookHandler;
+import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
@@ -134,6 +135,7 @@ public class GTplusplus implements ActionListener {
 		Logger.INFO("Loading " + CORE.name + " "+CORE.VERSION+" on Gregtech "+Utils.getGregtechVersionAsString());
 		//Load all class objects within the plugin package.
 		Core_Manager.veryEarlyInit();
+		PacketHandler.init();
 
 		if(!Utils.isServer()){
 			enableCustomCapes = true;

@@ -135,42 +135,42 @@ public class RECIPES_Tools {
 
 	private static void run(){
 		//Staballoy Pickaxe
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				plateStaballoy, plateStaballoy, ingotStaballoy,
 				craftingToolFile, stickTungsten, craftingToolHardHammer,
 				craftingToolWrench, stickTungsten, craftingToolHardHammer,
 				RECIPE_StaballoyPickaxe);
 
 		//Staballoy Axe
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				plateStaballoy, ingotStaballoy, craftingToolHardHammer,
 				plateStaballoy, stickTungsten, craftingToolHardHammer,
 				craftingToolFile, stickTungsten, craftingToolWrench,
 				RECIPE_StaballoyAxe);
 
 		//Cobble to Sand
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				CobbleStone, CobbleStone, CobbleStone,
 				CobbleStone, sandHammer, CobbleStone,
 				CobbleStone, CobbleStone, CobbleStone,
 				RECIPE_Sand);
 		
 		//Sand to Sandstone
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				Sand, Sand, Sand,
 				Sand, sandHammer, Sand,
 				Sand, Sand, Sand,
 				RECIPE_SandStone);
 
 		//Sandstone Hammer
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				plateElectrum, ingotElectrum, plateElectrum,
 				craftingToolScrewdriver, stickBronze, craftingToolHardHammer,
 				null, stickSteel, null,
 				RECIPE_SandstoneHammer);
 
 		//Basic Firemaker
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				"cropWheat", "cropWheat", "cropWheat",
 				ItemUtils.getSimpleStack(Items.string), stickWood, ItemUtils.getSimpleStack(Items.string),
 				"cropWheat", "cropWheat", "cropWheat",

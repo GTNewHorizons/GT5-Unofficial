@@ -31,6 +31,13 @@ public class ArrayUtils {
 		return r.get();
 	}*/
 
+
+	public static Object[] removeNulls(final Object[] v) {
+		List<Object> list = new ArrayList<Object>(Arrays.asList(v));
+		list.removeAll(Collections.singleton((Object)null));
+		return list.toArray(new Object[list.size()]);
+	}
+	
 	public static ItemStack[] removeNulls(final ItemStack[] v) {
 		List<ItemStack> list = new ArrayList<ItemStack>(Arrays.asList(v));
 		list.removeAll(Collections.singleton((ItemStack)null));

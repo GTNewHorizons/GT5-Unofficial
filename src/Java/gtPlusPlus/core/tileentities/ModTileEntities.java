@@ -43,6 +43,10 @@ public class ModTileEntities {
 		GameRegistry.registerTileEntity(TileEntityRoundRobinator.class, "TileEntityRoundRobinator");
 		GameRegistry.registerTileEntity(TileEntityEggBox.class, "TileEggBox");
 		
+		if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
+			GameRegistry.registerTileEntity(TileEntityVolumetricFlaskSetter.class, "TileEntityVolumetricFlaskSetter");
+		}
+		
 		//Mod TEs
 		if (LoadedMods.Thaumcraft){
 			
@@ -53,6 +57,7 @@ public class ModTileEntities {
 	private static void blacklistTilesFromAcceleration() {
 		Meta_GT_Proxy.setTileEntityClassAsBlacklistedInWorldAccelerator("gtPlusPlus.core.tileentities.general.TileEntityFishTrap");
 		Meta_GT_Proxy.setTileEntityClassAsBlacklistedInWorldAccelerator("gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest");
+		Meta_GT_Proxy.setTileEntityClassAsBlacklistedInWorldAccelerator("gtPlusPlus.core.tileentities.general.TileEggBox");
 	}
 
 }

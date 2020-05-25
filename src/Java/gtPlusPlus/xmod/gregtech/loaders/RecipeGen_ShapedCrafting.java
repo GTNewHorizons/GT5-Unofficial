@@ -93,7 +93,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 		//Ring Recipe
 		if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getRing(1)) && ItemUtils.checkForInvalidItems(material.getRod(1))) {
 			if (CORE.GTNH){
-				if (RecipeUtils.recipeBuilder(
+				if (RecipeUtils.addShapedRecipe(
 						"craftingToolHardHammer", null, null,
 						"craftingToolFile", material.getRod(1), null,
 						null, null, null,
@@ -105,7 +105,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 				}
 			}
 			else {
-				if (RecipeUtils.recipeBuilder(
+				if (RecipeUtils.addShapedRecipe(
 						"craftingToolHardHammer", null, null,
 						null, material.getRod(1), null,
 						null, null, null,
@@ -122,7 +122,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 		//Framebox Recipe
 		if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getFrameBox(1)) && ItemUtils.checkForInvalidItems(material.getRod(1))) {
 			final ItemStack stackStick = material.getRod(1);
-			if (RecipeUtils.recipeBuilder(
+			if (RecipeUtils.addShapedRecipe(
 					stackStick, stackStick, stackStick,
 					stackStick, "craftingToolWrench", stackStick,
 					stackStick, stackStick, stackStick,
@@ -166,7 +166,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
 		//Shaped Recipe - Bolts
 		if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getBolt(1)) && ItemUtils.checkForInvalidItems(material.getRod(1))) {
-			if (RecipeUtils.recipeBuilder(
+			if (RecipeUtils.addShapedRecipe(
 					"craftingToolSaw", null, null,
 					null, material.getRod(1), null,
 					null, null, null,
@@ -181,7 +181,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
 		//Shaped Recipe - Ingot to Rod
 		if (ItemUtils.checkForInvalidItems(material.getRod(1)) && ItemUtils.checkForInvalidItems(material.getIngot(1)))
-			if (RecipeUtils.recipeBuilder(
+			if (RecipeUtils.addShapedRecipe(
 					"craftingToolFile", null, null,
 					null, material.getIngot(1), null,
 					null, null, null,
@@ -195,7 +195,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
 		//Shaped Recipe - Long Rod to two smalls
 		if (ItemUtils.checkForInvalidItems(material.getRod(1)) && ItemUtils.checkForInvalidItems(material.getLongRod(1)))
-			if (RecipeUtils.recipeBuilder(
+			if (RecipeUtils.addShapedRecipe(
 					"craftingToolSaw", null, null,
 					material.getLongRod(1), null, null,
 					null, null, null,
@@ -208,7 +208,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
 		//Two small to long rod
 		if (ItemUtils.checkForInvalidItems(material.getLongRod(1)) && ItemUtils.checkForInvalidItems(material.getRod(1)))
-			if (RecipeUtils.recipeBuilder(
+			if (RecipeUtils.addShapedRecipe(
 					material.getRod(1), "craftingToolHardHammer", material.getRod(1),
 					null, null, null,
 					null, null, null,
@@ -221,7 +221,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
 		//Rotor Recipe
 		if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getRotor(1)) && ItemUtils.checkForInvalidItems(material.getRing(1)) && !material.isRadioactive && ItemUtils.checkForInvalidItems(material.getPlate(1)) && ItemUtils.checkForInvalidItems(material.getScrew(1))) {
-			if (RecipeUtils.recipeBuilder(
+			if (RecipeUtils.addShapedRecipe(
 					material.getPlate(1), "craftingToolHardHammer", material.getPlate(1),
 					material.getScrew(1), material.getRing(1), "craftingToolFile",
 					material.getPlate(1), "craftingToolScrewdriver", material.getPlate(1),
@@ -235,7 +235,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
 		//Gear Recipe
 		if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getGear(1)) && ItemUtils.checkForInvalidItems(material.getPlate(1)) && ItemUtils.checkForInvalidItems(material.getRod(1))) {
-			if (RecipeUtils.recipeBuilder(
+			if (RecipeUtils.addShapedRecipe(
 					material.getRod(1), material.getPlate(1), material.getRod(1),
 					material.getPlate(1), "craftingToolWrench", material.getPlate(1),
 					material.getRod(1), material.getPlate(1), material.getRod(1),
@@ -249,7 +249,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
 		//Screws
 		if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getScrew(1)) && ItemUtils.checkForInvalidItems(material.getBolt(1))) {
-			if (RecipeUtils.recipeBuilder(
+			if (RecipeUtils.addShapedRecipe(
 					"craftingToolFile", material.getBolt(1), null,
 					material.getBolt(1), null, null,
 					null, null, null,

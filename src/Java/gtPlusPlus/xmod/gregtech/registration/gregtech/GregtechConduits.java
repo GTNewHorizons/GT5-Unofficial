@@ -363,19 +363,19 @@ public class GregtechConduits {
 
 
 		//Add the Three Shaped Recipes First
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				pipePlate, "craftingToolWrench", pipePlate,
 				pipePlate, null, pipePlate,
 				pipePlate, "craftingToolHardHammer", pipePlate,
 				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 6));
 
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				pipePlate, pipePlate, pipePlate,
 				"craftingToolWrench", null, "craftingToolHardHammer",
 				pipePlate, pipePlate, pipePlate,
 				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 2));
 
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				pipePlate, "craftingToolHardHammer", pipePlate,
 				pipePlate, null, pipePlate,
 				pipePlate, "craftingToolWrench", pipePlate,
@@ -418,7 +418,7 @@ public class GregtechConduits {
 			try {
 				final ItemStack pipePlateDouble = ItemUtils.getItemStackOfAmountFromOreDict("plateDouble"+output, 1).copy();
 				if (pipePlateDouble != null) {
-					RecipeUtils.recipeBuilder(
+					RecipeUtils.addShapedRecipe(
 							pipePlateDouble, "craftingToolHardHammer", pipePlateDouble,
 							pipePlateDouble, null, pipePlateDouble,
 							pipePlateDouble, "craftingToolWrench", pipePlateDouble,
@@ -456,7 +456,7 @@ public class GregtechConduits {
 	public static boolean generateWireRecipes(Material aMaterial){
 
 		//Adds manual crafting recipe
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				Utils.sanitizeString("plate"+aMaterial.getLocalizedName()), CI.craftingToolWireCutter, null,
 				null, null, null,
 				null, null, null,

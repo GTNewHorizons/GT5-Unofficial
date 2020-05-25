@@ -6,11 +6,8 @@ import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.objects.ItemData;
+import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
@@ -20,9 +17,11 @@ import gtPlusPlus.api.objects.minecraft.ShapedRecipe;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
-import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -38,15 +37,15 @@ public static int mInvalidID = 1;
 		
 		//Old Debug Code, useful for finding recipes loading too early.
 		/*if (gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE != GTplusplus.INIT_PHASE.POST_INIT) {
-			Logger.INFO(ReflectionUtils.getMethodName(1));
-			Logger.INFO(ReflectionUtils.getMethodName(2));
-			Logger.INFO(ReflectionUtils.getMethodName(3));
-			Logger.INFO(ReflectionUtils.getMethodName(4));
-			Logger.INFO(ReflectionUtils.getMethodName(5));
-			Logger.INFO(ReflectionUtils.getMethodName(6));
-			Logger.INFO(ReflectionUtils.getMethodName(7));
-			Logger.INFO(ReflectionUtils.getMethodName(8));
-			Logger.INFO(ReflectionUtils.getMethodName(9));
+			Logger.RECIPE(ReflectionUtils.getMethodName(1));
+			Logger.RECIPE(ReflectionUtils.getMethodName(2));
+			Logger.RECIPE(ReflectionUtils.getMethodName(3));
+			Logger.RECIPE(ReflectionUtils.getMethodName(4));
+			Logger.RECIPE(ReflectionUtils.getMethodName(5));
+			Logger.RECIPE(ReflectionUtils.getMethodName(6));
+			Logger.RECIPE(ReflectionUtils.getMethodName(7));
+			Logger.RECIPE(ReflectionUtils.getMethodName(8));
+			Logger.RECIPE(ReflectionUtils.getMethodName(9));
 			System.exit(1);
 		}*/
 		
@@ -348,15 +347,15 @@ public static int mInvalidID = 1;
 		
 
 		if (gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE != GTplusplus.INIT_PHASE.POST_INIT) {
-			Logger.INFO(ReflectionUtils.getMethodName(1));
-			Logger.INFO(ReflectionUtils.getMethodName(2));
-			Logger.INFO(ReflectionUtils.getMethodName(3));
-			Logger.INFO(ReflectionUtils.getMethodName(4));
-			Logger.INFO(ReflectionUtils.getMethodName(5));
-			Logger.INFO(ReflectionUtils.getMethodName(6));
-			Logger.INFO(ReflectionUtils.getMethodName(7));
-			Logger.INFO(ReflectionUtils.getMethodName(8));
-			Logger.INFO(ReflectionUtils.getMethodName(9));
+			Logger.RECIPE(ReflectionUtils.getMethodName(1));
+			Logger.RECIPE(ReflectionUtils.getMethodName(2));
+			Logger.RECIPE(ReflectionUtils.getMethodName(3));
+			Logger.RECIPE(ReflectionUtils.getMethodName(4));
+			Logger.RECIPE(ReflectionUtils.getMethodName(5));
+			Logger.RECIPE(ReflectionUtils.getMethodName(6));
+			Logger.RECIPE(ReflectionUtils.getMethodName(7));
+			Logger.RECIPE(ReflectionUtils.getMethodName(8));
+			Logger.RECIPE(ReflectionUtils.getMethodName(9));
 			System.exit(1);
 		}
 		
@@ -517,6 +516,9 @@ public static int mInvalidID = 1;
 				else if (o instanceof Item) {
 					aFiltered[aValid++] = ItemUtils.getSimpleStack((Item) o);					
 				}
+				else if (o instanceof Block) {
+					aFiltered[aValid++] = ItemUtils.getSimpleStack((Block) o);					
+				}
 				else if (o instanceof String) {
 					aFiltered[aValid++] = o;					
 				}
@@ -534,6 +536,9 @@ public static int mInvalidID = 1;
 					validCounter++;
 				}
 				else if (p instanceof Item) {	
+					validCounter++;
+				}
+				else if (p instanceof Block) {	
 					validCounter++;
 				}
 				else if (p instanceof String) {	
@@ -643,6 +648,148 @@ public static int mInvalidID = 1;
 		
 	}
 
+	public static boolean addShapedRecipe(
+			Object Input_1, Object Input_2, Object Input_3, 
+			Object Input_4, Object Input_5, Object Input_6, 
+			Object Input_7, Object Input_8, Object Input_9, 
+			ItemStack aOutputStack) {		
+		return addShapedRecipe(new Object[] {Input_1, Input_2, Input_3, Input_4, Input_5, Input_6, Input_7, Input_8, Input_9}, aOutputStack);
+	}
+	
+	private static boolean addShapedRecipe(Object[] Inputs,	ItemStack aOutputStack) {
+		Object[] Slots = new Object[9];
+		
+		String aFullString = "";
+		String aFullStringExpanded = "abcdefghi";
+		
+		for (int i=0; i<9; i++) {
+			Object o = Inputs[i];
+			
+			if (o instanceof ItemStack) {
+				Slots[i] = ItemUtils.getSimpleStack((ItemStack) o, 1);
+				aFullString += aFullStringExpanded.charAt(i);
+			}
+			else if (o instanceof Item) {
+				Slots[i] = ItemUtils.getSimpleStack((Item) o, 1);		
+				aFullString += aFullStringExpanded.charAt(i);
+			}
+			else if (o instanceof Block) {
+				Slots[i] = ItemUtils.getSimpleStack((Block) o, 1);	
+				aFullString += aFullStringExpanded.charAt(i);	
+			}
+			else if (o instanceof String) {
+				Slots[i] = o;			
+				aFullString += aFullStringExpanded.charAt(i);
+			}
+			else if (o instanceof ItemData) {
+				ItemData aData = (ItemData) o;
+				ItemStack aStackFromGT = ItemUtils.getOrePrefixStack(aData.mPrefix, aData.mMaterial.mMaterial, 1);
+				Slots[i] = aStackFromGT;			
+				aFullString += aFullStringExpanded.charAt(i);
+			}
+			else if (o == null) {
+				Slots[i] = null;	
+				aFullString += " ";
+			}
+			else {
+				Slots[i] = null;
+				Logger.RECIPE("Cleaned a "+o.getClass().getSimpleName()+" from recipe input.");
+				Logger.RECIPE("ERROR");
+				CORE.crash("Bad Shaped Recipe.");				
+			}
+		}		
+		Logger.RECIPE("Using String: "+aFullString);
+		
+		String aRow1 = aFullString.substring(0, 3);
+		String aRow2 = aFullString.substring(3, 6);
+		String aRow3 = aFullString.substring(6, 9);	
+		Logger.RECIPE(""+aRow1);
+		Logger.RECIPE(""+aRow2);
+		Logger.RECIPE(""+aRow3);
+		
+		String[] aStringData = new String[] {aRow1, aRow2, aRow3};
+		Object[] aDataObject = new Object[19];
+		aDataObject[0] = aStringData;
+		int aIndex = 0;
+		for (int u=1;u<20;u+=2) {
+			if (aIndex == 9) {
+				break;
+			}
+			if (aFullString.charAt(aIndex) != (' ')) {
+				aDataObject[u] = aFullString.charAt(aIndex);
+				aDataObject[u+1] = Slots[aIndex];
+				Logger.RECIPE("("+aIndex+") "+aFullString.charAt(aIndex)+" | "+ (Slots[aIndex] instanceof ItemStack ? ItemUtils.getItemName((ItemStack) Slots[aIndex]) : Slots[aIndex] instanceof String ? (String) Slots[aIndex] : "Unknown"));
+				aIndex++;
+			}
+		}
+
+		Logger.RECIPE("Data Size: "+aDataObject.length);
+		aDataObject = ArrayUtils.removeNulls(aDataObject);
+		Logger.RECIPE("Clean Size: "+aDataObject.length);
+		
+		ShapedOreRecipe aRecipe = new ShapedOreRecipe(aOutputStack, aDataObject);
+		
+		/*ShapedOreRecipe aRecipe = new ShapedOreRecipe(aOutputStack, 
+				aStringData, 
+				'a', Slots[0], 
+				'b', Slots[1], 
+				'c', Slots[2], 
+				'd', Slots[3], 
+				'e', Slots[4], 
+				'f', Slots[5], 
+				'g', Slots[6], 
+				'h', Slots[7], 
+				'i', Slots[8]);*/
+		
+		int size = COMPAT_HANDLER.mRecipesToGenerate.size();
+		COMPAT_HANDLER.mRecipesToGenerate.put(new InternalRecipeObject2(aRecipe));
+		if (COMPAT_HANDLER.mRecipesToGenerate.size() > size) {
+			if (!COMPAT_HANDLER.areInitItemsLoaded){
+				RegistrationHandler.recipesSuccess++;
+			}
+			else {
+				LateRegistrationHandler.recipesSuccess++;
+			}
+			return true;
+		}
+		return false;
+	}
+	public static class InternalRecipeObject2 implements RunnableWithInfo<String> {
+		
+		final ItemStack mOutput;
+		final ShapedOreRecipe mRecipe;
+		final boolean isValid;
+
+		public InternalRecipeObject2(ShapedOreRecipe aRecipe) {		
+			mRecipe = aRecipe;
+			mOutput = aRecipe.getRecipeOutput();
+			if (mOutput != null) {
+				this.isValid = true;
+			}
+			else {
+				this.isValid = false;
+			}
+		}
+
+		@Override
+		public void run() {
+			if (this.isValid) {
+				GameRegistry.addRecipe(mRecipe);
+			}
+			else {
+				Logger.RECIPE("[Fix] Invalid shapped recipe outputting "+mOutput != null ? mOutput.getDisplayName() : "Bad Output Item");
+			}
+		}
+
+		@Override
+		public String getInfoData() {
+			if (mOutput != null && mOutput instanceof ItemStack) {
+				return ((ItemStack) mOutput).getDisplayName();
+			}
+			return "";
+		}
+
+	}
 
 
 }

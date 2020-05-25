@@ -58,7 +58,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
 
 		if (ItemUtils.checkForInvalidItems(tinyDust) && ItemUtils.checkForInvalidItems(normalDust)) {
-			if (RecipeUtils.recipeBuilder(
+			if (RecipeUtils.addShapedRecipe(
 					tinyDust,	tinyDust, tinyDust,
 					tinyDust, tinyDust, tinyDust,
 					tinyDust, tinyDust, tinyDust,
@@ -69,7 +69,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 				Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 
-			if (RecipeUtils.recipeBuilder(
+			if (RecipeUtils.addShapedRecipe(
 					normalDust, null, null,
 					null, null, null,
 					null, null, null,
@@ -82,7 +82,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 		}
 
 		if (ItemUtils.checkForInvalidItems(smallDust) && ItemUtils.checkForInvalidItems(normalDust)) {
-			if (RecipeUtils.recipeBuilder(
+			if (RecipeUtils.addShapedRecipe(
 					smallDust, smallDust, null,
 					smallDust, smallDust, null,
 					null, null, null,
@@ -92,7 +92,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 			else {
 				Logger.WARNING("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
 			}
-			if (RecipeUtils.recipeBuilder(
+			if (RecipeUtils.addShapedRecipe(
 					null, normalDust, null,
 					null, null, null,
 					null, null, null,

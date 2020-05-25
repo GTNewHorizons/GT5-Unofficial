@@ -37,7 +37,7 @@ public class EggBox extends BlockContainer implements ITileTooltip
 	/**
 	 * Determines which tooltip is displayed within the itemblock.
 	 */
-	private final int mTooltipID = 5;
+	private final int mTooltipID = 7;
 	public final int field_149956_a = 0;
 
 	@Override

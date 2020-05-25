@@ -63,14 +63,14 @@ public class RECIPES_General {
 
 	private static void run() {
 		//Workbench Blueprint
-		/*RecipeUtils.recipeBuilder(
+		/*RecipeUtils.addShapedRecipe(
 				RECIPE_Paper, RECIPE_LapisDust, NULL,
 				RECIPE_Paper, RECIPE_LapisDust, NULL,
 				RECIPE_LapisDust, RECIPE_LapisDust, NULL,
 				OUTPUT_Blueprint);*/
 
 		//Bronze Workbench
-		/*RecipeUtils.recipeBuilder(
+		/*RecipeUtils.addShapedRecipe(
 				RECIPE_BronzePlate, RECIPE_CraftingTable, RECIPE_BronzePlate,
 				RECIPE_BronzePlate, RECIPE_BasicCasingIC2, RECIPE_BronzePlate,
 				RECIPE_BronzePlate, RECIPE_BronzePlate, RECIPE_BronzePlate,
@@ -79,25 +79,25 @@ public class RECIPES_General {
 		//Generates recipes for the Dull shard when TC is not installed.
 		if (!LoadedMods.Thaumcraft) {
 			//Dull Shard to Aer
-			RecipeUtils.recipeBuilder(
+			RecipeUtils.addShapedRecipe(
 					RECIPE_HydrogenDust, RECIPE_HydrogenDust, RECIPE_HydrogenDust,
 					RECIPE_HydrogenDust, ItemUtils.getSimpleStack(ModItems.shardDull), RECIPE_HydrogenDust,
 					RECIPE_HydrogenDust, RECIPE_HydrogenDust, RECIPE_HydrogenDust,
 					ItemUtils.getSimpleStack(ModItems.shardAer));
 			//Dull Shard to Ignis
-			RecipeUtils.recipeBuilder(
+			RecipeUtils.addShapedRecipe(
 					RECIPE_Obsidian, RECIPE_Obsidian, RECIPE_Obsidian,
 					RECIPE_Obsidian, ItemUtils.getSimpleStack(ModItems.shardDull), RECIPE_Obsidian,
 					RECIPE_Obsidian, RECIPE_Obsidian, RECIPE_Obsidian,
 					ItemUtils.getSimpleStack(ModItems.shardIgnis));
 			//Dull Shard to Terra
-			RecipeUtils.recipeBuilder(
+			RecipeUtils.addShapedRecipe(
 					RECIPE_Dirt, RECIPE_Dirt, RECIPE_Dirt,
 					RECIPE_Dirt, ItemUtils.getSimpleStack(ModItems.shardDull), RECIPE_Dirt,
 					RECIPE_Dirt, RECIPE_Dirt, RECIPE_Dirt,
 					ItemUtils.getSimpleStack(ModItems.shardTerra));
 			//Dull Shard to Aqua
-			RecipeUtils.recipeBuilder(
+			RecipeUtils.addShapedRecipe(
 					RECIPE_LapisDust, RECIPE_LapisDust, RECIPE_LapisDust,
 					RECIPE_LapisDust, ItemUtils.getSimpleStack(ModItems.shardDull), RECIPE_LapisDust,
 					RECIPE_LapisDust, RECIPE_LapisDust, RECIPE_LapisDust,
@@ -111,7 +111,7 @@ public class RECIPES_General {
 		}
 
 		//Rainforest oak Sapling
-		if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.addShapedRecipe(
 				"stickWood", "stickWood", "stickWood",
 				"stickWood", "treeSapling", "stickWood",
 				"stickWood", "dustBone", "stickWood",
@@ -128,7 +128,7 @@ public class RECIPES_General {
 		}
 
 		//Fish Trap
-		if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.addShapedRecipe(
 				ironBars, ironBars, ironBars,
 				ironBars, "frameGtWroughtIron", ironBars,
 				ironBars, ironBars, ironBars,
@@ -145,7 +145,7 @@ public class RECIPES_General {
 			for (int y=0;y<ironTypes.length;y++) {
 				//Iron bars
 				String ironRecipe = "stick"+ironTypes[y]+"Iron";
-				if (RecipeUtils.recipeBuilder(
+				if (RecipeUtils.addShapedRecipe(
 						null, CI.craftingToolWrench, null,
 						ironRecipe, ironRecipe, ironRecipe,
 						ironRecipe, ironRecipe, ironRecipe,
@@ -189,7 +189,7 @@ public class RECIPES_General {
 
 		//Mining Explosive
 		Logger.RECIPE("[Inspection] Explosives");
-		if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.addShapedRecipe(
 				CI.explosiveITNT, CI.explosiveTNT, CI.explosiveITNT,
 				CI.explosiveTNT, "frameGtIron", CI.explosiveTNT,
 				"dustSulfur", CI.explosiveTNT, "dustSulfur",
@@ -198,7 +198,7 @@ public class RECIPES_General {
 		}
 
 		//Alkalus Coin
-		if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.addShapedRecipe(
 				"gemExquisiteRuby", "gemFlawlessDiamond", "gemExquisiteDiamond",
 				"gemFlawlessRuby", ItemList.Credit_Greg_Osmium.get(1), "gemFlawlessSapphire",
 				"gemExquisiteEmerald", "gemFlawlessEmerald", "gemExquisiteSapphire",
@@ -222,7 +222,7 @@ public class RECIPES_General {
 		}*/
 
 		Logger.RECIPE("[Inspection] Wither Cage");
-		if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.addShapedRecipe(
 				"stickBlackSteel", "plateTungstenSteel", "stickBlackSteel",
 				"plateTungstenSteel", getSimpleStack(Items.nether_star), "plateTungstenSteel",
 				"stickBlackSteel", "plateTungstenSteel", "stickBlackSteel",
@@ -231,7 +231,7 @@ public class RECIPES_General {
 		}
 
 		/*Logger.RECIPE("[Inspection] Xp Converter");
-		if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.addShapedRecipe(
 				getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 2, 1), getSimpleStack(Items.experience_bottle),
 				ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1), getSimpleStack(Items.nether_star), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1),
 				getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 2, 1), getSimpleStack(Items.experience_bottle),
@@ -259,7 +259,7 @@ public class RECIPES_General {
 			Logger.INFO("Added a recipe for Fiber.");
 		}
 
-		if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.addShapedRecipe(
 				null, ItemUtils.getSimpleStack(ModItems.itemFiber, 1), null,
 				ItemUtils.getSimpleStack(ModItems.itemFiber, 1), CI.craftingToolKnife, ItemUtils.getSimpleStack(ModItems.itemFiber, 1),
 				null, ItemUtils.getSimpleStack(ModItems.itemFiber, 1), null,
@@ -268,7 +268,7 @@ public class RECIPES_General {
 		}
 
 		Logger.RECIPE("[Inspection] Net");
-		if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.addShapedRecipe(
 				ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1),
 				ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1),
 				null, null, null,
@@ -307,7 +307,7 @@ public class RECIPES_General {
 
 	private static boolean addCompressedObsidian(){
 		//Invert Obsidian
-		if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.addShapedRecipe(
 				getSimpleStack(Items.redstone), getSimpleStack(Items.glowstone_dust), getSimpleStack(Items.redstone),
 				getSimpleStack(Items.glowstone_dust), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 1, 1), getSimpleStack(Items.glowstone_dust),
 				getSimpleStack(Items.redstone), getSimpleStack(Items.glowstone_dust), getSimpleStack(Items.redstone),
@@ -327,7 +327,7 @@ public class RECIPES_General {
 			final ItemStack input = mItems[r];
 			final ItemStack output = mItems[r+1];
 
-			if (RecipeUtils.recipeBuilder(
+			if (RecipeUtils.addShapedRecipe(
 					input, input, input,
 					input, input, input,
 					input, input, input,

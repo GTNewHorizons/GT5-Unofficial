@@ -107,4 +107,9 @@ public class ItemBlockRoundRobinator extends ItemBlockWithMetadata
 	public int getItemEnchantability(ItemStack stack) {
 		return 0;
 	}
+
+	@Override
+	public boolean getHasSubtypes() {
+		return true;
+	}
 }

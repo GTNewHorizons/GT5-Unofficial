@@ -56,6 +56,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI15 = 14; // Pest Killer
 	public static final int GUI16 = 15; // Round-Robinator
 	public static final int GUI17 = 16; // Egg Box
+	public static final int GUI18 = 17; // Volumetric Flask Setter
 
 	public static void init() {
 
@@ -108,6 +109,8 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_RoundRobinator(player.inventory, (TileEntityRoundRobinator) te);
 			}  else if (ID == GUI17) {
 				return new Container_EggBox(player.inventory, (TileEntityEggBox) te);
+			}   else if (ID == GUI18) {
+				return new Container_VolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te);
 			} 
 		}
 
@@ -172,7 +175,9 @@ public class GuiHandler implements IGuiHandler {
 				return new GUI_RoundRobinator(player.inventory, (TileEntityRoundRobinator) te);
 			}  else if (ID == GUI17) {
 				return new GUI_EggBox(player.inventory, (TileEntityEggBox) te);
-			} 
+			}   else if (ID == GUI18) {
+				return new GUI_VolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te);
+			}
 		}
 
 		if (ID == GUI9) {

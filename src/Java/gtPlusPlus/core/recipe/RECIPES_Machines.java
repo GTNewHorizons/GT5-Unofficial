@@ -28,7 +28,9 @@ import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
+import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaCustomCoverItem;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import net.minecraft.block.Block;
@@ -628,13 +630,44 @@ public class RECIPES_Machines {
 			}
 
 
-			//Steam Condenser
+			//RF Convertor
 			if (LoadedMods.CoFHCore && CORE.ConfigSwitches.enableMachine_RF_Convetor){
 				RecipeUtils.addShapedGregtechRecipe(
 						CI.getPlate(4, 1), CI.getTieredCircuitOreDictName(5), CI.getPlate(4, 1),
 						CI.getTransmissionComponent(3, 1), CI.getTieredGTPPMachineCasing(4, 1), CI.getTransmissionComponent(3, 1),
 						CI.getPlate(4, 1), plateEnergeticAlloy, CI.getPlate(4, 1),
 						GregtechItemList.Energy_Buffer_RF_Convertor.get(1));
+			}
+			
+			// Egg Box			
+			CORE.RA.addSixSlotAssemblingRecipe(
+					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(8),
+							CI.getTieredMachineHull(3),
+							ItemUtils.getSimpleStack(Items.egg, 64),
+							ItemUtils.getSimpleStack(ModItems.itemRope, 32),
+							CI.getPlate(4, GTNH ? 16 : 8)
+					}, 
+					FluidUtils.getFluidStack("mobessence", 4096), 
+					ItemUtils.getSimpleStack(ModBlocks.blockEggBox, 1),
+					20 * 60, 
+					480);
+			
+			//Flask Configurator
+			if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {				
+				CORE.RA.addSixSlotAssemblingRecipe(
+						new ItemStack[] {
+								CI.getNumberedAdvancedCircuit(8),
+								CI.getTieredMachineHull(2),
+								ItemUtils.getSimpleStack(ModBlocks.blockCircuitProgrammer),
+								VolumetricFlaskHelper.getVolumetricFlask(8),
+								CI.getTieredComponent(OrePrefixes.pipeSmall, 2, GTNH ? 4 : 2),
+								CI.getPlate(2, GTNH ? 8 : 4)
+						}, 
+						CI.getAlternativeTieredFluid(1, 144 * 8), 
+						ItemUtils.getSimpleStack(ModBlocks.blockVolumetricFlaskSetter, 1),
+						20 * 60, 
+						120);
 			}
 
 
@@ -1462,7 +1495,7 @@ public class RECIPES_Machines {
 
 
 			if (CORE.ConfigSwitches.enableMultiblock_PowerSubstation){
-				RecipeUtils.recipeBuilder(
+				RecipeUtils.addShapedRecipe(
 						"screwTitanium", "plateIncoloy020", "screwTitanium",
 						"plateIncoloy020", "frameGtIncoloyMA956", "plateIncoloy020",
 						"screwTitanium", "plateIncoloy020", "screwTitanium",
@@ -1470,7 +1503,7 @@ public class RECIPES_Machines {
 
 				ItemStack mBattery = ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR);
 
-				RecipeUtils.recipeBuilder(
+				RecipeUtils.addShapedRecipe(
 						"plateIncoloyMA956", mBattery, "plateIncoloyMA956",
 						GregtechItemList.Casing_Power_SubStation.get(1), GregtechItemList.Casing_Vanadium_Redox.get(1), GregtechItemList.Casing_Power_SubStation.get(1),
 						"plateIncoloy020", "plateIncoloyMA956", "plateIncoloy020",
@@ -1478,13 +1511,13 @@ public class RECIPES_Machines {
 			}
 
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialThermalCentrifuge){
-				RecipeUtils.recipeBuilder(
+				RecipeUtils.addShapedRecipe(
 						"plateRedSteel", CI.craftingToolHammer_Hard, "plateRedSteel",
 						"plateRedSteel", "frameGtBlackSteel", "plateRedSteel",
 						"plateRedSteel", CI.craftingToolWrench, "plateRedSteel",
 						GregtechItemList.Casing_ThermalCentrifuge.get(Casing_Amount));
 
-				RecipeUtils.recipeBuilder(
+				RecipeUtils.addShapedRecipe(
 						"plateRedSteel","circuitData","plateRedSteel",
 						"stickTalonite",EV_MACHINE_ThermalCentrifuge,"stickTalonite",
 						"plateRedSteel","gearGtTalonite","plateRedSteel",
@@ -1492,13 +1525,13 @@ public class RECIPES_Machines {
 			}
 
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialWashPlant){
-				RecipeUtils.recipeBuilder(
+				RecipeUtils.addShapedRecipe(
 						"plateGrisium", CI.craftingToolHammer_Hard, "plateGrisium",
 						"plateTalonite", "frameGtGrisium", "plateTalonite",
 						"plateGrisium", CI.craftingToolWrench, "plateGrisium",
 						GregtechItemList.Casing_WashPlant.get(Casing_Amount));
 
-				RecipeUtils.recipeBuilder( 
+				RecipeUtils.addShapedRecipe( 
 						"plateGrisium",CI.electricPump_MV,"plateGrisium",
 						"plateTalonite",EV_MACHINE_OreWasher,"plateTalonite",
 						"plateGrisium","circuitData","plateGrisium",
@@ -1550,13 +1583,13 @@ public class RECIPES_Machines {
 
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialCuttingMachine){
 				ItemStack plate = ALLOY.MARAGING300.getPlate(1);
-				RecipeUtils.recipeBuilder(
+				RecipeUtils.addShapedRecipe(
 						plate, CI.craftingToolHammer_Hard, plate,
 						"plateStellite", "frameGtTalonite", "plateStellite",
 						plate, CI.craftingToolWrench, plate,
 						GregtechItemList.Casing_CuttingFactoryFrame.get(Casing_Amount));
 
-				RecipeUtils.recipeBuilder( 
+				RecipeUtils.addShapedRecipe( 
 						plate,CI.getTieredCircuit(3),plate,
 						"wireFinePlatinum", EV_MACHINE_Cutter, "wireFinePlatinum",
 						plate,CI.getTieredCircuit(4),plate,
@@ -1566,13 +1599,13 @@ public class RECIPES_Machines {
 			//EV_MACHINE_Extruder
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialExtrudingMachine){
 				ItemStack plate = ALLOY.INCONEL_690.getPlate(1);
-				RecipeUtils.recipeBuilder(
+				RecipeUtils.addShapedRecipe(
 						plate, CI.craftingToolHammer_Hard, plate,
 						"plateTalonite", "frameGtStaballoy", "plateTalonite",
 						plate, CI.craftingToolWrench, plate,
 						GregtechItemList.Casing_Extruder.get(Casing_Amount));
 
-				RecipeUtils.recipeBuilder( 
+				RecipeUtils.addShapedRecipe( 
 						plate,CI.getTieredCircuit(4),plate,
 						CI.electricPiston_EV, EV_MACHINE_Extruder, CI.electricPiston_EV,
 						plate,CI.getTieredCircuit(4),plate,
@@ -1581,13 +1614,13 @@ public class RECIPES_Machines {
 
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialFishingPort){
 				ItemStack plate = ALLOY.AQUATIC_STEEL.getPlate(1);
-				RecipeUtils.recipeBuilder(
+				RecipeUtils.addShapedRecipe(
 						plate, CI.craftingToolHammer_Hard, plate,
 						"plateEglinSteel", "frameGtEglinSteel", "plateEglinSteel",
 						plate, CI.craftingToolWrench, plate,
 						GregtechItemList.Casing_FishPond.get(Casing_Amount));
 
-				RecipeUtils.recipeBuilder( 
+				RecipeUtils.addShapedRecipe( 
 						plate,CI.getTieredCircuit(3),plate,
 						"wireFineElectrum", ItemUtils.getSimpleStack(ModBlocks.blockFishTrap), "wireFineElectrum",
 						plate,CI.getTieredCircuit(2),plate,
@@ -1602,12 +1635,12 @@ public class RECIPES_Machines {
 				ItemStack cell1 = ItemList.Reactor_Coolant_He_6.get(1);
 				ItemStack cell2 = ItemList.Reactor_Coolant_NaK_6.get(1);
 
-				RecipeUtils.recipeBuilder(
+				RecipeUtils.addShapedRecipe(
 						plate, gear, plate,
 						cell1, frame, cell2,
 						plate, gear, plate,
 						GregtechItemList.Casing_AdvancedVacuum.get(Casing_Amount));
-				RecipeUtils.recipeBuilder( 
+				RecipeUtils.addShapedRecipe( 
 						gear,CI.getTieredCircuit(6),gear,
 						CI.electricPiston_IV, GregtechItemList.Casing_AdvancedVacuum.get(1), CI.electricPiston_IV,
 						plate, GregtechItemList.Gregtech_Computer_Cube.get(1), plate,
@@ -1621,12 +1654,12 @@ public class RECIPES_Machines {
 				cell2 = ItemUtils.simpleMetaStack("IC2:reactorVentGold:1", 1, 1);
 				ItemStack cell3 = ItemUtils.simpleMetaStack("IC2:reactorVentDiamond:1:1", 1, 1);
 
-				RecipeUtils.recipeBuilder(
+				RecipeUtils.addShapedRecipe(
 						plate, cell1, plate,
 						cell3, frame, cell2,
 						plate, gear, plate,
 						GregtechItemList.Casing_Adv_BlastFurnace.get(Casing_Amount));
-				RecipeUtils.recipeBuilder( 
+				RecipeUtils.addShapedRecipe( 
 						gear,CI.getTieredCircuit(6),gear,
 						CI.robotArm_IV, GregtechItemList.Casing_Adv_BlastFurnace.get(1), CI.robotArm_IV,
 						plate, GregtechItemList.Gregtech_Computer_Cube.get(1), plate,
@@ -1639,7 +1672,7 @@ public class RECIPES_Machines {
 				cell1 = ItemUtils.simpleMetaStack("IC2:reactorHeatSwitchDiamond:1", 1, 1);
 				cell2 = ItemUtils.simpleMetaStack("IC2:reactorVentGold:1", 1, 1);
 
-				RecipeUtils.recipeBuilder( 
+				RecipeUtils.addShapedRecipe( 
 						gear,CI.getTieredCircuit(6),gear,
 						CI.fieldGenerator_IV, CI.machineHull_ZPM, CI.robotArm_IV,
 						plate, GregtechItemList.Gregtech_Computer_Cube.get(1), plate,
@@ -1657,12 +1690,12 @@ public class RECIPES_Machines {
 				ItemStack aTieredUnboxinator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemUtils.getValueOfItemList("Machine_LuV_Unboxinator", 1, ItemList.Machine_IV_Unboxinator.get(1)) : ItemList.Machine_IV_Unboxinator.get(1);
 
 
-				RecipeUtils.recipeBuilder(
+				RecipeUtils.addShapedRecipe(
 						plate, ItemUtils.getItemStackOfAmountFromOreDict("cableGt12VanadiumGallium", 1), plate,
 						cell1, frame, cell2,
 						plate, gear, plate,
 						GregtechItemList.Casing_AmazonWarehouse.get(Casing_Amount));
-				RecipeUtils.recipeBuilder( 
+				RecipeUtils.addShapedRecipe( 
 						casingAmazon, CI.getTieredCircuit(7), casingAmazon,
 						CI.robotArm_LuV, aTieredUnboxinator, CI.robotArm_LuV,
 						CI.conveyorModule_LuV, GregtechItemList.Gregtech_Computer_Cube.get(1), CI.conveyorModule_LuV,
@@ -1670,7 +1703,7 @@ public class RECIPES_Machines {
 
 
 				//Industrial Mixing Machine
-				RecipeUtils.recipeBuilder( 
+				RecipeUtils.addShapedRecipe( 
 						"plateStaballoy",CI.getTieredCircuit(5),"plateStaballoy",
 						"plateZirconiumCarbide", EV_MACHINE_Mixer, "plateZirconiumCarbide",
 						"plateStaballoy",CI.getTieredCircuit(5),"plateStaballoy",
@@ -1704,13 +1737,13 @@ public class RECIPES_Machines {
 					o_Distillery = ItemList.Machine_EV_FluidExtractor.get(1);
 					o_Extractor = ItemList.Machine_EV_Extractor.get(1);	
 				}					
-				RecipeUtils.recipeBuilder(
+				RecipeUtils.addShapedRecipe(
 						plate, CI.craftingToolHammer_Hard, plate,
 						"plateStainlessSteel", "frameGtZirconiumCarbide", "plateStainlessSteel",
 						plate, CI.craftingToolWrench, plate,
 						GregtechItemList.Casing_Multi_Use.get(Casing_Amount));
 
-				RecipeUtils.recipeBuilder( 
+				RecipeUtils.addShapedRecipe( 
 						o_Compressor, o_Lathe, o_Electromagnet,
 						plate, ItemUtils.getSimpleStack(ModBlocks.blockProjectTable), plate,
 						o_Fermenter, o_Distillery, o_Extractor,

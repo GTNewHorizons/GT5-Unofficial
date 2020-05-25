@@ -3189,3 +3189,6 @@ entity.miscutils.AusBoar.name=Wild Boar
 entity.miscutils.AusSpider.name=Forest Spider
 entity.miscutils.AusOctopus.name=Octopus
 container.EggBox=Egg Hatching Box
+
+//Added24/05/20
+container.VolumetricFlaskSetter=Volumetric Flask Configurator

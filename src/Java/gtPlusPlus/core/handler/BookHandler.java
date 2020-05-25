@@ -22,6 +22,7 @@ public class BookHandler {
 	public static BookTemplate book_ModularBauble;
 	public static BookTemplate book_MultiMachineManual;
 	public static BookTemplate book_NuclearManual;
+	public static BookTemplate book_MultiChemicalPlant;
 
 	public static void run(){		
 
@@ -179,6 +180,18 @@ public class BookHandler {
 						"This structure is used to produce the Molten Salts required to run a Liquid Fluorine Thorium Reactor [LFTR]."
 						
 				});
+		
+		book_MultiChemicalPlant = writeBookTemplate(
+				"book_Multi_ChemicalPlant", "Chemical Plant Manual", "Alkalus", 
+				new String[] {
+						"This Multiblock, depending upon the mode used, can function as a variety of different machines. The idea behind this, was that most of these machines are rather niche compared to any others, as such, not used often.",
+						"To build, you need to construct a hollow 3x3x3 structure made from Multi-Use casings, With a minimum of 6. Any Casing position can be substituted out with an Input Hatch/Bus, an Output Hatch/Bus, Muffler, Maint. Hatch or Energy Injector Hatch.",
+						"The Mode can be set by using a Screwdriver on the controller block. Each mode allows the use of Numbered Circuits, to allow a different machine 'type' for each input bus.",
+						"[Metal Work] Mode A - Allows the multiblock to function as a Compressor, a Lathe or an Electro-Magnet. To allow a hatch to run in Compressor mode, insert a No. 20 circuit. For Lathe, use No. 21 and for Electro-Magnet use No. 22.",
+						"[Fluid Work] Mode B - Allows the multiblock to function as a Fermenter, a Fluid Extractor or an Extractor. To allow a hatch to run in Fermenter mode, insert a No. 20 circuit. For Fluid Extractor, use No. 21 and for Extractor use No. 22.",
+						"[Misc. Work] Mode C - Allows the multiblock to function as a Laser Engraver, an Autoclave or a Fluid Solidifier. To allow a hatch to run in Laser Engraver mode, insert a No. 20 circuit. For Autoclave, use No. 21 and for Solidifier use No. 22.",
+				});
+		
 	}
 
 
@@ -189,6 +202,7 @@ public class BookHandler {
 	public static ItemStack ItemBookWritten_ModularBaubles;
 	public static ItemStack ItemBookWritten_MultiPowerStorage;
 	public static ItemStack ItemBookWritten_MultiMachineManual;
+	public static ItemStack ItemBookWritten_MultiChemicalPlant;
 
 	public static void runLater(){
 		ItemBookWritten_ThermalBoiler = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 0, 1);
@@ -196,12 +210,14 @@ public class BookHandler {
 		ItemBookWritten_ModularBaubles = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 2, 1);
 		ItemBookWritten_MultiMachineManual = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 3, 1);
 		ItemBookWritten_NuclearManual = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 4, 1);
+		ItemBookWritten_MultiChemicalPlant = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 5, 1);
 
 		//Multiblock Manuals
 		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getSimpleStack(Items.lava_bucket)}, ItemBookWritten_ThermalBoiler);
 		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getItemStackOfAmountFromOreDict(CI.craftingToolWrench, 1)}, ItemBookWritten_MultiMachineManual);
 		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Tin", 1)}, ItemBookWritten_MultiPowerStorage);
 		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1)}, ItemBookWritten_NuclearManual);
+		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Copper", 1)}, ItemBookWritten_MultiChemicalPlant);
 	}
 
 	private static BookTemplate writeBookTemplate(String aMapping, String aTitle, String aAuthor, String[] aPages){
