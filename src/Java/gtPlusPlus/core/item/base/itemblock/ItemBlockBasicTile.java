@@ -56,6 +56,7 @@ public class ItemBlockBasicTile extends ItemBlock {
 		} 
 		else if (this.mID == 8){ // Volumetric Flask Setter
 			list.add("Easy Flask Configuration");
+			list.add("Configure default input slot with a screwdriver");
 		}
 		else if (this.mID == 9){
 			

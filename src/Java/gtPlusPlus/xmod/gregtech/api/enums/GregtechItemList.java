@@ -392,6 +392,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	// Flotation Cell
 	Controller_Flotation_Cell,
+	
+	// Big Steam Macerator
+	Controller_SteamMaceratorMulti,
 
 
 	//----------------------------------------------------------------------------
