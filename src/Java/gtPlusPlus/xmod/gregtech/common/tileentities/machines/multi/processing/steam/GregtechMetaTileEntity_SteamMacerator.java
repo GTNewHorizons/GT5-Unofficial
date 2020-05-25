@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
-import static gregtech.api.GregTech_API.sBlockCasings4;
+import static gregtech.api.GregTech_API.sBlockCasings1;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -16,7 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_SteamMacerator extends GregtechMeta_SteamMultiBase {
 
-	private String mCasingName = "Robust Tungstensteel Machine Casing";
+	private String mCasingName = "Bronze Plated Bricks";
 	
 	public GregtechMetaTileEntity_SteamMacerator(String aName) {
 		super(aName);
@@ -37,12 +37,12 @@ public class GregtechMetaTileEntity_SteamMacerator extends GregtechMeta_SteamMul
 
 	@Override
 	protected GT_RenderedTexture getFrontOverlay() {
-		return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_MACERATOR);
+		return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR);
 	}
 
 	@Override
 	protected GT_RenderedTexture getFrontOverlayActive() {
-		return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE);
+		return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE);
 	}
 
 	@Override
@@ -53,16 +53,17 @@ public class GregtechMetaTileEntity_SteamMacerator extends GregtechMeta_SteamMul
 	@Override
 	public String[] getTooltip() {
 		if (mCasingName.contains("gt.blockcasings")) {
-			mCasingName = ItemList.Casing_RobustTungstenSteel.get(1).getDisplayName();
+			mCasingName = ItemList.Casing_BronzePlatedBricks.get(1).getDisplayName();
 		}    	
 		return new String[]{
                 "Controller Block for the Steam Macerator",
                 "Macerates "+getMaxParallelRecipes()+" ores at a time",
                 "Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
                 "1x Input Bus (Any casing)",
-                "1x Steam Hatch (Any casing)",
                 "1x Output Bus (Any casing)",
-                mCasingName+"s for the rest (16 at least!)"
+                "1x Steam Hatch (Any casing)",
+                mCasingName+" for the rest (14 at least!)",
+                TAG_HIDE_MAINT
                 };
 	}
 
@@ -93,9 +94,9 @@ public class GregtechMetaTileEntity_SteamMacerator extends GregtechMeta_SteamMul
 							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 
-							if (!isValidBlockForStructure(tTileEntity, 48, true, aBlock, aMeta,
-									sBlockCasings4, 0)) {
-								Logger.INFO("Bad centrifuge casing");
+							if (!isValidBlockForStructure(tTileEntity, 10, true, aBlock, aMeta,
+									sBlockCasings1, 10)) {
+								Logger.INFO("Bad macerator casing");
 								return false;
 							}
 							++tAmount;
@@ -104,8 +105,29 @@ public class GregtechMetaTileEntity_SteamMacerator extends GregtechMeta_SteamMul
 					}
 				}
 			}
-			return tAmount >= 10;
+			if (tAmount >= 14) {
+				fixAllMaintenanceIssue();
+			}
+			return tAmount >= 14;
 		}
+	}
+	
+	@Override
+	public ItemStack[] getOutputItems(GT_Recipe aRecipe) {
+		// Collect output item types
+		ItemStack[] tOutputItems = new ItemStack[1];
+		for (int h = 0; h < 1; h++) {
+			if (aRecipe.getOutput(h) != null) {
+				tOutputItems[h] = aRecipe.getOutput(h).copy();
+				tOutputItems[h].stackSize = 0;
+			}
+		}
+		return tOutputItems;
+	}
+	
+	@Override
+	public int getOutputCount(ItemStack[] aOutputs) {
+		return 1;
 	}
 
 

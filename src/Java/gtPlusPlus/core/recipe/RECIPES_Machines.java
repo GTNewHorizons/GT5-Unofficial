@@ -4,6 +4,7 @@ import static gtPlusPlus.core.lib.CORE.GTNH;
 
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.Loader;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -629,6 +630,35 @@ public class RECIPES_Machines {
 						RECIPE_SteamCondenser);
 			}
 
+			ItemStack aBronzeBricks = ItemUtils.simpleMetaStack(GregTech_API.sBlockCasings1, 10, 1);
+			// Steam Macerator Multi
+			RecipeUtils.addShapedGregtechRecipe(
+					aBronzeBricks, ALLOY.POTIN.getGear(1), aBronzeBricks,
+					aBronzeBricks, ALLOY.POTIN.getFrameBox(1), aBronzeBricks,
+					aBronzeBricks, ALLOY.POTIN.getGear(1), aBronzeBricks,
+					GregtechItemList.Controller_SteamMaceratorMulti.get(1));
+
+			// Steam Hatch
+			RecipeUtils.addShapedGregtechRecipe(
+					"plateBronze", "pipeMediumBronze", "plateBronze",
+					"plateBronze", GregtechItemList.GT_FluidTank_ULV.get(1), "plateBronze",
+					"plateBronze", "pipeMediumBronze", "plateBronze",
+					GregtechItemList.Hatch_Input_Steam.get(1));
+			
+			// Steam Input Bus
+			RecipeUtils.addShapedGregtechRecipe(
+					"plateBronze", ALLOY.POTIN.getPlate(1), "plateBronze",
+					"plateTin", ItemUtils.getSimpleStack(Blocks.chest), "plateTin",
+					"plateBronze", ALLOY.POTIN.getPlate(1), "plateBronze",
+					GregtechItemList.Hatch_Input_Bus_Steam.get(1));
+			
+			// Steam Output Bus
+			RecipeUtils.addShapedGregtechRecipe(
+					"plateBronze", "plateTin", "plateBronze",
+					ALLOY.POTIN.getPlate(1), ItemUtils.getSimpleStack(Blocks.chest), ALLOY.POTIN.getPlate(1),
+					"plateBronze", "plateTin", "plateBronze",
+					GregtechItemList.Hatch_Output_Bus_Steam.get(1));
+			
 
 			//RF Convertor
 			if (LoadedMods.CoFHCore && CORE.ConfigSwitches.enableMachine_RF_Convetor){

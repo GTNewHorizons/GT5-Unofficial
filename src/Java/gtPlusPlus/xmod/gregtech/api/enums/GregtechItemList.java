@@ -429,6 +429,11 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_Input_Cryotheum,
 	Hatch_Input_Pyrotheum,	
 	Hatch_Input_Naquadah, 
+	Hatch_Input_Steam,
+	
+	//Steam Multi Buses
+	Hatch_Input_Bus_Steam,
+	Hatch_Output_Bus_Steam,
 
 
 	//Battery hatches for PSS
