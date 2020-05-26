@@ -13,6 +13,7 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.BiomeEvent;
+import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GT_PollutionRenderer {
@@ -23,20 +24,21 @@ public class GT_PollutionRenderer {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void manipulateDensity(EntityViewRenderEvent.FogDensity event) {
-        double curr = getCurrentPollutionRenderRatio();
-        if (event.density != 0.1f || curr > 0D) {
-            float newDensity =  (float) (curr * (0.15D * getCurrentSourRainRenderRatio() + 0.1D));
-            if (event.density != 0.1f)
-                event.density = Math.max(event.density, newDensity);
-            else
-                event.density = newDensity;
-            event.setCanceled(true);
+    public void renderGTPollutionFog(EntityViewRenderEvent.RenderFogEvent event) {
+        if (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
+            return;
+
+        float sourRain = getCurrentSourRainRenderRatio();
+        if (sourRain > 0D) {
+            GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
+            GL11.glFogf(GL11.GL_FOG_DENSITY, sourRain);
         }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void manipulateColor(EntityViewRenderEvent.FogColors event) {
+        if (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
+            return;
         float[] nucolor = curveColorArray(
                 new float[]{
                         event.red,
@@ -44,9 +46,9 @@ public class GT_PollutionRenderer {
                         event.blue
                 },
                 new float[]{
-                        0.546875f,
-                        0.3125f,
-                        0.15625f
+                        0.375f,  //0.546875f,
+                        0.3125f, //0.3125f,
+                        0.1484f  //0.15625f
                 }
         );
         event.red = nucolor[0];
@@ -54,10 +56,10 @@ public class GT_PollutionRenderer {
         event.blue = nucolor[2];
     }
 
-    private static double getCurrentSourRainRenderRatio() {
-        double player = GT_Pollution.mPlayerPollution;
-        double limit = GT_Mod.gregtechproxy.mPollutionSourRainLimit;
-        return Math.min(1D, Math.max(player/limit, 0D));
+    private static float getCurrentSourRainRenderRatio() {
+        float player = GT_Pollution.mPlayerPollution;
+        float limit = GT_Mod.gregtechproxy.mPollutionSourRainLimit;
+        return Math.min(1f, Math.max(player/limit, 0f));
     }
 
     private static double getCurrentPollutionRenderRatio() {
@@ -103,16 +105,22 @@ public class GT_PollutionRenderer {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void manipulateGrassColor(BiomeEvent.GetGrassColor event) {
+        if (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
+            return;
         event.newColor = curveIntegerColor(event.originalColor,0xD2691E);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void manipulateWaterColor(BiomeEvent.GetWaterColor event) {
+        if (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
+            return;
         event.newColor = curveIntegerColor(event.originalColor,0x556B2F);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void manipulateFoliageColor(BiomeEvent.GetFoliageColor event) {
+        if (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
+            return;
         event.newColor = curveIntegerColor(event.originalColor,0xCD853F);
     }
 
@@ -120,14 +128,20 @@ public class GT_PollutionRenderer {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onRenderTick(TickEvent.RenderTickEvent event){
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc == null)
+            return;
+        EntityClientPlayerMP player = mc.thePlayer;
+        if (player == null || player.capabilities == null || player.capabilities.isCreativeMode)
+            return;
         if(pollutionLastTick != GT_Pollution.mPlayerPollution && event.side == Side.CLIENT) {
             pollutionLastTick = GT_Pollution.mPlayerPollution;
-            Minecraft mc = Minecraft.getMinecraft();
-            EntityClientPlayerMP player = mc.thePlayer;
-            double x = player.posX, z = player.posZ;
+            double x = player.posX,
+                   z = player.posZ;
 
-            //We want to overshoot here to really trigger new render, even on the farest away chunks!
-            double renderDistanceBlocks = (mc.gameSettings.renderDistanceChunks + 2) * 16D;
+            int renderDistanceBlocks = pollutionLastTick > GT_Mod.gregtechproxy.mPollutionSmogLimit ?
+                    25 :
+                    (mc.gameSettings.renderDistanceChunks + 2) * 16;
 
             //May be a bit crude, but should do the job on *every* height.
             player.worldObj.markBlockRangeForRenderUpdate((int) (x - renderDistanceBlocks), 0, (int) (z - renderDistanceBlocks),
