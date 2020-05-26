@@ -72,6 +72,41 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 	public Inventory_VolumetricFlaskSetter getInventory() {
 		return this.inventoryContents;
 	}
+	
+	private int getFlaskType(ItemStack aStack) {
+		if (VolumetricFlaskHelper.isNormalVolumetricFlask(aStack)) {
+			return 1;
+		}
+		else if (VolumetricFlaskHelper.isLargeVolumetricFlask(aStack)) {
+			return 2;
+		}
+		else if (VolumetricFlaskHelper.isGiganticVolumetricFlask(aStack)) {
+			return 3;
+		}
+		return 0;
+	}
+	
+	private int getCapacityForSlot(int aSlot) {
+		switch (aSlot) {
+			case 0: //16
+				return 16;
+			case 1: //36
+				return 36;
+			case 2: //144
+				return 144;
+			case 3: //432
+				return 432;
+			case 4: //576
+				return 576;
+			case 5: //720
+				return 720;
+			case 6: //864
+				return 864;
+			case 7: //Custom
+				return getCustomValue();
+		}
+		return 0;
+	}
 
 	public boolean addOutput() {		
 		ItemStack[] aInputs = this.getInventory().getInventory().clone();
@@ -93,8 +128,8 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 			ItemStack g = this.getStackInSlot(e);
 			int aSize = 0;
 			ItemStack aInputStack = null;	
-			int aTypeInSlot = 0;
-			if (aTypeInSlot >= 0 && g != null) {
+			int aTypeInSlot = getFlaskType(g);
+			if (aTypeInSlot > 0 && g != null) {
 				// No Existing Output
 				if (!hasOutput) {
 					aSize = g.stackSize;
@@ -103,10 +138,10 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 				// Existing Output
 				else {
 					ItemStack f = this.getStackInSlot(8);
-					int aTypeInCheckedSlot = 0;					
+					int aTypeInCheckedSlot = getFlaskType(f);					
 					// Check that the Circuit in the Output slot is not null and the same type as the circuit input.
-					if (aTypeInCheckedSlot >= 0 && (aTypeInSlot == aTypeInCheckedSlot) && f != null) {
-						if (g.getItem() == f.getItem() && f.getItemDamage() == e) {
+					if (aTypeInCheckedSlot > 0 && (aTypeInSlot == aTypeInCheckedSlot) && f != null) {
+						if (g.getItem() == f.getItem() && VolumetricFlaskHelper.getFlaskCapacity(f) == getCapacityForSlot(e)) {
 							aSize = f.stackSize + g.stackSize;							
 							if (aSize > 64) {
 								aInputStack = g.copy();
@@ -119,41 +154,21 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 				if (doAdd) {	
 					// Check Circuit Type					
 					ItemStack aOutput;
-					if (aTypeInSlot == 0) {
+					if (aTypeInSlot == 1) {
 						aOutput = VolumetricFlaskHelper.getVolumetricFlask(1);
+					}
+					else if (aTypeInSlot == 2) {
+						aOutput = VolumetricFlaskHelper.getLargeVolumetricFlask(1);
+					}
+					else if (aTypeInSlot == 3) {
+						aOutput = VolumetricFlaskHelper.getGiganticVolumetricFlask(1);
 					}
 					else {
 						aOutput = null;
 					}					
 					if (aOutput != null) {
 						aOutput.stackSize = aSize;
-						switch (e) {
-							case 0: //16
-								VolumetricFlaskHelper.setNewFlaskCapacity(aOutput, 16);
-								break;
-							case 1: //36
-								VolumetricFlaskHelper.setNewFlaskCapacity(aOutput, 36);
-								break;
-							case 2: //144
-								VolumetricFlaskHelper.setNewFlaskCapacity(aOutput, 144);
-								break;
-							case 3: //432
-								VolumetricFlaskHelper.setNewFlaskCapacity(aOutput, 432);
-								break;
-							case 4: //576
-								VolumetricFlaskHelper.setNewFlaskCapacity(aOutput, 576);
-								break;
-							case 5: //720
-								VolumetricFlaskHelper.setNewFlaskCapacity(aOutput, 720);
-								break;
-							case 6: //864
-								VolumetricFlaskHelper.setNewFlaskCapacity(aOutput, 864);
-								break;
-							case 7: //Custom
-								VolumetricFlaskHelper.setNewFlaskCapacity(aOutput, getCustomValue());
-								break;
-						}
-
+						VolumetricFlaskHelper.setNewFlaskCapacity(aOutput, getCapacityForSlot(e));
 						this.setInventorySlotContents(e, aInputStack);
 						this.setInventorySlotContents(Container_VolumetricFlaskSetter.SLOT_OUTPUT, aOutput);
 						return true;

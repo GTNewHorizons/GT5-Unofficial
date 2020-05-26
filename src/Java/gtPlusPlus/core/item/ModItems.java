@@ -983,9 +983,9 @@ public final class ModItems {
 		
 		if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
 			Item a8kFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", "Large Volumetric Flask", 8000);
-			Item a64kFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_64k", "Gigantic Volumetric Flask", 64000);
+			Item a64kFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 32000);
 	        GregtechItemList.VOLUMETRIC_FLASK_8k.set(a8kFlask);
-	        GregtechItemList.VOLUMETRIC_FLASK_64k.set(a64kFlask);
+	        GregtechItemList.VOLUMETRIC_FLASK_32k.set(a64kFlask);
 		}	
 		
 		itemBoilerChassis = new ItemBoilerChassis();
