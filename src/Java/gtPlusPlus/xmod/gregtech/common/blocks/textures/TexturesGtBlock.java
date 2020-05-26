@@ -214,7 +214,9 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Material_HastelloyN = Internal_Casing_HastelloyN;
 	private static final CustomIcon Internal_Casing_Fluid_IncoloyDS = new CustomIcon("TileEntities/MACHINE_CASING_FLUID_INCOLOY_DS");
 	public static final CustomIcon Casing_Material_Fluid_IncoloyDS = Internal_Casing_Fluid_IncoloyDS;
-	
+
+	private static final CustomIcon Internal_Casing_Laurenium = new CustomIcon("TileEntities/MACHINE_CASING_LAURENIUM");
+	public static final CustomIcon Casing_Material_Laurenium = Internal_Casing_Laurenium;
 	
 	//Trinium Alloys
 	public static final CustomIcon Casing_Trinium_Titanium = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TRINIUM_TITANIUM");

@@ -2,10 +2,13 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 
 import java.util.List;
 
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -40,6 +43,7 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Strong Bronze Machine Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Sturdy Aluminium Machine Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Vigorous Laurenium Machine Casing");
+		TAE.registerTexture(84, new GT_CopiedBlockTexture(this, 6, 2));
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Rugged Botmium Machine Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "");
@@ -67,9 +71,9 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
 		case 1:
 			return Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getIcon();
 		case 2:
-			return Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
+			return TexturesGtBlock.Casing_Material_Laurenium.getIcon();
 		case 3:
-			return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();			
+			return Textures.BlockIcons.MACHINE_HEATPROOFCASING.getIcon();			
 		}
 		return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 	}

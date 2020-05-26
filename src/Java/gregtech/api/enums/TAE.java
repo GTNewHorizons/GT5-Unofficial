@@ -42,7 +42,7 @@ public class TAE {
 		return registerTexture(64 + aRealID, gt_CopiedBlockTexture);
 	}
 
-	private static boolean registerTexture(int aID, GT_CopiedBlockTexture gt_CopiedBlockTexture) {
+	public static boolean registerTexture(int aID, GT_CopiedBlockTexture gt_CopiedBlockTexture) {
 		if (mFreeSlots.contains(aID)) {
 			mFreeSlots.remove(aID);
 			mTAE.put(aID, gt_CopiedBlockTexture);

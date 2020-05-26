@@ -818,7 +818,7 @@ public final class ALLOY {
 	public static final Material LAURENIUM = new Material(
 			"Laurenium", //Material Name
 			MaterialState.SOLID, //State
-			null, //Material Colour
+			new short[] {244, 168, 255, 0}, //Material Colour
 			6825, //Melting Point in C
 			11355, //Boiling Point in C
 			-1,
@@ -838,7 +838,7 @@ public final class ALLOY {
 	public static final Material BOTMIUM = new Material(
 			"Botmium", //Material Name
 			MaterialState.SOLID, //State
-			null, //Material Colour
+			new short[] {80, 160, 80, 0}, //Material Colour
 			8220, //Melting Point in C
 			10540, //Boiling Point in C
 			-1,
