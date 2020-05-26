@@ -268,6 +268,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 										//We are good to clean
 										if (toRemove > 0){
 											if (damageTurbineRotor() && damageAirFilter()){
+												Logger.INFO("Removing "+toRemove+" pollution");
 												removePollution(mSaveRotor ? (toRemove/2) : toRemove);	
 												Logger.WARNING("mNewPollution[4]:"+getCurrentChunkPollution());		
 											}

@@ -20,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 public class GUI_VolumetricFlaskSetter extends GuiContainer {
 
 	private GuiTextField mText;
+	private boolean mIsOpen = false;
 	private TileEntityVolumetricFlaskSetter mTile;
 	private Container_VolumetricFlaskSetter mContainer;
 	private static final ResourceLocation mGuiTextures = new ResourceLocation(CORE.MODID, "textures/gui/VolumetricFlaskSetter.png");
@@ -32,6 +33,7 @@ public class GUI_VolumetricFlaskSetter extends GuiContainer {
 
 	public void initGui(){
 		super.initGui();
+		mIsOpen = true;
 		this.mText = new GuiValueField(this.fontRendererObj, 26, 31, this.width / 2 - 62, this.height/2-52, 106, 14);
 		mText.setMaxStringLength(5);
 		mText.setText("0");
@@ -39,47 +41,82 @@ public class GUI_VolumetricFlaskSetter extends GuiContainer {
 	}
 
 	protected void keyTyped(char par1, int par2){
-		if (!isNumber(par1) && par2 != Keyboard.KEY_BACK && par2 != Keyboard.KEY_RETURN) {
-			mText.setFocused(false);
-			super.keyTyped(par1, par2);			
-		}
-		else {
-			if (par2 == Keyboard.KEY_RETURN) {
-				if (mText.isFocused()) {
-					mText.setFocused(false);
-				}
-			}
-			else if (par2 == Keyboard.KEY_BACK) {
-				String aCurrentText = getText();
-				if (aCurrentText.length() > 0) {
-					this.mText.setText(aCurrentText.substring(0, aCurrentText.length() - 1));	
-					if (getText().length() <= 0) {
-						this.mText.setText("0");
+		if (mIsOpen) {
+			if (mText.isFocused()) {
+				if (par2 == Keyboard.KEY_RETURN) {
+					if (mText.isFocused()) {
+						mText.setFocused(false);
 					}
 				}
-			}
-			else {
-				if (this.mText.getText().equals("0")) {
-					this.mText.setText(""+par1);
+				else if (par2 == Keyboard.KEY_BACK) {
+					String aCurrentText = getText();
+					if (aCurrentText.length() > 0) {
+						this.mText.setText(aCurrentText.substring(0, aCurrentText.length() - 1));	
+						if (getText().length() <= 0) {
+							this.mText.setText("0");
+						}
+						sendUpdateToServer();
+					}
 				}
 				else {
-					this.mText.textboxKeyTyped(par1, par2);					
-				}
-			}	
-			sendUpdateToServer();
+					if (isNumber(par1)) {
+						if (this.mText.getText().equals("0")) {
+							this.mText.setText(""+par1);
+							sendUpdateToServer();
+						}
+						else {
+							this.mText.textboxKeyTyped(par1, par2);		
+							sendUpdateToServer();			
+						}
+					}
+					else {
+						super.keyTyped(par1, par2);	
+					}
+				}	
+			}
+			else {
+				super.keyTyped(par1, par2);				
+			}
 		}
+	}
+
+	@Override
+	public void onGuiClosed() {
+		mIsOpen = false;
+		super.onGuiClosed();
 	}
 
 	public void updateScreen(){
 		super.updateScreen();
+		// Update Textbox to 0 if Empty
+		if (getText().length() <= 0) {
+			this.mText.setText("0");
+			sendUpdateToServer();
+		}
 		this.mText.updateCursorCounter();
+
+		// Check TextBox Value is correct
+		short aCustomValue = 0;		
+		if (getText().length() > 0) {
+			try {
+				aCustomValue = Short.parseShort(getText());
+				short aTileValue = ((Container_VolumetricFlaskSetter) mContainer).mCustomValue;
+				if (mContainer != null) {
+					if (aTileValue != aCustomValue){
+						this.mText.setText(""+aTileValue);
+					}
+				}
+			} catch (NumberFormatException ex) {
+
+			}
+		}	
 	}
 
 	public void drawScreen(int par1, int par2, float par3){
 		this.drawDefaultBackground();
 		super.drawScreen(par1, par2, par3);
-		
-		
+
+
 	}
 
 	protected void mouseClicked(int x, int y, int btn) {
@@ -104,23 +141,7 @@ public class GUI_VolumetricFlaskSetter extends GuiContainer {
 		this.fontRendererObj.drawString(I18n.format("6 = 864l", new Object[0]), 64, aYVal, 4210752);
 		this.fontRendererObj.drawString(I18n.format("3 = 432l", new Object[0]), 8, aYVal+=8, 4210752);
 		this.fontRendererObj.drawString(I18n.format("-> = Custom", new Object[0]), 59, aYVal, 4210752);
-		
-
-		// Check TextBox Value is correct
-		short aCustomValue = 0;
-		if (getText().length() > 0) {
-			try {
-				aCustomValue = Short.parseShort(getText());
-				short aTileValue = ((Container_VolumetricFlaskSetter) mContainer).mCustomValue;
-		        if (mContainer != null) {
-		            if (aTileValue != aCustomValue){
-						this.mText.setText(""+aTileValue);
-		            }
-		        }
-			} catch (NumberFormatException ex) {
-
-			}
-		}		
+	
 	}
 
 	@Override
@@ -140,16 +161,16 @@ public class GUI_VolumetricFlaskSetter extends GuiContainer {
 		return this.mText.getText();
 	}
 
-    protected void sendUpdateToServer() {
-        short aCustomValue = 0;
-        if (getText().length() > 0) {
-            try {
-                aCustomValue = Short.parseShort(getText());
-                PacketHandler.sendToServer(new Packet_VolumetricFlaskGui(mTile, aCustomValue));
-            } catch (NumberFormatException ex) {
- 
-            }
-        }
-    }
+	protected void sendUpdateToServer() {
+		short aCustomValue = 0;
+		if (getText().length() > 0) {
+			try {
+				aCustomValue = Short.parseShort(getText());
+				PacketHandler.sendToServer(new Packet_VolumetricFlaskGui(mTile, aCustomValue));
+			} catch (NumberFormatException ex) {
+
+			}
+		}
+	}
 
 }

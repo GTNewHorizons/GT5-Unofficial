@@ -15,6 +15,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISidedInventory {
 
@@ -39,7 +40,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 	
 	public void setCustomValue(int aVal) {
 		Logger.INFO("Old Value: "+this.aCustomValue);
-		this.aCustomValue = (short) MathUtils.balance(aVal, 1, Short.MAX_VALUE);
+		this.aCustomValue = (short) MathUtils.balance(aVal, 0, Short.MAX_VALUE);
 		Logger.INFO("New Value: "+this.aCustomValue);
 		markDirty();
 	}
@@ -58,14 +59,14 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
 	//Rename to hasCircuitToConfigure
 	public final boolean hasFlask() {
-		for (ItemStack i : this.getInventory().getInventory()) {
-			if (i == null) {
+		for (int i=0;i<this.getInventory().getInventory().length-1;i++) {
+			if (i == Container_VolumetricFlaskSetter.SLOT_OUTPUT) {
 				continue;
 			}
-			else {
+			if (this.getInventory().getInventory()[i] != null) {
 				return true;
 			}
-		}		
+		}	
 		return false;
 	}
 
@@ -105,10 +106,17 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 			case 7: //Custom
 				return getCustomValue();
 		}
-		return 0;
+		return 1000;
 	}
 
-	public boolean addOutput() {		
+	public boolean addOutput() {	
+		
+		// Don't do anything unless we have items
+		if (!hasFlask()) {
+			Logger.INFO("No Flasks.");
+			return false;
+		}
+		
 		ItemStack[] aInputs = this.getInventory().getInventory().clone();
 		//Check if there is output in slot.
 		Boolean hasOutput = false;
@@ -124,8 +132,16 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 			aSlotCount++;
 		}
 		for (int e : aValidSlots) {
+			
+			// Skip slot 7 (Custom) unless it has a value > 0
+			if (e == 7 && getCustomValue() <= 0) {
+				Logger.INFO("Skipping Custom slot as value <= 0");
+				continue;
+			}
+			
 			boolean doAdd = false;
 			ItemStack g = this.getStackInSlot(e);
+			FluidStack aInputFluidStack = VolumetricFlaskHelper.getFlaskFluid(g);
 			int aSize = 0;
 			ItemStack aInputStack = null;	
 			int aTypeInSlot = getFlaskType(g);
@@ -138,10 +154,11 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 				// Existing Output
 				else {
 					ItemStack f = this.getStackInSlot(8);
+					FluidStack aFluidInCheckedSlot = VolumetricFlaskHelper.getFlaskFluid(f);
 					int aTypeInCheckedSlot = getFlaskType(f);					
 					// Check that the Circuit in the Output slot is not null and the same type as the circuit input.
 					if (aTypeInCheckedSlot > 0 && (aTypeInSlot == aTypeInCheckedSlot) && f != null) {
-						if (g.getItem() == f.getItem() && VolumetricFlaskHelper.getFlaskCapacity(f) == getCapacityForSlot(e)) {
+						if (g.getItem() == f.getItem() && VolumetricFlaskHelper.getFlaskCapacity(f) == getCapacityForSlot(e) && ((aInputFluidStack == null && aFluidInCheckedSlot == null) || aInputFluidStack.isFluidEqual(aFluidInCheckedSlot))) {
 							aSize = f.stackSize + g.stackSize;							
 							if (aSize > 64) {
 								aInputStack = g.copy();
@@ -154,6 +171,10 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 				if (doAdd) {	
 					// Check Circuit Type					
 					ItemStack aOutput;
+					FluidStack aOutputFluid = null;
+					if (!VolumetricFlaskHelper.isFlaskEmpty(g)) {
+						aOutputFluid = aInputFluidStack.copy();
+					}
 					if (aTypeInSlot == 1) {
 						aOutput = VolumetricFlaskHelper.getVolumetricFlask(1);
 					}
@@ -168,7 +189,14 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 					}					
 					if (aOutput != null) {
 						aOutput.stackSize = aSize;
-						VolumetricFlaskHelper.setNewFlaskCapacity(aOutput, getCapacityForSlot(e));
+						int aCapacity = getCapacityForSlot(e);
+						VolumetricFlaskHelper.setNewFlaskCapacity(aOutput, aCapacity);
+						if (aOutputFluid != null) {
+							if (aOutputFluid.amount > aCapacity) {
+								aOutputFluid.amount = aCapacity;
+							}
+							VolumetricFlaskHelper.setFluid(aOutput, aOutputFluid);
+						}
 						this.setInventorySlotContents(e, aInputStack);
 						this.setInventorySlotContents(Container_VolumetricFlaskSetter.SLOT_OUTPUT, aOutput);
 						return true;
