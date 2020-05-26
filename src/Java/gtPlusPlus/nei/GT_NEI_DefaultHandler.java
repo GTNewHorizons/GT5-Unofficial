@@ -20,7 +20,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.*;
-
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.guihook.GuiContainerManager;
@@ -40,9 +40,9 @@ extends TemplateRecipeHandler {
 		GuiContainerManager.addTooltipHandler(new GT_RectHandler());
 	}
 
-	protected final CustomRecipeMap mRecipeMap;
+	protected final GT_Recipe_Map mRecipeMap;
 
-	public GT_NEI_DefaultHandler(final CustomRecipeMap tMap) {
+	public GT_NEI_DefaultHandler(final GT_Recipe_Map tMap) {
 		this.mRecipeMap = tMap;
 		this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), this.getOverlayIdentifier(), new Object[0]));
 		if (!NEI_GT_Config.sIsAdded) {

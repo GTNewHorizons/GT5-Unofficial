@@ -3190,5 +3190,43 @@ entity.miscutils.AusSpider.name=Forest Spider
 entity.miscutils.AusOctopus.name=Octopus
 container.EggBox=Egg Hatching Box
 
-//Added24/05/20
+//Added 24/05/20
 container.VolumetricFlaskSetter=Volumetric Flask Configurator
+
+//Added 26/05/20
+item.itemIngotLaurenium.name=Laurenium Ingot
+item.itemHotIngotLaurenium.name=Hot Laurenium Ingot
+item.itemDustLaurenium.name=Laurenium Dust
+item.itemDustTinyLaurenium.name=Tiny Pile of Laurenium Dust
+item.itemDustSmallLaurenium.name=Small Pile of Laurenium Dust
+item.itemNuggetLaurenium.name=Laurenium Nugget
+item.itemPlateLaurenium.name=Laurenium Plate
+item.itemPlateDoubleLaurenium.name=Double Laurenium Plate
+item.itemBoltLaurenium.name=Laurenium Bolt
+item.itemRodLaurenium.name=Laurenium Rod
+item.itemRodLongLaurenium.name=Long Laurenium Rod
+item.itemRingLaurenium.name=Laurenium Ring
+item.itemScrewLaurenium.name=Laurenium Screw
+item.itemRotorLaurenium.name=Laurenium Rotor
+item.itemGearLaurenium.name=Laurenium Gear
+item.itemCellLaurenium.name=Laurenium Cell
+tile.Block of Laurenium.name=Block of Laurenium
+tile.Laurenium Frame Box.name=Laurenium Frame Box
+item.itemIngotBotmium.name=Botmium Ingot
+item.itemHotIngotBotmium.name=Hot Botmium Ingot
+item.itemDustBotmium.name=Botmium Dust
+item.itemDustTinyBotmium.name=Tiny Pile of Botmium Dust
+item.itemDustSmallBotmium.name=Small Pile of Botmium Dust
+item.itemNuggetBotmium.name=Botmium Nugget
+item.itemPlateBotmium.name=Botmium Plate
+item.itemPlateDoubleBotmium.name=Double Botmium Plate
+item.itemBoltBotmium.name=Botmium Bolt
+item.itemRodBotmium.name=Botmium Rod
+item.itemRodLongBotmium.name=Long Botmium Rod
+item.itemRingBotmium.name=Botmium Ring
+item.itemScrewBotmium.name=Botmium Screw
+item.itemRotorBotmium.name=Botmium Rotor
+item.itemGearBotmium.name=Botmium Gear
+item.itemCellBotmium.name=Botmium Cell
+tile.Block of Botmium.name=Block of Botmium
+tile.Botmium Frame Box.name=Botmium Frame Box

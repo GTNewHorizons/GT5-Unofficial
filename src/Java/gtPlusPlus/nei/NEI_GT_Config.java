@@ -6,7 +6,6 @@ import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
-import gregtech.nei.GT_NEI_DefaultHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 
@@ -38,7 +37,7 @@ implements IConfigureNEI {
 		}
 		
 		// Custom Recipe maps
-		Logger.INFO("NEI Registration: "+CustomRecipeMap.sMappings.size()+" sMappings");
+		Logger.INFO("NEI Registration: "+GTPP_Recipe.GTPP_Recipe_Map.sMappings.size()+" sMappings");
 		for (final GTPP_Recipe_Map tMap : GTPP_Recipe.GTPP_Recipe_Map.sMappings) {
 			if (tMap.mNEIAllowed) {				
 				if (!mUniqueRecipeMapHandling.contains(tMap.mUnlocalizedName)) {

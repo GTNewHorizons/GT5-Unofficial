@@ -21,7 +21,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.data.ArrayUtils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -505,10 +504,10 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				Math.max(1, aEUt), 
 				aSpecialValue);   
 
-		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sCyclotronRecipes.mRecipeList.size();
+		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.mRecipeList.size();
 		int aSize2 = aSize;
-		GTPP_Recipe.GTPP_Recipe_Map.sCyclotronRecipes.add(aSpecialRecipe);
-		aSize = GTPP_Recipe.GTPP_Recipe_Map.sCyclotronRecipes.mRecipeList.size();
+		GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.add(aSpecialRecipe);
+		aSize = GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.mRecipeList.size();
 
 
 		/*GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.addRecipe(true, aInput, aOutputStack, null,
