@@ -749,7 +749,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				markDirty();
 			}			
 		}
-		Logger.INFO("SolidCasingTier: "+mSolidCasingTier);
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
 
@@ -1046,11 +1045,9 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			for (int aTier : mTieredBlockRegistry.keySet()) {
 				Triplet<Block, Integer, Integer> aData = mTieredBlockRegistry.get(aTier);
 				if (aData.getValue_1() == aInitStructureCheck && aData.getValue_2() == aInitStructureCheckMeta) {
-					Logger.INFO("Found Tier information for "+aTier);
 					return aTier;
 				}			
 			}
-			Logger.INFO("Could not find tier info for "+aInitStructureCheck.getLocalizedName()+"|"+aInitStructureCheckMeta);
 			return 0;
 		}
 		catch (Throwable t) {

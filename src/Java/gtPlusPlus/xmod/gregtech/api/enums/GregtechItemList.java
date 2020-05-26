@@ -94,6 +94,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//Debug
 	TESTITEM, 
+	
+	// Larger Volumetric Flasks
+	VOLUMETRIC_FLASK_8k,
+	VOLUMETRIC_FLASK_64k,
 
 	//RTG Fuels
 	Pellet_RTG_PU238, Pellet_RTG_SR90,

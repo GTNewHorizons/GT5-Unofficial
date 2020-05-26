@@ -4,8 +4,10 @@ import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 import static gtPlusPlus.core.lib.CORE.LOAD_ALL_CONTENT;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.items.GT_VolumetricFlask;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
@@ -100,6 +102,9 @@ import gtPlusPlus.everglades.GTplusplus_Everglades;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.cofh.HANDLER_COFH;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
+import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -976,8 +981,12 @@ public final class ModItems {
 		itemIonParticleBase = new IonParticles();
 		itemStandarParticleBase = new StandardBaseParticles();
 		
-		
-		
+		if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
+			Item a8kFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", "Large Volumetric Flask", 8000);
+			Item a64kFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_64k", "Gigantic Volumetric Flask", 64000);
+	        GregtechItemList.VOLUMETRIC_FLASK_8k.set(a8kFlask);
+	        GregtechItemList.VOLUMETRIC_FLASK_64k.set(a64kFlask);
+		}	
 		
 		itemBoilerChassis = new ItemBoilerChassis();
 		itemDehydratorCoilWire = new ItemDehydratorCoilWire();
