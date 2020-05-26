@@ -1331,7 +1331,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         }
     }
 
-    private static final HashMap<EntityPlayer, Integer> pollutionLastTick = new HashMap<>();
+    private static final WeakHashMap<EntityPlayer, Integer> pollutionLastTick = new WeakHashMap<>();
 
     @SubscribeEvent
     public void onPlayerTickEventServer(TickEvent.PlayerTickEvent aEvent) {
