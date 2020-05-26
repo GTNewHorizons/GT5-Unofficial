@@ -693,24 +693,26 @@ public static int mInvalidID = 1;
 			}
 			else {
 				Slots[i] = null;
-				Logger.RECIPE("Cleaned a "+o.getClass().getSimpleName()+" from recipe input.");
-				Logger.RECIPE("ERROR");
+				Logger.INFO("Cleaned a "+o.getClass().getSimpleName()+" from recipe input.");
+				Logger.INFO("ERROR");
 				CORE.crash("Bad Shaped Recipe.");				
 			}
 		}		
-		Logger.RECIPE("Using String: "+aFullString);
+		Logger.INFO("Using String: "+aFullString);
 		
 		String aRow1 = aFullString.substring(0, 3);
 		String aRow2 = aFullString.substring(3, 6);
 		String aRow3 = aFullString.substring(6, 9);	
-		Logger.RECIPE(""+aRow1);
-		Logger.RECIPE(""+aRow2);
-		Logger.RECIPE(""+aRow3);
+		Logger.INFO(""+aRow1);
+		Logger.INFO(""+aRow2);
+		Logger.INFO(""+aRow3);
 		
 		String[] aStringData = new String[] {aRow1, aRow2, aRow3};
 		Object[] aDataObject = new Object[19];
 		aDataObject[0] = aStringData;
 		int aIndex = 0;
+		
+		
 		for (int u=1;u<20;u+=2) {
 			if (aIndex == 9) {
 				break;
@@ -718,14 +720,15 @@ public static int mInvalidID = 1;
 			if (aFullString.charAt(aIndex) != (' ')) {
 				aDataObject[u] = aFullString.charAt(aIndex);
 				aDataObject[u+1] = Slots[aIndex];
-				Logger.RECIPE("("+aIndex+") "+aFullString.charAt(aIndex)+" | "+ (Slots[aIndex] instanceof ItemStack ? ItemUtils.getItemName((ItemStack) Slots[aIndex]) : Slots[aIndex] instanceof String ? (String) Slots[aIndex] : "Unknown"));
-				aIndex++;
+				Logger.INFO("("+aIndex+") "+aFullString.charAt(aIndex)+" | "+ (Slots[aIndex] instanceof ItemStack ? ItemUtils.getItemName((ItemStack) Slots[aIndex]) : Slots[aIndex] instanceof String ? (String) Slots[aIndex] : "Unknown"));
 			}
+			aIndex++;
 		}
 
-		Logger.RECIPE("Data Size: "+aDataObject.length);
+		Logger.INFO("Data Size: "+aDataObject.length);
 		aDataObject = ArrayUtils.removeNulls(aDataObject);
-		Logger.RECIPE("Clean Size: "+aDataObject.length);
+		Logger.INFO("Clean Size: "+aDataObject.length);
+		Logger.INFO("ArrayData: "+aDataObject.toString());
 		
 		ShapedOreRecipe aRecipe = new ShapedOreRecipe(aOutputStack, aDataObject);
 		
@@ -777,7 +780,7 @@ public static int mInvalidID = 1;
 				GameRegistry.addRecipe(mRecipe);
 			}
 			else {
-				Logger.RECIPE("[Fix] Invalid shapped recipe outputting "+mOutput != null ? mOutput.getDisplayName() : "Bad Output Item");
+				Logger.INFO("[Fix] Invalid shapped recipe outputting "+mOutput != null ? mOutput.getDisplayName() : "Bad Output Item");
 			}
 		}
 

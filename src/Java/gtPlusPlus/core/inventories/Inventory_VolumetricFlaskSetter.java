@@ -1,6 +1,6 @@
 package gtPlusPlus.core.inventories;
 
-import gtPlusPlus.core.slots.SlotIntegratedCircuit;
+import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -9,10 +9,10 @@ import net.minecraft.nbt.NBTTagList;
 
 public class Inventory_VolumetricFlaskSetter implements IInventory{
 
-	private final String name = "Circuit Programmer";
+	private final String name = "Volumetric Flask Setter";
 
 	/** Defining your inventory size this way is handy */
-	public static final int INV_SIZE = 26;
+	public static final int INV_SIZE = 9;
 
 	/** Inventory's size must be same as number of slots you add to the Container class */
 	private ItemStack[] inventory = new ItemStack[INV_SIZE];
@@ -121,7 +121,7 @@ public class Inventory_VolumetricFlaskSetter implements IInventory{
 	@Override
 	public int getInventoryStackLimit()
 	{
-		return 64;
+		return 16;
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class Inventory_VolumetricFlaskSetter implements IInventory{
 	 */
 	@Override
 	public boolean isItemValidForSlot(final int slot, final ItemStack itemstack) {
-		return SlotIntegratedCircuit.isItemValidForSlot(itemstack);
+		return VolumetricFlaskHelper.isVolumetricFlask(itemstack);
 	}
 
 }

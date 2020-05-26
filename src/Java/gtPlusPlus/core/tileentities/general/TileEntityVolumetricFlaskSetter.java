@@ -4,6 +4,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.container.Container_VolumetricFlaskSetter;
 import gtPlusPlus.core.inventories.Inventory_VolumetricFlaskSetter;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,21 +25,21 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 	public int locationY;
 	public int locationZ;
 	private int aCurrentMode = 0;
-	private int aCustomValue = 1000;
+	private short aCustomValue = 1000;
 
 	public TileEntityVolumetricFlaskSetter() {
 		this.inventoryContents = new Inventory_VolumetricFlaskSetter();
 		this.setTileLocation();
 	}
 	
-	public int getCustomValue() {
-		Logger.INFO("Value: "+this.aCustomValue);
+	public short getCustomValue() {
+		//Logger.INFO("Value: "+this.aCustomValue);
 		return this.aCustomValue;
 	}
 	
 	public void setCustomValue(int aVal) {
 		Logger.INFO("Old Value: "+this.aCustomValue);
-		this.aCustomValue = aVal;
+		this.aCustomValue = (short) MathUtils.balance(aVal, 1, Short.MAX_VALUE);
 		Logger.INFO("New Value: "+this.aCustomValue);
 		markDirty();
 	}
@@ -198,7 +199,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 		final NBTTagCompound chestData = new NBTTagCompound();
 		this.inventoryContents.writeToNBT(chestData);
 		nbt.setTag("ContentsChest", chestData);
-		nbt.setInteger("aCustomValue", aCustomValue);
+		nbt.setShort("aCustomValue", aCustomValue);
 		if (this.hasCustomInventoryName()) {
 			nbt.setString("CustomName", this.getCustomName());
 		}
@@ -210,7 +211,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 		super.readFromNBT(nbt);
 		// Utils.LOG_WARNING("Trying to read NBT data from TE.");
 		this.inventoryContents.readFromNBT(nbt.getCompoundTag("ContentsChest"));
-		this.aCustomValue = nbt.getInteger("aCustomValue");
+		this.aCustomValue = nbt.getShort("aCustomValue");
 		if (nbt.hasKey("CustomName", 8)) {
 			this.setCustomName(nbt.getString("CustomName"));
 		}

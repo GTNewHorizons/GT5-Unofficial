@@ -78,7 +78,7 @@ public class VolumetricFlaskSetter extends BasicTileBlockWithTooltip {
 				if ((te != null) && (te instanceof TileEntityVolumetricFlaskSetter)){
 					player.openGui(GTplusplus.instance, GuiHandler.GUI18, world, x, y, z);
 					TileEntityVolumetricFlaskSetter aTile = (TileEntityVolumetricFlaskSetter) te;
-					new Packet_VolumetricFlaskGui2(aTile, aTile.getCustomValue());					
+					//new Packet_VolumetricFlaskGui2(aTile, aTile.getCustomValue());					
 					return true;
 				}
 			}

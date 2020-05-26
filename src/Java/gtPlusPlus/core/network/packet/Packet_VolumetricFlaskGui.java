@@ -115,7 +115,7 @@ public class Packet_VolumetricFlaskGui extends AbstractServerMessageHandler<Pack
 		if(te != null) {
 			Logger.INFO("Setting value on tile. "+message.getCustomValue());
 			te.setCustomValue(message.getCustomValue());
-			return new Packet_VolumetricFlaskGui2(te, message.getCustomValue());	
+			//return new Packet_VolumetricFlaskGui2(te, message.getCustomValue());	
 		}
 		return null;
 	}

@@ -176,7 +176,7 @@ public class GuiHandler implements IGuiHandler {
 			}  else if (ID == GUI17) {
 				return new GUI_EggBox(player.inventory, (TileEntityEggBox) te);
 			}   else if (ID == GUI18) {
-				return new GUI_VolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te);
+				return new GUI_VolumetricFlaskSetter(new Container_VolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te));
 			}
 		}
 
