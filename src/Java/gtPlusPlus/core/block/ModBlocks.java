@@ -50,6 +50,7 @@ public final class ModBlocks {
 	public static Block blockCasings5Misc;	
 	public static Block blockCasingsTieredGTPP;
 	public static Block blockSpecialMultiCasings;
+	public static Block blockCustomMachineCasings;
 	
 	public static Block blockMetaTileEntity;
 	public static Block blockHeliumGenerator;

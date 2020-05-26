@@ -396,6 +396,14 @@ public enum GregtechItemList implements GregtechItemContainer {
 	// Big Steam Macerator
 	Controller_SteamMaceratorMulti,
 
+	// Custom Machine Casings
+	Casing_Machine_Custom_1,
+	Casing_Machine_Custom_2,
+	Casing_Machine_Custom_3,
+	Casing_Machine_Custom_4,
+	Casing_Machine_Custom_5,
+	Casing_Machine_Custom_6,
+	
 
 	//----------------------------------------------------------------------------
 

@@ -1,13 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
-import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks2;
-import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks3;
-import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks4;
-import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks5;
-import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaSpecialMultiCasings;
-import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaTieredCasingBlocks1;
+import gtPlusPlus.xmod.gregtech.common.blocks.*;
 
 public class Gregtech_Blocks {
 
@@ -22,6 +16,7 @@ public class Gregtech_Blocks {
 
 		ModBlocks.blockCasingsTieredGTPP = new GregtechMetaTieredCasingBlocks1();
 		ModBlocks.blockSpecialMultiCasings = new GregtechMetaSpecialMultiCasings();
+		ModBlocks.blockCustomMachineCasings = new GregtechMetaSpecialMachineCasings();
 
 	}
 }

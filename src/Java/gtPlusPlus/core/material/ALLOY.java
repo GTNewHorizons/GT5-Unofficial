@@ -813,6 +813,44 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().RADON, 2),
 					new MaterialStack(ELEMENT.getInstance().GERMANIUM, 2),
 			});
+	
+	//Alkalus Alloy
+	public static final Material LAURENIUM = new Material(
+			"Laurenium", //Material Name
+			MaterialState.SOLID, //State
+			null, //Material Colour
+			6825, //Melting Point in C
+			11355, //Boiling Point in C
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ALLOY.EGLIN_STEEL, 40),
+					new MaterialStack(ELEMENT.getInstance().INDIUM, 10),
+					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 20),
+					new MaterialStack(ELEMENT.getInstance().DYSPROSIUM, 5),
+					new MaterialStack(ELEMENT.getInstance().RHENIUM, 5),
+			});
+	
+	
+	//Bot Alloy
+	public static final Material BOTMIUM = new Material(
+			"Botmium", //Material Name
+			MaterialState.SOLID, //State
+			null, //Material Colour
+			8220, //Melting Point in C
+			10540, //Boiling Point in C
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ALLOY.NITINOL_60, 2),
+					new MaterialStack(ELEMENT.getInstance().OSMIUM, 12),
+					new MaterialStack(ELEMENT.getInstance().RUTHENIUM, 12),
+					new MaterialStack(ELEMENT.getInstance().THALLIUM, 6),
+			});
 
 	//Titansteel
 	public static final Material TITANSTEEL = new Material(
