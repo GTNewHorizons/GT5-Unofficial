@@ -33,9 +33,11 @@ public class GUI_VolumetricFlaskSetter extends GuiContainer {
 
 	public void initGui(){
 		super.initGui();
+		Keyboard.enableRepeatEvents(true);
 		mIsOpen = true;
 		this.mText = new GuiValueField(this.fontRendererObj, 26, 31, this.width / 2 - 62, this.height/2-52, 106, 14);
 		mText.setMaxStringLength(5);
+		mText.setEnableBackgroundDrawing(true);
 		mText.setText("0");
 		mText.setFocused(true);
 	}
@@ -83,7 +85,10 @@ public class GUI_VolumetricFlaskSetter extends GuiContainer {
 	@Override
 	public void onGuiClosed() {
 		mIsOpen = false;
+		mText.setEnabled(false);
+		mText.setVisible(false);
 		super.onGuiClosed();
+		Keyboard.enableRepeatEvents(false);
 	}
 
 	public void updateScreen(){
@@ -120,8 +125,10 @@ public class GUI_VolumetricFlaskSetter extends GuiContainer {
 	}
 
 	protected void mouseClicked(int x, int y, int btn) {
-		super.mouseClicked(x, y, btn);
-		this.mText.mouseClicked(x, y, btn);
+		if (mIsOpen) {
+			super.mouseClicked(x, y, btn);
+			this.mText.mouseClicked(x, y, btn);
+		}
 	}
 
 
@@ -141,7 +148,7 @@ public class GUI_VolumetricFlaskSetter extends GuiContainer {
 		this.fontRendererObj.drawString(I18n.format("6 = 864l", new Object[0]), 64, aYVal, 4210752);
 		this.fontRendererObj.drawString(I18n.format("3 = 432l", new Object[0]), 8, aYVal+=8, 4210752);
 		this.fontRendererObj.drawString(I18n.format("-> = Custom", new Object[0]), 59, aYVal, 4210752);
-	
+
 	}
 
 	@Override

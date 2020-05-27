@@ -3,6 +3,8 @@ package gtPlusPlus.core.handler;
 import java.util.HashMap;
 import java.util.Map;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.recipe.common.CI;
@@ -57,45 +59,45 @@ public class BookHandler {
 				"Power Storage & You [Version 0.64]",
 				"Alkalus", 
 				new String[] {
-								//Page 1
-								"So, when it comes to power storage you relaly have three seperate options:\n"+
-								" \n"+
-								"Battery Buffers,\n"+
-								"Energy Buffers,\n"+
-								"The Power Sub-Station\n",
-								//Page 2
-								"Battery Buffer\n" + 
-										" \n" +
-								"Is rather portable. Allowing you to throw set one up and insert batteries where ever you may need."+"\n"+
-								"They output 1A for each battery stored inside, upto a maximum of 16A.",
-								//Page 3
-								"Energy Buffer\n" + 
-										" \n" +
-								"Is a more optimal choice for storage in your base. Once placed down, they cannot be moved without losing all stored power."+"\n"+
-								"Energy Buffers can output 4A from the output side, however accept 16A as input.",
-								//Page 4
-								"The Power Sub-Station"+
-										" \n"+
-								"Is used for storing Insane amounts of power later game."+"\n"+
-								"Consumes 2% of the average voltage of all energy type hatches every tick."+"\n",
-								//Page 5
-								"Allows Insertation/Removal of power from the rear face of the controller, swap with a screwdriver."+"\n"+
-								"Variable Height Structure, between 4-16Y. Inserted Redox Cells dictate max energy tier of structure."+"\n",
-								//Page 6
-								"Redox Cells cannot be placed into the Top or Bottom layer and only take up 3xhx3 internally."+"\n"+
-								"Different Tier cells CANNOT be mixed together."+"\n",
-								//Page 7
-								"All Hatches Must be HV at a Minimum, this minimum tier is in place to stop people abusing ULV/LV hatches to lower the avg/t."+"\n"+
-								"Currently the GUI will NOT display anything at all until the structure forms, this is a known bug."+"\n",
-								//Page 8
-								"Valid Hatches:\n"+
-								"Energy Hatch,\n"+
-								"Dynamo Hatch,\n"+
-								"Charging Bus,\n"+
-								"Discharging Bus,\n"+
-								"Dynamo Buffer,\n"+
-								"Multi-Amp Dynamo Hatch.\n\n\n"+
-								"Structure MUST contain at least one energy input and one energy output hatch."
+						//Page 1
+						"So, when it comes to power storage you relaly have three seperate options:\n"+
+						" \n"+
+						"Battery Buffers,\n"+
+						"Energy Buffers,\n"+
+						"The Power Sub-Station\n",
+						//Page 2
+						"Battery Buffer\n" + 
+						" \n" +
+						"Is rather portable. Allowing you to throw set one up and insert batteries where ever you may need."+"\n"+
+						"They output 1A for each battery stored inside, upto a maximum of 16A.",
+						//Page 3
+						"Energy Buffer\n" + 
+						" \n" +
+						"Is a more optimal choice for storage in your base. Once placed down, they cannot be moved without losing all stored power."+"\n"+
+						"Energy Buffers can output 4A from the output side, however accept 16A as input.",
+						//Page 4
+						"The Power Sub-Station"+
+						" \n"+
+						"Is used for storing Insane amounts of power later game."+"\n"+
+						"Consumes 2% of the average voltage of all energy type hatches every tick."+"\n",
+						//Page 5
+						"Allows Insertation/Removal of power from the rear face of the controller, swap with a screwdriver."+"\n"+
+						"Variable Height Structure, between 4-16Y. Inserted Redox Cells dictate max energy tier of structure."+"\n",
+						//Page 6
+						"Redox Cells cannot be placed into the Top or Bottom layer and only take up 3xhx3 internally."+"\n"+
+						"Different Tier cells CANNOT be mixed together."+"\n",
+						//Page 7
+						"All Hatches Must be HV at a Minimum, this minimum tier is in place to stop people abusing ULV/LV hatches to lower the avg/t."+"\n"+
+						"Currently the GUI will NOT display anything at all until the structure forms, this is a known bug."+"\n",
+						//Page 8
+						"Valid Hatches:\n"+
+						"Energy Hatch,\n"+
+						"Dynamo Hatch,\n"+
+						"Charging Bus,\n"+
+						"Discharging Bus,\n"+
+						"Dynamo Buffer,\n"+
+						"Multi-Amp Dynamo Hatch.\n\n\n"+
+						"Structure MUST contain at least one energy input and one energy output hatch."
 				});
 
 		//Test Novel
@@ -103,7 +105,7 @@ public class BookHandler {
 				"Manual_Modular_Bauble", "How to: Modular Baubles", "Alkalus", 
 				new String[] {
 						"Concept: This idea came from wanting flexibility. \n" +
-						"First step, Build a Modularity table to begin customisation of your Bauble. \n"
+								"First step, Build a Modularity table to begin customisation of your Bauble. \n"
 								+ " After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level/100.",
 								"Defence:\n"
 										+ "Can be upgraded by combining metal plates with the bauble. \n"
@@ -128,7 +130,7 @@ public class BookHandler {
 						"[Fluid Work] Mode B - Allows the multiblock to function as a Fermenter, a Fluid Extractor or an Extractor. To allow a hatch to run in Fermenter mode, insert a No. 20 circuit. For Fluid Extractor, use No. 21 and for Extractor use No. 22.",
 						"[Misc. Work] Mode C - Allows the multiblock to function as a Laser Engraver, an Autoclave or a Fluid Solidifier. To allow a hatch to run in Laser Engraver mode, insert a No. 20 circuit. For Autoclave, use No. 21 and for Solidifier use No. 22.",
 				});
-		
+
 		book_NuclearManual = writeBookTemplate(
 				"Manual_NuclearStuff_1", "Nuclear Chemistry [FFPP]", "Alkalus", 
 				new String[] {
@@ -178,20 +180,167 @@ public class BookHandler {
 						"Processing Plant"+
 						"----------------------\n"+
 						"This structure is used to produce the Molten Salts required to run a Liquid Fluorine Thorium Reactor [LFTR]."
-						
+
 				});
-		
+
+
 		book_MultiChemicalPlant = writeBookTemplate(
 				"book_Multi_ChemicalPlant", "Chemical Plant Manual", "Alkalus", 
 				new String[] {
-						"This Multiblock, depending upon the mode used, can function as a variety of different machines. The idea behind this, was that most of these machines are rather niche compared to any others, as such, not used often.",
-						"To build, you need to construct a hollow 3x3x3 structure made from Multi-Use casings, With a minimum of 6. Any Casing position can be substituted out with an Input Hatch/Bus, an Output Hatch/Bus, Muffler, Maint. Hatch or Energy Injector Hatch.",
-						"The Mode can be set by using a Screwdriver on the controller block. Each mode allows the use of Numbered Circuits, to allow a different machine 'type' for each input bus.",
-						"[Metal Work] Mode A - Allows the multiblock to function as a Compressor, a Lathe or an Electro-Magnet. To allow a hatch to run in Compressor mode, insert a No. 20 circuit. For Lathe, use No. 21 and for Electro-Magnet use No. 22.",
-						"[Fluid Work] Mode B - Allows the multiblock to function as a Fermenter, a Fluid Extractor or an Extractor. To allow a hatch to run in Fermenter mode, insert a No. 20 circuit. For Fluid Extractor, use No. 21 and for Extractor use No. 22.",
-						"[Misc. Work] Mode C - Allows the multiblock to function as a Laser Engraver, an Autoclave or a Fluid Solidifier. To allow a hatch to run in Laser Engraver mode, insert a No. 20 circuit. For Autoclave, use No. 21 and for Solidifier use No. 22.",
+
+						// Intro
+						"This book will explain how the Chemical Plant is constructed, which blocks are valid to upgrade it and also how the upgrades work.",
+
+						// Info
+						"Solid Casings = Plant tier" + "\n" +
+						"Machine Casings = Hatch tier" + "\n" +
+						"Higher tier coils  More Speed" + "\n" +
+						"T1 50% , T2 100% , T3 150%, etc" + "\n",
+						
+						"Higher tier pipe casings boost parallel"+ "\n" + 
+						"and reduce catalyst consumption" + "\n" +
+						"+2 parallel per tier, 20% extra chance of"+ "\n" + 
+						"not damaging catalyst per tier" + "\n",
+						
+						
+						// Machine Casings
+						"Valid Solid Machine Casings:" + "\n" +
+						"0 - Strong Bronze" + "\n" +
+						"1 - Solid Steel" + "\n" +
+						"2 - Sturdy Aluminium" + "\n" +
+						"3 - Clean Stainless Steel" + "\n" +
+						"4 - Stable Titanium" + "\n" +
+						"5 - Robust Tungstensteel" + "\n" +
+						"6 - Vigorous Laurenium" + "\n" +
+						"7 - Rugged Botmium",
+
+						// Machine Casings
+						"Valid Tiered Machine Casings:" + "\n" + "\n" +
+						"1 - " + GT_Values.VN[0] + "\n" +
+						"2 - " + GT_Values.VN[1] + "\n" +
+						"3 - " + GT_Values.VN[2] + "\n" +
+						"4 - " + GT_Values.VN[3] + "\n" +
+						"5 - " + GT_Values.VN[4] + "\n" +
+						"6 - " + GT_Values.VN[5] + "\n" +
+						"7 - " + GT_Values.VN[6] + "\n" +
+						"8 - " + GT_Values.VN[7] + "\n" +
+						"9 - " + GT_Values.VN[8] + "\n" +
+						"10 - " + GT_Values.VN[9],
+						
+						// Pipe Casings
+						"Valid Pipe Casings:" + "\n" + "\n" +
+						"1 - Bronze" + "\n" +
+						"2 - Steel" + "\n" +
+						"3 - Titanium" + "\n" +
+						"4 - Tungstensteel",						
+
+						//Coils
+						"Valid Coils:" + "\n" + "\n" +
+						"1 - Cupronickel" + "\n" +
+						"2 - Kanthal" + "\n" +
+						"3 - Nichrome" + "\n" +
+						"4 - Tungstensteel" + "\n" +
+						"5 - HSS-G" + "\n" +
+						"6 - Naquadah" + "\n" +
+						"7 - Naquadah Alloy",
+
+						// Requirements
+						"Multiblock Requirements:" + "\n" + "\n" +
+						"27x Coils" + "\n" +
+						"18x Pipe Casings" + "\n" +
+						"57x Tiered Machine Casings" + "\n" +
+						"80+ Solid Casings",
+
+						// Construction Guide
+						"Construction Guide Pt1:" + "\n"  + "\n" +
+						"Controller is placed on a middle casing in the bottom layer" + "\n" +
+						"Hatches can only be placed on the bottom layer edges",
+
+						"Construction Guide Pt2:" + "\n"  + "\n" +
+						"7x7x7 Hollow frame of solid casings" + "\n" +
+						"5x1x5 layer of solid casings (fills in top layer)" + "\n" +
+						"5x1x5 layer of machine casings (fills in bottom layer)",
+						
+						"Construction Guide Pt3:" + "\n"  +
+						"In the central 3x5x3:" + "\n" +
+						"3x1x3 layer of Coils, surrounded by ring of Machine Casings" + "\n" +
+						"3x1x3 layer of Pipe Casings" + "\n" +
+						"3x1x3 layer of Coils" + "\n" +
+						"3x1x3 layer of Pipe Casings" + "\n" +
+						"3x1x3 layer of Coils, surrounded by ring of Machine Casings",
+
+								// Construction Guide Info
+								"Information:" + "\n"  + "\n" +
+								"A = Air" + "\n" +
+								"X = Solid Casing" + "\n" +
+								"M = Machine Casing" + "\n" +
+								"P = Pipe Casing" + "\n" +
+								"C = Coil Casing",
+
+								"Layer 1:" + "\n"  + "\n" +
+										"XXXXXXX" + "\n" +
+										"XMMMMMX" + "\n" +
+										"XMMMMMX" + "\n" +
+										"XMMMMMX" + "\n" +
+										"XMMMMMX" + "\n" +
+										"XMMMMMX" + "\n" +
+										"XXXXXXX",
+
+								"Layer 2:" + "\n"  + "\n" +
+										"AAAAAAA" + "\n" +
+										"AMMMMMA" + "\n" +
+										"AMCCCMA" + "\n" +
+										"AMCCCMA" + "\n" +
+										"AMCCCMA" + "\n" +
+										"AMMMMMA" + "\n" +
+										"AAAAAAA",
+										
+								"Layer 3:" + "\n"  + "\n" +
+										"AAAAAAA" + "\n" +
+										"AAAAAAA" + "\n" +
+										"AAPPPAA" + "\n" +
+										"AAPPPAA" + "\n" +
+										"AAPPPAA" + "\n" +
+										"AAAAAAA" + "\n" +
+										"AAAAAAA",
+												
+								"Layer 4:" + "\n"  + "\n" +
+										"AAAAAAA" + "\n" +
+										"AAAAAAA" + "\n" +
+										"AACCCAA" + "\n" +
+										"AACCCAA" + "\n" +
+										"AACCCAA" + "\n" +
+										"AAAAAAA" + "\n" +
+										"AAAAAAA",
+														
+								"Layer 5:" + "\n"  + "\n" +
+										"AAAAAAA" + "\n" +
+										"AAAAAAA" + "\n" +
+										"AAPPPAA" + "\n" +
+										"AAPPPAA" + "\n" +
+										"AAPPPAA" + "\n" +
+										"AAAAAAA" + "\n" +
+										"AAAAAAA",
+										
+								"Layer 6:" + "\n"  + "\n" +
+										"AAAAAAA" + "\n" +
+										"AMMMMMA" + "\n" +
+										"AMCCCMA" + "\n" +
+										"AMCCCMA" + "\n" +
+										"AMCCCMA" + "\n" +
+										"AMMMMMA" + "\n" +
+										"AAAAAAA",
+						
+								"Layer 7:" + "\n"  + "\n" +
+										"XXXXXXX" + "\n" +
+										"XXXXXXX" + "\n" +
+										"XXXXXXX" + "\n" +
+										"XXXXXXX" + "\n" +
+										"XXXXXXX" + "\n" +
+										"XXXXXXX" + "\n" +
+										"XXXXXXX",
 				});
-		
+
 	}
 
 
@@ -218,6 +367,13 @@ public class BookHandler {
 		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Tin", 1)}, ItemBookWritten_MultiPowerStorage);
 		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1)}, ItemBookWritten_NuclearManual);
 		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Copper", 1)}, ItemBookWritten_MultiChemicalPlant);
+
+		for (int i=0;i<mBookKeeperCount;i++){
+			ItemStack bookstack = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, i, 1);
+			GT_OreDictUnificator.registerOre("bookWritten", bookstack);
+			GT_OreDictUnificator.registerOre("craftingBook", bookstack);
+		}
+
 	}
 
 	private static BookTemplate writeBookTemplate(String aMapping, String aTitle, String aAuthor, String[] aPages){

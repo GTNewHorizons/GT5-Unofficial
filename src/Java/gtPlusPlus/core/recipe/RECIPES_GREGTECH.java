@@ -39,6 +39,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
+import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -151,10 +152,10 @@ public class RECIPES_GREGTECH {
 						FluidUtils.getAir(8000)
 				},
 				new ItemStack[] {
-						FLUORIDES.FLUORITE.getOre(16),
 						FLUORIDES.FLUORITE.getOre(8),
-						FLUORIDES.FLUORITE.getOre(8),
-						FLUORIDES.FLUORITE.getOre(8),
+						FLUORIDES.FLUORITE.getOre(4),
+						FLUORIDES.FLUORITE.getOre(4),
+						FLUORIDES.FLUORITE.getOre(4),
 				},
 				new FluidStack[] {
 									
@@ -179,10 +180,10 @@ public class RECIPES_GREGTECH {
 						FluidUtils.getAir(12000)
 				},
 				new ItemStack[] {
-						FLUORIDES.FLUORITE.getOre(8),
 						FLUORIDES.FLUORITE.getOre(4),
-						FLUORIDES.FLUORITE.getOre(4),
-						FLUORIDES.FLUORITE.getOre(4),
+						FLUORIDES.FLUORITE.getOre(2),
+						FLUORIDES.FLUORITE.getOre(2),
+						FLUORIDES.FLUORITE.getOre(2),
 				},
 				new FluidStack[] {
 									
@@ -260,6 +261,26 @@ public class RECIPES_GREGTECH {
 				20 * 300, 
 				MaterialUtils.getVoltageForTier(4), 
 				4);
+		
+		// Modify Sapling into Pine Sapling
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(6),
+						ItemUtils.getSimpleStack(Blocks.sapling, 32)
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack("fluid.geneticmutagen", 2000),
+						FluidUtils.getDistilledWater(8000)
+				},
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Pine, 16)
+				},
+				new FluidStack[] {
+						
+				},
+				120 * 20,
+				64,
+				2);
 
 	}
 

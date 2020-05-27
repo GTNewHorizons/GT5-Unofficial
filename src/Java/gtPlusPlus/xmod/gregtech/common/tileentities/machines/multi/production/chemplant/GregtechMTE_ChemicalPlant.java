@@ -108,28 +108,8 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		return new String[] {
 				"Controller Block for the Chemical Plant",
 				"Heavy Industry, now right at your doorstep!",
-				"Solid Casings dictate Chemical Plant tier",
-				"Machine Casings dictate Hatch tier",			
-				"Higher tier coils speed up the machine",
-				"CuNi 50% , FeAlCr 100% , Ni4Cr 150% , ...",
-				"Higher tier pipe casings boost parallel and reduce catalyst consumption",
-				"+2 parallel per tier, 20% extra chance of not damaging catalyst per tier",
-				"27x Coils",
-				"18x Pipe Casings",
-				"57x Tiered Machine Casings",
-				"80+ Solid Casings",
-				"Construction Guide:",
-				"Controller is placed on a middle casing in the bottom layer",
-				"Hatches can only be placed on the bottom layer edges",
-				"7x7x7 Hollow frame of solid casings",
-				"5x1x5 layer of solid casings (fills in top layer)",
-				"5x1x5 layer of machine casings (fills in bottom layer)",
-				"In the central 3x5x3:",
-				"3x1x3 layer of Coils, surrounded by ring of Machine Casings",
-				"3x1x3 layer of Pipe Casings",
-				"3x1x3 layer of Coils",
-				"3x1x3 layer of Pipe Casings",
-				"3x1x3 layer of Coils, surrounded by ring of Machine Casings",
+				"Please read to user manual for more information on construction & usage",
+				TAG_HIDE_MAINT
 		};
 	}
 

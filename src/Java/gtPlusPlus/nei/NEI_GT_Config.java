@@ -19,9 +19,11 @@ implements IConfigureNEI {
 	@Override
 	public synchronized void loadConfig() {
 
+		mUniqueRecipeMapHandling.add(CustomRecipeMap.sFissionFuelProcessing.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sChemicalPlantRecipes.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sOreMillRecipes.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sFlotationCellRecipes.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sChemicalDehydratorRecipes.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sVacuumFurnaceRecipes.mUnlocalizedName);
 		
 		// Custom Recipe Maps
@@ -78,6 +80,10 @@ implements IConfigureNEI {
 		new GT_NEI_FlotationCell();
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes.mNEIName);
 		new GT_NEI_VacFurnace();
+		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes.mNEIName);
+		new GT_NEI_Dehydrator();
+		Logger.INFO("NEI Registration: Registering NEI handler for "+CustomRecipeMap.sFissionFuelProcessing.mNEIName);
+		new GT_NEI_RFPP();
 		Logger.INFO("NEI Registration: Registering NEI handler for "+DecayableRecipeHandler.mNEIName);
 		API.registerRecipeHandler(new DecayableRecipeHandler());
 		API.registerUsageHandler(new DecayableRecipeHandler());
