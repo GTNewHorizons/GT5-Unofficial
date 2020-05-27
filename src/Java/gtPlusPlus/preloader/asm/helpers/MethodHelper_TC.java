@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.Preloader_Logger;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import thaumcraft.api.ThaumcraftApi;
@@ -23,12 +22,12 @@ public class MethodHelper_TC {
         if (item == null) {
         	return null;
         }
-        Preloader_Logger.INFO("Generating aspect tags for "+item.getUnlocalizedName()+":"+meta);
+        //Preloader_Logger.INFO("Generating aspect tags for "+item.getUnlocalizedName()+":"+meta);
         try {
             tmeta = ((new ItemStack(item, 1, meta).getItem().isDamageable() || !new ItemStack(item, 1, meta).getItem().getHasSubtypes()) ? 32767 : meta);
         }
         catch (Exception ex) {}
-        Preloader_Logger.INFO("Set Meta to "+tmeta);
+        //Preloader_Logger.INFO("Set Meta to "+tmeta);
         if (ThaumcraftApi.exists(item, tmeta)) {
             return ThaumcraftCraftingManager.getObjectTags(new ItemStack(item, 1, tmeta));
         }
