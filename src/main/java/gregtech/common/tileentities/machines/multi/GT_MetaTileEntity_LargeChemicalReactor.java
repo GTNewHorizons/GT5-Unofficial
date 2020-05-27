@@ -115,30 +115,24 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_Mu
 		FluidStack[] fluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
 
 		if (inputs.length > 0 || fluids.length > 0) {
-			long voltage = getMaxInputVoltage();
-			byte tier = (byte) Math.max(1, GT_Utility.getTier(voltage));
-			GT_Recipe recipe = GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.findRecipe(getBaseMetaTileEntity(), false,
+			long tVoltage = getMaxInputVoltage();
+			byte tier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.findRecipe(getBaseMetaTileEntity(), false,
 					false, gregtech.api.enums.GT_Values.V[tier], fluids, inputs);
-			if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
+			if (tRecipe != null && tRecipe.isRecipeInputEqual(true, fluids, inputs)) {
 				this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 				this.mEfficiencyIncrease = 10000;
 
-				int EUt = recipe.mEUt;
-				int maxProgresstime = recipe.mDuration;
+				calculatePerfectOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
+				//In case recipe is too OP for that machine
+				if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+					return false;
+				if (this.mEUt > 0) {
+					this.mEUt = (-this.mEUt);
+				}
 
-				while (EUt <= gregtech.api.enums.GT_Values.V[tier - 1] && maxProgresstime > 2) {
-					EUt *= 4;
-					maxProgresstime /= 4;
-				}
-				if (maxProgresstime < 2) {
-					maxProgresstime = 2;
-					EUt = recipe.mEUt * recipe.mDuration / 2;
-				}
-				
-				this.mEUt = -EUt;
-				this.mMaxProgresstime = maxProgresstime;
-				this.mOutputItems = recipe.mOutputs;
-				this.mOutputFluids = recipe.mFluidOutputs;
+				this.mOutputItems = tRecipe.mOutputs;
+				this.mOutputFluids = tRecipe.mFluidOutputs;
 				this.updateSlots();
 				return true;
 			}

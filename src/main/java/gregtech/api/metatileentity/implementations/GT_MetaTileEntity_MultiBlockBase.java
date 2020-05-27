@@ -1,10 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.VN;
-
-import java.util.ArrayList;
-
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -28,6 +23,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.ArrayList;
+
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GT_Values.VN;
 
 public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 
@@ -538,13 +538,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                     aFirstVoltageFound = aVoltage;
                 }
                 else {
-                    /**
-                      * Calcualtes overclocked ness using long integers
-                      * @param aEUt          - recipe EUt
-                      * @param aDuration     - recipe Duration
-                      * @param mAmperage     - should be 1 ?
-                      */
-                    //Long time calculation
                     if (aFirstVoltageFound != aVoltage) {
                         aFoundMixedDynamos = true;
                     }
@@ -559,13 +552,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         }
 
         long leftToInject;
-        //Long EUt calculation
         long aVoltage;
-        //Isnt too low EUt check?
         int aAmpsToInject;
         int aRemainder;
         int ampsOnCurrentHatch;
-        //xEUt *= 4;//this is effect of everclocking
         for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : mDynamoHatches) {
             if (isValidMetaTileEntity(aDynamo)) {
                 leftToInject = aEU - injected;
@@ -594,49 +584,61 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     }
 
     /**
-     * Calcualtes overclocked ness using long integers
-     * @param aEUt          - recipe EUt
-     * @param aDuration     - recipe Duration
-     * @param mAmperage     - should be 1 ?
+     * Calcualtes the overclockedness using long integers
+     * @param aEUt              - recipe EUt
+     * @param aDuration         - recipe Duration
+     * @param mAmperage         - should be 1 ?
+     * @param maxInputVoltage   - Multiblock Max input voltage
+     * @param perfectOC         - If the Multiblock OCs perfectly, i.e. the large Chemical Reactor
      */
-    protected void calculateOverclockedNessMulti(int aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
-        byte mTier=(byte)Math.max(0,GT_Utility.getTier(maxInputVoltage));
-        if(mTier==0){
+    protected void calculateOverclockedNessMultiInternal(int aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
+        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
+        if(mTier == 0){
             //Long time calculation
             long xMaxProgresstime = ((long)aDuration)<<1;
-            if(xMaxProgresstime>Integer.MAX_VALUE-1){
+            if(xMaxProgresstime > Integer.MAX_VALUE - 1){
                 //make impossible if too long
-                mEUt=Integer.MAX_VALUE-1;
-                mMaxProgresstime=Integer.MAX_VALUE-1;
+                mEUt = Integer.MAX_VALUE - 1;
+                mMaxProgresstime = Integer.MAX_VALUE - 1;
             }else{
-                mEUt=aEUt>>2;
-                mMaxProgresstime=(int)xMaxProgresstime;
+                mEUt = aEUt >> 2;
+                mMaxProgresstime= (int) xMaxProgresstime;
             }
         }else{
             //Long EUt calculation
-            long xEUt=aEUt;
+            long xEUt = aEUt;
             //Isnt too low EUt check?
-            long tempEUt = xEUt<V[1] ? V[1] : xEUt;
+            long tempEUt = Math.max(xEUt, V[1]);
 
             mMaxProgresstime = aDuration;
 
-            while (tempEUt <= V[mTier -1] * mAmperage) {
-                tempEUt<<=2;//this actually controls overclocking
+            final int ocTimeShift = perfectOC ? 2 : 1;
+
+            while (tempEUt <= V[mTier - 1] * mAmperage) {
+                tempEUt <<= 2;//this actually controls overclocking
                 //xEUt *= 4;//this is effect of everclocking
-                mMaxProgresstime>>=1;//this is effect of overclocking
-                xEUt = mMaxProgresstime==0 ? xEUt>>1 : xEUt<<2;//U know, if the time is less than 1 tick make the machine use less power
+                mMaxProgresstime >>= ocTimeShift;//this is effect of overclocking
+                xEUt = mMaxProgresstime==0 ? xEUt >> ocTimeShift : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
             }
-            if(xEUt>Integer.MAX_VALUE-1){
-                mEUt = Integer.MAX_VALUE-1;
-                mMaxProgresstime = Integer.MAX_VALUE-1;
-            }else{
-                mEUt = (int)xEUt;
-                if(mEUt==0)
+            if(xEUt > Integer.MAX_VALUE - 1) {
+                mEUt = Integer.MAX_VALUE - 1;
+                mMaxProgresstime = Integer.MAX_VALUE - 1;
+            } else {
+                mEUt = (int) xEUt;
+                if(mEUt == 0)
                     mEUt = 1;
-                if(mMaxProgresstime==0)
+                if(mMaxProgresstime == 0)
                     mMaxProgresstime = 1;//set time to 1 tick
             }
         }
+    }
+
+    protected void calculateOverclockedNessMulti(int aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
+        calculateOverclockedNessMultiInternal(aEUt,aDuration,mAmperage,maxInputVoltage,false);
+    }
+
+    protected void calculatePerfectOverclockedNessMulti(int aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
+        calculateOverclockedNessMultiInternal(aEUt,aDuration,mAmperage,maxInputVoltage,true);
     }
 
     public boolean drainEnergyInput(long aEU) {
