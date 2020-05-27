@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
 import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
@@ -63,6 +64,7 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
         this.setCreativeTab(MainMod.BWT);
         this.setBlockName(blockName);
         this.setBlockTextureName(MainMod.MOD_ID + ":" + blockName);
+        GregTech_API.registerMachineBlock(this, -1);
     }
 
     @Override
@@ -120,9 +122,13 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileEntity t = world.getTileEntity(x,y,z);
-        if (t instanceof ITileDropsContent){
-            int[] dropSlots = ((ITileDropsContent)t).getDropSlots();
+        if (GregTech_API.isMachineBlock(this, world.getBlockMetadata(x, y, z))) {
+            GregTech_API.causeMachineUpdate(world, x, y, z);
+        }
+
+        TileEntity t = world.getTileEntity(x, y, z);
+        if (t instanceof ITileDropsContent) {
+            int[] dropSlots = ((ITileDropsContent) t).getDropSlots();
             for (int dropSlot : dropSlots) {
                 if (((ITileDropsContent) t).getStackInSlot(dropSlot) != null)
                     world.spawnEntityInWorld(new EntityItem(world, x, y, z, ((BW_TileEntity_HeatedWaterPump) t).getStackInSlot(dropSlot)));
@@ -193,5 +199,12 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
             }
         }
         return new String[0];
+    }
+
+    @Override
+    public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
+        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,10 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import com.github.bartimaeusnek.bartworks.API.SideReference;
+import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -33,10 +36,15 @@ public class BW_MetaGenerated_WerkstoffBlock_TE extends BW_MetaGenerated_Block_T
 
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide) {
-        Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
-        if ((aMaterial != null)) {
-            GT_RenderedTexture aIconSet = new GT_RenderedTexture(aMaterial.getTexSet().mTextures[OrePrefixes.block.mTextureIndex], aMaterial.getRGBA());
-            return new ITexture[]{new GT_CopiedBlockTexture(Blocks.iron_block, 0, 0), aIconSet};
+        if (SideReference.Side.Client) {
+            Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
+            if ((aMaterial != null)) {
+                TextureSet set = aMaterial.getTexSet();
+                GT_RenderedTexture aIconSet = new GT_RenderedTexture(
+                        set.mTextures[PrefixTextureLinker.blockTexMap.getOrDefault(set, OrePrefixes.block.mTextureIndex)], aMaterial.getRGBA()
+                );
+                return new ITexture[]{new GT_CopiedBlockTexture(Blocks.iron_block, 0, 0), aIconSet};
+            }
         }
         return new ITexture[]{new GT_CopiedBlockTexture(Blocks.iron_block, 0, 0), new GT_RenderedTexture(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex])};
     }

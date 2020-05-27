@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BW_MetaGenerated_WerkstoffBlocks extends BW_MetaGenerated_Blocks {
 
@@ -43,10 +44,14 @@ public class BW_MetaGenerated_WerkstoffBlocks extends BW_MetaGenerated_Blocks {
 
     @Override
     protected void doRegistrationStuff(Werkstoff tMaterial) {
-        if (tMaterial != null) {
-            if (tMaterial.getGenerationFeatures().hasGems() || (tMaterial.getGenerationFeatures().toGenerate & 0b10) != 0)
-                GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + "." + tMaterial.getmID() + ".name", OrePrefixes.block.mLocalizedMaterialPre + tMaterial.getDefaultName() + OrePrefixes.block.mLocalizedMaterialPost);
-        }
+        Optional.ofNullable(tMaterial)
+                .filter(pMaterial -> pMaterial.hasItemType(OrePrefixes.gem) || pMaterial.hasItemType(OrePrefixes.ingot))
+                .ifPresent(pMaterial ->
+                        GT_LanguageManager.addStringLocalization(
+                                this.getUnlocalizedName() + "." + pMaterial.getmID() + ".name",
+                                OrePrefixes.block.mLocalizedMaterialPre + pMaterial.getDefaultName() + OrePrefixes.block.mLocalizedMaterialPost
+                        )
+                );
     }
 
     @Override
@@ -67,9 +72,9 @@ public class BW_MetaGenerated_WerkstoffBlocks extends BW_MetaGenerated_Blocks {
     @Override
     @SuppressWarnings("unchecked")
     public void getSubBlocks(Item aItem, CreativeTabs p_149666_2_, List aList) {
-        for (Werkstoff tMaterial : Werkstoff.werkstoffHashSet) {
-            if (tMaterial.getGenerationFeatures().hasGems() || (tMaterial.getGenerationFeatures().toGenerate & 0b10) != 0)
-               aList.add(new ItemStack(aItem, 1, tMaterial.getmID()));
-        }
+        Werkstoff.werkstoffHashSet.stream()
+                .filter(tMaterial -> tMaterial.hasItemType(OrePrefixes.gem) || tMaterial.hasItemType(OrePrefixes.ingot))
+                .map(tMaterial -> new ItemStack(aItem, 1, tMaterial.getmID()))
+                .forEach(aList::add);
     }
 }

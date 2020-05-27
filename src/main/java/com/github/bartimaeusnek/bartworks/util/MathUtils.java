@@ -25,21 +25,102 @@ package com.github.bartimaeusnek.bartworks.util;
 /*
  * Faster implementations for Math stuff
  */
+@SuppressWarnings("unused")
 public class MathUtils {
+
+
+    public static long floorLong(double x) {
+        if (Double.isInfinite(x) || Double.isNaN(x))
+            return (long) x;
+        long xi = (long) x;
+        return x < xi ? xi - 1 : xi;
+    }
+
+    public static long ceilLong(double x) {
+        if (Double.isInfinite(x) || Double.isNaN(x))
+            return (long) x;
+        long xi = (long) x;
+        return x > xi ? xi + 1 : xi;
+    }
+
+    public static int floorInt(double x) {
+        if (Double.isInfinite(x) || Double.isNaN(x))
+            return (int) x;
+        int xi = (int) x;
+        return x < xi ? xi - 1 : xi;
+    }
+
+    public static int ceilInt(float x) {
+        if (Float.isInfinite(x) || Float.isNaN(x))
+            return (int) x;
+        int xi = (int) x;
+        return x > xi ? xi + 1 : xi;
+    }
+
+    public static int ceilInt(double x) {
+        if (Double.isInfinite(x) || Double.isNaN(x))
+            return (int) x;
+        int xi = (int) x;
+        return x > xi ? xi + 1 : xi;
+    }
 
     public static double floor(double x) {
         if (Double.isInfinite(x) || Double.isNaN(x))
             return x;
-        int xi = (int)x;
+        int xi = (int) x;
         return x < xi ? xi - 1 : xi;
     }
 
     public static double ceil(double x) {
         if (Double.isInfinite(x) || Double.isNaN(x))
             return x;
-        int xi = (int)x;
+        int xi = (int) x;
         return x > xi ? xi + 1 : xi;
     }
 
+    public static byte clamp(byte amount, byte min, byte max) {
+        byte inner = (amount <= max) ? amount : max;
+        return (min >= inner) ? min : inner;
+    }
 
+    public static short clamp(short amount, short min, short max) {
+        short inner = (amount <= max) ? amount : max;
+        return (min >= inner) ? min : inner;
+    }
+
+    public static int clamp(int amount, int min, int max) {
+        return Math.max(min, Math.min(amount, max));
+    }
+
+    public static long clamp(long amount, long min, long max) {
+        return Math.max(min, Math.min(amount, max));
+    }
+
+    public static float clamp(float amount, float min, float max) {
+        return Math.max(min, Math.min(amount, max));
+    }
+
+    public static double clamp(double amount, double min, double max) {
+        return Math.max(min, Math.min(amount, max));
+    }
+
+    public static <T extends Comparable<T>> T clamp(T val, T min, T max) {
+        return (val.compareTo(min) < 0) ? min : (val.compareTo(max) > 0) ? max : val;
+    }
+
+    public static int wrap(int input, int bound){
+        return (((input % bound)+bound) % bound);
+    }
+
+    public static long wrap(long input, long bound){
+        return (((input % bound)+bound) % bound);
+    }
+
+    public static double wrap(double input, double bound){
+        return (((input % bound)+bound) % bound);
+    }
+
+    public static float wrap(float input, float bound){
+        return (((input % bound)+bound) % bound);
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,10 +26,9 @@ import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialIte
 import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import gregtech.common.items.GT_DepletetCell_Item;
 
-public class LoadItemContainers implements Runnable {
+public class LoadItemContainers {
 
-    @Override
-    public void run() {
+    public static void run() {
         BW_NonMeta_MaterialItems.Depleted_Tiberium_1.set(new GT_DepletetCell_Item("TiberiumcellDep", "Fuel Rod (Depleted Tiberium)", 1));
         BW_NonMeta_MaterialItems.Depleted_Tiberium_2.set(new GT_DepletetCell_Item("Double_TiberiumcellDep", "Dual Fuel Rod (Depleted Tiberium)", 1));
         BW_NonMeta_MaterialItems.Depleted_Tiberium_4.set(new GT_DepletetCell_Item("Quad_TiberiumcellDep", "Quad Fuel Rod (Depleted Tiberium)", 1));

@@ -16,6 +16,8 @@ package com.github.bartimaeusnek.bartworks.util.NoiseUtil;
  *
  */
 
+import com.github.bartimaeusnek.bartworks.util.MathUtils;
+
 public class SimplexNoise {  // Simplex noise in 2D, 3D and 4D
   private static Grad[] grad3 = {new Grad(1,1,0),new Grad(-1,1,0),new Grad(1,-1,0),new Grad(-1,-1,0),
                                  new Grad(1,0,1),new Grad(-1,0,1),new Grad(1,0,-1),new Grad(-1,0,-1),
@@ -64,8 +66,7 @@ public class SimplexNoise {  // Simplex noise in 2D, 3D and 4D
 
   // This method is a *lot* faster than using (int)Math.floor(x)
   private static int fastfloor(double x) {
-    int xi = (int)x;
-    return x<xi ? xi-1 : xi;
+    return MathUtils.floorInt(x);
   }
 
   private static double dot(Grad g, double x, double y) {

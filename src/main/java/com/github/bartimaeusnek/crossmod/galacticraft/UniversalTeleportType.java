@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft;
 
-import cpw.mods.fml.common.Loader;
+import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
@@ -71,7 +71,7 @@ public class UniversalTeleportType implements ITeleportType {
             }
 
             EntityLanderBase elb;
-            if (Loader.isModLoaded("GalacticraftMars"))
+            if (LoaderReference.GalacticraftMars)
                 elb=PlanetsHelperClass.getLanderType(player);
             else
                 elb = new EntityLander(player);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.common.blocks;
 
+import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.client.renderer.RendererGlasBlock;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -93,12 +93,16 @@ public class BW_GlasBlocks extends BW_Blocks {
         this.connectedTexture = new IIcon[16];
         for (int i = 0; i < this.textureNames.length; i++) {
             this.texture[i] = par1IconRegister.registerIcon(this.textureNames[i]);
+            String[] splitname = this.textureNames[0].split(":");
             for (int j = 0; j < 16; j++) {
-                this.connectedTexture[j] = par1IconRegister.registerIcon(this.textureNames[0] + "_" + j);
+                this.connectedTexture[j] = par1IconRegister.registerIcon(
+                        splitname[0]
+                                + ":connectedTex/"
+                                + splitname[1] + '/'
+                                + splitname[1] + '_' + j);
             }
         }
     }
-
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -182,7 +186,7 @@ public class BW_GlasBlocks extends BW_Blocks {
 
     @Override
     public int getRenderType() {
-        if (!this.fake && FMLCommonHandler.instance().getSide().isClient())
+        if (!this.fake && SideReference.Side.Client)
             return RendererGlasBlock.RID;
         else
             return 0;

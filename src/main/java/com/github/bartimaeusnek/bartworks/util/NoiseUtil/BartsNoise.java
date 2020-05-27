@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.util.NoiseUtil;
 
 import com.github.bartimaeusnek.bartworks.API.INoiseGen;
+import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import gregtech.api.objects.XSTR;
 
 import java.util.Random;
@@ -54,13 +55,6 @@ public class BartsNoise implements INoiseGen {
             noise.setAmplitude(this.ampl);
             return noise;
         }
-    }
-
-    public static double clamp(double input, double lowerBound, double upperBound){
-        return Math.min(Math.max(input, lowerBound),upperBound);
-    }
-    public static double wrap(double input, double bound){
-        return (((input % bound)+bound) % bound);
     }
 
     public BartsNoise(int octaves, double frequency, double amplitude, long seed) {
@@ -159,13 +153,13 @@ public class BartsNoise implements INoiseGen {
             result = Double.MAX_VALUE;
         if (result == Double.NEGATIVE_INFINITY)
             result = Double.MIN_VALUE;
-        return BartsNoise.wrap(result,1D);
+        return MathUtils.wrap(result,1D);
     }
 
 
     double getNonOctavedNoise(double x, double y){
         double phase = SimplexNoise.noise( Math.pow(x*this.frequency,this.amplitude),Math.pow(y*this.frequency,this.amplitude));
-        return BartsNoise.wrap(phase,1);
+        return MathUtils.wrap(phase,1);
 
     }
 
@@ -196,7 +190,7 @@ public class BartsNoise implements INoiseGen {
             result += 1d/i * this.getNonOctavedNoise(i * x, y);
         }
         //result = (this.getNeighbouringNoise(x,y)+result)/2;
-        return BartsNoise.wrap(result,1D);
+        return MathUtils.wrap(result,1D);
     }
 
     @Override

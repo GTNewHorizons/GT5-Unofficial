@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,13 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
+import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.items.LabModule;
 import com.github.bartimaeusnek.bartworks.common.items.LabParts;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
 import com.github.bartimaeusnek.bartworks.util.*;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -87,7 +87,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
     public int checkRecipe(boolean skipOC) {
 
         int rTier = 3;
-        FluidStack dnaFluid = Loader.isModLoaded("gendustry") ? FluidRegistry.getFluidStack("liquiddna", 1000) : Materials.Biomass.getFluid(1000L);
+        FluidStack dnaFluid = LoaderReference.gendustry ? FluidRegistry.getFluidStack("liquiddna", 1000) : Materials.Biomass.getFluid(1000L);
 
         if (this.getSpecialSlot() != null && this.getSpecialSlot().getItem() instanceof LabModule) {
             int damage = this.getSpecialSlot().getItemDamage();
@@ -260,7 +260,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                 break;
                 case INCUBATION_MODULE:
                 default:
-                    return super.checkRecipe(skipOC);
+                    break;
             }
         }
         return super.checkRecipe(skipOC);

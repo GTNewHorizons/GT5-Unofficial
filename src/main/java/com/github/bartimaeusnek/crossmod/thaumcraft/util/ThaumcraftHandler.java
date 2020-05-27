@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +22,9 @@
 
 package com.github.bartimaeusnek.crossmod.thaumcraft.util;
 
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import com.github.bartimaeusnek.bartworks.API.API_ConfigValues;
 import com.github.bartimaeusnek.bartworks.util.Pair;
-import gregtech.api.enums.OrePrefixes;
+import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
 import gregtech.api.enums.TC_Aspects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,7 +33,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Objects;
 
 @SuppressWarnings({"rawtypes","unchecked","unused"})
 public class ThaumcraftHandler {
@@ -127,7 +123,7 @@ public class ThaumcraftHandler {
             try {
                 Object aspectList = ThaumcraftHandler.AspectAdder.mAspectListClass.newInstance();
                 for (Pair a : aspectPair) {
-                    if (ConfigHandler.debugLog)
+                    if (API_ConfigValues.debugLog)
                         DebugLog.log("Stack:"+ stack.getDisplayName() + " Damage:" +stack.getItemDamage() + " aspectPair: " + ThaumcraftHandler.AspectAdder.getName.invoke(a.getKey()) + " / " + a.getValue());
                     ThaumcraftHandler.AspectAdder.addToList.invoke(aspectList, a.getKey(), a.getValue());
                 }
@@ -147,23 +143,5 @@ public class ThaumcraftHandler {
                 e.printStackTrace();
             }
         }
-
-        public static void addAspectToAll(Werkstoff werkstoff){
-            for (OrePrefixes element : WerkstoffLoader.ENABLED_ORE_PREFIXES) {
-                if ((werkstoff.getGenerationFeatures().toGenerate & Werkstoff.GenerationFeatures.prefixLogic.get(element)) != 0 && (werkstoff.getGenerationFeatures().blacklist & Werkstoff.GenerationFeatures.prefixLogic.get(element)) == 0) {
-                    if (element.mMaterialAmount >= 3628800L || element == OrePrefixes.ore) {
-                        DebugLog.log("OrePrefix: " + element.name() + " mMaterialAmount: " + element.mMaterialAmount/3628800L);
-                        if (Objects.nonNull(WerkstoffLoader.items.get(element)))
-                            ThaumcraftHandler.AspectAdder.addAspectViaBW(werkstoff.get(element), werkstoff.getTCAspects(element == OrePrefixes.ore ? 1 : (int) (element.mMaterialAmount / 3628800L)));
-                    }
-                    else if (element.mMaterialAmount >= 0L) {
-                        if (Objects.nonNull(WerkstoffLoader.items.get(element)))
-                            ThaumcraftHandler.AspectAdder.addAspectViaBW(werkstoff.get(element), new Pair<>(TC_Aspects.PERDITIO.mAspect, 1));
-                    }
-                }
-            }
-        }
-
-
     }
 }

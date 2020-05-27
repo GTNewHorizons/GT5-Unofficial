@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.system.log;
+package com.github.bartimaeusnek.bartworks.util.log;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
@@ -38,7 +38,8 @@ public class DebugLog {
     private static boolean init;
     static FileHandler fh;
     private static Logger utilLog;
-    public DebugLog(FMLPreInitializationEvent event) throws IOException {
+
+    public static void initDebugLog(FMLPreInitializationEvent event) throws IOException {
         if (DebugLog.init)
             return;
         DebugLog.fh = new FileHandler(new File(new File(event.getModConfigurationDirectory().getParentFile(),"logs"),"BWLog.log").toString());

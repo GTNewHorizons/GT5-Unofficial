@@ -30,10 +30,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class DownTierLoader implements Runnable {
+public class DownTierLoader {
 
-    @Override
-    public void run() {
+    public static void run() {
         GT_Recipe.GT_Recipe_Map.sMappings.stream()
                 .filter(map -> StreamUtils.filterVisualMaps(map) && map != GT_Recipe.GT_Recipe_Map.sFusionRecipes)
                 .forEach(map -> {

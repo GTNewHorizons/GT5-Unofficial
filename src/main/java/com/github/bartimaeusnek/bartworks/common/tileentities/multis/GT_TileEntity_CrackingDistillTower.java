@@ -69,9 +69,9 @@ public class GT_TileEntity_CrackingDistillTower extends GT_MetaTileEntity_Distil
             FluidStack[] nuoutputs = new FluidStack[recipeDistill.mFluidOutputs.length];
             for (int i = 0; i < nuoutputs.length; i++) {
                 nuoutputs[i] = recipeDistill.mFluidOutputs[i];
-                nuoutputs[i].amount = (int) (MathUtils.floor(recipeDistill.mFluidOutputs[i].amount * ratio));
+                nuoutputs[i].amount = MathUtils.floorInt(recipeDistill.mFluidOutputs[i].amount * ratio);
             }
-            BWRecipes.DynamicGTRecipe combined = new BWRecipes.DynamicGTRecipe(true, null, recipeDistill.mOutputs, null, recipeDistill.mChances, recipeCracking.mFluidInputs, nuoutputs, (int) (MathUtils.floor(recipeDistill.mDuration * ratio)) + recipeCracking.mDuration, Math.max((int) (MathUtils.floor(recipeDistill.mEUt * ratio)), recipeCracking.mEUt), 0);
+            BWRecipes.DynamicGTRecipe combined = new BWRecipes.DynamicGTRecipe(true, null, recipeDistill.mOutputs, null, recipeDistill.mChances, recipeCracking.mFluidInputs, nuoutputs, (MathUtils.floorInt(recipeDistill.mDuration * ratio)) + recipeCracking.mDuration, Math.max((MathUtils.floorInt(recipeDistill.mEUt * ratio)), recipeCracking.mEUt), 0);
             if (combined.isRecipeInputEqual(true, array)) {
                 this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;

@@ -61,7 +61,7 @@ public class GT_GUIContainer_RadioHatch extends GT_GUIContainerMetaTile_Machine 
             this.drawTexturedModalRect(124, 18, 124, 18, 16, 48);
         }
         GL11.glColor3f(1f, 1f, 1f);
-        this.drawTexturedModalRect(124, 18, 176, 0, 16, 48 - (int) MathUtils.ceil(48 * (rem / maxT)));
+        this.drawTexturedModalRect(124, 18, 176, 0, 16, 48 - MathUtils.ceilInt(48 * (rem / maxT)));
         this.drawTexturedModalRect(65, 13, 192, 0, (48 * (((GT_Container_RadioHatch) this.mContainer).sv)) / (GT_GUIContainer_RadioHatch.maxSv), 16);
 
 

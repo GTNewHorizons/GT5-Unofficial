@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,13 @@
 
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
+import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_BioLab;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -45,11 +45,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class BioRecipeLoader extends RecipeLoader {
+public class BioRecipeLoader {
 
-    @Override
     @SuppressWarnings("deprecation")
-    public void run() {
+    public static void run() {
 
         //DNAExtractionModule
         GT_ModHandler.addCraftingRecipe(
@@ -133,16 +132,16 @@ public class BioRecipeLoader extends RecipeLoader {
                 }
         );
 
-        if (Loader.isModLoaded("croploadcore") && OreDictionary.getOres("cropVine").size() > 1)
+        if (LoaderReference.croploadcore && OreDictionary.getOres("cropVine").size() > 1)
             for (int i = 0; i < OreDictionary.getOres("cropVine").size(); i++) {
-                GT_Values.RA.addExtractorRecipe(OreDictionary.getOres("cropVine").get(i).splitStack(12), BioItemList.getOther(1), 500, BW_Util.getMachineVoltageFromTier(3));
+                GT_Values.RA.addExtractorRecipe(BW_Util.setStackSize(OreDictionary.getOres("cropVine").get(i),12), BioItemList.getOther(1), 500, BW_Util.getMachineVoltageFromTier(3));
             }
         else
             GT_Values.RA.addExtractorRecipe(new ItemStack(Blocks.vine, 12), BioItemList.getOther(1), 500, BW_Util.getMachineVoltageFromTier(3));
 
         GT_Values.RA.addExtractorRecipe(ItemList.Circuit_Chip_Stemcell.get(1L), BioItemList.getOther(4), 500, BW_Util.getMachineVoltageFromTier(6));
 
-        FluidStack dnaFluid = Loader.isModLoaded("gendustry") ? FluidRegistry.getFluidStack("liquiddna", 1000) : Materials.Biomass.getFluid(1000L);
+        FluidStack dnaFluid = LoaderReference.gendustry ? FluidRegistry.getFluidStack("liquiddna", 1000) : Materials.Biomass.getFluid(1000L);
         GT_Values.RA.addMixerRecipe(GT_Utility.getIntegratedCircuit(17), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L), null, null, dnaFluid, new FluidStack(FluidLoader.BioLabFluidMaterials[0], 2000), Materials.Empty.getCells(1), 500, BW_Util.getMachineVoltageFromTier(3));
 
         GT_Values.RA.addCentrifugeRecipe(GT_Utility.getIntegratedCircuit(17), null, new FluidStack(BioCultureLoader.eColi.getFluid(), 1000), new FluidStack(FluidLoader.BioLabFluidMaterials[1], 10), BioItemList.getOther(4), null, null, null, null, null, new int[]{1000}, 60 * 20, BW_Util.getMachineVoltageFromTier(3));
@@ -328,7 +327,7 @@ public class BioRecipeLoader extends RecipeLoader {
                     new ItemStack[]{new ItemStack(Items.sugar, 64)},
                     new FluidStack[]{new FluidStack(fluidStack, 100)},
                     BioCultureLoader.CommonYeast,
-                    new FluidStack[]{(Loader.isModLoaded("berriespp") ? FluidRegistry.getFluidStack("potion.ghp", 1) : Materials.Ethanol.getFluid(1L))},
+                    new FluidStack[]{(LoaderReference.berriespp ? FluidRegistry.getFluidStack("potion.ghp", 1) : Materials.Ethanol.getFluid(1L))},
                     350,
                     BW_Util.getMachineVoltageFromTier(4)
             );
@@ -384,10 +383,17 @@ public class BioRecipeLoader extends RecipeLoader {
     }
 
     public static void runOnServerStarted(){
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sFermentingRecipes.mRecipeList){
-            FluidStack[] flInput = new FluidStack[]{new FluidStack(recipe.mFluidInputs[0], recipe.mFluidInputs[0].amount*100)};
-            FluidStack[] flOutput = new FluidStack[]{new FluidStack(recipe.mFluidOutputs[0], recipe.mFluidOutputs[0].amount)};
-            BWRecipes.instance.addBacterialVatRecipe(new ItemStack[]{null},BioCultureLoader.generalPurposeFermentingBacteria,flInput,flOutput,recipe.mDuration > 10 ? recipe.mDuration/10 : recipe.mDuration,recipe.mEUt,GT_Utility.getTier(recipe.mEUt));
-        }
+        GT_Recipe.GT_Recipe_Map.sFermentingRecipes.mRecipeList.forEach(
+                recipe ->
+                        BWRecipes.instance.addBacterialVatRecipe(
+                                new ItemStack[]{null},
+                                BioCultureLoader.generalPurposeFermentingBacteria,
+                                recipe.mFluidInputs,
+                                recipe.mFluidOutputs,
+                                recipe.mDuration,
+                                recipe.mEUt,
+                                GT_Utility.getTier(recipe.mEUt)
+                        )
+        );
     }
 }

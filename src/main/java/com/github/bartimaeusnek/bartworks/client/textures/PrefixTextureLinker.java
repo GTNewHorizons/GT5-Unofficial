@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,27 +25,28 @@ package com.github.bartimaeusnek.bartworks.client.textures;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 @SideOnly(Side.CLIENT)
 public class PrefixTextureLinker implements Runnable {
-    public static HashMap<OrePrefixes, HashMap<TextureSet, Textures.ItemIcons.CustomIcon>> texMap = new HashMap<>();
 
-    {
-        GregTech_API.sBeforeGTLoad.add(this);
+    public static Map<OrePrefixes, HashMap<TextureSet, Textures.ItemIcons.CustomIcon>> texMap = new HashMap<>();
+    public static Map<TextureSet, Short> blockTexMap = new HashMap<>();
+
+    private static void fillBlockTexMap() {
+        blockTexMap.put(TextureSet.SET_QUARTZ, TextureSet.INDEX_block4);
     }
 
-    @Override
-    public void run() {
+    private static void fillItemTexMap() {
         Arrays.stream(OrePrefixes.values())
                 .filter(prefixes -> prefixes != OrePrefixes.rod
-                        && prefixes.mTextureIndex == -1 && Werkstoff.GenerationFeatures.prefixLogic.get(prefixes) != 0)
+                        && prefixes.mTextureIndex == -1 && Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes) != 0)
                 .forEach(prefixes -> {
                     HashMap<TextureSet, Textures.ItemIcons.CustomIcon> curr = new HashMap<>();
                     Arrays.stream(TextureSet.class.getFields())
@@ -62,5 +63,11 @@ public class PrefixTextureLinker implements Runnable {
                             });
                     texMap.put(prefixes, curr);
                 });
+    }
+
+    @Override
+    public void run() {
+        fillItemTexMap();
+        fillBlockTexMap();
     }
 }

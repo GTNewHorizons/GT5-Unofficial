@@ -26,6 +26,7 @@ import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.*;
 
+@SuppressWarnings("ALL")
 public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     transient int size = 0;
@@ -36,7 +37,8 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
         return new AccessPriorityList();
     }
 
-    public AccessPriorityList() {}
+    public AccessPriorityList() {
+    }
 
     @Override
     public void addFirst(E t) {
@@ -185,7 +187,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
         return true;
     }
 
-    private void moveNodeUp(AccessPriorityListNode<E> node){
+    private void moveNodeUp(AccessPriorityListNode<E> node) {
         if (node == head || node.getBefore() == null)
             return;
         final AccessPriorityListNode<E> before = node.getBefore();
@@ -327,18 +329,22 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
         }
     }
 
-    public void addPrioToNode(int index, long prio){
+    public void addPrioToNode(int index, long prio) {
         if (!isValidIndex(index))
             return;
         AccessPriorityListNode<E> node = getNode(index);
-        node.setPriority(node.getPriority()+prio);
-        while (node.getBefore() != null && node.getPriority() >= node.getBefore().getPriority()){
-                moveNodeUp(node);
+        long current = node.getPriority();
+        if (current == Long.MAX_VALUE || (current > 0 && prio > 0 && prio + current < 0))
+            node.setPriority(Long.MAX_VALUE);
+        else
+            node.setPriority(current + prio);
+        while (node.getBefore() != null && node.getPriority() >= node.getBefore().getPriority()) {
+            moveNodeUp(node);
         }
     }
 
-    public void addPrioToNode(int index){
-        addPrioToNode(index,1L);
+    public void addPrioToNode(int index) {
+        addPrioToNode(index, 1L);
     }
 
     @Override
@@ -376,12 +382,12 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public ListIterator<E> listIterator() {
-        return new AccessPriorityListIterators.AccessPriorityListListIterator<>(head,tail,false);
+        return new AccessPriorityListIterators.AccessPriorityListListIterator<>(head, tail, false);
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        return new AccessPriorityListIterators.AccessPriorityListListIterator<>(this,index);
+        return new AccessPriorityListIterators.AccessPriorityListListIterator<>(this, index);
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,11 +47,10 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
 
     protected void doRegistrationStuff(Werkstoff w) {
         if (w != null) {
-            if ((w.getGenerationFeatures().toGenerate & 0b1000) == 0 || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
+            if (!w.hasItemType(OrePrefixes.ore) || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
                 return;
             GT_ModHandler.addValuableOre(this, w.getmID(), 1);
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + "." + w.getmID() + ".name", w.getDefaultName() + OrePrefixes.ore.mLocalizedMaterialPost);
-
         }
     }
 
@@ -107,7 +106,7 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
     @SuppressWarnings("unchecked")
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
         for (Werkstoff tMaterial : Werkstoff.werkstoffHashSet) {
-            if ((tMaterial != null) && ((tMaterial.getGenerationFeatures().toGenerate & 0x8) != 0) && ((tMaterial.getGenerationFeatures().blacklist & 0x8) == 0)) {
+            if ((tMaterial != null) && tMaterial.hasItemType(OrePrefixes.ore) && ((tMaterial.getGenerationFeatures().blacklist & 0x8) == 0)) {
                 aList.add(new ItemStack(aItem, 1, tMaterial.getmID()));
             }
         }

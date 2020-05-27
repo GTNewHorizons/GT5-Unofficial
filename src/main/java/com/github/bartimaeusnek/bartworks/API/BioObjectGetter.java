@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -82,6 +82,8 @@ public final class BioObjectGetter {
     public static BioDNA convertBioPlasmidtoBioDNA(BioPlasmid bioPlasmid) {
         return BioObjectGetter.convertDataToDNA(BioObjectGetter.convertBioPlasmidToData(bioPlasmid));
     }
+
+    //UNSAFE needs to be reworked!
 
     public static Collection<ItemStack> getAllPetriDishes() {
         return BioItemList.getAllPetriDishes();

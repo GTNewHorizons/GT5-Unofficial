@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,35 +22,25 @@
 
 package com.github.bartimaeusnek.bartworks.util;
 
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
-import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import ic2.core.Ic2Items;
 import ic2.core.item.ItemFluidCell;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnegative;
-import java.io.Serializable;
 import java.util.*;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.calculateSv;
@@ -100,221 +90,6 @@ public class BWRecipes {
             6, 6, 1, 1, 1,
             "", 1, "", true, true //special handler
     );
-
-
-    public BWRecipes() {
-
-        if (ConfigHandler.BioLab) {
-            FluidStack[] dnaFluid = {Loader.isModLoaded("gendustry") ? FluidRegistry.getFluidStack("liquiddna", 1000) : Materials.Biomass.getFluid(1000L)};
-
-            for (ItemStack stack : BioItemList.getAllPetriDishes()) {
-                BioData DNA = BioData.getBioDataFromNBTTag(stack.getTagCompound().getCompoundTag("DNA"));
-                if (DNA != null) {
-                    ItemStack Detergent = BioItemList.getOther(1);
-                    ItemStack DNAFlask = BioItemList.getDNASampleFlask(null);
-                    ItemStack EthanolCell = Materials.Ethanol.getCells(1);
-                    sBiolab.addFakeRecipe(false,
-                            new ItemStack[]{
-                                    stack,
-                                    DNAFlask,
-                                    Detergent,
-                                    EthanolCell
-                            },
-                            new ItemStack[]{
-                                    BioItemList.getDNASampleFlask(BioDNA.convertDataToDNA(DNA)),
-                                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L)
-                            },
-                            BioItemList.mBioLabParts[0],
-                            new int[]{DNA.getChance(), 10000},
-                            new FluidStack[]{
-                                    FluidRegistry.getFluidStack("ic2distilledwater", 1000)
-                            },
-                            null,
-                            500,
-                            BW_Util.getMachineVoltageFromTier(3 + DNA.getTier()),
-                            BW_Util.STANDART
-                    );
-                }
-            }
-
-            for (ItemStack stack : BioItemList.getAllDNASampleFlasks()) {
-                BioData DNA = BioData.getBioDataFromNBTTag(stack.getTagCompound());
-
-                if (DNA != null) {
-                    ItemStack Outp = ItemList.Tool_DataOrb.get(1L);
-                    Behaviour_DataOrb.setDataTitle(Outp, "DNA Sample");
-                    Behaviour_DataOrb.setDataName(Outp, DNA.getName());
-
-                    sBiolab.addFakeRecipe(false,
-                            new ItemStack[]{
-                                    stack,
-                                    FluidLoader.BioLabFluidCells[0],
-                                    FluidLoader.BioLabFluidCells[3],
-                                    ItemList.Tool_DataOrb.get(1L)
-                            },
-                            new ItemStack[]{
-                                    Outp,
-                                    ItemList.Cell_Universal_Fluid.get(2L)
-                            },
-                            BioItemList.mBioLabParts[1],
-                            new int[]{DNA.getChance(), 10000},
-                            dnaFluid,
-                            null,
-                            500,
-                            BW_Util.getMachineVoltageFromTier(4 + DNA.getTier()),
-                            BW_Util.STANDART
-                    );
-                }
-            }
-
-            for (ItemStack stack : BioItemList.getAllPlasmidCells()) {
-                BioData DNA = BioData.getBioDataFromNBTTag(stack.getTagCompound());
-
-                if (DNA != null) {
-                    ItemStack inp = ItemList.Tool_DataOrb.get(0L);
-                    Behaviour_DataOrb.setDataTitle(inp, "DNA Sample");
-                    Behaviour_DataOrb.setDataName(inp, DNA.getName());
-                    ItemStack inp2 = ItemList.Tool_DataOrb.get(0L);
-                    Behaviour_DataOrb.setDataTitle(inp2, "DNA Sample");
-                    Behaviour_DataOrb.setDataName(inp2, BioCultureLoader.BIO_DATA_BETA_LACMATASE.getName());
-
-                    sBiolab.addFakeRecipe(false,
-                            new ItemStack[]{
-                                    FluidLoader.BioLabFluidCells[1],
-                                    BioItemList.getPlasmidCell(null),
-                                    inp,
-                                    inp2
-                            },
-                            new ItemStack[]{
-                                    stack,
-                                    ItemList.Cell_Universal_Fluid.get(1L)
-                            },
-                            BioItemList.mBioLabParts[2],
-                            new int[]{DNA.getChance(), 10000},
-                            dnaFluid,
-                            null,
-                            500,
-                            BW_Util.getMachineVoltageFromTier(4 + DNA.getTier()),
-                            BW_Util.STANDART
-                    );
-                }
-            }
-
-            //Transformation- [Distilled Water] + Culture () + Plasmids (Gene) Cell + Penicillin Cell= Culture (Gene) + Empty Cells
-            sBiolab.addFakeRecipe(false,
-                    new ItemStack[]{
-                            BioItemList.getPetriDish(null).setStackDisplayName("The Culture to change"),
-                            BioItemList.getPlasmidCell(null).setStackDisplayName("The Plasmids to Inject"),
-                            FluidLoader.BioLabFluidCells[2],
-                    },
-                    new ItemStack[]{
-                            BioItemList.getPetriDish(null).setStackDisplayName("The changed Culture"),
-                            ItemList.Cell_Universal_Fluid.get(1L)
-                    },
-                    BioItemList.mBioLabParts[3],
-                    new int[]{7500, 10000},
-                    new FluidStack[]{
-                            FluidRegistry.getFluidStack("ic2distilledwater", 1000)
-                    },
-                    null,
-                    500,
-                    BW_Util.getMachineVoltageFromTier(6),
-                    BW_Util.STANDART
-            );
-
-
-            ItemStack Outp = ItemList.Tool_DataOrb.get(1L);
-            Behaviour_DataOrb.setDataTitle(Outp, "DNA Sample");
-            Behaviour_DataOrb.setDataName(Outp, "Any DNA");
-            //Clonal Cellular Synthesis- [Liquid DNA] + Medium Petri Dish + Plasma Membrane + Stem Cells + Genome Data
-            sBiolab.addFakeRecipe(false,
-                    new ItemStack[]{
-                            BioItemList.getPetriDish(null),
-                            BioItemList.getOther(4),
-                            ItemList.Circuit_Chip_Stemcell.get(2L),
-                            Outp
-                    },
-                    new ItemStack[]{
-                            BioItemList.getPetriDish(null).setStackDisplayName("The Culture made from DNA"),
-                    },
-                    BioItemList.mBioLabParts[4],
-                    new int[]{7500, 10000},
-                    new FluidStack[]{new FluidStack(dnaFluid[0].getFluid(), 9000)},
-                    null,
-                    500,
-                    BW_Util.getMachineVoltageFromTier(6),
-                    BW_Util.STANDART
-            );
-
-            FluidStack[] easyFluids = {Materials.Water.getFluid(1000L), FluidRegistry.getFluidStack("ic2distilledwater", 1000)};
-            for (FluidStack fluidStack : easyFluids) {
-                for (BioCulture bioCulture : BioCulture.BIO_CULTURE_ARRAY_LIST) {
-                    if (bioCulture.isBreedable() && bioCulture.getTier() == 0) {
-                        sBacteriaVat.addRecipe(
-                                //boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue
-                                new BacteriaVatRecipe(
-                                        true,
-                                        new ItemStack[]{
-                                                GT_Utility.getIntegratedCircuit(0),
-                                                new ItemStack(Items.sugar, 64)
-                                        },
-                                        null,
-                                        BioItemList.getPetriDish(bioCulture),
-                                        null,
-                                        new FluidStack[]{
-                                                fluidStack
-                                        },
-                                        new FluidStack[]{
-                                                new FluidStack(bioCulture.getFluid(), 10)
-                                        },
-                                        1000,
-                                        BW_Util.getMachineVoltageFromTier(3),
-                                        BW_Util.STANDART
-                                ), true
-                        );
-                        //aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue
-                        sBiolab.addRecipe(
-                                new DynamicGTRecipe(
-                                        false,
-                                        new ItemStack[]{
-                                                BioItemList.getPetriDish(null),
-                                                fluidStack.equals(Materials.Water.getFluid(1000L)) ? Materials.Water.getCells(1) : ItemFluidCell.getUniversalFluidCell(FluidRegistry.getFluidStack("ic2distilledwater", 1000))
-                                        },
-                                        new ItemStack[]{
-                                                BioItemList.getPetriDish(bioCulture),
-                                                fluidStack.equals(Materials.Water.getFluid(1000L)) ? Materials.Empty.getCells(1) : ItemList.Cell_Universal_Fluid.get(1L)
-                                        },
-                                        null,
-                                        new int[]{
-                                                bioCulture.getChance(),
-                                                10000
-                                        },
-                                        new FluidStack[]{
-                                                new FluidStack(bioCulture.getFluid(), 1000)
-                                        },
-                                        null,
-                                        500,
-                                        BW_Util.getMachineVoltageFromTier(3),
-                                        BW_Util.STANDART
-                                ));
-                    }
-                }
-            }
-        }
-
-        sAcidGenFuels.addLiquidFuel(Materials.PhosphoricAcid, 36);
-        sAcidGenFuels.addLiquidFuel(Materials.DilutedHydrochloricAcid, 14);
-        sAcidGenFuels.addLiquidFuel(Materials.HypochlorousAcid, 30);
-        sAcidGenFuels.addLiquidFuel(Materials.HydrofluoricAcid, 40);
-        sAcidGenFuels.addLiquidFuel(Materials.HydrochloricAcid, 28);
-        sAcidGenFuels.addLiquidFuel(Materials.NitricAcid, 24);
-        sAcidGenFuels.addLiquidFuel(Materials.Mercury, 32);
-        sAcidGenFuels.addLiquidFuel(Materials.DilutedSulfuricAcid, 9);
-        sAcidGenFuels.addLiquidFuel(Materials.SulfuricAcid, 18);
-        sAcidGenFuels.addLiquidFuel(Materials.AceticAcid, 11);
-        sAcidGenFuels.addMoltenFuel(Materials.Redstone, 10);
-    }
-
 
     /**
      * @param machine 0 = biolab; 1 = BacterialVat; 2 = sAcidGenFuels; 3 = circuitAssemblyLine
@@ -464,13 +239,16 @@ public class BWRecipes {
         return sBacteriaVat.addRecipe(new BacteriaVatRecipe(true, aInputs, null, BioItemList.getPetriDish(aCulture), new int[]{}, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSievert)) != null;
     }
 
-    public static class DynamicGTRecipe extends GT_Recipe implements Serializable {
+    public static class DynamicGTRecipe extends GT_Recipe {
+
         public DynamicGTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
             super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
         }
+
     }
 
     public static class BW_Recipe_Map_LiquidFuel extends GT_Recipe.GT_Recipe_Map_Fuel {
+
         public BW_Recipe_Map_LiquidFuel(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
             super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
         }
@@ -487,13 +265,14 @@ public class BWRecipes {
             return super.addFuel(ItemFluidCell.getUniversalFluidCell(fluidStack), Ic2Items.FluidCell.copy(), burn);
         }
 
-
     }
 
     public static class BacteriaVatRecipe extends GT_Recipe {
-        protected BacteriaVatRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, ItemStack aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
+
+        public BacteriaVatRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, ItemStack aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
             super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
         }
+
     }
 
     public static class BacteriaVatRecipeMap extends BWRecipes.SpecialObjectSensitiveMap {
@@ -522,6 +301,7 @@ public class BWRecipes {
         }
 
         public GT_Recipe addRecipe(GT_Recipe aRecipe) {
+
             if (aRecipe.mInputs.length > 0 && GT_Utility.areStacksEqual(aRecipe.mInputs[aRecipe.mInputs.length - 1], GT_Utility.getIntegratedCircuit(32767)))
                 return aRecipe;
             else {

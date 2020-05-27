@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +22,12 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft;
 
+import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128ba;
 import com.github.bartimaeusnek.crossmod.galacticraft.atmosphere.BWAtmosphereManager;
 import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128SolarSystem;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -44,7 +44,7 @@ public class GalacticraftProxy {
     }
 
     public static void postInit(FMLPostInitializationEvent e){
-        if (FMLCommonHandler.instance().getSide().isServer() || FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+        if (SideReference.Side.Server || SideReference.EffectiveSide.Server) {
             GalacticraftProxy.serverPostInit(e);
         } else {
             GalacticraftProxy.clientPostInit(e);
@@ -53,7 +53,7 @@ public class GalacticraftProxy {
     }
 
     public static void preInit(FMLPreInitializationEvent e) {
-        if (FMLCommonHandler.instance().getSide().isServer() || FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+        if (SideReference.Side.Server || SideReference.EffectiveSide.Server) {
             GalacticraftProxy.serverpreInit(e);
         } else {
             GalacticraftProxy.clientpreInit(e);
@@ -81,7 +81,7 @@ public class GalacticraftProxy {
     }
 
     public static void init(FMLInitializationEvent e) {
-        if (FMLCommonHandler.instance().getSide().isServer() || FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+        if (SideReference.Side.Server || SideReference.EffectiveSide.Server) {
             GalacticraftProxy.serverInit(e);
         } else {
             GalacticraftProxy.clientInit(e);

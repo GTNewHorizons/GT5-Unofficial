@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,24 +24,18 @@ package com.github.bartimaeusnek.bartworks.API;
 
 import java.util.HashSet;
 
-public final class WerkstoffAdderRegistry implements Runnable {
+public final class WerkstoffAdderRegistry {
 
-    private static final WerkstoffAdderRegistry INSTANCE = new WerkstoffAdderRegistry();
-    private final HashSet<Runnable> toRun = new HashSet<>();
+    private static final HashSet<Runnable> toRun = new HashSet<>();
 
     private WerkstoffAdderRegistry() {
     }
 
-    public static WerkstoffAdderRegistry getINSTANCE() {
-        return INSTANCE;
-    }
-
     public static void addWerkstoffAdder(Runnable adder) {
-        INSTANCE.toRun.add(adder);
+        toRun.add(adder);
     }
 
-    @Override
-    public final void run() {
+    public static void run() {
         for (Runnable r : toRun)
             r.run();
     }

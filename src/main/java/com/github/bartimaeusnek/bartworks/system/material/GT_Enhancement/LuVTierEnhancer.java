@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,11 +22,12 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 
+import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.AfterLuVTierEnhacement;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -69,7 +70,7 @@ public class LuVTierEnhancer implements Runnable {
                 .filter(item -> item.toString().contains("LuV") && item.hasBeenSet())
                     .forEach(item -> LuVMachines.add(item.get(1)));
 
-        if (Loader.isModLoaded("dreamcraft")) {
+        if (LoaderReference.dreamcraft) {
             addDreamcraftItemListItems(LuVMachines);
         }
 
@@ -173,48 +174,52 @@ public class LuVTierEnhancer implements Runnable {
         }
     }
 
-    private static void replaceOsmiridiumInLuVRecipes(){
-        for (GT_Recipe.GT_Recipe_AssemblyLine recipe_assemblyLine : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes){
-            if (recipe_assemblyLine.mEUt > 6000)
+    private static void replaceOsmiridiumInLuVRecipes() {
+        Consumer<GT_Recipe> replace = gt_recipe ->
+                gt_recipe.mInputs = replaceArrayWith(
+                        gt_recipe.mInputs,
+                        Materials.Osmiridium,
+                        WerkstoffLoader.Ruridit
+                );
+
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.stream()
+                .filter(recipe_assemblyLine -> recipe_assemblyLine.mEUt <= 6000)
+                .forEach(recipe_assemblyLine ->
+                        recipe_assemblyLine.mInputs = replaceArrayWith(
+                                recipe_assemblyLine.mInputs,
+                                Materials.Osmiridium,
+                                WerkstoffLoader.Ruridit
+                        )
+                );
+
+        GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList.stream()
+                .filter(gt_recipe ->
+                        gt_recipe.mEUt < BW_Util.getTierVoltage(6) &&
+                                !BW_Util.checkStackAndPrefix(gt_recipe.mOutputs[0])
+                )
+                .forEach(replace);
+
+        GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList.stream()
+                .filter(gt_recipe -> gt_recipe.mEUt <= 6000)
+                .forEach(replace);
+    }
+
+    private static ItemStack[] replaceArrayWith(ItemStack[] stackArray, Materials source, Werkstoff target) {
+        for (int i = 0; i < stackArray.length; i++) {
+            ItemStack stack = stackArray[i];
+            if (!BW_Util.checkStackAndPrefix(stack))
                 continue;
-            for (int i = 0; i < recipe_assemblyLine.mInputs.length; i++) {
-                ItemStack stack = recipe_assemblyLine.mInputs[i];
-                if (!BW_Util.checkStackAndPrefix(stack))
-                    continue;
-                ItemData ass = GT_OreDictUnificator.getAssociation(stack);
-                if (ass.mMaterial.mMaterial.equals(Materials.Osmiridium))
-                    if (WerkstoffLoader.items.get(ass.mPrefix) != null)
-                        recipe_assemblyLine.mInputs[i] = WerkstoffLoader.Ruridit.get(ass.mPrefix,stack.stackSize);
-            }
+            stackArray[i] = replaceStackWith(stack, source, target);
         }
-        for (GT_Recipe recipe_assemblyLine : GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList){
-            if (recipe_assemblyLine.mEUt > BW_Util.getTierVoltage(6))
-                continue;
-            if (BW_Util.checkStackAndPrefix(recipe_assemblyLine.mOutputs[0]))
-                continue;
-            for (int i = 0; i < recipe_assemblyLine.mInputs.length; i++) {
-                ItemStack stack = recipe_assemblyLine.mInputs[i];
-                if (!BW_Util.checkStackAndPrefix(stack))
-                    continue;
-                ItemData ass = GT_OreDictUnificator.getAssociation(stack);
-                if (ass.mMaterial.mMaterial.equals(Materials.Osmiridium))
-                    if (WerkstoffLoader.items.get(ass.mPrefix) != null)
-                        recipe_assemblyLine.mInputs[i] = WerkstoffLoader.Ruridit.get(ass.mPrefix, stack.stackSize);
-            }
-        }
-        for (GT_Recipe recipe_assemblyLine : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList){
-            if (recipe_assemblyLine.mEUt > 6000)
-                continue;
-            for (int i = 0; i < recipe_assemblyLine.mInputs.length; i++) {
-                ItemStack stack = recipe_assemblyLine.mInputs[i];
-                if (!BW_Util.checkStackAndPrefix(stack))
-                    continue;
-                ItemData ass = GT_OreDictUnificator.getAssociation(stack);
-                if (ass.mMaterial.mMaterial.equals(Materials.Osmiridium))
-                    if (WerkstoffLoader.items.get(ass.mPrefix) != null)
-                        recipe_assemblyLine.mInputs[i] = WerkstoffLoader.Ruridit.get(ass.mPrefix,stack.stackSize);
-            }
-        }
+        return stackArray;
+    }
+
+    private static ItemStack replaceStackWith(ItemStack stack, Materials source, Werkstoff target) {
+        ItemData ass = GT_OreDictUnificator.getAssociation(stack);
+        if (ass.mMaterial.mMaterial.equals(source))
+            if (target.hasItemType(ass.mPrefix))
+                stack = target.get(ass.mPrefix, stack.stackSize);
+        return stack;
     }
 
     private static boolean doStacksCointainAndReplace(FluidStack[] stacks, FluidStack stack, boolean replace, Fluid... replacement) {
@@ -243,7 +248,7 @@ public class LuVTierEnhancer implements Runnable {
                         else {
                             int amount = ((ItemStack) ((ArrayList)stacks[i]).get(0)).stackSize;
                             stacks[i] = new ArrayList<>();
-                            ((ArrayList)stacks[i]).add(replacement[0].splitStack(amount));
+                            ((ArrayList)stacks[i]).add(BW_Util.setStackSize(replacement[0], amount));
                             replaced = true;
                         }
 
@@ -254,7 +259,7 @@ public class LuVTierEnhancer implements Runnable {
                     return true;
                 else {
                     int amount = ((ItemStack) stacks[i]).stackSize;
-                    stacks[i] = replacement[0].splitStack(amount);
+                    stacks[i] = BW_Util.setStackSize(replacement[0], amount);
                     replaced = true;
                 }
         }

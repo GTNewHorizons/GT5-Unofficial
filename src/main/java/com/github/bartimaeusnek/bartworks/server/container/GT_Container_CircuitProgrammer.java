@@ -163,7 +163,7 @@ public class GT_Container_CircuitProgrammer extends Container {
         @Override
         public void setInventorySlotContents(int slotNR, ItemStack itemStack) {
             if (itemStack != null && itemStack.getItem() != null && itemStack.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem())) {
-                this.Slot = itemStack.copy().splitStack(1);
+                this.Slot = BW_Util.setStackSize(itemStack.copy(),1);
                 itemStack.stackSize--;
                 this.tag = this.toBind.getTagCompound();
                 this.tag.setBoolean("HasChip", true);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.common.blocks;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -35,6 +36,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -52,6 +54,7 @@ public class BW_Blocks extends Block {
         this.name = name;
         this.textureNames = texture;
         this.setCreativeTab(MainMod.GT2);
+        GregTech_API.registerMachineBlock(this, -1);
     }
 
     public BW_Blocks(String name, String[] texture, CreativeTabs tabs) {
@@ -61,6 +64,7 @@ public class BW_Blocks extends Block {
         this.name = name;
         this.textureNames = texture;
         this.setCreativeTab(tabs);
+        GregTech_API.registerMachineBlock(this, -1);
     }
 
     public BW_Blocks(String name, String[] texture, CreativeTabs tabs, Material material) {
@@ -70,6 +74,7 @@ public class BW_Blocks extends Block {
         this.name = name;
         this.textureNames = texture;
         this.setCreativeTab(tabs);
+        GregTech_API.registerMachineBlock(this, -1);
     }
 
     @Override
@@ -98,6 +103,20 @@ public class BW_Blocks extends Block {
         this.texture = new IIcon[this.textureNames.length];
         for (int i = 0; i < this.textureNames.length; i++) {
             this.texture[i] = par1IconRegister.registerIcon(this.textureNames[i]);
+        }
+    }
+
+    @Override
+    public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
+        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        }
+    }
+
+    @Override
+    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
+        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
 

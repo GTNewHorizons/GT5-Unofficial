@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,16 +20,28 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.system.log;
+package com.github.bartimaeusnek.bartworks.util.log;
 
-
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.message.Message;
 import org.apache.logging.log4j.message.MessageFactory;
 
+import java.lang.reflect.Field;
+
 public class STFUGTPPLOG implements Logger {
+
+    public static void replaceLogger(){
+        try {
+            Field loggerField = FieldUtils.getField(Class.forName("gtPlusPlus.api.objects.Logger"), "modLogger", true);
+            FieldUtils.removeFinalModifier(loggerField, true);
+            loggerField.set(null, new STFUGTPPLOG());
+        } catch (IllegalAccessException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void catching(Level level, Throwable t) {

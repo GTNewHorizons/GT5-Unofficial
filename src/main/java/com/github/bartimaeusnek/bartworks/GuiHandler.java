@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks;
 
+import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.client.gui.BW_GUIContainer_HeatedWaterPump;
 import com.github.bartimaeusnek.bartworks.client.gui.BW_GUIContainer_RadLevel;
 import com.github.bartimaeusnek.bartworks.client.gui.GT_GUIContainer_CircuitProgrammer;
@@ -31,7 +32,6 @@ import com.github.bartimaeusnek.bartworks.server.container.BW_Container_HeatedWa
 import com.github.bartimaeusnek.bartworks.server.container.BW_Container_RadioHatch;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_CircuitProgrammer;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_Item_Destructopack;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,7 +60,7 @@ public class GuiHandler implements IGuiHandler {
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        if (FMLCommonHandler.instance().getSide().isClient()) {
+        if (SideReference.Side.Client) {
             switch (ID) {
                 case 0:
                     return new GT_GUIContainer_Destructopack(player.inventory);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +22,12 @@
 
 package com.github.bartimaeusnek.bartworks.server.EventHandler;
 
+import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.net.OreDictCachePacket;
 import com.github.bartimaeusnek.bartworks.common.net.ServerJoinedPackage;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -43,7 +43,7 @@ public class ServerEventHandler {
     //MinecraftForge.EVENT_BUS
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
-        if (event == null || !(event.entity instanceof EntityPlayerMP) || !FMLCommonHandler.instance().getSide().isServer())
+        if (event == null || !(event.entity instanceof EntityPlayerMP) || !SideReference.Side.Server)
             return;
         MainMod.BW_Network_instance.sendToPlayer(new OreDictCachePacket(OreDictHandler.getNonBWCache()), (EntityPlayerMP) event.entity);
         MainMod.BW_Network_instance.sendToPlayer(new ServerJoinedPackage(null),(EntityPlayerMP) event.entity);

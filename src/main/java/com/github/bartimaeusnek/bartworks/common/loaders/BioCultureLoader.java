@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ import net.minecraft.item.EnumRarity;
 import java.awt.*;
 
 
-public class BioCultureLoader implements Runnable {
+public class BioCultureLoader {
 
     public static final BioData BIO_DATA_BETA_LACMATASE = BioData.createAndRegisterBioData("beta-Lactamase", EnumRarity.uncommon, 10000, 0);
     private static final BioData BIO_DATA_YEAST = BioData.createAndRegisterBioData("Saccharomyces cerevisiae", EnumRarity.common);
@@ -47,8 +47,9 @@ public class BioCultureLoader implements Runnable {
     public static BioCulture eColi;
     public static BioCulture anaerobicOil;
     public static BioCulture generalPurposeFermentingBacteria;
-    @Override
-    public void run() {
+
+
+    public static void run() {
         BioCultureLoader.CommonYeast = BioCulture.createAndRegisterBioCulture(new Color(255, 248, 200), "Saccharomyces cerevisiae", BioPlasmid.convertDataToPlasmid(BioCultureLoader.BIO_DATA_YEAST), BioDNA.convertDataToDNA(BioCultureLoader.BIO_DATA_YEAST), true);
         BioCultureLoader.WhineYeast = BioCulture.createAndRegisterBioCulture(new Color(255, 248, 200), "Saccharomyces cerevisiae var bayanus", BioPlasmid.convertDataToPlasmid(BioCultureLoader.BIO_DATA_YEAST), BioCultureLoader.BIO_DNA_WHINE_YEAST,EnumRarity.uncommon, true);
         BioCultureLoader.BeerYeast = BioCulture.createAndRegisterBioCulture(new Color(255, 248, 200), "Saccharomyces cerevisiae var cerevisiae", BioPlasmid.convertDataToPlasmid(BioCultureLoader.BIO_DATA_YEAST), BioCultureLoader.BIO_DNA_BEER_YEAST, EnumRarity.uncommon,true);

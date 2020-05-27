@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,11 +22,11 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b;
 
+import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_WordGenerator;
 import com.github.bartimaeusnek.bartworks.system.worldgen.MapGenRuins;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.objects.XSTR;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -83,7 +83,7 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             } else if (biomeGenBase.biomeID == BiomeGenBase.mushroomIslandShore.biomeID) {
                 this.biomesForGeneration[i] = BiomeGenBase.stoneBeach;
             }
-            if (Loader.isModLoaded("Thaumcraft")) {
+            if (LoaderReference.Thaumcraft) {
                 if (ThaumcraftHandler.isTaintBiome(biomeGenBase.biomeID))
                     this.biomesForGeneration[i] = BiomeGenBase.taiga;
                 else if (ConfigHandler.disableMagicalForest && ThaumcraftHandler.isMagicalForestBiome(biomeGenBase.biomeID))

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,14 +20,26 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.common.loaders;
+package com.github.bartimaeusnek.bartworks.common.commands;
 
-public class LoaderRegistry implements Runnable {
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentText;
 
+public class RunGC extends CommandBase {
     @Override
-    public void run() {
-        ItemRegistry.run();
-        new RecipeLoader().run();
+    public String getCommandName() {
+        return "bwgc";
     }
 
+    @Override
+    public String getCommandUsage(ICommandSender p_71518_1_) {
+        return "bwgc";
+    }
+
+    @Override
+    public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
+        Runtime.getRuntime().gc();
+        p_71515_1_.addChatMessage(new ChatComponentText("Ran GC!"));
+    }
 }

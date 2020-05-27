@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
 package com.github.bartimaeusnek.crossmod.GTpp.loader;
 
 import com.github.bartimaeusnek.bartworks.API.IRadMaterial;
-import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
+import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -39,7 +39,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes","unused"})
-public class RadioHatchCompat implements Runnable {
+public class RadioHatchCompat {
 
     private static Class intf;
     private static Class materialClass;
@@ -104,8 +104,7 @@ public class RadioHatchCompat implements Runnable {
         }
     }
 
-    @Override
-    public void run() {
+    public static void run() {
         DebugLog.log("Starting Generation of missing GT++ rods/longrods");
         try {
             Class rodclass = Class.forName("gtPlusPlus.core.item.base.rods.BaseItemRod");

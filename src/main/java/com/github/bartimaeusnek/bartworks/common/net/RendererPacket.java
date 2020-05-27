@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +22,12 @@
 
 package com.github.bartimaeusnek.bartworks.common.net;
 
+import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.net.GT_Packet;
 import net.minecraft.world.IBlockAccess;
 
@@ -102,7 +102,7 @@ public class RendererPacket extends GT_Packet {
 
     @Override
     public void process(IBlockAccess iBlockAccess) {
-        if (FMLCommonHandler.instance().getSide().isClient()) {
+        if (SideReference.Side.Client) {
             if (this.removal == 0)
                 GT_TileEntity_BioVat.staticColorMap.put(this.coords, this.integer);
             else

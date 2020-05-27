@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
+import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
@@ -41,6 +42,11 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_Til
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaVacuumFreezer;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.*;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import com.github.bartimaeusnek.crossmod.galacticgreg.GT_TileEntity_VoidMiners;
+import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.TT_MetaTileEntity_LowPowerLaserBox;
+import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.TT_MetaTileEntity_LowPowerLaserDynamo;
+import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.TT_MetaTileEntity_LowPowerLaserHatch;
+import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.TT_MetaTileEntity_Pipe_Energy_LowPower;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -78,28 +84,30 @@ public class ItemRegistry {
     public static final Item PUMPPARTS = new SimpleSubItemClass("BWrawtube", "BWmotor");
     public static final Block EXPPUMP = new BW_TileEntityContainer(Material.coral, BW_TileEntity_ExperimentalFloodGate.class, "ExpReversePump");
 
+    public static final Block bw_realglas =  new BW_GlasBlocks(
+            "BW_GlasBlocks",
+            new String[]{
+                    MainMod.MOD_ID + ":BoronSilicateGlassBlock",
+                    MainMod.MOD_ID + ":NickelReinforcedBoronSilicateGlassBlock",
+                    MainMod.MOD_ID + ":TungstenReinforcedBoronSilicateGlassBlock",
+                    MainMod.MOD_ID + ":ChromeReinforcedBoronSilicateGlassBlock",
+                    MainMod.MOD_ID + ":IridiumReinforcedBoronSilicateGlassBlock",
+                    MainMod.MOD_ID + ":OsmiumReinforcedBoronSilicateGlassBlock",
+                    MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock1",
+                    MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock2",
+                    MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock3",
+                    MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock4",
+                    MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5",
+                    MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
+                    MainMod.MOD_ID + ":ThoriumYttriumGlass",
+            },
+            new short[][]{Materials.BorosilicateGlass.getRGBA(), Materials.Nickel.getRGBA(), Materials.Tungsten.getRGBA(), Materials.Chrome.getRGBA(), Materials.Iridium.getRGBA(), Materials.Osmium.getRGBA(), new short[]{0xff, 0, 0}, new short[]{0, 0xff, 0}, new short[]{0x80, 0, 0xff}, new short[]{0xff, 0xff, 0}, new short[]{0, 0xff, 0x80}, new short[]{0x80, 0x33, 0}, WerkstoffLoader.YttriumOxide.getRGBA()},
+            MainMod.BIO_TAB,
+            true, false
+    );
+
     public static final Block[] bw_glasses = {
-            new BW_GlasBlocks(
-                    "BW_GlasBlocks",
-                    new String[]{
-                            MainMod.MOD_ID + ":BoronSilicateGlassBlock",
-                            MainMod.MOD_ID + ":NickelReinforcedBoronSilicateGlassBlock",
-                            MainMod.MOD_ID + ":TungstenReinforcedBoronSilicateGlassBlock",
-                            MainMod.MOD_ID + ":ChromeReinforcedBoronSilicateGlassBlock",
-                            MainMod.MOD_ID + ":IridiumReinforcedBoronSilicateGlassBlock",
-                            MainMod.MOD_ID + ":OsmiumReinforcedBoronSilicateGlassBlock",
-                            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock1",
-                            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock2",
-                            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock3",
-                            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock4",
-                            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5",
-                            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
-                            MainMod.MOD_ID + ":ThoriumYttriumGlass",
-                    },
-                    new short[][]{Materials.BorosilicateGlass.getRGBA(), Materials.Nickel.getRGBA(), Materials.Tungsten.getRGBA(), Materials.Chrome.getRGBA(), Materials.Iridium.getRGBA(), Materials.Osmium.getRGBA(), new short[]{0xff, 0, 0}, new short[]{0, 0xff, 0}, new short[]{0x80, 0, 0xff}, new short[]{0xff, 0xff, 0}, new short[]{0, 0xff, 0x80}, new short[]{0x80, 0x33, 0}, WerkstoffLoader.YttriumOxide.getRGBA()},
-                    MainMod.BIO_TAB,
-                    true, false
-            )
+            bw_realglas
     };
     public static final Block bw_fake_glasses =
             new BW_GlasBlocks("BW_GlasBlocks", new String[]{
@@ -133,11 +141,15 @@ public class ItemRegistry {
     public static ItemStack[] acidGens = new ItemStack[3];
     public static ItemStack[] megaMachines = new ItemStack[3];
     public static ItemStack dehp;
+    public static ItemStack[] voidminer = new ItemStack[3];
     public static ItemStack thtr;
     public static ItemStack eic;
     public static ItemStack cal;
     public static ItemStack compressedHatch;
     public static ItemStack giantOutputHatch;
+
+    public static ItemStack[][][] TecTechLaserAdditions = new ItemStack[3][4][4];
+    public static ItemStack TecTechPipeEnergyLowPower;
 
     public static void run() {
         if (newStuff) {
@@ -194,6 +206,31 @@ public class ItemRegistry {
             ItemRegistry.compressedHatch = new GT_MetaTileEntity_CompressedFluidHatch(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 8, "CompressedFluidHatch", "Liquid Air Fluid Hatch").getStackForm(1L);
             ItemRegistry.giantOutputHatch = new GT_MetaTileEntity_GiantOutputHatch(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 9, "GiantOutputHatch", "Giant Output Hatch").getStackForm(1L);
             ItemRegistry.megaMachines[2] = new GT_TileEntity_MegaDistillTower(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 10, "MegaDistillationTower", "Mega Distillation Tower").getStackForm(1L);
+
+            if (LoaderReference.galacticgreg) {
+                ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 11, "VoidMiner3", "Void Miner III").getStackForm(1L);
+                ItemRegistry.voidminer[1] = new GT_TileEntity_VoidMiners.VMZPM(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 12, "VoidMiner2", "Void Miner II").getStackForm(1L);
+                ItemRegistry.voidminer[0] = new GT_TileEntity_VoidMiners.VMLUV(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 13, "VoidMiner1", "Void Miner I").getStackForm(1L);
+            }
+            if (LoaderReference.tectech) {
+                TecTechPipeEnergyLowPower = new TT_MetaTileEntity_Pipe_Energy_LowPower(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 14, "pipe.lowpowerlaser", "Low Power Laser Pipe").getStackForm(1L);
+                int startID = ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 15;
+                for (int amps = 32; amps <= 128; amps += 32) {
+                    for (int tier = 4; tier < 8; tier++) {
+                        TecTechLaserAdditions[0][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserBox(startID++, GT_Values.VN[tier] + "_LPLaser_Converter_" + amps, GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Converter", tier, amps).getStackForm(1L);
+                    }
+                }
+                for (int amps = 32; amps <= 128; amps += 32) {
+                    for (int tier = 4; tier < 8; tier++) {
+                        TecTechLaserAdditions[1][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserHatch(startID++, GT_Values.VN[tier] + "_LPLaser_Hatch_" + amps, GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Target Hatch", tier, amps).getStackForm(1L);
+                    }
+                }
+                for (int amps = 32; amps <= 128; amps += 32) {
+                    for (int tier = 4; tier < 8; tier++) {
+                        TecTechLaserAdditions[2][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserDynamo(startID++, GT_Values.VN[tier] + "_LPLaser_Dynamo_" + amps, GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Source Hatch", tier, amps).getStackForm(1L);
+                    }
+                }
+            }
         }
     }
 }

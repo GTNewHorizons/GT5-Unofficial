@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +39,10 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
 
+/**
+ * This class gets injected into GT via ASM!
+ * DO NOT CALL IT YOURSELF!
+ */
 public class BeforeGTPreload implements Runnable {
 
     private static boolean didrun;

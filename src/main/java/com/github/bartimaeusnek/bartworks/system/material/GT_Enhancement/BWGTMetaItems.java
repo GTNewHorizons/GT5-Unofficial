@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,11 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 
+import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Items;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
-import com.github.bartimaeusnek.bartworks.util.Pair;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -65,9 +62,6 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
                     continue materialloop;
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", getDefaultLocalization(w));
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", w.getToolTip());
-            if (ConfigHandler.experimentalThreadedLoader)
-                OreDictAdder.addToMap(new Pair<>(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""), tStack));
-            else
                 GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""), tStack);
         }
         if (noSubIDMaterials != null){
@@ -83,9 +77,6 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
                         continue materialloop;
                 GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", getDefaultLocalization(w));
                 GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", w.getToolTip());
-                if (ConfigHandler.experimentalThreadedLoader)
-                    OreDictAdder.addToMap(new Pair<>(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""), tStack));
-                else
                     GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""), tStack);
             }
         }
@@ -107,7 +98,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
     }
 
     protected IIconContainer getIconContainerBartWorks(int aMetaData) {
-        if (FMLCommonHandler.instance().getSide().isClient()) {
+        if (SideReference.Side.Client) {
             if (aMetaData > 1000 && hasList)
                 return PrefixTextureLinker.texMap.get(this.orePrefixes).get(NoMetaValue.get(aMetaData-1001).mIconSet);
             return PrefixTextureLinker.texMap.get(this.orePrefixes).get(Materials.values()[(short) aMetaData].mIconSet);
@@ -121,7 +112,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
     public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < Materials.values().length; i++) {
             Materials w = Materials.values()[i];
-            if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) == 0 && Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes) != 0)
+            if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0 && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0)
                 continue;
             else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                 continue;
@@ -130,7 +121,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
         if (hasList)
             for (int i = 0; i < NoMetaValue.size(); i++) {
                 Materials w = NoMetaValue.get(i);
-                if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes)) == 0 && Werkstoff.GenerationFeatures.prefixLogic.get(this.orePrefixes) != 0)
+                if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0 && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0)
                     continue;
                 else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                     continue;

@@ -26,6 +26,7 @@ import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.util.MathUtils;
+import com.github.bartimaeusnek.bartworks.util.MegaUtils;
 import com.google.common.collect.ArrayListMultimap;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -142,7 +143,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
         if (super.addOutputToMachineList(aTileEntity, aBaseCasingIndex)) {
             if (aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output) {
                 int layer = aTileEntity.getYCoord() - controllerY;
-                layer = (int) MathUtils.ceil(((double)layer) /5D)-1;
+                layer = MathUtils.ceilInt(((double)layer) /5D)-1;
                 LAYERMAP.put(layer,(GT_MetaTileEntity_Hatch_Output) aTileEntity.getMetaTileEntity());
             }
             return true;
@@ -236,9 +237,9 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
                     if (stacks > 0) {
                         for (int i = 0; i < stacks; i++)
                             if (i != stacks - 1)
-                                outputs[i] = tRecipe.getOutput(0).splitStack(64);
+                                outputs[i] = BW_Util.setStackSize(tRecipe.getOutput(0),64);
                             else
-                                outputs[i] = tRecipe.getOutput(0).splitStack(processed - (64 * i));
+                                outputs[i] = BW_Util.setStackSize(tRecipe.getOutput(0),processed - (64 * i));
                         this.mOutputItems = outputs;
                     } else
                         this.mOutputItems = null;
@@ -249,5 +250,10 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean drainEnergyInput(long aEU) {
+        return MegaUtils.drainEnergyMegaVanilla(this, aEU);
     }
 }

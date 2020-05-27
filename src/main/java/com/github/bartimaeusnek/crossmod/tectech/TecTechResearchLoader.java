@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,9 @@
 
 package com.github.bartimaeusnek.crossmod.tectech;
 
+import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import gregtech.api.enums.ItemList;
@@ -31,10 +33,62 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraftforge.fluids.FluidStack;
 
-public class TecTechResearchLoader  {
+public class TecTechResearchLoader {
 
     @SuppressWarnings("deprecation")
-    public static void runResearches(){
+    public static void runResearches() {
+
+        if (LoaderReference.galacticgreg) {
+
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    ItemRegistry.voidminer[0].copy(),
+                    1024000,
+                    256,
+                    BW_Util.getMachineVoltageFromTier(7),
+                    24,
+                    new Object[]{
+                            ItemRegistry.voidminer[0].copy(),
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackPlutonium, 9L),
+                            Materials.BlackPlutonium.getPlates(3),
+                            ItemList.Electric_Motor_ZPM.get(9L),
+                            ItemList.Sensor_ZPM.get(9L),
+                            ItemList.Field_Generator_ZPM.get(9L),
+                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlackPlutonium, 36L)
+                    },
+                    new FluidStack[]{
+                            Materials.SolderingAlloy.getMolten(1440),
+                            WerkstoffLoader.Krypton.getFluidOrGas(20000)
+                    },
+                    ItemRegistry.voidminer[1].copy(),
+                    216000,
+                    BW_Util.getMachineVoltageFromTier(7)
+            );
+
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    ItemRegistry.voidminer[1].copy(),
+                    8192000,
+                    512,
+                    BW_Util.getMachineVoltageFromTier(8),
+                    64,
+                    new Object[]{
+                            ItemRegistry.voidminer[1].copy(),
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 9L),
+                            Materials.Neutronium.getPlates(3),
+                            ItemList.Electric_Motor_UV.get(9L),
+                            ItemList.Sensor_UV.get(9L),
+                            ItemList.Field_Generator_UV.get(9L),
+                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 36L)
+                    },
+                    new FluidStack[]{
+                            Materials.SolderingAlloy.getMolten(1440),
+                            WerkstoffLoader.Oganesson.getFluidOrGas(20000)
+                    },
+                    ItemRegistry.voidminer[2].copy(),
+                    432000,
+                    BW_Util.getMachineVoltageFromTier(8)
+            );
+
+        }
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Machine_Multi_ImplosionCompressor.get(1L),
@@ -45,9 +99,9 @@ public class TecTechResearchLoader  {
                 new Object[]{
                         ItemList.Machine_Multi_ImplosionCompressor.get(1L),
                         Materials.Neutronium.getBlocks(5),
-                        GT_OreDictUnificator.get(OrePrefixes.stickLong,Materials.Osmium,64),
-                        GT_OreDictUnificator.get(OrePrefixes.ring,Materials.Osmium,64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt01,Materials.Superconductor,64),
+                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmium, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Osmium, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 64),
                         ItemList.Electric_Piston_UV.get(64),
                 },
                 new FluidStack[]{

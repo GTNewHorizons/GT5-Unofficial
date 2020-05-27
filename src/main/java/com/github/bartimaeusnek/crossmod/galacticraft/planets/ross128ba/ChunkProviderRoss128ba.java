@@ -39,6 +39,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class ChunkProviderRoss128ba extends ChunkProviderMoon {
 
@@ -51,11 +52,11 @@ public class ChunkProviderRoss128ba extends ChunkProviderMoon {
         super(world, seed, mapFeaturesEnabled);
         this.biomesForGeneration = new BiomeGenBase[]{BiomeGenBaseMoon.moonFlat};
         this.caveGenerator = new MapGenCavesMoon();
-        this.worldObj=world;
+        this.worldObj = world;
     }
 
     public Chunk provideChunk(int cx, int cz) {
-        this.rand.setSeed((long)cx * 341873128712L + (long)cz * 132897987541L);
+        this.rand.setSeed((long) cx * 341873128712L + (long) cz * 132897987541L);
         Block[] ids = new Block[65536];
         byte[] meta = new byte[65536];
         Arrays.fill(ids, Blocks.air);
@@ -67,6 +68,9 @@ public class ChunkProviderRoss128ba extends ChunkProviderMoon {
         Chunk Chunk = new Chunk(this.worldObj, ids, meta, cx, cz);
         Chunk.generateSkylightMap();
         return Chunk;
+    }
+
+    public void decoratePlanet(World par1World, Random par2Random, int par3, int par4) {
     }
 
     @Override
@@ -82,21 +86,21 @@ public class ChunkProviderRoss128ba extends ChunkProviderMoon {
     }
 
     final Block lowerBlockID = GCBlocks.blockMoon;
-    final BartsNoise noiseGen= new BartsNoise(2,0.008F,1D,System.nanoTime());
-    final BartsNoise noiseGen2= new BartsNoise(2,0.01F,1D,System.nanoTime());
-    final BartsNoise noiseGen3= new BartsNoise(2,0.002F,1D,System.nanoTime());
+    final BartsNoise noiseGen = new BartsNoise(2, 0.008F, 1D, System.nanoTime());
+    final BartsNoise noiseGen2 = new BartsNoise(2, 0.01F, 1D, System.nanoTime());
+    final BartsNoise noiseGen3 = new BartsNoise(2, 0.002F, 1D, System.nanoTime());
 
     public void generateTerrain(int chunkX, int chunkZ, Block[] idArray, byte[] metaArray) {
-        for(int x = 0; x < 16; ++x) {
-            for(int z = 0; z < 16; ++z) {
+        for (int x = 0; x < 16; ++x) {
+            for (int z = 0; z < 16; ++z) {
                 double d = noiseGen.getNoise(x + chunkX * 16, z + chunkZ * 16);
                 double d2 = noiseGen2.getNoise(x + chunkX * 16, z + chunkZ * 16);
                 double d3 = noiseGen3.getCosNoise(x + chunkX * 16, z + chunkZ * 16);
 
-                double yDev = d*4+d2*2+d3;
+                double yDev = d * 4 + d2 * 2 + d3;
 
-                for(int y = 0; y < 128; ++y) {
-                    if ((double)y < 60.0D + yDev) {
+                for (int y = 0; y < 128; ++y) {
+                    if ((double) y < 60.0D + yDev) {
                         idArray[this.getIndex(x, y, z)] = this.lowerBlockID;
                         int var10001 = this.getIndex(x, y, z);
                         metaArray[var10001] = 4;

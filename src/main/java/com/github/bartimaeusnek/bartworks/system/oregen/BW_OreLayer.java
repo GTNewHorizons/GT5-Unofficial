@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.system.oregen;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.*;
 import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
+import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.google.common.collect.ArrayListMultimap;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -115,6 +116,15 @@ public abstract class BW_OreLayer extends GT_Worldgen {
         ret.add((this.bwOres & 0b0100) != 0 ? new ItemStack(WerkstoffLoader.BWOres,1,this.mSecondaryMeta) : new ItemStack ( GregTech_API.sBlockOres1,1,this.mSecondaryMeta));
         ret.add((this.bwOres & 0b0010) != 0 ? new ItemStack(WerkstoffLoader.BWOres,1,this.mBetweenMeta) : new ItemStack ( GregTech_API.sBlockOres1,1,this.mBetweenMeta));
         ret.add((this.bwOres & 0b0001) != 0 ? new ItemStack(WerkstoffLoader.BWOres,1,this.mSporadicMeta) : new ItemStack ( GregTech_API.sBlockOres1,1,this.mSporadicMeta));
+        return ret;
+    }
+
+    public List<Pair<Integer,Boolean>> getStacksRawData(){
+        ArrayList<Pair<Integer,Boolean>> ret = new ArrayList<>();
+        ret.add(new Pair<>(this.mPrimaryMeta, (this.bwOres & 0b1000) != 0));
+        ret.add(new Pair<>(this.mSecondaryMeta, (this.bwOres & 0b0100) != 0));
+        ret.add(new Pair<>(this.mBetweenMeta, (this.bwOres & 0b0010) != 0));
+        ret.add(new Pair<>(this.mSporadicMeta, (this.bwOres & 0b0001) != 0));
         return ret;
     }
 

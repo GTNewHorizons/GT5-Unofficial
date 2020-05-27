@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
 package com.github.bartimaeusnek.bartworks.util;
 
 
-import com.github.bartimaeusnek.bartworks.MainMod;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.item.EnumRarity;
@@ -137,7 +136,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
 
     public Fluid getFluid() {
         if (this.mFluid == null)
-            MainMod.LOGGER.error("Fluid has not been set yet! The issuring Culture is: " + this.name);
+            throw new IllegalStateException("Fluid has not been set yet! The issuring Culture is: " + this.name);
         return this.mFluid;
     }
 

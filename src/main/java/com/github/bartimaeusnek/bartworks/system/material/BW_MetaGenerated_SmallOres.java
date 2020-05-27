@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,7 @@ public class BW_MetaGenerated_SmallOres extends BW_MetaGenerated_Ores {
     @Override
     protected void doRegistrationStuff(Werkstoff w) {
         if (w != null) {
-            if ((w.getGenerationFeatures().toGenerate & 0b1000) == 0 || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
+            if (!w.hasItemType(OrePrefixes.ore) || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
                 return;
             GT_ModHandler.addValuableOre(this, w.getmID(), 1);
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + "." + w.getmID() + ".name", "Small " + w.getDefaultName() + OrePrefixes.oreSmall.mLocalizedMaterialPost);

@@ -31,21 +31,22 @@ import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerMoon;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
-public class WorldProviderRoss128Ba extends AbstractWorldProviderSpace {
+public class WorldProviderRoss128ba extends AbstractWorldProviderSpace {
     @Override
     public Vector3 getFogColor() {
-        return new Vector3(0,0,0);
+        return new Vector3(0, 0, 0);
     }
 
     @Override
     public Vector3 getSkyColor() {
-        return new Vector3(0,0,0);
+        return new Vector3(0, 0, 0);
     }
 
     @Override
     public long getDayLength() {
-        return (long) MathUtils.floor(24000f*9.9f/100f);
+        return MathUtils.floorLong(24000f * 9.9f / 100f);
     }
+
     @Override
     public boolean hasSunset() {
         return false;

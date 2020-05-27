@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
 import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import gregtech.common.GT_Pollution;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -38,6 +39,9 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDropsContent, IFluidHandler, IFluidTank, ITileWithGUI, ITileAddsInformation, ITileHasDifferentTextureSides {
 
@@ -53,12 +57,10 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     @Override
     public void writeToNBT(NBTTagCompound p_145841_1_) {
         NBTTagCompound subItemStack = new NBTTagCompound();
-        if (this.fuelstack == null)
-            p_145841_1_.setTag("ItemStack", subItemStack);
-        else {
+        if (this.fuelstack != null) {
             this.fuelstack.writeToNBT(subItemStack);
-            p_145841_1_.setTag("ItemStack", subItemStack);
         }
+        p_145841_1_.setTag("ItemStack", subItemStack);
         NBTTagCompound subFluidStack = new NBTTagCompound();
         this.outputstack.writeToNBT(subFluidStack);
         p_145841_1_.setTag("FluidStack", subFluidStack);
@@ -79,22 +81,26 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
         super.readFromNBT(p_145839_1_);
     }
 
-    @Override
-    public void updateEntity() {
-        if (this.worldObj.isRemote || ((this.fuelstack == null || this.fuelstack.stackSize <= 0) && this.fuel <= 0) || (this.tick == 0 && this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord) == Blocks.air)) {
-            return;
-        }
 
+    private boolean checkPreUpdate() {
+        return this.worldObj.isRemote || ((this.fuelstack == null || this.fuelstack.stackSize <= 0) && this.fuel <= 0) || (this.tick == 0 && this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord) == Blocks.air);
+    }
+
+    private void fixUnderlflow() {
         if (this.fuel < 0)
             this.fuel = 0;
+    }
 
+    private void handleRefuel() {
         if (this.fuelstack != null && this.fuel == 0) {
             this.fuel = this.maxfuel = TileEntityFurnace.getItemBurnTime(this.fuelstack);
             --this.fuelstack.stackSize;
             if (this.fuelstack.stackSize <= 0)
                 this.fuelstack = null;
         }
+    }
 
+    private void handleWaterGeneration() {
         if (this.fuel > 0) {
             ++this.tick;
             --this.fuel;
@@ -104,6 +110,60 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
                 this.tick = 0;
             }
         }
+    }
+
+    @Override
+    public void updateEntity() {
+        pushWaterToAdjacentTiles();
+        if (checkPreUpdate())
+            return;
+
+        fixUnderlflow();
+        handleRefuel();
+        handleWaterGeneration();
+        causePollution();
+    }
+
+    private void pushWaterToAdjacentTiles() {
+        Arrays.stream(ForgeDirection.values(), 0, 6) //All but Unknown
+                .forEach(
+                        direction -> Optional.ofNullable(
+                                this.worldObj.getTileEntity(
+                                        this.xCoord + direction.offsetX,
+                                        this.yCoord + direction.offsetY,
+                                        this.zCoord + direction.offsetZ)
+                        ).ifPresent(
+                                te -> {
+                                    if (te instanceof IFluidHandler) {
+                                        IFluidHandler tank = (IFluidHandler) te;
+                                        if (tank.canFill(direction.getOpposite(), this.outputstack.getFluid())) {
+                                            int drainage;
+                                            if ((drainage = tank.fill(direction.getOpposite(), this.outputstack, false)) > 0) {
+                                                tank.fill(direction.getOpposite(), this.outputstack, true);
+                                                this.drain(drainage, true);
+                                            }
+                                        }
+                                    } else if (te instanceof IFluidTank) {
+                                        IFluidTank tank = (IFluidTank) te;
+                                        int drainage;
+                                        if ((drainage = tank.fill(this.outputstack, false)) > 0) {
+                                            tank.fill(this.outputstack, true);
+                                            this.drain(drainage, true);
+                                        }
+                                    }
+                                }
+                        ));
+    }
+
+    private void causePollution() {
+        Optional.ofNullable(this.worldObj).ifPresent(e -> {
+                    if (e.getTotalWorldTime() % 20 == 0) {
+                        Optional.ofNullable(e.getChunkFromBlockCoords(this.xCoord, this.zCoord)).ifPresent(c ->
+                                GT_Pollution.addPollution(c, 5)
+                        );
+                    }
+                }
+        );
     }
 
     @Override

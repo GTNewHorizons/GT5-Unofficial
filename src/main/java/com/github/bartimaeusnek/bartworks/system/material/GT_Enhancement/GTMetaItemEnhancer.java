@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 
+import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -42,8 +42,11 @@ import java.util.stream.Collectors;
 public class GTMetaItemEnhancer {
    static List<Materials> NoMetaValue;
 
-    static{
-        if (Loader.isModLoaded("Forestry")) {
+    private GTMetaItemEnhancer() {
+    }
+
+    public static void init(){
+        if (LoaderReference.Forestry) {
             NoMetaValue = Materials.getMaterialsMap().values().stream().filter(m -> m.mMetaItemSubID == -1).collect(Collectors.toList());
             Item moltenCapsuls = new BWGTMetaItems(WerkstoffLoader.capsuleMolten, null);
             Item capsuls = new BWGTMetaItems(OrePrefixes.capsule, NoMetaValue);

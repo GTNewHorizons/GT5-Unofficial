@@ -97,10 +97,10 @@ tooltip.labparts.7.name=A DNA Flask containing:
 tooltip.labparts.8.name=A Plasmid Cell containing:
 
 tooltip.tile.waterpump.0.name=Produces
-tooltip.tile.waterpump.1.name=L/s Water when fueled.
+tooltip.tile.waterpump.1.name=L/s Water when fueled. Causes 5 Pollution per second.
 tooltip.tile.waterpump.2.name=Must be placed on the Ground.
 
-tooltip.tile.mbf.0.name=Controller Block for the Mega Blast Furnace;Size(WxHxD): 15x20x15 (Hollow);Controller: 3nd Layer Middle Center;Inner 13x18x13 Heating Coils (Hollow);Outer 15x18x15 Borosilicate Glass;The glass limits the Energy Input tier;1+ Input Hatch/Bus (Any casing);1+ Output Bus (Any casing);1+ Energy Hatch (Any casing);1x Maintenance Hatch (Any casing);13x13 Muffler Hatches (Top middle);Heat Proof Machine Casings for the outer 15x15 (Layer 20);1+ Output Hatch to recover CO2/CO/SO2 (optional, any top layer casing);    Recovery scales with Muffler Hatch tier;Heat Proof Machine Casings for Base;Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively);Each 1800K over the min. Heat Capacity allows for one upgraded overclock;Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%;Causes maximum
+tooltip.tile.mbf.0.name=Controller Block for the Mega Blast Furnace;Size(WxHxD): 15x20x15 (Hollow);Controller: 3nd Layer Middle Center;Inner 13x18x13 Heating Coils (Hollow);Outer 15x18x15 Boronsilicate Glass;The glass limits the Energy Input tier;1+ Input Hatch/Bus (Any casing);1+ Output Hatch/Bus (Any casing);1+ Energy Hatch (Any casing);1x Maintenance Hatch (Any casing);13x13 Muffler Hatches (Top middle);Heat Proof Machine Casings for the outer 15x15 (Layer 20);1+ Output Hatch to recover CO2/CO/SO2 (optional, any top layer casing);    Recovery scales with Muffler Hatch tier;Heat Proof Machine Casings for Base;Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively);Each 1800K over the min. Heat Capacity allows for one upgraded overclock;Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%;Causes maximum
 tooltip.tile.mbf.1.name=Pollution per second
 tooltip.tile.mvf.0.name=Controller Block for the Mega Vacuum Freezer;Super cools hot ingots and cells;Size(WxHxD): 15x15x15 (Hollow);Controller: (Front centered);1x Input Bus (Any casing);1x Output Bus (Any casing);1x Maintenance Hatch (Any casing);1x Energy Hatch (Any casing);Frost Proof Machine Casings for the rest
 tooltip.tile.bvat.0.name=Controller Block for the Bacterial Vat;Size(WxHxD): 5x4x5;Bottom and top are Stainless Steel Casings;Bottom or top must contain:;1x Maintenance, 1x Output Hatch;1 or more Input Hatches, 1 or more Input Buses, 0-1 Radio Hatch;The two middle layers must be build out of glass, hollow;The glass can be any glass, i.e. Tinkers Construct Clear Glass;Some Recipes need more advanced Glass Types;For maximum efficiency boost keep the Output Hatch always half filled!
@@ -151,6 +151,11 @@ item.BISOPelletBall.name=BISO pebble ball
 item.BISOPellet.name=BISO pebble
 item.TRISOPelletCompound.name=TRISO pebble compund
 item.BISOPelletCompound.name=BISO pebble compund
+item.BurnedOutBISOPelletBall.name=Burned Out BISO pebble ball
+item.BurnedOutBISOPellet.name=Burned Out BISO pebble
+item.BurnedOutTRISOPelletBall.name=Burned Out TRISO pebble ball
+item.BurnedOutTRISOPellet.name=Burned Out TRISO pebble
+
 itemGroup.bartworksMetaMaterials=BartWorks' Meta Materials
 
 tooltip.tile.eic.0.name=Controller Block for the Electric Implosion Compressor;Size(WxHxD): 3x9x3;Uses Electricity instead of Explosives;Controller: Layer 3, front, center;Layer 1 and Layer 9: Solid Steel Machine Casings, each: 1 Energy Hatch in the middle;Layer 2,3,7,8: Middle: Nickel-Zinc-Ferrit Blocks, Outer: Transformer-Winding Blocks;Layer 4,5,6: Neutronium Blocks;1+ Input Bus, 1+ Output Bus, 1 Maintenance Hatch at any Solid Steel Machine Casing;Do NOT Obstruct or mine the Moving parts while in Operation, will explode if you do so!

@@ -272,7 +272,7 @@ public class CircuitImprintLoader {
 
     public static NBTTagCompound getTagFromStack(ItemStack stack) {
         if (GT_Utility.isStackValid(stack))
-            return stack.copy().splitStack(1).writeToNBT(new NBTTagCompound());
+            return BW_Util.setStackSize(stack.copy(),1).writeToNBT(new NBTTagCompound());
         return new NBTTagCompound();
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,18 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 
+import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.MegaUtils;
+import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
+import com.github.bartimaeusnek.crossmod.tectech.TecTechUtils;
+import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
@@ -38,11 +42,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.List;
 
 import static gregtech.api.enums.GT_Values.V;
 
-public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFreezer {
+@Optional.Interface(iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti", modid = "tectech", striprefs = true)
+public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFreezer implements TecTechEnabledMulti {
 
     public GT_TileEntity_MegaVacuumFreezer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -67,26 +72,30 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
         return new GT_TileEntity_MegaVacuumFreezer(this.mName);
     }
 
+    @SuppressWarnings("rawtypes")
+    public ArrayList TTTunnels = new ArrayList<>();
+    @SuppressWarnings("rawtypes")
+    public ArrayList TTMultiAmp = new ArrayList<>();
+
+    @Override
+    public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (LoaderReference.tectech)
+            return TecTechUtils.addEnergyInputToMachineList(this, aTileEntity, aBaseCasingIndex);
+        return super.addEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
+    }
+
+    @Override
     public boolean drainEnergyInput(long aEU) {
-        if (aEU <= 0)
-            return true;
-        long allTheEu = 0;
-        int hatches = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches)
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                allTheEu += tHatch.getEUVar();
-                hatches++;
-            }
-        if (allTheEu < aEU)
-            return false;
-        long euperhatch = aEU / hatches;
-        HashSet<Boolean> returnset = new HashSet<>();
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches)
-            if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euperhatch, false))
-                returnset.add(true);
-            else
-                returnset.add(false);
-        return returnset.size() > 0 && !returnset.contains(false);
+        if (LoaderReference.tectech)
+            return TecTechUtils.drainEnergyMEBFTecTech(this, aEU);
+        return MegaUtils.drainEnergyMegaVanilla(this, aEU);
+    }
+
+    @Override
+    public long getMaxInputVoltage() {
+        if (LoaderReference.tectech)
+            return TecTechUtils.getMaxInputVoltage(this);
+        return super.getMaxInputVoltage();
     }
 
     @Override
@@ -94,13 +103,14 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
         ItemStack[] tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
         ArrayList<ItemStack> outputItems = new ArrayList<>();
 
-        long tVoltage = this.getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+        long nominalV = LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this) : BW_Util.getnominalVoltage(this);
+
+        byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 
         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sVacuumRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], null, tInputs);
         boolean found_Recipe = false;
         int processed = 0;
-        long nominalV = BW_Util.getnominalVoltage(this);
+
         while (this.getStoredInputs().size() > 0 && processed < ConfigHandler.megaMachinesMax) {
             if (tRecipe != null && (tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, null, tInputs)) {
                 found_Recipe = true;
@@ -140,15 +150,51 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
         return false;
     }
 
+    // -------------- TEC TECH COMPAT ----------------
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        if (LoaderReference.tectech) {
+            this.getTecTechEnergyMultis().clear();
+            this.getTecTechEnergyTunnels().clear();
+        }
         return (
-                   BW_Util.check_layer(aBaseMetaTileEntity, 7, -7, -6, GregTech_API.sBlockCasings2, 1, 7, false,false,true, GregTech_API.sBlockCasings2,1,true, 17)
-                && BW_Util.check_layer(aBaseMetaTileEntity, 7, -6, 0, GregTech_API.sBlockCasings2, 1, 7, false, false, true, Blocks.air, -1, true, 17)
-                && BW_Util.check_layer(aBaseMetaTileEntity, 7, 0, 1, GregTech_API.sBlockCasings2, 1, 7, true, false, true, Blocks.air, -1, true, 17)
-                && BW_Util.check_layer(aBaseMetaTileEntity, 7, 1, 7, GregTech_API.sBlockCasings2, 1, 7, false, false, true, Blocks.air, -1, true, 17)
-                && BW_Util.check_layer(aBaseMetaTileEntity, 7, 7, 8, GregTech_API.sBlockCasings2, 1, 7, false,false,true, GregTech_API.sBlockCasings2,1,true, 17)
-                ) && !this.mInputBusses.isEmpty() && !this.mOutputBusses.isEmpty() && !this.mEnergyHatches.isEmpty() && !this.mMaintenanceHatches.isEmpty();
+                BW_Util.check_layer(aBaseMetaTileEntity, 7, -7, -6, GregTech_API.sBlockCasings2, 1, 7, false, false, true, GregTech_API.sBlockCasings2, 1, true, 17)
+                        && BW_Util.check_layer(aBaseMetaTileEntity, 7, -6, 0, GregTech_API.sBlockCasings2, 1, 7, false, false, true, Blocks.air, -1, true, 17)
+                        && BW_Util.check_layer(aBaseMetaTileEntity, 7, 0, 1, GregTech_API.sBlockCasings2, 1, 7, true, false, true, Blocks.air, -1, true, 17)
+                        && BW_Util.check_layer(aBaseMetaTileEntity, 7, 1, 7, GregTech_API.sBlockCasings2, 1, 7, false, false, true, Blocks.air, -1, true, 17)
+                        && BW_Util.check_layer(aBaseMetaTileEntity, 7, 7, 8, GregTech_API.sBlockCasings2, 1, 7, false, false, true, GregTech_API.sBlockCasings2, 1, true, 17)
+        ) &&
+                !this.mInputBusses.isEmpty() &&
+                !this.mOutputBusses.isEmpty() &&
+                !this.mMaintenanceHatches.isEmpty() &&
+                LoaderReference.tectech ?
+                (!this.getTecTechEnergyMultis().isEmpty() || !this.getTecTechEnergyTunnels().isEmpty() || !this.mEnergyHatches.isEmpty()) :
+                !this.mEnergyHatches.isEmpty();
     }
 
+    @Override
+    public String[] getInfoData() {
+        return LoaderReference.tectech ? this.getInfoDataArray(this) : super.getInfoData();
+    }
+
+    @Override
+    @Optional.Method(modid = "tectech")
+    public List<GT_MetaTileEntity_Hatch_Energy> getVanillaEnergyHatches() {
+        return this.mEnergyHatches;
+    }
+
+    @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Optional.Method(modid = "tectech")
+    public List getTecTechEnergyTunnels() {
+        return TTTunnels;
+    }
+
+    @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Optional.Method(modid = "tectech")
+    public List getTecTechEnergyMultis() {
+        return TTMultiAmp;
+    }
 }

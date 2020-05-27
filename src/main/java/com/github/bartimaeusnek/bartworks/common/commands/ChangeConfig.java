@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -75,6 +75,7 @@ public class ChangeConfig extends CommandBase {
                     p_71515_1_.addChatMessage(new ChatComponentText("booleans need to be set to true or false"));
                 }
             }
+            p_71515_1_.addChatMessage(new ChatComponentText("Set " + p_71515_2_[0] + " to " + p_71515_2_[1]));
         }catch (Exception e){
             e.printStackTrace();
         }

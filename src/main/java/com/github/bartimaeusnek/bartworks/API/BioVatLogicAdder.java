@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +22,13 @@
 
 package com.github.bartimaeusnek.bartworks.API;
 
-import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -41,23 +46,111 @@ public final class BioVatLogicAdder {
 
     public static class RadioHatch {
 
+        public static void runBasicItemIntegration() {
+            giveItemStackRadioHatchAbilites(ItemList.ThoriumCell_1.get(1), Materials.Thorium, 3);
+            giveItemStackRadioHatchAbilites(ItemList.ThoriumCell_2.get(1), Materials.Thorium, 6);
+            giveItemStackRadioHatchAbilites(ItemList.ThoriumCell_4.get(1), Materials.Thorium, 12);
+
+            giveItemStackRadioHatchAbilites(ItemList.NaquadahCell_1.get(1), Materials.Naquadah, 3);
+            giveItemStackRadioHatchAbilites(ItemList.NaquadahCell_2.get(1), Materials.Naquadah, 6);
+            giveItemStackRadioHatchAbilites(ItemList.NaquadahCell_4.get(1), Materials.Naquadah, 12);
+
+            giveItemStackRadioHatchAbilites(ItemList.Moxcell_1.get(1), Materials.Plutonium, 3);
+            giveItemStackRadioHatchAbilites(ItemList.Moxcell_2.get(1), Materials.Plutonium, 6);
+            giveItemStackRadioHatchAbilites(ItemList.Moxcell_4.get(1), Materials.Plutonium, 12);
+
+            giveItemStackRadioHatchAbilites(ItemList.Uraniumcell_1.get(1), Materials.Uranium, 3);
+            giveItemStackRadioHatchAbilites(ItemList.Uraniumcell_2.get(1), Materials.Uranium, 6);
+            giveItemStackRadioHatchAbilites(ItemList.Uraniumcell_4.get(1), Materials.Uranium, 12);
+
+            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.TiberiumCell_1.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 3);
+            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.TiberiumCell_2.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 6);
+            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.TiberiumCell_4.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 12);
+
+            giveItemStackRadioHatchAbilites(ItemList.MNqCell_1.get(1), Materials.Naquadria, 3);
+            giveItemStackRadioHatchAbilites(ItemList.MNqCell_2.get(1), Materials.Naquadria, 6);
+            giveItemStackRadioHatchAbilites(ItemList.MNqCell_4.get(1), Materials.Naquadria, 12);
+
+            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.TheCoreCell.get(1), Materials.Naquadah, 96);
+
+            giveItemStackRadioHatchAbilites(ItemList.Depleted_Thorium_1.get(1), Materials.Thorium, 3, 10);
+            giveItemStackRadioHatchAbilites(ItemList.Depleted_Thorium_2.get(1), Materials.Thorium, 6, 10);
+            giveItemStackRadioHatchAbilites(ItemList.Depleted_Thorium_4.get(1), Materials.Thorium, 12, 10);
+
+            giveItemStackRadioHatchAbilites(ItemList.Depleted_Naquadah_1.get(1), Materials.Naquadah, 3, 10);
+            giveItemStackRadioHatchAbilites(ItemList.Depleted_Naquadah_2.get(1), Materials.Naquadah, 6, 10);
+            giveItemStackRadioHatchAbilites(ItemList.Depleted_Naquadah_4.get(1), Materials.Naquadah, 12, 10);
+
+            giveItemStackRadioHatchAbilites(GT_ModHandler.getModItem("IC2","reactorMOXSimpledepleted",1), Materials.Plutonium, 3, 10);
+            giveItemStackRadioHatchAbilites(GT_ModHandler.getModItem("IC2","reactorMOXDualdepleted",1),  Materials.Plutonium, 6, 10);
+            giveItemStackRadioHatchAbilites(GT_ModHandler.getModItem("IC2","reactorMOXQuaddepleted",1),  Materials.Plutonium, 12, 10);
+
+            giveItemStackRadioHatchAbilites(GT_ModHandler.getModItem("IC2","reactorUraniumSimpledepleted",1), Materials.Uranium, 3, 10);
+            giveItemStackRadioHatchAbilites(GT_ModHandler.getModItem("IC2","reactorUraniumDualdepleted",1), Materials.Uranium, 6, 10);
+            giveItemStackRadioHatchAbilites(GT_ModHandler.getModItem("IC2","reactorUraniumQuaddepleted",1), Materials.Uranium, 12, 10);
+
+            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.Depleted_Tiberium_1.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 3, 10);
+            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 6, 10);
+            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.Depleted_Tiberium_4.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 12, 10);
+
+            giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_1.get(1), Materials.Naquadria, 3, 10);
+            giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_2.get(1), Materials.Naquadria, 6, 10);
+            giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_4.get(1), Materials.Naquadria, 12, 10);
+
+            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1), Materials.Naquadah, 96, 10);
+        }
+
         private static final HashSet<BioVatLogicAdder.MaterialSvPair> MaSv = new HashSet<>();
         private static final HashMap<ItemStack, Integer> IsSv = new HashMap<>();
+        private static final HashMap<ItemStack, Integer> IsKg = new HashMap<>();
+        private static final HashMap<ItemStack, short[]> IsColor = new HashMap<>();
 
         public static HashSet<BioVatLogicAdder.MaterialSvPair> getMaSv() {
             return RadioHatch.MaSv;
+        }
+
+        public static HashMap<ItemStack, Integer> getIsKg() {
+            return IsKg;
         }
 
         public static HashMap<ItemStack, Integer> getIsSv() {
             return RadioHatch.IsSv;
         }
 
-        public static void setOverrideSvForMaterial(Materials m, Integer sv) {
+        public static HashMap<ItemStack, short[]> getIsColor() {
+            return IsColor;
+        }
+
+        public static void setOverrideSvForMaterial(Materials m, int sv) {
             MaSv.add(new BioVatLogicAdder.MaterialSvPair(m, sv));
         }
 
-        public static void giveItemStackRadioHatchAbilites(ItemStack stack, Integer sv) {
+        public static void giveItemStackRadioHatchAbilites(ItemStack stack, int sv) {
             IsSv.put(stack, sv);
+        }
+
+        public static void giveItemStackRadioHatchAbilites(ItemStack stack, Materials materials) {
+            IsSv.put(stack, BW_Util.calculateSv(materials));
+        }
+
+        public static void giveItemStackRadioHatchAbilites(ItemStack stack, int sv, int kg) {
+            IsSv.put(stack, sv);
+            IsKg.put(stack, kg);
+        }
+
+        public static void giveItemStackRadioHatchAbilites(ItemStack stack, Materials materials, int kg) {
+            giveItemStackRadioHatchAbilites(stack, BW_Util.calculateSv(materials), kg);
+            IsColor.put(stack, materials.getRGBA());
+        }
+
+        public static void giveItemStackRadioHatchAbilites(ItemStack stack, Materials materials, int kg, int divider) {
+            giveItemStackRadioHatchAbilites(stack, BW_Util.calculateSv(materials) / divider, kg);
+            IsColor.put(stack, materials.getRGBA());
+        }
+
+        public static void giveItemStackRadioHatchAbilites(ItemStack stack, int sv, int kg, short[] color) {
+            giveItemStackRadioHatchAbilites(stack, sv, kg);
+            IsColor.put(stack, color);
         }
 
         public static int MaxSV = 150;
@@ -94,7 +187,7 @@ public final class BioVatLogicAdder {
             if (ret)
                 BioVatGlass.glasses.put(new BlockMetaPair(block, (byte) meta), (byte) tier);
             else
-                MainMod.LOGGER.warn("Block: " + sUnlocBlockName + " of the Mod: " + sModname + " was NOT found!");
+                new IllegalArgumentException("Block: " + sUnlocBlockName + " of the Mod: " + sModname + " was NOT found!").printStackTrace();
             block = null;
             return ret;
         }

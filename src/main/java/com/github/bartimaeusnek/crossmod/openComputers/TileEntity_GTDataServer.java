@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,9 @@ package com.github.bartimaeusnek.crossmod.openComputers;
 import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
 import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
 import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
+import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Utility;
@@ -77,7 +77,7 @@ public class TileEntity_GTDataServer extends TileEntity implements ISidedInvento
 
 
     private boolean isServerSide(){
-        return !this.worldObj.isRemote || FMLCommonHandler.instance().getSide().isServer();
+        return !this.worldObj.isRemote || SideReference.Side.Server;
     }
 
     @Override

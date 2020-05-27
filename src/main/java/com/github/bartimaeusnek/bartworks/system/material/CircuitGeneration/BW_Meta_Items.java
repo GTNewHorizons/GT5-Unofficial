@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,11 @@
 package com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
-import com.github.bartimaeusnek.bartworks.util.Pair;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -92,9 +89,6 @@ public class BW_Meta_Items {
 
         ItemStack tStack = BW_Meta_Items.NEWCIRCUITS.addCircuit(aID,aName,tooltip,aTier);
 
-        if (ConfigHandler.experimentalThreadedLoader)
-            OreDictAdder.addToMap(new Pair<>((aOreDictPrefix + additionalOreDictData).replaceAll(" ",""), tStack));
-        else
             GT_OreDictUnificator.registerOre((aOreDictPrefix + additionalOreDictData).replaceAll(" ",""), tStack);
     }
 

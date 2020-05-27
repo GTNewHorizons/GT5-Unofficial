@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.gui.BW_GUIContainer_Windmill;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
+import com.github.bartimaeusnek.bartworks.server.container.BW_Container_Windmill;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -57,8 +58,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -68,7 +70,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
     private static final IIconContainer[] iIconContainers = new IIconContainer[2];
     private static final ITexture[] iTextures = new ITexture[3];
 
-    private final ArrayList<TileEntityDispenser> tedList = new ArrayList<>();
+    private static final XSTR localRandomInstance = new XSTR();
     private BW_RotorBlock rotorBlock;
     private byte hasDoor;
 
@@ -85,14 +87,13 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
         return true;
     }
 
+    private final Set<TileEntityDispenser> tileEntityDispensers = new HashSet<>();
+
+    @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mMaxProgresstime > 0)
             this.mProgresstime += this.rotorBlock.getGrindPower();
         return this.rotorBlock.getGrindPower() > 0;
-    }
-
-    public boolean doRandomMaintenanceDamage() {
-        return true;
     }
 
     @Override
@@ -139,6 +140,27 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @Override
+    public boolean doRandomMaintenanceDamage() {
+        return true;
+    }
+
+    private boolean hardOverride(int maxProgresstime, boolean randomise, ItemStack input, ItemStack... outputs) {
+        input.stackSize -= 1;
+        this.mMaxProgresstime = maxProgresstime;
+        if (randomise) {
+            if (localRandomInstance.nextInt(2) == 0)
+                this.mOutputItems[0] = outputs[0];
+            else
+                this.mOutputItems[0] = outputs[1];
+        } else {
+            this.mOutputItems[0] = outputs[0];
+            if (outputs.length == 2)
+                this.mOutputItems[1] = outputs[1];
+        }
+        return true;
+    }
+
+    @Override
     public boolean checkRecipe(ItemStack itemStack) {
 
         if (itemStack == null || itemStack.getItem() == null)
@@ -150,119 +172,110 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
         //Override Recipes that doesnt quite work well with OreUnificator
         //Items
         if (itemStack.getItem().equals(Items.wheat)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 15 * 20 * 100;
-            this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L));
-            this.mOutputItems[1] = (GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wheat, 1L));
-            return true;
+            return hardOverride(
+                    30000,
+                    false,
+                    itemStack,
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wheat, 1L));
         } else if (itemStack.getItem().equals(Items.bone)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 15 * 20 * 100;
-            if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = new ItemStack(Items.dye, 4, 15);
-            else
-                this.mOutputItems[0] = new ItemStack(Items.dye, 3, 15);
-            return true;
+            return hardOverride(
+                    30000,
+                    true,
+                    itemStack,
+                    new ItemStack(Items.dye, 4, 15),
+                    new ItemStack(Items.dye, 3, 15));
         }
         //Blocks
         else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.gravel)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 30 * 20 * 100;
-            if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = new ItemStack(Items.flint, 2);
-            else
-                this.mOutputItems[0] = new ItemStack(Items.flint);
-            return true;
+            return hardOverride(
+                    60000,
+                    true,
+                    itemStack,
+                    new ItemStack(Items.flint, 2),
+                    new ItemStack(Items.flint));
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.cobblestone) || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.stone)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 60 * 20 * 100;
-            if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 2L);
-            else
-                this.mOutputItems[0] = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L);
-            return true;
+            return hardOverride(
+                    120000,
+                    true,
+                    itemStack,
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 2L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L));
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.sandstone)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 45 * 20 * 100;
-            if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = new ItemStack(Blocks.sand, 3);
-            else
-                this.mOutputItems[0] = new ItemStack(Blocks.sand, 2);
-            return true;
+            return hardOverride(
+                    120000,
+                    true,
+                    itemStack,
+                    new ItemStack(Blocks.sand, 3),
+                    new ItemStack(Blocks.sand, 2));
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.clay) || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.hardened_clay) || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.stained_hardened_clay)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 60 * 20 * 100;
-            if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = Materials.Clay.getDust(2);
-            else
-                this.mOutputItems[0] = Materials.Clay.getDust(1);
-            return true;
+            return hardOverride(
+                    120000,
+                    true,
+                    itemStack,
+                    Materials.Clay.getDust(2),
+                    Materials.Clay.getDust(1));
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.redstone_block)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 60 * 20 * 100;
-            this.mOutputItems[0] = Materials.Redstone.getDust(9);
-            return true;
+            return hardOverride(
+                    120000,
+                    false,
+                    itemStack,
+                    Materials.Redstone.getDust(9));
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.glass)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 60 * 20 * 100;
-            this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 1L));
-            return true;
+            return hardOverride(
+                    120000,
+                    false,
+                    itemStack,
+                    (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 1L)));
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.wool)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 60 * 20 * 100;
-            if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = new ItemStack(Items.string, 3);
-            else
-                this.mOutputItems[0] = new ItemStack(Items.string, 2);
-            return true;
+            return hardOverride(
+                    120000,
+                    true,
+                    itemStack,
+                    new ItemStack(Items.string, 3),
+                    new ItemStack(Items.string, 2));
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.glowstone)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 60 * 20 * 100;
-            if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = new ItemStack(Items.glowstone_dust, 4);
-            else
-                this.mOutputItems[0] = new ItemStack(Items.glowstone_dust, 3);
-            return true;
+            return hardOverride(
+                    120000,
+                    true,
+                    itemStack,
+                    new ItemStack(Items.glowstone_dust, 4),
+                    new ItemStack(Items.glowstone_dust, 3));
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.netherrack)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 60 * 20 * 100;
-            if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 2L));
-            else
-                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1L));
-            return true;
+            return hardOverride(
+                    120000,
+                    true,
+                    itemStack,
+                    (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 2L)),
+                    (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1L)));
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.log)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 60 * 20 * 100;
-            if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 12L));
-            else
-                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L));
-            return true;
+            return hardOverride(
+                    120000,
+                    true,
+                    itemStack,
+                    (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 12L)),
+                    (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L)));
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.log2)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 60 * 20 * 100;
-            if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 12L));
-            else
-                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L));
-            return true;
+            return hardOverride(
+                    120000,
+                    true,
+                    itemStack,
+                    (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 12L)),
+                    (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L)));
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.pumpkin)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 15 * 20 * 100;
-            if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = new ItemStack(Items.pumpkin_seeds, 2);
-            else
-                this.mOutputItems[0] = new ItemStack(Items.pumpkin_seeds, 1);
-            return true;
+            return hardOverride(
+                    30000,
+                    true,
+                    itemStack,
+                    new ItemStack(Items.pumpkin_seeds, 2),
+                    new ItemStack(Items.pumpkin_seeds, 1));
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.melon_block)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 15 * 20 * 100;
-            if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = new ItemStack(Items.melon_seeds, 2);
-            else
-                this.mOutputItems[0] = new ItemStack(Items.melon_seeds, 1);
-            return true;
+            return hardOverride(
+                    30000,
+                    true,
+                    itemStack,
+                    new ItemStack(Items.melon_seeds, 2),
+                    new ItemStack(Items.melon_seeds, 1));
         }
 
         //null checks for GT shit
@@ -276,40 +289,47 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
         //Ore Unificator shit for balance
         if (OrePrefixes.ingot.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix) || OrePrefixes.gem.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 45 * 20 * 100;
-            this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L));
-            return true;
+            return hardOverride(
+                    90000,
+                    false,
+                    itemStack,
+                    (GT_OreDictUnificator.get(OrePrefixes.dust, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L)));
         } else if (OrePrefixes.ore.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 60 * 20 * 100;
-            this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.crushed, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L));
-            return true;
+            return hardOverride(
+                    120000,
+                    false,
+                    itemStack,
+                    (GT_OreDictUnificator.get(OrePrefixes.crushed, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L)));
         } else if (OrePrefixes.nugget.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 15 * 20 * 100;
-            this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dustTiny, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L));
-            return true;
+            return hardOverride(
+                    30000,
+                    false,
+                    itemStack,
+                    (GT_OreDictUnificator.get(OrePrefixes.dustTiny, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L)));
         } else if (OrePrefixes.crushed.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 30 * 20 * 100;
-            this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dustImpure, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L));
-            return true;
+            return hardOverride(
+                    60000,
+                    false,
+                    itemStack,
+                    (GT_OreDictUnificator.get(OrePrefixes.dustImpure, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L)));
         } else if (OrePrefixes.crushedPurified.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 30 * 20 * 100;
-            this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dustPure, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L));
-            return true;
+            return hardOverride(
+                    60000,
+                    false,
+                    itemStack,
+                    (GT_OreDictUnificator.get(OrePrefixes.dustPure, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L)));
         } else if (OrePrefixes.crushedCentrifuged.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 30 * 20 * 100;
-            this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L));
-            return true;
+            return hardOverride(
+                    60000,
+                    false,
+                    itemStack,
+                    (GT_OreDictUnificator.get(OrePrefixes.dust, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L)));
         } else if (OrePrefixes.block.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 60 * 20 * 100;
-            this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, (GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mSubTags.contains(SubTag.METAL) || GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mSubTags.contains(SubTag.CRYSTAL)) ? 9L : 1L));
-            return true;
+            return hardOverride(
+                    120000,
+                    false,
+                    itemStack,
+                    (GT_OreDictUnificator.get(OrePrefixes.dust, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, (GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mSubTags.contains(SubTag.METAL) || GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mSubTags.contains(SubTag.CRYSTAL)) ? 9L : 1L)));
         } else if (
                 OrePrefixes.stone.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix) ||
                         OrePrefixes.stoneBricks.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix) ||
@@ -321,36 +341,41 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
                         OrePrefixes.stoneSmooth.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix) ||
                         OrePrefixes.cobblestone.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
         ) {
-            itemStack.stackSize -= 1;
-            this.mMaxProgresstime = 60 * 20 * 100;
-            if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 2L));
-            else
-                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L));
-            return true;
+            return hardOverride(
+                    120000,
+                    true,
+                    itemStack,
+                    (GT_OreDictUnificator.get(OrePrefixes.dust, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 2L)),
+                    (GT_OreDictUnificator.get(OrePrefixes.dust, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L)));
         }
         return this.recipe_fallback(itemStack); //2nd fallback
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new BW_GUIContainer_Windmill(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName());
+        return new BW_GUIContainer_Windmill(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new BW_Container_Windmill(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     public boolean addDispenserToOutputSet(TileEntity aTileEntity) {
         if (aTileEntity instanceof TileEntityDispenser) {
-            this.tedList.add((TileEntityDispenser) aTileEntity);
+            this.tileEntityDispensers.add((TileEntityDispenser) aTileEntity);
             return true;
         }
         return false;
     }
 
     @SuppressWarnings("ALL")
+    @Override
     public boolean addOutput(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack))
             return false;
 
-        for (TileEntityDispenser tHatch : this.tedList) {
+        for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
             for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
                 if (tHatch.getStackInSlot(i) == null || GT_Utility.areStacksEqual(tHatch.getStackInSlot(i), aStack) && aStack.stackSize + tHatch.getStackInSlot(i).stackSize <= 64) {
                     if (GT_Utility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
@@ -454,9 +479,8 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
             return false;
 
         //check for outputs
-        if (this.tedList.isEmpty())
+        if (this.tileEntityDispensers.isEmpty())
             return false;
-
         this.mWrench = true;
         this.mScrewdriver = true;
         this.mSoftHammer = true;
@@ -473,12 +497,14 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        this.mProgresstime++;
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mEfficiency < 0)
                 this.mEfficiency = 0;
+            //noinspection NonAtomicOperationOnVolatileField
             if (--this.mUpdate == 0 || --this.mStartUpCheck == 0) {
                 this.hasDoor = 0;
-                this.tedList.clear();
+                this.tileEntityDispensers.clear();
                 this.mMachine = this.checkMachine(aBaseMetaTileEntity, this.mInventory[1]);
             }
             if (this.mStartUpCheck < 0) {
@@ -577,6 +603,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public void registerIcons(IIconRegister aBlockIconRegister) {
         GT_TileEntity_Windmill.iIcons[0] = Blocks.brick_block.getIcon(0, 0);
         GT_TileEntity_Windmill.iIconContainers[0] = new IIconContainer() {

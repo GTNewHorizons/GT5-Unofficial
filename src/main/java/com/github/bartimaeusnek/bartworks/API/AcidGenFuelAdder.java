@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,15 +28,15 @@ import net.minecraftforge.fluids.FluidStack;
 
 public final class AcidGenFuelAdder {
 
-    public static boolean addLiquidFuel(Materials M, int burn) {
-        return ((BWRecipes.BW_Recipe_Map_LiquidFuel) BWRecipes.instance.getMappingsFor((byte) 2)).addLiquidFuel(M, burn) != null;
+    public static void addLiquidFuel(Materials M, int burn) {
+        ((BWRecipes.BW_Recipe_Map_LiquidFuel) BWRecipes.instance.getMappingsFor((byte) 2)).addLiquidFuel(M, burn);
     }
 
-    public static boolean addLiquidFuel(FluidStack fluidStack, int burn) {
-        return ((BWRecipes.BW_Recipe_Map_LiquidFuel) BWRecipes.instance.getMappingsFor((byte) 2)).addLiquidFuel(fluidStack, burn) != null;
+    public static void addLiquidFuel(FluidStack fluidStack, int burn) {
+        ((BWRecipes.BW_Recipe_Map_LiquidFuel) BWRecipes.instance.getMappingsFor((byte) 2)).addLiquidFuel(fluidStack, burn);
     }
 
-    public static boolean addMoltenFuel(Materials M, int burn) {
-        return ((BWRecipes.BW_Recipe_Map_LiquidFuel) BWRecipes.instance.getMappingsFor((byte) 2)).addMoltenFuel(M, burn) != null;
+    public static void addMoltenFuel(Materials M, int burn) {
+        ((BWRecipes.BW_Recipe_Map_LiquidFuel) BWRecipes.instance.getMappingsFor((byte) 2)).addMoltenFuel(M, burn);
     }
 }

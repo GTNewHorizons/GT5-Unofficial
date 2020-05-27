@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,7 @@ import net.minecraftforge.common.ChestGenHooks;
 import java.security.SecureRandom;
 import java.util.Random;
 
+import static com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler.maxTierRoss;
 import static net.minecraftforge.common.ChestGenHooks.PYRAMID_JUNGLE_CHEST;
 @SuppressWarnings({"ALL"})
 public abstract class MapGenRuins extends WorldGenerator {
@@ -133,10 +134,10 @@ public abstract class MapGenRuins extends WorldGenerator {
             this.setMiscBlocks(new int[]{1},Blocks.log);
             this.statBlocks = new int[]{rand.nextInt(this.ToBuildWith[0].length)};
             int colored = rand.nextInt(15);
-            int tier = secureRandom.nextInt(6);
+            int tier = secureRandom.nextInt(maxTierRoss);
             boolean useColor = rand.nextBoolean();
             byte set = 0;
-            byte toSet = (byte) (rand.nextInt(6-tier)+1);
+            byte toSet = (byte) (rand.nextInt(maxTierRoss - tier) + 1);
             short cablemeta = GT_WorldgenUtil.getCable(secureRandom,tier);
             byte treeinaRow = 0;
             boolean lastset = rand.nextBoolean();

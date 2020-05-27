@@ -22,17 +22,28 @@
 
 package com.github.bartimaeusnek.bartworks.server.container;
 
+import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
+import com.github.bartimaeusnek.bartworks.API.IRadMaterial;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_Container_1by1;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.ItemData;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 import java.nio.ByteBuffer;
 import java.util.Iterator;
+import java.util.Optional;
 
 public class GT_Container_RadioHatch extends GT_Container_1by1 {
 
@@ -44,6 +55,10 @@ public class GT_Container_RadioHatch extends GT_Container_1by1 {
 
     public GT_Container_RadioHatch(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
+    }
+
+    public void addSlots(InventoryPlayer aInventoryPlayer) {
+        this.addSlotToContainer(new RadioSlot(this.mTileEntity, 0, 80, 35));
     }
 
     @SuppressWarnings("rawtypes")
@@ -151,6 +166,32 @@ public class GT_Container_RadioHatch extends GT_Container_1by1 {
 
     public boolean canInteractWith(EntityPlayer player) {
         return true;
+    }
+
+    private static class RadioSlot extends Slot{
+        public RadioSlot(IInventory p_i1824_1_, int p_i1824_2_, int p_i1824_3_, int p_i1824_4_) {
+            super(p_i1824_1_, p_i1824_2_, p_i1824_3_, p_i1824_4_);
+        }
+
+        @Override
+        public boolean isItemValid(ItemStack p_75214_1_) {
+            if (BioVatLogicAdder.RadioHatch.getIsSv()
+                    .keySet()
+                    .stream()
+                    .anyMatch(
+                            stack -> GT_Utility.areStacksEqual(stack, p_75214_1_,true)
+                    ))
+                return true;
+
+            if (!BW_Util.checkStackAndPrefix(p_75214_1_))
+                return false;
+
+            ItemData ass = GT_OreDictUnificator.getAssociation(p_75214_1_);
+            return IRadMaterial.class.isAssignableFrom(p_75214_1_.getItem().getClass()) ||
+                    ass.mPrefix == OrePrefixes.rod ||
+                    ass.mPrefix == OrePrefixes.stick ||
+                    ass.mPrefix == OrePrefixes.stickLong;
+        }
     }
 
 }
