@@ -207,7 +207,7 @@ public class GT_Worldgenloader implements Runnable {
         new GT_Worldgen_GT_Ore_Layer("ore.mix.quartzspace", true, 40, 80, 20, 3, 16, false, false, false, Materials.Quartzite, Materials.Barite, Materials.CertusQuartz, Materials.CertusQuartz);
         new GT_Worldgen_GT_Ore_Layer("ore.mix.rutile", true, 5, 20, 8, 4, 12, false, false, false, Materials.Rutile, Materials.Titanium, Materials.Bauxite, Materials.MeteoricIron);
         new GT_Worldgen_GT_Ore_Layer("ore.mix.TFgalena", true, 5, 35, 40, 4, 16, false, false, false, Materials.Galena, Materials.Galena, Materials.Silver, Materials.Lead);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.LUVtantalite", true, 20, 30, 20, 4, 26, false, false, false, Materials.Apatite, Materials.Pyrolusite, Materials.Tantalite, Materials.Pyrochlore);
+        new GT_Worldgen_GT_Ore_Layer("ore.mix.LUVtantalite", true, 20, 30, 10, 4, 26, false, false, false, Materials.Apatite, Materials.Pyrolusite, Materials.Tantalite, Materials.Pyrochlore);
 
         /*
         
