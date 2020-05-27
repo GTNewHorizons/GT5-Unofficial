@@ -338,7 +338,7 @@ public class RECIPES_Machines {
 				},
 				20 * 600, 
 				MaterialUtils.getVoltageForTier(6), 
-				3);
+				5);
 
 	}
 

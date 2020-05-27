@@ -105,15 +105,30 @@ public class ClassTransformer_TC_ThaumcraftCraftingManager {
 			String aDesc1 = "(L+aDeObfName+;ILjava/util/ArrayList;)Lthaumcraft/api/aspects/AspectList;";
 			String aDesc2 = "(L"+aObfName+";ILjava/util/ArrayList;)Lthaumcraft/api/aspects/AspectList;";
 			
-			if (name.equals("generateTags") && (desc.equals(aDesc1) || desc.equals(aDesc2))) {				
-				Preloader_Logger.INFO("Found method descriptor: "+desc);
+			if (name.equals("generateTags") && signature != null) {	
 				if (desc.equals(aDesc1)) {
+					Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Found generateTags to remove: "+desc+" | "+signature);
+					Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Is not obfuscated.");
 					obfuscated = false;
-					methodVisitor = null;
+					methodVisitor = null;					
+				}
+				else if (desc.equals(aDesc2)) {
+					Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Found generateTags to remove: "+desc+" | "+signature);
+					Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Is obfuscated.");	
+					obfuscated = true;
+					methodVisitor = null;					
 				}
 				else {
-					obfuscated = true;
-					methodVisitor = null;
+					Preloader_Logger.INFO("Found generateTags: "+desc+" | "+signature);
+					if (desc.toLowerCase().contains("item")) {
+						obfuscated = false;		
+						Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Is not obfuscated.");
+					}
+					else {
+						obfuscated = true;	
+						Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Is obfuscated.");					
+					}	
+					methodVisitor = null;				
 				}
 			}
 			else {

@@ -177,7 +177,7 @@ public class RECIPES_GREGTECH {
 				},
 				20 * 30, 
 				MaterialUtils.getVoltageForTier(3), 
-				2);
+				3);
 		
 		// Produce Th232
 		CORE.RA.addChemicalPlantRecipe(
@@ -203,7 +203,7 @@ public class RECIPES_GREGTECH {
 				},
 				20 * 300, 
 				MaterialUtils.getVoltageForTier(4), 
-				3);
+				4);
 
 	}
 

@@ -118,7 +118,7 @@ public class RocketFuels extends ItemPackage {
 				new int[]{100, 100, 50, 50}, 
 				20*30, 
 				MaterialUtils.getVoltageForTier(3),
-				2);
+				3);
 
 		
 	}
@@ -276,7 +276,7 @@ public class RocketFuels extends ItemPackage {
 				},
 				20 * 60, 
 				120, 
-				2);
+				3);
 
 	}
 
@@ -388,7 +388,7 @@ public class RocketFuels extends ItemPackage {
 				},
 				20 * 30, 
 				240, 
-				3);	
+				4);	
 
 
 		// Monomethylhydrazine_Plus_Nitric_Acid
@@ -409,7 +409,7 @@ public class RocketFuels extends ItemPackage {
 				},
 				20 * 45, 
 				480, 
-				3);
+				5);
 
 
 		// Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide
@@ -430,7 +430,7 @@ public class RocketFuels extends ItemPackage {
 				},
 				20 * 60, 
 				480, 
-				3);	
+				5);	
 
 	}
 

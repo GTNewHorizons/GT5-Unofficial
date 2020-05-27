@@ -595,7 +595,7 @@ public class BioRecipes {
 						},
 						60 * 20,
 						2,
-						1);
+						0);
 			}
 			
 		}
@@ -617,7 +617,7 @@ public class BioRecipes {
 						},
 						60 * 20,
 						2,
-						1);
+						0);
 			}			
 		}
 
@@ -638,7 +638,7 @@ public class BioRecipes {
 				},
 				90 * 20,
 				30,
-				1);
+				0);
 
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
@@ -657,7 +657,7 @@ public class BioRecipes {
 				},
 				120 * 20,
 				30,
-				1);
+				0);
 
 		// Sugar Beet
 		if (OreDictUtils.containsValidEntries("cropSugarbeet")) {
@@ -678,7 +678,7 @@ public class BioRecipes {
 					},
 					60 * 20,
 					30,
-					1);
+					0);
 
 			CORE.RA.addChemicalPlantRecipe(
 					new ItemStack[] {
@@ -697,7 +697,7 @@ public class BioRecipes {
 					},
 					90 * 20,
 					30,
-					1);
+					0);
 		}
 
 		// Produce Acetone, Butanol and Ethanol
@@ -720,9 +720,9 @@ public class BioRecipes {
 				new FluidStack[] {
 
 				},
-				900 * 20,
+				450 * 20,
 				32,
-				2);
+				1);
 
 
 	}
@@ -1212,7 +1212,7 @@ public class BioRecipes {
 					},
 					120 * 20,
 					60,
-					2);
+					1);
 		}
 
 		aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertIC2, 2);
@@ -1233,7 +1233,7 @@ public class BioRecipes {
 				},
 				120 * 20,
 				60,
-				2);
+				1);
 
 	}
 
@@ -1275,7 +1275,7 @@ public class BioRecipes {
 				},
 				60 * 20,
 				60,
-				2);
+				1);
 	}
 
 	private static void recipeBenzene() {
@@ -1315,7 +1315,7 @@ public class BioRecipes {
 				},
 				16 * 20,
 				480,
-				3);
+				2);
 	}
 
 	private static void recipeBioChip() {
