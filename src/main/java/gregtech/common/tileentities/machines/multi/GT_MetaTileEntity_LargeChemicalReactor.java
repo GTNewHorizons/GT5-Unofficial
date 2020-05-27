@@ -126,13 +126,13 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_Mu
 				int EUt = recipe.mEUt;
 				int maxProgresstime = recipe.mDuration;
 
-				while (EUt <= gregtech.api.enums.GT_Values.V[tier - 1] && maxProgresstime > 2) {
+				while (EUt <= gregtech.api.enums.GT_Values.V[tier - 1]) {
 					EUt *= 4;
 					maxProgresstime /= 4;
 				}
 				if (maxProgresstime < 2) {
 					maxProgresstime = 2;
-					EUt = recipe.mEUt * recipe.mDuration / 2;
+		
 				}
 				
 				this.mEUt = -EUt;
