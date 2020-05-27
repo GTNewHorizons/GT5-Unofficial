@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.common.helpers;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -21,7 +23,15 @@ public class VolumetricFlaskHelper {
 	static {
 		if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
 			sClassVolumetricFlask = ReflectionUtils.getClass("gregtech.common.items.GT_VolumetricFlask");
-			sMethodGetFlaskMaxCapacity = ReflectionUtils.getMethod(sClassVolumetricFlask, "getMaxCapacity", new Class[] {});
+			Method aMaxCapacity = null;
+			try {
+				aMaxCapacity = sClassVolumetricFlask.getDeclaredMethod("getMaxCapacity", new Class[] {});
+			}
+			catch (NoSuchMethodException e) {
+				e.printStackTrace();
+				CORE.crash("Secondary Error Obtaining instance of 'getMaxCapacity' from 'GT_VolumetricFlask'. Crashing.");
+			}
+			sMethodGetFlaskMaxCapacity = aMaxCapacity;
 		}
 		else {
 			sClassVolumetricFlask = null;
@@ -101,24 +111,24 @@ public class VolumetricFlaskHelper {
 		}
 		return null;
 	}
-	
-    public static void setFluid(ItemStack stack, FluidStack fluidStack) {
-        boolean removeFluid = (fluidStack == null) || (fluidStack.amount <= 0);
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt == null) {
-            if (removeFluid)
-                return;
-            stack.setTagCompound(nbt = new NBTTagCompound());
-        }
-        if (removeFluid) {
-            nbt.removeTag("Fluid");
-            if (nbt.hasNoTags()) {
-                stack.setTagCompound(null);
-            }
-        } else {
-            nbt.setTag("Fluid", fluidStack.writeToNBT(new NBTTagCompound()));
-        }
-    }
+
+	public static void setFluid(ItemStack stack, FluidStack fluidStack) {
+		boolean removeFluid = (fluidStack == null) || (fluidStack.amount <= 0);
+		NBTTagCompound nbt = stack.getTagCompound();
+		if (nbt == null) {
+			if (removeFluid)
+				return;
+			stack.setTagCompound(nbt = new NBTTagCompound());
+		}
+		if (removeFluid) {
+			nbt.removeTag("Fluid");
+			if (nbt.hasNoTags()) {
+				stack.setTagCompound(null);
+			}
+		} else {
+			nbt.setTag("Fluid", fluidStack.writeToNBT(new NBTTagCompound()));
+		}
+	}
 
 	public static int getFlaskCapacity(ItemStack aStack) {
 		int capacity = 1000;

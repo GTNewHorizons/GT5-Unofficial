@@ -52,6 +52,7 @@ public class ClassesToTransform {
 
 
 	public static final String THAUMCRAFT_ITEM_WISP_ESSENCE = "thaumcraft.common.items.ItemWispEssence";
+	public static final String THAUMCRAFT_CRAFTING_MANAGER = "thaumcraft.common.lib.crafting.ThaumcraftCraftingManager";
 	public static final String THAUMICTINKERER_TILE_REPAIRER = "thaumic.tinkerer.common.block.tile.TileRepairer";
 
 	public static final String IC2_ITEM_ARMOUR_HAZMAT = "ic2.core.item.armor.ItemArmorHazmat";

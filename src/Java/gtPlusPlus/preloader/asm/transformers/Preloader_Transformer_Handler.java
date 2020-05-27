@@ -271,6 +271,10 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			Preloader_Logger.INFO("Thaumcraft WispEssence_Patch", "Transforming "+transformedName);
 			return new ClassTransformer_TC_ItemWispEssence(basicClass, obfuscated).getWriter().toByteArray();
 		}
+		if (transformedName.equals(THAUMCRAFT_CRAFTING_MANAGER)) {	
+			Preloader_Logger.INFO("Thaumcraft CraftingManager Patch", "Transforming "+transformedName);
+			return new ClassTransformer_TC_ThaumcraftCraftingManager(basicClass).getWriter().toByteArray();
+		}
 		//Fix Thaumic Tinkerer Shit
 		if (transformedName.equals(THAUMICTINKERER_TILE_REPAIRER) && AsmConfig.enableThaumicTinkererRepairFix) {	
 			//Preloader_Logger.INFO("Thaumic Tinkerer RepairItem Patch", "Transforming "+transformedName);
