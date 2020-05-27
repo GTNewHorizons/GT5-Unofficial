@@ -16,7 +16,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_PlayedSound;
@@ -56,7 +55,7 @@ public class GT_Client extends GT_Proxy
         });
     }
 
-    private final HashSet mCapeList = new HashSet();
+    private final HashSet<String> mCapeList = new HashSet<>();
     private final GT_CapeRenderer mCapeRenderer;
     private final List mPosR;
     private final List mPosG;
@@ -128,6 +127,7 @@ public class GT_Client extends GT_Proxy
         mMoltenNegB = Arrays.asList(new Materials[]{
                 Materials.InfusedEntropy
         });
+        new GT_PollutionRenderer();
     }
 
 
@@ -246,45 +246,6 @@ public class GT_Client extends GT_Proxy
     private static void drawGrid(DrawBlockHighlightEvent aEvent) {
         drawGrid(aEvent, false);
     }
-
-    //TODO less bad
-    //@SubscribeEvent
-    //public void manipulateDensity(EntityViewRenderEvent.FogDensity event) {
-    //	if(GT_Pollution.mPlayerPollution > (GT_Mod.gregtechproxy.mPollutionSmogLimit)){
-    //    event.density = (0.15f*(Math.min(GT_Pollution.mPlayerPollution/((float)GT_Mod.gregtechproxy.mPollutionSourRainLimit),1.0f)))+0.1f;
-    //    event.setCanceled(true);
-    //	}
-    //}
-
-    //@SubscribeEvent
-    //public void manipulateColor(EntityViewRenderEvent.FogColors event) {
-    //    if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit){
-    //        event.red = 140f/255f;
-    //        event.green = 80f/255f;
-    //        event.blue = 40f/255f;
-    //	}
-    //}
-
-    //@SubscribeEvent
-    //public void manipulateGrassColor(BiomeEvent.GetGrassColor event) {
-    //	if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit){
-    //        event.newColor = 0xD2691E;
-    //	}
-    //}
-
-    //@SubscribeEvent
-    //public void manipulateWaterColor(BiomeEvent.GetWaterColor event) {
-    //	if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit){
-    //        event.newColor = 0x556B2F;
-    //	}
-    //}
-
-    //@SubscribeEvent
-    //public void manipulateFoliageColor(BiomeEvent.GetFoliageColor event) {
-    //	if(GT_Pollution.mPlayerPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit){
-    //        event.newColor = 0xCD853F;
-    //	}
-    //}
 
     public boolean isServerSide() {
         return true;

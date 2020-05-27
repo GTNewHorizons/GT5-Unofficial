@@ -1331,8 +1331,23 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         }
     }
 
+    private static final WeakHashMap<EntityPlayer, Integer> pollutionLastTick = new WeakHashMap<>();
+
     @SubscribeEvent
     public void onPlayerTickEventServer(TickEvent.PlayerTickEvent aEvent) {
+        if ((aEvent.side.isServer()) && (aEvent.phase == TickEvent.Phase.START) && (!aEvent.player.isDead)) {
+            int tPollution = GT_Pollution.getLocalPollutionForRendering(
+                    new ChunkCoordIntPair(aEvent.player.chunkCoordX, aEvent.player.chunkCoordZ),
+                    aEvent.player.dimension,
+                    aEvent.player.posX,
+                    aEvent.player.posZ
+            );
+
+            if (aEvent.player instanceof EntityPlayerMP && pollutionLastTick.getOrDefault(aEvent.player,0) != tPollution) {
+                pollutionLastTick.put(aEvent.player, tPollution);
+                GT_Values.NW.sendToPlayer(new GT_Packet_Pollution(tPollution), (EntityPlayerMP) aEvent.player);
+            }
+        }
         if ((aEvent.side.isServer()) && (aEvent.phase == TickEvent.Phase.END) && (!aEvent.player.isDead)) {
             if ((aEvent.player.ticksExisted % 200 == 0) && (aEvent.player.capabilities.allowEdit) && (!aEvent.player.capabilities.isCreativeMode)
                     && (this.mSurvivalIntoAdventure)) {
@@ -1489,11 +1504,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 if (tHungerEffect) {
                     aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
                 }
-            }
-            if (aEvent.player.ticksExisted % 10 == 0) {
-        	int tPollution = 0;
-        	tPollution = GT_Pollution.getPollution(new ChunkCoordIntPair(aEvent.player.chunkCoordX,aEvent.player.chunkCoordZ), aEvent.player.dimension);
-        	if(aEvent.player instanceof EntityPlayerMP)GT_Values.NW.sendToPlayer(new GT_Packet_Pollution(tPollution), (EntityPlayerMP) aEvent.player);
             }
         }
     }
