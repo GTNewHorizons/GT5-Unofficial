@@ -137,6 +137,62 @@ public class RECIPES_GREGTECH {
 				10 * 20,
 				480,
 				3);
+
+		// Advanced recipe for Fluorine Production
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(17),
+						CI.getPurpleCatalyst(0),
+						ItemUtils.getSimpleStack(Blocks.sandstone, 64),
+						ItemUtils.getSimpleStack(Blocks.sandstone, 64)
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack("nitricacid", 4000),	
+						FluidUtils.getAir(8000)
+				},
+				new ItemStack[] {
+						FLUORIDES.FLUORITE.getOre(16),
+						FLUORIDES.FLUORITE.getOre(8),
+						FLUORIDES.FLUORITE.getOre(8),
+						FLUORIDES.FLUORITE.getOre(8),
+				},
+				new FluidStack[] {
+									
+				},
+				new int[] {
+						0, 2500, 2000, 1500 
+				},
+				10 * 20,
+				1024,
+				5);
+		
+		// Advanced recipe for Fluorine Production
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(17),
+						CI.getPurpleCatalyst(0),
+						ItemUtils.getSimpleStack(Blocks.sand, 64),
+						ItemUtils.getSimpleStack(Blocks.sand, 64)
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack("nitricacid", 5000),	
+						FluidUtils.getAir(12000)
+				},
+				new ItemStack[] {
+						FLUORIDES.FLUORITE.getOre(8),
+						FLUORIDES.FLUORITE.getOre(4),
+						FLUORIDES.FLUORITE.getOre(4),
+						FLUORIDES.FLUORITE.getOre(4),
+				},
+				new FluidStack[] {
+									
+				},
+				new int[] {
+						7500, 1500, 1000, 500 
+				},
+				10 * 20,
+				1024,
+				5);
 		
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
