@@ -117,7 +117,6 @@ public class WerkstoffLoader {
 
         if (!gtnhGT) {
             WerkstoffLoader.HDCS.getGenerationFeatures().extraRecipes ^= 10;
-                break;
         }
 
         if (WerkstoffLoader.cellMolten == null) {
