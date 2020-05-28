@@ -27,6 +27,7 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer;
+import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer_MachineBlock;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.items.*;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
@@ -72,7 +73,7 @@ public class ItemRegistry {
     public static final Item ROCKCUTTER_MV = new GT_Rockcutter_Item(2);
     public static final Item ROCKCUTTER_HV = new GT_Rockcutter_Item(3);
     public static final Item CIRCUIT_PROGRAMMER = new Circuit_Programmer();
-    public static final Block ROTORBLOCK = new BW_TileEntityContainer(Material.wood, BW_RotorBlock.class, "BWRotorBlock");
+    public static final Block ROTORBLOCK = new BW_TileEntityContainer_MachineBlock(Material.wood, BW_RotorBlock.class, "BWRotorBlock");
     public static final Item LEATHER_ROTOR = new BW_Stonage_Rotors(5, 0.15f, 15, 30, 2400, IKineticRotor.GearboxType.WIND, new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorLeather.png"), "BW_LeatherRotor", "rotors/itemRotorLeather");
     public static final Item WOOL_ROTOR = new BW_Stonage_Rotors(7, 0.18f, 10, 20, 1600, IKineticRotor.GearboxType.WIND, new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorWool.png"), "BW_WoolRotor", "rotors/itemRotorWool");
     public static final Item PAPER_ROTOR = new BW_Stonage_Rotors(9, 0.2f, 1, 10, 800, IKineticRotor.GearboxType.WIND, new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorPaper.png"), "BW_PaperRotor", "rotors/itemRotorPaper");
@@ -207,7 +208,7 @@ public class ItemRegistry {
             ItemRegistry.giantOutputHatch = new GT_MetaTileEntity_GiantOutputHatch(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 9, "GiantOutputHatch", "Giant Output Hatch").getStackForm(1L);
             ItemRegistry.megaMachines[2] = new GT_TileEntity_MegaDistillTower(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 10, "MegaDistillationTower", "Mega Distillation Tower").getStackForm(1L);
 
-            if (LoaderReference.galacticgreg) {
+            if (LoaderReference.galacticgreg && WerkstoffLoader.gtnhGT) {
                 ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 11, "VoidMiner3", "Void Miner III").getStackForm(1L);
                 ItemRegistry.voidminer[1] = new GT_TileEntity_VoidMiners.VMZPM(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 12, "VoidMiner2", "Void Miner II").getStackForm(1L);
                 ItemRegistry.voidminer[0] = new GT_TileEntity_VoidMiners.VMLUV(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 13, "VoidMiner1", "Void Miner I").getStackForm(1L);

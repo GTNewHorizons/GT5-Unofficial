@@ -59,7 +59,7 @@ public class ConfigHandler {
     public static boolean DEHPDirectSteam;
     public static boolean teslastaff;
     public static boolean classicMode;
-    public static boolean GTNH;
+    public static boolean hardmode;
     public static boolean ezmode;
 
     public static boolean GTppLogDisabler;

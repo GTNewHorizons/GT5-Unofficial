@@ -104,15 +104,15 @@ public final class MainMod {
         }
 
         if (LoaderReference.dreamcraft)
-            ConfigHandler.GTNH = true;
+            ConfigHandler.hardmode = true;
 
-        ConfigHandler.GTNH = ConfigHandler.ezmode != ConfigHandler.GTNH;
+        ConfigHandler.hardmode = ConfigHandler.ezmode != ConfigHandler.hardmode;
 
         if (API_ConfigValues.debugLog) {
             try {
                 DebugLog.initDebugLog(preinit);
             } catch (IOException e) {
-                e.printStackTrace();
+                MainMod.LOGGER.catching(e);
             }
         }
 
@@ -120,8 +120,8 @@ public final class MainMod {
             WerkstoffLoader.setUp();
         }
 
-        if (ConfigHandler.GTNH)
-            MainMod.LOGGER.info("GTNH-Detected . . . ACTIVATE HARDMODE.");
+        if (ConfigHandler.hardmode)
+            MainMod.LOGGER.info(". . . ACTIVATED HARDMODE.");
 
         if (ConfigHandler.BioLab) {
             BioCultureLoader.run();

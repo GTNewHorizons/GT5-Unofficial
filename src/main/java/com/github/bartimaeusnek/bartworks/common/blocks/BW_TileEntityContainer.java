@@ -64,7 +64,6 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
         this.setCreativeTab(MainMod.BWT);
         this.setBlockName(blockName);
         this.setBlockTextureName(MainMod.MOD_ID + ":" + blockName);
-        GregTech_API.registerMachineBlock(this, -1);
     }
 
     @Override
@@ -122,10 +121,6 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        if (GregTech_API.isMachineBlock(this, world.getBlockMetadata(x, y, z))) {
-            GregTech_API.causeMachineUpdate(world, x, y, z);
-        }
-
         TileEntity t = world.getTileEntity(x, y, z);
         if (t instanceof ITileDropsContent) {
             int[] dropSlots = ((ITileDropsContent) t).getDropSlots();
@@ -199,12 +194,5 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
             }
         }
         return new String[0];
-    }
-
-    @Override
-    public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
-        }
     }
 }

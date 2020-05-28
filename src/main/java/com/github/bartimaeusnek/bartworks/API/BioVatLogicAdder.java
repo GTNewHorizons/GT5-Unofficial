@@ -67,10 +67,6 @@ public final class BioVatLogicAdder {
             giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.TiberiumCell_2.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 6);
             giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.TiberiumCell_4.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 12);
 
-            giveItemStackRadioHatchAbilites(ItemList.MNqCell_1.get(1), Materials.Naquadria, 3);
-            giveItemStackRadioHatchAbilites(ItemList.MNqCell_2.get(1), Materials.Naquadria, 6);
-            giveItemStackRadioHatchAbilites(ItemList.MNqCell_4.get(1), Materials.Naquadria, 12);
-
             giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.TheCoreCell.get(1), Materials.Naquadah, 96);
 
             giveItemStackRadioHatchAbilites(ItemList.Depleted_Thorium_1.get(1), Materials.Thorium, 3, 10);
@@ -93,11 +89,16 @@ public final class BioVatLogicAdder {
             giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 6, 10);
             giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.Depleted_Tiberium_4.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 12, 10);
 
-            giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_1.get(1), Materials.Naquadria, 3, 10);
-            giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_2.get(1), Materials.Naquadria, 6, 10);
-            giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_4.get(1), Materials.Naquadria, 12, 10);
-
             giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1), Materials.Naquadah, 96, 10);
+
+            if (WerkstoffLoader.gtnhGT) {
+                giveItemStackRadioHatchAbilites(ItemList.MNqCell_1.get(1), Materials.Naquadria, 3);
+                giveItemStackRadioHatchAbilites(ItemList.MNqCell_2.get(1), Materials.Naquadria, 6);
+                giveItemStackRadioHatchAbilites(ItemList.MNqCell_4.get(1), Materials.Naquadria, 12);
+                giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_1.get(1), Materials.Naquadria, 3, 10);
+                giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_2.get(1), Materials.Naquadria, 6, 10);
+                giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_4.get(1), Materials.Naquadria, 12, 10);
+            }
         }
 
         private static final HashSet<BioVatLogicAdder.MaterialSvPair> MaSv = new HashSet<>();

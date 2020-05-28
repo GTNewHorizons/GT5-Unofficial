@@ -57,7 +57,7 @@ public class RecipeLoader {
     @SuppressWarnings("deprecation")
     public static void run() {
 
-        if (ConfigHandler.GTNH) {
+        if (ConfigHandler.hardmode) {
             /*
              * GTNH "hardmode" Recipes
              */
@@ -102,11 +102,11 @@ public class RecipeLoader {
                         "CDC",
                         "SBS",
                         "CFC",
-                        'C', ConfigHandler.GTNH ? "circuitAdvanced" : "circuitBasic",
+                        'C', ConfigHandler.hardmode ? "circuitAdvanced" : "circuitBasic",
                         'D', ItemList.Cover_Screen.get(1L),
-                        'S', GT_OreDictUnificator.get(OrePrefixes.cableGt12, ConfigHandler.GTNH ? Materials.Platinum : Materials.AnnealedCopper, 1L),
+                        'S', GT_OreDictUnificator.get(OrePrefixes.cableGt12, ConfigHandler.hardmode ? Materials.Platinum : Materials.AnnealedCopper, 1L),
                         'B', new ItemStack(ItemRegistry.BW_BLOCKS[1]),
-                        'F', ConfigHandler.GTNH ? ItemList.Field_Generator_HV.get(1L) : ItemList.Field_Generator_LV.get(1L)
+                        'F', ConfigHandler.hardmode ? ItemList.Field_Generator_HV.get(1L) : ItemList.Field_Generator_LV.get(1L)
                 });
 
         GT_ModHandler.addCraftingRecipe(
@@ -117,7 +117,7 @@ public class RecipeLoader {
                         "PLP",
                         "CPC",
                         'C', "circuitAdvanced",
-                        'P', GT_OreDictUnificator.get(ConfigHandler.GTNH ? OrePrefixes.plateDouble : OrePrefixes.plate, Materials.Aluminium, 1L),
+                        'P', GT_OreDictUnificator.get(ConfigHandler.hardmode ? OrePrefixes.plateDouble : OrePrefixes.plate, Materials.Aluminium, 1L),
                         'L', new ItemStack(Items.lava_bucket)
                 });
 
@@ -129,7 +129,7 @@ public class RecipeLoader {
                         "PLP",
                         "CPC",
                         'C', "circuitAdvanced",
-                        'P', GT_OreDictUnificator.get(ConfigHandler.GTNH ? OrePrefixes.plateDouble : OrePrefixes.plate, ConfigHandler.GTNH ? Materials.Steel : Materials.Iron, 1L),
+                        'P', GT_OreDictUnificator.get(ConfigHandler.hardmode ? OrePrefixes.plateDouble : OrePrefixes.plate, ConfigHandler.hardmode ? Materials.Steel : Materials.Iron, 1L),
                         'L', new ItemStack(Items.lava_bucket)
                 });
 
@@ -225,7 +225,7 @@ public class RecipeLoader {
                     }
             );
 
-            if (!ConfigHandler.GTNH)
+            if (!ConfigHandler.hardmode)
                 GT_ModHandler.addCraftingRecipe(
                         ItemRegistry.dehp,
                         RecipeLoader.BITSD,
@@ -864,16 +864,16 @@ public class RecipeLoader {
                 };
 
                 OrePrefixes[] prefixes = {
-                        OrePrefixes.cableGt04,
-                        OrePrefixes.cableGt08,
-                        OrePrefixes.cableGt12,
-                        OrePrefixes.cableGt16
+                        WerkstoffLoader.gtnhGT ? OrePrefixes.cableGt04 : OrePrefixes.wireGt04,
+                        WerkstoffLoader.gtnhGT ? OrePrefixes.cableGt08 : OrePrefixes.wireGt08,
+                        WerkstoffLoader.gtnhGT ? OrePrefixes.cableGt12 : OrePrefixes.wireGt12,
+                        WerkstoffLoader.gtnhGT ? OrePrefixes.cableGt16 : OrePrefixes.cableGt12
                 };
 
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[]{
                                 ItemList.Circuit_Parts_GlassFiber.get(32),
-                                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silver, 8),
+                                GT_OreDictUnificator.get(WerkstoffLoader.gtnhGT ? OrePrefixes.foil : OrePrefixes.plateDouble, Materials.Silver, WerkstoffLoader.gtnhGT ? 8 : 1),
                                 WerkstoffLoader.CubicZirconia.get(OrePrefixes.gemExquisite, 2)
                         },
                         Materials.Polytetrafluoroethylene.getMolten(72),
