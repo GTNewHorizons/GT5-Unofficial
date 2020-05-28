@@ -378,6 +378,16 @@ public class GregTech_API {
         return GT_OreDictUnificator.get(true, aOreStack);
     }
 
+    private static boolean bPauseMachineUpdates = false;
+
+    public static boolean isPausingMachineUpdates() {
+        return bPauseMachineUpdates;
+    }
+
+    public static void setPausingMachineUpdates(boolean pauseMachineUpdates) {
+        GregTech_API.bPauseMachineUpdates = pauseMachineUpdates;
+    }
+
     /**
      * Causes a Machineblock Update
      * This update will cause surrounding MultiBlock Machines to update their Configuration.
@@ -389,7 +399,7 @@ public class GregTech_API {
      * @param aZ     is the Z-Coord of the update causing Block
      */
     public static boolean causeMachineUpdate(World aWorld, int aX, int aY, int aZ) {
-        if (aWorld != null && !aWorld.isRemote) { //World might be null during Worldgen
+        if (aWorld != null && !aWorld.isRemote && !bPauseMachineUpdates) { //World might be null during Worldgen
             GT_Runnable_MachineBlockUpdate.setMachineUpdateValues(aWorld, aX, aY, aZ);
             return true;
         }
