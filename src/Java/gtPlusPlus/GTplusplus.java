@@ -321,11 +321,11 @@ public class GTplusplus implements ActionListener {
 			}
 		}
 
-		if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.size() < 1) {
-			for (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList) {
+		/*if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.size() < 1) {
+			for (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList) {
 				GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.add(a);
 			}
-		}
+		}*/
 
 		//Large Electrolyzer generation
 		mOriginalCount[1] = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList.size();
@@ -352,11 +352,11 @@ public class GTplusplus implements ActionListener {
 			}
 		}
 
-		if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.size() < 1) {
-			for (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes.mRecipeList) {
+		/*if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.size() < 1) {
+			for (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList) {
 				GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.add(a);
 			}
-		}
+		}*/
 
 		//Advanced Vacuum Freezer generation
 		mOriginalCount[2] = GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList.size();

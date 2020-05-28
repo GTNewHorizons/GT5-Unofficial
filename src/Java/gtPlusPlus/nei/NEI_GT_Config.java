@@ -24,14 +24,23 @@ implements IConfigureNEI {
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sOreMillRecipes.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sFlotationCellRecipes.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sChemicalDehydratorRecipes.mUnlocalizedName);
-		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sVacuumFurnaceRecipes.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sVacuumFurnaceRecipes.mUnlocalizedName);		
+
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mUnlocalizedName);
 		
 		// Custom Recipe Maps
 		Logger.INFO("NEI Registration: "+CustomRecipeMap.sMappings.size()+" CustomRecipeMaps");
 		for (final CustomRecipeMap tMap : CustomRecipeMap.sMappings) {
 			if (tMap.mNEIAllowed) {
-				Logger.INFO("NEI Registration: Registering NEI handler for "+tMap.mNEIName);
-				new GTPP_NEI_CustomMapHandler(tMap);
+				if (!mUniqueRecipeMapHandling.contains(tMap.mUnlocalizedName)) {
+					Logger.INFO("NEI Registration: Registering NEI handler for "+tMap.mNEIName);
+					new GTPP_NEI_CustomMapHandler(tMap);
+				}	
+				else {
+					Logger.INFO("NEI Registration: Not allowed to register NEI handler for "+tMap.mNEIName);					
+				}
 			}
 			else {
 				Logger.INFO("NEI Registration: Not allowed to register NEI handler for "+tMap.mNEIName);				
@@ -39,12 +48,12 @@ implements IConfigureNEI {
 		}
 		
 		// Custom Recipe maps
-		Logger.INFO("NEI Registration: "+GTPP_Recipe.GTPP_Recipe_Map.sMappings.size()+" sMappings");
+		/*Logger.INFO("NEI Registration: "+GTPP_Recipe.GTPP_Recipe_Map.sMappings.size()+" sMappings");
 		for (final GTPP_Recipe_Map tMap : GTPP_Recipe.GTPP_Recipe_Map.sMappings) {
 			if (tMap.mNEIAllowed) {				
 				if (!mUniqueRecipeMapHandling.contains(tMap.mUnlocalizedName)) {
 					Logger.INFO("NEI Registration: Registering NEI handler for "+tMap.mNEIName);
-					new GTPP_NEI_DefaultHandler(tMap);					
+					//new GTPP_NEI_DefaultHandler_Fix(tMap);					
 				}	
 				else {
 					Logger.INFO("NEI Registration: Not allowed to register NEI handler for "+tMap.mNEIName);					
@@ -54,7 +63,7 @@ implements IConfigureNEI {
 				Logger.INFO("NEI Registration: Skipping registration of NEI handler for "+tMap.mNEIName);
 				
 			}
-		}
+		}*/
 		
 		// Standard GT Recipe Maps
 		Logger.INFO("NEI Registration: "+GTPP_Recipe.GTPP_Recipe_Map_Internal.sMappingsEx.size()+" sMappingEx");
@@ -84,6 +93,14 @@ implements IConfigureNEI {
 		new GT_NEI_Dehydrator();
 		Logger.INFO("NEI Registration: Registering NEI handler for "+CustomRecipeMap.sFissionFuelProcessing.mNEIName);
 		new GT_NEI_RFPP();
+
+		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mNEIName);
+		new GT_NEI_DefaultHandler(GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT);					
+		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mNEIName);
+		new GT_NEI_DefaultHandler(GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT);					
+		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mNEIName);
+		new GT_NEI_DefaultHandler(GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT);					
+		
 		Logger.INFO("NEI Registration: Registering NEI handler for "+DecayableRecipeHandler.mNEIName);
 		API.registerRecipeHandler(new DecayableRecipeHandler());
 		API.registerUsageHandler(new DecayableRecipeHandler());

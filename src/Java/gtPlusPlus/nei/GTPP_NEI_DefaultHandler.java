@@ -35,8 +35,8 @@ public class GTPP_NEI_DefaultHandler
     public static final int sOffsetY = 11;
 
     static {
-        GuiContainerManager.addInputHandler(new GT_RectHandler());
-        GuiContainerManager.addTooltipHandler(new GT_RectHandler());
+        GuiContainerManager.addInputHandler(new GT_NEI_DefaultHandler.GT_RectHandler());
+        GuiContainerManager.addTooltipHandler(new GT_NEI_DefaultHandler.GT_RectHandler());
     }
 
     protected final GTPP_Recipe_Map mRecipeMap;
@@ -45,7 +45,7 @@ public class GTPP_NEI_DefaultHandler
         this.mRecipeMap = tMap;
         this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier(), new Object[0]));
         if (!NEI_GT_Config.sIsAdded) {
-            FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtech@" + getRecipeName() + "@" + getOverlayIdentifier());
+            FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtechplusplus@" + getRecipeName() + "@" + getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
             GuiUsageRecipe.usagehandlers.add(this);
         }

@@ -212,11 +212,11 @@ public class Meta_GT_Proxy {
 
 	public static boolean generatePlasmaRecipesForAdvVacFreezer() {
 
-		AutoMap<GTPP_Recipe> aFreezerMapRebaked = new AutoMap<GTPP_Recipe>();
-		AutoMap<GTPP_Recipe> aRemovedRecipes = new AutoMap<GTPP_Recipe>();
+		AutoMap<GT_Recipe> aFreezerMapRebaked = new AutoMap<GT_Recipe>();
+		AutoMap<GT_Recipe> aRemovedRecipes = new AutoMap<GT_Recipe>();
 
 		//Find recipes containing Plasma and map them
-		for (GTPP_Recipe y : GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList) {			
+		for (GT_Recipe y : GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mRecipeList) {			
 			if (y.mFluidInputs.length > 0) {
 				for (FluidStack r : y.mFluidInputs) {
 					if (r.getUnlocalizedName().toLowerCase().contains("plasma")) {
@@ -308,17 +308,17 @@ public class Meta_GT_Proxy {
 		//Best not touch the original map if we don't have a valid map to override it with.
 		if (aFreezerMapRebaked.size() > 0) {
 
-			int aOriginalCount = GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList.size();
+			int aOriginalCount = GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mRecipeList.size();
 
 			//Empty the original map
-			GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList.clear();
+			GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mRecipeList.clear();
 
 			//Rebake the real map
-			for (GTPP_Recipe w : aFreezerMapRebaked) {
-				GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList.add(w);
+			for (GT_Recipe w : aFreezerMapRebaked) {
+				GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mRecipeList.add(w);
 			}
 
-			return GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList.size() >= aOriginalCount;
+			return GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mRecipeList.size() >= aOriginalCount;
 		}			
 
 		return false;

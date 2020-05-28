@@ -120,6 +120,12 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			new ClassReader(basicClass).accept(new OreDictionaryVisitor(classWriter), 0);
 			return classWriter.toByteArray();
 		}
+		
+		// Log Handling of CodeChicken
+		if (transformedName.equals("codechicken.nei.guihook.GuiContainerManager")) {	
+			Preloader_Logger.INFO("CodeChicken GuiContainerManager Patch", "Transforming "+transformedName);
+			return new ClassTransformer_CC_GuiContainerManager(basicClass).getWriter().toByteArray();
+		}
 		// Fix the OreDictionary COFH
 		if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER) && (AsmConfig.enableCofhPatch || !obfuscated)) {
 			Preloader_Logger.INFO("COFH", "Transforming "+transformedName);

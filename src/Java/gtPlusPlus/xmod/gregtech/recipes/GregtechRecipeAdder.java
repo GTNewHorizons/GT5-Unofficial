@@ -683,7 +683,21 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(aFluidOutputs));
 			return false;
 		}
-		GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes.addRecipe(true, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial);
+
+		GTPP_Recipe aRecipe = new GTPP_Recipe(
+				false,
+				aInputs,
+				aOutputs,
+				null,
+				aChances,
+				aFluidInputs,
+				aFluidOutputs,
+				aDuration,
+				aEUtick,
+				aSpecial); 
+		GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.addRecipe(aRecipe);
+		
+		//GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes.addRecipe(true, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial);
 		return true;
 	}
 
@@ -699,7 +713,20 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(aFluidOutputs));
 			return false;
 		}
-		GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes.addRecipe(true, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial);
+
+		GTPP_Recipe aRecipe = new GTPP_Recipe(
+				false,
+				aInputs,
+				aOutputs,
+				null,
+				aChances,
+				aFluidInputs,
+				aFluidOutputs,
+				aDuration,
+				aEUtick,
+				aSpecial); 
+		GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.addRecipe(aRecipe);
+		//GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes.addRecipe(true, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial);
 		return true;
 	}
 
@@ -717,9 +744,22 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(aFluidOutputs));
 			return false;
 		}
-		if (GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.addRecipe(true, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial) != null) {
+
+		GTPP_Recipe aRecipe = new GTPP_Recipe(
+				false,
+				aInputs,
+				aOutputs,
+				null,
+				aChances,
+				aFluidInputs,
+				aFluidOutputs,
+				aDuration,
+				aEUtick,
+				aSpecial); 
+		GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT.addRecipe(aRecipe);
+		/*if (GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.addRecipe(true, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial) != null) {
 			return true;
-		}
+		}*/
 		return false;	
 
 	}
