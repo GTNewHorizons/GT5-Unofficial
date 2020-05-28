@@ -1336,11 +1336,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     @SubscribeEvent
     public void onPlayerTickEventServer(TickEvent.PlayerTickEvent aEvent) {
         if ((aEvent.side.isServer()) && (aEvent.phase == TickEvent.Phase.START) && (!aEvent.player.isDead)) {
-            int tPollution = GT_Pollution.getLocalPollutionForRendering(
+            int tPollution = GT_Pollution.getPollutionPercentage(
                     new ChunkCoordIntPair(aEvent.player.chunkCoordX, aEvent.player.chunkCoordZ),
-                    aEvent.player.dimension,
                     aEvent.player.posX,
-                    aEvent.player.posZ
+                    aEvent.player.posZ,
+                    aEvent.player.dimension,
+                    25D,
+                    2
             );
 
             if (aEvent.player instanceof EntityPlayerMP && pollutionLastTick.getOrDefault(aEvent.player,0) != tPollution) {

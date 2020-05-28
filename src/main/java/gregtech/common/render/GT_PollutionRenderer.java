@@ -28,7 +28,7 @@ public class GT_PollutionRenderer {
         if (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
             return;
 
-        float sourRain = getCurrentSourRainRenderRatio();
+        float sourRain = getCurrentPollutionRenderRatio() > 0.75f ? getCurrentSourRainRenderRatio() : getCurrentSourRainRenderRatio() / 5f;
         if (sourRain > 0D) {
             GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
             GL11.glFogf(GL11.GL_FOG_DENSITY, sourRain);
@@ -57,13 +57,13 @@ public class GT_PollutionRenderer {
     }
 
     private static float getCurrentSourRainRenderRatio() {
-        float player = GT_Pollution.mPlayerPollution;
+        float player = pollutionLastTick;
         float limit = GT_Mod.gregtechproxy.mPollutionSourRainLimit;
         return Math.min(1f, Math.max(player/limit, 0f));
     }
 
     private static double getCurrentPollutionRenderRatio() {
-        double player = GT_Pollution.mPlayerPollution;
+        double player = pollutionLastTick;
         double limit = GT_Mod.gregtechproxy.mPollutionSmogLimit;
         return Math.min(1D, Math.max(player/limit, 0D));
     }
@@ -124,7 +124,7 @@ public class GT_PollutionRenderer {
         event.newColor = curveIntegerColor(event.originalColor,0xCD853F);
     }
 
-    private static int pollutionLastTick;
+    private static int pollutionLastTick = 0;
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onRenderTick(TickEvent.RenderTickEvent event){
@@ -134,8 +134,12 @@ public class GT_PollutionRenderer {
         EntityClientPlayerMP player = mc.thePlayer;
         if (player == null || player.capabilities == null || player.capabilities.isCreativeMode)
             return;
-        if(pollutionLastTick != GT_Pollution.mPlayerPollution && event.side == Side.CLIENT) {
-            pollutionLastTick = GT_Pollution.mPlayerPollution;
+        if(pollutionLastTick != GT_Pollution.mPlayerPollution) {
+            if (pollutionLastTick < GT_Pollution.mPlayerPollution)
+                pollutionLastTick += GT_Pollution.mPlayerPollution / (Math.max(mc.gameSettings.limitFramerate, 60D) * 4D);
+            else
+                pollutionLastTick -= GT_Pollution.mPlayerPollution / (Math.max(mc.gameSettings.limitFramerate, 60D) * 4D);
+
             double x = player.posX,
                    z = player.posZ;
 
