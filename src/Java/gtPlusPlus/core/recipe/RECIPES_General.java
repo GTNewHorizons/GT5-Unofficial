@@ -181,7 +181,20 @@ public class RECIPES_General {
 
 
 
-
+		if (CORE.ConfigSwitches.enableMachine_Pollution) {
+			RecipeUtils.addShapedRecipe(
+					CI.craftingToolFile, "plateIron", "stickIron", 
+					"plateIron", "ringIron", "plateIron", 
+					"stickIron", "plateIron", CI.craftingToolHammer_Hard, 
+					ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 0, 1)
+					);
+			RecipeUtils.addShapedRecipe(
+					CI.craftingToolFile, "plateBronze", "stickBronze", 
+					"plateBronze", "ringBronze", "plateBronze", 
+					"stickBronze", "plateBronze", CI.craftingToolHammer_Hard, 
+					ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 1, 1)
+					);
+		}
 
 		if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
 			CORE.RA.addSixSlotAssemblingRecipe(
