@@ -3,16 +3,10 @@ package gtPlusPlus.xmod.gregtech.api.gui.basic;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.player.InventoryPlayer;
-
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaAtmosphericReconditioner;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GUI_PollutionCleaner extends GT_GUIContainerMetaTile_Machine {
 	public final String mName;
@@ -48,13 +42,7 @@ public class GUI_PollutionCleaner extends GT_GUIContainerMetaTile_Machine {
 		final int x3 = x2 - xStart;
 		final int y3 = y2 - yStart + 5;
 		final List<String> list = new ArrayList<String>();
-		if (y3 >= 67 && y3 <= 84) {
-			if (x3 >= 7 && x3 <= 24) {
-				list.add("Fluid Auto-Output");
-			}
-			if (x3 >= 25 && x3 <= 42) {
-				list.add("Item Auto-Output");
-			}
+		if (y3 >= 67 && y3 <= 84) {			
 			if (x3 >= 77 && x3 <= 95) {					
 				//Do Dumb shit				
 				CONTAINER_PollutionCleaner aContainerCast = (CONTAINER_PollutionCleaner) this.mContainer;				

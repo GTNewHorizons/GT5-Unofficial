@@ -21,6 +21,7 @@ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.general.ItemAirFilter;
+import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -90,7 +91,8 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 				"Can be configured with a soldering iron to change modes",
 				"Low Efficiency: Removes half pollution, Turbine takes 50% dmg",
 				"High Efficiency: Removes full pollution, Turbine takes 100% dmg",
-				"Turbine Rotor will not break in LE mode",				
+				"Turbine Rotor will not break in LE mode",	
+				"Insert an equal tier Conveyor Module to enable automation"
 				};
 		if (!mPollutionEnabled) {
 			String[] B = new String[] {
@@ -367,6 +369,9 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	
 	public boolean hasRotor(ItemStack rotorStack){
 		if(rotorStack != null){ 
+			if (rotorStack.getItem() instanceof ItemBasicScrubberTurbine) {
+				return true;
+			}			
 			if (rotorStack.getItem() instanceof GT_MetaGenerated_Tool  && rotorStack.getItemDamage() >= 170 && rotorStack.getItemDamage() <= 179){
 				return true;
 			}
@@ -391,6 +396,25 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 					}
 				}				
 			}		
+			
+			if (rotorStack.getItem() instanceof ItemBasicScrubberTurbine) {
+				long currentUse = ItemBasicScrubberTurbine.getFilterDamage(rotorStack);
+				//Remove broken Filter
+				if (rotorStack.getItemDamage() == 0 && currentUse >= 2500-10){			
+					this.mInventory[this.SLOT_FILTER] = null;
+					return false;				
+				}
+				else if (rotorStack.getItemDamage() == 1 && currentUse >= 5000-10){
+					this.mInventory[this.SLOT_FILTER] = null;
+					return false;			
+				}		
+				else {
+					//Do Damage
+					ItemAirFilter.setFilterDamage(rotorStack, currentUse+10);
+					Logger.WARNING("Rotor Damage: "+currentUse);
+					return true;
+				}	
+			}
 			
 			if(mInventory[SLOT_ROTOR].getItem() instanceof GT_MetaGenerated_Tool_01 &&
 					((GT_MetaGenerated_Tool) mInventory[SLOT_ROTOR].getItem()).getToolStats(mInventory[SLOT_ROTOR]).getSpeedMultiplier()>0 &&
@@ -646,10 +670,27 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
 	@Override
 	public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-		if (aIndex == 4){
-			return false;
+		Logger.INFO("Trying to Insert into "+aIndex);
+		if (aIndex == 5) {
+			if (aStack.getItem() instanceof ItemAirFilter) {
+				return true;
+			}
 		}
-		return super.canInsertItem(aIndex, aStack, aSide);
+		if (aIndex == 4 || aIndex == 6){
+			if (aIndex == 4) {
+				if (this.mInventory[5] != null) {
+					Logger.INFO("Found conveyor, can automate turbines.");
+					if (aStack.getItem() instanceof ItemBasicScrubberTurbine) {
+						return true;
+					}			
+					if (aStack.getItem() instanceof GT_MetaGenerated_Tool  && aStack.getItemDamage() >= 170 && aStack.getItemDamage() <= 179){
+						return true;
+					}
+				}
+			}
+		}
+		//return super.canInsertItem(aIndex, aStack, aSide);
+		return false;
 	}
 
 	@Override

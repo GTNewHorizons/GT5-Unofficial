@@ -3230,3 +3230,8 @@ item.itemGearBotmium.name=Botmium Gear
 item.itemCellBotmium.name=Botmium Cell
 tile.Block of Botmium.name=Block of Botmium
 tile.Botmium Frame Box.name=Botmium Frame Box
+
+//Added 29/05/20
+item.itemBasicTurbine.name=Basic Turbine
+item.itemBasicTurbine_0.name=Basic Iron Turbine
+item.itemBasicTurbine_1.name=Basic Bronze Turbine

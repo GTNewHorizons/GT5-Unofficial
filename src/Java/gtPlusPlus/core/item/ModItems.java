@@ -4,21 +4,15 @@ import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 import static gtPlusPlus.core.lib.CORE.LOAD_ALL_CONTENT;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.items.GT_VolumetricFlask;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.BaseEuItem;
-import gtPlusPlus.core.item.base.BaseItemBackpack;
+import gtPlusPlus.core.item.base.*;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
-import gtPlusPlus.core.item.base.BaseItemDamageable;
-import gtPlusPlus.core.item.base.BaseItemTCShard;
-import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
 import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
@@ -29,34 +23,12 @@ import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
-import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
-import gtPlusPlus.core.item.bauble.HealthBoostBauble;
-import gtPlusPlus.core.item.bauble.ModularBauble;
-import gtPlusPlus.core.item.bauble.MonsterKillerBaseBauble;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
-import gtPlusPlus.core.item.chemistry.CoalTar;
-import gtPlusPlus.core.item.chemistry.GenericChem;
-import gtPlusPlus.core.item.chemistry.IonParticles;
-import gtPlusPlus.core.item.chemistry.MilledOreProcessing;
-import gtPlusPlus.core.item.chemistry.NuclearChem;
-import gtPlusPlus.core.item.chemistry.RocketFuels;
-import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
+import gtPlusPlus.core.item.bauble.*;
+import gtPlusPlus.core.item.chemistry.*;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.food.BaseItemMetaFood;
-import gtPlusPlus.core.item.general.BaseItemGrindle;
-import gtPlusPlus.core.item.general.BufferCore;
-import gtPlusPlus.core.item.general.ItemAirFilter;
-import gtPlusPlus.core.item.general.ItemAreaClear;
-import gtPlusPlus.core.item.general.ItemBasicFirestarter;
-import gtPlusPlus.core.item.general.ItemBlueprint;
-import gtPlusPlus.core.item.general.ItemControlCore;
-import gtPlusPlus.core.item.general.ItemEmpty;
-import gtPlusPlus.core.item.general.ItemGemShards;
-import gtPlusPlus.core.item.general.ItemGenericToken;
-import gtPlusPlus.core.item.general.ItemGiantEgg;
-import gtPlusPlus.core.item.general.ItemHalfCompleteCasings;
-import gtPlusPlus.core.item.general.ItemLavaFilter;
+import gtPlusPlus.core.item.general.*;
 import gtPlusPlus.core.item.general.books.ItemBaseBook;
 import gtPlusPlus.core.item.general.capture.ItemEntityCatcher;
 import gtPlusPlus.core.item.general.chassis.ItemBoilerChassis;
@@ -74,20 +46,12 @@ import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
 import gtPlusPlus.core.item.tool.misc.box.AutoLunchBox;
 import gtPlusPlus.core.item.tool.misc.box.MagicToolBag;
 import gtPlusPlus.core.item.tool.misc.box.UniversalToolBox;
-import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
-import gtPlusPlus.core.item.tool.staballoy.MultiSpadeBase;
-import gtPlusPlus.core.item.tool.staballoy.StaballoyAxe;
-import gtPlusPlus.core.item.tool.staballoy.StaballoyPickaxe;
+import gtPlusPlus.core.item.tool.staballoy.*;
 import gtPlusPlus.core.item.wearable.WearableLoader;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.material.MISC_MATERIALS;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.material.NONMATERIAL;
+import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.recipe.common.CI;
@@ -106,11 +70,8 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
+import net.minecraft.item.*;
 import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
@@ -300,6 +261,7 @@ public final class ModItems {
 	public static Item itemSugarCoke;
 
 	public static Item itemCircuitLFTR;
+	public static Item itemBasicTurbine;
 
 	public static Item itemDebugAreaClear;
 
@@ -757,6 +719,9 @@ public final class ModItems {
 		//LFTR Control Circuit
 		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Control Circuit", AddToCreativeTab.tabMisc, 1, 0,  new String[] {"Keeps Multiblocks Stable"}, EnumRarity.epic, EnumChatFormatting.DARK_GREEN, false, null);
 
+		if (CORE.ConfigSwitches.enableMachine_Pollution) {
+			itemBasicTurbine = new ItemBasicScrubberTurbine();
+		}
 
 		//Zirconium
 		//Cinter Pellet.
