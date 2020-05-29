@@ -552,10 +552,29 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		}
 		final FluidStack inputs[] = { aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9 };
 		final FluidStack outputs[] = { aOutput1, aOutput2 };
-		// Recipe_GT.Gregtech_Recipe_Map.sFissionFuelProcessing.addRecipe(null,
-		// inputs, outputs, aDuration, aEUt, 0);
-		CustomRecipeMap.sFissionFuelProcessing.addRecipe(null, inputs, outputs, aDuration, aEUt, 0);
-		return true;
+
+		GTPP_Recipe aSpecialRecipe = new GTPP_Recipe(
+				true,
+				new ItemStack[] {},
+				new ItemStack[] {},
+				null,
+				new int[] {},
+				inputs,
+				outputs,
+				Math.max(1, aDuration),
+				Math.max(1, aEUt), 
+				0);   
+
+		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing.mRecipeList.size();
+		int aSize2 = aSize;
+		GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing.add(aSpecialRecipe);
+		aSize = GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing.mRecipeList.size();
+		
+		if (aSize > aSize2) {
+			Logger.INFO("Added Nuclear Fuel Recipe.");
+			return true;
+		}
+		return false;
 	}
 
 	@Override

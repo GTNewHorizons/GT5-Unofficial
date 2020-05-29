@@ -18,13 +18,13 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
+import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
+import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -183,7 +183,32 @@ public class RECIPES_General {
 
 
 
-
+		if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
+			CORE.RA.addSixSlotAssemblingRecipe(
+					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(4),
+							ItemUtils.getSimpleStack(Blocks.glass, 16),
+							ItemUtils.getSimpleStack(Blocks.glowstone, 16),
+							ItemList.Large_Fluid_Cell_Steel.get(1)
+					}, 
+					FluidUtils.getFluidStack("molten.borosilicateglass", 2000), 
+					VolumetricFlaskHelper.getLargeVolumetricFlask(2),
+					20 * 15, 
+					MaterialUtils.getVoltageForTier(3));
+			
+			CORE.RA.addSixSlotAssemblingRecipe(
+					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(5),
+							ItemUtils.getSimpleStack(Blocks.glass, 64),
+							ItemUtils.getSimpleStack(Blocks.glowstone, 64),
+							ItemList.Large_Fluid_Cell_TungstenSteel.get(1)
+					}, 
+					FluidUtils.getFluidStack("molten.borosilicateglass", 8000), 
+					VolumetricFlaskHelper.getGiganticVolumetricFlask(2),
+					20 * 15, 
+					MaterialUtils.getVoltageForTier(5));
+			
+		}
 
 
 

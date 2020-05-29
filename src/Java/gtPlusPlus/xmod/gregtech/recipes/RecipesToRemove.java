@@ -24,7 +24,7 @@ public class RecipesToRemove {
 			aRareEarthCentrifuging.mHidden = true;
 			GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.remove(aRareEarthCentrifuging);
 			//GTPP_Recipe.GT_Recipe_Map_LargeCentrifuge.sMultiblockCentrifugeRecipes.mRecipeList.remove(aRareEarthCentrifuging);
-			GTPP_Recipe.GT_Recipe_Map_LargeCentrifuge.sMultiblockCentrifugeRecipes_GT.mRecipeList.remove(aRareEarthCentrifuging);
+			GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.remove(aRareEarthCentrifuging);
 			Logger.INFO("Removed vanilla GT Rare Earth processing.");			
 			//Set the Chemical Symbol for Rare Earth now that we are giving it custom outputs
 			//Best not to set this unless the original recipe is removed.

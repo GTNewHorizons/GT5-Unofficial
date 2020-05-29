@@ -21,7 +21,6 @@ import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.nei.GT_NEI_MultiBlockHandler.FixedPositionedStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
@@ -176,7 +175,7 @@ extends TemplateRecipeHandler {
 
 	@Override
 	public String getGuiTexture() {
-		return CustomRecipeMap.sFissionFuelProcessing.mNEIGUIPath;
+		return GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing.mNEIGUIPath;
 	}
 
 	@Override
