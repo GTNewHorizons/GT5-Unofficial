@@ -108,16 +108,16 @@ public class RECIPES_GREGTECH {
 
 		addFuels();
 	}
-	
+
 
 
 	private static void chemplantRecipes() {
 
 		//This is subsequently absorbed in water to form nitric acid and nitric oxide.
-	    //3 NO2 (g) + H2O (l) → 2 HNO3 (aq) + NO (g) (ΔH = −117 kJ/mol)
-	    //The nitric oxide is cycled back for reoxidation. Alternatively, if the last step is carried out in air:
-	    //4 NO2 (g) + O2 (g) + 2 H2O (l) → 4 HNO3 (aq)
-		
+		//3 NO2 (g) + H2O (l) → 2 HNO3 (aq) + NO (g) (ΔH = −117 kJ/mol)
+		//The nitric oxide is cycled back for reoxidation. Alternatively, if the last step is carried out in air:
+		//4 NO2 (g) + O2 (g) + 2 H2O (l) → 4 HNO3 (aq)
+
 		// Advanced method for Nitric Acid Production
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
@@ -158,7 +158,7 @@ public class RECIPES_GREGTECH {
 						FLUORIDES.FLUORITE.getOre(4),
 				},
 				new FluidStack[] {
-									
+
 				},
 				new int[] {
 						0, 2500, 2000, 1500 
@@ -166,7 +166,7 @@ public class RECIPES_GREGTECH {
 				10 * 20,
 				1024,
 				5);
-		
+
 		// Advanced recipe for Fluorine Production
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
@@ -186,7 +186,7 @@ public class RECIPES_GREGTECH {
 						FLUORIDES.FLUORITE.getOre(2),
 				},
 				new FluidStack[] {
-									
+
 				},
 				new int[] {
 						7500, 1500, 1000, 500 
@@ -194,7 +194,7 @@ public class RECIPES_GREGTECH {
 				10 * 20,
 				1024,
 				5);
-		
+
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(16),
@@ -214,7 +214,7 @@ public class RECIPES_GREGTECH {
 				10 * 20,
 				480,
 				2);
-		
+
 		// Produce Boric Acid
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
@@ -235,7 +235,7 @@ public class RECIPES_GREGTECH {
 				20 * 30, 
 				MaterialUtils.getVoltageForTier(3), 
 				3);
-		
+
 		// Produce Th232
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
@@ -261,7 +261,7 @@ public class RECIPES_GREGTECH {
 				20 * 300, 
 				MaterialUtils.getVoltageForTier(4), 
 				4);
-		
+
 		// Modify Sapling into Pine Sapling
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
@@ -276,11 +276,67 @@ public class RECIPES_GREGTECH {
 						ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Pine, 16)
 				},
 				new FluidStack[] {
-						
+
 				},
 				120 * 20,
 				64,
 				2);
+
+
+		// Convert GT++ Plutonium239 into normal Plutonium
+		if (Materials.Plutonium.mDefaultLocalName.equals("Plutonium 239")) {
+			CORE.RA.addChemicalPlantRecipe(
+					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(16),
+							ELEMENT.getInstance().PLUTONIUM239.getDust(1)
+					},
+					new FluidStack[] {
+
+					},
+					new ItemStack[] {
+							ItemUtils.getItemStackOfAmountFromOreDict("dustPlutonium", 1)
+					},
+					new FluidStack[] {
+
+					},
+					5 * 20,
+					1,
+					2);
+			CORE.RA.addChemicalPlantRecipe(
+					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(16),
+							ELEMENT.getInstance().PLUTONIUM239.getSmallDust(1)
+					},
+					new FluidStack[] {
+
+					},
+					new ItemStack[] {
+							ItemUtils.getItemStackOfAmountFromOreDict("dustSmallPlutonium", 1)
+					},
+					new FluidStack[] {
+
+					},
+					5 * 20,
+					1,
+					2);
+			CORE.RA.addChemicalPlantRecipe(
+					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(16),
+							ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1)
+					},
+					new FluidStack[] {
+
+					},
+					new ItemStack[] {
+							ItemUtils.getItemStackOfAmountFromOreDict("dustTinyPlutonium", 1)
+					},
+					new FluidStack[] {
+
+					},
+					5 * 20,
+					1,
+					2);
+		}
 
 	}
 
@@ -607,7 +663,7 @@ public class RECIPES_GREGTECH {
 					ItemUtils.getSimpleStack(ModItems.itemChargePack_High_3, 1),
 					ItemUtils.getSimpleStack(ModItems.itemChargePack_High_4, 1),			
 			};
-			
+
 			int aCurrSlot = 0;
 			for (int h = 6; h < 10; h++) {
 				CORE.RA.addAssemblylineRecipe(

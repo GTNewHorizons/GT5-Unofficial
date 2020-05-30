@@ -3,6 +3,7 @@ package gtPlusPlus.core.util.minecraft;
 import static gregtech.api.GregTech_API.*;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -101,6 +102,143 @@ public class HazmatUtils {
 				addProtection(aItem);
 			}
 			Logger.INFO("[Hazmat] Registered EMT Items as hazmat gear.");
+		}		
+		
+		if (LoadedMods.isModLoaded("DraconicEvolution")) {
+			AutoMap<Field> aItemFields = new AutoMap<Field>();
+			Class aItemsDE = ReflectionUtils.getClass("com.brandon3055.draconicevolution.ModItems");		
+			
+			aItemFields.add(ReflectionUtils.getField(aItemsDE, "draconicHelm"));
+			aItemFields.add(ReflectionUtils.getField(aItemsDE, "draconicChest"));
+			aItemFields.add(ReflectionUtils.getField(aItemsDE, "draconicLeggs"));
+			aItemFields.add(ReflectionUtils.getField(aItemsDE, "draconicBoots"));
+			aItemFields.add(ReflectionUtils.getField(aItemsDE, "wyvernHelm"));
+			aItemFields.add(ReflectionUtils.getField(aItemsDE, "wyvernChest"));	
+			aItemFields.add(ReflectionUtils.getField(aItemsDE, "wyvernLeggs"));	
+			aItemFields.add(ReflectionUtils.getField(aItemsDE, "wyvernBoots"));		
+			AutoMap<ItemStack> aItemMap = new AutoMap<ItemStack>();			
+			for (Field aItemField : aItemFields) {
+				Item aItemObject = null;
+				if (aItemField != null) {
+					try {
+						aItemObject = (Item) aItemField.get(null);
+					}
+					catch (Exception t) {
+						t.printStackTrace();
+					}
+				}
+				if (aItemObject != null) {
+					aItemMap.add(ItemUtils.getSimpleStack(aItemObject));
+				}
+				else {
+					Logger.INFO("[Hazmat] Could not get "+aItemField.getName()+" from "+aItemsDE.getName());					
+				}
+			}
+			Logger.INFO("[Hazmat] Registering "+aItemMap.size()+" Draconic Evolution Items as hazmat gear.");
+			for (ItemStack aItem : aItemMap) {	
+				addProtection(aItem);
+			}
+			Logger.INFO("[Hazmat] Registered Draconic Evolution Items as hazmat gear.");
+		}	
+		
+		if (LoadedMods.isModLoaded("TaintedMagic")) {
+			AutoMap<Field> aItemFields = new AutoMap<Field>();
+			Class aItemsTaintedMagic = ReflectionUtils.getClass("taintedmagic.common.registry.ItemRegistry");		
+			
+			aItemFields.add(ReflectionUtils.getField(aItemsTaintedMagic, "ItemShadowFortressHelmet"));
+			aItemFields.add(ReflectionUtils.getField(aItemsTaintedMagic, "ItemShadowFortressChestplate"));
+			aItemFields.add(ReflectionUtils.getField(aItemsTaintedMagic, "ItemShadowFortressLeggings"));
+			aItemFields.add(ReflectionUtils.getField(aItemsTaintedMagic, "ItemVoidwalkerBoots"));	
+			AutoMap<ItemStack> aItemMap = new AutoMap<ItemStack>();			
+			for (Field aItemField : aItemFields) {
+				Item aItemObject = null;
+				if (aItemField != null) {
+					try {
+						aItemObject = (Item) aItemField.get(null);
+					}
+					catch (Exception t) {
+						t.printStackTrace();
+					}
+				}
+				if (aItemObject != null) {
+					aItemMap.add(ItemUtils.getSimpleStack(aItemObject));
+				}
+				else {
+					Logger.INFO("[Hazmat] Could not get "+aItemField.getName()+" from "+aItemsTaintedMagic.getName());					
+				}
+			}
+			Logger.INFO("[Hazmat] Registering "+aItemMap.size()+" Tainted Magic Items as hazmat gear.");
+			for (ItemStack aItem : aItemMap) {	
+				addProtection(aItem);
+			}
+			Logger.INFO("[Hazmat] Registered Tainted Magic Items as hazmat gear.");
+		}	
+		
+		if (LoadedMods.isModLoaded("WitchingGadgets")) {
+			AutoMap<Field> aItemFields = new AutoMap<Field>();
+			Class aItemsTaintedMagic = ReflectionUtils.getClass("witchinggadgets.common.WGContent");		
+			
+			aItemFields.add(ReflectionUtils.getField(aItemsTaintedMagic, "ItemPrimordialHelm"));
+			aItemFields.add(ReflectionUtils.getField(aItemsTaintedMagic, "ItemPrimordialChest"));
+			aItemFields.add(ReflectionUtils.getField(aItemsTaintedMagic, "ItemPrimordialLegs"));
+			aItemFields.add(ReflectionUtils.getField(aItemsTaintedMagic, "ItemPrimordialBoots"));	
+			AutoMap<ItemStack> aItemMap = new AutoMap<ItemStack>();			
+			for (Field aItemField : aItemFields) {
+				Item aItemObject = null;
+				if (aItemField != null) {
+					try {
+						aItemObject = (Item) aItemField.get(null);
+					}
+					catch (Exception t) {
+						t.printStackTrace();
+					}
+				}
+				if (aItemObject != null) {
+					aItemMap.add(ItemUtils.getSimpleStack(aItemObject));
+				}
+				else {
+					Logger.INFO("[Hazmat] Could not get "+aItemField.getName()+" from "+aItemsTaintedMagic.getName());					
+				}
+			}
+			Logger.INFO("[Hazmat] Registering "+aItemMap.size()+" Witching Gadgets Items as hazmat gear.");
+			for (ItemStack aItem : aItemMap) {	
+				addProtection(aItem);
+			}
+			Logger.INFO("[Hazmat] Registered Witching Gadgets Items as hazmat gear.");
+		}	
+		
+		if (LoadedMods.isModLoaded("ThaumicTinkerer")) {
+			AutoMap<Item> aItems = new AutoMap<Item>();
+			Class aMainTT = ReflectionUtils.getClass("thaumic.tinkerer.common.ThaumicTinkerer");		
+			Class aItemRegistryTT = ReflectionUtils.getClass("thaumic.tinkerer.common.registry.TTRegistry");
+			Field aRegistryInstance = ReflectionUtils.getField(aMainTT, "registry");
+			Object aRegistry = ReflectionUtils.getFieldValue(aRegistryInstance);
+			Method aFuckingStupidMethodHandlingMethod = ReflectionUtils.getMethod(aItemRegistryTT, "getFirstItemFromClass", new Class[] {Class.class});
+			Item aIchorHelm = (Item) ReflectionUtils.invokeNonBool(aRegistry, aFuckingStupidMethodHandlingMethod, new Object[] {ReflectionUtils.getClass("thaumic.tinkerer.common.item.kami.armor.ItemGemHelm")});
+			Item aIchorChest = (Item) ReflectionUtils.invokeNonBool(aRegistry, aFuckingStupidMethodHandlingMethod, new Object[] {ReflectionUtils.getClass("thaumic.tinkerer.common.item.kami.armor.ItemGemChest")});
+			Item aIchorLegs = (Item) ReflectionUtils.invokeNonBool(aRegistry, aFuckingStupidMethodHandlingMethod, new Object[] {ReflectionUtils.getClass("thaumic.tinkerer.common.item.kami.armor.ItemGemLegs")});
+			Item aIchorBoots = (Item) ReflectionUtils.invokeNonBool(aRegistry, aFuckingStupidMethodHandlingMethod, new Object[] {ReflectionUtils.getClass("thaumic.tinkerer.common.item.kami.armor.ItemGemBoots")});
+			aItems.add(aIchorHelm);
+			aItems.add(aIchorChest);
+			aItems.add(aIchorLegs);
+			aItems.add(aIchorBoots);			
+			AutoMap<ItemStack> aItemMap = new AutoMap<ItemStack>();	
+			int aIndex = 0;
+			for (Item aItem : aItems) {
+				Item aItemObject = null;
+				if (aItem != null) {
+					aItemMap.add(ItemUtils.getSimpleStack(aItemObject));
+				}
+				else {
+					Logger.INFO("[Hazmat] Could not get item "+aIndex+" from "+aItemRegistryTT.getName());					
+				}
+				aIndex++;
+			}
+			Logger.INFO("[Hazmat] Registering "+aItemMap.size()+" Thaumic Tinkerer Items as hazmat gear.");
+			for (ItemStack aItem : aItemMap) {	
+				addProtection(aItem);
+			}
+			Logger.INFO("[Hazmat] Registered Thaumic Tinkerer Items as hazmat gear.");
 		}
 		
 		if (LoadedMods.isModLoaded("GraviSuite")) {			

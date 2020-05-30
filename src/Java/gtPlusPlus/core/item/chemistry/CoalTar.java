@@ -5,7 +5,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
@@ -289,6 +288,7 @@ public class CoalTar extends ItemPackage {
 		FluidStack aGtAcid = FluidUtils.getFluidStack("phtalicacid", 500);
 		if (aMyAcid != null && aGtAcid != null) {
 			CORE.RA.addDistilleryRecipe(CI.getNumberedBioCircuit(8), aMyAcid, aGtAcid, null, 50, 16, false);
+			CORE.RA.addDistilleryRecipe(CI.getNumberedBioCircuit(9), aGtAcid, aMyAcid, null, 50, 16, false);
 		}
 	}
 
@@ -354,7 +354,7 @@ public class CoalTar extends ItemPackage {
 		Naphthalene = FluidUtils.generateFluidNonMolten("Naphthalene", "Naphthalene", 115, new short[]{210, 185, 135, 100}, null, null);
 		// v - Oxidize with mercury and nitric acid
 		//Create Phthalic Acid
-		Phthalic_Acid = FluidUtils.generateFluidNonMolten("PhthalicAcid", "Phtalic Acid", 207, new short[]{210, 220, 210, 100}, null, null);
+		Phthalic_Acid = FluidUtils.generateFluidNonMolten("PhthalicAcid", "Phthalic Acid", 207, new short[]{210, 220, 210, 100}, null, null);
 		// v - Dehydrate at 180C+
 		//Create Phthalic Anhydride
 		//ItemUtils.generateSpecialUseDusts("PhthalicAnhydride", "Phthalic Anhydride", "C6H4(CO)2O", Utils.rgbtoHexValue(175, 175, 175));

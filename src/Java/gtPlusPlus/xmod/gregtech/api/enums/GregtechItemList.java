@@ -705,6 +705,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Fluid Void Covers
 	Cover_Overflow_ULV, Cover_Overflow_LV, Cover_Overflow_MV, Cover_Overflow_HV, Cover_Overflow_EV, Cover_Overflow_IV, 
 	
+	//Item Void Covers
+	Cover_Overflow_Item_ULV, Cover_Overflow_Item_LV, Cover_Overflow_Item_MV, Cover_Overflow_Item_HV, Cover_Overflow_Item_EV, Cover_Overflow_Item_IV, 
+	
 	//Fake Hull Covers
 	FakeMachineCasingPlate_ULV, FakeMachineCasingPlate_LV,
 	FakeMachineCasingPlate_MV, FakeMachineCasingPlate_HV,
