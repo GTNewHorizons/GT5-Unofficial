@@ -469,6 +469,7 @@ public class TexturesGtBlock {
 	public static final CustomIcon TEXTURE_TECH_PANEL_A = new CustomIcon("metro/TEXTURE_TECH_PANEL_A");
 	public static final CustomIcon TEXTURE_TECH_PANEL_B = new CustomIcon("metro/TEXTURE_TECH_PANEL_B");
 	public static final CustomIcon TEXTURE_TECH_PANEL_C = new CustomIcon("metro/TEXTURE_TECH_PANEL_C");
+	public static final CustomIcon TEXTURE_TECH_PANEL_D = new CustomIcon("metro/TEXTURE_TECH_PANEL_D");
 
 	public static final CustomIcon TEXTURE_TECH_PANEL_RADIOACTIVE = new CustomIcon("TileEntities/DecayablesChest_bottom");
 	public static final CustomIcon TEXTURE_TECH_PANEL_RADIOACTIVE_ALT = new CustomIcon("TileEntities/DecayablesChest_top");

@@ -397,6 +397,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	// Flotation Cell
 	Controller_Flotation_Cell,
 	
+	// Elemental Duplicator
+	Controller_ElementalDuplicator,
+	Casing_ElementalDuplicator,
+	
 	// Big Steam Macerator
 	Controller_SteamMaceratorMulti,
 
@@ -445,7 +449,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	//Steam Multi Buses
 	Hatch_Input_Bus_Steam,
-	Hatch_Output_Bus_Steam,
+	Hatch_Output_Bus_Steam,	
+
+	//Elemental Duplicator Data Orb Bus
+	Hatch_Input_Elemental_Duplicator,
 
 
 	//Battery hatches for PSS
@@ -703,7 +710,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	FakeMachineCasingPlate_MV, FakeMachineCasingPlate_HV,
 	FakeMachineCasingPlate_EV, FakeMachineCasingPlate_IV,
 	FakeMachineCasingPlate_LuV, FakeMachineCasingPlate_ZPM,
-	FakeMachineCasingPlate_UV, FakeMachineCasingPlate_MAX,
+	FakeMachineCasingPlate_UV, FakeMachineCasingPlate_MAX, 
 	
 	
 	

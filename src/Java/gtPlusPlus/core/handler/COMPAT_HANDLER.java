@@ -157,6 +157,7 @@ public class COMPAT_HANDLER {
 			GregtechIndustrialAlloySmelter.run();
 			GregtechIsaMill.run();
 			GregtechSteamMultis.run();
+			GregtechIndustrialElementDuplicator.run();
 
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

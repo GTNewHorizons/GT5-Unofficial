@@ -14,8 +14,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cofh.lib.render.particle.EntityDropParticleFX;
+import gtPlusPlus.core.client.renderer.particle.EntityDropParticleFX;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
 import gtPlusPlus.core.lib.CORE;
