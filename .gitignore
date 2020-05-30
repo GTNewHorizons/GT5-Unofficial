@@ -37,7 +37,6 @@ eclipse/
 eclipse/*
 out/
 out/*
-*.iml
 *.ipr
 *.iws
 
