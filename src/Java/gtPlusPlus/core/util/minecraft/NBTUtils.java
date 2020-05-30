@@ -2,6 +2,7 @@ package gtPlusPlus.core.util.minecraft;
 
 import static gtPlusPlus.core.item.ModItems.ZZZ_Empty;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.entity.Entity;
@@ -413,6 +414,107 @@ public class NBTUtils {
 		return false;
 	}
 
+	public static Map getTagMap(NBTTagCompound aNBT) {
+		Map tagMap = new HashMap();
+		if (!aNBT.hasNoTags()) {
+			Map<?, ?> mInternalMap = ReflectionUtils.getField(aNBT, "tagMap");
+			if (mInternalMap != null && !mInternalMap.isEmpty()) {
+				tagMap.putAll(mInternalMap);
+			}
+		}
+		return tagMap;
+	}
+	
+	public static boolean isTagString(NBTTagCompound aNBT, String aTagName) {
+		Map<?, ?> aTagMap = getTagMap(aNBT);
+		if (aTagMap != null && !aTagMap.isEmpty()) {
+			for (Map.Entry<?, ?> e : aTagMap.entrySet()) {
+				if (e.getKey().equals(aTagName)) {
+					Object aValue = e.getValue();
+					if (aValue instanceof String) {
+						return true;
+					}
+				}
+			}
+		}		
+		return false;
+	}
+	
+	public static boolean isTagInteger(NBTTagCompound aNBT, String aTagName) {
+		Map<?, ?> aTagMap = getTagMap(aNBT);
+		if (aTagMap != null && !aTagMap.isEmpty()) {
+			for (Map.Entry<?, ?> e : aTagMap.entrySet()) {
+				if (e.getKey().equals(aTagName)) {
+					Object aValue = e.getValue();
+					if (int.class.isInstance(aValue) || aValue instanceof Integer) {
+						return true;
+					}
+				}
+			}
+		}		
+		return false;
+	}
+	
+	public static boolean isTagLong(NBTTagCompound aNBT, String aTagName) {
+		Map<?, ?> aTagMap = getTagMap(aNBT);
+		if (aTagMap != null && !aTagMap.isEmpty()) {
+			for (Map.Entry<?, ?> e : aTagMap.entrySet()) {
+				if (e.getKey().equals(aTagName)) {
+					Object aValue = e.getValue();
+					if (long.class.isInstance(aValue) || aValue instanceof Long) {
+						return true;
+					}
+				}
+			}
+		}		
+		return false;
+	}
+	
+	public static boolean isTagFloat(NBTTagCompound aNBT, String aTagName) {
+		Map<?, ?> aTagMap = getTagMap(aNBT);
+		if (aTagMap != null && !aTagMap.isEmpty()) {
+			for (Map.Entry<?, ?> e : aTagMap.entrySet()) {
+				if (e.getKey().equals(aTagName)) {
+					Object aValue = e.getValue();
+					if (float.class.isInstance(aValue) || aValue instanceof Float) {
+						return true;
+					}
+				}
+			}
+		}		
+		return false;
+	}
+	
+	public static boolean isTagDouble(NBTTagCompound aNBT, String aTagName) {
+		Map<?, ?> aTagMap = getTagMap(aNBT);
+		if (aTagMap != null && !aTagMap.isEmpty()) {
+			for (Map.Entry<?, ?> e : aTagMap.entrySet()) {
+				if (e.getKey().equals(aTagName)) {
+					Object aValue = e.getValue();
+					if (double.class.isInstance(aValue) || aValue instanceof Double) {
+						return true;
+					}
+				}
+			}
+		}		
+		return false;
+	}
+	
+	public static boolean isTagBoolean(NBTTagCompound aNBT, String aTagName) {
+		Map<?, ?> aTagMap = getTagMap(aNBT);
+		if (aTagMap != null && !aTagMap.isEmpty()) {
+			for (Map.Entry<?, ?> e : aTagMap.entrySet()) {
+				if (e.getKey().equals(aTagName)) {
+					Object aValue = e.getValue();
+					if (boolean.class.isInstance(aValue) || aValue instanceof Boolean) {
+						return true;
+					}
+				}
+			}
+		}		
+		return false;
+	}
+	
 	public static boolean tryCloneTagCompoundDataIntoSubTag(ItemStack aStack, NBTTagCompound aTagCompound) {
 		try {
 			NBTTagCompound aNBT = aTagCompound;
