@@ -343,14 +343,14 @@ public class RECIPES_GREGTECH {
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(12),
-						CI.getTieredMachineCasing(aLaureniumTier),
+						CI.getTieredMachineCasing(aLaureniumTier-1),
 						CI.getPlate(aLaureniumTier-1, 8),
-						CI.getGear(aLaureniumTier, 2),
-						CI.getBolt(aLaureniumTier-3, 16)
+						CI.getGear(aLaureniumTier, 2)
 				},
 				new FluidStack[] {
 						CI.getTieredFluid(aLaureniumTier, 2 * 144),
-						CI.getAlternativeTieredFluid(aLaureniumTier-1, 4 * 144)
+						CI.getAlternativeTieredFluid(aLaureniumTier-1, 4 * 144),
+						CI.getTertiaryTieredFluid(aLaureniumTier-2, 6 * 144)
 				},
 				new ItemStack[] {
 					GregtechItemList.Casing_Machine_Custom_3.get(1)
@@ -367,14 +367,14 @@ public class RECIPES_GREGTECH {
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(12),
-						CI.getTieredMachineCasing(aBotmiumTier),
+						CI.getTieredMachineCasing(aBotmiumTier-1),
 						CI.getPlate(aBotmiumTier-1, 8),
-						CI.getGear(aBotmiumTier, 2),
-						CI.getBolt(aBotmiumTier-3, 16)
+						CI.getGear(aBotmiumTier, 2)
 				},
 				new FluidStack[] {
 						CI.getTieredFluid(aBotmiumTier, 2 * 144),
-						CI.getAlternativeTieredFluid(aBotmiumTier-1, 4 * 144)
+						CI.getAlternativeTieredFluid(aBotmiumTier-1, 4 * 144),
+						CI.getTertiaryTieredFluid(aBotmiumTier-2, 6 * 144)
 				},
 				new ItemStack[] {
 					GregtechItemList.Casing_Machine_Custom_4.get(1)
