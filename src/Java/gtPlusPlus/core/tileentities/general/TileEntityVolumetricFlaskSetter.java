@@ -117,7 +117,21 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 			return false;
 		}
 		
+		boolean aAllowFluid = false;
+		boolean aHasFluid = false;
+		
 		ItemStack[] aInputs = this.getInventory().getInventory().clone();
+		
+		for (ItemStack aStack : aInputs) {
+			if (VolumetricFlaskHelper.getFlaskFluid(aStack) != null) {
+				aHasFluid = true;
+			}
+		}
+		
+		if (aHasFluid && !aAllowFluid) {
+			return false;
+		}
+		
 		//Check if there is output in slot.
 		Boolean hasOutput = false;
 		if (aInputs[Container_VolumetricFlaskSetter.SLOT_OUTPUT] != null) {
@@ -141,7 +155,8 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 			
 			boolean doAdd = false;
 			ItemStack g = this.getStackInSlot(e);
-			FluidStack aInputFluidStack = VolumetricFlaskHelper.getFlaskFluid(g);
+			//FluidStack aInputFluidStack = VolumetricFlaskHelper.getFlaskFluid(g);
+			FluidStack aInputFluidStack = null;
 			int aSize = 0;
 			ItemStack aInputStack = null;	
 			int aTypeInSlot = getFlaskType(g);
@@ -154,7 +169,8 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 				// Existing Output
 				else {
 					ItemStack f = this.getStackInSlot(8);
-					FluidStack aFluidInCheckedSlot = VolumetricFlaskHelper.getFlaskFluid(f);
+					//FluidStack aFluidInCheckedSlot = VolumetricFlaskHelper.getFlaskFluid(f);
+					FluidStack aFluidInCheckedSlot = null;
 					int aTypeInCheckedSlot = getFlaskType(f);					
 					// Check that the Circuit in the Output slot is not null and the same type as the circuit input.
 					if (aTypeInCheckedSlot > 0 && (aTypeInSlot == aTypeInCheckedSlot) && f != null) {
@@ -172,9 +188,9 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 					// Check Circuit Type					
 					ItemStack aOutput;
 					FluidStack aOutputFluid = null;
-					if (!VolumetricFlaskHelper.isFlaskEmpty(g)) {
+					/*if (!VolumetricFlaskHelper.isFlaskEmpty(g)) {
 						aOutputFluid = aInputFluidStack.copy();
-					}
+					}*/
 					if (aTypeInSlot == 1) {
 						aOutput = VolumetricFlaskHelper.getVolumetricFlask(1);
 					}
@@ -195,7 +211,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 							if (aOutputFluid.amount > aCapacity) {
 								aOutputFluid.amount = aCapacity;
 							}
-							VolumetricFlaskHelper.setFluid(aOutput, aOutputFluid);
+							//VolumetricFlaskHelper.setFluid(aOutput, aOutputFluid);
 						}
 						this.setInventorySlotContents(e, aInputStack);
 						this.setInventorySlotContents(Container_VolumetricFlaskSetter.SLOT_OUTPUT, aOutput);

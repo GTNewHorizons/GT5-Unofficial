@@ -19,10 +19,9 @@ import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.*;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map_Internal;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.nei.GTPP_NEI_DefaultHandler.CachedDefaultRecipe;
-import gtPlusPlus.nei.GTPP_NEI_DefaultHandler.FixedPositionedStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
@@ -51,6 +50,33 @@ extends TemplateRecipeHandler {
 			GuiUsageRecipe.usagehandlers.add(this);
 		}
 	}
+	
+	public static void logRecipeError(GT_Recipe aRecipe) {
+		if (aRecipe == null) {
+			Logger.INFO("Tried to handle null recipe. :(");
+		}
+		else {
+			ItemStack[] aInputs = aRecipe.mInputs;
+			ItemStack[] aOutputs = aRecipe.mOutputs;
+			FluidStack[] aFluidInputs = aRecipe.mFluidInputs;
+			FluidStack[] aFluidOutputs = aRecipe.mFluidOutputs;
+			int aEU = aRecipe.mEUt;
+			int aTime = aRecipe.mDuration;
+			int aSpecialValue = aRecipe.mSpecialValue;
+			String aInputitems = ItemUtils.getArrayStackNames(aInputs);
+			String aOutputitems = ItemUtils.getArrayStackNames(aOutputs);
+			String aInputFluids = ItemUtils.getArrayStackNames(aFluidInputs);
+			String aOutputFluids = ItemUtils.getArrayStackNames(aFluidOutputs);
+			Logger.INFO("Logging Broken Recipe Details:");
+			Logger.INFO("Input Items - "+aInputitems);
+			Logger.INFO("Output Items - "+aOutputitems);
+			Logger.INFO("Input Fluids - "+aInputFluids);
+			Logger.INFO("Output Fluids - "+aOutputFluids);
+			Logger.INFO("EU/t - "+aEU);
+			Logger.INFO("Duration - "+aTime);
+			Logger.INFO("Special Value - "+aSpecialValue);
+		}
+	}
 
 	public List<GTPP_Recipe> getSortedRecipes() {
 		List<GTPP_Recipe> result = new ArrayList(this.mRecipeMap.mRecipeList);
@@ -72,7 +98,11 @@ extends TemplateRecipeHandler {
 		if (outputId.equals(getRecipeMapName())) {
 			for (GTPP_Recipe tRecipe : getSortedRecipes()) {
 				if (!tRecipe.mHidden) {
-					this.arecipes.add(new CachedDefaultRecipe(tRecipe));
+					CachedDefaultRecipe tNEIRecipe = getCachedRecipe(tRecipe);
+					if (tNEIRecipe == null) {
+						continue;
+					}
+					this.arecipes.add(tNEIRecipe);
 				}
 			}
 		} else {
@@ -103,7 +133,10 @@ extends TemplateRecipeHandler {
 		}
 		for (GTPP_Recipe tRecipe : getSortedRecipes()) {
 			if (!tRecipe.mHidden) {
-				CachedDefaultRecipe tNEIRecipe = new CachedDefaultRecipe(tRecipe);
+				CachedDefaultRecipe tNEIRecipe = getCachedRecipe(tRecipe);
+				if (tNEIRecipe == null) {
+					continue;
+				}
 				for (ItemStack tStack : tResults) {
 					if (tNEIRecipe.contains(tNEIRecipe.mOutputs, tStack)) {
 						this.arecipes.add(tNEIRecipe);
@@ -137,7 +170,10 @@ extends TemplateRecipeHandler {
 		}
 		for (GTPP_Recipe tRecipe : getSortedRecipes()) {
 			if (!tRecipe.mHidden) {
-				CachedDefaultRecipe tNEIRecipe = new CachedDefaultRecipe(tRecipe);
+				CachedDefaultRecipe tNEIRecipe = getCachedRecipe(tRecipe);
+				if (tNEIRecipe == null) {
+					continue;
+				}
 				for (ItemStack tStack : tInputs) {
 					if (tNEIRecipe.contains(tNEIRecipe.mInputs, tStack)) {
 						this.arecipes.add(tNEIRecipe);
@@ -386,6 +422,8 @@ extends TemplateRecipeHandler {
 		mInputSlotMap.put(7, new Pair<Integer, Integer>(aSlotX_2, aSlotY_3));
 		mInputSlotMap.put(8, new Pair<Integer, Integer>(aSlotX_3, aSlotY_3));
 		mInputSlotMap.put(9, new Pair<Integer, Integer>(aSlotX_1, aSlotY_10));
+		mInputSlotMap.put(10, new Pair<Integer, Integer>(aSlotX_2, aSlotY_10));
+		mInputSlotMap.put(11, new Pair<Integer, Integer>(aSlotX_3, aSlotY_10));
 		aSlotX_1 = 102;
 		aSlotX_2 = 120;
 		aSlotX_3 = 138;
@@ -399,6 +437,18 @@ extends TemplateRecipeHandler {
 		mOutputSlotMap.put(7, new Pair<Integer, Integer>(aSlotX_2, aSlotY_3));
 		mOutputSlotMap.put(8, new Pair<Integer, Integer>(aSlotX_3, aSlotY_3));
 		mOutputSlotMap.put(9, new Pair<Integer, Integer>(aSlotX_1, aSlotY_10));
+		mOutputSlotMap.put(10, new Pair<Integer, Integer>(aSlotX_2, aSlotY_10));
+		mOutputSlotMap.put(11, new Pair<Integer, Integer>(aSlotX_3, aSlotY_10));
+	}
+	
+	private CachedDefaultRecipe getCachedRecipe(GT_Recipe aRecipe) {
+		try {
+			return new CachedDefaultRecipe(aRecipe);
+		}
+		catch(Throwable e) {
+			logRecipeError(aRecipe);
+		}
+		return null;
 	}
 
 	public class CachedDefaultRecipe
@@ -431,6 +481,9 @@ extends TemplateRecipeHandler {
 			
 			// Upto 9 Inputs Slots
 			if (aInputItemsCount > 0) {				
+				if (aInputItemsCount > 9) {
+					aInputItemsCount = 9;
+				}				
 				for (int i=0;i<aInputItemsCount;i++) {
 					int x = mInputSlotMap.get(aSlotToCheck).getKey();
 					int y = mInputSlotMap.get(aSlotToCheck).getValue();
@@ -441,7 +494,10 @@ extends TemplateRecipeHandler {
 			}
 			aSlotToCheck = 0;	
 			// Upto 9 Output Slots
-			if (aOutputItemsCount > 0) {
+			if (aOutputItemsCount > 0) {			
+				if (aOutputItemsCount > 9) {
+					aOutputItemsCount = 9;
+				}		
 				for (int i=0;i<aOutputItemsCount;i++) {
 					int x = mOutputSlotMap.get(aSlotToCheck).getKey();
 					int y = mOutputSlotMap.get(aSlotToCheck).getValue();

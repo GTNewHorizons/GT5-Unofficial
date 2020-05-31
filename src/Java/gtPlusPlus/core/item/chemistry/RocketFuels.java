@@ -100,7 +100,7 @@ public class RocketFuels extends ItemPackage {
 		
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 16),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 12),
 						ItemUtils.getSimpleStack(GenericChem.mOrangeCatalyst, 0),
 				},
 				new FluidStack[] {
@@ -397,14 +397,14 @@ public class RocketFuels extends ItemPackage {
 						CI.getNumberedCircuit(3),
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(Monomethylhydrazine, 1000),
+						FluidUtils.getFluidStack(Monomethylhydrazine, 2000),
 						FluidUtils.getFluidStack("nitricacid", 1000),
 				}, 
 				new ItemStack[] {
 
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(Monomethylhydrazine_Plus_Nitric_Acid, 3000),
+						FluidUtils.getFluidStack(Monomethylhydrazine_Plus_Nitric_Acid, 2000),
 
 				},
 				20 * 45, 
@@ -425,12 +425,12 @@ public class RocketFuels extends ItemPackage {
 
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide, 4000),
+						FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide, 5000),
 
 				},
 				20 * 60, 
 				480, 
-				5);	
+				6);	
 
 	}
 

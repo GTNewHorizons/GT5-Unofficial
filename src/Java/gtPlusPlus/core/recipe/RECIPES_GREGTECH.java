@@ -338,6 +338,54 @@ public class RECIPES_GREGTECH {
 					2);
 		}
 
+		int aLaureniumTier = ALLOY.LAURENIUM.vTier;
+		// Adding Recipes for Casings
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(12),
+						CI.getTieredMachineCasing(aLaureniumTier),
+						CI.getPlate(aLaureniumTier-1, 8),
+						CI.getGear(aLaureniumTier, 2),
+						CI.getBolt(aLaureniumTier-3, 16)
+				},
+				new FluidStack[] {
+						CI.getTieredFluid(aLaureniumTier, 2 * 144),
+						CI.getAlternativeTieredFluid(aLaureniumTier-1, 4 * 144)
+				},
+				new ItemStack[] {
+					GregtechItemList.Casing_Machine_Custom_3.get(1)
+				},
+				new FluidStack[] {
+
+				},
+				20 * 20,
+				MaterialUtils.getVoltageForTier(aLaureniumTier-2),
+				5);
+		
+		int aBotmiumTier = ALLOY.BOTMIUM.vTier;
+		// Adding Recipes for Casings
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(12),
+						CI.getTieredMachineCasing(aBotmiumTier),
+						CI.getPlate(aBotmiumTier-1, 8),
+						CI.getGear(aBotmiumTier, 2),
+						CI.getBolt(aBotmiumTier-3, 16)
+				},
+				new FluidStack[] {
+						CI.getTieredFluid(aBotmiumTier, 2 * 144),
+						CI.getAlternativeTieredFluid(aBotmiumTier-1, 4 * 144)
+				},
+				new ItemStack[] {
+					GregtechItemList.Casing_Machine_Custom_4.get(1)
+				},
+				new FluidStack[] {
+
+				},
+				20 * 20,
+				MaterialUtils.getVoltageForTier(aBotmiumTier-2),
+				6);
+
 	}
 
 	private static void fluidheaterRecipes() {

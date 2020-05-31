@@ -208,6 +208,7 @@ public class HazmatUtils {
 		}	
 		
 		if (LoadedMods.isModLoaded("ThaumicTinkerer")) {
+			/*
 			AutoMap<Item> aItems = new AutoMap<Item>();
 			Class aMainTT = ReflectionUtils.getClass("thaumic.tinkerer.common.ThaumicTinkerer");		
 			Class aItemRegistryTT = ReflectionUtils.getClass("thaumic.tinkerer.common.registry.TTRegistry");
@@ -225,21 +226,23 @@ public class HazmatUtils {
 			AutoMap<ItemStack> aItemMap = new AutoMap<ItemStack>();	
 			int aIndex = 0;
 			for (Item aItem : aItems) {
-				Item aItemObject = null;
-				if (aItem != null) {
-					aItemMap.add(ItemUtils.getSimpleStack(aItemObject));
-				}
-				else {
-					Logger.INFO("[Hazmat] Could not get item "+aIndex+" from "+aItemRegistryTT.getName());					
-				}
-				aIndex++;
+			Item aItemObject = null;
+			if (aItem != null) {
+			aItemMap.add(ItemUtils.getSimpleStack(aItemObject));
+			}
+			else {
+			Logger.INFO("[Hazmat] Could not get item "+aIndex+" from "+aItemRegistryTT.getName());					
+			}
+			aIndex++;
 			}
 			Logger.INFO("[Hazmat] Registering "+aItemMap.size()+" Thaumic Tinkerer Items as hazmat gear.");
 			for (ItemStack aItem : aItemMap) {	
-				addProtection(aItem);
+			addProtection(aItem);
 			}
 			Logger.INFO("[Hazmat] Registered Thaumic Tinkerer Items as hazmat gear.");
-		}
+			*/
+			Logger.INFO("[Hazmat] Did not register Thaumic Tinkerer Items as hazmat gear.");
+			}
 		
 		if (LoadedMods.isModLoaded("GraviSuite")) {			
 			AutoMap<Field> aItemFields = new AutoMap<Field>();
@@ -426,7 +429,7 @@ public class HazmatUtils {
 			Logger.INFO("==========================================================");
 			return false;
 		}
-		Logger.INFO("[Hazmat] Registering " + aVanStack.getDisplayName() + " for full Hazmat protection.");
+		Logger.INFO("[Hazmat] Registering " + ItemUtils.getItemName(aVanStack) + " for full Hazmat protection.");
 		GT_ItemStack aStack = getGtStackFromVanilla(aVanStack);
 		AutoMap<Boolean> aAdded = new AutoMap<Boolean>();
 		aAdded.put(addProtection_Frost(aStack));
