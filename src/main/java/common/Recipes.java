@@ -24,8 +24,6 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
 import util.Util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Recipes {
@@ -44,23 +42,6 @@ public class Recipes {
 		registerRecipes_SpaceElevator();
 
 		KekzCore.LOGGER.info("Finished registering recipes");
-	}
-
-	private static void lapoCapacitorRecipeAdder(GT_Recipe.GT_Recipe_AssemblyLine baseRecipe, Materials boxMaterial, ItemStack newResearchTrigger, ItemStack result) {
-		if(baseRecipe != null) {
-			final ArrayList<ItemStack> baseInputs = new ArrayList<>(Arrays.asList(baseRecipe.mInputs));
-			if(baseInputs.size() <= 14){
-				baseInputs.add(GT_OreDictUnificator.get(OrePrefixes.frameGt, boxMaterial, 4));
-				baseInputs.add(GT_OreDictUnificator.get(OrePrefixes.screw, boxMaterial, 24));
-
-				GT_Values.RA.addAssemblylineRecipe(newResearchTrigger, baseRecipe.mResearchTime,
-						Util.toItemStackArray(baseInputs), baseRecipe.mFluidInputs, result,
-						baseRecipe.mDuration * 2, baseRecipe.mEUt);
-				KekzCore.LOGGER.info("Successfully extended Lapotronic Battery recipe for Lapotronic Capacitor of tier " + result.getItemDamage());
-			}
-		} else {
-			KekzCore.LOGGER.info("Base recipe was NULL. Failed to extended Lapotronic Battery recipe for Lapotronic Capacitor of tier " + result.getItemDamage());
-		}
 	}
 
 	private static void registerRecipes_TFFT() {
@@ -499,77 +480,104 @@ public class Recipes {
 		};
 		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), lcIV_recipe);
 
-		KekzCore.LOGGER.info("Reading Assembly Line recipes from GregTech recipe map");
-		GT_Recipe.GT_Recipe_AssemblyLine arLuV = null;
-		// Next two are hardcoded because my code can't find them
-		GT_Recipe.GT_Recipe_AssemblyLine arZPM = new GT_Recipe.GT_Recipe_AssemblyLine(
-				ItemList.Energy_LapotronicOrb2.get(1L), 288000, new ItemStack[] {
+		// LuV Capacitor
+		GT_Values.RA.addAssemblylineRecipe(
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), 288000,
+				new Object[] {
+						GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 16L),
+						new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
+						new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
+						new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
+						new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
+						ItemList.Energy_LapotronicOrb2.get(8L),
+						ItemList.Field_Generator_LuV.get(2),
+						ItemList.Circuit_Wafer_SoC2.get(64),
+						ItemList.Circuit_Wafer_SoC2.get(64),
+						ItemList.Circuit_Parts_DiodeASMD.get(8),
+						GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32),
+						GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 4),
+						GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24)
+				},
+				new FluidStack[] {
+						Materials.SolderingAlloy.getMolten(2880),
+						new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)
+				},
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2), 2000, 100000
+		);
+		// ZPM Capacitor
+		GT_Values.RA.addAssemblylineRecipe(
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2), 288000,
+				new Object[] {
 				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 16L),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
+				new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
+				new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
+				new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
+				new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
 				ItemList.Energy_LapotronicOrb2.get(8L),
 				ItemList.Field_Generator_LuV.get(2),
 				ItemList.Circuit_Wafer_SoC2.get(64),
 				ItemList.Circuit_Wafer_SoC2.get(64),
 				ItemList.Circuit_Parts_DiodeASMD.get(8),
-				GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32)
+				GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32),
+				GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 4),
+				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 24)
 		},
 				new FluidStack[] {
 						Materials.SolderingAlloy.getMolten(2880),
 						new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)
 				},
-				ItemList.Energy_Module.get(1), 2000, 100000
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3), 2000, 100000
 		);
-		GT_Recipe.GT_Recipe_AssemblyLine arUV = new GT_Recipe.GT_Recipe_AssemblyLine(
-				ItemList.Energy_Module.get(1L), 288000, new ItemStack[] {
-				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 32L),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 1),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 1),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 1),
-				GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 1),
-				ItemList.Energy_Module.get(8L),
-				ItemList.Field_Generator_ZPM.get(2),
-				ItemList.Circuit_Wafer_HPIC.get(64),
-				ItemList.Circuit_Wafer_HPIC.get(64),
-				ItemList.Circuit_Parts_DiodeASMD.get(16),
-				GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32)
+		// UV Capacitor
+		GT_Values.RA.addAssemblylineRecipe(
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3), 288000,
+				new Object[] {
+					GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 32L),
+					new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 1},
+					new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 1},
+					new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 1},
+					new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 1},
+					ItemList.Energy_Module.get(8L),
+					ItemList.Field_Generator_ZPM.get(2),
+					ItemList.Circuit_Wafer_HPIC.get(64),
+					ItemList.Circuit_Wafer_HPIC.get(64),
+					ItemList.Circuit_Parts_DiodeASMD.get(16),
+					GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32),
+						GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
+						GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24)
 		},
 				new FluidStack[] {
 						Materials.SolderingAlloy.getMolten(2880),
 						new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)
 				},
-				ItemList.Energy_Cluster.get(1), 2000, 200000
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4), 2000, 200000
 		);
-		GT_Recipe.GT_Recipe_AssemblyLine arU = null;
-		for(GT_Recipe.GT_Recipe_AssemblyLine ar : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
-			if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_LapotronicOrb2.get(1L), true)) {
-				// LuV Lapo Orb
-				arLuV = ar;
-			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_Module.get(1L), true)) {
-				// ZPM Lapo Orb
-				KekzCore.LOGGER.info("Found matching recipe for Energy Module?");
-			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.Energy_Cluster.get(1L), true)) {
-				// UV Lapo Orb
-				KekzCore.LOGGER.info("Found matching recipe for Energy Cluster?");
-			} else if(GT_Utility.areStacksEqual(ar.mOutput, ItemList.ZPM2.get(1L), true)) {
-				// Ultimate Battery
-				arU = ar;
-			}
-		}
-		lapoCapacitorRecipeAdder(arLuV, Materials.Osmiridium,
-				GT_OreDictUnificator.get(OrePrefixes.block, Materials.Lapis, 1),
-				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2));
-		lapoCapacitorRecipeAdder(arZPM, Materials.NaquadahAlloy,
-				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2),
-				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3));
-		lapoCapacitorRecipeAdder(arUV, Materials.Neutronium,
-				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3),
-				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4));
-		lapoCapacitorRecipeAdder(arU, Materials.CosmicNeutronium,
-				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
-				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5));
+		// Ultimate Capacitor
+		GT_Values.RA.addAssemblylineRecipe(
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4), 288000,
+				new Object[] {
+						GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 32L),
+						GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 32L),
+						new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1},
+						new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1},
+						new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1},
+						new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1},
+						ItemList.ZPM2.get(8L),
+						ItemList.Field_Generator_UHV.get(4),
+						ItemList.Circuit_Wafer_UHPIC.get(64),
+						ItemList.Circuit_Wafer_UHPIC.get(64),
+						ItemList.Circuit_Wafer_SoC2.get(32),
+						ItemList.Circuit_Parts_DiodeASMD.get(64),
+						GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 4),
+						GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24)
+				},
+				new FluidStack[] {
+						Materials.SolderingAlloy.getMolten(3760),
+						Materials.Naquadria.getMolten(9216),
+						new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000)
+				},
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5), 2000, 200000
+		);
 
 		// Capacitor recycling
 		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
