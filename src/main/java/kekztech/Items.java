@@ -1,7 +1,7 @@
 package kekztech;
 
-import items.MetaItem_CraftingComponent;
-import items.MetaItem_ReactorComponent;
+import common.items.MetaItem_CraftingComponent;
+import common.items.MetaItem_ReactorComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import util.Util;
@@ -54,7 +54,7 @@ public enum Items {
 	private final int metaID;
 	private final int identifier;
 	
-	private Items(int metaID, int identifier) {
+	Items(int metaID, int identifier) {
 		this.metaID = metaID;
 		this.identifier = identifier;
 	}

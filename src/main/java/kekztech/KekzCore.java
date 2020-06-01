@@ -13,9 +13,9 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import items.ErrorItem;
-import items.MetaItem_CraftingComponent;
-import items.MetaItem_ReactorComponent;
+import common.items.ErrorItem;
+import common.items.MetaItem_CraftingComponent;
+import common.items.MetaItem_ReactorComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
