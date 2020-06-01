@@ -1,0 +1,185 @@
+item.kekztech_error_item.name=KekzTech Error Coin
+
+# -------- Multiblock Tooltip Builder Keywords
+# -------- Context can be found in the class util.MultiBlockTooltipBuilder
+mbdesc.beginStructureBlock.Dimensions=Dimensions
+mbdesc.beginStructureBlock.Structure=Structure
+mbdesc.addController.Controller=Controller
+mbdesc.addCasing.atleast=(at least)
+mbdesc.addEnergyHatch.EnergyHatch=Energy Hatch
+mbdesc.addDynamoHatch.DynamoHatch=Dynamo Hatch
+mbdesc.addMaintenanceHatch.MaintenanceHatch=Maintenance Hatch
+mbdesc.addIOHatches.IOHatches=I/O Hatches
+mbdesc.addInputBus.InputBus=Input Bus/ses
+mbdesc.addInputHatch.InputHatch=Input Hatch/es
+mbdesc.addOutputBus.OutputBus=Output Bus/ses
+mbdesc.addOutputHatch.OutputHatch=Output Hatch/es
+mbdesc.signAndFinalize.Hold=Hold
+mbdesc.signAndFinalize.todisplay=to display structure guidelines
+mbdesc.signAndFinalize.createdby=Created by
+
+# -------- Reactor: Structure Blocks
+tile.kekztech_controlrod_block.name=Nuclear Reactor Control Rod
+tile.kekztech_reactorchamberoff_block.name=Nuclear Reactor Chamber (OFF)
+tile.kekztech_reactorchamberon_block.name=Nuclear Reactor Chamber (ON)
+
+# -------- Reactor: Heat Vents
+item.kekztech_reactor_item.0.name=Weak Heat Vent
+item.kekztech_reactor_item.1.name=Basic Heat Vent
+item.kekztech_reactor_item.2.name=Advanced Heat Vent
+item.kekztech_reactor_item.3.name=High-Tech Heat Vent
+item.kekztech_reactor_item.4.name=Weak Component Heat Vent
+item.kekztech_reactor_item.5.name=Basic Component Heat Vent
+item.kekztech_reactor_item.6.name=Advanced Component Heat Vent
+item.kekztech_reactor_item.7.name=High-Tech Component Heat Vent
+item.kekztech_reactor_item.8.name=Weak Overclocked Heat Vent
+item.kekztech_reactor_item.9.name=Basic Overclocked Heat Vent
+item.kekztech_reactor_item.10.name=Advanced Overclocked Heat Vent
+item.kekztech_reactor_item.11.name=High-Tech Overclocked Heat Vent
+
+# -------- Reactor: Heat Exchangers
+item.kekztech_reactor_item.12.name=Weak Heat Exchanger
+item.kekztech_reactor_item.13.name=Basic Heat Exchanger
+item.kekztech_reactor_item.14.name=Advanced Heat Exchanger
+item.kekztech_reactor_item.15.name=High-Tech Heat Exchanger
+
+# -------- Reactor: Fuel Rods
+item.kekztech_reactor_item.16.name=Fuel Rod (Enriched Uranium)
+item.kekztech_reactor_item.17.name=Dual Fuel Rod (Enriched Uranium)
+item.kekztech_reactor_item.18.name=Quad Fuel Rod (Enriched Uranium)
+item.kekztech_reactor_item.19.name=Fuel Rod (Thorium)
+item.kekztech_reactor_item.20.name=Dual Fuel Rod (Thorium)
+item.kekztech_reactor_item.21.name=Quad Fuel Rod (Thorium)
+item.kekztech_reactor_item.22.name=Fuel Rod (Plutonium MOX)
+item.kekztech_reactor_item.23.name=Dual Fuel Rod (Plutonium MOX)
+item.kekztech_reactor_item.24.name=Quad Fuel Rod (Plutonium MOX)
+item.kekztech_reactor_item.25.name=Fuel Rod (Enriched Naquadah)
+item.kekztech_reactor_item.26.name=Dual Fuel Rod (Enriched Naquadah)
+item.kekztech_reactor_item.27.name=Quad Fuel Rod (Enriched Naquadah)
+item.kekztech_reactor_item.28.name=Fuel Rod (Thorium MOX)
+item.kekztech_reactor_item.29.name=Dual Fuel Rod (Thorium MOX)
+item.kekztech_reactor_item.30.name=Quad Fuel Rod (Thorium MOX)
+
+# -------- Reactor: Fuel Rods (Depleted)
+item.kekztech_reactor_item.31.name=Depleted Fuel Rod (Enriched Uranium)
+item.kekztech_reactor_item.32.name=Depleted Dual Fuel Rod (Enriched Uranium)
+item.kekztech_reactor_item.33.name=Depleted Quad Fuel Rod (Enriched Uranium)
+item.kekztech_reactor_item.34.name=Depleted Fuel Rod (Thorium)
+item.kekztech_reactor_item.35.name=Depleted Dual Fuel Rod (Thorium)
+item.kekztech_reactor_item.36.name=Depleted Quad Fuel Rod (Thorium)
+item.kekztech_reactor_item.37.name=Depleted Fuel Rod (Plutonium MOX)
+item.kekztech_reactor_item.38.name=Depleted Dual Fuel Rod (Plutonium MOX)
+item.kekztech_reactor_item.39.name=Depleted Quad Fuel Rod (Plutonium MOX)
+item.kekztech_reactor_item.40.name=Depleted Fuel Rod (Enriched Naquadah)
+item.kekztech_reactor_item.41.name=Depleted Dual Fuel Rod (Enriched Naquadah)
+item.kekztech_reactor_item.42.name=Depleted Quad Fuel Rod (Enriched Naquadah)
+item.kekztech_reactor_item.43.name=Depleted Fuel Rod (Thorium MOX)
+item.kekztech_reactor_item.44.name=Depleted Fuel Rod (Thorium MOX)
+item.kekztech_reactor_item.45.name=Depleted Fuel Rod (Thorium MOX)
+
+# -------- Reactor: Neutron Reflectors
+item.kekztech_reactor_item.46.name=Neutron Reflector
+item.kekztech_reactor_item.47.name=Neutron Supermirror (Unbreakable)
+
+# -------- Reactor: Coolant Cells
+item.kekztech_reactor_item.48.name=Helium Coolant Cell
+item.kekztech_reactor_item.49.name=NaK Coolant Cell
+
+# -------- Reactor: Crafting Components
+item.kekztech_crafting_item.0.name=Copper Heat Pipe
+item.kekztech_crafting_item.1.name=Silver Heat Pipe
+item.kekztech_crafting_item.2.name=Boron Arsenide Heat Pipe
+item.kekztech_crafting_item.3.name=Diamond Heat Pipe
+item.kekztech_crafting_item.4.name=Boron Arsenide Dust
+item.kekztech_crafting_item.5.name=Isotopically Pure Diamond Dust
+item.kekztech_crafting_item.6.name=Amine Carbamate Dust
+item.kekztech_crafting_item.7.name=Boron Arsenide Crystal
+item.kekztech_crafting_item.8.name=Isotopically Pure Diamond Crystal
+
+# -------- Fuel Cell: Structure Blocks
+tile.kekztech_gdcceramicelectrolyteunit_block.name=GDC Ceramic Electrolyte Unit
+tile.kekztech_yszceramicelectrolyteunit_block.name=YSZ Ceramic Electrolyte Unit
+
+# -------- Fuel Cell: Crafting Components
+item.kekztech_crafting_item.9.name=YSZ Ceramic Dust
+item.kekztech_crafting_item.10.name=GDC Ceramic Dust
+item.kekztech_crafting_item.11.name=Yttria Dust
+item.kekztech_crafting_item.12.name=Zirconia Dust
+item.kekztech_crafting_item.13.name=Ceria Dust
+item.kekztech_crafting_item.14.name=YSZ Ceramic Plate
+item.kekztech_crafting_item.15.name=GDC Ceramic Plate
+
+# -------- TFFT: Structure Blocks
+tile.kekztech_tfftcasingblock_block.name=T.F.F.T Casing
+tile.kekztech_tfftstoragefieldblock1_block.name=T.F.F.T Storage Field Block (Tier I)
+tile.kekztech_tfftstoragefieldblock1_block.0.desc=This is not a fluid tank
+tile.kekztech_tfftstoragefieldblock2_block.name=T.F.F.T Storage Field Block (Tier II)
+tile.kekztech_tfftstoragefieldblock3_block.name=T.F.F.T Storage Field Block (Tier III)
+tile.kekztech_tfftstoragefieldblock4_block.name=T.F.F.T Storage Field Block (Tier IV)
+tile.kekztech_tfftstoragefieldblock5_block.name=T.F.F.T Storage Field Block (Tier V)
+tile.kekztech_tfftmultihatch_block.name=T.F.F.T Multi-Fluid I/O Hatch
+tile.kekztech_tfftmultihatch_block.0.desc=Special hatch for the T.F.F.T
+tile.kekztech_tfftmultihatch_block.1.desc=Allows for automated interaction with all stored fluids in a single place
+tile.kekztech_tfftmultihatch_block.2.desc=Right-click with screwdriver to activate auto-output
+tile.kekztech_tfftmultihatch_block.3.desc=Auto-output will try to output fluids into adjacent tanks at a rate of 1000L/s per fluid
+
+# -------- Item Server: Structure Blocks
+tile.kekztech_itemserverdrive_block.name=Item Server Drive
+tile.kekztech_itemserverdrive_block.0.desc=Item Server Storage Drive
+tile.kekztech_itemserverrackcasing_block.name=Item Server Rack Casing
+tile.kekztech_itemserverrackcasing_block.0.desc=Shiny new server rack
+tile.kekztech_itemserverioport_block.name=Item Server I/O Port
+tile.kekztech_itemserverioport_block.0.desc=I/O Port for interfacing with an Item Server
+
+# -------- Item Server: Crafting Components
+item.kekztech_crafting_item.16.name=Item Server Blade
+
+# -------- Item Proxy: Structure Blocks
+tile.kekztech_itemproxycable_block.name=Item Proxy Network Cable
+tile.kekztech_itemproxycable_block.0.desc=Connects Item Proxy Nodes
+tile.kekztech_itemproxysource_block.name=Item Proxy Network Source
+tile.kekztech_itemproxysource_block.0.desc=Point to an inventory to act as source for the item proxy network
+tile.kekztech_itemproxysource_block.1.desc=Insert an Integrated Circuit to set the network channel
+tile.kekztech_itemproxysource_block.2.desc=Only one source can use one channel on the same network
+tile.kekztech_itemproxyendpoint_block.name=Item Proxy Network Endpoint
+tile.kekztech_itemproxyendpoint_block.0.desc=Point the marked side to where you want to provide an inventory proxy to
+tile.kekztech_itemproxyendpoint_block.1.desc=Insert an Integrated Circuit to set the network channel
+
+# -------- Lapotronic Super Capacitor: Structure Blocks
+tile.kekztech_lapotronicenergyunit_block.0.name=Lapotronic Super Capacitor Casing
+tile.kekztech_lapotronicenergyunit_block.1.name=Lapotronic Capacitor (IV)
+tile.kekztech_lapotronicenergyunit_block.2.name=Lapotronic Capacitor (LuV)
+tile.kekztech_lapotronicenergyunit_block.3.name=Lapotronic Capacitor (ZPM)
+tile.kekztech_lapotronicenergyunit_block.4.name=Lapotronic Capacitor (UV)
+tile.kekztech_lapotronicenergyunit_block.5.name=Ultimate Capacitor (UHV)
+tile.kekztech_lapotronicenergyunit_block.desc=Part of the Lapotronic Super Capacitor
+
+# -------- Thaumium Reinforced Jar: Block
+tile.kekztech_thaumiumreinforcedjar_block.0.name=Thaumium Reinforced Jar
+tile.kekztech_thaumiumreinforcedjar_block.3.name=Thaumium Reinforced Void Jar
+
+# -------- Thaumium Reinforced Jar: Research
+# This is the name of the research
+tc.research_name.THAUMIUMREINFORCEDJAR=Thaumium Reinforced Jars
+# This is the subtext for the research note
+tc.research_text.THAUMIUMREINFORCEDJAR=Slightly better jars
+# Lore text for the research pages
+kekztech.research_page.THAUMIUMREINFORCEDJAR.0=You have heard your fellow Thaumaturges talk about the benefits of digitized Essentia Storage.<BR><BR>Storing enough Essentia for your advanced infusions has indeed been an issue for you too. However those jars are simply too pleasing to look at to even consider the idea of replacing them with some compact technological construct.<BR><BR>Thanks to this new discovery, you have managed to quadruple the capacity of your jars by improving them with a thick Thaumium lining. This should buy you some more time to come up with a better solution.
+kekztech.research_page.THAUMIUMREINFORCEDJAR.1=Compressing this much Essentia in such a tiny space causes some volatility. Picking up reinforced jars is probably a bad idea...<BR><BR>You imagine that you could get even more out of your jars if only you had some kind of material harder than even diamond or any of the other magical metal you have seen so far.
+
+# -------- Ichor Jar: Block
+tile.kekztech_ichorjar_block.0.name=Ichor Jar
+tile.kekztech_ichorjar_block.3.name=Ichor Void Jar
+
+# -------- Ichor Jar: Research
+tc.research_name.ICHORJAR=Ichor Jars
+tc.research_text.ICHORJAR=Much better jars
+kekztech.research_page.ICHORJAR.0=This is it!<BR><BR>By infusing a jar with just a single piece of Ichor you have created something to rival digitized Essentia storage without sacrificing any of the beauty of Warded Jars.<BR><BR>Ichor Jars can hold an astounding 4096 Essentia and fit nicely into your recently aquired set of Ichor based achievements.<BR><BR>You definitely don't want to disturb these jars. Luckily Ichor is resilient enough to make accidentially destroying one unlikely.
+
+# -------- Space Elevator: Block
+tile.kekztech_spaceelevator_block.0.name=Space Elevator Base
+tile.kekztech_spaceelevator_block.1.name=Space Elevator Coil Holder
+tile.kekztech_spaceelevator_block.desc=Part of the Space Elevator Base Station
+tile.kekztech_spaceelevatorcapacitor_block.name=Space Elevator Capacitor
+tile.kekztech_spaceelevatorcapacitor_block.desc=The see-through is good for your FPS!
+tile.kekztech_spaceelevatortether_block.name=Space Elevator Tether
