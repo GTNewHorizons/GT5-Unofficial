@@ -446,6 +446,20 @@ public class DreamCraftRecipeLoader implements Runnable {
                 ItemList.Cover_Screen.get(1),
                 new ItemStack(Blocks.stone_button, 16),
         }, Materials.Iridium.getMolten(2592), CustomItemList.Parametrizer_Hatch.get(1), 800, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                CustomItemList.eM_Computer_Casing.get(1),
+                ItemList.Circuit_Ultimatecrystalcomputer.get(1),
+                CustomItemList.DATApipe.get(6),
+                ItemList.Cover_Screen.get(1),
+                new ItemStack(Blocks.stone_button, 32),
+        }, Materials.Iridium.getMolten(2592), CustomItemList.ParametrizerX_Hatch.get(1), 800, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                CustomItemList.eM_Computer_Casing.get(1),
+                ItemList.Circuit_Biomainframe.get(1),
+                CustomItemList.DATApipe.get(8),
+                ItemList.Cover_Screen.get(2),
+                new ItemStack(Blocks.stone_button, 64),
+        }, Materials.Iridium.getMolten(2592), CustomItemList.ParametrizerTXT_Hatch.get(1), 800, 122880);
         //Uncertainty
         addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1),
@@ -454,6 +468,13 @@ public class DreamCraftRecipeLoader implements Runnable {
                 ItemList.Cover_Screen.get(1),
                 new ItemStack(Blocks.stone_button, 16),
         }, Materials.Iridium.getMolten(2592), CustomItemList.Uncertainty_Hatch.get(1), 1200, 122880);
+        addAssemblerRecipeWithCleanroom(new ItemStack[]{
+                CustomItemList.eM_Computer_Casing.get(1),
+                ItemList.Circuit_Biomainframe.get(1),
+                CustomItemList.DATApipe.get(32),
+                ItemList.Cover_Screen.get(1),
+                new ItemStack(Blocks.stone_button, 16),
+        }, Materials.Iridium.getMolten(2592), CustomItemList.UncertaintyX_Hatch.get(1), 1200, 122880);
 
         //Elemental Input
         addAssemblerRecipeWithCleanroom(new ItemStack[]{
