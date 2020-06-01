@@ -8,7 +8,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import items.ErrorItem;
 import items.MetaItem_CraftingComponent;
@@ -400,15 +399,11 @@ public class Recipes {
 				ThaumcraftApi.addInfusionCraftingRecipe("THAUMIUMREINFORCEDJAR", new ItemStack(Blocks.jarThaumiumReinforced, 1, 0),
 						5, aspects_jarthaumiumreinforced, ItemApi.getBlock("blockJar",  0), recipe_jarthaumiumreinforced));
 		// Thaumium Reinforced Void Jar
-		final ItemStack n1 = GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Obsidian, 1);
-		final ItemStack n2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1);
-		final ItemStack n3 = GT_OreDictUnificator.get(OrePrefixes.plate, Materials.EnderEye, 1);
-		final ItemStack n4 = ItemApi.getItem("itemNugget", 5);
 		final ItemStack[] recipe_voidjarupgrade = {
-				n1,
-				n2,
-				n3,
-				n4
+				GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Obsidian, 1),
+				GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1),
+				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.EnderEye, 1),
+				ItemApi.getItem("itemNugget", 5)
 		};
 		final AspectList aspects_voidjarupgrade = new AspectList()
 				.add(Aspect.VOID, 14)
