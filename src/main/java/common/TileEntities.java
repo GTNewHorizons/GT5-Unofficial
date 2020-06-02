@@ -30,7 +30,7 @@ public class TileEntities {
         fms = new GTMTE_FluidMultiStorage(13104, "multimachine.tf_fluidtank", "T.F.F.T");
         //is = new GTMTE_ItemServer(13105, "multimachine.itemserver", "Item Server");
         lsc = new GTMTE_LapotronicSuperCapacitor(13106, "multimachine.supercapacitor", "Lapotronic Supercapacitor");
-        //se = new GTMTE_SpaceElevator(13107, "multimachine.spaceelevator", "Space Elevator");
+        se = new GTMTE_SpaceElevator(13107, "multimachine.spaceelevator", "Space Elevator");
     }
 
 }
