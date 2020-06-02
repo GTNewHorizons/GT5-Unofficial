@@ -12,7 +12,7 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
 
     protected GT_GuiIcon icon;
     private int x0, y0;
-    private IGuiScreen gui;
+    protected IGuiScreen gui;
     private String[] tooltipText;
 
     private GT_GuiTooltip tooltip;
@@ -56,7 +56,7 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
             int x = xPosition;
             int y = yPosition;
             if(!this.field_146123_n) {
-                GL11.glColor4f(200F/255F, 210F/255F, 1, 1);
+            //    GL11.glColor4f(200F/255F, 210F/255F, 1, 1);
             }
             else
                 GL11.glColor4f(1, 1, 1, 1);
@@ -84,12 +84,16 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
             return GT_GuiIcon.BUTTON_DISABLED;
         if (this.equals(this.gui.getSelectedButton()))
             return mouseOver ? GT_GuiIcon.BUTTON_HIGHLIGHT_DOWN : GT_GuiIcon.BUTTON_DOWN;
-        else
-            return mouseOver ? GT_GuiIcon.BUTTON_HIGHLIGHT : GT_GuiIcon.BUTTON_NORMAL;
+
+        return mouseOver ? GT_GuiIcon.BUTTON_HIGHLIGHT : GT_GuiIcon.BUTTON_NORMAL;
     }
 
     public GT_GuiIcon getIcon() {
         return icon;
+    }
+    public GT_GuiIconButton setIcon(GT_GuiIcon icon) {
+        this.icon = icon;
+        return this;
     }
 
     public GT_GuiTooltip getTooltip() {

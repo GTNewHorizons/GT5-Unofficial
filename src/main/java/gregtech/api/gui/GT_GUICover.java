@@ -157,8 +157,10 @@ public abstract class GT_GUICover extends GuiScreen implements GT_IToolTipRender
     public void mouseClicked(int x, int y, int button) {
         for (GT_GuiIntegerTextBox tBox : textBoxes) {
             boolean hadFocus = tBox.isFocused();
-            tBox.mouseClicked(x,y,button);
-            if (tBox.isFocused() && button == 1) //rightclick -> lcear it
+            if (tBox.isEnabled() || hadFocus)
+                tBox.mouseClicked(x,y,button);
+
+            if (tBox.isFocused() && button == 1 && tBox.isEnabled()) //rightclick -> lcear it
                 tBox.setText("0");
             else if (hadFocus && !tBox.isFocused())
                 applyTextBox(tBox);
@@ -193,6 +195,9 @@ public abstract class GT_GUICover extends GuiScreen implements GT_IToolTipRender
                     return;
                 }
             }
+            if (textBoxes.size() > 0 )
+                setFocusedTextBox(textBoxes.get(0));
+            return;
         }
 
         if (focusedTextBox != null && focusedTextBox.textboxKeyTyped(c, key)){
@@ -239,7 +244,7 @@ public abstract class GT_GUICover extends GuiScreen implements GT_IToolTipRender
      */
     private void setFocusedTextBox(GT_GuiIntegerTextBox boxToFocus) {
         for (GT_GuiIntegerTextBox textBox : textBoxes) {
-            textBox.setFocused(textBox.equals(boxToFocus));
+            textBox.setFocused(textBox.equals(boxToFocus) && textBox.isEnabled());
         }
     }
     public void applyTextBox(GT_GuiIntegerTextBox box) {

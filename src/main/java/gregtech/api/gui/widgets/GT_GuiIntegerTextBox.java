@@ -10,6 +10,7 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
     private final int x0, y0;
     private final IGuiScreen gui;
     public final int id;
+    private boolean enabled;
 
     public GT_GuiIntegerTextBox(IGuiScreen gui, int id, int x, int y, int width, int height) {
         super(Minecraft.getMinecraft().fontRenderer, x, y, width, height);
@@ -18,6 +19,7 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
         x0 = x;
         y0 = y;
         this.gui = gui;
+        enabled = true;
         gui.addElement(this);
     }
 
@@ -46,5 +48,15 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
             return super.textboxKeyTyped(c, key);
         }
         return false;
+    }
+
+    @Override
+    public void setEnabled(boolean p_146184_1_) {
+        super.setEnabled(p_146184_1_);
+        enabled = p_146184_1_;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 }

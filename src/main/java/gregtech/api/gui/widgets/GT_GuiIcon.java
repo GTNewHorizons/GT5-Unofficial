@@ -18,6 +18,7 @@ public enum GT_GuiIcon {
     CROSS                   (0, 32*4,  32),
     WHITELIST               (0, 32*5,  32),
     BLACKLIST               (0, 32*6,  32),
+    PROGRESS                (0, 32*7,  32),
 
     EXPORT                  (0, 0,     32*2),
     IMPORT                  (0, 32,    32*2),

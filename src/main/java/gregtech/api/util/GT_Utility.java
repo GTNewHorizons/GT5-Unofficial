@@ -665,6 +665,64 @@ public class GT_Utility {
         return 0;
     }
 
+    /**
+     * Moves Stack from Inv-Side to Inv-Slot.
+     *
+     * @return the Amount of moved Items
+     */
+    public static byte moveFromSlotToSide(IInventory fromTile, Object toTile, int aGrabFrom, byte aPutTo, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce, boolean aDoCheckChests) {
+        if (fromTile == null || aGrabFrom < 0 || aMinTargetStackSize <= 0 || aMaxMoveAtOnce <= 0 || aMinTargetStackSize > aMaxTargetStackSize || aMinMoveAtOnce > aMaxMoveAtOnce)
+            return 0;
+
+        if (!listContainsItem(aFilter, fromTile.getStackInSlot(aGrabFrom), true, aInvertFilter) ||
+            !isAllowedToTakeFromSlot(fromTile, aGrabFrom, (byte) 6, fromTile.getStackInSlot(aGrabFrom)))
+            return 0;
+
+        if (toTile instanceof IInventory) {
+            int[] tPutSlots = null;
+            if (toTile instanceof ISidedInventory)
+                tPutSlots = ((ISidedInventory) toTile).getAccessibleSlotsFromSide(aPutTo);
+
+            if (tPutSlots == null) {
+                tPutSlots = new int[((IInventory) toTile).getSizeInventory()];
+                for (int i = 0; i < tPutSlots.length; i++) tPutSlots[i] = i;
+            }
+
+            byte tMovedItemCount = 0;
+            for (int tPutSlot : tPutSlots) {
+                if (isAllowedToPutIntoSlot((IInventory) toTile, tPutSlot, aPutTo, fromTile.getStackInSlot(aGrabFrom), aMaxTargetStackSize)) {
+                    tMovedItemCount += moveStackFromSlotAToSlotB(fromTile, (IInventory) toTile, aGrabFrom, tPutSlot, aMaxTargetStackSize, aMinTargetStackSize, (byte) (aMaxMoveAtOnce - tMovedItemCount), aMinMoveAtOnce);
+                    if (tMovedItemCount >= aMaxMoveAtOnce) {
+                        return tMovedItemCount;
+
+                    }
+                }
+            }
+            if (tMovedItemCount > 0) return tMovedItemCount;
+
+            if (aDoCheckChests && toTile instanceof TileEntityChest) {
+                TileEntityChest tTileEntity2 = (TileEntityChest) toTile;
+                if (tTileEntity2.adjacentChestChecked) {
+                    if (tTileEntity2.adjacentChestXNeg != null) {
+                        tMovedItemCount = moveFromSlotToSide(fromTile, tTileEntity2.adjacentChestXNeg, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, false);
+                    } else if (tTileEntity2.adjacentChestZNeg != null) {
+                        tMovedItemCount = moveFromSlotToSide(fromTile, tTileEntity2.adjacentChestZNeg, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, false);
+                    } else if (tTileEntity2.adjacentChestXPos != null) {
+                        tMovedItemCount = moveFromSlotToSide(fromTile, tTileEntity2.adjacentChestXPos, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, false);
+                    } else if (tTileEntity2.adjacentChestZPos != null) {
+                        tMovedItemCount = moveFromSlotToSide(fromTile, tTileEntity2.adjacentChestZPos, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, false);
+                    }
+                    if (tMovedItemCount > 0) return tMovedItemCount;
+                }
+            }
+        }
+        return moveStackIntoPipe(fromTile, toTile, new int[]{aGrabFrom}, (byte) 6, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, aDoCheckChests);
+    }
+
+    public static byte moveFromSlotToSide(IInventory fromTile, Object toTile, int aGrabFrom, byte aPutTo, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce) {
+        return moveFromSlotToSide(fromTile, toTile, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, true);
+    }
+
     public static boolean listContainsItem(Collection<ItemStack> aList, ItemStack aStack, boolean aTIfListEmpty, boolean aInvertFilter) {
         if (aStack == null || aStack.stackSize < 1) return false;
         if (aList == null) return aTIfListEmpty;

@@ -1,14 +1,20 @@
 package gregtech.common.covers;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.GT_GUICover;
+import gregtech.api.gui.widgets.GT_GuiIcon;
+import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
+import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItem;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -140,5 +146,110 @@ public class GT_Cover_EUMeter
 
     public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 20;
+    }
+
+    /**
+     * GUI Stuff
+     */
+
+    @Override
+    public boolean hasCoverGUI() {
+        return true;
+    }
+
+    @Override
+    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity)  {
+        return new GUI(aSide, aCoverID, coverData, aTileEntity);
+    }
+
+    private class GUI extends GT_GUICover {
+        private final byte side;
+        private final int coverID;
+        private int coverVariable;
+
+        private final static int startX = 10;
+        private final static int startY = 25;
+        private final static int spaceX = 18;
+        private final static int spaceY = 18;
+
+        public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
+            this.side = aSide;
+            this.coverID = aCoverID;
+            this.coverVariable = aCoverVariable;
+
+            GuiButton b;
+            b = new GT_GuiIconCheckButton(this, 0, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.CHECKMARK, null)
+                    .setTooltipText(trans("031", "Normal Universal Storage"));
+            b = new GT_GuiIconCheckButton(this, 1, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.CHECKMARK, null)
+                    .setTooltipText(trans("033", "Normal Electricity Storage"));
+            b = new GT_GuiIconCheckButton(this, 2, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.CHECKMARK, null)
+                    .setTooltipText(trans("035", "Normal Steam Storage"));
+            b = new GT_GuiIconCheckButton(this, 3, startX + spaceX*4, startY+spaceY*1, GT_GuiIcon.CHECKMARK, null)
+                    .setTooltipText(trans("037", "Normal Average Electric Input"));
+            b = new GT_GuiIconCheckButton(this, 4, startX + spaceX*4, startY+spaceY*2, GT_GuiIcon.CHECKMARK, null)
+                    .setTooltipText(trans("039", "Normal Average Electric Output"));
+            b = new GT_GuiIconCheckButton(this, 5, startX + spaceX*4, startY+spaceY*0, GT_GuiIcon.CHECKMARK, null)
+                    .setTooltipText(trans("041", "Normal Electricity Storage(Including Batteries)"));
+            b = new GT_GuiIconCheckButton(this, 6, startX + spaceX*0, startY+spaceY*3+4, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF);
+        }
+
+        @Override
+        public void drawExtras(int mouseX, int mouseY, float parTicks) {
+            super.drawExtras(mouseX, mouseY, parTicks);
+            String s2;
+            if ((coverVariable & 0x1) > 0)
+                s2 = trans("INVERTED","Inverted");
+            else
+                s2 = trans("NORMAL","Normal");
+            this.fontRendererObj.drawString(s2,  startX + spaceX*1, 8+startY+spaceY*3, 0xFF555555);
+
+            this.fontRendererObj.drawString("Universal",
+                    startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
+            this.fontRendererObj.drawString("Int. EU",
+                    startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
+            this.fontRendererObj.drawString("Steam",
+                    startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
+            this.fontRendererObj.drawString("Avg. Input",
+                    startX + spaceX*5, 4+startY+spaceY*1, 0xFF555555);
+            this.fontRendererObj.drawString("Avg. Output",
+                    startX + spaceX*5, 4+startY+spaceY*2, 0xFF555555);
+            this.fontRendererObj.drawString("EU stored",
+                    startX + spaceX*5, 4+startY+spaceY*0, 0xFF555555);
+        }
+
+        @Override
+        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
+            updateButtons();
+        }
+
+        public void buttonClicked(GuiButton btn){
+            if (btn.id == 6 || !isEnabled(btn.id)){
+                coverVariable = getNewCoverVariable(btn.id, ((GT_GuiIconCheckButton) btn).isChecked());
+                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
+            }
+            updateButtons();
+        }
+
+        private void updateButtons(){
+            for (Object o : buttonList)
+                ((GT_GuiIconCheckButton) o).setChecked(isEnabled(((GT_GuiIconCheckButton) o).id));
+        }
+
+        private int getNewCoverVariable(int id, boolean checked) {
+            if (id == 6) {
+                if (checked)
+                    return coverVariable & ~0x1;
+                else
+                    return coverVariable | 0x1;
+            }
+            return (coverVariable & 0x1) | (id << 1) ;
+        }
+
+        private boolean isEnabled(int id) {
+            if (id == 6)
+                return (coverVariable & 0x1) > 0;
+            return (coverVariable >> 1) == id;
+        }
     }
 }
