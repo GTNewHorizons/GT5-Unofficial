@@ -54,7 +54,7 @@ public class Recipes {
 				'V', OrePrefixes.rotor.get(Materials.VibrantAlloy),
 				'C', OrePrefixes.circuit.get(Materials.Data)
 		};
-		GT_ModHandler.addCraftingRecipe(KekzCore.fms.getStackForm(1), tfft_recipe);
+		GT_ModHandler.addCraftingRecipe(TileEntities.fms.getStackForm(1), tfft_recipe);
 		
 		// Blocks
 		final ItemStack[] tfftcasing = {
@@ -155,7 +155,7 @@ public class Recipes {
 				'B', GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Gold, 1),
 				'L', GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1)
 		};		
-		GT_ModHandler.addCraftingRecipe(KekzCore.sofc1.getStackForm(1), mk1_recipe);
+		GT_ModHandler.addCraftingRecipe(TileEntities.sofc1.getStackForm(1), mk1_recipe);
 		final Object[] mk2_recipe = {
 				"CCC", "PHP", "FBL",
 				'C', OrePrefixes.circuit.get(Materials.Master),
@@ -165,7 +165,7 @@ public class Recipes {
 				'B', Util.getStackofAmountFromOreDict("wireGt04SuperconductorEV", 1),
 				'L', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1)
 		};
-		GT_ModHandler.addCraftingRecipe(KekzCore.sofc2.getStackForm(1), mk2_recipe);
+		GT_ModHandler.addCraftingRecipe(TileEntities.sofc2.getStackForm(1), mk2_recipe);
 		
 		// Blocks
 		final ItemStack[] yszUnit = {
@@ -326,7 +326,7 @@ public class Recipes {
 				'P', GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 1),
 				'Z', GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1)
 		};
-		GT_ModHandler.addCraftingRecipe(KekzCore.is.getStackForm(1), is_recipe);
+		GT_ModHandler.addCraftingRecipe(TileEntities.is.getStackForm(1), is_recipe);
 		
 		// Blocks
 		final Object[] is_rack_recipe = {
@@ -456,7 +456,7 @@ public class Recipes {
 				'C', OrePrefixes.circuit.get(Materials.Master),
 				'B', new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0),
 		};
-		GT_ModHandler.addCraftingRecipe(KekzCore.lsc.getStackForm(1), lsc_recipe);
+		GT_ModHandler.addCraftingRecipe(TileEntities.lsc.getStackForm(1), lsc_recipe);
 
 		// Blocks
 		final Object[] lcBase_recipe = {
@@ -595,6 +595,19 @@ public class Recipes {
 				ItemList.ZPM2.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
 				1200, 32);
+
+		// For the people that already made the Really Ultimate Battery but want to use the LSC
+		GT_Values.RA.addAssemblerRecipe(
+				new ItemStack[] {
+						ItemList.ZPM3.get(1),
+						GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 4),
+						GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
+						GT_Utility.getIntegratedCircuit(6)
+				},
+				null,
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
+				1200000, 12000
+		);
 	}
 
 	private static void registerRecipes_SpaceElevator() {
@@ -605,7 +618,7 @@ public class Recipes {
 				'C', OrePrefixes.cableGt16.get(Materials.Aluminium),
 				'P', OrePrefixes.circuit.get(Materials.Master)
 		};
-		GT_ModHandler.addCraftingRecipe(KekzCore.se.getStackForm(1), se_recipe);
+		GT_ModHandler.addCraftingRecipe(TileEntities.se.getStackForm(1), se_recipe);
 		// Blocks
 		final Object[] seBase_recipe = {
 				"DRD", "RCR", "DRD",
