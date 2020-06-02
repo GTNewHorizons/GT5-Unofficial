@@ -339,8 +339,8 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 	}
 
 	@Override
-	public boolean canInsertItem(final int p_102007_1_, final ItemStack p_102007_2_, final int p_102007_3_) {
-		return p_102007_1_ >= 0 && p_102007_1_ <= 24;
+	public boolean canInsertItem(final int aSlot, final ItemStack p_102007_2_, final int p_102007_3_) {
+		return aSlot >= 0 && aSlot <= 24;
 	}
 
 	@Override
