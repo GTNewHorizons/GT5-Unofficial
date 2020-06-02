@@ -16,7 +16,6 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -181,13 +180,13 @@ public class GT_Pollution {
 			chunkData.get(actualPos)[GTPOLLUTION] = tPollution;
 		}
 	}
-	
+
 	private static void damageBlock(World world, int x, int y, int z, boolean sourRain){
 		if (world.isRemote)	return;
 		Block tBlock = world.getBlock(x, y, z);
 		int tMeta = world.getBlockMetadata(x, y, z);
 		if (tBlock == Blocks.air || tBlock == Blocks.stone || tBlock == Blocks.sand|| tBlock == Blocks.deadbush)return;
-		
+
 			if (tBlock == Blocks.leaves || tBlock == Blocks.leaves2 || tBlock.getMaterial() == Material.leaves)
 				world.setBlockToAir(x, y, z);
 			if (tBlock == Blocks.reeds) {
@@ -200,12 +199,12 @@ public class GT_Pollution {
 				tBlock.dropBlockAsItem(world, x, y, z, tMeta, 0);
 				world.setBlockToAir(x, y, z);
 			}
-			if (tBlock == Blocks.waterlily || tBlock == Blocks.wheat || tBlock == Blocks.cactus || 
+			if (tBlock == Blocks.waterlily || tBlock == Blocks.wheat || tBlock == Blocks.cactus ||
 				tBlock.getMaterial() == Material.cactus || tBlock == Blocks.melon_block || tBlock == Blocks.melon_stem) {
 				tBlock.dropBlockAsItem(world, x, y, z, tMeta, 0);
 				world.setBlockToAir(x, y, z);
 			}
-			if (tBlock == Blocks.red_flower || tBlock == Blocks.yellow_flower || tBlock == Blocks.carrots || 
+			if (tBlock == Blocks.red_flower || tBlock == Blocks.yellow_flower || tBlock == Blocks.carrots ||
 				tBlock == Blocks.potatoes || tBlock == Blocks.pumpkin || tBlock == Blocks.pumpkin_stem) {
 				tBlock.dropBlockAsItem(world, x, y, z, tMeta, 0);
 				world.setBlockToAir(x, y, z);
@@ -219,12 +218,12 @@ public class GT_Pollution {
 			if (tBlock == Blocks.mossy_cobblestone)
 				world.setBlock(x, y, z, Blocks.cobblestone);
 			if (tBlock == Blocks.grass || tBlock.getMaterial() == Material.grass )
-				world.setBlock(x, y, z, Blocks.dirt);	
+				world.setBlock(x, y, z, Blocks.dirt);
 			if(tBlock == Blocks.farmland || tBlock == Blocks.dirt){
-				world.setBlock(x, y, z, Blocks.sand);					
+				world.setBlock(x, y, z, Blocks.sand);
 			}
-			
-			if(sourRain && world.isRaining() && (tBlock == Blocks.stone || tBlock == Blocks.gravel || tBlock == Blocks.cobblestone) && 
+
+			if(sourRain && world.isRaining() && (tBlock == Blocks.stone || tBlock == Blocks.gravel || tBlock == Blocks.cobblestone) &&
 				world.getBlock(x, y+1, z) == Blocks.air && world.canBlockSeeTheSky(x, y, z)){
 				if(tBlock == Blocks.stone){world.setBlock(x, y, z, Blocks.cobblestone);	}
 				else if(tBlock == Blocks.cobblestone){world.setBlock(x, y, z, Blocks.gravel);	}
@@ -257,7 +256,8 @@ public class GT_Pollution {
 	}
 
 	public static int getPollution(Chunk ch){
-		if(!GT_Mod.gregtechproxy.mPollution)return 0;
+		if(!GT_Mod.gregtechproxy.mPollution)
+			return 0;
 		HashMap<ChunkCoordIntPair,int[]> dataMap=dimensionWiseChunkData.get(ch.worldObj.provider.dimensionId);
 		if(dataMap==null || dataMap.get(ch.getChunkCoordIntPair())==null) return 0;
 		return dataMap.get(ch.getChunkCoordIntPair())[GTPOLLUTION];
@@ -272,88 +272,37 @@ public class GT_Pollution {
 		return dataMap.get(aCh)[GTPOLLUTION];
 	}
 
-	public static int getLocalPollutionForRendering(ChunkCoordIntPair aCh, int aDim, double posX, double posZ) {
-		final int SOUTHEAST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos + 1,aCh.chunkZPos + 1), aDim);
-		final int SOUTH = getPollution(new ChunkCoordIntPair(aCh.chunkXPos,aCh.chunkZPos + 1), aDim);
-		final int SOUTHWEST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos - 1,aCh.chunkZPos + 1), aDim);
-		final int WEST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos - 1,aCh.chunkZPos), aDim);
-		final int NORTHWEST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos - 1,aCh.chunkZPos - 1), aDim);
-		final int NORTH = getPollution(new ChunkCoordIntPair(aCh.chunkXPos,aCh.chunkZPos - 1), aDim);
-		final int NORTHEAST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos + 1,aCh.chunkZPos - 1), aDim);
-		final int EAST = getPollution(new ChunkCoordIntPair(aCh.chunkXPos + 1,aCh.chunkZPos), aDim);
-		final int MIDDLE = getPollution(aCh, aDim);
+	private final static int SIZE_IN_BLOCKS = 8;
+	private final static int CUTOFF = 25000;
+	private final static float DIVIDER = 0.00346020761F;
 
-		int cX = (int) Math.abs(posX % 15);
-		int cZ = (int) Math.abs(posZ % 15);
+	public static int getPlayerPollution(double posX, double posZ, int aDim) {
+		final int startX = (int) (posX - SIZE_IN_BLOCKS);
+		final int endX = (int) (posX + SIZE_IN_BLOCKS);
+		final int startZ = (int) (posZ - SIZE_IN_BLOCKS);
+		final int endZ = (int) (posZ + SIZE_IN_BLOCKS);
+		float pollution = 0f;
 
-		//We are using big ints here cause longs would overflow at a point!
-		BigInteger S = new BigInteger(""+ (SOUTH * (15 - cZ)));
-		BigInteger E = new BigInteger(""+ (EAST * (15 - cX)));
-		BigInteger N = new BigInteger(""+ (NORTH * cZ));
-		BigInteger W = new BigInteger(""+ (WEST * cX));
-		BigInteger M = new BigInteger(""+ (MIDDLE * 15 - Math.abs(cX - 7 + cZ - 7)));
-		BigInteger SE = new BigInteger(""+ (SOUTHEAST * (15 - cX + 15 - cZ) / 2));
-		BigInteger NE = new BigInteger(""+ (NORTHEAST * (15 - cX + cZ) / 2));
-		BigInteger NW = new BigInteger(""+ (NORTHWEST * (cX + cZ) / 2));
-		BigInteger SW = new BigInteger(""+ (SOUTHWEST * (cX + 15 - cZ) / 2));
-		return Integer.parseInt(
-				S
-				.add(E)
-				.add(N)
-				.add(W)
-				.add(M)
-				.add(SE)
-				.add(NE)
-				.add(NW)
-				.add(SW)
-				.divide(new BigInteger("9"))
-				.divide(new BigInteger("15"))
-				.toString());
-	}
+		//one sided cache, map would be slower, direct would be slower as well
+		ChunkCoordIntPair last = null;
+		float lastPol = 0f;
 
-	public static int getPollutionPercentage(ChunkCoordIntPair chunkCoordIntPair, double posX, double posZ, int aDim, double coefficient, int size) {
-		byte cX = (byte) Math.abs(posX % 16);
-		byte cZ = (byte) Math.abs(posZ % 16);
-
-		double pollution = 0.0D;
-		for (int xChunk = -size; xChunk <= size; xChunk++) {
-			for (int zChunk = -size; zChunk <= size; zChunk++) {
-				int newX = chunkCoordIntPair.chunkXPos + xChunk;
-				int newZ = chunkCoordIntPair.chunkZPos + zChunk;
-				pollution += (coefficient / getDistanceToChunk(cX, cZ, xChunk, zChunk) * getPollution(new ChunkCoordIntPair(newX,newZ), aDim));
-			}
-		}
-		return (int) Math.ceil(pollution / Math.pow(size * 2 + 1, 2));
-	}
-
-	public static double getDistanceToChunk(byte x, byte z, int xOffset, int zOffset) {
-		//Avoid division by zero
-		//First quadrant + middle
-		final int clamp = 4;
-		final int exponent = 2;
-		final double xNegative = Math.pow((15 - x + Math.abs(xOffset) * 16 - 7.5D), exponent);
-		final double zPositive = Math.pow((z + Math.abs(zOffset) * 16 - 7.5D), exponent);
-		if(xOffset >= 0 && zOffset <= 0) {
-			return Math.max(Math.sqrt(xNegative + zPositive), clamp);
-		}
-		//Second quadrant
-		else {
-			final double xPositive = Math.pow((x + Math.abs(xOffset) * 16 - 7.5), exponent);
-			if(xOffset < 0 && zOffset <= 0) {
-				return Math.max(Math.sqrt(xPositive + zPositive), clamp);
-			}
-			//Third quadrant
-			else {
-				final double zNegative = Math.pow((15 - z + Math.abs(zOffset) * 16 - 7.5), exponent);
-				if(xOffset < 0) {
-					return Math.max(Math.sqrt(xPositive + zNegative), clamp);
+		for (int xPos = startX; xPos <= endX; xPos++) {
+			for (int zPos = startZ; zPos <= endZ; zPos++) {
+				ChunkCoordIntPair curr = new ChunkCoordIntPair((xPos >> 4), (zPos >> 4));
+				if (!curr.equals(last)) {
+					last = curr;
+					lastPol = (getPollution(curr, aDim) * DIVIDER);
 				}
-				//Fourth quadrant
-				else {
-					return Math.max(Math.sqrt(xNegative + zNegative), clamp);
-				}
+				pollution += lastPol;
 			}
 		}
+		//fastCeil INLINE
+		int xi = (int) pollution;
+		xi = pollution > xi ? xi + 1 : xi;
+
+		//apply cutoff
+		return xi - CUTOFF > 0f ? xi : 0;
 	}
 
 	//Add compatibility with old code

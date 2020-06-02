@@ -25,11 +25,11 @@ public class GT_PollutionRenderer {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void renderGTPollutionFog(EntityViewRenderEvent.RenderFogEvent event) {
-        if (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
+        if (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode || pollutionLastTick <= 0)
             return;
 
         float sourRain = getCurrentPollutionRenderRatio() > 0.75f ? getCurrentSourRainRenderRatio() : getCurrentSourRainRenderRatio() / 5f;
-        if (sourRain > 0D) {
+        if (sourRain > 0.025F) { //0.025F instead of 0F bcs. of Double Horzion Bug
             GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
             GL11.glFogf(GL11.GL_FOG_DENSITY, sourRain);
         }
@@ -68,7 +68,7 @@ public class GT_PollutionRenderer {
         return Math.min(1D, Math.max(player/limit, 0D));
     }
 
-    private static short[] curveColorArray(short[] originalColorsSplit, short[] newColorsSplit){
+    private static short[] curveColorArray(short[] originalColorsSplit, short[] newColorsSplit) {
         double y = getCurrentPollutionRenderRatio();
         return new short[] {
                 (short) ((1D-y) * (double) originalColorsSplit[0] + y * (double) newColorsSplit[0]),
@@ -77,7 +77,7 @@ public class GT_PollutionRenderer {
         };
     }
 
-    private static float[] curveColorArray(float[] originalColorsSplit, float[] newColorsSplit){
+    private static float[] curveColorArray(float[] originalColorsSplit, float[] newColorsSplit) {
         double y = getCurrentPollutionRenderRatio();
         return new float[] {
                 (float) ((1D-y) * (double) originalColorsSplit[0] + y * (double) newColorsSplit[0]),
@@ -124,32 +124,59 @@ public class GT_PollutionRenderer {
         event.newColor = curveIntegerColor(event.originalColor,0xCD853F);
     }
 
-    private static int pollutionLastTick = 0;
-
+    public static int pollutionLastTick = 0;
+    private final static int MIN_RENDER_UPDATE_SIZE = 25;
+    private static short frame;
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onRenderTick(TickEvent.RenderTickEvent event){
+    public void onRenderTick(TickEvent.RenderTickEvent event) {
+        ++frame;
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null)
             return;
         EntityClientPlayerMP player = mc.thePlayer;
         if (player == null || player.capabilities == null || player.capabilities.isCreativeMode)
             return;
+
         if(pollutionLastTick != GT_Pollution.mPlayerPollution) {
-            if (pollutionLastTick < GT_Pollution.mPlayerPollution)
-                pollutionLastTick += GT_Pollution.mPlayerPollution / (Math.max(mc.gameSettings.limitFramerate, 60D) * 4D);
+            int frameRateLimit = Math.max(mc.gameSettings.limitFramerate, 60);
+            handlePollutionSmoothing(frameRateLimit);
+            handleReRendering(frameRateLimit, mc.gameSettings.renderDistanceChunks, player);
+        }
+    }
+
+    private static void handleReRendering(int frameRateLimit, int renderDistanceChunks, EntityClientPlayerMP player) {
+        if ((frame % frameRateLimit) != 0) //should fix chunk breakages
+            return;
+
+        int x = (int) player.posX, y = (int) player.posY, z = (int) player.posZ;
+        int renderDistanceBlocks = pollutionLastTick > GT_Mod.gregtechproxy.mPollutionSmogLimit ?
+                MIN_RENDER_UPDATE_SIZE : (renderDistanceChunks + 2) * 16;
+        player.worldObj.markBlockRangeForRenderUpdate(x - renderDistanceBlocks, y - MIN_RENDER_UPDATE_SIZE, z - renderDistanceBlocks,
+                x + renderDistanceBlocks, y + MIN_RENDER_UPDATE_SIZE, z + renderDistanceBlocks);
+    }
+
+    private static int approxZero;
+    private static void handlePollutionSmoothing(int frameRateLimit) {
+        int approx = GT_Pollution.mPlayerPollution / (frameRateLimit *4);
+        if (approx == 0 && approxZero == 0)
+            approxZero = pollutionLastTick / (frameRateLimit *4);
+        if (approx == 0)
+            approx = approxZero;
+        if (pollutionLastTick < GT_Pollution.mPlayerPollution) {
+            if (GT_Pollution.mPlayerPollution - pollutionLastTick <= approx)
+                pollutionLastTick = GT_Pollution.mPlayerPollution;
             else
-                pollutionLastTick -= GT_Pollution.mPlayerPollution / (Math.max(mc.gameSettings.limitFramerate, 60D) * 4D);
-
-            double x = player.posX,
-                   z = player.posZ;
-
-            int renderDistanceBlocks = pollutionLastTick > GT_Mod.gregtechproxy.mPollutionSmogLimit ?
-                    25 :
-                    (mc.gameSettings.renderDistanceChunks + 2) * 16;
-
-            //May be a bit crude, but should do the job on *every* height.
-            player.worldObj.markBlockRangeForRenderUpdate((int) (x - renderDistanceBlocks), 0, (int) (z - renderDistanceBlocks),
-                    (int) (x + renderDistanceBlocks), 256, (int) (z + renderDistanceBlocks));
+                pollutionLastTick += approx;
+        } else {
+            if (pollutionLastTick - GT_Pollution.mPlayerPollution <= approx)
+                pollutionLastTick = GT_Pollution.mPlayerPollution;
+            else
+                pollutionLastTick -= approx;
+            if (pollutionLastTick < 0)
+                pollutionLastTick = 0;
+        }
+        if (pollutionLastTick == 0) {
+            approxZero = 0;
         }
     }
 }
