@@ -55,6 +55,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.GregtechMTE_ChemicalPlant;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechMiniRaFusion;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 import net.minecraft.launchwrapper.Launch;
@@ -65,12 +66,9 @@ import net.minecraft.util.IIcon;
 public class GTplusplus implements ActionListener {
 
 	public static enum INIT_PHASE {
-		SUPER(null),
-		PRE_INIT(SUPER),
-		INIT(PRE_INIT),
-		POST_INIT(INIT),
-		SERVER_START(POST_INIT),
-		STARTED(SERVER_START);		
+		SUPER(null), PRE_INIT(SUPER), INIT(PRE_INIT), POST_INIT(
+				INIT
+		), SERVER_START(POST_INIT), STARTED(SERVER_START);
 		protected boolean mIsPhaseActive = false;
 		private final INIT_PHASE mPrev;
 
@@ -78,7 +76,7 @@ public class GTplusplus implements ActionListener {
 			mPrev = aPreviousPhase;
 		}
 
-		public synchronized final boolean isPhaseActive() {			
+		public synchronized final boolean isPhaseActive() {
 			return mIsPhaseActive;
 		}
 		public synchronized final void setPhaseActive(boolean aIsPhaseActive) {
@@ -94,17 +92,17 @@ public class GTplusplus implements ActionListener {
 
 	public static INIT_PHASE CURRENT_LOAD_PHASE = INIT_PHASE.SUPER;
 
-	//Mod Instance
+	// Mod Instance
 	@Mod.Instance(CORE.MODID)
 	public static GTplusplus instance;
 
-	//Material Loader
+	// Material Loader
 	public static GT_Material_Loader mGregMatLoader;
 
-	//GT_Proxy instance
+	// GT_Proxy instance
 	protected static Meta_GT_Proxy mGregProxy;
 
-	//GT++ Proxy Instances
+	// GT++ Proxy Instances
 	@SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.proxy.ServerProxy")
 	public static CommonProxy proxy;
 
@@ -113,14 +111,32 @@ public class GTplusplus implements ActionListener {
 	public static void loadTextures() {
 		Logger.INFO("Loading some textures on the client.");
 		// Tools
-		Logger.WARNING("Processing texture: " + TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
-		Logger.WARNING("Processing texture: " + TexturesGtTools.ANGLE_GRINDER.getTextureFile().getResourcePath());
-		Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_SNIPS.getTextureFile().getResourcePath());
-		Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_LIGHTER.getTextureFile().getResourcePath());
-		Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_BUTCHER_KNIFE.getTextureFile().getResourcePath());
+		Logger.WARNING(
+				"Processing texture: "
+						+ TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath()
+		);
+		Logger.WARNING(
+				"Processing texture: "
+						+ TexturesGtTools.ANGLE_GRINDER.getTextureFile().getResourcePath()
+		);
+		Logger.WARNING(
+				"Processing texture: "
+						+ TexturesGtTools.ELECTRIC_SNIPS.getTextureFile().getResourcePath()
+		);
+		Logger.WARNING(
+				"Processing texture: "
+						+ TexturesGtTools.ELECTRIC_LIGHTER.getTextureFile().getResourcePath()
+		);
+		Logger.WARNING(
+				"Processing texture: "
+						+ TexturesGtTools.ELECTRIC_BUTCHER_KNIFE.getTextureFile().getResourcePath()
+		);
 
 		// Blocks
-		Logger.WARNING("Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
+		Logger.WARNING(
+				"Processing texture: "
+						+ TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath()
+		);
 	}
 
 	public GTplusplus() {
@@ -132,35 +148,45 @@ public class GTplusplus implements ActionListener {
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
 		INIT_PHASE.PRE_INIT.setPhaseActive(true);
-		Logger.INFO("Loading " + CORE.name + " "+CORE.VERSION+" on Gregtech "+Utils.getGregtechVersionAsString());
-		//Load all class objects within the plugin package.
+		Logger.INFO(
+				"Loading " + CORE.name + " " + CORE.VERSION + " on Gregtech "
+						+ Utils.getGregtechVersionAsString()
+		);
+		// Load all class objects within the plugin package.
 		Core_Manager.veryEarlyInit();
 		PacketHandler.init();
 
-		if(!Utils.isServer()){
+		if (!Utils.isServer()) {
 			enableCustomCapes = true;
 		}
 
-		//Give this a go mate.
-		//initAnalytics();
+		// Give this a go mate.
+		// initAnalytics();
 		setupMaterialBlacklist();
-		//setupMaterialWhitelist();
+		// setupMaterialWhitelist();
 
-		//HTTP Requests
+		// HTTP Requests
 		if (CORE.ConfigSwitches.enableUpdateChecker) {
-			CORE.MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
+			CORE.MASTER_VERSION = NetworkUtils.getContentFromURL(
+					"https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt"
+			).toLowerCase();
 			CORE.USER_COUNTRY = GeoUtils.determineUsersCountry();
 		}
 
 		// Handle GT++ Config
-		ConfigHandler.handleConfigFile(event);		
+		ConfigHandler.handleConfigFile(event);
 
-		//Check for Dev
-		CORE.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-		if (enableUpdateChecker){
-			Logger.INFO("Latest is " + CORE.MASTER_VERSION + ". Updated? " + Utils.isModUpToDate());
+		// Check for Dev
+		CORE.DEVENV = (Boolean) Launch.blackboard.get(
+				"fml.deobfuscatedEnvironment"
+		);
+		if (enableUpdateChecker) {
+			Logger.INFO(
+					"Latest is " + CORE.MASTER_VERSION + ". Updated? "
+							+ Utils.isModUpToDate()
+			);
 		}
-		//Utils.LOG_INFO("User's Country: " + CORE.USER_COUNTRY);
+		// Utils.LOG_INFO("User's Country: " + CORE.USER_COUNTRY);
 
 		Utils.registerEvent(new LoginEventHandler());
 		Utils.registerEvent(new MissingMappingsEvent());
@@ -182,7 +208,7 @@ public class GTplusplus implements ActionListener {
 		Meta_GT_Proxy.init();
 		Core_Manager.init();
 
-		//Used by foreign players to generate .lang files for translation.
+		// Used by foreign players to generate .lang files for translation.
 		if (CORE.ConfigSwitches.dumpItemAndBlockData) {
 			LocaleUtils.generateFakeLocaleFile();
 		}
@@ -198,21 +224,32 @@ public class GTplusplus implements ActionListener {
 		BookHandler.runLater();
 		Meta_GT_Proxy.postInit();
 		Core_Manager.postInit();
-		//SprinklerHandler.registerModFerts();
+		// SprinklerHandler.registerModFerts();
 
 		ItemGiantEgg.postInit(ModItems.itemBigEgg);
 		BlockEventHandler.init();
-        GTPP_Recipe.reInit();
+		GTPP_Recipe.reInit();
 
-		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		Logger.INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
-				+ RegistrationHandler.recipesFailed + " |");
-		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		Logger.INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
+		Logger.INFO(
+				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+		);
+		Logger.INFO(
+				"| Recipes succesfully Loaded: "
+						+ RegistrationHandler.recipesSuccess + " | Failed: "
+						+ RegistrationHandler.recipesFailed + " |"
+		);
+		Logger.INFO(
+				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+		);
+		Logger.INFO(
+				"Finally, we are finished. Have some cripsy bacon as a reward."
+		);
 	}
 
 	@EventHandler
-	public synchronized void serverStarting(final FMLServerStartingEvent event) {
+	public synchronized void serverStarting(
+			final FMLServerStartingEvent event
+	) {
 		INIT_PHASE.SERVER_START.setPhaseActive(true);
 		event.registerServerCommand(new CommandMath());
 		event.registerServerCommand(new CommandEnableDebugWhileRunning());
@@ -228,7 +265,9 @@ public class GTplusplus implements ActionListener {
 	}
 
 	@Mod.EventHandler
-	public synchronized void serverStopping(final FMLServerStoppingEvent event) {
+	public synchronized void serverStopping(
+			final FMLServerStoppingEvent event
+	) {
 		Core_Manager.serverStop();
 		if (GregtechBufferThread.mBufferThreadAllocation.size() > 0) {
 			for (GregtechBufferThread i : GregtechBufferThread.mBufferThreadAllocation.values()) {
@@ -244,11 +283,16 @@ public class GTplusplus implements ActionListener {
 
 	}
 
-
 	/**
-	 * This {@link EventHandler} is called after the {@link FMLPostInitializationEvent} stages of all loaded mods executes successfully.
-	 * {@link #onLoadComplete(FMLLoadCompleteEvent)} exists to inject recipe generation after Gregtech and all other mods are entirely loaded and initialized.
-	 * @param event - The {@link EventHandler} object passed through from FML to {@link #GTplusplus()}'s {@link #instance}.
+	 * This {@link EventHandler} is called after the
+	 * {@link FMLPostInitializationEvent} stages of all loaded mods executes
+	 * successfully. {@link #onLoadComplete(FMLLoadCompleteEvent)} exists to
+	 * inject recipe generation after Gregtech and all other mods are entirely
+	 * loaded and initialized.
+	 * 
+	 * @param event
+	 *            - The {@link EventHandler} object passed through from FML to
+	 *            {@link #GTplusplus()}'s {@link #instance}.
 	 */
 	@Mod.EventHandler
 	public void onLoadComplete(FMLLoadCompleteEvent event) {
@@ -259,17 +303,19 @@ public class GTplusplus implements ActionListener {
 		Logger.INFO("Passed verification checks.");
 	}
 
-    @Mod.EventHandler
-    public void onIDChangingEvent(FMLModIdMappingEvent aEvent) {
-        GTPP_Recipe.reInit();
-    }
+	@Mod.EventHandler
+	public void onIDChangingEvent(FMLModIdMappingEvent aEvent) {
+		GTPP_Recipe.reInit();
+	}
 
 	public static void tryPatchTurbineTextures() {
 		if (enableAnimatedTurbines) {
 			BlockIcons h = Textures.BlockIcons.GAS_TURBINE_SIDE_ACTIVE;
 			BlockIcons h2 = Textures.BlockIcons.STEAM_TURBINE_SIDE_ACTIVE;
-			try {		
-				Logger.INFO("Trying to patch GT textures to make Turbines animated.");
+			try {
+				Logger.INFO(
+						"Trying to patch GT textures to make Turbines animated."
+				);
 				IIcon aIcon = TexturesGtBlock.Overlay_Machine_Turbine_Active.getIcon();
 				if (ReflectionUtils.setField(h, "mIcon", aIcon)) {
 					Logger.INFO("Patched Gas Turbine Icon.");
@@ -286,16 +332,33 @@ public class GTplusplus implements ActionListener {
 
 	protected void generateGregtechRecipeMaps() {
 
-		int[] mValidCount = new int[] {0, 0, 0};
-		int[] mInvalidCount = new int[] {0, 0, 0};
-		int[] mOriginalCount = new int[] {0, 0, 0};
+		int[] mValidCount = new int[]{
+				0, 0, 0
+		};
+		int[] mInvalidCount = new int[]{
+				0, 0, 0
+		};
+		int[] mOriginalCount = new int[]{
+				0, 0, 0
+		};
 
 		RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
-		FishPondFakeRecipe.generateFishPondRecipes();	
+		FishPondFakeRecipe.generateFishPondRecipes();
 		GregtechMiniRaFusion.generateSlowFusionrecipes();
 		SemiFluidFuelHandler.generateFuels();
 		GregtechMTE_ChemicalPlant.generateRecipes();
 
+		mInvalidCount[0] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+				GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes, GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT
+		);
+		mInvalidCount[1] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+				GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes, GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT
+		);
+		mInvalidCount[2] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+				GT_Recipe.GT_Recipe_Map.sVacuumRecipes, GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT
+		);
+		/*
+		
 		//Large Centrifuge generation
 		mOriginalCount[0] = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.size();
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList) {
@@ -320,13 +383,13 @@ public class GTplusplus implements ActionListener {
 				mInvalidCount[0]++;
 			}
 		}
-
-		/*if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.size() < 1) {
+		
+		if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.size() < 1) {
 			for (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList) {
 				GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.add(a);
 			}
-		}*/
-
+		}
+		
 		//Large Electrolyzer generation
 		mOriginalCount[1] = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList.size();
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList) {
@@ -351,13 +414,13 @@ public class GTplusplus implements ActionListener {
 				mInvalidCount[1]++;
 			}
 		}
-
-		/*if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.size() < 1) {
+		
+		if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.size() < 1) {
 			for (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList) {
 				GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.add(a);
 			}
-		}*/
-
+		}
+		
 		//Advanced Vacuum Freezer generation
 		mOriginalCount[2] = GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList.size();
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList) {
@@ -375,15 +438,15 @@ public class GTplusplus implements ActionListener {
 				mInvalidCount[2]++;
 			}
 		}
-
+		
 		//Redo plasma recipes in Adv. Vac.
 		//Meta_GT_Proxy.generatePlasmaRecipesForAdvVacFreezer();
-
-
+		
+		
 		String[] machineName = new String[] {"Centrifuge", "Electrolyzer", "Vacuum Freezer"};
 		for (int i=0;i<3;i++) {
 			Logger.INFO("[Recipe] Generated "+mValidCount[i]+" recipes for the Industrial "+machineName[i]+". The original machine can process "+mOriginalCount[i]+" recipes, meaning "+mInvalidCount[i]+" are invalid for this Multiblock's processing in some way.");
-		}
+		}*/
 	}
 
 	protected void dumpGtRecipeMap(final GT_Recipe_Map r) {
@@ -391,29 +454,43 @@ public class GTplusplus implements ActionListener {
 		Logger.INFO("Dumping " + r.mUnlocalizedName + " Recipes for Debug.");
 		for (final GT_Recipe newBo : x) {
 			Logger.INFO("========================");
-			Logger.INFO("Dumping Input: " + ItemUtils.getArrayStackNames(newBo.mInputs));
-			Logger.INFO("Dumping Inputs " + ItemUtils.getFluidArrayStackNames(newBo.mFluidInputs));
+			Logger.INFO(
+					"Dumping Input: "
+							+ ItemUtils.getArrayStackNames(newBo.mInputs)
+			);
+			Logger.INFO(
+					"Dumping Inputs " + ItemUtils.getFluidArrayStackNames(
+							newBo.mFluidInputs
+					)
+			);
 			Logger.INFO("Dumping Duration: " + newBo.mDuration);
 			Logger.INFO("Dumping EU/t: " + newBo.mEUt);
-			Logger.INFO("Dumping Output: " + ItemUtils.getArrayStackNames(newBo.mOutputs));
-			Logger.INFO("Dumping Output: " + ItemUtils.getFluidArrayStackNames(newBo.mFluidOutputs));
+			Logger.INFO(
+					"Dumping Output: "
+							+ ItemUtils.getArrayStackNames(newBo.mOutputs)
+			);
+			Logger.INFO(
+					"Dumping Output: " + ItemUtils.getFluidArrayStackNames(
+							newBo.mFluidOutputs
+					)
+			);
 			Logger.INFO("========================");
 		}
 	}
 
-	private static final boolean setupMaterialBlacklist(){	
+	private static final boolean setupMaterialBlacklist() {
 		Material.invalidMaterials.put(Materials._NULL);
 		Material.invalidMaterials.put(Materials.Clay);
 		Material.invalidMaterials.put(Materials.Phosphorus);
 		Material.invalidMaterials.put(Materials.Steel);
 		Material.invalidMaterials.put(Materials.Bronze);
 		Material.invalidMaterials.put(Materials.Hydrogen);
-		//Infused TC stuff
-		Material.invalidMaterials.put(Materials.InfusedAir);	
-		Material.invalidMaterials.put(Materials.InfusedEarth);	
-		Material.invalidMaterials.put(Materials.InfusedFire);	
+		// Infused TC stuff
+		Material.invalidMaterials.put(Materials.InfusedAir);
+		Material.invalidMaterials.put(Materials.InfusedEarth);
+		Material.invalidMaterials.put(Materials.InfusedFire);
 		Material.invalidMaterials.put(Materials.InfusedWater);
-		//EIO Materials
+		// EIO Materials
 		Material.invalidMaterials.put(Materials.SoulSand);
 		Material.invalidMaterials.put(Materials.EnderPearl);
 		Material.invalidMaterials.put(Materials.EnderEye);
@@ -422,7 +499,7 @@ public class GTplusplus implements ActionListener {
 		Material.invalidMaterials.put(Materials.Soularium);
 		Material.invalidMaterials.put(Materials.PhasedIron);
 
-		if (Material.invalidMaterials.size() > 0){
+		if (Material.invalidMaterials.size() > 0) {
 			return true;
 		}
 		return false;
@@ -434,14 +511,14 @@ public class GTplusplus implements ActionListener {
 
 		mGregMatLoader = new GT_Material_Loader();
 
-		//Non GTNH Materials
-		if (!CORE.GTNH){
-			//Mithril - Random Dungeon Loot
-			mGregMatLoader.enableMaterial(Materials.Mithril);			
-		}	
+		// Non GTNH Materials
+		if (!CORE.GTNH) {
+			// Mithril - Random Dungeon Loot
+			mGregMatLoader.enableMaterial(Materials.Mithril);
+		}
 
-		//Force - Alloying
-		mGregMatLoader.enableMaterial(Materials.Force);		
+		// Force - Alloying
+		mGregMatLoader.enableMaterial(Materials.Force);
 	}
 
 }

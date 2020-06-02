@@ -41,11 +41,18 @@ public class GregtechSimpleWasher {
 	}
 
 	private static boolean generateDirtyDustRecipes(){
+		boolean disablePlat = CORE.GTNH;
 		int mRecipeCount = 0;
 		// Generate Recipe Map for the Dust Washer.
 		ItemStack dustClean;
 		ItemStack dustDirty;
-		for (Materials v : Materials.values()) {
+		for (Materials v : Materials.values()) {			
+			if (disablePlat) {
+				if (v == Materials.Platinum || v == Materials.Osmium  || v == Materials.Iridium || v == Materials.Palladium) {
+					continue;
+				}
+			}
+			
 			dustClean = GT_OreDictUnificator.get(OrePrefixes.dust, v, 1L);
 			dustDirty = GT_OreDictUnificator.get(OrePrefixes.dustImpure, v, 1L);
 			if (dustClean != null && dustDirty != null) {

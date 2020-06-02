@@ -344,7 +344,7 @@ public class RECIPES_GREGTECH {
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(12),
 						CI.getTieredMachineCasing(aLaureniumTier-1),
-						CI.getPlate(aLaureniumTier-1, 8),
+						ALLOY.LAURENIUM.getPlate(8),
 						CI.getGear(aLaureniumTier, 2)
 				},
 				new FluidStack[] {
@@ -368,7 +368,7 @@ public class RECIPES_GREGTECH {
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(12),
 						CI.getTieredMachineCasing(aBotmiumTier-1),
-						CI.getPlate(aBotmiumTier-1, 8),
+						ALLOY.BOTMIUM.getPlate(8),
 						CI.getGear(aBotmiumTier, 2)
 				},
 				new FluidStack[] {

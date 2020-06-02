@@ -249,7 +249,8 @@ public class BookHandler {
 						"27x Coils" + "\n" +
 						"18x Pipe Casings" + "\n" +
 						"57x Tiered Machine Casings" + "\n" +
-						"80+ Solid Casings",
+						"80+ Solid Casings" + "\n" +
+						"1x Catalyst Housing (Catalysts cannot go inside an Input Bus)",
 
 						// Construction Guide
 						"Construction Guide Pt1:" + "\n"  + "\n" +
