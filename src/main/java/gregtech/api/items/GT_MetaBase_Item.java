@@ -514,11 +514,13 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         if (tFluid != null && maxDrain >= tFluid.amount) {
             ItemStack tStack = GT_Utility.getContainerItem(aStack, false);
             if (tStack == null) {
-                aStack.stackSize = 0;
+                if(doDrain) aStack.stackSize = 0;
                 return tFluid;
             }
-            aStack.setItemDamage(tStack.getItemDamage());
-            aStack.func_150996_a(tStack.getItem());
+            if(doDrain) {
+                aStack.setItemDamage(tStack.getItemDamage());
+                aStack.func_150996_a(tStack.getItem());
+            }
             return tFluid;
         }
 
