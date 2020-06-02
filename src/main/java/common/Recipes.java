@@ -479,23 +479,22 @@ public class Recipes {
 		GT_Values.RA.addAssemblylineRecipe(
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), 288000,
 				new Object[] {
-						GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 16L),
-						new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
-						new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
-						new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
-						new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1},
-						ItemList.Energy_LapotronicOrb2.get(8L),
-						ItemList.Field_Generator_LuV.get(2),
-						ItemList.Circuit_Wafer_SoC2.get(64),
-						ItemList.Circuit_Wafer_SoC2.get(64),
+						ItemList.Circuit_Board_Elite.get(1),
+						GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NaquadahAlloy, 64),
+						new Object[]{OrePrefixes.circuit.get(Materials.Master), 4},
+						// 36 lapo chip
+						// 36 lapo chip
+						ItemList.Circuit_Chip_HPIC.get(64),
 						ItemList.Circuit_Parts_DiodeASMD.get(8),
-						GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32),
+						ItemList.Circuit_Parts_CapacitorASMD.get(8),
+						ItemList.Circuit_Parts_ResistorASMD.get(8),
+						ItemList.Circuit_Parts_TransistorASMD.get(8),
+						GT_OreDictUnificator.get(OrePrefixes.wire, Materials.Platinum, 64),
 						GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 4),
 						GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24)
 				},
 				new FluidStack[] {
-						Materials.SolderingAlloy.getMolten(2880),
-						new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)
+						Materials.SolderingAlloy.getMolten(720)
 				},
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2), 2000, 100000
 		);
@@ -606,7 +605,7 @@ public class Recipes {
 				},
 				null,
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
-				1200000, 12000
+				12000, 200000
 		);
 	}
 
