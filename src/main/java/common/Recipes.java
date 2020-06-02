@@ -482,14 +482,14 @@ public class Recipes {
 						ItemList.Circuit_Board_Elite.get(1),
 						GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NaquadahAlloy, 64),
 						new Object[]{OrePrefixes.circuit.get(Materials.Master), 4},
-						// 36 lapo chip
-						// 36 lapo chip
+						ItemList.Circuit_Parts_Crystal_Chip_Master.get(36),
+						ItemList.Circuit_Parts_Crystal_Chip_Master.get(36),
 						ItemList.Circuit_Chip_HPIC.get(64),
 						ItemList.Circuit_Parts_DiodeASMD.get(8),
 						ItemList.Circuit_Parts_CapacitorASMD.get(8),
 						ItemList.Circuit_Parts_ResistorASMD.get(8),
 						ItemList.Circuit_Parts_TransistorASMD.get(8),
-						GT_OreDictUnificator.get(OrePrefixes.wire, Materials.Platinum, 64),
+						GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 64),
 						GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 4),
 						GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24)
 				},
