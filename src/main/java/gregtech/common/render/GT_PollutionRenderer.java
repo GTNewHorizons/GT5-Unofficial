@@ -14,6 +14,7 @@ import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GLContext;
 
 @SideOnly(Side.CLIENT)
 public class GT_PollutionRenderer {
@@ -27,13 +28,33 @@ public class GT_PollutionRenderer {
     public void renderGTPollutionFog(EntityViewRenderEvent.RenderFogEvent event) {
         if (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode || pollutionLastTick <= 0)
             return;
+        float fogValue = (getCurrentSourRainRenderRatio() * getCurrentPollutionRenderRatio());
+        //0.008F instead of 0F bcs. of Double Horzion Bug
+        if (fogValue > 0.008F) {
+            //This is the actual pollution renderer
+            if (event.fogMode == FOGMODE_CLOSE) {
+                GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
+                GL11.glFogf(GL11.GL_FOG_DENSITY, fogValue);
 
-        float sourRain = getCurrentPollutionRenderRatio() > 0.75f ? getCurrentSourRainRenderRatio() : getCurrentSourRainRenderRatio() / 5f;
-        if (sourRain > 0.025F) { //0.025F instead of 0F bcs. of Double Horzion Bug
-            GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
-            GL11.glFogf(GL11.GL_FOG_DENSITY, sourRain);
+                //This might help with visual glitches
+            } else if (event.fogMode == FOGMODE_SKY) {
+                GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_LINEAR);
+                GL11.glFogf(GL11.GL_FOG_START, 0F);
+                GL11.glFogf(GL11.GL_FOG_END, event.farPlaneDistance * (0.8F - fogValue));
+            } else if (event.fogMode == FOGMODE_WHATEVER) {
+                GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_LINEAR);
+                GL11.glFogf(GL11.GL_FOG_START, event.farPlaneDistance * (0.75F - fogValue));
+                GL11.glFogf(GL11.GL_FOG_END, event.farPlaneDistance);
+            }
+            //Whatever this is? its in vanilla code so i re-call it here...
+            if (GLContext.getCapabilities().GL_NV_fog_distance) {
+                GL11.glFogi(34138, 34139);
+            }
         }
     }
+    private static final int FOGMODE_SKY = -1;
+    private static final int FOGMODE_CLOSE = 0;
+    private static final int FOGMODE_WHATEVER = 1;
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void manipulateColor(EntityViewRenderEvent.FogColors event) {
@@ -62,10 +83,10 @@ public class GT_PollutionRenderer {
         return Math.min(1f, Math.max(player/limit, 0f));
     }
 
-    private static double getCurrentPollutionRenderRatio() {
-        double player = pollutionLastTick;
-        double limit = GT_Mod.gregtechproxy.mPollutionSmogLimit;
-        return Math.min(1D, Math.max(player/limit, 0D));
+    private static float getCurrentPollutionRenderRatio() {
+        float player = pollutionLastTick;
+        float limit = GT_Mod.gregtechproxy.mPollutionSmogLimit;
+        return Math.min(1F, Math.max(player/limit, 0F));
     }
 
     private static short[] curveColorArray(short[] originalColorsSplit, short[] newColorsSplit) {
@@ -137,29 +158,30 @@ public class GT_PollutionRenderer {
         if (player == null || player.capabilities == null || player.capabilities.isCreativeMode)
             return;
 
+        int frameRateLimit = Math.max(mc.gameSettings.limitFramerate, 60);
+        handleReRendering(frameRateLimit, mc.gameSettings.renderDistanceChunks, player);
         if(pollutionLastTick != GT_Pollution.mPlayerPollution) {
-            int frameRateLimit = Math.max(mc.gameSettings.limitFramerate, 60);
             handlePollutionSmoothing(frameRateLimit);
-            handleReRendering(frameRateLimit, mc.gameSettings.renderDistanceChunks, player);
         }
     }
 
     private static void handleReRendering(int frameRateLimit, int renderDistanceChunks, EntityClientPlayerMP player) {
-        if ((frame % frameRateLimit) != 0) //should fix chunk breakages
+        if ((frame % frameRateLimit) != 0 && pollutionLastTick > 0) //should fix chunk breakages
             return;
 
-        int x = (int) player.posX, y = (int) player.posY, z = (int) player.posZ;
-        int renderDistanceBlocks = pollutionLastTick > GT_Mod.gregtechproxy.mPollutionSmogLimit ?
+        int x = (int) player.posX, z = (int) player.posZ;
+        int renderDistanceBlocks = pollutionLastTick > GT_Mod.gregtechproxy.mPollutionPoisonLimit ?
                 MIN_RENDER_UPDATE_SIZE : (renderDistanceChunks + 2) * 16;
-        player.worldObj.markBlockRangeForRenderUpdate(x - renderDistanceBlocks, y - MIN_RENDER_UPDATE_SIZE, z - renderDistanceBlocks,
-                x + renderDistanceBlocks, y + MIN_RENDER_UPDATE_SIZE, z + renderDistanceBlocks);
+        player.worldObj.markBlockRangeForRenderUpdate(x - renderDistanceBlocks, 0, z - renderDistanceBlocks,
+                x + renderDistanceBlocks, 255, z + renderDistanceBlocks);
     }
 
     private static int approxZero;
     private static void handlePollutionSmoothing(int frameRateLimit) {
-        int approx = GT_Pollution.mPlayerPollution / (frameRateLimit *4);
+        int approxSpeed = (frameRateLimit * 4);
+        int approx = GT_Pollution.mPlayerPollution / approxSpeed;
         if (approx == 0 && approxZero == 0)
-            approxZero = pollutionLastTick / (frameRateLimit *4);
+            approxZero = Math.max(pollutionLastTick / approxSpeed, 10);
         if (approx == 0)
             approx = approxZero;
         if (pollutionLastTick < GT_Pollution.mPlayerPollution) {

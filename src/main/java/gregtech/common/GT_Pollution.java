@@ -272,9 +272,9 @@ public class GT_Pollution {
 		return dataMap.get(aCh)[GTPOLLUTION];
 	}
 
-	private final static int SIZE_IN_BLOCKS = 8;
+	private final static int SIZE_IN_BLOCKS = 16;
 	private final static int CUTOFF = 25000;
-	private final static float DIVIDER = 0.00346020761F;
+	private final static float DIVIDER = (float) (1D / Math.pow(2D * SIZE_IN_BLOCKS, 2D));
 
 	public static int getPlayerPollution(double posX, double posZ, int aDim) {
 		final int startX = (int) (posX - SIZE_IN_BLOCKS);
@@ -286,17 +286,17 @@ public class GT_Pollution {
 		//one sided cache, map would be slower, direct would be slower as well
 		ChunkCoordIntPair last = null;
 		float lastPol = 0f;
-
-		for (int xPos = startX; xPos <= endX; xPos++) {
-			for (int zPos = startZ; zPos <= endZ; zPos++) {
+		for (int xPos = startX; xPos < endX; xPos++) {
+			for (int zPos = startZ; zPos < endZ; zPos++) {
 				ChunkCoordIntPair curr = new ChunkCoordIntPair((xPos >> 4), (zPos >> 4));
 				if (!curr.equals(last)) {
 					last = curr;
-					lastPol = (getPollution(curr, aDim) * DIVIDER);
+					lastPol = getPollution(curr, aDim) * DIVIDER;
 				}
 				pollution += lastPol;
 			}
 		}
+
 		//fastCeil INLINE
 		int xi = (int) pollution;
 		xi = pollution > xi ? xi + 1 : xi;
