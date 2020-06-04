@@ -150,9 +150,9 @@ extends GregtechMeta_MultiBlockBase {
 					Logger.INFO("Found Correct Edge Casing at offset "+i);
 					break;
 				} else {
-					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, 0, 0);
+					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, -1, 0);
 					if (addToMachineList(tTileEntity, mCasingTextureID)) {
-						Logger.INFO("Found Tile Entity on Edge Casing on top layer, it is a valid htach/bus.");
+						Logger.INFO("Found Tile Entity on Edge Casing on middle layer, it is a valid htach/bus.");
 						x = i;
 						z = i;
 						break;
