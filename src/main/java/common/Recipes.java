@@ -131,14 +131,31 @@ public class Recipes {
 					FluidRegistry.getFluidStack("molten.epoxid", 1152),
 					new ItemStack(Blocks.tfftStorageField5, 1), 
 					400, 6147);
-			final Object[] multi_hatch = {
+			// Multi Hatch
+			final Object[] multi_hatch_HV = {
 					"PRP", "UFU", "PRP",
-					'P', GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NiobiumTitanium, 1),
+					'P', GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.StainlessSteel, 1),
 					'R', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1),
+					'U', ItemList.Electric_Pump_HV.get(1L),
+					'F', ItemList.Field_Generator_LV.get(1L)
+			};
+			GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.tfftMultiHatch), multi_hatch_HV);
+			final Object[] multi_hatch_IV = {
+					"PRP", "UFU", "PRP",
+					'P', GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 1),
+					'R', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1),
 					'U', ItemList.Electric_Pump_IV.get(1L),
 					'F', ItemList.Field_Generator_HV.get(1L)
 			};		
-			GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.tfftMultiHatch), multi_hatch);
+			GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.tfftMultiHatch), multi_hatch_IV);
+			final Object[] multi_hatch_ZPM = {
+					"PRP", "UFU", "PRP",
+					'P', GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NaquadahAlloy, 1),
+					'R', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.NaquadahAlloy, 1),
+					'U', ItemList.Electric_Pump_ZPM.get(1L),
+					'F', ItemList.Field_Generator_IV.get(1L)
+			};
+			GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.tfftMultiHatch), multi_hatch_ZPM);
 	}
 	
 	private static void registerRecipes_SOFC() {
