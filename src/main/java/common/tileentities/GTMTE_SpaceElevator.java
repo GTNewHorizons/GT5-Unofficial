@@ -140,6 +140,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
         boolean formationChecklist = true;
         int minCasingAmount = 320;
         int firstCoilMeta = -1;
+        capacitors.clear();
 
         // Base floor
         for(int X = -7; X <= 7; X++){
@@ -213,6 +214,10 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
         if(minCasingAmount > 0) {
             formationChecklist = false;
+        }
+
+        for(TE_SpaceElevatorCapacitor cap : capacitors){
+            cap.setIsDamaged(false);
         }
 
         return formationChecklist;

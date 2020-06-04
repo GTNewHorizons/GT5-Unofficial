@@ -21,6 +21,7 @@ public class TileEntities {
         GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
         GameRegistry.registerTileEntity(TE_ThaumiumReinforcedJar.class, "kekztech_thaumiumreinforcedjar");
         GameRegistry.registerTileEntity(TE_IchorJar.class, "kekztech_ichorjar");
+        GameRegistry.registerTileEntity(TE_SpaceElevatorCapacitor.class, "kekztech_secapacitor");
     }
     
     public static void init() {
