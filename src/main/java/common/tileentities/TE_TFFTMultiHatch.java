@@ -17,11 +17,23 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 	
 	public static final int BASE_OUTPUT_PER_SECOND = 2000; // L/s
-	
+
+	private byte facings = 0x0;
+
 	private MultiFluidHandler mfh;
 	private int tickCounter = 0;
 	private boolean autoOutput = false;
-	
+
+	public boolean hasFacingOnSide(byte side) {
+		final byte key = (byte) Math.pow(0x2, side);
+		return (facings & key) == key;
+	}
+
+	public void setFacingOnSide(byte side, boolean b) {
+		final byte key = (byte) Math.pow(0x2, side);
+		facings = (byte) (b ? facings | key : facings ^ key);
+	}
+
 	public void setMultiFluidHandler(MultiFluidHandler mfh) {
 		this.mfh = mfh;
 	}

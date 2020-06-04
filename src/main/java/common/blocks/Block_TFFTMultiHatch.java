@@ -1,5 +1,6 @@
 package common.blocks;
 
+import common.Blocks;
 import common.itemBlocks.IB_TFFTMultiHatch;
 import common.tileentities.TE_TFFTMultiHatch;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -11,12 +12,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import thaumcraft.common.tiles.TileJarFillable;
 
 import java.util.List;
 
@@ -24,6 +30,7 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 	
 	private static final Block_TFFTMultiHatch INSTANCE = new Block_TFFTMultiHatch();
 
+	private IIcon casing;
 	private final IIcon[] tieredTexture = new IIcon[3];
 
 	private Block_TFFTMultiHatch() {
@@ -38,12 +45,13 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 		INSTANCE.setHardness(5.0f);
 		INSTANCE.setResistance(6.0f);
 		GameRegistry.registerBlock(INSTANCE, IB_TFFTMultiHatch.class, blockName);
-		
+
 		return INSTANCE;
 	}
 
 	@Override
 	public void registerBlockIcons(IIconRegister ir) {
+		casing = ir.registerIcon("kekztech:TFFTCasing");
 		for(int i = 0; i < tieredTexture.length; i++) {
 			tieredTexture[i] = ir.registerIcon("kekztech:TFFTMultiHatch" + (i + 1));
 		}
@@ -59,17 +67,21 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 	}
 
 	@Override
-	public IIcon getIcon(int side, int meta) {
-		return tieredTexture[meta];
+	public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
+		final TileEntity te = blockAccess.getTileEntity(x, y, z);
+		if(te instanceof TE_TFFTMultiHatch && ((TE_TFFTMultiHatch) te).hasFacingOnSide((byte) side)){
+			return tieredTexture[blockAccess.getBlockMetadata(x, y, z)];
+		}
+		return casing;
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, int p_149915_2_) {
+	public TileEntity createTileEntity(World world, int meta) {
 		return new TE_TFFTMultiHatch();
 	}
 
 	@Override
-	public boolean hasTileEntity(int metadata) {
+	public boolean hasTileEntity(int meta) {
 		return true;
 	}
 	
@@ -91,4 +103,27 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 		}
 		return false;
 	}
+
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase ent, ItemStack stack) {
+		final TileEntity te = world.getTileEntity(x, y, z);
+		if (te instanceof TE_TFFTMultiHatch) {
+			final TE_TFFTMultiHatch hatchTE = (TE_TFFTMultiHatch) te;
+			for(int i = 0; i < 6; i++) {
+				final ForgeDirection d = ForgeDirection.getOrientation(i);
+				final Block n = world.getBlock(x + d.offsetX, y + d.offsetY, z + d.offsetZ);
+				KekzCore.LOGGER.info("Block on side " + i + " is " + n.getUnlocalizedName());
+				// Always implement your tiered blocks as sub-blocks so you don't have to do this
+				if(n.equals(Blocks.tfftStorageField1)
+						|| n.equals(Blocks.tfftStorageField2)
+						|| n.equals(Blocks.tfftStorageField3)
+						|| n.equals(Blocks.tfftStorageField4)
+						|| n.equals(Blocks.tfftStorageField5)) {
+					KekzCore.LOGGER.info("Found Storage Field at side: " + i);
+					hatchTE.setFacingOnSide((byte) ForgeDirection.OPPOSITES[i], true);
+				}
+			}
+		}
+	}
+
 }
