@@ -12,7 +12,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -235,20 +234,6 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
         final String[] a = new String[ll.size()];
         return ll.toArray(a);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound nbt) {
-        nbt = (nbt == null) ? new NBTTagCompound() : nbt;
-
-        super.saveNBTData(nbt);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound nbt) {
-        nbt = (nbt == null) ? new NBTTagCompound() : nbt;
-
-        super.loadNBTData(nbt);
     }
 
     @Override

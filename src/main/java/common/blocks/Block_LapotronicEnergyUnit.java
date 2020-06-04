@@ -14,7 +14,7 @@ import net.minecraft.util.IIcon;
 
 public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 	
-	private static final Block_LapotronicEnergyUnit instance = new Block_LapotronicEnergyUnit();
+	private static final Block_LapotronicEnergyUnit INSTANCE = new Block_LapotronicEnergyUnit();
 	
 	private IIcon iconBaseSide;
 	private IIcon iconBaseTop;
@@ -36,13 +36,13 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 	
 	public static Block registerBlock() {
 		final String blockName = "kekztech_lapotronicenergyunit_block";
-		instance.setBlockName(blockName);
-		instance.setCreativeTab(CreativeTabs.tabMisc);
-		instance.setHardness(5.0f);
-		instance.setResistance(6.0f);
-		GameRegistry.registerBlock(instance, IB_LapotronicEnergyUnit.class, blockName);
-		
-		return instance;
+		INSTANCE.setBlockName(blockName);
+		INSTANCE.setCreativeTab(CreativeTabs.tabMisc);
+		INSTANCE.setHardness(5.0f);
+		INSTANCE.setResistance(6.0f);
+		GameRegistry.registerBlock(INSTANCE, IB_LapotronicEnergyUnit.class, blockName);
+
+		return INSTANCE;
 	}
 	
 	@Override

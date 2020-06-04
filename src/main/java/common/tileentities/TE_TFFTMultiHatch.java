@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 	
-	private static final int OUTPUT_PER_SECOND = 1000; // L/s
+	public static final int BASE_OUTPUT_PER_SECOND = 2000; // L/s
 	
 	private MultiFluidHandler mfh;
 	private int tickCounter = 0;
@@ -50,12 +50,13 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 			final TileEntity t = this.getWorldObj().getTileEntity(
 					this.xCoord + d.offsetX, 
 					this.yCoord + d.offsetY, 
-					this.zCoord + d.offsetZ);
+					this.zCoord + d.offsetZ
+			);
 			
 			if(t instanceof IFluidHandler) {
 				
 				final IFluidHandler fh = (IFluidHandler) t;
-				
+				final int meta = t.getWorldObj().getBlockMetadata(t.xCoord, t.yCoord, t.zCoord);
 				// Cycle through fluids
 				final Iterator<FluidStack> volumes = mfh.getFluids().iterator();
 				while(volumes.hasNext()) {
@@ -69,7 +70,7 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 						
 						// Test how much can be output
 						final FluidStack copy = volume.copy();
-						copy.amount = Math.min(copy.amount, OUTPUT_PER_SECOND);
+						copy.amount = (int) Math.min(copy.amount, BASE_OUTPUT_PER_SECOND * Math.pow(10, meta));
 												
 						// How much is drawn
 						copy.amount = mfh.pullFluid(copy, false);

@@ -117,11 +117,13 @@ tile.kekztech_tfftstoragefieldblock2_block.name=T.F.F.T Storage Field Block (Tie
 tile.kekztech_tfftstoragefieldblock3_block.name=T.F.F.T Storage Field Block (Tier III)
 tile.kekztech_tfftstoragefieldblock4_block.name=T.F.F.T Storage Field Block (Tier IV)
 tile.kekztech_tfftstoragefieldblock5_block.name=T.F.F.T Storage Field Block (Tier V)
-tile.kekztech_tfftmultihatch_block.name=T.F.F.T Multi-Fluid I/O Hatch
+tile.kekztech_tfftmultihatch_block.0.name=T.F.F.T Multi-Fluid I/O Hatch (Tier I)
+tile.kekztech_tfftmultihatch_block.1.name=T.F.F.T Multi-Fluid I/O Hatch (Tier II)
+tile.kekztech_tfftmultihatch_block.2.name=T.F.F.T Multi-Fluid I/O Hatch (Tier III)
 tile.kekztech_tfftmultihatch_block.0.desc=Special hatch for the T.F.F.T
 tile.kekztech_tfftmultihatch_block.1.desc=Allows for automated interaction with all stored fluids in a single place
 tile.kekztech_tfftmultihatch_block.2.desc=Right-click with screwdriver to activate auto-output
-tile.kekztech_tfftmultihatch_block.3.desc=Auto-output will try to output fluids into adjacent tanks at a rate of 1000L/s per fluid
+tile.kekztech_tfftmultihatch_block.3.desc=Auto-output will try to output fluids into adjacent tanks at a per fluid rate of
 
 # -------- Item Server: Structure Blocks
 tile.kekztech_itemserverdrive_block.name=Item Server Drive

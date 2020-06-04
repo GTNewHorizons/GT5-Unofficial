@@ -9,29 +9,58 @@ import gregtech.api.util.GT_Utility;
 import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 	
-	private static Block_TFFTMultiHatch instance = new Block_TFFTMultiHatch();
-	
+	private static final Block_TFFTMultiHatch INSTANCE = new Block_TFFTMultiHatch();
+
+	private final IIcon[] tieredTexture = new IIcon[3];
+
 	private Block_TFFTMultiHatch() {
 		super(Material.iron);
 	}
 	
 	public static Block registerBlock() {
 		final String blockName = "kekztech_tfftmultihatch_block";
-		instance.setBlockName(blockName);
-		instance.setCreativeTab(CreativeTabs.tabMisc);
-		instance.setBlockTextureName(KekzCore.MODID + ":" + "TFFTMultiHatch");
-		instance.setHardness(5.0f);
-		instance.setResistance(6.0f);
-		GameRegistry.registerBlock(instance, IB_TFFTMultiHatch.class, blockName);
+		INSTANCE.setBlockName(blockName);
+		INSTANCE.setCreativeTab(CreativeTabs.tabMisc);
+		INSTANCE.setBlockTextureName(KekzCore.MODID + ":" + "TFFTMultiHatch");
+		INSTANCE.setHardness(5.0f);
+		INSTANCE.setResistance(6.0f);
+		GameRegistry.registerBlock(INSTANCE, IB_TFFTMultiHatch.class, blockName);
 		
-		return instance;
+		return INSTANCE;
+	}
+
+	@Override
+	public void registerBlockIcons(IIconRegister ir) {
+		for(int i = 0; i < tieredTexture.length; i++) {
+			tieredTexture[i] = ir.registerIcon("kekztech:TFFTMultiHatch" + (i + 1));
+		}
+	}
+
+	@Override
+	@SuppressWarnings({"unchecked" })
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+		// HV, IV, ZPM
+		par3List.add(new ItemStack(par1, 1, 0));
+		par3List.add(new ItemStack(par1, 1, 1));
+		par3List.add(new ItemStack(par1, 1, 2));
+	}
+
+	@Override
+	public IIcon getIcon(int side, int meta) {
+		return tieredTexture[meta];
 	}
 
 	@Override
