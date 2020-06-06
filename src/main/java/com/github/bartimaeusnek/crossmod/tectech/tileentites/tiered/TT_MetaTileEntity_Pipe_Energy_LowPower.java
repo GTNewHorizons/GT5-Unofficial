@@ -23,18 +23,25 @@
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.google.common.collect.Sets;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Cable implements LowPowerLaser {
 
@@ -109,5 +116,38 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
     @Override
     public boolean isConnectedCorrectly(byte aSide) {
         return this.isConnectedAtSide(aSide) && this.isConnectedAtSide(GT_Utility.getOppositeSide(aSide));
+    }
+
+    @Override
+    public boolean shouldJoinIc2Enet() {
+        return false;
+    }
+
+    @Override
+    public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
+        return 0L;
+    }
+
+
+    @Override
+    @Deprecated
+    @SuppressWarnings("deprecation")
+    public long transferElectricity(byte aSide, long aVoltage, long aAmperage, ArrayList<TileEntity> aAlreadyPassedTileEntityList) {
+        return 0L;
+    }
+
+    @Override
+    public long transferElectricity(byte aSide, long aVoltage, long aAmperage, HashSet<TileEntity> aAlreadyPassedSet) {
+        return 0L;
+    }
+
+    @Override
+    public boolean letsIn(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean letsOut(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+        return true;
     }
 }
