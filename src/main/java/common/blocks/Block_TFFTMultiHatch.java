@@ -1,9 +1,13 @@
 package common.blocks;
 
+import client.renderer.ConduitRenderer;
+import client.renderer.HatchRenderer;
 import common.Blocks;
 import common.itemBlocks.IB_TFFTMultiHatch;
 import common.tileentities.TE_TFFTMultiHatch;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
@@ -29,7 +33,8 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 	private static final Block_TFFTMultiHatch INSTANCE = new Block_TFFTMultiHatch();
 
 	private IIcon casing;
-	private final IIcon[] tieredTexture = new IIcon[3];
+	private final IIcon[] overlayOff = new IIcon[3];
+	private final IIcon[] overlayOn = new IIcon[3];
 
 	private Block_TFFTMultiHatch() {
 		super(Material.iron);
@@ -39,7 +44,6 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 		final String blockName = "kekztech_tfftmultihatch_block";
 		INSTANCE.setBlockName(blockName);
 		INSTANCE.setCreativeTab(CreativeTabs.tabMisc);
-		INSTANCE.setBlockTextureName(KekzCore.MODID + ":" + "TFFTMultiHatch");
 		INSTANCE.setHardness(5.0f);
 		INSTANCE.setResistance(6.0f);
 		GameRegistry.registerBlock(INSTANCE, IB_TFFTMultiHatch.class, blockName);
@@ -50,8 +54,9 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 	@Override
 	public void registerBlockIcons(IIconRegister ir) {
 		casing = ir.registerIcon("kekztech:TFFTCasing");
-		for(int i = 0; i < tieredTexture.length; i++) {
-			tieredTexture[i] = ir.registerIcon("kekztech:TFFTMultiHatch" + (i + 1));
+		for(int i = 0; i < overlayOff.length; i++) {
+			overlayOff[i] = ir.registerIcon("kekztech:TFFTMultiHatch" + i + "_off");
+			overlayOn[i] = ir.registerIcon("kekztech:TFFTMultiHatch" + i + "_on");
 		}
 	}
 
@@ -65,12 +70,32 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 	}
 
 	@Override
-	public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
-		final TileEntity te = blockAccess.getTileEntity(x, y, z);
-		if(te instanceof TE_TFFTMultiHatch && ((TE_TFFTMultiHatch) te).hasFacingOnSide((byte) side)){
-			return tieredTexture[blockAccess.getBlockMetadata(x, y, z)];
+	public IIcon getIcon(int side, int meta) {
+		if(side != 3) {
+			return casing;
+		} else {
+			return overlayOff[meta];
 		}
-		return casing;
+	}
+
+	@Override
+	public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
+		if(side != 3) {
+			return casing;
+		} else {
+			return overlayOff[blockAccess.getBlockMetadata(x, y, z)];
+		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getRenderBlockPass() {
+		return 0;
+	}
+
+	@Override
+	public int getRenderType() {
+		return HatchRenderer.RID;
 	}
 
 	@Override
