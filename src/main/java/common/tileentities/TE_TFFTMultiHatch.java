@@ -194,6 +194,7 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 
 		nbt.setBoolean("autoOutput", autoOutput);
+		nbt.setByte("facings", facings);
 
 		super.writeToNBT(nbt);
 	}
@@ -203,6 +204,7 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 
 		autoOutput = nbt.getBoolean("autoOutput");
+		facings = nbt.getByte("facings");
 
 		super.readFromNBT(nbt);
 	}
