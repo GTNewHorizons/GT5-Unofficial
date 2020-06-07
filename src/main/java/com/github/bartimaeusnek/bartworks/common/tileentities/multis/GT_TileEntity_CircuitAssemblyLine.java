@@ -286,7 +286,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
                 }
             }
         }
-        return this.mEnergyHatches.size() > 0 && this.mMaintenanceHatches.size() == 1;
+        return this.mEnergyHatches.size() == 1 && this.mMaintenanceHatches.size() == 1;
     }
 
     @Override
