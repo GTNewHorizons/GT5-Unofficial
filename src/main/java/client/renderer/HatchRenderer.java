@@ -1,14 +1,11 @@
 package client.renderer;
 
-import common.tileentities.TE_ItemProxyCable;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 public class HatchRenderer implements ISimpleBlockRenderingHandler {
@@ -60,7 +57,35 @@ public class HatchRenderer implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
                                     RenderBlocks renderer) {
+        final Tessellator t = Tessellator.instance;
+        // Set colour
+        int mb = block.getMixedBrightnessForBlock(world, x, y, z);
+        t.setBrightness(mb);
 
+        block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        renderer.setRenderBoundsFromBlock(block);
+
+        if (block.shouldSideBeRendered(world, x, y - 1, z, 6)) {
+            renderer.renderFaceYNeg(block, x, y, z, block.getIcon(world, x, y, z, 0));
+        }
+        if (block.shouldSideBeRendered(world, x, y + 1, z, 6)) {
+            t.setNormal(0.0F, 1.0F, 0.0F);
+            renderer.renderFaceYPos(block, x, y, z, block.getIcon(world, x, y, z, 1));
+        }
+
+        if (block.shouldSideBeRendered(world, x, y, z - 1, 6)) {
+            renderer.renderFaceZNeg(block, x, y, z, block.getIcon(world, x, y, z, 2));
+        }
+        if (block.shouldSideBeRendered(world, x, y, z + 1, 6)) {
+            renderer.renderFaceZPos(block, x, y, z, block.getIcon(world, x, y, z, 3));
+        }
+
+        if (block.shouldSideBeRendered(world, x - 1, y, z, 6)) {
+            renderer.renderFaceXNeg(block, x, y, z, block.getIcon(world, x, y, z, 4));
+        }
+        if (block.shouldSideBeRendered(world, x + 1, y, z, 6)) {
+            renderer.renderFaceXPos(block, x, y, z, block.getIcon(world, x, y, z, 5));
+        }
 
         return false;
     }

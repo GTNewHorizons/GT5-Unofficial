@@ -1,8 +1,6 @@
 package common.blocks;
 
-import client.renderer.ConduitRenderer;
 import client.renderer.HatchRenderer;
-import common.Blocks;
 import common.itemBlocks.IB_TFFTMultiHatch;
 import common.tileentities.TE_TFFTMultiHatch;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -11,7 +9,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,9 +19,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import thaumcraft.common.tiles.TileJarFillable;
 
 import java.util.List;
 
@@ -80,11 +79,48 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 
 	@Override
 	public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
-		if(side != 3) {
-			return casing;
+		final TileEntity te = blockAccess.getTileEntity(x, y, z);
+		if(te instanceof TE_TFFTMultiHatch) {
+			final TE_TFFTMultiHatch hatchTE = (TE_TFFTMultiHatch) te;
+			if(hatchTE.hasFacingOnSide((byte) side)) {
+				final int meta = blockAccess.getBlockMetadata(x, y, z);
+				if(hatchTE.isOutputting()) {
+					return overlayOn[meta];
+				} else {
+					return overlayOff[meta];
+				}
+			} else {
+				return casing;
+			}
 		} else {
-			return overlayOff[blockAccess.getBlockMetadata(x, y, z)];
+			return casing;
 		}
+	}
+	// ========= Leagris stuff
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+		return true;
+	}
+
+	@Override
+	public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
+		return 255;
+	}
+
+	@Override
+	public int getLightValue() {
+		return 0;
+	}
+
+	@Override
+	public boolean recolourBlock(World world, int x, int y, int z, ForgeDirection side, int colour) {
+		return false;
+	}
+
+	//============== Leagris over
+	@Override
+	public boolean renderAsNormalBlock() {
+		return false;
 	}
 
 	@Override
@@ -109,8 +145,8 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
-		// Code block taken from GregTech's BaseMetaTileEntity.class
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+		// Code block taken from GregTech's api.metatileentity.BaseMetaTileEntity.class
 		if (GT_Utility.isStackInList(player.getHeldItem(), GregTech_API.sScrewdriverList)) {
 			if (GT_ModHandler.damageOrDechargeItem(player.getHeldItem(), 1, 200, player)) {
 				final TileEntity te = world.getTileEntity(x, y, z);
@@ -123,30 +159,49 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 				}
 			}
 			return true;
+		} else if (GT_Utility.isStackInList(player.getHeldItem(), GregTech_API.sWrenchList)) {
+			if (GT_ModHandler.damageOrDechargeItem(player.getHeldItem(), 1, 200, player)) {
+				final TileEntity te = world.getTileEntity(x, y, z);
+				if(te instanceof TE_TFFTMultiHatch) {
+					((TE_TFFTMultiHatch) te).setFacingToSide((byte) side);
+					GT_Utility.sendSoundToPlayers(world, GregTech_API.sSoundList.get(100), 1.0F, -1.0F, x, y, z);
+				}
+			}
+			return true;
 		}
 		return false;
 	}
 
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase ent, ItemStack stack) {
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placer, ItemStack stack) {
+		final int yaw = MathHelper.floor_double((double)(placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		final int pitch = MathHelper.floor_double((double)(placer.rotationPitch * 4.0F / 360.0F) + 0.5D) & 3;
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if (te instanceof TE_TFFTMultiHatch) {
-			final TE_TFFTMultiHatch hatchTE = (TE_TFFTMultiHatch) te;
-			for(int i = 0; i < 6; i++) {
-				final ForgeDirection d = ForgeDirection.getOrientation(i);
-				final Block n = world.getBlock(x + d.offsetX, y + d.offsetY, z + d.offsetZ);
-				KekzCore.LOGGER.info("Block on side " + i + " is " + n.getUnlocalizedName());
-				// Always implement your tiered blocks as sub-blocks so you don't have to do this
-				if(n.equals(Blocks.tfftStorageField1)
-						|| n.equals(Blocks.tfftStorageField2)
-						|| n.equals(Blocks.tfftStorageField3)
-						|| n.equals(Blocks.tfftStorageField4)
-						|| n.equals(Blocks.tfftStorageField5)) {
-					KekzCore.LOGGER.info("Found Storage Field at side: " + i);
-					hatchTE.setFacingOnSide((byte) ForgeDirection.OPPOSITES[i], true);
+			if(pitch == 0 || pitch == 2) {
+				if (yaw == 0) {
+					((TE_TFFTMultiHatch)te).setFacingToSide((byte) 2);
+				}
+
+				if (yaw == 1) {
+					((TE_TFFTMultiHatch)te).setFacingToSide((byte) 5);
+				}
+
+				if (yaw == 2) {
+					((TE_TFFTMultiHatch)te).setFacingToSide((byte) 3);
+				}
+
+				if (yaw == 3) {
+					((TE_TFFTMultiHatch)te).setFacingToSide((byte) 4);
+				}
+			} else {
+				if(pitch == 1) {
+					((TE_TFFTMultiHatch)te).setFacingToSide((byte) 1);
+				} else {
+					((TE_TFFTMultiHatch)te).setFacingToSide((byte) 0);
 				}
 			}
 		}
+
 	}
 
 }

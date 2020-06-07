@@ -29,9 +29,8 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 		return (facings & key) == key;
 	}
 
-	public void setFacingOnSide(byte side, boolean b) {
-		final byte key = (byte) Math.pow(0x2, side);
-		facings = (byte) (b ? facings | key : facings ^ key);
+	public void setFacingToSide(byte side) {
+		facings = (byte) Math.pow(0x2, side);
 	}
 
 	public void setMultiFluidHandler(MultiFluidHandler mfh) {
@@ -191,22 +190,16 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
-		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
-
+		super.writeToNBT(nbt);
 		nbt.setBoolean("autoOutput", autoOutput);
 		nbt.setByte("facings", facings);
-
-		super.writeToNBT(nbt);
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
-
+		super.readFromNBT(nbt);
 		autoOutput = nbt.getBoolean("autoOutput");
 		facings = nbt.getByte("facings");
-
-		super.readFromNBT(nbt);
 	}
 	
 	
