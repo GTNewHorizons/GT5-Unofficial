@@ -1,11 +1,8 @@
 package common.blocks;
 
-import client.renderer.HatchRenderer;
 import common.itemBlocks.IB_TFFTMultiHatch;
 import common.tileentities.TE_TFFTMultiHatch;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
@@ -13,20 +10,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import thaumcraft.common.tiles.TileJarFillable;
 
 import java.util.List;
 
+@Deprecated
 public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 	
 	private static final Block_TFFTMultiHatch INSTANCE = new Block_TFFTMultiHatch();
@@ -96,43 +90,6 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 			return casing;
 		}
 	}
-	// ========= Leagris stuff
-	@Override
-	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-		return true;
-	}
-
-	@Override
-	public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
-		return 255;
-	}
-
-	@Override
-	public int getLightValue() {
-		return 0;
-	}
-
-	@Override
-	public boolean recolourBlock(World world, int x, int y, int z, ForgeDirection side, int colour) {
-		return false;
-	}
-
-	//============== Leagris over
-	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getRenderBlockPass() {
-		return 0;
-	}
-
-	@Override
-	public int getRenderType() {
-		return HatchRenderer.RID;
-	}
 
 	@Override
 	public TileEntity createTileEntity(World world, int meta) {
@@ -170,38 +127,6 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 			return true;
 		}
 		return false;
-	}
-
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placer, ItemStack stack) {
-		final int yaw = MathHelper.floor_double((double)(placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		final int pitch = MathHelper.floor_double((double)(placer.rotationPitch * 4.0F / 360.0F) + 0.5D) & 3;
-		final TileEntity te = world.getTileEntity(x, y, z);
-		if (te instanceof TE_TFFTMultiHatch) {
-			if(pitch == 0 || pitch == 2) {
-				if (yaw == 0) {
-					((TE_TFFTMultiHatch)te).setFacingToSide((byte) 2);
-				}
-
-				if (yaw == 1) {
-					((TE_TFFTMultiHatch)te).setFacingToSide((byte) 5);
-				}
-
-				if (yaw == 2) {
-					((TE_TFFTMultiHatch)te).setFacingToSide((byte) 3);
-				}
-
-				if (yaw == 3) {
-					((TE_TFFTMultiHatch)te).setFacingToSide((byte) 4);
-				}
-			} else {
-				if(pitch == 1) {
-					((TE_TFFTMultiHatch)te).setFacingToSide((byte) 1);
-				} else {
-					((TE_TFFTMultiHatch)te).setFacingToSide((byte) 0);
-				}
-			}
-		}
-
 	}
 
 }

@@ -14,6 +14,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+@Deprecated
 public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 	
 	public static final int BASE_OUTPUT_PER_SECOND = 2000; // L/s

@@ -35,7 +35,6 @@ public class Recipes {
 		registerRecipes_TFFT();
 		registerRecipes_SOFC();
 		registerRecipes_Nuclear();
-		//registerRecipes_ItemServer();
 		registerRecipes_Jars();
 		registerRecipes_LSC();
 		registerRecipes_SpaceElevator();
@@ -327,67 +326,6 @@ public class Recipes {
 				craftingItem.getStackOfAmountFromDamage(Items.IsotopicallyPureDiamondCrystal.getMetaID(), 4),  
 				craftingItem.getStackFromDamage(Items.DiamondHeatPipe.getMetaID()),
 				null, 1200, 7680);	
-	}
-	
-	private static void registerRecipes_ItemServer() {
-		
-		final MetaItem_CraftingComponent craftingItem = MetaItem_CraftingComponent.getInstance();
-		
-		// Controller
-		final Object[] is_recipe = {
-				"FRF", "CGC", "PZP",
-				'F', GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1),
-				'R', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1),
-				'C', ItemList.Conveyor_Module_LuV.get(1L),
-				'G', ItemList.Field_Generator_EV.get(1L),
-				'P', GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 1),
-				'Z', GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1)
-		};
-		GT_ModHandler.addCraftingRecipe(TileEntities.is.getStackForm(1), is_recipe);
-		
-		// Blocks
-		final Object[] is_rack_recipe = {
-				"BRB", "CFC", "BRB",
-				'B', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlueSteel, 1),
-				'R', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Aluminium, 1),
-				'C', GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Platinum, 1),
-				'F', GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1),
-		};
-		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.itemServerRackCasing), is_rack_recipe);
-		final ItemStack[] is_ioport = {
-				GT_Utility.getIntegratedCircuit(6),
-				new ItemStack(Blocks.itemServerRackCasing),
-				GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Platinum, 16),
-				GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Platinum, 2),
-				ItemList.Field_Generator_HV.get(1L),
-				ItemList.Robot_Arm_EV.get(4L)
-			};
-			GT_Values.RA.addAssemblerRecipe(
-					is_ioport, 
-					FluidRegistry.getFluidStack("molten.polytetrafluoroethylene", 144),
-					new ItemStack(Blocks.itemServerIOPort, 1), 
-					200, 7680);
-		final Object[] is_blade = {
-				"CRC", "CMC", "HPH",
-				'C', GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1),
-				'R', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Aluminium, 1),
-				'P', GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.Platinum, 1),
-				'M', ItemList.Electric_Motor_EV.get(1L),
-				'H', craftingItem.getStackFromDamage(Items.BoronArsenideHeatPipe.getMetaID()),
-		};
-		GT_ModHandler.addCraftingRecipe(craftingItem.getStackOfAmountFromDamage(Items.ItemServerBlade.getMetaID(), 8), is_blade);
-		final ItemStack[] is_drive = {
-				GT_Utility.getIntegratedCircuit(6),
-				craftingItem.getStackOfAmountFromDamage(Items.ItemServerBlade.getMetaID(), 8),
-				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlueSteel, 4),
-				GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
-				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Aluminium, 16)
-			};
-			GT_Values.RA.addAssemblerRecipe(
-					is_drive, 
-					FluidRegistry.getFluidStack("molten.polyethylene", 1152),
-					new ItemStack(Blocks.itemServerDrive, 1), 
-					200, 7680);
 	}
 	
 	private static void registerRecipes_Jars() {

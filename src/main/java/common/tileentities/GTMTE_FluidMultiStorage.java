@@ -1,13 +1,13 @@
 package common.tileentities;
 
+import common.Blocks;
+import common.blocks.*;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import kekztech.MultiFluidHandler;
 import net.minecraft.block.Block;
@@ -20,9 +20,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
-
-import common.Blocks;
-import common.blocks.*;
 import util.MultiBlockTooltipBuilder;
 import util.Vector3i;
 import util.Vector3ic;
@@ -39,11 +36,10 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 	private final static Block_TFFTStorageFieldBlockT3 STORAGE_FIELD3 = (Block_TFFTStorageFieldBlockT3) Blocks.tfftStorageField3;
 	private final static Block_TFFTStorageFieldBlockT4 STORAGE_FIELD4 = (Block_TFFTStorageFieldBlockT4) Blocks.tfftStorageField4;
 	private final static Block_TFFTStorageFieldBlockT5 STORAGE_FIELD5 = (Block_TFFTStorageFieldBlockT5) Blocks.tfftStorageField5;
-	private final static Block MULTI_HATCH = Blocks.tfftMultiHatch;
 	private final static int CASING_TEXTURE_ID = 176;
 
 	private MultiFluidHandler mfh;
-	private HashSet<TE_TFFTMultiHatch> multiHatches = new HashSet<>();
+	private final HashSet<GTMTE_TFFTMultiHatch> sMultiHatches = new HashSet<>();
 
 	private int runningCost = 0;
 	private boolean doVoidExcess = false;
@@ -123,7 +119,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		}
 		
 		// If there are no basic I/O hatches, let multi hatches handle it and skip a lot of code!
-		if (multiHatches.size() > 0 && super.mInputHatches.size() == 0 && super.mOutputHatches.size() == 0) {
+		if (sMultiHatches.size() > 0 && super.mInputHatches.size() == 0 && super.mOutputHatches.size() == 0) {
 			return true;
 		}
 
@@ -244,7 +240,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		float runningCostAcc = 0;
 		double fluidCapacityAcc = 0;
 
-		multiHatches.clear();
+		sMultiHatches.clear();
 
 		// Front segment
 		for (int X = -2; X <= 2; X++) {
@@ -264,22 +260,14 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 					if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-
-						final Block b = thisController.getBlockOffset(offset.x(), offset.y(), offset.z());
+							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+							&& !addMultiHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
 						// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
 						// Also check for multi hatch
-						if (b == CASING) {
+						if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
 							// Seems to be valid casing. Decrement counter.
 							minCasingAmount--;
-						} else if (b == MULTI_HATCH) {
-							final TE_TFFTMultiHatch mh =
-									(TE_TFFTMultiHatch) thisController.getWorld().getTileEntity(
-											thisController.getXCoord() + offset.x(),
-											thisController.getYCoord() + offset.y(),
-											thisController.getZCoord() + offset.z());
-							multiHatches.add(mh);
 						} else {
 							formationChecklist = false;
 						}
@@ -345,20 +333,14 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 						// Tries to add TE as either of those kinds of hatches.
 						// The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
 						if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-								&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+								&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
+								&& !addMultiHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
 							// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
 							// Also check for multi hatch
 							if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
 								// Seems to be valid casing. Decrement counter.
 								minCasingAmount--;
-							} else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == MULTI_HATCH) {
-								final TE_TFFTMultiHatch mh =
-										(TE_TFFTMultiHatch) thisController.getWorld().getTileEntity(
-												thisController.getXCoord() + offset.x(),
-												thisController.getYCoord() + offset.y(),
-												thisController.getZCoord() + offset.z());
-								multiHatches.add(mh);
 							} else if (!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameIC2Reinforced)) {
 								formationChecklist = false;
 							}
@@ -382,19 +364,13 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 					if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+							&& !addMultiHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
 						// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
 						if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
 							// Seems to be valid casing. Decrement counter.
 							minCasingAmount--;
-						} else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == MULTI_HATCH) {
-							final TE_TFFTMultiHatch mh =
-									(TE_TFFTMultiHatch) thisController.getWorld().getTileEntity(
-											thisController.getXCoord() + offset.x(),
-											thisController.getYCoord() + offset.y(),
-											thisController.getZCoord() + offset.z());
-							multiHatches.add(mh);
 						} else {
 							formationChecklist = false;
 						}
@@ -419,7 +395,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 			formationChecklist = false;
 		}
 
-		if (this.mMaintenanceHatches.size() < 1) {
+		if (this.mMaintenanceHatches.size() != 1) {
 			formationChecklist = false;
 		}
 
@@ -438,12 +414,28 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 					mfh = new MultiFluidHandler(capacityPerFluid, mfh.getFluids());
 				}
 			}
-			for (TE_TFFTMultiHatch mh : multiHatches) {
+			for (GTMTE_TFFTMultiHatch mh : sMultiHatches) {
 				mh.setMultiFluidHandler(mfh);
 			}
 		}
 
 		return formationChecklist;
+	}
+
+	public boolean addMultiHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity == null) {
+				return false;
+			} else if (aMetaTileEntity instanceof GTMTE_TFFTMultiHatch) {
+				((GTMTE_TFFTMultiHatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.sMultiHatches.add((GTMTE_TFFTMultiHatch)aMetaTileEntity);
+			} else {
+				return false;
+			}
+		}
 	}
 
 	@Override
@@ -498,7 +490,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 
 		mfh = new MultiFluidHandler();
 		mfh.loadNBTData(nbt);
-		for (TE_TFFTMultiHatch mh : multiHatches) {
+		for (GTMTE_TFFTMultiHatch mh : sMultiHatches) {
 			mh.setMultiFluidHandler(mfh);
 		}
 		super.loadNBTData(nbt);

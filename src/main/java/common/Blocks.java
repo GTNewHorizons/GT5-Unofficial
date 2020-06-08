@@ -44,7 +44,6 @@ public class Blocks {
 		registerBlocks_SOFC();
 		registerBlocks_TFFT();
 		registerBlocks_Nuclear();
-		//registerBlocks_ItemServer();
 		//registerBlocks_ItemProxy();
 		registerBlocks_Jars();
 		registerBlocks_LSC();
@@ -73,13 +72,7 @@ public class Blocks {
 		reactorChamberON = Block_ReactorChamber_ON.registerBlock();
 		reactorControlRod = Block_ControlRod.registerBlock();
 	}
-	
-	private static void registerBlocks_ItemServer() {
-		itemServerDrive = Block_ItemServerDrive.registerBlock();
-		itemServerRackCasing = Block_ItemServerRackCasing.registerBlock();
-		itemServerIOPort = Block_ItemServerIOPort.registerBlock();
-	}
-	
+
 	private static void registerBlocks_ItemProxy() {
 		itemProxyCable = Block_ItemProxyCable.registerBlock();
 		itemProxySource = Block_ItemProxySource.registerBlock();
