@@ -9,6 +9,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+@Deprecated
 public class IB_TFFTMultiHatch extends ItemBlock {
 	
 	public IB_TFFTMultiHatch(Block block) {
@@ -33,12 +34,6 @@ public class IB_TFFTMultiHatch extends ItemBlock {
 	@SuppressWarnings({"unchecked"})
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean advancedTooltips) {
-		final int outputPerSecond = (int) (TE_TFFTMultiHatch.BASE_OUTPUT_PER_SECOND * Math.pow(10, stack.getItemDamage()));
-
 		lines.add(StatCollector.translateToLocal("tile.kekztech_tfftmultihatch_block.0.desc"));
-		lines.add(StatCollector.translateToLocal("tile.kekztech_tfftmultihatch_block.1.desc"));
-		lines.add(StatCollector.translateToLocal("tile.kekztech_tfftmultihatch_block.2.desc"));
-		lines.add(StatCollector.translateToLocal("tile.kekztech_tfftmultihatch_block.3.desc" )
-				+ " " + outputPerSecond + "L/s");
 	}
 }

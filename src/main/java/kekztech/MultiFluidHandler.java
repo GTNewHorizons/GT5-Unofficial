@@ -70,14 +70,15 @@ public class MultiFluidHandler {
 	public int getCapacity() {
 		return capacityPerFluid;
 	}
-	
+
+	// TODO return deep copy instead
 	public List<FluidStack> getFluids(){
 		return (!locked) ? fluids : new ArrayList<>();
 	}
 	
 	public FluidStack getFluid(int slot) {
 		return (!locked && fluids.size() > 0 && slot >= 0 && slot < MAX_DISTINCT_FLUIDS) 
-				? fluids.get(slot) : null;
+				? fluids.get(slot).copy() : null;
 	}
 	
 	public NBTTagCompound saveNBTData(NBTTagCompound nbt) {
