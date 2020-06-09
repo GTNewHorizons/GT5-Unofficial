@@ -123,21 +123,22 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
         int x1;
         int y1;
         int z1;
-
-        if (biomegenbase != BiomeGenBase.ocean && biomegenbase != BiomeGenBase.deepOcean && biomegenbase != BiomeGenBase.river && biomegenbase != BiomeGenBase.frozenOcean && biomegenbase != BiomeGenBase.frozenRiver
-                    && this.rand.nextInt(ConfigHandler.ross128bRuinChance) == 0) {
-                x1 = k + this.rand.nextInt(16) + 3;
-                y1 = this.rand.nextInt(256);
-                z1 = l + this.rand.nextInt(16) + 3;
-            this.ruinsBase.generate(this.worldObj, this.rand, x1, y1, z1);
-        }
-
-        if (biomegenbase != BiomeGenBase.desert && biomegenbase != BiomeGenBase.desertHills && this.rand.nextInt(4) == 0
-                && TerrainGen.populate(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false, LAKE)) {
+        if (biomegenbase != BiomeGenBase.desert && biomegenbase != BiomeGenBase.desertHills && TerrainGen.populate(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false, LAKE)) {
             x1 = k + this.rand.nextInt(16) + 8;
             y1 = this.rand.nextInt(256);
             z1 = l + this.rand.nextInt(16) + 8;
-            (new WorldGenLakes(Blocks.water)).generate(this.worldObj, this.rand, x1, y1, z1);
+            int rni = this.rand.nextInt(8);
+            if (rni == 0)
+                (new WorldGenLakes(Blocks.ice)).generate(this.worldObj, this.rand, x1, y1, z1);
+            else if (rni == 4)
+                (new WorldGenLakes(Blocks.water)).generate(this.worldObj, this.rand, x1, y1, z1);
+        }
+        if (biomegenbase != BiomeGenBase.ocean && biomegenbase != BiomeGenBase.deepOcean && biomegenbase != BiomeGenBase.river && biomegenbase != BiomeGenBase.frozenOcean && biomegenbase != BiomeGenBase.frozenRiver
+                && this.rand.nextInt(ConfigHandler.ross128bRuinChance) == 0) {
+            x1 = k + this.rand.nextInt(16) + 3;
+            y1 = this.rand.nextInt(256);
+            z1 = l + this.rand.nextInt(16) + 3;
+            this.ruinsBase.generate(this.worldObj, this.rand, x1, y1, z1);
         }
 
         biomegenbase.decorate(this.worldObj, this.rand, k, l);

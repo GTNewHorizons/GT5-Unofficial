@@ -23,7 +23,6 @@
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
-import com.google.common.collect.Sets;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;

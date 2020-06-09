@@ -873,7 +873,7 @@ public class RecipeLoader {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[]{
                                 ItemList.Circuit_Parts_GlassFiber.get(32),
-                                GT_OreDictUnificator.get(WerkstoffLoader.gtnhGT ? OrePrefixes.foil : OrePrefixes.plateDouble, Materials.Silver, WerkstoffLoader.gtnhGT ? 8 : 1),
+                                GT_OreDictUnificator.get(WerkstoffLoader.gtnhGT ? OrePrefixes.foil : OrePrefixes.plateDouble, Materials.Electrum, WerkstoffLoader.gtnhGT ? 8 : 1),
                                 WerkstoffLoader.CubicZirconia.get(OrePrefixes.gemExquisite, 2)
                         },
                         Materials.Polytetrafluoroethylene.getMolten(72),
