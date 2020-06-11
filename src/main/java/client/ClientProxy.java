@@ -18,6 +18,8 @@ public class ClientProxy extends CommonProxy {
         // Register TESR
         ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorTether.class, new TESR_SETether());
         ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorCapacitor.class, new TESR_SECapacitor());
+        // Register GTTextures
+        GTTexture.init();
     }
 
     @Override
