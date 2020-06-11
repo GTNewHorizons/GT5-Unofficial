@@ -153,7 +153,7 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
      */
     private void fillContainers(IGregTechTileEntity aBaseMetaTileEntity) {
         final ItemStack cellFromFluid = GT_Utility.fillFluidContainer(
-                mfh.getFluid(mfh.getSelectedFluid()), super.mInventory[super.getInputSlot()], false, true);
+                mfh.getFluidCopy(mfh.getSelectedFluid()), super.mInventory[super.getInputSlot()], false, true);
         // Check if cell is not null and if there is space for the filled container
         if (cellFromFluid != null && aBaseMetaTileEntity.addStackToSlot(super.getOutputSlot(), cellFromFluid, 1)) {
             // Convert back to FluidStack to learn the container capacity...
@@ -171,14 +171,28 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
      *              this MetaTileEntity
      */
     private void doAutoOutputPerSecond(IGregTechTileEntity aBaseMetaTileEntity) {
-        final ForgeDirection side = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing());
-        final TileEntity adjacentTE = aBaseMetaTileEntity.getTileEntityOffset(side.offsetX, side.offsetY, side.offsetZ);
+        final ForgeDirection outSide = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing());
+        final TileEntity adjacentTE = aBaseMetaTileEntity.getTileEntityOffset(outSide.offsetX, outSide.offsetY, outSide.offsetZ);
         if(adjacentTE instanceof IFluidHandler) {
-            final IFluidHandler adj = (IFluidHandler) adjacentTE;
-            final int outputPerSec = vals.get(super.mTier);
+            final IFluidHandler adjFH = (IFluidHandler) adjacentTE;
             // Cycle through fluids
-            for(int i = 0; i < mfh.getInfoData().size(); i++) {
-                final FluidStack storedFluid = mfh.getFluid(i);
+            for(int i = 0; i < mfh.getDistinctFluids(); i++) {
+                final FluidStack fluidCopy = mfh.getFluidCopy(i);
+                // Make sure the adjacent IFluidHandler can accept this fluid
+                if(adjFH.canFill(outSide.getOpposite(), fluidCopy.getFluid())) {
+
+                    // Limit to output rate
+                    fluidCopy.amount = Math.min(fluidCopy.amount, vals.get(super.mTier));
+
+                    // Test how much can be drawn
+                    fluidCopy.amount = mfh.pullFluid(fluidCopy, false);
+
+                    // Test how much can be filled (and fill if possible)
+                    fluidCopy.amount = adjFH.fill(outSide.getOpposite(), fluidCopy, true);
+
+                    // Actually deplete storage
+                    mfh.pullFluid(fluidCopy, true);
+                }
             }
 
         }
@@ -211,7 +225,7 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         if(mfh != null) {
-            final FluidStack drain = mfh.getFluid(0);
+            final FluidStack drain = mfh.getFluidCopy(0);
             if(drain != null) {
                 // If there's no integrated circuit in the T.F.F.T. controller, output slot 0
                 final byte selectedSlot = (mfh.getSelectedFluid() == -1) ? 0 : mfh.getSelectedFluid();

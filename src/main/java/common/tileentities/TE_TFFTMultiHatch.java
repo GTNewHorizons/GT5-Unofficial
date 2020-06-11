@@ -1,11 +1,6 @@
 package common.tileentities;
 
-import java.util.Iterator;
-import java.util.List;
-
-import common.Blocks;
 import kekztech.MultiFluidHandler;
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -48,88 +43,19 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 	
 	@Override
 	public void updateEntity() {
-		if(!autoOutput || mfh == null) {
-			return;
-		}
-		
-		tickCounter++;
-		if(tickCounter >= 20) {
-			
-			final ForgeDirection d = getOutwardsFacingDirection();
-			if(d == ForgeDirection.UNKNOWN) {
-				return;
-			}
-			final TileEntity t = this.getWorldObj().getTileEntity(
-					this.xCoord + d.offsetX, 
-					this.yCoord + d.offsetY, 
-					this.zCoord + d.offsetZ
-			);
-			
-			if(t instanceof IFluidHandler) {
-				
-				final IFluidHandler fh = (IFluidHandler) t;
-				final int meta = t.getWorldObj().getBlockMetadata(t.xCoord, t.yCoord, t.zCoord);
-				// Cycle through fluids
-				for (FluidStack volume : mfh.getFluids()) {
-					// Remember for later
-					final int oVolume = volume.amount;
-
-					// Use API methods
-					if (fh.canFill(d.getOpposite(), volume.getFluid())) {
-
-						// Test how much can be output
-						final FluidStack copy = volume.copy();
-						copy.amount = (int) Math.min(copy.amount, BASE_OUTPUT_PER_SECOND * Math.pow(10, meta));
-
-						// How much is drawn
-						copy.amount = mfh.pullFluid(copy, false);
-
-						// Test how much can be filled (and fill if possible)
-						copy.amount = fh.fill(d.getOpposite(), copy, true);
-
-						// Actually deplete storage
-						mfh.pullFluid(copy, true);
-
-						// Prevent ConcurrentModificationException
-						if (copy.amount >= oVolume) {
-							break;
-						}
-					}
-				}
-			}
-			
-			tickCounter = 0;
-		}
-	}
-	
-	private ForgeDirection getOutwardsFacingDirection() {
-		// TODO Revisit this once the hatch has a facing side
-		// Look up which side has the storage field block and choose the other side.
-		// This is important so the tank doesn't output into itself in case
-		// there is another hatch next to this one. 
-		for(ForgeDirection direction : ForgeDirection.values()) {
-			
-			final Block b = this.getWorldObj().getBlock(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
-			if(b != null && (
-					b.equals(Blocks.tfftStorageField1)
-					|| b.equals(Blocks.tfftStorageField2)
-					|| b.equals(Blocks.tfftStorageField3)
-					|| b.equals(Blocks.tfftStorageField4)
-					|| b.equals(Blocks.tfftStorageField5))) {
-				return direction.getOpposite();
-			}
-		}
-		return ForgeDirection.UNKNOWN;
+		// Removed deprecated code
 	}
 	
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		return (mfh != null) ? mfh.pushFluid(resource, doFill) : 0; 
+		// Removed deprecated code
+		return 0;
 	}
 
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-		return (mfh != null) ? new FluidStack(resource.getFluid(), mfh.pullFluid(resource, doDrain)) : null; 
+		// Removed deprecated code
+		return null;
 	}
 	
 	/**
@@ -148,42 +74,26 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
      */
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		if(mfh != null) {
-			final FluidStack drain = mfh.getFluid(0);
-			if(drain != null) {
-				// If there's no integrated circuit in the T.F.F.T. controller, output slot 0
-				final byte selectedSlot = (mfh.getSelectedFluid() == -1) ? 0 : mfh.getSelectedFluid();
-				
-				return new FluidStack(
-						drain.getFluid(), 
-						mfh.pullFluid(new FluidStack(drain.getFluid(), maxDrain), selectedSlot, doDrain)
-						);			
-			}
-		}
+		// Removed deprecated code
 		return null;
 	}
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		return (mfh != null) && mfh.couldPush(new FluidStack(fluid, 1));
+		// Removed deprecated code
+		return false;
 	}
 
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		return (mfh != null) && mfh.contains(new FluidStack(fluid, 1));
+		// Removed deprecated code
+		return false;
 	}
 
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		if(mfh == null) {
-			return null;
-		}
-		final List<FluidStack> fluids = mfh.getFluids();
-		final FluidTankInfo[] tankInfo = new FluidTankInfo[fluids.size()];
-		for(int i = 0; i < tankInfo.length; i++) {
-			tankInfo[i] = new FluidTankInfo(fluids.get(i), mfh.getCapacity());
-		}
-		return tankInfo;
+		// Removed deprecated code
+		return null;
 	}
 
 	@Override

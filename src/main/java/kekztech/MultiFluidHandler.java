@@ -70,10 +70,26 @@ public class MultiFluidHandler {
 	public int getCapacity() {
 		return capacityPerFluid;
 	}
-	
-	public FluidStack getFluid(int slot) {
+
+	/**
+	 * Returns a deep copy of the the FluidStack in the requested slot
+	 * @param slot
+	 * 				requested slot
+	 * @return
+	 * 				deep copy of the requested FluidStack
+	 */
+	public FluidStack getFluidCopy(int slot) {
 		return (!locked && fluids.size() > 0 && slot >= 0 && slot < MAX_DISTINCT_FLUIDS) 
 				? fluids.get(slot).copy() : null;
+	}
+
+	/**
+	 * Returns the amount of different fluids currently stored.
+	 * @return
+	 * 				amount of different fluids currently stored (0-25)
+	 */
+	public int getDistinctFluids() {
+		return fluids.size();
 	}
 	
 	public NBTTagCompound saveNBTData(NBTTagCompound nbt) {

@@ -138,7 +138,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 
 		// Push out fluids
 		if (guiSlotItem != null && guiSlotItem.getUnlocalizedName().equals("gt.integrated_circuit")) {
-			final FluidStack storedFluid = mfh.getFluid(fluidSelector);
+			final FluidStack storedFluid = mfh.getFluidCopy(fluidSelector);
 			// Sum available output capacity
 			int possibleOutput = 0;
 			for (GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
