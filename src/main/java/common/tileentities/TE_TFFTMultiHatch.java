@@ -70,31 +70,28 @@ public class TE_TFFTMultiHatch extends TileEntity implements IFluidHandler {
 				final IFluidHandler fh = (IFluidHandler) t;
 				final int meta = t.getWorldObj().getBlockMetadata(t.xCoord, t.yCoord, t.zCoord);
 				// Cycle through fluids
-				final Iterator<FluidStack> volumes = mfh.getFluids().iterator();
-				while(volumes.hasNext()) {
-					final FluidStack volume = volumes.next();
-					
+				for (FluidStack volume : mfh.getFluids()) {
 					// Remember for later
 					final int oVolume = volume.amount;
-					
+
 					// Use API methods
-					if(fh.canFill(d.getOpposite(), volume.getFluid())) {
-						
+					if (fh.canFill(d.getOpposite(), volume.getFluid())) {
+
 						// Test how much can be output
 						final FluidStack copy = volume.copy();
 						copy.amount = (int) Math.min(copy.amount, BASE_OUTPUT_PER_SECOND * Math.pow(10, meta));
-												
+
 						// How much is drawn
 						copy.amount = mfh.pullFluid(copy, false);
-						
+
 						// Test how much can be filled (and fill if possible)
 						copy.amount = fh.fill(d.getOpposite(), copy, true);
-												
+
 						// Actually deplete storage
 						mfh.pullFluid(copy, true);
-						
+
 						// Prevent ConcurrentModificationException
-						if(copy.amount >= oVolume) {
+						if (copy.amount >= oVolume) {
 							break;
 						}
 					}

@@ -11,8 +11,10 @@ import kekztech.MultiFluidHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.HashMap;
 
@@ -116,29 +118,69 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
     }
 
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && mfh != null) {
-            // Handle emptying containers
-            final FluidStack fluidFromCell = GT_Utility.getFluidForFilledItem(super.mInventory[super.getInputSlot()], true);
-            // Check if fluid is not null, could be inserted, and if there is space for the empty container
-            if (fluidFromCell != null && mfh.couldPush(fluidFromCell)
-                    && aBaseMetaTileEntity.addStackToSlot(super.getOutputSlot(), GT_Utility.getContainerItem(super.mInventory[super.getInputSlot()], true), 1)) {
-                // Consume one filled container if it was emptied successfully
-                if(mfh.pushFluid(fluidFromCell, true) == fluidFromCell.amount) {
-                    aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
-                }
+            emptyContainers(aBaseMetaTileEntity);
+            fillContainers(aBaseMetaTileEntity);
+            if(outputting && (aTick % 20 == 0)) {
+                doAutoOutputPerSecond(aBaseMetaTileEntity);
             }
-            // Handle filling containers. This will use the selected T.F.F.T fluid
-            final ItemStack cellFromFluid = GT_Utility.fillFluidContainer(
-                    mfh.getFluid(mfh.getSelectedFluid()), super.mInventory[super.getInputSlot()], false, true);
-            // Check if cell is not null and if there is space for the filled container
-            if (cellFromFluid != null && aBaseMetaTileEntity.addStackToSlot(super.getOutputSlot(), cellFromFluid, 1)) {
-                // Convert back to FluidStack to learn the container capacity...
-                final FluidStack fluidCapacityStack = GT_Utility.getFluidForFilledItem(cellFromFluid, true);
-                // Consume one empty container if it was filled successfully
-                if(mfh.pullFluid(fluidCapacityStack, true) == fluidCapacityStack.amount) {
-                    aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
-                }
+        }
+    }
+
+    /**
+     * Empty containers (cells, buckets, etc) from the GUI into the T.F.F.T
+     * @param aBaseMetaTileEntity
+     *              this MetaTileEntity
+     */
+    private void emptyContainers(IGregTechTileEntity aBaseMetaTileEntity) {
+        final FluidStack fluidFromCell = GT_Utility.getFluidForFilledItem(super.mInventory[super.getInputSlot()], true);
+        // Check if fluid is not null, could be inserted, and if there is space for the empty container
+        if (fluidFromCell != null && mfh.couldPush(fluidFromCell)
+                && aBaseMetaTileEntity.addStackToSlot(super.getOutputSlot(), GT_Utility.getContainerItem(super.mInventory[super.getInputSlot()], true), 1)) {
+            // Consume one filled container if it was emptied successfully
+            if(mfh.pushFluid(fluidFromCell, true) == fluidFromCell.amount) {
+                aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
             }
+        }
+    }
+
+    /**
+     * Fill containers (cells, buckets, etc) in the GUI. The fluid used to fill containers will be the one that is
+     * selected through an Integrated Circuit in the T.F.F.T's controller GUI.
+     * @param aBaseMetaTileEntity
+     *              this MetaTileEntity
+     */
+    private void fillContainers(IGregTechTileEntity aBaseMetaTileEntity) {
+        final ItemStack cellFromFluid = GT_Utility.fillFluidContainer(
+                mfh.getFluid(mfh.getSelectedFluid()), super.mInventory[super.getInputSlot()], false, true);
+        // Check if cell is not null and if there is space for the filled container
+        if (cellFromFluid != null && aBaseMetaTileEntity.addStackToSlot(super.getOutputSlot(), cellFromFluid, 1)) {
+            // Convert back to FluidStack to learn the container capacity...
+            final FluidStack fluidCapacityStack = GT_Utility.getFluidForFilledItem(cellFromFluid, true);
+            // Consume one empty container if it was filled successfully
+            if(mfh.pullFluid(fluidCapacityStack, true) == fluidCapacityStack.amount) {
+                aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
+            }
+        }
+    }
+
+    /**
+     * Handle the Multi Hatch's auto-output feature. Should be called once per second only.
+     * @param aBaseMetaTileEntity
+     *              this MetaTileEntity
+     */
+    private void doAutoOutputPerSecond(IGregTechTileEntity aBaseMetaTileEntity) {
+        final ForgeDirection side = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing());
+        final TileEntity adjacentTE = aBaseMetaTileEntity.getTileEntityOffset(side.offsetX, side.offsetY, side.offsetZ);
+        if(adjacentTE instanceof IFluidHandler) {
+            final IFluidHandler adj = (IFluidHandler) adjacentTE;
+            final int outputPerSec = vals.get(super.mTier);
+            // Cycle through fluids
+            for(int i = 0; i < mfh.getInfoData().size(); i++) {
+                final FluidStack storedFluid = mfh.getFluid(i);
+            }
+
         }
     }
 
