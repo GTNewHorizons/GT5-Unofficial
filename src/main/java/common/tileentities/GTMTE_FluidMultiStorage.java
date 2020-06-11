@@ -157,24 +157,22 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 			super.addOutput(tempStack);
 
 		} else {
-			for (FluidStack storedFluid : mfh.getFluids()) {
-				// Sum available output capacity
-				int possibleOutput = 0;
+			for(int i = 0; i < mfh.getDistinctFluids(); i++) {
+				final FluidStack storedFluidCopy = mfh.getFluidCopy(i);
+				// Calculate how much capacity all available Output Hatches offer
 				for (GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
-					if (outputHatch.isFluidLocked() && outputHatch.getLockedFluidName().equals(storedFluid.getUnlocalizedName())) {
-						possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-					} else if (outputHatch.getFluid() != null && outputHatch.getFluid().getUnlocalizedName().equals(storedFluid.getUnlocalizedName())) {
-						possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+					if (outputHatch.isFluidLocked() && outputHatch.getLockedFluidName().equals(storedFluidCopy.getUnlocalizedName())) {
+						storedFluidCopy.amount += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+					} else if (outputHatch.getFluid() != null && outputHatch.getFluid().getUnlocalizedName().equals(storedFluidCopy.getUnlocalizedName())) {
+						storedFluidCopy.amount += outputHatch.getCapacity() - outputHatch.getFluidAmount();
 					} else if (outputHatch.getFluid() == null) {
-						possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+						storedFluidCopy.amount += outputHatch.getCapacity() - outputHatch.getFluidAmount();
 					}
 				}
-				// output as much as possible
-				final FluidStack tempStack = storedFluid.copy();
-				tempStack.amount = possibleOutput;
-				// TODO possible concurrent modification exception as pullFluid calls remove() without an iterator
-				tempStack.amount = mfh.pullFluid(tempStack, true);
-				super.addOutput(tempStack);
+				// Test how much can actually be drained and drain that amount
+				storedFluidCopy.amount = mfh.pullFluid(storedFluidCopy, true);
+				// Add to output
+				super.addOutput(storedFluidCopy);
 			}
 		}
 
@@ -408,10 +406,10 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 			// Update MultiFluidHandler in case storage cells have been changed
 			final int capacityPerFluid = (int) Math.round(fluidCapacityAcc / 25.0f);
 			if (mfh == null) {
-				mfh = new MultiFluidHandler(capacityPerFluid);
+				mfh = MultiFluidHandler.newInstance(25, capacityPerFluid);
 			} else {
 				if (mfh.getCapacity() != capacityPerFluid) {
-					mfh = new MultiFluidHandler(capacityPerFluid, mfh.getFluids());
+					mfh = MultiFluidHandler.newAdjustedInstance(mfh, capacityPerFluid);
 				}
 			}
 			for (GTMTE_TFFTMultiHatch mh : sMultiHatches) {
@@ -488,8 +486,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		runningCost = nbt.getInteger("runningCost");
 		doVoidExcess = nbt.getBoolean("doVoidExcess");
 
-		mfh = new MultiFluidHandler();
-		mfh.loadNBTData(nbt);
+		mfh = mfh.loadNBTData(nbt);
 		for (GTMTE_TFFTMultiHatch mh : sMultiHatches) {
 			mh.setMultiFluidHandler(mfh);
 		}
