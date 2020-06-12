@@ -503,7 +503,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 					if (aTileEntity != null) {
 
 						if (this.addToMachineList(aTileEntity)) {
-							tAmount++;							
+							continue;					
 						}
 						else {							
 							final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
