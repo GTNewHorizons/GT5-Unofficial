@@ -1708,6 +1708,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     private boolean drainEnergyInput_EM(long EUtTierVoltage, long EUtEffective, long Amperes) {
+        if(maxEUinputMin==0){
+            return false;
+        }
         if (EUtTierVoltage < 0) {
             EUtTierVoltage = -EUtTierVoltage;
         }
