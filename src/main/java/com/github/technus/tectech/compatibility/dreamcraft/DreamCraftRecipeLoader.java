@@ -30,9 +30,11 @@ import static com.github.technus.tectech.loader.recipe.RecipeLoader.getOrDefault
  */
 public class DreamCraftRecipeLoader implements Runnable {
     //region reflect a bit
+    @SuppressWarnings("rawtypes")
     private Class CUSTOM_ITEM_LIST;
     private Method ADD_ASSEMBLER_RECIPE;
 
+    @SuppressWarnings("unchecked")
     private IItemContainer getItemContainer(String name) {
         return (IItemContainer) Enum.valueOf(CUSTOM_ITEM_LIST, name);
     }
@@ -41,7 +43,7 @@ public class DreamCraftRecipeLoader implements Runnable {
         try {
             ADD_ASSEMBLER_RECIPE.invoke(GT_Values.RA, items, fluid, output, time, eut, true);
         } catch (Exception e) {
-            throw new Error(e);
+            throw new RuntimeException("Failed to add clean room assembler recipe! " +output.getDisplayName(),e);
         }
     }
     //endregion

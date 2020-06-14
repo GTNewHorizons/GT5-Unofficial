@@ -87,6 +87,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected ArrayList<GT_MetaTileEntity_Hatch_InputData> eInputData = new ArrayList<>();
     protected ArrayList<GT_MetaTileEntity_Hatch_OutputData> eOutputData = new ArrayList<>();
 
+    //endregion
+
     //region parameters
     public final Parameters parametrization;
     //endregion

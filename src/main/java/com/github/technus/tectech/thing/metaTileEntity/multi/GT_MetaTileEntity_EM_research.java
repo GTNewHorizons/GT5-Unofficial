@@ -239,7 +239,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 mEfficiencyIncrease = 10000;
                 eRequiredData = (short) (ttRecipe.mSpecialValue >>> 16);
                 eAmpereFlow = (short) (ttRecipe.mSpecialValue & 0xFFFF);
-                mEUt = ttRecipe.mEUt;
+                mEUt = Math.min(ttRecipe.mEUt,-ttRecipe.mEUt);
                 eHolders.get(0).getBaseMetaTileEntity().setActive(true);
                 return true;
             }
