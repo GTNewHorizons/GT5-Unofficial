@@ -35,6 +35,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -158,6 +159,23 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             }
         }
         return eUncertainHatches.size() == 1;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if(aBaseMetaTileEntity.isServerSide() && mMachine && !aBaseMetaTileEntity.isActive() && aTick % 20 == MULTI_CHECK_AT){
+            double maxTemp = 0;
+            for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
+                if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
+                    continue;
+                }
+                if (rack.heat > maxTemp) {
+                    maxTemp = rack.heat;
+                }
+            }
+            maxCurrentTemp.set(maxTemp);
+        }
     }
 
     @Override
