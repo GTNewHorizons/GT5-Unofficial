@@ -58,6 +58,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private GT_Recipe.GT_Recipe_AssemblyLine tRecipe;
     private TT_recipe.TT_assLineRecipe aRecipe;
     private String machineType;
+    private static final String assembly="Assembly line";
     private ItemStack holdItem;
     private long computationRemaining, computationRequired;
 
@@ -282,6 +283,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             if (ItemList.Tool_DataStick.isStackEqual(itemStack, false, true)) {
                 for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : TT_recipe.GT_Recipe_MapTT.sAssemblylineRecipes) {
                     if (GT_Utility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
+                        machineType = assembly;
                         tRecipe = assRecipe;
                         //if found
                         if (iterateRecipes()) return true;
@@ -469,6 +471,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                         for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : TT_recipe.GT_Recipe_MapTT.sAssemblylineRecipes) {
                             if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
                                 this.tRecipe = tRecipe;
+                                machineType = assembly;
                                 break;
                             }
                         }
