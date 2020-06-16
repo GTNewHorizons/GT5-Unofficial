@@ -1,12 +1,18 @@
 package gregtech.common;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.GT_Mod;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.net.GT_Packet_Pollution;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -15,6 +21,8 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.ChunkWatchEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,6 +72,10 @@ public class GT_Pollution {
 	private final World aWorld;
 	public static int mPlayerPollution;
 
+	private static int POLLUTIONPACKET_MINVALUE = 1000;
+
+	private static GT_PollutionEventHandler EVENT_HANDLER;
+
 	public GT_Pollution(World world){
 		aWorld=world;
 		chunkData=dimensionWiseChunkData.get(aWorld.provider.dimensionId);
@@ -72,6 +84,11 @@ public class GT_Pollution {
 			dimensionWiseChunkData.put(world.provider.dimensionId,chunkData);
 		}
 		dimensionWisePollution.put(aWorld.provider.dimensionId,this);
+
+		if (EVENT_HANDLER == null) {
+			EVENT_HANDLER = new GT_PollutionEventHandler();
+			MinecraftForge.EVENT_BUS.register(EVENT_HANDLER);
+		}
 	}
 
 	public static void onWorldTick(TickEvent.WorldTickEvent aEvent){//called from proxy
@@ -130,7 +147,10 @@ public class GT_Pollution {
 					AxisAlignedBB chunk = AxisAlignedBB.getBoundingBox(actualPos.chunkXPos << 4, 0, actualPos.chunkZPos << 4, (actualPos.chunkXPos << 4) + 16, 256, (actualPos.chunkZPos << 4) + 16);
 					List<EntityLivingBase> tEntitys = aWorld.getEntitiesWithinAABB(EntityLivingBase.class, chunk);
 					for (EntityLivingBase tEnt : tEntitys) {
-						if (!GT_Utility.isWearingFullGasHazmat(tEnt)) {
+						boolean creative = false;
+						if (tEnt instanceof EntityPlayerMP)
+							creative = ((EntityPlayerMP) tEnt).capabilities.isCreativeMode;
+						if (!(GT_Utility.isWearingFullGasHazmat(tEnt) || creative)) {
 							switch (XSTR_INSTANCE.nextInt(3)) {
 								default:
 									tEnt.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, Math.min(tPollution / 1000, 1000), tPollution / 400000));
@@ -178,15 +198,21 @@ public class GT_Pollution {
 			}
 			//Write new pollution to Hashmap !!!
 			chunkData.get(actualPos)[GTPOLLUTION] = tPollution;
+
+			//Send new value to players nearby
+			if (tPollution > POLLUTIONPACKET_MINVALUE) {
+				NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(aWorld.provider.dimensionId, (actualPos.chunkXPos << 4), 64, (actualPos.chunkZPos << 4), 256);
+				GT_Values.NW.sendToAllAround(new GT_Packet_Pollution(actualPos, tPollution), point);
+			}
 		}
 	}
-	
+
 	private static void damageBlock(World world, int x, int y, int z, boolean sourRain){
 		if (world.isRemote)	return;
 		Block tBlock = world.getBlock(x, y, z);
 		int tMeta = world.getBlockMetadata(x, y, z);
 		if (tBlock == Blocks.air || tBlock == Blocks.stone || tBlock == Blocks.sand|| tBlock == Blocks.deadbush)return;
-		
+
 			if (tBlock == Blocks.leaves || tBlock == Blocks.leaves2 || tBlock.getMaterial() == Material.leaves)
 				world.setBlockToAir(x, y, z);
 			if (tBlock == Blocks.reeds) {
@@ -199,12 +225,12 @@ public class GT_Pollution {
 				tBlock.dropBlockAsItem(world, x, y, z, tMeta, 0);
 				world.setBlockToAir(x, y, z);
 			}
-			if (tBlock == Blocks.waterlily || tBlock == Blocks.wheat || tBlock == Blocks.cactus || 
+			if (tBlock == Blocks.waterlily || tBlock == Blocks.wheat || tBlock == Blocks.cactus ||
 				tBlock.getMaterial() == Material.cactus || tBlock == Blocks.melon_block || tBlock == Blocks.melon_stem) {
 				tBlock.dropBlockAsItem(world, x, y, z, tMeta, 0);
 				world.setBlockToAir(x, y, z);
 			}
-			if (tBlock == Blocks.red_flower || tBlock == Blocks.yellow_flower || tBlock == Blocks.carrots || 
+			if (tBlock == Blocks.red_flower || tBlock == Blocks.yellow_flower || tBlock == Blocks.carrots ||
 				tBlock == Blocks.potatoes || tBlock == Blocks.pumpkin || tBlock == Blocks.pumpkin_stem) {
 				tBlock.dropBlockAsItem(world, x, y, z, tMeta, 0);
 				world.setBlockToAir(x, y, z);
@@ -218,12 +244,12 @@ public class GT_Pollution {
 			if (tBlock == Blocks.mossy_cobblestone)
 				world.setBlock(x, y, z, Blocks.cobblestone);
 			if (tBlock == Blocks.grass || tBlock.getMaterial() == Material.grass )
-				world.setBlock(x, y, z, Blocks.dirt);	
+				world.setBlock(x, y, z, Blocks.dirt);
 			if(tBlock == Blocks.farmland || tBlock == Blocks.dirt){
-				world.setBlock(x, y, z, Blocks.sand);					
+				world.setBlock(x, y, z, Blocks.sand);
 			}
-			
-			if(sourRain && world.isRaining() && (tBlock == Blocks.stone || tBlock == Blocks.gravel || tBlock == Blocks.cobblestone) && 
+
+			if(sourRain && world.isRaining() && (tBlock == Blocks.stone || tBlock == Blocks.gravel || tBlock == Blocks.cobblestone) &&
 				world.getBlock(x, y+1, z) == Blocks.air && world.canBlockSeeTheSky(x, y, z)){
 				if(tBlock == Blocks.stone){world.setBlock(x, y, z, Blocks.cobblestone);	}
 				else if(tBlock == Blocks.cobblestone){world.setBlock(x, y, z, Blocks.gravel);	}
@@ -256,24 +282,38 @@ public class GT_Pollution {
 	}
 
 	public static int getPollution(Chunk ch){
-		if(!GT_Mod.gregtechproxy.mPollution)return 0;
+		if(!GT_Mod.gregtechproxy.mPollution)
+			return 0;
 		HashMap<ChunkCoordIntPair,int[]> dataMap=dimensionWiseChunkData.get(ch.worldObj.provider.dimensionId);
 		if(dataMap==null || dataMap.get(ch.getChunkCoordIntPair())==null) return 0;
 		return dataMap.get(ch.getChunkCoordIntPair())[GTPOLLUTION];
 	}
 
-	public static int getPollution(ChunkCoordIntPair aCh, int aDim){
-		if(!GT_Mod.gregtechproxy.mPollution)return 0;
-		HashMap<ChunkCoordIntPair,int[]> dataMap=dimensionWiseChunkData.get(aDim);
-		if(dataMap==null || dataMap.get(aCh)==null) return 0;
+	public static int getPollution(ChunkCoordIntPair aCh, int aDim) {
+		if (!GT_Mod.gregtechproxy.mPollution)
+			return 0;
+		HashMap<ChunkCoordIntPair, int[]> dataMap = dimensionWiseChunkData.get(aDim);
+		if (dataMap == null || dataMap.get(aCh) == null)
+			return 0;
 		return dataMap.get(aCh)[GTPOLLUTION];
 	}
-	
+
 	//Add compatibility with old code
 	@Deprecated /*Don't use it... too weird way of passing position*/
 	public static void addPollution(World aWorld, ChunkPosition aPos, int aPollution){
 		//The abuse of ChunkPosition to store block position and dim... 
 		//is just bad especially when that is both used to store ChunkPos and BlockPos depending on context
 		addPollution(aWorld.getChunkFromBlockCoords(aPos.chunkPosX,aPos.chunkPosZ),aPollution);
+	}
+
+	public class GT_PollutionEventHandler {
+		@SubscribeEvent
+		public void chunkWatch(ChunkWatchEvent.Watch event) {
+			if (chunkData.containsKey(event.chunk)) {
+				int pollution = chunkData.get(event.chunk)[GTPOLLUTION];
+				if (pollution > POLLUTIONPACKET_MINVALUE)
+					GT_Values.NW.sendToPlayer(new GT_Packet_Pollution(event.chunk, pollution), event.player);
+			}
+		}
 	}
 }

@@ -1490,11 +1490,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
                 }
             }
-            if (aEvent.player.ticksExisted % 10 == 0) {
-        	int tPollution = 0;
-        	tPollution = GT_Pollution.getPollution(new ChunkCoordIntPair(aEvent.player.chunkCoordX,aEvent.player.chunkCoordZ), aEvent.player.dimension);
-        	if(aEvent.player instanceof EntityPlayerMP)GT_Values.NW.sendToPlayer(new GT_Packet_Pollution(tPollution), (EntityPlayerMP) aEvent.player);
-            }
         }
     }
 
