@@ -89,22 +89,9 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (GT_Utility.isStackInList(aPlayer.getHeldItem(), GregTech_API.sScrewdriverList)) {
-            if (GT_ModHandler.damageOrDechargeItem(aPlayer.getHeldItem(), 1, 200, aPlayer)) {
-                outputting = !outputting;
-                GT_Utility.sendSoundToPlayers(aBaseMetaTileEntity.getWorld(), GregTech_API.sSoundList.get(100),
-                        1.0F, -1.0F,
-                        aBaseMetaTileEntity.getXCoord(),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getZCoord()
-                );
-                // Give chat feedback
-                GT_Utility.sendChatToPlayer(aPlayer, outputting ? "Auto-output enabled" : "Auto-output disabled");
-            }
-            return true;
-        }
-        return false;
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        outputting = !outputting;
+        GT_Utility.sendChatToPlayer(aPlayer, outputting ? "Auto-output enabled" : "Auto-output disabled");
     }
 
     @Override

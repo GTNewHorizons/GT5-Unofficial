@@ -70,12 +70,14 @@ public class MultiFluidHandler {
 	/**
 	 * Used to tell the MFH if a fluid is selected by
 	 * an Integrated Circuit in the controller.
+	 * If the Integrate Circuit configuration exceeds
+	 * the number of stored fluid, the configuration will be ignored.
 	 * 
 	 * @param fluidSelector
 	 * 				Selected fluid or -1 if no fluid is selected
 	 */
 	public void setFluidSelector(byte fluidSelector) {
-		this.fluidSelector = fluidSelector;
+		this.fluidSelector = fluidSelector < fluids.size() ? fluidSelector : -1;
 	}
 	
 	/**

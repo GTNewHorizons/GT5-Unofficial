@@ -9,6 +9,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Utility;
 import kekztech.MultiFluidHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -438,13 +439,8 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		if (doVoidExcess) {
-			doVoidExcess = false;
-			aPlayer.addChatComponentMessage(new ChatComponentText("Auto-voiding turned off"));
-		} else {
-			doVoidExcess = true;
-			aPlayer.addChatComponentMessage(new ChatComponentText("Auto-voiding turned on"));
-		}
+		doVoidExcess = !doVoidExcess;
+		GT_Utility.sendChatToPlayer(aPlayer, doVoidExcess ? "Auto-voiding enabled" : "Auto-voiding disabled");
 	}
 
 	@Override
