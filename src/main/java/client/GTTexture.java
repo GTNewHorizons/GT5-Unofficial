@@ -9,37 +9,44 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.HashMap;
 
-public class GTTexture implements IIconContainer {
+public class GTTexture implements IIconContainer, Runnable {
 
+    public static final String TFFT_CASING = "TFFTCasing";
     public static final String MULTI_HATCH_OFF = "multi_hatch_off";
     public static final String MULTI_HATCH_ON = "multi_hatch_on";
 
     private static final HashMap<String, IIconContainer> icons = new HashMap<>();
+    private static final String REL_PATH = "blocks/";
 
-    private final IIcon icon;
-    private final IIcon overlayIcon;
-
-    private GTTexture(String iconName) {
-        icon = GregTech_API.sBlockIcons.registerIcon(KekzCore.MODID + ":" + iconName);
-        overlayIcon = null;
+    static {
+        registerTexture(TFFT_CASING);
+        registerTexture(MULTI_HATCH_OFF);
+        registerTexture(MULTI_HATCH_ON);
     }
 
-    private GTTexture(String iconName, String overlayIconName) {
-        icon = GregTech_API.sBlockIcons.registerIcon(KekzCore.MODID + ":" + iconName);
-        overlayIcon = GregTech_API.sBlockIcons.registerIcon(KekzCore.MODID + ":" + overlayIconName);
+    private IIcon icon;
+    private IIcon iconOverlay;
+    private final String iconName;
+    private final String iconOverlayName;
+
+    private GTTexture(String iconName) {
+        this.iconName = iconName;
+        this.iconOverlayName = "";
+        GregTech_API.sGTBlockIconload.add(this);
+    }
+
+    private GTTexture(String iconName, String iconOverlayName) {
+        this.iconName = iconName;
+        this.iconOverlayName = iconOverlayName;
+        GregTech_API.sGTBlockIconload.add(this);
     }
 
     public static void registerTexture(String iconName) {
         icons.put(iconName, new GTTexture(iconName));
     }
 
-    public static void registerTexture(String iconName, String overlayIconName) {
-        icons.put(iconName, new GTTexture(iconName, overlayIconName));
-    }
-
-    public static void init() {
-        registerTexture(MULTI_HATCH_ON);
-        registerTexture(MULTI_HATCH_OFF);
+    public static void registerTexture(String iconName, String iconOverlayName) {
+        icons.put(iconName, new GTTexture(iconName, iconOverlayName));
     }
 
     public static IIconContainer getIconContainer(String iconName) {
@@ -53,11 +60,21 @@ public class GTTexture implements IIconContainer {
 
     @Override
     public IIcon getOverlayIcon() {
-        return overlayIcon;
+        return iconOverlay;
     }
 
     @Override
     public ResourceLocation getTextureFile() {
         return TextureMap.locationBlocksTexture;
+    }
+
+    @Override
+    public void run() {
+        icon = GregTech_API.sBlockIcons.registerIcon(KekzCore.MODID + ":" + REL_PATH + iconName);
+        if(!iconOverlayName.equals("")) {
+            iconOverlay = GregTech_API.sBlockIcons.registerIcon(KekzCore.MODID + ":" + REL_PATH + iconOverlayName);
+        } else {
+            KekzCore.LOGGER.info("No overlay texture specified for icon: " + iconName + "; This is fine.");
+        }
     }
 }
