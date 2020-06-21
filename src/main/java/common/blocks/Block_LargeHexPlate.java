@@ -40,8 +40,14 @@ public class Block_LargeHexPlate extends Block {
     }
 
     @Override
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int meta) {
-        return parts[Math.abs(x % BATCH_SIZE)][Math.abs(z % BATCH_SIZE)];
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+        if(side == 0 || side == 1) {
+            return parts[Math.abs(x % BATCH_SIZE)][Math.abs(z % BATCH_SIZE)];
+        } else if(side == 2 || side == 3) {
+            return parts[Math.abs(x % BATCH_SIZE)][Math.abs(y % BATCH_SIZE)];
+        } else {
+            return parts[Math.abs(z % BATCH_SIZE)][Math.abs(y % BATCH_SIZE)];
+        }
     }
 
     @Override
