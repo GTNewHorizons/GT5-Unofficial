@@ -11,7 +11,7 @@ import net.minecraft.world.IBlockAccess;
 public class Block_LargeHexPlate extends Block {
 
     private static final Block_LargeHexPlate INSTANCE = new Block_LargeHexPlate();
-    private static final int BATCH_SIZE = 3;
+    private static final int BATCH_SIZE = 4;
 
     private final IIcon[][] parts = new IIcon[BATCH_SIZE][BATCH_SIZE];
 
