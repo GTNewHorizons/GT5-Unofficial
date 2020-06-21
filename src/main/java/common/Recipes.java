@@ -37,7 +37,7 @@ public class Recipes {
 		registerRecipes_Nuclear();
 		registerRecipes_Jars();
 		registerRecipes_LSC();
-		registerRecipes_SpaceElevator();
+		//registerRecipes_SpaceElevator();
 		registerRecipes_Cosmetics();
 
 		KekzCore.LOGGER.info("Finished registering recipes");

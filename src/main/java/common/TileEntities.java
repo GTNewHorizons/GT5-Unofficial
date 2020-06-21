@@ -24,7 +24,7 @@ public class TileEntities {
         GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
         GameRegistry.registerTileEntity(TE_ThaumiumReinforcedJar.class, "kekztech_thaumiumreinforcedjar");
         GameRegistry.registerTileEntity(TE_IchorJar.class, "kekztech_ichorjar");
-        GameRegistry.registerTileEntity(TE_SpaceElevatorCapacitor.class, "kekztech_secapacitor");
+        //GameRegistry.registerTileEntity(TE_SpaceElevatorCapacitor.class, "kekztech_secapacitor");
     }
     
     public static void init() {
@@ -34,7 +34,7 @@ public class TileEntities {
         mdr = new GTMTE_ModularNuclearReactor(13103, "multimachine.nuclearreactor", "Nuclear Reactor");
         fms = new GTMTE_FluidMultiStorage(13104, "multimachine.tf_fluidtank", "T.F.F.T");
         lsc = new GTMTE_LapotronicSuperCapacitor(13106, "multimachine.supercapacitor", "Lapotronic Supercapacitor");
-        se = new GTMTE_SpaceElevator(13107, "multimachine.spaceelevator", "Space Elevator");
+        //se = new GTMTE_SpaceElevator(13107, "multimachine.spaceelevator", "Space Elevator");
         // Singleblocks
         mhHV = new GTMTE_TFFTMultiHatch(13108, "machine.multihatch", "T.F.F.T Multi I/O Hatch [HV]", 3);
         mhIV = new GTMTE_TFFTMultiHatch(13109, "machine.multihatch", "T.F.F.T Multi I/O Hatch [IV]", 5);

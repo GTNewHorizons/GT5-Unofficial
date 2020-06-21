@@ -49,7 +49,7 @@ public class Blocks {
 		//registerBlocks_ItemProxy();
 		registerBlocks_Jars();
 		registerBlocks_LSC();
-		registerBlocks_SpaceElevator();
+		//registerBlocks_SpaceElevator();
 		registerBlocks_Cosmetics();
 
 		KekzCore.LOGGER.info("Finished registering blocks");
