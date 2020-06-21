@@ -1,5 +1,7 @@
 package common;
 
+import common.items.ErrorItem;
+import common.items.MetaItem_CraftingComponent;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
@@ -9,8 +11,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import common.items.ErrorItem;
-import common.items.MetaItem_CraftingComponent;
 import kekztech.Items;
 import kekztech.KekzCore;
 import net.minecraft.item.ItemStack;
@@ -156,6 +156,10 @@ public class Recipes {
 				'F', ItemList.Field_Generator_IV.get(1L)
 		};
 		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.tfftMultiHatch), multi_hatch_ZPM);
+
+		// Conversion recipe from deprecated hatch to new one (old hatch is equal to new IV hatch)
+		GT_ModHandler.addShapelessCraftingRecipe(TileEntities.mhIV.getStackForm(1),
+				new ItemStack[]{new ItemStack(Blocks.tfftMultiHatch, 1)});
 	}
 	
 	private static void registerRecipes_SOFC() {
