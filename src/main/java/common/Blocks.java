@@ -37,6 +37,8 @@ public class Blocks {
 	public static Block spaceElevatorStructure;
 	public static Block spaceElevatorCapacitor;
 	public static Block spaceElevatorTether;
+
+	public static Block largeHexPlate;
 	
 	public static void preInit() {
 		KekzCore.LOGGER.info("Registering blocks...");
@@ -48,6 +50,7 @@ public class Blocks {
 		registerBlocks_Jars();
 		registerBlocks_LSC();
 		registerBlocks_SpaceElevator();
+		registerBlocks_Cosmetics();
 
 		KekzCore.LOGGER.info("Finished registering blocks");
 	}
@@ -92,6 +95,10 @@ public class Blocks {
 		spaceElevatorStructure = Block_SpaceElevator.registerBlock();
 		spaceElevatorCapacitor = Block_SpaceElevatorCapacitor.registerBlock();
 		spaceElevatorTether = Block_SpaceElevatorTether.registerBlock();
+	}
+
+	private static void registerBlocks_Cosmetics() {
+		largeHexPlate = Block_LargeHexPlate.registerBlock();
 	}
 
 }

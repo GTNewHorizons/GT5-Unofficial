@@ -171,3 +171,6 @@ tile.kekztech_spaceelevator_block.desc=Part of the Space Elevator Base Station
 tile.kekztech_spaceelevatorcapacitor_block.name=Space Elevator Capacitor
 tile.kekztech_spaceelevatorcapacitor_block.desc=The see-through is good for your FPS!
 tile.kekztech_spaceelevatortether_block.name=Space Elevator Tether
+
+# -------- Cosmetic Blocks
+tile.kekztech_largehexttile_block=Large Hex Tile
