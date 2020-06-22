@@ -26,6 +26,7 @@ import com.github.bartimaeusnek.bartworks.client.renderer.BW_Renderer_Block_Ores
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.OrePrefixes;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -40,14 +41,19 @@ import static com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerate
 public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
 
     public static ThreadLocal<BW_MetaGenerated_Block_TE> mTemporaryTileEntity = new ThreadLocal<>();
+    protected OrePrefixes _prefixes;
 
     public BW_MetaGenerated_Blocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
-        super(p_i45386_1_, tileEntity, blockName);
+        this(p_i45386_1_, tileEntity, blockName, null);
+    }
 
+    public BW_MetaGenerated_Blocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName, OrePrefixes types) {
+        super(p_i45386_1_, tileEntity, blockName);
         this.setHardness(5.0F);
         this.setResistance(5.0F);
         this.setBlockTextureName("stone");
         this.setCreativeTab(metaTab);
+        _prefixes = types;
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }
 

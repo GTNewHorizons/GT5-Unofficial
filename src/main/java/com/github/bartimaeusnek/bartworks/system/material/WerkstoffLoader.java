@@ -90,6 +90,8 @@ public class WerkstoffLoader {
     public static final SubTag NO_BLAST = SubTag.getNewSubTag("NoBlast");
     public static OrePrefixes cellMolten;
     public static OrePrefixes capsuleMolten;
+    public static OrePrefixes blockCasing;
+    public static OrePrefixes blockCasingAdvanced;
     public static ItemList rotorMold;
     public static ItemList rotorShape;
     public static ItemList smallGearShape;
@@ -144,7 +146,40 @@ public class WerkstoffLoader {
 
         //add tiberium
         Element t = EnumUtils.createNewElement("Tr", 123L, 203L, 0L, -1L, null, "Tiberium", false);
-
+        blockCasing = EnumUtils.addNewOrePrefix("blockCasing",
+                "A Casing block for a Multiblock-Machine",
+                "", " Casing",
+                true,
+                true,
+                true,
+                true,
+                false,
+                true,
+                false,
+                true,
+                false,
+                false,
+                0,
+                32659200L,
+                64,
+                -1);
+        blockCasingAdvanced = EnumUtils.addNewOrePrefix("blockCasingAdvanced",
+                "An Advanced Casing block for a Multiblock-Machine",
+                "Advanced ", " Casing",
+                true,
+                true,
+                true,
+                true,
+                false,
+                true,
+                false,
+                true,
+                false,
+                false,
+                0,
+                32659200L,
+                64,
+                -1);
         //add molten & regular capsuls
         if (LoaderReference.Forestry) {
             capsuleMolten = EnumUtils.addNewOrePrefix(
@@ -1378,6 +1413,8 @@ public class WerkstoffLoader {
     public static Block BWOres;
     public static Block BWSmallOres;
     public static Block BWBlocks;
+    public static Block BWBlockCasings;
+    public static Block BWBlockCasingsAdvanced;
     public static boolean registered;
     public static final HashSet<OrePrefixes> ENABLED_ORE_PREFIXES = new HashSet<>();
 
@@ -1407,6 +1444,10 @@ public class WerkstoffLoader {
             return new ItemStack(WerkstoffLoader.BWSmallOres, amount, werkstoff.getmID());
         else if (orePrefixes == block)
             return new ItemStack(WerkstoffLoader.BWBlocks, amount, werkstoff.getmID());
+        else if (orePrefixes == WerkstoffLoader.blockCasing)
+            return new ItemStack(WerkstoffLoader.BWBlockCasings, amount, werkstoff.getmID());
+        else if (orePrefixes == WerkstoffLoader.blockCasingAdvanced)
+            return new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, amount, werkstoff.getmID());
         else if (WerkstoffLoader.items.get(orePrefixes) == null)
             return null;
         return new ItemStack(WerkstoffLoader.items.get(orePrefixes), amount, werkstoff.getmID()).copy();
@@ -1478,6 +1519,8 @@ public class WerkstoffLoader {
                 addBlockRecipes(werkstoff);
                 DebugLog.log("Loading Tool Recipes" + " " + (System.nanoTime() - timepreone));
                 addTools(werkstoff);
+                DebugLog.log("Loading Casing Recipes" + " " + (System.nanoTime() - timepreone));
+                addCasingRecipes(werkstoff);
                 if (LoaderReference.Thaumcraft) {
                     DebugLog.log("Loading Aspects" + " " + (System.nanoTime() - timepreone));
                     addAspectToAll(werkstoff);
@@ -1678,15 +1721,25 @@ public class WerkstoffLoader {
     static void gameRegistryHandler() {
         if (SideReference.Side.Client)
             RenderingRegistry.registerBlockHandler(BW_Renderer_Block_Ores.INSTANCE);
+
         GameRegistry.registerTileEntity(BW_MetaGeneratedOreTE.class, "bw.blockoresTE");
         GameRegistry.registerTileEntity(BW_MetaGeneratedSmallOreTE.class, "bw.blockoresSmallTE");
         GameRegistry.registerTileEntity(BW_MetaGenerated_WerkstoffBlock_TE.class, "bw.werkstoffblockTE");
+        GameRegistry.registerTileEntity(BW_MetaGeneratedBlocks_Casing_TE.class, "bw.werkstoffblockcasingTE");
+        GameRegistry.registerTileEntity(BW_MetaGeneratedBlocks_CasingAdvanced_TE.class, "bw.werkstoffblockscasingadvancedTE");
+
         WerkstoffLoader.BWOres = new BW_MetaGenerated_Ores(Material.rock, BW_MetaGeneratedOreTE.class, "bw.blockores");
         WerkstoffLoader.BWSmallOres = new BW_MetaGenerated_SmallOres(Material.rock, BW_MetaGeneratedSmallOreTE.class, "bw.blockoresSmall");
         WerkstoffLoader.BWBlocks = new BW_MetaGenerated_WerkstoffBlocks(Material.iron, BW_MetaGenerated_WerkstoffBlock_TE.class, "bw.werkstoffblocks");
+        WerkstoffLoader.BWBlockCasings = new BW_MetaGeneratedBlocks_Casing(Material.iron, BW_MetaGeneratedBlocks_Casing_TE.class, "bw.werkstoffblockscasing", blockCasing);
+        WerkstoffLoader.BWBlockCasingsAdvanced = new BW_MetaGeneratedBlocks_Casing(Material.iron, BW_MetaGeneratedBlocks_CasingAdvanced_TE.class, "bw.werkstoffblockscasingadvanced", blockCasingAdvanced);
+
         GameRegistry.registerBlock(WerkstoffLoader.BWOres, BW_MetaGeneratedBlock_Item.class, "bw.blockores.01");
         GameRegistry.registerBlock(WerkstoffLoader.BWSmallOres, BW_MetaGeneratedBlock_Item.class, "bw.blockores.02");
         GameRegistry.registerBlock(WerkstoffLoader.BWBlocks, BW_MetaGeneratedBlock_Item.class, "bw.werkstoffblocks.01");
+        GameRegistry.registerBlock(WerkstoffLoader.BWBlockCasings, BW_MetaGeneratedBlock_Item.class, "bw.werkstoffblockscasing.01");
+        GameRegistry.registerBlock(WerkstoffLoader.BWBlockCasingsAdvanced, BW_MetaGeneratedBlock_Item.class, "bw.werkstoffblockscasingadvanced.01");
+
         GTMetaItemEnhancer.init();
     }
 
@@ -1770,6 +1823,53 @@ public class WerkstoffLoader {
         }
         addAssociationToItems();
         addFakeItemDataToInWorldBlocksAndCleanUpFakeData();
+        addCasingsToGTOreDictUnificator();
+    }
+
+    public static void addCasingsToGTOreDictUnificator(){
+        Werkstoff.werkstoffHashSet.forEach(werkstoff -> {
+                    GT_OreDictUnificator.addAssociation(
+                            blockCasing, werkstoff.getBridgeMaterial(),
+                            new ItemStack(WerkstoffLoader.BWBlockCasings, 1, werkstoff.getmID()),
+                            false
+                    );
+                    GT_OreDictUnificator.addAssociation(
+                            blockCasingAdvanced, werkstoff.getBridgeMaterial(),
+                            new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, 1, werkstoff.getmID()),
+                            false
+                    );
+                }
+        );
+        GT_OreDictUnificator.addAssociation(
+                blockCasing, Materials.Aluminium,
+                ItemList.Casing_FrostProof.get(1L),
+                false
+        );
+        GT_OreDictUnificator.addAssociation(
+                blockCasing, Materials.Nickel,
+                ItemList.Casing_HeatProof.get(1L),
+                false
+        );
+        GT_OreDictUnificator.addAssociation(
+                blockCasing, Materials.Lead,
+                ItemList.Casing_RadiationProof.get(1L),
+                false
+        );
+        GT_OreDictUnificator.addAssociation(
+                blockCasing, Materials.Steel,
+                ItemList.Casing_SolidSteel.get(1L),
+                false
+        );
+        GT_OreDictUnificator.addAssociation(
+                blockCasing, Materials.TungstenSteel,
+                ItemList.Casing_RobustTungstenSteel.get(1L),
+                false
+        );
+        GT_OreDictUnificator.addAssociation(
+                blockCasing, Materials.Polytetrafluoroethylene,
+                ItemList.Casing_Chemically_Inert.get(1L),
+                false
+        );
     }
 
     public static void addAssociationToItems() {
@@ -1942,6 +2042,39 @@ public class WerkstoffLoader {
         }
 
         GT_OreDictUnificator.registerOre("craftingIndustrialDiamond", WerkstoffLoader.CubicZirconia.get(gemExquisite));
+    }
+
+    private static void addCasingRecipes(Werkstoff werkstoff) {
+        if (!(werkstoff.hasItemType(blockCasing) && werkstoff.hasItemType(plate) && werkstoff.hasItemType(screw) && werkstoff.hasItemType(gearGt) ))
+            return;
+
+        GT_ModHandler.addCraftingRecipe(werkstoff.get(blockCasing),new Object[]{
+                "PSP",
+                "PGP",
+                "PSP",
+                'P', werkstoff.get(plate),
+                'S', werkstoff.get(screw),
+                'G', werkstoff.get(gearGtSmall)
+        });
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                werkstoff.get(plate,6),
+                werkstoff.get(screw,2),
+                werkstoff.get(gearGtSmall)
+        }, GT_Values.NF,werkstoff.get(blockCasing), 200, 30);
+
+        GT_ModHandler.addCraftingRecipe(werkstoff.get(blockCasingAdvanced),new Object[]{
+                "PSP",
+                "PGP",
+                "PSP",
+                'P', werkstoff.get(plateDouble),
+                'S', werkstoff.get(screw),
+                'G', werkstoff.get(gearGt)
+        });
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                werkstoff.get(plateDouble,6),
+                werkstoff.get(screw,2),
+                werkstoff.get(gearGt)
+        }, GT_Values.NF,werkstoff.get(blockCasingAdvanced), 200, 30);
     }
 
     private static void addGemRecipes(Werkstoff werkstoff) {

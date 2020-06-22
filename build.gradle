@@ -51,12 +51,15 @@ idea{
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 import de.undercouch.gradle.tasks.download.Download
 
+//noinspection GroovyUnusedAssignment
 sourceCompatibility = JavaVersion.VERSION_1_8
+//noinspection GroovyUnusedAssignment
 targetCompatibility = JavaVersion.VERSION_1_8
+//noinspection GroovyUnusedAssignment
 sourceCompatibility = 1.8
+//noinspection GroovyUnusedAssignment
 targetCompatibility = 1.8
 
 compileJava.options.encoding = 'UTF-8'
@@ -70,7 +73,9 @@ configFile.withReader {
 
 
 version = config.majorUpdate+"."+config.minorUpdate+"."+config.buildNumber
+//noinspection GroovyUnusedAssignment
 group= "com.github.bartimaeusnek.bartworks" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+//noinspection GroovyUnusedAssignment
 archivesBaseName = "bartworks"+ "[" + config.mc_version + "]"
 
 minecraft {
@@ -171,6 +176,7 @@ processResources
 
 jar {
     exclude ("assets/gregtech/textures/items/materialicons/copy.bat")
+    exclude ("assets/gregtech/textures/blocks/materialicons/copy.bat")
     manifest {
         attributes 'FMLCorePlugin': 'com.github.bartimaeusnek.ASM.BWCorePlugin','FMLCorePluginContainsFMLMod': 'true'
     }

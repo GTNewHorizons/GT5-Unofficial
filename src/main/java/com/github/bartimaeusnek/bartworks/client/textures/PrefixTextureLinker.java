@@ -23,24 +23,46 @@
 package com.github.bartimaeusnek.bartworks.client.textures;
 
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @SideOnly(Side.CLIENT)
 public class PrefixTextureLinker implements Runnable {
 
     public static Map<OrePrefixes, HashMap<TextureSet, Textures.ItemIcons.CustomIcon>> texMap = new HashMap<>();
+    public static Map<OrePrefixes, HashMap<TextureSet, IIconContainer>> texMapBlocks = new HashMap<>();
     public static Map<TextureSet, Short> blockTexMap = new HashMap<>();
 
     private static void fillBlockTexMap() {
         blockTexMap.put(TextureSet.SET_QUARTZ, TextureSet.INDEX_block4);
+        Stream.of(WerkstoffLoader.blockCasing, WerkstoffLoader.blockCasingAdvanced).forEach(
+                prefixes -> {
+                    HashMap<TextureSet, IIconContainer> curr = new HashMap<>();
+                    Arrays.stream(TextureSet.class.getFields())
+                            .filter(field -> field.getName().contains("SET"))
+                            .forEach(SET -> {
+                                try {
+                                    curr.put((TextureSet) SET.get(null),
+                                            new Textures.BlockIcons.CustomIcon(
+                                                    "materialicons/" + SET.getName().substring(4) + "/" + prefixes)
+                                    );
+                                } catch (IllegalAccessException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                    texMapBlocks.put(prefixes, curr);
+                }
+        );
     }
 
     private static void fillItemTexMap() {
