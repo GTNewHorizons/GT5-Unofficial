@@ -13178,6 +13178,9 @@ languagefile {
     S:gt.blockmachines.machine.avr.tier.12.name=UMV AVR Micro-controller
     S:gt.blockmachines.machine.dehydrator.tier.00.name=Basic Dehydrator I
     S:gt.blockmachines.machine.dehydrator.tier.01.name=Basic Dehydrator II
+    S:gt.blockmachines.machine.multihatch.0.name=T.F.F.T Multi I/O Hatch [HV]
+    S:gt.blockmachines.machine.multihatch.1.name=T.F.F.T Multi I/O Hatch [IV]
+    S:gt.blockmachines.machine.multihatch.2.name=T.F.F.T Multi I/O Hatch [ZPM]
     S:gt.blockmachines.machine.multihatch.name=T.F.F.T Multi I/O Hatch [HV]
     S:gt.blockmachines.machine.tt.buck.05.name=Insane Buck Converter
     S:gt.blockmachines.machine.tt.buck.06.name=Ludicrous Buck Converter

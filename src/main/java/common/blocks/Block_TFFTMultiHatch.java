@@ -26,8 +26,6 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 	private static final Block_TFFTMultiHatch INSTANCE = new Block_TFFTMultiHatch();
 
 	private IIcon casing;
-	private final IIcon[] overlayOff = new IIcon[3];
-	private final IIcon[] overlayOn = new IIcon[3];
 
 	private Block_TFFTMultiHatch() {
 		super(Material.iron);
@@ -47,48 +45,11 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 	@Override
 	public void registerBlockIcons(IIconRegister ir) {
 		casing = ir.registerIcon("kekztech:TFFTCasing");
-		for(int i = 0; i < overlayOff.length; i++) {
-			overlayOff[i] = ir.registerIcon("kekztech:TFFTMultiHatch" + i + "_off");
-			overlayOn[i] = ir.registerIcon("kekztech:TFFTMultiHatch" + i + "_on");
-		}
-	}
-
-	@Override
-	@SuppressWarnings({"unchecked" })
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-		// HV, IV, ZPM
-		par3List.add(new ItemStack(par1, 1, 0));
-		par3List.add(new ItemStack(par1, 1, 1));
-		par3List.add(new ItemStack(par1, 1, 2));
 	}
 
 	@Override
 	public IIcon getIcon(int side, int meta) {
-		if(side != 3) {
-			return casing;
-		} else {
-			return overlayOff[meta];
-		}
-	}
-
-	@Override
-	public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
-		final TileEntity te = blockAccess.getTileEntity(x, y, z);
-		if(te instanceof TE_TFFTMultiHatch) {
-			final TE_TFFTMultiHatch hatchTE = (TE_TFFTMultiHatch) te;
-			if(hatchTE.hasFacingOnSide((byte) side)) {
-				final int meta = blockAccess.getBlockMetadata(x, y, z);
-				if(hatchTE.isOutputting()) {
-					return overlayOn[meta];
-				} else {
-					return overlayOff[meta];
-				}
-			} else {
-				return casing;
-			}
-		} else {
-			return casing;
-		}
+		return casing;
 	}
 
 	@Override
@@ -99,34 +60,6 @@ public class Block_TFFTMultiHatch extends BaseGTUpdateableBlock {
 	@Override
 	public boolean hasTileEntity(int meta) {
 		return true;
-	}
-	
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
-		// Code block taken from GregTech's api.metatileentity.BaseMetaTileEntity.class
-		if (GT_Utility.isStackInList(player.getHeldItem(), GregTech_API.sScrewdriverList)) {
-			if (GT_ModHandler.damageOrDechargeItem(player.getHeldItem(), 1, 200, player)) {
-				final TileEntity te = world.getTileEntity(x, y, z);
-				if(te instanceof TE_TFFTMultiHatch) {
-					((TE_TFFTMultiHatch) te).toggleAutoOutput();
-					GT_Utility.sendSoundToPlayers(world, GregTech_API.sSoundList.get(100), 1.0F, -1.0F, x, y, z);
-					// Give chat feedback
-					GT_Utility.sendChatToPlayer(player, ((TE_TFFTMultiHatch) te).isOutputting() ? "Auto-output enabled" : "Auto-output disabled");
-					
-				}
-			}
-			return true;
-		} else if (GT_Utility.isStackInList(player.getHeldItem(), GregTech_API.sWrenchList)) {
-			if (GT_ModHandler.damageOrDechargeItem(player.getHeldItem(), 1, 200, player)) {
-				final TileEntity te = world.getTileEntity(x, y, z);
-				if(te instanceof TE_TFFTMultiHatch) {
-					((TE_TFFTMultiHatch) te).setFacingToSide((byte) side);
-					GT_Utility.sendSoundToPlayers(world, GregTech_API.sSoundList.get(100), 1.0F, -1.0F, x, y, z);
-				}
-			}
-			return true;
-		}
-		return false;
 	}
 
 }

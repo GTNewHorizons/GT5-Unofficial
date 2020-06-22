@@ -36,9 +36,9 @@ public class TileEntities {
         lsc = new GTMTE_LapotronicSuperCapacitor(13106, "multimachine.supercapacitor", "Lapotronic Supercapacitor");
         //se = new GTMTE_SpaceElevator(13107, "multimachine.spaceelevator", "Space Elevator");
         // Singleblocks
-        mhHV = new GTMTE_TFFTMultiHatch(13108, "machine.multihatch", "T.F.F.T Multi I/O Hatch [HV]", 3);
-        mhIV = new GTMTE_TFFTMultiHatch(13109, "machine.multihatch", "T.F.F.T Multi I/O Hatch [IV]", 5);
-        mhZPM = new GTMTE_TFFTMultiHatch(13110, "machine.multihatch", "T.F.F.T Multi I/O Hatch [ZPM]", 7);
+        mhHV = new GTMTE_TFFTMultiHatch(13108, "machine.multihatch.0", "T.F.F.T Multi I/O Hatch [HV]", 3);
+        mhIV = new GTMTE_TFFTMultiHatch(13109, "machine.multihatch.1", "T.F.F.T Multi I/O Hatch [IV]", 5);
+        mhZPM = new GTMTE_TFFTMultiHatch(13110, "machine.multihatch.2", "T.F.F.T Multi I/O Hatch [ZPM]", 7);
     }
 
 }

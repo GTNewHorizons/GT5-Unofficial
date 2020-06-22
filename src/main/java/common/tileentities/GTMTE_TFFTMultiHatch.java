@@ -1,5 +1,6 @@
 package common.tileentities;
 
+import client.GTTexture;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -65,14 +66,12 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        // TODO return new ITexture[]{aBaseTexture, new GT_RenderedTexture(GTTexture.getIconContainer(GTTexture.MULTI_HATCH_ON))};
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(Textures.BlockIcons.ARROW_UP)};
+        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(GTTexture.MULTI_HATCH_ON)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        // TODO return new ITexture[]{aBaseTexture, new GT_RenderedTexture(GTTexture.getIconContainer(GTTexture.MULTI_HATCH_OFF))};
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(Textures.BlockIcons.ARROW_DOWN)};
+        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(GTTexture.MULTI_HATCH_OFF)};
     }
 
     @Override
