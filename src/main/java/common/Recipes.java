@@ -600,14 +600,14 @@ public class Recipes {
 		// Hex Tiles
 		final ItemStack[] hexTiles = {
 				GT_Utility.getIntegratedCircuit(6),
-				GT_OreDictUnificator.get(OrePrefixes.block, Materials.Concrete, 4),
-				GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 4),
-				GT_OreDictUnificator.get(OrePrefixes.foil, Materials.DarkSteel, 8)
+				GT_OreDictUnificator.get(OrePrefixes.stone, Materials.Concrete, 1),
+				GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
+				GT_OreDictUnificator.get(OrePrefixes.foil, Materials.DarkSteel, 2)
 		};
 		GT_Values.RA.addAssemblerRecipe(
 				hexTiles,
-				FluidRegistry.getFluidStack("molten.plastic", 144),
-				new ItemStack(Blocks.largeHexPlate, 8),
+				FluidRegistry.getFluidStack("molten.plastic", 36),
+				new ItemStack(Blocks.largeHexPlate, 2),
 				600, 120);
 	}
 }

@@ -173,4 +173,4 @@ tile.kekztech_spaceelevatorcapacitor_block.desc=The see-through is good for your
 tile.kekztech_spaceelevatortether_block.name=Space Elevator Tether
 
 # -------- Cosmetic Blocks
-tile.kekztech_largehexttile_block=Large Hex Tile
+tile.kekztech_largehextile_block=Large Hex Tile
