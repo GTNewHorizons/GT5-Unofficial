@@ -293,7 +293,10 @@ public class StructureUtility {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
+                if (defaultBlock instanceof ICustomMetaBlock)
+                    ((ICustomMetaBlock)defaultBlock).setBlock(world, x, y, z, defaultMeta);
+                else
+                    world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
                 return true;
             }
 
@@ -326,7 +329,10 @@ public class StructureUtility {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
+                if (defaultBlock instanceof ICustomMetaBlock)
+                    ((ICustomMetaBlock)defaultBlock).setBlock(world, x, y, z, defaultMeta);
+                else
+                    world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
                 return true;
             }
 
@@ -351,7 +357,10 @@ public class StructureUtility {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
+                if (defaultBlock instanceof ICustomMetaBlock)
+                    ((ICustomMetaBlock)defaultBlock).setBlock(world, x, y, z, defaultMeta);
+                else
+                    world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
                 return true;
             }
 
@@ -384,7 +393,10 @@ public class StructureUtility {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
+                if (defaultBlock instanceof ICustomMetaBlock)
+                    ((ICustomMetaBlock)defaultBlock).setBlock(world, x, y, z, defaultMeta);
+                else
+                    world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
                 return true;
             }
 
@@ -468,7 +480,10 @@ public class StructureUtility {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x, y, z, placeCasing, placeCasingMeta, 2);
+                if (placeCasing instanceof ICustomMetaBlock)
+                    ((ICustomMetaBlock)placeCasing).setBlock(world, x, y, z, placeCasingMeta);
+                else
+                    world.setBlock(x, y, z, placeCasing, placeCasingMeta, 2);
                 return true;
             }
         };

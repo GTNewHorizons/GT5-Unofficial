@@ -237,7 +237,10 @@ public class Structure {
                                         break;
                                     default: //check for block
                                         if ((pointer = block - '0') >= 0) {
-                                            world.setBlock(xyz[0], xyz[1], xyz[2], blockType[pointer], blockMeta[pointer], 2);
+                                            if (blockType[pointer] instanceof ICustomMetaBlock)
+                                                ((ICustomMetaBlock)blockType[pointer]).setBlock(world,xyz[0], xyz[1], xyz[2], blockMeta[pointer]);
+                                            else
+                                                world.setBlock(xyz[0], xyz[1], xyz[2], blockType[pointer], blockMeta[pointer], 2);
                                         }
                                 }
                             }
