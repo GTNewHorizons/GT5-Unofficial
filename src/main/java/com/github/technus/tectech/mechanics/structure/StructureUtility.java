@@ -196,7 +196,8 @@ public class StructureUtility {
         return new IStructureElementNoPlacement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
-                return blocsMap.getOrDefault(world.getBlock(x, y, z), -1) == world.getBlockMetadata(x, y, z);
+                Block worldBlock = world.getBlock(x, y, z);
+                return blocsMap.getOrDefault(worldBlock, -1) == worldBlock.getDamageValue(world, x, y, z);
             }
 
             @Override
@@ -222,7 +223,8 @@ public class StructureUtility {
         return new IStructureElementNoPlacement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
-                return blocsMap.getOrDefault(world.getBlock(x, y, z), Collections.emptySet()).contains(world.getBlockMetadata(x, y, z));
+                Block worldBlock = world.getBlock(x, y, z);
+                return blocsMap.getOrDefault(worldBlock, Collections.emptySet()).contains(worldBlock.getDamageValue(world, x, y, z));
             }
 
             @Override
@@ -240,7 +242,8 @@ public class StructureUtility {
         return new IStructureElementNoPlacement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
-                return block == world.getBlock(x, y, z) && meta == world.getBlockMetadata(x, y, z);
+                Block worldBlock = world.getBlock(x, y, z);
+                return block == worldBlock && meta == worldBlock.getDamageValue(world, x, y, z);
             }
 
             @Override
@@ -262,7 +265,8 @@ public class StructureUtility {
         return new IStructureElementNoPlacement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
-                return iBlockAdder.apply(t, world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
+                Block worldBlock = world.getBlock(x, y, z);
+                return iBlockAdder.apply(t, worldBlock, worldBlock.getDamageValue(world,x,y,z));
             }
 
             @Override
@@ -283,12 +287,16 @@ public class StructureUtility {
         return new IStructureElement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
-                return blocsMap.getOrDefault(world.getBlock(x, y, z), -1) == world.getBlockMetadata(x, y, z);
+                Block worldBlock = world.getBlock(x, y, z);
+                return blocsMap.getOrDefault(worldBlock, -1) == worldBlock.getDamageValue(world,x,y,z);
             }
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
+                if (defaultBlock instanceof ICustomMetaBlock)
+                    ((ICustomMetaBlock)defaultBlock).setBlock(world, x, y, z, defaultMeta);
+                else
+                    world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
                 return true;
             }
 
@@ -315,12 +323,16 @@ public class StructureUtility {
         return new IStructureElement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
-                return blocsMap.getOrDefault(world.getBlock(x, y, z), Collections.emptySet()).contains(world.getBlockMetadata(x, y, z));
+                Block worldBlock = world.getBlock(x, y, z);
+                return blocsMap.getOrDefault(worldBlock, Collections.emptySet()).contains(worldBlock.getDamageValue(world, x, y, z));
             }
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
+                if (defaultBlock instanceof ICustomMetaBlock)
+                    ((ICustomMetaBlock)defaultBlock).setBlock(world, x, y, z, defaultMeta);
+                else
+                    world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
                 return true;
             }
 
@@ -339,12 +351,16 @@ public class StructureUtility {
         return new IStructureElement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
-                return block == world.getBlock(x, y, z) && meta == world.getBlockMetadata(x, y, z);
+                Block worldBlock = world.getBlock(x, y, z);
+                return block == worldBlock && meta == worldBlock.getDamageValue(world, x, y, z);
             }
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
+                if (defaultBlock instanceof ICustomMetaBlock)
+                    ((ICustomMetaBlock)defaultBlock).setBlock(world, x, y, z, defaultMeta);
+                else
+                    world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
                 return true;
             }
 
@@ -371,12 +387,16 @@ public class StructureUtility {
         return new IStructureElement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
-                return iBlockAdder.apply(t, world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
+                Block worldBlock = world.getBlock(x, y, z);
+                return iBlockAdder.apply(t, worldBlock, worldBlock.getDamageValue(world, x, y, z));
             }
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
+                if (defaultBlock instanceof ICustomMetaBlock)
+                    ((ICustomMetaBlock)defaultBlock).setBlock(world, x, y, z, defaultMeta);
+                else
+                    world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
                 return true;
             }
 
@@ -446,9 +466,10 @@ public class StructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
+                Block worldBlock = world.getBlock(x, y, z);
                 return (tileEntity instanceof IGregTechTileEntity &&
                         iHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) textureIndex)) ||
-                                (world.getBlock(x, y, z) == placeCasing && world.getBlockMetadata(x, y, z) == placeCasingMeta);
+                                (worldBlock == placeCasing && worldBlock.getDamageValue(world, x, y, z) == placeCasingMeta);
             }
 
             @Override
@@ -459,7 +480,10 @@ public class StructureUtility {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                world.setBlock(x, y, z, placeCasing, placeCasingMeta, 2);
+                if (placeCasing instanceof ICustomMetaBlock)
+                    ((ICustomMetaBlock)placeCasing).setBlock(world, x, y, z, placeCasingMeta);
+                else
+                    world.setBlock(x, y, z, placeCasing, placeCasingMeta, 2);
                 return true;
             }
         };
@@ -989,7 +1013,7 @@ public class StructureUtility {
                                 if (set == null) {
                                     set = new TreeSet<>();
                                 }
-                                set.add(world.getBlockMetadata(x, y, z));
+                                set.add(block.getDamageValue(world, x, y, z));
                                 return set;
                             });
                         }
@@ -1060,7 +1084,7 @@ public class StructureUtility {
                         if (tileEntity == null) {
                             Block block = w.getBlock(x, y, z);
                             if (block != null && block != Blocks.air) {
-                                builder.append(map.get(block.getUnlocalizedName() + '\0' + world.getBlockMetadata(x, y, z)));
+                                builder.append(map.get(block.getUnlocalizedName() + '\0' + block.getDamageValue(world, x, y, z)));
                             } else {
                                 builder.append(' ');
                             }
@@ -1095,7 +1119,7 @@ public class StructureUtility {
                         if (tileEntity == null) {
                             Block block = w.getBlock(x, y, z);
                             if (block != null && block != Blocks.air) {
-                                builder.append(map.get(block.getUnlocalizedName() + '\0' + world.getBlockMetadata(x, y, z)));
+                                builder.append(map.get(block.getUnlocalizedName() + '\0' + block.getDamageValue(world,x, y, z)));
                             } else {
                                 builder.append(' ');
                             }
