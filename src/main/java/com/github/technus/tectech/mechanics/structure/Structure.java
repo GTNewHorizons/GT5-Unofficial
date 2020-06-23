@@ -19,6 +19,7 @@ public class Structure {
     private Structure() {
     }
 
+    @Deprecated
     @SafeVarargs
     public static <T> IHatchAdder<T>[] adders(IHatchAdder<T>... iHatchAdder) {
         return iHatchAdder;
@@ -26,6 +27,7 @@ public class Structure {
 
     //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
     //This only checks for REGULAR BLOCKS!
+    @Deprecated
     public static <T extends IMetaTileEntity> boolean checker(
             String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR-1 blocks
             Block[] blockType,//use numbers 0-9 for casing types
@@ -151,6 +153,7 @@ public class Structure {
         return true;
     }
 
+    @Deprecated
     public static boolean builder(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR+1 blocks
                                   Block[] blockType,//use numbers 0-9 for casing types
                                   byte[] blockMeta,//use numbers 0-9 for casing types
