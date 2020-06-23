@@ -12,9 +12,9 @@ import java.util.HashMap;
 
 public class GTTexture implements IIconContainer, Runnable {
 
-    public static final GTTexture TFFT_CASING = new GTTexture("textures/blocks/TFFTCasing");
-    public static final GTTexture MULTI_HATCH_OFF = new GTTexture("textures/blocks/multi_hatch_off");
-    public static final GTTexture MULTI_HATCH_ON = new GTTexture("textures/blocks/multi_hatch_on");
+    public static final GTTexture TFFT_CASING = new GTTexture("blocks/TFFTCasing");
+    public static final GTTexture MULTI_HATCH_OFF = new GTTexture("blocks/multi_hatch_off");
+    public static final GTTexture MULTI_HATCH_ON = new GTTexture("blocks/multi_hatch_on");
 
     private IIcon icon;
     private final String iconName;

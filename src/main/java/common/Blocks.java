@@ -33,6 +33,7 @@ public class Blocks {
 	public static Block jarIchor;
 	
 	public static Block lscLapotronicEnergyUnit;
+	public static Block beamTransmitter;
 
 	public static Block spaceElevatorStructure;
 	public static Block spaceElevatorCapacitor;
@@ -89,6 +90,7 @@ public class Blocks {
 	
 	private static void registerBlocks_LSC() {
 		lscLapotronicEnergyUnit = Block_LapotronicEnergyUnit.registerBlock();
+		beamTransmitter = Block_BeamTransmitter.registerBlock();
 	}
 
 	private static void registerBlocks_SpaceElevator() {
