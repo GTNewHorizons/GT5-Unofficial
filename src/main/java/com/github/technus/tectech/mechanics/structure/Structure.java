@@ -103,32 +103,34 @@ public class Structure {
                                     }
                                     break;
                                 default://check for block (countable)
+                                    Block worldblock = world.getBlock(xyz[0], xyz[1], xyz[2]);
+                                    int dmg = worldblock.getDamageValue(world, xyz[0], xyz[1], xyz[2]);
                                     if ((pointer = block - '0') >= 0) {
                                         //countable air -> net.minecraft.block.BlockAir
-                                        if (world.getBlock(xyz[0], xyz[1], xyz[2]) != blockType[pointer]) {
+                                        if (worldblock != blockType[pointer]) {
                                             if (DEBUG_MODE) {
-                                                TecTech.LOGGER.info("Struct-block-error " + xyz[0] + ' ' + xyz[1] + ' ' + xyz[2] + " / " + abc[0] + ' ' + abc[1] + ' ' + abc[2] + " / " + world.getBlock(xyz[0], xyz[1], xyz[2]).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
+                                                TecTech.LOGGER.info("Struct-block-error " + xyz[0] + ' ' + xyz[1] + ' ' + xyz[2] + " / " + abc[0] + ' ' + abc[1] + ' ' + abc[2] + " / " + worldblock.getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
                                             }
                                             return false;
                                         }
-                                        if (world.getBlockMetadata(xyz[0], xyz[1], xyz[2]) != blockMeta[pointer]) {
+                                        if (dmg != blockMeta[pointer]) {
                                             if (DEBUG_MODE) {
-                                                TecTech.LOGGER.info("Struct-meta-id-error " + xyz[0] + ' ' + xyz[1] + ' ' + xyz[2] + " / " + abc[0] + ' ' + abc[1] + ' ' + abc[2] + " / " + world.getBlockMetadata(xyz[0], xyz[1], xyz[2]) + ' ' + blockMeta[pointer]);
+                                                TecTech.LOGGER.info("Struct-meta-id-error " + xyz[0] + ' ' + xyz[1] + ' ' + xyz[2] + " / " + abc[0] + ' ' + abc[1] + ' ' + abc[2] + " / " + dmg + ' ' + blockMeta[pointer]);
                                             }
                                             return false;
                                         }
                                     } else if ((pointer = block - ' ') >= 0) {
                                         igt = aBaseMetaTileEntity.getIGregTechTileEntity(xyz[0], xyz[1], xyz[2]);
                                         if (igt == null || !addingMethods[pointer].apply(metaTile,igt, casingTextures[pointer])) {
-                                            if (world.getBlock(xyz[0], xyz[1], xyz[2]) != blockTypeFallback[pointer]) {
+                                            if (worldblock != blockTypeFallback[pointer]) {
                                                 if (DEBUG_MODE) {
-                                                    TecTech.LOGGER.info("Fallback-struct-block-error " + xyz[0] + ' ' + xyz[1] + ' ' + xyz[2] + " / " + abc[0] + ' ' + abc[1] + ' ' + abc[2] + " / " + world.getBlock(xyz[0], xyz[1], xyz[2]).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
+                                                    TecTech.LOGGER.info("Fallback-struct-block-error " + xyz[0] + ' ' + xyz[1] + ' ' + xyz[2] + " / " + abc[0] + ' ' + abc[1] + ' ' + abc[2] + " / " + worldblock.getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
                                                 }
                                                 return false;
                                             }
-                                            if (world.getBlockMetadata(xyz[0], xyz[1], xyz[2]) != blockMetaFallback[pointer]) {
+                                            if (dmg != blockMetaFallback[pointer]) {
                                                 if (DEBUG_MODE) {
-                                                    TecTech.LOGGER.info("Fallback-Struct-meta-id-error " + xyz[0] + ' ' + xyz[1] + ' ' + xyz[2] + " / " + abc[0] + ' ' + abc[1] + ' ' + abc[2] + " / " + world.getBlockMetadata(xyz[0], xyz[1], xyz[2]) + ' ' + blockMetaFallback[pointer]);
+                                                    TecTech.LOGGER.info("Fallback-Struct-meta-id-error " + xyz[0] + ' ' + xyz[1] + ' ' + xyz[2] + " / " + abc[0] + ' ' + abc[1] + ' ' + abc[2] + " / " + dmg + ' ' + blockMetaFallback[pointer]);
                                                 }
                                                 return false;
                                             }
@@ -212,7 +214,7 @@ public class Structure {
                                         break;
                                     default: //check for block
                                         if ((pointer = block - '0') >= 0) {
-                                            if (world.getBlock(xyz[0], xyz[1], xyz[2]) != blockType[pointer] || world.getBlockMetadata(xyz[0], xyz[1], xyz[2]) != blockMeta[pointer]) {
+                                            if (world.getBlock(xyz[0], xyz[1], xyz[2]) != blockType[pointer] || blockType[pointer].getDamageValue(world,xyz[0], xyz[1], xyz[2]) != blockMeta[pointer]) {
                                                 TecTech.proxy.hint_particle(world, xyz[0], xyz[1], xyz[2], blockType[pointer], blockMeta[pointer]);
                                             }
                                         } else if ((pointer = block - ' ') >= 0) {
