@@ -42,8 +42,8 @@ public class TESR_BeamTransmitter extends TileEntitySpecialRenderer {
         final double height = beamTransmitter.getDistanceFromTarget();
         final double uv_x1 = 0.0D;
         final double uv_x2 = 1.0D;
-        final double uv_y1 = -1.0D - streamTextureOffset; // This makes the beam stream upwards if you add a time sensitive number to it
-        final double uv_y2 = (double)beamTransmitter.getDistanceFromTarget() * (0.5D / (halfBeamWidth * 2)) + uv_y1;
+        final double uv_y1 = -1.0D - streamTextureOffset; // This makes the beam stream upwards if you subtract a time sensitive number from it
+        final double uv_y2 = height * (0.5D / (halfBeamWidth * 2)) + uv_y1;
         // Construct mesh with texture
         tessellator.addVertexWithUV(x + 0.5 + halfBeamWidth, y + 0.5, z + 0.5, uv_x2, uv_y2);
         tessellator.addVertexWithUV(x + 0.5 + halfBeamWidth, y + height, z + 0.5, uv_x2, uv_y1);
