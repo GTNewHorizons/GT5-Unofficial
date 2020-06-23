@@ -16,10 +16,11 @@ import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
 @Deprecated
 public class Structure {
-    private Structure(){}
+    private Structure() {
+    }
 
     @SafeVarargs
-    public static <T> IHatchAdder<T>[] adders(IHatchAdder<T>... iHatchAdder){
+    public static <T> IHatchAdder<T>[] adders(IHatchAdder<T>... iHatchAdder) {
         return iHatchAdder;
     }
 
@@ -121,7 +122,7 @@ public class Structure {
                                         }
                                     } else if ((pointer = block - ' ') >= 0) {
                                         igt = aBaseMetaTileEntity.getIGregTechTileEntity(xyz[0], xyz[1], xyz[2]);
-                                        if (igt == null || !addingMethods[pointer].apply(metaTile,igt, casingTextures[pointer])) {
+                                        if (igt == null || !addingMethods[pointer].apply(metaTile, igt, casingTextures[pointer])) {
                                             if (worldblock != blockTypeFallback[pointer]) {
                                                 if (DEBUG_MODE) {
                                                     TecTech.LOGGER.info("Fallback-struct-block-error " + xyz[0] + ' ' + xyz[1] + ' ' + xyz[2] + " / " + abc[0] + ' ' + abc[1] + ' ' + abc[2] + " / " + worldblock.getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
@@ -155,10 +156,10 @@ public class Structure {
                                   byte[] blockMeta,//use numbers 0-9 for casing types
                                   int horizontalOffset, int verticalOffset, int depthOffset,
                                   IGregTechTileEntity tileEntity, ExtendedFacing extendedFacing, boolean hintsOnly) {
-        World world=tileEntity.getWorld();
-        int baseX=tileEntity.getXCoord();
-        int baseY=tileEntity.getYCoord();
-        int baseZ=tileEntity.getZCoord();
+        World world = tileEntity.getWorld();
+        int baseX = tileEntity.getXCoord();
+        int baseY = tileEntity.getYCoord();
+        int baseZ = tileEntity.getZCoord();
         if (world == null || (!world.isRemote && hintsOnly)) {
             return false;
         }
@@ -214,7 +215,7 @@ public class Structure {
                                         break;
                                     default: //check for block
                                         if ((pointer = block - '0') >= 0) {
-                                            if (world.getBlock(xyz[0], xyz[1], xyz[2]) != blockType[pointer] || blockType[pointer].getDamageValue(world,xyz[0], xyz[1], xyz[2]) != blockMeta[pointer]) {
+                                            if (world.getBlock(xyz[0], xyz[1], xyz[2]) != blockType[pointer] || blockType[pointer].getDamageValue(world, xyz[0], xyz[1], xyz[2]) != blockMeta[pointer]) {
                                                 TecTech.proxy.hint_particle(world, xyz[0], xyz[1], xyz[2], blockType[pointer], blockMeta[pointer]);
                                             }
                                         } else if ((pointer = block - ' ') >= 0) {
@@ -237,10 +238,11 @@ public class Structure {
                                         break;
                                     default: //check for block
                                         if ((pointer = block - '0') >= 0) {
-                                            if (blockType[pointer] instanceof ICustomMetaBlock)
-                                                ((ICustomMetaBlock)blockType[pointer]).setBlock(world,xyz[0], xyz[1], xyz[2], blockMeta[pointer]);
-                                            else
+                                            if (blockType[pointer] instanceof ICustomBlockSetting) {
+                                                ((ICustomBlockSetting) blockType[pointer]).setBlock(world, xyz[0], xyz[1], xyz[2], blockMeta[pointer]);
+                                            } else {
                                                 world.setBlock(xyz[0], xyz[1], xyz[2], blockType[pointer], blockMeta[pointer], 2);
+                                            }
                                         }
                                 }
                             }
