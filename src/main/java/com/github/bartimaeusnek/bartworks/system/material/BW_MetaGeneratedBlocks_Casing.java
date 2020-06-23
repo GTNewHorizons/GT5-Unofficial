@@ -1,5 +1,6 @@
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import com.github.technus.tectech.mechanics.structure.ICustomMetaBlock;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
@@ -16,7 +17,8 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Optional;
 
-public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks {
+@cpw.mods.fml.common.Optional.Interface(modid = "tectech", striprefs = true, iface = "com.github.technus.tectech.mechanics.structure.ICustomMetaBlock")
+public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks implements ICustomMetaBlock {
 
     public BW_MetaGeneratedBlocks_Casing(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName, OrePrefixes prefixes) {
         super(p_i45386_1_, tileEntity, blockName, prefixes);
@@ -95,5 +97,14 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks {
                 )
                 .map(pMaterial -> new ItemStack(aItem, 1, pMaterial.getmID()))
                 .forEach(aList::add);
+    }
+
+    @cpw.mods.fml.common.Optional.Method(modid = "tectech")
+    public void setBlock(World world, int x, int y, int z, int meta) {
+        world.setBlock(x, y, z,this, meta,2);
+        Optional.ofNullable(world.getTileEntity(x,y,z))
+                .filter(te -> te instanceof BW_MetaGeneratedBlocks_Casing_TE)
+                .map(te -> (BW_MetaGeneratedBlocks_Casing_TE) te)
+                .ifPresent(te -> te.mMetaData = (short) meta);
     }
 }
