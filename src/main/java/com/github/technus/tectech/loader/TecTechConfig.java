@@ -24,11 +24,11 @@ public class TecTechConfig extends ConfigManager {
     public float TESLA_MULTI_MIN_EFFICIENCY;
     public float TESLA_MULTI_MAX_EFFICIENCY;
     public float TESLA_MULTI_OVERDRIVE_LOSS;
+    public int TESLA_MULTI_SCAN_RANGE;
+    public boolean TESLA_MULTI_MOLTEN_OUTPUT;
     public float TESLA_SINGLE_MIN_EFFICIENCY;
     public float TESLA_SINGLE_MAX_EFFICIENCY;
     public float TESLA_SINGLE_OVERDRIVE_LOSS;
-
-
 
     /**
      * This loading phases do not correspond to mod loading phases!
@@ -47,6 +47,8 @@ public class TecTechConfig extends ConfigManager {
         TESLA_MULTI_MIN_EFFICIENCY = 0.955F;
         TESLA_MULTI_MAX_EFFICIENCY = 0.98F;
         TESLA_MULTI_OVERDRIVE_LOSS = 0.005F;
+        TESLA_MULTI_SCAN_RANGE = 40;
+        TESLA_MULTI_MOLTEN_OUTPUT = false;
         TESLA_SINGLE_MIN_EFFICIENCY = 0.91F;
         TESLA_SINGLE_MAX_EFFICIENCY = 0.95F;
         TESLA_SINGLE_OVERDRIVE_LOSS = 0.010F;
@@ -78,17 +80,21 @@ public class TecTechConfig extends ConfigManager {
                 "Set to true to disable the block hardness nerf");
         DISABLE_MATERIAL_LOADING_FFS = _mainConfig.getBoolean("DisableMaterialLoading", "Debug", DISABLE_MATERIAL_LOADING_FFS,
                 "Set to true to disable gregtech material processing");
-        TESLA_MULTI_MIN_EFFICIENCY = _mainConfig.getFloat("teslaMultiMinEfficency", "Features", TESLA_MULTI_MIN_EFFICIENCY, 0, 1,
+        TESLA_MULTI_MIN_EFFICIENCY = _mainConfig.getFloat("TeslaMultiMinEfficency", "Features", TESLA_MULTI_MIN_EFFICIENCY, 0, 1,
                 "Worst possible power loss per block for the multi block tesla");
-        TESLA_MULTI_MAX_EFFICIENCY = _mainConfig.getFloat("teslaMultiMaxEfficency", "Features", TESLA_MULTI_MAX_EFFICIENCY, 0, 1,
+        TESLA_MULTI_MAX_EFFICIENCY = _mainConfig.getFloat("TeslaMultiMaxEfficency", "Features", TESLA_MULTI_MAX_EFFICIENCY, 0, 1,
                 "Best possible power loss per block for the multi block tesla");
-        TESLA_MULTI_OVERDRIVE_LOSS = _mainConfig.getFloat("teslaMultiOverdriveLoss", "Features", TESLA_MULTI_OVERDRIVE_LOSS, 0, 1,
+        TESLA_MULTI_OVERDRIVE_LOSS = _mainConfig.getFloat("TeslaMultiOverdriveLoss", "Features", TESLA_MULTI_OVERDRIVE_LOSS, 0, 1,
                 "Additional losses for overdrive use on the multi block tesla");
-        TESLA_SINGLE_MIN_EFFICIENCY = _mainConfig.getFloat("teslaSingleMinEfficency", "Features", TESLA_SINGLE_MIN_EFFICIENCY, 0, 1,
+        TESLA_MULTI_SCAN_RANGE = _mainConfig.getInt("TeslaMultiScanRange", "Features", TESLA_MULTI_SCAN_RANGE, 4, 256,
+                "Determines the scan range constant for multi block tesla");
+        TESLA_MULTI_MOLTEN_OUTPUT = _mainConfig.getBoolean("TeslaMultiMoltenOutput", "Features", TESLA_MULTI_MOLTEN_OUTPUT,
+                "Set to true to get molten outputs when boosting the multi block tesla with plasmas");
+        TESLA_SINGLE_MIN_EFFICIENCY = _mainConfig.getFloat("TeslaSingleMinEfficency", "Features", TESLA_SINGLE_MIN_EFFICIENCY, 0, 1,
                 "Worst possible power loss per block for the single block tesla");
-        TESLA_SINGLE_MAX_EFFICIENCY = _mainConfig.getFloat("teslaSingleMaxEfficency", "Features", TESLA_SINGLE_MAX_EFFICIENCY, 0, 1,
+        TESLA_SINGLE_MAX_EFFICIENCY = _mainConfig.getFloat("TeslaSingleMaxEfficency", "Features", TESLA_SINGLE_MAX_EFFICIENCY, 0, 1,
                 "Best possible power loss per block for the single block tesla");
-        TESLA_SINGLE_OVERDRIVE_LOSS = _mainConfig.getFloat("teslaSingleOverdriveLoss", "Features", TESLA_SINGLE_OVERDRIVE_LOSS, 0, 1,
+        TESLA_SINGLE_OVERDRIVE_LOSS = _mainConfig.getFloat("TeslaSingleOverdriveLoss", "Features", TESLA_SINGLE_OVERDRIVE_LOSS, 0, 1,
                 "Additional losses for overdrive use on the single block tesla");
     }
 

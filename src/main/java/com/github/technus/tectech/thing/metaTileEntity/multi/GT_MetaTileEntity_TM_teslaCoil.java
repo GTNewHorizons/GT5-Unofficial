@@ -23,6 +23,7 @@ import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -33,6 +34,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,20 +59,24 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
-
+    //TODO Make the setting abstractions static, if they aren't changed at tick time
     private int mTier = 0; //Determines max voltage and efficiency (MV to LuV)
     private int maxTier = 6; //Max tier for efficiency calcuation
+    private int plasmaTier = 0; //0 is None, 1 is Helium or Nitrogen, 2 is Radon
+    private boolean doFluidOutput = TecTech.configTecTech.TESLA_MULTI_MOLTEN_OUTPUT; //Default is false
+    private FluidStack[] mOutputFluidsQueue; //Used to buffer the fluid outputs for one second
 
     private float energyEfficiency = 1;
     private float overdriveEfficiency = 1;
     private float minEfficiency = TecTech.configTecTech.TESLA_MULTI_MIN_EFFICIENCY;//Default is 0.955F
-    private float maxEfficiency = TecTech.configTecTech.TESLA_MULTI_MAX_EFFICIENCY;//Default is 0.98F;
+    private float maxEfficiency = TecTech.configTecTech.TESLA_MULTI_MAX_EFFICIENCY;//Default is 0.98F
     private float overdriveEfficiencyExtra = TecTech.configTecTech.TESLA_MULTI_OVERDRIVE_LOSS;//Default is 0.005F
 
     private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>(); //Used to store targets for power transmission
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCapacitorHatches = new ArrayList<>(); //Used to determine count and tier of capacitors present
 
     private int scanTime = 0; //Scan timer used for tesla search intervals
+    private int scanRangeXZ = TecTech.configTecTech.TESLA_MULTI_SCAN_RANGE;//Default is 40
 
     private long energyCapacity = 0; //Total energy storage limited by capacitors
     private long outputVoltageMax = 0; //Tesla voltage output limited by capacitors
@@ -254,11 +260,25 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     private float getRangeMulti(int mTier, int vTier) {
+        //Helium and Nitrogen Plasmas will double the range
+        //Radon will quadruple the range
+        int plasmaBoost;
+        switch (plasmaTier) {
+            case 2:
+                plasmaBoost = 4;
+                break;
+            case 1:
+                plasmaBoost = 2;
+                break;
+            default:
+                plasmaBoost = 1;
+        }
+
         //Over-tiered coils will add +25% range
         if (vTier > mTier) {
-            return 1.25F;
+            return 1.25F * plasmaBoost;
         }
-        return 1F;
+        return 1F * plasmaBoost;
     }
 
     private void scanForTransmissionTargets(Vec3Impl coordsMin, Vec3Impl coordsMax) {
@@ -302,6 +322,46 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         sparkList.add(new ThaumSpark(posTop.get0(), posTop.get1(), posTop.get2(), xR, yR, zR, wID));
     }
 
+    private void checkPlasmaBoost() {
+        //If there's fluid in the queue, try to output it
+        //That way it takes at least a second to 'process' the plasma
+        if (mOutputFluidsQueue != null) {
+            mOutputFluids = mOutputFluidsQueue;
+            mOutputFluidsQueue = null;
+        }
+
+        for (GT_MetaTileEntity_Hatch_Input fluidHatch : mInputHatches) {
+            if (fluidHatch.mFluid != null) {
+                if (fluidHatch.mFluid.isFluidEqual(Materials.Helium.getPlasma(1)) && fluidHatch.mFluid.amount >= 100) {
+                    System.out.print("HELIUM\n");
+                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - 100;
+                    if (doFluidOutput) {
+                        mOutputFluidsQueue = new FluidStack[]{Materials.Helium.getGas(100)};
+                    }
+                    plasmaTier = 1;
+                    return;
+                } else if (fluidHatch.mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && fluidHatch.mFluid.amount >= 50) {
+                    System.out.print("NITRO\n");
+                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - 50;
+                    if (doFluidOutput) {
+                        mOutputFluidsQueue = new FluidStack[]{Materials.Nitrogen.getGas(50)};
+                    }
+                    plasmaTier = 1;
+                    return;
+                } else if (fluidHatch.mFluid.isFluidEqual(Materials.Radon.getPlasma(1)) && fluidHatch.mFluid.amount >= 50) {
+                    System.out.print("RADON\n");
+                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - 50;
+                    if (doFluidOutput) {
+                        mOutputFluidsQueue = new FluidStack[]{Materials.Radon.getGas(50)};
+                    }
+                    plasmaTier = 2;
+                    return;
+                }
+            }
+        }
+        plasmaTier = 0;
+    }
+
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_TM_teslaCoil(mName);
@@ -340,20 +400,20 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -14, 2)).add(getBaseMetaTileEntity());
 
                 //Calculate offsets for scanning
-                scanPosOffsets[0] = getExtendedFacing().getWorldOffset(new Vec3Impl(40, 0, 43));
-                scanPosOffsets[1] = getExtendedFacing().getWorldOffset(new Vec3Impl(-40, -4, -37));
+                scanPosOffsets[0] = getExtendedFacing().getWorldOffset(new Vec3Impl(scanRangeXZ, 0, scanRangeXZ + 3));
+                scanPosOffsets[1] = getExtendedFacing().getWorldOffset(new Vec3Impl(-1 * scanRangeXZ, -4, -1 * scanRangeXZ + 3));
 
-                scanPosOffsets[2] = getExtendedFacing().getWorldOffset(new Vec3Impl(40, -5, 43));
-                scanPosOffsets[3] = getExtendedFacing().getWorldOffset(new Vec3Impl(-40, -8, -37));
+                scanPosOffsets[2] = getExtendedFacing().getWorldOffset(new Vec3Impl(scanRangeXZ, -5, scanRangeXZ + 3));
+                scanPosOffsets[3] = getExtendedFacing().getWorldOffset(new Vec3Impl(-1 * scanRangeXZ, -8, -1 * scanRangeXZ + 3));
 
-                scanPosOffsets[4] = getExtendedFacing().getWorldOffset(new Vec3Impl(40, -9, 43));
-                scanPosOffsets[5] = getExtendedFacing().getWorldOffset(new Vec3Impl(-40, -12, -37));
+                scanPosOffsets[4] = getExtendedFacing().getWorldOffset(new Vec3Impl(scanRangeXZ, -9, scanRangeXZ + 3));
+                scanPosOffsets[5] = getExtendedFacing().getWorldOffset(new Vec3Impl(-1 * scanRangeXZ, -12, -1 * scanRangeXZ + 3));
 
-                scanPosOffsets[6] = getExtendedFacing().getWorldOffset(new Vec3Impl(40, -13, 43));
-                scanPosOffsets[7] = getExtendedFacing().getWorldOffset(new Vec3Impl(-40, -16, -37));
+                scanPosOffsets[6] = getExtendedFacing().getWorldOffset(new Vec3Impl(scanRangeXZ, -13, scanRangeXZ + 3));
+                scanPosOffsets[7] = getExtendedFacing().getWorldOffset(new Vec3Impl(-1 * scanRangeXZ, -16, -1 * scanRangeXZ + 3));
 
-                scanPosOffsets[8] = getExtendedFacing().getWorldOffset(new Vec3Impl(40, -17, 43));
-                scanPosOffsets[9] = getExtendedFacing().getWorldOffset(new Vec3Impl(-40, -20, -37));
+                scanPosOffsets[8] = getExtendedFacing().getWorldOffset(new Vec3Impl(scanRangeXZ, -17, scanRangeXZ + 3));
+                scanPosOffsets[9] = getExtendedFacing().getWorldOffset(new Vec3Impl(-1 * scanRangeXZ, -20, -1 * scanRangeXZ + 3));
             }
             return true;
         }
@@ -362,6 +422,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
+        checkPlasmaBoost();
+
         if (!histHighSetting.getStatus(false).isOk ||
                 !histLowSetting.getStatus(false).isOk ||
                 !transferRadiusTowerSetting.getStatus(false).isOk ||
@@ -824,6 +886,14 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Param) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eParamHatches.add((GT_MetaTileEntity_Hatch_Param) aMetaTileEntity);
+        }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
         }
         return false;
     }
