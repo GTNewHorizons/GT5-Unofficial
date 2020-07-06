@@ -1,16 +1,18 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.Util;
-import com.github.technus.tectech.util.Vec3Impl;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
-import com.github.technus.tectech.mechanics.constructible.IConstructable;
+import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
+import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -28,12 +30,13 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.util.CommonValues.V;
-import static com.github.technus.tectech.util.Util.StructureBuilderExtreme;
+import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
+import static com.github.technus.tectech.util.CommonValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -54,7 +57,9 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     private static final String[][] slice = new String[][]{{"-01", "A!2", "A!2", "-01",},};
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{2, 1, 3};
-    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addToMachineList, this::addRackToMachineList};
+    private static final IHatchAdder<GT_MetaTileEntity_EM_computer>[] addingMethods = adders(
+            GT_MetaTileEntity_EM_computer::addToMachineList,
+            GT_MetaTileEntity_EM_computer::addRackToMachineList);
     private static final short[] casingTextures = new short[]{textureOffset + 1, textureOffset + 3};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{1, 3};
@@ -154,6 +159,23 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             }
         }
         return eUncertainHatches.size() == 1;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if(aBaseMetaTileEntity.isServerSide() && mMachine && !aBaseMetaTileEntity.isActive() && aTick % 20 == MULTI_CHECK_AT){
+            double maxTemp = 0;
+            for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
+                if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
+                    continue;
+                }
+                if (rack.heat > maxTemp) {
+                    maxTemp = rack.heat;
+                }
+            }
+            maxCurrentTemp.set(maxTemp);
+        }
     }
 
     @Override
@@ -335,22 +357,22 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
         IGregTechTileEntity igt = getBaseMetaTileEntity();
-        StructureBuilderExtreme(front, blockType, blockMeta, 1, 2, 0, igt, getExtendedFacing(), hintsOnly);
-        StructureBuilderExtreme(cap, blockType, blockMeta, 1, 2, -1, igt, getExtendedFacing(), hintsOnly);
+        Structure.builder(front, blockType, blockMeta, 1, 2, 0, igt, getExtendedFacing(), hintsOnly);
+        Structure.builder(cap, blockType, blockMeta, 1, 2, -1, igt, getExtendedFacing(), hintsOnly);
 
         byte offset = -2;
-        for (int rackSlices = Math.min(stackSize, 12); rackSlices > 0; rackSlices--) {
-            StructureBuilderExtreme(slice, blockType, blockMeta, 1, 2, offset--, igt, getExtendedFacing(), hintsOnly);
+        for (int rackSlices = Math.min(stackSize.stackSize, 12); rackSlices > 0; rackSlices--) {
+            Structure.builder(slice, blockType, blockMeta, 1, 2, offset--, igt, getExtendedFacing(), hintsOnly);
         }
 
-        StructureBuilderExtreme(cap, blockType, blockMeta, 1, 2, offset--, igt, getExtendedFacing(), hintsOnly);
-        StructureBuilderExtreme(terminator, blockType, blockMeta, 1, 2, offset, igt, getExtendedFacing(), hintsOnly);
+        Structure.builder(cap, blockType, blockMeta, 1, 2, offset--, igt, getExtendedFacing(), hintsOnly);
+        Structure.builder(terminator, blockType, blockMeta, 1, 2, offset, igt, getExtendedFacing(), hintsOnly);
     }
 
     @Override
-    public String[] getStructureDescription(int stackSize) {
+    public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
 }

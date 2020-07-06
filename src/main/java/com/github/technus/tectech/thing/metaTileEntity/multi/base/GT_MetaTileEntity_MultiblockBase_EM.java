@@ -2,19 +2,25 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.alignment.*;
+import com.github.technus.tectech.loader.NetworkDispatcher;
+import com.github.technus.tectech.mechanics.alignment.AlignmentLimits;
+import com.github.technus.tectech.mechanics.alignment.AlignmentMessage;
+import com.github.technus.tectech.mechanics.alignment.IAlignment;
+import com.github.technus.tectech.mechanics.alignment.IAlignmentLimits;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Flip;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Rotation;
-import com.github.technus.tectech.util.Util;
-import com.github.technus.tectech.util.Vec3Impl;
-import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
+import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
+import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
+import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -40,11 +46,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.util.CommonValues.*;
-import static com.github.technus.tectech.util.Util.StructureCheckerExtreme;
-import static com.github.technus.tectech.util.Util.getTier;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
+import static com.github.technus.tectech.util.CommonValues.*;
+import static com.github.technus.tectech.util.Util.getTier;
 
 /**
  * Created by danie_000 on 27.10.2016.
@@ -81,6 +86,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //data hatches
     protected ArrayList<GT_MetaTileEntity_Hatch_InputData> eInputData = new ArrayList<>();
     protected ArrayList<GT_MetaTileEntity_Hatch_OutputData> eOutputData = new ArrayList<>();
+
+    //endregion
 
     //region parameters
     public final Parameters parametrization;
@@ -183,8 +190,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public boolean isFacingValid(byte aFacing) {
-        return getAlignmentLimits()
-                .isNewExtendedFacingValid(getExtendedFacing().with(ForgeDirection.getOrientation(aFacing)));
+        return canSetToDirectionAny(ForgeDirection.getOrientation(aFacing));
     }
 
     @Override
@@ -192,17 +198,46 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         toolSetDirection(ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()));
     }
 
-    public final boolean structureCheck_EM(
+    /**
+     * Gets structure
+     * @return STATIC INSTANCE OF STRUCTURE
+     */
+    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM(){
+        throw new NoSuchMethodError("Implement it as STATIC INSTANCE");
+    }
+
+    @SuppressWarnings("unchecked")
+    private IStructureDefinition<GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM_Internal(){
+        return (IStructureDefinition<GT_MetaTileEntity_MultiblockBase_EM>)getStructure_EM();
+    }
+
+    public final boolean structureCheck_EM(String piece,int horizontalOffset, int verticalOffset, int depthOffset) {
+        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        return getStructure_EM_Internal().check(this,piece, baseMetaTileEntity.getWorld(),getExtendedFacing(),
+                baseMetaTileEntity.getXCoord(),baseMetaTileEntity.getYCoord(),baseMetaTileEntity.getZCoord(),
+                horizontalOffset,verticalOffset,depthOffset,!mMachine);
+    }
+
+    public final boolean structureBuild_EM(String piece,int horizontalOffset, int verticalOffset, int depthOffset,boolean hintsOnly,ItemStack trigger) {
+        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        return getStructure_EM_Internal().buildOrHints(this, trigger, piece, baseMetaTileEntity.getWorld(),
+                getExtendedFacing(), baseMetaTileEntity.getXCoord(), baseMetaTileEntity.getYCoord(),
+                baseMetaTileEntity.getZCoord(), horizontalOffset, verticalOffset, depthOffset, hintsOnly);
+    }
+
+    @Deprecated
+    @SuppressWarnings("unchecked")
+    public final <T extends GT_MetaTileEntity_MultiblockBase_EM> boolean structureCheck_EM(
             String[][] structure,//0-9 casing, +- air no air, a-z ignore
             Block[] blockType,//use numbers 0-9 for casing types
             byte[] blockMeta,//use numbers 0-9 for casing types
-            IHatchAdder[] addingMethods,
+            IHatchAdder<T>[] addingMethods,
             short[] casingTextures,
             Block[] blockTypeFallback,//use numbers 0-9 for casing types
             byte[] blockMetaFallback,//use numbers 0-9 for casing types
             int horizontalOffset, int verticalOffset, int depthOffset) {
-        return StructureCheckerExtreme(structure, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
-                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), getExtendedFacing(), !mMachine);
+        return Structure.checker(structure, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
+                horizontalOffset, verticalOffset, depthOffset, (T)this, getExtendedFacing(), !mMachine);
     }
 
     //endregion
@@ -1107,12 +1142,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     }
                 }
 
-                for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eOutputData) {
+                for (GT_MetaTileEntity_Hatch_DataConnector<?> hatch_data : eOutputData) {
                     if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch_data)) {
                         hatch_data.id = -1;
                     }
                 }
-                for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eInputData) {
+                for (GT_MetaTileEntity_Hatch_DataConnector<?> hatch_data : eInputData) {
                     if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch_data)) {
                         hatch_data.id = -1;
                     }
@@ -1176,13 +1211,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     }
 
                     id = 1;
-                    for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eOutputData) {
+                    for (GT_MetaTileEntity_Hatch_DataConnector<?> hatch_data : eOutputData) {
                         if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch_data)) {
                             hatch_data.id = id++;
                         }
                     }
                     id = 1;
-                    for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eInputData) {
+                    for (GT_MetaTileEntity_Hatch_DataConnector<?> hatch_data : eInputData) {
                         if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch_data)) {
                             hatch_data.id = id++;
                         }
@@ -1402,7 +1437,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                                         euVar = tHatch.maxEUOutput();
                                         if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
-                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.min(euVar >> 7, 1), false)) {
+                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar >> 7, 1), false)) {
                                             tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
                                         }
                                     }
@@ -1411,7 +1446,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                                         euVar = tHatch.maxEUOutput() * tHatch.Amperes;
                                         if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
-                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.min(euVar >> 7, tHatch.Amperes), false)) {
+                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar >> 7, tHatch.Amperes), false)) {
                                             tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
                                         }
                                     }
@@ -1673,6 +1708,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     private boolean drainEnergyInput_EM(long EUtTierVoltage, long EUtEffective, long Amperes) {
+        if(maxEUinputMin==0){
+            return false;
+        }
         if (EUtTierVoltage < 0) {
             EUtTierVoltage = -EUtTierVoltage;
         }

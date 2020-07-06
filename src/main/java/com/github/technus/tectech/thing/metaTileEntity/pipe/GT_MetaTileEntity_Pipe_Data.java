@@ -194,6 +194,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
                 if (meta instanceof IConnectsToDataPipe && meta != source) {
                     if (meta instanceof GT_MetaTileEntity_Pipe_Data &&
                             ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount == 2) {
+                        ((GT_MetaTileEntity_Pipe_Data) meta).markUsed();
                         return (IConnectsToDataPipe) meta;
                     }
                     if (((IConnectsToDataPipe) meta).isDataInputFacing(GT_Utility.getOppositeSide(b))) {

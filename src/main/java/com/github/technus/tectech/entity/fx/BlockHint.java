@@ -3,6 +3,7 @@ package com.github.technus.tectech.entity.fx;
 import com.github.technus.tectech.TecTech;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Dyes;
 import net.minecraft.block.Block;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
@@ -14,9 +15,29 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class BlockHint extends EntityFX {
     private IIcon[] icons = new IIcon[6];
+    private short[] mRGBa = Dyes._NULL.mRGBa;
 
     public BlockHint(World world){
         this(world,0,0,0, Blocks.stone,0);
+    }
+
+    /**
+     *
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param icons DOWN, UP, NORTH, SOUTH, WEST, EAST
+     */
+    public BlockHint(World world, int x, int y, int z, IIcon[] icons) {
+        super(world, x + .25, y + .5, z + .25);
+        particleGravity = 0;
+        prevPosX = posX;
+        prevPosY = posY;
+        prevPosZ = posZ;
+        noClip = true;
+        particleMaxAge = 2000 + TecTech.RANDOM.nextInt(200);
+        this.icons=icons;
     }
 
     public BlockHint(World world, int x, int y, int z, Block block, int meta) {
@@ -32,6 +53,11 @@ public class BlockHint extends EntityFX {
         }
     }
 
+    public BlockHint withColorTint(short[] coloure){
+        this.mRGBa =coloure;
+        return this;
+    }
+
     @Override
     public void renderParticle(Tessellator tes, float subTickTime, float p_70539_3_, float p_70539_4_, float p_70539_5_, float p_70539_6_, float p_70539_7_) {
         float size = .5f;
@@ -40,7 +66,7 @@ public class BlockHint extends EntityFX {
         float Z = (float) (prevPosZ + (posZ - prevPosZ) * (double) subTickTime - EntityFX.interpPosZ);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDepthMask(false);
-        tes.setColorRGBA_F(.9F, .95F, 1F, .75f);
+        tes.setColorRGBA((int) (mRGBa[0] * .9F), (int) (mRGBa[1] * .95F), (int) (mRGBa[2] * 1F), 192);
 
         //var8, var9 - X U
         //var 10, var 11 - Y V

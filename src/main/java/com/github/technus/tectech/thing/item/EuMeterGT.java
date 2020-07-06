@@ -73,7 +73,7 @@ public class EuMeterGT extends Item {
             }
         }
         if (!(aPlayer instanceof EntityPlayerMP)) {
-            GT_Utility.doSoundAtClient(Reference.MODID + ":fx_scan", 1, 1.0F, (double) aX, (double) aY, (double) aZ);
+            GT_Utility.doSoundAtClient(Reference.MODID + ":fx_scan", 1, 1.0F, aX, aY, aZ);
         }
         return false;
     }
