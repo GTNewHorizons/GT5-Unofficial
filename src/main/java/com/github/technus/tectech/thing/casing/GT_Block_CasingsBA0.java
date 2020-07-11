@@ -184,7 +184,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        for (int i = 0; i <= 8; i++) {
+        for (int i = 0; i <= 9; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
     }
