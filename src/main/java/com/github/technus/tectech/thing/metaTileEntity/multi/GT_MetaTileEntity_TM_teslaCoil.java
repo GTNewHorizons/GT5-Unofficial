@@ -252,10 +252,22 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     private long getEnergyEfficiency(long voltage, int distance, boolean overDriveToggle) {
+        //Helium and Nitrogen Plasmas will half the effective distance
+        //Radon will half it again
+        int effectiveDistance = distance;
+        switch (plasmaTier) {
+            case 2:
+                effectiveDistance = distance / 4;
+                break;
+            case 1:
+                effectiveDistance = distance / 2;
+                break;
+        }
+
         if (overDriveToggle) {
-            return (long) ((voltage * 2) - (voltage * Math.pow(overdriveEfficiency, distance)));
+            return (long) ((voltage * 2) - (voltage * Math.pow(overdriveEfficiency, effectiveDistance)));
         } else {
-            return (long) (voltage * Math.pow(energyEfficiency, distance));
+            return (long) (voltage * Math.pow(energyEfficiency, effectiveDistance));
         }
     }
 
@@ -333,7 +345,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         for (GT_MetaTileEntity_Hatch_Input fluidHatch : mInputHatches) {
             if (fluidHatch.mFluid != null) {
                 if (fluidHatch.mFluid.isFluidEqual(Materials.Helium.getPlasma(1)) && fluidHatch.mFluid.amount >= 100) {
-                    System.out.print("HELIUM\n");
                     fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - 100;
                     if (doFluidOutput) {
                         mOutputFluidsQueue = new FluidStack[]{Materials.Helium.getGas(100)};
@@ -341,7 +352,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                     plasmaTier = 1;
                     return;
                 } else if (fluidHatch.mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && fluidHatch.mFluid.amount >= 50) {
-                    System.out.print("NITRO\n");
                     fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - 50;
                     if (doFluidOutput) {
                         mOutputFluidsQueue = new FluidStack[]{Materials.Nitrogen.getGas(50)};
@@ -349,7 +359,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                     plasmaTier = 1;
                     return;
                 } else if (fluidHatch.mFluid.isFluidEqual(Materials.Radon.getPlasma(1)) && fluidHatch.mFluid.amount >= 50) {
-                    System.out.print("RADON\n");
                     fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - 50;
                     if (doFluidOutput) {
                         mOutputFluidsQueue = new FluidStack[]{Materials.Radon.getGas(50)};
@@ -450,6 +459,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         //Calculate Efficiency values
         energyEfficiency = map(mTier + 1, 1, maxTier, minEfficiency, maxEfficiency);
+        //OD Eff calc
         overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
 
         energyCapacity = 0;
