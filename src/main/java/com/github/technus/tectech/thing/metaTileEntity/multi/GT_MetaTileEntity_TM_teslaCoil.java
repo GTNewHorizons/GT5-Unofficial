@@ -61,7 +61,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static Textures.BlockIcons.CustomIcon ScreenON;
     //TODO Make the setting abstractions static, if they aren't changed at tick time
     private int mTier = 0; //Determines max voltage and efficiency (MV to LuV)
-    private int maxTier = 6; //Max tier for efficiency calcuation
+    private int maxTier = 7; //Max tier for efficiency calcuation
     private int plasmaTier = 0; //0 is None, 1 is Helium or Nitrogen, 2 is Radon
     private boolean doFluidOutput = TecTech.configTecTech.TESLA_MULTI_MOLTEN_OUTPUT; //Default is false
     private FluidStack[] mOutputFluidsQueue; //Used to buffer the fluid outputs for one second
@@ -110,7 +110,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static final byte[] blockMetaT3 = new byte[]{7, 3, 6, 8};
     private static final byte[] blockMetaT4 = new byte[]{7, 4, 6, 8};
     private static final byte[] blockMetaT5 = new byte[]{7, 5, 6, 8};
-    private static final byte[][] blockMetas = new byte[][]{blockMetaT0, blockMetaT1, blockMetaT2, blockMetaT3, blockMetaT4, blockMetaT5};
+    private static final byte[] blockMetaT6 = new byte[]{7, 9, 6, 8};
+    private static final byte[][] blockMetas = new byte[][]{blockMetaT0, blockMetaT1, blockMetaT2, blockMetaT3, blockMetaT4, blockMetaT5, blockMetaT6};
     private static final IHatchAdder<GT_MetaTileEntity_TM_teslaCoil>[] addingMethods = adders(
             GT_MetaTileEntity_TM_teslaCoil::addCapacitorToMachineList,
             GT_MetaTileEntity_TM_teslaCoil::addFrameToMachineList);
@@ -389,6 +390,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 1));
         mTier = iGregTechTileEntity.getMetaIDOffset(xyzOffsets.get0(), xyzOffsets.get1(), xyzOffsets.get2());
+        if (mTier == 9){
+            mTier = 6;
+        }
 
         if (structureCheck_EM(shape, blockType, blockMetas[mTier], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 3, 16, 0) && eCapacitorHatches.size() > 0) {
             for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
@@ -914,7 +918,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        Structure.builder(shape, blockType, blockMetas[(stackSize.stackSize - 1) % 6], 3, 16, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+        Structure.builder(shape, blockType, blockMetas[(stackSize.stackSize - 1) % 7], 3, 16, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
     }
 
     @Override

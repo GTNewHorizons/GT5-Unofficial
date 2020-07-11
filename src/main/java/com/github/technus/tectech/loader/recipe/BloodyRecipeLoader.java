@@ -191,6 +191,7 @@ public class BloodyRecipeLoader implements Runnable {
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"WWW", "WwW", "WWW",
                         'W', OrePrefixes.wireGt02.get(Materials.Superconductor)});
+        //TODO Add Tesla Primary Coils T6
 
         //endregion
 
@@ -1157,6 +1158,21 @@ public class BloodyRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 24),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 24),
         }, Materials.Epoxid.getMolten(360), CustomItemList.teslaCapacitor.getWithDamage(1, 4), 320, 7680);
+        //LuV Tesla Capacitor
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.HSSG, 4),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 14),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 28),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 28),
+        }, Materials.Epoxid.getMolten(432), CustomItemList.teslaCapacitor.getWithDamage(1, 5), 320, 30720);
+        //ZPM Tesla Capacitor
+        //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+        //        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 4),
+        //        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 16),
+        //        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 32),
+        //        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 32),
+        //}, Materials.Epoxid.getMolten(504), CustomItemList.teslaCapacitor.getWithDamage(1, 6), 320, 122880);
+        //TODO Allow with the coils, useless alone and will only cause trouble
         //Tesla Cover
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.teslaComponent.getWithDamage(4, 0),
@@ -1221,6 +1237,12 @@ public class BloodyRecipeLoader implements Runnable {
         //IV Tesla Capacitor
         GT_Values.RA.addExtractorRecipe(CustomItemList.teslaCapacitor.getWithDamage(1, 4),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 12), 300, 2);
+        //LuV Tesla Capacitor
+        GT_Values.RA.addExtractorRecipe(CustomItemList.teslaCapacitor.getWithDamage(1, 5),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 14), 300, 2);
+        //ZPM Tesla Capacitor
+        GT_Values.RA.addExtractorRecipe(CustomItemList.teslaCapacitor.getWithDamage(1, 6),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 16), 300, 2);
 
         //endregion
 
