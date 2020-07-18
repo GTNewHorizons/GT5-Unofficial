@@ -6,7 +6,6 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefin
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
-import com.github.technus.tectech.util.DoubleCount;
 import com.github.technus.tectech.util.Util;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.null__;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition.deadEnd;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
+import static com.github.technus.tectech.util.DoubleCount.*;
 import static java.lang.Math.ulp;
 
 /**
@@ -190,8 +190,8 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         if(definition.usesMultipleDecayCalls(energy)){
             double amountTemp=amount;
             long decayCnt=(long) Math.min(Math.max(amount/DECAY_CALL_PER,MIN_MULTIPLE_DECAY_CALLS),MAX_MULTIPLE_DECAY_CALLS);
-            double amountPer= DoubleCount.div(amount,decayCnt);
-            amount=DoubleCount.sub(amount,amountPer*(--decayCnt));
+            double amountPer= div(amount,decayCnt);
+            amount= sub(amount,amountPer*(--decayCnt));
             cElementalInstanceStackMap output=decayMechanics(lifeTimeMult,apparentAge,newEnergyLevel);
             if(output==null){
                 amount=amountTemp;
@@ -234,7 +234,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     //Use to get direct decay output providing correct decay array
     private cElementalInstanceStackMap exponentialDecayCompute(cElementalDecay[] decays, double lifeTimeMult, double newProductsAge, long newEnergyLevel) {
         double decayInverseRatio=Math.pow(2D,1D/* 1 second *//lifeTime);
-        double newAmount=DoubleCount.div(amount,decayInverseRatio+ulp(decayInverseRatio));
+        double newAmount= div(amount,decayInverseRatio+ulp(decayInverseRatio));
         //if(definition.getSymbol().startsWith("U ")) {
         //    System.out.println("newAmount = " + newAmount);
         //    System.out.println("amountRemaining = " + amountRemaining);
@@ -253,7 +253,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
 
         //split to non decaying and decaying part
         double amount=this.amount;
-        this.amount=DoubleCount.sub(this.amount,newAmount);
+        this.amount= sub(this.amount,newAmount);
         cElementalInstanceStackMap products=decayCompute(decays,lifeTimeMult,newProductsAge,newEnergyLevel);
         this.amount=newAmount;
         products.putUnify(clone());
@@ -305,7 +305,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             for (int i = 0; i < probabilities.length; i++) {
                 probabilities[i]=decays[i].probability;
             }
-            double[] qttyOfDecay = DoubleCount.distribute(this.amount, probabilities);
+            double[] qttyOfDecay = distribute(this.amount, probabilities);
             //long amountRemaining = this.amount, amount = this.amount;
             //float remainingProbability = 1D;
 //
@@ -406,7 +406,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
 
         for (cElementalInstanceStack instance : instances) {
             if (instance != null && compareTo(instance) == 0) {
-                amount=DoubleCount.add(amount,instance.amount);
+                amount= add(amount,instance.amount);
                 energyTotal += instance.energy * instance.amount;
                 if(instance.energy>maxEnergy){
                     maxEnergy=instance.energy;

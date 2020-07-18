@@ -3,7 +3,8 @@ package com.github.technus.tectech.mechanics.elementalMatter.core;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
-import com.github.technus.tectech.util.DoubleCount;
+
+import static com.github.technus.tectech.util.DoubleCount.add;
 
 /**
  * Created by danie_000 on 22.10.2016.
@@ -57,7 +58,7 @@ public final class cElementalDecay {
         //Deny decay code is in instance!
         double qtty = 0D;
         for (cElementalDefinitionStack stack : outputStacks.values()) {
-            qtty= DoubleCount.add(qtty,stack.amount);
+            qtty= add(qtty,stack.amount);
         }
         if (qtty <= 0D) {
             return decayResult;

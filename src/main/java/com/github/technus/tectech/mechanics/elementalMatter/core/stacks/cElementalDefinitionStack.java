@@ -2,10 +2,10 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
-import com.github.technus.tectech.util.DoubleCount;
 import net.minecraft.nbt.NBTTagCompound;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.null__;
+import static com.github.technus.tectech.util.DoubleCount.add;
 
 /**
  * Created by danie_000 on 20.11.2016.
@@ -61,7 +61,7 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
         if(amount==0) {
             return this;
         }
-        return new cElementalDefinitionStack(definition, DoubleCount.add(amount,this.amount));
+        return new cElementalDefinitionStack(definition, add(amount,this.amount));
     }
 
     public cElementalDefinitionStack addAmountIntoNewInstance(cElementalDefinitionStack... other) {
@@ -70,7 +70,7 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
         }
         double l = 0;
         for (cElementalDefinitionStack stack : other) {
-            l=DoubleCount.add(l,stack.amount);
+            l= add(l,stack.amount);
         }
         return addAmountIntoNewInstance(l);
     }

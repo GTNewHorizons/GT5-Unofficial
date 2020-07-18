@@ -4,13 +4,14 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElement
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
-import com.github.technus.tectech.util.DoubleCount;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.*;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.nbtE__;
+import static com.github.technus.tectech.util.DoubleCount.add;
+import static com.github.technus.tectech.util.DoubleCount.sub;
 
 /**
  * Created by danie_000 on 22.01.2017.
@@ -132,7 +133,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         if (testOnly) {
             return target.amount >= instance.amount;
         } else {
-            double diff = DoubleCount.sub(target.amount,instance.amount);
+            double diff = sub(target.amount,instance.amount);
             if (diff > 0) {
                 target.amount = diff;
                 return true;
@@ -152,7 +153,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         if (testOnly) {
             return target.amount >= stack.getAmount();
         } else {
-            double diff = DoubleCount.sub(target.amount,stack.getAmount());
+            double diff = sub(target.amount,stack.getAmount());
             if (diff > 0) {
                 target.amount = diff;
                 return true;
@@ -381,11 +382,10 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return charge;
     }
 
-    @Deprecated
     public double getCountOfAllAmounts(){
         double sum=0;
         for(cElementalInstanceStack stack:map.values()){
-            sum+=stack.amount;
+            sum= add(sum,stack.amount);
         }
         return sum;
     }

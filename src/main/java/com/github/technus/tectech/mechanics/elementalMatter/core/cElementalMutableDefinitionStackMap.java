@@ -4,13 +4,13 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElement
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
-import com.github.technus.tectech.util.DoubleCount;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.Map;
 import java.util.TreeMap;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.nbtE__;
+import static com.github.technus.tectech.util.DoubleCount.sub;
 
 /**
  * Created by danie_000 on 22.01.2017.
@@ -101,7 +101,7 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
         if (testOnly) {
             return target.amount >= instance.amount;
         } else {
-            double diff = DoubleCount.sub(target.amount,instance.amount);
+            double diff = sub(target.amount,instance.amount);
             if (diff > 0) {
                 map.put(target.definition, new cElementalDefinitionStack(target.definition, diff));
                 return true;
@@ -121,7 +121,7 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
         if (testOnly) {
             return target.amount >= stack.getAmount();
         } else {
-            double diff = DoubleCount.sub(target.amount,stack.getAmount());
+            double diff = sub(target.amount,stack.getAmount());
             if (diff > 0) {
                 map.put(target.definition, new cElementalDefinitionStack(target.definition, diff));
                 return true;
