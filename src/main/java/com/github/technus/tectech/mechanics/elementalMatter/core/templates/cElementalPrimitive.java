@@ -37,7 +37,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     public final String name;
     public final String symbol;
     //float-mass in eV/c^2
-    public final float mass;
+    public final double mass;
     //int -electric charge in 1/3rds of electron charge for optimization
     public final byte charge;
     //byte color; 0=Red 1=Green 2=Blue 0=Cyan 1=Magenta 2=Yellow, else ignored (-1 - uncolorable)
@@ -49,7 +49,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     private cElementalDecay[] elementalDecays;
     private byte naturalDecayInstant;
     private byte energeticDecayInstant;
-    private float rawLifeTime;
+    private double rawLifeTime;
 
     public final int ID;
 
@@ -57,7 +57,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     //   _ at end - anti particle
     //  __ at end - self is antiparticle
 
-    protected cElementalPrimitive(String name, String symbol, int type, float mass, int charge, int color, int ID) {
+    protected cElementalPrimitive(String name, String symbol, int type, double mass, int charge, int color, int ID) {
         this.name = name;
         this.symbol = symbol;
         this.type = (byte) type;
@@ -72,7 +72,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     //
-    protected void init(cElementalPrimitive antiParticle, float rawLifeTime, int naturalInstant, int energeticInstant, cElementalDecay... elementalDecaysArray) {
+    protected void init(cElementalPrimitive antiParticle, double rawLifeTime, int naturalInstant, int energeticInstant, cElementalDecay... elementalDecaysArray) {
         anti = antiParticle;
         this.rawLifeTime = rawLifeTime;
         naturalDecayInstant = (byte) naturalInstant;
@@ -111,7 +111,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     @Override
-    public float getMass() {
+    public double getMass() {
         return mass;
     }
 
@@ -136,7 +136,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     @Override
-    public float getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
+    public double getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
         return iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT *(newEnergyLevel-currentEnergyLevel);
     }
 
@@ -166,7 +166,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     @Override
-    public float getRawTimeSpan(long currentEnergy) {
+    public double getRawTimeSpan(long currentEnergy) {
         return rawLifeTime;
     }
 
@@ -234,7 +234,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
             lines.add("SYMBOL = "+getSymbol());
         }
         if(areBitsSet(SCAN_GET_CHARGE,capabilities)) {
-            lines.add("CHARGE = " + getCharge() / 3f + " e");
+            lines.add("CHARGE = " + getCharge() / 3D + " e");
         }
         if(areBitsSet(SCAN_GET_COLOR,capabilities)) {
             lines.add(getColor() < 0 ? "COLORLESS" : "CARRIES COLOR");

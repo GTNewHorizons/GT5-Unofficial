@@ -1,7 +1,5 @@
 package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex;
 
-import com.github.technus.tectech.util.Util;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -10,6 +8,7 @@ import java.util.HashSet;
 import java.util.TreeMap;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
+import static com.github.technus.tectech.util.Util.splitButDifferent;
 
 public final class iaeaNuclide {
     public static final double AMU_TO_EV_DIV_C_C=9.31494061E08D,MICRO_AMU_TO_EV_DIV_C_C=9.31494061E02D;
@@ -28,7 +27,7 @@ public final class iaeaNuclide {
             BufferedReader reader = new BufferedReader(new InputStreamReader(iaeaNuclide.class.getResourceAsStream("nuclides.csv")));
             ArrayList<String[]> blockOfData=new ArrayList<>(4);
             while((line=reader.readLine())!=null) {
-                String[] split= Util.splitButDifferent(line,",");
+                String[] split= splitButDifferent(line,",");
                 if(split.length!=19) {
                     throw new Error("Invalid count (" + split.length + ") of separators in IAEA nuclides database " + line);
                 }
@@ -51,7 +50,7 @@ public final class iaeaNuclide {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(iaeaNuclide.class.getResourceAsStream("nuclidesTable.csv")));
             while((line=reader.readLine())!=null) {
-                String[] split= Util.splitButDifferent(line,",");
+                String[] split= splitButDifferent(line,",");
                 if(split.length!=47) {
                     throw new Error("Invalid count (" + split.length + ") of separators in IAEA nuvlidesTable database " + line);
                 }
@@ -66,7 +65,7 @@ public final class iaeaNuclide {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(iaeaNuclide.class.getResourceAsStream("energyLevels.csv")));
             while((line=reader.readLine())!=null) {
-                String[] split= Util.splitButDifferent(line,",");
+                String[] split= splitButDifferent(line,",");
                 if(split.length!=27) {
                     throw new Error("Invalid count (" + split.length + ") of separators in IAEA energyLevels database " + line);
                 }
@@ -88,10 +87,10 @@ public final class iaeaNuclide {
     }
 
     public final short N,Z;
-    public final float halfTime;//sec
-    public final float mass;//eV/c^2
+    public final double halfTime;//sec
+    public final double mass;//eV/c^2
     public final short discovery;//year
-    private TreeMap<Float,energeticState> energeticStates;
+    private TreeMap<Double,energeticState> energeticStates;
     public energeticState[] energeticStatesArray;
 
 
@@ -100,14 +99,14 @@ public final class iaeaNuclide {
         Z=Short.parseShort(rows[1][0]);
         NUCLIDES.put(((int)Z <<16)+N,this);
 
-        String[] parts = Util.splitButDifferent(rows[0][16], "|");
+        String[] parts = splitButDifferent(rows[0][16], "|");
         double Mass=doubleOrNaN(parts[0],"mass");
         if(!Double.isNaN(Mass)) {
             //System.out.println("Mass =\t" + Mass+"\t"+(N+Z)+"\t"+N+"\t"+Z+"\t"+(Mass/(N+Z)));
-            mass = (float)(Mass* MICRO_AMU_TO_EV_DIV_C_C);
+            mass = Mass* MICRO_AMU_TO_EV_DIV_C_C;
         }
         else {
-            mass = Float.NaN;
+            mass = Double.NaN;
         }
 
         discovery=(short)doubleOrNaN(rows[0][18],"discovery");
@@ -115,8 +114,8 @@ public final class iaeaNuclide {
         if(rows[0][3].contains("STABLE")){
             halfTime = STABLE_RAW_LIFE_TIME;
         }else{
-            parts = Util.splitButDifferent(rows[0][4], "|");
-            halfTime = (float)doubleOrNaN(parts[0],"half life");
+            parts = splitButDifferent(rows[0][4], "|");
+            halfTime = doubleOrNaN(parts[0],"half life");
         }
     }
 
@@ -126,7 +125,13 @@ public final class iaeaNuclide {
         //    if (add(cells[17])) System.out.println(N + " " + Z);
         //    if (add(cells[20])) System.out.println(N + " " + Z);
         //}
-        new energeticState(this, halfTime, getDecaysFixed(cells[14],doubleOrNaN(cells[15],"chance1"),cells[17],doubleOrNaN(cells[18],"chance1"),cells[20],doubleOrNaN(cells[21],"chance1")));
+        new energeticState(this, halfTime, getDecaysFixed(
+                cells[14],
+                doubleOrNaN(cells[15],"chance1"),
+                cells[17],
+                doubleOrNaN(cells[18],"chance1"),
+                cells[20],
+                doubleOrNaN(cells[21],"chance1")));
     }
 
     private static final energeticState[] empty=new energeticState[0];
@@ -156,11 +161,11 @@ public final class iaeaNuclide {
     }
 
     public static final class energeticState{
-        public final float energy;
-        public final float Thalf;
+        public final double energy;
+        public final double Thalf;
         public final iaeaDecay[] decaymodes;
 
-        private energeticState(iaeaNuclide nuclide,float Thalf,iaeaDecay[] decaymodes){
+        private energeticState(iaeaNuclide nuclide,double Thalf,iaeaDecay[] decaymodes){
             energy=0;
             this.Thalf=Thalf;
             this.decaymodes=decaymodes;
@@ -175,11 +180,11 @@ public final class iaeaNuclide {
             if(nuclide==null) {
                 throw new Error("Missing nuclide " + (int) doubleOrNaN(cells[0], "protons") + ' ' + (int) doubleOrNaN(cells[1], "neutrons"));
             }
-            energy =(float) (doubleOrNaN(cells[3],"energy level",nuclide)*1000f);//to eV
+            energy =doubleOrNaN(cells[3],"energy level",nuclide)*1000D;//to eV
             if(energy<0) {
                 throw new Error("Invalid energy " + nuclide.N + ' ' + nuclide.Z + ' ' + cells[3]);
             }
-            Thalf =(float) doubleOrNaN(cells[10],"half life",nuclide);
+            Thalf =doubleOrNaN(cells[10],"half life",nuclide);
             if(nuclide.energeticStates==null) {
                 new Exception("Should be initialized before doing this... "+ nuclide.N + ' ' +nuclide.Z).printStackTrace();
                 nuclide.energeticStates = new TreeMap<>();
@@ -190,7 +195,13 @@ public final class iaeaNuclide {
             //    if (add(cells[15])) System.out.println(nuclide.N + " " + nuclide.Z);
             //    if (add(cells[18])) System.out.println(nuclide.N + " " + nuclide.Z);
             //}
-            decaymodes = getDecaysFixed(cells[12],doubleOrNaN(cells[13],"chance 1",nuclide),cells[15],doubleOrNaN(cells[16],"chance 2",nuclide),cells[18],doubleOrNaN(cells[19],"chance 3",nuclide));
+            decaymodes = getDecaysFixed(
+                    cells[12],
+                    doubleOrNaN(cells[13],"chance 1",nuclide),
+                    cells[15],
+                    doubleOrNaN(cells[16],"chance 2",nuclide),
+                    cells[18],
+                    doubleOrNaN(cells[19],"chance 3",nuclide));
         }
 
         private double doubleOrNaN(String s, String name){
@@ -231,40 +242,40 @@ public final class iaeaNuclide {
         do3= !decay3.isEmpty() && !Double.isNaN(chance3);
         TreeMap<Double,iaeaDecay> decays=new TreeMap<>();
         if(do1 && do2 && chance1==100 && chance2==100 && chance3!=100){
-            decays.put(1D, new iaeaDecay(1f, decay1));
+            decays.put(1D, new iaeaDecay(1D, decay1));
             if(do3) {
                 chance3/=100d;
-                decays.put(chance3, new iaeaDecay((float) chance3, decay2));
+                decays.put(chance3, new iaeaDecay(chance3, decay2));
                 chance2=1d-chance3;
             }
             chance2/=2d;
-            decays.put(chance2, new iaeaDecay((float) chance2, decay2));
+            decays.put(chance2, new iaeaDecay(chance2, decay2));
         }else if(do1 && chance1==100){
-            decays.put(1D, new iaeaDecay(1f, decay1));
+            decays.put(1D, new iaeaDecay(1D, decay1));
             if(do2) {
                 chance2/=100d;
-                decays.put(chance2, new iaeaDecay((float) chance2, decay2));
+                decays.put(chance2, new iaeaDecay(chance2, decay2));
             }
             if(do3) {
                 chance3 /= 100d;
                 if(do2) {
                     chance3 *= chance2;
                 }
-                decays.put(chance3, new iaeaDecay((float) chance3, decay3));
+                decays.put(chance3, new iaeaDecay(chance3, decay3));
             }
         }else{
             double normalization= (do1?chance1:0) + (do2?chance2:0) + (do3?chance3:0);
             if(do1) {
                 chance1/=normalization;
-                decays.put(chance1, new iaeaDecay((float) chance1, decay1));
+                decays.put(chance1, new iaeaDecay(chance1, decay1));
             }
             if(do2) {
                 chance2/=normalization;
-                decays.put(chance2, new iaeaDecay((float) chance2, decay2));
+                decays.put(chance2, new iaeaDecay(chance2, decay2));
             }
             if(do3) {
                 chance3/=normalization;
-                decays.put(chance3, new iaeaDecay((float) chance3, decay3));
+                decays.put(chance3, new iaeaDecay(chance3, decay3));
             }
             if(do1||do2||do3) {
                 decays.put(1D, iaeaDecay.DEAD_END);
@@ -277,10 +288,10 @@ public final class iaeaNuclide {
     }
 
     public static final class iaeaDecay{
-        public final float chance;
+        public final double chance;
         public final String decayName;
-        public static final iaeaDecay DEAD_END=new iaeaDecay(1f,"DEAD_END");
-        private iaeaDecay(float chance,String decayName){
+        public static final iaeaDecay DEAD_END=new iaeaDecay(1D,"DEAD_END");
+        private iaeaDecay(double chance,String decayName){
             this.chance=chance;
             this.decayName=decayName;
         }

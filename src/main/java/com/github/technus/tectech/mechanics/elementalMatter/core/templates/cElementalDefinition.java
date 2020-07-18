@@ -100,8 +100,8 @@ public abstract class cElementalDefinition extends iElementalDefinition {
     }
 
     @Override
-    public final cElementalDefinitionStack getStackForm(long i) {
-        return new cElementalDefinitionStack(this,i);
+    public final cElementalDefinitionStack getStackForm(double amount) {
+        return new cElementalDefinitionStack(this, amount);
     }
 
     @Override
@@ -122,7 +122,8 @@ public abstract class cElementalDefinition extends iElementalDefinition {
     public int hashCode() {//Internal amounts should be also hashed
         int hash = -(getSubParticles().size() << 4);
         for (cElementalDefinitionStack stack : getSubParticles().values()) {
-            hash += ((stack.amount & 0x1) == 0 ? -stack.amount : stack.amount) + stack.definition.hashCode();
+            int amount=(int)stack.amount;
+            hash += ((amount & 0x1) == 0 ? -amount : amount) + stack.definition.hashCode();
         }
         return hash;
     }

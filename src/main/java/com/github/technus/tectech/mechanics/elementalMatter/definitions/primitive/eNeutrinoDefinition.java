@@ -9,38 +9,38 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElem
  */
 public final class eNeutrinoDefinition extends cElementalPrimitive {
     public static final eNeutrinoDefinition
-            lepton_Ve = new eNeutrinoDefinition("Electron neutrino", "\u03bd\u03b2", 1, 2e0F, 21),
-            lepton_Vm = new eNeutrinoDefinition("Muon neutrino", "\u03bd\u03bc", 2, 0.15e6F, 23),
-            lepton_Vt = new eNeutrinoDefinition("Tauon neutrino", "\u03bd\u03c4", 3, 15e6F, 25),
-            lepton_Ve_ = new eNeutrinoDefinition("Positron neutrino", "~\u03bd\u03b2", -1, 2e0F, 22),
-            lepton_Vm_ = new eNeutrinoDefinition("Antimuon neutrino", "~\u03bd\u03bc", -2, 0.15e6F, 24),
-            lepton_Vt_ = new eNeutrinoDefinition("Antitauon neutrino", "~\u03bd\u03c4", -3, 15e6F, 26);
+            lepton_Ve = new eNeutrinoDefinition("Electron neutrino", "\u03bd\u03b2", 1, 2e0D, 21),
+            lepton_Vm = new eNeutrinoDefinition("Muon neutrino", "\u03bd\u03bc", 2, 0.15e6D, 23),
+            lepton_Vt = new eNeutrinoDefinition("Tauon neutrino", "\u03bd\u03c4", 3, 15e6D, 25),
+            lepton_Ve_ = new eNeutrinoDefinition("Positron neutrino", "~\u03bd\u03b2", -1, 2e0D, 22),
+            lepton_Vm_ = new eNeutrinoDefinition("Antimuon neutrino", "~\u03bd\u03bc", -2, 0.15e6D, 24),
+            lepton_Vt_ = new eNeutrinoDefinition("Antitauon neutrino", "~\u03bd\u03c4", -3, 15e6D, 26);
 
     public static final cElementalDefinitionStack lepton_Ve1 = new cElementalDefinitionStack(lepton_Ve, 1);
     public static final cElementalDefinitionStack lepton_Ve2 = new cElementalDefinitionStack(lepton_Ve, 2);
     public static final cElementalDefinitionStack lepton_Ve_1 = new cElementalDefinitionStack(lepton_Ve_, 1);
     public static final cElementalDefinitionStack lepton_Ve_2 = new cElementalDefinitionStack(lepton_Ve_, 2);
 
-    private eNeutrinoDefinition(String name, String symbol, int type, float mass, int ID) {
+    private eNeutrinoDefinition(String name, String symbol, int type, double mass, int ID) {
         super(name, symbol, type, mass, 0, -1, ID);
     }
 
     public static void run() {
-        lepton_Ve.init(lepton_Ve_, 1F, -1, -1,
+        lepton_Ve.init(lepton_Ve_, 1D, -1, -1,
                 cElementalDecay.noProduct);
-        lepton_Vm.init(lepton_Vm_, 1F, 1, 0,
-                new cElementalDecay(0.825F, nothing),
+        lepton_Vm.init(lepton_Vm_, 1D, 1, 0,
+                new cElementalDecay(0.825D, nothing),
                 eBosonDefinition.deadEndHalf);
-        lepton_Vt.init(lepton_Vt_, 1F, 1, 0,
+        lepton_Vt.init(lepton_Vt_, 1, 1, 0,
                 new cElementalDecay(0.75F, nothing),
                 eBosonDefinition.deadEnd);
 
-        lepton_Ve_.init(lepton_Ve, 1F, -1, -1,
+        lepton_Ve_.init(lepton_Ve, 1, -1, -1,
                 cElementalDecay.noProduct);
-        lepton_Vm_.init(lepton_Vm, 1F, 1, 0,
+        lepton_Vm_.init(lepton_Vm, 1, 1, 0,
                 new cElementalDecay(0.825F, nothing),
                 eBosonDefinition.deadEndHalf);
-        lepton_Vt_.init(lepton_Vt, 1F, 1, 0,
+        lepton_Vt_.init(lepton_Vt, 1, 1, 0,
                 new cElementalDecay(0.75F, nothing),
                 eBosonDefinition.deadEnd);
     }

@@ -2,6 +2,7 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
+import com.github.technus.tectech.util.DoubleCount;
 import net.minecraft.nbt.NBTTagCompound;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.null__;
@@ -11,9 +12,9 @@ import static com.github.technus.tectech.mechanics.elementalMatter.definitions.p
  */
 public final class cElementalDefinitionStack implements iHasElementalDefinition {
     public final iElementalDefinition definition;
-    public final long amount;
+    public final double amount;
 
-    public cElementalDefinitionStack(iElementalDefinition def, long amount) {
+    public cElementalDefinitionStack(iElementalDefinition def, double amount) {
         definition = def == null ? null__ : def;
         this.amount = amount;
     }
@@ -29,47 +30,47 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
     }
 
     @Override
-    public long getAmount() {
+    public double getAmount() {
         return amount;
     }
 
     @Override
-    public long getCharge() {
+    public double getCharge() {
         return definition.getCharge() * amount;
     }
 
     @Override
-    public float getMass() {
+    public double getMass() {
         return definition.getMass() * amount;
     }
 
     public NBTTagCompound toNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setTag("d", definition.toNBT());
-        nbt.setLong("q", amount);
+        nbt.setDouble("Q", amount);
         return nbt;
     }
 
     public static cElementalDefinitionStack fromNBT(NBTTagCompound nbt) {
         return new cElementalDefinitionStack(
                 cElementalDefinition.fromNBT(nbt.getCompoundTag("d")),
-                nbt.getLong("q"));
+                nbt.getLong("q")+nbt.getDouble("Q"));
     }
 
-    public cElementalDefinitionStack addAmountIntoNewInstance(long amount) {
+    public cElementalDefinitionStack addAmountIntoNewInstance(double amount) {
         if(amount==0) {
             return this;
         }
-        return new cElementalDefinitionStack(definition, amount + this.amount);
+        return new cElementalDefinitionStack(definition, DoubleCount.add(amount,this.amount));
     }
 
     public cElementalDefinitionStack addAmountIntoNewInstance(cElementalDefinitionStack... other) {
         if (other == null || other.length == 0) {
             return this;
         }
-        long l = 0;
+        double l = 0;
         for (cElementalDefinitionStack stack : other) {
-            l += stack.amount;
+            l=DoubleCount.add(l,stack.amount);
         }
         return addAmountIntoNewInstance(l);
     }

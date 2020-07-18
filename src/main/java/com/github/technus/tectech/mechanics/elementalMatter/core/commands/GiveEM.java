@@ -50,7 +50,7 @@ public class GiveEM implements ICommand {
 
                 cElementalDefinitionStack def= getDefinitionStack(list);
                 if(def!=null) {
-                    cElementalInstanceStack instanceStack = new cElementalInstanceStack(def, 1, 0, Long.parseLong(energy));
+                    cElementalInstanceStack instanceStack = new cElementalInstanceStack(def, 1D, 0D, Long.parseLong(energy));
 
                     sender.addChatMessage(new ChatComponentText(instanceStack.definition.getSymbol() + " - " + instanceStack.definition.getName()));
 
@@ -73,7 +73,7 @@ public class GiveEM implements ICommand {
             args.remove(0);
             return null;
         }
-        long amount=Long.parseLong(args.remove(0));
+        double amount=Double.parseDouble(args.remove(0));
         try{
             int id=Integer.parseInt(args.get(0));
             args.remove(0);

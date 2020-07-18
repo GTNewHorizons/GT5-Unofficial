@@ -65,6 +65,7 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
         return var.toArray(new iElementalDefinition[0]);
     }
 
+    @Deprecated
     public long getCountOfAllAmounts(){
         long sum=0;
         for(cElementalDefinitionStack stack:map.values()){

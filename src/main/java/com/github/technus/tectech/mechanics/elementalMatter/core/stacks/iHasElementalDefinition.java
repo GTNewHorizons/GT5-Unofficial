@@ -8,11 +8,11 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElem
 public interface iHasElementalDefinition extends Comparable<iHasElementalDefinition>,Cloneable {
     iElementalDefinition getDefinition();
 
-    long getAmount();
+    double getAmount();
 
-    long getCharge();
+    double getCharge();
 
-    float getMass();
+    double getMass();
 
     iHasElementalDefinition clone();
 }

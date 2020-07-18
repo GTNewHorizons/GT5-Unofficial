@@ -4,6 +4,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElement
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
+import com.github.technus.tectech.util.DoubleCount;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -131,7 +132,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         if (testOnly) {
             return target.amount >= instance.amount;
         } else {
-            long diff = target.amount - instance.amount;
+            double diff = DoubleCount.sub(target.amount,instance.amount);
             if (diff > 0) {
                 target.amount = diff;
                 return true;
@@ -151,7 +152,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         if (testOnly) {
             return target.amount >= stack.getAmount();
         } else {
-            long diff = target.amount - stack.getAmount();
+            double diff = DoubleCount.sub(target.amount,stack.getAmount());
             if (diff > 0) {
                 target.amount = diff;
                 return true;
@@ -165,7 +166,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     @Deprecated
     public boolean removeAmount(boolean testOnly, iElementalDefinition def) {
-        return removeAmount(testOnly, new cElementalDefinitionStack(def, 1));
+        return removeAmount(testOnly, new cElementalDefinitionStack(def, 1D));
     }
 
     public boolean removeAllAmounts(boolean testOnly, cElementalInstanceStack... instances) {
@@ -234,8 +235,8 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     //Remove overflow
-    public float removeOverflow(int stacksCount, long stackCapacity) {
-        float massRemoved = 0;
+    public double removeOverflow(int stacksCount, double stackCapacity) {
+        double massRemoved = 0;
 
         if (map.size() > stacksCount) {
             iElementalDefinition[] keys = keys();
@@ -364,24 +365,25 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return var.toArray(new iElementalDefinition[0]);
     }
 
-    public float getMass() {
-        float mass = 0;
+    public double getMass() {
+        double mass = 0;
         for (cElementalInstanceStack stack : map.values()) {
             mass += stack.getMass();
         }
         return mass;
     }
 
-    public long getCharge() {
-        long charge = 0;
+    public double getCharge() {
+        double charge = 0;
         for (cElementalInstanceStack stack : map.values()) {
             charge += stack.getCharge();
         }
         return charge;
     }
 
-    public long getCountOfAllAmounts(){
-        long sum=0;
+    @Deprecated
+    public double getCountOfAllAmounts(){
+        double sum=0;
         for(cElementalInstanceStack stack:map.values()){
             sum+=stack.amount;
         }
@@ -410,11 +412,11 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     //Tick Content
-    public void tickContentByOneSecond(float lifeTimeMult, int postEnergize) {
-        tickContent(lifeTimeMult,postEnergize,1);
+    public void tickContentByOneSecond(double lifeTimeMult, int postEnergize) {
+        tickContent(lifeTimeMult,postEnergize,1D);
     }
 
-    public void tickContent(float lifeTimeMult, int postEnergize, int seconds){
+    public void tickContent(double lifeTimeMult, int postEnergize, double seconds){
         for (cElementalInstanceStack instance : values()) {
             cElementalInstanceStackMap newInstances = instance.decay(lifeTimeMult, instance.age += seconds, postEnergize);
             if (newInstances == null) {

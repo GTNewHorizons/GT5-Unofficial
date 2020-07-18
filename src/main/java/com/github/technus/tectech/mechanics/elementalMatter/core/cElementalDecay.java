@@ -3,6 +3,7 @@ package com.github.technus.tectech.mechanics.elementalMatter.core;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
+import com.github.technus.tectech.util.DoubleCount;
 
 /**
  * Created by danie_000 on 22.10.2016.
@@ -15,50 +16,50 @@ public final class cElementalDecay {
     public static final cElementalDecay[] noProduct = new cElementalDecay[0];
     //this in turn can be used to tell that the thing should just vanish
     public final cElementalDefinitionStackMap outputStacks;
-    public final float probability;
+    public final double probability;
 
     public cElementalDecay(iElementalDefinition... outSafe) {
-        this(2F, outSafe);
+        this(2D, outSafe);
     }
 
-    public cElementalDecay(float probability, iElementalDefinition... outSafe) {
+    public cElementalDecay(double probability, iElementalDefinition... outSafe) {
         cElementalDefinitionStack[] outArr = new cElementalDefinitionStack[outSafe.length];
         for (int i = 0; i < outArr.length; i++) {
-            outArr[i] = new cElementalDefinitionStack(outSafe[i], 1);
+            outArr[i] = new cElementalDefinitionStack(outSafe[i], 1D);
         }
         outputStacks = new cElementalDefinitionStackMap(outArr);
         this.probability = probability;
     }
 
     public cElementalDecay(cElementalDefinitionStack... outSafe) {
-        this(2F, outSafe);
+        this(2D, outSafe);
     }
 
-    public cElementalDecay(float probability, cElementalDefinitionStack... out) {
+    public cElementalDecay(double probability, cElementalDefinitionStack... out) {
         outputStacks = new cElementalDefinitionStackMap(out);
         this.probability = probability;
     }
 
     public cElementalDecay(cElementalDefinitionStackMap tree) {
-        this(2F, tree);
+        this(2D, tree);
     }
 
-    public cElementalDecay(float probability, cElementalDefinitionStackMap tree) {
+    public cElementalDecay(double probability, cElementalDefinitionStackMap tree) {
         outputStacks = tree;
         this.probability = probability;
     }
 
-    public cElementalInstanceStackMap getResults(float lifeMult, long age, long energyTotalForProducts, long amountDecaying) {
+    public cElementalInstanceStackMap getResults(double lifeMult, double age, long energyTotalForProducts, double amountDecaying) {
         cElementalInstanceStackMap decayResult = new cElementalInstanceStackMap();
         if (outputStacks == null) {
             return decayResult;//This is to prevent null pointer exceptions.
         }
         //Deny decay code is in instance!
-        long qtty = 0;
+        double qtty = 0D;
         for (cElementalDefinitionStack stack : outputStacks.values()) {
-            qtty += stack.amount;
+            qtty= DoubleCount.add(qtty,stack.amount);
         }
-        if (qtty <= 0) {
+        if (qtty <= 0D) {
             return decayResult;
         }
         //energyTotalForProducts /= qtty;
@@ -66,7 +67,7 @@ public final class cElementalDecay {
         for (cElementalDefinitionStack stack : outputStacks.values()) {
             decayResult.putUnify(new cElementalInstanceStack(stack.definition,
                     amountDecaying * stack.amount,
-                    lifeMult, age/*new products*/, energyTotalForProducts / Math.max(1, Math.abs(stack.amount))));//get instances from stack
+                    lifeMult, age/*new products*/, (long)(energyTotalForProducts / Math.max(1D, Math.abs(stack.amount)))));//get instances from stack
         }
         return decayResult;
     }
