@@ -143,9 +143,9 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
         for(iElementalDefinition defintion: STACKS_REGISTERED){
-            list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+AVOGADRO_CONSTANT),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,1))));
-            list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+AVOGADRO_CONSTANT_144),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,144))));
-            list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+AVOGADRO_CONSTANT*1000),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,1000))));
+            list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+AVOGADRO_CONSTANT),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,AVOGADRO_CONSTANT))));
+            list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+AVOGADRO_CONSTANT_144),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,AVOGADRO_CONSTANT_144))));
+            list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+AVOGADRO_CONSTANT*1000),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,AVOGADRO_CONSTANT*1000))));
         }
     }
 
