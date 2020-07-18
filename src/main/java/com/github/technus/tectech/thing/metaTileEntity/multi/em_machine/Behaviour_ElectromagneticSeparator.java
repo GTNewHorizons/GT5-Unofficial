@@ -9,8 +9,11 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunctio
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_144;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.github.technus.tectech.util.DoubleCount.mul;
+import static com.github.technus.tectech.util.DoubleCount.sub;
 
 /**
  * Created by danie_000 on 24.12.2017.
@@ -19,8 +22,8 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
     private final byte tier;
     private int ticks;
     private byte precisionFull,precisionMinimal;
-    private float maxCapacity;
-    private long maxCharge;
+    private double maxCapacity;
+    private double maxCharge;
     private int offsetMax;
     private Parameters.Group.ParameterIn fullSetting,minimalSetting,offsetSetting;
     private final static INameFunction<GT_MetaTileEntity_EM_machine> fullName= (gt_metaTileEntity_em_machine, iParameter) -> "Full Precision Input [e/3]";
@@ -85,8 +88,8 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
     public Behaviour_ElectromagneticSeparator(int desiredTier){
         tier=(byte) desiredTier;
         ticks =Math.max(20,(1<<(12-desiredTier))*20);
-        maxCapacity= dAtomDefinition.getSomethingHeavy().getMass()*(2<<tier);
-        maxCharge=144*(1<<(tier-5));
+        maxCapacity= dAtomDefinition.getSomethingHeavy().getMass()*(2<<tier)*AVOGADRO_CONSTANT_144;
+        maxCharge=144D*(1<<(tier-5));
         switch (tier){
             case 12:
                 precisionFull=1;
@@ -153,20 +156,20 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
         float excessMass = 0;
         while (inputMass > maxCapacity) {
             cElementalInstanceStack randomStack = stacks[TecTech.RANDOM.nextInt(stacks.length)];
-            int amountToRemove = TecTech.RANDOM.nextInt((int) randomStack.getAmount()) + 1;
-            randomStack.amount -= amountToRemove;//mutates the parent InstanceStackMap
+            double amountToRemove = TecTech.RANDOM.nextDouble()/10D * randomStack.getAmount();
+            randomStack.amount= sub(randomStack.amount,amountToRemove);//mutates the parent InstanceStackMap
             if (randomStack.amount <= 0) {
                 input.remove(randomStack.definition);
             }
-            float mass = Math.abs(randomStack.getDefinition().getMass()) * amountToRemove;
+            double mass = Math.abs(randomStack.getDefinition().getMass()) * amountToRemove;
             excessMass += mass;
             inputMass -= mass;
         }
 
-        long totalCharge=Math.abs(input.getCharge());
+        double totalCharge=Math.abs(input.getCharge());
         if (totalCharge>maxCharge) return new MultiblockControl<>(excessMass);//AND THEN IT EXPLODES
 
-        int mEut=(int)(((double)totalCharge/(double) maxCharge)*V[tier]);
+        int mEut=(int)((totalCharge/ maxCharge)*V[tier]);
         mEut = Math.max(mEut, 512);
         int mTicks=(int)(ticks*(inputMass/maxCapacity));
         mTicks=Math.max(mTicks,20);
@@ -192,24 +195,18 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
             }else if(charge<=-precisionFullIn){
                 outputs[0].putReplace(stack);
             }else{
-                long amount=(long)(stack.amount*((Math.abs(charge)-precisionMinimalIn+1)/levelsCountPlus1));//todo check
-                if(amount>=stack.amount){
-                    if(charge>0){
-                        outputs[2].putReplace(stack);
-                    }else {
-                        outputs[0].putReplace(stack);
-                    }
-                }else {
-                    cElementalInstanceStack clone=stack.clone();
-                    clone.amount-=amount;
+                double amount=mul(stack.amount,(Math.abs(charge)-precisionMinimalIn+1D)/levelsCountPlus1);//todo check
+                if (amount < stack.amount) {
+                    cElementalInstanceStack clone = stack.clone();
+                    clone.amount = sub(clone.amount, amount);
                     outputs[1].putReplace(clone);
 
-                    stack.amount=amount;
-                    if(charge>0){
-                        outputs[2].putReplace(stack);
-                    }else {
-                        outputs[0].putReplace(stack);
-                    }
+                    stack.amount = amount;
+                }
+                if(charge>0){
+                    outputs[2].putReplace(stack);
+                }else {
+                    outputs[0].putReplace(stack);
                 }
             }
         }

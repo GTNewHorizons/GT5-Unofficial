@@ -17,13 +17,17 @@ import static com.github.technus.tectech.thing.item.DebugElementalInstanceContai
  * Created by Tec on 26.05.2017.
  */
 public class bTransformationInfo {
+    public static final double AVOGADRO_CONSTANT =6.02214076e23D;
+    public static final double AVOGADRO_CONSTANT_144 =AVOGADRO_CONSTANT*144D;
+
     public static final HashMap<Integer,aFluidQuantizationInfo> fluidQuantization=new HashMap<>(32);
+    public static final HashMap<aItemQuantizationInfo,aItemQuantizationInfo> itemQuantization=new HashMap<>(32);
+    public static final HashMap<Integer,aOredictQuantizationInfo> oredictQuantization=new HashMap<>(32);
+
     public HashMap<iElementalDefinition,aFluidDequantizationInfo> fluidDequantization;
 
-    public static final HashMap<aItemQuantizationInfo,aItemQuantizationInfo> itemQuantization=new HashMap<>(32);
     public HashMap<iElementalDefinition,aItemDequantizationInfo> itemDequantization;
 
-    public static final HashMap<Integer,aOredictQuantizationInfo> oredictQuantization=new HashMap<>(32);
     public HashMap<iElementalDefinition,aOredictDequantizationInfo> oredictDequantization;
 
     public bTransformationInfo(int fluidCap,int itemCap, int oreCap){
@@ -41,13 +45,6 @@ public class bTransformationInfo {
     public void addFluid(iHasElementalDefinition em, FluidStack fluidStack){
         fluidQuantization.put(fluidStack.getFluidID(),new aFluidQuantizationInfo(fluidStack,em));
         fluidDequantization.put(em.getDefinition(),new aFluidDequantizationInfo(em,fluidStack));
-        STACKS_REGISTERED.add(em.getDefinition());
-        STACKS_REGISTERED.add(em.getDefinition().getAnti());
-    }
-
-    public void addFluid(iHasElementalDefinition em ,int fluidID,int fluidAmount) {
-        fluidQuantization.put(fluidID,new aFluidQuantizationInfo(fluidID,fluidAmount,em));
-        fluidDequantization.put(em.getDefinition(),new aFluidDequantizationInfo(em,fluidID,fluidAmount));
         STACKS_REGISTERED.add(em.getDefinition());
         STACKS_REGISTERED.add(em.getDefinition().getAnti());
     }
@@ -73,13 +70,6 @@ public class bTransformationInfo {
     public void addItem(iHasElementalDefinition em, OrePrefixes prefix, Materials material, int amount, boolean skipNBT){
         addItemQuantization(new aItemQuantizationInfo(prefix,material,amount,skipNBT,em));
         itemDequantization.put(em.getDefinition(),new aItemDequantizationInfo(em,prefix,material,amount));
-        STACKS_REGISTERED.add(em.getDefinition());
-        STACKS_REGISTERED.add(em.getDefinition().getAnti());
-    }
-
-    public void addOredict(iHasElementalDefinition em, int id, int qty){
-        oredictQuantization.put(id,new aOredictQuantizationInfo(id,qty,em));
-        oredictDequantization.put(em.getDefinition(),new aOredictDequantizationInfo(em,id,qty));
         STACKS_REGISTERED.add(em.getDefinition());
         STACKS_REGISTERED.add(em.getDefinition().getAnti());
     }

@@ -1,7 +1,6 @@
 package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalMutableDefinitionStackMap;
@@ -13,6 +12,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.transformations
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition;
 import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
+import com.github.technus.tectech.util.Util;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,7 +24,8 @@ import java.util.Map;
 
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition.getNbtTagCompound;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.transformation;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_144;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.TRANSFORMATION_INFO;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static gregtech.api.enums.OrePrefixes.dust;
@@ -464,8 +465,8 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     public static void setTransformations(){
         //Added to atom map, but should be in its own
-        cElementalDefinitionStack neutrons=new cElementalDefinitionStack(hadron_n, 100000);
-        transformation.oredictDequantization.put(neutrons.definition,new aOredictDequantizationInfo(neutrons, dust, Materials.Neutronium,1));
+        cElementalDefinitionStack neutrons=new cElementalDefinitionStack(hadron_n, 1000*AVOGADRO_CONSTANT_144);
+        TRANSFORMATION_INFO.oredictDequantization.put(neutrons.definition,new aOredictDequantizationInfo(neutrons, dust, Materials.Neutronium,1));
         bTransformationInfo.oredictQuantization.put(
                 OreDictionary.getOreID(OrePrefixes.ingotHot.name()+Materials.Neutronium.mName),
                 new aOredictQuantizationInfo(OrePrefixes.ingotHot,Materials.Neutronium,1 ,neutrons)

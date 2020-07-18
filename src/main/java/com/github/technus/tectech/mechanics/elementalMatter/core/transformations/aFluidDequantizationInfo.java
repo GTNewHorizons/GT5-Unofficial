@@ -7,19 +7,13 @@ import net.minecraftforge.fluids.FluidStack;
 /**
  * Created by Tec on 23.05.2017.
  */
-public class aFluidDequantizationInfo implements iExchangeInfo {
+public class aFluidDequantizationInfo implements iExchangeInfo<iHasElementalDefinition,FluidStack> {
     private final iHasElementalDefinition in;
     private final FluidStack out;
 
     public aFluidDequantizationInfo(iHasElementalDefinition emIn, FluidStack fluidStackOut){
         in=emIn;
         out=fluidStackOut;
-    }
-
-    @Deprecated
-    public aFluidDequantizationInfo(iHasElementalDefinition emIn ,int fluidID,int fluidAmount) {
-        in = emIn;
-        out = new FluidStack(fluidID, fluidAmount);
     }
 
     public aFluidDequantizationInfo(iHasElementalDefinition emIn, Fluid fluid, int fluidAmount){

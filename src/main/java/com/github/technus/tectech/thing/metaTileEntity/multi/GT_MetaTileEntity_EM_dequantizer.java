@@ -4,10 +4,11 @@ import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aFluidDequantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aItemDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictDequantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.iExchangeInfo;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.mechanics.structure.Structure;
+import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -99,32 +100,36 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
             cElementalInstanceStackMap map = in.getContainerHandler();
             for (cElementalInstanceStack stack : map.values()) {
-                iExchangeInfo info = stack.getDefinition().someAmountIntoFluidStack();
-                if (info != null) {
-                    if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
-                        mOutputFluids = new FluidStack[]{(FluidStack) info.output()};
-                        startRecipe((iHasElementalDefinition) info.input(), stack.getEnergy());
-                        return true;
-                    }
-                }
-
-                info = stack.getDefinition().someAmountIntoItemsStack();
-                if (info != null) {
-                    if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
-                        mOutputItems = new ItemStack[]{(ItemStack) info.output()};
-                        startRecipe((iHasElementalDefinition) info.input(), stack.getEnergy());
-                        return true;
-                    }
-                }
-
-                info = stack.getDefinition().someAmountIntoOredictStack();
-                if (info != null) {
-                    if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
-                        ArrayList<ItemStack> items = OreDictionary.getOres(((aOredictDequantizationInfo) info).out);
-                        if (items != null && !items.isEmpty()) {
-                            mOutputItems = new ItemStack[]{items.get(0)};
-                            startRecipe((iHasElementalDefinition) info.input(), stack.getEnergy());
+                {
+                    aFluidDequantizationInfo info = stack.getDefinition().someAmountIntoFluidStack();
+                    if (info != null) {
+                        if (map.removeAllAmounts(false, info.input())) {
+                            mOutputFluids = new FluidStack[]{info.output()};
+                            startRecipe(info.input(), stack.getEnergy());
                             return true;
+                        }
+                    }
+                }
+                {
+                    aItemDequantizationInfo info = stack.getDefinition().someAmountIntoItemsStack();
+                    if (info != null) {
+                        if (map.removeAllAmounts(false, info.input())) {
+                            mOutputItems = new ItemStack[]{info.output()};
+                            startRecipe(info.input(), stack.getEnergy());
+                            return true;
+                        }
+                    }
+                }
+                {
+                    aOredictDequantizationInfo info = stack.getDefinition().someAmountIntoOredictStack();
+                    if (info != null) {
+                        if (map.removeAllAmounts(false, info.input())) {
+                            ArrayList<ItemStack> items = OreDictionary.getOres(info.out);
+                            if (items != null && !items.isEmpty()) {
+                                mOutputItems = new ItemStack[]{items.get(0)};
+                                startRecipe(info.input(), stack.getEnergy());
+                                return true;
+                            }
                         }
                     }
                 }
