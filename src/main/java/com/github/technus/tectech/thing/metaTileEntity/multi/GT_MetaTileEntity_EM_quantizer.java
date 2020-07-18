@@ -155,8 +155,8 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     private void startRecipe(iHasElementalDefinition into) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
-        float mass = into.getMass();
-        float euMult = Math.abs(mass / refMass);
+        double mass = into.getMass();
+        double euMult = Math.abs(mass / refMass);
         eAmpereFlow = (int) Math.ceil(Math.sqrt(Math.sqrt(euMult)));
         if (mass > refUnstableMass || into.getDefinition().getRawTimeSpan(DEFAULT_ENERGY_LEVEL) < STABLE_RAW_LIFE_TIME) {
             mEUt = (int) -V[8];

@@ -43,7 +43,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     protected cElementalInstanceStackMap content = new cElementalInstanceStackMap();
     //float lifeTimeMult=1f;
     public int postEnergize = 0;
-    public float overflowMatter = 0f;
+    public double overflowMatter = 0f;
     public short id = -1;
     private byte deathDelay = 2;
 
@@ -80,7 +80,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         super.saveNBTData(aNBT);
         aNBT.setInteger("postEnergize", postEnergize);
         //aNBT.setFloat("lifeTimeMult",lifeTimeMult);
-        aNBT.setFloat("overflowMatter", overflowMatter);
+        aNBT.setDouble("OverflowMatter", overflowMatter);
         aNBT.setTag("eM_Stacks", content.toNBT());
         aNBT.setShort("eID", id);
     }
@@ -90,7 +90,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         super.loadNBTData(aNBT);
         postEnergize = aNBT.getInteger("postEnergize");
         //lifeTimeMult=aNBT.getFloat("lifeTimeMult");
-        overflowMatter = aNBT.getFloat("overflowMatter");
+        overflowMatter = aNBT.getFloat("overflowMatter")+aNBT.getDouble("OverflowMatter");
         id = aNBT.getShort("eID");
         try {
             content = cElementalInstanceStackMap.fromNBT(aNBT.getCompoundTag("eM_Stacks"));

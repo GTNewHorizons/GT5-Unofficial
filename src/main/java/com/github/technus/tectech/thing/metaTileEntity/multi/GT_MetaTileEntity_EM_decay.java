@@ -144,7 +144,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
             //System.out.println(stack.definition.getSymbol()+" "+stack.amount);
         }
 
-        float preMass = outputEM[0].getMass();
+        double preMass = outputEM[0].getMass();
         outputEM[0].tickContent(1, 0, 1);
         double energyDose = ((preMass - outputEM[0].getMass()) * URANIUM_MASS_TO_EU_PARTIAL);
         eAmpereFlow = (long) ampereFlow.get();

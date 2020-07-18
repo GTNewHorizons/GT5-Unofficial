@@ -74,8 +74,8 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     private void startRecipe(iHasElementalDefinition from, long energy) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
-        float mass = from.getMass();
-        float euMult = Math.abs(mass / refMass);
+        double mass = from.getMass();
+        double euMult = Math.abs(mass / refMass);
         eAmpereFlow = (int) Math.ceil(Math.sqrt(Math.sqrt(euMult)));
         if (mass > refUnstableMass || from.getDefinition().getRawTimeSpan(energy) < STABLE_RAW_LIFE_TIME) {
             mEUt = (int) -V[8];
