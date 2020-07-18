@@ -11,10 +11,10 @@ import static com.github.technus.tectech.util.CommonValues.V;
  */
 public class Behaviour_Recycler implements GT_MetaTileEntity_EM_machine.IBehaviour {
     private final int tier;
-    private final float coeff;
+    private final double coeff;
     public Behaviour_Recycler(int tier){
         this.tier=tier;
-        coeff=(float)(1/Math.pow(2,tier-4));
+        coeff=(1D/Math.pow(2D,tier-4));
     }
 
     @Override
@@ -27,7 +27,7 @@ public class Behaviour_Recycler implements GT_MetaTileEntity_EM_machine.IBehavio
 
     @Override
     public MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
-        float mass=0;
+        double mass=0;
         for (cElementalInstanceStackMap input : inputs) {
             if (input != null) {
                 mass += input.getMass();
