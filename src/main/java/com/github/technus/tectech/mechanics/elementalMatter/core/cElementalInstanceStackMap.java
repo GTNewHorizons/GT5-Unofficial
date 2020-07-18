@@ -551,10 +551,6 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public void cleanUp(){
-        for(Map.Entry<iElementalDefinition, cElementalInstanceStack> entry:map.entrySet()){
-            if(entry.getValue().amount<1) {
-                map.remove(entry.getKey());
-            }
-        }
+        map.entrySet().removeIf(entry -> entry.getValue().amount < 1);
     }
 }
