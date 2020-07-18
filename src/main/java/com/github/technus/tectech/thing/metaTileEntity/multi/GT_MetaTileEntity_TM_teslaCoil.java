@@ -55,42 +55,44 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region variables
-    private final static HashSet<ThaumSpark> sparkList = new HashSet<>();
+    private static final int heliumUse = TecTech.configTecTech.TESLA_MULTI_HELIUM_PLASMA_PER_SECOND;//Default is 100
+    private static final int nitrogenUse = TecTech.configTecTech.TESLA_MULTI_NITROGEN_PLASMA_PER_SECOND;//Default is 50
+    private static final int radonUse = TecTech.configTecTech.TESLA_MULTI_RADON_PLASMA_PER_SECOND;//Default is 50
+    //Default is {1, 1, 1}
+    private static final int[] plasmaTierLoss = new int[]{TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T0,
+            TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T1, TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T2};
+    private static final float overDriveLoss = TecTech.configTecTech.TESLA_MULTI_OVERDRIVE_LOSS_FACTOR;//Default is 0.25F;
+    private static final int scanRangeXZ = TecTech.configTecTech.TESLA_MULTI_SCAN_RANGE;//Default is 40
+    private static final boolean doFluidOutput = TecTech.configTecTech.TESLA_MULTI_GAS_OUTPUT; //Default is false
 
+    //Face icons
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
-    //TODO Make the setting abstractions static, if they aren't changed at tick time
-    private int mTier = 0; //Determines max voltage and efficiency (MV to LuV)
-    private int maxTier = 7; //Max tier for efficiency calcuation
-    private int plasmaTier = 0; //0 is None, 1 is Helium or Nitrogen, 2 is Radon
-    private boolean doFluidOutput = TecTech.configTecTech.TESLA_MULTI_MOLTEN_OUTPUT; //Default is false
-    private FluidStack[] mOutputFluidsQueue; //Used to buffer the fluid outputs for one second
 
-    private float energyEfficiency = 1;
-    private float overdriveEfficiency = 1;
-    private float minEfficiency = TecTech.configTecTech.TESLA_MULTI_MIN_EFFICIENCY;//Default is 0.955F
-    private float maxEfficiency = TecTech.configTecTech.TESLA_MULTI_MAX_EFFICIENCY;//Default is 0.98F
-    private float overdriveEfficiencyExtra = TecTech.configTecTech.TESLA_MULTI_OVERDRIVE_LOSS;//Default is 0.005F
+    private int mTier = 0; //Determines max voltage (LV to ZPM)
+    private int plasmaTier = 0; //0 is None, 1 is Helium or Nitrogen, 2 is Radon (Does not match actual plasma tiers)
 
-    private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>(); //Used to store targets for power transmission
-    private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCapacitorHatches = new ArrayList<>(); //Used to determine count and tier of capacitors present
+    private FluidStack[] mOutputFluidsQueue; //Used to buffer the fluid outputs, so the tesla takes a second to 'cool' any plasma it would output as a gas
 
-    private int scanTime = 0; //Scan timer used for tesla search intervals
-    private int scanRangeXZ = TecTech.configTecTech.TESLA_MULTI_SCAN_RANGE;//Default is 40
+    private final HashSet<ThaumSpark> sparkList = new HashSet<>(); //Thaumcraft lighting coordinate pairs, so we can send them in bursts and save on lag
+    private final Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>(); //Targets for power transmission //TODO Make this fill more efficently and globally
+    private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCapacitorHatches = new ArrayList<>(); //Capacitor hatches which determine the max voltage tier and count of amps
+
+    private int scanTime = 0; //Scan timer used for tesla search intervals //TODO Replace with something that fetches from a global map
 
     private long energyCapacity = 0; //Total energy storage limited by capacitors
     private long outputVoltageMax = 0; //Tesla voltage output limited by capacitors
     private int vTier = -1; //Tesla voltage tier limited by capacitors
     private long outputCurrentMax = 0; //Tesla current output limited by capacitors
 
-    //Prevents unnecessary offset calculation
+    //Prevents unnecessary offset calculation, saving on lag
     private byte oldRotation = -1;
     private byte oldOrientation = -1;
 
     //Coordinate Arrays
     private final Vec3Impl[] scanPosOffsets = new Vec3Impl[10];
-    private Vec3Impl posZap = Vec3Impl.NULL_VECTOR;//Power Transfer Origin
-    public Vec3Impl posTop = Vec3Impl.NULL_VECTOR;//Lightning Origin
+    private Vec3Impl posZap = Vec3Impl.NULL_VECTOR;//Location of the bottom middle of the tower, used as the power transfer origin
+    public Vec3Impl posTop = Vec3Impl.NULL_VECTOR;//Location of the center of the sphere on top of the tower, used as theThaumcraft lightning origin
     //endregion
 
     //region structure
@@ -252,24 +254,22 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         super(aName);
     }
 
-    private long getEnergyEfficiency(long voltage, int distance, boolean overDriveToggle) {
-        //Helium and Nitrogen Plasmas will half the effective distance
-        //Radon will half it again
-        int effectiveDistance = distance;
-        switch (plasmaTier) {
-            case 2:
-                effectiveDistance = distance / 4;
-                break;
-            case 1:
-                effectiveDistance = distance / 2;
-                break;
-        }
+    private int getPerBlockLoss(){
+        return plasmaTierLoss[plasmaTier];
+    }
+
+    private long[] getOutputVoltage(long outputVoltage, int distance, boolean overDriveToggle) {
+        long outputVoltageInjectable;
+        long outputVoltageConsumption;
 
         if (overDriveToggle) {
-            return (long) ((voltage * 2) - (voltage * Math.pow(overdriveEfficiency, effectiveDistance)));
+            outputVoltageInjectable = outputVoltage;
+            outputVoltageConsumption = outputVoltage + (distance * getPerBlockLoss()) + (long) Math.round(overDriveLoss * outputVoltage);
         } else {
-            return (long) (voltage * Math.pow(energyEfficiency, effectiveDistance));
+            outputVoltageInjectable = outputVoltage - (distance * getPerBlockLoss());
+            outputVoltageConsumption = outputVoltage;
         }
+        return new long[]{outputVoltageInjectable, outputVoltageConsumption};
     }
 
     private float getRangeMulti(int mTier, int vTier) {
@@ -345,24 +345,24 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         for (GT_MetaTileEntity_Hatch_Input fluidHatch : mInputHatches) {
             if (fluidHatch.mFluid != null) {
-                if (fluidHatch.mFluid.isFluidEqual(Materials.Helium.getPlasma(1)) && fluidHatch.mFluid.amount >= 100) {
-                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - 100;
+                if (fluidHatch.mFluid.isFluidEqual(Materials.Helium.getPlasma(1)) && fluidHatch.mFluid.amount >= heliumUse) {
+                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - heliumUse;
                     if (doFluidOutput) {
-                        mOutputFluidsQueue = new FluidStack[]{Materials.Helium.getGas(100)};
+                        mOutputFluidsQueue = new FluidStack[]{Materials.Helium.getGas(heliumUse)};
                     }
                     plasmaTier = 1;
                     return;
-                } else if (fluidHatch.mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && fluidHatch.mFluid.amount >= 50) {
-                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - 50;
+                } else if (fluidHatch.mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && fluidHatch.mFluid.amount >= nitrogenUse) {
+                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - nitrogenUse;
                     if (doFluidOutput) {
-                        mOutputFluidsQueue = new FluidStack[]{Materials.Nitrogen.getGas(50)};
+                        mOutputFluidsQueue = new FluidStack[]{Materials.Nitrogen.getGas(nitrogenUse)};
                     }
                     plasmaTier = 1;
                     return;
-                } else if (fluidHatch.mFluid.isFluidEqual(Materials.Radon.getPlasma(1)) && fluidHatch.mFluid.amount >= 50) {
-                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - 50;
+                } else if (fluidHatch.mFluid.isFluidEqual(Materials.Radon.getPlasma(1)) && fluidHatch.mFluid.amount >= radonUse) {
+                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - radonUse;
                     if (doFluidOutput) {
-                        mOutputFluidsQueue = new FluidStack[]{Materials.Radon.getGas(50)};
+                        mOutputFluidsQueue = new FluidStack[]{Materials.Radon.getGas(radonUse)};
                     }
                     plasmaTier = 2;
                     return;
@@ -390,9 +390,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 1));
         mTier = iGregTechTileEntity.getMetaIDOffset(xyzOffsets.get0(), xyzOffsets.get1(), xyzOffsets.get2());
-        if (mTier == 9){
-            mTier = 6;
-        }
+        if (mTier == 9){mTier = 6;}//Hacky remap because the ZPM coils were added later
 
         if (structureCheck_EM(shape, blockType, blockMetas[mTier], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 3, 16, 0) && eCapacitorHatches.size() > 0) {
             for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
@@ -460,11 +458,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 vTier = (int) cap.getCapacitors()[0];
             }
         }
-
-        //Calculate Efficiency values
-        energyEfficiency = map(mTier + 1, 1, maxTier, minEfficiency, maxEfficiency);
-        //OD Eff calc
-        overdriveEfficiency = energyEfficiency - overdriveEfficiencyExtra;
 
         energyCapacity = 0;
         outputCurrentMax = 0;
@@ -608,6 +601,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             cap.getBaseMetaTileEntity().setActive(false);
         }
 
+        ePowerPass = false;
         setEUVar(0);
         energyStoredDisplay.set(0);
         energyFractionDisplay.set(0);
@@ -618,12 +612,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         IGregTechTileEntity mte = getBaseMetaTileEntity();
 
         //Hysteresis based ePowerPass setting
-        long energyMax = maxEUStore() / 2;
         long energyStored = getEUVar();
+        float energyFrac = (float) energyStored / energyCapacity;
 
-        float energyFrac = (float) energyStored / energyMax;
-
-        energyCapacityDisplay.set(energyMax);
+        energyCapacityDisplay.set(energyCapacity);
         energyStoredDisplay.set(energyStored);
         energyFractionDisplay.set(energyFrac);
 
@@ -793,15 +785,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                         IGregTechTileEntity node = Rx.getKey();
                         IMetaTileEntity nodeInside = node.getMetaTileEntity();
 
-                        long outputVoltageInjectable;
-                        long outputVoltageConsumption;
-                        if (overdriveToggle) {
-                            outputVoltageInjectable = outputVoltage;
-                            outputVoltageConsumption = getEnergyEfficiency(outputVoltage, Rx.getValue(), true);
-                        } else {
-                            outputVoltageInjectable = getEnergyEfficiency(outputVoltage, Rx.getValue(), false);
-                            outputVoltageConsumption = outputVoltage;
-                        }
+                        long[] outputVoltageNow = getOutputVoltage(outputVoltage, Rx.getValue(), overdriveToggle);
+                        long outputVoltageInjectable = outputVoltageNow[0];
+                        long outputVoltageConsumption = outputVoltageNow[1];
 
                         if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && Rx.getValue() <= transferRadiusTower) {
                             GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
@@ -863,6 +849,11 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public long maxEUStore() {
         return energyCapacity * 2;
+    }
+
+    @Override
+    public long getEUVar() {
+        return getBaseMetaTileEntity().isActive() ? super.getEUVar() : 0;
     }
 
     private boolean addCapacitorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

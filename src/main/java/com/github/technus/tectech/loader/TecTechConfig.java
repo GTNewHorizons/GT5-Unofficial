@@ -21,14 +21,17 @@ public class TecTechConfig extends ConfigManager {
     public boolean DISABLE_BLOCK_HARDNESS_NERF;
     public float TURRET_DAMAGE_FACTOR;
     public float TURRET_EXPLOSION_FACTOR;
-    public float TESLA_MULTI_MIN_EFFICIENCY;
-    public float TESLA_MULTI_MAX_EFFICIENCY;
-    public float TESLA_MULTI_OVERDRIVE_LOSS;
-    public int TESLA_MULTI_SCAN_RANGE;
-    public boolean TESLA_MULTI_MOLTEN_OUTPUT;
-    public float TESLA_SINGLE_MIN_EFFICIENCY;
-    public float TESLA_SINGLE_MAX_EFFICIENCY;
-    public float TESLA_SINGLE_OVERDRIVE_LOSS;
+    public int TESLA_MULTI_HELIUM_PLASMA_PER_SECOND;
+    public int TESLA_MULTI_NITROGEN_PLASMA_PER_SECOND;
+    public int TESLA_MULTI_RADON_PLASMA_PER_SECOND;
+    public int TESLA_MULTI_LOSS_PER_BLOCK_T0;
+    public int TESLA_MULTI_LOSS_PER_BLOCK_T1;
+    public int TESLA_MULTI_LOSS_PER_BLOCK_T2;
+    public float TESLA_MULTI_OVERDRIVE_LOSS_FACTOR;
+    public int TESLA_MULTI_SCAN_RANGE;//TODO delete
+    public boolean TESLA_MULTI_GAS_OUTPUT;
+    public int TESLA_SINGLE_LOSS_PER_BLOCK;
+    public float TESLA_SINGLE_OVERDRIVE_LOSS_FACTOR;
 
     /**
      * This loading phases do not correspond to mod loading phases!
@@ -44,16 +47,18 @@ public class TecTechConfig extends ConfigManager {
         DISABLE_MATERIAL_LOADING_FFS = false;
         TURRET_DAMAGE_FACTOR = 10;
         TURRET_EXPLOSION_FACTOR = 1;
-        TESLA_MULTI_MIN_EFFICIENCY = 0.955F;
-        TESLA_MULTI_MAX_EFFICIENCY = 0.98F;
-        TESLA_MULTI_OVERDRIVE_LOSS = 0.005F;
+        TESLA_MULTI_HELIUM_PLASMA_PER_SECOND = 100;
+        TESLA_MULTI_NITROGEN_PLASMA_PER_SECOND = 50;
+        TESLA_MULTI_RADON_PLASMA_PER_SECOND = 50;
+        TESLA_MULTI_LOSS_PER_BLOCK_T0 = 1;
+        TESLA_MULTI_LOSS_PER_BLOCK_T1 = 1;
+        TESLA_MULTI_LOSS_PER_BLOCK_T2 = 1;
+        TESLA_MULTI_OVERDRIVE_LOSS_FACTOR = 0.25F;
         TESLA_MULTI_SCAN_RANGE = 40;
-        TESLA_MULTI_MOLTEN_OUTPUT = false;
-        TESLA_SINGLE_MIN_EFFICIENCY = 0.91F;
-        TESLA_SINGLE_MAX_EFFICIENCY = 0.95F;
-        TESLA_SINGLE_OVERDRIVE_LOSS = 0.010F;
+        TESLA_MULTI_GAS_OUTPUT = false;
+        TESLA_SINGLE_LOSS_PER_BLOCK = 1;
+        TESLA_SINGLE_OVERDRIVE_LOSS_FACTOR = 0.25F;
     }
-
 
     /**
      * This loading phases do not correspond to mod loading phases!
@@ -80,22 +85,18 @@ public class TecTechConfig extends ConfigManager {
                 "Set to true to disable the block hardness nerf");
         DISABLE_MATERIAL_LOADING_FFS = _mainConfig.getBoolean("DisableMaterialLoading", "Debug", DISABLE_MATERIAL_LOADING_FFS,
                 "Set to true to disable gregtech material processing");
-        TESLA_MULTI_MIN_EFFICIENCY = _mainConfig.getFloat("TeslaMultiMinEfficency", "Features", TESLA_MULTI_MIN_EFFICIENCY, 0, 1,
-                "Worst possible power loss per block for the multi block tesla");
-        TESLA_MULTI_MAX_EFFICIENCY = _mainConfig.getFloat("TeslaMultiMaxEfficency", "Features", TESLA_MULTI_MAX_EFFICIENCY, 0, 1,
-                "Best possible power loss per block for the multi block tesla");
-        TESLA_MULTI_OVERDRIVE_LOSS = _mainConfig.getFloat("TeslaMultiOverdriveLoss", "Features", TESLA_MULTI_OVERDRIVE_LOSS, 0, 1,
-                "Additional losses for overdrive use on the multi block tesla");
-        TESLA_MULTI_SCAN_RANGE = _mainConfig.getInt("TeslaMultiScanRange", "Features", TESLA_MULTI_SCAN_RANGE, 4, 256,
-                "Determines the scan range constant for multi block tesla");
-        TESLA_MULTI_MOLTEN_OUTPUT = _mainConfig.getBoolean("TeslaMultiMoltenOutput", "Features", TESLA_MULTI_MOLTEN_OUTPUT,
-                "Set to true to get molten outputs when boosting the multi block tesla with plasmas");
-        TESLA_SINGLE_MIN_EFFICIENCY = _mainConfig.getFloat("TeslaSingleMinEfficency", "Features", TESLA_SINGLE_MIN_EFFICIENCY, 0, 1,
-                "Worst possible power loss per block for the single block tesla");
-        TESLA_SINGLE_MAX_EFFICIENCY = _mainConfig.getFloat("TeslaSingleMaxEfficency", "Features", TESLA_SINGLE_MAX_EFFICIENCY, 0, 1,
-                "Best possible power loss per block for the single block tesla");
-        TESLA_SINGLE_OVERDRIVE_LOSS = _mainConfig.getFloat("TeslaSingleOverdriveLoss", "Features", TESLA_SINGLE_OVERDRIVE_LOSS, 0, 1,
-                "Additional losses for overdrive use on the single block tesla");
+
+        TESLA_MULTI_HELIUM_PLASMA_PER_SECOND = _mainConfig.getInt("TeslaMultiHeliumPlasmaPerSecond", "Balance Tweaks", TESLA_MULTI_HELIUM_PLASMA_PER_SECOND, 0, Integer.MAX_VALUE, "Tesla Tower helium plasma consumed each second the tesla tower is active");
+        TESLA_MULTI_NITROGEN_PLASMA_PER_SECOND = _mainConfig.getInt("TeslaMultiNitrogenPlasmaPerSecond", "Balance Tweaks", TESLA_MULTI_NITROGEN_PLASMA_PER_SECOND, 0, Integer.MAX_VALUE, "Tesla Tower nitrogen plasma consumed each second the tesla tower is active");
+        TESLA_MULTI_RADON_PLASMA_PER_SECOND = _mainConfig.getInt("TeslaMultiRadonPlasmaPerSecond", "Balance Tweaks", TESLA_MULTI_RADON_PLASMA_PER_SECOND, 0, Integer.MAX_VALUE, "Tesla Tower radon plasma consumed each second the tesla tower is active");
+        TESLA_MULTI_LOSS_PER_BLOCK_T0 = _mainConfig.getInt("TeslaMultiLossPerBlockT0", "Balance Tweaks", TESLA_MULTI_LOSS_PER_BLOCK_T0, 0, Integer.MAX_VALUE, "Tesla Tower power transmission loss per block per amp using no plasmas");
+        TESLA_MULTI_LOSS_PER_BLOCK_T1 = _mainConfig.getInt("TeslaMultiLossPerBlockT1", "Balance Tweaks", TESLA_MULTI_LOSS_PER_BLOCK_T1, 0, Integer.MAX_VALUE, "Tesla Tower power transmission loss per block per amp using helium or nitrogen plasma");
+        TESLA_MULTI_LOSS_PER_BLOCK_T2 = _mainConfig.getInt("TeslaMultiLossPerBlockT1", "Balance Tweaks", TESLA_MULTI_LOSS_PER_BLOCK_T2, 0, Integer.MAX_VALUE, "Tesla Tower power transmission loss per block per amp using radon plasma");
+        TESLA_MULTI_OVERDRIVE_LOSS_FACTOR = _mainConfig.getFloat("TeslaMultiOverdriveLossFactor", "Balance Tweaks", TESLA_MULTI_OVERDRIVE_LOSS_FACTOR, 0, 1, "Additional Tesla Tower power loss per amp as a factor of the tier voltage");
+        TESLA_MULTI_SCAN_RANGE = _mainConfig.getInt("TeslaMultiScanRange", "Balance Tweaks", TESLA_MULTI_SCAN_RANGE, 4, 256, "The horizontal radius scanned by the Tesla Tower");
+        TESLA_MULTI_GAS_OUTPUT = _mainConfig.getBoolean("TeslaMultiMoltenOutput", "Balance Tweaks", TESLA_MULTI_GAS_OUTPUT, "Set to true to enable outputting plasmas as gasses from the tesla tower with a 1:1 ratio");
+        TESLA_SINGLE_LOSS_PER_BLOCK = _mainConfig.getInt("TeslaSingleLossPerBlock", "Balance Tweaks", TESLA_SINGLE_LOSS_PER_BLOCK, 0, Integer.MAX_VALUE, "Tesla Transceiver power transmission loss per block per amp");
+        TESLA_SINGLE_OVERDRIVE_LOSS_FACTOR = _mainConfig.getFloat("TeslaSingleOverdriveLossFactor", "Balance Tweaks", TESLA_SINGLE_OVERDRIVE_LOSS_FACTOR, 0, 1, "Additional Tesla Transceiver power loss per amp as a factor of the tier voltage");
     }
 
     /**
