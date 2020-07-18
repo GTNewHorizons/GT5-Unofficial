@@ -5,8 +5,8 @@ import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.spark.RendererMessage;
 import com.github.technus.tectech.mechanics.spark.ThaumSpark;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.mechanics.structure.Structure;
+import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
@@ -47,7 +47,6 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.Util.entriesSortedByValues;
-import static com.github.technus.tectech.util.Util.map;
 import static gregtech.api.enums.GT_Values.E;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -74,8 +73,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     private FluidStack[] mOutputFluidsQueue; //Used to buffer the fluid outputs, so the tesla takes a second to 'cool' any plasma it would output as a gas
 
+    public static final HashSet<IGregTechTileEntity> teslaNodeSet = new HashSet<>(); //Targets for power transmission //TODO Make this fill more efficently and globally
     private final HashSet<ThaumSpark> sparkList = new HashSet<>(); //Thaumcraft lighting coordinate pairs, so we can send them in bursts and save on lag
-    private final Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>(); //Targets for power transmission //TODO Make this fill more efficently and globally
+    private final Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>(); //Targets for power transmission
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCapacitorHatches = new ArrayList<>(); //Capacitor hatches which determine the max voltage tier and count of amps
 
     private int scanTime = 0; //Scan timer used for tesla search intervals //TODO Replace with something that fetches from a global map
@@ -519,6 +519,11 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public void onRemoval() {
         super.onRemoval();
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return;
+        }
+        teslaNodeSet.remove(aBaseMetaTileEntity);
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                 cap.getBaseMetaTileEntity().setActive(false);
@@ -592,6 +597,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         energyCapacity = aNBT.getLong("eEnergyCapacity");
+        teslaNodeSet.add(this.getBaseMetaTileEntity());
     }
 
     @Override
@@ -605,6 +611,14 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         setEUVar(0);
         energyStoredDisplay.set(0);
         energyFractionDisplay.set(0);
+    }
+
+    @Override
+    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick_EM(aBaseMetaTileEntity);
+        if (!aBaseMetaTileEntity.isClientSide()) {
+            teslaNodeSet.add(aBaseMetaTileEntity);
+        }
     }
 
     @Override

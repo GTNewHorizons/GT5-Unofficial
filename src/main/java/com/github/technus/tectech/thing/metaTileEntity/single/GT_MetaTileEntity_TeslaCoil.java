@@ -17,6 +17,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_TM_teslaCoil.teslaNodeSet;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.Util.entriesSortedByValues;
 import static com.github.technus.tectech.util.Util.map;
@@ -38,7 +40,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer {
     private final static int perBlockLoss = TecTech.configTecTech.TESLA_SINGLE_LOSS_PER_BLOCK;//Default is 1
     private final static float overDriveLoss = TecTech.configTecTech.TESLA_SINGLE_OVERDRIVE_LOSS_FACTOR;//Default is 0.25F
-    
+
     public Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>();//Tesla Map to map them tesla bois!
     private final static HashSet<ThaumSpark> sparkList = new HashSet<>();
     private byte sparkCount = 0;
@@ -227,6 +229,29 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             outputVoltageConsumption = outputVoltage;
         }
         return new long[]{outputVoltageInjectable, outputVoltageConsumption};
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        if (!aBaseMetaTileEntity.isClientSide()) {
+            teslaNodeSet.add(aBaseMetaTileEntity);
+        }
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+        if (!aBaseMetaTileEntity.isClientSide()) {
+            teslaNodeSet.remove(aBaseMetaTileEntity);
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        teslaNodeSet.add(this.getBaseMetaTileEntity());
     }
 
     @Override
