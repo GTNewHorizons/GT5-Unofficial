@@ -74,18 +74,18 @@ public class GtppAtomLoader implements Runnable{
         TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(75), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("RHENIUM"),1);
         TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(81), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("THALLIUM"),1);
 
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(84),AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("POLONIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(85),AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("ASTATINE"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(87),AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("FRANCIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(88),AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("RADIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(89),AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("ACTINIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(91),AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("PROTACTINIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(93),AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("NEPTUNIUM"),1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(84), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("POLONIUM"),1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(85), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("ASTATINE"),1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(87), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("FRANCIUM"),1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(88), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("RADIUM"),1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(89), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("ACTINIUM"),1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(91), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("PROTACTINIUM"),1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(93), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("NEPTUNIUM"),1);
 
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(96),AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("CURIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(97),AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("BERKELIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(98),AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("CALIFORNIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(99),AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("EINSTEINIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(100),AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("FERMIUM"),1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(96), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("CURIUM"),1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(97), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("BERKELIUM"),1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(98), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("CALIFORNIUM"),1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(99), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("EINSTEINIUM"),1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(100), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("FERMIUM"),1);
     }
 }

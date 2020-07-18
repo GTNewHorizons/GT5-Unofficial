@@ -88,7 +88,7 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
     public Behaviour_ElectromagneticSeparator(int desiredTier){
         tier=(byte) desiredTier;
         ticks =Math.max(20,(1<<(12-desiredTier))*20);
-        maxCapacity= dAtomDefinition.getSomethingHeavy().getMass()*(2<<tier)*AVOGADRO_CONSTANT_144;
+        maxCapacity= dAtomDefinition.getSomethingHeavy().getMass()*(2<<tier)* AVOGADRO_CONSTANT_144;
         maxCharge=144D*(1<<(tier-5));
         switch (tier){
             case 12:

@@ -208,7 +208,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     public int getMaxStacksCount() {
-        return mTier * 16;
+        return mTier * 128;
     }
 
     public double getMaxStackSize() {

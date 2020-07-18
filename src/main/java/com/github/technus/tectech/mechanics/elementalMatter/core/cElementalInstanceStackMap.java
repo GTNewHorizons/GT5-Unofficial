@@ -9,6 +9,8 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.*;
 
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_UNCERTAINTY;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.nbtE__;
 import static com.github.technus.tectech.util.DoubleCount.add;
 import static com.github.technus.tectech.util.DoubleCount.sub;
@@ -331,12 +333,12 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         String[] info = new String[map.size() * 4];
         int i = 0;
         for (cElementalInstanceStack instance : map.values()) {
-            info[i] = EnumChatFormatting.BLUE + instance.definition.getName();
-            info[i + 1] = EnumChatFormatting.AQUA + instance.definition.getSymbol();
-            info[i + 2] = "Amount " + EnumChatFormatting.GREEN + instance.amount;
-            info[i + 3] = "LifeTime " + EnumChatFormatting.GREEN + instance.getLifeTime();
-            i += 4;
+            info[i++] = EnumChatFormatting.BLUE + instance.definition.getName();
+            info[i++] = EnumChatFormatting.AQUA + instance.definition.getSymbol();
+            info[i++] = "Amount " + EnumChatFormatting.GREEN + instance.amount/ AVOGADRO_CONSTANT +" mol";
+            info[i++] = "LifeTime " + EnumChatFormatting.GREEN + (instance.getLifeTime()<0?"STABLE":instance.getLifeTime());
         }
+
         return info;
     }
 
@@ -423,9 +425,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
                 instance.nextColor();
             } else {
                 removeAmount(false,instance);
-                for (cElementalInstanceStack newInstance : newInstances.values()) {
-                    putUnify(newInstance);
-                }
+                putUnifyAll(newInstances);
             }
         }
     }
@@ -551,6 +551,6 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public void cleanUp(){
-        map.entrySet().removeIf(entry -> entry.getValue().amount < 1);
+        map.entrySet().removeIf(entry -> entry.getValue().amount < AVOGADRO_CONSTANT_UNCERTAINTY);
     }
 }

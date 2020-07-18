@@ -465,7 +465,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     public static void setTransformations(){
         //Added to atom map, but should be in its own
-        cElementalDefinitionStack neutrons=new cElementalDefinitionStack(hadron_n, 1000*AVOGADRO_CONSTANT_144);
+        cElementalDefinitionStack neutrons=new cElementalDefinitionStack(hadron_n, 1000* AVOGADRO_CONSTANT_144);
         TRANSFORMATION_INFO.oredictDequantization.put(neutrons.definition,new aOredictDequantizationInfo(neutrons, dust, Materials.Neutronium,1));
         bTransformationInfo.oredictQuantization.put(
                 OreDictionary.getOreID(OrePrefixes.ingotHot.name()+Materials.Neutronium.mName),

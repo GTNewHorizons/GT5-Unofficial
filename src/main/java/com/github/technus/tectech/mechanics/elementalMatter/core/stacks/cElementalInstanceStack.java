@@ -1,5 +1,6 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
+import ch.obermuhlner.math.big.BigFloat;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
@@ -11,10 +12,12 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
 
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.null__;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition.deadEnd;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static com.github.technus.tectech.util.DoubleCount.*;
+import static java.lang.Math.min;
 import static java.lang.Math.ulp;
 
 /**
@@ -189,9 +192,10 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         }
         if(definition.usesMultipleDecayCalls(energy)){
             double amountTemp=amount;
-            long decayCnt=(long) Math.min(Math.max(amount/DECAY_CALL_PER,MIN_MULTIPLE_DECAY_CALLS),MAX_MULTIPLE_DECAY_CALLS);
+            long decayCnt=(long) min(Math.max(amount/DECAY_CALL_PER,MIN_MULTIPLE_DECAY_CALLS),MAX_MULTIPLE_DECAY_CALLS);
             double amountPer= div(amount,decayCnt);
             amount= sub(amount,amountPer*(--decayCnt));
+            //todo decay mechanics should handle splitting!
             cElementalInstanceStackMap output=decayMechanics(lifeTimeMult,apparentAge,newEnergyLevel);
             if(output==null){
                 amount=amountTemp;
@@ -233,8 +237,27 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
 
     //Use to get direct decay output providing correct decay array
     private cElementalInstanceStackMap exponentialDecayCompute(cElementalDecay[] decays, double lifeTimeMult, double newProductsAge, long newEnergyLevel) {
+        if(lifeTime<1){
+            throw new ArithmeticException("Value would be too big...");
+        }
         double decayInverseRatio=Math.pow(2D,1D/* 1 second *//lifeTime);
-        double newAmount= div(amount,decayInverseRatio+ulp(decayInverseRatio));
+        double newAmount,decayedAmount;
+        if(decayInverseRatio>0.99999999D){
+            //todo cache this...
+            BigFloat dir=BigFloat.context(50).valueOf(2).pow(1D/* 1 second *//lifeTime);
+            BigFloat na=BigFloat.context(50).valueOf(amount).divide(dir);
+            newAmount=na.toDouble();
+            if(newAmount>=amount) {
+                decayedAmount=BigFloat.context(50).valueOf(amount).subtract(na).toDouble();
+                newAmount=amount-ulp(amount);
+            }else {
+                decayedAmount=amount-newAmount;
+            }
+        }else{
+            newAmount= div(amount,decayInverseRatio);
+            decayedAmount=amount-newAmount;
+        }
+
         //if(definition.getSymbol().startsWith("U ")) {
         //    System.out.println("newAmount = " + newAmount);
         //    System.out.println("amountRemaining = " + amountRemaining);
@@ -245,18 +268,20 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         //        }
         //    }
         //}
-        //if(newAmount==amount) {//no longer needed
-        //    return null;//nothing decayed
-        //} else if(newAmount<=0) {//no longer needed
-        //    return decayCompute(decays, lifeTimeMult, newProductsAge, newEnergyLevel);
-        //}//no longer needed
+        if(newAmount==amount) {
+            return null;//nothing decayed
+        } else if(newAmount<1) {
+            return decayCompute(decays, lifeTimeMult, newProductsAge, newEnergyLevel);
+        }
 
         //split to non decaying and decaying part
         double amount=this.amount;
-        this.amount= sub(this.amount,newAmount);
+        this.amount= decayedAmount;
         cElementalInstanceStackMap products=decayCompute(decays,lifeTimeMult,newProductsAge,newEnergyLevel);
         this.amount=newAmount;
-        products.putUnify(clone());
+        if(products!=null){
+            products.putUnify(clone());
+        }
         this.amount=amount;
         return products;
     }
@@ -411,7 +436,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
                 if(instance.energy>maxEnergy){
                     maxEnergy=instance.energy;
                 }
-                lifeTimeMul = Math.min(lifeTimeMul, instance.lifeTimeMult);
+                lifeTimeMul = min(lifeTimeMul, instance.lifeTimeMult);
                 age = Math.max(age, instance.age);
             }
         }
@@ -421,12 +446,12 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         }
 
         double wholeParts=Math.floor(energyTotal);
-        energyTotal=Math.min(energyTotal-wholeParts,1D)+(wholeParts>=0?-0.11709966304863834D:0.11709966304863834D);
+        energyTotal= min(energyTotal-wholeParts,1D)+(wholeParts>=0?-0.11709966304863834D:0.11709966304863834D);
         long energy=(long) wholeParts + ((energyTotal > TecTech.RANDOM.nextDouble()) ? 1 : 0);
         if(energy*energyTotal<0){
             energy=0;
         }
-        setEnergy(Math.min(maxEnergy,energy));
+        setEnergy(min(maxEnergy,energy));
         return this;
     }
 
@@ -468,7 +493,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             lines.add("ENERGY = " + energy);
         }
         if(Util.areBitsSet(SCAN_GET_AMOUNT,capabilities)) {
-            lines.add("AMOUNT = " + amount);
+            lines.add("AMOUNT = " + amount/ AVOGADRO_CONSTANT +" mol");
         }
         scanContents(lines,definition.getSubParticles(),1,detailsOnDepthLevels);
     }
@@ -537,6 +562,6 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
 
     @Override
     public String toString() {
-        return definition.getName()+ '\n' + definition.getSymbol() + '\n' + amount + '\n' + getMass();
+        return definition.toString() + '\n' + amount/ AVOGADRO_CONSTANT + " mol\n" + getMass();
     }
 }

@@ -1564,16 +1564,16 @@ public final class dAtomDefinition extends cElementalDefinition {
         TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(83), AVOGADRO_CONSTANT_144), dust, Materials.Bismuth,1);
         //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(84),AVOGADRO_CONSTANT_144),OrePrefixes.dust, Materials.Polonium,1);
         //transformation.addFluid(new cElementalDefinitionStack(getBestUnstableIsotope(85),AVOGADRO_CONSTANT_144),Materials.Astatine.mPlasma.getID(), 144);
-        TRANSFORMATION_INFO.addFluid(new cElementalDefinitionStack(getBestUnstableIsotope(86),AVOGADRO_CONSTANT_144),Materials.Radon.mGas, 144);
+        TRANSFORMATION_INFO.addFluid(new cElementalDefinitionStack(getBestUnstableIsotope(86), AVOGADRO_CONSTANT_144),Materials.Radon.mGas, 144);
         //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(87),AVOGADRO_CONSTANT_144),OrePrefixes.dust, Materials.Francium,1);
         //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(88),AVOGADRO_CONSTANT_144),OrePrefixes.dust, Materials.Radium,1);
         //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(89),AVOGADRO_CONSTANT_144),OrePrefixes.dust, Materials.Actinium,1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(90),AVOGADRO_CONSTANT_144), dust, Materials.Thorium,1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(90), AVOGADRO_CONSTANT_144), dust, Materials.Thorium,1);
         //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(91),AVOGADRO_CONSTANT_144),OrePrefixes.dust, Materials.Protactinium,1);
         ////transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(92),AVOGADRO_CONSTANT_144), dust, Materials.Uranium,1);
         //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(93),AVOGADRO_CONSTANT_144),OrePrefixes.dust, Materials.Neptunium,1);
         ////transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(94),AVOGADRO_CONSTANT_144), dust, Materials.Plutonium,1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(95),AVOGADRO_CONSTANT_144), dust, Materials.Americium,1);
+        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(95), AVOGADRO_CONSTANT_144), dust, Materials.Americium,1);
 
         try {
             dAtomDefinition temp;

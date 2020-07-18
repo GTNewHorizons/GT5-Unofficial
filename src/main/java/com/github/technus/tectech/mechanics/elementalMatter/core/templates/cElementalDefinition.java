@@ -127,4 +127,9 @@ public abstract class cElementalDefinition extends iElementalDefinition {
         }
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return getName()+ '\n' + getSymbol();
+    }
 }
