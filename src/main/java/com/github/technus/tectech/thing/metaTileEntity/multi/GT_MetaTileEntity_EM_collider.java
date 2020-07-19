@@ -403,17 +403,13 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             partner.stack = stack = null;
             //System.out.println("check = " + check);
             //System.out.println("preMass-map.getMass() = " + (preMass - map.getMass()));
-            return check ? preMass - map.getMass() :
-                    Math.min(preMass - map.getMass(), 0);
+            return check ? preMass - map.getMass() : Math.min(preMass - map.getMass(), 0);
         }
         return 0;
     }
 
     protected double collide(GT_MetaTileEntity_EM_collider partner) {//DOES NOT MAKE EU!
         if (partner.stack != null && stack != null) {//todo add single event mode as an option
-            boolean check = stack.definition.fusionMakesEnergy(stack.getEnergy()) &&
-                    partner.stack.definition.fusionMakesEnergy(partner.stack.getEnergy());
-
             cElementalInstanceStack stack2 = partner.stack;
             double preMass = stack2.getMass() + stack.getMass();
             //System.out.println("preMass = " + preMass);
@@ -427,17 +423,13 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                 colliderHandler = FUSE_HANDLERS.get((stack.definition.getClassType() << 16) | stack2.definition.getClassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             }
-            for (cElementalInstanceStack newStack : map.values()) {
-                check &= newStack.definition.fusionMakesEnergy(newStack.getEnergy());
-            }
             //System.out.println("outputEM[0].getMass() = " + outputEM[0].getMass());
             outputEM = new cElementalInstanceStackMap[]{map};
 
             partner.stack = stack = null;
             //System.out.println("check = " + check);
             //System.out.println("preMass-map.getMass() = " + (preMass - map.getMass()));
-            return check ? preMass - map.getMass() :
-                    Math.min(preMass - map.getMass(), 0);
+            return Math.min(preMass - map.getMass(), 0);
         }
         return 0;
     }
