@@ -1,11 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalInstanceContainer;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToElementalPipe;
+import com.github.technus.tectech.util.Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -23,8 +23,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import static com.github.technus.tectech.util.CommonValues.*;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_144;
+import static com.github.technus.tectech.util.CommonValues.*;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -43,7 +44,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     protected cElementalInstanceStackMap content = new cElementalInstanceStackMap();
     //float lifeTimeMult=1f;
     public int postEnergize = 0;
-    public float overflowMatter = 0f;
+    public double overflowMatter = 0f;
     public short id = -1;
     private byte deathDelay = 2;
 
@@ -80,7 +81,8 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         super.saveNBTData(aNBT);
         aNBT.setInteger("postEnergize", postEnergize);
         //aNBT.setFloat("lifeTimeMult",lifeTimeMult);
-        aNBT.setFloat("overflowMatter", overflowMatter);
+        aNBT.setDouble("OverflowMatter", overflowMatter);
+        content.cleanUp();
         aNBT.setTag("eM_Stacks", content.toNBT());
         aNBT.setShort("eID", id);
     }
@@ -90,7 +92,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         super.loadNBTData(aNBT);
         postEnergize = aNBT.getInteger("postEnergize");
         //lifeTimeMult=aNBT.getFloat("lifeTimeMult");
-        overflowMatter = aNBT.getFloat("overflowMatter");
+        overflowMatter = aNBT.getFloat("overflowMatter")+aNBT.getDouble("OverflowMatter");
         id = aNBT.getShort("eID");
         try {
             content = cElementalInstanceStackMap.fromNBT(aNBT.getCompoundTag("eM_Stacks"));
@@ -151,6 +153,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                 }
             } else if (MOVE_AT == Tick) {
                 if (content.hasStacks()) {
+                    content.cleanUp();
                     moveAround(aBaseMetaTileEntity);
                 }
                 getBaseMetaTileEntity().setActive(content.hasStacks());
@@ -203,11 +206,11 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     public int getMaxStacksCount() {
-        return mTier * 2;
+        return mTier * 128;
     }
 
-    public int getMaxStackSize() {
-        return mTier * (mTier - 7) * 1000;
+    public double getMaxStackSize() {
+        return mTier * (mTier - 7) * 64D * AVOGADRO_CONSTANT_144;
     }
 
     @Override
@@ -239,7 +242,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     @Override
     public String[] getInfoData() {
-        if (TecTech.configTecTech.EASY_SCAN) {
+        if (TecTech.configTecTech.EASY_SCAN || DEBUG_MODE) {
             if (id > 0) {
                 if (content == null || content.size() == 0) {
                     return new String[]{translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id, translateToLocalFormatted("tt.keyphrase.No_Stacks", clientLocale)};

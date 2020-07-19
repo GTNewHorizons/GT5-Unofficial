@@ -59,7 +59,7 @@ public class projectileEM extends LaserProjectile {
                 avalableEM.clear();
             } else {
                 cElementalInstanceStack consumeFromThis=avalableEM.get(TecTech.RANDOM.nextInt(avalableEM.size()));
-                massFactor =consumeFromThis.definition.getMass()/ dHadronDefinition.hadron_n_.getMass();
+                massFactor =(float) (consumeFromThis.definition.getMass()/ dHadronDefinition.hadron_n_.getMass());
 
                 if(consumeFromThis.definition.getType()>1 || consumeFromThis.definition.getType()<-1) {
                     exotic = true;
