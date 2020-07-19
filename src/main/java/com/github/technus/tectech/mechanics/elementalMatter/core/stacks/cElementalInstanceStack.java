@@ -8,6 +8,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInsta
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
 import com.github.technus.tectech.util.Util;
+import net.minecraft.client.Minecraft;
+import net.minecraft.crash.CrashReport;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
@@ -190,18 +192,19 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         } else if (newEnergyLevel < 0) {
             newEnergyLevel += 1;
         }
+        cElementalDecayResult output;
         if(definition.usesMultipleDecayCalls(energy)){
             double amountTemp=amount;
-            long decayCnt=(long) min(MAX_MULTIPLE_DECAY_CALLS,max(amount/DECAY_CALL_PER,MIN_MULTIPLE_DECAY_CALLS));
-            double amountPer= div(amount,decayCnt);
-            amount= sub(amount,amountPer*(--decayCnt));
+            int decayCnt=(int) min(MAX_MULTIPLE_DECAY_CALLS,max(amount/DECAY_CALL_PER,MIN_MULTIPLE_DECAY_CALLS));
+            amount= div(amount,decayCnt);
+            decayCnt--;
 
-            cElementalDecayResult output=decayMechanics(lifeTimeMult,apparentAge,newEnergyLevel);
+            output=decayMechanics(lifeTimeMult,apparentAge,newEnergyLevel);
             if(output==null){
                 amount=amountTemp;
                 return null;
             }
-            amount=amountPer;
+
             for(int i=0;i<decayCnt;i++){
                 cElementalDecayResult map=decayMechanics(lifeTimeMult,apparentAge,newEnergyLevel);
                 if(map!=null){
@@ -211,10 +214,13 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
                 }
             }
             amount=amountTemp;
-            return output;
         }else{
-            return decayMechanics(lifeTimeMult,apparentAge,newEnergyLevel);
+            output=decayMechanics(lifeTimeMult,apparentAge,newEnergyLevel);
         }
+        if(output!=null){
+            output.getOutput().cleanUp();
+        }
+        return output;
     }
 
     private cElementalDecayResult decayMechanics(double lifeTimeMult, double apparentAge, long newEnergyLevel) {
@@ -312,7 +318,13 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             for (int i = 0; i < probabilities.length; i++) {
                 probabilities[i]=decays[i].probability;
             }
-            double[] qttyOfDecay = distribute(amount, probabilities);
+            double[] qttyOfDecay;
+            try{
+                qttyOfDecay = distribute(amount, probabilities);
+            }catch (ArithmeticException e){
+                Minecraft.getMinecraft().crashed(new CrashReport("Decay failed for: "+this.toString(),e));
+                return null;
+            }
             //long amountRemaining = this.amount, amount = this.amount;
             //float remainingProbability = 1D;
 //

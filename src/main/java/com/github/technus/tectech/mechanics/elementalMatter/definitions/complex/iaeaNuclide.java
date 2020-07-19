@@ -52,7 +52,7 @@ public final class iaeaNuclide {
             while((line=reader.readLine())!=null) {
                 String[] split= splitButDifferent(line,",");
                 if(split.length!=47) {
-                    throw new Error("Invalid count (" + split.length + ") of separators in IAEA nuvlidesTable database " + line);
+                    throw new Error("Invalid count (" + split.length + ") of separators in IAEA nuclidesTable database " + line);
                 }
                 get(Integer.parseInt(split[0]),Integer.parseInt(split[1])).getMoreData(split);
             }
@@ -140,6 +140,14 @@ public final class iaeaNuclide {
             energeticStatesArray = empty;
         } else {
             energeticStatesArray = energeticStates.values().toArray(new energeticState[0]);
+            double life=halfTime;
+            for (energeticState energeticState : energeticStatesArray) {
+                if(Double.isNaN(energeticState.Thalf)){
+                    energeticState.Thalf=life;
+                }else {
+                    life=energeticState.Thalf;
+                }
+            }
         }
     }
 
@@ -162,7 +170,7 @@ public final class iaeaNuclide {
 
     public static final class energeticState{
         public final double energy;
-        public final double Thalf;
+        public double Thalf;
         public final iaeaDecay[] decaymodes;
 
         private energeticState(iaeaNuclide nuclide,double Thalf,iaeaDecay[] decaymodes){

@@ -4,6 +4,10 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalPrimitive;
 
+import static com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eLeptonDefinition.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition.*;
+
 /**
  * Created by danie_000 on 22.10.2016.
  */
@@ -21,11 +25,11 @@ public final class eBosonDefinition extends cElementalPrimitive {
     }
 
     public static void run() {
-        boson_Y__.init(null, NO_DECAY_RAW_LIFE_TIME, -1, -1, cElementalDecay.noDecay);
-        boson_H__.init(null, 1.56e-22D, 0, 0,
+        boson_Y__.init(null, NO_DECAY_RAW_LIFE_TIME, -1, -1, noDecay);
+        boson_H__.init(null, 1.56e-22D, 2, 2,
+                new cElementalDecay(0.01D, quark_b, quark_b_),
+                new cElementalDecay(0.02D, lepton_t, lepton_t_),
                 new cElementalDecay(0.96D, new cElementalDefinitionStack(boson_Y__, 4)),
-                new cElementalDecay(0.02D, eLeptonDefinition.lepton_t, eLeptonDefinition.lepton_t_),
-                new cElementalDecay(0.01D, eQuarkDefinition.quark_b, eQuarkDefinition.quark_b_),
                 deadEnd);
     }
 

@@ -6,7 +6,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.ulp;
 
 public class DoubleCount {
-    public static double[] distribute(double count,double... probabilities){
+    public static double[] distribute(double count,double... probabilities) throws ArithmeticException{
         if(probabilities==null){
             return null;
         }else if(count==0){
@@ -20,12 +20,15 @@ public class DoubleCount {
                     double remaining=count,previous=probabilities[size],probability,out,sum=0;
                     for (int i = size - 1; i >= 0; i--) {
                         probability=probabilities[i];
-                        remaining-=out=count*probability;
-                        sum+=output[i]=out-ulp(out);
+                        remaining-=out=count*(probability-ulp(probability));
+                        sum+=output[i]=out;
                         if(previous<probability){
                             throw new ArithmeticException("Malformed probability order: "+ Arrays.toString(probabilities));
                         }
                         previous=probability;
+                        if(probability>=1){
+                            break;
+                        }
                     }
                     if(remaining*count<0){
                         throw new ArithmeticException("Malformed probability sum: "+ Arrays.toString(probabilities));

@@ -2,8 +2,6 @@ package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.Util;
-import com.github.technus.tectech.util.XSTR;
 import com.github.technus.tectech.compatibility.gtpp.GtppAtomLoader;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
@@ -19,19 +17,21 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.transformations
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eLeptonDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eNeutrinoDefinition;
+import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.XSTR;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Materials;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.*;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_144;
-import static com.github.technus.tectech.util.XSTR.XSTR_INSTANCE;
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition.getNbtTagCompound;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_144;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition.deadEnd;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
+import static com.github.technus.tectech.util.XSTR.XSTR_INSTANCE;
 import static gregtech.api.enums.OrePrefixes.dust;
 
 /**
@@ -178,7 +178,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                 } else {
                     rawLifeTimeTemp = calculateLifeTime(izoDiff, izoDiffAbs, element, neutralCount, containsAnti);
                 }
-                rawLifeTime = Math.min(rawLifeTimeTemp, iElementalDefinition.STABLE_RAW_LIFE_TIME);
+                rawLifeTime = Math.min(rawLifeTimeTemp, STABLE_RAW_LIFE_TIME);
             }else {
                 rawLifeTime = containsAnti ? iaea.halfTime * 1.5514433E-21d * (1d + xstr.nextDouble() * 9d) : iaea.halfTime;
             }
@@ -193,7 +193,7 @@ public final class dAtomDefinition extends cElementalDefinition {
             } else {
                 rawLifeTimeTemp = calculateLifeTime(izoDiff, izoDiffAbs, element, neutralCount, containsAnti);
             }
-            rawLifeTime = Math.min(rawLifeTimeTemp, iElementalDefinition.STABLE_RAW_LIFE_TIME);
+            rawLifeTime = Math.min(rawLifeTimeTemp, STABLE_RAW_LIFE_TIME);
 
             iaeaDefinitionExistsAndHasEnergyLevels =false;
         }
@@ -208,7 +208,6 @@ public final class dAtomDefinition extends cElementalDefinition {
             decayMode = izoDiff > 0 ? (byte) (Math.min(2, 1 + izoDiffAbs / 4)+ BYTE_OFFSET) : (byte) (-Math.min(2, 1 + izoDiffAbs / 4) + BYTE_OFFSET);
         }
         //this.stable = this.rawLifeTime >= STABLE_RAW_LIFE_TIME;
-
         hash=super.hashCode();
     }
 

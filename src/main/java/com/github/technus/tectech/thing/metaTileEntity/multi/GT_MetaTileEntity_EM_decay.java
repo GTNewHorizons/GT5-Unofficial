@@ -132,17 +132,15 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         outputEM[0] = input;
         outputEM[1] = new cElementalInstanceStackMap();
 
-
         for (cElementalInstanceStack stack : outputEM[0].values()) {
-            if (stack.getEnergy() == 0 && stack.definition.decayMakesEnergy(1)
-                    && getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                    (long) (stack.getEnergySettingCost(1) * URANIUM_MASS_TO_EU_INSTANT), false)) {
+            if (stack.getEnergy() == 0 && stack.definition.decayMakesEnergy(1) &&
+                    getBaseMetaTileEntity().decreaseStoredEnergyUnits(
+                            (long) (stack.getEnergySettingCost(1) * URANIUM_MASS_TO_EU_INSTANT), false)) {
                 stack.setEnergy(1);
             } else if (!stack.definition.decayMakesEnergy(stack.getEnergy())) {
                 outputEM[0].remove(stack.definition);
                 outputEM[1].putReplace(stack);
             }
-            //System.out.println(stack.definition.getSymbol()+" "+stack.amount);
         }
 
         eAmpereFlow = (long) ampereFlow.get();

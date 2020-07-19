@@ -17,8 +17,8 @@ import static com.github.technus.tectech.thing.item.DebugElementalInstanceContai
  * Created by Tec on 26.05.2017.
  */
 public class bTransformationInfo {
-    public static final double AVOGADRO_CONSTANT =6.02214076e23D;//CUBE LOL XD
-    public static final double AVOGADRO_CONSTANT_UNCERTAINTY =1/6.02214076e23D;//CUBE LOL XD
+    public static final double AVOGADRO_CONSTANT =6.02214076e23D;
+    public static final double AVOGADRO_CONSTANT_UNCERTAINTY =(144*1000)/6.02214076e23D;
     public static final double AVOGADRO_CONSTANT_144 = AVOGADRO_CONSTANT *144D;
 
     public static final HashMap<Integer,aFluidQuantizationInfo> fluidQuantization=new HashMap<>(32);

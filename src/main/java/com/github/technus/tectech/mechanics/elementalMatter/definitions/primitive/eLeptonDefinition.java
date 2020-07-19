@@ -4,6 +4,10 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalPrimitive;
 
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eNeutrinoDefinition.*;
+
 /**
  * Created by danie_000 on 22.10.2016.
  */
@@ -29,28 +33,28 @@ public final class eLeptonDefinition extends cElementalPrimitive {
 
     public static void run() {
         lepton_e.init(lepton_e_, STABLE_RAW_LIFE_TIME, 0, 1,
-                eBosonDefinition.deadEnd,//makes photons and don't care
-                new cElementalDecay(lepton_e, eBosonDefinition.boson_Y__));
+                deadEnd,
+                new cElementalDecay(lepton_e,boson_Y__));
         lepton_m.init(lepton_m_, 2.197019e-6D, 0, 1,
-                new cElementalDecay(0.9D, lepton_e, eNeutrinoDefinition.lepton_Ve_, eNeutrinoDefinition.lepton_Vm),
-                eBosonDefinition.deadEnd);//makes photons and don't care
+                new cElementalDecay(0.9D, lepton_e, lepton_Ve_, lepton_Vm),
+                deadEnd);//makes photons and don't care
         lepton_t.init(lepton_t_, 2.906e-13D, 1, 3,
-                new cElementalDecay(0.8D, lepton_m, eNeutrinoDefinition.lepton_Vm_, eNeutrinoDefinition.lepton_Vt, eBosonDefinition.boson_Y__),
-                new cElementalDecay(0.1D, lepton_e, eNeutrinoDefinition.lepton_Ve_, eNeutrinoDefinition.lepton_Vm),
-                new cElementalDecay(0.05F, lepton_m, eNeutrinoDefinition.lepton_Vm_, eNeutrinoDefinition.lepton_Vt, eBosonDefinition.boson_H__),
-                eBosonDefinition.deadEnd);//makes photons and don't care
+                new cElementalDecay(0.05F, lepton_m, lepton_Vm_, lepton_Vt, boson_H__),
+                new cElementalDecay(0.1D, lepton_e, lepton_Ve_, lepton_Vm),
+                new cElementalDecay(0.8D, lepton_m, lepton_Vm_, lepton_Vt, boson_Y__),
+                deadEnd);//makes photons and don't care
 
         lepton_e_.init(lepton_e, STABLE_RAW_LIFE_TIME, 0, 1,
-                eBosonDefinition.deadEnd,//makes photons and don't care
-                new cElementalDecay(lepton_e_, eBosonDefinition.boson_Y__));
+                deadEnd,
+                new cElementalDecay(lepton_e,boson_Y__));
         lepton_m_.init(lepton_m, 2.197019e-6F, 0, 1,
-                new cElementalDecay(0.9F, lepton_e_, eNeutrinoDefinition.lepton_Ve, eNeutrinoDefinition.lepton_Vm_),
-                eBosonDefinition.deadEnd);//makes photons and don't care
+                new cElementalDecay(0.9F, lepton_e_, lepton_Ve, lepton_Vm_),
+                deadEnd);//makes photons and don't care
         lepton_t_.init(lepton_t, 2.906e-13F, 1, 3,
-                new cElementalDecay(0.8F, lepton_m_, eNeutrinoDefinition.lepton_Vm, eNeutrinoDefinition.lepton_Vt_, eBosonDefinition.boson_Y__),
-                new cElementalDecay(0.1F, lepton_e_, eNeutrinoDefinition.lepton_Ve, eNeutrinoDefinition.lepton_Vm_),
-                new cElementalDecay(0.05F, lepton_m_, eNeutrinoDefinition.lepton_Vm, eNeutrinoDefinition.lepton_Vt_, eBosonDefinition.boson_H__),
-                eBosonDefinition.deadEnd);//makes photons and don't care
+                new cElementalDecay(0.05F, lepton_m_, lepton_Vm, lepton_Vt_, boson_H__),
+                new cElementalDecay(0.1F, lepton_e_, lepton_Ve, lepton_Vm_),
+                new cElementalDecay(0.8F, lepton_m_, lepton_Vm, lepton_Vt_, boson_Y__),
+                deadEnd);//makes photons and don't care
     }
 
     @Override

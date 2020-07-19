@@ -11,9 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.github.technus.tectech.util.Util.areBitsSet;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
@@ -77,7 +75,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         this.rawLifeTime = rawLifeTime;
         naturalDecayInstant = (byte) naturalInstant;
         energeticDecayInstant = (byte) energeticInstant;
-        elementalDecays = elementalDecaysArray;
+        elementalDecays =elementalDecaysArray;
     }
 
     @Override

@@ -20,7 +20,7 @@ public final class cElementalDecay {
     public final double probability;
 
     public cElementalDecay(iElementalDefinition... outSafe) {
-        this(2D, outSafe);
+        this(1D, outSafe);
     }
 
     public cElementalDecay(double probability, iElementalDefinition... outSafe) {
@@ -33,7 +33,7 @@ public final class cElementalDecay {
     }
 
     public cElementalDecay(cElementalDefinitionStack... outSafe) {
-        this(2D, outSafe);
+        this(1D, outSafe);
     }
 
     public cElementalDecay(double probability, cElementalDefinitionStack... out) {
@@ -42,7 +42,7 @@ public final class cElementalDecay {
     }
 
     public cElementalDecay(cElementalDefinitionStackMap tree) {
-        this(2D, tree);
+        this(1D, tree);
     }
 
     public cElementalDecay(double probability, cElementalDefinitionStackMap tree) {

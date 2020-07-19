@@ -154,7 +154,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
             name.append(' ').append(sym);
         }else {
             for (cElementalDefinitionStack quark : quarkStacks.values()) {
-                name.append(' ').append(quark.definition.getSymbol()).append(quark.amount);
+                name.append(' ').append(quark.definition.getSymbol()).append((int)quark.amount);
             }
         }
         return name.toString();
@@ -278,7 +278,9 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     @Override
     public cElementalDecay[] getDecayArray() {
         cElementalDefinitionStack[] quarkStacks = this.quarkStacks.values();
-        if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType()) {
+        if (amount == 2 && quarkStacks.length == 2 &&
+                quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() &&
+                quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType()) {
             return cElementalDecay.noProduct;
         } else if (amount != 3) {
             return new cElementalDecay[]{new cElementalDecay(0.95D, quarkStacks), eBosonDefinition.deadEnd}; //decay into quarks
@@ -293,24 +295,22 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
             //remove last
             eQuarkDefinition lastQuark = newBaryon.remove(2);
 
+            cElementalDefinitionStack[] decay;
             if (Math.abs(lastQuark.getType()) > 1) {
-                cElementalDefinitionStack[] decay = lastQuark.getDecayArray()[1].outputStacks.values();
-                newBaryon.add((eQuarkDefinition) decay[0].definition);
-                Particles[0] = decay[1].definition;
-                Particles[1] = decay[2].definition;
+                decay = lastQuark.getDecayArray()[1].outputStacks.values();
             } else {
-                cElementalDefinitionStack[] decay = lastQuark.getDecayArray()[0].outputStacks.values();
-                newBaryon.add((eQuarkDefinition) decay[0].definition);
-                Particles[0] = decay[1].definition;
-                Particles[1] = decay[2].definition;
+                decay = lastQuark.getDecayArray()[2].outputStacks.values();
             }
+            newBaryon.add((eQuarkDefinition) decay[0].definition);
+            Particles[0] = decay[1].definition;
+            Particles[1] = decay[2].definition;
 
             eQuarkDefinition[] contentOfBaryon = newBaryon.toArray(new eQuarkDefinition[3]);
 
             try {
                 return new cElementalDecay[]{
-                        new cElementalDecay(0.99D, new dHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1]),
                         new cElementalDecay(0.001D, new dHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1], boson_Y__),
+                        new cElementalDecay(0.99D, new dHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1]),
                         eBosonDefinition.deadEnd};
             } catch (tElementalException e) {
                 if (DEBUG_MODE) {

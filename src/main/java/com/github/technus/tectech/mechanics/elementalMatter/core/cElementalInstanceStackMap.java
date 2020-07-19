@@ -99,6 +99,11 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return map;
     }
 
+    public Set<Map.Entry<iElementalDefinition, cElementalInstanceStack>> getEntrySet() {
+        return map.entrySet();
+    }
+
+
     //Removers
     public void clear() {
         map.clear();
@@ -336,6 +341,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
             info[i++] = EnumChatFormatting.BLUE + instance.definition.getName()+
                     " "+ EnumChatFormatting.AQUA + instance.definition.getSymbol()+ EnumChatFormatting.RESET+
                     " #: " + EnumChatFormatting.GREEN + String.format("%.3E",instance.amount/ AVOGADRO_CONSTANT) +" mol"+ EnumChatFormatting.RESET+
+                    " E: " + EnumChatFormatting.GREEN + instance.getEnergy() + EnumChatFormatting.RESET+
                     " T: " + EnumChatFormatting.GREEN + (instance.getLifeTime()<0?"STABLE":String.format("%.3E",instance.getLifeTime()));
         }
         return info;
@@ -418,6 +424,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public double tickContent(double lifeTimeMult, int postEnergize, double seconds){
+        cleanUp();
         double diff=0;
         for (cElementalInstanceStack instance : values()) {
             cElementalDecayResult newInstances = instance.decay(lifeTimeMult, instance.age += seconds, postEnergize);

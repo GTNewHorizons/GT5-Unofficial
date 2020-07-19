@@ -4,6 +4,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalPrimitive;
 
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition.*;
+
 /**
  * Created by danie_000 on 22.10.2016.
  */
@@ -30,19 +32,19 @@ public final class eNeutrinoDefinition extends cElementalPrimitive {
                 cElementalDecay.noProduct);
         lepton_Vm.init(lepton_Vm_, 1D, 1, 0,
                 new cElementalDecay(0.825D, nothing),
-                eBosonDefinition.deadEndHalf);
+                deadEndHalf);
         lepton_Vt.init(lepton_Vt_, 1, 1, 0,
                 new cElementalDecay(0.75F, nothing),
-                eBosonDefinition.deadEnd);
+                deadEnd);
 
         lepton_Ve_.init(lepton_Ve, 1, -1, -1,
                 cElementalDecay.noProduct);
         lepton_Vm_.init(lepton_Vm, 1, 1, 0,
                 new cElementalDecay(0.825F, nothing),
-                eBosonDefinition.deadEndHalf);
+                deadEndHalf);
         lepton_Vt_.init(lepton_Vt, 1, 1, 0,
                 new cElementalDecay(0.75F, nothing),
-                eBosonDefinition.deadEnd);
+                deadEnd);
     }
 
     @Override
