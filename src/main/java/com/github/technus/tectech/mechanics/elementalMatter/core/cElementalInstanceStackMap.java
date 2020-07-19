@@ -414,20 +414,23 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     //Tick Content
-    public void tickContentByOneSecond(double lifeTimeMult, int postEnergize) {
-        tickContent(lifeTimeMult,postEnergize,1D);
+    public double tickContentByOneSecond(double lifeTimeMult, int postEnergize) {
+        return tickContent(lifeTimeMult,postEnergize,1D);
     }
 
-    public void tickContent(double lifeTimeMult, int postEnergize, double seconds){
+    public double tickContent(double lifeTimeMult, int postEnergize, double seconds){
+        double diff=0;
         for (cElementalInstanceStack instance : values()) {
-            cElementalInstanceStackMap newInstances = instance.decay(lifeTimeMult, instance.age += seconds, postEnergize);
+            cElementalDecayResult newInstances = instance.decay(lifeTimeMult, instance.age += seconds, postEnergize);
             if (newInstances == null) {
                 instance.nextColor();
             } else {
+                diff=add(diff,newInstances.getMassDiff());
                 removeAmount(false,instance);
-                putUnifyAll(newInstances);
+                putUnifyAll(newInstances.getOutput());
             }
         }
+        return diff;
     }
 
     //NBT

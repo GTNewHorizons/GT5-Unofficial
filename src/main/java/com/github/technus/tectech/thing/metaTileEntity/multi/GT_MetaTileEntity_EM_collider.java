@@ -4,6 +4,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecayResult;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalMutableDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
@@ -43,6 +44,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.github.technus.tectech.util.DoubleCount.add;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -374,13 +376,13 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         KEEPUP_COST = -heliumPlasmaValue;
     }
 
-    protected double fuse(GT_MetaTileEntity_EM_collider partner) {
+    protected double fuse(GT_MetaTileEntity_EM_collider partner) {///CAN MAKE EU
         if (partner.stack != null && stack != null) {//todo add single event mode as an option
             boolean check = stack.definition.fusionMakesEnergy(stack.getEnergy()) &&
                     partner.stack.definition.fusionMakesEnergy(partner.stack.getEnergy());
 
             cElementalInstanceStack stack2 = partner.stack;
-            double preMass = stack2.getMass() + stack.getMass();
+            double preMass = add(stack2.getMass(),stack.getMass());
             //System.out.println("preMass = " + preMass);
 
             cElementalInstanceStackMap map = new cElementalInstanceStackMap();
@@ -407,7 +409,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         return 0;
     }
 
-    protected double collide(GT_MetaTileEntity_EM_collider partner) {
+    protected double collide(GT_MetaTileEntity_EM_collider partner) {//DOES NOT MAKE EU!
         if (partner.stack != null && stack != null) {//todo add single event mode as an option
             boolean check = stack.definition.fusionMakesEnergy(stack.getEnergy()) &&
                     partner.stack.definition.fusionMakesEnergy(partner.stack.getEnergy());
@@ -482,13 +484,14 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         if (stack == null) {
             return null;
         }
-        cElementalInstanceStackMap newInstances = stack.decay(1, stack.age += 1, 0);
+        cElementalDecayResult newInstances = stack.decay(1, stack.age += 1, 0);
         if (newInstances == null) {
             stack.nextColor();
+            return null;
         } else {
-            stack = newInstances.remove(newInstances.getLast().definition);
+            stack = newInstances.getOutput().remove(newInstances.getOutput().getLast().definition);
+            return newInstances.getOutput();
         }
-        return newInstances;
     }
 
     @Override
@@ -552,14 +555,13 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             mMaxProgresstime = 20;
             mEUt = KEEPUP_COST;
             eAmpereFlow = 2;
-            return true;
         } else {
             started = true;
             mMaxProgresstime = 20;
             mEUt = STARTUP_COST;
             eAmpereFlow = 10;
-            return true;
         }
+        return true;
     }
 
     @Override

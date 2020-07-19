@@ -1,8 +1,8 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
-import ch.obermuhlner.math.big.BigFloat;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecayResult;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalDefinition;
@@ -18,7 +18,6 @@ import static com.github.technus.tectech.mechanics.elementalMatter.definitions.p
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static com.github.technus.tectech.util.DoubleCount.*;
 import static java.lang.Math.min;
-import static java.lang.Math.ulp;
 
 /**
  * Created by danie_000 on 22.10.2016.
@@ -159,31 +158,31 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         return lifeTimeMult;
     }
 
-    public cElementalInstanceStackMap tickStackByOneSecond(double lifeTimeMult, int postEnergize){
+    public cElementalDecayResult tickStackByOneSecond(double lifeTimeMult, int postEnergize){
         return tickStack(lifeTimeMult,postEnergize,1D);
     }
 
-    public cElementalInstanceStackMap tickStack(double lifeTimeMult, int postEnergize, double seconds){
-        cElementalInstanceStackMap newInstances = decay(lifeTimeMult, age += seconds, postEnergize);
+    public cElementalDecayResult tickStack(double lifeTimeMult, int postEnergize, double seconds){
+        cElementalDecayResult newInstances = decay(lifeTimeMult, age += seconds, postEnergize);
         if (newInstances == null) {
             nextColor();
         } else {
-            for (cElementalInstanceStack newInstance : newInstances.values()) {
+            for (cElementalInstanceStack newInstance : newInstances.getOutput().values()) {
                 newInstance.nextColor();
             }
         }
         return newInstances;
     }
 
-    public cElementalInstanceStackMap decay() {
+    public cElementalDecayResult decay() {
         return decay(1D, age, 0);//try to decay without changes
     }
 
-    public cElementalInstanceStackMap decay(double apparentAge, long postEnergize) {
+    public cElementalDecayResult decay(double apparentAge, long postEnergize) {
         return decay(1D,apparentAge,postEnergize);
     }
 
-    public cElementalInstanceStackMap decay(double lifeTimeMult, double apparentAge, long postEnergize) {
+    public cElementalDecayResult decay(double lifeTimeMult, double apparentAge, long postEnergize) {
         long newEnergyLevel = postEnergize + energy;
         if (newEnergyLevel > 0) {
             newEnergyLevel -= 1;
@@ -195,19 +194,19 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             long decayCnt=(long) min(Math.max(amount/DECAY_CALL_PER,MIN_MULTIPLE_DECAY_CALLS),MAX_MULTIPLE_DECAY_CALLS);
             double amountPer= div(amount,decayCnt);
             amount= sub(amount,amountPer*(--decayCnt));
-            //todo decay mechanics should handle splitting!
-            cElementalInstanceStackMap output=decayMechanics(lifeTimeMult,apparentAge,newEnergyLevel);
+
+            cElementalDecayResult output=decayMechanics(lifeTimeMult,apparentAge,newEnergyLevel);
             if(output==null){
                 amount=amountTemp;
                 return null;
             }
-            if(amountPer>0){
-                amount=amountPer;
-                for(int i=0;i<decayCnt;i++){
-                    cElementalInstanceStackMap map=decayMechanics(lifeTimeMult,apparentAge,newEnergyLevel);
-                    if(map!=null){
-                        output.putUnifyAll(map);
-                    }
+            amount=amountPer;
+            for(int i=0;i<decayCnt;i++){
+                cElementalDecayResult map=decayMechanics(lifeTimeMult,apparentAge,newEnergyLevel);
+                if(map!=null){
+                    output.getOutput().putUnifyAll(map.getOutput());
+                    output.setMassDiff(add(output.getMassDiff(),map.getMassDiff()));
+                    output.setMassAffected(output.getMassDiff()+map.getMassDiff());
                 }
             }
             amount=amountTemp;
@@ -217,7 +216,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         }
     }
 
-    private cElementalInstanceStackMap decayMechanics(double lifeTimeMult, double apparentAge, long newEnergyLevel) {
+    private cElementalDecayResult decayMechanics(double lifeTimeMult, double apparentAge, long newEnergyLevel) {
         if (energy > 0 && !definition.usesSpecialEnergeticDecayHandling()) {
             setLifeTimeMultiplier(getLifeTimeMultiplier());
             return decayCompute(definition.getEnergyInducedDecay(energy), lifeTimeMult, -1D, newEnergyLevel);
@@ -236,27 +235,8 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     }
 
     //Use to get direct decay output providing correct decay array
-    private cElementalInstanceStackMap exponentialDecayCompute(cElementalDecay[] decays, double lifeTimeMult, double newProductsAge, long newEnergyLevel) {
-        if(lifeTime<1){
-            throw new ArithmeticException("Value would be too big...");
-        }
-        double decayInverseRatio=Math.pow(2D,1D/* 1 second *//lifeTime);
-        double newAmount,decayedAmount;
-        if(decayInverseRatio>0.99999999D){
-            //todo cache this...
-            BigFloat dir=BigFloat.context(50).valueOf(2).pow(1D/* 1 second *//lifeTime);
-            BigFloat na=BigFloat.context(50).valueOf(amount).divide(dir);
-            newAmount=na.toDouble();
-            if(newAmount>=amount) {
-                decayedAmount=BigFloat.context(50).valueOf(amount).subtract(na).toDouble();
-                newAmount=amount-ulp(amount);
-            }else {
-                decayedAmount=amount-newAmount;
-            }
-        }else{
-            newAmount= div(amount,decayInverseRatio);
-            decayedAmount=amount-newAmount;
-        }
+    private cElementalDecayResult exponentialDecayCompute(cElementalDecay[] decays, double lifeTimeMult, double newProductsAge, long newEnergyLevel) {
+        double newAmount= div(amount,Math.pow(2D,1D/* 1 second *//lifeTime));
 
         //if(definition.getSymbol().startsWith("U ")) {
         //    System.out.println("newAmount = " + newAmount);
@@ -276,61 +256,62 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
 
         //split to non decaying and decaying part
         double amount=this.amount;
-        this.amount= decayedAmount;
-        cElementalInstanceStackMap products=decayCompute(decays,lifeTimeMult,newProductsAge,newEnergyLevel);
+        this.amount-=newAmount;
+        cElementalDecayResult products=decayCompute(decays,lifeTimeMult,newProductsAge,newEnergyLevel);
         this.amount=newAmount;
         if(products!=null){
-            products.putUnify(clone());
+            products.getOutput().putUnify(clone());
         }
         this.amount=amount;
         return products;
     }
 
     //Use to get direct decay output providing correct decay array
-    private cElementalInstanceStackMap decayCompute(cElementalDecay[] decays, double lifeTimeMult, double newProductsAge, long newEnergyLevel) {
+    private cElementalDecayResult decayCompute(cElementalDecay[] decays, double lifeTimeMult, double newProductsAge, long newEnergyLevel) {
         if (decays == null) {
             return null;//Can not decay so it wont
         }
+        boolean makesEnergy=definition.decayMakesEnergy(energy);
+        double mass=getMass();
         if (decays.length == 0) {
-            if(definition.decayMakesEnergy(this.energy)) {
-                return null;
-            }
-            return new cElementalInstanceStackMap();//provide non null 0 length array for annihilation
+            return makesEnergy ? null : new cElementalDecayResult(new cElementalInstanceStackMap(), mass, 0);
+            //provide non null 0 length array for annihilation
         } else if (decays.length == 1) {//only one type of decay :D, doesn't need dead end
-            if(decays[0]==deadEnd && definition.decayMakesEnergy(this.energy)) {
-                return null;//no extra photons
+            if(decays[0]==deadEnd) {
+                return makesEnergy ? null : new cElementalDecayResult(decays[0].getResults(lifeTimeMult, newProductsAge, newEnergyLevel, amount), mass, 0);
             }
-            cElementalInstanceStackMap products=decays[0].getResults(lifeTimeMult, newProductsAge, newEnergyLevel, amount);
+            cElementalInstanceStackMap output = decays[0].getResults(lifeTimeMult, newProductsAge, newEnergyLevel, amount);
             if(newProductsAge<0){
-                if(products.size()==1) {
-                    if(products.size()==1 && products.get(0).definition.equals(definition)) {
-                        products.get(0).setEnergy(energy);
-                        products.get(0).age=age;
+                if(output.size()==1) {
+                    if(output.size()==1 && output.get(0).definition.equals(definition)) {
+                        output.get(0).setEnergy(energy);
+                        output.get(0).age=age;
                     }
                 }else {
-                    for (cElementalInstanceStack stack : products.values()) {
+                    for (cElementalInstanceStack stack : output.values()) {
                         if (stack.definition.equals(definition)) {
                             stack.age = age;
                         }
                     }
                 }
             }else{
-                if(products.size()==1 && products.get(0).definition.equals(definition)) {
-                    products.get(0).setEnergy(energy);
+                if(output.size()==1 && output.get(0).definition.equals(definition)) {
+                    output.get(0).setEnergy(energy);
                 }
             }
-            if(this.energy <= 0 && products.getMass() > getMass()){
+            if(energy <= 0 && output.getMass() > mass){
                 return null;//no energy usage to decay
             }
-            return products;
+            return new cElementalDecayResult(new cElementalInstanceStackMap(), mass, makesEnergy ? output.getMass()-mass:0);
         } else {
-            cElementalInstanceStackMap output = new cElementalInstanceStackMap();
+            cElementalDecayResult totalOutput = new cElementalDecayResult(new cElementalInstanceStackMap(),getMass(),0);
+            cElementalInstanceStackMap output=totalOutput.getOutput(),results;
             int differentDecays = decays.length;
             double[] probabilities=new double[differentDecays];
             for (int i = 0; i < probabilities.length; i++) {
                 probabilities[i]=decays[i].probability;
             }
-            double[] qttyOfDecay = distribute(this.amount, probabilities);
+            double[] qttyOfDecay = distribute(amount, probabilities);
             //long amountRemaining = this.amount, amount = this.amount;
             //float remainingProbability = 1D;
 //
@@ -376,23 +357,22 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             //    }
             //}
 
-            if(definition.decayMakesEnergy(this.energy)){
-                for (int i = 0; i < differentDecays; i++) {
-                    if (qttyOfDecay[i] > 0) {
-                        if(decays[i]==deadEnd){
-                            cElementalInstanceStack clone=this.clone();
-                            clone.amount=qttyOfDecay[i];
-                            output.putUnify(clone);
-                        }else {
-                            output.putUnifyAll(decays[i].getResults(lifeTimeMult, newProductsAge, newEnergyLevel, qttyOfDecay[i]));
-                        }
+            if(definition.decayMakesEnergy(energy)){
+                for (int i = differentDecays - 1; i >= 0; i--) {
+                    if(decays[i]==deadEnd){
+                        cElementalInstanceStack clone=clone();
+                        clone.amount=qttyOfDecay[i];
+                        output.putUnify(clone);
+                    }else {
+                        results=decays[i].getResults(lifeTimeMult, newProductsAge, newEnergyLevel, qttyOfDecay[i]);
+                        output.putUnifyAll(results);
+                        totalOutput.setMassDiff(add(totalOutput.getMassDiff(),results.getMass()-mass));
                     }
                 }
             }else{
-                for (int i = 0; i < differentDecays; i++) {
-                    if (qttyOfDecay[i] > 0) {
-                        output.putUnifyAll(decays[i].getResults(lifeTimeMult, newProductsAge, newEnergyLevel, qttyOfDecay[i]));
-                    }
+                for (int i = differentDecays - 1; i >= 0; i--) {
+                    results=decays[i].getResults(lifeTimeMult, newProductsAge, newEnergyLevel, qttyOfDecay[i]);
+                    output.putUnifyAll(results);
                 }
             }
 
@@ -413,10 +393,10 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
                     output.get(0).age=age;
                 }
             }
-            if(this.energy <= 0 && output.getMass() > getMass()){
+            if(energy <= 0 && output.getMass() > getMass()){
                 return null;//no energy usage to decay
             }
-            return output;
+            return totalOutput;
         }
     }
 
