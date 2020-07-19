@@ -33,7 +33,7 @@ file "build.properties" withReader {
 def getVersionAppendage() {
     def proc = "git rev-parse --short HEAD".execute()
     proc.waitFor()
-    return "DEV." + proc.exitValue() ? "GITBORK" : proc.text.trim()
+    return "DEV." + proc.exitValue() ? proc.text.trim() : "GITBORK"
 }
 
 ext.set("minecraftVersion","${config.minecraft.version}-${config.forge.version}-${config.minecraft.version}")
