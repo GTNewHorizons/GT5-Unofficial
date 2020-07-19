@@ -28,7 +28,6 @@ public class TecTechConfig extends ConfigManager {
     public int TESLA_MULTI_LOSS_PER_BLOCK_T1;
     public int TESLA_MULTI_LOSS_PER_BLOCK_T2;
     public float TESLA_MULTI_OVERDRIVE_LOSS_FACTOR;
-    public int TESLA_MULTI_SCAN_RANGE;//TODO delete
     public boolean TESLA_MULTI_GAS_OUTPUT;
     public int TESLA_SINGLE_LOSS_PER_BLOCK;
     public float TESLA_SINGLE_OVERDRIVE_LOSS_FACTOR;
@@ -54,7 +53,6 @@ public class TecTechConfig extends ConfigManager {
         TESLA_MULTI_LOSS_PER_BLOCK_T1 = 1;
         TESLA_MULTI_LOSS_PER_BLOCK_T2 = 1;
         TESLA_MULTI_OVERDRIVE_LOSS_FACTOR = 0.25F;
-        TESLA_MULTI_SCAN_RANGE = 40;
         TESLA_MULTI_GAS_OUTPUT = false;
         TESLA_SINGLE_LOSS_PER_BLOCK = 1;
         TESLA_SINGLE_OVERDRIVE_LOSS_FACTOR = 0.25F;
@@ -93,7 +91,6 @@ public class TecTechConfig extends ConfigManager {
         TESLA_MULTI_LOSS_PER_BLOCK_T1 = _mainConfig.getInt("TeslaMultiLossPerBlockT1", "Balance Tweaks", TESLA_MULTI_LOSS_PER_BLOCK_T1, 0, Integer.MAX_VALUE, "Tesla Tower power transmission loss per block per amp using helium or nitrogen plasma");
         TESLA_MULTI_LOSS_PER_BLOCK_T2 = _mainConfig.getInt("TeslaMultiLossPerBlockT1", "Balance Tweaks", TESLA_MULTI_LOSS_PER_BLOCK_T2, 0, Integer.MAX_VALUE, "Tesla Tower power transmission loss per block per amp using radon plasma");
         TESLA_MULTI_OVERDRIVE_LOSS_FACTOR = _mainConfig.getFloat("TeslaMultiOverdriveLossFactor", "Balance Tweaks", TESLA_MULTI_OVERDRIVE_LOSS_FACTOR, 0, 1, "Additional Tesla Tower power loss per amp as a factor of the tier voltage");
-        TESLA_MULTI_SCAN_RANGE = _mainConfig.getInt("TeslaMultiScanRange", "Balance Tweaks", TESLA_MULTI_SCAN_RANGE, 4, 256, "The horizontal radius scanned by the Tesla Tower");
         TESLA_MULTI_GAS_OUTPUT = _mainConfig.getBoolean("TeslaMultiMoltenOutput", "Balance Tweaks", TESLA_MULTI_GAS_OUTPUT, "Set to true to enable outputting plasmas as gasses from the tesla tower with a 1:1 ratio");
         TESLA_SINGLE_LOSS_PER_BLOCK = _mainConfig.getInt("TeslaSingleLossPerBlock", "Balance Tweaks", TESLA_SINGLE_LOSS_PER_BLOCK, 0, Integer.MAX_VALUE, "Tesla Transceiver power transmission loss per block per amp");
         TESLA_SINGLE_OVERDRIVE_LOSS_FACTOR = _mainConfig.getFloat("TeslaSingleOverdriveLossFactor", "Balance Tweaks", TESLA_SINGLE_OVERDRIVE_LOSS_FACTOR, 0, 1, "Additional Tesla Transceiver power loss per amp as a factor of the tier voltage");
