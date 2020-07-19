@@ -38,7 +38,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer {
     private final static int transferRadiusMax = TecTech.configTecTech.TESLA_SINGLE_RANGE;//Default is 20
     private final static int perBlockLoss = TecTech.configTecTech.TESLA_SINGLE_LOSS_PER_BLOCK;//Default is 1
-    private final static float overDriveLoss = TecTech.configTecTech.TESLA_SINGLE_OVERDRIVE_LOSS_FACTOR;//Default is 0.25F
+    private final static float overDriveLoss = TecTech.configTecTech.TESLA_SINGLE_LOSS_FACTOR_OVERDRIVE;//Default is 0.25F
 
     private Map<IGregTechTileEntity, Integer> teslaNodeMap = new HashMap<>();//Tesla Map to map them tesla bois!
     private final static HashSet<ThaumSpark> sparkList = new HashSet<>();

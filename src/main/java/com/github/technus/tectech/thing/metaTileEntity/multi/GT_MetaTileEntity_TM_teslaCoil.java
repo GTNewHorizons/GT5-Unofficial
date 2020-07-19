@@ -53,18 +53,18 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region variables
-    private static final int transferRadiusTowerFromConfig = TecTech.configTecTech.TESLA_MULTI_TOWER_RANGE;//Default is 32
-    private static final int transferRadiusTransceiverFromConfig = TecTech.configTecTech.TESLA_MULTI_TRANSCEIVER_RANGE;//Default is 16
-    private static final int transferRadiusCoverUltimateFromConfig = TecTech.configTecTech.TESLA_MULTI_COVER_RANGE;//Default is 16
-    private static final int plasmaRangeMultiT1 = TecTech.configTecTech.TESLA_MULTI_PLASMA_RANGE_MULTI_T1;//Default is 2
-    private static final int plasmaRangeMultiT2 = TecTech.configTecTech.TESLA_MULTI_PLASMA_RANGE_MULTI_T2;//Default is 4
-    private static final int heliumUse = TecTech.configTecTech.TESLA_MULTI_HELIUM_PLASMA_PER_SECOND;//Default is 100
-    private static final int nitrogenUse = TecTech.configTecTech.TESLA_MULTI_NITROGEN_PLASMA_PER_SECOND;//Default is 50
-    private static final int radonUse = TecTech.configTecTech.TESLA_MULTI_RADON_PLASMA_PER_SECOND;//Default is 50
+    private static final int transferRadiusTowerFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_TOWER;//Default is 32
+    private static final int transferRadiusTransceiverFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_TRANSCEIVER;//Default is 16
+    private static final int transferRadiusCoverUltimateFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_COVER;//Default is 16
+    private static final int plasmaRangeMultiT1 = TecTech.configTecTech.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T1;//Default is 2
+    private static final int plasmaRangeMultiT2 = TecTech.configTecTech.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T2;//Default is 4
+    private static final int heliumUse = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM;//Default is 100
+    private static final int nitrogenUse = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN;//Default is 50
+    private static final int radonUse = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON;//Default is 50
     //Default is {1, 1, 1}
     private static final int[] plasmaTierLoss = new int[]{TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T0,
             TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T1, TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T2};
-    private static final float overDriveLoss = TecTech.configTecTech.TESLA_MULTI_OVERDRIVE_LOSS_FACTOR;//Default is 0.25F;
+    private static final float overDriveLoss = TecTech.configTecTech.TESLA_MULTI_LOSS_FACTOR_OVERDRIVE;//Default is 0.25F;
     private static final boolean doFluidOutput = TecTech.configTecTech.TESLA_MULTI_GAS_OUTPUT; //Default is false
 
     //Face icons
