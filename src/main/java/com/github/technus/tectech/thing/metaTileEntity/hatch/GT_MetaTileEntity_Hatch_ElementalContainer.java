@@ -244,7 +244,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     @Override
     public String[] getInfoData() {
-        if (TecTech.configTecTech.EASY_SCAN) {
+        if (TecTech.configTecTech.EASY_SCAN || DEBUG_MODE) {
             if (id > 0) {
                 if (content == null || content.size() == 0) {
                     return new String[]{translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id, translateToLocalFormatted("tt.keyphrase.No_Stacks", clientLocale)};

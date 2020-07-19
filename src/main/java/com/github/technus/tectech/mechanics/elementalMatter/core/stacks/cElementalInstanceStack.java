@@ -18,6 +18,7 @@ import static com.github.technus.tectech.mechanics.elementalMatter.definitions.p
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static com.github.technus.tectech.util.DoubleCount.*;
 import static java.lang.Math.min;
+import static java.lang.Math.ulp;
 
 /**
  * Created by danie_000 on 22.10.2016.
@@ -249,7 +250,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         //    }
         //}
         if(newAmount==amount) {
-            return null;//nothing decayed
+            newAmount-=ulp(newAmount);
         } else if(newAmount<1) {
             return decayCompute(decays, lifeTimeMult, newProductsAge, newEnergyLevel);
         }
