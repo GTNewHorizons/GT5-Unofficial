@@ -697,7 +697,6 @@ public class GT_Client extends GT_Proxy
     }
 
     public static void recieveChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {
-        System.out.println("RECIEVE: " + chunk.toString() + "(" + pollution + ")" );
         mPollutionRenderer.processPacket(chunk, pollution);
     }
 }

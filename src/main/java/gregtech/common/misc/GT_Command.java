@@ -29,8 +29,6 @@ public final class GT_Command extends CommandBase {
     }
     private void printHelp(ICommandSender sender) {
         sender.addChatMessage(new ChatComponentText("Usage: gt <toggle|chunks|pollution>"));
-
-        sender.addChatMessage(new ChatComponentText("Usage: gt <toggle|chunks>"));
         sender.addChatMessage(new ChatComponentText("\"toggle D1\" - toggles general.Debug (D1)"));
         sender.addChatMessage(new ChatComponentText("\"toggle D2\" - toggles general.Debug2 (D2)"));
         sender.addChatMessage(new ChatComponentText("\"toggle debugCleanroom\" - toggles cleanroom debug log"));
