@@ -8,9 +8,9 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 public class GT_ClientPollutionMap {
-    private static final byte RADIUS = 15; //Area to keep stored.
-    private static final byte DISTANCE_RELOAD_MAP = 2;
-    private static final byte SIZE = RADIUS*2+1;
+    private static final byte RADIUS = 24;
+    private static final byte DISTANCE_RELOAD_MAP = 5; //When player moved x chunks, shift the map to new center.
+    private static final byte SIZE = RADIUS*2+1; //Area to keep stored.
 
     private int x0, z0;
     private int dim;
@@ -24,7 +24,6 @@ public class GT_ClientPollutionMap {
 
     public void reset() {
         initialized = false;
-        System.out.println("RESET MAP");
     }
 
     private void initialize(int playerChunkX, int playerChunkZ, int dimension) {
@@ -33,7 +32,6 @@ public class GT_ClientPollutionMap {
         x0 = playerChunkX;
         z0 = playerChunkZ;
         dim = dimension;
-        System.out.println("INIT MAP" + x0 + "/" + z0 + " d:" + dim);
     }
 
     public void addChunkPollution(int chunkX, int chunkZ, int pollution) {
@@ -154,58 +152,5 @@ public class GT_ClientPollutionMap {
 
         x0 = chunkX;
         z0 = chunkZ;
-        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("CENTER: " + x0 + "/" + z0));
-    }
-
-    public void draw3x3Chinks(double cX, double cZ) {
-        if (!initialized) return;
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-
-        int px = (MathHelper.floor_double(cX)) >> 4;
-        int pz = (MathHelper.floor_double(cZ)) >> 4;
-
-        int mX = px - x0 + RADIUS;
-        int mZ = pz - z0 + RADIUS;
-
-        int LEN = 8;
-
-        StringBuilder b = new StringBuilder();
-        b.append(len(" ", LEN));
-        for (int x = -2; x < 3; x++) {
-            b.append(len("x:" + (mX - RADIUS + x0 + x), LEN));
-        }
-        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(b.toString(), 200, 130 + -3 * 16, 0xFFFFFFFF);
-
-        for (int z = 2; z > -3; z--) {
-            b = new StringBuilder();
-            b.append(len("z:" + (mZ - RADIUS + z0 +z), LEN));
-            int zz = mZ + z;
-            for (int x = -2; x < 3; x++) {
-                int xx = mX + x;
-                if (xx >= 0 && xx < SIZE && zz >= 0 && zz < SIZE) {
-                    b.append(len(chunkMatrix[xx][zz]*225/1000, LEN));
-                } else {
-                    b.append(len(-1, LEN));
-                }
-            }
-            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(b.toString(), 200, 130 + -z * 16, 0xFFFFFFFF);
-        }
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
-    }
-
-    private String len(String s, int lenghth) {
-        StringBuilder sBuilder = new StringBuilder(lenghth);
-        sBuilder.append(s);
-        while (sBuilder.length() < lenghth) {
-            sBuilder.append(" ");
-        }
-        return sBuilder.toString();
-    }
-
-    private String len(int s, int lenghth) {
-        return len(Integer.toString(s), lenghth);
     }
 }

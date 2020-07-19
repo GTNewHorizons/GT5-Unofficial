@@ -147,10 +147,9 @@ public class GT_Pollution {
 					AxisAlignedBB chunk = AxisAlignedBB.getBoundingBox(actualPos.chunkXPos << 4, 0, actualPos.chunkZPos << 4, (actualPos.chunkXPos << 4) + 16, 256, (actualPos.chunkZPos << 4) + 16);
 					List<EntityLivingBase> tEntitys = aWorld.getEntitiesWithinAABB(EntityLivingBase.class, chunk);
 					for (EntityLivingBase tEnt : tEntitys) {
-						boolean creative = false;
-						if (tEnt instanceof EntityPlayerMP)
-							creative = ((EntityPlayerMP) tEnt).capabilities.isCreativeMode;
-						if (!(GT_Utility.isWearingFullGasHazmat(tEnt) || creative)) {
+						if (tEnt instanceof EntityPlayerMP && ((EntityPlayerMP) tEnt).capabilities.isCreativeMode)
+							continue;
+						if (!(GT_Utility.isWearingFullGasHazmat(tEnt))) {
 							switch (XSTR_INSTANCE.nextInt(3)) {
 								default:
 									tEnt.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, Math.min(tPollution / 1000, 1000), tPollution / 400000));
@@ -168,6 +167,8 @@ public class GT_Pollution {
 						//AxisAlignedBB chunk = AxisAlignedBB.getBoundingBox(tPos.chunkPosX*16, 0, tPos.chunkPosZ*16, tPos.chunkPosX*16+16, 256, tPos.chunkPosZ*16+16);
 						//List<EntityLiving> tEntitys = aWorld.getEntitiesWithinAABB(EntityLiving.class, chunk);
 						for (EntityLivingBase tEnt : tEntitys) {
+							if (tEnt instanceof EntityPlayerMP && ((EntityPlayerMP) tEnt).capabilities.isCreativeMode)
+								continue;
 							if (!GT_Utility.isWearingFullGasHazmat(tEnt)) {
 								switch (XSTR_INSTANCE.nextInt(4)) {
 									default:
