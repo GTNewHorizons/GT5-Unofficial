@@ -17,14 +17,14 @@ import static com.github.technus.tectech.mechanics.elementalMatter.definitions.p
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition.deadEnd;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static com.github.technus.tectech.util.DoubleCount.*;
-import static java.lang.Math.min;
-import static java.lang.Math.ulp;
+import static java.lang.Math.*;
 
 /**
  * Created by danie_000 on 22.10.2016.
  */
 public final class cElementalInstanceStack implements iHasElementalDefinition {
-    public static int MIN_MULTIPLE_DECAY_CALLS=16,MAX_MULTIPLE_DECAY_CALLS=64,DECAY_CALL_PER=144;//todo
+    public static int MIN_MULTIPLE_DECAY_CALLS=4,MAX_MULTIPLE_DECAY_CALLS=16;
+    public static double DECAY_CALL_PER=AVOGADRO_CONSTANT;//todo
 
     public final iElementalDefinition definition;
     //energy - if positive then particle should try to decay
@@ -192,7 +192,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         }
         if(definition.usesMultipleDecayCalls(energy)){
             double amountTemp=amount;
-            long decayCnt=(long) min(Math.max(amount/DECAY_CALL_PER,MIN_MULTIPLE_DECAY_CALLS),MAX_MULTIPLE_DECAY_CALLS);
+            long decayCnt=(long) min(MAX_MULTIPLE_DECAY_CALLS,max(amount/DECAY_CALL_PER,MIN_MULTIPLE_DECAY_CALLS));
             double amountPer= div(amount,decayCnt);
             amount= sub(amount,amountPer*(--decayCnt));
 
@@ -418,7 +418,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
                     maxEnergy=instance.energy;
                 }
                 lifeTimeMul = min(lifeTimeMul, instance.lifeTimeMult);
-                age = Math.max(age, instance.age);
+                age = max(age, instance.age);
             }
         }
 
