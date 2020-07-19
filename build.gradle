@@ -30,6 +30,12 @@ file "build.properties" withReader {
     ext.config = new ConfigSlurper().parse prop
 }
 
+def getVersionAppendage() {
+    def proc = "git rev-parse --short HEAD".execute()
+    proc.waitFor()
+    return "DEV." + proc.exitValue() ? "GITBORK" : proc.text.trim()
+}
+
 ext.set("minecraftVersion","${config.minecraft.version}-${config.forge.version}-${config.minecraft.version}")
 
 import de.undercouch.gradle.tasks.download.Download
@@ -51,7 +57,7 @@ sourceSets {
     }
 }
 
-version = "${config.minecraft.version}-${config.tectech.version}"
+version = "${config.minecraft.version}-${config.tectech.version}-"+getVersionAppendage()
 group = "com.github.technus"
 archivesBaseName = "TecTech"
 
