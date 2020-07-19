@@ -53,6 +53,11 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region variables
+    private static final int transferRadiusTowerFromConfig = TecTech.configTecTech.TESLA_MULTI_TOWER_RANGE;//Default is 32
+    private static final int transferRadiusTransceiverFromConfig = TecTech.configTecTech.TESLA_MULTI_TRANSCEIVER_RANGE;//Default is 16
+    private static final int transferRadiusCoverUltimateFromConfig = TecTech.configTecTech.TESLA_MULTI_COVER_RANGE;//Default is 16
+    private static final int plasmaRangeMultiT1 = TecTech.configTecTech.TESLA_MULTI_PLASMA_RANGE_MULTI_T1;//Default is 2
+    private static final int plasmaRangeMultiT2 = TecTech.configTecTech.TESLA_MULTI_PLASMA_RANGE_MULTI_T2;//Default is 4
     private static final int heliumUse = TecTech.configTecTech.TESLA_MULTI_HELIUM_PLASMA_PER_SECOND;//Default is 100
     private static final int nitrogenUse = TecTech.configTecTech.TESLA_MULTI_NITROGEN_PLASMA_PER_SECOND;//Default is 50
     private static final int radonUse = TecTech.configTecTech.TESLA_MULTI_RADON_PLASMA_PER_SECOND;//Default is 50
@@ -168,17 +173,25 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (Double.isNaN(value)) return STATUS_WRONG;
         value = (int) value;
         if (value < 0) return STATUS_TOO_LOW;
-        if (value > 40) return STATUS_TOO_HIGH;
-        if (value < 32) return STATUS_LOW;
+        if (value > transferRadiusTowerFromConfig) return STATUS_HIGH;
+        if (value < transferRadiusTowerFromConfig) return STATUS_LOW;
         return STATUS_OK;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_STATUS = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         value = (int) value;
         if (value < 0) return STATUS_TOO_LOW;
-        if (value > 20) return STATUS_TOO_HIGH;
-        if (value < 16) return STATUS_LOW;
+        if (value > transferRadiusTransceiverFromConfig) return STATUS_HIGH;
+        if (value < transferRadiusTransceiverFromConfig) return STATUS_LOW;
+        return STATUS_OK;
+    };    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_STATUS = (base, p) -> {
+        double value = p.get();
+        if (Double.isNaN(value)) return STATUS_WRONG;
+        value = (int) value;
+        if (value < 0) return STATUS_TOO_LOW;
+        if (value > transferRadiusCoverUltimateFromConfig) return STATUS_HIGH;
+        if (value < transferRadiusCoverUltimateFromConfig) return STATUS_LOW;
         return STATUS_OK;
     };
     private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_OR_CURRENT_STATUS = (base, p) -> {
@@ -215,7 +228,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         value = (int) value;
-        if (value == 0 || value == 20 || value == 40 || value == 60 || value == 80) return STATUS_HIGH;
+        if (value == 0) return STATUS_HIGH;
         return STATUS_LOW;
     };
     private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> POWER_STATUS = (base, p) -> {
@@ -268,15 +281,16 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     private float getRangeMulti(int mTier, int vTier) {
+        //By Default:
         //Helium and Nitrogen Plasmas will double the range
         //Radon will quadruple the range
         int plasmaBoost;
         switch (plasmaTier) {
             case 2:
-                plasmaBoost = 4;
+                plasmaBoost = plasmaRangeMultiT2;
                 break;
             case 1:
-                plasmaBoost = 2;
+                plasmaBoost = plasmaRangeMultiT1;
                 break;
             default:
                 plasmaBoost = 1;
@@ -351,7 +365,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         eCapacitorHatches.clear();
 
         Vec3Impl xyzOffsets;
-
         xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 1));
         mTier = iGregTechTileEntity.getMetaIDOffset(xyzOffsets.get0(), xyzOffsets.get1(), xyzOffsets.get2());
         if (mTier == 9){mTier = 6;}//Hacky remap because the ZPM coils were added later
@@ -496,10 +509,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         popogaSetting = hatch_0.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
         histHighSetting = hatch_1.makeInParameter(0, 0.75, HYSTERESIS_HIGH_SETTING_NAME, HYSTERESIS_HIGH_STATUS);
         popogaSetting = hatch_1.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        transferRadiusTowerSetting = hatch_2.makeInParameter(0, 32, TRANSFER_RADIUS_TOWER_SETTING_NAME, TRANSFER_RADIUS_TOWER_STATUS);
+        transferRadiusTowerSetting = hatch_2.makeInParameter(0, transferRadiusTowerFromConfig, TRANSFER_RADIUS_TOWER_SETTING_NAME, TRANSFER_RADIUS_TOWER_STATUS);
         popogaSetting = hatch_2.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        transferRadiusTransceiverSetting = hatch_3.makeInParameter(0, 16, TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
-        transferRadiusCoverUltimateSetting = hatch_3.makeInParameter(1, 16, TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
+        transferRadiusTransceiverSetting = hatch_3.makeInParameter(0, transferRadiusTransceiverFromConfig, TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME, TRANSFER_RADIUS_TRANSCEIVER_STATUS);
+        transferRadiusCoverUltimateSetting = hatch_3.makeInParameter(1, transferRadiusCoverUltimateFromConfig, TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME, TRANSFER_RADIUS_COVER_ULTIMATE_STATUS);
         outputVoltageSetting = hatch_4.makeInParameter(0, -1, OUTPUT_VOLTAGE_SETTING_NAME, OUTPUT_VOLTAGE_OR_CURRENT_STATUS);
         popogaSetting = hatch_4.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
         outputCurrentSetting = hatch_5.makeInParameter(0, -1, OUTPUT_CURRENT_SETTING_NAME, OUTPUT_VOLTAGE_OR_CURRENT_STATUS);
@@ -519,8 +532,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         popogaDisplay = hatch_1.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
         transferRadiusTowerDisplay = hatch_2.makeOutParameter(0, 0, TRANSFER_RADIUS_TOWER_DISPLAY_NAME, TRANSFER_RADIUS_TOWER_STATUS);
         popogaDisplay = hatch_2.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        transferRadiusTransceiverDisplay = hatch_3.makeOutParameter(0, 0, TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
-        transferRadiusCoverUltimateDisplay = hatch_3.makeOutParameter(1, 0, TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME, TRANSFER_RADIUS_TRANSCEIVER_OR_COVER_ULTIMATE_STATUS);
+        transferRadiusTransceiverDisplay = hatch_3.makeOutParameter(0, 0, TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME, TRANSFER_RADIUS_TRANSCEIVER_STATUS);
+        transferRadiusCoverUltimateDisplay = hatch_3.makeOutParameter(1, 0, TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME, TRANSFER_RADIUS_COVER_ULTIMATE_STATUS);
         outputVoltageDisplay = hatch_4.makeOutParameter(0, 0, OUTPUT_VOLTAGE_DISPLAY_NAME, POWER_STATUS);
         popogaDisplay = hatch_4.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
         outputCurrentDisplay = hatch_5.makeOutParameter(0, 0, OUTPUT_CURRENT_DISPLAY_NAME, POWER_STATUS);
@@ -572,19 +585,19 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     public static Map<IGregTechTileEntity, Integer> generateTeslaNodeMap(IGregTechTileEntity orgin){
         Map<IGregTechTileEntity, Integer> generatedNodeMap = new HashMap<>();
-        IMetaTileEntity orginInside = orgin.getMetaTileEntity();
-        int orginX;
-        int orginY;
-        int orginZ;
-        if (orginInside instanceof GT_MetaTileEntity_TM_teslaCoil) {
-            GT_MetaTileEntity_TM_teslaCoil teslaTower = (GT_MetaTileEntity_TM_teslaCoil) orginInside;
-            orginX = teslaTower.posTop.get0();
-            orginY = teslaTower.posTop.get1();
-            orginZ = teslaTower.posTop.get2();
+        IMetaTileEntity originInside = orgin.getMetaTileEntity();
+        int originX;
+        int originY;
+        int originZ;
+        if (originInside instanceof GT_MetaTileEntity_TM_teslaCoil) {
+            GT_MetaTileEntity_TM_teslaCoil teslaTower = (GT_MetaTileEntity_TM_teslaCoil) originInside;
+            originX = teslaTower.posTop.get0();
+            originY = teslaTower.posTop.get1();
+            originZ = teslaTower.posTop.get2();
         } else {
-            orginX = orgin.getXCoord();
-            orginY = orgin.getYCoord();
-            orginZ = orgin.getZCoord();
+            originX = orgin.getXCoord();
+            originY = orgin.getYCoord();
+            originZ = orgin.getZCoord();
         }
 
         for (IGregTechTileEntity node : teslaNodeSet) {
@@ -593,7 +606,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 teslaNodeSet.remove(null);
                 continue;
             } else if (node == orgin || orgin.getWorld().provider.dimensionId != node.getWorld().provider.dimensionId) {
-                //Skip if looking at myself and skip if not in the same dimention
+                //Skip if looking at myself and skip if not in the same dimension
                 //TODO, INTERDIM?
                 continue;
             }
@@ -615,9 +628,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             }
 
             //Find the xyz offsets and calculate the distance between us and the target
-            int xPosOffset = targetX - orginX;
-            int yPosOffset = targetY - orginY;
-            int zPosOffset = targetZ - orginZ;
+            int xPosOffset = targetX - originX;
+            int yPosOffset = targetY - originY;
+            int zPosOffset = targetZ - originZ;
             int distance = (int) ceil(sqrt(pow(xPosOffset, 2) + pow(yPosOffset, 2) + pow(zPosOffset, 2)));
             //Thought we need abs here, we don't. An Integer to the power of two is going to be either 0 or positive.
             //We also can just put stuff here without further checks, as we always check the next section
@@ -626,7 +639,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         return generatedNodeMap;
     }
 
-    public static Map<IGregTechTileEntity, Integer> cleanTeslaNodeMap(Map<IGregTechTileEntity, Integer> nodeMap, IGregTechTileEntity orgin) {
+    public static void cleanTeslaNodeMap(Map<IGregTechTileEntity, Integer> nodeMap, IGregTechTileEntity orgin) {
         IMetaTileEntity orginInside = orgin.getMetaTileEntity();
         //Assumes that if the orgin is not a Tesla Tower, it mus be a single block.
         boolean isMulti = orginInside instanceof GT_MetaTileEntity_TM_teslaCoil;
@@ -669,7 +682,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             }
             nodeMap.remove(Rx.getKey());
         }
-        return nodeMap;
     }
 
 
@@ -727,7 +739,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             transferRadiusCoverUltimateDisplay.set(transferRadiusCoverUltimate);
 
             //Clean the teslaNodeMap
-            teslaNodeMap = cleanTeslaNodeMap(teslaNodeMap, mte);
+            cleanTeslaNodeMap(teslaNodeMap, mte);
 
             //Power transfer
             long sparks = outputCurrent;

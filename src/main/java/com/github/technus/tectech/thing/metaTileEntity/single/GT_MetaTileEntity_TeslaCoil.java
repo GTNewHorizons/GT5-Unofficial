@@ -36,6 +36,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer {
+    private final static int transferRadiusMax = TecTech.configTecTech.TESLA_SINGLE_RANGE;//Default is 20
     private final static int perBlockLoss = TecTech.configTecTech.TESLA_SINGLE_LOSS_PER_BLOCK;//Default is 1
     private final static float overDriveLoss = TecTech.configTecTech.TESLA_SINGLE_OVERDRIVE_LOSS_FACTOR;//Default is 0.25F
 
@@ -43,18 +44,17 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private final static HashSet<ThaumSpark> sparkList = new HashSet<>();
     private byte sparkCount = 0;
 
-    private final static int transferRadiusMax = 20; //Maximum user configurable
-    private final static int transferRadiusMin = 4; //Minimum user configurable
-    private int transferRadius = 16; //Default transferRadius setting
+    private final static int transferRadiusMin = 4;//Minimum user configurable
+    private int transferRadius = transferRadiusMax;//Default transferRadius setting
 
-    public boolean powerPassToggle = false; //Power Pass for public viewing
-    private final static int histSteps = 20; //Hysteresis Resolution
-    private int histSettingLow = 3; //Hysteresis Low Limit
-    private int histSettingHigh = 15; //Hysteresis High Limit
-    private final static int histLowLimit = 1; //How low can you configure it?
-    private final static int histHighLimit = 19; //How high can you configure it?
-    private float histLow = (float) histSettingLow / histSteps; //Power pass is disabled if power is under this fraction
-    private float histHigh = (float) histSettingHigh / histSteps; //Power pass is enabled if power is over this fraction
+    public boolean powerPassToggle = false;//Power Pass for public viewing
+    private final static int histSteps = 20;//Hysteresis Resolution
+    private int histSettingLow = 3;//Hysteresis Low Limit
+    private int histSettingHigh = 15;//Hysteresis High Limit
+    private final static int histLowLimit = 1;//How low can you configure it?
+    private final static int histHighLimit = 19;//How high can you configure it?
+    private float histLow = (float) histSettingLow / histSteps;//Power pass is disabled if power is under this fraction
+    private float histHigh = (float) histSettingHigh / histSteps;//Power pass is enabled if power is over this fraction
 
     private final long outputVoltage = V[mTier];
     private boolean overdriveToggle = false;
@@ -284,7 +284,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             int transferRadiusCover = (int) (transferRadiusTower / 1.25);
 
             //Clean the teslaNodeMap
-            teslaNodeMap = cleanTeslaNodeMap(teslaNodeMap, aBaseMetaTileEntity);
+            cleanTeslaNodeMap(teslaNodeMap, aBaseMetaTileEntity);
 
             //Power transfer
             while (outputCurrent > 0) {
