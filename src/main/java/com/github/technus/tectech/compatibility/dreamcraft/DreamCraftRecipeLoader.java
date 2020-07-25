@@ -1213,7 +1213,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                     ItemList.Circuit_Wafer_UHPIC.get(64),
                     ItemList.Circuit_Wafer_SoC2.get(32),
                     ItemList.Circuit_Parts_DiodeASMD.get(64),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Neutronium, 64),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64),
             }, new FluidStack[]{
                     Materials.SolderingAlloy.getMolten(3760),
                     Materials.Naquadria.getMolten(9216),
