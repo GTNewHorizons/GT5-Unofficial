@@ -619,12 +619,15 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public long maxEUStore() {
-        return energyCapacity * 2;
+        //Setting the power here so that the tower looses all it's charge once disabled
+        //This also stops it from exploding
+        return getBaseMetaTileEntity().isActive() ? energyCapacity * 2 : 0;
     }
 
     @Override
     public long getEUVar() {
-        return getBaseMetaTileEntity().isActive() ? super.getEUVar() : 0;
+        //Same reason as maxEUStore, set to 1 instead of zero so it doesn't drain constantly
+        return getBaseMetaTileEntity().isActive() ? super.getEUVar() : 1;
     }
 
     private boolean addCapacitorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
