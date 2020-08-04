@@ -7,8 +7,7 @@ import com.github.technus.tectech.mechanics.spark.RendererMessage;
 import com.github.technus.tectech.mechanics.spark.ThaumSpark;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
-import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
-import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
+import com.github.technus.tectech.mechanics.tesla.ITeslaConnectable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
@@ -18,7 +17,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
-import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TeslaCoil;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
@@ -37,21 +35,18 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 
 import static com.github.technus.tectech.mechanics.structure.Structure.adders;
+import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.*;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsBA0;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.CommonValues.V;
-import static com.github.technus.tectech.util.Util.entriesSortedByValues;
 import static gregtech.api.enums.GT_Values.E;
 import static java.lang.Math.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable, ITeslaConnectable {
     //region variables
     private static final int transferRadiusTowerFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_TOWER;//Default is 32
     private static final int transferRadiusTransceiverFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_TRANSCEIVER;//Default is 16
@@ -76,9 +71,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     private FluidStack[] mOutputFluidsQueue; //Used to buffer the fluid outputs, so the tesla takes a second to 'cool' any plasma it would output as a gas
 
-    public static final HashSet<IGregTechTileEntity> teslaNodeSet = new HashSet<>(); //Targets for power transmission
-    private final HashSet<ThaumSpark> sparkList = new HashSet<>(); //Thaumcraft lighting coordinate pairs, so we can send them in bursts and save on lag
-    private Map<IGregTechTileEntity, Integer> teslaNodeMap = new HashMap<>(); //Targets for power transmission
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCapacitorHatches = new ArrayList<>(); //Capacitor hatches which determine the max voltage tier and count of amps
 
     private int sortTime = 0; //Scan timer used for tesla search intervals
@@ -87,6 +79,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private long outputVoltageMax = 0; //Tesla voltage output limited by capacitors
     private int vTier = -1; //Tesla voltage tier limited by capacitors
     private long outputCurrentMax = 0; //Tesla current output limited by capacitors
+
+    //outputVoltage and current after settings
+    private long outputVoltage;
+    private long outputCurrent;
 
     //Prevents unnecessary offset calculation, saving on lag
     private byte oldRotation = -1;
@@ -185,7 +181,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (value > transferRadiusTransceiverFromConfig) return STATUS_HIGH;
         if (value < transferRadiusTransceiverFromConfig) return STATUS_LOW;
         return STATUS_OK;
-    };    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_STATUS = (base, p) -> {
+    };
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_STATUS = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         value = (int) value;
@@ -262,24 +259,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         super(aName);
     }
 
-    private int getPerBlockLoss(){
-        return plasmaTierLoss[plasmaTier];
-    }
-
-    private long[] getOutputVoltage(long outputVoltage, int distance, boolean overDriveToggle) {
-        long outputVoltageInjectable;
-        long outputVoltageConsumption;
-
-        if (overDriveToggle) {
-            outputVoltageInjectable = outputVoltage;
-            outputVoltageConsumption = outputVoltage + (distance * getPerBlockLoss()) + (long) Math.round(overDriveLoss * outputVoltage);
-        } else {
-            outputVoltageInjectable = outputVoltage - (distance * getPerBlockLoss());
-            outputVoltageConsumption = outputVoltage;
-        }
-        return new long[]{outputVoltageInjectable, outputVoltageConsumption};
-    }
-
     private float getRangeMulti(int mTier, int vTier) {
         //By Default:
         //Helium and Nitrogen Plasmas will double the range
@@ -301,16 +280,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             return 1.25F * plasmaBoost;
         }
         return 1F * plasmaBoost;
-    }
-
-    private void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
-        byte xR = (byte) (node.getXCoord() - posTop.get0());
-        byte yR = (byte) (node.getYCoord() - posTop.get1());
-        byte zR = (byte) (node.getZCoord() - posTop.get2());
-
-        int wID = mte.getWorld().provider.dimensionId;
-
-        sparkList.add(new ThaumSpark(posTop.get0(), posTop.get1(), posTop.get2(), xR, yR, zR, wID));
     }
 
     private void checkPlasmaBoost() {
@@ -367,7 +336,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         Vec3Impl xyzOffsets;
         xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 1));
         mTier = iGregTechTileEntity.getMetaIDOffset(xyzOffsets.get0(), xyzOffsets.get1(), xyzOffsets.get2());
-        if (mTier == 9){mTier = 6;}//Hacky remap because the ZPM coils were added later
+        if (mTier == 9) {
+            mTier = 6;
+        }//Hacky remap because the ZPM coils were added later
 
         if (structureCheck_EM(shape, blockType, blockMetas[mTier], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 3, 16, 0) && eCapacitorHatches.size() > 0) {
             for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
@@ -480,11 +451,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public void onRemoval() {
         super.onRemoval();
-        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-        if (aBaseMetaTileEntity.isClientSide()) {
+        if (this.getBaseMetaTileEntity().isClientSide()) {
             return;
         }
-        teslaNodeSet.remove(aBaseMetaTileEntity);
+        teslaNodeSet.remove(this);
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                 cap.getBaseMetaTileEntity().setActive(false);
@@ -558,7 +528,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         energyCapacity = aNBT.getLong("eEnergyCapacity");
-        teslaNodeSet.add(this.getBaseMetaTileEntity());
+        teslaNodeSet.add(this);
     }
 
     @Override
@@ -578,112 +548,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick_EM(aBaseMetaTileEntity);
         if (!aBaseMetaTileEntity.isClientSide()) {
-            teslaNodeSet.add(aBaseMetaTileEntity);
+            teslaNodeSet.add(this);
         }
     }
-
-
-    public static Map<IGregTechTileEntity, Integer> generateTeslaNodeMap(IGregTechTileEntity orgin){
-        Map<IGregTechTileEntity, Integer> generatedNodeMap = new HashMap<>();
-        IMetaTileEntity originInside = orgin.getMetaTileEntity();
-        int originX;
-        int originY;
-        int originZ;
-        if (originInside instanceof GT_MetaTileEntity_TM_teslaCoil) {
-            GT_MetaTileEntity_TM_teslaCoil teslaTower = (GT_MetaTileEntity_TM_teslaCoil) originInside;
-            originX = teslaTower.posTop.get0();
-            originY = teslaTower.posTop.get1();
-            originZ = teslaTower.posTop.get2();
-        } else {
-            originX = orgin.getXCoord();
-            originY = orgin.getYCoord();
-            originZ = orgin.getZCoord();
-        }
-
-        for (IGregTechTileEntity node : teslaNodeSet) {
-            if (node == null) {
-                //Technically, the Tesla Covers do not remove themselves from the list and this is the code that does
-                teslaNodeSet.remove(null);
-                continue;
-            } else if (node == orgin || orgin.getWorld().provider.dimensionId != node.getWorld().provider.dimensionId) {
-                //Skip if looking at myself and skip if not in the same dimension
-                //TODO, INTERDIM?
-                continue;
-            }
-
-            //Makes the target coordinates the center of the sphere of the tower if it has one
-            IMetaTileEntity nodeInside = node.getMetaTileEntity();
-            int targetX;
-            int targetY;
-            int targetZ;
-            if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil) {
-                GT_MetaTileEntity_TM_teslaCoil teslaTower = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
-                targetX = teslaTower.posTop.get0();
-                targetY = teslaTower.posTop.get1();
-                targetZ = teslaTower.posTop.get2();
-            } else {
-                targetX = node.getXCoord();
-                targetY = node.getYCoord();
-                targetZ = node.getZCoord();
-            }
-
-            //Find the xyz offsets and calculate the distance between us and the target
-            int xPosOffset = targetX - originX;
-            int yPosOffset = targetY - originY;
-            int zPosOffset = targetZ - originZ;
-            int distance = (int) ceil(sqrt(pow(xPosOffset, 2) + pow(yPosOffset, 2) + pow(zPosOffset, 2)));
-            //Thought we need abs here, we don't. An Integer to the power of two is going to be either 0 or positive.
-            //We also can just put stuff here without further checks, as we always check the next section
-            generatedNodeMap.put(node, distance);
-        }
-        return generatedNodeMap;
-    }
-
-    public static void cleanTeslaNodeMap(Map<IGregTechTileEntity, Integer> nodeMap, IGregTechTileEntity orgin) {
-        IMetaTileEntity orginInside = orgin.getMetaTileEntity();
-        //Assumes that if the orgin is not a Tesla Tower, it mus be a single block.
-        boolean isMulti = orginInside instanceof GT_MetaTileEntity_TM_teslaCoil;
-
-        for (Map.Entry<IGregTechTileEntity, Integer> Rx : nodeMap.entrySet()) {
-            //All the checks need to pass or the target gets removed from the transmission list
-            IGregTechTileEntity node = Rx.getKey();
-            //Null check
-            if (node != null) {
-                IMetaTileEntity nodeInside = node.getMetaTileEntity();
-                //We need this in a try catch, just as a precaution that a chunk had unloaded or a machine was removed
-                try {
-                    //Is it an Active Tesla Tower with at least some energy capacity?
-                    //Singles and Multis can send power here, so we don't check
-                    if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()) {
-                        GT_MetaTileEntity_TM_teslaCoil teslaTower = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
-                        if (teslaTower.maxEUStore() > 0) {
-                            continue;
-                        }
-                        //Is it a Tesla Transceiver with at least one battery?
-                        //Only multis can send power to singles
-                    } else if (isMulti && nodeInside instanceof GT_MetaTileEntity_TeslaCoil) {
-                        GT_MetaTileEntity_TeslaCoil teslaTransceiver = (GT_MetaTileEntity_TeslaCoil) nodeInside;
-                        if (teslaTransceiver.mBatteryCount > 0) {
-                            continue;
-                        }
-                        //Is it a tile entity with a Tesla Coil Cover?
-                        //Only single can send power to non-Rich edition covers
-                        //Since Rich edition inherits from regular, we need the final check
-                    } else if (!isMulti && node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil &&
-                            node.getEUCapacity() > 0 && !(node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil_Ultimate)) {
-                        continue;
-                        //Is it a tile entity with a Tesla Coil Cover Rich edition?
-                        //Only multis can send power to Rich edition covers
-                    } else if (isMulti && node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil_Ultimate && node.getEUCapacity() > 0) {
-                        continue;
-                    }
-                } catch (Exception ignored) {
-                }
-            }
-            nodeMap.remove(Rx.getKey());
-        }
-    }
-
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
@@ -706,13 +573,12 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (sortTime == sortTimeMinSetting.get()) {
             sortTime = 0;
             sortTimeDisplay.updateStatus();
-            teslaNodeMap = generateTeslaNodeMap(mte);
+            generateTeslaNodeMap(this);
         }
         sortTime++;
         sortTimeDisplay.set(sortTime);
 
         //Power Limit Settings
-        long outputVoltage;
         if (outputVoltageSetting.get() > 0) {
             outputVoltage = min(outputVoltageMax, (long) outputVoltageSetting.get());
         } else {
@@ -720,95 +586,34 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         }
         outputVoltageDisplay.set(outputVoltage);
 
-        long outputCurrent;
         if (outputCurrentSetting.get() > 0) {
             outputCurrent = min(outputCurrentMax, (long) outputCurrentSetting.get());
         } else {
             outputCurrent = outputCurrentMax;
         }
-        outputCurrentDisplay.set(0);
 
-        //Stuff to do if ePowerPass
-        if (ePowerPass) {
-            //Range calculation and display
-            int transferRadiusTower = (int) (transferRadiusTowerSetting.get() * getRangeMulti(mTier, vTier));
-            transferRadiusTowerDisplay.set(transferRadiusTower);
-            int transferRadiusTransceiver = (int) (transferRadiusTransceiverSetting.get() * getRangeMulti(mTier, vTier));
-            transferRadiusTransceiverDisplay.set(transferRadiusTransceiver);
-            int transferRadiusCoverUltimate = (int) (transferRadiusCoverUltimateSetting.get() * getRangeMulti(mTier, vTier));
-            transferRadiusCoverUltimateDisplay.set(transferRadiusCoverUltimate);
+        //Range calculation and display
+        int transferRadiusTower = getTeslaTransmissionRange();
+        transferRadiusTowerDisplay.set(transferRadiusTower);
+        transferRadiusTransceiverDisplay.set(transferRadiusTower * 2);
+        transferRadiusCoverUltimateDisplay.set(transferRadiusTower);
 
-            //Clean the teslaNodeMap
-            cleanTeslaNodeMap(teslaNodeMap, mte);
+        //Clean the teslaNodeMap
+        cleanTeslaNodeMap(this);
 
-            //Power transfer
-            long sparks = outputCurrent;
-            while (sparks > 0) {
-                boolean overdriveToggle = overDriveSetting.get() > 0;
-                boolean idle = true;
-                for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(teslaNodeMap)) {
-                    if (getEUVar() >= (overdriveToggle ? outputVoltage * 2 : outputVoltage)) {
-                        IGregTechTileEntity node = Rx.getKey();
-                        IMetaTileEntity nodeInside = node.getMetaTileEntity();
+        //Power transfer
+        outputCurrentDisplay.set(powerTeslaNodeMap(this));
 
-                        long[] outputVoltageNow = getOutputVoltage(outputVoltage, Rx.getValue(), overdriveToggle);
-                        long outputVoltageInjectable = outputVoltageNow[0];
-                        long outputVoltageConsumption = outputVoltageNow[1];
-
-                        if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && Rx.getValue() <= transferRadiusTower) {
-                            GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
-                            if (!nodeTesla.ePowerPass) {
-                                if (nodeTesla.getEUVar() + outputVoltageInjectable <= (nodeTesla.maxEUStore() / 2)) {
-                                    setEUVar(getEUVar() - outputVoltageConsumption);
-                                    node.increaseStoredEnergyUnits(outputVoltageConsumption, true);
-                                    thaumLightning(mte, node);
-                                    sparks--;
-                                    idle = false;
-                                }
-                            }
-                        } else if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil && Rx.getValue() <= transferRadiusTransceiver) {
-                            GT_MetaTileEntity_TeslaCoil nodeTesla = (GT_MetaTileEntity_TeslaCoil) nodeInside;
-                            if (!nodeTesla.powerPassToggle) {
-                                if (node.injectEnergyUnits((byte) 6, outputVoltageInjectable, 1L) > 0L) {
-                                    setEUVar(getEUVar() - outputVoltageConsumption);
-                                    thaumLightning(mte, node);
-                                    sparks--;
-                                    idle = false;
-                                }
-                            }
-                        } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil_Ultimate) && Rx.getValue() <= transferRadiusCoverUltimate) {
-                            if (node.injectEnergyUnits((byte) 1, outputVoltageInjectable, 1L) > 0L) {
-                                setEUVar(getEUVar() - outputVoltageConsumption);
-                                thaumLightning(mte, node);
-                                sparks--;
-                                idle = false;
-                            }
-                        }
-                        if (sparks == 0) {
-                            break;
-                        }
-                    } else {
-                        idle = true;
-                        break;
-                    }
-                }
-                if (idle) {
-                    break;
-                }
-            }
-            outputCurrentDisplay.set(outputCurrent - sparks);
-            if (sortTime % 60 == 0 && !sparkList.isEmpty()) {
-                NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
-                        mte.getWorld().provider.dimensionId,
-                        posTop.get0(),
-                        posTop.get1(),
-                        posTop.get2(),
-                        256);
-            }
-            sparkList.clear();
-        } else {
-            outputCurrentDisplay.set(0);
+        if (!sparkList.isEmpty()) {
+            NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
+                    mte.getWorld().provider.dimensionId,
+                    posTop.get0(),
+                    posTop.get1(),
+                    posTop.get2(),
+                    256);
         }
+        sparkList.clear();
+
         return true;
     }
 
@@ -881,5 +686,89 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
+    }
+
+    @Override
+    public byte getTeslaReceptionCapability() {
+        return 0;
+    }
+
+    @Override
+    public float getTeslaReceptionCoefficient() {
+        return 0;
+    }
+
+    @Override
+    public byte getTeslaTransmissionCapability() {
+        return 1;
+    }
+
+    @Override
+    public int getTeslaTransmissionRange() {
+        return (int) (transferRadiusTowerSetting.get() * getRangeMulti(mTier, vTier));
+    }
+
+    @Override
+    public boolean isOverdriveEnabled() {
+        return overDriveSetting.get() > 0;
+    }
+
+    @Override
+    public int getTeslaEnergyLossPerBlock() {
+        return plasmaTierLoss[plasmaTier];
+    }
+
+    @Override
+    public float getTeslaOverdriveLossCoefficient() {
+        return overDriveLoss;
+    }
+
+    @Override
+    public long getTeslaOutputVoltage() {
+        return outputVoltage;
+    }
+
+    @Override
+    public long getTeslaOutputCurrent() {
+        return outputCurrent;
+    }
+
+    @Override
+    public boolean teslaDrainEnergy(long teslaVoltageDrained) {
+        if (getEUVar() < teslaVoltageDrained) {
+            return false;
+        }
+
+        setEUVar(getEUVar() - teslaVoltageDrained);
+        return true;
+    }
+
+    @Override
+    public boolean isTeslaReadyToReceive() {
+        return !this.ePowerPass;
+    }
+
+    @Override
+    public long getTeslaStoredEnergy() {
+        return getEUVar();
+    }
+
+    @Override
+    public Vec3Impl getTeslaPosition() {
+        return posTop;
+    }
+
+    @Override
+    public Integer getTeslaDimension() {
+        return this.getBaseMetaTileEntity().getWorld().provider.dimensionId;
+    }
+
+    @Override
+    public boolean teslaInjectEnergy(long teslaVoltageInjected) {
+        if (this.getEUVar() + teslaVoltageInjected <= (this.maxEUStore() / 2)) {
+            this.getBaseMetaTileEntity().increaseStoredEnergyUnits(teslaVoltageInjected, true);
+            return true;
+        }
+        return false;
     }
 }
