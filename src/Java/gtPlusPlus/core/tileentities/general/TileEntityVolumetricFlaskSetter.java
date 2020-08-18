@@ -340,12 +340,12 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
 	@Override
 	public boolean canInsertItem(final int aSlot, final ItemStack p_102007_2_, final int p_102007_3_) {
-		return aSlot >= 0 && aSlot <= 24;
+		return aSlot == aCurrentMode;
 	}
 
 	@Override
-	public boolean canExtractItem(final int p_102008_1_, final ItemStack p_102008_2_, final int p_102008_3_) {
-		return p_102008_1_ == 25;
+	public boolean canExtractItem(final int aSlot, final ItemStack p_102008_2_, final int p_102008_3_) {
+		return aSlot == Container_VolumetricFlaskSetter.SLOT_OUTPUT;
 	}
 
 	public String getCustomName() {

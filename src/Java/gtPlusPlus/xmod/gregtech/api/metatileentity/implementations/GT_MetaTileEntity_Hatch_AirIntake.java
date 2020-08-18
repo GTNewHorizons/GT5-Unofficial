@@ -1,6 +1,8 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraft.world.World;
 import net.minecraft.item.ItemStack;
 
@@ -196,6 +198,20 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 	public boolean canTankBeEmptied() {
 		return true;
 	}
+	
+	private static Fluid AIR;
+	
+	public boolean isAirInHatch() {		
+		if (this.mFluid != null) {
+			if (AIR == null) {
+				AIR = FluidUtils.getAir(1).getFluid();
+			}
+			if (AIR == this.mFluid.getFluid()) {
+				return true;
+			}
+		}		
+		return false;
+	}
 
 	public boolean addAirToHatch(long aTick) {		
 		if (!this.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing())) {
@@ -209,6 +225,9 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 			return false;
 		}
 		else {
+			if (!isAirInHatch()) {
+				return false;
+			}
 			if (this.mFluid != null && a1) {
 				this.mFluid.amount += 1000;
 				return true;
@@ -244,6 +263,26 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 
 	@Override
 	public boolean doesFillContainers() {
-		return true;
+		return false;
+	}
+
+	@Override
+	public int fill(FluidStack aFluid, boolean doFill) {
+		return 0;
+	}
+
+	@Override
+	public boolean canFill(ForgeDirection aSide, Fluid aFluid) {
+		return false;
+	}
+
+	@Override
+	public int fill(ForgeDirection arg0, FluidStack arg1, boolean arg2) {
+		return 0;
+	}
+
+	@Override
+	public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+		return 0;
 	}
 }

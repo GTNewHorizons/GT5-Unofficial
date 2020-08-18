@@ -79,7 +79,8 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 					}
 				}
 				if ((waterCount >= 2) && (trapCount <= 4)) {
-					this.waterSides = waterCount;
+					int aCheck = trapCount + waterCount;
+					this.waterSides = MathUtils.balance(aCheck, 0, 6);
 					Logger.MACHINE_INFO("Valid Trap. "+waterCount+" | "+(this.tickCount/20)+"/"+(this.baseTickRate/20));
 					return true;
 				}

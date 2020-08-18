@@ -59,6 +59,7 @@ public class LoadedMods {
 	public static boolean Waila = false;
 	public static boolean CropsPlusPlus = false; //Barts Crop Mod
 	public static boolean Reliquary = false;
+	public static boolean SpiceOfLife = false;
 
 
 
@@ -209,6 +210,11 @@ public class LoadedMods {
 		if (isModLoaded("Waila")){
 			Waila  = true;
 			Logger.INFO("Components enabled for: WAILA");
+			totalMods++;
+		}
+		if (isModLoaded("SpiceOfLife")){
+			SpiceOfLife  = true;
+			Logger.INFO("Components enabled for: Spice Of Life");
 			totalMods++;
 		}
 		if (isModLoaded("Mekanism")){
