@@ -23,6 +23,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sHintCasingsTT;
+import static java.lang.Integer.MIN_VALUE;
 
 public class StructureUtility {
     private static final String NICE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz=|!@#$%&()[]{};:<>/?_,.*^'`";
@@ -197,7 +198,7 @@ public class StructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block worldBlock = world.getBlock(x, y, z);
-                return blocsMap.getOrDefault(worldBlock, -1) == worldBlock.getDamageValue(world, x, y, z);
+                return blocsMap.getOrDefault(worldBlock, MIN_VALUE) == worldBlock.getDamageValue(world, x, y, z);
             }
 
             @Override
@@ -289,7 +290,7 @@ public class StructureUtility {
                 @Override
                 public boolean check(T t, World world, int x, int y, int z) {
                     Block worldBlock = world.getBlock(x, y, z);
-                    return blocsMap.getOrDefault(worldBlock, -1) == worldBlock.getDamageValue(world, x, y, z);
+                    return blocsMap.getOrDefault(worldBlock, MIN_VALUE) == worldBlock.getDamageValue(world, x, y, z);
                 }
 
                 @Override
@@ -309,7 +310,7 @@ public class StructureUtility {
                 @Override
                 public boolean check(T t, World world, int x, int y, int z) {
                     Block worldBlock = world.getBlock(x, y, z);
-                    return blocsMap.getOrDefault(worldBlock, -1) == worldBlock.getDamageValue(world, x, y, z);
+                    return blocsMap.getOrDefault(worldBlock, MIN_VALUE) == worldBlock.getDamageValue(world, x, y, z);
                 }
 
                 @Override
@@ -391,7 +392,6 @@ public class StructureUtility {
                 @Override
                 public boolean check(T t, World world, int x, int y, int z) {
                     Block worldBlock = world.getBlock(x, y, z);
-                    if (meta == -1) return block == worldBlock;
                     return block == worldBlock && meta == worldBlock.getDamageValue(world, x, y, z);
                 }
 
@@ -412,8 +412,52 @@ public class StructureUtility {
                 @Override
                 public boolean check(T t, World world, int x, int y, int z) {
                     Block worldBlock = world.getBlock(x, y, z);
-                    if (meta == -1) return block == worldBlock;
                     return block == worldBlock && meta == worldBlock.getDamageValue(world, x, y, z);
+                }
+
+                @Override
+                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                    world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
+                    return true;
+                }
+
+                @Override
+                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                    TecTech.proxy.hint_particle(world, x, y, z, defaultBlock, defaultMeta);
+                    return true;
+                }
+            };
+        }
+    }
+
+    public static <T> IStructureElement<T> ofBlockAnyMeta(Block block, Block defaultBlock, int defaultMeta) {
+        if (block == null || defaultBlock == null) {
+            throw new IllegalArgumentException();
+        }
+        if(block instanceof ICustomBlockSetting){
+            return new IStructureElement<T>() {
+                @Override
+                public boolean check(T t, World world, int x, int y, int z) {
+                    return block == world.getBlock(x, y, z);
+                }
+
+                @Override
+                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                    ((ICustomBlockSetting) defaultBlock).setBlock(world, x, y, z, defaultMeta);
+                    return true;
+                }
+
+                @Override
+                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                    TecTech.proxy.hint_particle(world, x, y, z, defaultBlock, defaultMeta);
+                    return true;
+                }
+            };
+        } else {
+            return new IStructureElement<T>() {
+                @Override
+                public boolean check(T t, World world, int x, int y, int z) {
+                    return block == world.getBlock(x, y, z);
                 }
 
                 @Override
@@ -435,8 +479,12 @@ public class StructureUtility {
         return ofBlock(block, meta, block, meta);
     }
     
-    public static <T> IStructureElement<T> ofBlock(Block block) {
-        return ofBlock(block, -1, block, 0);
+    public static <T> IStructureElement<T> ofBlockAnyMeta(Block block) {
+        return ofBlockAnyMeta(block,  block, 0);
+    }
+
+    public static <T> IStructureElement<T> ofBlockAnyMeta(Block block,int defaultMeta) {
+        return ofBlockAnyMeta(block,  block, defaultMeta);
     }
 
     //endregion
