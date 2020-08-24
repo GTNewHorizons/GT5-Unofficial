@@ -25,6 +25,11 @@ import java.util.function.Supplier;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sHintCasingsTT;
 import static java.lang.Integer.MIN_VALUE;
 
+/**
+ * Fluent API for structure checking!
+ *
+ * (Just import static this class to have a nice fluent syntax while defining structure definitions)
+ */
 public class StructureUtility {
     private static final String NICE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz=|!@#$%&()[]{};:<>/?_,.*^'`";
     @SuppressWarnings("rawtypes")
@@ -430,6 +435,9 @@ public class StructureUtility {
         }
     }
 
+    /**
+     * Same as above but ignores target meta id
+     */
     public static <T> IStructureElement<T> ofBlockAnyMeta(Block block, Block defaultBlock, int defaultMeta) {
         if (block == null || defaultBlock == null) {
             throw new IllegalArgumentException();
@@ -478,11 +486,17 @@ public class StructureUtility {
     public static <T> IStructureElement<T> ofBlock(Block block, int meta) {
         return ofBlock(block, meta, block, meta);
     }
-    
+
+    /**
+     * Same as above but ignores target meta id
+     */
     public static <T> IStructureElement<T> ofBlockAnyMeta(Block block) {
         return ofBlockAnyMeta(block,  block, 0);
     }
 
+    /**
+     * Same as above but allows to set hint particle render
+     */
     public static <T> IStructureElement<T> ofBlockAnyMeta(Block block,int defaultMeta) {
         return ofBlockAnyMeta(block,  block, defaultMeta);
     }
