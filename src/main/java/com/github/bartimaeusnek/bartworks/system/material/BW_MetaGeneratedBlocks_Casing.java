@@ -1,6 +1,6 @@
 package com.github.bartimaeusnek.bartworks.system.material;
 
-import com.github.technus.tectech.mechanics.structure.ICustomMetaBlock;
+import com.github.technus.tectech.mechanics.structure.ICustomBlockSetting;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
@@ -17,8 +17,8 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Optional;
 
-@cpw.mods.fml.common.Optional.Interface(modid = "tectech", striprefs = true, iface = "com.github.technus.tectech.mechanics.structure.ICustomMetaBlock")
-public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks implements ICustomMetaBlock {
+@cpw.mods.fml.common.Optional.Interface(modid = "tectech", striprefs = true, iface = "com.github.technus.tectech.mechanics.structure.ICustomBlockSetting")
+public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks implements ICustomBlockSetting {
 
     public BW_MetaGeneratedBlocks_Casing(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName, OrePrefixes prefixes) {
         super(p_i45386_1_, tileEntity, blockName, prefixes);
@@ -51,16 +51,12 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
 
     @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
-        }
+        GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
     }
 
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
-        }
+        GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
     }
 
     @Override
@@ -89,12 +85,7 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
     @SuppressWarnings("unchecked")
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
         Werkstoff.werkstoffHashSet.stream()
-                .filter(pMaterial ->
-                        pMaterial != null
-                        && (
-                                pMaterial.hasItemType(OrePrefixes.plate) && pMaterial.hasItemType(OrePrefixes.screw) && pMaterial.hasItemType(OrePrefixes.plateDouble)
-                        )
-                )
+                .filter(pMaterial -> (pMaterial.hasItemType(WerkstoffLoader.blockCasing)))
                 .map(pMaterial -> new ItemStack(aItem, 1, pMaterial.getmID()))
                 .forEach(aList::add);
     }

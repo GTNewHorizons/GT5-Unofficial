@@ -34,6 +34,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("ALL")
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
@@ -73,6 +74,41 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public static void init() {
         Werkstoff.default_null_Werkstoff = new Werkstoff(new short[3], "_NULL", "Default null Werkstoff", Werkstoff.DEFAULT_NULL_STATS, Werkstoff.Types.UNDEFINED, Werkstoff.DEFAULT_NULL_GENERATION_FEATURES, -1, TextureSet.SET_NONE);
+    }
+
+    public Werkstoff(Materials materials, Werkstoff.GenerationFeatures generationFeatures, Types type, int mID){
+        this(   materials.mRGBa,
+                materials.getToolTip(),
+                materials.mDefaultLocalName,
+                type == null ? materials.mElement != null ? Types.ELEMENT : Types.UNDEFINED : type,
+                generationFeatures,
+                mID,
+                materials.mIconSet,
+                (List) materials.mOreByProducts,
+                materials.mMaterialList
+                        .stream()
+                        .map(ml -> new Pair<ISubTagContainer, Integer>(ml.mMaterial, (int) ml.mAmount))
+                        .collect(Collectors.toList())
+                        .<Pair<ISubTagContainer, Integer>>toArray(new Pair[0])
+        );
+        this.stats.mass = materials.getMass();
+        this.stats.protons = materials.getProtons();
+        this.stats.meltingPoint = materials.mMeltingPoint;
+        this.stats.neutrons = materials.getNeutrons();
+        this.stats.speedOverride = materials.mToolSpeed;
+        this.stats.durOverride = materials.mDurability;
+        this.stats.qualityOverride = materials.mToolQuality;
+        this.stats.setGas(materials.mHasGas);
+        this.stats.setRadioactive(materials.isRadioactive());
+        this.stats.setBlastFurnace(materials.mBlastFurnaceRequired);
+        if (type == Types.COMPOUND){
+            this.stats.setElektrolysis(type == Types.COMPOUND);
+            this.generationFeatures.addChemicalRecipes();
+        }
+        else if (type == Types.MIXTURE) {
+            this.stats.setCentrifuge(type == Types.MIXTURE);
+            this.generationFeatures.addMixerRecipes();
+        }
     }
 
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingpoint, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, Pair<ISubTagContainer, Integer>... contents) {

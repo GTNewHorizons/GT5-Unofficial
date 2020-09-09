@@ -78,7 +78,7 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.superscriptNumbers;
 import static gregtech.api.enums.OrePrefixes.*;
 
-@SuppressWarnings({"unchecked", "unused", "deprecation"})
+@SuppressWarnings({"unchecked", "deprecation"})
 public class WerkstoffLoader {
     private WerkstoffLoader() {
     }
@@ -148,7 +148,7 @@ public class WerkstoffLoader {
         Element t = EnumUtils.createNewElement("Tr", 123L, 203L, 0L, -1L, null, "Tiberium", false);
         blockCasing = EnumUtils.addNewOrePrefix("blockCasing",
                 "A Casing block for a Multiblock-Machine",
-                "", " Casing",
+                "Bolted ", " Casing",
                 true,
                 true,
                 true,
@@ -165,7 +165,7 @@ public class WerkstoffLoader {
                 -1);
         blockCasingAdvanced = EnumUtils.addNewOrePrefix("blockCasingAdvanced",
                 "An Advanced Casing block for a Multiblock-Machine",
-                "Advanced ", " Casing",
+                "Rebolted ", " Casing",
                 true,
                 true,
                 true,
@@ -1740,6 +1740,7 @@ public class WerkstoffLoader {
         GameRegistry.registerBlock(WerkstoffLoader.BWBlockCasings, BW_MetaGeneratedBlock_Item.class, "bw.werkstoffblockscasing.01");
         GameRegistry.registerBlock(WerkstoffLoader.BWBlockCasingsAdvanced, BW_MetaGeneratedBlock_Item.class, "bw.werkstoffblockscasingadvanced.01");
 
+        GTMetaItemEnhancer.addAdditionalOreDictToForestry();
         GTMetaItemEnhancer.init();
     }
 

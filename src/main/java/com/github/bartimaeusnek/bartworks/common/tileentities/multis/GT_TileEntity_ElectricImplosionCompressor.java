@@ -43,7 +43,7 @@ import static com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry.BW_
 public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity_ImplosionCompressor {
 
     public static GT_Recipe.GT_Recipe_Map eicMap;
-    private boolean piston;
+    private Boolean piston = null;
 
     public GT_TileEntity_ElectricImplosionCompressor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -109,7 +109,8 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        this.piston = true;
+        if (this.piston == null)
+            this.piston = true;
     }
 
     private void resetPiston() {
@@ -148,8 +149,6 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
                     }
                 }
             }
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
-            this.piston = !this.piston;
         } else {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
@@ -157,9 +156,9 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
                         this.getBaseMetaTileEntity().getWorld().setBlock(xDir + aX + x, aY + 2, zDir + aZ + z, GregTech_API.sBlockMetal5, 2, 3);
                 }
             }
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
-            this.piston = !this.piston;
         }
+        GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
+        this.piston = !this.piston;
         if (hax)
             this.explodeMultiblock();
     }
