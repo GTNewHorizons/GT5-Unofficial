@@ -22,6 +22,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.mechanics.structure.StructureIterationType.SPAWN_HINTS;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sHintCasingsTT;
 import static java.lang.Integer.MIN_VALUE;
 
@@ -1374,6 +1376,134 @@ public class StructureUtility {
                 nextC.run();
             }
         }
+    }
+
+    public static <T> boolean iterate(T object,
+                                      ItemStack trigger,
+                                      IStructureElement<T>[] elements,
+                                      World world,
+                                      ExtendedFacing extendedFacing,
+                                      int basePositionX, int basePositionY, int basePositionZ,
+                                      int basePositionA, int basePositionB, int basePositionC,
+                                      StructureIterationType iterationType) {
+        if (world.isRemote ^ (iterationType == SPAWN_HINTS)) {
+            return false;
+        }
+
+        //change base position to base offset
+        basePositionA = -basePositionA;
+        basePositionB = -basePositionB;
+        basePositionC = -basePositionC;
+
+        int[] abc = new int[]{basePositionA, basePositionB, basePositionC};
+        int[] xyz = new int[3];
+
+        switch (iterationType) {
+            case SPAWN_HINTS: {
+                for (IStructureElement<T> element : elements) {
+                    if (element.isNavigating()) {
+                        abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
+                        abc[1] = (element.resetB() ? basePositionB : abc[1]) + element.getStepB();
+                        abc[2] = (element.resetC() ? basePositionC : abc[2]) + element.getStepC();
+                    } else {
+                        extendedFacing.getWorldOffset(abc, xyz);
+                        xyz[0] += basePositionX;
+                        xyz[1] += basePositionY;
+                        xyz[2] += basePositionZ;
+
+                        element.spawnHint(object, world, xyz[0], xyz[1], xyz[2], trigger);
+
+                        abc[0] += 1;
+                    }
+                }
+                break;
+            }
+            case BUILD_TEMPLATE: {
+                for (IStructureElement<T> element : elements) {
+                    if (element.isNavigating()) {
+                        abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
+                        abc[1] = (element.resetB() ? basePositionB : abc[1]) + element.getStepB();
+                        abc[2] = (element.resetC() ? basePositionC : abc[2]) + element.getStepC();
+                    } else {
+                        extendedFacing.getWorldOffset(abc, xyz);
+                        xyz[0] += basePositionX;
+                        xyz[1] += basePositionY;
+                        xyz[2] += basePositionZ;
+
+                        if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
+                            element.placeBlock(object, world, xyz[0], xyz[1], xyz[2], trigger);
+                        }
+                        abc[0] += 1;
+                    }
+                }
+                break;
+            }
+            case CHECK: {
+                for (IStructureElement<T> element : elements) {
+                    if (element.isNavigating()) {
+                        abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
+                        abc[1] = (element.resetB() ? basePositionB : abc[1]) + element.getStepB();
+                        abc[2] = (element.resetC() ? basePositionC : abc[2]) + element.getStepC();
+                    } else {
+                        extendedFacing.getWorldOffset(abc, xyz);
+                        xyz[0] += basePositionX;
+                        xyz[1] += basePositionY;
+                        xyz[2] += basePositionZ;
+
+                        if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
+                            if (!element.check(object, world, xyz[0], xyz[1], xyz[2])) {
+                                if (DEBUG_MODE) {
+                                    TecTech.LOGGER.info("Multi [" + basePositionX + ", " + basePositionY + ", " + basePositionZ + "] failed @ " +
+                                            Arrays.toString(xyz) + " " + Arrays.toString(abc));
+                                }
+                                return false;
+                            }
+                        } else {
+                            if (DEBUG_MODE) {
+                                TecTech.LOGGER.info("Multi [" + basePositionX + ", " + basePositionY + ", " + basePositionZ + "] !blockExists @ " +
+                                        Arrays.toString(xyz) + " " + Arrays.toString(abc));
+                            }
+                        }
+                        abc[0] += 1;
+                    }
+                    break;
+                }
+            }
+            case CHECK_FULLY: {
+                for (IStructureElement<T> element : elements) {
+                    if (element.isNavigating()) {
+                        abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
+                        abc[1] = (element.resetB() ? basePositionB : abc[1]) + element.getStepB();
+                        abc[2] = (element.resetC() ? basePositionC : abc[2]) + element.getStepC();
+                    } else {
+                        extendedFacing.getWorldOffset(abc, xyz);
+                        xyz[0] += basePositionX;
+                        xyz[1] += basePositionY;
+                        xyz[2] += basePositionZ;
+
+                        if (world.blockExists(xyz[0], xyz[1], xyz[2])) {
+                            if (!element.check(object, world, xyz[0], xyz[1], xyz[2])) {
+                                if (DEBUG_MODE) {
+                                    TecTech.LOGGER.info("Multi [" + basePositionX + ", " + basePositionY + ", " + basePositionZ + "] failed @ " +
+                                            Arrays.toString(xyz) + " " + Arrays.toString(abc));
+                                }
+                                return false;
+                            }
+                        } else {
+                            if (DEBUG_MODE) {
+                                TecTech.LOGGER.info("Multi [" + basePositionX + ", " + basePositionY + ", " + basePositionZ + "] !blockExists @ " +
+                                        Arrays.toString(xyz) + " " + Arrays.toString(abc));
+                            }
+                            return false;
+                        }
+                        abc[0] += 1;
+                    }
+                }
+                break;
+            }
+            default: return false;
+        }
+        return true;
     }
 
     /**
