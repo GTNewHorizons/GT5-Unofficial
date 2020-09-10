@@ -26,7 +26,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  */
 public final class dComplexAspectDefinition extends cElementalDefinition implements iElementalAspect {
     private final int hash;
-    public final float mass;
+    public final double mass;
 
     private static final byte nbtType = (byte) 'c';
 
@@ -73,6 +73,9 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
         for (cElementalDefinitionStack aspects : stacks.values()) {
             if (!(aspects.definition instanceof dComplexAspectDefinition) && !(aspects.definition instanceof ePrimalAspectDefinition)) {
                 return false;
+            }
+            if((int)aspects.amount!=aspects.amount){
+                throw new ArithmeticException("Amount cannot be safely converted to int!");
             }
             amount += aspects.amount;
         }
@@ -160,7 +163,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
-    public float getRawTimeSpan(long currentEnergy) {
+    public double getRawTimeSpan(long currentEnergy) {
         return -1;
     }
 
@@ -195,7 +198,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
-    public float getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
+    public double getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
         return iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT * (newEnergyLevel - currentEnergyLevel);
     }
 
@@ -230,7 +233,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
-    public float getMass() {
+    public double getMass() {
         return mass;
     }
 

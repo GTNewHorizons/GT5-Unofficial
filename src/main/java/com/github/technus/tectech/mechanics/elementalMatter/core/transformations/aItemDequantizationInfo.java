@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by Tec on 23.05.2017.
  */
-public class aItemDequantizationInfo implements iExchangeInfo {
+public class aItemDequantizationInfo implements iExchangeInfo<iHasElementalDefinition,ItemStack> {
     private final iHasElementalDefinition in;
     private final ItemStack out;
 

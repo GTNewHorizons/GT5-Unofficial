@@ -14,9 +14,9 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInsta
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.Structure;
+import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.Util;
@@ -49,7 +49,9 @@ import java.util.ArrayList;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.util.CommonValues.*;
+import static com.github.technus.tectech.util.DoubleCount.div;
 import static com.github.technus.tectech.util.Util.getTier;
+import static java.lang.Math.min;
 
 /**
  * Created by danie_000 on 27.10.2016.
@@ -1374,12 +1376,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                             if (voider.overflowMax < voider.getOverflowMatter()) {
                                 continue;
                             }
-                            float remaining = voider.overflowMax - voider.getOverflowMatter();
+                            double remaining = voider.overflowMax - voider.getOverflowMatter();
                             for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
                                 for (cElementalInstanceStack instance : in.getContainerHandler().values()) {
-                                    long qty = (long) Math.floor(remaining / instance.definition.getMass());
+                                    double qty = div(remaining,instance.definition.getMass());
                                     if (qty > 0) {
-                                        qty = Math.min(qty, instance.amount);
+                                        qty = min(qty, instance.amount);
                                         if (voider.addOverflowMatter(instance.definition.getMass() * qty)) {
                                             voider.setOverflowMatter(voider.overflowMax);
                                         }
@@ -1389,9 +1391,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                             }
                             for (GT_MetaTileEntity_Hatch_OutputElemental out : eOutputHatches) {
                                 for (cElementalInstanceStack instance : out.getContainerHandler().values()) {
-                                    long qty = (long) Math.floor(remaining / instance.definition.getMass());
+                                    double qty = div(remaining,instance.definition.getMass());
                                     if (qty > 0) {
-                                        qty = Math.min(qty, instance.amount);
+                                        qty = min(qty, instance.amount);
                                         if (voider.addOverflowMatter(instance.definition.getMass() * qty)) {
                                             voider.setOverflowMatter(voider.overflowMax);
                                         }
@@ -1496,7 +1498,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     mEfficiencyIncrease = 0;
                                     if (aBaseMetaTileEntity.isAllowedToWork()) {
                                         if (checkRecipe(mInventory[1])) {
-                                            mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - (getIdealStatus() - getRepairStatus()) * 1000));
+                                            mEfficiency = Math.max(0, min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - (getIdealStatus() - getRepairStatus()) * 1000));
                                         } else {
                                             afterRecipeCheckFailed();
                                         }
@@ -1511,7 +1513,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         } else if (RECIPE_AT == Tick || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
                                 if (checkRecipe(mInventory[1])) {
-                                    mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - (getIdealStatus() - getRepairStatus()) * 1000));
+                                    mEfficiency = Math.max(0, min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - (getIdealStatus() - getRepairStatus()) * 1000));
                                 } else {
                                     afterRecipeCheckFailed();
                                 }
@@ -1684,7 +1686,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 }
             }
         }
-        setEUVar(Math.min(getEUVar() + euVar, maxEUStore()));
+        setEUVar(min(getEUVar() + euVar, maxEUStore()));
         return false;
     }
 
@@ -1863,7 +1865,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         cleanMassEM_EM(target.getMass());
     }
 
-    public void cleanMassEM_EM(float mass) {
+    public void cleanMassEM_EM(double mass) {
         if (mass > 0) {
             if (eMufflerHatches.size() < 1) {
                 TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(), mass);

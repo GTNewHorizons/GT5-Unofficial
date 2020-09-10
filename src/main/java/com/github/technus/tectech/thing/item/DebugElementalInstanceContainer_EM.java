@@ -31,6 +31,8 @@ import java.util.TreeSet;
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_144;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -140,10 +142,10 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         ItemStack that = new ItemStack(this, 1);
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
-        for(iElementalDefinition defintion: STACKS_REGISTERED){
-            list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+1),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,1))));
-            list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+144),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,144))));
-            list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+1000),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,1000))));
+        for(iElementalDefinition definition: STACKS_REGISTERED){
+            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getName()+" 1 mol"),new cElementalInstanceStackMap(new cElementalInstanceStack(definition, AVOGADRO_CONSTANT))));
+            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getName()+" 144 mol"),new cElementalInstanceStackMap(new cElementalInstanceStack(definition, AVOGADRO_CONSTANT_144))));
+            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getName()+" 1000 mol"),new cElementalInstanceStackMap(new cElementalInstanceStack(definition, AVOGADRO_CONSTANT *1000))));
         }
     }
 

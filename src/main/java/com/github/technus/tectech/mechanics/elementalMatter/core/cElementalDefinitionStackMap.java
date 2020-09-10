@@ -13,7 +13,7 @@ import static com.github.technus.tectech.mechanics.elementalMatter.definitions.p
  */
 public final class cElementalDefinitionStackMap/*IMMUTABLE*/ extends cElementalStackMap {//Target class for construction of definitions/recipes
     //Constructors + Clone, all make a whole new OBJ.
-    public static final cElementalDefinitionStackMap empty = new cElementalDefinitionStackMap();
+    public static final cElementalDefinitionStackMap EMPTY = new cElementalDefinitionStackMap();
 
     private cElementalDefinitionStackMap() {
         map = new TreeMap<>();

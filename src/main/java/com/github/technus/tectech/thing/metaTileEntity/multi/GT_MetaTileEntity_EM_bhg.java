@@ -35,6 +35,7 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
+    //todo CHECK VALUES
     private static final double NEUTRONIUM_BLOCK_MASS = 4.1E17;
     private static final double NEUTRONIUM_BLOCK_ATOM_COUNT = 2.4478671E44;
     private static final double NEUTRONIUM_BLOCK_TO_EU_INSTANT = URANIUM_MASS_TO_EU_INSTANT * NEUTRONIUM_BLOCK_MASS / (URANIUM_INGOT_MASS_DIFF * 1.78266191e-36);//~ 5.314e40

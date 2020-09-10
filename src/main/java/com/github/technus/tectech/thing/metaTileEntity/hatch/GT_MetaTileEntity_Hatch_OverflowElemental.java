@@ -44,13 +44,13 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     public static Textures.BlockIcons.CustomIcon MufflerEM;
     public static Textures.BlockIcons.CustomIcon MufflerEMidle;
-    private float overflowMatter;
-    public final float overflowMax;
-    private final float overflowDisperse;
+    private double overflowMatter;
+    public final double overflowMax;
+    private final double overflowDisperse;
 
     private String clientLocale = "en_US";
 
-    public GT_MetaTileEntity_Hatch_OverflowElemental(int aID, String aName, String aNameRegional, int aTier, float max) {
+    public GT_MetaTileEntity_Hatch_OverflowElemental(int aID, String aName, String aNameRegional, int aTier, double max) {
         super(aID, aName, aNameRegional, aTier, 0, translateToLocal("gt.blockmachines.hatch.emmuffler.desc.0"));//Disposes excess elemental Matter
         overflowMatter = max / 2;
         overflowMax = max;
@@ -58,7 +58,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         Util.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_OverflowElemental(String aName, int aTier, float max, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_OverflowElemental(String aName, int aTier, double max, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         overflowMatter = max / 2;
         overflowMax = max;
@@ -124,13 +124,13 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setFloat("overflowMatter", overflowMatter);
+        aNBT.setDouble("OverflowMatter", overflowMatter);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        overflowMatter = aNBT.getFloat("overflowMatter");
+        overflowMatter = aNBT.getFloat("overflowMatter")+aNBT.getDouble("OverflowMatter");
     }
 
     @Override
@@ -235,17 +235,17 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     }
 
     //Return - Should Explode
-    public boolean addOverflowMatter(float matter) {
+    public boolean addOverflowMatter(double matter) {
         overflowMatter += matter;
         return overflowMatter > overflowMax;
     }
 
-    public float getOverflowMatter() {
+    public double getOverflowMatter() {
         return overflowMatter;
     }
 
     //Return - Should Explode
-    public boolean setOverflowMatter(float overflowMatter) {
+    public boolean setOverflowMatter(double overflowMatter) {
         this.overflowMatter = overflowMatter;
         return overflowMatter > overflowMax;
     }

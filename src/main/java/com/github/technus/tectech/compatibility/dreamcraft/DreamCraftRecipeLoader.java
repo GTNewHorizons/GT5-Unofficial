@@ -1186,6 +1186,26 @@ public class DreamCraftRecipeLoader implements Runnable {
                             Materials.Concrete.getMolten(73728L)
                     },
                     getItemContainer("StargateFramePart").get(1L), 72000, 2000000);
+            //Deep Dark Portal
+            TT_recipeAdder.addResearchableAssemblylineRecipe(GT_ModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 1, 0),
+                    16777216, 2048, 2000000, 64, new Object[]{
+                    GT_ModHandler.getModItem("ExtraUtilities", "cobblestone_compressed", 1, 7),
+                    GT_ModHandler.getModItem("IC2", "blockMachine2", 1, 0),
+                    GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 4L),
+                    new Object[]{OrePrefixes.circuit.get(Materials.Nano), 1},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Nano), 1},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Nano), 1},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Nano), 1},
+                    GT_ModHandler.getModItem("dreamcraft", "item.PicoWafer", 32, 0),
+                    ItemList.Robot_Arm_UEV.get(4),
+                    ItemList.Emitter_UEV.get(4),
+                    ItemList.Sensor_UEV.get(4),
+            }, new FluidStack[]{
+                    new FluidStack(FluidRegistry.getFluid("oganesson"), 50000),
+                    Materials.Infinity.getMolten(9216L),
+                    Materials.Cheese.getMolten(232000L),
+            }, ItemList.Block_BedrockiumCompressed.get(1), 10000, 5000000);
+
 
             //Batteries
             TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Energy_Cluster.get(1L), 12000, 16, 100000, 3, new Object[]{
@@ -1218,7 +1238,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                     ItemList.Circuit_Wafer_UHPIC.get(64),
                     ItemList.Circuit_Wafer_SoC2.get(32),
                     ItemList.Circuit_Parts_DiodeASMD.get(64),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Neutronium, 64),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64),
             }, new FluidStack[]{
                     Materials.SolderingAlloy.getMolten(3760),
                     Materials.Naquadria.getMolten(9216),

@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.TreeMap;
 
+import static com.github.technus.tectech.util.DoubleCount.add;
+
 /**
  * Created by Tec on 12.05.2017.
  */
@@ -65,10 +67,10 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
         return var.toArray(new iElementalDefinition[0]);
     }
 
-    public long getCountOfAllAmounts(){
-        long sum=0;
+    public double getCountOfAllAmounts(){
+        double sum=0;
         for(cElementalDefinitionStack stack:map.values()){
-            sum+=stack.amount;
+            sum= add(sum,stack.amount);
         }
         return sum;
     }
