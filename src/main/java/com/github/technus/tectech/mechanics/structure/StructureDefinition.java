@@ -7,31 +7,31 @@ import java.util.*;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
-public class StructureDefinition<T> implements IStructureDefinition<T> {
-    private final Map<Character, IStructureElement<T>> elements;
+public class StructureDefinition<MultiBlock> implements IStructureDefinition<MultiBlock> {
+    private final Map<Character, IStructureElement<MultiBlock>> elements;
     private final Map<String, String> shapes;
-    private final Map<String, IStructureElement<T>[]> structures;
+    private final Map<String, IStructureElement<MultiBlock>[]> structures;
 
-    public static <B> Builder<B> builder() {
+    public static <MultiBlock> Builder<MultiBlock> builder() {
         return new Builder<>();
     }
 
     private StructureDefinition(
-            Map<Character, IStructureElement<T>> elements,
+            Map<Character, IStructureElement<MultiBlock>> elements,
             Map<String, String> shapes,
-            Map<String, IStructureElement<T>[]> structures) {
+            Map<String, IStructureElement<MultiBlock>[]> structures) {
         this.elements =elements;
         this.shapes=shapes;
         this.structures = structures;
     }
 
-    public static class Builder<T> {
+    public static class Builder<MultiBlock> {
         private static final char A='\uA000';
         private static final char B='\uB000';
         private static final char C='\uC000';
         private char d ='\uD000';
         private final Map<Vec3Impl,Character> navigates;
-        private final Map<Character, IStructureElement<T>> elements;
+        private final Map<Character, IStructureElement<MultiBlock>> elements;
         private final Map<String, String> shapes;
 
         private Builder() {
@@ -40,7 +40,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
             shapes = new HashMap<>();
         }
 
-        public Map<Character, IStructureElement<T>> getElements() {
+        public Map<Character, IStructureElement<MultiBlock>> getElements() {
             return elements;
         }
 
@@ -57,7 +57,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
          * @return
          */
         @Deprecated
-        public Builder<T> addShapeOldApi(String name, String[][] structurePiece) {
+        public Builder<MultiBlock> addShapeOldApi(String name, String[][] structurePiece) {
             StringBuilder builder = new StringBuilder();
             if (structurePiece.length > 0) {
                 for (String[] strings : structurePiece) {
@@ -142,7 +142,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
          * @param structurePiece generated or written struct - DO NOT STORE IT ANYWHERE, or at least set them to null afterwards
          * @return this builder
          */
-        public Builder<T> addShape(String name, String[][] structurePiece) {
+        public Builder<MultiBlock> addShape(String name, String[][] structurePiece) {
             StringBuilder builder = new StringBuilder();
             if (structurePiece.length > 0) {
                 for (String[] strings : structurePiece) {
@@ -199,13 +199,13 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
             return this;
         }
 
-        public Builder<T> addElement(Character name, IStructureElement<T> structurePiece) {
+        public Builder<MultiBlock> addElement(Character name, IStructureElement<MultiBlock> structurePiece) {
             elements.putIfAbsent(name, structurePiece);
             return this;
         }
 
-        public IStructureDefinition<T> build() {
-            Map<String, IStructureElement<T>[]> structures = compileStructureMap();
+        public IStructureDefinition<MultiBlock> build() {
+            Map<String, IStructureElement<MultiBlock>[]> structures = compileStructureMap();
             if(DEBUG_MODE){
                 return new StructureDefinition<>(new HashMap<>(elements), new HashMap<>(shapes), structures);
             }else {
@@ -214,22 +214,22 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
         }
 
         @SuppressWarnings("unchecked")
-        private Map<String, IStructureElement<T>[]> compileElementSetMap() {
+        private Map<String, IStructureElement<MultiBlock>[]> compileElementSetMap() {
             Set<Integer> missing = new HashSet<>();
             shapes.values().stream().map(CharSequence::chars).forEach(intStream -> intStream.forEach(c -> {
-                IStructureElement<T> iStructureElement = elements.get((char) c);
+                IStructureElement<MultiBlock> iStructureElement = elements.get((char) c);
                 if (iStructureElement == null) {
                     missing.add(c);
                 }
             }));
             if (missing.isEmpty()) {
-                Map<String, IStructureElement<T>[]> map = new HashMap<>();
+                Map<String, IStructureElement<MultiBlock>[]> map = new HashMap<>();
                 shapes.forEach((key, value) -> {
                     Set<Character> chars=new HashSet<>();
                     for (char c : value.toCharArray()) {
                         chars.add(c);
                     }
-                    IStructureElement<T>[] compiled = new IStructureElement[chars.size()];
+                    IStructureElement<MultiBlock>[] compiled = new IStructureElement[chars.size()];
                     int i=0;
                     for (Character aChar : chars) {
                         compiled[i++]=elements.get(aChar);
@@ -244,18 +244,18 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
         }
 
         @SuppressWarnings("unchecked")
-        private Map<String, IStructureElement<T>[]> compileStructureMap() {
+        private Map<String, IStructureElement<MultiBlock>[]> compileStructureMap() {
             Set<Integer> mising = new HashSet<>();
             shapes.values().stream().map(CharSequence::chars).forEach(intStream -> intStream.forEach(c -> {
-                IStructureElement<T> iStructureElement = elements.get((char) c);
+                IStructureElement<MultiBlock> iStructureElement = elements.get((char) c);
                 if (iStructureElement == null) {
                     mising.add(c);
                 }
             }));
             if (mising.isEmpty()) {
-                Map<String, IStructureElement<T>[]> map = new HashMap<>();
+                Map<String, IStructureElement<MultiBlock>[]> map = new HashMap<>();
                 shapes.forEach((key, value) -> {
-                    IStructureElement<T>[] compiled = new IStructureElement[value.length()];
+                    IStructureElement<MultiBlock>[] compiled = new IStructureElement[value.length()];
                     for (int i = 0; i < value.length(); i++) {
                         compiled[i] = elements.get(value.charAt(i));
                     }
@@ -269,7 +269,7 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
         }
     }
 
-    public Map<Character, IStructureElement<T>> getElements(){
+    public Map<Character, IStructureElement<MultiBlock>> getElements(){
         return elements;
     }
 
@@ -277,12 +277,12 @@ public class StructureDefinition<T> implements IStructureDefinition<T> {
         return shapes;
     }
 
-    public Map<String, IStructureElement<T>[]> getStructures() {
+    public Map<String, IStructureElement<MultiBlock>[]> getStructures() {
         return structures;
     }
 
     @Override
-    public IStructureElement<T>[] getStructureFor(String name) {
+    public IStructureElement<MultiBlock>[] getStructureFor(String name) {
         return structures.get(name);
     }
 }
