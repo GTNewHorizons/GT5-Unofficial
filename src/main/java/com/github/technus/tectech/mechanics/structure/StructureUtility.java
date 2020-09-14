@@ -39,18 +39,18 @@ public class StructureUtility {
     @SuppressWarnings("rawtypes")
     private static final IStructureElement AIR = new IStructureElement() {
         @Override
-        public boolean check(Object t, World world, int x, int y, int z) {
+        public boolean check(Object multiBlock, World world, int x, int y, int z) {
             return world.getBlock(x, y, z).getMaterial() == Material.air;
         }
 
         @Override
-        public boolean spawnHint(Object o, World world, int x, int y, int z, ItemStack trigger) {
+        public boolean spawnHint(Object multiBlock, World world, int x, int y, int z, ItemStack trigger) {
             TecTech.proxy.hint_particle(world, x, y, z, sHintCasingsTT, 13);
             return true;
         }
 
         @Override
-        public boolean placeBlock(Object o, World world, int x, int y, int z, ItemStack trigger) {
+        public boolean placeBlock(Object multiBlock, World world, int x, int y, int z, ItemStack trigger) {
             world.setBlock(x, y, z, Blocks.air, 0, 2);
             return false;
         }
@@ -58,18 +58,18 @@ public class StructureUtility {
     @SuppressWarnings("rawtypes")
     private static final IStructureElement NOT_AIR = new IStructureElement() {
         @Override
-        public boolean check(Object t, World world, int x, int y, int z) {
+        public boolean check(Object multiBlock, World world, int x, int y, int z) {
             return world.getBlock(x, y, z).getMaterial() != Material.air;
         }
 
         @Override
-        public boolean spawnHint(Object o, World world, int x, int y, int z, ItemStack trigger) {
+        public boolean spawnHint(Object multiBlock, World world, int x, int y, int z, ItemStack trigger) {
             TecTech.proxy.hint_particle(world, x, y, z, sHintCasingsTT, 14);
             return true;
         }
 
         @Override
-        public boolean placeBlock(Object o, World world, int x, int y, int z, ItemStack trigger) {
+        public boolean placeBlock(Object multiBlock, World world, int x, int y, int z, ItemStack trigger) {
             world.setBlock(x, y, z, sHintCasingsTT, 14, 2);
             return true;
         }
@@ -77,18 +77,18 @@ public class StructureUtility {
     @SuppressWarnings("rawtypes")
     private static final IStructureElement ERROR = new IStructureElement() {
         @Override
-        public boolean check(Object t, World world, int x, int y, int z) {
+        public boolean check(Object multiBlock, World world, int x, int y, int z) {
             return false;
         }
 
         @Override
-        public boolean spawnHint(Object o, World world, int x, int y, int z, ItemStack trigger) {
+        public boolean spawnHint(Object multiBlock, World world, int x, int y, int z, ItemStack trigger) {
             TecTech.proxy.hint_particle(world, x, y, z, sHintCasingsTT, 15);
             return true;
         }
 
         @Override
-        public boolean placeBlock(Object o, World world, int x, int y, int z, ItemStack trigger) {
+        public boolean placeBlock(Object multiBlock, World world, int x, int y, int z, ItemStack trigger) {
             return true;
         }
     };
@@ -98,12 +98,12 @@ public class StructureUtility {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> IStructureElement<T> isAir() {
+    public static <MultiBlock> IStructureElement<MultiBlock> isAir() {
         return AIR;
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> IStructureElement<T> notAir() {
+    public static <MultiBlock> IStructureElement<MultiBlock> notAir() {
         return NOT_AIR;
     }
 
@@ -112,11 +112,11 @@ public class StructureUtility {
      * Placement is always handled by this and does nothing.
      * Makes little to no use it in  fallback chain.
      *
-     * @param <T>
+     * @param <MultiBlock>
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> IStructureElement<T> error() {
+    public static <MultiBlock> IStructureElement<MultiBlock> error() {
         return ERROR;
     }
 
@@ -126,19 +126,19 @@ public class StructureUtility {
      * Check always returns: true.
      *
      * @param dots
-     * @param <T>
+     * @param <MultiBlock>
      * @return
      */
-    public static <T> IStructureElementNoPlacement<T> ofHint(int dots) {
+    public static <MultiBlock> IStructureElementNoPlacement<MultiBlock> ofHint(int dots) {
         int meta = dots - 1;
-        return new IStructureElementNoPlacement<T>() {
+        return new IStructureElementNoPlacement<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                 return true;
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                 TecTech.proxy.hint_particle(world, x, y, z, sHintCasingsTT, meta);
                 return false;
             }
@@ -149,18 +149,18 @@ public class StructureUtility {
      * Check always returns: true.
      *
      * @param icons
-     * @param <T>
+     * @param <MultiBlock>
      * @return
      */
-    public static <T> IStructureElementNoPlacement<T> ofHintDeferred(Supplier<IIcon[]> icons) {
-        return new IStructureElementNoPlacement<T>() {
+    public static <MultiBlock> IStructureElementNoPlacement<MultiBlock> ofHintDeferred(Supplier<IIcon[]> icons) {
+        return new IStructureElementNoPlacement<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                 return true;
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                 TecTech.proxy.hint_particle(world, x, y, z, icons.get());
                 return false;
             }
@@ -172,18 +172,18 @@ public class StructureUtility {
      *
      * @param icons
      * @param RGBa
-     * @param <T>
+     * @param <MultiBlock>
      * @return
      */
-    public static <T> IStructureElementNoPlacement<T> ofHintDeferred(Supplier<IIcon[]> icons, short[] RGBa) {
-        return new IStructureElementNoPlacement<T>() {
+    public static <MultiBlock> IStructureElementNoPlacement<MultiBlock> ofHintDeferred(Supplier<IIcon[]> icons, short[] RGBa) {
+        return new IStructureElementNoPlacement<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                 return true;
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                 TecTech.proxy.hint_particle_tinted(world, x, y, z, icons.get(), RGBa);
                 return false;
             }
@@ -197,19 +197,19 @@ public class StructureUtility {
     /**
      * Does not allow Block duplicates (with different meta)
      */
-    public static <T> IStructureElementNoPlacement<T> ofBlocksFlatHint(Map<Block, Integer> blocsMap, Block hintBlock, int hintMeta) {
+    public static <MultiBlock> IStructureElementNoPlacement<MultiBlock> ofBlocksFlatHint(Map<Block, Integer> blocsMap, Block hintBlock, int hintMeta) {
         if (blocsMap == null || blocsMap.isEmpty() || hintBlock == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementNoPlacement<T>() {
+        return new IStructureElementNoPlacement<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                 Block worldBlock = world.getBlock(x, y, z);
                 return blocsMap.getOrDefault(worldBlock, MIN_VALUE) == worldBlock.getDamageValue(world, x, y, z);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                 TecTech.proxy.hint_particle(world, x, y, z, hintBlock, hintMeta);
                 return true;
             }
@@ -219,7 +219,7 @@ public class StructureUtility {
     /**
      * Allows block duplicates (with different meta)
      */
-    public static <T> IStructureElementNoPlacement<T> ofBlocksMapHint(Map<Block, Set<Integer>> blocsMap, Block hintBlock, int hintMeta) {
+    public static <MultiBlock> IStructureElementNoPlacement<MultiBlock> ofBlocksMapHint(Map<Block, Set<Integer>> blocsMap, Block hintBlock, int hintMeta) {
         if (blocsMap == null || blocsMap.isEmpty() || hintBlock == null) {
             throw new IllegalArgumentException();
         }
@@ -228,57 +228,57 @@ public class StructureUtility {
                 throw new IllegalArgumentException();
             }
         }
-        return new IStructureElementNoPlacement<T>() {
+        return new IStructureElementNoPlacement<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                 Block worldBlock = world.getBlock(x, y, z);
                 return blocsMap.getOrDefault(worldBlock, Collections.emptySet()).contains(worldBlock.getDamageValue(world, x, y, z));
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                 TecTech.proxy.hint_particle(world, x, y, z, hintBlock, hintMeta);
                 return true;
             }
         };
     }
 
-    public static <T> IStructureElementNoPlacement<T> ofBlockHint(Block block, int meta, Block hintBlock, int hintMeta) {
+    public static <MultiBlock> IStructureElementNoPlacement<MultiBlock> ofBlockHint(Block block, int meta, Block hintBlock, int hintMeta) {
         if (block == null || hintBlock == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementNoPlacement<T>() {
+        return new IStructureElementNoPlacement<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                 Block worldBlock = world.getBlock(x, y, z);
                 return block == worldBlock && meta == worldBlock.getDamageValue(world, x, y, z);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                 TecTech.proxy.hint_particle(world, x, y, z, hintBlock, hintMeta);
                 return true;
             }
         };
     }
 
-    public static <T> IStructureElementNoPlacement<T> ofBlockHint(Block block, int meta) {
+    public static <MultiBlock> IStructureElementNoPlacement<MultiBlock> ofBlockHint(Block block, int meta) {
         return ofBlockHint(block, meta, block, meta);
     }
 
-    public static <T> IStructureElementNoPlacement<T> ofBlockAdderHint(IBlockAdder<T> iBlockAdder, Block hintBlock, int hintMeta) {
+    public static <MultiBlock> IStructureElementNoPlacement<MultiBlock> ofBlockAdderHint(IBlockAdder<MultiBlock> iBlockAdder, Block hintBlock, int hintMeta) {
         if (iBlockAdder == null || hintBlock == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementNoPlacement<T>() {
+        return new IStructureElementNoPlacement<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                 Block worldBlock = world.getBlock(x, y, z);
-                return iBlockAdder.apply(t, worldBlock, worldBlock.getDamageValue(world, x, y, z));
+                return iBlockAdder.apply(multiBlock, worldBlock, worldBlock.getDamageValue(world, x, y, z));
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                 TecTech.proxy.hint_particle(world, x, y, z, hintBlock, hintMeta);
                 return true;
             }
@@ -288,46 +288,46 @@ public class StructureUtility {
     /**
      * Does not allow Block duplicates (with different meta)
      */
-    public static <T> IStructureElement<T> ofBlocksFlat(Map<Block, Integer> blocsMap, Block defaultBlock, int defaultMeta) {
+    public static <MultiBlock> IStructureElement<MultiBlock> ofBlocksFlat(Map<Block, Integer> blocsMap, Block defaultBlock, int defaultMeta) {
         if (blocsMap == null || blocsMap.isEmpty() || defaultBlock == null) {
             throw new IllegalArgumentException();
         }
         if(defaultBlock instanceof ICustomBlockSetting){
-            return new IStructureElement<T>() {
+            return new IStructureElement<MultiBlock>() {
                 @Override
-                public boolean check(T t, World world, int x, int y, int z) {
+                public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                     Block worldBlock = world.getBlock(x, y, z);
                     return blocsMap.getOrDefault(worldBlock, MIN_VALUE) == worldBlock.getDamageValue(world, x, y, z);
                 }
 
                 @Override
-                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     ((ICustomBlockSetting) defaultBlock).setBlock(world, x, y, z, defaultMeta);
                     return true;
                 }
 
                 @Override
-                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     TecTech.proxy.hint_particle(world, x, y, z, defaultBlock, defaultMeta);
                     return true;
                 }
             };
         }else {
-            return new IStructureElement<T>() {
+            return new IStructureElement<MultiBlock>() {
                 @Override
-                public boolean check(T t, World world, int x, int y, int z) {
+                public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                     Block worldBlock = world.getBlock(x, y, z);
                     return blocsMap.getOrDefault(worldBlock, MIN_VALUE) == worldBlock.getDamageValue(world, x, y, z);
                 }
 
                 @Override
-                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
                     return true;
                 }
 
                 @Override
-                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     TecTech.proxy.hint_particle(world, x, y, z, defaultBlock, defaultMeta);
                     return true;
                 }
@@ -338,7 +338,7 @@ public class StructureUtility {
     /**
      * Allows block duplicates (with different meta)
      */
-    public static <T> IStructureElement<T> ofBlocksMap(Map<Block, Set<Integer>> blocsMap, Block defaultBlock, int defaultMeta) {
+    public static <MultiBlock> IStructureElement<MultiBlock> ofBlocksMap(Map<Block, Set<Integer>> blocsMap, Block defaultBlock, int defaultMeta) {
         if (blocsMap == null || blocsMap.isEmpty() || defaultBlock == null) {
             throw new IllegalArgumentException();
         }
@@ -348,41 +348,41 @@ public class StructureUtility {
             }
         }
         if(defaultBlock instanceof ICustomBlockSetting){
-            return new IStructureElement<T>() {
+            return new IStructureElement<MultiBlock>() {
                 @Override
-                public boolean check(T t, World world, int x, int y, int z) {
+                public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                     Block worldBlock = world.getBlock(x, y, z);
                     return blocsMap.getOrDefault(worldBlock, Collections.emptySet()).contains(worldBlock.getDamageValue(world, x, y, z));
                 }
 
                 @Override
-                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     ((ICustomBlockSetting) defaultBlock).setBlock(world, x, y, z, defaultMeta);
                     return true;
                 }
 
                 @Override
-                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     TecTech.proxy.hint_particle(world, x, y, z, defaultBlock, defaultMeta);
                     return true;
                 }
             };
         }else {
-            return new IStructureElement<T>() {
+            return new IStructureElement<MultiBlock>() {
                 @Override
-                public boolean check(T t, World world, int x, int y, int z) {
+                public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                     Block worldBlock = world.getBlock(x, y, z);
                     return blocsMap.getOrDefault(worldBlock, Collections.emptySet()).contains(worldBlock.getDamageValue(world, x, y, z));
                 }
 
                 @Override
-                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
                     return true;
                 }
 
                 @Override
-                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     TecTech.proxy.hint_particle(world, x, y, z, defaultBlock, defaultMeta);
                     return true;
                 }
@@ -390,46 +390,46 @@ public class StructureUtility {
         }
     }
 
-    public static <T> IStructureElement<T> ofBlock(Block block, int meta, Block defaultBlock, int defaultMeta) {
+    public static <MultiBlock> IStructureElement<MultiBlock> ofBlock(Block block, int meta, Block defaultBlock, int defaultMeta) {
         if (block == null || defaultBlock == null) {
             throw new IllegalArgumentException();
         }
         if(block instanceof ICustomBlockSetting){
-            return new IStructureElement<T>() {
+            return new IStructureElement<MultiBlock>() {
                 @Override
-                public boolean check(T t, World world, int x, int y, int z) {
+                public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                     Block worldBlock = world.getBlock(x, y, z);
                     return block == worldBlock && meta == worldBlock.getDamageValue(world, x, y, z);
                 }
 
                 @Override
-                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     ((ICustomBlockSetting) defaultBlock).setBlock(world, x, y, z, defaultMeta);
                     return true;
                 }
 
                 @Override
-                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     TecTech.proxy.hint_particle(world, x, y, z, defaultBlock, defaultMeta);
                     return true;
                 }
             };
         } else {
-            return new IStructureElement<T>() {
+            return new IStructureElement<MultiBlock>() {
                 @Override
-                public boolean check(T t, World world, int x, int y, int z) {
+                public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                     Block worldBlock = world.getBlock(x, y, z);
                     return block == worldBlock && meta == worldBlock.getDamageValue(world, x, y, z);
                 }
 
                 @Override
-                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
                     return true;
                 }
 
                 @Override
-                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     TecTech.proxy.hint_particle(world, x, y, z, defaultBlock, defaultMeta);
                     return true;
                 }
@@ -440,44 +440,44 @@ public class StructureUtility {
     /**
      * Same as above but ignores target meta id
      */
-    public static <T> IStructureElement<T> ofBlockAnyMeta(Block block, Block defaultBlock, int defaultMeta) {
+    public static <MultiBlock> IStructureElement<MultiBlock> ofBlockAnyMeta(Block block, Block defaultBlock, int defaultMeta) {
         if (block == null || defaultBlock == null) {
             throw new IllegalArgumentException();
         }
         if(block instanceof ICustomBlockSetting){
-            return new IStructureElement<T>() {
+            return new IStructureElement<MultiBlock>() {
                 @Override
-                public boolean check(T t, World world, int x, int y, int z) {
+                public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                     return block == world.getBlock(x, y, z);
                 }
 
                 @Override
-                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     ((ICustomBlockSetting) defaultBlock).setBlock(world, x, y, z, defaultMeta);
                     return true;
                 }
 
                 @Override
-                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     TecTech.proxy.hint_particle(world, x, y, z, defaultBlock, defaultMeta);
                     return true;
                 }
             };
         } else {
-            return new IStructureElement<T>() {
+            return new IStructureElement<MultiBlock>() {
                 @Override
-                public boolean check(T t, World world, int x, int y, int z) {
+                public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                     return block == world.getBlock(x, y, z);
                 }
 
                 @Override
-                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
                     return true;
                 }
 
                 @Override
-                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     TecTech.proxy.hint_particle(world, x, y, z, defaultBlock, defaultMeta);
                     return true;
                 }
@@ -485,21 +485,21 @@ public class StructureUtility {
         }
     }
 
-    public static <T> IStructureElement<T> ofBlock(Block block, int meta) {
+    public static <MultiBlock> IStructureElement<MultiBlock> ofBlock(Block block, int meta) {
         return ofBlock(block, meta, block, meta);
     }
 
     /**
      * Same as above but ignores target meta id
      */
-    public static <T> IStructureElement<T> ofBlockAnyMeta(Block block) {
+    public static <MultiBlock> IStructureElement<MultiBlock> ofBlockAnyMeta(Block block) {
         return ofBlockAnyMeta(block,  block, 0);
     }
 
     /**
      * Same as above but allows to set hint particle render
      */
-    public static <T> IStructureElement<T> ofBlockAnyMeta(Block block,int defaultMeta) {
+    public static <MultiBlock> IStructureElement<MultiBlock> ofBlockAnyMeta(Block block,int defaultMeta) {
         return ofBlockAnyMeta(block,  block, defaultMeta);
     }
 
@@ -507,46 +507,46 @@ public class StructureUtility {
 
     //region adders
 
-    public static <T> IStructureElement<T> ofBlockAdder(IBlockAdder<T> iBlockAdder, Block defaultBlock, int defaultMeta) {
+    public static <MultiBlock> IStructureElement<MultiBlock> ofBlockAdder(IBlockAdder<MultiBlock> iBlockAdder, Block defaultBlock, int defaultMeta) {
         if (iBlockAdder == null || defaultBlock == null) {
             throw new IllegalArgumentException();
         }
         if(defaultBlock instanceof  ICustomBlockSetting){
-            return new IStructureElement<T>() {
+            return new IStructureElement<MultiBlock>() {
                 @Override
-                public boolean check(T t, World world, int x, int y, int z) {
+                public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                     Block worldBlock = world.getBlock(x, y, z);
-                    return iBlockAdder.apply(t, worldBlock, worldBlock.getDamageValue(world, x, y, z));
+                    return iBlockAdder.apply(multiBlock, worldBlock, worldBlock.getDamageValue(world, x, y, z));
                 }
 
                 @Override
-                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     ((ICustomBlockSetting) defaultBlock).setBlock(world, x, y, z, defaultMeta);
                     return true;
                 }
 
                 @Override
-                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     TecTech.proxy.hint_particle(world, x, y, z, defaultBlock, defaultMeta);
                     return true;
                 }
             };
         }else {
-            return new IStructureElement<T>() {
+            return new IStructureElement<MultiBlock>() {
                 @Override
-                public boolean check(T t, World world, int x, int y, int z) {
+                public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                     Block worldBlock = world.getBlock(x, y, z);
-                    return iBlockAdder.apply(t, worldBlock, worldBlock.getDamageValue(world, x, y, z));
+                    return iBlockAdder.apply(multiBlock, worldBlock, worldBlock.getDamageValue(world, x, y, z));
                 }
 
                 @Override
-                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     world.setBlock(x, y, z, defaultBlock, defaultMeta, 2);
                     return true;
                 }
 
                 @Override
-                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     TecTech.proxy.hint_particle(world, x, y, z, defaultBlock, defaultMeta);
                     return true;
                 }
@@ -554,102 +554,102 @@ public class StructureUtility {
         }
     }
 
-    public static <T> IStructureElement<T> ofBlockAdder(IBlockAdder<T> iBlockAdder, int dots) {
+    public static <MultiBlock> IStructureElement<MultiBlock> ofBlockAdder(IBlockAdder<MultiBlock> iBlockAdder, int dots) {
         return ofBlockAdder(iBlockAdder, sHintCasingsTT, dots - 1);
     }
 
-    public static <T> IStructureElementNoPlacement<T> ofTileAdder(ITileAdder<T> iTileAdder, Block hintBlock, int hintMeta) {
+    public static <MultiBlock> IStructureElementNoPlacement<MultiBlock> ofTileAdder(ITileAdder<MultiBlock> iTileAdder, Block hintBlock, int hintMeta) {
         if (iTileAdder == null || hintBlock == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementNoPlacement<T>() {
+        return new IStructureElementNoPlacement<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
-                return tileEntity instanceof IGregTechTileEntity && iTileAdder.apply(t, tileEntity);
+                return tileEntity instanceof IGregTechTileEntity && iTileAdder.apply(multiBlock, tileEntity);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                 TecTech.proxy.hint_particle(world, x, y, z, hintBlock, hintMeta);
                 return true;
             }
         };
     }
 
-    public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, int textureIndex, int dots) {
+    public static <MultiBlock> IStructureElementNoPlacement<MultiBlock> ofHatchAdder(IHatchAdder<MultiBlock> iHatchAdder, int textureIndex, int dots) {
         return ofHatchAdder(iHatchAdder, textureIndex, sHintCasingsTT, dots - 1);
     }
 
-    public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IHatchAdder<T> iHatchAdder, int textureIndex, Block hintBlock, int hintMeta) {
+    public static <MultiBlock> IStructureElementNoPlacement<MultiBlock> ofHatchAdder(IHatchAdder<MultiBlock> iHatchAdder, int textureIndex, Block hintBlock, int hintMeta) {
         if (iHatchAdder == null || hintBlock == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementNoPlacement<T>() {
+        return new IStructureElementNoPlacement<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
-                return tileEntity instanceof IGregTechTileEntity && iHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) textureIndex);
+                return tileEntity instanceof IGregTechTileEntity && iHatchAdder.apply(multiBlock, (IGregTechTileEntity) tileEntity, (short) textureIndex);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                 TecTech.proxy.hint_particle(world, x, y, z, hintBlock, hintMeta);
                 return true;
             }
         };
     }
 
-    public static <T> IStructureElement<T> ofHatchAdderOptional(IHatchAdder<T> iHatchAdder, int textureIndex, int dots, Block placeCasing, int placeCasingMeta) {
+    public static <MultiBlock> IStructureElement<MultiBlock> ofHatchAdderOptional(IHatchAdder<MultiBlock> iHatchAdder, int textureIndex, int dots, Block placeCasing, int placeCasingMeta) {
         return ofHatchAdderOptional(iHatchAdder, textureIndex, sHintCasingsTT, dots - 1, placeCasing, placeCasingMeta);
     }
 
-    public static <T> IStructureElement<T> ofHatchAdderOptional(IHatchAdder<T> iHatchAdder, int textureIndex, Block hintBlock, int hintMeta, Block placeCasing, int placeCasingMeta) {
+    public static <MultiBlock> IStructureElement<MultiBlock> ofHatchAdderOptional(IHatchAdder<MultiBlock> iHatchAdder, int textureIndex, Block hintBlock, int hintMeta, Block placeCasing, int placeCasingMeta) {
         if (iHatchAdder == null || hintBlock == null) {
             throw new IllegalArgumentException();
         }
         if(placeCasing instanceof ICustomBlockSetting){
-            return new IStructureElement<T>() {
+            return new IStructureElement<MultiBlock>() {
                 @Override
-                public boolean check(T t, World world, int x, int y, int z) {
+                public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
                     Block worldBlock = world.getBlock(x, y, z);
                     return (tileEntity instanceof IGregTechTileEntity &&
-                            iHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) textureIndex)) ||
+                            iHatchAdder.apply(multiBlock, (IGregTechTileEntity) tileEntity, (short) textureIndex)) ||
                             (worldBlock == placeCasing && worldBlock.getDamageValue(world, x, y, z) == placeCasingMeta);
                 }
 
                 @Override
-                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     TecTech.proxy.hint_particle(world, x, y, z, hintBlock, hintMeta);
                     return true;
                 }
 
                 @Override
-                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     ((ICustomBlockSetting) placeCasing).setBlock(world, x, y, z, placeCasingMeta);
                     return true;
                 }
             };
         }else {
-            return new IStructureElement<T>() {
+            return new IStructureElement<MultiBlock>() {
                 @Override
-                public boolean check(T t, World world, int x, int y, int z) {
+                public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
                     Block worldBlock = world.getBlock(x, y, z);
                     return (tileEntity instanceof IGregTechTileEntity &&
-                            iHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) textureIndex)) ||
+                            iHatchAdder.apply(multiBlock, (IGregTechTileEntity) tileEntity, (short) textureIndex)) ||
                             (worldBlock == placeCasing && worldBlock.getDamageValue(world, x, y, z) == placeCasingMeta);
                 }
 
                 @Override
-                public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     TecTech.proxy.hint_particle(world, x, y, z, hintBlock, hintMeta);
                     return true;
                 }
 
                 @Override
-                public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
                     world.setBlock(x, y, z, placeCasing, placeCasingMeta, 2);
                     return true;
                 }
@@ -661,48 +661,48 @@ public class StructureUtility {
 
     //region side effects
 
-    public static <B extends IStructureElement<T>, T> IStructureElement<T> onElementPass(Consumer<T> onCheckPass, B element) {
-        return new IStructureElement<T>() {
+    public static <MultiBlock> IStructureElement<MultiBlock> onElementPass(Consumer<MultiBlock> onCheckPass, IStructureElement<MultiBlock> element) {
+        return new IStructureElement<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                boolean check = element.check(t, world, x, y, z);
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                boolean check = element.check(multiBlock, world, x, y, z);
                 if (check) {
-                    onCheckPass.accept(t);
+                    onCheckPass.accept(multiBlock);
                 }
                 return check;
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return element.placeBlock(t, world, x, y, z, trigger);
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return element.placeBlock(multiBlock, world, x, y, z, trigger);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return element.spawnHint(t, world, x, y, z, trigger);
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return element.spawnHint(multiBlock, world, x, y, z, trigger);
             }
         };
     }
 
-    public static <B extends IStructureElement<T>, T> IStructureElement<T> onElementFail(Consumer<T> onFail, B element) {
-        return new IStructureElement<T>() {
+    public static <MultiBlock> IStructureElement<MultiBlock> onElementFail(Consumer<MultiBlock> onFail, IStructureElement<MultiBlock> element) {
+        return new IStructureElement<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                boolean check = element.check(t, world, x, y, z);
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                boolean check = element.check(multiBlock, world, x, y, z);
                 if (!check) {
-                    onFail.accept(t);
+                    onFail.accept(multiBlock);
                 }
                 return check;
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return element.placeBlock(t, world, x, y, z, trigger);
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return element.placeBlock(multiBlock, world, x, y, z, trigger);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return element.spawnHint(t, world, x, y, z, trigger);
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return element.spawnHint(multiBlock, world, x, y, z, trigger);
             }
         };
     }
@@ -714,15 +714,15 @@ public class StructureUtility {
      * If none does it will finally return false.
      *
      * @param elementChain
-     * @param <T>
+     * @param <MultiBlock>
      * @return
      */
     @SafeVarargs
-    public static <T> IStructureElementChain<T> ofChain(IStructureElement<T>... elementChain) {
+    public static <MultiBlock> IStructureElementChain<MultiBlock> ofChain(IStructureElement<MultiBlock>... elementChain) {
         if (elementChain == null || elementChain.length == 0) {
             throw new IllegalArgumentException();
         }
-        for (IStructureElement<T> iStructureElement : elementChain) {
+        for (IStructureElement<MultiBlock> iStructureElement : elementChain) {
             if (iStructureElement == null) {
                 throw new IllegalArgumentException();
             }
@@ -735,317 +735,317 @@ public class StructureUtility {
      * If none does it will finally return false.
      *
      * @param elementChain
-     * @param <T>
+     * @param <MultiBlock>
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> IStructureElementChain<T> ofChain(List<IStructureElement<T>> elementChain) {
+    public static <MultiBlock> IStructureElementChain<MultiBlock> ofChain(List<IStructureElement<MultiBlock>> elementChain) {
         return ofChain(elementChain.toArray(new IStructureElement[0]));
     }
 
     //region defer
 
-    public static <T> IStructureElementDeferred<T> defer(Supplier<IStructureElement<T>> to) {
+    public static <MultiBlock> IStructureElementDeferred<MultiBlock> defer(Supplier<IStructureElement<MultiBlock>> to) {
         if (to == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementDeferred<T>() {
+        return new IStructureElementDeferred<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return to.get().check(t, world, x, y, z);
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                return to.get().check(multiBlock, world, x, y, z);
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return to.get().placeBlock(t, world, x, y, z, trigger);
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return to.get().placeBlock(multiBlock, world, x, y, z, trigger);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return to.get().spawnHint(t, world, x, y, z, trigger);
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return to.get().spawnHint(multiBlock, world, x, y, z, trigger);
             }
         };
     }
 
-    public static <T> IStructureElementDeferred<T> defer(Function<T, IStructureElement<T>> to) {
+    public static <MultiBlock> IStructureElementDeferred<MultiBlock> defer(Function<MultiBlock, IStructureElement<MultiBlock>> to) {
         if (to == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementDeferred<T>() {
+        return new IStructureElementDeferred<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return to.apply(t).check(t, world, x, y, z);
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                return to.apply(multiBlock).check(multiBlock, world, x, y, z);
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return to.apply(t).placeBlock(t, world, x, y, z, trigger);
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return to.apply(multiBlock).placeBlock(multiBlock, world, x, y, z, trigger);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return to.apply(t).spawnHint(t, world, x, y, z, trigger);
-            }
-        };
-    }
-
-    public static <T, K> IStructureElementDeferred<T> defer(Function<T, K> keyExtractor, Map<K, IStructureElement<T>> map) {
-        if (keyExtractor == null || map == null) {
-            throw new IllegalArgumentException();
-        }
-        return new IStructureElementDeferred<T>() {
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return map.get(keyExtractor.apply(t)).check(t, world, x, y, z);
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return map.get(keyExtractor.apply(t)).placeBlock(t, world, x, y, z, trigger);
-            }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return map.get(keyExtractor.apply(t)).spawnHint(t, world, x, y, z, trigger);
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return to.apply(multiBlock).spawnHint(multiBlock, world, x, y, z, trigger);
             }
         };
     }
 
-    public static <T, K> IStructureElementDeferred<T> defer(Function<T, K> keyExtractor, Map<K, IStructureElement<T>> map, IStructureElement<T> defaultElem) {
+    public static <MultiBlock, K> IStructureElementDeferred<MultiBlock> defer(Function<MultiBlock, K> keyExtractor, Map<K, IStructureElement<MultiBlock>> map) {
         if (keyExtractor == null || map == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementDeferred<T>() {
+        return new IStructureElementDeferred<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return map.getOrDefault(keyExtractor.apply(t), defaultElem).check(t, world, x, y, z);
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                return map.get(keyExtractor.apply(multiBlock)).check(multiBlock, world, x, y, z);
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return map.getOrDefault(keyExtractor.apply(t), defaultElem).placeBlock(t, world, x, y, z, trigger);
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return map.get(keyExtractor.apply(multiBlock)).placeBlock(multiBlock, world, x, y, z, trigger);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return map.getOrDefault(keyExtractor.apply(t), defaultElem).spawnHint(t, world, x, y, z, trigger);
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return map.get(keyExtractor.apply(multiBlock)).spawnHint(multiBlock, world, x, y, z, trigger);
+            }
+        };
+    }
+
+    public static <MultiBlock, K> IStructureElementDeferred<MultiBlock> defer(Function<MultiBlock, K> keyExtractor, Map<K, IStructureElement<MultiBlock>> map, IStructureElement<MultiBlock> defaultElem) {
+        if (keyExtractor == null || map == null) {
+            throw new IllegalArgumentException();
+        }
+        return new IStructureElementDeferred<MultiBlock>() {
+            @Override
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                return map.getOrDefault(keyExtractor.apply(multiBlock), defaultElem).check(multiBlock, world, x, y, z);
+            }
+
+            @Override
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return map.getOrDefault(keyExtractor.apply(multiBlock), defaultElem).placeBlock(multiBlock, world, x, y, z, trigger);
+            }
+
+            @Override
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return map.getOrDefault(keyExtractor.apply(multiBlock), defaultElem).spawnHint(multiBlock, world, x, y, z, trigger);
             }
         };
     }
 
     @SafeVarargs
-    public static <T> IStructureElementDeferred<T> defer(Function<T, Integer> keyExtractor, IStructureElement<T>... array) {
+    public static <MultiBlock> IStructureElementDeferred<MultiBlock> defer(Function<MultiBlock, Integer> keyExtractor, IStructureElement<MultiBlock>... array) {
         if (keyExtractor == null || array == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementDeferred<T>() {
+        return new IStructureElementDeferred<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return array[keyExtractor.apply(t)].check(t, world, x, y, z);
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                return array[keyExtractor.apply(multiBlock)].check(multiBlock, world, x, y, z);
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return array[keyExtractor.apply(t)].placeBlock(t, world, x, y, z, trigger);
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return array[keyExtractor.apply(multiBlock)].placeBlock(multiBlock, world, x, y, z, trigger);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return array[keyExtractor.apply(t)].spawnHint(t, world, x, y, z, trigger);
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return array[keyExtractor.apply(multiBlock)].spawnHint(multiBlock, world, x, y, z, trigger);
             }
         };
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> IStructureElementDeferred<T> defer(Function<T, Integer> keyExtractor, List<IStructureElement<T>> array) {
+    public static <MultiBlock> IStructureElementDeferred<MultiBlock> defer(Function<MultiBlock, Integer> keyExtractor, List<IStructureElement<MultiBlock>> array) {
         return defer(keyExtractor, array.toArray(new IStructureElement[0]));
     }
 
-    public static <T> IStructureElementDeferred<T> defer(BiFunction<T, ItemStack, IStructureElement<T>> to) {
+    public static <MultiBlock> IStructureElementDeferred<MultiBlock> defer(BiFunction<MultiBlock, ItemStack, IStructureElement<MultiBlock>> to) {
         if (to == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementDeferred<T>() {
+        return new IStructureElementDeferred<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return to.apply(t, null).check(t, world, x, y, z);
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                return to.apply(multiBlock, null).check(multiBlock, world, x, y, z);
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return to.apply(t, trigger).placeBlock(t, world, x, y, z, trigger);
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return to.apply(multiBlock, trigger).placeBlock(multiBlock, world, x, y, z, trigger);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return to.apply(t, trigger).spawnHint(t, world, x, y, z, trigger);
-            }
-        };
-    }
-
-    public static <T, K> IStructureElementDeferred<T> defer(BiFunction<T, ItemStack, K> keyExtractor, Map<K, IStructureElement<T>> map) {
-        if (keyExtractor == null || map == null) {
-            throw new IllegalArgumentException();
-        }
-        return new IStructureElementDeferred<T>() {
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return map.get(keyExtractor.apply(t, null)).check(t, world, x, y, z);
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return map.get(keyExtractor.apply(t, trigger)).placeBlock(t, world, x, y, z, trigger);
-            }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return map.get(keyExtractor.apply(t, trigger)).spawnHint(t, world, x, y, z, trigger);
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return to.apply(multiBlock, trigger).spawnHint(multiBlock, world, x, y, z, trigger);
             }
         };
     }
 
-    public static <T, K> IStructureElementDeferred<T> defer(BiFunction<T, ItemStack, K> keyExtractor, Map<K, IStructureElement<T>> map, IStructureElement<T> defaultElem) {
+    public static <MultiBlock, K> IStructureElementDeferred<MultiBlock> defer(BiFunction<MultiBlock, ItemStack, K> keyExtractor, Map<K, IStructureElement<MultiBlock>> map) {
         if (keyExtractor == null || map == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementDeferred<T>() {
+        return new IStructureElementDeferred<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return map.getOrDefault(keyExtractor.apply(t, null), defaultElem).check(t, world, x, y, z);
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                return map.get(keyExtractor.apply(multiBlock, null)).check(multiBlock, world, x, y, z);
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return map.getOrDefault(keyExtractor.apply(t, trigger), defaultElem).placeBlock(t, world, x, y, z, trigger);
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return map.get(keyExtractor.apply(multiBlock, trigger)).placeBlock(multiBlock, world, x, y, z, trigger);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return map.getOrDefault(keyExtractor.apply(t, trigger), defaultElem).spawnHint(t, world, x, y, z, trigger);
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return map.get(keyExtractor.apply(multiBlock, trigger)).spawnHint(multiBlock, world, x, y, z, trigger);
+            }
+        };
+    }
+
+    public static <MultiBlock, K> IStructureElementDeferred<MultiBlock> defer(BiFunction<MultiBlock, ItemStack, K> keyExtractor, Map<K, IStructureElement<MultiBlock>> map, IStructureElement<MultiBlock> defaultElem) {
+        if (keyExtractor == null || map == null) {
+            throw new IllegalArgumentException();
+        }
+        return new IStructureElementDeferred<MultiBlock>() {
+            @Override
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                return map.getOrDefault(keyExtractor.apply(multiBlock, null), defaultElem).check(multiBlock, world, x, y, z);
+            }
+
+            @Override
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return map.getOrDefault(keyExtractor.apply(multiBlock, trigger), defaultElem).placeBlock(multiBlock, world, x, y, z, trigger);
+            }
+
+            @Override
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return map.getOrDefault(keyExtractor.apply(multiBlock, trigger), defaultElem).spawnHint(multiBlock, world, x, y, z, trigger);
             }
         };
     }
 
     @SafeVarargs
-    public static <T> IStructureElementDeferred<T> defer(BiFunction<T, ItemStack, Integer> keyExtractor, IStructureElement<T>... array) {
+    public static <MultiBlock> IStructureElementDeferred<MultiBlock> defer(BiFunction<MultiBlock, ItemStack, Integer> keyExtractor, IStructureElement<MultiBlock>... array) {
         if (keyExtractor == null || array == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementDeferred<T>() {
+        return new IStructureElementDeferred<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return array[keyExtractor.apply(t, null)].check(t, world, x, y, z);
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                return array[keyExtractor.apply(multiBlock, null)].check(multiBlock, world, x, y, z);
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return array[keyExtractor.apply(t, trigger)].placeBlock(t, world, x, y, z, trigger);
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return array[keyExtractor.apply(multiBlock, trigger)].placeBlock(multiBlock, world, x, y, z, trigger);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return array[keyExtractor.apply(t, trigger)].spawnHint(t, world, x, y, z, trigger);
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return array[keyExtractor.apply(multiBlock, trigger)].spawnHint(multiBlock, world, x, y, z, trigger);
             }
         };
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> IStructureElementDeferred<T> defer(BiFunction<T, ItemStack, Integer> keyExtractor, List<IStructureElement<T>> array) {
+    public static <MultiBlock> IStructureElementDeferred<MultiBlock> defer(BiFunction<MultiBlock, ItemStack, Integer> keyExtractor, List<IStructureElement<MultiBlock>> array) {
         return defer(keyExtractor, array.toArray(new IStructureElement[0]));
     }
 
-    public static <T> IStructureElementDeferred<T> defer(Function<T, IStructureElement<T>> toCheck, BiFunction<T, ItemStack, IStructureElement<T>> to) {
+    public static <MultiBlock> IStructureElementDeferred<MultiBlock> defer(Function<MultiBlock, IStructureElement<MultiBlock>> toCheck, BiFunction<MultiBlock, ItemStack, IStructureElement<MultiBlock>> to) {
         if (to == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementDeferred<T>() {
+        return new IStructureElementDeferred<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return toCheck.apply(t).check(t, world, x, y, z);
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                return toCheck.apply(multiBlock).check(multiBlock, world, x, y, z);
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return to.apply(t, trigger).placeBlock(t, world, x, y, z, trigger);
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return to.apply(multiBlock, trigger).placeBlock(multiBlock, world, x, y, z, trigger);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return to.apply(t, trigger).spawnHint(t, world, x, y, z, trigger);
-            }
-        };
-    }
-
-    public static <T, K> IStructureElementDeferred<T> defer(Function<T, K> keyExtractorCheck, BiFunction<T, ItemStack, K> keyExtractor, Map<K, IStructureElement<T>> map) {
-        if (keyExtractor == null || map == null) {
-            throw new IllegalArgumentException();
-        }
-        return new IStructureElementDeferred<T>() {
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return map.get(keyExtractorCheck.apply(t)).check(t, world, x, y, z);
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return map.get(keyExtractor.apply(t, trigger)).placeBlock(t, world, x, y, z, trigger);
-            }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return map.get(keyExtractor.apply(t, trigger)).spawnHint(t, world, x, y, z, trigger);
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return to.apply(multiBlock, trigger).spawnHint(multiBlock, world, x, y, z, trigger);
             }
         };
     }
 
-    public static <T, K> IStructureElementDeferred<T> defer(Function<T, K> keyExtractorCheck, BiFunction<T, ItemStack, K> keyExtractor, Map<K, IStructureElement<T>> map, IStructureElement<T> defaultElem) {
+    public static <MultiBlock, K> IStructureElementDeferred<MultiBlock> defer(Function<MultiBlock, K> keyExtractorCheck, BiFunction<MultiBlock, ItemStack, K> keyExtractor, Map<K, IStructureElement<MultiBlock>> map) {
         if (keyExtractor == null || map == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementDeferred<T>() {
+        return new IStructureElementDeferred<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return map.getOrDefault(keyExtractorCheck.apply(t), defaultElem).check(t, world, x, y, z);
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                return map.get(keyExtractorCheck.apply(multiBlock)).check(multiBlock, world, x, y, z);
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return map.getOrDefault(keyExtractor.apply(t, trigger), defaultElem).placeBlock(t, world, x, y, z, trigger);
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return map.get(keyExtractor.apply(multiBlock, trigger)).placeBlock(multiBlock, world, x, y, z, trigger);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return map.getOrDefault(keyExtractor.apply(t, trigger), defaultElem).spawnHint(t, world, x, y, z, trigger);
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return map.get(keyExtractor.apply(multiBlock, trigger)).spawnHint(multiBlock, world, x, y, z, trigger);
+            }
+        };
+    }
+
+    public static <MultiBlock, K> IStructureElementDeferred<MultiBlock> defer(Function<MultiBlock, K> keyExtractorCheck, BiFunction<MultiBlock, ItemStack, K> keyExtractor, Map<K, IStructureElement<MultiBlock>> map, IStructureElement<MultiBlock> defaultElem) {
+        if (keyExtractor == null || map == null) {
+            throw new IllegalArgumentException();
+        }
+        return new IStructureElementDeferred<MultiBlock>() {
+            @Override
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                return map.getOrDefault(keyExtractorCheck.apply(multiBlock), defaultElem).check(multiBlock, world, x, y, z);
+            }
+
+            @Override
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return map.getOrDefault(keyExtractor.apply(multiBlock, trigger), defaultElem).placeBlock(multiBlock, world, x, y, z, trigger);
+            }
+
+            @Override
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return map.getOrDefault(keyExtractor.apply(multiBlock, trigger), defaultElem).spawnHint(multiBlock, world, x, y, z, trigger);
             }
         };
     }
 
     @SafeVarargs
-    public static <T> IStructureElementDeferred<T> defer(Function<T, Integer> keyExtractorCheck, BiFunction<T, ItemStack, Integer> keyExtractor, IStructureElement<T>... array) {
+    public static <MultiBlock> IStructureElementDeferred<MultiBlock> defer(Function<MultiBlock, Integer> keyExtractorCheck, BiFunction<MultiBlock, ItemStack, Integer> keyExtractor, IStructureElement<MultiBlock>... array) {
         if (keyExtractor == null || array == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementDeferred<T>() {
+        return new IStructureElementDeferred<MultiBlock>() {
             @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                return array[keyExtractorCheck.apply(t)].check(t, world, x, y, z);
+            public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
+                return array[keyExtractorCheck.apply(multiBlock)].check(multiBlock, world, x, y, z);
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return array[keyExtractor.apply(t, trigger)].placeBlock(t, world, x, y, z, trigger);
+            public boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return array[keyExtractor.apply(multiBlock, trigger)].placeBlock(multiBlock, world, x, y, z, trigger);
             }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return array[keyExtractor.apply(t, trigger)].spawnHint(t, world, x, y, z, trigger);
+            public boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+                return array[keyExtractor.apply(multiBlock, trigger)].spawnHint(multiBlock, world, x, y, z, trigger);
             }
         };
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> IStructureElementDeferred<T> defer(Function<T, Integer> keyExtractorCheck, BiFunction<T, ItemStack, Integer> keyExtractor, List<IStructureElement<T>> array) {
+    public static <MultiBlock> IStructureElementDeferred<MultiBlock> defer(Function<MultiBlock, Integer> keyExtractorCheck, BiFunction<MultiBlock, ItemStack, Integer> keyExtractor, List<IStructureElement<MultiBlock>> array) {
         return defer(keyExtractorCheck, keyExtractor, array.toArray(new IStructureElement[0]));
     }
 
@@ -1057,10 +1057,10 @@ public class StructureUtility {
      * @param a
      * @param b
      * @param c
-     * @param <T>
+     * @param <MultiBlock>
      * @return
      */
-    public static <T> IStructureNavigate<T> step(int a, int b, int c) {
+    public static <MultiBlock> IStructureNavigate<MultiBlock> step(int a, int b, int c) {
         return step(new Vec3Impl(a, b, c));
     }
 
@@ -1068,11 +1068,11 @@ public class StructureUtility {
      * Used internally, to generate skips for structure definitions
      *
      * @param step
-     * @param <T>
+     * @param <MultiBlock>
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> IStructureNavigate<T> step(Vec3Impl step) {
+    public static <MultiBlock> IStructureNavigate<MultiBlock> step(Vec3Impl step) {
         if (step == null || step.get0() < 0 || step.get1() < 0 || step.get2() < 0) {
             throw new IllegalArgumentException();
         }
@@ -1087,8 +1087,8 @@ public class StructureUtility {
         });
     }
 
-    private static <T> IStructureNavigate<T> stepA(int a, int b, int c) {
-        return new IStructureNavigate<T>() {
+    private static <MultiBlock> IStructureNavigate<MultiBlock> stepA(int a, int b, int c) {
+        return new IStructureNavigate<MultiBlock>() {
             @Override
             public int getStepA() {
                 return a;
@@ -1106,8 +1106,8 @@ public class StructureUtility {
         };
     }
 
-    private static <T> IStructureNavigate<T> stepB(int a, int b, int c) {
-        return new IStructureNavigate<T>() {
+    private static <MultiBlock> IStructureNavigate<MultiBlock> stepB(int a, int b, int c) {
+        return new IStructureNavigate<MultiBlock>() {
             @Override
             public int getStepA() {
                 return a;
@@ -1130,8 +1130,8 @@ public class StructureUtility {
         };
     }
 
-    private static <T> IStructureNavigate<T> stepC(int a, int b, int c) {
-        return new IStructureNavigate<T>() {
+    private static <MultiBlock> IStructureNavigate<MultiBlock> stepC(int a, int b, int c) {
+        return new IStructureNavigate<MultiBlock>() {
             @Override
             public int getStepA() {
                 return a;
@@ -1378,9 +1378,9 @@ public class StructureUtility {
         }
     }
 
-    public static <T> boolean iterate(T object,
+    public static <MultiBlock> boolean iterate(MultiBlock object,
                                       ItemStack trigger,
-                                      IStructureElement<T>[] elements,
+                                      IStructureElement<MultiBlock>[] elements,
                                       World world,
                                       ExtendedFacing extendedFacing,
                                       int basePositionX, int basePositionY, int basePositionZ,
@@ -1400,7 +1400,7 @@ public class StructureUtility {
 
         switch (iterationType) {
             case SPAWN_HINTS: {
-                for (IStructureElement<T> element : elements) {
+                for (IStructureElement<MultiBlock> element : elements) {
                     if (element.isNavigating()) {
                         abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
                         abc[1] = (element.resetB() ? basePositionB : abc[1]) + element.getStepB();
@@ -1419,7 +1419,7 @@ public class StructureUtility {
                 break;
             }
             case BUILD_TEMPLATE: {
-                for (IStructureElement<T> element : elements) {
+                for (IStructureElement<MultiBlock> element : elements) {
                     if (element.isNavigating()) {
                         abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
                         abc[1] = (element.resetB() ? basePositionB : abc[1]) + element.getStepB();
@@ -1439,7 +1439,7 @@ public class StructureUtility {
                 break;
             }
             case CHECK: {
-                for (IStructureElement<T> element : elements) {
+                for (IStructureElement<MultiBlock> element : elements) {
                     if (element.isNavigating()) {
                         abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
                         abc[1] = (element.resetB() ? basePositionB : abc[1]) + element.getStepB();
@@ -1470,7 +1470,7 @@ public class StructureUtility {
                 }
             }
             case CHECK_FULLY: {
-                for (IStructureElement<T> element : elements) {
+                for (IStructureElement<MultiBlock> element : elements) {
                     if (element.isNavigating()) {
                         abc[0] = (element.resetA() ? basePositionA : abc[0]) + element.getStepA();
                         abc[1] = (element.resetB() ? basePositionB : abc[1]) + element.getStepB();

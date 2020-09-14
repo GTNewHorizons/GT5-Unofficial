@@ -10,5 +10,5 @@ public interface IHatchAdder<MultiBlock> {
      * @param textureIndex requested texture index, or null if not...
      * @return managed to add hatch (structure still valid)
      */
-    boolean apply(MultiBlock multiBlock, IGregTechTileEntity iGregTechTileEntity, Short textureIndex);
+    boolean apply(MultiBlock multiBlock, IGregTechTileEntity iGregTechTileEntity, int textureIndex);
 }
