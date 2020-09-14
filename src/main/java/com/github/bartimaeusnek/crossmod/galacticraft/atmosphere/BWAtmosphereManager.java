@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 
 import java.util.*;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "RedundantSuppression"})
 public final class BWAtmosphereManager {
 
     private static final Map<Integer,Integer[]> COEFFICIENT_MAP = new HashMap<>();
@@ -90,7 +90,7 @@ public final class BWAtmosphereManager {
             return true;
         }
         String name = gas.toString();
-        name = name.substring(0,1)+name.substring(1).toLowerCase(Locale.US);
+        name = name.charAt(0)+name.substring(1).toLowerCase(Locale.US);
         ISubTagContainer mat = Materials.get(name);
         if (mat == Materials._NULL){
             mat = WerkstoffLoader.getWerkstoff(name);

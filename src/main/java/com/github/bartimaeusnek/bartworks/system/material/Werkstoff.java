@@ -801,16 +801,14 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return this;
         }
 
-        byte qualityOverride;
-        int durOverride;
-        float speedOverride;
-
-        int meltingPoint;
-
-        long protons;
-        long neutrons;
-        long electrons;
-        long mass;
+        private byte qualityOverride;
+        private int durOverride;
+        private float speedOverride;
+        private int meltingPoint;
+        private long protons;
+        private long neutrons;
+        private long electrons;
+        private long mass;
 
         float durMod = 1f;
 

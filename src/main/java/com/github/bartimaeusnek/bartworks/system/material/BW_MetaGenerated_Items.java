@@ -89,7 +89,6 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         }
     }
 
-
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure || this.orePrefixes == OrePrefixes.crushed) {
             int aDamage = aItemEntity.getEntityItem().getItemDamage();
@@ -223,7 +222,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     @Override
     public int getRadiationLevel(ItemStack aStack) {
         Werkstoff w = werkstoffHashMap.get((short)aStack.getItemDamage());
-        return w.getStats().isRadioactive() ? (int) w.getStats().protons : 0;
+        return w.getStats().isRadioactive() ? (int) w.getStats().getProtons() : 0;
     }
 
     @Override

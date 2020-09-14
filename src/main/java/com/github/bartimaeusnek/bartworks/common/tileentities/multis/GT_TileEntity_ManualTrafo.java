@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -396,6 +396,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[this.texid], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)} : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[this.texid]};
     }

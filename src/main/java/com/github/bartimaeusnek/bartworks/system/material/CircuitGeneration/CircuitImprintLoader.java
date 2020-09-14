@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,7 +60,7 @@ public class CircuitImprintLoader {
     private static final HashSet<GT_Recipe> ORIGINAL_CAL_RECIPES = new HashSet<>();
     private static final HashSet<GT_Recipe> MODIFIED_CAL_RECIPES = new HashSet<>();
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused","RedundantSuppression"})
     public static void run() {
         HashSet<GT_Recipe> toRem = new HashSet<>();
         HashSet<GT_Recipe> toAdd = new HashSet<>();
@@ -69,7 +69,7 @@ public class CircuitImprintLoader {
         rebuildCircuitAssemblerMap(toRem,toAdd);
         exchangeRecipesInList(toRem,toAdd);
         makeCircuitImprintRecipes();
-
+        
         toRem = null;
         toAdd = null;
     }

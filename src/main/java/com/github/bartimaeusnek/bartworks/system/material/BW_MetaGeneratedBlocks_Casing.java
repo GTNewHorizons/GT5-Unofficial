@@ -1,3 +1,25 @@
+/*
+ * Copyright (c) 2018-2020 bartimaeusnek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.github.bartimaeusnek.bartworks.system.material;
 
 import com.github.technus.tectech.mechanics.structure.ICustomBlockSetting;
@@ -85,14 +107,25 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
     @SuppressWarnings("unchecked")
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
         Werkstoff.werkstoffHashSet.stream()
-                .filter(pMaterial -> (pMaterial.hasItemType(WerkstoffLoader.blockCasing)))
+                .filter(pMaterial ->
+                           pMaterial.hasItemType(OrePrefixes.plate)
+                        && pMaterial.hasItemType(OrePrefixes.screw)
+                        && pMaterial.hasItemType(OrePrefixes.plateDouble)
+                        )
                 .map(pMaterial -> new ItemStack(aItem, 1, pMaterial.getmID()))
                 .forEach(aList::add);
     }
 
+    /**
+     * DEBUG Method for TT-Blueprints!
+     */
     @cpw.mods.fml.common.Optional.Method(modid = "tectech")
     public void setBlock(World world, int x, int y, int z, int meta) {
         world.setBlock(x, y, z,this, meta,2);
+        try {
+            Thread.sleep(1);
+            //Fucking Minecraft TE settings.
+        } catch (InterruptedException ignored) {}
         Optional.ofNullable(world.getTileEntity(x,y,z))
                 .filter(te -> te instanceof BW_MetaGeneratedBlocks_Casing_TE)
                 .map(te -> (BW_MetaGeneratedBlocks_Casing_TE) te)

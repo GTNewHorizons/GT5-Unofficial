@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -379,6 +379,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[16], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE)} : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[16]};
     }

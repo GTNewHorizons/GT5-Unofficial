@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,6 +44,7 @@ public class PrintRecipeListToFile extends CommandBase {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
         File file = new File(p_71515_2_[0]);
         try {

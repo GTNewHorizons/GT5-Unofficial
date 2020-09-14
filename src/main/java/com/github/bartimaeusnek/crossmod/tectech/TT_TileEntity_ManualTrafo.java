@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import java.util.ArrayList;
 import java.util.Iterator;
 
-@SuppressWarnings({"unused"})
+@SuppressWarnings({"unused","RedundantSuppression"})
 public class TT_TileEntity_ManualTrafo extends GT_TileEntity_ManualTrafo {
 
     ArrayList<GT_MetaTileEntity_Hatch_EnergyMulti> mTTEnergyHatches = new ArrayList<>();
