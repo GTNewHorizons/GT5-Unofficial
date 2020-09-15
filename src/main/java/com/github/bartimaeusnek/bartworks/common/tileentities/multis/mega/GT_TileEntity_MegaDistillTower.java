@@ -65,7 +65,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Mega Distillation Tower",
-                "Size(WxHxD): 15xhx15 (Hollow), with h ranging from 16 to 61",
+                "Size(WxHxD): 15xhx15 (Hollow), with h ranging from 16 to 56",
                 "Controller (Front bottom)",
                 "1+ Input Hatch (Any bottom layer casing)",
                 "1+ Output Bus (Any bottom layer casing)",
@@ -135,7 +135,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
             }
         }
 
-        return casingAmount >= 15 * y - 5 && y >= 16 && y <= 61 && reachedTop;
+        return casingAmount >= 15 * y - 5 && y >= 16 && y <= 56 && reachedTop;
     }
 
     @Override
