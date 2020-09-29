@@ -217,11 +217,11 @@ public class StructureUtility {
     /**
      * Allows block duplicates (with different meta)
      */
-    public static <T> IStructureElementNoPlacement<T> ofBlocksMapHint(Map<Block, Set<Integer>> blocsMap, Block hintBlock, int hintMeta) {
+    public static <T> IStructureElementNoPlacement<T> ofBlocksMapHint(Map<Block, Collection<Integer>> blocsMap, Block hintBlock, int hintMeta) {
         if (blocsMap == null || blocsMap.isEmpty() || hintBlock == null) {
             throw new IllegalArgumentException();
         }
-        for (Set<Integer> value : blocsMap.values()) {
+        for (Collection<Integer> value : blocsMap.values()) {
             if (value.isEmpty()) {
                 throw new IllegalArgumentException();
             }
@@ -336,11 +336,11 @@ public class StructureUtility {
     /**
      * Allows block duplicates (with different meta)
      */
-    public static <T> IStructureElement<T> ofBlocksMap(Map<Block, Set<Integer>> blocsMap, Block defaultBlock, int defaultMeta) {
+    public static <T> IStructureElement<T> ofBlocksMap(Map<Block, Collection<Integer>> blocsMap, Block defaultBlock, int defaultMeta) {
         if (blocsMap == null || blocsMap.isEmpty() || defaultBlock == null) {
             throw new IllegalArgumentException();
         }
-        for (Set<Integer> value : blocsMap.values()) {
+        for (Collection<Integer> value : blocsMap.values()) {
             if (value.isEmpty()) {
                 throw new IllegalArgumentException();
             }
