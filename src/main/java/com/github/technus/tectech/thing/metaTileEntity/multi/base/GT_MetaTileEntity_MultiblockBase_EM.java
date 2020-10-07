@@ -166,10 +166,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     @Override
-    public void setExtendedFacing(ExtendedFacing alignment) {
-        if(extendedFacing!=alignment){
-            extendedFacing=alignment;
+    public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
+        if(extendedFacing!=newExtendedFacing){
+            extendedFacing=newExtendedFacing;
             IGregTechTileEntity base = getBaseMetaTileEntity();
+            mMachine = false;
             if (getBaseMetaTileEntity().isServerSide()) {
                 NetworkDispatcher.INSTANCE.sendToAllAround(new AlignmentMessage.AlignmentData(this),
                         base.getWorld().provider.dimensionId,
