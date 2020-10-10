@@ -158,8 +158,15 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 			super.addOutput(tempStack);
 
 		} else {
-			for(int i = 0; i < mfh.getDistinctFluids(); i++) {
+			int tDistinct = mfh.getDistinctFluids();
+			int tDistinctCount = 0;
+			int tMaxDistinct = mfh.getMaxDistinctFluids();
+			for(int i = 0; i < tMaxDistinct && tDistinctCount< tDistinct;i++) {
 				final FluidStack storedFluidCopy = mfh.getFluidCopy(i);
+				if (storedFluidCopy == null)
+					continue;
+				tDistinctCount++;
+				storedFluidCopy.amount = 0;
 				// Calculate how much capacity all available Output Hatches offer
 				for (GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
 					if (outputHatch.isFluidLocked() && outputHatch.getLockedFluidName().equals(storedFluidCopy.getUnlocalizedName())) {
@@ -482,7 +489,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		runningCost = nbt.getInteger("runningCost");
 		doVoidExcess = nbt.getBoolean("doVoidExcess");
 
-		mfh = mfh.loadNBTData(nbt);
+		mfh = MultiFluidHandler.loadNBTData(nbt);
 		for (GTMTE_TFFTMultiHatch mh : sMultiHatches) {
 			mh.setMultiFluidHandler(mfh);
 		}

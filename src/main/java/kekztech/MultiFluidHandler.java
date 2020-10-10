@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MultiFluidHandler {
 
-	private final List<FluidStack> fluids;
+	private final FluidStack[] fluids;
 	private final int maxDistinctFluids;
 	private final int capacityPerFluid;
 	
@@ -18,11 +18,14 @@ public class MultiFluidHandler {
 	private boolean doVoidExcess = false;
 	private byte fluidSelector = -1;
 	
-	private MultiFluidHandler(int maxDistinctFluids, int capacityPerFluid, List<FluidStack> fluidsToAdd) {
+	public MultiFluidHandler(int maxDistinctFluids, int capacityPerFluid, FluidStack[] fluidsToAdd) {
 		this.maxDistinctFluids = maxDistinctFluids;
-		this.fluids = new ArrayList<>(maxDistinctFluids);
+		this.fluids = new FluidStack[maxDistinctFluids];
 		if(fluidsToAdd != null) {
-			this.fluids.addAll(fluidsToAdd);
+			int tFluidLengt = (maxDistinctFluids <fluidsToAdd.length) ? maxDistinctFluids:fluidsToAdd.length;
+			for (int i = 0; i < tFluidLengt; i++) {
+				this.fluids[i] = fluidsToAdd[i];
+			}
 		}
 		this.capacityPerFluid = capacityPerFluid;
 	}
@@ -39,7 +42,7 @@ public class MultiFluidHandler {
 	 * 				A new instance
 	 */
 	public static MultiFluidHandler newInstance(int maxDistinctFluids, int capacityPerFluid, FluidStack...fluidsToAdd) {
-		return new MultiFluidHandler(maxDistinctFluids, capacityPerFluid, Arrays.asList(fluidsToAdd));
+		return new MultiFluidHandler(maxDistinctFluids, capacityPerFluid, fluidsToAdd);
 	}
 
 	/**
@@ -77,7 +80,7 @@ public class MultiFluidHandler {
 	 * 				Selected fluid or -1 if no fluid is selected
 	 */
 	public void setFluidSelector(byte fluidSelector) {
-		this.fluidSelector = fluidSelector < fluids.size() ? fluidSelector : -1;
+		this.fluidSelector = fluidSelector < fluids.length ? fluidSelector : -1;
 	}
 	
 	/**
@@ -88,13 +91,40 @@ public class MultiFluidHandler {
 	public byte getSelectedFluid() {
 		return fluidSelector;
 	}
-	
-	public boolean contains(FluidStack fluid) {
-		return !locked && fluids.contains(fluid);
+
+	public int getFluidPosistion(FluidStack aFluid) {
+
+		for (int i = 0; i < fluids.length; i++)
+		{
+			FluidStack tFluid = fluids[i];
+			if (tFluid != null && tFluid.isFluidEqual(aFluid))
+				return i;
+		}
+		return -1;
 	}
+
+	public boolean contains(FluidStack aFluid) {
+		if (locked)
+			return false;
+		return getFluidPosistion(aFluid)>=0;
+	}
+
+	public int countFluids()
+	{
+		int tCount = 0;
+		for (int i = 0; i < fluids.length; i++) {
+			if (fluids[i] != null)
+				tCount++;
+		}
+		return tCount;
+	}
+
 	
 	public int getCapacity() {
 		return capacityPerFluid;
+	}
+	public int getMaxDistinctFluids() {
+		return maxDistinctFluids;
 	}
 
 	/**
@@ -105,8 +135,18 @@ public class MultiFluidHandler {
 	 * 				deep copy of the requested FluidStack
 	 */
 	public FluidStack getFluidCopy(int slot) {
-		return (!locked && fluids.size() > 0 && slot >= 0 && slot < maxDistinctFluids)
-				? fluids.get(slot).copy() : null;
+		if (slot >= fluids.length)
+			return null;
+		if (!locked
+				&& fluids.length > 0
+				&& slot >= 0
+				&& slot < maxDistinctFluids)
+		{
+			FluidStack tFluid = fluids[slot];
+			if (tFluid != null)
+				return tFluid.copy();
+		}
+		return null;
 	}
 
 	/**
@@ -115,7 +155,12 @@ public class MultiFluidHandler {
 	 * 				amount of different fluids currently stored (0-25)
 	 */
 	public int getDistinctFluids() {
-		return fluids.size();
+		int distinctFluids = 0;
+		for (FluidStack f : fluids) {
+			if (f != null)
+				distinctFluids++;
+		}
+		return distinctFluids;
 	}
 
 	/**
@@ -129,9 +174,15 @@ public class MultiFluidHandler {
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 		
 		nbt.setInteger("capacityPerFluid", getCapacity());
+		nbt.setInteger("maxDistinctFluids",this.maxDistinctFluids);
 		int c = 0;
 		for(FluidStack f : fluids) {
-			nbt.setTag("" + c, f.writeToNBT(new NBTTagCompound()));
+			if (f == null)
+			{
+				c++;
+				continue;
+			}
+			nbt.setTag( String.valueOf(c), f.writeToNBT(new NBTTagCompound()));
 			c++;
 		}
 		return nbt;
@@ -144,31 +195,44 @@ public class MultiFluidHandler {
 	 * @return
 	 * 				A new Instance
 	 */
-	public MultiFluidHandler loadNBTData(NBTTagCompound nbt) {
+	static public MultiFluidHandler loadNBTData(NBTTagCompound nbt) {
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 		
 		final int capacityPerFluid = nbt.getInteger("capacityPerFluid");
 		final NBTTagCompound fluidsTag = (NBTTagCompound) nbt.getTag("fluids");
-		final ArrayList<FluidStack> loadedFluids = new ArrayList<>();
-		int distinctFluids = 0;
-		while(true) {
-			final NBTTagCompound fluidNBT = (NBTTagCompound) fluidsTag.getTag("" + distinctFluids);
-			if(fluidNBT == null) {
-				break;
+		int distinctFluids = nbt.getInteger("maxDistinctFluids");
+		if (!nbt.hasKey("maxDistinctFluids"))
+			distinctFluids = 25;// adding it so it doesent break on upgrading
+		final FluidStack[] loadedFluids = new FluidStack[distinctFluids];
+
+		if (fluidsTag != null)
+		{
+			for (int i = 0; i < distinctFluids; i++) {
+				final NBTTagCompound fluidNBT = (NBTTagCompound) fluidsTag.getTag("" + i);
+				if(fluidNBT == null) {
+					loadedFluids[i] = null;
+				} else {
+					loadedFluids[i] = FluidStack.loadFluidStackFromNBT(fluidNBT);
+				}
 			}
-			loadedFluids.add(FluidStack.loadFluidStackFromNBT(fluidNBT));
-			distinctFluids++;
 		}
 		return new MultiFluidHandler(distinctFluids, capacityPerFluid, loadedFluids);
 	}
 	
 	public ArrayList<String> getInfoData() {
-		final ArrayList<String> lines = new ArrayList<>(fluids.size());
+		final ArrayList<String> lines = new ArrayList<>(fluids.length);
 		lines.add(EnumChatFormatting.YELLOW + "Stored Fluids:" + EnumChatFormatting.RESET);
-		for(int i = 0; i < fluids.size(); i++) {
-			lines.add(i + " - " + fluids.get(i).getLocalizedName() + ": " 
-					+ fluids.get(i).amount + "L (" 
-					+ (Math.round(100.0f * fluids.get(i).amount / getCapacity())) + "%)");
+		for(int i = 0; i < fluids.length; i++) {
+			FluidStack tFluid = fluids[i];
+			if (tFluid == null) {
+				lines.add(i + " - " + "null" + ": "
+						+ "0" + "L ("
+						+ "0" + "%)");
+			} else {
+				lines.add(i + " - " + tFluid.getLocalizedName() + ": "
+						+ tFluid.amount + "L ("
+						+ (Math.round(100.0f * tFluid.amount / getCapacity())) + "%)");
+			}
 		}
 		
 		return lines;
@@ -187,20 +251,29 @@ public class MultiFluidHandler {
 		if(locked) {
 			return 0;
 		}
-		if(fluids.size() == maxDistinctFluids && !contains(push)) {
+		int empty = getNullSlot();
+		int fluidCount = countFluids();
+		if(fluidCount >= maxDistinctFluids && !contains(push)) {
 			// Already contains 25 fluids and this isn't one of them
 			return 0;
-		} else if (fluids.size() < maxDistinctFluids && !contains(push)) {
+		} else if (empty < maxDistinctFluids && !contains(push)) {
 			// Add new fluid
 			final int fit = Math.min(getCapacity(), push.amount);
 			if(doPush) {
-				fluids.add(new FluidStack(push.getFluid(), fit));	
+				empty = getNullSlot();
+				if (empty == -1)
+					return 0;
+				else
+					fluids[empty] = new FluidStack(push.getFluid(), fit);
 			}
 			// If doVoidExcess, pretend all of it fit
 			return doVoidExcess ? push.amount : fit;
 		} else {
-			// Add to existing fluid
-			final FluidStack existing = fluids.get(fluids.indexOf(push));
+			// Add to existing fluids
+			int index = getFluidPosistion(push);
+			if (index < 0)
+				return 0;
+			final FluidStack existing = fluids[index];
 			final int fit = Math.min(getCapacity() - existing.amount, push.amount);
 			if(doPush) {
 				existing.amount += fit;
@@ -208,6 +281,16 @@ public class MultiFluidHandler {
 			// If doVoidExcess, pretend all of it fit
 			return doVoidExcess ? push.amount : fit;
 		}
+	}
+
+
+	public int getNullSlot()
+	{
+		for (int i = 0; i < fluids.length; i++) {
+			if (fluids[i] == null)
+				return i;
+		}
+		return -1;
 	}
 	
 	/**
@@ -225,19 +308,25 @@ public class MultiFluidHandler {
 		if(locked) {
 			return 0;
 		}
+		FluidStack tFluid = fluids[slot];
 		if(slot < 0 || slot >= maxDistinctFluids) {
 			// Invalid slot
 			return 0;
 		}
-		if((fluids.get(slot) != null) && !fluids.get(slot).equals(push)) {
+		if((tFluid != null) && !tFluid.equals(push)) {
 			// Selected slot is taken by a non-matching fluid
 			return 0;
 		} else {
+			int fit = 0;
 			// Add to existing fluid
-			final FluidStack existing = fluids.get(slot);
-			final int fit = Math.min(getCapacity() - existing.amount, push.amount);
-			if(doPush) {
-				existing.amount += fit;
+			if (tFluid == null) {
+				fit = Math.min(getCapacity(),push.amount);
+				fluids[slot] = new FluidStack(push.getFluid(), fit);
+			} else {
+				fit = Math.min(getCapacity() - tFluid.amount, push.amount);
+				if(doPush) {
+					tFluid.amount += fit;
+				}
 			}
 			// If doVoidExcess, pretend all of it fit
 			return doVoidExcess ? push.amount : fit;
@@ -254,16 +343,19 @@ public class MultiFluidHandler {
 	 * @return Amount of fluid that was (or would have been, if simulated) pulled.
 	 */
 	public int pullFluid(FluidStack pull, boolean doPull) {
-		if (locked || !contains(pull)) {
+		if (locked) {
 			return 0;
 		} else {
-			final FluidStack src = fluids.get(fluids.indexOf(pull));
+			int tIndex = getFluidPosistion(pull);
+			if (tIndex < 0)
+				return 0;
+			FluidStack src = fluids[tIndex];
 			final int rec = Math.min(pull.amount, src.amount);
 			if (doPull) {
 				src.amount -= rec;
 			}
 			if (src.amount == 0) {
-				fluids.remove(src);
+				fluids[tIndex]= null;
 			}
 			return rec;
 		}
@@ -281,22 +373,22 @@ public class MultiFluidHandler {
 	 * @return Amount of fluid that was (or would have been, if simulated) pulled.
 	 */
 	public int pullFluid(FluidStack pull, int slot, boolean doPull) {
-		if(locked) {
+		if(locked || slot >= fluids.length) {
 			return 0;
 		}
 		if(slot < 0 || slot >= maxDistinctFluids) {
 			return 0;
 		}
-		if(!fluids.get(slot).equals(pull)) {
+		FluidStack tFluid = fluids[slot];
+		if(tFluid == null && tFluid.equals(pull)) {
 			return 0;
 		} else {
-			final FluidStack src = fluids.get(slot);
-			final int rec = Math.min(pull.amount, src.amount);
+			final int rec = Math.min(pull.amount, tFluid.amount);
 			if(doPull) {
-				src.amount -= rec;
+				tFluid.amount -= rec;
 			}
-			if(src.amount == 0) {
-				fluids.remove(src);
+			if(tFluid.amount == 0) {
+				fluids[slot] = null;
 			}
 			return rec;
 		}
@@ -312,12 +404,14 @@ public class MultiFluidHandler {
 		if(locked) {
 			return false;
 		}
-		if(fluids.size() == maxDistinctFluids && !contains(push)) {
+		int tFluidIndex = getFluidPosistion(push);
+		int fluidCount = countFluids();
+		if(fluidCount >= maxDistinctFluids && !contains(push)) {
 			return false;
-		} else if (fluids.size() < maxDistinctFluids && !contains(push)) {
+		} else if (fluidCount < maxDistinctFluids && !contains(push)) {
 			return Math.min(getCapacity(), push.amount) > 0;
 		} else {
-			final int remcap = getCapacity() - fluids.get(fluids.indexOf(push)).amount;
+			final int remcap = getCapacity() - fluids[tFluidIndex].amount;
 			return doVoidExcess || (Math.min(remcap, push.amount) > 0);
 		}
 	}
