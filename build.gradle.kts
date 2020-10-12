@@ -25,14 +25,8 @@ import net.minecraftforge.gradle.user.UserExtension
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            name = "forge"
-            url = uri("http://files.minecraftforge.net/maven")
-        }
-        maven {
-            name = "jitpack"
-            url = uri("https://jitpack.io")
-        }
+        maven("http://files.minecraftforge.net/maven")
+        maven("https://jitpack.io")
     }
     dependencies {
         classpath("com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT")
@@ -62,79 +56,55 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
-val majorUpdate : String by project
-val minorUpdate : String by project
-val buildNumber : String by project
+val majorUpdate: String by project
+val minorUpdate: String by project
+val buildNumber: String by project
 
 version = "$majorUpdate.$minorUpdate.$buildNumber"
 group = "com.github.bartimaeusnek.bartworks"
 
 //minecraft block
-configure<UserExtension>{
+configure<UserExtension> {
     version = "1.7.10-10.13.4.1614-1.7.10"
     replaceIn("MainMod.java")
     replaceIn("API_REFERENCE.java")
     replace("@version@", project.version)
-    val apiVersion : String by project
+    val apiVersion: String by project
     replace("@apiversion@", apiVersion)
     runDir = "run"
 }
 
 repositories {
     mavenLocal()
-    maven {
-        name = "gt"
-        url = uri("https://gregtech.overminddl1.com/")
-    }
-    maven {
-        name = "ic2"
-        url = uri("http://maven.ic2.player.to/")
-    }
-    maven { // GalacticGreg, YAMCore,..
-        name = "UsrvDE"
-        url = uri("http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/")
+    maven("https://gregtech.overminddl1.com/") { this.name = "GT6Maven" }
+    maven("http://maven.ic2.player.to/") { this.name = "ic2" }
+    maven("http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/") { this.name = "UsrvDE/GTNH" }
+    ivy {
+        this.name = "gtnh_download_source_stupid_underscore_typo"
+        this.artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]_[revision].[ext]")
     }
     ivy {
-        name = "gtnh_download_source_stupid_underscore_typo"
-        artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]_[revision].[ext]")
+        this.name = "gtnh_download_source"
+        this.artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]")
     }
     ivy {
-        name = "gtnh_download_source"
-        artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]")
+        this.name = "BuildCraft"
+        this.artifactPattern("http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision](-[classifier]).[ext]")
     }
-    maven {
-        name = "OC repo"
-        url = uri("http://maven.cil.li/")
-    }
-    maven {
-        name = "jabba"
-        url = uri("http://default.mobiusstrip.eu/maven")
-    }
-    maven {
-        name = "chickenbones"
-        url = uri("http://chickenbones.net/maven/")
-    }
-    maven {
-        name = "Apple"
-        url = uri("http://www.ryanliptak.com/maven/")
-    }
-    ivy {
-        name = "BuildCraft"
-        artifactPattern("http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision](-[classifier]).[ext]")
-    }
-    maven {
-        name = "jitpack"
-        url = uri("https://jitpack.io")
-    }
+    maven("http://maven.cil.li/") { this.name = "OpenComputers" }
+    maven("http://default.mobiusstrip.eu/maven") { this.name = "Jabba" }
+    maven("http://chickenbones.net/maven/") { this.name = "CodeChicken" }
+    maven("http://www.ryanliptak.com/maven/") { this.name = "appleCore" }
+    maven("https://jitpack.io")
 }
 
 dependencies {
     //Needed properties
-    val ic2Version : String by project
-    val galacticraftVersion : String by project
-    val applecoreVersion : String by project
-    val enderCoreVersion : String by project
-    val enderioVersion : String by project
+    val ic2Version: String by project
+    val galacticraftVersion: String by project
+    val applecoreVersion: String by project
+    val enderCoreVersion: String by project
+    val enderioVersion: String by project
     //hard deps
     compile("net.industrial-craft:industrialcraft-2:$ic2Version:dev")
     //compile("com.github.GTNH2:GT5-Unofficial:experimental-SNAPSHOT:dev") //broken jitpack.io dep
@@ -148,7 +118,7 @@ dependencies {
     compileOnly("li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api")
     compileOnly("net.sengir.forestry:forestry_1.7.10:4.2.16.64:dev")
     compileOnly("com.github.GTNewHorizons:GalacticGregGT5:master-SNAPSHOT")
-    //compileOnly(fileTree(dir = "libs", include = "*.jar"))
+    compileOnly(fileTree("libs") { this.include("*.jar") })
 
     //CoreLibs for compile-age
     //compileOnly("com.github.GTNH2:Yamcl:master-SNAPSHOT") //broken jitpack.io dep
@@ -162,7 +132,7 @@ dependencies {
     compile("codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev")
 }
 
-val Project.minecraft : UserExtension
+val Project.minecraft: UserExtension
     get() = extensions.getByName<UserExtension>("minecraft")
 
 tasks.withType<Jar> {
@@ -181,8 +151,8 @@ tasks.withType<Jar> {
 }
 
 tasks.jar {
-    exclude ("assets/gregtech/textures/items/materialicons/copy.bat")
-    exclude ("assets/gregtech/textures/blocks/materialicons/copy.bat")
+    exclude("assets/gregtech/textures/items/materialicons/copy.bat")
+    exclude("assets/gregtech/textures/blocks/materialicons/copy.bat")
     manifest {
         attributes["FMLCorePlugin"] = "com.github.bartimaeusnek.ASM.BWCorePlugin"
         attributes["FMLCorePluginContainsFMLMod"] = "true"
