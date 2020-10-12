@@ -42,14 +42,14 @@ apply(plugin = "forge")
 
 idea {
     module {
-        isDownloadJavadoc = true
-        isDownloadSources = true
+        this.isDownloadJavadoc = true
+        this.isDownloadSources = true
     }
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    this.sourceCompatibility = JavaVersion.VERSION_1_8
+    this.targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks.withType<JavaCompile> {
@@ -65,13 +65,21 @@ group = "com.github.bartimaeusnek.bartworks"
 
 //minecraft block
 configure<UserExtension> {
-    version = "1.7.10-10.13.4.1614-1.7.10"
-    replaceIn("MainMod.java")
-    replaceIn("API_REFERENCE.java")
-    replace("@version@", project.version)
+    this.version = "1.7.10-10.13.4.1614-1.7.10"
+    this.includes.addAll(
+            arrayOf(
+                    "MainMod.java",
+                    "API_REFERENCE.java"
+            )
+    )
     val apiVersion: String by project
-    replace("@apiversion@", apiVersion)
-    runDir = "run"
+    this.replacements.putAll(
+            mapOf(
+                Pair("@version@", project.version),
+                Pair("@apiversion@", apiVersion)
+            )
+    )
+    this.runDir = "run"
 }
 
 repositories {
@@ -137,50 +145,58 @@ val Project.minecraft: UserExtension
 
 tasks.withType<Jar> {
     // this will ensure that this task is redone when the versions change.
-    inputs.properties += "version" to project.version
-    inputs.properties += "mcversion" to project.minecraft.version
-    archiveBaseName.set("bartworks[${project.minecraft.version}]")
+    this.inputs.properties += "version" to project.version
+    this.inputs.properties += "mcversion" to project.minecraft.version
+    this.archiveBaseName.set("bartworks[${project.minecraft.version}]")
 
     // replace stuff in mcmod.info, nothing else
-    filesMatching("/mcmod.info") {
-        expand(mapOf(
-                "version" to project.version,
-                "mcversion" to project.minecraft.version
-        ))
+    this.filesMatching("/mcmod.info") {
+        this.expand(
+                mapOf(
+                    "version" to project.version,
+                    "mcversion" to project.minecraft.version
+                )
+        )
     }
 }
 
 tasks.jar {
-    exclude("assets/gregtech/textures/items/materialicons/copy.bat")
-    exclude("assets/gregtech/textures/blocks/materialicons/copy.bat")
-    manifest {
-        attributes["FMLCorePlugin"] = "com.github.bartimaeusnek.ASM.BWCorePlugin"
-        attributes["FMLCorePluginContainsFMLMod"] = "true"
-    }
+    this.exclude(
+            "assets/gregtech/textures/items/materialicons/copy.bat",
+            "assets/gregtech/textures/blocks/materialicons/copy.bat"
+    )
+    this.manifest.attributes(
+                mapOf(
+                        Pair("FMLCorePlugin","com.github.bartimaeusnek.ASM.BWCorePlugin"),
+                        Pair("FMLCorePluginContainsFMLMod","true")
+                )
+        )
 }
 
 val apiJar by tasks.creating(Jar::class) {
-    from(sourceSets.main.get().output) {
-        include("com/github/bartimaeusnek/bartworks/API/**")
-        include("com/github/bartimaeusnek/bartworks/util/**")
-        include("com/github/bartimaeusnek/bartworks/system/material/Werkstoff.class")
-        include("com/github/bartimaeusnek/crossmod/thaumcraft/util/**")
+    this.from(sourceSets.main.get().output) {
+        this.include(
+                "com/github/bartimaeusnek/bartworks/API/**",
+                "com/github/bartimaeusnek/bartworks/util/**",
+                "com/github/bartimaeusnek/bartworks/system/material/Werkstoff.class",
+                "com/github/bartimaeusnek/crossmod/thaumcraft/util/**"
+        )
     }
-    archiveClassifier.set("API")
+    this.archiveClassifier.set("API")
 }
 
 val sourcesJar by tasks.creating(Jar::class) {
-    from(sourceSets.main.get().allSource)
-    archiveClassifier.set("sources")
+    this.from(sourceSets.main.get().allSource)
+    this.archiveClassifier.set("sources")
 }
 
 val devJar by tasks.creating(Jar::class) {
-    from(sourceSets.main.get().output)
-    archiveClassifier.set("dev")
+    this.from(sourceSets.main.get().output)
+    this.archiveClassifier.set("dev")
 }
 
 artifacts {
-    add("archives", apiJar)
-    add("archives", sourcesJar)
-    add("archives", devJar)
+    this.archives(apiJar)
+    this.archives(sourcesJar)
+    this.archives(devJar)
 }
