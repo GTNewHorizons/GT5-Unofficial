@@ -260,7 +260,6 @@ public class MultiFluidHandler {
 			// Add new fluid
 			final int fit = Math.min(getCapacity(), push.amount);
 			if(doPush) {
-				empty = getNullSlot();
 				if (empty == -1)
 					return 0;
 				else
