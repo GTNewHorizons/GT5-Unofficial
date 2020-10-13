@@ -23,6 +23,8 @@
 package com.github.bartimaeusnek.bartworks.system.material;
 
 import com.github.technus.tectech.mechanics.structure.ICustomBlockSetting;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
@@ -78,6 +80,7 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
 
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
+        super.onBlockAdded(aWorld,aX,aY,aZ);
         GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
     }
 
@@ -85,7 +88,6 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
     protected void doRegistrationStuff(Werkstoff tMaterial) {
         GregTech_API.registerMachineBlock(this, -1);
         Optional.ofNullable(tMaterial)
-                .filter(pMaterial -> pMaterial.hasItemType(OrePrefixes.plate) && pMaterial.hasItemType(OrePrefixes.screw) && pMaterial.hasItemType(OrePrefixes.plateDouble) )
                 .ifPresent(pMaterial ->
                             GT_LanguageManager.addStringLocalization(
                                     this.getUnlocalizedName() + "." + pMaterial.getmID() + ".name",
@@ -104,13 +106,19 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     @SuppressWarnings("unchecked")
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
         Werkstoff.werkstoffHashSet.stream()
                 .filter(pMaterial ->
-                           pMaterial.hasItemType(OrePrefixes.plate)
-                        && pMaterial.hasItemType(OrePrefixes.screw)
-                        && pMaterial.hasItemType(OrePrefixes.plateDouble)
+                                   pMaterial.getType().equals(Werkstoff.Types.BIOLOGICAL)
+                                && pMaterial.hasGenerationFeature(WerkstoffLoader.blockCasing)
+                                ||
+                                   pMaterial.doesOreDictedItemExists(OrePrefixes.plate)
+                                && pMaterial.doesOreDictedItemExists(OrePrefixes.screw)
+                                && pMaterial.doesOreDictedItemExists(OrePrefixes.plateDouble)
+                                && pMaterial.doesOreDictedItemExists(OrePrefixes.gearGt)
+                                && pMaterial.doesOreDictedItemExists(OrePrefixes.gearGtSmall)
                         )
                 .map(pMaterial -> new ItemStack(aItem, 1, pMaterial.getmID()))
                 .forEach(aList::add);

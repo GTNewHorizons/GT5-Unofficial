@@ -26,7 +26,6 @@ import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_M
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -40,11 +39,12 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Collection;
 import java.util.HashSet;
+
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 
 public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -129,6 +129,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
             this.mOutputItems = this.bufferedRecipe.mOutputs;
             this.mOutputFluids = this.bufferedRecipe.mFluidOutputs;
+            sendLoopStart((byte) 20);
             this.updateSlots();
             return true;
         }
@@ -217,9 +218,8 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
 
                 --length;
 
-                if (length < -7){
+                if (length < -7)
                     return false;
-                }
 
             }
 
@@ -361,7 +361,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
                 "Imprint this machine with a Circuit Imprint,",
                 "by putting the imprint in the controller.",
                 "Every Circuit Assembly Line can only be imprinted ONCE.",
-                StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"
+                ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()
         };
     }
 

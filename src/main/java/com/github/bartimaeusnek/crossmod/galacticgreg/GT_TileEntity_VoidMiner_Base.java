@@ -34,7 +34,7 @@ import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_OreLayer;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128ba;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.google.common.collect.ArrayListMultimap;
 import gregtech.api.GregTech_API;
@@ -48,7 +48,6 @@ import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -160,7 +159,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
                 "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64)",
                 "for higher outputs.",
                 "Will output "+(2*TIER_MULTIPLIER)+" Ores per Second depending on the Dimension it is build in",
-                StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"
+                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()
         };
     }
 

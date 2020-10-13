@@ -27,6 +27,7 @@ import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -76,7 +77,7 @@ public class OreDictHandler {
             Pair<Integer,Short> p = OreDictHandler.cache.get(prefixes+elementName.replaceAll(" ",""));
             return new ItemStack(Item.getItemById(p.getKey()),amount,p.getValue());
         } else if (!OreDictionary.getOres(prefixes+elementName.replaceAll(" ","")).isEmpty()){
-            ItemStack tmp = OreDictionary.getOres(prefixes+elementName.replaceAll(" ","")).get(0).copy();
+            ItemStack tmp = GT_OreDictUnificator.get(OreDictionary.getOres(prefixes+elementName.replaceAll(" ","")).get(0).copy()).copy();
             OreDictHandler.cache.put(prefixes+elementName.replaceAll(" ",""),new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage()));
             tmp.stackSize=amount;
             return tmp;

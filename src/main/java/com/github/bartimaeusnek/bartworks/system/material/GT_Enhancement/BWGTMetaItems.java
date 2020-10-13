@@ -55,36 +55,36 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
     public BWGTMetaItems(OrePrefixes orePrefixes, List<Materials> noSubIDMaterials) {
         super(orePrefixes,null);
-        materialloop:
+        //materialloop:
         for (int i = 0; i < Materials.values().length; i++) {
             ItemStack tStack = new ItemStack(this, 1, i);
-            Materials w = Materials.values()[i];
-            if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
+            Materials material = Materials.values()[i];
+            if (((material.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((material.getFluid(1) == null && material.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                 continue;
-            for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
-                if (w.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
-                    continue materialloop;
-            if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""))){
+            //for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
+            //    if (material.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
+            //        continue materialloop;
+            if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ",""))){
                 hiddenThings.add(i);
                 continue;
             }
 
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", getDefaultLocalization(w));
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", w.getToolTip());
-            GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""), tStack);
+            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", getDefaultLocalization(material));
+            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", material.getToolTip());
+            GT_OreDictUnificator.registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ",""), tStack);
         }
 
-        if (noSubIDMaterials != null){
+        if (noSubIDMaterials != null) {
             hasList = true;
-            materialloop:
+            //materialloop:
             for (int i = 0; i < noSubIDMaterials.size(); i++) {
                 ItemStack tStack = new ItemStack(this, 1, i+1001);
                 Materials w = noSubIDMaterials.get(i);
                 if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                     continue;
-                for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
-                    if (w.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
-                        continue materialloop;
+                //for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
+                //    if (w.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
+                //        continue materialloop;
                 if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""))){
                     hiddenThings.add(i);
                     continue;

@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
@@ -37,7 +38,6 @@ import gregtech.common.GT_Client;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -83,7 +83,7 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
                 "Does not auto-connect",
                 "Does not turn or bend",
                 ChatColorHelper.WHITE + "Must be " + ChatColorHelper.YELLOW + "c" + ChatColorHelper.RED + "o" + ChatColorHelper.BLUE + "l" + ChatColorHelper.DARKPURPLE + "o" + ChatColorHelper.GOLD + "r" + ChatColorHelper.DARKRED + "e" + ChatColorHelper.DARKGREEN + "d" + ChatColorHelper.WHITE + " in order to work",
-                StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"
+                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()
         };
     }
 

@@ -23,7 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.items;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -32,7 +32,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -60,7 +59,7 @@ public class SimpleSubItemClass extends Item {
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
         super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
-        aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
+        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override

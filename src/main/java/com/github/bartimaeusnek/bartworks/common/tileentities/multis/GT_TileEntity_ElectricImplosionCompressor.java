@@ -22,7 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -33,7 +33,6 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCo
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
@@ -249,12 +248,6 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
 
     @Override
     public String[] getDescription() {
-        String[] dsc = StatCollector.translateToLocal("tooltip.tile.eic.0.name").split(";");
-        String[] mDescription = new String[dsc.length + 1];
-        for (int i = 0; i < dsc.length; i++) {
-            mDescription[i] = dsc[i];
-            mDescription[dsc.length] = StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
-        }
-        return mDescription;
+        return BW_Tooltip_Reference.getTranslatedBrandedTooltip("tooltip.tile.eic.0.name");
     }
 }

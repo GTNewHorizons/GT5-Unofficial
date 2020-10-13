@@ -27,6 +27,7 @@ import com.github.bartimaeusnek.bartworks.client.gui.GT_GUIContainer_LESU;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_LESU;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.util.ConnectedBlocksChecker;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -163,7 +164,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         dsc = StatCollector.translateToLocal("tooltip.tile.lesu.2.name").split(";");
         Collections.addAll(e, dsc);
         e.add(ChatColorHelper.RED + StatCollector.translateToLocal("tooltip.tile.lesu.3.name"));
-        e.add(StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks");
+        e.add(BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
         return e.toArray(new String[0]);
     }
 

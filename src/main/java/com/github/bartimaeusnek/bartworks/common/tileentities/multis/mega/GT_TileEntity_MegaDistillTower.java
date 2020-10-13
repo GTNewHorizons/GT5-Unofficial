@@ -23,10 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
-import com.github.bartimaeusnek.bartworks.util.MathUtils;
-import com.github.bartimaeusnek.bartworks.util.MegaUtils;
+import com.github.bartimaeusnek.bartworks.util.*;
 import com.google.common.collect.ArrayListMultimap;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -38,7 +35,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DistillationTower;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -76,7 +72,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
                 "Fluids are only put out at the correct height",
                 "The correct height equals the slot number in the NEI recipe",
                 "Clean Stainless Steel Machine Casings for the rest (15 x h - 5 at least!)",
-                StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"
+                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()
         };
     }
 

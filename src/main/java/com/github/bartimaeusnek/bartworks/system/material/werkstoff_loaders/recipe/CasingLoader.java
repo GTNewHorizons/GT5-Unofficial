@@ -22,9 +22,11 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
+import com.github.bartimaeusnek.bartworks.system.material.BW_GT_MaterialReference;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.item.ItemStack;
 
@@ -35,10 +37,27 @@ import static gregtech.api.enums.OrePrefixes.*;
 public class CasingLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
-        if (!(werkstoff.hasItemType(blockCasing) || werkstoff.hasItemType(plate) || werkstoff.hasItemType(screw) || werkstoff.hasItemType(gearGt) ))
-            return;
+        if (werkstoff == BW_GT_MaterialReference.Wood /*|| werkstoff == BW_GT_MaterialReference.WoodSealed*/) {
+            addCasingRecipes(werkstoff, plank);
+        } else {
+            if (!
+                    (
+                            werkstoff.hasGenerationFeature(blockCasing) &&
+                                    werkstoff.doesOreDictedItemExists(plate) &&
+                                    werkstoff.doesOreDictedItemExists(screw) &&
+                                    werkstoff.doesOreDictedItemExists(gearGtSmall) &&
+                                    werkstoff.doesOreDictedItemExists(gearGt) &&
+                                    werkstoff.doesOreDictedItemExists(plateDouble)
+                    )
+            )
+                return;
 
-        GT_ModHandler.addCraftingRecipe(werkstoff.get(blockCasing),new Object[]{
+            addCasingRecipes(werkstoff, plateDouble);
+        }
+    }
+
+    private static void addCasingRecipes(Werkstoff werkstoff, OrePrefixes reboltedCasingsOuterStuff){
+        GT_ModHandler.addCraftingRecipe(werkstoff.get(blockCasing), new Object[]{
                 "PSP",
                 "PGP",
                 "PSP",
@@ -47,23 +66,23 @@ public class CasingLoader implements IWerkstoffRunnable {
                 'G', werkstoff.get(gearGtSmall)
         });
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                werkstoff.get(plate,6),
-                werkstoff.get(screw,2),
+                werkstoff.get(plate, 6),
+                werkstoff.get(screw, 2),
                 werkstoff.get(gearGtSmall)
-        }, GT_Values.NF,werkstoff.get(blockCasing), 200, 30);
+        }, GT_Values.NF, werkstoff.get(blockCasing), 200, 30);
 
-        GT_ModHandler.addCraftingRecipe(werkstoff.get(blockCasingAdvanced),new Object[]{
+        GT_ModHandler.addCraftingRecipe(werkstoff.get(blockCasingAdvanced), new Object[]{
                 "PSP",
                 "PGP",
                 "PSP",
-                'P', werkstoff.get(plateDouble),
+                'P', werkstoff.get(reboltedCasingsOuterStuff),
                 'S', werkstoff.get(screw),
                 'G', werkstoff.get(gearGt)
         });
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                werkstoff.get(plateDouble,6),
-                werkstoff.get(screw,2),
+                werkstoff.get(reboltedCasingsOuterStuff, 6),
+                werkstoff.get(screw, 2),
                 werkstoff.get(gearGt)
-        }, GT_Values.NF,werkstoff.get(blockCasingAdvanced), 200, 30);
+        }, GT_Values.NF, werkstoff.get(blockCasingAdvanced), 200, 30);
     }
 }

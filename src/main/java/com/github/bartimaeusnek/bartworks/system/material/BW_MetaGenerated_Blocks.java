@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.renderer.BW_Renderer_Block_Ores;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer;
 import cpw.mods.fml.relauncher.Side;
@@ -55,6 +56,17 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
         this.setCreativeTab(metaTab);
         _prefixes = types;
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
+    }
+
+    @Override
+    public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
+        super.onBlockAdded(aWorld, aX, aY, aZ);
+        try {
+            //TODO: Unsleep this, is here because TE isnt set yet.
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            MainMod.LOGGER.catching(e);
+        }
     }
 
     @SideOnly(Side.CLIENT)

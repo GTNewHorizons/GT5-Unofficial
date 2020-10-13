@@ -24,11 +24,11 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.util.MegaUtils;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
-import com.github.bartimaeusnek.crossmod.tectech.TecTechUtils;
+import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -39,7 +39,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,13 +57,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
     }
 
     public String[] getDescription() {
-        String[] dsc = StatCollector.translateToLocal("tooltip.tile.mvf.0.name").split(";");
-        String[] fdsc = new String[dsc.length + 1];
-        for (int i = 0; i < dsc.length; i++) {
-            fdsc[i] = dsc[i];
-            fdsc[dsc.length] = StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
-        }
-        return fdsc;
+        return BW_Tooltip_Reference.getTranslatedBrandedTooltip("tooltip.tile.mvf.0.name");
     }
 
     @Override

@@ -187,6 +187,7 @@ public class WerkstoffLoader {
 
         bottle.mDefaultStackSize = 1;
         Werkstoff.GenerationFeatures.initPrefixLogic();
+        BW_GT_MaterialReference.init();
     }
 
     //TODO:
@@ -474,6 +475,8 @@ public class WerkstoffLoader {
             Arrays.asList(Materials.RockSalt, Materials.Borax),
             new Pair<>(Materials.RockSalt, 1)
     );
+
+    //More NonGT Stuff
     public static final Werkstoff Fayalit = new Werkstoff(
             new short[]{50, 50, 50, 0},
             "Fayalite",
@@ -1426,7 +1429,10 @@ public class WerkstoffLoader {
 
     public static ItemStack getCorrespondingItemStackUnsafe(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
         if (!werkstoff.getGenerationFeatures().enforceUnification) {
-            ItemStack ret = OreDictHandler.getItemStack(werkstoff.getVarName(), orePrefixes, amount);
+            ItemStack ret = GT_OreDictUnificator.get(orePrefixes, werkstoff.getBridgeMaterial(), 1);
+            if (ret != null)
+                return ret;
+            ret = OreDictHandler.getItemStack(werkstoff.getVarName(), orePrefixes, amount);
             if (ret != null)
                 return ret;
         }

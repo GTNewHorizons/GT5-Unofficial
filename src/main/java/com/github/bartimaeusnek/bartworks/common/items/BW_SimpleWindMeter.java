@@ -23,7 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.items;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.WorldData;
@@ -59,7 +59,7 @@ public class BW_SimpleWindMeter extends Item {
         super.addInformation(itemStack, entityPlayer, list, p_77624_4_);
         list.add(StatCollector.translateToLocal("tooltip.windmeter.0.name"));
         list.add(StatCollector.translateToLocal("tooltip.windmeter.1.name") + " " + (this.getMaxDamage() - this.getDamage(itemStack)) + "/" + this.getMaxDamage());
-        list.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
+        list.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override

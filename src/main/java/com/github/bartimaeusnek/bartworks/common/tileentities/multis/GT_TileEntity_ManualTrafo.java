@@ -23,7 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -37,7 +37,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.GT_Values.V;
@@ -374,13 +373,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
 
     @Override
     public String[] getDescription() {
-        String[] dsc = StatCollector.translateToLocal("tooltip.tile.manualtravo.0.name").split(";");
-        String[] fdsc = new String[dsc.length + 1];
-        for (int i = 0; i < dsc.length; i++) {
-            fdsc[i] = dsc[i];
-            fdsc[dsc.length] = StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
-        }
-        return fdsc;
+        return BW_Tooltip_Reference.getTranslatedBrandedTooltip("tooltip.tile.manualtravo.0.name");
     }
 
     @Override

@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
@@ -123,6 +124,6 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 
     @SuppressWarnings("deprecation")
     public String[] getDescription() {
-        return new String[]{this.mDescription, StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " " + ChatColorHelper.YELLOW + this.maxAmperesIn(), StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " " + ChatColorHelper.YELLOW + this.maxAmperesOut(), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
+        return new String[]{this.mDescription, StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " " + ChatColorHelper.YELLOW + this.maxAmperesIn(), StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " " + ChatColorHelper.YELLOW + this.maxAmperesOut(), BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()};
     }
 }

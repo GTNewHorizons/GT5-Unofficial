@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.system.material;
 
 import com.github.bartimaeusnek.bartworks.common.items.BW_ItemBlocks;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_LanguageManager;
@@ -62,6 +63,7 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
         if (aList == null)
             aList = new ArrayList<String>();
         aList.add(Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage()).getToolTip());
+        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side, float hitX, float hitY, float hitZ, int aMeta) {

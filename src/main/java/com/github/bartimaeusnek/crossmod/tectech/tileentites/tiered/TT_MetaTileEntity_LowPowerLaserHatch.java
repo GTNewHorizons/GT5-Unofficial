@@ -22,7 +22,7 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -46,7 +46,7 @@ public class TT_MetaTileEntity_LowPowerLaserHatch extends GT_MetaTileEntity_Hatc
         return new String[]{
                 this.mDescription,
                 StatCollector.translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": " + EnumChatFormatting.YELLOW + this.getTotalPower() + EnumChatFormatting.RESET + " EU/t",
-                StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"
+                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()
         };
     }
 

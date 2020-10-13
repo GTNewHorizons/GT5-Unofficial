@@ -22,8 +22,10 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.*;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
+import com.google.common.base.Verify;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -34,7 +36,6 @@ import net.minecraftforge.fluids.FluidStack;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("ALL")
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
@@ -76,21 +77,25 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         Werkstoff.default_null_Werkstoff = new Werkstoff(new short[3], "_NULL", "Default null Werkstoff", Werkstoff.DEFAULT_NULL_STATS, Werkstoff.Types.UNDEFINED, Werkstoff.DEFAULT_NULL_GENERATION_FEATURES, -1, TextureSet.SET_NONE);
     }
 
+    /**
+     * GT Materials Bridge Constructor
+     * @param materials a GT Materials
+     * @param generationFeatures the new Types you want to add
+     * @param type - self explainatory
+     * @param mID > 31_766 && <= 32_767
+     */
     public Werkstoff(Materials materials, Werkstoff.GenerationFeatures generationFeatures, Types type, int mID){
         this(   materials.mRGBa,
-                materials.getToolTip(),
                 materials.mDefaultLocalName,
+                materials.getToolTip(),
                 type == null ? materials.mElement != null ? Types.ELEMENT : Types.UNDEFINED : type,
                 generationFeatures,
                 mID,
                 materials.mIconSet,
                 (List) materials.mOreByProducts,
-                materials.mMaterialList
-                        .stream()
-                        .map(ml -> new Pair<ISubTagContainer, Integer>(ml.mMaterial, (int) ml.mAmount))
-                        .collect(Collectors.toList())
-                        .<Pair<ISubTagContainer, Integer>>toArray(new Pair[0])
+                new Pair<>(materials, 1)
         );
+        Verify.verify(mID > 31_766 && mID <= 32_767);
         this.stats.mass = materials.getMass();
         this.stats.protons = materials.getProtons();
         this.stats.meltingPoint = materials.mMeltingPoint;
@@ -102,11 +107,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.stats.setRadioactive(materials.isRadioactive());
         this.stats.setBlastFurnace(materials.mBlastFurnaceRequired);
         if (type == Types.COMPOUND){
-            this.stats.setElektrolysis(type == Types.COMPOUND);
+            this.stats.setElektrolysis(true);
             this.generationFeatures.addChemicalRecipes();
         }
         else if (type == Types.MIXTURE) {
-            this.stats.setCentrifuge(type == Types.MIXTURE);
+            this.stats.setCentrifuge(true);
             this.generationFeatures.addMixerRecipes();
         }
     }
@@ -452,9 +457,27 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return this.stats.getDurOverride() > 0 ? this.stats.getDurOverride() : (int) (this.stats.durMod * ((0.01f * (float) this.getStats().getMeltingPoint() * (float) this.getStats().getMass()) / (float) this.getContents().getKey()));
     }
 
+    /**
+     * Checks if the generation feature is enabled and if its not in the blacklist
+     */
     public boolean hasItemType(OrePrefixes prefixes) {
         int unpacked = Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes);
         return (this.getGenerationFeatures().toGenerate & unpacked) != 0 && (this.getGenerationFeatures().blacklist & unpacked) == 0;
+    }
+
+    /**
+     *  DOES NOT CHECK BLACKLIST!
+     */
+    public boolean hasGenerationFeature(OrePrefixes prefixes){
+        int unpacked = Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes);
+        return (this.getGenerationFeatures().toGenerate & unpacked) != 0;
+    }
+
+    /**
+     * Checks if the Actual Stack exists in the OreDict
+     */
+    public boolean doesOreDictedItemExists(OrePrefixes prefixes) {
+        return OreDictHandler.getItemStack(this.getDefaultName(), prefixes,1) != null;
     }
 
     public enum Types {
@@ -474,6 +497,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public static class GenerationFeatures {
+        public static final GenerationFeatures DISABLED = new GenerationFeatures().disable();
         long toGenerate = 0b0001001;
         //logic gate shit
         /*
@@ -712,7 +736,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
 
         public Werkstoff.GenerationFeatures addCasings() {
-            this.toGenerate = (long) (this.toGenerate | 0x380);
+            this.toGenerate = (long) (this.toGenerate | 0x382);
             return this;
         }
 

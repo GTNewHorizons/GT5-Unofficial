@@ -29,10 +29,9 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.gui.GT_GUIContainer_RadioHatch;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_RadioHatch;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import com.github.bartimaeusnek.crossmod.GTpp.loader.RadioHatchCompat;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -62,7 +61,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
     private byte coverage;
 
     public GT_MetaTileEntity_RadioHatch(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, new String[]{StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"), StatCollector.translateToLocal("tooltip.tile.tiereddsc.3.name") + " " + (aTier - 2) + " " + ((aTier - 2) >= 2 ? StatCollector.translateToLocal("tooltip.bw.kg.1.name") : StatCollector.translateToLocal("tooltip.bw.kg.0.name")), StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"});
+        super(aID, aName, aNameRegional, aTier, 1, new String[]{StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"), StatCollector.translateToLocal("tooltip.tile.tiereddsc.3.name") + " " + (aTier - 2) + " " + ((aTier - 2) >= 2 ? StatCollector.translateToLocal("tooltip.bw.kg.1.name") : StatCollector.translateToLocal("tooltip.bw.kg.0.name")), StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"), BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()});
         this.cap = aTier - 2;
     }
 

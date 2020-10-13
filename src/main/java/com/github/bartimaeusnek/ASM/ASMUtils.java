@@ -52,7 +52,9 @@ public class ASMUtils {
 
     public static boolean writeClassToDisk(byte[] towrite, String Classname, String Path) {
         try {
-            OutputStream os = new FileOutputStream(new File(Path + Classname + ".class"));
+            if (Path.charAt(Path.length()-1) == '/' || Path.charAt(Path.length()-1) == '\\')
+                Path = Path.substring(0,Path.length()-1);
+            OutputStream os = new FileOutputStream(new File(Path + '/' + Classname + ".class"));
             os.write(towrite);
         } catch (IOException e) {
             e.printStackTrace();

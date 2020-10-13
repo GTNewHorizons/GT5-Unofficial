@@ -22,12 +22,12 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.util.StatCollector;
 
 public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLaserThingy {
 
@@ -139,6 +139,6 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Like a Tranformer... but for LAZORZ", "Transferrate: " + ChatColorHelper.YELLOW + this.getTotalPower() + ChatColorHelper.WHITE + " EU/t", StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
+        return new String[]{"Like a Tranformer... but for LAZORZ", "Transferrate: " + ChatColorHelper.YELLOW + this.getTotalPower() + ChatColorHelper.WHITE + " EU/t", BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()};
     }
 }

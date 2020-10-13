@@ -143,4 +143,24 @@ public class AccessPriorityListIterators {
         }
     }
 
+    public static class AccessPriorityListNodeIterator<E> implements Iterator<AccessPriorityListNode<E>> {
+        final AccessPriorityListNode<E> head;
+        AccessPriorityListNode<E> current;
+        public AccessPriorityListNodeIterator(AccessPriorityListNode<E> head) {
+            this.head = this.current = head;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public AccessPriorityListNode<E> next() {
+            AccessPriorityListNode<E> ret = current;
+            current = current.getNext();
+            return ret;
+        }
+    }
+
 }
