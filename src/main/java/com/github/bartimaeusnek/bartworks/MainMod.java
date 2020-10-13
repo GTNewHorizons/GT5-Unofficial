@@ -47,6 +47,8 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -63,7 +65,7 @@ import static com.github.bartimaeusnek.bartworks.common.loaders.BioRecipeLoader.
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.removeIC2Recipes;
 import static gregtech.api.enums.GT_Values.VN;
 
-@SuppressWarnings("unused")
+@SuppressWarnings("ALL")
 @Mod(
         modid = MainMod.MOD_ID, name = MainMod.NAME, version = MainMod.VERSION,
         dependencies = "required-after:IC2; "
@@ -89,8 +91,15 @@ public final class MainMod {
     public static MainMod instance;
     public static BW_Network BW_Network_instance = new BW_Network();
 
+    @SideOnly(Side.CLIENT)
+    private void ClientGTppWarning() {
+        javax.swing.JOptionPane.showMessageDialog(null,
+                "BartWorks was NOT meant to be played with GT++," +
+                        " since GT++'s Multiblocks break the Platinum Processing chain. " +
+                        "Feel free to continue, but be aware of this.","GT++ Warning", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+
     @Mod.EventHandler
-    @SuppressWarnings("ALL")
     public void preInit(FMLPreInitializationEvent preinit) {
 
         if (!(API_REFERENCE.VERSION.equals(MainMod.APIVERSION))) {
@@ -98,6 +107,15 @@ public final class MainMod {
         }
 
         LoaderReference.init(); //Check for ALL the mods.
+
+        if (LoaderReference.miscutils) {
+            if (SideReference.Side.Client)
+                ClientGTppWarning();
+
+            MainMod.LOGGER.error("BartWorks was NOT meant to be played with GT++," +
+                        " since GT++'s Multiblocks break the Platinum Processing chain. " +
+                        "Feel free to continue, but be aware of this.");
+        }
 
         if (LoaderReference.miscutils && ConfigHandler.GTppLogDisabler) {
             STFUGTPPLOG.replaceLogger();

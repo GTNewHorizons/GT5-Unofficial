@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ import static gregtech.api.enums.OrePrefixes.dustSmall;
 
 public class AfterLuVTierEnhacement {
 
-    private AfterLuVTierEnhacement(){};
+    private AfterLuVTierEnhacement(){}
 
     public static void run() {
 

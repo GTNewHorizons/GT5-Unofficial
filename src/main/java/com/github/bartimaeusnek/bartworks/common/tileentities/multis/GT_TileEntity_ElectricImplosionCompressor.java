@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -33,7 +33,6 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCo
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ import static com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry.BW_
 public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity_ImplosionCompressor {
 
     public static GT_Recipe.GT_Recipe_Map eicMap;
-    private boolean piston;
+    private Boolean piston = null;
 
     public GT_TileEntity_ElectricImplosionCompressor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -109,7 +108,8 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        this.piston = true;
+        if (this.piston == null)
+            this.piston = true;
     }
 
     private void resetPiston() {
@@ -148,8 +148,6 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
                     }
                 }
             }
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
-            this.piston = !this.piston;
         } else {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
@@ -157,9 +155,9 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
                         this.getBaseMetaTileEntity().getWorld().setBlock(xDir + aX + x, aY + 2, zDir + aZ + z, GregTech_API.sBlockMetal5, 2, 3);
                 }
             }
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
-            this.piston = !this.piston;
         }
+        GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
+        this.piston = !this.piston;
         if (hax)
             this.explodeMultiblock();
     }
@@ -250,12 +248,6 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
 
     @Override
     public String[] getDescription() {
-        String[] dsc = StatCollector.translateToLocal("tooltip.tile.eic.0.name").split(";");
-        String[] mDescription = new String[dsc.length + 1];
-        for (int i = 0; i < dsc.length; i++) {
-            mDescription[i] = dsc[i];
-            mDescription[dsc.length] = StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
-        }
-        return mDescription;
+        return BW_Tooltip_Reference.getTranslatedBrandedTooltip("tooltip.tile.eic.0.name");
     }
 }

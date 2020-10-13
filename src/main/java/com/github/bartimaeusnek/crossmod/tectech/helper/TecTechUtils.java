@@ -20,8 +20,9 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.crossmod.tectech;
+package com.github.bartimaeusnek.crossmod.tectech.helper;
 
+import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

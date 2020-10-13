@@ -572,7 +572,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
         String[] fdsc = new String[dsc.length + 1];
         for (int i = 0; i < dsc.length; i++) {
             fdsc[i] = dsc[i];
-            fdsc[dsc.length] = StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
+            fdsc[dsc.length] = BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get();
         }
         return fdsc;
     }

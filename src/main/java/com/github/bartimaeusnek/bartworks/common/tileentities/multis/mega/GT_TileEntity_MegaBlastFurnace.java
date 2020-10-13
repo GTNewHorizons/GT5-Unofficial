@@ -26,11 +26,11 @@ import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.util.MegaUtils;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
-import com.github.bartimaeusnek.crossmod.tectech.TecTechUtils;
+import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
 import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.LowPowerLaser;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
@@ -91,7 +91,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         String[] fdsc = new String[dsc.length + 1];
         for (int i = 0; i < dsc.length; i++) {
             fdsc[i] = dsc[i];
-            fdsc[dsc.length] = StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
+            fdsc[dsc.length] = BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get();
         }
         return fdsc;
     }
@@ -448,7 +448,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                     return false;
 
         if (LoaderReference.tectech && this.glasTier != 8)
-            if (!areLazorsLowPowa() || !areThingsProperlyTiered(this.getTecTechEnergyTunnels()) || !areThingsProperlyTiered(this.getTecTechEnergyMultis()))
+            if (!areLazorsLowPowa() || areThingsNotProperlyTiered(this.getTecTechEnergyTunnels()) || areThingsNotProperlyTiered(this.getTecTechEnergyMultis()))
                 return false;
 
         if (this.glasTier != 8 && !this.mEnergyHatches.isEmpty())
@@ -461,12 +461,12 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
 
     @SuppressWarnings("rawtypes")
     @Optional.Method(modid = "tectech")
-    private boolean areThingsProperlyTiered(Collection collection) {
+    private boolean areThingsNotProperlyTiered(Collection collection) {
         if (!collection.isEmpty())
             for (Object tecTechEnergyMulti : collection)
                 if (((GT_MetaTileEntity_TieredMachineBlock) tecTechEnergyMulti).mTier > this.glasTier)
-                    return false;
-        return true;
+                    return true;
+        return false;
     }
 
     @SuppressWarnings("rawtypes")

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
+ * Copyright (c) 2018-2020 bartimaeusnek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,9 @@ public class ASMUtils {
 
     public static boolean writeClassToDisk(byte[] towrite, String Classname, String Path) {
         try {
-            OutputStream os = new FileOutputStream(new File(Path + Classname + ".class"));
+            if (Path.charAt(Path.length()-1) == '/' || Path.charAt(Path.length()-1) == '\\')
+                Path = Path.substring(0,Path.length()-1);
+            OutputStream os = new FileOutputStream(new File(Path + '/' + Classname + ".class"));
             os.write(towrite);
         } catch (IOException e) {
             e.printStackTrace();

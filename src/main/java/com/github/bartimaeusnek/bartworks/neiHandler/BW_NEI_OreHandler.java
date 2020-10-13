@@ -74,10 +74,10 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equalsIgnoreCase("quickanddirtyneihandler")) {
             HashSet<ItemStack> result = new HashSet<>();
-            Werkstoff.werkstoffHashSet.stream().filter(w -> w.getGenerationFeatures().hasOres()).forEach(w -> result.add(w.get(OrePrefixes.ore)));
+            Werkstoff.werkstoffHashSet.stream().filter(w -> w.hasGenerationFeature(OrePrefixes.ore)).forEach(w -> result.add(w.get(OrePrefixes.ore)));
             result.forEach(this::loadCraftingRecipes);
             result.clear();
-            Werkstoff.werkstoffHashSet.stream().filter(w -> w.getGenerationFeatures().hasOres()).forEach(w -> result.add(w.get(OrePrefixes.oreSmall)));
+            Werkstoff.werkstoffHashSet.stream().filter(w -> w.hasGenerationFeature(OrePrefixes.ore)).forEach(w -> result.add(w.get(OrePrefixes.oreSmall)));
             result.forEach(this::loadCraftingRecipes);
             result.clear();
             HashSet<TemplateRecipeHandler.CachedRecipe> hashSet = new HashSet<>(this.arecipes);

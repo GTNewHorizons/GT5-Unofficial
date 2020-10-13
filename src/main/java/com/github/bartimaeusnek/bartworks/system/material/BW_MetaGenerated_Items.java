@@ -25,7 +25,7 @@ package com.github.bartimaeusnek.bartworks.system.material;
 import com.github.bartimaeusnek.bartworks.API.IRadMaterial;
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -49,7 +49,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -88,7 +87,6 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
             GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.getVarName(), tStack);
         }
     }
-
 
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure || this.orePrefixes == OrePrefixes.crushed) {
@@ -135,7 +133,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         if (aStack != null && aStack.getItem() instanceof BW_MetaGenerated_Items && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.nqgen"));
 
-        aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
+        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     public String getDefaultLocalization(Werkstoff werkstoff) {
@@ -223,7 +221,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     @Override
     public int getRadiationLevel(ItemStack aStack) {
         Werkstoff w = werkstoffHashMap.get((short)aStack.getItemDamage());
-        return w.getStats().isRadioactive() ? (int) w.getStats().protons : 0;
+        return w.getStats().isRadioactive() ? (int) w.getStats().getProtons() : 0;
     }
 
     @Override

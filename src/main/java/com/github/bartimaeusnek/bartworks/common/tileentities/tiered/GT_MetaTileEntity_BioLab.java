@@ -268,6 +268,6 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
 
     @Override
     public String[] getDescription() {
-        return new String[]{StatCollector.translateToLocal("tooltip.tile.biolab.0.name"), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
+        return new String[]{StatCollector.translateToLocal("tooltip.tile.biolab.0.name"), BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()};
     }
 }

@@ -24,6 +24,7 @@ package com.github.bartimaeusnek.ASM;
 
 import com.github.bartimaeusnek.bartworks.util.NonNullWrappedHashSet;
 import com.github.bartimaeusnek.bartworks.util.accessprioritylist.AccessPriorityList;
+import com.github.bartimaeusnek.bartworks.util.accessprioritylist.AccessPriorityListNode;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,6 +32,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -53,21 +55,16 @@ public class BWCoreStaticReplacementMethodes {
             if (itemstack2 != null)
             {
                 if (i == 0)
-                {
                     itemstack = itemstack2;
-                }
 
                 if (i == 1)
-                {
                     itemstack1 = itemstack2;
-                }
 
                 ++i;
             }
         }
 
-        if (i == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.stackSize == 1 && itemstack1.stackSize == 1 && itemstack.getItem().isRepairable())
-        {
+        if (i == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.stackSize == 1 && itemstack1.stackSize == 1 && itemstack.getItem().isRepairable()) {
             Item item = itemstack.getItem();
             int j1 = item.getMaxDamage() - itemstack.getItemDamageForDisplay();
             int k = item.getMaxDamage() - itemstack1.getItemDamageForDisplay();
@@ -75,24 +72,23 @@ public class BWCoreStaticReplacementMethodes {
             int i1 = item.getMaxDamage() - l;
 
             if (i1 < 0)
-            {
                 i1 = 0;
-            }
 
             return new ItemStack(itemstack.getItem(), 1, i1);
-        } else {
-            IRecipe iPossibleRecipe = null;
-            int index = 0;
-            for (Iterator<IRecipe> it = RECENTLYUSEDRECIPES.iterator(); it.hasNext(); ++index) {
-                IRecipe RECENTLYUSEDRECIPE = it.next();
-                if (RECENTLYUSEDRECIPE.matches(inventoryCrafting, world)) {
-                    iPossibleRecipe = RECENTLYUSEDRECIPE;
-                    break;
-                }
-            }
 
-            if (iPossibleRecipe != null) {
-                RECENTLYUSEDRECIPES.addPrioToNode(index);
+        } else {
+
+            IRecipe iPossibleRecipe = null;
+            Iterator<AccessPriorityListNode<IRecipe>> it = RECENTLYUSEDRECIPES.nodeIterator();
+
+            while (it.hasNext()) {
+                AccessPriorityListNode<IRecipe> recipeNode = it.next();
+                iPossibleRecipe = recipeNode.getELEMENT();
+
+                if (!iPossibleRecipe.matches(inventoryCrafting, world))
+                    continue;
+
+                RECENTLYUSEDRECIPES.addPrioToNode(recipeNode);
                 return iPossibleRecipe.getCraftingResult(inventoryCrafting);
             }
 
@@ -102,10 +98,12 @@ public class BWCoreStaticReplacementMethodes {
             List recipeList = CraftingManager.getInstance().getRecipeList();
 
             for (int k = 0; k < recipeList.size(); k++) {
-                recipeSet.add((IRecipe) recipeList.get(k));
+                IRecipe r = (IRecipe) recipeList.get(k);
+                if (r.matches(inventoryCrafting, world))
+                    recipeSet.add(r);
             }
 
-            Object[] arr = recipeSet.parallelStream().filter(r -> r.matches(inventoryCrafting, world)).toArray();
+            Object[] arr = recipeSet.toArray();
 
             if (arr.length == 0)
                 return null;

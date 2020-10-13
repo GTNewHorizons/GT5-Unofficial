@@ -40,44 +40,58 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.GTMetaItemEnhancer.NoMetaValue;
 
 public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
     private boolean hasList;
+    private final Set<Integer> hiddenThings = new HashSet<>();
 
     public BWGTMetaItems(OrePrefixes orePrefixes, List<Materials> noSubIDMaterials) {
         super(orePrefixes,null);
-        materialloop:
+        //materialloop:
         for (int i = 0; i < Materials.values().length; i++) {
             ItemStack tStack = new ItemStack(this, 1, i);
-            Materials w = Materials.values()[i];
-            if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
+            Materials material = Materials.values()[i];
+            if (((material.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((material.getFluid(1) == null && material.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                 continue;
-            for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
-                if (w.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
-                    continue materialloop;
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", getDefaultLocalization(w));
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", w.getToolTip());
-                GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""), tStack);
+            //for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
+            //    if (material.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
+            //        continue materialloop;
+            if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ",""))){
+                hiddenThings.add(i);
+                continue;
+            }
+
+            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", getDefaultLocalization(material));
+            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", material.getToolTip());
+            GT_OreDictUnificator.registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ",""), tStack);
         }
-        if (noSubIDMaterials != null){
+
+        if (noSubIDMaterials != null) {
             hasList = true;
-            materialloop:
+            //materialloop:
             for (int i = 0; i < noSubIDMaterials.size(); i++) {
                 ItemStack tStack = new ItemStack(this, 1, i+1001);
                 Materials w = noSubIDMaterials.get(i);
                 if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                     continue;
-                for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
-                    if (w.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
-                        continue materialloop;
+                //for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
+                //    if (w.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
+                //        continue materialloop;
+                if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""))){
+                    hiddenThings.add(i);
+                    continue;
+                }
                 GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", getDefaultLocalization(w));
                 GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", w.getToolTip());
-                    GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""), tStack);
+                GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""), tStack);
             }
         }
     }
@@ -116,6 +130,8 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
                 continue;
             else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                 continue;
+            else if (hiddenThings.contains(i))
+                continue;
             aList.add(new ItemStack(this, 1, i));
         }
         if (hasList)
@@ -124,6 +140,8 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
                 if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0 && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0)
                     continue;
                 else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
+                    continue;
+                else if (hiddenThings.contains(i))
                     continue;
                 aList.add(new ItemStack(this, 1, i + 1001));
             }
