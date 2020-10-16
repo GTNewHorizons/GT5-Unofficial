@@ -44,19 +44,19 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                 if (data > 3) data = 0;
                 switch (data) {
                     case 0:
-                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Ore, Any Rock Block"));
+                        aPlayer.addChatMessage(new ChatComponentText(GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.mode.0", "Set Mode: Ore, Any Rock Block").getString()));
                         break;
                     case 1:
-                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Ore (with small), Any Rock Block"));
+                        aPlayer.addChatMessage(new ChatComponentText(GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.mode.1", "Set Mode: Ore (with small), Any Rock Block").getString()));
                         break;
                     case 2:
-                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Oil, Any Block"));
+                        aPlayer.addChatMessage(new ChatComponentText(GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.mode.2", "Set Mode: Oil, Any Block").getString()));
                         break;
                     case 3:
-                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Pollution, Any Block"));
+                        aPlayer.addChatMessage(new ChatComponentText(GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.mode.3", "Set Mode: Pollution, Any Block").getString()));
                         break;
                     default:
-                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: ERROR"));
+                        aPlayer.addChatMessage(new ChatComponentText(GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.mode.error", "Set Mode: ERROR").getString()));
                         break;
                 }
                 DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, (long) data);
@@ -160,11 +160,11 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
 
     void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
         if (value < 0) {
-            aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name));
+            aPlayer.addChatMessage(new ChatComponentText(GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.foundtexts.6", foundTexts[6]).getString() + name));
         } else if (value < 1) {
-            aPlayer.addChatMessage(new ChatComponentText(foundTexts[0]));
+            aPlayer.addChatMessage(new ChatComponentText(GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.foundtexts.6", foundTexts[0]).getString()));
         } else
-            aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name + " " + value));
+            aPlayer.addChatMessage(new ChatComponentText(GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.foundtexts.6", foundTexts[6]).getString() + name + " " + value));
     }
 
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {

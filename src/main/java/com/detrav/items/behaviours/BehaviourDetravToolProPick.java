@@ -117,7 +117,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
         }
         range = range/2; // Convert range from diameter to radius
         
-        aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+"Prospecting at " + EnumChatFormatting.BLUE + "(" + bX + ", " + bZ + ")" ));
+        aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+ GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.prospecting", "Prospecting at ").getString() + EnumChatFormatting.BLUE + "(" + bX + ", " + bZ + ")" ));
         for (int x = -(range); x<(range+1);++x){
             aX=bX+(x*16);
             for (int z = -(range); z<(range+1);++z) {
@@ -131,7 +131,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                     }
                 }
                 if (DetravScannerMod.DEBUGBUILD)
-                    aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW+"Chunk at "+ aX +"|"+aZ+" to "+(aX+16)+"|"+(aZ+16) + DISTANCETEXTS[distTextIndex]));
+                    aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW+"Chunk at "+ aX +"|"+aZ+" to "+(aX+16)+"|"+(aZ+16) + GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.distancetexts."+distTextIndex, DISTANCETEXTS[distTextIndex]).getString()));
                 processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), aRandom, chance);
             }
         }
@@ -142,9 +142,9 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
         }
         
         if( badluck == 0) {
-            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "All chunks scanned successfully!"));
+            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.success", "All chunks scanned successfully!").getString()));
         } else {
-            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Failed on " + badluck + " chunks. Better luck next time!"));
+            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.fail", "Failed on %badluck chunks. Better luck next time!").getString().replace("%badluck", Integer.toString(badluck))));
         }
     }
 
@@ -152,7 +152,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
     protected void prospectSingleChunk(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ )
     {
         ores = new HashMap<String, Integer>();
-        aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+"Prospecting at " + EnumChatFormatting.BLUE + "(" + aX + ", " + aZ + ")" ));
+        aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+ GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.prospecting", "Prospecting at ").getString() + EnumChatFormatting.BLUE + "(" + aX + ", " + aZ + ")" ));
         processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), new SplittableRandom(), 1000);
         
         for (String key : ores.keySet()) {
@@ -265,7 +265,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
     }
 
     void addOreToHashMap(String orename, EntityPlayer aPlayer) {
-        String oreDistance = orename + DISTANCETEXTS[distTextIndex]; // orename + the textual distance of the ore
+        String oreDistance = orename + GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.distancetexts."+distTextIndex, DISTANCETEXTS[distTextIndex]).getString(); // orename + the textual distance of the ore
         if (!ores.containsKey(oreDistance)) {
             if (DetravScannerMod.DEBUGBUILD)
                 aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN+" Adding to oremap " + oreDistance));
@@ -278,19 +278,19 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
 
     void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
         if (value < 0) {
-            aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name));
+            aPlayer.addChatMessage(new ChatComponentText(GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.foundtexts.6", foundTexts[6]).getString() + name));
         } else if (value < 1) {
-            aPlayer.addChatMessage(new ChatComponentText(foundTexts[0]));
+            aPlayer.addChatMessage(new ChatComponentText(GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.foundtexts.0", foundTexts[0]).getString()));
         } else if (value < 10)
-            aPlayer.addChatMessage(new ChatComponentText(name + foundTexts[1]));
+            aPlayer.addChatMessage(new ChatComponentText(name + GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.foundtexts.1", foundTexts[1]).getString()));
         else if (value < 30)
-            aPlayer.addChatMessage(new ChatComponentText(name + foundTexts[2]));
+            aPlayer.addChatMessage(new ChatComponentText(name + GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.foundtexts.2", foundTexts[2]).getString()));
         else if (value < 60)
-            aPlayer.addChatMessage(new ChatComponentText(name + foundTexts[3]));
+            aPlayer.addChatMessage(new ChatComponentText(name + GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.foundtexts.3", foundTexts[3]).getString()));
         else if (value < 100)
-            aPlayer.addChatMessage(new ChatComponentText(name + foundTexts[4]));
+            aPlayer.addChatMessage(new ChatComponentText(name + GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.foundtexts.4", foundTexts[4]).getString()));
         else
-            aPlayer.addChatMessage(new ChatComponentText(name + foundTexts[5]));
+            aPlayer.addChatMessage(new ChatComponentText(name + GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.foundtexts.5", foundTexts[5]).getString()));
     }
 
     public static int getPolution(World aWorld, int aX, int aZ)
