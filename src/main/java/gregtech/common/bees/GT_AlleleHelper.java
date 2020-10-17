@@ -21,7 +21,7 @@ public class GT_AlleleHelper extends AlleleHelper {
 
     private static final String modId = Constants.ID;
 
-    private Map<Class, Map<?, ? extends IAllele>> alleleMaps = new HashMap<>();
+    private Map<Class<?>, Map<?, ? extends IAllele>> alleleMaps = new HashMap<>();
 
     public void init() {
         if (PluginManager.Module.APICULTURE.isEnabled()) {
@@ -114,12 +114,17 @@ public class GT_AlleleHelper extends AlleleHelper {
         }
         alleleMaps.put(Boolean.class, booleans);
     }
-
+    @SuppressWarnings("unchecked")
     public static void initialisation(){
         GT_AlleleHelper helper = new GT_AlleleHelper();
 
         try {
-            helper.alleleMaps = (Map<Class, Map<?, ? extends IAllele>>) FieldUtils.readField(FieldUtils.getField(AlleleHelper.class,"alleleMaps",true),AlleleHelper.instance,true);
+            helper.alleleMaps = (Map<Class<?>, Map<?, ? extends IAllele>>)
+                    FieldUtils.readField(
+                        FieldUtils.getField(AlleleHelper.class,"alleleMaps",true),
+                        AlleleHelper.instance,
+                        true
+                    );
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }

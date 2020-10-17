@@ -8,9 +8,19 @@ import forestry.apiculture.genetics.alleles.AlleleBeeSpecies;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import java.awt.*;
+
 public class GT_AlleleBeeSpecies extends AlleleBeeSpecies {
-    public GT_AlleleBeeSpecies(String uid, boolean dominant, String unlocalizedName, String authority, String unlocalizedDescription, IClassification branch, String binomial, int primaryColor, int secondaryColor) {
-        super(uid, unlocalizedName, authority, unlocalizedDescription, dominant, branch, binomial, primaryColor, secondaryColor);
+    public GT_AlleleBeeSpecies(String uid,
+                               boolean dominant,
+                               String unlocalizedName,
+                               String authority,
+                               String unlocalizedDescription,
+                               IClassification branch,
+                               String binomial,
+                               Color primaryColor,
+                               Color secondaryColor) {
+        super(uid, unlocalizedName, authority, unlocalizedDescription, dominant, branch, binomial, primaryColor.getRGB(), secondaryColor.getRGB());
         AlleleManager.alleleRegistry.registerAllele(this, EnumBeeChromosome.SPECIES);
     }
 
