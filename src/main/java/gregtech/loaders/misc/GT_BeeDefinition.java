@@ -50,7 +50,7 @@ import static gregtech.loaders.misc.GT_BeeDefinitionReference.*;
  * Bride Class for Lambdas
  */
 class GT_BeeDefinitionReference {
-    protected final static byte FORRESTRY = 0;
+    protected final static byte FORESTRY = 0;
     protected final static byte EXTRABEES = 1;
     protected final static byte GENDUSTRY = 2;
     protected final static byte MAGICBEES = 3;
@@ -74,7 +74,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.VANILLA);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Industrious"), getSpecies(FORRESTRY, "Diligent"), 10);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Industrious"), getSpecies(FORESTRY, "Diligent"), 10);
                 tMutation.requireResource(Blocks.clay, 0); //blockStainedHardenedClay
             }
     ),
@@ -98,7 +98,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, FLOWER_PROVIDER, getFlowers(EXTRABEES, "water"));
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Marshy"), CLAY, 7);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Marshy"), CLAY, 7);
                 if (Loader.isModLoaded("TConstruct"))
                     tMutation.requireResource(GameRegistry.findBlock("TConstruct", "slime.gel"), 1);
             }
@@ -119,7 +119,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, FLOWERING, Flowering.FASTER);
                 AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.NONE);
             },
-            dis -> dis.registerMutation(getSpecies(FORRESTRY, "Rural"), CLAY, 10)
+            dis -> dis.registerMutation(getSpecies(FORESTRY, "Rural"), CLAY, 10)
     ),
     STICKYRESIN(GT_BranchDefinition.ORGANIC, "StickyResin", true, new Color(0x2E8F5B), new Color(0xDCC289),
             beeSpecies -> {
@@ -155,7 +155,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectCreeper);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Industrious"), PEAT, 9);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Industrious"), PEAT, 9);
                 tMutation.requireResource("blockCoal");
             }
     ),
@@ -201,7 +201,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, FLOWERING, Flowering.FASTER);
 
             },
-            dis -> dis.registerMutation(getSpecies(FORRESTRY, "Agrarian"), getSpecies(MAGICBEES, "TCBatty"), 10)
+            dis -> dis.registerMutation(getSpecies(FORESTRY, "Agrarian"), getSpecies(MAGICBEES, "TCBatty"), 10)
     ),
     ASH(GT_BranchDefinition.ORGANIC, "Ash", true, new Color(0x1e1a18), new Color(0xc6c6c6),
             beeSpecies -> {
@@ -271,7 +271,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER),
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Industrious"), getSpecies(FORRESTRY, "Demonic"), 10);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Industrious"), getSpecies(FORESTRY, "Demonic"), 10);
                 tMutation.requireResource("blockRedstone");
             }
     ),
@@ -284,7 +284,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER),
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Demonic"), getSpecies(FORRESTRY, "Imperial"), 10);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Demonic"), getSpecies(FORESTRY, "Imperial"), 10);
                 tMutation.requireResource("blockLapis");
             }
     ),
@@ -297,7 +297,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER),
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Hermitic"), LAPIS, 10);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Hermitic"), LAPIS, 10);
                 if (Loader.isModLoaded("appliedenergistics2"))
                     tMutation.requireResource(GameRegistry.findBlock("appliedenergistics2", "tile.BlockQuartz"), 0);
             }
@@ -366,7 +366,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
             },
             template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER),
-            dis -> dis.registerMutation(CERTUS, getSpecies(FORRESTRY, "Ended"), 5)
+            dis -> dis.registerMutation(CERTUS, getSpecies(FORESTRY, "Ended"), 5)
     ),
     EMERALD(GT_BranchDefinition.GEM, "Emerald", false, new Color(0x248F24), new Color(0x2EB82E),
             beeSpecies -> {
@@ -449,7 +449,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER),
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Majestic"), CLAY, 13);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Majestic"), CLAY, 13);
                 tMutation.requireResource("blockCopper");
             }
     ),
@@ -463,7 +463,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER),
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(CLAY, getSpecies(FORRESTRY, "Diligent"), 13);
+                IBeeMutationCustom tMutation = dis.registerMutation(CLAY, getSpecies(FORESTRY, "Diligent"), 13);
                 tMutation.requireResource("blockTin");
             }
     ),
@@ -649,7 +649,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER),
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Heroic"), MANGANESE, 5);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Heroic"), MANGANESE, 5);
                 tMutation.requireResource(GregTech_API.sBlockMetal7, 11);
             }
     ),
@@ -758,7 +758,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectGlacial);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Icy"), getSpecies(FORRESTRY, "Glacial"), 10);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Icy"), getSpecies(FORESTRY, "Glacial"), 10);
                 tMutation.requireResource(Block.getBlockFromItem(GT_ModHandler.getModItem("IC2", "fluidCoolant", 1).getItem()), 0);
                 tMutation.restrictTemperature(ICY);
             }
@@ -781,7 +781,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Demonic"), getSpecies(EXTRABEES, "volcanic"), 10);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Demonic"), getSpecies(EXTRABEES, "volcanic"), 10);
                 tMutation.requireResource(Block.getBlockFromItem(GT_ModHandler.getModItem("IC2", "fluidHotCoolant", 1).getItem()), 0);
                 tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(128, "Boneyard Biome"));//Boneyard Biome
             }
@@ -917,7 +917,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(REDSTONEALLOY, getSpecies(FORRESTRY, "Demonic"), 9);
+                IBeeMutationCustom tMutation = dis.registerMutation(REDSTONEALLOY, getSpecies(FORESTRY, "Demonic"), 9);
                 tMutation.requireResource("blockEnergeticAlloy");
             }
     ),
@@ -935,7 +935,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, FLOWERING, Flowering.FAST);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(ENERGETICALLOY, getSpecies(FORRESTRY, "Phantasmal"), 6);
+                IBeeMutationCustom tMutation = dis.registerMutation(ENERGETICALLOY, getSpecies(FORESTRY, "Phantasmal"), 6);
                 tMutation.requireResource("blockVibrantAlloy");
                 tMutation.restrictTemperature(HOT, HELLISH);
             }
@@ -952,7 +952,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTER);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(STEEL, getSpecies(FORRESTRY, "Demonic"), 9);
+                IBeeMutationCustom tMutation = dis.registerMutation(STEEL, getSpecies(FORESTRY, "Demonic"), 9);
                 tMutation.requireResource("blockElectricalSteel");
             }
     ),
@@ -968,7 +968,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(ELECTRICALSTEEL, getSpecies(FORRESTRY, "Demonic"), 7);
+                IBeeMutationCustom tMutation = dis.registerMutation(ELECTRICALSTEEL, getSpecies(FORESTRY, "Demonic"), 7);
                 tMutation.requireResource("blockDarkSteel");
             }
     ),
@@ -984,7 +984,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(REDALLOY, getSpecies(FORRESTRY, "Ended"), 9);
+                IBeeMutationCustom tMutation = dis.registerMutation(REDALLOY, getSpecies(FORESTRY, "Ended"), 9);
                 tMutation.requireResource("blockPulsatingIron");
             }
     ),
@@ -1021,7 +1021,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(PLATINUM, getSpecies(FORRESTRY, "Phantasmal"), 3);
+                IBeeMutationCustom tMutation = dis.registerMutation(PLATINUM, getSpecies(FORESTRY, "Phantasmal"), 3);
                 tMutation.requireResource("blockEnderium");
             }
     ),
@@ -1043,7 +1043,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.JUNGLE);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(MAGICBEES, "TCFire"), getSpecies(FORRESTRY, "Edenic"), 10);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(MAGICBEES, "TCFire"), getSpecies(FORESTRY, "Edenic"), 10);
                 tMutation.requireResource("blockThaumium");
                 tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(192, "Magical Forest"));//magical forest
             }
@@ -1294,7 +1294,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Avenging"), PLATINUM, 2);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Avenging"), PLATINUM, 2);
                 tMutation.requireResource(GregTech_API.sBlockMetal7, 14);
             }
     ),
@@ -1454,7 +1454,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(MAGICBEES, "Eldritch"), getSpecies(FORRESTRY, "Imperial"), 8);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(MAGICBEES, "Eldritch"), getSpecies(FORESTRY, "Imperial"), 8);
                 tMutation.restrictHumidity(DAMP);
             }
     ),
@@ -1541,7 +1541,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.NORMAL),
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Ended"), STAINLESSSTEEL, 8);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Ended"), STAINLESSSTEEL, 8);
 
                 tMutation.restrictHumidity(ARID);
                 if (Loader.isModLoaded("HardcoreEnderExpansion"))
@@ -1563,7 +1563,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.NORMAL),
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Ended"), THAUMIUMDUST, 8);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Ended"), THAUMIUMDUST, 8);
                 tMutation.restrictHumidity(ARID);
                 if (Loader.isModLoaded("HardcoreEnderExpansion"))
                     tMutation.requireResource("blockHeeEndium");
@@ -1584,7 +1584,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, FLOWERING, Flowering.SLOWER);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Ended"), ZINC, 8);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Ended"), ZINC, 8);
                 tMutation.restrictHumidity(ARID);
                 if (Loader.isModLoaded("HardcoreEnderExpansion"))
                     tMutation.requireResource(GameRegistry.findBlock("HardcoreEnderExpansion", "stardust_ore"), 0);
@@ -1605,7 +1605,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Ended"), ENDDUST, 5);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Ended"), ENDDUST, 5);
                 tMutation.restrictHumidity(ARID);
                 if (Loader.isModLoaded("HardcoreEnderExpansion"))
                     tMutation.requireResource(GameRegistry.findBlock("HardcoreEnderExpansion", "spooky_log"), 0);
@@ -1759,7 +1759,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             template -> {
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORRESTRY, "Industrious"), getSpecies(FORRESTRY, "Heroic"), 10);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Industrious"), getSpecies(FORESTRY, "Heroic"), 10);
                 tMutation.restrictTemperature(ICY);
             }
     ),
