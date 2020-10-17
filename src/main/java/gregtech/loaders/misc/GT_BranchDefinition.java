@@ -9,151 +9,132 @@ import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.EnumAllele;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 
-import static gregtech.loaders.misc.GT_BeeDefinition.*;
-
+import static gregtech.loaders.misc.GT_BeeDefinition.getEffect;
+import static gregtech.loaders.misc.GT_BeeDefinition.getFlowers;
+import static gregtech.loaders.misc.GT_BeeDefinitionReference.EXTRABEES;
 
 public enum GT_BranchDefinition {
 
-    ORGANIC("Fuelis") {
-        @Override
-        protected void setBranchProperties(IAllele[] alleles) {
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.NONE);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.HUMIDITY_TOLERANCE, EnumAllele.Tolerance.BOTH_2);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.WHEAT);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.SLOW);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.SHORTER);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, EnumAllele.Speed.SLOWEST);
-        }
-    },
-    IC2("Industrialis") {
-        @Override
-        protected void setBranchProperties(IAllele[] alleles) {
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.UP_1);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.HUMIDITY_TOLERANCE, EnumAllele.Tolerance.BOTH_1);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.SNOW);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.FASTER);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.SHORT);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, EnumAllele.Speed.SLOW);
-        }
-    },
-    GTALLOY("Amalgamis") {
-        @Override
-        protected void setBranchProperties(IAllele[] alleles) {
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.NONE);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TOLERANT_FLYER, true);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.VANILLA);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.AVERAGE);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.SHORTEST);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, EnumAllele.Speed.FAST);
-        }
-    },
-    THAUMIC("Arcanis") {
-        @Override
-        protected void setBranchProperties(IAllele[] alleles) {
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.BOTH_1);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.HUMIDITY_TOLERANCE, EnumAllele.Tolerance.BOTH_1);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, getFlowers(EXTRABEES, "book"));
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.FASTER);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.LONGEST);
-        }
-    },
-    GEM("Ornamentis") {
-        @Override
-        protected void setBranchProperties(IAllele[] alleles) {
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.NONE);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.NETHER);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.AVERAGE);
-        }
-    },
-    METAL("Metaliferis") {
-        @Override
-        protected void setBranchProperties(IAllele[] alleles) {
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.DOWN_2);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.CAVE_DWELLING, true);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.JUNGLE);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.SLOWER);
-        }
-    },
-    RAREMETAL("Mineralis") {
-        @Override
-        protected void setBranchProperties(IAllele[] alleles) {
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.DOWN_1);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.CACTI);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.FAST);
-        }
-    },
-    RADIOACTIVE("Criticalis") {
-        @Override
-        protected void setBranchProperties(IAllele[] alleles) {
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.NONE);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.END);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.AVERAGE);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, GT_Bees.speedBlinding);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, getEffect(EXTRABEES, "radioactive"));
-        }
-    },
-    TWILIGHT("Nemoris Obscuri") {
-        @Override
-        protected void setBranchProperties(IAllele[] alleles) {
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.BOTH_1);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.HUMIDITY_TOLERANCE, EnumAllele.Tolerance.BOTH_1);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.VANILLA);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.FASTER);
-        }
-    },
-    HEE("Finis Expansiones") {
-        @Override
-        protected void setBranchProperties(IAllele[] alleles) {
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.BOTH_2);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.HUMIDITY_TOLERANCE, EnumAllele.Tolerance.BOTH_2);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, true);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, getFlowers(EXTRABEES, "book"));
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.SHORT);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING,  EnumAllele.Flowering.SLOW);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, EnumAllele.Speed.FASTEST);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TERRITORY, EnumAllele.Territory.LARGER);
-        }
-    },
-    SPACE("Cosmicis") {
-        @Override
-        protected void setBranchProperties(IAllele[] alleles) {
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.DOWN_2);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TOLERANT_FLYER, true);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, true);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, getFlowers(EXTRABEES, "rock"));
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.FASTEST);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.LONGEST);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, EnumAllele.Speed.FAST);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TERRITORY, EnumAllele.Territory.LARGEST);
-        }
-    },
-    PLANET("Planetaris") {
-        @Override
-        protected void setBranchProperties(IAllele[] alleles) {
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.BOTH_1);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TOLERANT_FLYER, true);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, getFlowers(EXTRABEES, "rock"));
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.FASTEST);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.NORMAL);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, EnumAllele.Speed.FASTEST);
-            AlleleHelper.instance.set(alleles, EnumBeeChromosome.TERRITORY, EnumAllele.Territory.LARGER);
-        }
-    };
+    ORGANIC("Fuelis", alleles -> {
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.NONE);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.HUMIDITY_TOLERANCE, EnumAllele.Tolerance.BOTH_2);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.WHEAT);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.SLOW);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.SHORTER);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, EnumAllele.Speed.SLOWEST);
+    }
+    ),
+    IC2("Industrialis", alleles -> {
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.UP_1);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.HUMIDITY_TOLERANCE, EnumAllele.Tolerance.BOTH_1);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.SNOW);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.FASTER);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.SHORT);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, EnumAllele.Speed.SLOW);
+    }
+    ),
+    GTALLOY("Amalgamis", alleles -> {
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.NONE);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TOLERANT_FLYER, true);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.VANILLA);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.AVERAGE);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.SHORTEST);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, EnumAllele.Speed.FAST);
+    }
+    ),
+    THAUMIC("Arcanis", alleles -> {
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.BOTH_1);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.HUMIDITY_TOLERANCE, EnumAllele.Tolerance.BOTH_1);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, getFlowers(EXTRABEES, "book"));
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.FASTER);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.LONGEST);
+    }
+    ),
+    GEM("Ornamentis", alleles -> {
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.NONE);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.NETHER);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.AVERAGE);
+    }
+    ),
+    METAL("Metaliferis", alleles -> {
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.DOWN_2);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.CAVE_DWELLING, true);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.JUNGLE);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.SLOWER);
+    }
+    ),
+    RAREMETAL("Mineralis", alleles -> {
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.DOWN_1);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.CACTI);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.FAST);
+    }
+    ),
+    RADIOACTIVE("Criticalis", alleles -> {
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.NONE);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.END);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.AVERAGE);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, GT_Bees.speedBlinding);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, getEffect(EXTRABEES, "radioactive"));
+    }
+    ),
+    TWILIGHT("Nemoris Obscuri", alleles -> {
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.BOTH_1);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.HUMIDITY_TOLERANCE, EnumAllele.Tolerance.BOTH_1);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, false);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.VANILLA);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.FASTER);
+    }
+    ),
+    HEE("Finis Expansiones", alleles -> {
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.BOTH_2);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.HUMIDITY_TOLERANCE, EnumAllele.Tolerance.BOTH_2);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, true);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, getFlowers(EXTRABEES, "book"));
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.SHORT);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.SLOW);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, EnumAllele.Speed.FASTEST);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TERRITORY, EnumAllele.Territory.LARGER);
+    }
+    ),
+    SPACE("Cosmicis", alleles -> {
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.DOWN_2);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TOLERANT_FLYER, true);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.NOCTURNAL, true);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, getFlowers(EXTRABEES, "rock"));
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.FASTEST);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.LONGEST);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, EnumAllele.Speed.FAST);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TERRITORY, EnumAllele.Territory.LARGEST);
+    }
+    ),
+    PLANET("Planetaris", alleles -> {
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.BOTH_1);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TOLERANT_FLYER, true);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWER_PROVIDER, getFlowers(EXTRABEES, "rock"));
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.FASTEST);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.LIFESPAN, EnumAllele.Lifespan.NORMAL);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.SPEED, EnumAllele.Speed.FASTEST);
+        AlleleHelper.instance.set(alleles, EnumBeeChromosome.TERRITORY, EnumAllele.Territory.LARGER);
+    }
+    ),
+    ;
 
     private static IAllele[] defaultTemplate;
     private final IClassification branch;
+    private final Consumer<IAllele[]> mBranchProperties;
 
-    GT_BranchDefinition(String scientific) {
-        branch = BeeManager.beeFactory.createBranch(this.name().toLowerCase(), scientific);
+    GT_BranchDefinition(String scientific, Consumer<IAllele[]> aBranchProperties) {
+        this.branch = BeeManager.beeFactory.createBranch(this.name().toLowerCase(), scientific);
+        this.mBranchProperties = aBranchProperties;
     }
 
     private static IAllele[] getDefaultTemplate() {
@@ -176,8 +157,8 @@ public enum GT_BranchDefinition {
         return Arrays.copyOf(defaultTemplate, defaultTemplate.length);
     }
 
-    protected void setBranchProperties(IAllele[] template) {
-
+    protected final void setBranchProperties(IAllele[] template) {
+        this.mBranchProperties.accept(template);
     }
 
     public final IAllele[] getTemplate() {
@@ -189,5 +170,4 @@ public enum GT_BranchDefinition {
     public final IClassification getBranch() {
         return branch;
     }
-
 }
