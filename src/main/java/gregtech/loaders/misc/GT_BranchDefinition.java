@@ -1,6 +1,7 @@
 package gregtech.loaders.misc;
 
 import forestry.api.apiculture.BeeManager;
+import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IClassification;
 import forestry.apiculture.genetics.alleles.AlleleEffect;
@@ -139,7 +140,7 @@ public enum GT_BranchDefinition {
 
     private static IAllele[] getDefaultTemplate() {
         if (defaultTemplate == null) {
-            defaultTemplate = new IAllele[values().length];
+            defaultTemplate = new IAllele[EnumBeeChromosome.values().length];
 
             AlleleHelper.instance.set(defaultTemplate, SPEED, Speed.SLOWEST);
             AlleleHelper.instance.set(defaultTemplate, LIFESPAN, Lifespan.SHORTER);
