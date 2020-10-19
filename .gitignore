@@ -94,3 +94,4 @@ libs/
 *.jar
 *.errored
 /build/
+/run
