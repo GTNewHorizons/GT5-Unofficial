@@ -17,6 +17,7 @@ buildscript {
 
 apply plugin: 'forge'
 apply plugin: 'idea'
+apply plugin: 'java'
 apply plugin: 'signing'
 
 file "build.properties" withReader {
@@ -29,30 +30,21 @@ version = "${config.gt.version}"
 group= "gregtech"
 archivesBaseName = "gregtech"
 
-
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+compileJava.options.encoding("UTF-8")
 
 minecraft {
     version = "${config.minecraft.version}-${config.forge.version}"
-    runDir = "eclipse"
-
+    runDir = "run"
 }
 
-idea { module { inheritOutputDirs = true } }
-
-configurations {
-    provided
-    embedded
-    compile.extendsFrom provided, embedded
-}
+idea.module.inheritOutputDirs = true
 
 repositories {
     maven {
-        name 'Forge'
-        url 'http://files.minecraftforge.net/maven'
+        name = 'Forge'
+        url = 'http://files.minecraftforge.net/maven'
     }
     maven {
         name = "chickenbones"
@@ -63,58 +55,58 @@ repositories {
         url = "http://maven.ic2.player.to/"
     }
     maven { // EnderIO & EnderCore
-        name 'tterrag Repo'
-        url "http://maven.tterrag.com"
+        name = 'tterrag Repo'
+        url = "http://maven.tterrag.com"
     }
     maven { // TConstruct
-        name 'DVS1 Maven FS'
-        url 'http://dvs1.progwml6.com/files/maven'
+        name = 'DVS1 Maven FS'
+        url = 'http://dvs1.progwml6.com/files/maven'
     }
     
     maven { // AppleCore
-        url "http://www.ryanliptak.com/maven/"
+        url = "http://www.ryanliptak.com/maven/"
     }
     maven { // GalacticGreg, YAMCore,..
-        name 'UsrvDE'
-        url "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/"
+        name = 'UsrvDE'
+        url = "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/"
     }
 	ivy {
-        name 'gtnh_download_source_stupid_underscore_typo'
-        artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]_[revision].[ext]"
+        name = 'gtnh_download_source_stupid_underscore_typo'
+        artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]_[revision].[ext]")
     }
 
 	ivy {
-        name 'gtnh_download_source'
-        artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]"
+        name = 'gtnh_download_source'
+        artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]")
     }
 }
 
 dependencies {
-	compile "eu.usrv:YAMCore:${config.minecraft.version}-${config.yamcore.version}:deobf"
-	compile "tconstruct:TConstruct:${config.minecraft.version}-${config.tconstruct.version}:deobf"
-	compile "mantle:Mantle:${config.minecraft.version}-${config.mantle.version}:deobf"
-	provided ("appeng:appliedenergistics2:${config.ae2.version}:dev") {
+    compileOnly "eu.usrv:YAMCore:${config.minecraft.version}-${config.yamcore.version}:deobf"
+    compileOnly "tconstruct:TConstruct:${config.minecraft.version}-${config.tconstruct.version}:deobf"
+	//compile "mantle:Mantle:${config.minecraft.version}-${config.mantle.version}:deobf"
+    compileOnly ("appeng:appliedenergistics2:${config.ae2.version}:dev") {
         exclude module: '*'
     }
-    provided "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
-    provided "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
-    provided "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
-    provided "codechicken:Translocator:${config.minecraft.version}-${config.translocators.version}:dev"
-    provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
-    provided "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}:dev"
-    provided "applecore:AppleCore:${config.applecore.version}:api"
-    provided "com.enderio.core:EnderCore:${config.enderiocore.version}:dev"
-    provided ("com.enderio:EnderIO:${config.enderio.version}:dev") {
+    compileOnly "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
+    compileOnly "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
+    compileOnly "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
+    compileOnly "codechicken:Translocator:${config.minecraft.version}-${config.translocators.version}:dev"
+    compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
+    compileOnly "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}:dev"
+    compileOnly "applecore:AppleCore:${config.applecore.version}:api"
+    compileOnly "com.enderio.core:EnderCore:${config.enderiocore.version}:dev"
+    compileOnly ("com.enderio:EnderIO:${config.enderio.version}:dev") {
         transitive = false
     }
-    compile files("libs/Galacticraft-API-1.7-${config.gc.version}.jar")
-    compile files("libs/GalacticraftCore-Dev-${config.gc.version}.jar")
-    provided name: "Galacticraft-API", version: config.gc.version, ext: 'jar'
-    provided name: "GalacticraftCore-Dev", version: config.gc.version, ext: 'jar'
-    provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
-    provided name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
-    provided name: 'Railcraft', version: config.railcraft.version, ext: 'jar'
-    provided name: 'IC2NuclearControl', version: config.nc.version, ext: 'jar'
+    compileOnly files("libs/Galacticraft-API-1.7-${config.gc.version}.jar")
+    compileOnly files("libs/GalacticraftCore-Dev-${config.gc.version}.jar")
+    compileOnly name: "Galacticraft-API", version: config.gc.version, ext: 'jar'
+    compileOnly name: "GalacticraftCore-Dev", version: config.gc.version, ext: 'jar'
+    compileOnly name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
+  //compileOnly name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
+    compileOnly name: 'Railcraft', version: config.railcraft.version, ext: 'jar'
+    compileOnly name: 'IC2NuclearControl', version: config.nc.version, ext: 'jar'
 
   //provided name: 'ImmersiveEngineering', version: config.immeng.version, ext: 'jar'
   //provided name: 'magneticraft', version: config.magneticraft.version, ext: 'jar'
@@ -149,14 +141,18 @@ task sourceJar(type: Jar) {
 task devJar(type: Jar) {
     from sourceSets.main.output
     classifier = 'dev'
-    manifest {
-        //attributes 'FMLCorePlugin': 'WhateverLoaderClass'
-        //attributes 'FMLCorePluginContainsFMLMod': 'true'
-    }
+}
+
+task apiJar(type: Jar) {
+    from sourceSets.main.allSource
+    include("gregtech/api/**")
+    classifier = 'api'
 }
 
 artifacts {
-    archives devJar
+    archives(devJar)
+    archives(sourceJar)
+    archives(apiJar)
 }
 
 task signJar(dependsOn: 'reobf'){
