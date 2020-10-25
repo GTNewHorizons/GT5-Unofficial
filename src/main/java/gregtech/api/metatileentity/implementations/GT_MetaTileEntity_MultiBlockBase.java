@@ -628,7 +628,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                 }
                 else
                 {
-                    xEUt <<= ocTimeShift;
+                    xEUt <<= 2;
                 }
             }
             if(xEUt > Integer.MAX_VALUE - 1) {
