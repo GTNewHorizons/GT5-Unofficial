@@ -928,6 +928,8 @@ public class DreamCraftRecipeLoader implements Runnable {
                 48000, 64, 200000, 8, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CosmicNeutronium, 6L),
+                        ItemList.Gravistar.get(4L),
+                        ItemList.Emitter_UHV.get(4L),
                         new Object[]{OrePrefixes.circuit.get(Materials.Bio), 4L},
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
@@ -947,7 +949,9 @@ public class DreamCraftRecipeLoader implements Runnable {
                 96000, 128, 400000, 16, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 6L),
-                        new Object[]{OrePrefixes.circuit.get(Materials.Bio), 8L},
+                        ItemList.Gravistar.get(8L),
+                        ItemList.Emitter_UEV.get(4L),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Nano), 4},
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 64L),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 64L),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 64L),
