@@ -25,7 +25,6 @@ package com.github.bartimaeusnek.bartworks.system.material;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.*;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
-import com.google.common.base.Verify;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -95,7 +94,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 (List) materials.mOreByProducts,
                 new Pair<>(materials, 1)
         );
-        Verify.verify(mID > 31_766 && mID <= 32_767);
+        if(!(mID > 31_766 && mID <= 32_767))
+            throw new IllegalArgumentException();
         this.stats.mass = materials.getMass();
         this.stats.protons = materials.getProtons();
         this.stats.meltingPoint = materials.mMeltingPoint;
