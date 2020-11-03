@@ -115,7 +115,8 @@ dependencies {
     val enderioVersion: String by project
     //hard deps
     compile("net.industrial-craft:industrialcraft-2:$ic2Version:dev")
-    //compile("com.github.GTNH2:GT5-Unofficial:experimental-SNAPSHOT:dev") //broken jitpack.io dep
+    //jitpack
+    compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev")
     //soft deps
     compileOnly("com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf")
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
@@ -125,7 +126,10 @@ dependencies {
     compileOnly("micdoodle8.mods:Galacticraft-Planets:$galacticraftVersion:Dev")
     compileOnly("li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api")
     compileOnly("net.sengir.forestry:forestry_1.7.10:4.2.16.64:dev")
+    //jitpack
     compileOnly("com.github.GTNewHorizons:GalacticGregGT5:master-SNAPSHOT")
+    //compileOnly("com.github.Technus:TecTech:BassAddons-SNAPSHOT")
+    //Files
     compileOnly(fileTree("libs") { this.include("*.jar") })
 
     //CoreLibs for compile-age

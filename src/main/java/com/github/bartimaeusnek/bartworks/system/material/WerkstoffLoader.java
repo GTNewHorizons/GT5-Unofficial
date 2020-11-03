@@ -1429,7 +1429,7 @@ public class WerkstoffLoader {
 
     public static ItemStack getCorrespondingItemStackUnsafe(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
         if (!werkstoff.getGenerationFeatures().enforceUnification) {
-            ItemStack ret = GT_OreDictUnificator.get(orePrefixes, werkstoff.getBridgeMaterial(), 1);
+            ItemStack ret = GT_OreDictUnificator.get(orePrefixes, werkstoff.getBridgeMaterial(), amount);
             if (ret != null)
                 return ret;
             ret = OreDictHandler.getItemStack(werkstoff.getVarName(), orePrefixes, amount);
