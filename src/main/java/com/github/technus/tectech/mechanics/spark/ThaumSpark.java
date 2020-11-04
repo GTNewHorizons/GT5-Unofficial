@@ -1,5 +1,7 @@
 package com.github.technus.tectech.mechanics.spark;
 
+import com.github.technus.tectech.util.Vec3Impl;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,26 +11,27 @@ public class ThaumSpark implements Serializable {
     public int x, y, z, wID;
     public byte xR, yR, zR;
 
-    public ThaumSpark(){
-        this.x = 0;
-        this.z = 0;
-        this.y = 0;
-
-        this.xR = 0;
-        this.yR = 0;
-        this.zR = 0;
-
-        this.wID = 0;
-    }
-
     public ThaumSpark(int x, int y, int z, byte xR, byte yR, byte zR, int wID) {
         this.x = x;
-        this.z = z;
         this.y = y;
+        this.z = z;
 
         this.xR = xR;
         this.yR = yR;
         this.zR = zR;
+
+        this.wID = wID;
+    }
+
+    public ThaumSpark(Vec3Impl origin, Vec3Impl target, int wID) {
+        this.x = origin.get0();
+        this.y = origin.get1();
+        this.z = origin.get2();
+
+        Vec3Impl offset = target.sub(origin);
+        this.xR = (byte) offset.get0();
+        this.yR = (byte) offset.get1();
+        this.zR = (byte) offset.get2();
 
         this.wID = wID;
     }

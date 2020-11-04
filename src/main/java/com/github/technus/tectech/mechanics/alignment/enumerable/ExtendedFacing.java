@@ -128,6 +128,7 @@ public enum ExtendedFacing {
     private static final Map<String, ExtendedFacing> NAME_LOOKUP = stream(VALUES).collect(toMap(ExtendedFacing::getName2, (extendedFacing) -> extendedFacing));
 
     private final ForgeDirection direction;
+    private final ForgeDirection a,b,c;
     private final Rotation rotation;
     private final Flip flip;
 
@@ -206,6 +207,9 @@ public enum ExtendedFacing {
             default:
                 throw new RuntimeException("More impossible...");
         }
+        this.a=a;
+        this.b=b;
+        this.c=c;
         integerAxisSwap =new IntegerAxisSwap(a,b,c);
     }
 
@@ -326,5 +330,29 @@ public enum ExtendedFacing {
 
     public IntegerAxisSwap getIntegerAxisSwap() {
         return integerAxisSwap;
+    }
+
+    public ForgeDirection getRelativeLeftInWorld() {
+        return a;
+    }
+
+    public ForgeDirection getRelativeRightInWorld() {
+        return a.getOpposite();
+    }
+
+    public ForgeDirection getRelativeDownInWorld() {
+        return b;
+    }
+
+    public ForgeDirection getRelativeUpInWorld() {
+        return b.getOpposite();
+    }
+
+    public ForgeDirection getRelativeBackInWorld() {
+        return c;
+    }
+
+    public ForgeDirection getRelativeForwardInWorld() {
+        return c.getOpposite();
     }
 }

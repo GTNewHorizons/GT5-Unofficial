@@ -97,10 +97,14 @@ repositories {
         name "Tterrag maven"
         url "https://maven.tterrag.com/"
     }
-	ivy { //CoFHCore
-        name 'gtnh_download_source'
-        artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]"
+    maven {
+        name = "Curse Maven"
+        url = "https://www.cursemaven.com"
     }
+	//ivy { //CoFHCore
+    //    name 'gtnh_download_source'
+    //    artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]"
+    //}
 }
 
 dependencies {
@@ -126,8 +130,12 @@ dependencies {
 	compile "micdoodle8.mods:Galacticraft-Planets:${config.galacticraft.version}:Dev"
 	compile "micdoodle8.mods:Galacticraft:${config.galacticraft.version}:API"
 	compile "com.mod-buildcraft:buildcraft:${config.buildcraft.version}:dev"
+
+    //TODO Re-work the formatting and add documentation
+    runtime "curse.maven:cofh-core:${config.cofh_core_version}"
 	//Ivy
-	compile name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
+	//compile name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
+
 }
 
 task getGregTech(type: Download) {

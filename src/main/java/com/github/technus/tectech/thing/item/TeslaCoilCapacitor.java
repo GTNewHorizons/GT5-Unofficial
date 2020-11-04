@@ -22,7 +22,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 public final class TeslaCoilCapacitor extends Item {
     public static TeslaCoilCapacitor INSTANCE;
-    private static IIcon LVicon, MVicon, HVicon, EVicon, IVicon;
+    private static IIcon LVicon, MVicon, HVicon, EVicon, IVicon, LuVicon, ZPMicon;
 
     private TeslaCoilCapacitor() {
         setHasSubtypes(true);
@@ -33,8 +33,8 @@ public final class TeslaCoilCapacitor extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.BASS_MARK);
-        if (aStack.getItemDamage() >= 0 && aStack.getItemDamage() <= 4) {
-            aList.add(translateToLocal("item.tm.teslaCoilCapacitor.desc.0") + " " + V[aStack.getItemDamage() + 1] * 512 + " " + translateToLocal("item.tm.teslaCoilCapacitor.desc.1") +" " + V[aStack.getItemDamage() + 1] + " EU/t");//Stores 16384 EU in a tesla tower at 32 EU/t
+        if (aStack.getItemDamage() >= 0 && aStack.getItemDamage() <= 6) {
+            aList.add(translateToLocal("item.tm.teslaCoilCapacitor.desc.0") + " " + V[aStack.getItemDamage() + 1] * 512 + " " + translateToLocal("item.tm.teslaCoilCapacitor.desc.1") + " " + V[aStack.getItemDamage() + 1] + " EU/t");//Stores 16384 EU in a tesla tower at 32 EU/t
         } else {
             aList.add(translateToLocal("item.tm.teslaCoilCapacitor.desc.2"));//Yeet this broken item into some spicy water!
         }
@@ -61,6 +61,8 @@ public final class TeslaCoilCapacitor extends Item {
         HVicon = iconRegister.registerIcon(MODID + ":itemCapacitorHV");
         EVicon = iconRegister.registerIcon(MODID + ":itemCapacitorEV");
         IVicon = iconRegister.registerIcon(MODID + ":itemCapacitorIV");
+        LuVicon = iconRegister.registerIcon(MODID + ":itemCapacitorLuV");
+        ZPMicon = iconRegister.registerIcon(MODID + ":itemCapacitorZPM");
     }
 
     @Override
@@ -74,6 +76,10 @@ public final class TeslaCoilCapacitor extends Item {
                 return EVicon;
             case 4:
                 return IVicon;
+            case 5:
+                return LuVicon;
+            case 6:
+                return ZPMicon;
             default:
                 return LVicon;
         }
@@ -81,7 +87,7 @@ public final class TeslaCoilCapacitor extends Item {
 
     @Override
     public void getSubItems(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        for (int i = 0; i <= 4; i++) {
+        for (int i = 0; i <= 6; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
     }
