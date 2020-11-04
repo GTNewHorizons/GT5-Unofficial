@@ -4,14 +4,14 @@ import com.github.technus.tectech.mechanics.spark.ThaumSpark;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.Objects;
 
 import static com.github.technus.tectech.util.Util.entriesSortedByValues;
 import static java.lang.Math.sqrt;
 
 public interface ITeslaConnectable extends ITeslaConnectableSimple {
     //Map with all Teslas in the same dimension and the distance to them //TODO Range
-    Map<ITeslaConnectableSimple, Integer> teslaNodeMap = new HashMap<>();
+    HashMap<ITeslaConnectableSimple, Integer> teslaNodeMap = new HashMap<>();
     //ThaumCraft lighting coordinate pairs, so we can send them in bursts and save on lag
     HashSet<ThaumSpark> sparkList = new HashSet<>();
 
@@ -64,12 +64,8 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
         }
 
         public static void cleanTeslaNodeMap(ITeslaConnectable origin) {
-            //TODO Do we still need this?
-            for (ITeslaConnectableSimple target : origin.teslaNodeMap.keySet()) {
-                if (target == null) {
-                    origin.teslaNodeMap.remove(null);
-                }
-            }
+            //Wipes all null objects, in practice this is unloaded or improperly removed tesla objects
+            origin.teslaNodeMap.keySet().removeIf(Objects::isNull);
         }
 
         public static long powerTeslaNodeMap(ITeslaConnectable origin) {
@@ -80,7 +76,7 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
             long remainingAmperes = origin.getTeslaOutputCurrent();
             while (remainingAmperes > 0) {
                 long startingAmperes = remainingAmperes;
-                for (Map.Entry<ITeslaConnectableSimple, Integer> Rx : entriesSortedByValues(teslaNodeMap)) {
+                for (HashMap.Entry<ITeslaConnectableSimple, Integer> Rx : entriesSortedByValues(teslaNodeMap)) {
                     if (origin.getTeslaStoredEnergy() < (origin.isOverdriveEnabled() ? origin.getTeslaOutputVoltage() * 2 : origin.getTeslaOutputVoltage())) {
                         //Return and end the tick if we're out of energy to send
                         return origin.getTeslaOutputCurrent() - remainingAmperes;
