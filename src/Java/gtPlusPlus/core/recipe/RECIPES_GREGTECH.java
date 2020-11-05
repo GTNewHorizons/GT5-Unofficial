@@ -93,6 +93,7 @@ public class RECIPES_GREGTECH {
 		vacuumFreezerRecipes();
 		fluidheaterRecipes();
 		chemplantRecipes();
+		packagerRecipes();
 
 
 		/**
@@ -110,6 +111,11 @@ public class RECIPES_GREGTECH {
 	}
 
 
+
+	private static void packagerRecipes() {
+		
+		
+	}
 
 	private static void chemplantRecipes() {
 

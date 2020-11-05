@@ -26,8 +26,10 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy_RTG;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntity_RTG;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -96,7 +98,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				e.getStackTrace();
 			}
 			try {
-				
+
 				GTPP_Recipe aSpecialRecipe = new GTPP_Recipe(
 						true,
 						new ItemStack[] { aInput1, aInput2 },
@@ -113,8 +115,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				int aSize2 = aSize;
 				GTPP_Recipe.GTPP_Recipe_Map.sCokeOvenRecipes.add(aSpecialRecipe);
 				aSize = GTPP_Recipe.GTPP_Recipe_Map.sCokeOvenRecipes.mRecipeList.size();
-				
-				
+
+
 				// RECIPEHANDLER_CokeOven.debug4(aInput1, aInput2, aFluidInput,
 				// aFluidOutput, aOutput, aDuration, aEUt);
 				/*if (aFluidInput == null && aInput2 != null) {
@@ -398,7 +400,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			if (aFluidOutput != null) {
 				Logger.WARNING("Recipe will output: " + aFluidOutput.getFluid().getName());
 			}
-			
+
 			GTPP_Recipe aSpecialRecipe = new GTPP_Recipe(
 					true,
 					aInput,
@@ -421,7 +423,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, aInput, aOutputItems, null,
 						aChances, new FluidStack[] { aFluidInput }, new FluidStack[] { aFluidOutput }, aDuration, aEUt,
 						0);
-			
+
 			}
 			else {
 				Logger.WARNING("Dehydrator recipe has two input items.");
@@ -513,7 +515,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		/*GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.addRecipe(true, aInput, aOutputStack, null,
 				aChance, new FluidStack[] { aInputFluid }, new FluidStack[] { aOutput }, aDuration, aEUt,
 				aSpecialValue);*/
-		
+
 		return aSize > aSize2;
 	}
 
@@ -569,7 +571,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		int aSize2 = aSize;
 		GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing.add(aSpecialRecipe);
 		aSize = GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing.mRecipeList.size();
-		
+
 		if (aSize > aSize2) {
 			Logger.INFO("Added Nuclear Fuel Recipe.");
 			return true;
@@ -607,7 +609,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		int aSize2 = aSize;
 		GTPP_Recipe.GTPP_Recipe_Map.sCyclotronRecipes.add(aSpecialRecipe);
 		aSize = GTPP_Recipe.GTPP_Recipe_Map.sCyclotronRecipes.mRecipeList.size();
-		
+
 		if (aSize > aSize2) {
 			Logger.INFO("Added Cyclotron Recipe.");
 			return true;
@@ -648,12 +650,12 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		int aSize2 = aSize;
 		GTPP_Recipe.GTPP_Recipe_Map.sAdvancedMixerRecipes.add(aSpecialRecipe);
 		aSize = GTPP_Recipe.GTPP_Recipe_Map.sAdvancedMixerRecipes.mRecipeList.size();
-		
+
 		/*GTPP_Recipe.GTPP_Recipe_Map.sAdvancedMixerRecipes.addRecipe(true,
 				new ItemStack[] { aInput1, aInput2, aInput3, aInput4 },
 				new ItemStack[] { aOutput1, aOutput2, aOutput3, aOutput4 }, null, null,
 				new FluidStack[] { aFluidInput }, new FluidStack[] { aFluidOutput }, aDuration, aEUt, 0);*/
-		
+
 		return aSize > aSize2;
 	}
 
@@ -715,7 +717,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				aEUtick,
 				aSpecial); 
 		GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.addRecipe(aRecipe);
-		
+
 		//GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes.addRecipe(true, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial);
 		return true;
 	}
@@ -1658,6 +1660,46 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		aSize = GTPP_Recipe.GTPP_Recipe_Map.sFlotationCellRecipes.mRecipeList.size();
 
 		return aSize > aSize2;
+	}
+
+	@Override
+	public boolean addpackagerRecipe(ItemStack aRecipeType, ItemStack aSmallDust, ItemStack aTinyDust, ItemStack aOutputStack1) {
+		AutoMap<Boolean> aResults = new AutoMap<Boolean>();
+		//Dust 1
+		aResults.put(GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(4L, new Object[]{aSmallDust}), aRecipeType, aOutputStack1, 100, 4));
+		//Dust 2
+		aResults.put(GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(9L, new Object[]{aTinyDust}), aRecipeType, aOutputStack1, 100, 4));
+		for (boolean b : aResults) {
+			if (!b) {
+				return false;
+			}
+		}		
+		return true;
+	}
+
+	@Override
+	public boolean addFuelForRTG(ItemStack aFuelPellet, int aFuelDays, int aVoltage) {	
+		int aSize1 = GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.mRecipeList.size();	
+		GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.addRecipe(
+				true,
+				new ItemStack[]{aFuelPellet},
+				new ItemStack[]{},
+				null,
+				null,
+				null,
+				0,
+				aVoltage,
+				aFuelDays);
+		int aSize2 = GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.mRecipeList.size();
+		
+		if (aSize2 > aSize1) {
+			long eu = GregtechMetaTileEntity_RTG.getTotalEUGenerated(GregtechMetaTileEntity_RTG.convertDaysToTicks(aFuelDays), aVoltage);
+			GT_MetaTileEntity_Hatch_Energy_RTG.registerPelletForHatch(aFuelPellet, eu);
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 

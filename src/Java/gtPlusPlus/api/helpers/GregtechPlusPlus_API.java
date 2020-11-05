@@ -6,6 +6,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.WeightedCollection;
 import gtPlusPlus.api.objects.minecraft.multi.SpecialMultiBehaviour;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy_RTG;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -36,6 +37,15 @@ public class GregtechPlusPlus_API {
 			return mSpecialBehaviourItemMap;
 		}
 		
+		/**
+		 * Allows RTG Fuel pellets from other mods to be used in the RTG hatch.
+		 * @param aStack - The Pellet Stack, sanitsed after passing through.
+		 * @param aFuelValue - The Fuel Value of the Pellet to be added to the energy storage.
+		 * @return - Did register?
+		 */
+		public static boolean registerPelletForRtgHatch(ItemStack aStack, long aFuelValue) {
+			return GT_MetaTileEntity_Hatch_Energy_RTG.registerPelletForHatch(aStack, aFuelValue);
+		}
 
 	}
 

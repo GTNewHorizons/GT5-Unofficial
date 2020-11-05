@@ -99,6 +99,10 @@ public class TexturesGtBlock {
 		}
 	}
 
+	public static GT_RenderedTexture getTextureFromIcon(CustomIcon aIcon, short[] aRGB) {
+		return new GT_RenderedTexture(aIcon, aRGB);
+	}
+	
 	/*
 	 * Add Some Custom Textures below.
 	 * I am not sure whether or not I need to declare them as such, but better to be safe than sorry.
@@ -397,7 +401,11 @@ public class TexturesGtBlock {
 	// Catalyst Bus
 	private static final CustomIcon Internal_Overlay_Bus_Catalyst = new CustomIcon("iconsets/OVERLAY_CATALYSTS");
 	public static final CustomIcon Overlay_Bus_Catalyst = Internal_Overlay_Bus_Catalyst;	
-	
+	// RTG Hatch
+	private static final CustomIcon Internal_Overlay_Hatch_RTG_Off = new CustomIcon("iconsets/OVERLAY_ENERGY_RTG_OFF");
+	public static final CustomIcon Overlay_Hatch_RTG_Off = Internal_Overlay_Hatch_RTG_Off;
+	private static final CustomIcon Internal_Overlay_Hatch_RTG_On = new CustomIcon("iconsets/OVERLAY_ENERGY_RTG_ON");
+	public static final CustomIcon Overlay_Hatch_RTG_On = Internal_Overlay_Hatch_RTG_On;
 	
 	//Dimensional
 	private static final CustomIcon Internal_Overlay_Machine_Dimensional_Blue = new CustomIcon("TileEntities/adv_machine_dimensional_cover_blue");

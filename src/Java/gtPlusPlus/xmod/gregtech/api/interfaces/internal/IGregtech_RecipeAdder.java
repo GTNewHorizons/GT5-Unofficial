@@ -293,6 +293,9 @@ public interface IGregtech_RecipeAdder {
 	public boolean addFlotationRecipe(Materials aMat, ItemStack aXanthate, FluidStack[] aInputFluids, FluidStack[] aOutputFluids, int aTime, int aEU);
 	public boolean addFlotationRecipe(Material aMat, ItemStack aXanthate, FluidStack[] aInputFluids, FluidStack[] aOutputFluids, int aTime, int aEU);
 
-	
+	public boolean addpackagerRecipe(ItemStack aRecipeType, ItemStack aInput1, ItemStack aInput2, ItemStack aOutputStack1);
+
+	public boolean addFuelForRTG(ItemStack aFuelPellet, int aFuelDays, int aVoltage);
+
 
 }

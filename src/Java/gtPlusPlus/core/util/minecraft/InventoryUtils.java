@@ -2,6 +2,11 @@ package gtPlusPlus.core.util.minecraft;
 
 import java.util.Random;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy_RTG;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
@@ -57,6 +62,27 @@ public class InventoryUtils {
 			world.func_147453_f(x, y, z, block);
 		}
 
+	}
+
+	public static void sortInventoryItems(MetaTileEntity aTile) {
+		sortInventoryItems(aTile.getBaseMetaTileEntity());		
+	}
+
+	public static void sortInventoryItems(IGregTechTileEntity aBaseMetaTileEntity) {
+		IInventory mInv = aBaseMetaTileEntity.getIInventory(aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord());
+		AutoMap<ItemStack> aInvContents = new AutoMap<ItemStack>();
+		int aSize = mInv.getSizeInventory();
+		for (int slot=0; slot<aSize; slot++) {
+			aInvContents.put(mInv.getStackInSlot(slot));
+		}		
+		ItemStack[] mInventory = aInvContents.toArray();
+		for (int i = 0; i < mInventory.length; i++) {
+			for (int j = i + 1; j < mInventory.length; j++) {
+				if (mInventory[j] != null && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
+					GT_Utility.moveStackFromSlotAToSlotB(aBaseMetaTileEntity, aBaseMetaTileEntity, j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
+				}
+			}
+		}
 	}
 	
 }

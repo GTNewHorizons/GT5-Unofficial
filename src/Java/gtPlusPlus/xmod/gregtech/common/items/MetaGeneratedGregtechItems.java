@@ -201,46 +201,13 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Pellet_RTG_SR90.set(this.addItem(42, StringUtils.superscript("90")+"Sr Pellet", "", new Object[]{getTcAspectStack(TC_Aspects.RADIO, 4L), getTcAspectStack(TC_Aspects.POTENTIA, 2L), getTcAspectStack(TC_Aspects.METALLUM, 2L)}));
 		GregtechItemList.Pellet_RTG_PO210.set(this.addItem(43, StringUtils.superscript("210")+"Po Pellet", "", new Object[]{getTcAspectStack(TC_Aspects.RADIO, 4L), getTcAspectStack(TC_Aspects.POTENTIA, 2L), getTcAspectStack(TC_Aspects.METALLUM, 2L)}));
 		GregtechItemList.Pellet_RTG_AM241.set(this.addItem(44, StringUtils.superscript("241")+"Am Pellet", "", new Object[]{getTcAspectStack(TC_Aspects.RADIO, 4L), getTcAspectStack(TC_Aspects.POTENTIA, 2L), getTcAspectStack(TC_Aspects.METALLUM, 2L)}));
-		GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.addRecipe(
-				true,
-				new ItemStack[]{GregtechItemList.Pellet_RTG_PU238.get(1)},
-				new ItemStack[]{},
-				null,
-				null,
-				null,
-				0,
-				64,
-				MathUtils.roundToClosestInt(87.7f));
-		GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.addRecipe(
-				true,
-				new ItemStack[]{GregtechItemList.Pellet_RTG_SR90.get(1)},
-				new ItemStack[]{},
-				null,
-				null,
-				null,
-				0,
-				32,
-				MathUtils.roundToClosestInt(28.8f));
-		GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.addRecipe(
-				true,
-				new ItemStack[]{GregtechItemList.Pellet_RTG_PO210.get(1)},
-				new ItemStack[]{},
-				null,
-				null,
-				null,
-				0,
-				512,
-				MathUtils.roundToClosestInt(1f));
-		GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.addRecipe(
-				true,
-				new ItemStack[]{GregtechItemList.Pellet_RTG_AM241.get(1)},
-				new ItemStack[]{},
-				null,
-				null,
-				null,
-				0,
-				16,
-				MathUtils.roundToClosestInt(432/2));
+
+		CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_PU238.get(1), MathUtils.roundToClosestInt(87.7f), 64);
+		CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_SR90.get(1), MathUtils.roundToClosestInt(28.8f), 32);
+		CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_PO210.get(1), 1, 512);
+		CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_AM241.get(1), MathUtils.roundToClosestInt(432/2), 16);
+		CORE.RA.addFuelForRTG(GT_ModHandler.getIC2Item("RTGPellets", 1), MathUtils.roundToClosestInt(2.6f), 8);
+		
 		//Computer Cube
 		GregtechItemList.Gregtech_Computer_Cube.set(this.addItem(tLastID = 55, "Gregtech Computer Cube", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 8L), getTcAspectStack(TC_Aspects.POTENTIA, 8L)}));
 		this.setElectricStats(32000 + tLastID, GT_Values.V[6]* 10 * 60 * 20, GT_Values.V[5], 5L, -3L, true);

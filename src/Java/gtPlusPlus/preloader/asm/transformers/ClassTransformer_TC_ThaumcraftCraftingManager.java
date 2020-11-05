@@ -14,7 +14,7 @@ public class ClassTransformer_TC_ThaumcraftCraftingManager {
 	private final ClassWriter writer;
 
 	public ClassTransformer_TC_ThaumcraftCraftingManager(byte[] basicClass) {
-		
+
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;
 
@@ -29,7 +29,7 @@ public class ClassTransformer_TC_ThaumcraftCraftingManager {
 		} else {
 			isValid = false;
 		}
-		
+
 		Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Valid patch? " + isValid + ".");
 		reader = aTempReader;
 		writer = aTempWriter;
@@ -37,6 +37,7 @@ public class ClassTransformer_TC_ThaumcraftCraftingManager {
 		if (reader != null && writer != null) {
 			Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Attempting Method Injection.");
 			injectMethod("generateTags", wasMethodObfuscated);
+			injectMethod("getObjectTags", wasMethodObfuscated);
 		}
 
 	}
@@ -58,7 +59,9 @@ public class ClassTransformer_TC_ThaumcraftCraftingManager {
 		boolean didInject = false;
 		ClassWriter cw = getWriter();
 		String aitemClassName = wasMethodObfuscated ? "adb" : "net/minecraft/item/Item";
-		String aClassName = "thaumcraft.common.lib.crafting.ThaumcraftCraftingManager";		
+		String aitemStackClassName = wasMethodObfuscated ? "add" : "net/minecraft/item/ItemStack";
+		String aClassName = "thaumcraft.common.lib.crafting.ThaumcraftCraftingManager";	
+
 		if (aMethodName.equals("generateTags")) {
 			Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Injecting " + aMethodName + ", static replacement call to "+aClassName+".");
 			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "generateTags", "(L"+aitemClassName+";ILjava/util/ArrayList;)Lthaumcraft/api/aspects/AspectList;", "(L"+aitemClassName+";ILjava/util/ArrayList<Ljava/util/List;>;)Lthaumcraft/api/aspects/AspectList;", null);
@@ -80,7 +83,24 @@ public class ClassTransformer_TC_ThaumcraftCraftingManager {
 			mv.visitEnd();
 			didInject = true;
 		}		
-		
+
+		if (aMethodName.equals("getObjectTags")) {
+			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "getObjectTags", "(L"+aitemStackClassName+";)Lthaumcraft/api/aspects/AspectList;", null, null);
+			mv.visitCode();
+			Label l0 = new Label();
+			mv.visitLabel(l0);
+			mv.visitLineNumber(222, l0);
+			mv.visitVarInsn(ALOAD, 0);
+			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/helpers/MethodHelper_TC", "getObjectTags", "(L"+aitemStackClassName+";)Lthaumcraft/api/aspects/AspectList;", false);
+			mv.visitInsn(ARETURN);
+			Label l1 = new Label();
+			mv.visitLabel(l1);
+			mv.visitLocalVariable("itemstack", "L"+aitemStackClassName+";", null, l0, l1, 0);
+			mv.visitMaxs(1, 1);
+			mv.visitEnd();
+			didInject = true;
+		}
+
 		Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Method injection complete.");
 		return didInject;
 	}
@@ -88,7 +108,7 @@ public class ClassTransformer_TC_ThaumcraftCraftingManager {
 	public final class localClassVisitor extends ClassVisitor {
 
 		boolean obfuscated = false;
-		
+
 		public localClassVisitor(ClassVisitor cv) {
 			super(ASM5, cv);
 		}
@@ -102,9 +122,9 @@ public class ClassTransformer_TC_ThaumcraftCraftingManager {
 			MethodVisitor methodVisitor;
 			String aDeObfName = "net/minecraft/item/Item";
 			String aObfName = "adb";
-			String aDesc1 = "(L+aDeObfName+;ILjava/util/ArrayList;)Lthaumcraft/api/aspects/AspectList;";
+			String aDesc1 = "(L"+aDeObfName+";ILjava/util/ArrayList;)Lthaumcraft/api/aspects/AspectList;";
 			String aDesc2 = "(L"+aObfName+";ILjava/util/ArrayList;)Lthaumcraft/api/aspects/AspectList;";
-			
+
 			if (name.equals("generateTags") && signature != null) {	
 				if (desc.equals(aDesc1)) {
 					Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Found generateTags to remove: "+desc+" | "+signature);
@@ -120,6 +140,32 @@ public class ClassTransformer_TC_ThaumcraftCraftingManager {
 				}
 				else {
 					Preloader_Logger.INFO("Found generateTags: "+desc+" | "+signature);
+					if (desc.toLowerCase().contains("item")) {
+						obfuscated = false;		
+						Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Is not obfuscated.");
+					}
+					else {
+						obfuscated = true;	
+						Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Is obfuscated.");					
+					}	
+					methodVisitor = null;				
+				}
+			}
+			else if (name.equals("getObjectTags")) {	
+				if (desc.equals(aDesc1)) {
+					Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Found getObjectTags to remove: "+desc+" | "+signature);
+					Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Is not obfuscated.");
+					obfuscated = false;
+					methodVisitor = null;					
+				}
+				else if (desc.equals(aDesc2)) {
+					Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Found getObjectTags to remove: "+desc+" | "+signature);
+					Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Is obfuscated.");	
+					obfuscated = true;
+					methodVisitor = null;					
+				}
+				else {
+					Preloader_Logger.INFO("Found getObjectTags: "+desc+" | "+signature);
 					if (desc.toLowerCase().contains("item")) {
 						obfuscated = false;		
 						Preloader_Logger.LOG("TC CraftingManager Patch", Level.INFO, "Is not obfuscated.");

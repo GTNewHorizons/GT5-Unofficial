@@ -7,14 +7,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler_Adv;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Naquadah;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_TurbineProvider;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Input;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Output;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.*;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
 
 public class GregtechCustomHatches {
@@ -27,6 +22,7 @@ public class GregtechCustomHatches {
 				run2();
 			}			
 			run3();
+			run4();
 		}
 	}
 
@@ -70,10 +66,10 @@ public class GregtechCustomHatches {
 
 		// Multiblock Control Core Bus
 		GregtechItemList.Hatch_Control_Core.set((new GT_MetaTileEntity_Hatch_ControlCore(30020, "hatch.control.adv", "Control Core Module", 1)).getStackForm(1L));
-		
+
 		// Multiblock Air Intake Hatch
 		GregtechItemList.Hatch_Air_Intake.set(new GT_MetaTileEntity_Hatch_AirIntake(861, "hatch.air.intake.tier.00", "Air Intake Hatch", 5).getStackForm(1L));
-		
+
 		// Steam Hatch
 		GregtechItemList.Hatch_Input_Steam
 		.set(new GT_MetaTileEntity_Hatch_CustomFluidBase(FluidUtils.getSteam(1).getFluid(), // Fluid
@@ -86,10 +82,10 @@ public class GregtechCustomHatches {
 				"hatch.steam.input.tier.00", // unlocal name
 				"Steam Hatch" // Local name
 				).getStackForm(1L));
-		
-		
-		
-		
+
+
+
+
 
 	}
 
@@ -125,86 +121,86 @@ public class GregtechCustomHatches {
 
 	private static void run3() {
 
-		
-		
+
+
 		/*
 		 * Super Input Busses
 		 */
-		
+
 		int aStartID = 30021;
 
 		Class aGT_MetaTileEntity_SuperBus_Input = GT_MetaTileEntity_SuperBus_Input.class;
 		Class aGT_MetaTileEntity_SuperBus_Output = GT_MetaTileEntity_SuperBus_Output.class;
-		
+
 
 		GregtechItemList.Hatch_SuperBus_Input_ULV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.00", "Super Bus (I) (ULV)", 0))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.00", "Super Bus (I) (ULV)", 0))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_LV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.01", "Super Bus (I) (LV)", 1))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.01", "Super Bus (I) (LV)", 1))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_MV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.02", "Super Bus (I) (MV)", 2))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.02", "Super Bus (I) (MV)", 2))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_HV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.03", "Super Bus (I) (HV)", 3))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.03", "Super Bus (I) (HV)", 3))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_EV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.04", "Super Bus (I) (EV)", 4))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.04", "Super Bus (I) (EV)", 4))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_IV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.05", "Super Bus (I) (IV)", 5))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.05", "Super Bus (I) (IV)", 5))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_LuV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.06", "Super Bus (I) (LuV)", 6))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.06", "Super Bus (I) (LuV)", 6))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_ZPM
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.07", "Super Bus (I) (ZPM)", 7))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.07", "Super Bus (I) (ZPM)", 7))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_UV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.08", "Super Bus (I) (UV)", 8))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.08", "Super Bus (I) (UV)", 8))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_MAX
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.09", "Super Bus (I) (MAX)", 9))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.09", "Super Bus (I) (MAX)", 9))
+				.getStackForm(1L));
 
 		/*
 		 * Super Output Busses
 		 */
 
 		GregtechItemList.Hatch_SuperBus_Output_ULV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.00", "Super Bus (O) (ULV)", 0))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.00", "Super Bus (O) (ULV)", 0))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_LV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.01", "Super Bus (O) (LV)", 1))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.01", "Super Bus (O) (LV)", 1))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_MV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.02", "Super Bus (O) (MV)", 2))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.02", "Super Bus (O) (MV)", 2))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_HV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.03", "Super Bus (O) (HV)", 3))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.03", "Super Bus (O) (HV)", 3))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_EV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.04", "Super Bus (O) (EV)", 4))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.04", "Super Bus (O) (EV)", 4))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_IV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.05", "Super Bus (O) (IV)", 5))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.05", "Super Bus (O) (IV)", 5))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_LuV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.06", "Super Bus (O) (LuV)", 6))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.06", "Super Bus (O) (LuV)", 6))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_ZPM
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.07", "Super Bus (O) (ZPM)", 7))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.07", "Super Bus (O) (ZPM)", 7))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_UV
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.08", "Super Bus (O) (UV)", 8))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.08", "Super Bus (O) (UV)", 8))
+				.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_MAX
-				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.09", "Super Bus (O) (MAX)", 9))
-						.getStackForm(1L));
+		.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.09", "Super Bus (O) (MAX)", 9))
+				.getStackForm(1L));
 
 	}
-	
+
 	private static Object generateBus(Class aClass, int aID, String aUnlocalName, String aLocalName, int aTier) {
 		Class<?> aBusEntity = aClass;
 		Constructor<?> constructor;
@@ -236,6 +232,21 @@ public class GregtechCustomHatches {
 			Logger.INFO("Failed to Generate "+aLocalName+".");
 		}
 		return null;
+	}
+
+
+	private static void run4() {
+		int aID = 31060;
+		//41, "hatch.energy.tier.01", "LV Energy Hatch", 1
+		Constructor aRTG = ReflectionUtils.getConstructor(GT_MetaTileEntity_Hatch_Energy_RTG.class, new Class[] {int.class, String.class, String.class, int.class, int.class});
+		Object aHatch1 = ReflectionUtils.createNewInstanceFromConstructor(aRTG, new Object[] {aID++, "hatch.energy.rtg.tier.01", "RTG Power Unit [LV]", 1, 9});
+		Object aHatch2 = ReflectionUtils.createNewInstanceFromConstructor(aRTG, new Object[] {aID++, "hatch.energy.rtg.tier.02", "RTG Power Unit [MV]", 2, 9});
+		Object aHatch3 = ReflectionUtils.createNewInstanceFromConstructor(aRTG, new Object[] {aID++, "hatch.energy.rtg.tier.03", "RTG Power Unit [HV]", 3, 9});
+
+		GregtechItemList.Hatch_RTG_LV.set(((IMetaTileEntity) aHatch1).getStackForm(1L));
+		GregtechItemList.Hatch_RTG_MV.set(((IMetaTileEntity) aHatch2).getStackForm(1L));
+		GregtechItemList.Hatch_RTG_HV.set(((IMetaTileEntity) aHatch3).getStackForm(1L));
+
 	}
 
 }

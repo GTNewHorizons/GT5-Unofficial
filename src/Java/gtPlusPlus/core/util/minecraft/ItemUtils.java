@@ -451,7 +451,8 @@ public class ItemUtils {
 		final ItemStack smallDust = ItemUtils.getSimpleStack(output[1]);
 		final ItemStack tinyDust = ItemUtils.getSimpleStack(output[2]);
 
-
+		CORE.RA.addpackagerRecipe(ItemList.Schematic_Dust.get(1), smallDust, tinyDust, normalDust);
+		
 		if (ItemUtils.checkForInvalidItems(tinyDust) && ItemUtils.checkForInvalidItems(normalDust)) {
 			if (RecipeUtils.addShapedRecipe(
 					tinyDust,	tinyDust, tinyDust,
@@ -1136,8 +1137,8 @@ public class ItemUtils {
 		String aDisplay = null;
 		try {
 			aDisplay = (aStack.getUnlocalizedName()).trim();
-
-		} catch (Throwable t) {
+		} 
+		catch (Throwable t) {
 			aDisplay = aStack.getItem().getUnlocalizedName();
 		}
 		if (aDisplay == null || aDisplay.length() <= 0) {
@@ -1366,6 +1367,14 @@ public class ItemUtils {
 			Logger.INFO("Using fallback option instead - "+ItemUtils.getItemName(aOther));
 		}
 		return aOther;
+	}
+
+	public static boolean areItemsEqual(ItemStack aStack1, ItemStack aStack2) {
+		return areItemsEqual(aStack1, aStack2, true);
+	}
+	
+	public static boolean areItemsEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
+		return GT_Utility.areStacksEqual(aStack1, aStack2, aIgnoreNBT);
 	}
 
 }
