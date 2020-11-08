@@ -83,6 +83,10 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
                     }
 
                     ITeslaConnectableSimple target = Rx.getKey();
+
+                    //Continue if the target can't receive
+                    if(!target.isTeslaReadyToReceive()) continue;
+
                     int distance = Rx.getValue();
 
                     //Calculate the voltage output
