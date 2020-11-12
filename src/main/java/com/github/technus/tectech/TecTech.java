@@ -78,7 +78,7 @@ public class TecTech {
             LOGGER.error(Reference.MODID + " could not load its config file. Things are going to be weird!");
         }
 
-        if (configTecTech.modAdminErrorLogs) {
+        if (configTecTech.MOD_ADMIN_ERROR_LOGS) {
             LOGGER.setDebugOutput(DEBUG_MODE);
             LOGGER.debug("moduleAdminErrorLogs is enabled");
             moduleAdminErrorLogs = new IngameErrorLog();

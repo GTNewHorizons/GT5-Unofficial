@@ -45,6 +45,10 @@ public class GT_Item_CasingsBA0 extends GT_Item_Casings_Abstract {
                 aList.add(translateToLocal("gt.blockcasingsBA0.8.desc.0"));//Picks up power from a primary coil
                 aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.8.desc.1"));//Who wouldn't want a 32k epoxy multi?
                 break;
+            case 9://"ZPM Superconductor Primary Tesla Windings"
+                aList.add(translateToLocal("gt.blockcasingsBA0.0.desc.0") + " " + V[7] + " EU/t");//Handles up to
+                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.0.desc.1"));//What one man calls God, another calls the laws of physics.
+                break;
             default://WTF?
                 aList.add("Damn son where did you get that!?");
                 aList.add(EnumChatFormatting.BLUE.toString() + "From outer space... I guess...");

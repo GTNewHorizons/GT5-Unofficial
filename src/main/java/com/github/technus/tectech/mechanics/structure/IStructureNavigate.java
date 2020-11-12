@@ -6,19 +6,19 @@ import net.minecraft.world.World;
 /**
  * Use StructureUtility to instantiate
  */
-interface IStructureNavigate<MultiBlock> extends IStructureElement<MultiBlock> {
+interface IStructureNavigate<T> extends IStructureElement<T> {
     @Override
-    default boolean check(MultiBlock multiBlock, World world, int x, int y, int z){
+    default boolean check(T t, World world, int x, int y, int z){
         return true;
     }
 
     @Override
-    default boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+    default boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
         return true;
     }
 
     @Override
-    default boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
+    default boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
         return true;
     }
 

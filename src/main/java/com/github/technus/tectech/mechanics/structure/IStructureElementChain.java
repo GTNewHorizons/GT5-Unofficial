@@ -6,13 +6,13 @@ import net.minecraft.world.World;
 /**
  * Use StructureUtility to instantiate
  */
-public interface IStructureElementChain<MultiBlock> extends IStructureElement<MultiBlock> {
-    IStructureElement<MultiBlock>[] fallbacks();
+public interface IStructureElementChain<T> extends IStructureElement<T> {
+    IStructureElement<T>[] fallbacks();
 
     @Override
-    default boolean check(MultiBlock multiBlock, World world, int x, int y, int z){
-        for (IStructureElement<MultiBlock> fallback : fallbacks()) {
-            if (fallback.check(multiBlock, world, x, y, z)) {
+    default boolean check(T t, World world, int x, int y, int z){
+        for (IStructureElement<T> fallback : fallbacks()) {
+            if (fallback.check(t, world, x, y, z)) {
                 return true;
             }
         }
@@ -20,9 +20,9 @@ public interface IStructureElementChain<MultiBlock> extends IStructureElement<Mu
     }
 
     @Override
-    default boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
-        for (IStructureElement<MultiBlock> fallback : fallbacks()) {
-            if (fallback.spawnHint(multiBlock, world, x, y, z, trigger)) {
+    default boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+        for (IStructureElement<T> fallback : fallbacks()) {
+            if (fallback.spawnHint(t, world, x, y, z, trigger)) {
                 return true;
             }
         }
@@ -30,9 +30,9 @@ public interface IStructureElementChain<MultiBlock> extends IStructureElement<Mu
     }
 
     @Override
-    default boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger) {
-        for (IStructureElement<MultiBlock> fallback : fallbacks()) {
-            if (fallback.placeBlock(multiBlock, world, x, y, z, trigger)) {
+    default boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+        for (IStructureElement<T> fallback : fallbacks()) {
+            if (fallback.placeBlock(t, world, x, y, z, trigger)) {
                 return true;
             }
         }

@@ -6,12 +6,12 @@ import net.minecraft.world.World;
 /**
  * Use StructureUtility to instantiate
  */
-public interface IStructureElement<MultiBlock> {
-    boolean check(MultiBlock multiBlock, World world, int x, int y, int z);
+public interface IStructureElement<T> {
+    boolean check(T t,World world,int x,int y,int z);
 
-    boolean spawnHint(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger);
+    boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger);
 
-    boolean placeBlock(MultiBlock multiBlock, World world, int x, int y, int z, ItemStack trigger);
+    boolean placeBlock(T t,World world,int x,int y,int z, ItemStack trigger);
 
     default int getStepA(){
         return 1;

@@ -40,6 +40,7 @@ public final class Util {
     private Util() {
     }
 
+    @SuppressWarnings("ComparatorMethodParameterNotUsed")
     public static <K, V extends Comparable<? super V>> SortedSet<Map.Entry<K, V>> entriesSortedByValues(Map<K, V> map) {
         SortedSet<Map.Entry<K, V>> sortedEntries = new TreeSet<>(
                 (e1, e2) -> {

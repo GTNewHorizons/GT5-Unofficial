@@ -5,6 +5,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -71,12 +72,14 @@ public class RendererMessage implements IMessage {
     private static void thaumLightning(int tX, int tY, int tZ, int tXN, int tYN, int tZN, int wID) {
         //This is enough to check for thaum, since it only ever matters for client side effects (Tested not to crash)
         if (Loader.isModLoaded("Thaumcraft")) {
-            World world = DimensionManager.getWorld(wID);
-            FXLightningBolt bolt = new FXLightningBolt(world, tX + 0.5F, tY + 0.5F, tZ + 0.5F, tX + tXN + 0.5F, tY + tYN + 0.5F, tZ + tZN + 0.5F, world.rand.nextLong(), 6, 0.5F, 8);
-            bolt.defaultFractal();
-            bolt.setType(2);
-            bolt.setWidth(0.125F);
-            bolt.finalizeBolt();
+            World world = Minecraft.getMinecraft().theWorld;
+            if (world.provider.dimensionId == wID){
+                FXLightningBolt bolt = new FXLightningBolt(world, tX + 0.5F, tY + 0.5F, tZ + 0.5F, tX + tXN + 0.5F, tY + tYN + 0.5F, tZ + tZN + 0.5F, world.rand.nextLong(), 6, 0.5F, 8);
+                bolt.defaultFractal();
+                bolt.setType(2);
+                bolt.setWidth(0.125F);
+                bolt.finalizeBolt();
+            }
         }
     }
 }
