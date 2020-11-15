@@ -8,6 +8,7 @@ import com.github.technus.tectech.mechanics.spark.ThaumSpark;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.mechanics.tesla.ITeslaConnectable;
+import com.github.technus.tectech.mechanics.tesla.ITeslaConnectableSimple;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
@@ -19,6 +20,8 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Vec3Impl;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -35,6 +38,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.*;
@@ -47,6 +51,10 @@ import static java.lang.Math.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable, ITeslaConnectable {
+    //Interface fields
+    Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = ArrayListMultimap.create();
+    HashSet<ThaumSpark> sparkList = new HashSet<>();
+
     //region variables
     private static final int transferRadiusTowerFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_TOWER;//Default is 32
     private static final int transferRadiusTransceiverFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_TRANSCEIVER;//Default is 16
@@ -699,6 +707,16 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public float getTeslaReceptionCoefficient() {
         return 0;
+    }
+
+    @Override
+    public Multimap<Integer, ITeslaConnectableSimple> getTeslaNodeMap() {
+        return teslaNodeMap;
+    }
+
+    @Override
+    public HashSet<ThaumSpark> getSparkList() {
+        return sparkList;
     }
 
     @Override

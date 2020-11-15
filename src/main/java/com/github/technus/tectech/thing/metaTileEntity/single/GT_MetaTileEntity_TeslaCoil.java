@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
 import com.github.technus.tectech.mechanics.tesla.ITeslaConnectable;
+import com.github.technus.tectech.mechanics.tesla.ITeslaConnectableSimple;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
@@ -9,6 +10,8 @@ import com.github.technus.tectech.mechanics.spark.ThaumSpark;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_TM_teslaCoil;
 import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.util.Vec3Impl;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -23,6 +26,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.*;
 import static com.github.technus.tectech.util.CommonValues.V;
@@ -32,6 +36,10 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer implements ITeslaConnectable {
+    //Interface fields
+    Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = ArrayListMultimap.create();
+    HashSet<ThaumSpark> sparkList = new HashSet<>();
+
     private final static int transferRadiusMax = TecTech.configTecTech.TESLA_SINGLE_RANGE;//Default is 20
     private final static int perBlockLoss = TecTech.configTecTech.TESLA_SINGLE_LOSS_PER_BLOCK;//Default is 1
     private final static float overDriveLoss = TecTech.configTecTech.TESLA_SINGLE_LOSS_FACTOR_OVERDRIVE;//Default is 0.25F
@@ -179,45 +187,45 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         return new GT_MetaTileEntity_TeslaCoil(mName, mTier, mDescription, mTextures, mInventory.length);
     }
 
-    private void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
-        int x = mte.getXCoord();
-        int y = mte.getYCoord();
-        int z = mte.getZCoord();
-
-        byte xR;
-        byte yR;
-        byte zR;
-
-        IMetaTileEntity nodeInside = node.getMetaTileEntity();
-        if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil) {
-            GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
-            xR = (byte) (nodeTesla.posTop.get0() - x);
-            yR = (byte) (nodeTesla.posTop.get1() - y);
-            zR = (byte) (nodeTesla.posTop.get2() - z);
-        } else {
-            xR = (byte) (node.getXCoord() - x);
-            yR = (byte) (node.getYCoord() - y);
-            zR = (byte) (node.getZCoord() - z);
-        }
-
-        int wID = mte.getWorld().provider.dimensionId;
-
-        sparkList.add(new ThaumSpark(x, y, z, xR, yR, zR, wID));
-    }
-
-    private long[] getOutputVoltage(long outputVoltage, int distance, boolean overDriveToggle) {
-        long outputVoltageInjectable;
-        long outputVoltageConsumption;
-
-        if (overDriveToggle) {
-            outputVoltageInjectable = outputVoltage;
-            outputVoltageConsumption = outputVoltage + (distance * perBlockLoss) + (long) Math.round(overDriveLoss * outputVoltage);
-        } else {
-            outputVoltageInjectable = outputVoltage - (distance * perBlockLoss);
-            outputVoltageConsumption = outputVoltage;
-        }
-        return new long[]{outputVoltageInjectable, outputVoltageConsumption};
-    }
+//    private void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
+//        int x = mte.getXCoord();
+//        int y = mte.getYCoord();
+//        int z = mte.getZCoord();
+//
+//        byte xR;
+//        byte yR;
+//        byte zR;
+//
+//        IMetaTileEntity nodeInside = node.getMetaTileEntity();
+//        if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil) {
+//            GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
+//            xR = (byte) (nodeTesla.posTop.get0() - x);
+//            yR = (byte) (nodeTesla.posTop.get1() - y);
+//            zR = (byte) (nodeTesla.posTop.get2() - z);
+//        } else {
+//            xR = (byte) (node.getXCoord() - x);
+//            yR = (byte) (node.getYCoord() - y);
+//            zR = (byte) (node.getZCoord() - z);
+//        }
+//
+//        int wID = mte.getWorld().provider.dimensionId;
+//
+//        sparkList.add(new ThaumSpark(x, y, z, xR, yR, zR, wID));
+//    }
+//
+//    private long[] getOutputVoltage(long outputVoltage, int distance, boolean overDriveToggle) {
+//        long outputVoltageInjectable;
+//        long outputVoltageConsumption;
+//
+//        if (overDriveToggle) {
+//            outputVoltageInjectable = outputVoltage;
+//            outputVoltageConsumption = outputVoltage + (distance * perBlockLoss) + (long) Math.round(overDriveLoss * outputVoltage);
+//        } else {
+//            outputVoltageInjectable = outputVoltage - (distance * perBlockLoss);
+//            outputVoltageConsumption = outputVoltage;
+//        }
+//        return new long[]{outputVoltageInjectable, outputVoltageConsumption};
+//    }
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -306,6 +314,16 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     @Override
     public float getTeslaReceptionCoefficient() {
         return 1;
+    }
+
+    @Override
+    public Multimap<Integer, ITeslaConnectableSimple> getTeslaNodeMap() {
+        return teslaNodeMap;
+    }
+
+    @Override
+    public HashSet<ThaumSpark> getSparkList() {
+        return sparkList;
     }
 
     @Override

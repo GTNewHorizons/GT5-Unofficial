@@ -1,19 +1,20 @@
 package com.github.technus.tectech.mechanics.tesla;
 
 import com.github.technus.tectech.mechanics.spark.ThaumSpark;
+import com.google.common.collect.Multimap;
 
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 
-import static com.github.technus.tectech.util.Util.entriesSortedByValues;
 import static java.lang.Math.sqrt;
 
 public interface ITeslaConnectable extends ITeslaConnectableSimple {
     //Map with all Teslas in the same dimension and the distance to them //TODO Range
-    HashMap<ITeslaConnectableSimple, Integer> teslaNodeMap = new HashMap<>();
+    Multimap<Integer, ITeslaConnectableSimple> getTeslaNodeMap();
+
     //ThaumCraft lighting coordinate pairs, so we can send them in bursts and save on lag
-    HashSet<ThaumSpark> sparkList = new HashSet<>();
+    HashSet<ThaumSpark> getSparkList();
 
     //-128 to -1 disables capability
     //0 means any source or target
@@ -36,7 +37,7 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
         public static final HashSet<ITeslaConnectableSimple> teslaNodeSet = new HashSet<>();//Targets for power transmission
 
         public static void generateTeslaNodeMap(ITeslaConnectable origin) {
-            origin.teslaNodeMap.clear();
+            origin.getTeslaNodeMap().clear();
             for (ITeslaConnectableSimple target : teslaNodeSet) {
                 //Sanity checks
                 if (target == null) {
@@ -59,13 +60,13 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
                     //Skip if the range is too vast
                     continue;
                 }
-                origin.teslaNodeMap.put(target, distance);
+                origin.getTeslaNodeMap().put(distance, target);
             }
         }
 
         public static void cleanTeslaNodeMap(ITeslaConnectable origin) {
             //Wipes all null objects, in practice this is unloaded or improperly removed tesla objects
-            origin.teslaNodeMap.keySet().removeIf(Objects::isNull);
+            origin.getTeslaNodeMap().keySet().removeIf(Objects::isNull);
         }
 
         public static long powerTeslaNodeMap(ITeslaConnectable origin) {
@@ -76,18 +77,18 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
             long remainingAmperes = origin.getTeslaOutputCurrent();
             while (remainingAmperes > 0) {
                 long startingAmperes = remainingAmperes;
-                for (HashMap.Entry<ITeslaConnectableSimple, Integer> Rx : entriesSortedByValues(teslaNodeMap)) {
+                for (Map.Entry<Integer, ITeslaConnectableSimple> Rx : origin.getTeslaNodeMap().entries()) {
                     if (origin.getTeslaStoredEnergy() < (origin.isOverdriveEnabled() ? origin.getTeslaOutputVoltage() * 2 : origin.getTeslaOutputVoltage())) {
                         //Return and end the tick if we're out of energy to send
                         return origin.getTeslaOutputCurrent() - remainingAmperes;
                     }
 
-                    ITeslaConnectableSimple target = Rx.getKey();
+                    ITeslaConnectableSimple target = Rx.getValue();
 
                     //Continue if the target can't receive
                     if(!target.isTeslaReadyToReceive()) continue;
 
-                    int distance = Rx.getValue();
+                    int distance = Rx.getKey();
 
                     //Calculate the voltage output
                     long outputVoltageInjectable;
@@ -109,7 +110,7 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
 
                     if (target.teslaInjectEnergy(outputVoltageInjectable)) {
                         origin.teslaDrainEnergy(outputVoltageConsumption);
-                        sparkList.add(new ThaumSpark(origin.getTeslaPosition(), target.getTeslaPosition(), origin.getTeslaDimension()));
+                        origin.getSparkList().add(new ThaumSpark(origin.getTeslaPosition(), target.getTeslaPosition(), origin.getTeslaDimension()));
                         remainingAmperes--;
                     }
                     if (remainingAmperes == 0) {
