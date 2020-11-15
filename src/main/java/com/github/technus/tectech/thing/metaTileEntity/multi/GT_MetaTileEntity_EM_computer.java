@@ -143,7 +143,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             totalLen++;
             offset--;
         }
-        if (totalLen > 16) {
+        if (totalLen > 17) {
             return false;
         }
         if (!structureCheck_EM(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, ++offset)) {
