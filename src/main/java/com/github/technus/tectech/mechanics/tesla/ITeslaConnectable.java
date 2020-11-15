@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap;
 
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 
 import static java.lang.Math.sqrt;
 
@@ -74,17 +73,15 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
         }
 
         public static void generateTeslaNodeMap(ITeslaConnectable origin) {
-            if(!teslaNodeSet.contains(origin)) {
-                origin.getTeslaNodeMap().clear();
-                for (ITeslaConnectableSimple target : teslaSimpleNodeSet) {
-                    //Sanity checks
-                    if (target == null) {
-                        //The Tesla Covers do not remove themselves from the list and this is the code that does
-                        teslaSimpleNodeSet.remove(null);
-                        continue;
-                    }
-                    addTargetToTeslaOrigin(target, origin);
+            origin.getTeslaNodeMap().clear();
+            for (ITeslaConnectableSimple target : teslaSimpleNodeSet) {
+                //Sanity checks
+                if (target == null) {
+                    //The Tesla Covers do not remove themselves from the list and this is the code that does
+                    teslaSimpleNodeSet.remove(null);
+                    continue;
                 }
+                addTargetToTeslaOrigin(target, origin);
             }
             teslaNodeSet.add(origin);
         }

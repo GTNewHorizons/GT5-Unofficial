@@ -52,8 +52,9 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable, ITeslaConnectable {
     //Interface fields
-    Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = ArrayListMultimap.create();
-    HashSet<ThaumSpark> sparkList = new HashSet<>();
+    private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = ArrayListMultimap.create();
+    private final HashSet<ThaumSpark> sparkList = new HashSet<>();
+    private int sparkCount = 10;
 
     //region variables
     private static final int transferRadiusTowerFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_TOWER;//Default is 32
@@ -80,8 +81,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private FluidStack[] mOutputFluidsQueue; //Used to buffer the fluid outputs, so the tesla takes a second to 'cool' any plasma it would output as a gas
 
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCapacitorHatches = new ArrayList<>(); //Capacitor hatches which determine the max voltage tier and count of amps
-
-    private int sortTime = 0; //Scan timer used for tesla search intervals
 
     private long energyCapacity = 0; //Total energy storage limited by capacitors
     private long outputVoltageMax = 0; //Tesla voltage output limited by capacitors
@@ -459,13 +458,12 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public void onRemoval() {
         super.onRemoval();
-        if (this.getBaseMetaTileEntity().isClientSide()) {
-            return;
-        }
-        teslaSimpleNodeSetRemove(this);
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
-                cap.getBaseMetaTileEntity().setActive(false);
+        if (!getBaseMetaTileEntity().isClientSide()) {
+            teslaSimpleNodeSetRemove(this);
+            for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
+                if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
+                    cap.getBaseMetaTileEntity().setActive(false);
+                }
             }
         }
     }
@@ -557,13 +555,12 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         super.onFirstTick_EM(aBaseMetaTileEntity);
         if (!aBaseMetaTileEntity.isClientSide()) {
             teslaSimpleNodeSetAdd(this);
+            generateTeslaNodeMap(this);
         }
     }
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        IGregTechTileEntity mte = getBaseMetaTileEntity();
-
         //Hysteresis based ePowerPass setting
         float energyFrac = (float) getEUVar() / energyCapacity;
 
@@ -576,15 +573,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         } else if (ePowerPass && energyFrac < histLowSetting.get()) {
             ePowerPass = false;
         }
-
-        //Create the teslaNodeMap
-        if (sortTime == sortTimeMinSetting.get()) {
-            sortTime = 0;
-            sortTimeDisplay.updateStatus();
-            generateTeslaNodeMap(this);
-        }
-        sortTime++;
-        sortTimeDisplay.set(sortTime);
 
         //Power Limit Settings
         if (outputVoltageSetting.get() > 0) {
@@ -609,16 +597,21 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         //Power transfer
         outputCurrentDisplay.set(powerTeslaNodeMap(this));
 
-        if (!sparkList.isEmpty()) {
-            NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
-                    mte.getWorld().provider.dimensionId,
-                    posTop.get0(),
-                    posTop.get1(),
-                    posTop.get2(),
-                    256);
+        //Randomly send all the sparks out once every 3 to 5 seconds
+        sparkCount--;
+        if (sparkCount == 0){
+            IGregTechTileEntity mte = getBaseMetaTileEntity();
+            sparkCount = 60 + mte.getWorld().rand.nextInt(41);
+            if(!sparkList.isEmpty()){
+                NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
+                        mte.getWorld().provider.dimensionId,
+                        mte.getXCoord(),
+                        mte.getYCoord(),
+                        mte.getZCoord(),
+                        256);
+                sparkList.clear();
+            }
         }
-        sparkList.clear();
-
         return true;
     }
 

@@ -35,15 +35,13 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer implements ITeslaConnectable {
     //Interface fields
-    Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = ArrayListMultimap.create();
-    HashSet<ThaumSpark> sparkList = new HashSet<>();
+    private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = ArrayListMultimap.create();
+    private final HashSet<ThaumSpark> sparkList = new HashSet<>();
+    private int sparkCount = 10;
 
     private final static int transferRadiusMax = TecTech.configTecTech.TESLA_SINGLE_RANGE;//Default is 20
     private final static int perBlockLoss = TecTech.configTecTech.TESLA_SINGLE_LOSS_PER_BLOCK;//Default is 1
     private final static float overDriveLoss = TecTech.configTecTech.TESLA_SINGLE_LOSS_FACTOR_OVERDRIVE;//Default is 0.25F
-
-    private byte sparkCount = 0;
-
     private final static int transferRadiusMin = 4;//Minimum user configurable
     private int transferRadius = transferRadiusMax;//Default transferRadius setting
 
@@ -60,9 +58,6 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private boolean overdriveToggle = false;
 
     private String clientLocale = "en_US";
-
-    private int sortTime = 0;//Sorting tick counter
-    private final static int sortTimeMax = 100;//Sorting tick counter limit, so we only sort once every 5 seconds
 
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, "", aSlotCount);
@@ -185,51 +180,12 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         return new GT_MetaTileEntity_TeslaCoil(mName, mTier, mDescription, mTextures, mInventory.length);
     }
 
-//    private void thaumLightning(IGregTechTileEntity mte, IGregTechTileEntity node) {
-//        int x = mte.getXCoord();
-//        int y = mte.getYCoord();
-//        int z = mte.getZCoord();
-//
-//        byte xR;
-//        byte yR;
-//        byte zR;
-//
-//        IMetaTileEntity nodeInside = node.getMetaTileEntity();
-//        if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil) {
-//            GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
-//            xR = (byte) (nodeTesla.posTop.get0() - x);
-//            yR = (byte) (nodeTesla.posTop.get1() - y);
-//            zR = (byte) (nodeTesla.posTop.get2() - z);
-//        } else {
-//            xR = (byte) (node.getXCoord() - x);
-//            yR = (byte) (node.getYCoord() - y);
-//            zR = (byte) (node.getZCoord() - z);
-//        }
-//
-//        int wID = mte.getWorld().provider.dimensionId;
-//
-//        sparkList.add(new ThaumSpark(x, y, z, xR, yR, zR, wID));
-//    }
-//
-//    private long[] getOutputVoltage(long outputVoltage, int distance, boolean overDriveToggle) {
-//        long outputVoltageInjectable;
-//        long outputVoltageConsumption;
-//
-//        if (overDriveToggle) {
-//            outputVoltageInjectable = outputVoltage;
-//            outputVoltageConsumption = outputVoltage + (distance * perBlockLoss) + (long) Math.round(overDriveLoss * outputVoltage);
-//        } else {
-//            outputVoltageInjectable = outputVoltage - (distance * perBlockLoss);
-//            outputVoltageConsumption = outputVoltage;
-//        }
-//        return new long[]{outputVoltageInjectable, outputVoltageConsumption};
-//    }
-
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         if (!aBaseMetaTileEntity.isClientSide()) {
             teslaSimpleNodeSetAdd(this);
+            generateTeslaNodeMap(this);
         }
     }
 
@@ -266,27 +222,23 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             powerPassToggle = false;
         }
 
-        //Create the teslaNodeMap
-        if (sortTime == sortTimeMax) {
-            sortTime = 0;
-            generateTeslaNodeMap(this);
-        }
-        sortTime++;
-
         //Send Power
         powerTeslaNodeMap(this);
 
-        sparkCount++;
-        if (sparkCount == 60 && !sparkList.isEmpty()) {
-            sparkCount = 0;
-            NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
-                    aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                    aBaseMetaTileEntity.getXCoord(),
-                    aBaseMetaTileEntity.getYCoord(),
-                    aBaseMetaTileEntity.getZCoord(),
-                    256);
+        //Randomly send all the sparks out once every 3 to 5 seconds
+        sparkCount--;
+        if (sparkCount == 0){
+            sparkCount = 60 + aBaseMetaTileEntity.getWorld().rand.nextInt(41);
+            if(!sparkList.isEmpty()){
+                NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
+                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                        aBaseMetaTileEntity.getXCoord(),
+                        aBaseMetaTileEntity.getYCoord(),
+                        aBaseMetaTileEntity.getZCoord(),
+                        256);
+                sparkList.clear();
+            }
         }
-        sparkList.clear();
     }
 
     @Override
