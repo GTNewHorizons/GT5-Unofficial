@@ -34,39 +34,59 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
     boolean teslaDrainEnergy(long teslaVoltageDrained);
 
     class TeslaUtil {
-        public static final HashSet<ITeslaConnectableSimple> teslaNodeSet = new HashSet<>();//Targets for power transmission
+        private static final HashSet<ITeslaConnectableSimple> teslaSimpleNodeSet = new HashSet<>();//Targets for power transmission
+        private static final HashSet<ITeslaConnectable> teslaNodeSet = new HashSet<>();//Sources of power transmission
 
-        public static void generateTeslaNodeMap(ITeslaConnectable origin) {
-            origin.getTeslaNodeMap().clear();
-            for (ITeslaConnectableSimple target : teslaNodeSet) {
-                //Sanity checks
-                if (target == null) {
-                    //The Tesla Covers do not remove themselves from the list and this is the code that does
-                    teslaNodeSet.remove(null);
-                    continue;
-                } else if (origin.equals(target) || !origin.getTeslaDimension().equals(target.getTeslaDimension())) {
-                    //Skip if looking at myself and skip if not in the same dimension
-                    //TODO, INTERDIM?
-                    continue;
-                } else if (origin.getTeslaTransmissionCapability() != 0 && origin.getTeslaReceptionCapability() != 0 &&
-                        origin.getTeslaTransmissionCapability() != origin.getTeslaReceptionCapability()) {
-                    //Skip if incompatible
-                    continue;
-                }
-
-                //Range calc
-                int distance = (int) sqrt(origin.getTeslaPosition().distanceSq(target.getTeslaPosition()));
-                if (distance > origin.getTeslaTransmissionRange() * target.getTeslaReceptionCoefficient()) {
-                    //Skip if the range is too vast
-                    continue;
-                }
-                origin.getTeslaNodeMap().put(distance, target);
-            }
+        public static void teslaSimpleNodeSetAdd(ITeslaConnectableSimple target){
+            teslaSimpleNodeSet.add(target);
+            teslaNodeSet.forEach(origin -> addTargetToTeslaOrigin(target, origin));
         }
 
-        public static void cleanTeslaNodeMap(ITeslaConnectable origin) {
-            //Wipes all null objects, in practice this is unloaded or improperly removed tesla objects
-            origin.getTeslaNodeMap().keySet().removeIf(Objects::isNull);
+        public static void teslaSimpleNodeSetRemove(ITeslaConnectableSimple target){
+            teslaSimpleNodeSet.remove(target);
+            if (target instanceof ITeslaConnectable)teslaNodeSet.remove(target);
+            teslaNodeSet.forEach(origin -> removeTargetFromTeslaOrigin(target, origin));
+        }
+
+        private static void addTargetToTeslaOrigin(ITeslaConnectableSimple target, ITeslaConnectable origin){
+            if (origin.equals(target) || !origin.getTeslaDimension().equals(target.getTeslaDimension())) {
+                //Skip if looking at myself and skip if not in the same dimension
+                //TODO, INTERDIM?
+                return;
+            } else if (origin.getTeslaTransmissionCapability() != 0 && origin.getTeslaReceptionCapability() != 0 &&
+                    origin.getTeslaTransmissionCapability() != origin.getTeslaReceptionCapability()) {
+                //Skip if incompatible
+                return;
+            }
+            //Range calc
+            int distance = (int) sqrt(origin.getTeslaPosition().distanceSq(target.getTeslaPosition()));
+            if (distance > origin.getTeslaTransmissionRange() * target.getTeslaReceptionCoefficient()) {
+                //Skip if the range is too vast
+                return;
+            }
+            origin.getTeslaNodeMap().put(distance, target);
+        }
+
+        private static void removeTargetFromTeslaOrigin(ITeslaConnectableSimple target, ITeslaConnectable origin){
+            //Range calc TODO Remove duplicate?
+            int distance = (int) sqrt(origin.getTeslaPosition().distanceSq(target.getTeslaPosition()));
+            origin.getTeslaNodeMap().remove(distance, target);
+        }
+
+        public static void generateTeslaNodeMap(ITeslaConnectable origin) {
+            if(!teslaNodeSet.contains(origin)) {
+                origin.getTeslaNodeMap().clear();
+                for (ITeslaConnectableSimple target : teslaSimpleNodeSet) {
+                    //Sanity checks
+                    if (target == null) {
+                        //The Tesla Covers do not remove themselves from the list and this is the code that does
+                        teslaSimpleNodeSet.remove(null);
+                        continue;
+                    }
+                    addTargetToTeslaOrigin(target, origin);
+                }
+            }
+            teslaNodeSet.add(origin);
         }
 
         public static long powerTeslaNodeMap(ITeslaConnectable origin) {

@@ -7,14 +7,12 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.spark.RendererMessage;
 import com.github.technus.tectech.mechanics.spark.ThaumSpark;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_TM_teslaCoil;
 import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.util.Vec3Impl;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
@@ -231,7 +229,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         if (!aBaseMetaTileEntity.isClientSide()) {
-            teslaNodeSet.add(this);
+            teslaSimpleNodeSetAdd(this);
         }
     }
 
@@ -239,14 +237,14 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     public void onRemoval() {
         super.onRemoval();
         if (!this.getBaseMetaTileEntity().isClientSide()) {
-            teslaNodeSet.remove(this);
+            teslaSimpleNodeSetRemove(this);
         }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        teslaNodeSet.add(this);
+        teslaSimpleNodeSetAdd(this);
     }
 
     @Override

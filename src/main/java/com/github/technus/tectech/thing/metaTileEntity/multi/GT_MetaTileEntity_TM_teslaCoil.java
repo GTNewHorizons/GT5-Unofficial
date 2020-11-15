@@ -462,7 +462,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (this.getBaseMetaTileEntity().isClientSide()) {
             return;
         }
-        teslaNodeSet.remove(this);
+        teslaSimpleNodeSetRemove(this);
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                 cap.getBaseMetaTileEntity().setActive(false);
@@ -536,7 +536,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         energyCapacity = aNBT.getLong("eEnergyCapacity");
-        teslaNodeSet.add(this);
+        teslaSimpleNodeSetAdd(this);
     }
 
     @Override
@@ -556,7 +556,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick_EM(aBaseMetaTileEntity);
         if (!aBaseMetaTileEntity.isClientSide()) {
-            teslaNodeSet.add(this);
+            teslaSimpleNodeSetAdd(this);
         }
     }
 
@@ -605,9 +605,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         transferRadiusTowerDisplay.set(transferRadiusTower);
         transferRadiusTransceiverDisplay.set(transferRadiusTower * 2);
         transferRadiusCoverUltimateDisplay.set(transferRadiusTower);
-
-        //Clean the teslaNodeMap
-        cleanTeslaNodeMap(this);
 
         //Power transfer
         outputCurrentDisplay.set(powerTeslaNodeMap(this));
