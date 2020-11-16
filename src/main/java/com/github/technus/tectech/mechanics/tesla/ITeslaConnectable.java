@@ -87,56 +87,57 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
         }
 
         public static long powerTeslaNodeMap(ITeslaConnectable origin) {
-            //Teslas can only send OR receive
-            if (origin.isTeslaReadyToReceive()) {
-                return 0L;//TODO Negative values to indicate charging?
-            }
             long remainingAmperes = origin.getTeslaOutputCurrent();
-            while (remainingAmperes > 0) {
-                long startingAmperes = remainingAmperes;
+            boolean canSendPower = !origin.isTeslaReadyToReceive() && remainingAmperes > 0;
+
+            if (canSendPower) {
                 for (Map.Entry<Integer, ITeslaConnectableSimple> Rx : origin.getTeslaNodeMap().entries()) {
-                    if (origin.getTeslaStoredEnergy() < (origin.isOverdriveEnabled() ? origin.getTeslaOutputVoltage() * 2 : origin.getTeslaOutputVoltage())) {
-                        //Return and end the tick if we're out of energy to send
-                        return origin.getTeslaOutputCurrent() - remainingAmperes;
-                    }
-
+                    //Do we still have power left to send kind of check
+                    if (origin.getTeslaStoredEnergy() < (origin.isOverdriveEnabled() ? origin.getTeslaOutputVoltage() *
+                            2 : origin.getTeslaOutputVoltage())) break;
+                    //Explicit words for the important fields
                     ITeslaConnectableSimple target = Rx.getValue();
-
-                    //Continue if the target can't receive
-                    if(!target.isTeslaReadyToReceive()) continue;
-
                     int distance = Rx.getKey();
+                    //Can our target receive energy?
+                    if(!target.isTeslaReadyToReceive()) continue;
 
                     //Calculate the voltage output
                     long outputVoltageInjectable;
                     long outputVoltageConsumption;
-
                     if (origin.isOverdriveEnabled()) {
                         outputVoltageInjectable = origin.getTeslaOutputVoltage();
-                        outputVoltageConsumption = origin.getTeslaOutputVoltage() + (distance * origin.getTeslaEnergyLossPerBlock()) +
-                                (long) Math.round(origin.getTeslaOutputVoltage() * origin.getTeslaOverdriveLossCoefficient());
+                        outputVoltageConsumption = origin.getTeslaOutputVoltage() +
+                                (distance * origin.getTeslaEnergyLossPerBlock()) +
+                                (long) Math.round(origin.getTeslaOutputVoltage() *
+                                        origin.getTeslaOverdriveLossCoefficient());
                     } else {
-                        outputVoltageInjectable = origin.getTeslaOutputVoltage() - (distance * origin.getTeslaEnergyLossPerBlock());
+                        outputVoltageInjectable = origin.getTeslaOutputVoltage() - (distance *
+                                origin.getTeslaEnergyLossPerBlock());
                         outputVoltageConsumption = origin.getTeslaOutputVoltage();
                     }
 
-                    //Skip the target if the cost is too high
-                    if (origin.getTeslaStoredEnergy() < outputVoltageConsumption) {
-                        continue;
+                    //Break out of the loop if the cost is too high
+                    //Since the next target will have an even higher cost, just quit now.
+                    if (origin.getTeslaStoredEnergy() < outputVoltageConsumption) break;
+
+                    //Now shove in as many packets as will fit~
+                    while(canSendPower){
+                        if (target.teslaInjectEnergy(outputVoltageInjectable)) {
+                            origin.teslaDrainEnergy(outputVoltageConsumption);
+                            origin.getSparkList().add(new ThaumSpark(origin.getTeslaPosition(),
+                                    target.getTeslaPosition(), origin.getTeslaDimension()));
+                            remainingAmperes--;
+                            //Update the can send power flag each time we send power
+                            canSendPower = (origin.getTeslaStoredEnergy() < outputVoltageConsumption ||
+                                    remainingAmperes == 0);
+                        } else {
+                            //Breaks out when I can't send anymore power
+                            break;
+                        }
                     }
 
-                    if (target.teslaInjectEnergy(outputVoltageInjectable)) {
-                        origin.teslaDrainEnergy(outputVoltageConsumption);
-                        origin.getSparkList().add(new ThaumSpark(origin.getTeslaPosition(), target.getTeslaPosition(), origin.getTeslaDimension()));
-                        remainingAmperes--;
-                    }
-                    if (remainingAmperes == 0) {
-                        return origin.getTeslaOutputCurrent();
-                    }
-                }
-                //End the tick after one iteration with no transmissions
-                if (remainingAmperes == startingAmperes) {
-                    return origin.getTeslaOutputCurrent() - remainingAmperes;
+                    //Break out if we can't send power anymore
+                    if (canSendPower)break;
                 }
             }
             return origin.getTeslaOutputCurrent() - remainingAmperes;

@@ -31,7 +31,7 @@ public class RendererMessage implements IMessage {
             ObjectInputStream ois = new ObjectInputStream(is);
             Object data = ois.readObject();
             sparkList = (HashSet<ThaumSpark>) data;
-        } catch (IOException | ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ignored) {
         }
     }
 
@@ -44,7 +44,7 @@ public class RendererMessage implements IMessage {
             oos.flush();
             InputStream is = new ByteArrayInputStream(baos.toByteArray());
             pBuffer.writeBytes(is, baos.toByteArray().length);
-        } catch (IOException ex) {
+        } catch (IOException ignore) {
         }
     }
 
