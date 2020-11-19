@@ -16,7 +16,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import util.MultiBlockTooltipBuilder;
 
 public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBase {
 	
