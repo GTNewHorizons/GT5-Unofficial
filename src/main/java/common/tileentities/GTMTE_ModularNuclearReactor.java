@@ -47,6 +47,8 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 
 	@Override
 	public String[] getDescription() {
+		return new String[]{"Disabled"};
+		/*
 		final MultiBlockTooltipBuilder b =  new MultiBlockTooltipBuilder();
 		b.addInfo("Can be built, BUT DOES NOT WORK")
 				.addInfo("Converts fissile material and outputs power or heat")
@@ -75,7 +77,7 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 			return b.getInformation();
 		} else {
 			return b.getStructureInformation();
-		}
+		}*/
 	}
 
 	@Override

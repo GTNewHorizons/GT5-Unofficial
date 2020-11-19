@@ -9,6 +9,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import kekztech.MultiFluidHandler;
 import net.minecraft.block.Block;
@@ -21,7 +22,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
-import util.MultiBlockTooltipBuilder;
 import util.Vector3i;
 import util.Vector3ic;
 
@@ -61,28 +61,32 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-		b.addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
-				.addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
-				.addInfo("Right clicking the controller with a screwdriver will turn on excess voiding.")
-				.addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
-				.addSeparator()
-				.addInfo("Note on hatch locking:")
-				.addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
-				.addInfo("The index of a stored fluid can be obtained through the Tricorder.")
-				.addSeparator()
-				.beginStructureBlock(5, 9, 5)
-				.addController("Top Center")
-				.addEnergyHatch("Any top or bottom casing")
-				.addOtherStructurePart("Inner 3x7x3 solid pillar", "Storage Field Blocks")
-				.addOtherStructurePart("Outer 5x7x5 glass shell", "IC2 Reinforced Glass")
-				.addMaintenanceHatch("Any top or bottom casing")
-				.addIOHatches("Instead of any casing or glass, have to touch storage field.")
-				.signAndFinalize("Kekzdealer");
+		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType("Fluid Tank")
+		.addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
+		.addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
+		.addInfo("Right clicking the controller with a screwdriver will turn on excess voiding.")
+		.addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
+		.addSeparator()
+		.addInfo("Note on hatch locking:")
+		.addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
+		.addInfo("The index of a stored fluid can be obtained through the Tricorder.")
+		.addSeparator()
+		.beginStructureBlock(5, 9, 5)
+		.addController("Top Center")
+		.addOtherStructurePart("Storage Field Blocks", "Inner 3x7x3 solid pillar")
+		.addOtherStructurePart("IC2 Reinforced Glass", "Outer 5x7x5 glass shell")
+		.addMaintenanceHatch("Any top or bottom casing")
+		.addEnergyHatch("Any top or bottom casing")
+		.addInputHatch("Instead of any casing or glass, has to touch storage field block")
+		.addOutputHatch("Instead of any casing or glass, has to touch storage field block")
+		.addStructureInfo("You can have a bunch of hatches")
+		.addOtherStructurePart("Multi I/O Hatches", "Instead of any casing or glass, has to touch storage field block")
+		.toolTipFinisher("KekzTech");
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
+			return tt.getInformation();
 		} else {
-			return b.getStructureInformation();
+			return tt.getStructureInformation();
 		}
 	}
 

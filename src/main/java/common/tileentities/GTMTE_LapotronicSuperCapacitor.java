@@ -16,6 +16,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynam
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
-import util.MultiBlockTooltipBuilder;
 import util.Vector3i;
 import util.Vector3ic;
 
@@ -74,29 +74,33 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	
 	@Override
 	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-		b.addInfo("Power storage structure!")
-				.addInfo("Looses energy equal to 1% of the total capacity every 24 hours.")
-				.addInfo("EXCEPTION: Ultimate Capacitors only count as Lapotronic Capacitors (UV) for the")
-				.addInfo("purpose of passive loss calculation. The full capacity is counted towards the actual power capacity.")
-				.addSeparator()
-				.addInfo("Glass shell has to be Tier - 2 of the highest capacitor tier")
-				.addInfo("UV-Tier glass required for TecTech Laser Hatches")
-				.addInfo("Modular height of 4 to 18 blocks.")
-				.addSeparator()
-				.beginStructureBlock(5, 4, 5)
-				.addController("Front Bottom Center")
-				.addDynamoHatch("Instead of any casing")
-				.addEnergyHatch("Instead of any casing")
-				.addOtherStructurePart("Lapotronic Capacitor Base", "5x2x5 base (at least 17x)")
-				.addOtherStructurePart("Lapotronic Capacitor, (Really) Ultimate Capacitor", "Center 3x(1-15)x3 above base (9-135 blocks)")
-				.addOtherStructurePart("Borosilicate Glass", "41-265x, Encase capacitor pillar")
-				.addMaintenanceHatch("Instead of any casing")
-				.signAndFinalize("Kekzdealer");
+		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType("Battery Buffer")
+		.addInfo("Power storage structure!")
+		.addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
+		.addInfo("EXCEPTION: Ultimate Capacitors only count as Lapotronic Capacitors (UV) for the")
+		.addInfo("purpose of passive loss calculation. The full capacity is counted towards the actual power capacity.")
+		.addSeparator()
+		.addInfo("Glass shell has to be Tier - 2 of the highest capacitor tier")
+		.addInfo("UV-tier glass required for TecTech Laser Hatches")
+		.addInfo("Add more or better capacitors to increase capacity")
+		.addSeparator()
+		.beginStructureBlock(5, 4, 5)
+		.addStructureInfo("Modular height of 4-18 blocks.")
+		.addController("Front center bottom")
+		.addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
+		.addOtherStructurePart("Lapotronic Capacitor (IV-UV), Ultimate Capacitor (UHV)", "Center 3x(1-15)x3 above base (9-135 blocks)")
+		.addOtherStructurePart("Borosilicate Glass (any)", "41-265x, Encase capacitor pillar")
+		.addEnergyHatch("Any casing")
+		.addDynamoHatch("Any casing")
+		.addOtherStructurePart("Laser Target/Source Hatches", "Any casing, must be using UV-tier glass")
+		.addStructureInfo("You can have several I/O Hstches")
+		.addMaintenanceHatch("Any casing")
+		.toolTipFinisher("KekzTech");
 		if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
+			return tt.getInformation();
 		} else {
-			return b.getStructureInformation();
+			return tt.getStructureInformation();
 		}
 	}
 	
