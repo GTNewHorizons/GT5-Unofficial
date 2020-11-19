@@ -74,7 +74,8 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		.addSeparator()
 		.beginStructureBlock(5, 9, 5)
 		.addController("Top Center")
-		.addOtherStructurePart("Storage Field Blocks", "Inner 3x7x3 solid pillar")
+		.addCasingInfo("T.F.F.T. Casing", 20)
+		.addOtherStructurePart("Storage Field Blocks (Tier I-V)", "Inner 3x7x3 solid pillar")
 		.addOtherStructurePart("IC2 Reinforced Glass", "Outer 5x7x5 glass shell")
 		.addMaintenanceHatch("Any top or bottom casing")
 		.addEnergyHatch("Any top or bottom casing")
@@ -82,6 +83,8 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		.addOutputHatch("Instead of any casing or glass, has to touch storage field block")
 		.addStructureInfo("You can have a bunch of hatches")
 		.addOtherStructurePart("Multi I/O Hatches", "Instead of any casing or glass, has to touch storage field block")
+		.addStructureInfo("Use MIOH with conduits or fluid storage busses to see all fluids at once. If it's fixed.")
+		.addStructureInfo("Ask someone else why there's 4 versions, with 2 uncraftable ones")
 		.toolTipFinisher("KekzTech");
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return tt.getInformation();

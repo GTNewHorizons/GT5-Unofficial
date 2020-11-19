@@ -76,10 +76,10 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	public String[] getDescription() {
 		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType("Battery Buffer")
-		.addInfo("Power storage structure!")
+		.addInfo("Power storage structure. Does not charge batteries or tools, however.")
 		.addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
-		.addInfo("EXCEPTION: Ultimate Capacitors only count as Lapotronic Capacitors (UV) for the")
-		.addInfo("purpose of passive loss calculation. The full capacity is counted towards the actual power capacity.")
+		.addInfo("Exception: Ultimate Capacitors only count as Lapotronic Capacitors (UV) for the")
+		.addInfo("purposes of passive loss calculation. The full capacity is counted towards the actual power capacity.")
 		.addSeparator()
 		.addInfo("Glass shell has to be Tier - 2 of the highest capacitor tier")
 		.addInfo("UV-tier glass required for TecTech Laser Hatches")
@@ -94,7 +94,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		.addEnergyHatch("Any casing")
 		.addDynamoHatch("Any casing")
 		.addOtherStructurePart("Laser Target/Source Hatches", "Any casing, must be using UV-tier glass")
-		.addStructureInfo("You can have several I/O Hstches")
+		.addStructureInfo("You can have several I/O Hatches")
 		.addMaintenanceHatch("Any casing")
 		.toolTipFinisher("KekzTech");
 		if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
