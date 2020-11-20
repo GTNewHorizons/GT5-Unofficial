@@ -85,7 +85,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		.addInfo("UV-tier glass required for TecTech Laser Hatches")
 		.addInfo("Add more or better capacitors to increase capacity")
 		.addSeparator()
-		.beginStructureBlock(5, 4, 5)
+		.beginStructureBlock(5, 4, 5, false)
 		.addStructureInfo("Modular height of 4-18 blocks.")
 		.addController("Front center bottom")
 		.addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")

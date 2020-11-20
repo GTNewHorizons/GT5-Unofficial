@@ -72,7 +72,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		.addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
 		.addInfo("The index of a stored fluid can be obtained through the Tricorder.")
 		.addSeparator()
-		.beginStructureBlock(5, 9, 5)
+		.beginStructureBlock(5, 9, 5, false)
 		.addController("Top Center")
 		.addCasingInfo("T.F.F.T. Casing", 20)
 		.addOtherStructurePart("Storage Field Blocks (Tier I-V)", "Inner 3x7x3 solid pillar")

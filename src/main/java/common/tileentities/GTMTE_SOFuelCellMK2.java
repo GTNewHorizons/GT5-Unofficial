@@ -65,7 +65,7 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 		.addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
 		.addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
 		.addSeparator()
-		.beginStructureBlock(3, 3, 5)
+		.beginStructureBlock(3, 3, 5, false)
 		.addController("Front center")
 		.addCasingInfo("Robust Tungstensteel Machine Casing", 12)
 		.addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
