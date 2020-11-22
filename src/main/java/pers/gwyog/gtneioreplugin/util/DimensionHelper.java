@@ -101,6 +101,56 @@ public class DimensionHelper {
                         s = "Deep Dark";
                     else if (s.equals("EndAsteroid"))
                         s = "Far End Asteroids";
+                    
+                    switch (s) {
+                        case "Moon":
+                            s = s + " (T1)";
+                            break;
+                        case "Mars":
+                        case "Phobos":
+                        case "Deimos":
+                            s = s + " (T2)";
+                            break;
+                        case "Asteroids":
+                        case "Ceres":
+                        case "Europa":
+                        case "Ganymede":
+                        case "Callisto":
+                            s = s + " (T3)";
+                            break;
+                        case "Io":
+                        case "Venus":
+                        case "Mercury":
+                            s = s + " (T4)";
+                            break;
+                        case "Enceladus":
+                        case "Titan":
+                        case "Miranda":
+                        case "Oberon":
+                            s = s + " (T5)";
+                            break;
+                        case "Proteus":
+                        case "Triton":
+                            s = s + " (T6)";
+                            break;
+                        case "Pluto":
+                        case "Kuiperbelt":
+                        case "Haumea":
+                        case "MakeMake":
+                            s = s + " (T7)";
+                            break;
+                        case "Deep Dark":
+                        case "CentauriBb":
+                        case "CentauriA":
+                        case "VegaB":
+                        case "BarnardC":
+                        case "BarnardE":
+                        case "BarnardF":
+                        case "TcetiE":
+                            s = s + " (T8)";
+                            break;
+                    }
+                    
                     dims[j] = s;
                 }
             }
