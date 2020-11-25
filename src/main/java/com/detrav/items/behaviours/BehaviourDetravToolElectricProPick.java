@@ -83,6 +83,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             packet.chunkX = cX;
             packet.chunkZ = cZ;
             packet.size = size;
+            String small_ore_keyword = GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.small_ore.keyword", "Small").getString();
             for (Chunk c : chunks) {
                 for (int x = 0; x < 16; x++)
                     for (int z = 0; z < 16; z++) {
@@ -103,7 +104,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
 
                                                 String name = GT_LanguageManager.getTranslation(
                                                         tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
-                                                if (name.startsWith("Small")) if (data != 1) continue;
+                                                if (name.startsWith(small_ore_keyword)) if (data != 1) continue;
                                                 packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
                                             } catch (Exception e) {
                                                 String name = tBlock.getUnlocalizedName() + ".";
