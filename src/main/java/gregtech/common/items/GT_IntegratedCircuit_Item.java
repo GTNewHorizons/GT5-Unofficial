@@ -7,6 +7,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -15,13 +16,17 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
 public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
     private final static String aTextEmptyRow = "   ";
+    protected IIcon[] mIconDamage = new IIcon[25];
     public GT_IntegratedCircuit_Item() {
         super("integrated_circuit", "Programmed Circuit", "");
         setHasSubtypes(true);
@@ -93,9 +98,13 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
         aList.add(new ItemStack(this, 1, 0));
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aIconRegister) {
         super.registerIcons(aIconRegister);
+        for (int i=0; i < mIconDamage.length; i++) {
+            mIconDamage[i] = aIconRegister.registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
+        }
         if (GregTech_API.sPostloadFinished) {
             GT_Log.out.println("GT_Mod: Starting Item Icon Load Phase");
             GT_FML_LOGGER.info("GT_Mod: Starting Item Icon Load Phase");
@@ -109,4 +118,10 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
             GT_FML_LOGGER.info("GT_Mod: Finished Item Icon Load Phase");
         }
     }
+
+    @Override
+    public IIcon getIconFromDamage(int damage) {
+        return mIconDamage[damage];
+    }
+
 }
