@@ -158,7 +158,7 @@ public class GT_OreDictUnificator {
 
     /** Doesn't copy the returned stack or set quantity. Be careful and do not mutate it;
      * intended only to optimize comparisons */
-    public static ItemStack get_nocopy(boolean aUseBlackList, ItemStack aStack) {
+    static ItemStack get_nocopy(boolean aUseBlackList, ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return null;
         ItemData tPrefixMaterial = getAssociation(aStack);
         ItemStack rStack = null;
