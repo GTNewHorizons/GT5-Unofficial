@@ -23,6 +23,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,19 +45,19 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                 if (data > 3) data = 0;
                 switch (data) {
                     case 0:
-                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Ore, Any Rock Block"));
+                        aPlayer.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode.0")));
                         break;
                     case 1:
-                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Ore (with small), Any Rock Block"));
+                        aPlayer.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode.1")));
                         break;
                     case 2:
-                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Oil, Any Block"));
+                        aPlayer.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode.2")));
                         break;
                     case 3:
-                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Pollution, Any Block"));
+                        aPlayer.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode.3")));
                         break;
                     default:
-                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: ERROR"));
+                        aPlayer.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode.error")));
                         break;
                 }
                 DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, (long) data);
@@ -83,6 +84,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             packet.chunkX = cX;
             packet.chunkZ = cZ;
             packet.size = size;
+            String small_ore_keyword = StatCollector.translateToLocal("detrav.scanner.small_ore.keyword");
             for (Chunk c : chunks) {
                 for (int x = 0; x < 16; x++)
                     for (int z = 0; z < 16; z++) {
@@ -103,7 +105,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
 
                                                 String name = GT_LanguageManager.getTranslation(
                                                         tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
-                                                if (name.startsWith("Small")) if (data != 1) continue;
+                                                if (name.startsWith(small_ore_keyword)) if (data != 1) continue;
                                                 packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
                                             } catch (Exception e) {
                                                 String name = tBlock.getUnlocalizedName() + ".";
@@ -160,11 +162,11 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
 
     void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
         if (value < 0) {
-            aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name));
+            aPlayer.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name));
         } else if (value < 1) {
-            aPlayer.addChatMessage(new ChatComponentText(foundTexts[0]));
+            aPlayer.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6")));
         } else
-            aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name + " " + value));
+            aPlayer.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name + " " + value));
     }
 
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {

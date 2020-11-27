@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,24 +36,6 @@ import java.util.SplittableRandom;
  * Created by wital_000 on 19.03.2016.
  */
 public class BehaviourDetravToolProPick extends Behaviour_None {
-
-    static final String[] foundTexts = new String[]{
-            "Found nothing of interest",        //0
-            " traces.",                 //1-9
-            " small sample.",         //10-29
-            " medium sample.",        //30-59
-            " large sample.",         //60-99
-            " very large sample.",    //100-**
-            "Found "
-    };
-
-    static final String[] DISTANCETEXTS = new String[]{
-            " next to you,",     // 0 chunks away
-            " close to you,",    // 1-2 chunks aways
-            " at medium range,", // 3 - 5 chunks away
-            " at long range,",   // 6 -8 chunks away
-            " far away,",        // 9 + chunks away
-    };
 
     static final int[] DISTANCEINTS = new int[] {
             0,
@@ -117,7 +100,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
         }
         range = range/2; // Convert range from diameter to radius
         
-        aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+"Prospecting at " + EnumChatFormatting.BLUE + "(" + bX + ", " + bZ + ")" ));
+        aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+ GT_LanguageManager.sEnglishFile.get("LanguageFile", "gt.scanner.prospecting", "Prospecting at ").getString() + EnumChatFormatting.BLUE + "(" + bX + ", " + bZ + ")" ));
         for (int x = -(range); x<(range+1);++x){
             aX=bX+(x*16);
             for (int z = -(range); z<(range+1);++z) {
@@ -131,7 +114,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                     }
                 }
                 if (DetravScannerMod.DEBUGBUILD)
-                    aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW+"Chunk at "+ aX +"|"+aZ+" to "+(aX+16)+"|"+(aZ+16) + DISTANCETEXTS[distTextIndex]));
+                    aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW+"Chunk at "+ aX +"|"+aZ+" to "+(aX+16)+"|"+(aZ+16) + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex)));
                 processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), aRandom, chance);
             }
         }
@@ -142,9 +125,9 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
         }
         
         if( badluck == 0) {
-            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "All chunks scanned successfully!"));
+            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + StatCollector.translateToLocal("detrav.scanner.success")));
         } else {
-            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Failed on " + badluck + " chunks. Better luck next time!"));
+            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + StatCollector.translateToLocal("detrav.scanner.fail").replace("%badluck", Integer.toString(badluck))));
         }
     }
 
@@ -152,7 +135,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
     protected void prospectSingleChunk(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ )
     {
         ores = new HashMap<String, Integer>();
-        aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+"Prospecting at " + EnumChatFormatting.BLUE + "(" + aX + ", " + aZ + ")" ));
+        aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+ StatCollector.translateToLocal("detrav.scanner.prospecting") + EnumChatFormatting.BLUE + "(" + aX + ", " + aZ + ")" ));
         processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), new SplittableRandom(), 1000);
         
         for (String key : ores.keySet()) {
@@ -205,14 +188,12 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                                 try {
                                     String name = Materials.getLocalizedNameForItem(
                                     		GT_LanguageManager.getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name"), tMetaID%1000);
-                                    if (name.startsWith("Small")) if (data != 1) continue;
-                                    if (name.startsWith("Small")) if(data!=1) continue;
+                                    if (name.startsWith(StatCollector.translateToLocal("detrav.scanner.small_ore.keyword"))) if (data != 1) continue;
                                     addOreToHashMap(name, aPlayer);
                                 }
                                 catch(Exception e) {
                                     String name = tBlock.getUnlocalizedName() + ".";
                                     if (name.contains(".small.")) if (data != 1) continue;
-                                    if (name.startsWith("Small")) if(data!=1) continue;
                                     addOreToHashMap(name, aPlayer);
                                 }
                             }
@@ -265,7 +246,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
     }
 
     void addOreToHashMap(String orename, EntityPlayer aPlayer) {
-        String oreDistance = orename + DISTANCETEXTS[distTextIndex]; // orename + the textual distance of the ore
+        String oreDistance = orename + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex); // orename + the textual distance of the ore
         if (!ores.containsKey(oreDistance)) {
             if (DetravScannerMod.DEBUGBUILD)
                 aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN+" Adding to oremap " + oreDistance));
@@ -278,19 +259,19 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
 
     void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
         if (value < 0) {
-            aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name));
+            aPlayer.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name));
         } else if (value < 1) {
-            aPlayer.addChatMessage(new ChatComponentText(foundTexts[0]));
+            aPlayer.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.0")));
         } else if (value < 10)
-            aPlayer.addChatMessage(new ChatComponentText(name + foundTexts[1]));
+            aPlayer.addChatMessage(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.1")));
         else if (value < 30)
-            aPlayer.addChatMessage(new ChatComponentText(name + foundTexts[2]));
+            aPlayer.addChatMessage(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.2")));
         else if (value < 60)
-            aPlayer.addChatMessage(new ChatComponentText(name + foundTexts[3]));
+            aPlayer.addChatMessage(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.3")));
         else if (value < 100)
-            aPlayer.addChatMessage(new ChatComponentText(name + foundTexts[4]));
+            aPlayer.addChatMessage(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.4")));
         else
-            aPlayer.addChatMessage(new ChatComponentText(name + foundTexts[5]));
+            aPlayer.addChatMessage(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.5")));
     }
 
     public static int getPolution(World aWorld, int aX, int aZ)
