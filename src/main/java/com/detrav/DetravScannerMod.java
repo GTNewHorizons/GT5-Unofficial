@@ -1,6 +1,5 @@
 package com.detrav;
 
-import com.detrav.net.DetravProPickPacket00;
 import com.detrav.utils.FluidColors;
 import org.apache.logging.log4j.LogManager;
 

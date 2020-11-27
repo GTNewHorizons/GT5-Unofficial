@@ -11,6 +11,7 @@ import com.google.common.io.ByteStreams;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -242,7 +243,7 @@ public class DetravProPickPacket00 extends DetravPacket {
 
                             name = FluidRegistry.getFluid( metas[0] ).getLocalizedName(new FluidStack( FluidRegistry.getFluid( metas[0] ), 0) );
                             if (name == null) {
-                                name = "Unknown Fluid name!";
+                                name = StatCollector.translateToLocal("gui.detrav.scanner.unknown_fluid");
                             }
 
                             if (!ores.containsKey(name))
@@ -277,7 +278,7 @@ public class DetravProPickPacket00 extends DetravPacket {
                     }
                 break;
             case 3:
-                    ores.put("Pollution", ((0 & 0xFF) << 16) + ((0 & 0xFF) << 8) + ((0 & 0xFF)));
+                    ores.put(StatCollector.translateToLocal("gui.detrav.scanner.pollution"), ((0 & 0xFF) << 16) + ((0 & 0xFF) << 8) + ((0 & 0xFF)));
                 for (int i = 0; i < wh; i++)
                     for (int j = 0; j < wh; j++) {
                         if (map[i][j] == null) {

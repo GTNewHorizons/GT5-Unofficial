@@ -19,6 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import static com.detrav.DetravScannerMod.DEBUGBUILD;
@@ -67,18 +68,18 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                 range += 1;
             }
             if (meta<100) {
-                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + Long.toString(tMaxDamage - getToolDamage(aStack)) + " / " + Long.toString(tMaxDamage) + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Chunks: " + 
+                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.durability") + EnumChatFormatting.GREEN + Long.toString(tMaxDamage - getToolDamage(aStack)) + " / " + Long.toString(tMaxDamage) + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 2, EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.range") +
                         Integer.toString(range) + 
                         "x"+
                         Integer.toString(range) + 
                         EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 3, EnumChatFormatting.ITALIC+ "Right click on rock for prospecting current chunk!" + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 4, EnumChatFormatting.ITALIC+ "Right click on bedrock for prospecting oil!" + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 5, EnumChatFormatting.ITALIC+ "Chance of a successful scan: "+EnumChatFormatting.RESET+Integer.toString(((((1+meta)*8) <= 100)? ((1+meta)*8) : 100))+EnumChatFormatting.GRAY+"%");
-                    aList.add(tOffset + 6, EnumChatFormatting.ITALIC+ "next to you (0 chunks away), close to you (1-2)");
-                    aList.add(tOffset + 7, EnumChatFormatting.ITALIC+ "at medium range (3-5), at long range (6-8), far away (9+)");
+                    aList.add(tOffset + 3, EnumChatFormatting.ITALIC+ StatCollector.translateToLocal("tooltip.detrav.scanner.usage.0") + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 4, EnumChatFormatting.ITALIC+ StatCollector.translateToLocal("tooltip.detrav.scanner.usage.1") + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 5, EnumChatFormatting.ITALIC+ StatCollector.translateToLocal("tooltip.detrav.scanner.success.chance")+EnumChatFormatting.RESET+Integer.toString(((((1+meta)*8) <= 100)? ((1+meta)*8) : 100))+EnumChatFormatting.GRAY+"%");
+                    aList.add(tOffset + 6, EnumChatFormatting.ITALIC+ StatCollector.translateToLocal("tooltip.detrav.scanner.distance.0"));
+                    aList.add(tOffset + 7, EnumChatFormatting.ITALIC+ StatCollector.translateToLocal("tooltip.detrav.scanner.distance.1"));
 
                     /*aList.add(tOffset + 4, "Traces: 1-9");
                     aList.add(tOffset + 5, "Small: 10-29");
@@ -86,12 +87,12 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                     aList.add(tOffset + 7, "Large: 60-99");
                     aList.add(tOffset + 8, "Very large: 100-***");*/
             }else if (meta >=100 && meta<200) {
-                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Chunks: " + EnumChatFormatting.YELLOW + (getHarvestLevel(aStack, "") * 2 + 1) + "x" + (getHarvestLevel(aStack, "") * 2 + 1) + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 3, EnumChatFormatting.ITALIC+ "Right click on rock for prospecting current chunk!");
-                    aList.add(tOffset + 4, EnumChatFormatting.ITALIC+ "Right click on bedrock for prospecting oil!");
-                    aList.add(tOffset + 5, EnumChatFormatting.ITALIC+ "Right click for scanning!");
+                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.durability") + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 2, EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.range") + EnumChatFormatting.YELLOW + (getHarvestLevel(aStack, "") * 2 + 1) + "x" + (getHarvestLevel(aStack, "") * 2 + 1) + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 3, EnumChatFormatting.ITALIC+ StatCollector.translateToLocal("tooltip.detrav.scanner.usage.0"));
+                    aList.add(tOffset + 4, EnumChatFormatting.ITALIC+ StatCollector.translateToLocal("tooltip.detrav.scanner.usage.1"));
+                    aList.add(tOffset + 5, EnumChatFormatting.ITALIC+ StatCollector.translateToLocal("tooltip.detrav.scanner.usage.2"));
             }
             
                  /* unused
