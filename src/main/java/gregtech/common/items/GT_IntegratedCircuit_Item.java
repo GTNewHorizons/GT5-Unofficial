@@ -18,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
