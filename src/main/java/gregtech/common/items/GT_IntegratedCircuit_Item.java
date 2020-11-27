@@ -121,7 +121,6 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
 
     @Override
     public IIcon getIconFromDamage(int damage) {
-        return mIconDamage[damage];
+        return (damage < mIconDamage.length ? mIconDamage[damage] : mIcon);
     }
-
 }
