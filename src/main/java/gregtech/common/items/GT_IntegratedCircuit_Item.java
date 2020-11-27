@@ -18,7 +18,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
@@ -121,6 +120,6 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
 
     @Override
     public IIcon getIconFromDamage(int damage) {
-        return (damage < mIconDamage.length ? mIconDamage[damage] : mIcon);
+        return (damage > 0 && damage < mIconDamage.length ? mIconDamage[damage] : mIcon);
     }
 }
