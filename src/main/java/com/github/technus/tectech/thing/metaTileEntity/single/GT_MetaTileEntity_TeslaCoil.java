@@ -11,6 +11,7 @@ import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.util.Vec3Impl;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -35,7 +36,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer implements ITeslaConnectable {
     //Interface fields
-    private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = ArrayListMultimap.create();
+    private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = MultimapBuilder.treeKeys().linkedListValues().build();
     private final HashSet<ThaumSpark> sparkList = new HashSet<>();
     private int sparkCount = 10;
 
