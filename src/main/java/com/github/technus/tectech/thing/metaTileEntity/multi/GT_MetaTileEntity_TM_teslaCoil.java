@@ -601,7 +601,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         sparkCount--;
         if (sparkCount == 0){
             IGregTechTileEntity mte = getBaseMetaTileEntity();
-            sparkCount = 60 + mte.getWorld().rand.nextInt(41);
+            sparkCount = 10;
             if(!sparkList.isEmpty()){
                 NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
                         mte.getWorld().provider.dimensionId,

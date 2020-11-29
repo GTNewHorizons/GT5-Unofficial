@@ -228,7 +228,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         //Randomly send all the sparks out once every 3 to 5 seconds
         sparkCount--;
         if (sparkCount == 0){
-            sparkCount = 60 + aBaseMetaTileEntity.getWorld().rand.nextInt(41);
+            sparkCount = 10;
             if(!sparkList.isEmpty()){
                 NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
                         aBaseMetaTileEntity.getWorld().provider.dimensionId,
@@ -243,16 +243,15 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
+        if (aBaseMetaTileEntity.isServerSide()) {
+            try {
+                EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+                clientLocale = (String) FieldUtils.readField(player, "translator", true);
+            } catch (Exception e) {
+                clientLocale = "en_US";
+            }
+            aBaseMetaTileEntity.openGUI(aPlayer);
         }
-        try {
-            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-            clientLocale = (String) FieldUtils.readField(player, "translator", true);
-        } catch (Exception e) {
-            clientLocale = "en_US";
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }
 
