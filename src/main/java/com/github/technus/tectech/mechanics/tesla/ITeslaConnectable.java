@@ -36,9 +36,11 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
         private static final HashSet<ITeslaConnectableSimple> teslaSimpleNodeSet = new HashSet<>();//Targets for power transmission
         private static final HashSet<ITeslaConnectable> teslaNodeSet = new HashSet<>();//Sources of power transmission
 
-        public static void teslaSimpleNodeSetAdd(ITeslaConnectableSimple target){
-            teslaSimpleNodeSet.add(target);
-            teslaNodeSet.forEach(origin -> addTargetToTeslaOrigin(target, origin));
+        public static void teslaSimpleNodeSetAdd(ITeslaConnectableSimple target) {
+            if (!teslaSimpleNodeSet.contains(target)) {
+                teslaSimpleNodeSet.add(target);
+                teslaNodeSet.forEach(origin -> addTargetToTeslaOrigin(target, origin));
+            }
         }
 
         public static void teslaSimpleNodeSetRemove(ITeslaConnectableSimple target){
