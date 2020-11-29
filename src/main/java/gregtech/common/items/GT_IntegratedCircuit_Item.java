@@ -120,6 +120,7 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
 
     @Override
     public IIcon getIconFromDamage(int damage) {
-        return (damage >= 0 && damage < mIconDamage.length ? mIconDamage[damage] : mIcon);
+        byte circuitMode = ((byte) (damage & 0xFF)); // Mask out the MSB Comparison Mode Bits. See: getModeString
+        return mIconDamage[circuitMode < mIconDamage.length ? circuitMode : 0];
     }
 }
