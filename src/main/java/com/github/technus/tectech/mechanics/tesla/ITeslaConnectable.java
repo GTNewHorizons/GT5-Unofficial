@@ -129,7 +129,7 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
                             remainingAmperes--;
                             //Update the can send power flag each time we send power
                             canSendPower = (origin.getTeslaStoredEnergy() < outputVoltageConsumption ||
-                                    remainingAmperes == 0);
+                                    remainingAmperes > 0);
                         } else {
                             //Breaks out when I can't send anymore power
                             break;
@@ -137,7 +137,7 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
                     }
 
                     //Break out if we can't send power anymore
-                    if (canSendPower)break;
+                    if (!canSendPower)break;
                 }
             }
             return origin.getTeslaOutputCurrent() - remainingAmperes;
