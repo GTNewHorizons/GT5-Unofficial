@@ -535,7 +535,7 @@ gt.blockmachines.multimachine.em.transformer.name=有源变压器
 gt.blockmachines.multimachine.em.transformer.hint=1 - 能源仓、动力仓或超能机械方块
 gt.blockmachines.multimachine.em.transformer.desc.0=变电站
 gt.blockmachines.multimachine.em.transformer.desc.1=任意电压间的相互转换!
-gt.blockmachines.multimachine.em.transformer.desc.2=只有0.78125%的能量损失, HAYO!
+gt.blockmachines.multimachine.em.transformer.desc.2=只有0.004%的能量损失, HAYO!
 
 gt.blockmachines.multimachine.tm.microwave.name=微波发生仪
 gt.blockmachines.multimachine.tm.microwave.hint.0=1 - 基础仓室或洁净不锈钢机械方块

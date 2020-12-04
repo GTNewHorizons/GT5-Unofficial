@@ -538,7 +538,7 @@ gt.blockmachines.multimachine.em.transformer.name=Active Transformer
 gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
 gt.blockmachines.multimachine.em.transformer.desc.0=Power substation
 gt.blockmachines.multimachine.em.transformer.desc.1=All the transformation!
-gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.78125% power loss, HAYO!
+gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
 
 gt.blockmachines.multimachine.tm.microwave.name=Microwave Grinder
 gt.blockmachines.multimachine.tm.microwave.hint.0=1 - Classic Hatches or Clean Stainless Steel Casing
