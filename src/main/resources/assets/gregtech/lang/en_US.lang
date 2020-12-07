@@ -66,7 +66,8 @@ GT5U.machines.minermulti=Multiblock Miner
 GT5U.machines.voidoveflow.enabled=Overflow voiding enabled
 GT5U.machines.voidoveflow.disabled=Overflow voiding disabled
 
-
+GT5U.hatch.disableFilter.true=Input Filter Off
+GT5U.hatch.disableFilter.false=Input Filter On
 
 GT5U.multiblock.pollution=Pollution reduced to
 GT5U.multiblock.energy=Stored Energy

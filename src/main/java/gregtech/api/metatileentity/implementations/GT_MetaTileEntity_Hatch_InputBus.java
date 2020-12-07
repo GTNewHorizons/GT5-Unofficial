@@ -13,10 +13,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
     public GT_Recipe_Map mRecipeMap = null;
     public boolean disableSort;
+    public boolean disableFilter = false;
 
     public GT_MetaTileEntity_Hatch_InputBus(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, getSlots(aTier), new String[]{
@@ -136,12 +138,14 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("disableSort", disableSort);
+        aNBT.setBoolean("disableFilter", disableFilter);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         disableSort = aNBT.getBoolean("disableSort");
+        disableFilter = aNBT.getBoolean("disableFilter");
     }
 
     @Override
@@ -151,6 +155,9 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
         if (aPlayer.isSneaking()) {
             disableSort = !disableSort;
             GT_Utility.sendChatToPlayer(aPlayer, trans("200", "Sort mode: " + (disableSort ? "Disabled" : "Enabled")));
+        } else {
+            disableFilter = !disableFilter;
+            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter."+disableFilter));
         }
     }
 
@@ -165,6 +172,6 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing() && (mRecipeMap == null || mRecipeMap.containsInput(aStack));
+        return aSide == getBaseMetaTileEntity().getFrontFacing() && (mRecipeMap == null || disableFilter || mRecipeMap.containsInput(aStack));
     }
 }
