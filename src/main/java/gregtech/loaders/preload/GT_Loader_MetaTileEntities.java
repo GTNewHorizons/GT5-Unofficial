@@ -1626,6 +1626,17 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
 
     }
 
+    /**
+     * @param aMaterial Material it's made of
+     * @param aStartID Metadata ID it starts at (uses multiple)
+     * @param aLossInsulated Loss when insulated
+     * @param aLoss Loss when not insulated
+     * @param aAmperage Amperage for 1x, determines the rest too
+     * @param aVoltage Voltage tier, use GT_Values.V[X], where X=tier
+     * @param aInsulatable Can it be insulated (made into a cable)
+     * @param aAutoInsulated Insulated anyway, see Graphene<br>
+     * For bEC, left is easy, right is hard
+     */
     private static void makeWires(Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage, long aVoltage, boolean aInsulatable, boolean aAutoInsulated) {
     	String name = GT_LanguageManager.i18nPlaceholder ? "%material" : aMaterial.mDefaultLocalName;
         GT_OreDictUnificator.registerOre(OrePrefixes.wireGt01, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 0, aTextWire1 + aMaterial.mName.toLowerCase() + ".01", "1x " + name + aTextWire2, 0.125F, aMaterial, aLoss, 1L * aAmperage, aVoltage, aBoolConst_0, !aAutoInsulated).getStackForm(1L));

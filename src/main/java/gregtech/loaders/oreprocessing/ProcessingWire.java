@@ -42,7 +42,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
         }
 
         int cableWidth;
-        OrePrefixes correspondingCable;
+        OrePrefixes correspondingCable;//cables?
         switch (aPrefix) {
             case wireGt01:
                 cableWidth = 1;

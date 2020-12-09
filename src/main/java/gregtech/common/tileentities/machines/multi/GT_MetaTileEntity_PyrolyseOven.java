@@ -171,7 +171,7 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_MultiBlock
                                 return false;
                             }
                             int metaID = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-                            if (metaID > 8) {
+                            if (metaID > 10) {
                                 return false;
                             } else {
                             	if (firstCoil) {
