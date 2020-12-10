@@ -207,6 +207,14 @@ public class GT_MetaTileEntity_MultiFurnace
                 this.mLevel = 16;
                 this.mCostDiscount = 24;
                 break;
+            case 9:
+                this.mLevel = 16;
+                this.mCostDiscount = 32;
+                break;
+            case 10:
+                this.mLevel = 16;
+                this.mCostDiscount = 40;
+                break;
             default:
                 return false;
         }
