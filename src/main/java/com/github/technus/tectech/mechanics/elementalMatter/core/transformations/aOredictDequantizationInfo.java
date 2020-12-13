@@ -3,37 +3,30 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.transformation
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Created by Tec on 23.05.2017.
  */
-public class aOredictDequantizationInfo implements iExchangeInfo {
+public class aOredictDequantizationInfo implements iExchangeInfo<iHasElementalDefinition,String> {
     private final iHasElementalDefinition in;
-    public final int out;
+    public final String out;
     public final int amount;
-
-    public aOredictDequantizationInfo(iHasElementalDefinition emIn, int id, int qty) {
-        in = emIn;
-        out = id;
-        amount = qty;
-    }
 
     public aOredictDequantizationInfo(iHasElementalDefinition emIn, String name, int qty) {
         in = emIn;
-        out = OreDictionary.getOreID(name);
+        out =name;
         amount = qty;
     }
 
     public aOredictDequantizationInfo(iHasElementalDefinition emIn, OrePrefixes prefix, Materials material, int qty) {
         in = emIn;
-        out = OreDictionary.getOreID(prefix.name() + material.mName);
+        out = prefix.name() + material.mName;
         amount = qty;
     }
 
     public aOredictDequantizationInfo(iHasElementalDefinition emIn, OrePrefixes prefix, String materialName, int qty) {
         in = emIn;
-        out = OreDictionary.getOreID(prefix.name() + materialName);
+        out = prefix.name() + materialName;
         amount = qty;
     }
 
@@ -43,7 +36,7 @@ public class aOredictDequantizationInfo implements iExchangeInfo {
     }
 
     @Override
-    public Integer output() {
+    public String output() {
         return out;
     }
 

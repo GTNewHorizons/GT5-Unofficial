@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

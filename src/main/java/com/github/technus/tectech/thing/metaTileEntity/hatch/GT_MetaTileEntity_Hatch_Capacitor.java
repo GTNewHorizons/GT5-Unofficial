@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Capacitor;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Capacitor;
 import cpw.mods.fml.relauncher.Side;
@@ -23,8 +23,8 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.Util.getUniqueIdentifier;
+import static com.github.technus.tectech.util.CommonValues.V;
+import static com.github.technus.tectech.util.Util.getUniqueIdentifier;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -38,7 +38,7 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_Hatch_Capacitor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 16, "");
-        Util.setTier(aTier,this);
+        Util.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_Capacitor(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -173,11 +173,13 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
     }
 
     public static void run() {
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.0", 0, 1, V[1]*512);//LV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.1", 1, 1, V[2]*512);//MV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.2", 2, 1, V[3]*512);//HV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.3", 3, 1, V[4]*512);//EV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.4", 4, 1, V[5]*512);//IV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID + ":item.tm.teslaCoilCapacitor.0", 0, 1, V[1] * 512);//LV  Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID + ":item.tm.teslaCoilCapacitor.1", 1, 1, V[2] * 512);//MV  Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID + ":item.tm.teslaCoilCapacitor.2", 2, 1, V[3] * 512);//HV  Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID + ":item.tm.teslaCoilCapacitor.3", 3, 1, V[4] * 512);//EV  Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID + ":item.tm.teslaCoilCapacitor.4", 4, 1, V[5] * 512);//IV  Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID + ":item.tm.teslaCoilCapacitor.5", 5, 1, V[6] * 512);//LuV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID + ":item.tm.teslaCoilCapacitor.6", 6, 1, V[7] * 512);//ZPM Capacitor
     }
 
     public static class CapacitorComponent implements Comparable<GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> {
@@ -206,12 +208,10 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
 
         @Override
         public boolean equals(Object obj) {
-            if(obj instanceof CapacitorComponent) {
+            if (obj instanceof CapacitorComponent) {
                 return compareTo((CapacitorComponent) obj) == 0;
             }
             return false;
         }
     }
 }
-
-

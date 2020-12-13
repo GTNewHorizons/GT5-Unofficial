@@ -1,7 +1,7 @@
 package com.github.technus.tectech.mechanics.anomaly;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.data.ChunkDataHandler;
@@ -243,7 +243,9 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                         player.attackEntityFrom(MainLoader.subspace,Math.max(1,badness/8f));
                     }
                 } else if (playerTag.getDouble(SPACE_CANCER) > 0 && !player.isDead) {
-                    playerTag.setDouble(SPACE_CANCER, Math.max(0, playerTag.getDouble(SPACE_CANCER) - 7.6293945E-6f));
+                    if (playerTag.getDouble(SPACE_CANCER) == 0 || player.ticksExisted % 10 != 0)
+                        return;
+                    playerTag.setDouble(SPACE_CANCER, Math.max(0, playerTag.getDouble(SPACE_CANCER) - 7.6293945E-5f));
                 }
             }
             TecTech.playerPersistence.saveData(player);

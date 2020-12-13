@@ -78,7 +78,7 @@ public enum CustomItemList implements IItemContainer {
     eM_Containment, eM_Containment_Field, eM_Containment_Advanced, eM_Coil, eM_Teleportation, eM_Dimensional, eM_Ultimate_Containment, eM_Ultimate_Containment_Advanced, eM_Ultimate_Containment_Field, eM_Spacetime, eM_Computer_Casing, eM_Computer_Bus, eM_Computer_Vent, eM_Hollow, eM_Power,
     debugBlock,
 
-    tM_TeslaBase, tM_TeslaToroid, tM_TeslaSecondary, tM_TeslaPrimary_0, tM_TeslaPrimary_1, tM_TeslaPrimary_2, tM_TeslaPrimary_3, tM_TeslaPrimary_4, tM_TeslaPrimary_5,
+    tM_TeslaBase, tM_TeslaToroid, tM_TeslaSecondary, tM_TeslaPrimary_0, tM_TeslaPrimary_1, tM_TeslaPrimary_2, tM_TeslaPrimary_3, tM_TeslaPrimary_4, tM_TeslaPrimary_5, tM_TeslaPrimary_6,
 
     Machine_Multi_Microwave, Machine_Multi_TeslaCoil,
     Machine_Multi_Transformer,

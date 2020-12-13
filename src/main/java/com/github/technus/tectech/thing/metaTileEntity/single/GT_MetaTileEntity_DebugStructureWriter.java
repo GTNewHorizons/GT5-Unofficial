@@ -1,10 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
+import com.github.technus.tectech.mechanics.structure.StructureUtility;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DebugStructureWriter;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DebugStructureWriter;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -19,8 +21,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
-import static com.github.technus.tectech.Util.StructureWriter;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -56,7 +59,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], aSide != aFacing ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK};
+        return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aSide != aFacing ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK};
     }
 
     @Override
@@ -104,22 +107,36 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        aBaseMetaTileEntity.disableWorking();
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isAllowedToWork()) {
-            result = StructureWriter(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], false);
-            for (String s : result) {
-                TecTech.LOGGER.info(s);
-            }
+            String pseudoJavaCode = StructureUtility.getPseudoJavaCode(aBaseMetaTileEntity.getWorld(),
+                    ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
+                    aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(),
+                    numbers[0], numbers[1], numbers[2],
+                    numbers[3], numbers[4], numbers[5],false);
+            TecTech.LOGGER.info(pseudoJavaCode);
+            result = pseudoJavaCode.split("\\n");
             aBaseMetaTileEntity.disableWorking();
         }
     }
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        result = StructureWriter(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], true);
-        for (String s : result) {
-            TecTech.LOGGER.info(s);
-        }
+        IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
+        String pseudoJavaCode = StructureUtility.getPseudoJavaCode(aBaseMetaTileEntity.getWorld(),
+                ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
+                aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(),
+                numbers[0], numbers[1], numbers[2],
+                numbers[3], numbers[4], numbers[5],true);
+        TecTech.LOGGER.info(pseudoJavaCode);
+        result = pseudoJavaCode.split("\\n");
+        aBaseMetaTileEntity.disableWorking();
     }
 
     @Override
@@ -128,8 +145,6 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
             return true;
         }
         aBaseMetaTileEntity.openGUI(aPlayer);
-        //if (TecTechConfig.DEBUG_MODE && aPlayer.getHeldItem() != null)
-        //    TecTech.LOGGER.info("UnlocalizedName: " + getUniqueIdentifier(aPlayer.getHeldItem()));
         return true;
     }
 

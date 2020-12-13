@@ -1,5 +1,9 @@
 buildscript {
     repositories {
+        maven {
+            name = "mavenLocal"
+            url = "mavenLocal"
+        }
         mavenCentral()
         maven {
             name = "forge"
@@ -11,7 +15,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2.2-SNAPSHOT'
         classpath "de.undercouch:gradle-download-task:3.1.2"
     }
 }
@@ -19,6 +23,20 @@ buildscript {
 plugins {
     id 'org.ajoberstar.grgit' version '3.1.1'
 }
+
+file "build.properties" withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
+def getVersionAppendage() {
+    def proc = "git rev-parse --short HEAD".execute()
+    proc.waitFor()
+    return "DEV." + proc.exitValue() ? proc.text.trim() : "GITBORK"
+}
+
+ext.set("minecraftVersion","${config.minecraft.version}-${config.forge.version}-${config.minecraft.version}")
 
 import de.undercouch.gradle.tasks.download.Download
 apply plugin: 'forge'
@@ -39,23 +57,14 @@ sourceSets {
     }
 }
 
-file "build.properties" withReader {
-    def prop = new Properties()
-    prop.load(it)
-    ext.config = new ConfigSlurper().parse prop
-}
-
-version = "${config.minecraft.version}-${config.tectech.version}"
+version = "${config.minecraft.version}-${config.tectech.version}-"+getVersionAppendage()
 group = "com.github.technus"
 archivesBaseName = "TecTech"
 
-minecraft {
-    version = "${config.minecraft.version}-${config.forge.version}-${config.minecraft.version}"
-    runDir = "eclipse"
-
-    replaceIn "src/main/java/com/github/technus/tectech/auxiliary/Reference.java"
-    replace "GRADLETOKEN_VERSION", "${config.tectech.version}"
-}
+minecraft.version = ext.get("minecraftVersion")
+minecraft.runDir = "eclipse"
+minecraft.replaceIn "src/main/java/com/github/technus/tectech/Reference.java"
+minecraft.replace "GRADLETOKEN_VERSION", "${config.tectech.version}"
 
 configurations {
     provided
@@ -88,10 +97,14 @@ repositories {
         name "Tterrag maven"
         url "https://maven.tterrag.com/"
     }
-	ivy { //CoFHCore
-        name 'gtnh_download_source'
-        artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]"
+    maven {
+        name = "Curse Maven"
+        url = "https://www.cursemaven.com"
     }
+	//ivy { //CoFHCore
+    //    name 'gtnh_download_source'
+    //    artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]"
+    //}
 }
 
 dependencies {
@@ -116,8 +129,13 @@ dependencies {
 	compile "micdoodle8.mods:GalacticraftCore:${config.galacticraft.version}:Dev"
 	compile "micdoodle8.mods:Galacticraft-Planets:${config.galacticraft.version}:Dev"
 	compile "micdoodle8.mods:Galacticraft:${config.galacticraft.version}:API"
+	compile "com.mod-buildcraft:buildcraft:${config.buildcraft.version}:dev"
+
+    //TODO Re-work the formatting and add documentation
+    runtime "curse.maven:cofh-core:${config.cofh_core_version}"
 	//Ivy
-	compile name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
+	//compile name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
+
 }
 
 task getGregTech(type: Download) {
@@ -172,6 +190,15 @@ processResources
             }
         }
 
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+artifacts {
+    archives devJar
+}
+
 task signJar(dependsOn: 'reobf') {
     doLast {
         ant.signjar(
@@ -185,4 +212,11 @@ task signJar(dependsOn: 'reobf') {
                 verbose: true
         )
     }
+}
+
+jar {
+    manifest
+            {
+                attributes "FMLAT": "tectech_at.cfg"
+            }
 }

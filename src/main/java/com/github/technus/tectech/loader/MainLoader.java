@@ -38,7 +38,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import static com.github.technus.tectech.CommonValues.*;
+import static com.github.technus.tectech.util.CommonValues.*;
 import static com.github.technus.tectech.TecTech.*;
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
@@ -121,12 +121,12 @@ public final class MainLoader {
     }
 
     public static void postLoad() {
-        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 5);
+        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 6);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
         if(Loader.isModLoaded(Reference.DREAMCRAFT)){
             try {
-                Class clazz = Class.forName("com.dreammaster.gthandler.casings.GT_Container_CasingsNH");
+                Class<?> clazz = Class.forName("com.dreammaster.gthandler.casings.GT_Container_CasingsNH");
                 TT_Container_Casings.sBlockCasingsNH = (Block)clazz.getField("sBlockCasingsNH").get(null);
 
                 if(TT_Container_Casings.sBlockCasingsNH==null){
@@ -153,9 +153,18 @@ public final class MainLoader {
         registerExtraHazmats();
         TecTech.LOGGER.info("Hazmat additions done");
 
-        progressBarPostLoad.step("Nerf blocks blast resistance");
-        fixBlocks();
-        TecTech.LOGGER.info("Blocks nerf done");
+        if (!configTecTech.DISABLE_BLOCK_HARDNESS_NERF) {
+            progressBarPostLoad.step("Nerf blocks blast resistance");
+            fixBlocks();
+            TecTech.LOGGER.info("Blocks nerf done");
+        } else {
+            progressBarPostLoad.step("Do not nerf blocks blast resistance");
+            TecTech.LOGGER.info("Blocks were not nerfed");
+        }
+
+        progressBarPostLoad.step("Constructable stuff");
+        new ConstructableLoader().run();
+        TecTech.LOGGER.info("Constructable initialized");
 
         ProgressManager.pop(progressBarPostLoad);
     }
@@ -323,6 +332,7 @@ public final class MainLoader {
                 "DraconicEvolution",
                 "IC2NuclearControl",
                 "IronChest",
+                "irontank",
                 "opensecurity",
                 "openmodularturrets",
                 "Railcraft",
@@ -338,23 +348,23 @@ public final class MainLoader {
         for(Block block : GameData.getBlockRegistry().typeSafeIterable()) {
             GameRegistry.UniqueIdentifier uniqueIdentifier=GameRegistry.findUniqueIdentifierFor(block);
             if (uniqueIdentifier != null) {
-                if (modIDs.contains(uniqueIdentifier.modId)) {//Full Whitelisted Mods
+                if (block.blockHardness < 0 || modIDs.contains(uniqueIdentifier.modId)) {
                     continue;
                 } else if ("OpenBlocks".equals(uniqueIdentifier.modId)) {
                     if ("grave".equals(uniqueIdentifier.name)) {
                         continue;
                     }
-                } else if ("TwilightForest".equals(uniqueIdentifier.modId)){
-                    if ("tile.TFShield".equals(uniqueIdentifier.name)){
+                } else if ("TwilightForest".equals(uniqueIdentifier.modId)) {
+                    if ("tile.TFShield".equals(uniqueIdentifier.name)) {
                         block.setResistance(30);
                         continue;
-                    }else if ("tile.TFThorns".equals(uniqueIdentifier.name)){
+                    } else if ("tile.TFThorns".equals(uniqueIdentifier.name)) {
                         block.setResistance(10);
                         continue;
-                    }else if ("tile.TFTowerTranslucent".equals(uniqueIdentifier.name)){
+                    } else if ("tile.TFTowerTranslucent".equals(uniqueIdentifier.name)) {
                         block.setResistance(30);
                         continue;
-                    }else if ("tile.TFDeadrock".equals(uniqueIdentifier.name)) {
+                    } else if ("tile.TFDeadrock".equals(uniqueIdentifier.name)) {
                         block.setResistance(5);
                         continue;
                     } else {

@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DataReader;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DataReader;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -26,13 +26,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
+import static com.github.technus.tectech.util.CommonValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -69,16 +68,16 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if(aBaseMetaTileEntity.getWorld()==null){
             if(aSide==aFacing){
-                return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE};
+                return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE};
             }
-            return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]};
+            return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1]};
         }
         if(aSide==mMainFacing){
-            return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE};
+            return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE};
         }else if(aSide==aFacing){
-            return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+            return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
         }
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]};
+        return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1]};
     }
 
     @Override
@@ -92,8 +91,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
             return DID_NOT_FIND_RECIPE;
         }
         ItemStack input=getInputAt(0);
-        ArrayList<IDataRender> renders=getRenders(new Util.ItemStack_NoNBT(input));
-        for(IDataRender render:renders){
+        for(IDataRender render:getRenders(new Util.ItemStack_NoNBT(input))){
             if(render.canRender(input,mTier)){
                 mOutputItems[0]=input.copy();
                 input.stackSize-=1;
@@ -185,8 +183,9 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
         renders.add(render);
     }
 
-    public static ArrayList<IDataRender> getRenders(Util.ItemStack_NoNBT stack){
-        return RENDER_REGISTRY.get(stack);
+    public static List<IDataRender> getRenders(Util.ItemStack_NoNBT stack){
+        ArrayList<IDataRender> iDataRenders = RENDER_REGISTRY.get(stack);
+        return iDataRenders==null?Collections.emptyList():iDataRenders;
     }
 
     public interface IDataRender {

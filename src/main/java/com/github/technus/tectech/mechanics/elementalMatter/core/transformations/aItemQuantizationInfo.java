@@ -11,7 +11,7 @@ import net.minecraftforge.oredict.OreDictionary;
 /**
  * Created by Tec on 23.05.2017.
  */
-public class aItemQuantizationInfo implements iExchangeInfo {
+public class aItemQuantizationInfo implements iExchangeInfo<ItemStack,iHasElementalDefinition> {
     private final ItemStack in;
     private final boolean skipNBT;
     private final iHasElementalDefinition out;

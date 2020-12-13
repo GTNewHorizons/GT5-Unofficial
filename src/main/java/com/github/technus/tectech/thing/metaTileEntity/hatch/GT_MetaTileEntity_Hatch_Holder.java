@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Holder;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Holder;
 import cpw.mods.fml.relauncher.Side;

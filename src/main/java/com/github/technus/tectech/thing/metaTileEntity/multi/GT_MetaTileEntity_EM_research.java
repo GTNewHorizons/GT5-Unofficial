@@ -1,13 +1,14 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
+import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
+import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.recipe.TT_recipe;
-import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Holder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
+import com.github.technus.tectech.util.CommonValues;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -35,15 +36,15 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.CommonValues.VN;
-import static com.github.technus.tectech.Util.StructureBuilderExtreme;
+import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting.crafter;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine.machine;
+import static com.github.technus.tectech.util.CommonValues.V;
+import static com.github.technus.tectech.util.CommonValues.VN;
 import static gregtech.api.enums.GT_Values.E;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -57,6 +58,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private GT_Recipe.GT_Recipe_AssemblyLine tRecipe;
     private TT_recipe.TT_assLineRecipe aRecipe;
     private String machineType;
+    private static final String assembly="Assembly line";
     private ItemStack holdItem;
     private long computationRemaining, computationRequired;
 
@@ -77,7 +79,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{1, 3, 2};
-    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList, this::addHolderToMachineList};
+    private static final IHatchAdder<GT_MetaTileEntity_EM_research>[] addingMethods = adders(
+            GT_MetaTileEntity_EM_research::addClassicToMachineList,
+            GT_MetaTileEntity_EM_research::addHolderToMachineList);
     private static final short[] casingTextures = new short[]{textureOffset + 1, textureOffset + 3};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, Blocks.air};
     private static final byte[] blockMetaFallback = new byte[]{1, 0};
@@ -236,7 +240,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 mEfficiencyIncrease = 10000;
                 eRequiredData = (short) (ttRecipe.mSpecialValue >>> 16);
                 eAmpereFlow = (short) (ttRecipe.mSpecialValue & 0xFFFF);
-                mEUt = ttRecipe.mEUt;
+                mEUt = Math.min(ttRecipe.mEUt,-ttRecipe.mEUt);
                 eHolders.get(0).getBaseMetaTileEntity().setActive(true);
                 return true;
             }
@@ -279,6 +283,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             if (ItemList.Tool_DataStick.isStackEqual(itemStack, false, true)) {
                 for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : TT_recipe.GT_Recipe_MapTT.sAssemblylineRecipes) {
                     if (GT_Utility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
+                        machineType = assembly;
                         tRecipe = assRecipe;
                         //if found
                         if (iterateRecipes()) return true;
@@ -394,7 +399,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3], new TT_RenderedTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3], new TT_RenderedExtendedFacingTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3]};
     }
@@ -466,6 +471,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                         for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : TT_recipe.GT_Recipe_MapTT.sAssemblylineRecipes) {
                             if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
                                 this.tRecipe = tRecipe;
+                                machineType = assembly;
                                 break;
                             }
                         }
@@ -552,12 +558,12 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 3, 4, getBaseMetaTileEntity(), this, hintsOnly);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        Structure.builder(shape, blockType, blockMeta, 1, 3, 4, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
     }
 
     @Override
-    public String[] getStructureDescription(int stackSize) {
+    public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
 }

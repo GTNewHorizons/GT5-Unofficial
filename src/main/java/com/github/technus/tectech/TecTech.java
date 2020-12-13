@@ -12,6 +12,7 @@ import com.github.technus.tectech.mechanics.data.PlayerPersistence;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.GiveEM;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.ListEM;
 import com.github.technus.tectech.proxy.CommonProxy;
+import com.github.technus.tectech.util.XSTR;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -77,7 +78,7 @@ public class TecTech {
             LOGGER.error(Reference.MODID + " could not load its config file. Things are going to be weird!");
         }
 
-        if (configTecTech.modAdminErrorLogs) {
+        if (configTecTech.MOD_ADMIN_ERROR_LOGS) {
             LOGGER.setDebugOutput(DEBUG_MODE);
             LOGGER.debug("moduleAdminErrorLogs is enabled");
             moduleAdminErrorLogs = new IngameErrorLog();
@@ -97,7 +98,6 @@ public class TecTech {
     @Mod.EventHandler
     public void Load(FMLInitializationEvent event) {
         hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
-
 
         if(configTecTech.DISABLE_MATERIAL_LOADING_FFS){
             try {

@@ -1,6 +1,6 @@
 package com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretbases;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.util.CommonValues;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;

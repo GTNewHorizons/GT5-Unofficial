@@ -24,11 +24,11 @@ public class ThingsLoader implements Runnable {
         if(Textures.BlockIcons.casingTexturePages[tectechTexturePage1]==null) {
             Textures.BlockIcons.casingTexturePages[tectechTexturePage1] = new ITexture[128];
         }
-        if(!Loader.isModLoaded(Reference.DREAMCRAFT)){
-            TecTech.LOGGER.info("Adding basic casings");
-            TT_Container_Casings.sBlockCasingsNH = new GT_Block_CasingsNH();
-        }
         TecTech.LOGGER.info("Added texture page if was null");
+        if(!Loader.isModLoaded(Reference.DREAMCRAFT)){
+            TT_Container_Casings.sBlockCasingsNH = new GT_Block_CasingsNH();
+            TecTech.LOGGER.info("Adding basic casings");
+        }
         TT_Container_Casings.sBlockCasingsTT = new GT_Block_CasingsTT();
         TecTech.LOGGER.info("Elemental Casing registered");
         TT_Container_Casings.sBlockCasingsBA0 = new GT_Block_CasingsBA0();

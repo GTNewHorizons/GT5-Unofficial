@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_ParamText;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_ParamText;

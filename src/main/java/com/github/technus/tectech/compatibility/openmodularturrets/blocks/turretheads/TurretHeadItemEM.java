@@ -10,7 +10,7 @@ import openmodularturrets.handler.ConfigHandler;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import static com.github.technus.tectech.CommonValues.TEC_MARK_EM;
+import static com.github.technus.tectech.util.CommonValues.TEC_MARK_EM;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**

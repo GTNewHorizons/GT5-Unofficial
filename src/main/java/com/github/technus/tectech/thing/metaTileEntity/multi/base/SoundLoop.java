@@ -25,7 +25,7 @@ public class SoundLoop extends MovingSound{
         zPosF=base.getZCoord();
         worldID=base.getWorld().provider.dimensionId;
         repeat=true;
-        volume=0f;
+        volume= 0.0625f;
     }
 
     @Override
@@ -34,14 +34,13 @@ public class SoundLoop extends MovingSound{
             return;
         }
         if(fadeMe) {
-            volume-=0.05f;
-            if(volume<0){
+            volume-=0.0625f;
+            if(volume<=0){
                 volume=0;
-            }else if(volume==0){
                 donePlaying=true;
             }
         }else if(volume<1) {
-            volume += 0.05f;
+            volume += 0.0625f;
         }
         World world=Minecraft.getMinecraft().thePlayer.worldObj;
         donePlaying=world.provider.dimensionId!=worldID ||

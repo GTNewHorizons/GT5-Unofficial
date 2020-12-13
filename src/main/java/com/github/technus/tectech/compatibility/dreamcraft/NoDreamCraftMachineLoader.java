@@ -2,7 +2,7 @@ package com.github.technus.tectech.compatibility.dreamcraft;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TT_Transformer;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_WetTransformer;

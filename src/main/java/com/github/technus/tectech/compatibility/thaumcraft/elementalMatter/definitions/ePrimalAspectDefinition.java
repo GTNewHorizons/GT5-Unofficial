@@ -10,14 +10,14 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  */
 public final class ePrimalAspectDefinition extends cElementalPrimitive implements iElementalAspect {
     public static final ePrimalAspectDefinition
-            magic_air = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Air"), "a`", 1e1F, 35),
-            magic_earth = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Earth"), "e`", 1e9F, 34),
-            magic_fire = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Fire"), "f`", 1e3F, 33),
-            magic_water = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Water"), "w`", 1e7F, 32),
-            magic_order = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Order"), "o`", 1e5F, 30),
-            magic_entropy = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Entropy"), "e`", 1e5F, 31);
+            magic_air = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Air"), "a`", 1e1D, 35),
+            magic_earth = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Earth"), "e`", 1e9D, 34),
+            magic_fire = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Fire"), "f`", 1e3D, 33),
+            magic_water = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Water"), "w`", 1e7D, 32),
+            magic_order = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Order"), "o`", 1e5D, 30),
+            magic_entropy = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Entropy"), "e`", 1e5D, 31);
 
-    private ePrimalAspectDefinition(String name, String symbol, float mass, int ID) {
+    private ePrimalAspectDefinition(String name, String symbol, double mass, int ID) {
         super(name, symbol, 0, mass, 0, -1, ID);
     }
 

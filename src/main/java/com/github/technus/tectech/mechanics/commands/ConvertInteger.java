@@ -1,6 +1,6 @@
 package com.github.technus.tectech.mechanics.commands;
 
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
