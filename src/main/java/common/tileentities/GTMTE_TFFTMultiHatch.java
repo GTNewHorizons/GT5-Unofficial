@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.HashMap;
@@ -178,6 +179,18 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
             }
         }
         return null;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        FluidStack[] fluids = mfh.getAllFluids();
+        int length = fluids.length;
+        int maxCapcity = mfh.getCapacity();
+        FluidTankInfo[] tankInfo = new FluidTankInfo[length];
+        for (int i = 0; i < length; i++) {
+            tankInfo[i] = new FluidTankInfo(fluids[i],maxCapcity);
+        }
+        return tankInfo;
     }
 
     @Override
