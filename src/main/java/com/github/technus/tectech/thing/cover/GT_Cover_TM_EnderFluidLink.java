@@ -11,6 +11,8 @@ import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
@@ -22,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import java.awt.*;
+import java.util.UUID;
 
 import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.*;
 
@@ -29,7 +32,7 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     private static final int L_PER_TICK = 8000;
     private final static int IMPORT_EXPORT_MASK = 0b0001;
     private final static int PUBLIC_PRIVATE_MASK = 0b0010;
-    private static EnderLinkTag tag = new EnderLinkTag(Color.WHITE, null);
+    private static EnderLinkTag tag = new EnderLinkTag(Color.WHITE, null);//Client-Sided
 
     public GT_Cover_TM_EnderFluidLink() {
     }
@@ -179,27 +182,30 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
             int borderY2 = borderY1 + BOX_SIZE_Y;
             drawRect(borderX1, borderY1, borderX2, borderY2, BOX_BORDER_COLOR);
 
-            //
-            //int white = 0xFFFFFFFF;
-            //int black = 0xFF000000;
-            //int checkers_x = 5;
-            //int checkers_wide = 3;
-            //int checkers_y = 5;
-            //int checkers_tall = 3;
-            //int checkeredX = borderX1 + 1;
-            //int checkeredY = borderY1 + 1;
-            //for (int i = 0; i < checkers_x; i++) {
-            //    int checkerX1 = checkeredX + (checkers_wide * i);
-            //    int checkerX2 = checkerX1 + checkers_wide;
-            //    for (int j = 0; j < checkers_y; j++) {
-            //        int checkerY1 = checkeredY + (checkers_tall * j);
-            //        int checkerY2 = checkerY1 + checkers_tall;
-            //        //Sets the color to white-black-white black and snakes around
-            //        int nowColor = (checkers_x * i) + j % 2 == 0 ? white : black;
-            //        drawRect(checkerX1, checkerY1, checkerX2, checkerY2, nowColor);
-            //    }
-            //}
+            //Draw Checkerboard Pattern
+            int white = 0xFFFFFFFF;
+            int grey = 0xFFBFBFBF;
+            boolean whiteOrGrey = true;
+            int cGridXStart = borderX1 + 1;
+            int cGridYStart = borderY1 + 1;
+            int cGridXToDraw = 4;
+            int cGridYToDraw = 4;
+            int cSquareWidth = 8;
+            int cSquareHeight = 8;
+            for (int i = 0; i < cGridXToDraw; i++) {
+                for (int j = 0; j < cGridYToDraw; j++) {
+                    int cBoxX1 = cGridXStart + (cSquareWidth * i);
+                    int cBoxY1 = cGridYStart + (cSquareHeight * j);
+                    int cBoxX2 = cBoxX1 + cSquareWidth;
+                    int cBoxY2 = cBoxY1 + cSquareHeight;
+                    int cBoxColor = whiteOrGrey ? white : grey;
+                    drawRect(cBoxX1, cBoxY1, cBoxX2, cBoxY2, cBoxColor);
+                    whiteOrGrey = !whiteOrGrey;
+                }
+                whiteOrGrey = !whiteOrGrey;
+            }
 
+            //Draw the actual color
             int insideX1 = borderX1 + 1;
             int insideY1 = borderY1 + 1;
             int insideX2 = borderX2 - 1;
@@ -260,56 +266,49 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
             }
         }
 
+        private void switchPrivatePublic(int coverVar) {
+            UUID ownerUUID = tag.getUUID();
+            if (testBit(coverVar, PUBLIC_PRIVATE_MASK)){
+                if (tile instanceof BaseMetaTileEntity){
+                    BaseMetaTileEntity mte = (BaseMetaTileEntity) tile;
+                    ownerUUID = mte.getOwnerUuid();
+                }
+            } else {
+                ownerUUID = null;
+            }
+            EnderLinkTag newTag = new EnderLinkTag(new Color(tag.getColorInt(), true), ownerUUID);
+            NetworkDispatcher.INSTANCE.sendToServer(new EnderLinkCoverMessage.EnderLinkCoverUpdate(newTag, (IFluidHandler) tile));
+        }
+
         private int getNewCoverVariable(int id) {
-            //TODO make this work between 0 and 1 screwdriver state things
-            //switch (id) {
-            //    case 0:
-            //        return coverVariable & ~0x1;
-            //    case 1:
-            //        return coverVariable | 0x1;
-            //    case 2:
-            //        if (coverVariable > 5)
-            //            return 0x6 | (coverVariable & ~0xE);
-            //        return (coverVariable & ~0xE);
-            //    case 3:
-            //        if (coverVariable > 5)
-            //            return 0x8 | (coverVariable & ~0xE);
-            //        return 0x2 | (coverVariable & ~0xE);
-            //    case 4:
-            //        if (coverVariable > 5)
-            //            return 0xA | (coverVariable & ~0xE);
-            //        return (0x4 | (coverVariable & ~0xE));
-            //    case 5:
-            //        if (coverVariable <= 5)
-            //            return coverVariable + 6;
-            //        break;
-            //    case 6:
-            //        if (coverVariable > 5)
-            //            return coverVariable - 6;
-            //}
-            return coverVariable;
+            int tempCoverVariable = coverVariable;
+            switch (id) {
+                case PUBLIC_BUTTON_ID: case PRIVATE_BUTTON_ID:
+                    tempCoverVariable = toggleBit(tempCoverVariable, PUBLIC_PRIVATE_MASK);
+                    switchPrivatePublic(tempCoverVariable);
+                    break;
+                case IMPORT_BUTTON_ID: case EXPORT_BUTTON_ID:
+                    tempCoverVariable = toggleBit(tempCoverVariable, IMPORT_EXPORT_MASK);
+            }
+            return tempCoverVariable;
         }
 
         private boolean getClickable(int id) {
-            //TODO Make this work for 1 to 2 buttons
-            //if (coverVariable < 0 | 11 < coverVariable)
-            //    return false;
-            //
-            //switch (id) {
-            //    case 0: case 1:
-            //        return (0x1 & coverVariable) != id;
-            //    case 2:
-            //        return (coverVariable % 6) >= 2;
-            //    case 3:
-            //        return (coverVariable % 6) < 2 | 4 <= (coverVariable % 6);
-            //    case 4:
-            //        return (coverVariable % 6) < 4;
-            //    case 5:
-            //        return coverVariable < 6;
-            //    case 6:
-            //        return coverVariable >= 6;
-            //}
-            return false;
+            boolean canBeClicked = false;
+            switch (id) {
+                case PUBLIC_BUTTON_ID:
+                    canBeClicked = testBit(coverVariable, PUBLIC_PRIVATE_MASK);
+                    break;
+                case PRIVATE_BUTTON_ID:
+                    canBeClicked = !testBit(coverVariable, PUBLIC_PRIVATE_MASK);
+                    break;
+                case IMPORT_BUTTON_ID:
+                    canBeClicked = testBit(coverVariable, IMPORT_EXPORT_MASK);
+                    break;
+                case EXPORT_BUTTON_ID:
+                    canBeClicked = !testBit(coverVariable, IMPORT_EXPORT_MASK);
+            }
+            return canBeClicked;
         }
 
         @Override
