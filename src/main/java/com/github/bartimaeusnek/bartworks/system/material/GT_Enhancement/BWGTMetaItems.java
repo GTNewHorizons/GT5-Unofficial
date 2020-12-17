@@ -31,6 +31,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -42,6 +44,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -111,13 +114,27 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
         return werkstoff != null ? this.orePrefixes.mLocalizedMaterialPre + werkstoff.mDefaultLocalName + this.orePrefixes.mLocalizedMaterialPost : Materials._NULL.mDefaultLocalName;
     }
 
+    @Override
     protected IIconContainer getIconContainerBartWorks(int aMetaData) {
-        if (SideReference.Side.Client) {
-            if (aMetaData > 1000 && hasList)
-                return PrefixTextureLinker.texMap.get(this.orePrefixes).get(NoMetaValue.get(aMetaData-1001).mIconSet);
-            return PrefixTextureLinker.texMap.get(this.orePrefixes).get(Materials.values()[(short) aMetaData].mIconSet);
-        }
-        return null;
+        if (SideReference.Side.Server || PrefixTextureLinker.texMap == null)
+            return null;
+
+        HashMap<TextureSet, Textures.ItemIcons.CustomIcon> iconLink = PrefixTextureLinker.texMap.get(this.orePrefixes);
+
+        if (iconLink == null)
+            return null;
+
+        Materials material;
+
+        if (aMetaData > 1000 && hasList)
+            material = NoMetaValue.get(aMetaData-1001);
+        else
+            material = Materials.values()[aMetaData];
+
+        if (material == null || material.mIconSet == null)
+            return null;
+
+        return iconLink.get(material.mIconSet);
     }
 
     @Override
