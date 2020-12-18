@@ -109,8 +109,8 @@ public final class MainMod {
         LoaderReference.init(); //Check for ALL the mods.
 
         if (LoaderReference.miscutils) {
-            if (SideReference.Side.Client)
-                ClientGTppWarning();
+            //if (SideReference.Side.Client)
+                //ClientGTppWarning();
 
             MainMod.LOGGER.error("BartWorks was NOT meant to be played with GT++," +
                         " since GT++'s Multiblocks break the Platinum Processing chain. " +
