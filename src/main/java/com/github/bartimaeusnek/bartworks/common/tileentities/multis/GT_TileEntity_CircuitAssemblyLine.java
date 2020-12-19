@@ -121,16 +121,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
                 return false;
 
         if (this.bufferedRecipe != null && this.bufferedRecipe.isRecipeInputEqual(true,false, BW_Util.getFluidsFromInputHatches(this), BW_Util.getItemsFromInputBusses(this))) {
-            BW_Util.calculateOverclockedNessMultiPefectOC(this.bufferedRecipe.mEUt,this.bufferedRecipe.mDuration,1,this.getMaxInputVoltage(),this);
-            if (this.mEUt > 0)
-                this.mEUt = -this.mEUt;
-            this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-            this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-            this.mOutputItems = this.bufferedRecipe.mOutputs;
-            this.mOutputFluids = this.bufferedRecipe.mFluidOutputs;
-            sendLoopStart((byte) 20);
-            this.updateSlots();
+            setRecipeStats();
             return true;
         }
 
@@ -153,18 +144,23 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
             else
                 continue;
 
-            BW_Util.calculateOverclockedNessMulti(this.bufferedRecipe.mEUt,this.bufferedRecipe.mDuration,1,this.getMaxInputVoltage(),this);
-            if (this.mEUt > 0)
-                this.mEUt = -this.mEUt;
-            this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-            this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-            this.mOutputItems = this.bufferedRecipe.mOutputs;
-            this.mOutputFluids = this.bufferedRecipe.mFluidOutputs;
-            this.updateSlots();
+            this.setRecipeStats();
             return true;
         }
         return false;
+    }
+
+    private void setRecipeStats() {
+        BW_Util.calculateOverclockedNessMulti(this.bufferedRecipe.mEUt,this.bufferedRecipe.mDuration,1,this.getMaxInputVoltage(),this);
+        if (this.mEUt > 0)
+            this.mEUt = -this.mEUt;
+        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
+        this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+        this.mOutputItems = this.bufferedRecipe.mOutputs;
+        this.mOutputFluids = this.bufferedRecipe.mFluidOutputs;
+        sendLoopStart((byte) 20);
+        this.updateSlots();
     }
 
     @Override
@@ -349,28 +345,35 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
         return new GT_TileEntity_CircuitAssemblyLine(this.mName);
     }
 
-    @Override
-    public String[] getDescription() {
-        return new String[]{
-                "Circuit Assembly Line", "Size(WxHxD): (2-7)x3x3, variable length",
-                "Bottom: Steel Machine Casing(or 1x Maintenance or Input Hatch),",
-                "ULV Input Bus (Last ULV Output Bus), Steel Machine Casing",
-                "Middle: EV+ Tier Glass, Assembling Line Casing, EV+ Tier Glass",
-                "Top: Grate Machine Casing (or Controller or 1x Energy Hatch)",
-                "Up to 7 repeating slices, last is Output Bus",
-                "Imprint this machine with a Circuit Imprint,",
-                "by putting the imprint in the controller.",
-                "Every Circuit Assembly Line can only be imprinted ONCE.",
-                ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()
-        };
-    }
+    private static final String[] DESCRIPTION = new String[]{
+            "Circuit Assembly Line", "Size(WxHxD): (2-7)x3x3, variable length",
+            "Bottom: Steel Machine Casing(or 1x Maintenance or Input Hatch),",
+            "ULV Input Bus (Last ULV Output Bus), Steel Machine Casing",
+            "Middle: EV+ Tier Glass, Assembling Line Casing, EV+ Tier Glass",
+            "Top: Grate Machine Casing (or Controller or 1x Energy Hatch)",
+            "Up to 7 repeating slices, last is Output Bus",
+            "Imprint this machine with a Circuit Imprint,",
+            "by putting the imprint in the controller.",
+            "Every Circuit Assembly Line can only be imprinted ONCE.",
+            ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()
+    };
 
     @Override
+    public String[] getDescription() {
+        return DESCRIPTION;
+    }
+
+    private String[] infoDataBuffer;
+    @Override
     public String[] getInfoData() {
-        String[] ret = new String[super.getInfoData().length+1];
-        System.arraycopy(super.getInfoData(),0,ret,0,super.getInfoData().length);
-        ret[super.getInfoData().length] = "Imprinted with: "+ GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(this.type)));
-        return ret;
+        if (infoDataBuffer != null)
+            return infoDataBuffer;
+
+        String[] oldInfo = super.getInfoData();
+        infoDataBuffer = new String[oldInfo.length+1];
+        System.arraycopy(oldInfo,0,infoDataBuffer,0, oldInfo.length);
+        infoDataBuffer[oldInfo.length] = "Imprinted with: "+ GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(this.type)));
+        return infoDataBuffer;
     }
 
     @Override

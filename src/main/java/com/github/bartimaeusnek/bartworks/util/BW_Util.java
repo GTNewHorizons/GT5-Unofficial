@@ -413,10 +413,6 @@ public class BW_Util {
         }
     }
 
-    public static void calculateOverclockedNessMultiPefectOC(@Nonnegative int aEUt, @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage, @Nonnull GT_MetaTileEntity_MultiBlockBase base){
-        calculateOverclockednessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, base, 1);
-    }
-
     public static long getnominalVoltage(GT_MetaTileEntity_MultiBlockBase base) {
         long rVoltage = 0L;
         long rAmperage = 0L;
