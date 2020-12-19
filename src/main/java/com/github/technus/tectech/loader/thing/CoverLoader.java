@@ -4,7 +4,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_EnderFluidLink;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
-import com.github.technus.tectech.thing.item.EnderLinkCover;
+import com.github.technus.tectech.thing.item.EnderFluidLinkCover;
 import com.github.technus.tectech.thing.item.TeslaCoilCover;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
@@ -22,7 +22,7 @@ public class CoverLoader implements Runnable {
 
         GregTech_API.registerCover(new ItemStack(TeslaCoilCover.INSTANCE, 1, 0), new GT_RenderedTexture(TESLA_OVERLAY), new GT_Cover_TM_TeslaCoil());
         GregTech_API.registerCover(new ItemStack(TeslaCoilCover.INSTANCE, 1, 1), new GT_RenderedTexture(TESLA_OVERLAY_ULTIMATE), new GT_Cover_TM_TeslaCoil_Ultimate());
-        GregTech_API.registerCover(new ItemStack(EnderLinkCover.INSTANCE, 1, 0), new GT_RenderedTexture(ENDERFLUIDLINK_OVERLAY), new GT_Cover_TM_EnderFluidLink());
+        GregTech_API.registerCover(new ItemStack(EnderFluidLinkCover.INSTANCE, 1, 0), new GT_RenderedTexture(ENDERFLUIDLINK_OVERLAY), new GT_Cover_TM_EnderFluidLink());
         TecTech.LOGGER.info("Cover functionality registered");
     }
 }

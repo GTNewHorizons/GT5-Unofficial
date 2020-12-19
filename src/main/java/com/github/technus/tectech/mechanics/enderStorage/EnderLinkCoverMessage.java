@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
 import eu.usrv.yamcore.network.server.AbstractServerMessageHandler;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -91,7 +92,16 @@ public class EnderLinkCoverMessage implements IMessage {
         @Override
         public IMessage handleServerMessage(EntityPlayer pPlayer, EnderLinkCoverUpdate pMessage, MessageContext pCtx) {
             if (pMessage.messageData != null) {
-                bindEnderLinkTag(pMessage.messageData.getFluidHandler(), pMessage.messageData.getTag());
+                EnderLinkTag tag = pMessage.messageData.getTag();
+                IFluidHandler handler = pMessage.messageData.getFluidHandler();
+                if (tag.getUUID() == null){
+                    bindEnderLinkTag(handler, tag);
+                } else if (handler instanceof BaseMetaTileEntity) {
+                    BaseMetaTileEntity baseTile = (BaseMetaTileEntity) handler;
+                    if (tag.getUUID() == baseTile.getOwnerUuid()){
+                        bindEnderLinkTag(handler, tag);
+                    }
+                }
             }
             return null;
         }
