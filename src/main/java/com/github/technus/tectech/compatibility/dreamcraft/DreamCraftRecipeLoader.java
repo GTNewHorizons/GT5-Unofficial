@@ -1686,7 +1686,13 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8),
         }, Materials.SolderingAlloy.getMolten(72), CustomItemList.teslaCover.getWithDamage(1, 1), 320, 7680);
-
+        //Ender Fluid Link Cover
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 4),
+                ItemList.Sensor_LuV.get(1),
+                ItemList.Emitter_LuV.get(1),
+                ItemList.Electric_Pump_LuV.get(1),
+        }, Materials.Chrome.getMolten(288), CustomItemList.enderLinkFluidCover.getWithDamage(1, 0), 320, 30720);
         //endregion
 
         //region recycling

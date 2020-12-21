@@ -1,19 +1,19 @@
 package com.github.technus.tectech.mechanics.tesla;
 
 import com.github.technus.tectech.mechanics.spark.ThaumSpark;
+import com.google.common.collect.Multimap;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Objects;
+import java.util.Map;
 
-import static com.github.technus.tectech.util.Util.entriesSortedByValues;
 import static java.lang.Math.sqrt;
 
 public interface ITeslaConnectable extends ITeslaConnectableSimple {
     //Map with all Teslas in the same dimension and the distance to them //TODO Range
-    HashMap<ITeslaConnectableSimple, Integer> teslaNodeMap = new HashMap<>();
+    Multimap<Integer, ITeslaConnectableSimple> getTeslaNodeMap();
+
     //ThaumCraft lighting coordinate pairs, so we can send them in bursts and save on lag
-    HashSet<ThaumSpark> sparkList = new HashSet<>();
+    HashSet<ThaumSpark> getSparkList();
 
     //-128 to -1 disables capability
     //0 means any source or target
@@ -33,88 +33,113 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
     boolean teslaDrainEnergy(long teslaVoltageDrained);
 
     class TeslaUtil {
-        public static final HashSet<ITeslaConnectableSimple> teslaNodeSet = new HashSet<>();//Targets for power transmission
+        private static final HashSet<ITeslaConnectableSimple> teslaSimpleNodeSet = new HashSet<>();//Targets for power transmission
+        private static final HashSet<ITeslaConnectable> teslaNodeSet = new HashSet<>();//Sources of power transmission
+
+        public static void teslaSimpleNodeSetAdd(ITeslaConnectableSimple target) {
+            if (!teslaSimpleNodeSet.contains(target)) {
+                teslaSimpleNodeSet.add(target);
+                teslaNodeSet.forEach(origin -> addTargetToTeslaOrigin(target, origin));
+            }
+        }
+
+        public static void teslaSimpleNodeSetRemove(ITeslaConnectableSimple target){
+            teslaSimpleNodeSet.remove(target);
+            if (target instanceof ITeslaConnectable)teslaNodeSet.remove(target);
+            teslaNodeSet.forEach(origin -> removeTargetFromTeslaOrigin(target, origin));
+        }
+
+        private static void addTargetToTeslaOrigin(ITeslaConnectableSimple target, ITeslaConnectable origin){
+            if (origin.equals(target) || !origin.getTeslaDimension().equals(target.getTeslaDimension())) {
+                //Skip if looking at myself and skip if not in the same dimension
+                //TODO, INTERDIM?
+                return;
+            } else if (origin.getTeslaTransmissionCapability() != 0 && origin.getTeslaReceptionCapability() != 0 &&
+                    origin.getTeslaTransmissionCapability() != origin.getTeslaReceptionCapability()) {
+                //Skip if incompatible
+                return;
+            }
+            //Range calc
+            int distance = (int) sqrt(origin.getTeslaPosition().distanceSq(target.getTeslaPosition()));
+            if (distance > origin.getTeslaTransmissionRange() * target.getTeslaReceptionCoefficient()) {
+                //Skip if the range is too vast
+                return;
+            }
+            origin.getTeslaNodeMap().put(distance, target);
+        }
+
+        private static void removeTargetFromTeslaOrigin(ITeslaConnectableSimple target, ITeslaConnectable origin){
+            //Range calc TODO Remove duplicate?
+            int distance = (int) sqrt(origin.getTeslaPosition().distanceSq(target.getTeslaPosition()));
+            origin.getTeslaNodeMap().remove(distance, target);
+        }
 
         public static void generateTeslaNodeMap(ITeslaConnectable origin) {
-            origin.teslaNodeMap.clear();
-            for (ITeslaConnectableSimple target : teslaNodeSet) {
+            origin.getTeslaNodeMap().clear();
+            for (ITeslaConnectableSimple target : teslaSimpleNodeSet) {
                 //Sanity checks
                 if (target == null) {
                     //The Tesla Covers do not remove themselves from the list and this is the code that does
-                    teslaNodeSet.remove(null);
-                    continue;
-                } else if (origin.equals(target) || !origin.getTeslaDimension().equals(target.getTeslaDimension())) {
-                    //Skip if looking at myself and skip if not in the same dimension
-                    //TODO, INTERDIM?
-                    continue;
-                } else if (origin.getTeslaTransmissionCapability() != 0 && origin.getTeslaReceptionCapability() != 0 &&
-                        origin.getTeslaTransmissionCapability() != origin.getTeslaReceptionCapability()) {
-                    //Skip if incompatible
+                    teslaSimpleNodeSet.remove(null);
                     continue;
                 }
-
-                //Range calc
-                int distance = (int) sqrt(origin.getTeslaPosition().distanceSq(target.getTeslaPosition()));
-                if (distance > origin.getTeslaTransmissionRange() * target.getTeslaReceptionCoefficient()) {
-                    //Skip if the range is too vast
-                    continue;
-                }
-                origin.teslaNodeMap.put(target, distance);
+                addTargetToTeslaOrigin(target, origin);
             }
-        }
-
-        public static void cleanTeslaNodeMap(ITeslaConnectable origin) {
-            //Wipes all null objects, in practice this is unloaded or improperly removed tesla objects
-            origin.teslaNodeMap.keySet().removeIf(Objects::isNull);
+            teslaNodeSet.add(origin);
         }
 
         public static long powerTeslaNodeMap(ITeslaConnectable origin) {
-            //Teslas can only send OR receive
-            if (origin.isTeslaReadyToReceive()) {
-                return 0L;//TODO Negative values to indicate charging?
-            }
             long remainingAmperes = origin.getTeslaOutputCurrent();
-            while (remainingAmperes > 0) {
-                long startingAmperes = remainingAmperes;
-                for (HashMap.Entry<ITeslaConnectableSimple, Integer> Rx : entriesSortedByValues(teslaNodeMap)) {
-                    if (origin.getTeslaStoredEnergy() < (origin.isOverdriveEnabled() ? origin.getTeslaOutputVoltage() * 2 : origin.getTeslaOutputVoltage())) {
-                        //Return and end the tick if we're out of energy to send
-                        return origin.getTeslaOutputCurrent() - remainingAmperes;
-                    }
+            boolean canSendPower = !origin.isTeslaReadyToReceive() && remainingAmperes > 0;
 
-                    ITeslaConnectableSimple target = Rx.getKey();
-                    int distance = Rx.getValue();
+            if (canSendPower) {
+                for (Map.Entry<Integer, ITeslaConnectableSimple> Rx : origin.getTeslaNodeMap().entries()) {
+                    //Do we still have power left to send kind of check
+                    if (origin.getTeslaStoredEnergy() < (origin.isOverdriveEnabled() ? origin.getTeslaOutputVoltage() *
+                            2 : origin.getTeslaOutputVoltage())) break;
+                    //Explicit words for the important fields
+                    ITeslaConnectableSimple target = Rx.getValue();
+                    int distance = Rx.getKey();
+                    //Can our target receive energy?
+                    if(!target.isTeslaReadyToReceive()) continue;
 
                     //Calculate the voltage output
                     long outputVoltageInjectable;
                     long outputVoltageConsumption;
-
                     if (origin.isOverdriveEnabled()) {
                         outputVoltageInjectable = origin.getTeslaOutputVoltage();
-                        outputVoltageConsumption = origin.getTeslaOutputVoltage() + (distance * origin.getTeslaEnergyLossPerBlock()) +
-                                (long) Math.round(origin.getTeslaOutputVoltage() * origin.getTeslaOverdriveLossCoefficient());
+                        outputVoltageConsumption = origin.getTeslaOutputVoltage() +
+                                (distance * origin.getTeslaEnergyLossPerBlock()) +
+                                (long) Math.round(origin.getTeslaOutputVoltage() *
+                                        origin.getTeslaOverdriveLossCoefficient());
                     } else {
-                        outputVoltageInjectable = origin.getTeslaOutputVoltage() - (distance * origin.getTeslaEnergyLossPerBlock());
+                        outputVoltageInjectable = origin.getTeslaOutputVoltage() - (distance *
+                                origin.getTeslaEnergyLossPerBlock());
                         outputVoltageConsumption = origin.getTeslaOutputVoltage();
                     }
 
-                    //Skip the target if the cost is too high
-                    if (origin.getTeslaStoredEnergy() < outputVoltageConsumption) {
-                        continue;
+                    //Break out of the loop if the cost is too high
+                    //Since the next target will have an even higher cost, just quit now.
+                    if (origin.getTeslaStoredEnergy() < outputVoltageConsumption) break;
+
+                    //Now shove in as many packets as will fit~
+                    while(canSendPower){
+                        if (target.teslaInjectEnergy(outputVoltageInjectable)) {
+                            origin.teslaDrainEnergy(outputVoltageConsumption);
+                            origin.getSparkList().add(new ThaumSpark(origin.getTeslaPosition(),
+                                    target.getTeslaPosition(), origin.getTeslaDimension()));
+                            remainingAmperes--;
+                            //Update the can send power flag each time we send power
+                            canSendPower = (origin.getTeslaStoredEnergy() < outputVoltageConsumption ||
+                                    remainingAmperes > 0);
+                        } else {
+                            //Breaks out when I can't send anymore power
+                            break;
+                        }
                     }
 
-                    if (target.teslaInjectEnergy(outputVoltageInjectable)) {
-                        origin.teslaDrainEnergy(outputVoltageConsumption);
-                        sparkList.add(new ThaumSpark(origin.getTeslaPosition(), target.getTeslaPosition(), origin.getTeslaDimension()));
-                        remainingAmperes--;
-                    }
-                    if (remainingAmperes == 0) {
-                        return origin.getTeslaOutputCurrent();
-                    }
-                }
-                //End the tick after one iteration with no transmissions
-                if (remainingAmperes == startingAmperes) {
-                    return origin.getTeslaOutputCurrent() - remainingAmperes;
+                    //Break out if we can't send power anymore
+                    if (!canSendPower)break;
                 }
             }
             return origin.getTeslaOutputCurrent() - remainingAmperes;
