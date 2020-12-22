@@ -114,7 +114,7 @@ public class GT_MetaTileEntity_BasicHull extends GT_MetaTileEntity_BasicTank {
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[6][17][];
-        for (byte i = -1; i < 16; i++) {
+        for (int i = -1; i < 16; i++) {
             rTextures[0][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1]};
             rTextures[1][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1]};
             rTextures[2][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1]};

@@ -49,9 +49,9 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
         byte tSide = getBaseMetaTileEntity().getBackFacing();
         if ((getBaseMetaTileEntity().getAirAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 1)) && (getBaseMetaTileEntity().getAirAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2))) {
             int tAirCount = 0;
-            for (byte i = -1; i < 2; i = (byte) (i + 1)) {
-                for (byte j = -1; j < 2; j = (byte) (j + 1)) {
-                    for (byte k = -1; k < 2; k = (byte) (k + 1)) {
+            for (int i = -1; i < 2; i++) {
+                for (int j = -1; j < 2; j++) {
+                    for (int k = -1; k < 2; k++) {
                         if (getBaseMetaTileEntity().getAirOffset(i, j, k)) {
                             tAirCount++;
                         }
@@ -61,7 +61,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
             if (tAirCount != 10) {
                 return false;
             }
-            for (byte i = 2; i < 6; i = (byte) (i + 1)) {
+            for (byte i = 2; i < 6; i++) {
                 IGregTechTileEntity tTileEntity;
                 if ((null != (tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(i, 2))) &&
                         (tTileEntity.getFrontFacing() == getBaseMetaTileEntity().getFrontFacing()) && (tTileEntity.getMetaTileEntity() != null) &&
@@ -72,10 +72,10 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
             int tX = getBaseMetaTileEntity().getXCoord();
             int tY = getBaseMetaTileEntity().getYCoord();
             int tZ = getBaseMetaTileEntity().getZCoord();
-            for (byte i = -1; i < 2; i = (byte) (i + 1)) {
-                for (byte j = -1; j < 2; j = (byte) (j + 1)) {
+            for (int i = -1; i < 2; i++) {
+                for (int j = -1; j < 2; j++) {
                     if ((i != 0) || (j != 0)) {
-                        for (byte k = 0; k < 4; k = (byte) (k + 1)) {
+                        for (int k = 0; k < 4; k++) {
                             if (((i == 0) || (j == 0)) && ((k == 1) || (k == 2))) {
                                 if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == getCasingBlock() && getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == getCasingMeta()) {
                                 } else if (!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)))) {

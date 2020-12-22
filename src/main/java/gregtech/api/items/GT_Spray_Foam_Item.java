@@ -128,7 +128,7 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
                     }
                     break;
                 case 1:
-                    for (byte i = 0; i < 4; i++) {
+                    for (int i = 0; i < 4; i++) {
                         if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                             GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
                             aWorld.setBlock(aX, aY, aZ, GT_Utility.getBlockFromStack(tStack), tStack.getItemDamage(), 3);
@@ -151,8 +151,8 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
                     aY -= (tYFactor ? 1 : 0);
                     aZ -= (tZFactor ? 1 : 0);
 
-                    for (byte i = 0; i < 3; i++)
-                        for (byte j = 0; j < 3; j++) {
+                    for (int i = 0; i < 3; i++)
+                        for (int j = 0; j < 3; j++) {
                             if (GT_Utility.isBlockAir(aWorld, aX + (tXFactor ? i : 0), aY + (!tXFactor && tYFactor ? i : 0) + (!tZFactor && tYFactor ? j : 0), aZ + (tZFactor ? j : 0))) {
                                 if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                                     GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);

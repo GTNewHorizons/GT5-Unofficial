@@ -100,7 +100,7 @@ public class GT_Item_Machines
         if (aNBT.hasKey("mCoverSides")){
             int[] mCoverSides = aNBT.getIntArray("mCoverSides");
             if (mCoverSides != null && mCoverSides.length == 6) {
-                for (byte i = 0; i < 6; i++) {
+                for (int i = 0; i < 6; i++) {
                     int coverId = mCoverSides[i];
                     ItemStack coverStack = GT_Utility.intToStack(coverId);
                     if (coverStack != null) {

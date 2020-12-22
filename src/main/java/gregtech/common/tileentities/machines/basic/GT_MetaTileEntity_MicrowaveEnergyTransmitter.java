@@ -135,9 +135,9 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     public boolean checkForBlock() {
-        for (byte i = -5; i <= 5; i = (byte) (i + 1)) {
-            for (byte j = -5; j <= 5; j = (byte) (j + 1)) {
-                for (byte k = -5; k <= 5; k = (byte) (k + 1)) {
+        for (int i = -5; i <= 5; i++) {
+            for (int j = -5; j <= 5; j++) {
+                for (int k = -5; k <= 5; k++) {
                     if (getBaseMetaTileEntity().getBlockOffset(i, j, k) ==  GregTech_API.sBlockMetal5 && getBaseMetaTileEntity().getMetaIDOffset(i, j, k) == 8) {//require osmiridium block
                         return true;
                     }

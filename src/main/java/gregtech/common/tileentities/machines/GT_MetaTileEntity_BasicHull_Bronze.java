@@ -28,7 +28,7 @@ public class GT_MetaTileEntity_BasicHull_Bronze
 
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[3][17][];
-        for (byte i = -1; i < 16; i = (byte) (i + 1)) {
+        for (int i = -1; i < 16; i++) {
             rTextures[0][(i + 1)] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZE_BOTTOM, Dyes.getModulation(i, Dyes._NULL.mRGBa))};
             rTextures[1][(i + 1)] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZE_TOP, Dyes.getModulation(i, Dyes._NULL.mRGBa))};
             rTextures[2][(i + 1)] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZE_SIDE, Dyes.getModulation(i, Dyes._NULL.mRGBa))};

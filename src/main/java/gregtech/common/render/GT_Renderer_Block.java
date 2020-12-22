@@ -147,13 +147,13 @@ public class GT_Renderer_Block
         float sp = (1.0F - tThickness) / 2.0F;
 
         byte tConnections = 0;
-        for (byte i = 0; i < 6; i = (byte) (i + 1)) {
+        for (int i = 0; i < 6; i++) {
             if ((aConnections & 1 << i) != 0) {
                 tConnections = (byte) (tConnections | 1 << (i + 2) % 6);
             }
         }
         boolean[] tIsCovered = new boolean[6];
-        for (byte i = 0; i < 6; i = (byte) (i + 1)) {
+        for (byte i = 0; i < 6; i++) {
             tIsCovered[i] = (aTileEntity.getCoverIDAtSide(i) != 0);
         }
         if ((tIsCovered[0]) && (tIsCovered[1]) && (tIsCovered[2]) && (tIsCovered[3]) && (tIsCovered[4]) && (tIsCovered[5])) {
@@ -161,7 +161,7 @@ public class GT_Renderer_Block
         }
         ITexture[][] tIcons = new ITexture[6][];
         ITexture[][] tCovers = new ITexture[6][];
-        for (byte i = 0; i < 6; i = (byte) (i + 1)) {
+        for (byte i = 0; i < 6; i++) {
             tCovers[i] = aTileEntity.getTexture(aBlock, i);
             tIcons[i] = aTileEntity.getTextureUncovered(i);
         }

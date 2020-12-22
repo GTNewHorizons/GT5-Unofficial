@@ -70,7 +70,7 @@ public class GT_MetaTileEntity_Filter
             return false;
         }
         if (this.bInvertFilter) {
-            for (byte i = 9; i < 18; i = (byte) (i + 1)) {
+            for (int i = 9; i < 18; i++) {
                 if (GT_Utility.areStacksEqual(this.mInventory[i], aStack, this.bIgnoreNBT)) {
                     return false;
                 }

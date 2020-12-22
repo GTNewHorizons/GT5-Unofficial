@@ -186,7 +186,7 @@ public class GT_Client extends GT_Proxy
             	{4, 2, 3, 1, 0, 5},
             	{2, 4, 3, 1, 5, 0},
             };
-        	for (byte i = 0; i < 6; i++) {
+        	for (int i = 0; i < 6; i++) {
         		if ((tConnections & (1 << i)) != 0) {
         			switch (GridSwitchArr[aEvent.target.sideHit][i]) {
         	        case 0:

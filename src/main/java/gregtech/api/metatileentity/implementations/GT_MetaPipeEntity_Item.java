@@ -255,7 +255,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     public boolean sendItemStack(Object aSender) {
         if (pipeCapacityCheck()) {
             byte tOffset = (byte) getBaseMetaTileEntity().getRandomNumber(6), tSide = 0;
-            for (byte i = 0; i < 6; i++) {
+            for (int i = 0; i < 6; i++) {
                 tSide = (byte) ((i + tOffset) % 6);
                 if (isConnectedAtSide(tSide) && (isInventoryEmpty() || (tSide != mLastReceivedFrom || aSender != getBaseMetaTileEntity()))) {
                     if (insertItemStackIntoTileEntity(aSender, tSide)) return true;

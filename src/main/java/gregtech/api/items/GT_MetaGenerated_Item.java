@@ -327,7 +327,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         short j = (short) mEnabledItems.length();
         for (short i = 0; i < j; i++)
             if (mEnabledItems.get(i)) {
-                for (byte k = 1; k < mIconList[i].length; k++) {
+                for (int k = 1; k < mIconList[i].length; k++) {
                     mIconList[i][k] = aIconRegister.registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
                 }
                 mIconList[i][0] = aIconRegister.registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));

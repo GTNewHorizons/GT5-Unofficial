@@ -38,7 +38,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
 
     public GT_Block_Reinforced(String aName) {
         super(GT_Item_Storage.class, aName, new GT_Material_Reinforced());
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+        for (int i = 0; i < 16; i++) {
             Textures.BlockIcons.casingTexturePages[1][i + 80] = new GT_CopiedBlockTexture(this, 6, i);
         }
         setStepSound(soundTypeStone);

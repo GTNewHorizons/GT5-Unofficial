@@ -109,7 +109,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         	{1, 0, 2, 3}
         };
         if (aSide >= 0 && aSide < 6) {
-            for (byte i = 0; i < 4; i++) if (isInputDisabledAtSide(sRestrictionArray[aSide][i])) tMask |= 1 << i;
+            for (int i = 0; i < 4; i++) if (isInputDisabledAtSide(sRestrictionArray[aSide][i])) tMask |= 1 << i;
             //Full block size renderer flips side 5 and 2  textures, flip restrictor textures to compensate
             if (aSide == 5 || aSide == 2 || aSide == 0)
                 if (tMask > 3 && tMask < 12)
@@ -444,7 +444,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         super.doSound(aIndex, aX, aY, aZ);
         if (aIndex == 9) {
             GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 5, 1.0F, aX, aY, aZ);
-            for (byte i = 0; i < 6; i++)
+            for (int i = 0; i < 6; i++)
                     getBaseMetaTileEntity().getWorld().spawnParticle("largesmoke", aX - 0.5 + XSTR_INSTANCE.nextFloat(), aY - 0.5 + XSTR_INSTANCE.nextFloat(), aZ - 0.5 + XSTR_INSTANCE.nextFloat(), ForgeDirection.getOrientation(i).offsetX / 5.0, ForgeDirection.getOrientation(i).offsetY / 5.0, ForgeDirection.getOrientation(i).offsetZ / 5.0);
         }
     }

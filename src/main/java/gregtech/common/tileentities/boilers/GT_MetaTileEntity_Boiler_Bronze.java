@@ -48,7 +48,7 @@ public class GT_MetaTileEntity_Boiler_Bronze
 
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[5][17][];
-        for (byte i = -1; i < 16; i++) {
+        for (int i = -1; i < 16; i++) {
             rTextures[0][(i + 1)] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM, Dyes.getModulation(i, Dyes._NULL.mRGBa))};
             rTextures[1][(i + 1)] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP, Dyes.getModulation(i, Dyes._NULL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE)};
             rTextures[2][(i + 1)] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE, Dyes.getModulation(i, Dyes._NULL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE)};
@@ -88,7 +88,7 @@ public class GT_MetaTileEntity_Boiler_Bronze
                 this.mTemperature -= 1;
                 this.mLossTimer = 0;
             }
-            for (byte i = 1; (this.mSteam != null) && (i < 6); i = (byte) (i + 1)) {
+            for (byte i = 1; (this.mSteam != null) && (i < 6); i++) {
                 if (i != aBaseMetaTileEntity.getFrontFacing()) {
                     IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(i);
                     if (tTileEntity != null) {

@@ -180,10 +180,10 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
         if(getBaseMetaTileEntity().getMetaIDAtSideAndDistance(tSide, 1) != getGearboxMeta() && getBaseMetaTileEntity().getMetaIDAtSideAndDistance(tSide, 2) != getGearboxMeta()) {
             return false;
         }
-        for (byte i = -1; i < 2; i = (byte) (i + 1)) {
-            for (byte j = -1; j < 2; j = (byte) (j + 1)) {
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
                 if ((i != 0) || (j != 0)) {
-                    for (byte k = 0; k < 4; k = (byte) (k + 1)) {
+                    for (int k = 0; k < 4; k++) {
 
                         final int fX = tX - (tSide == 5 ? 1 : tSide == 4 ? -1 : i),
                                   fZ = tZ - (tSide == 2 ? -1 : tSide == 3 ? 1 : i),

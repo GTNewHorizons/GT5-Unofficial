@@ -111,7 +111,7 @@ public class GT_ClientPollutionMap {
         int zDiff = chunkZ - z0;
         boolean[] allEmpty = new boolean[SIZE]; //skip check z row if its empty.
         if (xDiff > 0)
-            for (byte x = 0; x < SIZE; x++) {
+            for (int x = 0; x < SIZE; x++) {
                 int xOff = x + xDiff;
                 if (xOff < SIZE) {
                     chunkMatrix[x] = chunkMatrix[xOff].clone();
@@ -121,7 +121,7 @@ public class GT_ClientPollutionMap {
                 }
             }
         else if (xDiff < 0)
-            for (byte x = SIZE-1; x >= 0; x--) {
+            for (int x = SIZE-1; x >= 0; x--) {
                 int xOff = x + xDiff;
                 if (xOff > 0) {
                     chunkMatrix[x] = chunkMatrix[xOff].clone();
@@ -132,7 +132,7 @@ public class GT_ClientPollutionMap {
             }
 
         if (zDiff > 0)
-            for (byte x = 0; x < SIZE; x++) {
+            for (int x = 0; x < SIZE; x++) {
                 if (allEmpty[x])
                     continue;
                 for (int z = 0; z < SIZE ; z++) {
@@ -141,7 +141,7 @@ public class GT_ClientPollutionMap {
                 }
             }
         else if (zDiff < 0)
-            for (byte x = 0; x < SIZE; x++) {
+            for (int x = 0; x < SIZE; x++) {
                 if (allEmpty[x])
                     continue;
                 for (int z = SIZE-1; z >= 0 ; z--) {

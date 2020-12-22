@@ -148,7 +148,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             tList.addAll(Arrays.asList(aOutputs));
             for (int i = 0; i < tList.size(); i++) if (tList.get(i) == null) tList.remove(i--);
 
-            for (byte i = (byte) Math.min(64, aDuration / 16); i > 1; i--)
+            for (int i = (byte) Math.min(64, aDuration / 16); i > 1; i--)
                 if (aDuration / i >= 16) {
                     boolean temp = true;
                     for (ItemStack stack : tList)

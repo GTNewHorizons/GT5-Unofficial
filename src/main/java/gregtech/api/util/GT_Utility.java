@@ -189,7 +189,7 @@ public class GT_Utility {
     public static Object callMethod(Object aObject, String aMethod, boolean aPrivate, boolean aUseUpperCasedDataTypes, boolean aLogErrors, Object... aParameters) {
         try {
             Class<?>[] tParameterTypes = new Class<?>[aParameters.length];
-            for (byte i = 0; i < aParameters.length; i++) {
+            for (int i = 0; i < aParameters.length; i++) {
                 if (aParameters[i] instanceof Class) {
                     tParameterTypes[i] = (Class) aParameters[i];
                     aParameters[i] = null;
@@ -1105,7 +1105,7 @@ public class GT_Utility {
         tNBT.setString("title", GT_LanguageManager.addStringLocalization("Book." + aTitle + ".Name", aTitle));
         tNBT.setString("author", aAuthor);
         NBTTagList tNBTList = new NBTTagList();
-        for (byte i = 0; i < aPages.length; i++) {
+        for (int i = 0; i < aPages.length; i++) {
             aPages[i] = GT_LanguageManager.addStringLocalization("Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : i), aPages[i]);
             if (i < 48) {
                 if (aPages[i].length() < 256)
@@ -1314,7 +1314,7 @@ public class GT_Utility {
      * page 0 is old CASING_BLOCKS
      *
      * Then casings should be registered like this:
-     * for (byte i = MIN_USED_META; i < MAX_USED_META; i = (byte) (i + 1)) {
+     * for (int i = MIN_USED_META; i < MAX_USED_META; i++) {
      *     Textures.BlockIcons.casingTexturePages[PAGE][i+START_INDEX] = new GT_CopiedBlockTexture(this, 6, i);
      * }
      *
@@ -1463,37 +1463,37 @@ public class GT_Utility {
     }
 
     public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
+        for (int i = 1; i < 5; i++)
             if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sFrostHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
+        for (int i = 1; i < 5; i++)
             if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sHeatHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
+        for (int i = 1; i < 5; i++)
             if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sBioHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
+        for (int i = 1; i < 5; i++)
             if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sRadioHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
+        for (int i = 1; i < 5; i++)
             if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sElectroHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
+        for (int i = 1; i < 5; i++)
             if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sGasHazmatList)) return false;
         return true;
     }
@@ -1879,7 +1879,7 @@ public class GT_Utility {
                 if (tTileEntity instanceof IFluidHandler) {
                     rEUAmount += 500;
                     FluidTankInfo[] tTanks = ((IFluidHandler) tTileEntity).getTankInfo(ForgeDirection.getOrientation(aSide));
-                    if (tTanks != null) for (byte i = 0; i < tTanks.length; i++) {
+                    if (tTanks != null) for (int i = 0; i < tTanks.length; i++) {
                     tList.add(trans("167","Tank ") + i + ": " +EnumChatFormatting.GREEN+ GT_Utility.formatNumbers((tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount)) +EnumChatFormatting.RESET+ " L / " +EnumChatFormatting.YELLOW+ GT_Utility.formatNumbers(tTanks[i].capacity) +EnumChatFormatting.RESET+ " L " +EnumChatFormatting.GOLD+ getFluidName(tTanks[i].fluid, true)+EnumChatFormatting.RESET);
                     }
                 }

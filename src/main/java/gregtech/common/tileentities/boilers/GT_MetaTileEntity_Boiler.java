@@ -178,7 +178,7 @@ public abstract class GT_MetaTileEntity_Boiler
                 this.mTemperature -= 1;
                 this.mLossTimer = 0;
             }
-            for (byte i = 1; (this.mSteam != null) && (i < 6); i = (byte) (i + 1)) {
+            for (byte i = 1; (this.mSteam != null) && (i < 6); i++) {
                 if (i != aBaseMetaTileEntity.getFrontFacing()) {
                     IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(i);
                     if (tTileEntity != null) {

@@ -38,7 +38,7 @@ public class GT_MetaTileEntity_Locker
 
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[3][17][];
-        for (byte i = -1; i < 16; i = (byte) (i + 1)) {
+        for (int i = -1; i < 16; i++) {
             ITexture[] tmp0 = {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][(i + 1)]};
             rTextures[0][(i + 1)] = tmp0;
             ITexture[] tmp1 = {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][(i + 1)], Textures.BlockIcons.OVERLAYS_ENERGY_IN[this.mTier]};

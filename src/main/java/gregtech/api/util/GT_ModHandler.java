@@ -951,7 +951,7 @@ public class GT_ModHandler {
 
         boolean tThereWasARecipe = false;
 
-        for (byte i = 0; i < aRecipe.length; i++) {
+        for (int i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] instanceof IItemContainer)
                 aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
             else if (aRecipe[i] instanceof Enum)
@@ -1180,7 +1180,7 @@ public class GT_ModHandler {
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable, boolean aRemovable, Object[] aRecipe) {
         aResult = GT_OreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length <= 0) return false;
-        for (byte i = 0; i < aRecipe.length; i++) {
+        for (int i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] instanceof IItemContainer)
                 aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
             else if (aRecipe[i] instanceof Enum)
@@ -1253,7 +1253,7 @@ public class GT_ModHandler {
     public static ItemStack removeRecipe(ItemStack... aRecipe) {
         if (aRecipe == null) return null;
         boolean temp = false;
-        for (byte i = 0; i < aRecipe.length; i++) {
+        for (int i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] != null) {
                 temp = true;
                 break;
@@ -1326,7 +1326,7 @@ public class GT_ModHandler {
         if (aWorld == null) aWorld = DW;
 
         boolean temp = false;
-        for (byte i = 0; i < aRecipe.length; i++) {
+        for (int i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] != null) {
                 temp = true;
                 break;
@@ -1395,7 +1395,7 @@ public class GT_ModHandler {
     public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... aRecipe) {
         if (aRecipe == null) return null;
         boolean temp = false;
-        for (byte i = 0; i < aRecipe.length; i++) {
+        for (int i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] != null) {
                 temp = true;
                 break;
@@ -1639,7 +1639,7 @@ public class GT_ModHandler {
                         if (tList.length == 0) break;
                         ItemStack[] rList = new ItemStack[aOutputSlots.length];
                         rRecipeMetaData.setTag("return", tEntry.getValue().metadata);
-                        for (byte i = 0; i < aOutputSlots.length && i < tList.length; i++) {
+                        for (int i = 0; i < aOutputSlots.length && i < tList.length; i++) {
                             if (tList[i] != null) {
                                 if (aOutputSlots[i] == null || (GT_Utility.areStacksEqual(tList[i], aOutputSlots[i]) && tList[i].stackSize + aOutputSlots[i].stackSize <= aOutputSlots[i].getMaxStackSize())) {
                                     rList[i] = GT_Utility.copy(tList[i]);

@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 public class GT_CoverLoader
         implements Runnable {
     public void run() {
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+        for (int i = 0; i < 16; i++) {
             GregTech_API.registerCover(new ItemStack(Blocks.carpet, 1, i), new GT_CopiedBlockTexture(Blocks.wool, 0, i), null);
         }
         GregTech_API.registerCover(GT_ModHandler.getIC2Item("reactorVent", 1L, 1), new GT_RenderedTexture(Textures.BlockIcons.VENT_NORMAL), new GT_Cover_Vent(1));

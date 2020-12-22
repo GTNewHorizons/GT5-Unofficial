@@ -16,7 +16,7 @@ public class GT_Block_Casings2
         extends GT_Block_Casings_Abstract {
     public GT_Block_Casings2() {
         super(GT_Item_Casings2.class, "gt.blockcasings2", GT_Material_Casings.INSTANCE);
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+        for (int i = 0; i < 16; i++) {
         	if (i != 6){
         		Textures.BlockIcons.casingTexturePages[0][(i + 16)] = new GT_CopiedBlockTexture(this, 6, i);
         	}

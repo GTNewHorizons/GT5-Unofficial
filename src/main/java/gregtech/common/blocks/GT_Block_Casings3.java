@@ -11,7 +11,7 @@ public class GT_Block_Casings3
         extends GT_Block_Casings_Abstract {
     public GT_Block_Casings3() {
         super(GT_Item_Casings3.class, "gt.blockcasings3", GT_Material_Casings.INSTANCE);
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+        for (int i = 0; i < 16; i++) {
             Textures.BlockIcons.casingTexturePages[0][(i + 32)] = new GT_CopiedBlockTexture(this, 6, i);
         }
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Yellow Stripes Block");

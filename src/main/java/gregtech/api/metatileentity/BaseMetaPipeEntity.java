@@ -149,7 +149,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             if (mCoverSides.length != 6) mCoverSides = new int[]{0, 0, 0, 0, 0, 0};
             if (mSidedRedstone.length != 6) mSidedRedstone = new byte[]{0, 0, 0, 0, 0, 0};
 
-            for (byte i = 0; i < 6; i++) {
+            for (int i = 0; i < 6; i++) {
                 mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
                 if(mCoverBehaviors[i] instanceof GT_Cover_Fluidfilter) {
                     final String filterKey = String.format("fluidFilter%d", i);
@@ -183,7 +183,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         if (mCoverSides.length != 6) mCoverSides = new int[]{0, 0, 0, 0, 0, 0};
         if (mSidedRedstone.length != 6) mSidedRedstone = new byte[]{0, 0, 0, 0, 0, 0};
 
-        for (byte i = 0; i < 6; i++) mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
+        for (int i = 0; i < 6; i++) mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
     }
 
     private boolean createNewMetatileEntity(short aID) {
@@ -271,7 +271,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         tCode++;
                         if (isServerSide()) {
                             if (mTickTimer == 10) {
-                                for (byte i = 0; i < 6; i++)
+                                for (int i = 0; i < 6; i++)
                                     mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
                                 issueBlockUpdate();
                                 joinEnet();
@@ -355,7 +355,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         mCoverSides[4] = aCover4;
         mCoverSides[5] = aCover5;
 
-        for (byte i = 0; i < 6; i++) mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
+        for (int i = 0; i < 6; i++) mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
 
         receiveClientEvent(0, aTextureData);
         receiveClientEvent(1, aUpdateData);
@@ -818,7 +818,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, mID);
         NBTTagCompound tNBT = new NBTTagCompound();
         if (mStrongRedstone > 0) tNBT.setByte("mStrongRedstone", mStrongRedstone);
-        for (byte i = 0; i < mCoverSides.length; i++) {
+        for (int i = 0; i < mCoverSides.length; i++) {
             if (mCoverSides[i] != 0) {
                 tNBT.setIntArray("mCoverData", mCoverData);
                 tNBT.setIntArray("mCoverSides", mCoverSides);
