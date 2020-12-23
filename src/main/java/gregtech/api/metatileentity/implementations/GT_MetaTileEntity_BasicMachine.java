@@ -153,7 +153,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         aTextures = Arrays.copyOf(aTextures, 14);
 
         for (int i = 0; i < aTextures.length; i++)
-            if (aTextures[i] != null) 
+        	if (aTextures[i] != null) 
             	for (int c = -1; c < 16; c++) {
             		if (rTextures[i][c + 1] == null)
             			rTextures[i][c + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][c + 1], aTextures[i]};
