@@ -211,7 +211,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     mSidedRedstone = new byte[]{0, 0, 0, 0, 0, 0};
                 else mSidedRedstone = new byte[]{15, 15, 15, 15, 15, 15};
 
-            for (int i = 0; i < 6; i++) mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
+            for (int i = 0; i < 6; i++) 
+            	mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
 
             if (mID != 0 && createNewMetatileEntity(mID)) {
                 NBTTagList tItemList = aNBT.getTagList("Inventory", 10);
@@ -240,7 +241,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                 mSidedRedstone = new byte[]{0, 0, 0, 0, 0, 0};
             else mSidedRedstone = new byte[]{15, 15, 15, 15, 15, 15};
 
-        for (int i = 0; i < 6; i++) mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
+        for (int i = 0; i < 6; i++) 
+        	mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
     }
 
     private boolean createNewMetatileEntity(short aID) {
@@ -636,7 +638,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         mCoverSides[4] = aCover4;
         mCoverSides[5] = aCover5;
 
-        for (int i = 0; i < 6; i++) mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
+        for (int i = 0; i < 6; i++) 
+        	mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
 
         receiveClientEvent(0, aTextureData);
         receiveClientEvent(1, aUpdateData & 0x7F);
@@ -660,7 +663,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         mCoverSides[4] = aCover4;
         mCoverSides[5] = aCover5;
 
-        for (int i = 0; i < 6; i++) mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
+        for (int i = 0; i < 6; i++) 
+        	mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
 
         receiveClientEvent(0, aTextureData);
         receiveClientEvent(1, aUpdateData & 0x7F);

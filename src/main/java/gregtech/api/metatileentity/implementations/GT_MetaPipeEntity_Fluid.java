@@ -109,7 +109,8 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         	{1, 0, 2, 3}
         };
         if (aSide >= 0 && aSide < 6) {
-            for (int i = 0; i < 4; i++) if (isInputDisabledAtSide(sRestrictionArray[aSide][i])) tMask |= 1 << i;
+            for (int i = 0; i < 4; i++) 
+            	if (isInputDisabledAtSide(sRestrictionArray[aSide][i])) tMask |= 1 << i;
             //Full block size renderer flips side 5 and 2  textures, flip restrictor textures to compensate
             if (aSide == 5 || aSide == 2 || aSide == 0)
                 if (tMask > 3 && tMask < 12)

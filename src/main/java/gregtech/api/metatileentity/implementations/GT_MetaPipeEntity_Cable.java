@@ -179,25 +179,25 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         byte i = (byte)((((aSide/2)*2)+2)%6); //this bit of trickery makes sure a direction goes to the next cardinal pair.  IE, NS goes to E, EW goes to U, UD goes to N.  It's a lame way to make sure locally connected machines on a wire get EU first.
         aVoltage -= mCableLossPerMeter;
         
-        if (aVoltage > 0) for (int j = 0; j < 6 && aAmperage > rUsedAmperes; j++, i=(byte)((i+1)%6) )
-            if (i != aSide && isConnectedAtSide(i) && baseMetaTile.getCoverBehaviorAtSide(i).letsEnergyOut(i, baseMetaTile.getCoverIDAtSide(i), baseMetaTile.getCoverDataAtSide(i), baseMetaTile)) {
-                final TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(i);
+        if (aVoltage > 0) 
+        	for (int j = 0; j < 6 && aAmperage > rUsedAmperes; j++, i=(byte)((i+1)%6) )
+        		if (i != aSide && isConnectedAtSide(i) && baseMetaTile.getCoverBehaviorAtSide(i).letsEnergyOut(i, baseMetaTile.getCoverIDAtSide(i), baseMetaTile.getCoverDataAtSide(i), baseMetaTile)) {
+        			final TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(i);
 
-                if (tTileEntity != null && aAlreadyPassedSet.add(tTileEntity)) {
-                    final byte tSide = GT_Utility.getOppositeSide(i);
-                    final IGregTechTileEntity tBaseMetaTile = tTileEntity instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tTileEntity) : null;
-                    final IMetaTileEntity tMeta = tBaseMetaTile != null ? tBaseMetaTile.getMetaTileEntity() : null;
+        			if (tTileEntity != null && aAlreadyPassedSet.add(tTileEntity)) {
+        				final byte tSide = GT_Utility.getOppositeSide(i);
+        				final IGregTechTileEntity tBaseMetaTile = tTileEntity instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tTileEntity) : null;
+        				final IMetaTileEntity tMeta = tBaseMetaTile != null ? tBaseMetaTile.getMetaTileEntity() : null;
 
-                    if (tMeta instanceof IMetaTileEntityCable) {
-                        if (tBaseMetaTile.getCoverBehaviorAtSide(tSide).letsEnergyIn(tSide, tBaseMetaTile.getCoverIDAtSide(tSide), tBaseMetaTile.getCoverDataAtSide(tSide), tBaseMetaTile) && ((IGregTechTileEntity) tTileEntity).getTimer() > 50) {
-                            rUsedAmperes += ((IMetaTileEntityCable) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).transferElectricity(tSide, aVoltage, aAmperage - rUsedAmperes, aAlreadyPassedSet);
-                        }
-                    } else {
-                        rUsedAmperes += insertEnergyInto(tTileEntity, tSide, aVoltage, aAmperage - rUsedAmperes);
-                    }
-
-                }
-            }
+        				if (tMeta instanceof IMetaTileEntityCable) {
+        					if (tBaseMetaTile.getCoverBehaviorAtSide(tSide).letsEnergyIn(tSide, tBaseMetaTile.getCoverIDAtSide(tSide), tBaseMetaTile.getCoverDataAtSide(tSide), tBaseMetaTile) && ((IGregTechTileEntity) tTileEntity).getTimer() > 50) {
+        						rUsedAmperes += ((IMetaTileEntityCable) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).transferElectricity(tSide, aVoltage, aAmperage - rUsedAmperes, aAlreadyPassedSet);
+        					}
+        				} else {
+        					rUsedAmperes += insertEnergyInto(tTileEntity, tSide, aVoltage, aAmperage - rUsedAmperes);
+        				}
+        			}
+        		}
         mTransferredVoltage = Math.max(mTransferredVoltage, aVoltage);
         mTransferredAmperage += rUsedAmperes;
         mTransferredVoltageLast20 = Math.max(mTransferredVoltageLast20, aVoltage);

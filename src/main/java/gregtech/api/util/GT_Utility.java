@@ -1879,9 +1879,10 @@ public class GT_Utility {
                 if (tTileEntity instanceof IFluidHandler) {
                     rEUAmount += 500;
                     FluidTankInfo[] tTanks = ((IFluidHandler) tTileEntity).getTankInfo(ForgeDirection.getOrientation(aSide));
-                    if (tTanks != null) for (int i = 0; i < tTanks.length; i++) {
-                    tList.add(trans("167","Tank ") + i + ": " +EnumChatFormatting.GREEN+ GT_Utility.formatNumbers((tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount)) +EnumChatFormatting.RESET+ " L / " +EnumChatFormatting.YELLOW+ GT_Utility.formatNumbers(tTanks[i].capacity) +EnumChatFormatting.RESET+ " L " +EnumChatFormatting.GOLD+ getFluidName(tTanks[i].fluid, true)+EnumChatFormatting.RESET);
-                    }
+                    if (tTanks != null)
+                    	for (int i = 0; i < tTanks.length; i++) {
+                    		tList.add(trans("167","Tank ") + i + ": " +EnumChatFormatting.GREEN+ GT_Utility.formatNumbers((tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount)) +EnumChatFormatting.RESET+ " L / " +EnumChatFormatting.YELLOW+ GT_Utility.formatNumbers(tTanks[i].capacity) +EnumChatFormatting.RESET+ " L " +EnumChatFormatting.GOLD+ getFluidName(tTanks[i].fluid, true)+EnumChatFormatting.RESET);
+                    	}
                 }
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);

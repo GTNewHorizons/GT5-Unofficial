@@ -290,8 +290,9 @@ public class GT_OreDictUnificator {
     public static void addAssociation(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack, boolean aBlackListed) {
         if (aPrefix == null || aMaterial == null || GT_Utility.isStackInvalid(aStack))
             return;
-        if (Items.feather.getDamage(aStack) == W) for (int i = 0; i < 16; i++)
-            setItemData(GT_Utility.copyAmountAndMetaData(1, i, aStack), new ItemData(aPrefix, aMaterial, aBlackListed));
+        if (Items.feather.getDamage(aStack) == W)
+        	for (int i = 0; i < 16; i++)
+        		setItemData(GT_Utility.copyAmountAndMetaData(1, i, aStack), new ItemData(aPrefix, aMaterial, aBlackListed));
         setItemData(aStack, new ItemData(aPrefix, aMaterial, aBlackListed));
     }
 
