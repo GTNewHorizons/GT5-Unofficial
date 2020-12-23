@@ -74,9 +74,9 @@ public class GT_MetaTileEntity_Boiler_Lava
                 this.mTemperature -= 1;
                 this.mLossTimer = 0;
             }
-            for (byte i = 1; (this.mSteam != null) && (i < 6); i++) {
+            for (int i = 1; (this.mSteam != null) && (i < 6); i++) {
                 if (i != aBaseMetaTileEntity.getFrontFacing()) {
-                    IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(i);
+                    IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide((byte)i);
                     if (tTileEntity != null) {
                         FluidStack tDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(i), Math.max(1, this.mSteam.amount / 2), false);
                         if (tDrained != null) {

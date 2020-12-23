@@ -168,8 +168,8 @@ public class GT_Client extends GT_Proxy
         byte tConnections = 0;
         if (tTile instanceof ICoverable){
             if (showCoverConnections) {
-                for (byte i = 0; i < 6; i++) {
-                    if ( ((ICoverable) tTile).getCoverIDAtSide(i) > 0)
+                for (int i = 0; i < 6; i++) {
+                    if ( ((ICoverable) tTile).getCoverIDAtSide((byte)i) > 0)
                         tConnections = (byte)(tConnections + (1 << i));
                 }
             }
@@ -462,8 +462,8 @@ public class GT_Client extends GT_Proxy
             GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sScrewdriverList))
         {
             if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
-                for (byte i = 0; i < 6; i++)
-                    if (((ICoverable) aTileEntity).getCoverIDAtSide(i) > 0) {
+                for (int i = 0; i < 6; i++)
+                    if (((ICoverable) aTileEntity).getCoverIDAtSide((byte)i) > 0) {
                         drawGrid(aEvent, true);
                         return;
                     }

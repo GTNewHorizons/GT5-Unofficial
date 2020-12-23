@@ -303,10 +303,10 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                         oX = xCoord;
                         oY = yCoord;
                         oZ = zCoord;
-                        if (aSideServer) for (byte i = 0; i < 6; i++)
-                            if (getCoverIDAtSide(i) != 0)
-                                if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i))))
-                                    dropCover(i, i, true);
+                        if (aSideServer) for (int i = 0; i < 6; i++)
+                            if (getCoverIDAtSide((byte)i) != 0)
+                                if (!mMetaTileEntity.allowCoverOnSide((byte)i, new GT_ItemStack(getCoverIDAtSide((byte)i))))
+                                    dropCover((byte)i, (byte)i, true);
                         worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
                         mMetaTileEntity.onFirstTick(this);
                         if (!hasValidMetaTileEntity()) {
@@ -348,13 +348,13 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                 case 6:
                 case 7:
                     if (aSideServer && mTickTimer > 10) {
-                        for (byte i = (byte) (tCode - 2); i < 6; i++)
-                            if (getCoverIDAtSide(i) != 0) {
+                        for (int i = (byte) (tCode - 2); i < 6; i++)
+                            if (getCoverIDAtSide((byte)i) != 0) {
                                 tCode++;
-                                GT_CoverBehavior tCover = getCoverBehaviorAtSide(i);
-                                int tCoverTickRate = tCover.getTickRate(i, getCoverIDAtSide(i), mCoverData[i], this);
+                                GT_CoverBehavior tCover = getCoverBehaviorAtSide((byte)i);
+                                int tCoverTickRate = tCover.getTickRate((byte)i, getCoverIDAtSide((byte)i), mCoverData[i], this);
                                 if (tCoverTickRate > 0 && mTickTimer % tCoverTickRate == 0) {
-                                    mCoverData[i] = tCover.doCoverThings(i, getInputRedstoneSignal(i), getCoverIDAtSide(i), mCoverData[i], this, mTickTimer);
+                                    mCoverData[i] = tCover.doCoverThings((byte)i, getInputRedstoneSignal((byte)i), getCoverIDAtSide((byte)i), mCoverData[i], this, mTickTimer);
                                     if (!hasValidMetaTileEntity()) {
                                         mRunningThroughTick = false;
                                         return;
@@ -400,10 +400,10 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
                         if (mFacing != oFacing) {
                             oFacing = mFacing;
-                            for (byte i = 0; i < 6; i++)
-                                if (getCoverIDAtSide(i) != 0)
-                                    if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i))))
-                                        dropCover(i, i, true);
+                            for (int i = 0; i < 6; i++)
+                                if (getCoverIDAtSide((byte)i) != 0)
+                                    if (!mMetaTileEntity.allowCoverOnSide((byte)i, new GT_ItemStack(getCoverIDAtSide((byte)i))))
+                                        dropCover((byte)i, (byte)i, true);
                             issueBlockUpdate();
                         }
 
@@ -415,13 +415,13 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                             }
 
                             if (mMetaTileEntity.isEnetOutput() || mMetaTileEntity.isEnetInput()) {
-                                for (byte i = 0; i < 6; i++) {
+                                for (int i = 0; i < 6; i++) {
                                     boolean
-                                            temp = isEnergyInputSide(i);
+                                            temp = isEnergyInputSide((byte)i);
                                     if (temp != mActiveEUInputs[i]) {
                                         mActiveEUInputs[i] = temp;
                                     }
-                                    temp = isEnergyOutputSide(i);
+                                    temp = isEnergyOutputSide((byte)i);
                                     if (temp != mActiveEUOutputs[i]) {
                                         mActiveEUOutputs[i] = temp;
                                     }

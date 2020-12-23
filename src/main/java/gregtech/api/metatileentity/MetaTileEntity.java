@@ -831,9 +831,9 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void onColorChangeServer(byte aColor) {
         final IGregTechTileEntity meta = getBaseMetaTileEntity();
         final int aX = meta.getXCoord(), aY = meta.getYCoord(), aZ = meta.getZCoord();
-        for (byte aSide = 0; aSide < 6 ; aSide++ ) {
+        for (int aSide = 0; aSide < 6 ; aSide++ ) {
             // Flag surrounding pipes/cables to revaluate their connection with us if we got painted
-            final TileEntity tTileEntity = meta.getTileEntityAtSide(aSide);
+            final TileEntity tTileEntity = meta.getTileEntityAtSide((byte)aSide);
             if ((tTileEntity instanceof BaseMetaPipeEntity)) {
                 ((BaseMetaPipeEntity) tTileEntity).onNeighborBlockChange(aX, aY, aZ);
             }

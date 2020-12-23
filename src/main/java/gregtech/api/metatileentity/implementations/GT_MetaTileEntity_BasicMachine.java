@@ -159,21 +159,21 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             			rTextures[i][c + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][c + 1], aTextures[i]};
             	}
 
-        for (byte c = -1; c < 16; c++) {
-            if (rTextures[0][c + 1] == null) rTextures[0][c + 1] = getSideFacingActive(c);
-            if (rTextures[1][c + 1] == null) rTextures[1][c + 1] = getSideFacingInactive(c);
-            if (rTextures[2][c + 1] == null) rTextures[2][c + 1] = getFrontFacingActive(c);
-            if (rTextures[3][c + 1] == null) rTextures[3][c + 1] = getFrontFacingInactive(c);
-            if (rTextures[4][c + 1] == null) rTextures[4][c + 1] = getTopFacingActive(c);
-            if (rTextures[5][c + 1] == null) rTextures[5][c + 1] = getTopFacingInactive(c);
-            if (rTextures[6][c + 1] == null) rTextures[6][c + 1] = getBottomFacingActive(c);
-            if (rTextures[7][c + 1] == null) rTextures[7][c + 1] = getBottomFacingInactive(c);
-            if (rTextures[8][c + 1] == null) rTextures[8][c + 1] = getBottomFacingPipeActive(c);
-            if (rTextures[9][c + 1] == null) rTextures[9][c + 1] = getBottomFacingPipeInactive(c);
-            if (rTextures[10][c + 1] == null) rTextures[10][c + 1] = getTopFacingPipeActive(c);
-            if (rTextures[11][c + 1] == null) rTextures[11][c + 1] = getTopFacingPipeInactive(c);
-            if (rTextures[12][c + 1] == null) rTextures[12][c + 1] = getSideFacingPipeActive(c);
-            if (rTextures[13][c + 1] == null) rTextures[13][c + 1] = getSideFacingPipeInactive(c);
+        for (int c = -1; c < 16; c++) {
+            if (rTextures[0][c + 1] == null) rTextures[0][c + 1] = getSideFacingActive((byte)c);
+            if (rTextures[1][c + 1] == null) rTextures[1][c + 1] = getSideFacingInactive((byte)c);
+            if (rTextures[2][c + 1] == null) rTextures[2][c + 1] = getFrontFacingActive((byte)c);
+            if (rTextures[3][c + 1] == null) rTextures[3][c + 1] = getFrontFacingInactive((byte)c);
+            if (rTextures[4][c + 1] == null) rTextures[4][c + 1] = getTopFacingActive((byte)c);
+            if (rTextures[5][c + 1] == null) rTextures[5][c + 1] = getTopFacingInactive((byte)c);
+            if (rTextures[6][c + 1] == null) rTextures[6][c + 1] = getBottomFacingActive((byte)c);
+            if (rTextures[7][c + 1] == null) rTextures[7][c + 1] = getBottomFacingInactive((byte)c);
+            if (rTextures[8][c + 1] == null) rTextures[8][c + 1] = getBottomFacingPipeActive((byte)c);
+            if (rTextures[9][c + 1] == null) rTextures[9][c + 1] = getBottomFacingPipeInactive((byte)c);
+            if (rTextures[10][c + 1] == null) rTextures[10][c + 1] = getTopFacingPipeActive((byte)c);
+            if (rTextures[11][c + 1] == null) rTextures[11][c + 1] = getTopFacingPipeInactive((byte)c);
+            if (rTextures[12][c + 1] == null) rTextures[12][c + 1] = getSideFacingPipeActive((byte)c);
+            if (rTextures[13][c + 1] == null) rTextures[13][c + 1] = getSideFacingPipeInactive((byte)c);
         }
         return rTextures;
     }

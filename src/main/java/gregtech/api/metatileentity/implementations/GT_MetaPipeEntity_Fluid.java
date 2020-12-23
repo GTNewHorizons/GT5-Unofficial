@@ -310,15 +310,15 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         // Tank, From, Amount to receive
         List<MutableTriple<IFluidHandler, ForgeDirection, Integer>> tTanks = new ArrayList<>();
 
-        for (byte aSide, i = 0, j = (byte) aBaseMetaTileEntity.getRandomNumber(6); i < 6; i++) {
+        for (int aSide, i = 0, j = (byte) aBaseMetaTileEntity.getRandomNumber(6); i < 6; i++) {
             // Get a list of tanks accepting fluids, and what side they're on
             aSide = (byte) ((i + j) % 6);
             final byte tSide = GT_Utility.getOppositeSide(aSide);
-            final IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aSide);
+            final IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide((byte)aSide);
             final IGregTechTileEntity gTank = tTank instanceof IGregTechTileEntity ? (IGregTechTileEntity) tTank : null;
 
             if (isConnectedAtSide(aSide) && tTank != null && (mLastReceivedFrom & (1 << aSide)) == 0 &&
-                getBaseMetaTileEntity().getCoverBehaviorAtSide(aSide).letsFluidOut(aSide, getBaseMetaTileEntity().getCoverIDAtSide(aSide), getBaseMetaTileEntity().getCoverDataAtSide(aSide), tFluid.getFluid(), getBaseMetaTileEntity()) &&
+                getBaseMetaTileEntity().getCoverBehaviorAtSide((byte)aSide).letsFluidOut((byte)aSide, getBaseMetaTileEntity().getCoverIDAtSide((byte)aSide), getBaseMetaTileEntity().getCoverDataAtSide((byte)aSide), tFluid.getFluid(), getBaseMetaTileEntity()) &&
                 (gTank == null || gTank.getCoverBehaviorAtSide(tSide).letsFluidIn(tSide, gTank.getCoverIDAtSide(tSide), gTank.getCoverDataAtSide(tSide), tFluid.getFluid(), gTank)))
             {
                 if (tTank.fill(ForgeDirection.getOrientation(tSide), tFluid, false) > 0) {

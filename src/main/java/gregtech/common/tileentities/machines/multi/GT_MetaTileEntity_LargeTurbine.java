@@ -61,9 +61,9 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
             if (tAirCount != 10) {
                 return false;
             }
-            for (byte i = 2; i < 6; i++) {
+            for (int i = 2; i < 6; i++) {
                 IGregTechTileEntity tTileEntity;
-                if ((null != (tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(i, 2))) &&
+                if ((null != (tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance((byte)i, 2))) &&
                         (tTileEntity.getFrontFacing() == getBaseMetaTileEntity().getFrontFacing()) && (tTileEntity.getMetaTileEntity() != null) &&
                         ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine))) {
                     return false;

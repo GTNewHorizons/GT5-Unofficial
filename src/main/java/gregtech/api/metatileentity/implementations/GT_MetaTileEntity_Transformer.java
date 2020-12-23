@@ -142,9 +142,9 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && GregTech_API.mInputRF) {
             aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork());
-            for (byte i = 0; i < 6 && aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity(); i++)
-                if (aBaseMetaTileEntity.inputEnergyFrom(i)) {
-                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(i);
+            for (int i = 0; i < 6 && aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity(); i++)
+                if (aBaseMetaTileEntity.inputEnergyFrom((byte)i)) {
+                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide((byte)i);
                     if (tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)), 1, true) == 1) {
                         long tEU = (long) ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)), GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false);
                         tEU = tEU * GregTech_API.mRFtoEU / 100;
