@@ -42,18 +42,18 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[10][17][];
-        for (int i = -1; i < 16; i++) {
-        	byte ii = (byte)i;
-            rTextures[0][ii + 1] = getFront(ii);
-            rTextures[1][ii + 1] = getBack(ii);
-            rTextures[2][ii + 1] = getBottom(ii);
-            rTextures[3][ii + 1] = getTop(ii);
-            rTextures[4][ii + 1] = getSides(ii);
-            rTextures[5][ii + 1] = getFrontActive(ii);
-            rTextures[6][ii + 1] = getBackActive(ii);
-            rTextures[7][ii + 1] = getBottomActive(ii);
-            rTextures[8][ii + 1] = getTopActive(ii);
-            rTextures[9][ii + 1] = getSidesActive(ii);
+        for (int color = 0; color < 17; color++) {
+            byte byteColor = (byte)(color - 1);
+            rTextures[0][color] = getFront(byteColor);
+            rTextures[1][color] = getBack(byteColor);
+            rTextures[2][color] = getBottom(byteColor);
+            rTextures[3][color] = getTop(byteColor);
+            rTextures[4][color] = getSides(byteColor);
+            rTextures[5][color] = getFrontActive(byteColor);
+            rTextures[6][color] = getBackActive(byteColor);
+            rTextures[7][color] = getBottomActive(byteColor);
+            rTextures[8][color] = getTopActive(byteColor);
+            rTextures[9][color] = getSidesActive(byteColor);
         }
         return rTextures;
     }
@@ -215,7 +215,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
                 long tFuelValue = getFuelValue(mFluid), tConsumed = consumedFluidPerOperation(mFluid);
                 if (tFuelValue > 0 && tConsumed > 0 && mFluid.amount >= tConsumed) {
                     long tFluidAmountToUse = Math.min(mFluid.amount / tConsumed, (maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
-					//long tFluidAmountToUse = Math.min(mFluid.amount / tConsumed, (maxEUOutput() * 20 + getMinimumStoredEU() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);//TODO CHECK
+                    //long tFluidAmountToUse = Math.min(mFluid.amount / tConsumed, (maxEUOutput() * 20 + getMinimumStoredEU() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);//TODO CHECK
                     if (tFluidAmountToUse > 0 && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)) {
                         GT_Pollution.addPollution(getBaseMetaTileEntity(),10 * getPollution());
                         mFluid.amount -= tFluidAmountToUse * tConsumed;

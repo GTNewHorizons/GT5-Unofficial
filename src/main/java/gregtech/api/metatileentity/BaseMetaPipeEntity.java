@@ -149,12 +149,12 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             if (mCoverSides.length != 6) mCoverSides = new int[]{0, 0, 0, 0, 0, 0};
             if (mSidedRedstone.length != 6) mSidedRedstone = new byte[]{0, 0, 0, 0, 0, 0};
 
-            for (int i = 0; i < 6; i++) {
-                mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
-                if(mCoverBehaviors[i] instanceof GT_Cover_Fluidfilter) {
-                    final String filterKey = String.format("fluidFilter%d", i);
+            for (int side = 0; side < 6; side++) {
+                mCoverBehaviors[side] = GregTech_API.getCoverBehavior(mCoverSides[side]);
+                if(mCoverBehaviors[side] instanceof GT_Cover_Fluidfilter) {
+                    final String filterKey = String.format("fluidFilter%d", side);
                     if (aNBT.hasKey(filterKey)) {
-                        mCoverData[i] = (mCoverData[i] & 7) | (FluidRegistry.getFluidID(aNBT.getString(filterKey)) << 3);
+                        mCoverData[side] = (mCoverData[side] & 7) | (FluidRegistry.getFluidID(aNBT.getString(filterKey)) << 3);
                     }
                 }
             }
@@ -183,8 +183,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         if (mCoverSides.length != 6) mCoverSides = new int[]{0, 0, 0, 0, 0, 0};
         if (mSidedRedstone.length != 6) mSidedRedstone = new byte[]{0, 0, 0, 0, 0, 0};
 
-        for (int i = 0; i < 6; i++) 
-        	mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
+        for (int side = 0; side < 6; side++)
+            mCoverBehaviors[side] = GregTech_API.getCoverBehavior(mCoverSides[side]);
     }
 
     private boolean createNewMetatileEntity(short aID) {
@@ -220,11 +220,11 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         oX = xCoord;
                         oY = yCoord;
                         oZ = zCoord;
-                        if (isServerSide()) for (int i = 0; i < 6; i++) {
-                        	byte ii = (byte)i;
-                            if (getCoverIDAtSide(ii) != 0) {
-                                if (!mMetaTileEntity.allowCoverOnSide(ii, new GT_ItemStack(getCoverIDAtSide(ii)))) {
-                                    dropCover(ii, ii, true);
+                        if (isServerSide()) for (int side = 0; side < 6; side++) {
+                            byte byteSide = (byte)side;
+                            if (getCoverIDAtSide(byteSide) != 0) {
+                                if (!mMetaTileEntity.allowCoverOnSide(byteSide, new GT_ItemStack(getCoverIDAtSide(byteSide)))) {
+                                    dropCover(byteSide, byteSide, true);
                                 }
                             }
                         }
@@ -253,16 +253,16 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                     case 6:
                     case 7:
                         if (isServerSide() && mTickTimer > 10) {
-                            for (int i = (byte) (tCode - 2); i < 6; i++) {
-                            	byte ii = (byte)i;
-                            	if (getCoverIDAtSide(ii) != 0) {
+                            for (int side = tCode - 2; side < 6; side++) {
+                                byte byteSide = (byte)side;
+                                if (getCoverIDAtSide(byteSide) != 0) {
                                     tCode++;
-                                    GT_CoverBehavior tCover = getCoverBehaviorAtSide(ii);
-                                    int tCoverTickRate = tCover.getTickRate(ii, getCoverIDAtSide(ii), mCoverData[ii], this);
+                                    GT_CoverBehavior tCover = getCoverBehaviorAtSide(byteSide);
+                                    int tCoverTickRate = tCover.getTickRate(byteSide, getCoverIDAtSide(byteSide), mCoverData[byteSide], this);
                                     if (tCoverTickRate > 0 && mTickTimer % tCoverTickRate == 0) {
-                                        mCoverData[i] = tCover.doCoverThings(ii, getInputRedstoneSignal(ii), getCoverIDAtSide(ii), mCoverData[ii], this, mTickTimer);
+                                        mCoverData[side] = tCover.doCoverThings(byteSide, getInputRedstoneSignal(byteSide), getCoverIDAtSide(byteSide), mCoverData[byteSide], this, mTickTimer);
                                         if (!hasValidMetaTileEntity())
-                                        	return;
+                                            return;
                                     }
                                 }
                             }
@@ -279,8 +279,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         tCode++;
                         if (isServerSide()) {
                             if (mTickTimer == 10) {
-                                for (int i = 0; i < 6; i++)
-                                    mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
+                                for (int side = 0; side < 6; side++)
+                                    mCoverBehaviors[side] = GregTech_API.getCoverBehavior(mCoverSides[side]);
                                 issueBlockUpdate();
                                 joinEnet();
                             }
@@ -336,7 +336,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             tTime = System.nanoTime() - tTime;
             if (mTimeStatistics.length > 0)
                 mTimeStatistics[mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length] = (int) tTime;
-            if (tTime > 0 && tTime > (GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING*1000000) && mTickTimer > 1000 && getMetaTileEntity().doTickProfilingMessageDuringThisTick() && mLagWarningCount++ < 10)
+            if (tTime > 0 && tTime > (GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING* 1000000L) && mTickTimer > 1000 && getMetaTileEntity().doTickProfilingMessageDuringThisTick() && mLagWarningCount++ < 10)
                 GT_FML_LOGGER.warn("WARNING: Possible Lag Source at ["+xCoord+","+yCoord+","+zCoord+"] in Dimension "+worldObj.provider.dimensionId+" with "+tTime+" ns caused by an instance of "+getMetaTileEntity().getClass());
         }
 
@@ -363,8 +363,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         mCoverSides[4] = aCover4;
         mCoverSides[5] = aCover5;
 
-        for (int i = 0; i < 6; i++) 
-        	mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
+        for (int side = 0; side < 6; side++)
+            mCoverBehaviors[side] = GregTech_API.getCoverBehavior(mCoverSides[side]);
 
         receiveClientEvent(0, aTextureData);
         receiveClientEvent(1, aUpdateData);
@@ -628,7 +628,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public boolean increaseProgress(int aProgressAmountInTicks) {
-        return canAccessData() ? mMetaTileEntity.increaseProgress(aProgressAmountInTicks) != aProgressAmountInTicks : false;
+        return canAccessData() && mMetaTileEntity.increaseProgress(aProgressAmountInTicks) != aProgressAmountInTicks;
     }
 
     @Override
@@ -827,8 +827,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, mID);
         NBTTagCompound tNBT = new NBTTagCompound();
         if (mStrongRedstone > 0) tNBT.setByte("mStrongRedstone", mStrongRedstone);
-        for (int i = 0; i < mCoverSides.length; i++) {
-            if (mCoverSides[i] != 0) {
+        for (int mCoverSide : mCoverSides) {
+            if (mCoverSide != 0) {
                 tNBT.setIntArray("mCoverData", mCoverData);
                 tNBT.setIntArray("mCoverSides", mCoverSides);
                 break;
@@ -885,7 +885,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
 
                 if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sHardHammerList)) {
                     //if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                    //	GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(1), 1.0F, -1, xCoord, yCoord, zCoord);
+                    //    GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(1), 1.0F, -1, xCoord, yCoord, zCoord);
                     //}
                     return true;
                 }
@@ -910,8 +910,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                 }
 
                 if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)) {
-                	if (mMetaTileEntity.onSolderingToolRightClick(aSide, tSide, aPlayer, aX, aY, aZ)) {
-                	    //logic handled internally
+                    if (mMetaTileEntity.onSolderingToolRightClick(aSide, tSide, aPlayer, aX, aY, aZ)) {
+                        //logic handled internally
                         GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 1.0F, -1, xCoord, yCoord, zCoord);
                     } else if (GT_ModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                         mStrongRedstone ^= (1 << tSide);
@@ -1287,11 +1287,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                 && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidIn((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getCoverDataAtSide((byte) aSide.ordinal()), aFluid, this))
             return true;
 
-        if (!isFill && mMetaTileEntity.isLiquidOutput((byte) aSide.ordinal())
-                && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidOut((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getCoverDataAtSide((byte) aSide.ordinal()),aFluid, this))
-            return true;
-
-        return false;
+        return !isFill && mMetaTileEntity.isLiquidOutput((byte) aSide.ordinal())
+                && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidOut((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getCoverDataAtSide((byte) aSide.ordinal()), aFluid, this);
     }
 
     @Override

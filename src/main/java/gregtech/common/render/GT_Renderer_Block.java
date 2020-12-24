@@ -77,7 +77,6 @@ public class GT_Renderer_Block
             Tessellator.instance.startDrawingQuads();
             Tessellator.instance.setNormal(1.0F, 0.0F, 0.0F);
             renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(tMetaTileEntity.getBaseMetaTileEntity(), (byte) 5, (byte) 9, (byte) -1, true, false), true);
-            Tessellator.instance.draw();
         } else {
             Tessellator.instance.startDrawingQuads();
             Tessellator.instance.setNormal(0.0F, -1.0F, 0.0F);
@@ -107,8 +106,8 @@ public class GT_Renderer_Block
             Tessellator.instance.startDrawingQuads();
             Tessellator.instance.setNormal(1.0F, 0.0F, 0.0F);
             renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(tMetaTileEntity.getBaseMetaTileEntity(), (byte) 5, (byte) 4, (byte) -1, true, false), true);
-            Tessellator.instance.draw();
         }
+        Tessellator.instance.draw();
         aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         aRenderer.setRenderBoundsFromBlock(aBlock);
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
@@ -136,7 +135,7 @@ public class GT_Renderer_Block
     }
 
     public static boolean renderPipeBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, IPipeRenderedTileEntity aTileEntity, RenderBlocks aRenderer) {
-        byte aConnections = aTileEntity.getConnections();
+        int aConnections = aTileEntity.getConnections();
         if ((aConnections & 0xC0) != 0) {
             return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer);
         }
@@ -146,25 +145,25 @@ public class GT_Renderer_Block
         }
         float sp = (1.0F - tThickness) / 2.0F;
 
-        byte tConnections = 0;
-        for (int i = 0; i < 6; i++) {
-            if ((aConnections & 1 << i) != 0) {
-                tConnections = (byte) (tConnections | 1 << (i + 2) % 6);
+        int tConnections = 0;
+        for (int side = 0; side < 6; side++) {
+            if ((aConnections & 1 << side) != 0) {
+                tConnections = tConnections | 1 << (side + 2) % 6;
             }
         }
         boolean[] tIsCovered = new boolean[6];
-        for (int i = 0; i < 6; i++) {
-            tIsCovered[i] = (aTileEntity.getCoverIDAtSide((byte)i) != 0);
+        for (int side = 0; side < 6; side++) {
+            tIsCovered[side] = (aTileEntity.getCoverIDAtSide((byte)side) != 0);
         }
         if ((tIsCovered[0]) && (tIsCovered[1]) && (tIsCovered[2]) && (tIsCovered[3]) && (tIsCovered[4]) && (tIsCovered[5])) {
             return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer);
         }
         ITexture[][] tIcons = new ITexture[6][];
         ITexture[][] tCovers = new ITexture[6][];
-        for (int i = 0; i < 6; i++) {
-        	byte ii = (byte)i;
-            tCovers[ii] = aTileEntity.getTexture(aBlock, ii);
-            tIcons[ii] = aTileEntity.getTextureUncovered(ii);
+        for (int side = 0; side < 6; side++) {
+            byte byteSide = (byte)side;
+            tCovers[side] = aTileEntity.getTexture(aBlock, byteSide);
+            tIcons[side] = aTileEntity.getTextureUncovered(byteSide);
         }
         if (tConnections == 0) {
             aBlock.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
@@ -421,9 +420,12 @@ public class GT_Renderer_Block
     }
 
     public static void renderNegativeYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
-        if (aWorld == null) return;
-        if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0))) return;
-        Tessellator.instance.setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
+        if (aWorld != null) {
+            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0))) {
+                return;
+            }
+            Tessellator.instance.setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
+        };
 
         if (aIcon != null) {
             for (ITexture iTexture : aIcon) {
