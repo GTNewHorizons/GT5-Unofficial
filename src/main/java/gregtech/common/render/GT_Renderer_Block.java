@@ -162,8 +162,9 @@ public class GT_Renderer_Block
         ITexture[][] tIcons = new ITexture[6][];
         ITexture[][] tCovers = new ITexture[6][];
         for (int i = 0; i < 6; i++) {
-            tCovers[i] = aTileEntity.getTexture(aBlock, (byte)i);
-            tIcons[i] = aTileEntity.getTextureUncovered((byte)i);
+        	byte ii = (byte)i;
+            tCovers[ii] = aTileEntity.getTexture(aBlock, ii);
+            tIcons[ii] = aTileEntity.getTextureUncovered(ii);
         }
         if (tConnections == 0) {
             aBlock.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);

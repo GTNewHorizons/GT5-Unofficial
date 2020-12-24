@@ -160,20 +160,21 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             	}
 
         for (int c = -1; c < 16; c++) {
-            if (rTextures[0][c + 1] == null) rTextures[0][c + 1] = getSideFacingActive((byte)c);
-            if (rTextures[1][c + 1] == null) rTextures[1][c + 1] = getSideFacingInactive((byte)c);
-            if (rTextures[2][c + 1] == null) rTextures[2][c + 1] = getFrontFacingActive((byte)c);
-            if (rTextures[3][c + 1] == null) rTextures[3][c + 1] = getFrontFacingInactive((byte)c);
-            if (rTextures[4][c + 1] == null) rTextures[4][c + 1] = getTopFacingActive((byte)c);
-            if (rTextures[5][c + 1] == null) rTextures[5][c + 1] = getTopFacingInactive((byte)c);
-            if (rTextures[6][c + 1] == null) rTextures[6][c + 1] = getBottomFacingActive((byte)c);
-            if (rTextures[7][c + 1] == null) rTextures[7][c + 1] = getBottomFacingInactive((byte)c);
-            if (rTextures[8][c + 1] == null) rTextures[8][c + 1] = getBottomFacingPipeActive((byte)c);
-            if (rTextures[9][c + 1] == null) rTextures[9][c + 1] = getBottomFacingPipeInactive((byte)c);
-            if (rTextures[10][c + 1] == null) rTextures[10][c + 1] = getTopFacingPipeActive((byte)c);
-            if (rTextures[11][c + 1] == null) rTextures[11][c + 1] = getTopFacingPipeInactive((byte)c);
-            if (rTextures[12][c + 1] == null) rTextures[12][c + 1] = getSideFacingPipeActive((byte)c);
-            if (rTextures[13][c + 1] == null) rTextures[13][c + 1] = getSideFacingPipeInactive((byte)c);
+        	byte cc = (byte)c;
+            if (rTextures[0][cc + 1] == null) rTextures[0][cc + 1] = getSideFacingActive(cc);
+            if (rTextures[1][cc + 1] == null) rTextures[1][cc + 1] = getSideFacingInactive(cc);
+            if (rTextures[2][cc + 1] == null) rTextures[2][cc + 1] = getFrontFacingActive(cc);
+            if (rTextures[3][cc + 1] == null) rTextures[3][cc + 1] = getFrontFacingInactive(cc);
+            if (rTextures[4][cc + 1] == null) rTextures[4][cc + 1] = getTopFacingActive(cc);
+            if (rTextures[5][cc + 1] == null) rTextures[5][cc + 1] = getTopFacingInactive(cc);
+            if (rTextures[6][cc + 1] == null) rTextures[6][cc + 1] = getBottomFacingActive(cc);
+            if (rTextures[7][cc + 1] == null) rTextures[7][cc + 1] = getBottomFacingInactive(cc);
+            if (rTextures[8][cc + 1] == null) rTextures[8][cc + 1] = getBottomFacingPipeActive(cc);
+            if (rTextures[9][cc + 1] == null) rTextures[9][cc + 1] = getBottomFacingPipeInactive(cc);
+            if (rTextures[10][cc + 1] == null) rTextures[10][cc + 1] = getTopFacingPipeActive(cc);
+            if (rTextures[11][cc + 1] == null) rTextures[11][cc + 1] = getTopFacingPipeInactive(cc);
+            if (rTextures[12][cc + 1] == null) rTextures[12][cc + 1] = getSideFacingPipeActive(cc);
+            if (rTextures[13][cc + 1] == null) rTextures[13][cc + 1] = getSideFacingPipeInactive(cc);
         }
         return rTextures;
     }

@@ -43,16 +43,17 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[10][17][];
         for (int i = -1; i < 16; i++) {
-            rTextures[0][i + 1] = getFront((byte)i);
-            rTextures[1][i + 1] = getBack((byte)i);
-            rTextures[2][i + 1] = getBottom((byte)i);
-            rTextures[3][i + 1] = getTop((byte)i);
-            rTextures[4][i + 1] = getSides((byte)i);
-            rTextures[5][i + 1] = getFrontActive((byte)i);
-            rTextures[6][i + 1] = getBackActive((byte)i);
-            rTextures[7][i + 1] = getBottomActive((byte)i);
-            rTextures[8][i + 1] = getTopActive((byte)i);
-            rTextures[9][i + 1] = getSidesActive((byte)i);
+        	byte ii = (byte)i;
+            rTextures[0][ii + 1] = getFront(ii);
+            rTextures[1][ii + 1] = getBack(ii);
+            rTextures[2][ii + 1] = getBottom(ii);
+            rTextures[3][ii + 1] = getTop(ii);
+            rTextures[4][ii + 1] = getSides(ii);
+            rTextures[5][ii + 1] = getFrontActive(ii);
+            rTextures[6][ii + 1] = getBackActive(ii);
+            rTextures[7][ii + 1] = getBottomActive(ii);
+            rTextures[8][ii + 1] = getTopActive(ii);
+            rTextures[9][ii + 1] = getSidesActive(ii);
         }
         return rTextures;
     }

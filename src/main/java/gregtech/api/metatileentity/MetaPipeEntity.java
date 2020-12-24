@@ -805,8 +805,9 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         // Verify connections around us.  If GT6 style cables are not enabled then revert to old behavior and try
         // connecting to everything around us
         for (int aSide = 0; aSide < 6; aSide++) {
-            if ((!getGT6StyleConnection() || isConnectedAtSide(aSide)) && connect((byte)aSide) == 0) {
-                disconnect((byte)aSide);
+        	byte baSide = (byte)aSide;
+            if ((!getGT6StyleConnection() || isConnectedAtSide(baSide)) && connect(baSide) == 0) {
+                disconnect(baSide);
             }
         }
         mCheckConnections = false;

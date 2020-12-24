@@ -220,10 +220,14 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         oX = xCoord;
                         oY = yCoord;
                         oZ = zCoord;
-                        if (isServerSide()) for (int i = 0; i < 6; i++)
-                            if (getCoverIDAtSide((byte)i) != 0)
-                                if (!mMetaTileEntity.allowCoverOnSide((byte)i, new GT_ItemStack(getCoverIDAtSide((byte)i))))
-                                    dropCover((byte)i, (byte)i, true);
+                        if (isServerSide()) for (int i = 0; i < 6; i++) {
+                        	byte ii = (byte)i;
+                            if (getCoverIDAtSide(ii) != 0) {
+                                if (!mMetaTileEntity.allowCoverOnSide(ii, new GT_ItemStack(getCoverIDAtSide(ii)))) {
+                                    dropCover(ii, ii, true);
+                                }
+                            }
+                        }
                         worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
                         mMetaTileEntity.onFirstTick(this);
                         if (!hasValidMetaTileEntity()) return;
@@ -249,16 +253,19 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                     case 6:
                     case 7:
                         if (isServerSide() && mTickTimer > 10) {
-                            for (int i = (byte) (tCode - 2); i < 6; i++)
-                                if (getCoverIDAtSide((byte)i) != 0) {
+                            for (int i = (byte) (tCode - 2); i < 6; i++) {
+                            	byte ii = (byte)i;
+                            	if (getCoverIDAtSide(ii) != 0) {
                                     tCode++;
-                                    GT_CoverBehavior tCover = getCoverBehaviorAtSide((byte)i);
-                                    int tCoverTickRate = tCover.getTickRate((byte)i, getCoverIDAtSide((byte)i), mCoverData[i], this);
+                                    GT_CoverBehavior tCover = getCoverBehaviorAtSide(ii);
+                                    int tCoverTickRate = tCover.getTickRate(ii, getCoverIDAtSide(ii), mCoverData[ii], this);
                                     if (tCoverTickRate > 0 && mTickTimer % tCoverTickRate == 0) {
-                                        mCoverData[i] = tCover.doCoverThings((byte)i, getInputRedstoneSignal((byte)i), getCoverIDAtSide((byte)i), mCoverData[i], this, mTickTimer);
-                                        if (!hasValidMetaTileEntity()) return;
+                                        mCoverData[i] = tCover.doCoverThings(ii, getInputRedstoneSignal(ii), getCoverIDAtSide(ii), mCoverData[ii], this, mTickTimer);
+                                        if (!hasValidMetaTileEntity())
+                                        	return;
                                     }
                                 }
+                            }
                             mConnections = (byte) (mMetaTileEntity.mConnections | (mConnections & ~63));
                             if ((mConnections & -64) == 64 && getRandomNumber(1000) == 0) {
                                 mConnections = (byte) ((mConnections & ~64) | -128);
