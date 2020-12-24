@@ -118,18 +118,18 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected boolean isValidMainFacing(byte aSide) {
-    	return aSide > 1;
+        return aSide > 1;
     }
     
     public boolean setMainFacing(byte aSide){
-    	if (!isValidMainFacing(aSide)) return false;
-    	mMainFacing = aSide;
-    	if(getBaseMetaTileEntity().getFrontFacing() == mMainFacing){
-    		getBaseMetaTileEntity().setFrontFacing(GT_Utility.getOppositeSide(aSide));
-    	}
+        if (!isValidMainFacing(aSide)) return false;
+        mMainFacing = aSide;
+        if(getBaseMetaTileEntity().getFrontFacing() == mMainFacing){
+            getBaseMetaTileEntity().setFrontFacing(GT_Utility.getOppositeSide(aSide));
+        }
         onFacingChange();
         onMachineBlockUpdate();
-    	return true;
+        return true;
     }
 
     @Override
@@ -153,28 +153,28 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         aTextures = Arrays.copyOf(aTextures, 14);
 
         for (int i = 0; i < aTextures.length; i++)
-        	if (aTextures[i] != null) 
-            	for (int c = -1; c < 16; c++) {
-            		if (rTextures[i][c + 1] == null)
-            			rTextures[i][c + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][c + 1], aTextures[i]};
-            	}
+            if (aTextures[i] != null) 
+                for (int color = 0; color < 17; color++) {
+                    if (rTextures[i][color] == null)
+                        rTextures[i][color] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][color], aTextures[i]};
+                }
 
-        for (int c = -1; c < 16; c++) {
-        	byte cc = (byte)c;
-            if (rTextures[0][cc + 1] == null) rTextures[0][cc + 1] = getSideFacingActive(cc);
-            if (rTextures[1][cc + 1] == null) rTextures[1][cc + 1] = getSideFacingInactive(cc);
-            if (rTextures[2][cc + 1] == null) rTextures[2][cc + 1] = getFrontFacingActive(cc);
-            if (rTextures[3][cc + 1] == null) rTextures[3][cc + 1] = getFrontFacingInactive(cc);
-            if (rTextures[4][cc + 1] == null) rTextures[4][cc + 1] = getTopFacingActive(cc);
-            if (rTextures[5][cc + 1] == null) rTextures[5][cc + 1] = getTopFacingInactive(cc);
-            if (rTextures[6][cc + 1] == null) rTextures[6][cc + 1] = getBottomFacingActive(cc);
-            if (rTextures[7][cc + 1] == null) rTextures[7][cc + 1] = getBottomFacingInactive(cc);
-            if (rTextures[8][cc + 1] == null) rTextures[8][cc + 1] = getBottomFacingPipeActive(cc);
-            if (rTextures[9][cc + 1] == null) rTextures[9][cc + 1] = getBottomFacingPipeInactive(cc);
-            if (rTextures[10][cc + 1] == null) rTextures[10][cc + 1] = getTopFacingPipeActive(cc);
-            if (rTextures[11][cc + 1] == null) rTextures[11][cc + 1] = getTopFacingPipeInactive(cc);
-            if (rTextures[12][cc + 1] == null) rTextures[12][cc + 1] = getSideFacingPipeActive(cc);
-            if (rTextures[13][cc + 1] == null) rTextures[13][cc + 1] = getSideFacingPipeInactive(cc);
+        for (int color = 0; color < 17; color++) {
+            byte byteColor = (byte)(color - 1);
+            if (rTextures[0][color] == null) rTextures[0][color] = getSideFacingActive(byteColor);
+            if (rTextures[1][color] == null) rTextures[1][color] = getSideFacingInactive(byteColor);
+            if (rTextures[2][color] == null) rTextures[2][color] = getFrontFacingActive(byteColor);
+            if (rTextures[3][color] == null) rTextures[3][color] = getFrontFacingInactive(byteColor);
+            if (rTextures[4][color] == null) rTextures[4][color] = getTopFacingActive(byteColor);
+            if (rTextures[5][color] == null) rTextures[5][color] = getTopFacingInactive(byteColor);
+            if (rTextures[6][color] == null) rTextures[6][color] = getBottomFacingActive(byteColor);
+            if (rTextures[7][color] == null) rTextures[7][color] = getBottomFacingInactive(byteColor);
+            if (rTextures[8][color] == null) rTextures[8][color] = getBottomFacingPipeActive(byteColor);
+            if (rTextures[9][color] == null) rTextures[9][color] = getBottomFacingPipeInactive(byteColor);
+            if (rTextures[10][color] == null) rTextures[10][color] = getTopFacingPipeActive(byteColor);
+            if (rTextures[11][color] == null) rTextures[11][color] = getTopFacingPipeInactive(byteColor);
+            if (rTextures[12][color] == null) rTextures[12][color] = getSideFacingPipeActive(byteColor);
+            if (rTextures[13][color] == null) rTextures[13][color] = getSideFacingPipeInactive(byteColor);
         }
         return rTextures;
     }
@@ -385,14 +385,14 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if(!GT_Mod.gregtechproxy.mForceFreeFace) {
-        	aBaseMetaTileEntity.openGUI(aPlayer);
-        	return true;
+            aBaseMetaTileEntity.openGUI(aPlayer);
+            return true;
         }
         for(byte i=0;i < 6; i++){
-        	if(aBaseMetaTileEntity.getAirAtSide(i)){
-        		aBaseMetaTileEntity.openGUI(aPlayer);
-        		return true;
-        	}        	
+            if(aBaseMetaTileEntity.getAirAtSide(i)){
+                aBaseMetaTileEntity.openGUI(aPlayer);
+                return true;
+            }            
         }
         GT_Utility.sendChatToPlayer(aPlayer,"No free Side!");        
         return true;
@@ -880,12 +880,12 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             for (int i = 0; i < mOutputItems.length; i++)
                 if (mOutputItems[i] != null && getBaseMetaTileEntity().getRandomNumber(10000) > getCallbackBase().mEfficiency)
                 {
-					if (debugCleanroom) {
-						GT_Log.out.println(
-							"BasicMachine: Voiding output due to efficiency failure. mEfficiency = " + 
-							getCallbackBase().mEfficiency
-						);
-					}
+                    if (debugCleanroom) {
+                        GT_Log.out.println(
+                            "BasicMachine: Voiding output due to efficiency failure. mEfficiency = " + 
+                            getCallbackBase().mEfficiency
+                        );
+                    }
                     mOutputItems[i] = null;
                 }
         mOutputFluid = tRecipe.getFluidOutput(0);

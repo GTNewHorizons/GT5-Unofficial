@@ -142,16 +142,16 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && GregTech_API.mInputRF) {
             aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork());
-            for (int i = 0; i < 6 && aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity(); i++) {
-            	byte ii = (byte)i;
-                if (aBaseMetaTileEntity.inputEnergyFrom(ii)) {
-                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(ii);
-                    if (tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(ii)), 1, true) == 1) {
-                        long tEU = (long) ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(ii)), GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false);
+            for (int side = 0; side < 6 && aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity(); side++) {
+                byte byteSide = (byte)side;
+                if (aBaseMetaTileEntity.inputEnergyFrom(byteSide)) {
+                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(byteSide);
+                    if (tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(byteSide)), 1, true) == 1) {
+                        long tEU = ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(byteSide)), GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false);
                         tEU = tEU * GregTech_API.mRFtoEU / 100;
                         aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
                     } else if (tTileEntity instanceof IEnergyStorage && ((IEnergyStorage) tTileEntity).extractEnergy(1, true) == 1) {
-                        long tEU = (long) ((IEnergyStorage) tTileEntity).extractEnergy(GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false);
+                        long tEU = ((IEnergyStorage) tTileEntity).extractEnergy(GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false);
                         tEU = tEU * GregTech_API.mRFtoEU / 100;
                         aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
                     } else if (GregTech_API.meIOLoaded && tTileEntity instanceof IPowerContainer && ((IPowerContainer) tTileEntity).getEnergyStored() > 0) {
@@ -202,12 +202,12 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     
     @Override
     public boolean hasAlternativeModeText(){
-    	return true;
+        return true;
     }
     
     @Override
     public String getAlternativeModeText(){
-    	return
+        return
                 (getBaseMetaTileEntity().isAllowedToWork() ? trans("145","Step Down, In: ") : trans("146","Step Up, In: ")) +
                         maxEUInput() +
                         trans("148","V ") +
