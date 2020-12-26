@@ -31,8 +31,7 @@ public class GT_Cover_TM_TeslaCoil_Ultimate extends GT_Cover_TM_TeslaCoil {
     public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
         return true;
     }
-
-    @Override
+    
     public byte getTeslaReceptionCapability() {
         return 1;
     }

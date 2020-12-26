@@ -220,3 +220,6 @@ jar {
                 attributes "FMLAT": "tectech_at.cfg"
             }
 }
+
+//Fixes Intellij Runs not loading textures
+sourceSets { main { output.resourcesDir = output.classesDir } }

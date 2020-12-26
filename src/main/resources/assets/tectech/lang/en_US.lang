@@ -87,6 +87,11 @@ item.tm.teslaCover.desc.4=Who the hell uses cables anyway?
 item.tm.teslaStaff.name=Tesla Staff
 item.tm.teslaStaff.desc=Power of the gods, at the whim of a mortal!
 
+item.tm.enderfluidlinkcover.name=Ender Fluid Link Cover
+item.tm.enderfluidlinkcover.desc.0=Ender-Fluid-Enables Machines!
+item.tm.enderfluidlinkcover.desc.1=Use on any side of a fluid tank to link it to the Ender
+item.tm.enderfluidlinkcover.desc.2=Ender Tanks so are laggy -Bot from the Chads of NH
+
 #Death Messages
 death.attack.microwaving=%1$s was dehydrated by radiation.
 death.attack.microwaving.player=%1$s was dehydrated by radiation while fighting %2$s.

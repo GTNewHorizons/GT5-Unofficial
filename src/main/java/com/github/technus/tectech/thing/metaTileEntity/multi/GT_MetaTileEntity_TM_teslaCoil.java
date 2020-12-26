@@ -8,6 +8,7 @@ import com.github.technus.tectech.mechanics.spark.ThaumSpark;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.mechanics.tesla.ITeslaConnectable;
+import com.github.technus.tectech.mechanics.tesla.ITeslaConnectableSimple;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
@@ -19,6 +20,9 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Vec3Impl;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -35,6 +39,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.*;
@@ -47,6 +52,11 @@ import static java.lang.Math.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable, ITeslaConnectable {
+    //Interface fields
+    private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = MultimapBuilder.treeKeys().linkedListValues().build();
+    private final HashSet<ThaumSpark> sparkList = new HashSet<>();
+    private int sparkCount = 10;
+
     //region variables
     private static final int transferRadiusTowerFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_TOWER;//Default is 32
     private static final int transferRadiusTransceiverFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_TRANSCEIVER;//Default is 16
@@ -72,8 +82,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private FluidStack[] mOutputFluidsQueue; //Used to buffer the fluid outputs, so the tesla takes a second to 'cool' any plasma it would output as a gas
 
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCapacitorHatches = new ArrayList<>(); //Capacitor hatches which determine the max voltage tier and count of amps
-
-    private int sortTime = 0; //Scan timer used for tesla search intervals
 
     private long energyCapacity = 0; //Total energy storage limited by capacitors
     private long outputVoltageMax = 0; //Tesla voltage output limited by capacitors
@@ -451,13 +459,12 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public void onRemoval() {
         super.onRemoval();
-        if (this.getBaseMetaTileEntity().isClientSide()) {
-            return;
-        }
-        teslaNodeSet.remove(this);
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
-                cap.getBaseMetaTileEntity().setActive(false);
+        if (!getBaseMetaTileEntity().isClientSide()) {
+            teslaSimpleNodeSetRemove(this);
+            for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
+                if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
+                    cap.getBaseMetaTileEntity().setActive(false);
+                }
             }
         }
     }
@@ -528,7 +535,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         energyCapacity = aNBT.getLong("eEnergyCapacity");
-        teslaNodeSet.add(this);
+        teslaSimpleNodeSetAdd(this);
     }
 
     @Override
@@ -548,14 +555,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick_EM(aBaseMetaTileEntity);
         if (!aBaseMetaTileEntity.isClientSide()) {
-            teslaNodeSet.add(this);
+            teslaSimpleNodeSetAdd(this);
+            generateTeslaNodeMap(this);
         }
     }
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        IGregTechTileEntity mte = getBaseMetaTileEntity();
-
         //Hysteresis based ePowerPass setting
         float energyFrac = (float) getEUVar() / energyCapacity;
 
@@ -568,15 +574,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         } else if (ePowerPass && energyFrac < histLowSetting.get()) {
             ePowerPass = false;
         }
-
-        //Create the teslaNodeMap
-        if (sortTime == sortTimeMinSetting.get()) {
-            sortTime = 0;
-            sortTimeDisplay.updateStatus();
-            generateTeslaNodeMap(this);
-        }
-        sortTime++;
-        sortTimeDisplay.set(sortTime);
 
         //Power Limit Settings
         if (outputVoltageSetting.get() > 0) {
@@ -598,22 +595,24 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         transferRadiusTransceiverDisplay.set(transferRadiusTower * 2);
         transferRadiusCoverUltimateDisplay.set(transferRadiusTower);
 
-        //Clean the teslaNodeMap
-        cleanTeslaNodeMap(this);
-
         //Power transfer
         outputCurrentDisplay.set(powerTeslaNodeMap(this));
 
-        if (!sparkList.isEmpty()) {
-            NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
-                    mte.getWorld().provider.dimensionId,
-                    posTop.get0(),
-                    posTop.get1(),
-                    posTop.get2(),
-                    256);
+        //Randomly send all the sparks out once every 3 to 5 seconds
+        sparkCount--;
+        if (sparkCount == 0){
+            IGregTechTileEntity mte = getBaseMetaTileEntity();
+            sparkCount = 10;
+            if(!sparkList.isEmpty()){
+                NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
+                        mte.getWorld().provider.dimensionId,
+                        mte.getXCoord(),
+                        mte.getYCoord(),
+                        mte.getZCoord(),
+                        256);
+                sparkList.clear();
+            }
         }
-        sparkList.clear();
-
         return true;
     }
 
@@ -699,6 +698,16 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public float getTeslaReceptionCoefficient() {
         return 0;
+    }
+
+    @Override
+    public Multimap<Integer, ITeslaConnectableSimple> getTeslaNodeMap() {
+        return teslaNodeMap;
+    }
+
+    @Override
+    public HashSet<ThaumSpark> getSparkList() {
+        return sparkList;
     }
 
     @Override

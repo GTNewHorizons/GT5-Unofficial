@@ -42,7 +42,7 @@ item.em.constructable.desc.0=触发可构造界面
 item.em.constructable.desc.1=显示多方块结构细节,
 item.em.constructable.desc.2=只可在多方块控制器上使用.
 item.em.constructable.desc.3=(在创造模式下潜行右键可直接构造)
-item.em.constructable.desc.4=数量影响等级/模式/类型
+item.em.constructable.desc.4=堆叠数量影响等级/模式/类型
 
 item.em.EuMeterGT.name=GT EU电表
 item.em.EuMeterGT.desc.0=测量EU相关的基本内容
@@ -64,6 +64,8 @@ item.tm.teslaCoilCapacitor.1.name=MV特斯拉电容
 item.tm.teslaCoilCapacitor.2.name=HV特斯拉电容
 item.tm.teslaCoilCapacitor.3.name=EV特斯拉电容
 item.tm.teslaCoilCapacitor.4.name=IV特斯拉电容
+item.tm.teslaCoilCapacitor.5.name=LuV特斯拉电容
+item.tm.teslaCoilCapacitor.6.name=ZPM特斯拉电容
 item.tm.teslaCoilCapacitor.desc.0=存储量：
 item.tm.teslaCoilCapacitor.desc.1=EU；充能速度：
 item.tm.teslaCoilCapacitor.desc.2=把这个破碎的东西浸入某种辛辣的水中!
@@ -402,12 +404,12 @@ gt.blockmachines.hatch.certain.tier.10.name=未定元解析器 X
 gt.blockmachines.hatch.certain.desc.0=你真的很确定吗？
 gt.blockmachines.hatch.certain.desc.1=盒子里的薛定谔方程
 
-gt.blockmachines.hatch.datain.tier.07.name=副光学连接端口
+gt.blockmachines.hatch.datain.tier.07.name=副光学接口
 gt.blockmachines.hatch.datain.desc.0=多方块机器的数据输入
 gt.blockmachines.hatch.datain.desc.1=高速光纤接口
 gt.blockmachines.hatch.datain.desc.2=启用前必须涂色
 
-gt.blockmachines.hatch.dataout.tier.07.name=主光学连接端口
+gt.blockmachines.hatch.dataout.tier.07.name=主光学接口
 gt.blockmachines.hatch.dataout.desc.0=多方块机器的数据输出
 gt.blockmachines.hatch.dataout.desc.1=高速光纤接口
 gt.blockmachines.hatch.dataout.desc.2=启用前必须涂色
@@ -518,6 +520,7 @@ gt.blockcasingsBA0.2.name=HV超导初级特斯拉绕组
 gt.blockcasingsBA0.3.name=EV超导初级特斯拉绕组
 gt.blockcasingsBA0.4.name=IV超导初级特斯拉绕组
 gt.blockcasingsBA0.5.name=LuV超导初级特斯拉绕组
+gt.blockcasingsBA0.9.name=ZPM超导初级特斯拉绕组
 gt.blockcasingsBA0.0.desc.0=最高电圧
 gt.blockcasingsBA0.0.desc.1=有的人称这为神迹，另一些人把这叫做物理.
 gt.blockcasingsBA0.6.name=特斯拉基座机械方块
@@ -575,12 +578,12 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=充能进度显示
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=扫描时间显示
 
 gt.blockmachines.multimachine.em.switch.name=QoS网络交换机
-gt.blockmachines.multimachine.em.switch.hint=1 - 基础仓室、光学连接端口或电子计算机机械方块
+gt.blockmachines.multimachine.em.switch.hint=1 - 基础仓室、光学接口或电子计算机机械方块
 gt.blockmachines.multimachine.em.switch.desc.0=用户控制的计算力路由
 gt.blockmachines.multimachine.em.switch.desc.1=服务质量是必须的
 
 gt.blockmachines.multimachine.em.computer.name=量子计算机
-gt.blockmachines.multimachine.em.computer.hint.0=1 - 基础仓室、光学连接端口或电子计算机机械方块
+gt.blockmachines.multimachine.em.computer.hint.0=1 - 基础仓室、光学接口或电子计算机机械方块
 gt.blockmachines.multimachine.em.computer.hint.1=2 - 计算机箱或进阶电子计算机械方块
 gt.blockmachines.multimachine.em.computer.desc=你需要它来处理上面的这串数字
 gt.blockmachines.multimachine.em.computer.cfgi.0=超频比
@@ -639,7 +642,7 @@ gt.blockmachines.multimachine.em.scanner.desc.0=它是如何存在的？
 gt.blockmachines.multimachine.em.scanner.desc.1=我！不！知！道！(至少暂时是这样)
 
 gt.blockmachines.multimachine.em.research.name=研究站
-gt.blockmachines.multimachine.em.research.hint.0=1 - 基础仓室、光学连接端口或电子计算机械方块
+gt.blockmachines.multimachine.em.research.hint.0=1 - 基础仓室、光学接口或电子计算机械方块
 gt.blockmachines.multimachine.em.research.hint.1=2 - 物品固定容器
 gt.blockmachines.multimachine.em.research.desc.0=哲学家们甚至...
 gt.blockmachines.multimachine.em.research.desc.1=从来不曾梦见它！
@@ -762,7 +765,7 @@ gt.blockmachines.machine.tt.tesla.desc.1=富人的闪电洪炉
 gt.blockmachines.debug.tt.pollutor.name=Debug污染生成机
 gt.blockmachines.debug.tt.pollutor.desc.0=该死的genny破产了!
 gt.blockmachines.debug.tt.pollutor.desc.1=无限的生产者/消费者
-gt.blockmachines.debug.tt.pollutor.desc.2=我只是想要一个?
+gt.blockmachines.debug.tt.pollutor.desc.2=因为我需要一个?
 gt.blockmachines.debug.tt.data.name=Debug数据仓
 gt.blockmachines.debug.tt.data.desc.0=量子数据输出
 gt.blockmachines.debug.tt.data.desc.1=高速光纤接口
@@ -811,7 +814,7 @@ tt.keyword.Efficiency=效率
 #Button that allows to pass power to other machines
 tt.keyword.PowerPass=导能
 #Button that vents EM
-tt.keyword.SafeVoid=安全罩
+tt.keyword.SafeVoid=安全销毁
 tt.keyword.Parametrizer=参数仪
 tt.keyword.Value=值
 tt.keyword.Input=输入
@@ -823,7 +826,7 @@ tt.keyword.PacketHistory=封包记录
 
 tt.keyphrase.LIFE_TIME=寿命
 tt.keyphrase.CARRIES_COLOR=有色
-tt.keyphrase.提示方块：Details=提示细节
+tt.keyphrase.Hint_Details=提示细节
 tt.keyphrase.At_current_energy_level=在当前能级
 #Used when 0 Elemental Matter Stacks
 tt.keyphrase.No_Stacks=空
