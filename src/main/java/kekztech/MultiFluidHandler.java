@@ -92,6 +92,10 @@ public class MultiFluidHandler {
 		return fluidSelector;
 	}
 
+	public FluidStack[] getAllFluids() {
+		return fluids;
+	}
+
 	public int getFluidPosistion(FluidStack aFluid) {
 
 		for (int i = 0; i < fluids.length; i++)

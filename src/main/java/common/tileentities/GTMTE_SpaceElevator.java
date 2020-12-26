@@ -16,7 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
-import util.MultiBlockTooltipBuilder;
 import util.Vector3i;
 import util.Vector3ic;
 
@@ -57,6 +56,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public String[] getDescription() {
+    	return new String[]{"Disabled"};
+    	/*
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
         b.addInfo("Access for your Space Station!")
                 .addInfo("Check out the wiki on my github if you are having trouble with the structure")
@@ -77,7 +78,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
             return b.getInformation();
         } else {
             return b.getStructureInformation();
-        }
+        }*/
     }
 
     @Override
