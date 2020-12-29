@@ -33,6 +33,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEnt
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.google.common.collect.ImmutableSet;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_MultiMachine;
@@ -44,11 +45,13 @@ import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -59,7 +62,7 @@ import static gregtech.api.enums.GT_Values.V;
 
 public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_EM implements IHasCoils, IConstructable {
 
-    public TT_ElectronicBlastFurnace(Object unused) {
+    public TT_ElectronicBlastFurnace(Object unused, Object unused2) {
         super(32765, "multimachine.blastfurnace", "Electric Blast Furnace");
         GregTech_API.METATILEENTITIES[32765] = null;
         GregTech_API.METATILEENTITIES[1000] = this;
@@ -69,7 +72,7 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
         super(aName);
     }
 
-    private short coilMeta = -1;
+    private HeatingCoilLevel coilMeta = HeatingCoilLevel.None;
     private static final byte TEXTURE_INDEX = 11;
     private static final IStructureDefinition<TT_ElectronicBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition
             .<TT_ElectronicBlastFurnace>builder()
@@ -113,8 +116,8 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
 
     @Override
     protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        this.setCoilMeta((short) -1);
-        boolean ret = this.structureCheck_EM("main", 1, 3, 0) && this.getHeatingCapacity() > -1;
+        this.setCoilHeat(HeatingCoilLevel.None);
+        boolean ret = this.structureCheck_EM("main", 1, 3, 0) && this.getCoilHeat() != HeatingCoilLevel.None;
         if (this.mMufflerHatches.stream()
                 .map(MetaTileEntity::getBaseMetaTileEntity)
                 .mapToInt(ITurnable::getFrontFacing)
@@ -210,24 +213,36 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
     }
 
     public String[] getDescription() {
-        return new String[]{
-                "Controller Block for the Blast Furnace",
-                "Size(WxHxD): 3x4x3 (Hollow), Controller (Front middle bottom)",
-                "16x Heating Coils (Two middle Layers, hollow)",
-                "1x Input Hatch/Bus (Any bottom layer casing)",
-                "1x Output Hatch/Bus (Any bottom layer casing)",
-                "1x Energy Hatch (Any bottom layer casing)",
-                "1x Maintenance Hatch (Any bottom layer casing)",
-                "1x Muffler Hatch (Top middle)",
-                "1x Output Hatch to recover CO2/CO/SO2 (optional, any top layer casing),",
-                "    Recovery scales with Muffler Hatch tier",
-                "Heat Proof Machine Casings for the rest",
-                "Each 900K over the min. Heat Capacity multiplies eu/t by 0.95",
-                "Each 1800K over the min. Heat Capacity allows for one upgraded overclock",
-                "Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%",
-                "Causes " + 20 * getPollutionPerTick(null) + " Pollution per second",
-                ADV_STR_CHECK
-        };
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Blast Furnace")
+                .addInfo("Controller block for the Electric Blast Furnace")
+                .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
+                .addInfo("Each 900K over the min. Heat required multiplies EU/t by 0.95")
+                .addInfo("Each 1800K over the min. Heat required allows for one upgraded overclock instead of normal")
+                .addInfo("Upgraded overclocks reduce recipe time to 25% (instead of 50%) and increase EU/t to 400%")
+                .addInfo("Additionally gives +100K for every tier past MV")
+                .addPollutionAmount(20 * getPollutionPerTick(null))
+                .addInfo(ADV_STR_CHECK)
+                .addSeparator()
+                .beginStructureBlock(3, 4, 3, true)
+                .addController("Front bottom")
+                .addCasingInfo("Heat Proof Machine Casing", 0)
+                .addOtherStructurePart("Heating Coils", "Two middle Layers")
+                .addEnergyHatch("Any bottom layer casing")
+                .addMaintenanceHatch("Any bottom layer casing")
+                .addMufflerHatch("Top middle")
+                .addInputBus("Any bottom layer casing")
+                .addInputHatch("Any bottom layer casing")
+                .addOutputBus("Any bottom layer casing")
+                .addOutputHatch("CO/CO2/SO2, Any top layer casing")
+                .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
+                .addOutputHatch("Fluids, Any bottom layer casing")
+                .toolTipFinisher("Gregtech");
+        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            return tt.getInformation();
+        } else {
+            return tt.getStructureInformation();
+        }
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
@@ -247,38 +262,13 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
     }
 
     @Override
-    public void setCoilMeta(short coilMeta) {
+    public void setCoilHeat(HeatingCoilLevel coilMeta) {
         this.coilMeta = coilMeta;
     }
 
     @Override
-    public short getCoilMeta() {
+    public HeatingCoilLevel getCoilHeat() {
         return coilMeta;
-    }
-
-    private int getHeatingCapacity() {
-        switch (coilMeta) {
-            case 0:
-                return 1801;
-            case 1:
-                return 2701;
-            case 2:
-                return 3601;
-            case 3:
-                return 4501;
-            case 4:
-                return 5401;
-            case 5:
-                return 7201;
-            case 6:
-                return 9001;
-            case 7:
-                return 9901;
-            case 8:
-                return 10801;
-            default:
-                return -1;
-        }
     }
 
     @Override
@@ -292,53 +282,21 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
     }
 
     public boolean checkRecipe_EM(ItemStack aStack) {
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        int tInputList_sS = tInputList.size();
-        for (int i = 0; i < tInputList_sS - 1; i++) {
-            for (int j = i + 1; j < tInputList_sS; j++) {
-                if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-                    if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-                        tInputList.remove(j--);
-                        tInputList_sS = tInputList.size();
-                    } else {
-                        tInputList.remove(i--);
-                        tInputList_sS = tInputList.size();
-                        break;
-                    }
-                }
-            }
-        }
-        ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
+        ItemStack[] tInputs = this.getCompactedInputs();
+        FluidStack[] tFluids = this.getCompactedFluids();
 
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        int tFluidList_sS = tFluidList.size();
-        for (int i = 0; i < tFluidList_sS - 1; i++) {
-            for (int j = i + 1; j < tFluidList_sS; j++) {
-                if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-                    if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                        tFluidList.remove(j--);
-                        tFluidList_sS = tFluidList.size();
-                    } else {
-                        tFluidList.remove(i--);
-                        tFluidList_sS = tFluidList.size();
-                        break;
-                    }
-                }
-            }
-        }
-        FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
-        if (tInputList.size() > 0) {
+        if (tInputs.length > 0) {
             long tVoltage = getMaxInputVoltage();
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
             GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
             if (tRecipe == null
-                    || (this.getHeatingCapacity() < tRecipe.mSpecialValue)
+                    || (this.getCoilHeat().getHeat() < tRecipe.mSpecialValue)
                     || (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
                 return false;
             }
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            int tHeatCapacityDivTiers = (this.getHeatingCapacity() - tRecipe.mSpecialValue) / 900;
+            int tHeatCapacityDivTiers = (int) ((this.getCoilHeat().getHeat() - tRecipe.mSpecialValue) / 900);
             byte overclockCount = calculateOverclockednessEBF(tRecipe.mEUt, tRecipe.mDuration, tVoltage);
             //In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)

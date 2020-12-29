@@ -40,10 +40,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
@@ -51,7 +53,7 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADV_S
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
 public class TT_VaccuumFreezer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-    public TT_VaccuumFreezer(Object unused) {
+    public TT_VaccuumFreezer(Object unused, Object unused2) {
         super(32765, "multimachine.vacuumfreezer", "Vacuum Freezer");
         GregTech_API.METATILEENTITIES[32765] = null;
         GregTech_API.METATILEENTITIES[1002] = this;
@@ -97,17 +99,25 @@ public class TT_VaccuumFreezer extends GT_MetaTileEntity_MultiblockBase_EM imple
     }
 
     public String[] getDescription() {
-        return new String[]{
-                "Controller Block for the Vacuum Freezer",
-                "Super cools hot ingots and cells",
-                "Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
-                "1x Input Bus (Any casing)",
-                "1x Output Bus (Any casing)",
-                "1x Maintenance Hatch (Any casing)",
-                "1x Energy Hatch (Any casing)",
-                "Frost Proof Machine Casings for the rest (16 at least!)",
-                ADV_STR_CHECK
-        };
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Vacuum Freezer")
+                .addInfo("Controller Block for the Vacuum Freezer")
+                .addInfo("Cools hot ingots and cells")
+                .addInfo(ADV_STR_CHECK)
+                .addSeparator()
+                .beginStructureBlock(3, 3, 3, true)
+                .addController("Front center")
+                .addCasingInfo("Frost Proof Machine Casing", 16)
+                .addEnergyHatch("Any casing")
+                .addMaintenanceHatch("Any casing")
+                .addInputBus("Any casing")
+                .addOutputBus("Any casing")
+                .toolTipFinisher("Gregtech");
+        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            return tt.getInformation();
+        } else {
+            return tt.getStructureInformation();
+        }
     }
 
     @Override

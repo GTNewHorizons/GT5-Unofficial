@@ -26,6 +26,9 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.structure.IStructureElement;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.interfaces.IHeatingCoil;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -43,10 +46,14 @@ public class CoilAdder<MultiBlock extends GT_MetaTileEntity_MultiblockBase_EM & 
 
     @Override
     public boolean check(MultiBlock multiBlock, World world, int x, int y, int z) {
-        if (multiBlock.getCoilMeta() == -1)
-            multiBlock.setCoilMeta((short) world.getBlockMetadata(x, y, z));
-        return multiBlock.getCoilMeta() == (short) world.getBlockMetadata(x, y, z)
-                && GregTech_API.sBlockCasings5 == world.getBlock(x, y, z);
+        Block coil = world.getBlock(x, y, z);
+        if (!(coil instanceof IHeatingCoil))
+            return false;
+        int meta = world.getBlockMetadata(x, y, z);
+        HeatingCoilLevel heat = ((IHeatingCoil) coil).getCoilHeat(meta);
+        if (multiBlock.getCoilHeat() == HeatingCoilLevel.None)
+            multiBlock.setCoilHeat(heat);
+        return multiBlock.getCoilHeat() == heat;
     }
 
     @Override

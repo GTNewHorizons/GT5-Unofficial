@@ -60,12 +60,12 @@ val majorUpdate: String by project
 val minorUpdate: String by project
 val buildNumber: String by project
 
+minecraft.version = "1.7.10-10.13.4.1614-1.7.10"
 version = "$majorUpdate.$minorUpdate.$buildNumber"
 group = "com.github.bartimaeusnek.bartworks"
 
 //minecraft block
 configure<UserExtension> {
-    this.version = "1.7.10-10.13.4.1614-1.7.10"
     this.includes.addAll(
             arrayOf(
                     "MainMod.java",
@@ -121,9 +121,9 @@ dependencies {
     compileOnly("com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf")
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
     compileOnly("mods.railcraft:Railcraft_1.7.10:9.12.3.0:dev")
-    compileOnly("micdoodle8.mods:MicdoodleCore:$galacticraftVersion:Dev")
-    compileOnly("micdoodle8.mods:GalacticraftCore:$galacticraftVersion:Dev")
-    compileOnly("micdoodle8.mods:Galacticraft-Planets:$galacticraftVersion:Dev")
+    compile("micdoodle8.mods:MicdoodleCore:$galacticraftVersion:Dev")
+    compile("micdoodle8.mods:GalacticraftCore:$galacticraftVersion:Dev")
+    compile("micdoodle8.mods:Galacticraft-Planets:$galacticraftVersion:Dev")
     compileOnly("li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api")
     compileOnly("net.sengir.forestry:forestry_1.7.10:4.2.16.64:dev")
     //jitpack

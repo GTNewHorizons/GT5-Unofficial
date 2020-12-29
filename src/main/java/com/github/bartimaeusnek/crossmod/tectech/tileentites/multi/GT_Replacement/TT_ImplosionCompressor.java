@@ -39,11 +39,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
@@ -52,7 +54,7 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
 public class TT_ImplosionCompressor extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
 
-    public TT_ImplosionCompressor(Object unused) {
+    public TT_ImplosionCompressor(Object unused, Object unused2) {
         super(32765, "multimachine.implosioncompressor", "Implosion Compressor");
         GregTech_API.METATILEENTITIES[32765] = null;
         GregTech_API.METATILEENTITIES[1001] = this;
@@ -150,19 +152,28 @@ public class TT_ImplosionCompressor extends GT_MetaTileEntity_MultiblockBase_EM 
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                "Controller Block for the Implosion Compressor",
-                "Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
-                "1x Input Bus (Any casing)",
-                "1x Output Bus (Any casing)",
-                "1x Maintenance Hatch (Any casing)",
-                "1x Muffler Hatch (Any casing)",
-                "1x Energy Hatch (Any casing)",
-                "Solid Steel Machine Casings for the rest (16 at least!)",
-                "Casings can be replaced with Explosion Warning Signs",
-                "Causes " + 20 * getPollutionPerTick(null) + " Pollution per second",
-                ADV_STR_CHECK
-        };
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Implosion Compressor")
+                .addInfo("Explosions are fun")
+                .addInfo("Controller block for the Implosion Compressor")
+                .addPollutionAmount(20 * getPollutionPerTick(null))
+                .addInfo(ADV_STR_CHECK)
+                .addSeparator()
+                .beginStructureBlock(3, 3, 3, true)
+                .addController("Front center")
+                .addCasingInfo("Solid Steel Machine Casing", 16)
+                .addStructureInfo("Casings can be replaced with Explosion Warning Signs")
+                .addEnergyHatch("Any casing")
+                .addMaintenanceHatch("Any casing")
+                .addMufflerHatch("Any casing")
+                .addInputBus("Any casing")
+                .addOutputBus("Any casing")
+                .toolTipFinisher("Gregtech");
+        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            return tt.getInformation();
+        } else {
+            return tt.getStructureInformation();
+        }
     }
 
     @Override

@@ -27,10 +27,7 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.crossmod.GTpp.loader.RadioHatchCompat;
 import com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechResearchLoader;
-import com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement.TT_ElectronicBlastFurnace;
-import com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement.TT_ImplosionCompressor;
-import com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement.TT_OilCrackingUnit;
-import com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement.TT_VaccuumFreezer;
+import com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement.*;
 import com.github.bartimaeusnek.crossmod.thaumcraft.CustomAspects;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -80,12 +77,13 @@ public class BartWorksCrossmod {
         if (LoaderReference.GalacticraftCore)
             GalacticraftProxy.init(init);
         //Base GT -> TT Replacement
-        //if (LoaderReference.tectech) {
-        //    new TT_VaccuumFreezer(null);
-        //    new TT_OilCrackingUnit(null);
-        //    new TT_ImplosionCompressor(null);
-        //    new TT_ElectronicBlastFurnace(null);
-        //}
+        if (LoaderReference.tectech) {
+            new TT_VaccuumFreezer(null,null);
+            new TT_OilCrackingUnit(null,null);
+            new TT_ImplosionCompressor(null,null);
+            new TT_ElectronicBlastFurnace(null,null);
+            new TT_MultiSmelter(null,null);
+        }
     }
 
     @Mod.EventHandler

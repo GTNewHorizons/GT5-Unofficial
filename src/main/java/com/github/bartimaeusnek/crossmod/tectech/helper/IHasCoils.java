@@ -22,7 +22,9 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.helper;
 
+import gregtech.api.enums.HeatingCoilLevel;
+
 public interface IHasCoils {
-    void setCoilMeta(short coilMeta);
-    short getCoilMeta();
+    void setCoilHeat(HeatingCoilLevel coilMeta);
+    HeatingCoilLevel getCoilHeat();
 }
