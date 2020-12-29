@@ -53,7 +53,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADV_STR_CHECK;
@@ -72,7 +71,9 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
         super(aName);
     }
 
-    private HeatingCoilLevel coilMeta = HeatingCoilLevel.None;
+    private HeatingCoilLevel heatingCoilLevel = HeatingCoilLevel.None;
+    private int mHeatingCapacity = 0;
+
     private static final byte TEXTURE_INDEX = 11;
     private static final IStructureDefinition<TT_ElectronicBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition
             .<TT_ElectronicBlastFurnace>builder()
@@ -116,6 +117,7 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
 
     @Override
     protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        this.mHeatingCapacity = 0;
         this.setCoilHeat(HeatingCoilLevel.None);
         boolean ret = this.structureCheck_EM("main", 1, 3, 0) && this.getCoilHeat() != HeatingCoilLevel.None;
         if (this.mMufflerHatches.stream()
@@ -123,6 +125,8 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
                 .mapToInt(ITurnable::getFrontFacing)
                 .noneMatch(x -> x == this.getExtendedFacing().getRelativeUpInWorld().ordinal()))
             return false;
+        this.mHeatingCapacity = (int) this.getCoilHeat().getHeat();
+        this.mHeatingCapacity += 100 * (GT_Utility.getTier(getMaxInputVoltage()) - 2);
         return ret;
     }
 
@@ -212,6 +216,7 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
         return false;
     }
 
+    @Override
     public String[] getDescription() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Blast Furnace")
@@ -245,6 +250,7 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
         }
     }
 
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][11], new TT_RenderedExtendedFacingTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
@@ -252,6 +258,7 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][11]};
     }
 
+    @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "ElectricBlastFurnace.png");
     }
@@ -263,12 +270,12 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
 
     @Override
     public void setCoilHeat(HeatingCoilLevel coilMeta) {
-        this.coilMeta = coilMeta;
+        this.heatingCoilLevel = coilMeta;
     }
 
     @Override
     public HeatingCoilLevel getCoilHeat() {
-        return coilMeta;
+        return heatingCoilLevel;
     }
 
     @Override
@@ -281,6 +288,7 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
         return new TT_ElectronicBlastFurnace(this.mName);
     }
 
+    @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
         ItemStack[] tInputs = this.getCompactedInputs();
         FluidStack[] tFluids = this.getCompactedFluids();
@@ -290,13 +298,13 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
             GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
             if (tRecipe == null
-                    || (this.getCoilHeat().getHeat() < tRecipe.mSpecialValue)
+                    || (this.mHeatingCapacity < tRecipe.mSpecialValue)
                     || (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
                 return false;
             }
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            int tHeatCapacityDivTiers = (int) ((this.getCoilHeat().getHeat() - tRecipe.mSpecialValue) / 900);
+            int tHeatCapacityDivTiers = ((this.mHeatingCapacity - tRecipe.mSpecialValue) / 900);
             byte overclockCount = calculateOverclockednessEBF(tRecipe.mEUt, tRecipe.mDuration, tVoltage);
             //In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
