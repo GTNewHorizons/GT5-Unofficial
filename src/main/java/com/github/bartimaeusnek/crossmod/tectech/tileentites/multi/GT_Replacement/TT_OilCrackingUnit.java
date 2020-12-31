@@ -22,11 +22,14 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement;
 
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.crossmod.tectech.helper.CoilAdder;
 import com.github.bartimaeusnek.crossmod.tectech.helper.IHasCoils;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import gregtech.api.GregTech_API;
@@ -53,6 +56,7 @@ import org.lwjgl.input.Keyboard;
 import java.util.ArrayList;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADV_STR_CHECK;
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.TT_BLUEPRINT;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
 public class TT_OilCrackingUnit extends GT_MetaTileEntity_MultiblockBase_EM implements IHasCoils, IConstructable {
@@ -199,30 +203,16 @@ public class TT_OilCrackingUnit extends GT_MetaTileEntity_MultiblockBase_EM impl
 
     @Override
     public String[] getDescription() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Cracker")
-                .addInfo("Controller block for the Oil Cracking Unit")
-                .addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")
-                .addInfo("More efficient than the Chemical Reactor")
-                .addInfo("Place the appropriate circuit in the controller")
-                .addSeparator()
-                .beginStructureBlock(5, 3, 3, true)
-                .addController("Front center")
-                .addCasingInfo("Clean Stainless Steel Machine Casing", 18)
-                .addOtherStructurePart("2 Rings of 8 Coils", "Each side of the controller")
-                .addInfo("Gets 5% energy cost reduction per coil tier")
-                .addInfo(ADV_STR_CHECK)
-                .addEnergyHatch("Any casing")
-                .addMaintenanceHatch("Any casing")
-                .addInputHatch("Steam/Hydrogen, Any middle ring casing")
-                .addInputHatch("Any left/right side casing")
-                .addOutputHatch("Any left/right side casing")
-                .addStructureInfo("Input/Output Hatches must be on opposite sides!")
-                .toolTipFinisher("Gregtech");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-            return tt.getInformation();
-        else
-            return tt.getStructureInformation();
+        return new String[]{
+                "Cracker",
+                "Controller block for the Oil Cracking Unit",
+                "Thermally cracks heavy hydrocarbons into lighter fractions",
+                "More efficient than the Chemical Reactor",
+                "Place the appropriate circuit in the controller",
+                "Gets 5% energy cost reduction per coil tier",
+                ADV_STR_CHECK,
+                TT_BLUEPRINT
+        };
     }
 
     @Override
@@ -236,12 +226,12 @@ public class TT_OilCrackingUnit extends GT_MetaTileEntity_MultiblockBase_EM impl
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "OilCrackingUnit.png");
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",false,false,true);
     }
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, false, false, true);
     }
 
     @Override

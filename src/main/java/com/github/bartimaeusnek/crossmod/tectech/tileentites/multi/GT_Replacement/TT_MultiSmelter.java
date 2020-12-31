@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement;
 
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.crossmod.tectech.helper.CoilAdder;
 import com.github.bartimaeusnek.crossmod.tectech.helper.IHasCoils;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
@@ -29,6 +30,8 @@ import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import gregtech.api.GregTech_API;
@@ -52,6 +55,7 @@ import org.lwjgl.input.Keyboard;
 import java.util.ArrayList;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADV_STR_CHECK;
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.TT_BLUEPRINT;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
 public class TT_MultiSmelter extends GT_MetaTileEntity_MultiblockBase_EM implements IHasCoils, IConstructable {
@@ -143,6 +147,9 @@ public class TT_MultiSmelter extends GT_MetaTileEntity_MultiblockBase_EM impleme
         this.mCostDiscount = 1;
         this.setCoilHeat(HeatingCoilLevel.None);
         boolean ret = this.structureCheck_EM("main", 1, 2, 0) && this.getCoilHeat() != HeatingCoilLevel.None;
+
+        this.mMufflerHatches.forEach(x -> x.setInValidFacings(this.getExtendedFacing().getRelativeUpInWorld().getOpposite()));
+
         if (this.mMufflerHatches.stream()
                 .map(MetaTileEntity::getBaseMetaTileEntity)
                 .mapToInt(ITurnable::getFrontFacing)
@@ -166,27 +173,15 @@ public class TT_MultiSmelter extends GT_MetaTileEntity_MultiblockBase_EM impleme
 
     @Override
     public String[] getDescription() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Furnace")
-                .addInfo("Controller Block for the Multi Smelter")
-                .addInfo("Smelts up to 8-128 items at once")
-                .addInfo("Items smelted increases with coil tier")
-                .addPollutionAmount(20 * getPollutionPerTick(null))
-                .addInfo(ADV_STR_CHECK)
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front bottom")
-                .addCasingInfo("Heat Proof Machine Casing", 8)
-                .addOtherStructurePart("Heating Coils", "Middle layer")
-                .addEnergyHatch("Any bottom casing")
-                .addMaintenanceHatch("Any bottom casing")
-                .addMufflerHatch("Top Middle")
-                .addInputBus("Any bottom casing")
-                .addOutputBus("Any bottom casing")
-                .toolTipFinisher("Gregtech");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-            return tt.getInformation();
-        return tt.getStructureInformation();
+        return new String[]{
+                "Furnace",
+                "Controller Block for the Multi Smelter",
+                "Smelts up to 8-128 items at once",
+                "Items smelted increases with coil tier",
+                "Creates up to: " + 20 * getPollutionPerTick(null) + " Pollution per Second",
+                ADV_STR_CHECK,
+                TT_BLUEPRINT
+        };
     }
 
     @Override
@@ -199,12 +194,12 @@ public class TT_MultiSmelter extends GT_MetaTileEntity_MultiblockBase_EM impleme
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiFurnace.png");
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",false,false,true);
     }
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, false, false, true);
     }
 
     @Override

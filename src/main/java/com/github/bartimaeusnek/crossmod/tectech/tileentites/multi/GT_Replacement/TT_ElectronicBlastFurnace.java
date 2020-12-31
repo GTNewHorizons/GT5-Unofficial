@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement;
 
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.crossmod.tectech.helper.CoilAdder;
 import com.github.bartimaeusnek.crossmod.tectech.helper.IHasCoils;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
@@ -29,6 +30,8 @@ import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.google.common.collect.ImmutableSet;
@@ -56,6 +59,7 @@ import org.lwjgl.input.Keyboard;
 import java.util.Set;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADV_STR_CHECK;
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.TT_BLUEPRINT;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_Values.V;
 
@@ -120,11 +124,14 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
         this.mHeatingCapacity = 0;
         this.setCoilHeat(HeatingCoilLevel.None);
         boolean ret = this.structureCheck_EM("main", 1, 3, 0) && this.getCoilHeat() != HeatingCoilLevel.None;
+        this.mMufflerHatches.forEach(x -> x.setInValidFacings(this.getExtendedFacing().getRelativeUpInWorld().getOpposite()));
+
         if (this.mMufflerHatches.stream()
                 .map(MetaTileEntity::getBaseMetaTileEntity)
                 .mapToInt(ITurnable::getFrontFacing)
                 .noneMatch(x -> x == this.getExtendedFacing().getRelativeUpInWorld().ordinal()))
             return false;
+
         this.mHeatingCapacity = (int) this.getCoilHeat().getHeat();
         this.mHeatingCapacity += 100 * (GT_Utility.getTier(getMaxInputVoltage()) - 2);
         return ret;
@@ -218,36 +225,18 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
 
     @Override
     public String[] getDescription() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Blast Furnace")
-                .addInfo("Controller block for the Electric Blast Furnace")
-                .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
-                .addInfo("Each 900K over the min. Heat required multiplies EU/t by 0.95")
-                .addInfo("Each 1800K over the min. Heat required allows for one upgraded overclock instead of normal")
-                .addInfo("Upgraded overclocks reduce recipe time to 25% (instead of 50%) and increase EU/t to 400%")
-                .addInfo("Additionally gives +100K for every tier past MV")
-                .addPollutionAmount(20 * getPollutionPerTick(null))
-                .addInfo(ADV_STR_CHECK)
-                .addSeparator()
-                .beginStructureBlock(3, 4, 3, true)
-                .addController("Front bottom")
-                .addCasingInfo("Heat Proof Machine Casing", 0)
-                .addOtherStructurePart("Heating Coils", "Two middle Layers")
-                .addEnergyHatch("Any bottom layer casing")
-                .addMaintenanceHatch("Any bottom layer casing")
-                .addMufflerHatch("Top middle")
-                .addInputBus("Any bottom layer casing")
-                .addInputHatch("Any bottom layer casing")
-                .addOutputBus("Any bottom layer casing")
-                .addOutputHatch("CO/CO2/SO2, Any top layer casing")
-                .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
-                .addOutputHatch("Fluids, Any bottom layer casing")
-                .toolTipFinisher("Gregtech");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getInformation();
-        } else {
-            return tt.getStructureInformation();
-        }
+        return new String[]{
+                "Blast Furnace",
+                "Controller block for the Electric Blast Furnace",
+                "You can use some fluids to reduce recipe time. Place the circuit in the Input Bus",
+                "Each 900K over the min. Heat required multiplies EU/t by 0.95",
+                "Each 1800K over the min. Heat required allows for one upgraded overclock instead of normal",
+                "Upgraded overclocks reduce recipe time to 25% (instead of 50%) and increase EU/t to 400%",
+                "Additionally gives +100K for every tier past MV",
+                "Creates up to: " + 20 * getPollutionPerTick(null) + " Pollution per Second",
+                ADV_STR_CHECK,
+                TT_BLUEPRINT
+        };
     }
 
     @Override
@@ -260,12 +249,12 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "ElectricBlastFurnace.png");
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",false,false,true);
     }
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, false, false, true);
     }
 
     @Override

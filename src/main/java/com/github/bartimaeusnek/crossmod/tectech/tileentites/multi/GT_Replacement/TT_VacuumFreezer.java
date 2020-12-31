@@ -22,20 +22,21 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement;
 
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.crossmod.tectech.helper.StructureDefinitions;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_Container_MultiMachine;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -50,10 +51,11 @@ import org.lwjgl.input.Keyboard;
 import java.util.ArrayList;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADV_STR_CHECK;
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.TT_BLUEPRINT;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
-public class TT_VaccuumFreezer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-    public TT_VaccuumFreezer(Object unused, Object unused2) {
+public class TT_VacuumFreezer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    public TT_VacuumFreezer(Object unused, Object unused2) {
         super(32765, "multimachine.vacuumfreezer", "Vacuum Freezer");
         GregTech_API.METATILEENTITIES[32765] = null;
         GregTech_API.METATILEENTITIES[1002] = this;
@@ -64,7 +66,7 @@ public class TT_VaccuumFreezer extends GT_MetaTileEntity_MultiblockBase_EM imple
         return false;
     }
 
-    private TT_VaccuumFreezer(String aName) {
+    private TT_VacuumFreezer(String aName) {
         super(aName);
     }
 
@@ -72,14 +74,14 @@ public class TT_VaccuumFreezer extends GT_MetaTileEntity_MultiblockBase_EM imple
 
     private byte blocks = 0;
 
-    private static final IStructureDefinition<TT_VaccuumFreezer> STRUCTURE_DEFINITION =
-        StructureDefinition.<TT_VaccuumFreezer>builder().addShape("main",
+    private static final IStructureDefinition<TT_VacuumFreezer> STRUCTURE_DEFINITION =
+        StructureDefinition.<TT_VacuumFreezer>builder().addShape("main",
                 StructureDefinitions.CUBE_NO_MUFFLER.getDefinition()
         ).addElement(
                 'V',
                     ofChain(
                             ofHatchAdder(
-                                TT_VaccuumFreezer::addVaccumFreezerHatches,
+                                TT_VacuumFreezer::addVacuumFreezerHatches,
                                 TEXTURE_INDEX,
                             1
                             ),
@@ -94,30 +96,18 @@ public class TT_VaccuumFreezer extends GT_MetaTileEntity_MultiblockBase_EM imple
         ).build();
 
     @Override
-    public IStructureDefinition<TT_VaccuumFreezer> getStructure_EM() {
+    public IStructureDefinition<TT_VacuumFreezer> getStructure_EM() {
         return STRUCTURE_DEFINITION;
     }
 
     public String[] getDescription() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Vacuum Freezer")
-                .addInfo("Controller Block for the Vacuum Freezer")
-                .addInfo("Cools hot ingots and cells")
-                .addInfo(ADV_STR_CHECK)
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front center")
-                .addCasingInfo("Frost Proof Machine Casing", 16)
-                .addEnergyHatch("Any casing")
-                .addMaintenanceHatch("Any casing")
-                .addInputBus("Any casing")
-                .addOutputBus("Any casing")
-                .toolTipFinisher("Gregtech");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getInformation();
-        } else {
-            return tt.getStructureInformation();
-        }
+        return new String[]{
+                "Vacuum Freezer",
+                "Controller Block for the Vacuum Freezer",
+                "Cools hot ingots and cells",
+                ADV_STR_CHECK,
+                TT_BLUEPRINT
+        };
     }
 
     @Override
@@ -167,7 +157,7 @@ public class TT_VaccuumFreezer extends GT_MetaTileEntity_MultiblockBase_EM imple
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new TT_VaccuumFreezer(this.mName);
+        return new TT_VacuumFreezer(this.mName);
     }
 
     @Override
@@ -202,16 +192,16 @@ public class TT_VaccuumFreezer extends GT_MetaTileEntity_MultiblockBase_EM imple
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",false,false,true);
     }
 
     @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "VacuumFreezer.png");
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, false, false, true);
     }
 
-    public final boolean addVaccumFreezerHatches(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+    public final boolean addVacuumFreezerHatches(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch)

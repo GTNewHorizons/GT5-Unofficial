@@ -78,7 +78,7 @@ public class BartWorksCrossmod {
             GalacticraftProxy.init(init);
         //Base GT -> TT Replacement
         if (LoaderReference.tectech) {
-            new TT_VaccuumFreezer(null,null);
+            new TT_VacuumFreezer(null,null);
             new TT_OilCrackingUnit(null,null);
             new TT_ImplosionCompressor(null,null);
             new TT_ElectronicBlastFurnace(null,null);
