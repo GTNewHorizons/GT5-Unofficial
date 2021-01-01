@@ -50,6 +50,8 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
@@ -57,23 +59,21 @@ import java.util.ArrayList;
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADV_STR_CHECK;
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.TT_BLUEPRINT;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_Values.VN;
 
-public class TT_MultiSmelter extends GT_MetaTileEntity_MultiblockBase_EM implements IHasCoils, IConstructable {
+public class TT_MultiSmelter extends TT_Abstract_GT_Replacement_Coils {
 
     private int mLevel;
     private int mCostDiscount;
 
     public TT_MultiSmelter(Object unused, Object unused2) {
-        super(32765, "multimachine.multifurnace", "Multi Smelter");
-        GregTech_API.METATILEENTITIES[32765] = null;
-        GregTech_API.METATILEENTITIES[1003] = this;
+        super(1003, "multimachine.multifurnace", "Multi Smelter");
     }
 
     private TT_MultiSmelter(String aName) {
         super(aName);
     }
 
-    private HeatingCoilLevel coilMeta = HeatingCoilLevel.None;
     private static final byte TEXTURE_INDEX = 11;
     private static final IStructureDefinition<TT_MultiSmelter> STRUCTURE_DEFINITION = StructureDefinition
             .<TT_MultiSmelter>builder()
@@ -101,39 +101,23 @@ public class TT_MultiSmelter extends GT_MetaTileEntity_MultiblockBase_EM impleme
             ).addElement(
                     'B',
                     ofHatchAdderOptional(
-                            TT_MultiSmelter::addHatchesBottom, TEXTURE_INDEX,
+                            TT_MultiSmelter::addEBFInputsBottom, TEXTURE_INDEX,
                             GregTech_API.sBlockCasings1, TEXTURE_INDEX,
                             GregTech_API.sBlockCasings1, TEXTURE_INDEX
                     )
             )
             .build();
 
-    public final boolean addHatchesBottom(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null)
-            return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch)
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-        else
-            return false;
 
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus)
-            return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus)
-            return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output)
-            return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)
-            return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy)
-            return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance)
-            return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti)
-            return this.eEnergyMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti)
-            return this.eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
-        return false;
+    private static final String[] sfStructureDescription = new String[] {
+            "0 - Air",
+            "1 - Muffler",
+            "Required: Output Bus, Input Bus, Energy Hatch, Maintenance Hatch",
+    };
+
+    @Override
+    public String[] getStructureDescription(ItemStack itemStack) {
+        return sfStructureDescription;
     }
 
     @Override
@@ -166,22 +150,21 @@ public class TT_MultiSmelter extends GT_MetaTileEntity_MultiblockBase_EM impleme
         this.structureBuild_EM("main", 1,2,0, b, itemStack);
     }
 
-    @Override
-    protected boolean cyclicUpdate_EM() {
-        return false;
-    }
+    private static final int pollutionPerTick = 20;
+
+    private final static String[] desc = new String[]{
+            "Furnace",
+            "Controller Block for the Multi Smelter",
+            "Smelts up to 8-128 items at once",
+            "Items smelted increases with coil tier",
+            "Creates up to: " + 20 * pollutionPerTick + " Pollution per Second",
+            ADV_STR_CHECK,
+            TT_BLUEPRINT
+    };
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                "Furnace",
-                "Controller Block for the Multi Smelter",
-                "Smelts up to 8-128 items at once",
-                "Items smelted increases with coil tier",
-                "Creates up to: " + 20 * getPollutionPerTick(null) + " Pollution per Second",
-                ADV_STR_CHECK,
-                TT_BLUEPRINT
-        };
+        return desc;
     }
 
     @Override
@@ -190,31 +173,6 @@ public class TT_MultiSmelter extends GT_MetaTileEntity_MultiblockBase_EM impleme
             return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][11], new TT_RenderedExtendedFacingTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][11]};
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",false,false,true);
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, false, false, true);
-    }
-
-    @Override
-    public void setCoilHeat(HeatingCoilLevel coilMeta) {
-        this.coilMeta = coilMeta;
-    }
-
-    @Override
-    public HeatingCoilLevel getCoilHeat() {
-        return coilMeta;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[0];
     }
 
     @Override
@@ -275,32 +233,44 @@ public class TT_MultiSmelter extends GT_MetaTileEntity_MultiblockBase_EM impleme
     }
 
     @Override
-    public boolean isMachineBlockUpdateRecursive() {
-        return true;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 20;
+        return pollutionPerTick;
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
+    public String[] getInfoData() {
+        int mPollutionReduction=0;
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches)
+            if (isValidMetaTileEntity(tHatch))
+                mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
+        long storedEnergy=0;
+        long maxEnergy=0;
+        for(GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+
+        return new String[]{
+                StatCollector.translateToLocal("GT5U.multiblock.Progress")+": "+
+                        EnumChatFormatting.GREEN + mProgresstime / 20 + EnumChatFormatting.RESET +" s / "+
+                        EnumChatFormatting.YELLOW + mMaxProgresstime / 20 + EnumChatFormatting.RESET +" s",
+                StatCollector.translateToLocal("GT5U.multiblock.energy")+": "+
+                        EnumChatFormatting.GREEN + storedEnergy + EnumChatFormatting.RESET +" EU / "+
+                        EnumChatFormatting.YELLOW + maxEnergy + EnumChatFormatting.RESET +" EU",
+                StatCollector.translateToLocal("GT5U.multiblock.usage")+": "+
+                        EnumChatFormatting.RED + -mEUt + EnumChatFormatting.RESET + " EU/t",
+                StatCollector.translateToLocal("GT5U.multiblock.mei")+": "+
+                        EnumChatFormatting.YELLOW+ getMaxInputVoltage() +EnumChatFormatting.RESET+" EU/t(*2A) "+StatCollector.translateToLocal("GT5U.machines.tier")+": "+
+                        EnumChatFormatting.YELLOW+VN[GT_Utility.getTier(getMaxInputVoltage())]+ EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.multiblock.problems")+": "+
+                        EnumChatFormatting.RED+ (getIdealStatus() - getRepairStatus())+EnumChatFormatting.RESET+
+                        " "+StatCollector.translateToLocal("GT5U.multiblock.efficiency")+": "+
+                        EnumChatFormatting.YELLOW+ mEfficiency / 100.0F +EnumChatFormatting.RESET + " %",
+                StatCollector.translateToLocal("GT5U.MS.multismelting")+": "+
+                        EnumChatFormatting.GREEN+mLevel*8+EnumChatFormatting.RESET+" Discount: (EU/t) / "+EnumChatFormatting.GREEN+mCostDiscount+EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.multiblock.pollution")+": "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %"
+        };
     }
 }

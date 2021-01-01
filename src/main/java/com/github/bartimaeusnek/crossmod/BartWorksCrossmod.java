@@ -83,6 +83,7 @@ public class BartWorksCrossmod {
             new TT_ImplosionCompressor(null,null);
             new TT_ElectronicBlastFurnace(null,null);
             new TT_MultiSmelter(null,null);
+            new BW_TT_HeatExchanger(null, null);
         }
     }
 

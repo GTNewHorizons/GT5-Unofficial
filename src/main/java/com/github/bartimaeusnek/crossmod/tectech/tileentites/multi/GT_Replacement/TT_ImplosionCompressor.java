@@ -57,21 +57,14 @@ import java.util.List;
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.*;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
-public class TT_ImplosionCompressor extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class TT_ImplosionCompressor extends TT_Abstract_GT_Replacement {
 
     public TT_ImplosionCompressor(Object unused, Object unused2) {
-        super(32765, "multimachine.implosioncompressor", "Implosion Compressor");
-        GregTech_API.METATILEENTITIES[32765] = null;
-        GregTech_API.METATILEENTITIES[1001] = this;
+        super(1001, "multimachine.implosioncompressor", "Implosion Compressor");
     }
 
     private TT_ImplosionCompressor(String aName) {
         super(aName);
-    }
-
-    @Override
-    protected boolean cyclicUpdate_EM() {
-        return false;
     }
 
     private byte blocks = 0;
@@ -92,17 +85,17 @@ public class TT_ImplosionCompressor extends GT_MetaTileEntity_MultiblockBase_EM 
             ).addElement(
                     'V',
                     ofChain(
-                            ofHatchAdder(
-                                TT_ImplosionCompressor::addImplosionHatches,
-                                TEXTURE_INDEX,
-                                1
-                            ),
                             onElementPass(
                                     x -> ++x.blocks,
                                     ofBlocksMap(
                                             BLOCKS.asMap(),GregTech_API.sBlockCasings2,
                                             0
                                     )
+                            ),
+                            ofHatchAdder(
+                                TT_ImplosionCompressor::addImplosionHatches,
+                                TEXTURE_INDEX,
+                                1
                             )
                     )
             ).build();
@@ -155,25 +148,24 @@ public class TT_ImplosionCompressor extends GT_MetaTileEntity_MultiblockBase_EM 
     }
 
     @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[0];
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new TT_ImplosionCompressor(this.mName);
     }
 
+    private static final int pollutionPerTick = 500;
+
+    private final static String[] desc = new String[]{
+            "Implosion Compressor",
+            "Explosions are fun",
+            "Controller block for the Implosion Compressor",
+            "Creates up to: " + 20 * pollutionPerTick + " Pollution per Second",
+            ADV_STR_CHECK,
+            TT_BLUEPRINT
+    };
+
     @Override
     public String[] getDescription() {
-        return new String[]{
-                "Implosion Compressor",
-                "Explosions are fun",
-                "Controller block for the Implosion Compressor",
-                "Creates up to: " + 20 * getPollutionPerTick(null) + " Pollution per Second",
-                ADV_STR_CHECK,
-                TT_BLUEPRINT
-        };
+        return desc;
     }
 
     @Override
@@ -182,16 +174,6 @@ public class TT_ImplosionCompressor extends GT_MetaTileEntity_MultiblockBase_EM 
             return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][TEXTURE_INDEX], new TT_RenderedExtendedFacingTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][TEXTURE_INDEX]};
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",false,false,true);
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, false, false, true);
     }
 
     @Override
@@ -249,22 +231,18 @@ public class TT_ImplosionCompressor extends GT_MetaTileEntity_MultiblockBase_EM 
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 500;
+        return pollutionPerTick;
     }
 
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
+    private static final String[] sfStructureDescription = new String[] {
+            "0 - Air",
+            "Required: Muffler Hatch, Output Bus, Input Bus, Energy Hatch, Maintenance Hatch"
+    };
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
+    public String[] getStructureDescription(ItemStack itemStack) {
+        return sfStructureDescription;
     }
+
 }

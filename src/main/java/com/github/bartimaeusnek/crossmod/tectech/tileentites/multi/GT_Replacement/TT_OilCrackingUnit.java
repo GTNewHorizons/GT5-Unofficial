@@ -59,87 +59,86 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADV_S
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.TT_BLUEPRINT;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
-public class TT_OilCrackingUnit extends GT_MetaTileEntity_MultiblockBase_EM implements IHasCoils, IConstructable {
+public class TT_OilCrackingUnit extends TT_Abstract_GT_Replacement_Coils {
 
     public TT_OilCrackingUnit(Object unused, Object unused2) {
-        super(32765, "multimachine.cracker", "Oil Cracking Unit");
-        GregTech_API.METATILEENTITIES[32765] = null;
-        GregTech_API.METATILEENTITIES[1160] = this;
+        super(1160, "multimachine.cracker", "Oil Cracking Unit");
     }
 
     private TT_OilCrackingUnit(String aName) {
         super(aName);
     }
 
-    private HeatingCoilLevel coilMeta = HeatingCoilLevel.None;
-
-    @Override
-    public void setCoilHeat(HeatingCoilLevel coilMeta) {
-        this.coilMeta = coilMeta;
-    }
-
-    @Override
-    public HeatingCoilLevel getCoilHeat() {
-        return coilMeta;
-    }
-
     private byte blocks = 0;
 
     private static final byte TEXTURE_INDEX = 49;
-
-    @Override
-    protected boolean cyclicUpdate_EM() {
-        return false;
-    }
 
     private static final IStructureDefinition<TT_OilCrackingUnit> STRUCTURE_DEFINITION = StructureDefinition.<TT_OilCrackingUnit>builder().addShape("main",
             transpose(new String[][]{
                     {"ABABA","ABGBA","ABABA"},
                     {"AB~BA","E---F","ABABA"},
-                    {"ABCBA","ABABA","ABABA"}
+                    {"ABABA","ABABA","ABABA"}
             })
     ).addElement(
             'A',
-            onElementPass(
-                    x -> ++x.blocks,ofBlock(
-                        GregTech_API.sBlockCasings4,
-                    1
+            ofChain(
+                    onElementPass(
+                            x -> ++x.blocks,
+                            ofBlock(
+                                    GregTech_API.sBlockCasings4,
+                                    1
+                            )
+                    ),
+                    ofHatchAdder(
+                            TT_OilCrackingUnit::addClassicMaintenanceToMachineList,
+                            TEXTURE_INDEX,
+                            1
+                    ),
+                    ofHatchAdder(
+                            TT_OilCrackingUnit::addEnergyIOToMachineList,
+                            TEXTURE_INDEX,
+                            1
                     )
             )
     ).addElement(
             'B',
             CoilAdder.getINSTANCE()
     ).addElement(
-            'C',
-            ofHatchAdder(
-                    GT_MetaTileEntity_MultiblockBase_EM::addClassicMaintenanceToMachineList,
-                    TEXTURE_INDEX,
-                    1
-            )
-    ).addElement(
             'E',
             ofHatchAdder(
                     TT_OilCrackingUnit::addInputFluidHatch,
                     TEXTURE_INDEX,
-                    2
+                    1
             )
     ).addElement(
             'F',
             ofHatchAdder(
                     TT_OilCrackingUnit::addOutputFluidHatch,
                     TEXTURE_INDEX,
-                    3
+                    2
             )
     ).addElement(
             'G',
             ofHatchAdder(
                     TT_OilCrackingUnit::addMiddleFluidHatch,
                     TEXTURE_INDEX,
-                    4
+                    1
             )
     ).build();
 
-    GT_MetaTileEntity_Hatch_Input middleFluidHatch;
+    private static final String[] sfStructureDescription = new String[] {
+            "0 - Air",
+            "1 - Input Hatch",
+            "2 - Output Hatch",
+            "Required: Maintenance Hatch, Energy Hatch"
+    };
+
+    @Override
+    public String[] getStructureDescription(ItemStack itemStack) {
+        return sfStructureDescription;
+    }
+
+    private GT_MetaTileEntity_Hatch_Input middleFluidHatch;
 
     public final boolean addMiddleFluidHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null)
@@ -158,7 +157,7 @@ public class TT_OilCrackingUnit extends GT_MetaTileEntity_MultiblockBase_EM impl
 
     @Override
     protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        this.coilMeta = HeatingCoilLevel.None;
+        this.setCoilHeat(HeatingCoilLevel.None);
         this.blocks = 0;
         return this.structureCheck_EM("main", 2,1,0)
                 && this.blocks >= 18;
@@ -201,18 +200,20 @@ public class TT_OilCrackingUnit extends GT_MetaTileEntity_MultiblockBase_EM impl
         return new TT_OilCrackingUnit(this.mName);
     }
 
+    private final static String[] desc = new String[]{
+            "Cracker",
+            "Controller block for the Oil Cracking Unit",
+            "Thermally cracks heavy hydrocarbons into lighter fractions",
+            "More efficient than the Chemical Reactor",
+            "Place the appropriate circuit in the controller",
+            "Gets 5% energy cost reduction per coil tier",
+            ADV_STR_CHECK,
+            TT_BLUEPRINT
+    };
+
     @Override
     public String[] getDescription() {
-        return new String[]{
-                "Cracker",
-                "Controller block for the Oil Cracking Unit",
-                "Thermally cracks heavy hydrocarbons into lighter fractions",
-                "More efficient than the Chemical Reactor",
-                "Place the appropriate circuit in the controller",
-                "Gets 5% energy cost reduction per coil tier",
-                ADV_STR_CHECK,
-                TT_BLUEPRINT
-        };
+        return desc;
     }
 
     @Override
@@ -222,16 +223,6 @@ public class TT_OilCrackingUnit extends GT_MetaTileEntity_MultiblockBase_EM impl
                     new TT_RenderedExtendedFacingTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][TEXTURE_INDEX]};
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",false,false,true);
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, false, false, true);
     }
 
     @Override
@@ -249,7 +240,7 @@ public class TT_OilCrackingUnit extends GT_MetaTileEntity_MultiblockBase_EM impl
             calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, getMaxInputVoltage());
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                 return false;
-            this.mEUt *= Math.pow(0.95D, this.coilMeta.getTier());
+            this.mEUt *= Math.pow(0.95D, this.getCoilHeat().getTier());
 
             if (this.mEUt > 0) {
                 this.mEUt = (-this.mEUt);
@@ -259,36 +250,6 @@ public class TT_OilCrackingUnit extends GT_MetaTileEntity_MultiblockBase_EM impl
             this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
             return true;
         }
-        return false;
-    }
-
-    @Override
-    public boolean isMachineBlockUpdateRecursive() {
-        return true;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }
 
@@ -318,10 +279,5 @@ public class TT_OilCrackingUnit extends GT_MetaTileEntity_MultiblockBase_EM impl
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         this.structureBuild_EM("main", 2,1,0, b, itemStack);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[0];
     }
 }

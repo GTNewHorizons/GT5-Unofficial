@@ -22,7 +22,6 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement;
 
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.crossmod.tectech.helper.CoilAdder;
 import com.github.bartimaeusnek.crossmod.tectech.helper.IHasCoils;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
@@ -30,8 +29,6 @@ import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.google.common.collect.ImmutableSet;
@@ -39,8 +36,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_Container_MultiMachine;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -48,13 +43,12 @@ import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
 
 import java.util.Set;
 
@@ -62,20 +56,18 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADV_S
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.TT_BLUEPRINT;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GT_Values.VN;
 
-public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_EM implements IHasCoils, IConstructable {
+public class TT_ElectronicBlastFurnace extends TT_Abstract_GT_Replacement_Coils {
 
     public TT_ElectronicBlastFurnace(Object unused, Object unused2) {
-        super(32765, "multimachine.blastfurnace", "Electric Blast Furnace");
-        GregTech_API.METATILEENTITIES[32765] = null;
-        GregTech_API.METATILEENTITIES[1000] = this;
+        super(1000, "multimachine.blastfurnace", "Electric Blast Furnace");
     }
 
     private TT_ElectronicBlastFurnace(String aName) {
         super(aName);
     }
 
-    private HeatingCoilLevel heatingCoilLevel = HeatingCoilLevel.None;
     private int mHeatingCapacity = 0;
 
     private static final byte TEXTURE_INDEX = 11;
@@ -142,11 +134,6 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
         this.structureBuild_EM("main", 1,3,0, b, itemStack);
     }
 
-    @Override
-    protected boolean cyclicUpdate_EM() {
-        return false;
-    }
-
     public final boolean addEBFInputsTop(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null)
             return false;
@@ -195,48 +182,24 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
         return false;
     }
 
-    public final boolean addEBFInputsBottom(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null)
-            return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch)
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-        else
-            return false;
+    private static final int pollutionPerTick = 20;
 
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus)
-            return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus)
-            return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output)
-            return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)
-            return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy)
-            return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance)
-            return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti)
-            return this.eEnergyMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti)
-            return this.eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
-        return false;
-    }
+    private final static String[] desc = new String[]{
+            "Blast Furnace",
+            "Controller block for the Electric Blast Furnace",
+            "You can use some fluids to reduce recipe time. Place the circuit in the Input Bus",
+            "Each 900K over the min. Heat required multiplies EU/t by 0.95",
+            "Each 1800K over the min. Heat required allows for one upgraded overclock instead of normal",
+            "Upgraded overclocks reduce recipe time to 25% (instead of 50%) and increase EU/t to 400%",
+            "Additionally gives +100K for every tier past MV",
+            "Creates up to: " + 20 * pollutionPerTick + " Pollution per Second",
+            ADV_STR_CHECK,
+            TT_BLUEPRINT
+    };
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                "Blast Furnace",
-                "Controller block for the Electric Blast Furnace",
-                "You can use some fluids to reduce recipe time. Place the circuit in the Input Bus",
-                "Each 900K over the min. Heat required multiplies EU/t by 0.95",
-                "Each 1800K over the min. Heat required allows for one upgraded overclock instead of normal",
-                "Upgraded overclocks reduce recipe time to 25% (instead of 50%) and increase EU/t to 400%",
-                "Additionally gives +100K for every tier past MV",
-                "Creates up to: " + 20 * getPollutionPerTick(null) + " Pollution per Second",
-                ADV_STR_CHECK,
-                TT_BLUEPRINT
-        };
+        return desc;
     }
 
     @Override
@@ -245,31 +208,6 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
             return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][11], new TT_RenderedExtendedFacingTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][11]};
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",false,false,true);
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, false, false, true);
-    }
-
-    @Override
-    public void setCoilHeat(HeatingCoilLevel coilMeta) {
-        this.heatingCoilLevel = coilMeta;
-    }
-
-    @Override
-    public HeatingCoilLevel getCoilHeat() {
-        return heatingCoilLevel;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[0];
     }
 
     @Override
@@ -366,32 +304,56 @@ public class TT_ElectronicBlastFurnace extends GT_MetaTileEntity_MultiblockBase_
     }
 
     @Override
-    public boolean isMachineBlockUpdateRecursive() {
-        return true;
-    }
+    public String[] getInfoData() {
+        int mPollutionReduction = 0;
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
+            if (!isValidMetaTileEntity(tHatch))
+                continue;
+            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
+        }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
+        long storedEnergy = 0;
+        long maxEnergy = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (!isValidMetaTileEntity(tHatch))
+                continue;
+            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+        }
 
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
+        return new String[]{
+                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN + mProgresstime / 20 + EnumChatFormatting.RESET + " s / " +
+                        EnumChatFormatting.YELLOW + mMaxProgresstime / 20 + EnumChatFormatting.RESET + " s",
+                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN + storedEnergy + EnumChatFormatting.RESET + " EU / " +
+                        EnumChatFormatting.YELLOW + maxEnergy + EnumChatFormatting.RESET + " EU",
+                StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED + -mEUt + EnumChatFormatting.RESET + " EU/t",
+                StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW + getMaxInputVoltage() + EnumChatFormatting.RESET + " EU/t(*2A) " + StatCollector.translateToLocal("GT5U.machines.tier") + ": " +
+                        EnumChatFormatting.YELLOW + VN[GT_Utility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " +
+                        EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
+                        " " + StatCollector.translateToLocal("GT5U.multiblock.efficiency") + ": " +
+                        EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
+                StatCollector.translateToLocal("GT5U.EBF.heat") + ": " +
+                        EnumChatFormatting.GREEN + mHeatingCapacity + EnumChatFormatting.RESET + " K",
+                StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN + mPollutionReduction + EnumChatFormatting.RESET + " %"
+        };
     }
 
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 20;
+        return pollutionPerTick;
     }
 
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
+    private static final String[] sfStructureDescription = new String[] {
+            "0 - Air",
+            "1 - Muffler",
+            "Required: Output Bus, Input Bus, Energy Hatch, Maintenance Hatch",
+            "Optional: Input Hatch, Output Hatch at Bottom, Output Hatch at top to regain CO/CO2/SO2"
+    };
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
+    public String[] getStructureDescription(ItemStack itemStack) {
+        return sfStructureDescription;
     }
+
 }

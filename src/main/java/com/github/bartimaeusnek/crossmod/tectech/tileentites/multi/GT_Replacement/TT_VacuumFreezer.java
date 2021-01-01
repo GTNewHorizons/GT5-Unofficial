@@ -54,16 +54,9 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADV_S
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.TT_BLUEPRINT;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
-public class TT_VacuumFreezer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class TT_VacuumFreezer extends TT_Abstract_GT_Replacement {
     public TT_VacuumFreezer(Object unused, Object unused2) {
-        super(32765, "multimachine.vacuumfreezer", "Vacuum Freezer");
-        GregTech_API.METATILEENTITIES[32765] = null;
-        GregTech_API.METATILEENTITIES[1002] = this;
-    }
-
-    @Override
-    protected boolean cyclicUpdate_EM() {
-        return false;
+        super(1002, "multimachine.vacuumfreezer", "Vacuum Freezer");
     }
 
     private TT_VacuumFreezer(String aName) {
@@ -80,17 +73,17 @@ public class TT_VacuumFreezer extends GT_MetaTileEntity_MultiblockBase_EM implem
         ).addElement(
                 'V',
                     ofChain(
-                            ofHatchAdder(
-                                TT_VacuumFreezer::addVacuumFreezerHatches,
-                                TEXTURE_INDEX,
-                            1
-                            ),
                             onElementPass(
                                     x -> ++x.blocks,
                                     ofBlock(
                                             GregTech_API.sBlockCasings2,
                                             1
                                     )
+                            ),
+                            ofHatchAdder(
+                                TT_VacuumFreezer::addVacuumFreezerHatches,
+                                TEXTURE_INDEX,
+                            1
                             )
                     )
         ).build();
@@ -100,14 +93,26 @@ public class TT_VacuumFreezer extends GT_MetaTileEntity_MultiblockBase_EM implem
         return STRUCTURE_DEFINITION;
     }
 
+    private final static String[] desc = new String[]{
+            "Vacuum Freezer",
+            "Controller Block for the Vacuum Freezer",
+            "Cools hot ingots and cells",
+            ADV_STR_CHECK,
+            TT_BLUEPRINT
+    };
+
+    private static final String[] sfStructureDescription = new String[] {
+            "0 - Air",
+            "Required: Output Bus, Input Bus, Energy Hatch, Maintenance Hatch"
+    };
+
+    @Override
+    public String[] getStructureDescription(ItemStack itemStack) {
+        return sfStructureDescription;
+    }
+
     public String[] getDescription() {
-        return new String[]{
-                "Vacuum Freezer",
-                "Controller Block for the Vacuum Freezer",
-                "Cools hot ingots and cells",
-                ADV_STR_CHECK,
-                TT_BLUEPRINT
-        };
+        return desc;
     }
 
     @Override
@@ -161,44 +166,8 @@ public class TT_VacuumFreezer extends GT_MetaTileEntity_MultiblockBase_EM implem
     }
 
     @Override
-    public boolean isMachineBlockUpdateRecursive() {
-        return true;
-    }
-
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
-    }
-
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public void construct(ItemStack itemStack, boolean b) {
         this.structureBuild_EM("main", 1,1,0, b, itemStack);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[0];
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",false,false,true);
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, false, false, true);
     }
 
     public final boolean addVacuumFreezerHatches(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
