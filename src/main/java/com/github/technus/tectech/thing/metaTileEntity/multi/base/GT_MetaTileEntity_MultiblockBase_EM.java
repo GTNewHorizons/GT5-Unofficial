@@ -812,7 +812,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()),
                 Rotation.byIndex(aNBT.getByte("eRotation")),
                 Flip.byIndex(aNBT.getByte("eFlip")));
-        eParameters = aNBT.getBoolean("eParam");
+        eParameters = !aNBT.hasKey("eParam") || aNBT.getBoolean("eParam");
         ePowerPass = aNBT.getBoolean("ePass");
         eSafeVoid = aNBT.getBoolean("eVoid");
         eDismantleBoom = aNBT.getBoolean("eBoom");
