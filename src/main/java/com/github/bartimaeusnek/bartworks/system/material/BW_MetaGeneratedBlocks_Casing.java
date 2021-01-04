@@ -135,8 +135,8 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
             //Fucking Minecraft TE settings.
         } catch (InterruptedException ignored) {}
         Optional.ofNullable(world.getTileEntity(x,y,z))
-                .filter(te -> te instanceof BW_MetaGeneratedBlocks_Casing_TE)
-                .map(te -> (BW_MetaGeneratedBlocks_Casing_TE) te)
+                .filter(te -> te instanceof BW_MetaGenerated_Block_TE)
+                .map(te -> (BW_MetaGenerated_Block_TE) te)
                 .ifPresent(te -> te.mMetaData = (short) meta);
     }
 }
