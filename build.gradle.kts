@@ -46,10 +46,11 @@ sourceSets.getByName("main") {
 //Load versioning
 val Project.minecraft: UserExtension
     get() = extensions.getByName<UserExtension>("minecraft")
+
 val projectVersion: String by project
-var commitHash: String by extra
+
 //Generates a hash for each new commit to differentiate versions
-commitHash = Runtime
+var commitHash = Runtime
         .getRuntime()
         .exec("git rev-parse --short HEAD")
         .let { process ->
@@ -140,8 +141,8 @@ dependencies {
     //Compile Dependencies
     compileOnly("li.cil.oc:OpenComputers:$opencomputersVersion:dev")
     compileOnly("dan200.computercraft:ComputerCraft:$computercraftVersion")
-    compileOnly("com.azanor.baubles:Baubles:$baublesVersion:deobf")
-    compileOnly("thaumcraft:Thaumcraft:$thaumcraftVersion:dev")
+    compile("com.azanor.baubles:Baubles:$baublesVersion:deobf")
+    compile("thaumcraft:Thaumcraft:$thaumcraftVersion:dev")
     compile("codechicken:CodeChickenLib:$codechickenlibVersion:dev")
     compile("codechicken:CodeChickenCore:$codechickencoreVersion:dev")
     compile("codechicken:NotEnoughItems:$neiVersion:dev")
@@ -183,7 +184,7 @@ tasks.jar {
     //Needed for access transformer which allows nerfing hardness of blocks
     this.manifest.attributes(
             mapOf(
-                    Pair("FMLAT","tectech_at.cfg")
+                    Pair("FMLAT", "tectech_at.cfg")
             )
     )
 }
