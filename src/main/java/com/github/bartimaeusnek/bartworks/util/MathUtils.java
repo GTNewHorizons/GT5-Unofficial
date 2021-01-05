@@ -22,6 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.util;
 
+import net.minecraft.util.MathHelper;
+
 /*
  * Faster implementations for Math stuff
  */
@@ -122,5 +124,12 @@ public class MathUtils {
 
     public static float wrap(float input, float bound){
         return (((input % bound)+bound) % bound);
+    }
+
+    public static float tanh(float x) {
+        float x2 = x * x;
+        float a = x * (135135.0f + x2 * (17325.0f + x2 * (378.0f + x2)));
+        float b = 135135.0f + x2 * (62370.0f + x2 * (3150.0f + x2 * 28.0f));
+        return clamp(a / b, -1, 1);
     }
 }

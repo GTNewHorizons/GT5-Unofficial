@@ -82,9 +82,9 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
         else if (x == 61)
             ret = 4500;
         else if (x <= 100)
-            ret = MathUtils.ceilLong((8000D * Math.tanh(-x / 20D) + 8000D) * 1000D);
+            ret = MathUtils.ceilLong((8000F * MathUtils.tanh(-x / 20F) + 8000F) * 1000F);
         else
-            ret = MathUtils.ceilLong(((8000D * Math.tanh(-x / 65D) + 8000D)));
+            ret = MathUtils.ceilLong(((8000F * MathUtils.tanh(-x / 65F) + 8000F)));
         return ret;//*20;
     }
 
