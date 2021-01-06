@@ -7,6 +7,7 @@ import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IDigitalChest;
 import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
@@ -34,20 +35,26 @@ public class GT_Cover_ItemMeter
             else if (aCoverVariable > 1)
                 aCoverVariable = CONVERTED_BIT | Math.min((aCoverVariable - 2), SLOT_MASK);
 
-        int[] tSlots;
-        if ((aCoverVariable & SLOT_MASK) > 0)
-            tSlots = new int[]{(aCoverVariable & SLOT_MASK) - 1};
-        else
-            tSlots = aTileEntity.getAccessibleSlotsFromSide(aSide);
+        long tMax = 0;
+        long tUsed = 0;
+        if (aTileEntity instanceof IDigitalChest) {
+            IDigitalChest dc = (IDigitalChest)aTileEntity;
+            tMax = dc.getMaxItemCount(); // currently it is limited by int, but there is not much reason for that
+            ItemStack[] inv = dc.getStoredItemData();
+            if (inv != null && inv.length > 1 && inv[1] != null)
+                tUsed = inv[1].stackSize;
+        } else {
+            int[] tSlots = (aCoverVariable & SLOT_MASK) > 0 ?
+                 new int[] {(aCoverVariable & SLOT_MASK) - 1} :
+                 aTileEntity.getAccessibleSlotsFromSide(aSide);
 
-        int tMax = 0;
-        int tUsed = 0;
-        for (int i : tSlots) {
-            if (i >= 0 && i < aTileEntity.getSizeInventory()) {
-                tMax+=64;
-                ItemStack tStack = aTileEntity.getStackInSlot(i);
-                if (tStack != null)
-                    tUsed += (tStack.stackSize<<6)/tStack.getMaxStackSize();
+            for (int i : tSlots) {
+                if (i >= 0 && i < aTileEntity.getSizeInventory()) {
+                    tMax += 64;
+                    ItemStack tStack = aTileEntity.getStackInSlot(i);
+                    if (tStack != null)
+                        tUsed += (tStack.stackSize << 6) / tStack.getMaxStackSize();
+                }
             }
         }
 
@@ -169,7 +176,7 @@ public class GT_Cover_ItemMeter
             else
                 maxSlot = -1;
 
-            if (maxSlot == -1)
+            if (maxSlot == -1 || tile instanceof IDigitalChest)
                 intSlot.setEnabled(false);
         }
 

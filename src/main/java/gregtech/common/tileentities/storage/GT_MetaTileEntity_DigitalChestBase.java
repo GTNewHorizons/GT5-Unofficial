@@ -168,7 +168,10 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     public int getMaxItemCount() {
         return CommonSizeCompute(mTier);
     }
-
+    @Override
+    public ItemStack[] getStoredItemData() {
+        return mInventory;
+    }
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return aIndex == 1;
