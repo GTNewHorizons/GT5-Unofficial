@@ -1,4 +1,6 @@
 import net.minecraftforge.gradle.user.UserExtension
+import java.io.FileInputStream
+import java.util.*
 import java.io.*
 
 buildscript {
@@ -43,11 +45,21 @@ sourceSets.getByName("main") {
     java.srcDir("AVRcore/src")
 }
 
-//Load versioning
+//Load Minecraft Version
 val Project.minecraft: UserExtension
     get() = extensions.getByName<UserExtension>("minecraft")
 
-val projectVersion: String by project
+//TODO Delete this! This exists to load the configs from the real properties file, which is needed for Jenkins to build
+//Gradle will load gradle.properties from it's home, it's install, and the project folder. Clearly whoever setup the
+//Jenkins jar signing needs to be reminded of this!
+val fis = FileInputStream("real.gradle.properties")
+val prop = Properties()
+prop.load(fis)
+
+//TODO Delete
+val projectVersion: String = prop.getProperty("projectVersion")
+//TODO Uncomment
+//val projectVersion: String by project
 
 //Generates a hash for each new commit to differentiate versions
 var commitHash = Runtime
@@ -112,24 +124,44 @@ dependencies {
     //Local Libraries
     compile(fileTree("libs") { this.include("*.jar") })
 
+    //TODO Uncomment
     //Versions from properties
-    val ic2Version: String by project
-    val gt5uVersion: String by project
-    val yamcoreVersion: String by project
-    val opencomputersVersion: String by project
-    val computercraftVersion: String by project
-    val baublesVersion: String by project
-    val thaumcraftVersion: String by project
-    val codechickenlibVersion: String by project
-    val codechickencoreVersion: String by project
-    val neiVersion: String by project
-    val wailaVersion: String by project
-    val galacticraftVersion: String by project
-    val galacticGregVersion: String by project
-    val buildcraftVersion: String by project
-    val forestryVersion: String by project
-    val enderioVersion: String by project
-    val enderCoreVersion: String by project
+    //val ic2Version: String by project
+    //val gt5uVersion: String by project
+    //val yamcoreVersion: String by project
+    //val opencomputersVersion: String by project
+    //val computercraftVersion: String by project
+    //val baublesVersion: String by project
+    //val thaumcraftVersion: String by project
+    //val codechickenlibVersion: String by project
+    //val codechickencoreVersion: String by project
+    //val neiVersion: String by project
+    //val wailaVersion: String by project
+    //val galacticraftVersion: String by project
+    //val galacticGregVersion: String by project
+    //val buildcraftVersion: String by project
+    //val forestryVersion: String by project
+    //val enderioVersion: String by project
+    //val enderCoreVersion: String by project
+
+    //TODO Delete
+    val ic2Version: String = prop.getProperty("ic2Version")
+    val gt5uVersion: String = prop.getProperty("gt5uVersion")
+    val yamcoreVersion: String = prop.getProperty("yamcoreVersion")
+    val opencomputersVersion: String = prop.getProperty("opencomputersVersion")
+    val computercraftVersion: String = prop.getProperty("computercraftVersion")
+    val baublesVersion: String = prop.getProperty("baublesVersion")
+    val thaumcraftVersion: String = prop.getProperty("thaumcraftVersion")
+    val codechickenlibVersion: String = prop.getProperty("codechickenlibVersion")
+    val codechickencoreVersion: String = prop.getProperty("codechickencoreVersion")
+    val neiVersion: String = prop.getProperty("neiVersion")
+    val wailaVersion: String = prop.getProperty("wailaVersion")
+    val galacticraftVersion: String = prop.getProperty("galacticraftVersion")
+    val galacticGregVersion: String = prop.getProperty("galacticGregVersion")
+    val buildcraftVersion: String = prop.getProperty("buildcraftVersion")
+    val forestryVersion: String = prop.getProperty("forestryVersion")
+    val enderioVersion: String = prop.getProperty("enderioVersion")
+    val enderCoreVersion: String = prop.getProperty("enderCoreVersion")
 
     //Hard Dependencies
     compile("net.industrial-craft:industrialcraft-2:$ic2Version:dev")
