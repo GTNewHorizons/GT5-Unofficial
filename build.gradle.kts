@@ -17,6 +17,7 @@ buildscript {
 plugins {
     idea
     java
+    signing
 }
 apply(plugin = "forge")
 
@@ -236,6 +237,10 @@ artifacts {
     this.archives(devJar)
 }
 
+tasks.register("signJar") {
+    dependsOn("reobf")
+}
+
 //TODO Convert Sign Jar to Kotlin
 //task signJar(dependsOn: 'reobf') {
 //    doLast {
@@ -250,4 +255,8 @@ artifacts {
 //        verbose: true
 //        )
 //    }
+//}
+
+//signing {
+//    sign(tasks["reobf"])
 //}
