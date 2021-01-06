@@ -266,9 +266,11 @@ signing {
 }
 
 tasks.named("signJar") {
-    extra["signing.keyId"] = propSign.getProperty("keyStoreAlias")
-    extra["signing.secretKeyRingFile"] = propSign.getProperty("keyStore")
-    extra["signing.password"] = propSign.getProperty("keyStorePass")
+    allprojects {
+        extra["signing.keyId"] = propSign.getProperty("keyStoreAlias")
+        extra["signing.secretKeyRingFile"] = propSign.getProperty("keyStore")
+        extra["signing.password"] = propSign.getProperty("keyStorePass")
+    }
     dependsOn(":reobf")
 }
 
