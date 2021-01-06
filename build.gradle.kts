@@ -19,6 +19,7 @@ plugins {
     java
     signing
 }
+
 apply(plugin = "forge")
 
 //Downloads Javadocs and sources by default
@@ -53,9 +54,10 @@ val Project.minecraft: UserExtension
 //TODO Delete this! This exists to load the configs from the real properties file, which is needed for Jenkins to build
 //Gradle will load gradle.properties from it's home, it's install, and the project folder. Clearly whoever setup the
 //Jenkins jar signing needs to be reminded of this!
-val fis = FileInputStream("real.gradle.properties")
 val prop = Properties()
-prop.load(fis)
+prop.load(FileInputStream("real.gradle.properties"))
+val propSign = Properties()
+propSign.load(FileInputStream("gradle.properties"))
 
 //TODO Delete
 val projectVersion: String = prop.getProperty("projectVersion")
@@ -237,26 +239,25 @@ artifacts {
     this.archives(devJar)
 }
 
-tasks.register("signJar") {
-    dependsOn("reobf")
+signing {
+    sign(tasks["jar"])
 }
 
-//TODO Convert Sign Jar to Kotlin
-//task signJar(dependsOn: 'reobf') {
-//    doLast {
-//        ant.signjar(
-//                destDir: jar.destinationDir,
-//        jar: jar.getArchivePath(),
-//        alias: findProperty('keyStoreAlias') ?: '',
-//        keystore: findProperty('keyStore') ?: '',
-//        storepass: findProperty('keyStorePass') ?: '',
-//        digestalg: findProperty('signDigestAlg') ?: '',
-//        tsaurl: findProperty('signTSAurl') ?: '',
-//        verbose: true
-//        )
-//    }
-//}
+tasks.named("signJar") {
+    extra["signing.keyId"] = propSign.getProperty("keyStoreAlias")
+    extra["signing.secretKeyRingFile"] = propSign.getProperty("keyStore")
+    extra["signing.password"] = propSign.getProperty("keyStorePass")
+    dependsOn(":reobf")
+}
 
-//signing {
-//    sign(tasks["reobf"])
+//task signJar(type: SignJar, dependsOn: reobfJar) {
+//    // findProperty allows us to reference the property without it existing.
+//    // Using project.propName would cause the script to fail validation if
+//    // the property did not exist.
+//    keyStore = project.findProperty('keyStore')
+//    alias = project.findProperty('keyStoreAlias')
+//    storePass = project.findProperty('keyStorePass')
+//    keyPass = project.findProperty('keyStoreKeyPass')
+//    inputFile = jar.archivePath
+//    outputFile = jar.archivePath
 //}
