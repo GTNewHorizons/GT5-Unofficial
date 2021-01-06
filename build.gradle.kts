@@ -215,6 +215,28 @@ tasks.withType<Jar> {
     }
 }
 
+//Load AVRcore
+val submodulesUpdate by tasks.creating(Exec::class) {
+    this.description = "Updates (and inits) git submodules"
+    this.group = "Build Setup"
+    this.commandLine("git", "submodule", "update", "--init", "--recursive", "--remote")
+}
+tasks.named("setupCIWorkspace") {
+    dependsOn(":submodulesUpdate")
+}
+tasks.named("setupDevWorkspace") {
+    dependsOn(":submodulesUpdate")
+}
+tasks.named("setupDecompWorkspace") {
+    dependsOn(":submodulesUpdate")
+}
+tasks.named("compileJava") {
+    dependsOn(":submodulesUpdate")
+}
+tasks.named("sourceMainJava") {
+    dependsOn(":submodulesUpdate")
+}
+
 tasks.jar {
     //Needed for access transformer which allows nerfing hardness of blocks
     this.manifest.attributes(
