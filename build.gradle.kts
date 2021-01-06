@@ -261,27 +261,20 @@ artifacts {
     this.archives(devJar)
 }
 
-signing {
-    sign(tasks["jar"])
+tasks.register("signJar") {
+    dependsOn("reobf")
 }
 
-tasks.named("signJar") {
-    allprojects {
-        extra["signing.keyId"] = propSign.getProperty("keyStoreAlias")
-        extra["signing.secretKeyRingFile"] = propSign.getProperty("keyStore")
-        extra["signing.password"] = propSign.getProperty("keyStorePass")
-    }
-    dependsOn(":reobf")
-}
-
-//task signJar(type: SignJar, dependsOn: reobfJar) {
-//    // findProperty allows us to reference the property without it existing.
-//    // Using project.propName would cause the script to fail validation if
-//    // the property did not exist.
-//    keyStore = project.findProperty('keyStore')
-//    alias = project.findProperty('keyStoreAlias')
-//    storePass = project.findProperty('keyStorePass')
-//    keyPass = project.findProperty('keyStoreKeyPass')
-//    inputFile = jar.archivePath
-//    outputFile = jar.archivePath
+//TODO Fix, but technically it was never fully implemented
+//signing {
+//    sign(tasks["jar"])
+//}
+//
+//tasks.named("signJar") {
+//    allprojects {
+//        extra["signing.keyId"] = propSign.getProperty("keyStoreAlias")
+//        extra["signing.secretKeyRingFile"] = propSign.getProperty("keyStore")
+//        extra["signing.password"] = propSign.getProperty("keyStorePass")
+//    }
+//    dependsOn(":reobf")
 //}
