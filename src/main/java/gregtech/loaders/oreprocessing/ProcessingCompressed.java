@@ -14,7 +14,7 @@ public class ProcessingCompressed implements IOreRecipeRegistrator {
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        GT_ModHandler.removeRecipeByOutput(aStack);
+        GT_ModHandler.removeRecipeByOutputDelayed(aStack);
         GregTech_API.registerCover(aStack, new GT_RenderedTexture(aMaterial.mIconSet.mTextures[72], aMaterial.mRGBa, false), null);
         //GT_RecipeRegistrator.registerUsagesForMaterials(null, false, GT_Utility.copyAmount(1L, aStack));
     }

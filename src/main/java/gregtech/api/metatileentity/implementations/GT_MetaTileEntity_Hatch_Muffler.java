@@ -35,8 +35,8 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
         System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
         desc[mDescriptionArray.length] = "DO NOT OBSTRUCT THE OUTPUT!";
         desc[mDescriptionArray.length + 1] = "Reduces Pollution to " + calculatePollutionReduction(100) + "%";
-        //Pollution Recovery scales from 5% at LV to 100% at MAX Voltage
-        desc[mDescriptionArray.length + 2] = "Recovers " + (105 - calculatePollutionReduction(100)) + "% of CO2/CO/SO2";
+        //Pollution Recovery scales from 0% at LV to 100% at UHV Voltage
+        desc[mDescriptionArray.length + 2] = "Recovers " + (100 - calculatePollutionReduction(100)) + "% of CO2/CO/SO2";
         return desc;
     }
 
@@ -97,7 +97,9 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     }
 
     public int calculatePollutionReduction(int aPollution) {
-        return (int) (aPollution * (Math.pow(0.85F, mTier - 1)));
+        if ((float) mTier < 2)
+            return aPollution;
+        return (int) ((float) aPollution * ((100F - (12.5F * ((float) mTier - 1F))) / 100F));
     }
 
     @Override
