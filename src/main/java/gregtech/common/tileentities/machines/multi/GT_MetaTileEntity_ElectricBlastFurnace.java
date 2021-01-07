@@ -239,7 +239,11 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
         if ((i == 0) && (j == 0)) {
             return addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir), CASING_INDEX);
         }
-        if (addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j), CASING_INDEX))
+        IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j);
+        if (addOutputToMachineList(tTileEntity, CASING_INDEX))
+            return true;
+
+        if (addMaintenanceToMachineList(tTileEntity, CASING_INDEX))
             return true;
 
         if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j) != GregTech_API.sBlockCasings1)
