@@ -68,7 +68,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                 .addCasingInfo("Heat Proof Machine Casing", 0)
                 .addOtherStructurePart("Heating Coils", "Two middle Layers")
                 .addEnergyHatch("Any bottom layer casing")
-                .addMaintenanceHatch("Any bottom layer casing")
+                .addMaintenanceHatch("Any casing")
                 .addMufflerHatch("Top middle")
                 .addInputBus("Any bottom layer casing")
                 .addInputHatch("Any bottom layer casing")
