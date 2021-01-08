@@ -1196,8 +1196,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                             hatchesStatusUpdate_EM();
                         }
 
-                        chargeController_EM(aBaseMetaTileEntity);
                         dischargeController_EM(aBaseMetaTileEntity);
+                        chargeController_EM(aBaseMetaTileEntity);
 
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {//Start
                             if (onRunningTick(mInventory[1])) {//Compute EU
@@ -1535,28 +1535,28 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     protected void dischargeController_EM(IGregTechTileEntity aBaseMetaTileEntity) {
-        powerPass(aBaseMetaTileEntity);
+        if(ePowerPass && getEUVar() > getMinimumStoredEU()){
+            powerPass(aBaseMetaTileEntity);
+        }
     }
 
     protected final void powerPass(IGregTechTileEntity aBaseMetaTileEntity) {
         long euVar;
-        if (ePowerPass && getEUVar() > getMinimumStoredEU()) {
-            for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
-                if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                    euVar = tHatch.maxEUOutput()*tHatch.maxAmperesOut();
-                    if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
-                            aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.maxAmperesOut()), false)) {
-                        tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
-                    }
+        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
+                euVar = tHatch.maxEUOutput() * tHatch.maxAmperesOut();
+                if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
+                        aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.maxAmperesOut()), false)) {
+                    tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
                 }
             }
-            for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : eDynamoMulti) {
-                if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                    euVar = tHatch.maxEUOutput() * tHatch.maxAmperesOut();
-                    if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
-                            aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.maxAmperesOut()), false)) {
-                        tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
-                    }
+        }
+        for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : eDynamoMulti) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
+                euVar = tHatch.maxEUOutput() * tHatch.maxAmperesOut();
+                if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
+                        aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.maxAmperesOut()), false)) {
+                    tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
                 }
             }
         }
@@ -1564,23 +1564,21 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     protected final void powerPass_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         long euVar;
-        if (ePowerPass && getEUVar() > getMinimumStoredEU()) {
-            for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
-                if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                    euVar = tHatch.maxEUOutput();
-                    if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
-                            aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, 1), false)) {
-                        tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
-                    }
+        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
+                euVar = tHatch.maxEUOutput();
+                if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
+                        aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, 1), false)) {
+                    tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
                 }
             }
-            for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : eDynamoMulti) {
-                if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                    euVar = tHatch.maxEUOutput() * tHatch.Amperes;
-                    if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
-                            aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.Amperes), false)) {
-                        tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
-                    }
+        }
+        for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : eDynamoMulti) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
+                euVar = tHatch.maxEUOutput() * tHatch.Amperes;
+                if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
+                        aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.Amperes), false)) {
+                    tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
                 }
             }
         }
@@ -1597,7 +1595,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 break;
             }
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                euVar = tHatch.maxEUInput() * tHatch.maxAmperesIn();
+                euVar = Math.min(tHatch.maxEUInput() * tHatch.maxAmperesIn(),tHatch.getEUVar());
                 if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euVar, false)) {
                     setEUVar(getEUVar() + euVar);
                 }
@@ -1608,7 +1606,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 break;
             }
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                euVar = tHatch.maxEUInput() * tHatch.maxAmperesIn();
+                euVar = Math.min(tHatch.maxEUInput() * tHatch.maxAmperesIn(),tHatch.getEUVar());
                 if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euVar, false)) {
                     setEUVar(getEUVar() + euVar);
                 }
@@ -1684,7 +1682,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (allowProduction && euFlow > 0) {
             addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
-            if (!drainEnergyInput_EM(0, (long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency), eAmpereFlow)) {
+            if (!drainEnergyInput((long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency), eAmpereFlow)) {
                 stopMachine();
                 return false;
             }
@@ -1802,9 +1800,29 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             if (DEBUG_MODE) {
                 TecTech.LOGGER.debug("L1 " + EUuse + ' ' + getEUVar() + ' ' + (EUuse > getEUVar()));
                 TecTech.LOGGER.debug("L2 " + EUtEffective + ' ' + maxEUinputMax + ' ' + (EUtEffective > maxEUinputMax));
-                TecTech.LOGGER.debug("L3 " + EUuse + ' ' + eMaxAmpereFlow);
+                TecTech.LOGGER.debug("L3 " + Amperes + ' ' + getMaxInputEnergy());
                 TecTech.LOGGER.debug("L4 " + ((EUuse - 1) / maxEUinputMin + 1) + ' ' + eMaxAmpereFlow + ' ' + ((EUuse - 1) / maxEUinputMin + 1 > eMaxAmpereFlow));
             }
+            return false;
+        }
+        //sub eu
+        setEUVar(getEUVar() - EUuse);
+        return true;
+    }
+
+    public boolean drainEnergyInput(long EUtEffective, long Amperes) {
+        long EUuse = EUtEffective * Amperes;
+        if(EUuse==0){
+            return true;
+        }
+        if(maxEUinputMin==0){
+            return false;
+        }
+        if (EUuse < 0) {
+            EUuse = -EUuse;
+        }
+        //not enough power
+        if (EUuse > getEUVar() || EUuse > getMaxInputEnergy()) {// EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1! //if not too much A
             return false;
         }
         //sub eu
