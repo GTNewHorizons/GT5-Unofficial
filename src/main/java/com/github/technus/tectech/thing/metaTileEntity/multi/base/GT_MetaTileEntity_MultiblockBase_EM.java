@@ -1595,7 +1595,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (allowProduction && euFlow > 0) {
             addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
-            if (!drainEnergyInput_EM(getMaxInputEnergy(), (long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency), eAmpereFlow)) {
+            if (!drainEnergyInput_EM(0, (long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency), eAmpereFlow)) {
                 stopMachine();
                 return false;
             }
@@ -1710,7 +1710,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
         long EUuse = EUtEffective * Amperes;
         if (EUuse > getEUVar() || //not enough power
-                (EUtTierVoltage > maxEUinputMax) || //TIER IS BASED ON BEST HATCH! not total EUtEffective input
+                (EUtTierVoltage==0?EUuse>getMaxInputEnergy():EUtTierVoltage > maxEUinputMax) || //TIER IS BASED ON BEST HATCH! not total EUtEffective input
                 (EUtTierVoltage * Amperes - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1! //if not too much A
             if (DEBUG_MODE) {
                 TecTech.LOGGER.debug("L1 " + EUuse + ' ' + getEUVar() + ' ' + (EUuse > getEUVar()));
