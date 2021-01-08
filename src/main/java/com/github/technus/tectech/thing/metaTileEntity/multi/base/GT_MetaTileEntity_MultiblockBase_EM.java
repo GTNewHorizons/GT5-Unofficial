@@ -1104,6 +1104,20 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      */
     @Override
     public boolean onRunningTick(ItemStack aStack) {
+        return onRunningTickCheck(aStack);
+    }
+
+    public boolean onRunningTickCheck_EM(ItemStack aStack) {
+        if (eRequiredData > eAvailableData) {
+            if (energyFlowOnRunningTick_EM(aStack, false)) {
+                stopMachine();
+            }
+            return false;
+        }
+        return energyFlowOnRunningTick_EM(aStack, true);
+    }
+
+    public boolean onRunningTickCheck(ItemStack aStack) {
         if (eRequiredData > eAvailableData) {
             if (energyFlowOnRunningTick(aStack, false)) {
                 stopMachine();
@@ -1564,12 +1578,24 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //region ENERGY!!!!
 
     //new method
-    private boolean energyFlowOnRunningTick(ItemStack aStack, boolean allowProduction) {
+    public boolean energyFlowOnRunningTick_EM(ItemStack aStack, boolean allowProduction) {
         long euFlow = mEUt * eAmpereFlow;//quick scope sign
         if (allowProduction && euFlow > 0) {
             addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
             if (!drainEnergyInput_EM(mEUt, (long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency), eAmpereFlow)) {
+                stopMachine();
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean energyFlowOnRunningTick(ItemStack aStack, boolean allowProduction) {
+        long euFlow = mEUt * eAmpereFlow;//quick scope sign
+        if (allowProduction && euFlow > 0) {
+            addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
+        } else if (euFlow < 0) {
+            if (!drainEnergyInput_EM(getMaxInputEnergy(), (long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency), eAmpereFlow)) {
                 stopMachine();
                 return false;
             }
@@ -1612,39 +1638,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Deprecated
     @Override
-    public final boolean addEnergyOutput(long EU) {
-        if (EU <= 0L) {
-            return true;
-        }
-        for (GT_MetaTileEntity_Hatch tHatch : eDynamoMulti) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                if (tHatch.maxEUOutput() < EU) {
-                    explodeMultiblock();
-                }
-                if (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(EU, false)) {
-                    return true;
-                }
-            }
-        }
-        for (GT_MetaTileEntity_Hatch tHatch : mDynamoHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                if (tHatch.maxEUOutput() < EU) {
-                    explodeMultiblock();
-                }
-                if (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(EU, false)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public final boolean addEnergyOutput(long eu) {
+        return addEnergyOutput_EM(eu,1);
     }
 
-    /**
-     * @param EU
-     * @param Amperes
-     * @return if was able to put inside the hatches
-     */
-    private boolean addEnergyOutput_EM(long EU, long Amperes) {
+    public boolean addEnergyOutput_EM(long EU, long Amperes) {
         if (EU < 0) {
             EU = -EU;
         }
@@ -1693,24 +1691,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Deprecated
     @Override
-    public final boolean drainEnergyInput(long EU) {
-        if (EU <= 0L) {
-            return true;
-        }
-        for (GT_MetaTileEntity_Hatch tHatch : eEnergyMulti) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch) && tHatch.maxEUInput() > EU && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(EU, false)) {
-                return true;
-            }
-        }
-        for (GT_MetaTileEntity_Hatch tHatch : mEnergyHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch) && tHatch.maxEUInput() > EU && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(EU, false)) {
-                return true;
-            }
-        }
-        return false;
+    public final boolean drainEnergyInput(long eu) {
+        return drainEnergyInput_EM(0,eu,1);
     }
 
-    private boolean drainEnergyInput_EM(long EUtTierVoltage, long EUtEffective, long Amperes) {
+    public boolean drainEnergyInput_EM(long EUtTierVoltage, long EUtEffective, long Amperes) {
         if(maxEUinputMin==0){
             return false;
         }
@@ -1725,7 +1710,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
         long EUuse = EUtEffective * Amperes;
         if (EUuse > getEUVar() || //not enough power
-                EUtTierVoltage > maxEUinputMax || //TIER IS BASED ON BEST HATCH! not total EUtEffective input
+                (EUtTierVoltage > maxEUinputMax) || //TIER IS BASED ON BEST HATCH! not total EUtEffective input
                 (EUtTierVoltage * Amperes - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1! //if not too much A
             if (DEBUG_MODE) {
                 TecTech.LOGGER.debug("L1 " + EUuse + ' ' + getEUVar() + ' ' + (EUuse > getEUVar()));
@@ -1747,7 +1732,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             mMaxProgresstime = time;
             return true;
         }
-        long tempEUt = EU < V[1] ? V[1] : EU;
+        long tempEUt = Math.max(EU, V[1]);
         long tempTier = maxEUinputMax >> 2;
         while (tempEUt < tempTier) {
             tempEUt <<= 2;
@@ -1791,6 +1776,21 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 energy += tHatch.maxEUInput() * tHatch.Amperes;
+            }
+        }
+        return energy;
+    }
+
+    public final long getMaxTheoreticalInputEnergy() {
+        long energy = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
+                energy += tHatch.maxEUInput()*tHatch.maxAmperesIn();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
+                energy += tHatch.maxEUInput() * tHatch.maxAmperesIn();
             }
         }
         return energy;
