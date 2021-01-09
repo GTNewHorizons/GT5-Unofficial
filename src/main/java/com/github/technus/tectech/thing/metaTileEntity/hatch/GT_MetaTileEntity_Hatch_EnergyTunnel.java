@@ -79,8 +79,13 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
     }
 
     @Override
-    public long maxAmperesIn() {
-        return 0;
+    public boolean isEnetOutput() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnetInput() {
+        return false;
     }
 
     @Override
