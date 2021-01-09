@@ -801,13 +801,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         eMaxAmpereGen = aNBT.getLong("eGenRating");
         maxEUinputMin = aNBT.getLong("eMaxEUmin");
         maxEUinputMax = aNBT.getLong("eMaxEUmax");
-        eAmpereFlow = aNBT.getLong("eRating");
+        eAmpereFlow = aNBT.hasKey("eRating")?aNBT.getLong("eRating"):1;
         eMaxAmpereFlow = aNBT.getLong("eMaxA");
         eRequiredData = aNBT.getLong("eDataR");
         eAvailableData = aNBT.getLong("eDataA");
         eCertainMode = aNBT.getByte("eCertainM");
         eCertainStatus = aNBT.getByte("eCertainS");
-        minRepairStatus = aNBT.getByte("eMinRepair");
+        minRepairStatus = aNBT.hasKey("eMinRepair")?aNBT.getByte("eMinRepair"):3;
         extendedFacing=ExtendedFacing.of(
                 ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()),
                 Rotation.byIndex(aNBT.getByte("eRotation")),
