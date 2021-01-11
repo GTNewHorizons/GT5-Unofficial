@@ -159,8 +159,14 @@ public class TT_OilCrackingUnit extends TT_Abstract_GT_Replacement_Coils {
     protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         this.setCoilHeat(HeatingCoilLevel.None);
         this.blocks = 0;
-        return this.structureCheck_EM("main", 2,1,0)
-                && this.blocks >= 18;
+        boolean ret = this.structureCheck_EM("main", 2,1,0);
+        setInputFilters();
+        return ret && this.blocks >= 18;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sCrakingRecipes;
     }
 
     public final boolean addOutputFluidHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

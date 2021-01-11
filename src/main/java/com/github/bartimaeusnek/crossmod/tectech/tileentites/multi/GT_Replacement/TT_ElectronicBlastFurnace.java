@@ -122,7 +122,13 @@ public class TT_ElectronicBlastFurnace extends TT_Abstract_GT_Replacement_Coils 
 
         this.mHeatingCapacity = (int) this.getCoilHeat().getHeat();
         this.mHeatingCapacity += 100 * (GT_Utility.getTier(getMaxInputVoltage()) - 2);
+        setInputFilters();
         return ret;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sBlastRecipes;
     }
 
     @Override

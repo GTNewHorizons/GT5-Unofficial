@@ -25,6 +25,11 @@ public abstract class TT_Abstract_GT_Replacement extends GT_MetaTileEntity_Multi
         super(aName);
     }
 
+    protected void setInputFilters() {
+        this.mInputBusses.forEach(x -> x.mRecipeMap = this.getRecipeMap());
+        this.mInputHatches.forEach(x -> x.mRecipeMap = this.getRecipeMap());
+    }
+
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", ePowerPass,false,true);

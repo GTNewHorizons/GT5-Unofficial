@@ -118,8 +118,15 @@ public class TT_VacuumFreezer extends TT_Abstract_GT_Replacement {
     @Override
     protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         this.blocks = 0;
-        return this.structureCheck_EM("main", 1,1,0)
+        boolean ret = this.structureCheck_EM("main", 1,1,0)
                 && this.blocks >= 16;
+        setInputFilters();
+        return ret;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
     }
 
     @SideOnly(Side.CLIENT)

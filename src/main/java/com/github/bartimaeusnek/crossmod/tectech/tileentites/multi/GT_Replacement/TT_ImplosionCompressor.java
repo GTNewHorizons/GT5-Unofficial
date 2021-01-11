@@ -139,7 +139,13 @@ public class TT_ImplosionCompressor extends TT_Abstract_GT_Replacement {
                 .noneMatch(x -> x == this.getExtendedFacing().getRelativeUpInWorld().ordinal()))
             return false;
 
+        setInputFilters();
         return ret;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sImplosionRecipes;
     }
 
     @Override
