@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.util;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
+import com.github.bartimaeusnek.bartworks.MainMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
@@ -833,6 +834,18 @@ public class BW_Util {
         GT_Utility.updateItemStack(aResult);
 
         return new GT_Shaped_Recipe(GT_Utility.copy(aResult), aDismantleable, aRemovable, aKeepNBT, aEnchantmentsAdded, aEnchantmentLevelsAdded, aRecipe).setMirrored(aMirrored);
+    }
+
+    public static void shortSleep(long nanos) {
+        try {
+            long start = System.nanoTime();
+            long end;
+            do {
+                end = System.nanoTime();
+            } while(start + nanos >= end);
+        } catch (Exception e) {
+            MainMod.LOGGER.catching(e);
+        }
     }
 
 }

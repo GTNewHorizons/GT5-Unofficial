@@ -36,6 +36,7 @@ buildscript {
 plugins {
     idea
     java
+    id("org.ajoberstar.grgit") version("3.1.1")
 }
 
 apply(plugin = "forge")
@@ -151,7 +152,7 @@ tasks.withType<Jar> {
     // this will ensure that this task is redone when the versions change.
     this.inputs.properties += "version" to project.version
     this.inputs.properties += "mcversion" to project.minecraft.version
-    this.archiveBaseName.set("bartworks[${project.minecraft.version}]")
+    this.archiveBaseName.set("bartworks[${project.minecraft.version}]-[${getVersionAppendage()}]")
 
     // replace stuff in mcmod.info, nothing else
     this.filesMatching("/mcmod.info") {
@@ -203,4 +204,8 @@ artifacts {
     this.archives(apiJar)
     this.archives(sourcesJar)
     this.archives(devJar)
+}
+
+fun getVersionAppendage() : String {
+    return org.ajoberstar.grgit.Grgit.open(mapOf("currentDir" to project.rootDir)).log().last().abbreviatedId
 }

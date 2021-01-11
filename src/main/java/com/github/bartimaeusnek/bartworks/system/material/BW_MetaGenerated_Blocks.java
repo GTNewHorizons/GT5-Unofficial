@@ -22,9 +22,9 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
-import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.renderer.BW_Renderer_Block_Ores;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
@@ -61,12 +61,9 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
         super.onBlockAdded(aWorld, aX, aY, aZ);
-        try {
-            //TODO: Unsleep this, is here because TE isnt set yet.
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            MainMod.LOGGER.catching(e);
-        }
+        //Waste some time to allow the TE to be set, do not use thread sleep here, it doesnt allow for nanoseconds.
+        //This will just waste a few cpu cycles to allow the TE to be set
+        BW_Util.shortSleep(0);
     }
 
     @SideOnly(Side.CLIENT)

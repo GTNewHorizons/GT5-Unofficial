@@ -145,25 +145,25 @@ public abstract class BW_OreLayer extends GT_Worldgen {
                     int i;
                     if (this.mSecondaryMeta > 0) {
                         for (i = tMinY - 1; i < tMinY + 2; ++i) {
-                            if (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0 || aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0) {
+                            if (shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ)) {
                                 wasPlaced = this.setOreBlock(aWorld, tX, i, tZ, this.mSecondaryMeta, false);
                             }
                         }
                     }
 
-                    if (this.mBetweenMeta > 0 && (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0 || aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0)) {
+                    if (this.mBetweenMeta > 0 && shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ)) {
                         wasPlaced = this.setOreBlock(aWorld, tX, tMinY + 2 + aRandom.nextInt(2), tZ, this.mBetweenMeta, false);
                     }
 
                     if (this.mPrimaryMeta > 0) {
                         for (i = tMinY + 3; i < tMinY + 6; ++i) {
-                            if (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0 || aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0) {
+                            if (shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ)) {
                                 wasPlaced = this.setOreBlock(aWorld, tX, i, tZ, this.mPrimaryMeta, false);
                             }
                         }
                     }
 
-                    if (this.mSporadicMeta > 0 && (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0 || aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0)) {
+                    if (this.mSporadicMeta > 0 && (shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ))) {
                         wasPlaced = this.setOreBlock(aWorld, tX, tMinY - 1 + aRandom.nextInt(7), tZ, this.mSporadicMeta, false);
                     }
                 }
@@ -175,6 +175,14 @@ public abstract class BW_OreLayer extends GT_Worldgen {
 
             return wasPlaced;
         }
+    }
+
+    private boolean shouldPlace(Random aRandom, int cX, int eX, int tX, int cZ, int eZ, int tZ) {
+        if (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0)
+            return true;
+        if (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0)
+            return true;
+        return false;
     }
 
     public boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean isSmallOre) {

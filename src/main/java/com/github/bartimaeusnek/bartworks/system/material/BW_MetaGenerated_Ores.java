@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
@@ -56,7 +57,7 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
 
     public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean air, Block block, int[] aBlockMeta) {
         if (!air) {
-            aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
+            aY = MathUtils.clamp(aY,1, aWorld.getActualHeight());
         }
 
         Block tBlock = aWorld.getBlock(aX, aY, aZ);
