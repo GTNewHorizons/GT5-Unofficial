@@ -105,7 +105,7 @@ public class GT_MetaTileEntity_Scanner
             if (ItemList.IC2_Crop_Seeds.isStackEqual(aStack, true, true)) {
                 
             	NBTTagCompound tNBT = Optional.ofNullable(
-            	        aStack.getTagCompound()).orElse(new NBTTagCompound());
+            	        aStack.getTagCompound()).orElseGet(NBTTagCompound::new);
                 
                 if (tNBT.getByte("scan") < 4) {
                     
@@ -297,7 +297,7 @@ public class GT_MetaTileEntity_Scanner
                         GT_Utility.ItemNBT.setBookTitle(this.mOutputItems[0], outputDisplayName + " Construction Data");
 
                         NBTTagCompound tNBT = Optional.ofNullable(
-                                mOutputItems[0].getTagCompound()).orElse(new NBTTagCompound());
+                                mOutputItems[0].getTagCompound()).orElseGet(NBTTagCompound::new);
 
                         tNBT.setTag("output", tRecipe.mOutput.writeToNBT(new NBTTagCompound()));
                         tNBT.setInteger("time", tRecipe.mDuration);
@@ -340,7 +340,7 @@ public class GT_MetaTileEntity_Scanner
                                         outputDisplayName = tStack.getDisplayName();
                                         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
                                             outputDisplayName = Optional.ofNullable(
-                                                    GT_Assemblyline_Server.lServerNames.get(tStack.getDisplayName())).orElse(tStack.getDisplayName());
+                                                    GT_Assemblyline_Server.lServerNames.get(tStack.getDisplayName())).orElse(tStac.getDisplayName());
 
                                         tBuilder.append((count == 0 ? "" : "\nOr ") + tStack.stackSize + " " + outputDisplayName);
                                         count++;
