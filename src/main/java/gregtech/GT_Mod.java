@@ -177,7 +177,7 @@ public class GT_Mod implements IGT_Mod {
     public static GT_Mod instance;
     @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GT_Client", serverSide = "gregtech.common.GT_Server")
     public static GT_Proxy gregtechproxy;
-    public static int MAX_IC2 = 2147483647;
+    public static final int MAX_IC2 = 2147483647;
     public static GT_Achievements achievements;
     private final String aTextGeneral = "general";
     private final String aTextIC2 = "ic2_";
