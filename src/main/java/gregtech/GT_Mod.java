@@ -231,7 +231,8 @@ public class GT_Mod implements IGT_Mod {
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
         Locale.setDefault(Locale.ENGLISH);
-        if (GregTech_API.sPreloadStarted)
+        if (GregTech_API.sPreloadStarted) 
+            return;
 
         for (Runnable tRunnable : GregTech_API.sBeforeGTPreload) {
             try {
