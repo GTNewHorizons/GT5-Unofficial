@@ -170,42 +170,49 @@ import static gregtech.api.enums.GT_Values.MOD_ID_FR;
                 " after:TConstruct;" +
                 " after:Translocator;")
 public class GT_Mod implements IGT_Mod {
+    
     public static final int VERSION = 509, SUBVERSION = 33;
     public static final int TOTAL_VERSION = calculateTotalGTVersion(VERSION, SUBVERSION);
     public static final int REQUIRED_IC2 = 624;
+    
     @Mod.Instance("gregtech")
     public static GT_Mod instance;
+    
     @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GT_Client", serverSide = "gregtech.common.GT_Server")
     public static GT_Proxy gregtechproxy;
-    public static final int MAX_IC2 = 2147483647;
+    
+    public static int MAX_IC2 = 2147483647;
     public static GT_Achievements achievements;
     private final String aTextGeneral = "general";
-    private final String aTextIC2 = "ic2_";
+    
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
 
 
     static {
-        if ((509 != GregTech_API.VERSION) || (509 != GT_ModHandler.VERSION) || (509 != GT_OreDictUnificator.VERSION) || (509 != GT_Recipe.VERSION) || (509 != GT_Utility.VERSION) || (509 != GT_RecipeRegistrator.VERSION) || (509 != Element.VERSION) || (509 != Materials.VERSION) || (509 != OrePrefixes.VERSION)) {
+        
+        if ((509 != GregTech_API.VERSION) || (509 != GT_ModHandler.VERSION) || (509 != GT_OreDictUnificator.VERSION) || (509 != GT_Recipe.VERSION) || (509 != GT_Utility.VERSION) || (509 != GT_RecipeRegistrator.VERSION) || (509 != Element.VERSION) || (509 != Materials.VERSION) || (509 != OrePrefixes.VERSION)) 
             throw new GT_ItsNotMyFaultException("One of your Mods included GregTech-API Files inside it's download, mention this to the Mod Author, who does this bad thing, and tell him/her to use reflection. I have added a Version check, to prevent Authors from breaking my Mod that way.");
-        }
+        
     }
 
     public GT_Mod() {
+        
         try {
             Class.forName("ic2.core.IC2").getField("enableOreDictCircuit").set(null, Boolean.FALSE);
-        } catch (Throwable ignored) {
-        }
+        } catch (Throwable ignored) {}
+        
         try {
             Class.forName("ic2.core.IC2").getField("enableCraftingBucket").set(null, Boolean.FALSE);
-        } catch (Throwable ignored) {
-        }
+        } catch (Throwable ignored) {}
+        
         try {
             Class.forName("ic2.core.IC2").getField("enableEnergyInStorageBlockItems").set(null, Boolean.FALSE);
-        } catch (Throwable ignored) {
-        }
+        } catch (Throwable ignored) {}
+        
         GT_Values.GT = this;
         GT_Values.DW = new GT_DummyWorld();
         GT_Values.NW = new GT_Network();
+        
         GregTech_API.sRecipeAdder = GT_Values.RA = new GT_RecipeAdder();
 
         Textures.BlockIcons.VOID.name();
@@ -224,9 +231,7 @@ public class GT_Mod implements IGT_Mod {
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
         Locale.setDefault(Locale.ENGLISH);
-        if (GregTech_API.sPreloadStarted) {
-            return;
-        }
+        if (GregTech_API.sPreloadStarted)
 
         for (Runnable tRunnable : GregTech_API.sBeforeGTPreload) {
             try {
@@ -904,7 +909,7 @@ public class GT_Mod implements IGT_Mod {
                 "blastfurnace", "blockcutter", "inductionFurnace", "generator", "windMill", "waterMill", "solarPanel", "centrifuge", "electrolyzer", "compressor",
                 "electroFurnace", "extractor", "macerator", "recycler", "metalformer", "orewashingplant", "massFabricator", "replicator",
             })
-           .filter(tName -> GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + tName, true))
+           .filter(tName -> GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + tName, true))
            .map(tName -> GT_ModHandler.getIC2Item(tName, 1L)).forEach(GT_ModHandler::removeRecipeByOutputDelayed);
         
 

@@ -32,8 +32,9 @@ import java.util.stream.IntStream;
 
 public class GT_MetaTileEntity_Disassembler
         extends GT_MetaTileEntity_BasicMachine {
+    
     public GT_MetaTileEntity_Disassembler(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "Disassembles Machines at " + Math.min(50 + 10 * aTier,100) + "% Efficiency", 1, 9, "Disassembler.png", "", new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_DISASSEMBLER_ACTIVE), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_DISASSEMBLER), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER_ACTIVE), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_DISASSEMBLER_ACTIVE), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_DISASSEMBLER)});
+        super(aID, aName, aNameRegional, aTier, 1, "Disassembles Machines at " + Math.min(50 + 10 * aTier, 100) + "% Efficiency", 1, 9, "Disassembler.png", "", new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_DISASSEMBLER_ACTIVE), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_DISASSEMBLER), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER_ACTIVE), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_DISASSEMBLER_ACTIVE), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_DISASSEMBLER)});
     }
 
     public GT_MetaTileEntity_Disassembler(String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
@@ -92,22 +93,31 @@ public class GT_MetaTileEntity_Disassembler
     }
 
     public int checkRecipe() {
+        
         ItemStack is = getInputAt(0);
+        
         if (GT_Utility.isStackInvalid(is))
             return DID_NOT_FIND_RECIPE;
+        
         if (is.getItem() instanceof GT_MetaGenerated_Tool)
             return DID_NOT_FIND_RECIPE;
+        
         ItemStack comp = new ItemStack(GregTech_API.sBlockMachines);
         if (is.getItem() == comp.getItem()) {
+            
             IMetaTileEntity iMetaTileEntity = GregTech_API.METATILEENTITIES[is.getItemDamage()];
             if (iMetaTileEntity instanceof GT_MetaTileEntity_TieredMachineBlock &&
                     ((GT_MetaTileEntity_TieredMachineBlock) iMetaTileEntity).mTier > this.mTier)
+                
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
+        
         Set<GT_ItemStack> stacks = outputHardOverrides.keySet();
         for (GT_ItemStack stack : stacks) {
+            
             ItemStack in = is.copy();
             in.stackSize = 1;
+            
             if (stack.isStackEqual(in) && stack.mStackSize <= is.stackSize) {
                 return setOutputsAndTime(outputHardOverrides.get(stack).toArray(new ItemStack[0]), stack.mStackSize)
                         ? FOUND_AND_SUCCESSFULLY_USED_RECIPE
@@ -123,8 +133,10 @@ public class GT_MetaTileEntity_Disassembler
 
         GT_Recipe gt_recipe = GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.findRecipe(this.getBaseMetaTileEntity(), true, this.mEUt, null, this.getAllInputs());
         if (gt_recipe != null) {
+            
             gt_recipe.isRecipeInputEqual(true, null, this.getRealInventory());
             return setOutputsAndTime(gt_recipe.mOutputs, gt_recipe.mInputs[0].stackSize);
+        
         }
 
         Collection<DissassembleReference> recipes = this.findRecipeFromMachine();
@@ -143,8 +155,10 @@ public class GT_MetaTileEntity_Disassembler
     }
 
     private boolean setOutputsAndTime(ItemStack[] inputs, int stackSize){
+        
         if (this.getInputAt(0).stackSize >= stackSize)
             this.getInputAt(0).stackSize -= stackSize;
+        
         else
             return false;
 
@@ -155,6 +169,7 @@ public class GT_MetaTileEntity_Disassembler
     }
 
     private static DissassembleReference ensureDowncasting(Collection<DissassembleReference> recipes) {
+        
         ItemStack[] inputs = recipes.stream()
                 .findFirst()
                 .orElseThrow(NullPointerException::new)

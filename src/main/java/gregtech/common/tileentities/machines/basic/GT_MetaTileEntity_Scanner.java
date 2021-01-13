@@ -1,5 +1,9 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes;
+
+import java.util.Optional;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IIndividual;
@@ -28,10 +32,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes;
-
-import org.apache.commons.lang3.ObjectUtils;
 
 public class GT_MetaTileEntity_Scanner
         extends GT_MetaTileEntity_BasicMachine {
@@ -104,9 +104,8 @@ public class GT_MetaTileEntity_Scanner
             }
             if (ItemList.IC2_Crop_Seeds.isStackEqual(aStack, true, true)) {
                 
-            	NBTTagCompound tNBT = aStack.getTagCompound();
-                if (tNBT == null) 
-                    tNBT = new NBTTagCompound();
+            	NBTTagCompound tNBT = Optional.ofNullable(
+            	        aStack.getTagCompound()).orElse(new NBTTagCompound());
                 
                 if (tNBT.getByte("scan") < 4) {
                     
@@ -289,17 +288,16 @@ public class GT_MetaTileEntity_Scanner
 
                         String outputDisplayName = tRecipe.mOutput.getDisplayName();
                         if (FMLCommonHandler.instance().getEffectiveSide().isServer()) 
-                            outputDisplayName = ObjectUtils.defaultIfNull(
-                                    GT_Assemblyline_Server.lServerNames.get(tRecipe.mOutput.getDisplayName()), 
-                                    tRecipe.mOutput.getDisplayName())
-                                    ;
+                            outputDisplayName = Optional.ofNullable(
+                                    GT_Assemblyline_Server.lServerNames.get(tRecipe.mOutput.getDisplayName())).orElse(tRecipe.mOutput.getDisplayName());
     
                         this.mOutputItems[0] = GT_Utility.copyAmount(1L, new Object[]{getSpecialSlot()});
                         //remove possible old NBTTagCompound
                         this.mOutputItems[0].setTagCompound(new NBTTagCompound());
                         GT_Utility.ItemNBT.setBookTitle(this.mOutputItems[0], outputDisplayName + " Construction Data");
 
-                        NBTTagCompound tNBT = ObjectUtils.defaultIfNull(this.mOutputItems[0].getTagCompound(), new NBTTagCompound());
+                        NBTTagCompound tNBT = Optional.ofNullable(
+                                mOutputItems[0].getTagCompound()).orElse(new NBTTagCompound());
 
                         tNBT.setTag("output", tRecipe.mOutput.writeToNBT(new NBTTagCompound()));
                         tNBT.setInteger("time", tRecipe.mDuration);
@@ -325,7 +323,8 @@ public class GT_MetaTileEntity_Scanner
                         outputDisplayName = tRecipe.mOutput.getDisplayName();
                         
                         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
-                            outputDisplayName = ObjectUtils.defaultIfNull(GT_Assemblyline_Server.lServerNames.get(tRecipe.mOutput.getDisplayName()), tRecipe.mOutput.getDisplayName());
+                            outputDisplayName = Optional.ofNullable(
+                                    GT_Assemblyline_Server.lServerNames.get(tRecipe.mOutput.getDisplayName())).orElse(tRecipe.mOutput.getDisplayName());
                             
                         tNBTList.appendTag(new NBTTagString("Construction plan for " + tRecipe.mOutput.stackSize + " " + outputDisplayName + ". Needed EU/t: " + tRecipe.mEUt + " Production time: " + (tRecipe.mDuration / 20)));
                         for (int i = 0; i < tRecipe.mInputs.length; i++) {
@@ -340,7 +339,8 @@ public class GT_MetaTileEntity_Scanner
                                         
                                         outputDisplayName = tStack.getDisplayName();
                                         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
-                                            outputDisplayName = ObjectUtils.defaultIfNull(GT_Assemblyline_Server.lServerNames.get(tStack.getDisplayName()),tStack.getDisplayName());
+                                            outputDisplayName = Optional.ofNullable(
+                                                    GT_Assemblyline_Server.lServerNames.get(tStack.getDisplayName())).orElse(tStack.getDisplayName());
 
                                         tBuilder.append((count == 0 ? "" : "\nOr ") + tStack.stackSize + " " + outputDisplayName);
                                         count++;
@@ -354,9 +354,8 @@ public class GT_MetaTileEntity_Scanner
                                 
                                 outputDisplayName = tRecipe.mInputs[i].getDisplayName();
                                 if (FMLCommonHandler.instance().getEffectiveSide().isServer())
-                                    outputDisplayName = ObjectUtils.defaultIfNull(
-                                            GT_Assemblyline_Server.lServerNames.get(tRecipe.mInputs[i].getDisplayName()), 
-                                            tRecipe.mInputs[i].getDisplayName());
+                                    outputDisplayName = Optional.ofNullable(
+                                            GT_Assemblyline_Server.lServerNames.get(tRecipe.mInputs[i].getDisplayName())).orElse( tRecipe.mInputs[i].getDisplayName());
                                 
                                 tNBTList.appendTag(new NBTTagString("Input Bus " + (i + 1) + ": " + tRecipe.mInputs[i].stackSize + " " + outputDisplayName));
                             }
@@ -367,9 +366,8 @@ public class GT_MetaTileEntity_Scanner
                                 
                                 outputDisplayName = tRecipe.mFluidInputs[i].getLocalizedName();
                                 if (FMLCommonHandler.instance().getEffectiveSide().isServer())
-                                    outputDisplayName = ObjectUtils.defaultIfNull(
-                                            GT_Assemblyline_Server.lServerNames.get(tRecipe.mFluidInputs[i].getLocalizedName()), 
-                                            tRecipe.mFluidInputs[i].getLocalizedName());
+                                    outputDisplayName = Optional.ofNullable(
+                                            GT_Assemblyline_Server.lServerNames.get(tRecipe.mFluidInputs[i].getLocalizedName())).orElse(tRecipe.mFluidInputs[i].getLocalizedName());
 
                                 tNBTList.appendTag(new NBTTagString("Input Hatch " + (i + 1) + ": " + tRecipe.mFluidInputs[i].amount + "L " + outputDisplayName));
                             }

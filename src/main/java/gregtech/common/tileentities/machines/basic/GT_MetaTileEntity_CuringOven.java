@@ -55,30 +55,48 @@ public class GT_MetaTileEntity_CuringOven
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        
         if (aBaseMetaTileEntity.isServerSide()) {
+            
             for (ItemStack tStack : mInventory)
-                if (tStack!=null&&tStack.getItem() instanceof GT_MetaGenerated_Tool &&getBaseMetaTileEntity().getStoredEU()>0) {
-                	getBaseMetaTileEntity().decreaseStoredEnergyUnits(24, true);
+                
+                if (tStack!=null && tStack.getItem() instanceof GT_MetaGenerated_Tool && getBaseMetaTileEntity().getStoredEU() > 0) {
+                	
+                    getBaseMetaTileEntity().decreaseStoredEnergyUnits(24, true);
                     NBTTagCompound aNBT = tStack.getTagCompound();
                     if (aNBT != null) {
-                	int tHeat = 300;
-                	long tWorldTime = getBaseMetaTileEntity().getWorld().getTotalWorldTime();
-                        aNBT = aNBT.getCompoundTag("GT.ToolStats");
-                        if (aNBT != null&&aNBT.hasKey("Heat")) {
-                        	tHeat = aNBT.getInteger("Heat");
-                        	if(aNBT.hasKey("HeatTime")){
-                        		long tHeatTime = aNBT.getLong("HeatTime");
-                        		if(tWorldTime>(tHeatTime+10)){
-                        			tHeat = (int) (tHeat - ((tWorldTime-tHeatTime)/10));
-                        			if(tHeat<300)tHeat=300;
-                        		}
-                        	}
+                    	int tHeat = 300;
+                    	long tWorldTime = getBaseMetaTileEntity().getWorld().getTotalWorldTime();
+                        
+                    	aNBT = aNBT.getCompoundTag("GT.ToolStats");
+                        if (aNBT != null && aNBT.hasKey("Heat")) {
+                            
+                            tHeat = aNBT.getInteger("Heat");
+                            if(aNBT.hasKey("HeatTime")){
+                            	
+                                long tHeatTime = aNBT.getLong("HeatTime");
+                            	if (tWorldTime > (tHeatTime + 10)){
+                            		tHeat = (int) (tHeat - ((tWorldTime - tHeatTime) / 10));
+                            		
+                            		if (tHeat < 300)
+                            		    tHeat = 300;
+                            		
+                            	}
+                            	
+                            }
+                            
                         }
                         tHeat++;
-                        if(aNBT!=null){
-                        	aNBT.setInteger("Heat", tHeat);
-                        	aNBT.setLong("HeatTime", tWorldTime);}
-                        if(tHeat>GT_MetaGenerated_Tool.getPrimaryMaterial(tStack).mMeltingPoint){mInventory[0]=null;}
+                        if (aNBT != null) {
+                            
+                            aNBT.setInteger("Heat", tHeat);
+                            aNBT.setLong("HeatTime", tWorldTime);
+                        
+                        }
+                            
+                        if(tHeat > GT_MetaGenerated_Tool.getPrimaryMaterial(tStack).mMeltingPoint)
+                                mInventory[0] = null;
+                    
                     }
                 	
                 }

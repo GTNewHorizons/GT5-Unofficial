@@ -26,10 +26,12 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
 	
 	
     public GT_Block_Casings1() {
+        
         super(GT_Item_Casings1.class, "gt.blockcasings", GT_Material_Casings.INSTANCE);
-        for (int i = 0; i < 16; i = i+1) {
+        
+        for (int i = 0; i < 16; i++)
             Textures.BlockIcons.casingTexturePages[0][i] = new GT_CopiedBlockTexture(this, 6, i);
-        }
+
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "ULV Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "LV Machine Casing");
@@ -47,6 +49,7 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Kanthal Coil Block (Deprecated)");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Nichrome Coil Block (Deprecated)");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Superconducting Coil Block");
+        
         ItemList.Casing_ULV.set(new ItemStack(this, 1, 0));
         ItemList.Casing_LV.set(new ItemStack(this, 1, 1));
         ItemList.Casing_MV.set(new ItemStack(this, 1, 2));
@@ -66,33 +69,46 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
     }
 
     public IIcon getIcon(int aSide, int aMeta) {
+        
         if ((aMeta >= 0) && (aMeta < 16)) {
+            
             switch (aMeta) {
                 case 10:
                     return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
+                    
                 case 11:
                     return Textures.BlockIcons.MACHINE_HEATPROOFCASING.getIcon();
+                    
                 case 12:
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+                    
                 case 13:
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+                    
                 case 14:
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+                    
                 case 15:
                     return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR.getIcon();
+                    
             }
-            if (aSide == 0) {
+            
+            if (aSide == 0)
                 return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta].getIcon();
-            }
-            if (aSide == 1) {
+            
+            if (aSide == 1) 
                 return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta].getIcon();
-            }
+        
             return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta].getIcon();
         }
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
     }
 
     public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return aWorld.getBlockMetadata(aX, aY, aZ) > 9 ? super.colorMultiplier(aWorld, aX, aY, aZ) : gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
+        return aWorld.getBlockMetadata(aX, aY, aZ) > 9 
+                ? super.colorMultiplier(aWorld, aX, aY, aZ) 
+                : gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16 
+                    | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8 
+                    | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
     }
 }

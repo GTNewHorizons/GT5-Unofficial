@@ -58,9 +58,12 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        
         if (aBaseMetaTileEntity.isClientSide()) return true;
+        
         this.hasBlock = checkForBlock();
         aBaseMetaTileEntity.openGUI(aPlayer);
+        
         return true;
     }
 
@@ -82,12 +85,12 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     public String[] getInfoData() {
         return new String[]{
                 "Coordinates:",
-                "X: "+EnumChatFormatting.GREEN+ this.mTargetX+EnumChatFormatting.RESET,
-                "Y: "+EnumChatFormatting.GREEN+ this.mTargetY+EnumChatFormatting.RESET,
+                "X: " + EnumChatFormatting.GREEN + this.mTargetX + EnumChatFormatting.RESET,
+                "Y: " + EnumChatFormatting.GREEN + this.mTargetY + EnumChatFormatting.RESET,
                 "Z: "+EnumChatFormatting.GREEN+ this.mTargetZ+EnumChatFormatting.RESET,
-                "Dimension: " + EnumChatFormatting.GREEN+this.mTargetD+EnumChatFormatting.RESET,
-                "Dimension Valid: " + (GT_Utility.isRealDimension(this.mTargetD) ? EnumChatFormatting.GREEN+"Yes"+EnumChatFormatting.RESET : EnumChatFormatting.RED+"No"+EnumChatFormatting.RESET),
-                "Dimension Registered: " + (DimensionManager.isDimensionRegistered(this.mTargetD) ? EnumChatFormatting.GREEN+"Yes"+EnumChatFormatting.RESET : EnumChatFormatting.RED+"No"+EnumChatFormatting.RESET)
+                "Dimension: " + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET,
+                "Dimension Valid: " + (GT_Utility.isRealDimension(this.mTargetD) ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET),
+                "Dimension Registered: " + (DimensionManager.isDimensionRegistered(this.mTargetD) ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET)
         };
     }
 
@@ -97,50 +100,67 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     public void saveNBTData(NBTTagCompound aNBT) {
-        if (mFluid != null) aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
+        
+        if (mFluid != null) 
+            aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
+        
         aNBT.setInteger("mTargetX", this.mTargetX);
         aNBT.setInteger("mTargetY", this.mTargetY);
         aNBT.setInteger("mTargetZ", this.mTargetZ);
         aNBT.setInteger("mTargetD", this.mTargetD);
         aNBT.setBoolean("mDebug", this.mDebug);
+    
     }
 
     public void loadNBTData(NBTTagCompound aNBT) {
+        
         mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));
+        
         this.mTargetX = aNBT.getInteger("mTargetX");
         this.mTargetY = aNBT.getInteger("mTargetY");
         this.mTargetZ = aNBT.getInteger("mTargetZ");
         this.mTargetD = aNBT.getInteger("mTargetD");
         this.mDebug = aNBT.getBoolean("mDebug");
+    
     }
 
     public void onConfigLoad(GT_Config aConfig) {
+        
         sInterDimensionalTeleportAllowed = aConfig.get(ConfigCategories.machineconfig, "Teleporter.Interdimensional", true);
         mMaxLoss = Math.max(aConfig.get(ConfigCategories.machineconfig, "MicrowaveTransmitter.MaxLoss", 50), 11);
         mMaxLossDistance = aConfig.get(ConfigCategories.machineconfig, "MicrowaveTransmitter.MaxLossDistance", 10000);
         mPassiveEnergyUse = aConfig.get(ConfigCategories.machineconfig, "MicrowaveTransmitter.PassiveEnergy", true);
+    
     }
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        
         if (aBaseMetaTileEntity.isServerSide()) {
+            
             if ((this.mTargetX == 0) && (this.mTargetY == 0) && (this.mTargetZ == 0) && (this.mTargetD == 0)) {
+                
                 this.mTargetX = aBaseMetaTileEntity.getXCoord();
                 this.mTargetY = aBaseMetaTileEntity.getYCoord();
                 this.mTargetZ = aBaseMetaTileEntity.getZCoord();
                 this.mTargetD = aBaseMetaTileEntity.getWorld().provider.dimensionId;
+            
             }
             this.hasBlock = checkForBlock();
         }
     }
 
     public boolean checkForBlock() {
+        
         for (byte i = -5; i <= 5; i = (byte) (i + 1)) {
+            
             for (byte j = -5; j <= 5; j = (byte) (j + 1)) {
+                
                 for (byte k = -5; k <= 5; k = (byte) (k + 1)) {
-                    if (getBaseMetaTileEntity().getBlockOffset(i, j, k) ==  GregTech_API.sBlockMetal5 && getBaseMetaTileEntity().getMetaIDOffset(i, j, k) == 8) {//require osmiridium block
+                    
+                    if (getBaseMetaTileEntity().getBlockOffset(i, j, k) ==  GregTech_API.sBlockMetal5 && getBaseMetaTileEntity().getMetaIDOffset(i, j, k) == 8) //require osmiridium block
                         return true;
-                    }
+                        
                 }
             }
         }
@@ -153,7 +173,9 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
                         sInterDimensionalTeleportAllowed &&
                                 (
                                         this.hasBlock ||
-                                                mFluid != null && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && mFluid.amount >= 1000
+                                        mFluid != null && 
+                                        mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && 
+                                        mFluid.amount >= 1000
 
                                 )
                 )
@@ -161,71 +183,95 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     public boolean isDimensionalTeleportAvailable() {
-        return this.mDebug || (hasDimensionalTeleportCapability() && GT_Utility.isRealDimension(this.mTargetD) && GT_Utility.isRealDimension(getBaseMetaTileEntity().getWorld().provider.dimensionId));
+        
+        return this.mDebug || 
+                (hasDimensionalTeleportCapability() && 
+                GT_Utility.isRealDimension(this.mTargetD) && 
+                GT_Utility.isRealDimension(getBaseMetaTileEntity().getWorld().provider.dimensionId))
+                    ;
+    
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (mFluid == null) {
+        
+        if (mFluid == null)
             mFluid = Materials.Nitrogen.getPlasma(0);
-        }
+
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (getBaseMetaTileEntity().isServerSide()) {
+            
             if (getBaseMetaTileEntity().getTimer() % 100L == 50L) {
+                
                 this.hasBlock = checkForBlock();
+            
             }
             if ((getBaseMetaTileEntity().isAllowedToWork()) && (getBaseMetaTileEntity().getRedstone())) {
+                
                 if (getBaseMetaTileEntity().getStoredEU() > (V[mTier] * 16)) {
-                    if (mPassiveEnergyUse) {
-                        getBaseMetaTileEntity().decreaseStoredEnergyUnits(2L<<(mTier-1), false);
-                    }
+                    
+                    if (mPassiveEnergyUse)
+                        getBaseMetaTileEntity().decreaseStoredEnergyUnits(2L << (mTier - 1), false);
+                    
                     if (hasDimensionalTeleportCapability() && this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1))) {
+                        
                         mFluid.amount--;
-                        if (mFluid.amount < 1) {
+                        
+                        if (mFluid.amount < 1) //invalid state
                             mFluid = null;
-                        }
+                        
                     }
                     if (tTargetD != mTargetD || tTargetX != mTargetX || tTargetY != mTargetY || tTargetZ != mTargetZ) {
+                        
                         tTargetD = mTargetD;
                         tTargetX = mTargetX;
                         tTargetY = mTargetY;
                         tTargetZ = mTargetZ;
+                        
                         if (this.mTargetD == getBaseMetaTileEntity().getWorld().provider.dimensionId) {
+                            
                             tTile = getBaseMetaTileEntity().getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
+                        
                         } else {
+                            
                             World tWorld = DimensionManager.getWorld(this.mTargetD);
-                            if (tWorld != null) {
+                            if (tWorld != null)
                                 tTile = tWorld.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
-                            }
+                            
                         }
                     }
+                    
                     int tDistance = distanceCalculation();
-                    if(tTile!=null) {
+                    if (tTile != null) {
+                        
                         if (tTile instanceof IEnergyConnected) {
-                            long packetSize=V[mTier];
+                            
+                            long packetSize = V[mTier];
                             if(tTile instanceof IGregTechTileEntity){
-                                IMetaTileEntity mte=((IGregTechTileEntity) tTile).getMetaTileEntity();
-                                if(mte instanceof BaseMetaTileEntity) {
+                                
+                                IMetaTileEntity mte = ((IGregTechTileEntity) tTile).getMetaTileEntity();
+                                if(mte instanceof BaseMetaTileEntity)
                                     packetSize=((BaseMetaTileEntity) mte).getMaxSafeInput();
-                                }
+                                
                             }
                             long energyUse = 10;
-                            if (mMaxLossDistance != 0) {
+                            if (mMaxLossDistance != 0)
                                 energyUse = GT_Utility.safeInt(10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
-                            }
+                            
                             energyUse=packetSize + ((V[mTier] * energyUse) / 100);
                             if (getBaseMetaTileEntity().isUniversalEnergyStored(energyUse)) {
-                                if (((IEnergyConnected) tTile).injectEnergyUnits((byte) 6, packetSize, 1) > 0) {
+                                if (((IEnergyConnected) tTile).injectEnergyUnits((byte) 6, packetSize, 1) > 0)
                                     getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyUse, false);
-                                }
+                                
                             }
                         }
                     }
                 }
                 getBaseMetaTileEntity().setActive(true);
-            } else {
+            
+            } else
                 getBaseMetaTileEntity().setActive(false);
-            }
+            
         }
     }
 

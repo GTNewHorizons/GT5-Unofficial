@@ -33,16 +33,16 @@ public class GT_Achievements {
 
     //public static List<Materials> oreList = new ArrayList<Materials>();
     //public static List<Integer[]> oreStats = new ArrayList<Integer[]>();
-    //public static int oreReg = -1;
-    private static int assReg=-1;
-    private ConcurrentHashMap<String, Achievement> achievementList;
-    //private ConcurrentHashMap<String, Boolean> issuedAchievements;
-    private int adjX = 5;
-    private int adjY = 9;
+    public static int oreReg = -1;
+    public static int assReg=-1;
+    public ConcurrentHashMap<String, Achievement> achievementList;
+    public ConcurrentHashMap<String, Boolean> issuedAchievements;
+    public int adjX = 5;
+    public int adjY = 9;
 
     public GT_Achievements() {
         this.achievementList = new ConcurrentHashMap<>();
-        //this.issuedAchievements = new ConcurrentHashMap<>();
+        this.issuedAchievements = new ConcurrentHashMap<>();
         /*int oreList_sS=oreList.size();
         for (int i = 0; i < oreList_sS; i++) {
             if (oreList.get(i) != null) {
