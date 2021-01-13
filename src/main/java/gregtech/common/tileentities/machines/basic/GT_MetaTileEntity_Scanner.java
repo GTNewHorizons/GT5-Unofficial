@@ -340,7 +340,7 @@ public class GT_MetaTileEntity_Scanner
                                         outputDisplayName = tStack.getDisplayName();
                                         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
                                             outputDisplayName = Optional.ofNullable(
-                                                    GT_Assemblyline_Server.lServerNames.get(tStack.getDisplayName())).orElse(tStac.getDisplayName());
+                                                    GT_Assemblyline_Server.lServerNames.get(tStack.getDisplayName())).orElse(tStack.getDisplayName());
 
                                         tBuilder.append((count == 0 ? "" : "\nOr ") + tStack.stackSize + " " + outputDisplayName);
                                         count++;
