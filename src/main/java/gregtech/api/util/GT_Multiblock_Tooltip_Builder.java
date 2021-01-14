@@ -76,6 +76,7 @@ public class GT_Multiblock_Tooltip_Builder {
 	 */
 	public GT_Multiblock_Tooltip_Builder addMachineType(String machine) {
 		iLines.add(TT_machineType + COLON + EnumChatFormatting.YELLOW + machine + EnumChatFormatting.RESET);
+		sLines.add("");
 		return this;
 	}
 	
@@ -88,6 +89,7 @@ public class GT_Multiblock_Tooltip_Builder {
 	 */
 	public GT_Multiblock_Tooltip_Builder addInfo(String info) {
 		iLines.add(info);
+		sLines.add("");
 		return this;
 	}
 	
@@ -99,6 +101,7 @@ public class GT_Multiblock_Tooltip_Builder {
 	 */
 	public GT_Multiblock_Tooltip_Builder addSeparator() {
 		iLines.add("-----------------------------------------");
+		sLines.add("");
 		return this;
 	}
 	
@@ -113,6 +116,7 @@ public class GT_Multiblock_Tooltip_Builder {
 	 */
 	public GT_Multiblock_Tooltip_Builder addPollutionAmount(int pollution) {
 		iLines.add(TT_causes + COLON + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
+		sLines.add("");
 		return this;
 	}
 
@@ -330,7 +334,9 @@ public class GT_Multiblock_Tooltip_Builder {
 	 */
 	public void toolTipFinisher(String mod) {
 		iLines.add(TT_hold + " " + EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " " + TT_todisplay);
+		sLines.add(0, "");
 		iLines.add(TT_mod + COLON + EnumChatFormatting.GREEN + mod + EnumChatFormatting.GRAY);
+		sLines.add(0, "");
 		iArray = new String[iLines.size()];
 		sArray = new String[sLines.size()];
 		iLines.toArray(iArray);
