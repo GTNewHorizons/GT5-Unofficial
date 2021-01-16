@@ -188,10 +188,12 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBas
 							if ((!this.addMaintenanceToMachineList(tTileEntity, 82)) && (!this.addEnergyInputToMachineList(tTileEntity, 82))) {
 								if (tBlock instanceof ic2.core.block.BlockIC2Door) {
 									if ((tMeta & 8) == 0) {
-										if (Math.abs(dY) < y) //x - side
-											doorState = (tMeta & 0x5) == 0x4 || (tMeta & 0x5) == 0x1;
-										else if (Math.abs(dX) < x) //y-side, corners ignored.
-											doorState = (tMeta & 0x5) == 0x5 || (tMeta & 0x5) == 0x0;
+										// let's not fiddle with bits anymore.
+										if (Math.abs(dZ) < z) // on side parallel to z axis
+											doorState = tMeta == 1 || tMeta == 3 || tMeta == 4 || tMeta == 6;
+										else if (Math.abs(dX) < x) // on side parallel to x axis
+											doorState = tMeta == 0 || tMeta == 2 || tMeta == 5 || tMeta == 7;
+										// corners ignored
 									}
 									mDoorCount++;
 								} else {
