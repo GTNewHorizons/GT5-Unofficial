@@ -69,7 +69,7 @@ public class RendererMessage implements IMessage {
             Random localRand = Minecraft.getMinecraft().theWorld.rand;
             int[] zapsToUse = new int[4];
             for (int i = 0; i < 3; i++) {
-                zapsToUse[0] = localRand.nextInt(pMessage.sparkList.size());
+                zapsToUse[i] = localRand.nextInt(pMessage.sparkList.size());
             }
             int i = 0;
             for (ThaumSpark sp : pMessage.sparkList) {
