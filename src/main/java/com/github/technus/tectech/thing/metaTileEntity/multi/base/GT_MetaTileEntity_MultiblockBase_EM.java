@@ -121,6 +121,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //if u need to force some things to be fixed - u might need to override doRandomMaintenanceDamage
     protected byte minRepairStatus = 3;
 
+    //can power pass be enabled
+    public boolean ePowerPassUpgraded = false;
+
     //functionality toggles - changed by buttons in gui also
     public boolean ePowerPass = false, eSafeVoid = false;
 
