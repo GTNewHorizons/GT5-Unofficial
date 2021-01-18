@@ -92,6 +92,11 @@ item.tm.enderfluidlinkcover.desc.0=Ender-Fluid-Enables Machines!
 item.tm.enderfluidlinkcover.desc.1=Use on any side of a fluid tank to link it to the Ender
 item.tm.enderfluidlinkcover.desc.2=Ender Tanks so are laggy -Bot from the Chads of NH
 
+item.tm.powerpassupgradecover.name=Power Pass Upgrade Cover
+item.tm.powerpassupgradecover.desc.0=Add power pass functionality to TecTech Multiblocks
+item.tm.powerpassupgradecover.desc.1=Active transformer in a can??
+item.tm.powerpassupgradecover.desc.2=Chain them up like Christmas lights!
+
 #Death Messages
 death.attack.microwaving=%1$s was dehydrated by radiation.
 death.attack.microwaving.player=%1$s was dehydrated by radiation while fighting %2$s.
