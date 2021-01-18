@@ -226,7 +226,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         //Send Power
         powerTeslaNodeMap(this);
 
-        //Randomly send all the sparks out once every 3 to 5 seconds
+        //TODO Encapsulate the spark sender
         sparkCount--;
         if (sparkCount == 0){
             sparkCount = 10;
