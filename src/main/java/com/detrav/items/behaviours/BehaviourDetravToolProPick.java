@@ -4,7 +4,6 @@ import com.detrav.DetravScannerMod;
 import com.detrav.items.DetravMetaGeneratedTool01;
 import com.detrav.utils.BartWorksHelper;
 import com.detrav.utils.GTppHelper;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -37,12 +36,7 @@ import java.util.SplittableRandom;
  */
 public class BehaviourDetravToolProPick extends Behaviour_None {
 
-    static final int[] DISTANCEINTS = new int[] {
-            0,
-            4,
-            25,
-            64,
-    };
+    static final int[] DISTANCEINTS = new int[] {0, 4, 25, 64};
     int distTextIndex;
 
     HashMap<String, Integer> ores;
@@ -157,9 +151,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                 return;
             }
         } else if (tAssotiation!=null){
-            //if (aTileEntity instanceof GT_TileEntity_Ores) {
             try {
-                GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) aTileEntity;
                 String name = tAssotiation.toString();
                 addChatMassageByValue(aPlayer, -1, name);
                 if (!aPlayer.capabilities.isCreativeMode)
@@ -172,6 +164,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
             }
         }else if (aRandom.nextInt(100) < chance) {
             int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack).intValue();
+            final String small_ore_keyword = StatCollector.translateToLocal("detrav.scanner.small_ore.keyword");
             for (int x = 0; x < 16; x++)
                 for (int z = 0; z < 16; z++) {
                     int ySize = aChunk.getHeightValue(x, z);
@@ -181,30 +174,27 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                         short tMetaID = (short)aChunk.getBlockMetadata(x,y,z);
                         if (tBlock instanceof GT_Block_Ores_Abstract) {
                             TileEntity tTileEntity = aChunk.getTileEntityUnsafe(x,y,z);
-                            if ((tTileEntity!=null)
-                                    && (tTileEntity instanceof GT_TileEntity_Ores)
-                                    && ((GT_TileEntity_Ores) tTileEntity).mNatural == true) {
+                            if ((tTileEntity instanceof GT_TileEntity_Ores)
+                                && ((GT_TileEntity_Ores) tTileEntity).mNatural) {
                                 tMetaID = (short)((GT_TileEntity_Ores) tTileEntity).getMetaData();
                                 try {
-                                    String name = Materials.getLocalizedNameForItem(
-                                    		GT_LanguageManager.getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name"), tMetaID%1000);
-                                    if (name.startsWith(StatCollector.translateToLocal("detrav.scanner.small_ore.keyword"))) if (data != 1) continue;
+                                    String name = Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name"), tMetaID%1000);
+                                    if (data != 1 && name.startsWith(small_ore_keyword)) continue;
                                     addOreToHashMap(name, aPlayer);
                                 }
                                 catch(Exception e) {
                                     String name = tBlock.getUnlocalizedName() + ".";
-                                    if (name.contains(".small.")) if (data != 1) continue;
+                                    if (data != 1 && name.contains(".small."))  continue;
                                     addOreToHashMap(name, aPlayer);
                                 }
                             }
-                        } else if (Loader.isModLoaded("miscutils") && GTppHelper.isGTppBlock(tBlock) ) {
+                        } else if (DetravScannerMod.isGTppLoaded && GTppHelper.isGTppBlock(tBlock) ) {
                             String name = GTppHelper.getGTppVeinName(tBlock);
                             if (!name.isEmpty())
                                 addOreToHashMap(name, aPlayer);
-                        } else if (Loader.isModLoaded("bartworks") && BartWorksHelper.isOre(tBlock)){
-                            if (data != 1 && BartWorksHelper.isSmallOre(tBlock))
-                                continue;
-                                addOreToHashMap(GT_LanguageManager.getTranslation((BartWorksHelper.isSmallOre(tBlock) ? "bw.blockores.02." : "bw.blockores.01.") + ((BartWorksHelper.getMetaFromBlock(aChunk,x,y,z,tBlock))*-1) + ".name"), aPlayer);
+                        } else if (DetravScannerMod.isBartWorksLoaded && BartWorksHelper.isOre(tBlock)){
+                            if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
+                            addOreToHashMap(GT_LanguageManager.getTranslation((BartWorksHelper.isSmallOre(tBlock) ? "bw.blockores.02." : "bw.blockores.01.") + ((BartWorksHelper.getMetaFromBlock(aChunk,x,y,z,tBlock))*-1) + ".name"), aPlayer);
                         } else if (data == 1) {
                             tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                             if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
@@ -212,18 +202,14 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                                     try {
                                         tMetaID = (short)tAssotiation.mMaterial.mMaterial.mMetaItemSubID;
                                         
-                                        String name = Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation(
-                                                "gt.blockores." + tMetaID + ".name"), tMetaID%1000);
+                                        String name = Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation("gt.blockores." + tMetaID + ".name"), tMetaID%1000);
                                         addOreToHashMap(name, aPlayer);
                                     } catch (Exception e1) {
                                         String name = tAssotiation.toString();
                                         addOreToHashMap(name, aPlayer);
                                     }
                                 }
-                                catch (Exception e)
-                                {
-
-                                }
+                                catch (Exception ignored) { }
                             }
                         }
 

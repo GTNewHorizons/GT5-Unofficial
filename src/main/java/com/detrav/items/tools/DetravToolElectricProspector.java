@@ -7,11 +7,11 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by wital_000 on 19.03.2016.
  */
-public class DetravToolElectricProPick extends DetravToolElectricProPickBase {
+public class DetravToolElectricProspector extends DetravToolElectricProspectorBase {
 	
 	private int tier;
 	
-    public DetravToolElectricProPick(int tier) {
+    public DetravToolElectricProspector(int tier) {
 		this.tier=tier;
 	}
 	public int getBaseQuality() {

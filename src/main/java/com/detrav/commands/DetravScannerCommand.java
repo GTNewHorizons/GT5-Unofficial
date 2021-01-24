@@ -23,8 +23,7 @@ public class DetravScannerCommand implements ICommand {
 
     private List aliases;
 
-    public DetravScannerCommand()
-    {
+    public DetravScannerCommand() {
         this.aliases = new ArrayList<String>();
         this.aliases.add("DetravScanner");
         this.aliases.add("dscan");
@@ -123,8 +122,7 @@ public class DetravScannerCommand implements ICommand {
 
             }
         sender.addChatMessage(new ChatComponentText("*** Detrav Scanner Begin"));
-        for(String key : ores.keySet())
-        {
+        for(String key : ores.keySet()) {
             sender.addChatMessage(new ChatComponentText(String.format("%s : %d", key, ores.get(key))));
         }
         sender.addChatMessage(new ChatComponentText("*** Detrav Scanner End"));

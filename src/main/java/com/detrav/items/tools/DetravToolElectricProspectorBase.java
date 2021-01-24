@@ -1,7 +1,7 @@
 package com.detrav.items.tools;
 
 import com.detrav.enums.Textures01;
-import com.detrav.items.behaviours.BehaviourDetravToolElectricProPick;
+import com.detrav.items.behaviours.BehaviourDetravToolElectricProspector;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
@@ -28,7 +28,7 @@ import java.util.List;
  * Created by wital_000 on 19.03.2016.
  * modified by bartimaeusnek on 05.06.2018
  */
-public class DetravToolElectricProPickBase implements IToolStats {
+public class DetravToolElectricProspectorBase implements IToolStats {
 	
     public int getToolDamagePerBlockBreak() {
         return GT_Mod.gregtechproxy.mHardRock ? 50 : 100;
@@ -169,7 +169,7 @@ public class DetravToolElectricProPickBase implements IToolStats {
     }
 
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        aItem.addItemBehavior(aID, new BehaviourDetravToolElectricProPick(getToolDamagePerBlockBreak()));
+        aItem.addItemBehavior(aID, new BehaviourDetravToolElectricProspector(getToolDamagePerBlockBreak()));
     }
 
     public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {

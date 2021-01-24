@@ -16,9 +16,10 @@ buildscript {
 }
 apply plugin: 'java'
 apply plugin: 'forge'
-//apply plugin: 'idea'
+apply plugin: 'idea'
 
-//idea.module.inheritOutputDirs = true
+
+idea { module { inheritOutputDirs = true } }
 
 file "build.properties" withReader {
     def prop = new Properties()
@@ -39,7 +40,7 @@ archivesBaseName = "GT Scanner Mod"
 
 minecraft {
     version = "${config.minecraft.version}-${config.forge.version}"
-    runDir = "eclipse"
+    runDir = "run"
 }
 
 configurations {
@@ -68,32 +69,9 @@ repositories {
     maven { // AppleCore
         url "http://www.ryanliptak.com/maven/"
     }
-    //ivy {
-    //    name "BuildCraft"
-    //    artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision]-[classifier].[ext]"
-    //}
-    //ivy {
-    //    name 'CoFHLib'
-    //    artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhlib.cf}/[module]-[revision].[ext]"
-    //}
-    //ivy {
-    //    name 'CoFHCore'
-    //    artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhcore.cf}/[module]-[revision].[ext]"
-    //}
-    //ivy {
-    //    name 'Railcraft'
-    //    artifactPattern "http://addons-origin.cursecdn.com/files/${config.railcraft.cf}/[module]_[revision].[ext]"
-    //}
-	//ivy {
-    //    name 'IC2NuclearControl'
-    //    artifactPattern "http://addons-origin.cursecdn.com/files/${config.nc.cf}/[module]-[revision].[ext]"
-    //}
 }
 
 dependencies {
-//    provided ("appeng:appliedenergistics2:${config.ae2.version}:dev") {
-//        exclude module: '*'
-//    }
     provided "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
 	provided "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
     provided "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
@@ -105,7 +83,7 @@ dependencies {
         transitive = false
     }
    // provided name: 'buildcraft', version: config.buildcraft.version, classifier: "dev", ext: 'jar'
-   // provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
+//    provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
    // provided name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
    // provided name: 'Railcraft', version: config.railcraft.version, ext: 'jar'
    // provided name: 'IC2NuclearControl', version: config.nc.version, ext: 'jar'
@@ -137,6 +115,10 @@ artifacts {
     archives devJar
     archives debugJar
 }
+sourceSets {
+    main { output.resourcesDir = output.classesDir }
+}
+
 processResources
 {
     // this will ensure that this task is redone when the versions change.
@@ -146,7 +128,7 @@ processResources
     ext.srcFiles = "$projectDir/src/main/resources"
     ext.destDir = "$projectDir/build/classes/main"
 
-    // registering inputs & outputs allow gradle to skip if UP-TO-DATE
+    // registering inputs & outputs allow grFadle to skip if UP-TO-DATE
     inputs.files srcFiles
     outputs.dir destDir
 

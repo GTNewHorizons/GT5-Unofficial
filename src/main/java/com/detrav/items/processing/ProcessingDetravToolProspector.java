@@ -15,17 +15,14 @@ import static com.detrav.DetravScannerMod.DEBUGBUILD;
 /**
  * Created by wital_000 on 18.03.2016.
  */
-public class ProcessingDetravToolProPick implements gregtech.api.interfaces.IOreRecipeRegistrator {			
-    public ProcessingDetravToolProPick() {
+public class ProcessingDetravToolProspector implements gregtech.api.interfaces.IOreRecipeRegistrator {			
+    public ProcessingDetravToolProspector() {
         OrePrefixes.toolHeadPickaxe.add(this);
-        
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        if(!aPrefix.doGenerateItem(aMaterial)) 
-        	return;
-        if (DEBUGBUILD)
-            return;
+        if(!aPrefix.doGenerateItem(aMaterial)) return;
+        if (DEBUGBUILD) return;
         try {
             //ULV disabled
             //GT_ModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(0, 1, aMaterial, Materials.Lead, null), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"SHE","CPC","PXP",'E',OreDictionary.getOres("cellSulfuricAcid").get(0),'S',OreDictionary.getOres("cellHydroxide").get(0),'H',OrePrefixes.toolHeadDrill.get(aMaterial),'P',OrePrefixes.plate.get(aMaterial),'C',OrePrefixes.circuit.get(Materials.Primitive),'X',gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Sensor_ULV});
@@ -46,7 +43,7 @@ public class ProcessingDetravToolProPick implements gregtech.api.interfaces.IOre
             GT_ModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(102, 1, aMaterial, Materials.Osmium, new long[]{409600000L, GT_Values.V[7], 7L, -1L}), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"EHR", "CSC", "PBP", Character.valueOf('S'), ItemList.Cover_Screen, Character.valueOf('R'), ItemList.Sensor_ZPM, Character.valueOf('H'), OrePrefixes.toolHeadDrill.get(aMaterial), Character.valueOf('E'), ItemList.Emitter_ZPM, Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Ultimate), Character.valueOf('P'), OrePrefixes.plate.get(Materials.Osmium), Character.valueOf('B'), CustomItemList.BatteryHull_ZPM_Full.get(1L)});
             GT_ModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(104, 1, aMaterial, Materials.Neutronium, new long[]{1638400000L, GT_Values.V[8], 8L, -1L}), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"EHR", "CSC", "PBP", Character.valueOf('S'), ItemList.Cover_Screen, Character.valueOf('R'), ItemList.Sensor_UV, Character.valueOf('H'), OrePrefixes.toolHeadDrill.get(aMaterial), Character.valueOf('E'), ItemList.Emitter_UV, Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Superconductor), Character.valueOf('P'), OrePrefixes.plate.get(Materials.Neutronium), Character.valueOf('B'), CustomItemList.BatteryHull_UV_Full.get(1L)});
             GT_ModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(106, 1, aMaterial, Materials.Infinity, new long[]{6553600000L, GT_Values.V[9], 9L, -1L}), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"EHR", "CSC", "PBP", Character.valueOf('S'), ItemList.Cover_Screen, Character.valueOf('R'), ItemList.Sensor_UHV, Character.valueOf('H'), OrePrefixes.toolHeadDrill.get(aMaterial), Character.valueOf('E'), ItemList.Emitter_UHV, Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Infinite), Character.valueOf('P'), OrePrefixes.plate.get(Materials.Infinity), Character.valueOf('B'), CustomItemList.BatteryHull_UHV_Full.get(1L)});
-        }catch (Exception ignored){}
+        } catch (Exception ignored){}
 		
     }
 }
