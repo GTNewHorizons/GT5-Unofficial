@@ -25,13 +25,13 @@ class OresList extends GuiScrollingList {
         ores = aOres;
         keys = new ArrayList<>(ores.keySet());
         Collections.sort(keys);
-        keys.add(0, "All");
+        if(keys.size() > 1) keys.add(0, "All");
         selected = 0;
     }
 
     @Override
     protected int getSize() {
-        return ores.size();
+        return keys.size();
     }
 
     @Override
@@ -54,7 +54,7 @@ class OresList extends GuiScrollingList {
             parent.mc.fontRenderer,
             parent.mc.fontRenderer.trimStringToWidth(keys.get(slotIdx), listWidth - 10),
             this.left + 3,
-            slotTop,
+            slotTop - 1,
             ores.getOrDefault(keys.get(slotIdx), 0x7d7b76)
         );
     }

@@ -1,7 +1,7 @@
-detrav.scanner.mode.0=Set Mode: Ore, Any Rock Block
-detrav.scanner.mode.1=Set Mode: Ore (with small), Any Rock Block
-detrav.scanner.mode.2=Set Mode: Oil, Any Block
-detrav.scanner.mode.3=Set Mode: Pollution, Any Block
+detrav.scanner.mode.0=Set Mode: Ores
+detrav.scanner.mode.1=Set Mode: Ores and Small Ores
+detrav.scanner.mode.2=Set Mode: Underground Fluids
+detrav.scanner.mode.3=Set Mode: Pollution
 detrav.scanner.mode.error=Set Mode: ERROR
 
 detrav.scanner.distance.texts.0= next to you,

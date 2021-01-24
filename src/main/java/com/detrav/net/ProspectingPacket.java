@@ -92,7 +92,7 @@ public class ProspectingPacket extends DetravPacket {
             } else if (packet.ptype == 3) {
                 // Pollution
                 name = StatCollector.translateToLocal("gui.detrav.scanner.pollution");
-                rgba = new short[]{0,0,0,0};
+                rgba = new short[]{125,123,118,0};
             } else {
                 return;
             }

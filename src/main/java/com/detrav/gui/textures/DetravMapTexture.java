@@ -57,8 +57,7 @@ public class DetravMapTexture extends AbstractTexture {
                         }
                     }else if (packet.ptype == 3) {
                         final short meta = packet.map[i][j].get((byte) 1);
-                        final String name = packet.metaMap.get(meta);
-                        image.setRGB(i, j, packet.ores.get(name));                        
+                        image.setRGB(i, j, ((meta & 0xFF) << 16) + ((meta & 0xFF) << 8) + ((meta & 0xFF)) | 0XFF000000);                        
                     }
                 }
                 // draw player pos
