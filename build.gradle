@@ -82,11 +82,6 @@ dependencies {
     provided ("com.enderio:EnderIO:${config.enderio.version}:dev") {
         transitive = false
     }
-   // provided name: 'buildcraft', version: config.buildcraft.version, classifier: "dev", ext: 'jar'
-//    provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
-   // provided name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
-   // provided name: 'Railcraft', version: config.railcraft.version, ext: 'jar'
-   // provided name: 'IC2NuclearControl', version: config.nc.version, ext: 'jar'
 }
 task devJar(type: Jar) {
     from sourceSets.main.output
@@ -115,6 +110,8 @@ artifacts {
     archives devJar
     archives debugJar
 }
+
+// Textures in debug mode.  :rage: 
 sourceSets {
     main { output.resourcesDir = output.classesDir }
 }
@@ -128,7 +125,7 @@ processResources
     ext.srcFiles = "$projectDir/src/main/resources"
     ext.destDir = "$projectDir/build/classes/main"
 
-    // registering inputs & outputs allow grFadle to skip if UP-TO-DATE
+    // registering inputs & outputs allow gradle to skip if UP-TO-DATE
     inputs.files srcFiles
     outputs.dir destDir
 
