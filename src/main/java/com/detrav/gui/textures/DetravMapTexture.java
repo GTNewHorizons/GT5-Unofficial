@@ -20,6 +20,7 @@ public class DetravMapTexture extends AbstractTexture {
     private String selected = "All";
     public int width = -1;
     public int height = -1;
+    public boolean invert = false;
 
     public DetravMapTexture(ProspectingPacket aPacket)
     {
@@ -27,7 +28,8 @@ public class DetravMapTexture extends AbstractTexture {
     }
 
     private BufferedImage getImage() {
-        int wh = (packet.size * 2 + 1) * 16;
+        final int backgroundColor = invert ? Color.GRAY.getRGB() : Color.WHITE.getRGB();
+        final int wh = (packet.size * 2 + 1) * 16;
 
         BufferedImage image = new BufferedImage(wh, wh, BufferedImage.TYPE_INT_ARGB);
         WritableRaster raster = image.getRaster();
@@ -36,7 +38,7 @@ public class DetravMapTexture extends AbstractTexture {
         int playerJ = packet.posZ - (packet.chunkZ - packet.size) * 16 - 1;
         for (int i = 0; i < wh; i++) {
             for (int j = 0; j < wh; j++) {
-                image.setRGB(i, j, Color.WHITE.getRGB());
+                image.setRGB(i, j, backgroundColor);
                 if (packet.map[i][j] != null) {
                     if (packet.ptype == 0 || packet.ptype == 1) {
                         for (short meta : packet.map[i][j].values()) {
@@ -90,10 +92,15 @@ public class DetravMapTexture extends AbstractTexture {
             height = packet.getSize();
         }
     }
-    
-    public void loadTexture(IResourceManager resourceManager, String selected){
-        this.selected = selected;
+
+    public void loadTexture(IResourceManager resourceManager, boolean invert){
+        this.invert = invert;
         loadTexture(resourceManager);
+    }
+    
+    public void loadTexture(IResourceManager resourceManager, String selected, boolean invert){
+        this.selected = selected;
+        loadTexture(resourceManager, invert);
     }
 
     public int glBindTexture() {

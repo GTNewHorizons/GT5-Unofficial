@@ -8,17 +8,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 class OresList extends GuiScrollingList {
     private final HashMap<String, Integer> ores;
     private final List<String> keys;
     private final GuiScreen parent;
-    private final Consumer<String> onSelected;
+    private final BiConsumer<String, Boolean> onSelected;
+    private boolean invert = false;
     
     private int selected = -1;
 
-    public OresList(GuiScreen parent, int width, int height, int top, int bottom, int left, int entryHeight, HashMap<String, Integer> aOres, Consumer<String> onSelected) {
+    public OresList(GuiScreen parent, int width, int height, int top, int bottom, int left, int entryHeight, HashMap<String, Integer> aOres, BiConsumer<String, Boolean> onSelected) {
         super(parent.mc, width, height, top, bottom, left, entryHeight);
         this.parent = parent;
         this.onSelected = onSelected;
@@ -37,7 +39,9 @@ class OresList extends GuiScrollingList {
     @Override
     protected void elementClicked(int index, boolean doubleClick) {
         selected = index;
-        if(onSelected != null) onSelected.accept(keys.get(index));
+        if (doubleClick) this.invert = !this.invert;
+        
+        if(onSelected != null) onSelected.accept(keys.get(index), this.invert);
     }
 
     @Override

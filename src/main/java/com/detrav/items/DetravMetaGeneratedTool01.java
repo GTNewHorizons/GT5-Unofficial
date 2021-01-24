@@ -79,6 +79,7 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                 aList.add(tOffset + 3, EnumChatFormatting.ITALIC+ StatCollector.translateToLocal("tooltip.detrav.scanner.usage.0"));
                 aList.add(tOffset + 4, EnumChatFormatting.ITALIC+ StatCollector.translateToLocal("tooltip.detrav.scanner.usage.1"));
                 aList.add(tOffset + 5, EnumChatFormatting.ITALIC+ StatCollector.translateToLocal("tooltip.detrav.scanner.usage.2"));
+                aList.add(tOffset + 6, EnumChatFormatting.ITALIC+ StatCollector.translateToLocal("tooltip.detrav.scanner.usage.3"));
         }
 
     }

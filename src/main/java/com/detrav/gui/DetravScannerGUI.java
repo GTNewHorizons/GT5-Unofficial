@@ -49,8 +49,8 @@ public class DetravScannerGUI extends GuiScreen {
         if(oresList == null || (prevW != width || prevH != height)) {
             oresList = new OresList(
                 this, 100, currentHeight, aY, aY+currentHeight, aX+currentWidth, 10, map.packet.ores, 
-                (name -> {
-                    if (map != null) map.loadTexture(null, name);
+                ((name, invert) -> {
+                    if (map != null) map.loadTexture(null, name, invert);
                 })
             );
             prevW = width;
