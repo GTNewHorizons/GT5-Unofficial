@@ -10,8 +10,8 @@ import java.util.HashMap;
  * Created by bartimaeusnek on 19.04.2018.
  */
 public class GTppHelper {
-	public static HashMap<Short,Material> decodeoresGTpp = new HashMap<>();
-	public static HashMap<Material,Short> encodeoresGTpp = new HashMap<>();
+	public static final HashMap<Short,Material> decodeoresGTpp = new HashMap<>();
+	public static final HashMap<Material,Short> encodeoresGTpp = new HashMap<>();
 	
 	public static void generate_OreIDs() {
 		for (short n=0 ; n < gtPlusPlus.core.material.ORES.class.getFields().length ; ++n) {

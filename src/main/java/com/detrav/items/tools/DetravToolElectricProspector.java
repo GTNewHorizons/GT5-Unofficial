@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
  */
 public class DetravToolElectricProspector extends DetravToolElectricProspectorBase {
 	
-	private int tier;
+	private final int tier;
 	
     public DetravToolElectricProspector(int tier) {
 		this.tier=tier;

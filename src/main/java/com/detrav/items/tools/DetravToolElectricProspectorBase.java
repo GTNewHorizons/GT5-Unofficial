@@ -81,7 +81,7 @@ public class DetravToolElectricProspectorBase implements IToolStats {
     }
 
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(Integer.valueOf(0));
+        return (String) GregTech_API.sSoundList.get(0);
     }
 
     @Override

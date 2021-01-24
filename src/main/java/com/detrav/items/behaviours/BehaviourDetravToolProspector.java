@@ -86,7 +86,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
         int bZ = aZ;
         
         badluck = 0;
-        ores = new HashMap<String, Integer>();
+        ores = new HashMap<>();
         
         int range = ((DetravMetaGeneratedTool01)aItem).getHarvestLevel(aStack, "")/2+(aStack.getItemDamage()/4);
         if ((range % 2) == 0 ) {
@@ -128,7 +128,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
     // Used by Electric scanner when scanning the chunk whacked by the scanner. 100% chance find rate
     protected void prospectSingleChunk(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ )
     {
-        ores = new HashMap<String, Integer>();
+        ores = new HashMap<>();
         aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+ StatCollector.translateToLocal("detrav.scanner.prospecting") + EnumChatFormatting.BLUE + "(" + aX + ", " + aZ + ")" ));
         processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), new SplittableRandom(), 1000);
         
@@ -163,7 +163,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
                 addChatMassageByValue(aPlayer, -1, "ERROR, lol ^_^");
             }
         }else if (aRandom.nextInt(100) < chance) {
-            int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack).intValue();
+            final int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack).intValue();
             final String small_ore_keyword = StatCollector.translateToLocal("detrav.scanner.small_ore.keyword");
             for (int x = 0; x < 16; x++)
                 for (int z = 0; z < 16; z++) {
