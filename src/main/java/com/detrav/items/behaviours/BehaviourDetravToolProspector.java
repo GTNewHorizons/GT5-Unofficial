@@ -34,7 +34,7 @@ import java.util.SplittableRandom;
 /**
  * Created by wital_000 on 19.03.2016.
  */
-public class BehaviourDetravToolProPick extends Behaviour_None {
+public class BehaviourDetravToolProspector extends Behaviour_None {
 
     static final int[] DISTANCEINTS = new int[] {0, 4, 25, 64};
     int distTextIndex;
@@ -44,7 +44,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
 
     protected final int mCosts;
 
-    public BehaviourDetravToolProPick(int aCosts) {
+    public BehaviourDetravToolProspector(int aCosts) {
         mCosts = aCosts;
     }
     

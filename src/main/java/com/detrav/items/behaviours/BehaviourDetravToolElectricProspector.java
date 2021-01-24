@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Created by wital_000 on 19.03.2016.
  */
-public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolProPick {
+public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolProspector {
 
     public BehaviourDetravToolElectricProspector(int aCosts) {
         super(aCosts);

@@ -1,7 +1,7 @@
 package com.detrav.items.tools;
 
 import com.detrav.enums.Textures01;
-import com.detrav.items.behaviours.BehaviourDetravToolProPick;
+import com.detrav.items.behaviours.BehaviourDetravToolProspector;
 
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -28,6 +28,6 @@ public class DetravProspector extends DetravToolElectricProspectorBase {
 	    }
 	    
 	    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-	        aItem.addItemBehavior(aID, new BehaviourDetravToolProPick(100));
+	        aItem.addItemBehavior(aID, new BehaviourDetravToolProspector(100));
 	    }
 }
