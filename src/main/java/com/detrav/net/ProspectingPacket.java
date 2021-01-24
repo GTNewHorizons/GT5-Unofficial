@@ -99,7 +99,6 @@ public class ProspectingPacket extends DetravPacket {
         } catch (Exception ignored) {
             return;
         }
-        packet.map[i][j].put(y, meta);
         packet.ores.put(name, ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
         packet.metaMap.put(meta, name);
     }
@@ -118,7 +117,8 @@ public class ProspectingPacket extends DetravPacket {
                 for (int k = 0; k < kSize; k++) {
                     final byte y = aData.readByte();
                     final short meta = aData.readShort();
-                    addOre(packet, y, i, j, meta);
+                    packet.map[i][j].put(y, meta);
+                    if (packet.ptype != 2 || y == 1) addOre(packet, y, i, j, meta);
                     checkOut++;
                 }
             }

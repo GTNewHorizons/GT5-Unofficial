@@ -52,8 +52,8 @@ public class DetravMapTexture extends AbstractTexture {
                         // Variables used to locate within a chunk.
                         final int k = (i % 16), l = (j % 16);
                         
-                        if( ( (k + l * 16) * 3) < (fluidSize + 48) ) {
-                            image.setRGB(i, j, packet.ores.get(name));
+                        if( ( (k + l * 16) * 3) < (fluidSize + 48) && (selected.equals("All") || selected.equals(name))) {
+                            image.setRGB(i, j, packet.ores.get(name) | 0XFF000000);
                         }
                     }else if (packet.ptype == 3) {
                         final short meta = packet.map[i][j].get((byte) 1);

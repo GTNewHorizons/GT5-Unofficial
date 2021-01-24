@@ -23,7 +23,7 @@ class OresList extends GuiScrollingList {
         this.parent = parent;
         this.onSelected = onSelected;
         ores = aOres;
-        keys = new ArrayList(ores.keySet());
+        keys = new ArrayList<>(ores.keySet());
         Collections.sort(keys);
         keys.add(0, "All");
         selected = 0;
