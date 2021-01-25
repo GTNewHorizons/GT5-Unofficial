@@ -419,10 +419,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
     }
 
     public static void renderNegativeYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
-        if (aWorld == null) return;
-        if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0))) return;
-        Tessellator.instance.setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
-
+        if (aWorld != null) {
+            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0))) {
+                return;
+            }
+            Tessellator.instance.setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
+        }
         if (aIcon != null) {
             for (ITexture iTexture : aIcon) {
                 if (iTexture != null) {
