@@ -1212,7 +1212,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     stopMachine();
                                 }
 
-                                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime && RECIPE_AT == Tick) {//progress increase and done
+                                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {//progress increase and done
                                     hatchesStatusUpdate_EM();
 
                                     outputAfterRecipe_EM();
@@ -1224,6 +1224,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     mProgresstime = 0;
                                     mMaxProgresstime = 0;
                                     mEfficiencyIncrease = 0;
+                                    
                                     if (aBaseMetaTileEntity.isAllowedToWork()) {
                                         if (checkRecipe(mInventory[1])) {
                                             mEfficiency = Math.max(0, min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - (getIdealStatus() - getRepairStatus()) * 1000));
