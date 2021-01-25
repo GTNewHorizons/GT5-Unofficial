@@ -44,7 +44,8 @@ public class DetravMapTexture extends AbstractTexture {
                         for (short meta : packet.map[i][j].values()) {
                             final String name = packet.metaMap.get(meta);
                             if (!selected.equals("All") && !selected.equals(name)) continue;
-                            image.setRGB(i, j, packet.ores.get(name) | 0XFF000000);
+
+                            image.setRGB(i, j, packet.ores.getOrDefault(name, Color.BLACK.getRGB()) | 0XFF000000);
                             break;
                         }
                     } else if (packet.ptype == 2) {
@@ -55,7 +56,7 @@ public class DetravMapTexture extends AbstractTexture {
                         final int k = (i % 16), l = (j % 16);
                         
                         if( ( (k + l * 16) * 3) < (fluidSize + 48) && (selected.equals("All") || selected.equals(name))) {
-                            image.setRGB(i, j, packet.ores.get(name) | 0XFF000000);
+                            image.setRGB(i, j, packet.ores.getOrDefault(name, Color.BLACK.getRGB()) | 0XFF000000);
                         }
                     }else if (packet.ptype == 3) {
                         final short meta = packet.map[i][j].get((byte) 1);

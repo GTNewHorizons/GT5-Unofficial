@@ -63,14 +63,14 @@ public class ProspectingPacket extends DetravPacket {
             if(packet.ptype == 0 || packet.ptype == 1) {
                 // Ore or Small Ore
                 if (meta < 7000 || meta > 7500) {
-                    Materials tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];
-
                     if (meta > 0) {
+                        Materials tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];
                         rgba = tMaterial.getRGBA();
                         name = tMaterial.getLocalizedNameForItem(GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name"));
                     } else {
                         name = GT_LanguageManager.getTranslation("bw.blockores.01." + (meta * -1) + ".name");
-                        rgba = Werkstoff.werkstoffHashMap.get((short) (meta * -1)).getRGBA();
+                        final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) (meta * -1), null);
+                        rgba = werkstoff != null ? werkstoff.getRGBA() : new short[]{0,0,0,0}; 
                     }
                 } else {
                     gtPlusPlus.core.material.Material pMaterial = GTppHelper.decodeoresGTpp.get((short) (meta - 7000));
