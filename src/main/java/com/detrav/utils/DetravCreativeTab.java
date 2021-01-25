@@ -7,7 +7,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -27,34 +26,25 @@ public class DetravCreativeTab extends CreativeTabs {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void displayAllReleventItems(List p_78018_1_)
-    {
-        Iterator iterator = Item.itemRegistry.iterator();
+    public void displayAllReleventItems(List p_78018_1_) {
+        for (Object o : Item.itemRegistry) {
+            Item item = (Item) o;
 
-        while (iterator.hasNext())
-        {
-            Item item = (Item)iterator.next();
-
-            if (item == null)
-            {
+            if (item == null) {
                 continue;
             }
 
-            for (CreativeTabs tab : item.getCreativeTabs())
-            {
-                if (tab == this)
-                {
+            for (CreativeTabs tab : item.getCreativeTabs()) {
+                if (tab == this) {
                     item.getSubItems(item, this, p_78018_1_);
-                    if(item instanceof DetravMetaGeneratedTool01)
-                    {
-                        ((DetravMetaGeneratedTool01)item).getDetravSubItems(item,this,p_78018_1_);
+                    if (item instanceof DetravMetaGeneratedTool01) {
+                        ((DetravMetaGeneratedTool01) item).getDetravSubItems(item, this, p_78018_1_);
                     }
                 }
             }
         }
 
-        if (this.func_111225_m() != null)
-        {
+        if (this.func_111225_m() != null) {
             this.addEnchantmentBooksToList(p_78018_1_, this.func_111225_m());
         }
     }

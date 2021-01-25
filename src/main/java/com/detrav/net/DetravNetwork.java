@@ -27,14 +27,9 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
     private final EnumMap<Side, FMLEmbeddedChannel> mChannel;
     private DetravPacket[] mSubChannels;
 
-    public DetravNetwork()
-    {
+    public DetravNetwork() {
         INSTANCE = this;
-        this.mChannel = NetworkRegistry.INSTANCE.newChannel("DetravScanner", new ChannelHandler[]{this, new HandlerShared()});
-        this.mSubChannels = new DetravPacket[]
-                {
-                        new DetravProPickPacket00(),
-                };
+        this.mChannel = NetworkRegistry.INSTANCE.newChannel("DetravScanner", this, new HandlerShared());
     }
 
     @Override
@@ -42,10 +37,12 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
         out.add(new FMLProxyPacket(Unpooled.buffer().writeByte(msg.getPacketID()).writeBytes(msg.encode()).copy(),(String) ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get()));
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     protected void decode(ChannelHandlerContext ctx, FMLProxyPacket msg, List<Object> out) throws Exception {
         ByteArrayDataInput aData = ByteStreams.newDataInput(msg.payload().array());
-        out.add(this.mSubChannels[aData.readByte()].decode(aData));
+        aData.readByte(); // Sub Channel - Ignore
+        out.add(ProspectingPacket.decode(aData));
     }
 
     public void sendToPlayer(DetravPacket aPacket, EntityPlayerMP aPlayer) {
@@ -59,11 +56,8 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
     }
 
     @ChannelHandler.Sharable
-    static final class HandlerShared
-            extends SimpleChannelInboundHandler<DetravPacket> {
-        protected void channelRead0(ChannelHandlerContext ctx, DetravPacket aPacket)
-                throws Exception {
-            //EntityPlayer aPlayer = GT_Values.GT.getThePlayer();
+    static final class HandlerShared extends SimpleChannelInboundHandler<DetravPacket> {
+        protected void channelRead0(ChannelHandlerContext ctx, DetravPacket aPacket) throws Exception {
             aPacket.process();
         }
     }

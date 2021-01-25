@@ -1,14 +1,12 @@
 package com.detrav.utils;
 
-import com.detrav.net.DetravProPickPacket00;
-import cpw.mods.fml.common.ProgressManager;
 import gregtech.api.enums.Materials;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-import static com.detrav.net.DetravProPickPacket00.fluidColors;
+import static com.detrav.net.ProspectingPacket.fluidColors;
 
 public class FluidColors {
 

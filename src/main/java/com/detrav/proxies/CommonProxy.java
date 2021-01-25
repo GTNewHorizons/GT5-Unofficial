@@ -1,7 +1,7 @@
 package com.detrav.proxies;
 
 import com.detrav.events.DetravLoginEventHandler;
-import com.detrav.gui.DetravGuiProPick;
+import com.detrav.gui.DetravScannerGUI;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -22,7 +22,7 @@ public class CommonProxy implements IGuiHandler {
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch (ID) {
-            case DetravGuiProPick.GUI_ID:
+            case DetravScannerGUI.GUI_ID:
                 return null;
             default:
                 return null;
@@ -32,22 +32,20 @@ public class CommonProxy implements IGuiHandler {
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch (ID) {
-            case DetravGuiProPick.GUI_ID:
-                return new DetravGuiProPick();
+            case DetravScannerGUI.GUI_ID:
+                return new DetravScannerGUI();
             default:
                 return null;
         }
     }
 
 
-    public void openProPickGui()
-    {
+    public void openProspectorGUI() {
         //just Client code
     }
 
 
-    public void onPreInit()
-    {
+    public void onPreInit() {
 
     }
 

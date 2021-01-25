@@ -1,7 +1,7 @@
-detrav.scanner.mode.0=Set Mode: Ore, Any Rock Block
-detrav.scanner.mode.1=Set Mode: Ore (with small), Any Rock Block
-detrav.scanner.mode.2=Set Mode: Oil, Any Block
-detrav.scanner.mode.3=Set Mode: Pollution, Any Block
+detrav.scanner.mode.0=Set Mode: Ores
+detrav.scanner.mode.1=Set Mode: Ores and Small Ores
+detrav.scanner.mode.2=Set Mode: Underground Fluids
+detrav.scanner.mode.3=Set Mode: Pollution
 detrav.scanner.mode.error=Set Mode: ERROR
 
 detrav.scanner.distance.texts.0= next to you,
@@ -29,8 +29,9 @@ detrav.scanner.prospecting=Prospecting at
 tooltip.detrav.scanner.durability=Durability:
 tooltip.detrav.scanner.range=Chunks:
 tooltip.detrav.scanner.usage.0=Right click on rock for prospecting current chunk!
-tooltip.detrav.scanner.usage.1=Right click on bedrock for prospecting oil!
+tooltip.detrav.scanner.usage.1=Right click on bedrock for prospecting fluids!
 tooltip.detrav.scanner.usage.2=Right click for scanning!
+tooltip.detrav.scanner.usage.3=Double click any entry to invert the background color!
 tooltip.detrav.scanner.success.chance=Chance of a successful scan:
 tooltip.detrav.scanner.distance.0=next to you (0 chunks away), close to you (1-2)
 tooltip.detrav.scanner.distance.1=at medium range (3-5), at long range (6-8), far away (9+)

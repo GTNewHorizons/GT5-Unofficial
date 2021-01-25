@@ -23,8 +23,7 @@ public class DetravScannerCommand implements ICommand {
 
     private List aliases;
 
-    public DetravScannerCommand()
-    {
+    public DetravScannerCommand() {
         this.aliases = new ArrayList<String>();
         this.aliases.add("DetravScanner");
         this.aliases.add("dscan");
@@ -52,7 +51,7 @@ public class DetravScannerCommand implements ICommand {
         int aY = 0;
         String name = null;
 
-        ArrayList<String> strs = new ArrayList<String>();
+        ArrayList<String> strs = new ArrayList<>();
         for(int i =0; i<args.length;i++)
         {
             strs.add(args[i]);
@@ -95,7 +94,7 @@ public class DetravScannerCommand implements ICommand {
         Chunk c = sender.getEntityWorld().getChunkFromChunkCoords(aX,aZ);
         if(c == null)
             sender.addChatMessage(new ChatComponentText("ERROR"));
-        HashMap<String,Integer> ores = new HashMap<String,Integer>();
+        HashMap<String,Integer> ores = new HashMap<>();
         for (int x = 0; x < 16; x++)
             for (int z = 0; z < 16; z++) {
                 int ySize = c.getHeightValue(x, z);
@@ -123,8 +122,7 @@ public class DetravScannerCommand implements ICommand {
 
             }
         sender.addChatMessage(new ChatComponentText("*** Detrav Scanner Begin"));
-        for(String key : ores.keySet())
-        {
+        for(String key : ores.keySet()) {
             sender.addChatMessage(new ChatComponentText(String.format("%s : %d", key, ores.get(key))));
         }
         sender.addChatMessage(new ChatComponentText("*** Detrav Scanner End"));
