@@ -20,11 +20,12 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
     public long[] eParamsOutl = new long[20];
     public byte eCertainMode = 5, eCertainStatus = 127;
     public boolean ePowerPass = false, eSafeVoid = false, allowedToWork = false;
-    public final boolean ePowerPassButton, eSafeVoidButton, allowedToWorkButton;
+    public boolean ePowerPassButton;
+    public final boolean eSafeVoidButton, allowedToWorkButton;
 
-    public GT_Container_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean enablePowerPass, boolean enableSafeVoid, boolean enablePowerButton) {
+    public GT_Container_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean enableSafeVoid, boolean enablePowerButton) {
         super(aInventoryPlayer, aTileEntity);
-        ePowerPassButton=enablePowerPass;
+        ePowerPassButton=false;
         eSafeVoidButton=enableSafeVoid;
         allowedToWorkButton=enablePowerButton;
     }
@@ -74,7 +75,11 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
                 case 0:
                     if(ePowerPassButton) {
                         TecTech.proxy.playSound(base,"fx_click");
-                        mte.ePowerPass ^= true;
+                        if(mte.ePowerPassCapable){
+                            mte.ePowerPass ^= true;
+                        }else {
+                            mte.ePowerPass = false;
+                        }
                         if (!allowedToWorkButton) {//TRANSFORMER HACK
                             if (mte.ePowerPass) {
                                 mte.getBaseMetaTileEntity().enableWorking();
@@ -118,6 +123,7 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
         eCertainMode = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eCertainMode;
         eCertainStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eCertainStatus;
         ePowerPass = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).ePowerPass;
+        ePowerPassButton = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).ePowerPassCapable;
         eSafeVoid = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eSafeVoid;
         allowedToWork = mTileEntity.isAllowedToWork();
 
@@ -127,7 +133,7 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
                 var1.sendProgressBarUpdate(this, i++, (eParamsInStatus[j].getOrdinalByte() | (eParamsOutStatus[j].getOrdinalByte() << 8)));
             }
             var1.sendProgressBarUpdate(this, 120, eCertainMode | (eCertainStatus << 8));
-            var1.sendProgressBarUpdate(this, 121, (ePowerPass ? 1 : 0) + (eSafeVoid ? 2 : 0) + (allowedToWork ? 4 : 0));
+            var1.sendProgressBarUpdate(this, 121, (ePowerPass ? 1 : 0) + (eSafeVoid ? 2 : 0) + (allowedToWork ? 4 : 0) + (ePowerPassButton?8:0));
             for(int i=128,k=208,j=0;j<20;j++,i+=4,k+=4) {
                 Util.sendDouble(eParamsOut[j], this, var1, i);
                 Util.sendDouble(eParamsIn[j], this, var1, k);
@@ -151,6 +157,7 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             ePowerPass = (par2 & 1) == 1;
             eSafeVoid = (par2 & 2) == 2;
             allowedToWork = (par2 & 4) == 4;
+            ePowerPassButton = (par2 & 8) == 8;
         } else if(par1>=128 && par1<208){
             int pos=(par1-128)>>2;
             eParamsOut[pos]=Double.longBitsToDouble(eParamsOutl[pos]=Util.receiveLong(eParamsOutl[pos],par1&0xFFFFFFFC,par1,par2));

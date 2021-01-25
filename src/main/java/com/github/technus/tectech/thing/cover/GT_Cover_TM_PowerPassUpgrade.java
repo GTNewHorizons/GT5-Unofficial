@@ -3,35 +3,47 @@ package com.github.technus.tectech.thing.cover;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_CoverBehavior;
+import net.minecraft.item.ItemStack;
 
 public class GT_Cover_TM_PowerPassUpgrade extends GT_CoverBehavior {
     public GT_Cover_TM_PowerPassUpgrade() {
     }
 
-    @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        IGregTechTileEntity TE = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0);
-        if (TE instanceof GT_MetaTileEntity_MultiblockBase_EM) {
-            GT_MetaTileEntity_MultiblockBase_EM multi = (GT_MetaTileEntity_MultiblockBase_EM) TE;
-            multi.ePowerPassUpgraded = true;
+    public boolean isCoverPlaceable(byte aSide, GT_ItemStack aStack, ICoverable aTileEntity) {
+        IGregTechTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0);
+        if (iGregTechTileEntityOffset instanceof GT_MetaTileEntity_MultiblockBase_EM) {
+            GT_MetaTileEntity_MultiblockBase_EM multi = (GT_MetaTileEntity_MultiblockBase_EM) iGregTechTileEntityOffset;
+            return !multi.ePowerPassCapable;
         }
-        return super.doCoverThings(aSide, aInputRedstone, aCoverID, aCoverVariable, aTileEntity, aTimer);
+        return false;
+    }
+
+    @Override
+    public void placeCover(byte aSide, ItemStack aCover, ICoverable aTileEntity) {
+        IGregTechTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0);
+        if (iGregTechTileEntityOffset instanceof GT_MetaTileEntity_MultiblockBase_EM) {
+            GT_MetaTileEntity_MultiblockBase_EM multi = (GT_MetaTileEntity_MultiblockBase_EM) iGregTechTileEntityOffset;
+            multi.ePowerPassCapable = true;
+            multi.ePowerPass = true;
+        }
+        super.placeCover(aSide, aCover, aTileEntity);
     }
 
     @Override
     public boolean onCoverRemoval(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
-        IGregTechTileEntity TE = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0);
-        if (TE instanceof GT_MetaTileEntity_MultiblockBase_EM) {
-            GT_MetaTileEntity_MultiblockBase_EM multi = (GT_MetaTileEntity_MultiblockBase_EM) TE;
-            multi.ePowerPassUpgraded = false;
+        IGregTechTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0);
+        if (iGregTechTileEntityOffset instanceof GT_MetaTileEntity_MultiblockBase_EM) {
+            GT_MetaTileEntity_MultiblockBase_EM multi = (GT_MetaTileEntity_MultiblockBase_EM) iGregTechTileEntityOffset;
+            multi.ePowerPassCapable = false;
+            multi.ePowerPass = false;
         }
         return true;
     }
 
-    @Override
+    @Deprecated
     public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        //It updates once every 200 ticks, so once every 10 seconds
-        return 200;
+        return 0;
     }
 }
