@@ -121,8 +121,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //if u need to force some things to be fixed - u might need to override doRandomMaintenanceDamage
     protected byte minRepairStatus = 3;
 
-    //can power pass be enabled
-    public boolean ePowerPassCapable = false;
+    //is power pass cover present
+    public boolean ePowerPassCover = false;
 
     //functionality toggles - changed by buttons in gui also
     public boolean ePowerPass = false, eSafeVoid = false;
@@ -724,7 +724,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         aNBT.setByte("eFlip", (byte)extendedFacing.getFlip().getIndex());
         aNBT.setBoolean("eParam", eParameters);
         aNBT.setBoolean("ePass", ePowerPass);
-        aNBT.setBoolean("ePassCapable", ePowerPassCapable);
+        aNBT.setBoolean("ePowerPassCover", ePowerPassCover);
         aNBT.setBoolean("eVoid", eSafeVoid);
         aNBT.setBoolean("eBoom", eDismantleBoom);
         aNBT.setBoolean("eOK", mMachine);
@@ -817,9 +817,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 Flip.byIndex(aNBT.getByte("eFlip")));
         eParameters = !aNBT.hasKey("eParam") || aNBT.getBoolean("eParam");
         ePowerPass = aNBT.getBoolean("ePass");
-        if(aNBT.hasKey("ePassCapable")) {
-            ePowerPassCapable = aNBT.getBoolean("ePassCapable");
-        }
+        ePowerPassCover = aNBT.getBoolean("ePowerPassCover");
         eSafeVoid = aNBT.getBoolean("eVoid");
         eDismantleBoom = aNBT.getBoolean("eBoom");
         mMachine = aNBT.getBoolean("eOK");
