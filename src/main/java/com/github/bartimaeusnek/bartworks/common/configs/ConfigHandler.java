@@ -111,10 +111,8 @@ public class ConfigHandler {
         ConfigHandler.classicMode= ConfigHandler.c.get("System", "Enable Classic Mode", false, "Enables the classic Mode (all recipes in normal machines are doable in MV").getBoolean(false);
         ConfigHandler.creativeScannerID = ConfigHandler.c.get("System", "Creative Debug Scanner", 0, "ID for the Creative Debug Scanner Block").getInt(0);
 
-        if (SideReference.Side.Client) {
-            ConfigHandler.tooltips = ConfigHandler.c.get("System", "BartWorksToolTips", true, "If you wish to enable extra tooltips").getBoolean(true);
-            ConfigHandler.sharedItemStackTooltip = ConfigHandler.c.get("System", "BartWorksSharedItemStackToolTips", true, "If you wish to enable \"Shared Item Stack\" tooltips").getBoolean(true);
-        }
+        ConfigHandler.tooltips = ConfigHandler.c.get("System", "BartWorksToolTips", true, "If you wish to enable extra tooltips").getBoolean(true);
+        ConfigHandler.sharedItemStackTooltip = ConfigHandler.c.get("System", "BartWorksSharedItemStackToolTips", true, "If you wish to enable \"Shared Item Stack\" tooltips").getBoolean(true);
 
         ConfigHandler.IDOffset = ConfigHandler.c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + ConfigHandler.IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").getInt(12600);
         ConfigHandler.ezmode = ConfigHandler.c.get("System", "Mode switch", false, "If GTNH is Loaded, this will enable easy recipes, if not, it will enable harder recipes.").getBoolean(false);
