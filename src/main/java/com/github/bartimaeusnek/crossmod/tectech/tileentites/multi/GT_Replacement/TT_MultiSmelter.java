@@ -71,7 +71,7 @@ public class TT_MultiSmelter extends TT_Abstract_GT_Replacement_Coils {
                     transpose(new String[][]{
                             {"AAA", "AMA", "AAA"},
                             {"CCC", "C-C", "CCC"},
-                            {"B~B", "BBB", "BBB"}
+                            {"A~A", "AAA", "AAA"}
                     })
             ).addElement(
                     'C',
@@ -84,12 +84,6 @@ public class TT_MultiSmelter extends TT_Abstract_GT_Replacement_Coils {
                     )
             ).addElement(
                     'A',
-                    ofBlock(
-                            GregTech_API.sBlockCasings1, TEXTURE_INDEX,
-                            GregTech_API.sBlockCasings1, TEXTURE_INDEX
-                    )
-            ).addElement(
-                    'B',
                     ofHatchAdderOptional(
                             TT_MultiSmelter::addEBFInputsBottom, TEXTURE_INDEX,
                             GregTech_API.sBlockCasings1, TEXTURE_INDEX,

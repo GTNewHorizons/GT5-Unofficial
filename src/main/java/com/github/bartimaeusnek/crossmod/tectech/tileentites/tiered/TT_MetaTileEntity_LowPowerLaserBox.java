@@ -54,26 +54,32 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
         return false;
     }
 
+    @Override
     public long maxAmperesOut() {
         return !this.getBaseMetaTileEntity().isAllowedToWork() ? AMPERES : 0;
     }
 
+    @Override
     public long maxAmperesIn() {
         return this.getBaseMetaTileEntity().isAllowedToWork() ? AMPERES + (AMPERES / 4) : 0;
     }
 
+    @Override
     public boolean hasAlternativeModeText() {
         return true;
     }
 
+    @Override
     public String getAlternativeModeText() {
         return isReceiver() ? "Set to receiving mode" : "Set to sending mode";
     }
 
+    @Override
     public boolean isEnetInput() {
         return this.getBaseMetaTileEntity().isAllowedToWork();
     }
 
+    @Override
     public boolean isEnetOutput() {
         return !this.getBaseMetaTileEntity().isAllowedToWork();
     }
