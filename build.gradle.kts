@@ -117,7 +117,7 @@ dependencies {
     //hard deps
     compile("net.industrial-craft:industrialcraft-2:$ic2Version:dev")
     //jitpack
-    compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:GT5-Unofficial:appeng_transitivity-SNAPSHOT:dev")
     //soft deps
     compileOnly("com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf")
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
