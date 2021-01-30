@@ -56,6 +56,7 @@ public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_
         this.AMPERES = aAmperes;
     }
 
+    @Override
     public long getAMPERES() {
         return AMPERES;
     }
@@ -84,7 +85,6 @@ public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_
     public boolean shouldJoinIc2Enet() {
         return true;
     }
-
 
     @Override
     public boolean isGivingInformation() {
@@ -118,6 +118,16 @@ public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_
     @Override
     public boolean isFacingValid(byte aFacing) {
         return true;
+    }
+
+    @Override
+    public boolean isEnetInput() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnetOutput() {
+        return false;
     }
 
     @Override

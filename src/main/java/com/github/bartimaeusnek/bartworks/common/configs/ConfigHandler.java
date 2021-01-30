@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.common.configs;
 
 import com.github.bartimaeusnek.ASM.BWCoreTransformer;
 import com.github.bartimaeusnek.bartworks.API.API_ConfigValues;
+import com.github.bartimaeusnek.bartworks.API.SideReference;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -64,6 +65,7 @@ public class ConfigHandler {
 
     public static boolean GTppLogDisabler;
     public static boolean tooltips = true;
+    public static boolean sharedItemStackTooltip = true;
     public static boolean[] enabledPatches;
 
     public static byte maxTierRoss;
@@ -108,7 +110,10 @@ public class ConfigHandler {
         ConfigHandler.c = C;
         ConfigHandler.classicMode= ConfigHandler.c.get("System", "Enable Classic Mode", false, "Enables the classic Mode (all recipes in normal machines are doable in MV").getBoolean(false);
         ConfigHandler.creativeScannerID = ConfigHandler.c.get("System", "Creative Debug Scanner", 0, "ID for the Creative Debug Scanner Block").getInt(0);
+
         ConfigHandler.tooltips = ConfigHandler.c.get("System", "BartWorksToolTips", true, "If you wish to enable extra tooltips").getBoolean(true);
+        ConfigHandler.sharedItemStackTooltip = ConfigHandler.c.get("System", "BartWorksSharedItemStackToolTips", true, "If you wish to enable \"Shared Item Stack\" tooltips").getBoolean(true);
+
         ConfigHandler.IDOffset = ConfigHandler.c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + ConfigHandler.IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").getInt(12600);
         ConfigHandler.ezmode = ConfigHandler.c.get("System", "Mode switch", false, "If GTNH is Loaded, this will enable easy recipes, if not, it will enable harder recipes.").getBoolean(false);
         ConfigHandler.teslastaff = ConfigHandler.c.get("System", "Enable Teslastaff", false, "Enables the Teslastaff, an Item used to destroy Electric Armors").getBoolean(false);
@@ -166,7 +171,7 @@ public class ConfigHandler {
     private static void setUpComments() {
         ConfigHandler.c.addCustomCategoryComment("ASM fixes", "Disable ASM fixes here.");
         ConfigHandler.c.addCustomCategoryComment("Singleblocks", "Singleblock Options can be set here.");
-        ConfigHandler.c.addCustomCategoryComment("Multiblocks", "Multliblock Options can be set here.");
+        ConfigHandler.c.addCustomCategoryComment("Multiblocks", "Multiblock Options can be set here.");
         ConfigHandler.c.addCustomCategoryComment("System", "Different System Settings can be set here.");
         ConfigHandler.c.addCustomCategoryComment("CrossMod Interactions", "CrossMod Interaction Settings can be set here. For Underground Fluid settings change the Gregtech.cfg!");
         ConfigHandler.c.addCustomCategoryComment("Ross Ruin Metas", "Ruin Metas and Tiers can be set here.");

@@ -191,9 +191,10 @@ public class WerkstoffLoader {
     }
 
     //TODO:
-    //FREE ID RANGE: 95-29_999
-    //bartimaeusnek reserved 0-10_000
-    //Tec & basdxz reserved range 30_000-31_000
+    //FREE ID RANGE:                10_001-28_998
+    //bartimaeusnek reserved             0-10_000
+    //bot reserved range            29_899-29_999
+    //Tec & basdxz reserved range   30_000-31_000
     //GT Material range reserved on 31_767-32_767
     public static final Werkstoff Bismutite = new Werkstoff(
             new short[]{255, 233, 0, 0},

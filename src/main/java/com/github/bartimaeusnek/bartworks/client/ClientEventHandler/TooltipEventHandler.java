@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.client.ClientEventHandler;
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
@@ -64,7 +65,7 @@ public class TooltipEventHandler {
             ItemStack tmp = event.itemStack.copy();
             Pair<Integer,Short> abstractedStack = new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage());
             List<String> tooAdd = new ArrayList<>();
-            if (OreDictHandler.getNonBWCache().contains(abstractedStack)) {
+            if (ConfigHandler.sharedItemStackTooltip && OreDictHandler.getNonBWCache().contains(abstractedStack)) {
                 for (Pair<Integer,Short> pair : OreDictHandler.getNonBWCache()) {
                     if (pair.equals(abstractedStack)) {
                         GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(tmp.getItem());
