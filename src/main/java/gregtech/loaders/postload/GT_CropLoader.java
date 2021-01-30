@@ -374,7 +374,7 @@ public class GT_CropLoader implements Runnable {
                     "Green",
                     "Ingredient"
             }, ItemList.Crop_Drop_TeaLeaf.get(1), null);
-            new GT_BaseCrop(178, "Rape", "unknown", null, 4, 4, 0, 1, 4, 1, 1, 0, 2, 0, new String[] {
+            new GT_BaseCrop(178, "Rapeseed", "unknown", null, 4, 4, 0, 1, 4, 1, 1, 0, 2, 0, new String[] {
                     "Food",
                     "Yellow",
                     "Oil"
