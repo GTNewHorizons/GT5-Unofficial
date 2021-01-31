@@ -52,6 +52,9 @@ java {
     this.sourceCompatibility = JavaVersion.VERSION_1_8
     this.targetCompatibility = JavaVersion.VERSION_1_8
 }
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor(0, TimeUnit.SECONDS)
+}
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
@@ -104,6 +107,7 @@ repositories {
     maven("http://default.mobiusstrip.eu/maven") { this.name = "Jabba" }
     maven("http://chickenbones.net/maven/") { this.name = "CodeChicken" }
     maven("http://www.ryanliptak.com/maven/") { this.name = "appleCore" }
+    maven("http://maven.tterrag.com") { this.name = "tterrag Repo" }
     maven("https://jitpack.io")
 }
 
@@ -117,7 +121,9 @@ dependencies {
     //hard deps
     compile("net.industrial-craft:industrialcraft-2:$ic2Version:dev")
     //jitpack
-    compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev") {
+        this.isChanging = true
+    }
     //soft deps
     compileOnly("com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf")
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
@@ -128,8 +134,12 @@ dependencies {
     compileOnly("li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api")
     compileOnly("net.sengir.forestry:forestry_1.7.10:4.2.16.64:dev")
     //jitpack
-    compileOnly("com.github.GTNewHorizons:GalacticGregGT5:master-SNAPSHOT")
-    //compileOnly("com.github.Technus:TecTech:BassAddons-SNAPSHOT")
+    compileOnly("com.github.GTNewHorizons:GalacticGregGT5:master-SNAPSHOT") {
+        this.isChanging = true
+    }
+    //compileOnly("com.github.Technus:Tectech:master-SNAPSHOT") {
+    //    this.isChanging = true
+    //}
     //Files
     compileOnly(fileTree("libs") { this.include("*.jar") })
 

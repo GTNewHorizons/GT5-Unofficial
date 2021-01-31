@@ -236,38 +236,38 @@ public class TT_ElectronicBlastFurnace extends TT_Abstract_GT_Replacement_Coils 
         ItemStack[] tInputs = this.getCompactedInputs();
         FluidStack[] tFluids = this.getCompactedFluids();
 
-        if (tInputs.length > 0) {
-            long tVoltage = getMaxInputVoltage();
-            byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-            if (tRecipe == null
-                    || (this.mHeatingCapacity < tRecipe.mSpecialValue)
-                    || (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
-                return false;
-            }
-            this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-            int tHeatCapacityDivTiers = ((this.mHeatingCapacity - tRecipe.mSpecialValue) / 900);
-            byte overclockCount = calculateOverclockednessEBF(tRecipe.mEUt, tRecipe.mDuration, tVoltage);
-            //In case recipe is too OP for that machine
-            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
-                return false;
-            if (this.mEUt > 0)
-                this.mEUt = (-this.mEUt);
-
-            if (tHeatCapacityDivTiers > 0) {
-                this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
-                this.mMaxProgresstime >>= Math.min(tHeatCapacityDivTiers / 2, overclockCount);//extra free overclocking if possible
-                if (this.mMaxProgresstime < 1)
-                    this.mMaxProgresstime = 1;//no eu efficiency correction
-            }
-            this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-            this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
-            this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
-            updateSlots();
-            return true;
+        if (tInputs.length <= 0) {
+            return false;
         }
-        return false;
+        long tVoltage = getMaxInputVoltage();
+        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+        if (tRecipe == null
+                || (this.mHeatingCapacity < tRecipe.mSpecialValue)
+                || (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
+            return false;
+        }
+        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
+        int tHeatCapacityDivTiers = ((this.mHeatingCapacity - tRecipe.mSpecialValue) / 900);
+        byte overclockCount = calculateOverclockednessEBF(tRecipe.mEUt, tRecipe.mDuration, tVoltage);
+        //In case recipe is too OP for that machine
+        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+            return false;
+        if (this.mEUt > 0)
+            this.mEUt = (-this.mEUt);
+
+        if (tHeatCapacityDivTiers > 0) {
+            this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
+            this.mMaxProgresstime >>= Math.min(tHeatCapacityDivTiers / 2, overclockCount);//extra free overclocking if possible
+            if (this.mMaxProgresstime < 1)
+                this.mMaxProgresstime = 1;//no eu efficiency correction
+        }
+        this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+        this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
+        this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
+        updateSlots();
+        return true;
     }
 
     /**
@@ -323,18 +323,18 @@ public class TT_ElectronicBlastFurnace extends TT_Abstract_GT_Replacement_Coils 
     public String[] getInfoData() {
         int mPollutionReduction = 0;
         for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-            if (!isValidMetaTileEntity(tHatch))
-                continue;
-            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
+            if (isValidMetaTileEntity(tHatch)) {
+                mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
+            }
         }
 
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-            if (!isValidMetaTileEntity(tHatch))
-                continue;
-            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
         }
 
         return new String[]{

@@ -183,16 +183,19 @@ public class TT_MultiSmelter extends TT_Abstract_GT_Replacement_Coils {
         ItemStack tOutputStack = GT_ModHandler.getSmeltingOutput(tSmeltStack,false,null);
         if (tOutputStack == null)
             return false;
-        for (ItemStack item : tInputList)
-            if (tSmeltStack.isItemEqual(item))
-                if (item.stackSize < (tMaxParrallel - tCurrenParrallel)) {
-                    tCurrenParrallel += item.stackSize;
-                    item.stackSize = 0;
-                } else {
-                    item.stackSize = (tCurrenParrallel + item.stackSize) - tMaxParrallel;
-                    tCurrenParrallel = tMaxParrallel;
-                    break;
-                }
+        for (ItemStack item : tInputList) {
+            if (!tSmeltStack.isItemEqual(item)) {
+                continue;
+            }
+            if (item.stackSize < (tMaxParrallel - tCurrenParrallel)) {
+                tCurrenParrallel += item.stackSize;
+                item.stackSize = 0;
+            } else {
+                item.stackSize = (tCurrenParrallel + item.stackSize) - tMaxParrallel;
+                tCurrenParrallel = tMaxParrallel;
+                break;
+            }
+        }
         tCurrenParrallel *= tOutputStack.stackSize;
         this.mOutputItems = new ItemStack[(tCurrenParrallel/64)+1];
         for (int i = 0; i < this.mOutputItems.length; i++) {
