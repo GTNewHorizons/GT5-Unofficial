@@ -22,22 +22,14 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement;
 
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.crossmod.tectech.helper.CoilAdder;
-import com.github.bartimaeusnek.crossmod.tectech.helper.IHasCoils;
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_Container_MultiMachine;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -45,13 +37,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
@@ -75,9 +64,9 @@ public class TT_OilCrackingUnit extends TT_Abstract_GT_Replacement_Coils {
 
     private static final IStructureDefinition<TT_OilCrackingUnit> STRUCTURE_DEFINITION = StructureDefinition.<TT_OilCrackingUnit>builder().addShape("main",
             transpose(new String[][]{
-                    {"ABABA","ABGBA","ABABA"},
-                    {"AB~BA","E---F","ABABA"},
-                    {"ABABA","ABABA","ABABA"}
+                    {"ABGBA","ABGBA","ABGBA"},
+                    {"AB~BA","E---F","ABGBA"},
+                    {"ABGBA","ABGBA","ABGBA"}
             })
     ).addElement(
             'A',
@@ -119,10 +108,29 @@ public class TT_OilCrackingUnit extends TT_Abstract_GT_Replacement_Coils {
             )
     ).addElement(
             'G',
-            ofHatchAdder(
-                    TT_OilCrackingUnit::addMiddleFluidHatch,
-                    TEXTURE_INDEX,
-                    1
+            ofChain(
+                    ofHatchAdder(
+                            TT_OilCrackingUnit::addMiddleFluidHatch,
+                            TEXTURE_INDEX,
+                            3),
+                    onElementPass(
+                            x -> ++x.blocks,
+                            ofBlock(
+                                    GregTech_API.sBlockCasings4,
+                                    1
+                            )
+                    ),
+                    ofHatchAdder(
+                            TT_OilCrackingUnit::addClassicMaintenanceToMachineList,
+                            TEXTURE_INDEX,
+                            1
+                    ),
+                    ofHatchAdder(
+                            TT_OilCrackingUnit::addEnergyIOToMachineList,
+                            TEXTURE_INDEX,
+                            1
+                    )
+
             )
     ).build();
 
@@ -130,7 +138,9 @@ public class TT_OilCrackingUnit extends TT_Abstract_GT_Replacement_Coils {
             "0 - Air",
             "1 - Input Hatch",
             "2 - Output Hatch",
-            "Required: Maintenance Hatch, Energy Hatch"
+            "3 - 1x Input Hatch, rest Casings, Maintenance Hatch or Energy Hatch",
+            "Required: Maintenance Hatch, Energy Hatch, at Position 3 or instead of Casings",
+            "18 Casings at least!"
     };
 
     @Override
@@ -240,23 +250,21 @@ public class TT_OilCrackingUnit extends TT_Abstract_GT_Replacement_Coils {
 
         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sCrakingRecipes.findRecipe(
                 getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluidInputs , mInventory[1]);
-        if (tRecipe != null && tRecipe.isRecipeInputEqual(true, tFluidInputs, mInventory[1])) {
-            this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-            calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, getMaxInputVoltage());
-            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
-                return false;
-            this.mEUt *= Math.pow(0.95D, this.getCoilHeat().getTier());
-
-            if (this.mEUt > 0) {
-                this.mEUt = (-this.mEUt);
-            }
-
-            this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-            this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
-            return true;
+        if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, tFluidInputs, mInventory[1])) {
+            return false;
         }
-        return false;
+        setEfficiencyAndOc(tRecipe);
+        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+            return false;
+        this.mEUt *= Math.pow(0.95D, this.getCoilHeat().getTier());
+
+        if (this.mEUt > 0) {
+            this.mEUt = (-this.mEUt);
+        }
+
+        this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+        this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
+        return true;
     }
 
     @Override
@@ -265,19 +273,21 @@ public class TT_OilCrackingUnit extends TT_Abstract_GT_Replacement_Coils {
 
         for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
             tHatch.mRecipeMap = getRecipeMap();
-            if (isValidMetaTileEntity(tHatch) && tHatch.getFillableStack() != null) {
-                FluidStack tStack = tHatch.getFillableStack();
-                if (!tStack.isFluidEqual(GT_ModHandler.getSteam(1000)) && !tStack.isFluidEqual(Materials.Hydrogen.getGas(1000)))
-                    rList.add(tStack);
+            if (!isValidMetaTileEntity(tHatch) || tHatch.getFillableStack() == null) {
+                continue;
             }
-        }
-
-        if (this.middleFluidHatch != null && isValidMetaTileEntity(this.middleFluidHatch) && this.middleFluidHatch.getFillableStack() != null) {
-            this.middleFluidHatch.mRecipeMap = getRecipeMap();
-            FluidStack tStack = this.middleFluidHatch.getFillableStack();
-            if (tStack.isFluidEqual(GT_ModHandler.getSteam(1000)) || tStack.isFluidEqual(Materials.Hydrogen.getGas(1000)))
+            FluidStack tStack = tHatch.getFillableStack();
+            if (!tStack.isFluidEqual(GT_ModHandler.getSteam(1000)) && !tStack.isFluidEqual(Materials.Hydrogen.getGas(1000)))
                 rList.add(tStack);
         }
+
+        if (this.middleFluidHatch == null || !isValidMetaTileEntity(this.middleFluidHatch) || this.middleFluidHatch.getFillableStack() == null) {
+            return rList;
+        }
+        this.middleFluidHatch.mRecipeMap = getRecipeMap();
+        FluidStack tStack = this.middleFluidHatch.getFillableStack();
+        if (tStack.isFluidEqual(GT_ModHandler.getSteam(1000)) || tStack.isFluidEqual(Materials.Hydrogen.getGas(1000)))
+            rList.add(tStack);
 
         return rList;
     }

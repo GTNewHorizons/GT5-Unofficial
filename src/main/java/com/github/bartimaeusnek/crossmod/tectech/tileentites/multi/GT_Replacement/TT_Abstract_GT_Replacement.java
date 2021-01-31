@@ -10,6 +10,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.util.GT_Recipe;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -32,12 +33,12 @@ public abstract class TT_Abstract_GT_Replacement extends GT_MetaTileEntity_Multi
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", ePowerPass,false,true);
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", this.ePowerPassCover, false, true);
     }
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, ePowerPass, false, true);
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, this.ePowerPassCover, false, true);
     }
 
     @Override
@@ -70,11 +71,11 @@ public abstract class TT_Abstract_GT_Replacement extends GT_MetaTileEntity_Multi
         return 0;
     }
 
-    private static final String[] sfStructureDescription = new String[] {"1 - Muffler"};
+    protected void setEfficiencyAndOc(GT_Recipe gtRecipe) {
+        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
 
-    @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return sfStructureDescription;
+        calculateOverclockedNessMulti(gtRecipe.mEUt, gtRecipe.mDuration, 1, getMaxInputVoltage());
     }
 
     public final boolean addEBFInputsBottom(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -96,6 +97,8 @@ public abstract class TT_Abstract_GT_Replacement extends GT_MetaTileEntity_Multi
             return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
         else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy)
             return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo)
+            return this.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
         else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance)
             return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
         else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti)

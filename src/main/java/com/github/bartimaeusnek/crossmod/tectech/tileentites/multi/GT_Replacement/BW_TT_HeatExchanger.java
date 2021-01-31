@@ -170,7 +170,9 @@ public class BW_TT_HeatExchanger extends TT_Abstract_GT_Replacement {
 
     private void checkRecipe_Additions(float efficiency){
         Materials m = null;
-        if (last == null || !mInputHotFluidHatch.getFluid().isFluidEqual(last.getPlasma(1))) {
+        if (last != null && mInputHotFluidHatch.getFluid().isFluidEqual(last.getPlasma(1))) {
+            m = last;
+        } else {
             for (Materials materials : Materials.values()) {
                 if (mInputHotFluidHatch.getFluid().isFluidEqual(materials.getPlasma(1))) {
                     last = m = materials;
@@ -183,8 +185,6 @@ public class BW_TT_HeatExchanger extends TT_Abstract_GT_Replacement {
                 }
             }
         }
-        else
-            m = last;
 
         if (m == null)
             return;
@@ -358,7 +358,8 @@ public class BW_TT_HeatExchanger extends TT_Abstract_GT_Replacement {
             "1 - Cold Fluid Output",
             "2 - Hot Fluid Input",
             "Needs an additional Output Hatch",
-            "Needs an additional Input Hatch"
+            "Needs an additional Input Hatch",
+            "20 Casings at least!"
     };
 
     @Override

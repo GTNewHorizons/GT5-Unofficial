@@ -22,16 +22,11 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement;
 
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.crossmod.tectech.helper.StructureDefinitions;
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -41,12 +36,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
@@ -145,24 +137,23 @@ public class TT_VacuumFreezer extends TT_Abstract_GT_Replacement {
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
             GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sVacuumRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, tInput);
-            if (tRecipe != null) {
-                if (tRecipe.isRecipeInputEqual(true, null, tInput)) {
-                    this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                    this.mEfficiencyIncrease = 10000;
-
-                    calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
-                    //In case recipe is too OP for that machine
-                    if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
-                        return false;
-                    if (this.mEUt > 0) {
-                        this.mEUt = (-this.mEUt);
-                    }
-                    this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                    this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
-                    updateSlots();
-                    return true;
-                }
+            if (tRecipe == null) {
+                continue;
             }
+            if (!tRecipe.isRecipeInputEqual(true, null, tInput)) {
+                continue;
+            }
+            setEfficiencyAndOc(tRecipe);
+            //In case recipe is too OP for that machine
+            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                return false;
+            if (this.mEUt > 0) {
+                this.mEUt = (-this.mEUt);
+            }
+            this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+            this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
+            updateSlots();
+            return true;
         }
         return false;
     }
@@ -178,26 +169,27 @@ public class TT_VacuumFreezer extends TT_Abstract_GT_Replacement {
     }
 
     public final boolean addVacuumFreezerHatches(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity != null) {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch)
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            else
-                return false;
-
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus)
-                return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
-            else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus)
-                return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
-            else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy)
-                return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
-            else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance)
-                return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
-            else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti)
-                return this.eEnergyMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
-            else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti)
-                return this.eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
+        if (aTileEntity == null) {
+            return false;
         }
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch)
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        else
+            return false;
+
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus)
+            return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus)
+            return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy)
+            return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance)
+            return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti)
+            return this.eEnergyMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
+        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti)
+            return this.eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
         return false;
     }
 }
