@@ -69,27 +69,6 @@ public class TT_OilCrackingUnit extends TT_Abstract_GT_Replacement_Coils {
                     {"EBGBF","EBGBF","EBGBF"}
             })
     ).addElement(
-            'A',
-            ofChain(
-                    onElementPass(
-                            x -> ++x.blocks,
-                            ofBlock(
-                                    GregTech_API.sBlockCasings4,
-                                    1
-                            )
-                    ),
-                    ofHatchAdder(
-                            TT_OilCrackingUnit::addClassicMaintenanceToMachineList,
-                            TEXTURE_INDEX,
-                            1
-                    ),
-                    ofHatchAdder(
-                            TT_OilCrackingUnit::addEnergyIOToMachineList,
-                            TEXTURE_INDEX,
-                            1
-                    )
-            )
-    ).addElement(
             'B',
             CoilAdder.getINSTANCE()
     ).addElement(
