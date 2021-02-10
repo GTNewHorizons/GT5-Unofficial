@@ -178,20 +178,24 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 				for (GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
 					if (outputHatch.isFluidLocked() && outputHatch.getLockedFluidName().equals(storedFluidCopy.getUnlocalizedName())) {
 						storedFluidCopy.amount += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-					} else if (outputHatch.getFluid() != null && outputHatch.getFluid().getUnlocalizedName().equals(storedFluidCopy.getUnlocalizedName())) {
+						addFluidToHatch(storedFluidCopy,outputHatch);
+					} else if (outputHatch.getFluid() != null && outputHatch.getFluid().isFluidEqual(storedFluidCopy)) {
 						storedFluidCopy.amount += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-					} else if (outputHatch.getFluid() == null) {
+						addFluidToHatch(storedFluidCopy,outputHatch);
+					} else if (!outputHatch.isFluidLocked() && outputHatch.getFluid() == null) {
 						storedFluidCopy.amount += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+						addFluidToHatch(storedFluidCopy,outputHatch);
 					}
 				}
-				// Test how much can actually be drained and drain that amount
-				storedFluidCopy.amount = mfh.pullFluid(storedFluidCopy, true);
-				// Add to output
-				super.addOutput(storedFluidCopy);
 			}
 		}
 
 		return true;
+	}
+
+	public void addFluidToHatch(FluidStack aFluid, GT_MetaTileEntity_Hatch_Output aHatch) {
+		aFluid.amount = mfh.pullFluid(aFluid, true);
+		aHatch.fill(aFluid,true);
 	}
 
 	@Override
