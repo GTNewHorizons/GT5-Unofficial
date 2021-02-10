@@ -183,6 +183,8 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        if (mfh == null)
+            return null;
         FluidStack[] fluids = mfh.getAllFluids();
         int length = fluids.length;
         int maxCapcity = mfh.getCapacity();
