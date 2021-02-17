@@ -31,12 +31,12 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     private AENetworkProxy gridProxy = null;
 
     public GT_MetaTileEntity_Hatch_OutputBus_ME(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 1, new String[]{
+        super(aID, aName, aNameRegional, 1, 0, new String[]{
             "Item Output for Multiblocks", "Stores directly into ME"});
     }
 
     public GT_MetaTileEntity_Hatch_OutputBus_ME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
+        super(aName, aTier,0, aDescription, aTextures);
     }
 
     @Override

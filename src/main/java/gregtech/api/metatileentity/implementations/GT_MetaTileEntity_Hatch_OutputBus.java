@@ -20,8 +20,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch {
         		"Capacity: " + getSlots(aTier) + " stack" + (getSlots(aTier) >= 2 ? "s" : "")});
     }
 
-    public GT_MetaTileEntity_Hatch_OutputBus(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
-        super(aID, aName, aNameRegional, aTier, getSlots(aTier), aDescription);
+    public GT_MetaTileEntity_Hatch_OutputBus(int aID, String aName, String aNameRegional, int aTier, int inventorySize, String[] aDescription) {
+        super(aID, aName, aNameRegional, aTier, inventorySize, aDescription);
     }
 
     public GT_MetaTileEntity_Hatch_OutputBus(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -30,6 +30,10 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_Hatch_OutputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 9 : 16, aDescription, aTextures);
+    }
+
+    public GT_MetaTileEntity_Hatch_OutputBus(String aName, int aTier, int inventorySize, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, inventorySize, aDescription, aTextures);
     }
 
     @Override
