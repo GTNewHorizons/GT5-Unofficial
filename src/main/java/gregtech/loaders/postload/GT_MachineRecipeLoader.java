@@ -495,6 +495,12 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_EV.get(1L), ItemList.Electric_Motor_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.Titanium), 2L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Steam_Valve_EV.get(1L), 250, 1920);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_IV.get(1L), ItemList.Electric_Motor_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.TungstenSteel), 2L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Steam_Valve_IV.get(1L), 200, 7680);
 
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.FluidRegulator_LV.get(1L), GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.Steel), 1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Metering_Valve_LV.get(1L), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.FluidRegulator_MV.get(1L), GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.Aluminium), 1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Metering_Valve_MV.get(1L), 350, 120);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.FluidRegulator_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.StainlessSteel), 1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Metering_Valve_HV.get(1L), 300, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.FluidRegulator_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.Titanium), 1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Metering_Valve_EV.get(1L), 250, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.FluidRegulator_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.TungstenSteel), 1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Metering_Valve_IV.get(1L), 200, 7680);
+
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2L), OrePrefixes.circuit.get(Materials.Good), 4, GT_Values.NF, ItemList.Schematic.get(1L), 320, 16);
         //GT_Values.RA.addAssemblerRecipe(ItemList.Cover_Shutter.get(1L), OrePrefixes.circuit.get(Materials.Basic), 2, GT_Values.NF, ItemList.FluidFilter.get(1L), 800, 4);//TODO Check
 

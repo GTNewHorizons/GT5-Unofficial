@@ -1562,6 +1562,12 @@ public enum ItemList implements IItemContainer {
     Block_Powderbarrel,
     GelledToluene,
 
+    Metering_Valve_LV,
+    Metering_Valve_MV,
+    Metering_Valve_HV,
+    Metering_Valve_EV,
+    Metering_Valve_IV,
+
     FluidRegulator_LV,
     FluidRegulator_MV,
     FluidRegulator_HV,
