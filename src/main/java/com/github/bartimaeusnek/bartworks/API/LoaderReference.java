@@ -56,6 +56,7 @@ public class LoaderReference {
     public static boolean EnderIO;
     public static boolean HardcoreEnderExpension;
     public static boolean betterloadingscreen;
+    public static boolean TGregworks;
 
     public static void init() {
         Natura = Loader.isModLoaded("Natura");
@@ -84,5 +85,6 @@ public class LoaderReference {
         EnderIO = Loader.isModLoaded("EnderIO");
         HardcoreEnderExpension = Loader.isModLoaded("HardcoreEnderExpension");
         betterloadingscreen = Loader.isModLoaded("betterloadingscreen");
+        TGregworks = Loader.isModLoaded("TGregworks");
     }
 }

@@ -52,8 +52,10 @@ java {
     this.sourceCompatibility = JavaVersion.VERSION_1_8
     this.targetCompatibility = JavaVersion.VERSION_1_8
 }
+
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor(0, TimeUnit.SECONDS)
+    isTransitive = false
 }
 
 tasks.withType<JavaCompile> {
@@ -103,6 +105,10 @@ repositories {
         this.name = "BuildCraft"
         this.artifactPattern("http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision](-[classifier]).[ext]")
     }
+    ivy {
+        this.name = "vexatos"
+        this.artifactPattern("https://files.vexatos.com/[organisation]/[module]-[revision]-[classifier].[ext]")
+    }
     maven("http://maven.cil.li/") { this.name = "OpenComputers" }
     maven("http://default.mobiusstrip.eu/maven") { this.name = "Jabba" }
     maven("http://chickenbones.net/maven/") { this.name = "CodeChicken" }
@@ -118,10 +124,17 @@ dependencies {
     val applecoreVersion: String by project
     val enderCoreVersion: String by project
     val enderioVersion: String by project
+
     //hard deps
     compile("net.industrial-craft:industrialcraft-2:$ic2Version:dev")
     //jitpack
     compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev") {
+        this.isChanging = true
+    }
+    compile("com.github.GTNewHorizons:TinkersConstruct:master-SNAPSHOT:deobf") {
+        this.isChanging = true
+    }
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-1.7.10-SNAPSHOT:dev") {
         this.isChanging = true
     }
     //soft deps
@@ -133,6 +146,7 @@ dependencies {
     compile("micdoodle8.mods:Galacticraft-Planets:$galacticraftVersion:Dev")
     compileOnly("li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api")
     compileOnly("net.sengir.forestry:forestry_1.7.10:4.2.16.64:dev")
+    compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.19:deobf")
     //jitpack
     compileOnly("com.github.GTNewHorizons:GalacticGregGT5:master-SNAPSHOT") {
         this.isChanging = true
