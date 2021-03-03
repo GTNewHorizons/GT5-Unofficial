@@ -97,7 +97,6 @@ public class TT_PyrolyseOven extends TT_Abstract_GT_Replacement_Coils {
             ).addElement(
                     'C',
                     ofChain(
-                            ofHint(2),
                             ofHatchAdder(
                                     TT_PyrolyseOven::addClassicInputToMachineList, TEXTURE_INDEX,
                                     2
