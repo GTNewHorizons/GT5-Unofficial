@@ -2,45 +2,62 @@ package com.github.technus.tectech.util;
 
 import java.util.Arrays;
 
+import static java.lang.Math.*;
 import static java.lang.Math.max;
 import static java.lang.Math.ulp;
 
 public class DoubleCount {
-    public static double[] distribute(double count,double... probabilities) throws ArithmeticException{
-        if(probabilities==null){
+    public static double[] distribute(double count,double... probabilities) throws ArithmeticException {
+        if (probabilities == null) {
             return null;
-        }else if(count==0){
+        } else if (count == 0) {
             return new double[probabilities.length];
-        }else {
-            switch (probabilities.length){
+        } else {
+            switch (probabilities.length) {
                 default: {
-                    int size=probabilities.length;
-                    double[] output=new double[size];
+                    int size = probabilities.length;
+                    double[] output = new double[size];
                     size--;
-                    double remaining=count,previous=probabilities[size],probability,out,sum=0;
+                    double remaining = count, previous = probabilities[size], probability, out, sum = 0;
                     for (int i = size - 1; i >= 0; i--) {
-                        probability=probabilities[i];
-                        remaining-=out=count*(probability-ulp(probability));
-                        sum+=output[i]=out;
-                        if(previous<probability){
-                            throw new ArithmeticException("Malformed probability order: "+ Arrays.toString(probabilities));
+                        probability = probabilities[i];
+                        remaining -= out = count * probability - ulp(probability);
+                        sum += output[i] = out;
+                        if (previous < probability) {
+                            throw new ArithmeticException("Malformed probability order: " + Arrays.toString(probabilities));
                         }
-                        previous=probability;
-                        if(probability>=1){
+                        previous = probability;
+                        if (probability >= 1) {
                             break;
                         }
                     }
-                    if(remaining*count<0){
-                        throw new ArithmeticException("Malformed probability sum: "+ Arrays.toString(probabilities));
-                    }
-                    sum+=output[size]=remaining-ulp(remaining)*size;
-                    if(sum>count){
-                        throw new ArithmeticException("Too much outputted: "+ Arrays.toString(output)+" "+sum+" / "+count);
+                    if (remaining * count < 0) {
+                        finishIt(size, output, remaining);
+                    } else {
+                        sum += output[size] = remaining - ulp(remaining) * size;
+                        if (sum > count) {
+                            remaining = sum - count;
+                            finishIt(size, output, remaining);
+                        }
                     }
                     return output;
                 }
-                case 1: return new double[]{count};
-                case 0: return probabilities;//empty array at hand...
+                case 1:
+                    return new double[]{count};
+                case 0:
+                    return probabilities;//empty array at hand...
+            }
+        }
+    }
+
+    private static void finishIt(int size, double[] output, double remaining) {
+        for (int i = size - 1; i >= 0; i--) {
+            if (abs(output[i]) >= abs(remaining)) {
+                output[i] -= remaining;
+                break;
+            } else {
+                remaining+=output[i];
+                output[i]=0;
             }
         }
     }
