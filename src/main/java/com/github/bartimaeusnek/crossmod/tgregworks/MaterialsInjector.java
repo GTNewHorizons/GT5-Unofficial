@@ -1,8 +1,11 @@
 package com.github.bartimaeusnek.crossmod.tgregworks;
 
+import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import net.minecraftforge.common.config.Property;
@@ -18,8 +21,21 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Mod(
+        modid = MaterialsInjector.MOD_ID, name = MaterialsInjector.NAME, version = MaterialsInjector.VERSION,
+        dependencies = "required-after:IC2; "
+                + "required-after:gregtech; "
+                + "required-after:bartworks;"
+                + "before:TGregworks;"
+                + "before:miscutils; "
+)
 @SuppressWarnings("unchecked")
 public class MaterialsInjector {
+
+    public static final String NAME = "BartWorks Mod Additions - TGregworks Container";
+    public static final String VERSION = MainMod.VERSION;
+    public static final String MOD_ID = "bartworkscrossmodtgregworkscontainer";
+
     private static HashMap<Materials, Property> configProps;
     private static ArrayList<Integer> configIDs;
     private static Method getGlobalMultiplierMethod;
@@ -29,7 +45,15 @@ public class MaterialsInjector {
     private static Method getReinforcedLevelMethod;
     private static Method getStoneboundLevelMethod;
 
-    static {
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent init) {
+        if (LoaderReference.TGregworks) {
+            MaterialsInjector.preinit();
+            MaterialsInjector.run();
+        }
+    }
+
+    private static void preinit() {
         try {
             getFields();
             getMethodes();

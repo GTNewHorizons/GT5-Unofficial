@@ -28,7 +28,6 @@ import com.github.bartimaeusnek.crossmod.GTpp.loader.RadioHatchCompat;
 import com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechResearchLoader;
 import com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement.*;
-import com.github.bartimaeusnek.crossmod.tgregworks.MaterialsInjector;
 import com.github.bartimaeusnek.crossmod.thaumcraft.CustomAspects;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -89,8 +88,6 @@ public class BartWorksCrossmod {
 
             new BW_TT_HeatExchanger(null, null);
         }
-        if (LoaderReference.TGregworks)
-            MaterialsInjector.run();
     }
 
     @Mod.EventHandler
