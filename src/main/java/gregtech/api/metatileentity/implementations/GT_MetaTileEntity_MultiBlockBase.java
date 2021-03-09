@@ -320,7 +320,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
             if (isValidMetaTileEntity(tHatch)) {
                 if (mPollution >= 10000) {
-                    if (tHatch.polluteEnvironment()) {
+                    if (tHatch.polluteEnvironment(this)) {
                         mPollution -= 10000;
                     }
                 } else {
