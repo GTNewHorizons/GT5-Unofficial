@@ -61,21 +61,19 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
         return true;
     }
 
-    //API Code, Bartworks relies on this. It's marked here, not anywhere else.
+    //API Code, BartWorks/TecTech based EBF relies on this. It's marked here, not anywhere else.
     public void setInValidFacings(ForgeDirection... aFacings) {
         mFacings = Arrays.stream(aFacings).mapToInt(Enum::ordinal).toArray();
     }
 
     @Override
     public boolean isFacingValid(byte aFacing) {
-        boolean valid = true;
         for (int x : mFacings) {
             if (x == aFacing) {
-                valid = false;
-                break;
+                return true;
             }
         }
-        return valid;
+        return false;
     }
 
     @Override
@@ -93,23 +91,25 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
         return new GT_MetaTileEntity_Hatch_Muffler(mName, mTier, mDescriptionArray, mTextures);
     }
 
+    //MetaTileEntity is passed so newer muffler hatches can do wacky things with the multis
     public boolean polluteEnvironment(MetaTileEntity mte) {
-        boolean doPollute = false;
         if (getBaseMetaTileEntity().getAirAtSide(getBaseMetaTileEntity().getFrontFacing())) {
             GT_Pollution.addPollution(getBaseMetaTileEntity(), calculatePollutionReduction(10000));
-            doPollute = true;
+            return true;
         }
-        return doPollute;
+        return false;
+    }
+
+    @Deprecated
+    public boolean polluteEnvironment() {
+        return polluteEnvironment(null);
     }
 
     public int calculatePollutionReduction(int aPollution) {
-        int pollutionReduction;
         if ((float) mTier < 2) {
-            pollutionReduction = aPollution;
-        } else {
-            pollutionReduction = (int) ((float) aPollution * ((100F - (12.5F * ((float) mTier - 1F))) / 100F));
+            return aPollution;
         }
-        return pollutionReduction;
+        return (int) ((float) aPollution * ((100F - (12.5F * ((float) mTier - 1F))) / 100F));
     }
 
     @Override
