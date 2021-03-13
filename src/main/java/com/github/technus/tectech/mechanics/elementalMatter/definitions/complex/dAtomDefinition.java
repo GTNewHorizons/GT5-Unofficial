@@ -1319,17 +1319,26 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     @Override
     public aFluidDequantizationInfo someAmountIntoFluidStack() {
-        return TRANSFORMATION_INFO.fluidDequantization.get(this);
+        HashMap<iElementalDefinition, aFluidDequantizationInfo> temp = TRANSFORMATION_INFO.fluidDequantization;
+        if (temp == null)
+            return null;
+        return temp.get(this);
     }
 
     @Override
     public aItemDequantizationInfo someAmountIntoItemsStack() {
-        return TRANSFORMATION_INFO.itemDequantization.get(this);
+        HashMap<iElementalDefinition, aItemDequantizationInfo> temp = TRANSFORMATION_INFO.itemDequantization;
+        if (temp == null)
+            return null;
+        return temp.get(this);
     }
 
     @Override
     public aOredictDequantizationInfo someAmountIntoOredictStack() {
-        return TRANSFORMATION_INFO.oredictDequantization.get(this);
+        HashMap<iElementalDefinition, aOredictDequantizationInfo> temp = TRANSFORMATION_INFO.oredictDequantization;
+        if (temp == null)
+            return null;
+        return temp.get(this);
     }
 
     private static final class Nomenclature {
