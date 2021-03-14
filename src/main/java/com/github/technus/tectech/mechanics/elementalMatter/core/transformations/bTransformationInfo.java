@@ -9,7 +9,9 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM.STACKS_REGISTERED;
 
@@ -21,26 +23,18 @@ public class bTransformationInfo {
     public static final double AVOGADRO_CONSTANT_UNCERTAINTY =(144*1000)/6.02214076e23D;
     public static final double AVOGADRO_CONSTANT_144 = AVOGADRO_CONSTANT *144D;
 
-    public static final HashMap<Integer,aFluidQuantizationInfo> fluidQuantization=new HashMap<>(32);
-    public static final HashMap<aItemQuantizationInfo,aItemQuantizationInfo> itemQuantization=new HashMap<>(32);
-    public static final HashMap<Integer,aOredictQuantizationInfo> oredictQuantization=new HashMap<>(32);
+    public static final Map<Integer,aFluidQuantizationInfo> fluidQuantization=new HashMap<>(32);
+    public static final Map<aItemQuantizationInfo,aItemQuantizationInfo> itemQuantization=new HashMap<>(32);
+    public static final Map<Integer,aOredictQuantizationInfo> oredictQuantization=new HashMap<>(32);
 
-    public HashMap<iElementalDefinition,aFluidDequantizationInfo> fluidDequantization;
-
-    public HashMap<iElementalDefinition,aItemDequantizationInfo> itemDequantization;
-
-    public HashMap<iElementalDefinition,aOredictDequantizationInfo> oredictDequantization;
+    public Map<iElementalDefinition,aFluidDequantizationInfo> fluidDequantization;
+    public Map<iElementalDefinition,aItemDequantizationInfo> itemDequantization;
+    public Map<iElementalDefinition,aOredictDequantizationInfo> oredictDequantization;
 
     public bTransformationInfo(int fluidCap,int itemCap, int oreCap){
-        if(fluidCap>0) {
-            fluidDequantization = new HashMap<>(fluidCap);
-        }
-        if(itemCap>0) {
-            itemDequantization = new HashMap<>(itemCap);
-        }
-        if(oreCap>0) {
-            oredictDequantization = new HashMap<>(oreCap);
-        }
+        fluidDequantization = fluidCap > 0 ? new HashMap<>(fluidCap) : Collections.emptyMap();
+        itemDequantization = itemCap > 0 ? new HashMap<>(itemCap) : Collections.emptyMap();
+        oredictDequantization = oreCap > 0 ? new HashMap<>(oreCap) : Collections.emptyMap();
     }
 
     public void addFluid(iHasElementalDefinition em, FluidStack fluidStack){
