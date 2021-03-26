@@ -84,6 +84,9 @@ repositories {
         name = 'gtnh_download_source'
         artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]")
     }
+    maven {
+        url 'https://jitpack.io'
+    }
 }
 
 dependencies {
@@ -98,6 +101,9 @@ dependencies {
     api "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
     api "com.enderio.core:EnderCore:${config.enderiocore.version}:dev"
     api ("com.enderio:EnderIO:${config.enderio.version}:dev"){
+        transitive = false
+    }
+    compileOnly ("com.github.SinTh0r4s:HydroEnergy:master-SNAPSHOT:api") {
         transitive = false
     }
 

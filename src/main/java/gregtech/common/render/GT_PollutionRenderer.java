@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+import com.sinthoras.hydroenergy.api.HEGetMaterialUtil;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -105,7 +106,7 @@ public class GT_PollutionRenderer {
         if (!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
             return;
 
-        if (event.block.getMaterial() == Material.water ||
+        if (HEGetMaterialUtil.getMaterialWrapper(event.block, event.entity.posY + event.entity.getEyeHeight()) == Material.water ||
             event.block.getMaterial() == Material.lava)
             return;
 
