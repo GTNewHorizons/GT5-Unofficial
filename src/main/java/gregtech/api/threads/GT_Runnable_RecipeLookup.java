@@ -5,6 +5,8 @@ import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.Collections;
+
 public class GT_Runnable_RecipeLookup implements Runnable {
 
     private GT_MetaTileEntity_BasicMachine aTileEntity;
@@ -65,16 +67,21 @@ public class GT_Runnable_RecipeLookup implements Runnable {
 
     @Override
     public void run() {
-        GT_Recipe recipe = gt_recipe_map.findRecipe(
-                aTileEntity.getBaseMetaTileEntity(),
-                lastRecipe,
-                aNotUnificated,
-                voltage,
-                fluidStacks,
-                aSpecialSlot,
-                itemStacks
-        );
-        aTileEntity.getRecipeAtomicReference().set(recipe);
-        aTileEntity.getRecipeStatus().set(recipe == null ? RECIPE_RETURNED_NULL : RECIPE_RETURNED);
+        for(;;) {
+            try {
+                GT_Recipe recipe = gt_recipe_map.findRecipe(
+                        aTileEntity.getBaseMetaTileEntity(),
+                        lastRecipe,
+                        aNotUnificated,
+                        voltage,
+                        fluidStacks,
+                        aSpecialSlot,
+                        itemStacks
+                );
+                aTileEntity.getRecipeAtomicReference().set(recipe);
+                aTileEntity.getRecipeStatus().set(recipe == null ? RECIPE_RETURNED_NULL : RECIPE_RETURNED);
+                break;
+            } catch (Exception ignored) {}
+        }
     }
 }
