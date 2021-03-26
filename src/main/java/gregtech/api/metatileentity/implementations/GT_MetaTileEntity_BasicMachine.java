@@ -11,6 +11,7 @@ import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.threads.GT_Runnable_RecipeLookup;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -30,9 +31,12 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugCleanroom;
+import static gregtech.api.threads.GT_Runnable_RecipeLookup.*;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 /**
@@ -43,13 +47,24 @@ import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
  */
 public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank implements IMachineCallback<GT_MetaTileEntity_Cleanroom> {
 
+    public AtomicReference<GT_Recipe> getRecipeAtomicReference() {
+        return recipeAtomicReference;
+    }
+    public AtomicInteger getRecipeStatus() {
+        return recipeStatus;
+    }
+
+    private AtomicReference<GT_Recipe> recipeAtomicReference = new AtomicReference<>(null);
+    private AtomicInteger recipeStatus = new AtomicInteger(RECIPE_NOT_REQUESTED);
+
     /**
      * return values for checkRecipe()
      */
     protected static final int
             DID_NOT_FIND_RECIPE = 0,
             FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
-            FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
+            FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2,
+            WAITING_FOR_RESPONSE = 3;
     public static final int OTHER_SLOT_COUNT = 4;
     public final ItemStack[] mOutputItems;
     public final int mInputSlotCount, mAmperage;
@@ -510,13 +525,14 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                             tTank.fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), drain(tFilledAmount, true), true);
                     }
                 }
-                if (getDrainableStack() == null) tRemovedOutputFluid = true;
+                if (getDrainableStack() == null)
+                    tRemovedOutputFluid = true;
             }
 
             if (doesAutoOutput() && !isOutputEmpty() && aBaseMetaTileEntity.getFrontFacing() != mMainFacing && (tSucceeded || mOutputBlocked % 300 == 1 || aBaseMetaTileEntity.hasInventoryBeenModified() || aTick % 600 == 0)) {
                 TileEntity tTileEntity2 = aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
                 long tStoredEnergy = aBaseMetaTileEntity.getUniversalEnergyStored();
-                int tMaxStacks = (int)(tStoredEnergy/64l);
+                int tMaxStacks = (int)(tStoredEnergy/ 64L);
                 if (tMaxStacks > mOutputItems.length)
                     tMaxStacks = mOutputItems.length;
 
@@ -527,38 +543,57 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 //                }
             }
 
-            if (mOutputBlocked != 0) if (isOutputEmpty()) mOutputBlocked = 0;
+            if (mOutputBlocked != 0)
+                if (isOutputEmpty())
+                    mOutputBlocked = 0;
             else mOutputBlocked++;
 
             if (allowToCheckRecipe()) {
-                if (mMaxProgresstime <= 0 && aBaseMetaTileEntity.isAllowedToWork() && (tRemovedOutputFluid || tSucceeded || aBaseMetaTileEntity.hasInventoryBeenModified() || aTick % 600 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) && hasEnoughEnergyToCheckRecipe()) {
-                    if (checkRecipe() == FOUND_AND_SUCCESSFULLY_USED_RECIPE) {
-                        if (mInventory[3] != null && mInventory[3].stackSize <= 0) mInventory[3] = null;
+                if (
+                        mMaxProgresstime <= 0
+                        && aBaseMetaTileEntity.isAllowedToWork()
+                        && (
+                                tRemovedOutputFluid
+                             || tSucceeded
+                             || aBaseMetaTileEntity.hasInventoryBeenModified()
+                             || aTick % 600 == 0
+                             || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+                             || getRecipeStatus().get() == WAITING_FOR_RESPONSE
+                            )
+                        && hasEnoughEnergyToCheckRecipe()
+                ) {
+                    int check = checkRecipe();
+                    if (check == FOUND_AND_SUCCESSFULLY_USED_RECIPE) {
+                        if (mInventory[3] != null && mInventory[3].stackSize <= 0)
+                            mInventory[3] = null;
                         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++)
-                            if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
+                            if (mInventory[i] != null && mInventory[i].stackSize <= 0)
+                                mInventory[i] = null;
                         for (int i = 0; i < mOutputItems.length; i++) {
                             mOutputItems[i] = GT_Utility.copy(mOutputItems[i]);
                             if (mOutputItems[i] != null && mOutputItems[i].stackSize > 64)
                                 mOutputItems[i].stackSize = 64;
                             mOutputItems[i] = GT_OreDictUnificator.get(true, mOutputItems[i]);
                         }
-                        if (mFluid != null && mFluid.amount <= 0) mFluid = null;
+                        if (mFluid != null && mFluid.amount <= 0)
+                            mFluid = null;
                         mMaxProgresstime = Math.max(1, mMaxProgresstime);
-                        if (GT_Utility.isDebugItem(mInventory[dechargerSlotStartIndex()])) {
+                        if (GT_Utility.isDebugItem(mInventory[dechargerSlotStartIndex()]))
                             mEUt = mMaxProgresstime = 1;
-                        }
                         startProcess();
                     } else {
+                        if (check == WAITING_FOR_RESPONSE)
+                            return;
                         mMaxProgresstime = 0;
                         Arrays.fill(mOutputItems, null);
                         mOutputFluid = null;
                     }
                 }
             } else {
-                if (!mStuttering) {
-                    stutterProcess();
-                    mStuttering = true;
-                }
+                if (mStuttering)
+                    return;
+                stutterProcess();
+                mStuttering = true;
             }
         }
     }
@@ -868,9 +903,24 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      */
     public int checkRecipe(boolean skipOC){
         GT_Recipe_Map tMap = getRecipeList();
-        if (tMap == null) return DID_NOT_FIND_RECIPE;
-        GT_Recipe tRecipe = tMap.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, V[mTier], new FluidStack[]{getFillableStack()}, getSpecialSlot(), getAllInputs());
-        if (tRecipe == null) return DID_NOT_FIND_RECIPE;
+        if (tMap == null)
+            return DID_NOT_FIND_RECIPE;
+        requestRecipeAsync();
+        GT_Recipe tRecipe;
+        switch (this.getRecipeStatus().get()){
+            case RECIPE_RETURNED:
+                this.getRecipeStatus().set(RECIPE_NOT_REQUESTED);
+                tRecipe = this.recipeAtomicReference.get();
+                break;
+            case RECIPE_REQUESTED:
+                return WAITING_FOR_RESPONSE;
+            case RECIPE_RETURNED_NULL: {
+                this.getRecipeStatus().set(RECIPE_NOT_REQUESTED);
+                return DID_NOT_FIND_RECIPE;
+            }
+            default:
+                throw new IllegalStateException("This should never happen!");
+        }
 
         if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300) &&
                 !isValidForLowGravity(tRecipe,getBaseMetaTileEntity().getWorld().provider.dimensionId))
@@ -907,6 +957,21 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
         return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+    }
+
+    private void requestRecipeAsync() {
+        if (this.getRecipeStatus().get() != RECIPE_NOT_REQUESTED) {
+            return;
+        }
+        GT_Runnable_RecipeLookup.requestRecipe(this,
+                mLastRecipe,
+                false,
+                V[mTier],
+                new FluidStack[]{getFillableStack()},
+                getSpecialSlot(),
+                getRecipeList(),
+                getAllInputs()
+        );
     }
 
     public ITexture[] getSideFacingActive(byte aColor) {
