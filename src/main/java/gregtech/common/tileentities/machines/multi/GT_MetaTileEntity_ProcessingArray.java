@@ -139,6 +139,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
     }
 
     private String mMachine = "";
+
     public boolean checkRecipe(ItemStack aStack) {
         if (!isCorrectMachinePart(mInventory[1])) {
             return false;
@@ -146,62 +147,66 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
         GT_Recipe.GT_Recipe_Map map = getRecipeMap();
         if (map == null) return false;
 
-        if (mInventory[1].getUnlocalizedName().endsWith("10")) {
-            tTier = 9;
-            mMult = 2;//u need 4x less machines and they will use 4x less power
-        } else if (mInventory[1].getUnlocalizedName().endsWith("11")) {
-            tTier = 9;
-            mMult = 4;//u need 16x less machines and they will use 16x less power
-        } else if (mInventory[1].getUnlocalizedName().endsWith("12") ||
-                mInventory[1].getUnlocalizedName().endsWith("13") ||
-                mInventory[1].getUnlocalizedName().endsWith("14") ||
-                mInventory[1].getUnlocalizedName().endsWith("15")) {
-            tTier = 9;
-            mMult = 6;//u need 64x less machines and they will use 64x less power
-        } else if (mInventory[1].getUnlocalizedName().endsWith("1")) {
-            tTier = 1;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("2")) {
-            tTier = 2;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("3")) {
-            tTier = 3;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("4")) {
-            tTier = 4;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("5")) {
-            tTier = 5;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("6")) {
-            tTier = 6;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("7")) {
-            tTier = 7;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("8")) {
-            tTier = 8;
-            mMult = 0;//*1
-        } else if (mInventory[1].getUnlocalizedName().endsWith("9")) {
-            tTier = 9;
-            mMult = 0;//*1
-        } else {
-            tTier = 0;
-            mMult = 0;//*1
+        if (!mMachine.equals(mInventory[1].getUnlocalizedName())) {
+            mLastRecipe = null;
+            mMachine = mInventory[1].getUnlocalizedName();
         }
 
-        if (!mMachine.equals(mInventory[1].getUnlocalizedName())) mLastRecipe = null;
-        mMachine = mInventory[1].getUnlocalizedName();
+        int machineTier = 0;
+
+        if (mLastRecipe == null) {
+            try {
+                int length = mMachine.length();
+
+                machineTier = Integer.parseInt(mMachine.substring(length - 2));
+
+            } catch (NumberFormatException e) {
+            }
+
+            switch (machineTier) {
+                default:
+                    tTier = 0;
+                    mMult = 0;//*1
+                    break;
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                    tTier = machineTier;
+                    mMult = 0;//*1
+                    break;
+                case 10:
+                    tTier = 9;
+                    mMult = 2;//u need 4x less machines and they will use 4x less power
+                    break;
+                case 11:
+                    tTier = 9;
+                    mMult = 4;//u need 16x less machines and they will use 16x less power
+                    break;
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                    tTier = 9;
+                    mMult = 6;//u need 64x less machines and they will use 64x less power
+                    break;
+            }
+        }
 
         ArrayList<FluidStack> tFluidList = getStoredFluids();
         FluidStack[] tFluids = (FluidStack[]) tFluidList.toArray(new FluidStack[tFluidList.size()]);
         if (mSeparate) {
         	ArrayList<ItemStack> tInputList = new ArrayList<ItemStack>();
         	for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
-        		IGregTechTileEntity tInpuBus = tHatch.getBaseMetaTileEntity();
-        		for (int i = tInpuBus.getSizeInventory() - 1; i >= 0; i--) {
-					if (tInpuBus.getStackInSlot(i) != null)
-						tInputList.add(tInpuBus.getStackInSlot(i));
+        		IGregTechTileEntity tInputBus = tHatch.getBaseMetaTileEntity();
+        		for (int i = tInputBus.getSizeInventory() - 1; i >= 0; i--) {
+					if (tInputBus.getStackInSlot(i) != null)
+						tInputList.add(tInputBus.getStackInSlot(i));
 				}
         		ItemStack[] tInputs = (ItemStack[]) tInputList.toArray(new ItemStack[tInputList.size()]);
         		if (processRecipe(tInputs, tFluids, map))

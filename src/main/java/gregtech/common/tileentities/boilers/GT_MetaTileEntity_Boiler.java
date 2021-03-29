@@ -8,10 +8,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -141,6 +138,11 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         return this.mSteam;
     }
 
+    @Override
+    public boolean isDrainableStackSeparate() {
+        return true;
+    }
+
     public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCover) {
         return GregTech_API.getCoverBehavior(aCover.toStack()).isSimpleCover();
     }
@@ -265,10 +267,19 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
 
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         if (aIndex == 1) {
-            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(4), 2, 1.0F, aX, aY, aZ);
-            for (int l = 0; l < 8; l++) {
-                getBaseMetaTileEntity().getWorld().spawnParticle("largesmoke", aX - 0.5D + XSTR_INSTANCE.nextFloat(), aY, aZ - 0.5D + XSTR_INSTANCE.nextFloat(), 0.0D, 0.0D, 0.0D);
-            }
+            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 2, 1.0F, aX, aY, aZ);
+
+            new WorldSpawnedEventBuilder.ParticleEventBuilder()
+                    .setIdentifier("largesmoke")
+                    .setWorld(getBaseMetaTileEntity().getWorld())
+                    .setMotion(0D,0D,0D)
+                    .<WorldSpawnedEventBuilder.ParticleEventBuilder>times(8, x -> x
+                            .setPosition(
+                                    aX - 0.5D + XSTR_INSTANCE.nextFloat(),
+                                    aY,
+                                    aZ - 0.5D + XSTR_INSTANCE.nextFloat()
+                            ).run()
+                    );
         }
     }
 

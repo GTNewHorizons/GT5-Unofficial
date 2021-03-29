@@ -11,6 +11,7 @@ import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.WorldSpawnedEventBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -255,8 +256,13 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
       if(!world.isRemote && world.getBlockMetadata(x, y, z)==5){
     	EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, x + 0.5F, y + 0.5F, z + 0.5F, player);
         world.spawnEntityInWorld(entitytntprimed);
-        world.playSoundAtEntity(entitytntprimed, "game.tnt.primed", 1.0F, 1.0F);
-        
+        new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder()
+                .setPitch(1f)
+                .setVolume(1f)
+                .setIdentifier("game.tnt.primed")
+                .setEntity(entitytntprimed)
+                .setWorld(world)
+                .run();
       world.setBlockToAir(x, y, z);
       return false;
       }

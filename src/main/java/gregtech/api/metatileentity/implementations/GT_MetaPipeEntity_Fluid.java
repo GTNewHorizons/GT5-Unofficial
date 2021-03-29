@@ -17,6 +17,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.GT_Cover_Drain;
 import gregtech.common.covers.GT_Cover_FluidRegulator;
@@ -444,8 +445,22 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         super.doSound(aIndex, aX, aY, aZ);
         if (aIndex == 9) {
             GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 5, 1.0F, aX, aY, aZ);
-            for (byte i = 0; i < 6; i++)
-                    getBaseMetaTileEntity().getWorld().spawnParticle("largesmoke", aX - 0.5 + XSTR_INSTANCE.nextFloat(), aY - 0.5 + XSTR_INSTANCE.nextFloat(), aZ - 0.5 + XSTR_INSTANCE.nextFloat(), ForgeDirection.getOrientation(i).offsetX / 5.0, ForgeDirection.getOrientation(i).offsetY / 5.0, ForgeDirection.getOrientation(i).offsetZ / 5.0);
+
+            new WorldSpawnedEventBuilder.ParticleEventBuilder()
+                    .setIdentifier("largesmoke")
+                    .setWorld(getBaseMetaTileEntity().getWorld())
+                    .<WorldSpawnedEventBuilder.ParticleEventBuilder>times(6, (x, i) -> x
+                            .setMotion(
+                                    ForgeDirection.getOrientation(i).offsetX / 5.0,
+                                    ForgeDirection.getOrientation(i).offsetY / 5.0,
+                                    ForgeDirection.getOrientation(i).offsetZ / 5.0
+                            )
+                            .setPosition(
+                                aX - 0.5 + XSTR_INSTANCE.nextFloat(),
+                                aY - 0.5 + XSTR_INSTANCE.nextFloat(),
+                                aZ - 0.5 + XSTR_INSTANCE.nextFloat()
+                            ).run()
+                    );
         }
     }
 

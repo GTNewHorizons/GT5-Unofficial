@@ -1,11 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Textures;
-import gregtech.api.enums.Tier;
+import gregtech.api.enums.*;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.ITexture;
@@ -16,6 +12,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.WorldSpawnedEventBuilder;
 import ic2.core.Ic2Items;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -26,10 +23,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.Locale;
 import java.util.Random;
 
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.VN;
-import static gregtech.api.enums.GT_Values.W;
-import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
+import static gregtech.api.enums.GT_Values.*;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -806,12 +800,18 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     break;
                 case 1:
                     if (aBaseMetaTileEntity.getFrontFacing() != 1 && aBaseMetaTileEntity.getCoverIDAtSide((byte) 1) == 0 && !aBaseMetaTileEntity.getOpacityAtSide((byte) 1)) {
+
                         Random tRandom = aBaseMetaTileEntity.getWorld().rand;
-                        aBaseMetaTileEntity.getWorld().spawnParticle(
-                            "smoke", aBaseMetaTileEntity.getXCoord() + 0.8F - tRandom.nextFloat() * 0.6F, 
-                            aBaseMetaTileEntity.getYCoord() + 0.9F + tRandom.nextFloat() * 0.2F, 
-                            aBaseMetaTileEntity.getZCoord() + 0.8F - tRandom.nextFloat() * 0.6F, 0.0D, 0.0D, 0.0D
-                        );
+                        new WorldSpawnedEventBuilder.ParticleEventBuilder()
+                                .setMotion(0.0D, 0.0D, 0.0D)
+                                .setIdentifier("smoke")
+                                .setPosition(
+                                        aBaseMetaTileEntity.getXCoord() + 0.8F - tRandom.nextFloat() * 0.6F,
+                                        aBaseMetaTileEntity.getYCoord() + 0.9F + tRandom.nextFloat() * 0.2F,
+                                        aBaseMetaTileEntity.getZCoord() + 0.8F - tRandom.nextFloat() * 0.6F
+                                )
+                                .setWorld(aBaseMetaTileEntity.getWorld())
+                                .run();
                     }
                     break;
             }

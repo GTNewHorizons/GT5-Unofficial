@@ -8,19 +8,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.GT_StdRenderedTexture;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Client;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -484,6 +488,10 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     public ITexture getCoverTexture(byte aSide) {
+        if (getCoverIDAtSide(aSide) == 0) return null;
+        if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) {
+            return BlockIcons.HIDDEN_TEXTURE[0]; // See through
+        }
         return GregTech_API.sCovers.get(new GT_ItemStack(getCoverIDAtSide(aSide)));
     }
 
@@ -781,6 +789,20 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         ITexture rIcon = getCoverTexture(aSide);
         if (rIcon != null) return new ITexture[]{rIcon};
         return getTextureUncovered(aSide);
+    }
+
+    @Override
+    public ITexture[] getTextureCovered(byte aSide) {
+        ITexture coverTexture = getCoverTexture(aSide);
+        ITexture[] textureUncovered = getTextureUncovered(aSide);
+        ITexture[] textureCovered;
+        if (coverTexture != null) {
+            textureCovered = Arrays.copyOf(textureUncovered, textureUncovered.length + 1);
+            textureCovered[textureUncovered.length] = coverTexture;
+            return textureCovered;
+        } else {
+            return textureUncovered;
+        }
     }
 
     @Override

@@ -107,24 +107,53 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
 
     private static final ArrayListMultimap<GT_ItemStack, ItemStack> outputHardOverrides;
 
+    private static final Set<GT_ItemStack> blackList;
+
+    public static Set<GT_ItemStack> getBlackList() {
+        return blackList;
+    }
+
     static {
         outputHardOverrides = ArrayListMultimap.create();
         outputHardOverrides.put(new GT_ItemStack(new ItemStack(Blocks.torch,6)), new ItemStack(Items.stick));
+        blackList = new HashSet<>();
+        blackList.add(new GT_ItemStack(ItemList.Casing_Coil_Superconductor.get(1L)));
+    }
+
+    private boolean compareToUnpacker(ItemStack is){
+       return null != GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes.findRecipe(
+               null,
+               true,
+               true,
+               Long.MAX_VALUE,
+               null,
+               is);
     }
 
     public int checkRecipe() {
         ItemStack is = getInputAt(0);
+
         if (GT_Utility.isStackInvalid(is))
             return DID_NOT_FIND_RECIPE;
-        if (is.getItem() instanceof GT_MetaGenerated_Tool)
+
+        if (
+                is.getItem() instanceof GT_MetaGenerated_Tool
+                || blackList.contains(new GT_ItemStack(is))
+                || compareToUnpacker(is)
+        )
             return DID_NOT_FIND_RECIPE;
-        ItemStack comp = new ItemStack(GregTech_API.sBlockMachines);
-        if (is.getItem() == comp.getItem()) {
-            IMetaTileEntity iMetaTileEntity = GregTech_API.METATILEENTITIES[is.getItemDamage()];
-            if (iMetaTileEntity instanceof GT_MetaTileEntity_TieredMachineBlock &&
-                    ((GT_MetaTileEntity_TieredMachineBlock) iMetaTileEntity).mTier > this.mTier)
-                return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        }
+
+        if (checkTier(is))
+            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+
+        Integer handleHardOverride = handleHardOverride(is);
+        if (handleHardOverride != null)
+            return handleHardOverride;
+
+        return process();
+    }
+
+    private Integer handleHardOverride(ItemStack is) {
         Set<GT_ItemStack> stacks = outputHardOverrides.keySet();
         for (GT_ItemStack stack : stacks) {
             ItemStack in = is.copy();
@@ -135,32 +164,60 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
                         : DID_NOT_FIND_RECIPE;
             }
         }
-        return process()
-                ? FOUND_AND_SUCCESSFULLY_USED_RECIPE
-                : DID_NOT_FIND_RECIPE;
+        return null;
     }
 
-    private boolean process(){
+    private boolean checkTier(ItemStack is) {
+        ItemStack comp = new ItemStack(GregTech_API.sBlockMachines);
+        if (is.getItem() == comp.getItem()) {
+            IMetaTileEntity iMetaTileEntity = GregTech_API.METATILEENTITIES[is.getItemDamage()];
 
-        GT_Recipe gt_recipe = GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.findRecipe(this.getBaseMetaTileEntity(), true, this.mEUt, null, this.getAllInputs());
-        if (gt_recipe != null) {
-            gt_recipe.isRecipeInputEqual(true, null, this.getRealInventory());
-            return setOutputsAndTime(gt_recipe.mOutputs, gt_recipe.mInputs[0].stackSize);
+            return iMetaTileEntity instanceof GT_MetaTileEntity_TieredMachineBlock &&
+                    ((GT_MetaTileEntity_TieredMachineBlock) iMetaTileEntity).mTier > this.mTier;
         }
+        return false;
+    }
 
+    private int process(){
+        int statusCode = checkRecipeMap();
+        if (statusCode != DID_NOT_FIND_RECIPE)
+            return statusCode;
+
+        return onTheFlyGeneration();
+    }
+
+    private int onTheFlyGeneration() {
         Collection<DissassembleReference> recipes = this.findRecipeFromMachine();
         if (recipes.isEmpty())
-            return false;
+            return DID_NOT_FIND_RECIPE;
 
         DissassembleReference recipe = ensureDowncasting(recipes);
 
+        removeInvalidStacks(recipe);
+
+        return setOutputsAndTime(recipe.inputs, recipe.stackSize)
+                ? FOUND_AND_SUCCESSFULLY_USED_RECIPE
+                : FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+    }
+
+    private void removeInvalidStacks(DissassembleReference recipe) {
         for (int i = 0; i < recipe.inputs.length; i++)
             if (GT_Utility.isStackInvalid(recipe.inputs[i]) || recipe.inputs[i].stackSize < 1)
                 recipe.inputs[i] = null;
 
         recipe.inputs = GT_Utility.getArrayListWithoutNulls(recipe.inputs).toArray(new ItemStack[0]);
+    }
 
-        return setOutputsAndTime(recipe.inputs, recipe.stackSize);
+    private int checkRecipeMap() {
+        GT_Recipe gt_recipe = GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.findRecipe(this.getBaseMetaTileEntity(), true, this.maxEUInput(), null, this.getAllInputs());
+        if (gt_recipe == null)
+            return DID_NOT_FIND_RECIPE;
+        if (gt_recipe.isRecipeInputEqual(false, null, this.getAllInputs()))
+            return setOutputsAndTime(gt_recipe.mOutputs, gt_recipe.mInputs[0].stackSize)
+                    ? FOUND_AND_SUCCESSFULLY_USED_RECIPE
+                    : FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+
+        return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
     }
 
     private boolean setOutputsAndTime(ItemStack[] inputs, int stackSize){
@@ -420,19 +477,20 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         //More Inputs should mean cheaper Materials
         return possibleRecipes
                 .stream()
-                .sorted(Comparator.comparingDouble(x ->
-                        {
-                            double fluidInputValueRaw = Arrays.stream(x.recipe.mFluidInputs).flatMapToInt(f -> IntStream.of(f.amount)).sum();
-                            fluidInputValueRaw = fluidInputValueRaw > 0 ? fluidInputValueRaw : 144D;
-                            double inputValue = Arrays.stream(x.inputs).flatMapToInt(f -> IntStream.of(f.stackSize)).sum() +
-                                    (fluidInputValueRaw / 144D);
-                            double fluidOutputValueRaw = Arrays.stream(x.recipe.mFluidOutputs).flatMapToInt(f -> IntStream.of(f.amount)).sum();
-                            fluidOutputValueRaw = fluidOutputValueRaw > 0 ? fluidOutputValueRaw : 144D;
-                            double outputValue = Arrays.stream(x.recipe.mOutputs).flatMapToInt(f -> IntStream.of(f.stackSize)).sum() +
-                                    (fluidOutputValueRaw / 144D);
-                            return inputValue / outputValue;
-                        }
-                )).collect(Collectors.toList());
+                .sorted(Comparator.comparingDouble(GT_MetaTileEntity_Disassembler::getCheaperInputs))
+                .collect(Collectors.toList());
+    }
+
+    private static double getCheaperInputs(GT_MetaTileEntity_Disassembler.DissassembleReference x){
+        double fluidInputValueRaw = Arrays.stream(x.recipe.mFluidInputs).flatMapToInt(f -> IntStream.of(f.amount)).sum();
+        fluidInputValueRaw = fluidInputValueRaw > 0 ? fluidInputValueRaw : 144D;
+        double inputValue = Arrays.stream(x.inputs).flatMapToInt(f -> IntStream.of(f.stackSize)).sum() +
+                (fluidInputValueRaw / 144D);
+        double fluidOutputValueRaw = Arrays.stream(x.recipe.mFluidOutputs).flatMapToInt(f -> IntStream.of(f.amount)).sum();
+        fluidOutputValueRaw = fluidOutputValueRaw > 0 ? fluidOutputValueRaw : 144D;
+        double outputValue = Arrays.stream(x.recipe.mOutputs).flatMapToInt(f -> IntStream.of(f.stackSize)).sum() +
+                (fluidOutputValueRaw / 144D);
+        return inputValue / outputValue;
     }
 
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {

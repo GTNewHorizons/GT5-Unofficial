@@ -102,7 +102,7 @@ public class GT_ChunkManager implements ForgeChunkManager.OrderedLoadingCallback
             tag.setInteger("OwnerZ", owner.zCoord);
             ForgeChunkManager.forceChunk(ticket, chunkXZ);
             if (GT_Values.alwaysReloadChunkloaders)
-                ForgeChunkManager.forceChunk(ticket, new ChunkCoordIntPair(owner.xCoord << 4, owner.zCoord << 4));
+                ForgeChunkManager.forceChunk(ticket, new ChunkCoordIntPair(owner.xCoord >> 4, owner.zCoord >> 4));
             instance.registeredTickets.put(owner, ticket);
         }
         return true;

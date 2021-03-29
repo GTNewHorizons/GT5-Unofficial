@@ -8,12 +8,12 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.tile.TileEvent;
 import appeng.tile.events.TileEventType;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
@@ -22,7 +22,13 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.*;
+import gregtech.api.objects.GT_StdRenderedTexture;
+import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Client;
 import gregtech.common.GT_Pollution;
 import ic2.api.Direction;
 import net.minecraft.block.Block;
@@ -826,6 +832,10 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     public ITexture getCoverTexture(byte aSide) {
+        if (getCoverIDAtSide(aSide) == 0) return null;
+        if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) {
+            return BlockIcons.HIDDEN_TEXTURE[0]; // See through
+        }
         return GregTech_API.sCovers.get(new GT_ItemStack(getCoverIDAtSide(aSide)));
     }
 
@@ -927,12 +937,12 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         tileEntityInvalid = false;
         leaveEnet();
         if (canAccessData()) {
+            if (GregTech_API.mAE2)
+                invalidateAE();
             mMetaTileEntity.onRemoval();
             mMetaTileEntity.setBaseMetaTileEntity(null);
         }
         super.invalidate();
-        if (GregTech_API.mAE2)
-            invalidateAE();
     }
 
     @Override
@@ -1169,11 +1179,18 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide) {
-        ITexture rIcon = getCoverTexture(aSide);
-        if (rIcon != null) return new ITexture[]{rIcon};
-        if (hasValidMetaTileEntity())
-            return mMetaTileEntity.getTexture(this, aSide, mFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal(aSide) > 0);
-        return Textures.BlockIcons.ERROR_RENDERING;
+        ITexture coverTexture = getCoverTexture(aSide);
+        ITexture[] textureUncovered = hasValidMetaTileEntity() ?
+                mMetaTileEntity.getTexture(this, aSide, mFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal(aSide) > 0) :
+                Textures.BlockIcons.ERROR_RENDERING;
+        ITexture[] textureCovered;
+        if (coverTexture != null) {
+            textureCovered = Arrays.copyOf(textureUncovered, textureUncovered.length + 1);
+            textureCovered[textureUncovered.length] = coverTexture;
+            return textureCovered;
+        } else {
+            return textureUncovered;
+        }
     }
 
     private boolean isEnergyInputSide(byte aSide) {

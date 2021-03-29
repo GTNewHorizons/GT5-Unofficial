@@ -6,6 +6,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_ModHandler.RecipeBits;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -15,6 +16,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import static gregtech.api.enums.GT_Values.RA;
 
 public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
+    private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
+            "gt.blockmachines.gt_frame.desc.format",
+            "Just something you can put covers on.");
     public final Materials mMaterial;
 
     public GT_MetaPipeEntity_Frame(int aID, String aName, String aNameRegional, Materials aMaterial) {
@@ -48,7 +52,7 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Just something you can put a Cover or CFoam on."};
+        return localizedDescFormat.split("\\R");
     }
 
     @Override

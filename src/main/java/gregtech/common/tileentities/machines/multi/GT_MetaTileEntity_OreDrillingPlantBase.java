@@ -37,7 +37,7 @@ import org.lwjgl.input.Keyboard;
 
 import static gregtech.api.enums.GT_Values.VN;
 
-public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTileEntity_DrillerBase implements IChunkLoader {
+public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTileEntity_DrillerBase {
     private final ArrayList<ChunkPosition> oreBlockPositions = new ArrayList<>();
     protected int mTier = 1;
     private int chunkRadiusConfig = getRadiusInChunks();
@@ -62,9 +62,6 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         if (aNBT.hasKey("chunkRadiusConfig"))
             chunkRadiusConfig = aNBT.getInteger("chunkRadiusConfig");
     }
-
-    @Override
-    public ChunkCoordIntPair getActiveChunk(){return mCurrentChunk;}
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

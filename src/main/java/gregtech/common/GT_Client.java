@@ -17,20 +17,10 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_PlayedSound;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
-import gregtech.common.render.GT_CapeRenderer;
-import gregtech.common.render.GT_FlaskRenderer;
-import gregtech.common.render.GT_FluidDisplayStackRenderer;
-import gregtech.common.render.GT_MetaGenerated_Item_Renderer;
-import gregtech.common.render.GT_MetaGenerated_Tool_Renderer;
-import gregtech.common.render.GT_PollutionRenderer;
-import gregtech.common.render.GT_Renderer_Block;
-import gregtech.common.render.GT_Renderer_Entity_Arrow;
+import gregtech.common.render.*;
 import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -46,13 +36,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.opengl.GL11;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 // Referenced classes of package gregtech.common:
 //            GT_Proxy
@@ -648,10 +632,20 @@ public class GT_Client extends GT_Proxy
                     tString = (new StringBuilder()).append(tString).append("wherearewenow").toString();
                     break;
             }
-        if (tString.startsWith("streaming."))
-            aWorld.playRecord(tString.substring(10, tString.length()), (int) aX, (int) aY, (int) aZ);
-        else
-            aWorld.playSound(aX, aY, aZ, tString, 3F, tString.startsWith("note.") ? (float) Math.pow(2D, (double) (aStack.stackSize - 13) / 12D) : 1.0F, false);
+        if (tString.startsWith("streaming.")){
+            new WorldSpawnedEventBuilder.RecordEffectEventBuilder()
+                    .setIdentifier(tString.substring(10))
+                    .setPosition(aX, aY, aZ)
+                    .run();
+        }
+        else{
+            new WorldSpawnedEventBuilder.SoundEventBuilder()
+                    .setVolume(3f)
+                    .setPitch(tString.startsWith("note.") ? (float) Math.pow(2D, (double) (aStack.stackSize - 13) / 12D) : 1.0F)
+                    .setIdentifier(tString)
+                    .setPosition(aX, aY, aZ)
+                    .run();
+        }
     }
 
     public static int hideValue=0;

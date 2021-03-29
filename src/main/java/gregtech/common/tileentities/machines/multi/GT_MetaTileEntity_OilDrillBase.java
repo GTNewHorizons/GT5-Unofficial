@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -9,8 +10,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,10 +28,7 @@ import static gregtech.common.GT_UndergroundOil.undergroundOil;
 import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
 
 public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_DrillerBase {
-
-    private boolean completedCycle = false;
-
-    private ArrayList<Chunk> mOilFieldChunks = new ArrayList<Chunk>();
+    private final ArrayList<Chunk> mOilFieldChunks = new ArrayList<>();
     private int mOilId = 0;
 
     private int chunkRangeConfig = getRangeInChunks();
@@ -137,6 +137,11 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         }
 
         if (reachingVoidOrBedrock() && tryFillChunkList()) {
+            if (mWorkChunkNeedsReload) {
+                mCurrentChunk = new ChunkCoordIntPair(xDrill >> 4, zDrill >> 4);
+                GT_ChunkManager.requestChunkLoad((TileEntity) getBaseMetaTileEntity(), null);
+                mWorkChunkNeedsReload = false;
+            }
             float speed = .5F+(GT_Utility.getTier(getMaxInputVoltage()) - getMinTier()) *.25F;
             FluidStack tFluid = pumpOil(speed);
             if (tFluid != null && tFluid.amount > getTotalConfigValue()){
@@ -144,6 +149,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                 return true;
             }
         }
+        GT_ChunkManager.releaseTicket((TileEntity)getBaseMetaTileEntity());
         workState = STATE_UPWARD;
         return true;
     }
@@ -220,7 +226,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
              );
         }
 
-        ArrayList<Chunk> emptyChunks = new ArrayList<Chunk>();
+        ArrayList<Chunk> emptyChunks = new ArrayList<>();
         
         for (Chunk tChunk : mOilFieldChunks) {
             tFluid = undergroundOil(tChunk,speed);

@@ -5,6 +5,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.GT_SidedTexture;
+import gregtech.api.objects.GT_StdRenderedTexture;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
@@ -56,6 +57,8 @@ public class Textures {
         
         LONG_DISTANCE_PIPE_FLUID,
         LONG_DISTANCE_PIPE_ITEM,
+
+        HIDDEN_FACE,
 
         MACHINE_CASING_TANK_1,
         MACHINE_CASING_TANK_2,
@@ -1352,6 +1355,9 @@ public class Textures {
                         BLOCK_CHARCOAL,
                         BLOCK_BLAZE
                 };
+        public static ITexture[] HIDDEN_TEXTURE = new ITexture[]{
+                new GT_StdRenderedTexture(BlockIcons.HIDDEN_FACE)
+        };
         public static ITexture[]
                 ERROR_RENDERING = new ITexture[]{
                 new GT_RenderedTexture(RENDERING_ERROR)

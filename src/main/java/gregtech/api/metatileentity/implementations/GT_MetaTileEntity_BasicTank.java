@@ -9,7 +9,9 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -100,6 +102,9 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
         return mFluid;
     }
 
+    /**
+     * If you override this and change the field returned, be sure to override {@link #isDrainableStackSeparate()} as well!
+     */
     public FluidStack getDrainableStack() {
         return mFluid;
     }
@@ -107,6 +112,10 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
     public FluidStack setDrainableStack(FluidStack aFluid) {
         mFluid = aFluid;
         return mFluid;
+    }
+
+    public boolean isDrainableStackSeparate() {
+        return false;
     }
 
     public FluidStack getDisplayedFluid() {
@@ -150,7 +159,7 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
                             }
                         }
                     } else {
-                        if (tFluid.isFluidEqual(getFillableStack()) && tFluid.amount + getFillableStack().amount <= getCapacity()) {
+                        if (tFluid.isFluidEqual(getFillableStack()) && ((long)tFluid.amount + getFillableStack().amount) <= (long)getCapacity()) {
                             if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerItem(mInventory[getInputSlot()], true), 1)) {
                                 getFillableStack().amount += tFluid.amount;
                                 aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
@@ -246,6 +255,19 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
         }
 
         return drained;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+        if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) return new FluidTankInfo[]{};
+        if (isDrainableStackSeparate()) {
+            return new FluidTankInfo[]{
+                    new FluidTankInfo(getFillableStack(), getCapacity()),
+                    new FluidTankInfo(getDrainableStack(), getCapacity())
+            };
+        } else {
+            return new FluidTankInfo[]{new FluidTankInfo(this)};
+        }
     }
 
     @Override

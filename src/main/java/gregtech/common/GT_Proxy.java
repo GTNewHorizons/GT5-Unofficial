@@ -33,22 +33,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.objects.GT_ChunkManager;
-import gregtech.api.objects.GT_Fluid;
-import gregtech.api.objects.GT_FluidStack;
-import gregtech.api.objects.GT_UO_DimensionList;
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_CLS_Compat;
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeRegistrator;
-import gregtech.api.util.GT_Shaped_Recipe;
-import gregtech.api.util.GT_Shapeless_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.objects.*;
+import gregtech.api.util.*;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.gui.GT_ContainerVolumetricFlask;
 import gregtech.common.gui.GT_GUIContainerVolumetricFlask;
@@ -781,8 +767,14 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             }
             aEvent.bow.damageItem(1, aEvent.entityPlayer);
             aEvent.bow.getItem();
-            aEvent.entityPlayer.worldObj.playSoundAtEntity(aEvent.entityPlayer, "random.bow", 1.0F, 0.64893958288F + tSpeed
-                    * 0.5F);
+
+            new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder()
+                    .setPitch(0.64893958288F + tSpeed * 0.5F)
+                    .setVolume(1f)
+                    .setIdentifier("random.bow")
+                    .setEntity(aEvent.entityPlayer)
+                    .setWorld(aEvent.entityPlayer.worldObj)
+                    .run();
 
             tArrowEntity.canBePickedUp = 1;
             if (!aEvent.entityPlayer.capabilities.isCreativeMode) {

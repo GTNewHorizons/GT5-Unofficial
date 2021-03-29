@@ -405,6 +405,11 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
+    public boolean isDrainableStackSeparate() {
+        return true;
+    }
+
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if(!GT_Mod.gregtechproxy.mForceFreeFace) {

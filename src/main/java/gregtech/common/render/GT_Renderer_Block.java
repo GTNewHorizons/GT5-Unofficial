@@ -20,6 +20,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
+import static gregtech.api.util.LightingHelper.NO_Z_FIGHT_OFFSET;
+
 public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
     public static GT_Renderer_Block INSTANCE;
     public final int mRenderID;
@@ -117,8 +119,23 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
 
     public static boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if ((tTileEntity instanceof IPipeRenderedTileEntity)) {
+            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, new ITexture[][]{
+                    ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) 0),
+                    ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) 1),
+                    ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) 2),
+                    ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) 3),
+                    ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) 4),
+                    ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) 5)});
+        }
         if ((tTileEntity instanceof ITexturedTileEntity)) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, new ITexture[][]{((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 0), ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 1), ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 2), ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 3), ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 4), ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 5)});
+            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, new ITexture[][]{
+                    ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 0),
+                    ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 1),
+                    ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 2),
+                    ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 3),
+                    ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 4),
+                    ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 5)});
         }
         return false;
     }
@@ -182,12 +199,10 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[1], false);
             renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[2], false);
             renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[3], false);
-            if (!tIsCovered[4]) {
-                renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[4], false);
-            }
-            if (!tIsCovered[5]) {
-                renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[5], false);
-            }
+
+            renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[4], false);
+            renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[5], false);
+
         } else if (tConnections == 12) {
             aBlock.setBlockBounds(sp, 0.0F, sp, sp + tThickness, 1.0F, sp + tThickness);
             aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -195,12 +210,10 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[3], false);
             renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[4], false);
             renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[5], false);
-            if (!tIsCovered[0]) {
-                renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[0], false);
-            }
-            if (!tIsCovered[1]) {
-                renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[1], false);
-            }
+
+            renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[0], false);
+            renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[1], false);
+
         } else if (tConnections == 48) {
             aBlock.setBlockBounds(sp, sp, 0.0F, sp + tThickness, sp + tThickness, 1.0F);
             aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -208,17 +221,14 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[1], false);
             renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[4], false);
             renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[5], false);
-            if (!tIsCovered[2]) {
-                renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[2], false);
-            }
-            if (!tIsCovered[3]) {
-                renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[3], false);
-            }
+
+            renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[2], false);
+            renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[3], false);
+
         } else {
             if ((tConnections & 0x1) == 0) {
                 aBlock.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
-                renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[4], false);
             } else {
                 aBlock.setBlockBounds(0.0F, sp, sp, sp, sp + tThickness, sp + tThickness);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -226,14 +236,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[1], false);
                 renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[2], false);
                 renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[3], false);
-                if (!tIsCovered[4]) {
-                    renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[4], false);
-                }
+
             }
+            renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[4], false);
             if ((tConnections & 0x2) == 0) {
                 aBlock.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
-                renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[5], false);
             } else {
                 aBlock.setBlockBounds(sp + tThickness, sp, sp, 1.0F, sp + tThickness, sp + tThickness);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -241,14 +249,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[1], false);
                 renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[2], false);
                 renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[3], false);
-                if (!tIsCovered[5]) {
-                    renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[5], false);
-                }
+
             }
+            renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[5], false);
             if ((tConnections & 0x4) == 0) {
                 aBlock.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
-                renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[0], false);
             } else {
                 aBlock.setBlockBounds(sp, 0.0F, sp, sp + tThickness, sp, sp + tThickness);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -256,14 +262,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[3], false);
                 renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[4], false);
                 renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[5], false);
-                if (!tIsCovered[0]) {
-                    renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[0], false);
-                }
+
             }
+            renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[0], false);
             if ((tConnections & 0x8) == 0) {
                 aBlock.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
-                renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[1], false);
             } else {
                 aBlock.setBlockBounds(sp, sp + tThickness, sp, sp + tThickness, 1.0F, sp + tThickness);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -271,14 +275,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[3], false);
                 renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[4], false);
                 renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[5], false);
-                if (!tIsCovered[1]) {
-                    renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[1], false);
-                }
+
             }
+            renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[1], false);
             if ((tConnections & 0x10) == 0) {
                 aBlock.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
-                renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[2], false);
             } else {
                 aBlock.setBlockBounds(sp, sp, 0.0F, sp + tThickness, sp + tThickness, sp);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -286,14 +288,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[1], false);
                 renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[4], false);
                 renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[5], false);
-                if (!tIsCovered[2]) {
-                    renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[2], false);
-                }
+
             }
+            renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[2], false);
             if ((tConnections & 0x20) == 0) {
                 aBlock.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
-                renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[3], false);
             } else {
                 aBlock.setBlockBounds(sp, sp, sp + tThickness, sp + tThickness, sp + tThickness, 1.0F);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -301,13 +301,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[1], false);
                 renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[4], false);
                 renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[5], false);
-                if (!tIsCovered[3]) {
-                    renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[3], false);
-                }
+
             }
+            renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[3], false);
         }
         if (tIsCovered[0]) {
-            aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
+            aBlock.setBlockBounds(0.0F, 0.0F + NO_Z_FIGHT_OFFSET, 0.0F, 1.0F, 0.125F, 1.0F);
             aRenderer.setRenderBoundsFromBlock(aBlock);
             renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[0], false);
             renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[0], false);
@@ -325,7 +324,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             }
         }
         if (tIsCovered[1]) {
-            aBlock.setBlockBounds(0.0F, 0.875F, 0.0F, 1.0F, 1.0F, 1.0F);
+            aBlock.setBlockBounds(0.0F, 0.875F, 0.0F, 1.0F, 1.0F - NO_Z_FIGHT_OFFSET, 1.0F);
             aRenderer.setRenderBoundsFromBlock(aBlock);
             renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[1], false);
             renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[1], false);
@@ -343,7 +342,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             }
         }
         if (tIsCovered[2]) {
-            aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.125F);
+            aBlock.setBlockBounds(0.0F, 0.0F, 0.0F + NO_Z_FIGHT_OFFSET, 1.0F, 1.0F, 0.125F);
             aRenderer.setRenderBoundsFromBlock(aBlock);
             if (!tIsCovered[0]) {
                 renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[2], false);
@@ -361,7 +360,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             }
         }
         if (tIsCovered[3]) {
-            aBlock.setBlockBounds(0.0F, 0.0F, 0.875F, 1.0F, 1.0F, 1.0F);
+            aBlock.setBlockBounds(0.0F, 0.0F, 0.875F, 1.0F, 1.0F, 1.0F - NO_Z_FIGHT_OFFSET);
             aRenderer.setRenderBoundsFromBlock(aBlock);
             if (!tIsCovered[0]) {
                 renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[3], false);
@@ -379,7 +378,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             }
         }
         if (tIsCovered[4]) {
-            aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 0.125F, 1.0F, 1.0F);
+            aBlock.setBlockBounds(0.0F + NO_Z_FIGHT_OFFSET, 0.0F, 0.0F, 0.125F, 1.0F, 1.0F);
             aRenderer.setRenderBoundsFromBlock(aBlock);
             if (!tIsCovered[0]) {
                 renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[4], false);
@@ -397,7 +396,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[4], false);
         }
         if (tIsCovered[5]) {
-            aBlock.setBlockBounds(0.875F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+            aBlock.setBlockBounds(0.875F, 0.0F, 0.0F, 1.0F - NO_Z_FIGHT_OFFSET, 1.0F, 1.0F);
             aRenderer.setRenderBoundsFromBlock(aBlock);
             if (!tIsCovered[0]) {
                 renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[5], false);
