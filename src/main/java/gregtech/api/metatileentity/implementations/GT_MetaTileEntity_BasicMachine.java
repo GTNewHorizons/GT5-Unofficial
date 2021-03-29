@@ -1133,6 +1133,12 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (fluidAsyncBuffer == null && this.getFluid() == null) {
             return this.itemAsyncBuffer.length == 0;
         } else {
+            if (fluidAsyncBuffer == null && this.getFluid() != null || fluidAsyncBuffer != null && this.getFluid() == null)
+                return false;
+
+            assert this.fluidAsyncBuffer != null;
+            assert this.getFluid() != null;
+
             return !this.fluidAsyncBuffer.equals(this.getFluid().getFluid());
         }
     }
