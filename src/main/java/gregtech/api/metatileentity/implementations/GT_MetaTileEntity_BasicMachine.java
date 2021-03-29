@@ -27,10 +27,14 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -50,12 +54,16 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public AtomicReference<GT_Recipe> getRecipeAtomicReference() {
         return recipeAtomicReference;
     }
+
     public AtomicInteger getRecipeStatus() {
         return recipeStatus;
     }
 
-    private AtomicReference<GT_Recipe> recipeAtomicReference = new AtomicReference<>(null);
-    private AtomicInteger recipeStatus = new AtomicInteger(RECIPE_NOT_REQUESTED);
+    private final AtomicReference<GT_Recipe> recipeAtomicReference = new AtomicReference<>(null);
+    private final AtomicInteger recipeStatus = new AtomicInteger(RECIPE_NOT_REQUESTED);
+
+    private GT_ItemStack[] itemAsyncBuffer = new GT_ItemStack[0];
+    private Fluid fluidAsyncBuffer;
 
     /**
      * return values for checkRecipe()
@@ -881,7 +889,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      * @return see constants above
      */
     public int checkRecipe() {
-        return checkRecipe(false);
+        return checkRecipe(false,false);
     }
 
     public static boolean isValidForLowGravity(GT_Recipe tRecipe, int dimId){
@@ -892,85 +900,261 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 DimensionManager.getProvider(dimId).getClass().getName().endsWith("SS") ||
                 DimensionManager.getProvider(dimId).getClass().getName().contains("SpaceStation");
     }
+    
+    private int regularRecipeLookupFlow(boolean skipOC, GT_Recipe tRecipe, boolean asyncBuffer) {
+        if (tRecipe == null)
+            return DID_NOT_FIND_RECIPE;
+        
+        if (this.checkOutputBlocked(tRecipe) || this.checkSpecialValue(tRecipe))
+            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
+        if (this.checkFluidInput(tRecipe))
+            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+
+        if (tRecipe.mCanBeBuffered)
+            bufferRecipe(tRecipe);
+        
+        if (asyncBuffer) {
+            this.saveLastTickItems();
+            this.saveLastTickFluids();
+        }
+        
+        this.rollRandomChance(tRecipe);
+        this.doCleanroomChecks(tRecipe);
+        this.setOutputFluid(tRecipe);
+
+        if (!skipOC)
+            return this.doOverclock(tRecipe);
+
+        return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+    }
+
+    private void bufferRecipe(GT_Recipe tRecipe) {
+        mLastRecipe = tRecipe;
+    }
+
+    private boolean checkOutputBlocked(GT_Recipe tRecipe) {
+        if (!canOutput(tRecipe)) {
+            mOutputBlocked++;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkSpecialValue(GT_Recipe tRecipe) {
+        if (
+                GT_Mod.gregtechproxy.mLowGravProcessing &&
+                        (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300) &&
+                        !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId)
+        )
+            return true;
+        return tRecipe.mSpecialValue == -200 && (this.getCallbackBase() == null || this.getCallbackBase().mEfficiency == 0);
+    }
+
+    private void setOutputFluid(GT_Recipe tRecipe) {
+        mOutputFluid = tRecipe.getFluidOutput(0);
+    }
+
+    private int doOverclock(GT_Recipe tRecipe) {
+        this.calculateOverclockedNess(tRecipe);
+        //In case recipe is too OP for that machine
+        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+    }
+
+    private boolean checkFluidInput(GT_Recipe tRecipe) {
+        return !tRecipe.isRecipeInputEqual(true, new FluidStack[]{getFillableStack()}, getAllInputs());
+    }
+
+    private void rollRandomChance(GT_Recipe tRecipe) {
+        for (int i = 0; i < mOutputItems.length; i++)
+            if (this.getBaseMetaTileEntity().getRandomNumber(100_00) < tRecipe.getOutputChance(i))
+                mOutputItems[i] = tRecipe.getOutput(i);
+    }
+
+    private void doCleanroomChecks(GT_Recipe tRecipe) {
+        if (tRecipe.mSpecialValue != -200 && tRecipe.mSpecialValue != -300) {
+            return;
+        }
+        
+        for (int i = 0; i < mOutputItems.length; i++) {
+            if (mOutputItems[i] == null
+                || this.getBaseMetaTileEntity().getRandomNumber(100_00) <= this.getCallbackBase().mEfficiency) {
+                continue;
+            }
+            if (debugCleanroom) {
+                GT_Log.out.println(
+                        "BasicMachine: Voiding output due to efficiency failure. mEfficiency = " +
+                                this.getCallbackBase().mEfficiency
+                );
+            }
+            mOutputItems[i] = null;
+        }
+    }
 
     /**
      *
      * @param skipOC disables OverclockedNess calculation and check - if you do you must implement your own method...
      * @return DID_NOT_FIND_RECIPE = 0,
      *         FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
-     *         FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
+     *         FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2,
+     *         WAITING_FOR_RESPONSE = 3;
+     *
+     * @deprecated use checkRecipe(boolean skipOC, boolean synchronous) instead!
      */
-    public int checkRecipe(boolean skipOC){
-        GT_Recipe_Map tMap = getRecipeList();
+    @Deprecated
+    public int checkRecipe(boolean skipOC) {
+        return this.checkRecipe(skipOC, false);
+    }
+    /**
+     *
+     * @param skipOC disables OverclockedNess calculation and check - if you do you must implement your own method...
+     * @param synchronous true for same thread lookup, NOT RECOMMENDED!, false for async call
+     * @return DID_NOT_FIND_RECIPE = 0,
+     *         FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
+     *         FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2,
+     *         WAITING_FOR_RESPONSE = 3;
+     */
+    public int checkRecipe(boolean skipOC, boolean synchronous) {
+        return synchronous ? this.checkRecipeSync(skipOC) : this.checkRecipeAsync(skipOC);
+    }
+
+    private int checkRecipeSync(boolean skipOC) {
+        GT_Recipe_Map tMap = this.getRecipeList();
         if (tMap == null)
             return DID_NOT_FIND_RECIPE;
-        requestRecipeAsync();
-        GT_Recipe tRecipe;
-        switch (this.getRecipeStatus().get()){
-            case RECIPE_RETURNED:
-                this.getRecipeStatus().set(RECIPE_NOT_REQUESTED);
-                tRecipe = this.recipeAtomicReference.get();
+        GT_Recipe recipe = tMap.findRecipe(this.getBaseMetaTileEntity(),
+                mLastRecipe,
+                false,
+                V[mTier],
+                new FluidStack[]{getFillableStack()},
+                this.getSpecialSlot(),
+                this.getAllInputs());
+
+       return regularRecipeLookupFlow(skipOC, recipe, false);
+    }
+
+    private int checkRecipeAsync(boolean skipOC) {
+        if (this.noChange() && this.wasRecipeSuccessful(skipOC))
+            return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+        else
+            resetAsyncBuffer();
+
+        if (!preprocessInventory())
+            return DID_NOT_FIND_RECIPE;
+
+        GT_Recipe_Map tMap = this.getRecipeList();
+        if (tMap == null)
+            return DID_NOT_FIND_RECIPE;
+
+        this.requestRecipeAsync();
+
+        return this.recipeLookupStatemachine(skipOC);
+    }
+
+    /* --- INTERNAL RECIPE METHODS --- */
+
+    private boolean preprocessInventory() {
+
+        ItemStack[] inputs = GT_Utility.getArrayListWithoutNulls(this.getAllInputs()).toArray(new ItemStack[0]);
+        if (this.getRecipeList().mMinimalInputItems > inputs.length) //No Lookup when not enough items
+            return false;
+
+        boolean onlyContainsCircuitOrShematic = true;
+        for (ItemStack x : inputs) {
+            if (!GT_Utility.areStacksEqual(x, ItemList.Circuit_Integrated.get(1))
+                    &&
+                    (x.getItem() != ItemList.Schematic.getItem() || x.getItemDamage() <= 490 || x.getItemDamage() > 498)) {
+                onlyContainsCircuitOrShematic = false;
                 break;
+            }
+        }
+        return !onlyContainsCircuitOrShematic;
+    }
+
+    private void resetAsyncBuffer() {
+        this.itemAsyncBuffer = new GT_ItemStack[0];
+        this.fluidAsyncBuffer = null;
+    }
+
+    private boolean wasRecipeSuccessful(boolean skipOC) {
+        return this.regularRecipeLookupFlow(skipOC, this.recipeAtomicReference.get(), false) == FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+    }
+
+    private int recipeLookupStatemachine(boolean skipOC) {
+        switch (this.getRecipeStatus().get()) {
+            case RECIPE_RETURNED:
+                this.resetRecipeRequestStatus();
+                GT_Recipe tRecipe = this.recipeAtomicReference.get();
+                return this.regularRecipeLookupFlow(skipOC, tRecipe, true);
+
             case RECIPE_REQUESTED:
                 return WAITING_FOR_RESPONSE;
-            case RECIPE_RETURNED_NULL: {
-                this.getRecipeStatus().set(RECIPE_NOT_REQUESTED);
+
+            case RECIPE_RETURNED_NULL:
+                this.resetAsyncBuffer();
+                this.resetRecipeRequestStatus();
                 return DID_NOT_FIND_RECIPE;
-            }
+
             default:
                 throw new IllegalStateException("This should never happen!");
         }
+    }
 
-        if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300) &&
-                !isValidForLowGravity(tRecipe,getBaseMetaTileEntity().getWorld().provider.dimensionId))
-            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
-        if (!canOutput(tRecipe)) {
-            mOutputBlocked++;
-            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+    private void resetRecipeRequestStatus() {
+        this.getRecipeStatus().set(RECIPE_NOT_REQUESTED);
+    }
+
+    private void saveLastTickFluids() {
+        if (this.getFluid() == null)
+            return;
+        this.fluidAsyncBuffer = this.getFluid().getFluid();
+    }
+
+    private void saveLastTickItems() {
+        this.inputsToSimplifiedArray();
+        this.itemAsyncBuffer = this.inputsToSimplifiedArray();
+    }
+
+    private boolean noChange() {
+        if (this.fluidNotNullInventoryChanged())
+            return false;
+
+        return Arrays.deepEquals(this.itemAsyncBuffer, this.inputsToSimplifiedArray());
+    }
+
+    private boolean fluidNotNullInventoryChanged() {
+        if (fluidAsyncBuffer == null && this.getFluid() == null) {
+            return this.itemAsyncBuffer.length == 0;
+        } else {
+            return !this.fluidAsyncBuffer.equals(this.getFluid().getFluid());
         }
-        if (tRecipe.mSpecialValue == -200 && (getCallbackBase() == null || getCallbackBase().mEfficiency == 0))
-            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[]{getFillableStack()}, getAllInputs()))
-            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        for (int i = 0; i < mOutputItems.length; i++)
-            if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i))
-                mOutputItems[i] = tRecipe.getOutput(i);
-        if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300)
-            for (int i = 0; i < mOutputItems.length; i++)
-                if (mOutputItems[i] != null && getBaseMetaTileEntity().getRandomNumber(10000) > getCallbackBase().mEfficiency)
-                {
-					if (debugCleanroom) {
-						GT_Log.out.println(
-							"BasicMachine: Voiding output due to efficiency failure. mEfficiency = " + 
-							getCallbackBase().mEfficiency
-						);
-					}
-                    mOutputItems[i] = null;
-                }
-        mOutputFluid = tRecipe.getFluidOutput(0);
-        if(!skipOC){
-            calculateOverclockedNess(tRecipe);
-            //In case recipe is too OP for that machine
-            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
-                return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+    }
+
+    private GT_ItemStack[] inputsToSimplifiedArray() {
+        ItemStack[] allInputs = this.getAllInputs();
+        List<GT_ItemStack> list = new ArrayList<>();
+        for (ItemStack input : allInputs) {
+            if (input == null)
+                continue;
+            list.add(new GT_ItemStack(input.getItem(), 1, input.getItemDamage()));
         }
-        return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+        return list.toArray(new GT_ItemStack[0]);
     }
 
     private void requestRecipeAsync() {
-        if (this.getRecipeStatus().get() != RECIPE_NOT_REQUESTED) {
+        if (this.getRecipeStatus().get() != RECIPE_NOT_REQUESTED)
             return;
-        }
+
         GT_Runnable_RecipeLookup.requestRecipe(this,
                 mLastRecipe,
                 false,
                 V[mTier],
                 new FluidStack[]{getFillableStack()},
-                getSpecialSlot(),
-                getRecipeList(),
-                getAllInputs()
+                this.getSpecialSlot(),
+                this.getRecipeList(),
+                this.getAllInputs()
         );
     }
 
