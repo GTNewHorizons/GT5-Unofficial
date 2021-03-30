@@ -5,10 +5,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.objects.GT_FluidStack;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.ItemData;
-import gregtech.api.objects.MaterialStack;
+import gregtech.api.objects.*;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
 import gregtech.nei.GT_NEI_DefaultHandler.FixedPositionedStack;
 import ic2.core.Ic2Items;
@@ -555,80 +552,80 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          */
         public static final Collection<GT_Recipe_Map> sMappings = new ArrayList<>();
 
-        public static final GT_Recipe_Map sOreWasherRecipes = new GT_Recipe_Map(new HashSet<>(500), "gt.recipe.orewasher", "Ore Washing Plant", null, RES_PATH_GUI + "basicmachines/OreWasher", 1, 3, 1, 1, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sThermalCentrifugeRecipes = new GT_Recipe_Map(new HashSet<>(1000), "gt.recipe.thermalcentrifuge", "Thermal Centrifuge", null, RES_PATH_GUI + "basicmachines/ThermalCentrifuge", 1, 3, 1, 0, 2, E, 1, E, true, true);
-        public static final GT_Recipe_Map sCompressorRecipes = new GT_Recipe_Map(new HashSet<>(750), "gt.recipe.compressor", "Compressor", null, RES_PATH_GUI + "basicmachines/Compressor", 1, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sExtractorRecipes = new GT_Recipe_Map(new HashSet<>(250), "gt.recipe.extractor", "Extractor", null, RES_PATH_GUI + "basicmachines/Extractor", 1, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sRecyclerRecipes = new GT_Recipe_Map_Recycler(new HashSet<>(0), "ic.recipe.recycler", "Recycler", "ic2.recycler", RES_PATH_GUI + "basicmachines/Recycler", 1, 1, 1, 0, 1, E, 1, E, true, false);
-        public static final GT_Recipe_Map sFurnaceRecipes = new GT_Recipe_Map_Furnace(new HashSet<>(0), "mc.recipe.furnace", "Furnace", "smelting", RES_PATH_GUI + "basicmachines/E_Furnace", 1, 1, 1, 0, 1, E, 1, E, true, false);
-        public static final GT_Recipe_Map sMicrowaveRecipes = new GT_Recipe_Map_Microwave(new HashSet<>(0), "gt.recipe.microwave", "Microwave", "smelting", RES_PATH_GUI + "basicmachines/E_Furnace", 1, 1, 1, 0, 1, E, 1, E, true, false);
-        public static final GT_Recipe_Map sDisassemblerRecipes = new GT_Recipe_Map(new HashSet<>(250), "gt.recipe.disassembler", "Disassembler", null, RES_PATH_GUI + "basicmachines/Disassembler", 1, 9, 1, 0, 1, E, 1, E, true, false);
-        public static final GT_Recipe_Map sScannerFakeRecipes = new GT_Recipe_Map(new HashSet<>(300), "gt.recipe.scanner", "Scanner", null, RES_PATH_GUI + "basicmachines/Scanner", 1, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sRockBreakerFakeRecipes = new GT_Recipe_Map(new HashSet<>(200), "gt.recipe.rockbreaker", "Rock Breaker", null, RES_PATH_GUI + "basicmachines/RockBreaker", 1, 1, 0, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sByProductList = new GT_Recipe_Map(new HashSet<>(1000), "gt.recipe.byproductlist", "Ore Byproduct List", null, RES_PATH_GUI + "basicmachines/Default", 1, 6, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sReplicatorFakeRecipes = new ReplicatorFakeMap(new HashSet<>(100), "gt.recipe.replicator", "Replicator", null, RES_PATH_GUI + "basicmachines/Replicator", 0, 1, 0, 1, 1, E, 1, E, true, true);
-        //public static final GT_Recipe_Map sAssemblylineFakeRecipes = new GT_Recipe_Map(new HashSet<>(30), "gt.recipe.scanner", "Scanner", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sAssemblylineVisualRecipes = new GT_Recipe_Map(new HashSet<>(110), "gt.recipe.fakeAssemblylineProcess", "Assemblyline Process", null, RES_PATH_GUI + "FakeAssemblyline", 1, 1, 1, 0, 1, E, 1, E, true, false);
-        public static final GT_Recipe_Map sPlasmaArcFurnaceRecipes = new GT_Recipe_Map(new HashSet<>(20000), "gt.recipe.plasmaarcfurnace", "Plasma Arc Furnace", null, RES_PATH_GUI + "basicmachines/PlasmaArcFurnace", 1, 4, 1, 1, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sArcFurnaceRecipes = new GT_Recipe_Map(new HashSet<>(20000), "gt.recipe.arcfurnace", "Arc Furnace", null, RES_PATH_GUI + "basicmachines/ArcFurnace", 1, 4, 1, 1, 3, E, 1, E, true, true);
-        public static final GT_Recipe_Map sPrinterRecipes = new GT_Recipe_Map_Printer(new HashSet<>(5), "gt.recipe.printer", "Printer", null, RES_PATH_GUI + "basicmachines/Printer", 1, 1, 1, 1, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sSifterRecipes = new GT_Recipe_Map(new HashSet<>(105), "gt.recipe.sifter", "Sifter", null, RES_PATH_GUI + "basicmachines/Sifter", 1, 9, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sPressRecipes = new GT_Recipe_Map_FormingPress(new HashSet<>(300), "gt.recipe.press", "Forming Press", null, RES_PATH_GUI + "basicmachines/Press", 2, 1, 2, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sLaserEngraverRecipes = new GT_Recipe_Map(new HashSet<>(810), "gt.recipe.laserengraver", "Precision Laser Engraver", null, RES_PATH_GUI + "basicmachines/LaserEngraver", 2, 1, 2, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sMixerRecipes = new GT_Recipe_Map(new HashSet<>(900), "gt.recipe.mixer", "Mixer", null, RES_PATH_GUI + "basicmachines/Mixer2", 9, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sAutoclaveRecipes = new GT_Recipe_Map(new HashSet<>(300), "gt.recipe.autoclave", "Autoclave", null, RES_PATH_GUI + "basicmachines/Autoclave", 2, 1, 1, 1, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sElectroMagneticSeparatorRecipes = new GT_Recipe_Map(new HashSet<>(50), "gt.recipe.electromagneticseparator", "Electromagnetic Separator", null, RES_PATH_GUI + "basicmachines/ElectromagneticSeparator", 1, 3, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sPolarizerRecipes = new GT_Recipe_Map(new HashSet<>(300), "gt.recipe.polarizer", "Electromagnetic Polarizer", null, RES_PATH_GUI + "basicmachines/Polarizer", 1, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sMaceratorRecipes = new GT_Recipe_Map_Macerator(new HashSet<>(16600), "gt.recipe.macerator", "Pulverization", null, RES_PATH_GUI + "basicmachines/Macerator4", 1, 4, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sChemicalBathRecipes = new GT_Recipe_Map(new HashSet<>(2550), "gt.recipe.chemicalbath", "Chemical Bath", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sFluidCannerRecipes = new GT_Recipe_Map_FluidCanner(new HashSet<>(2100), "gt.recipe.fluidcanner", "Fluid Canning Machine", null, RES_PATH_GUI + "basicmachines/FluidCannerNEI", 1, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sBrewingRecipes = new GT_Recipe_Map(new HashSet<>(450), "gt.recipe.brewer", "Brewing Machine", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 0, 1, 1, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sFluidHeaterRecipes = new GT_Recipe_Map(new HashSet<>(10), "gt.recipe.fluidheater", "Fluid Heater", null, RES_PATH_GUI + "basicmachines/FluidHeater", 1, 0, 1, 1, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sDistilleryRecipes = new GT_Recipe_Map(new HashSet<>(400), "gt.recipe.distillery", "Distillery", null, RES_PATH_GUI + "basicmachines/Distillery", 1, 1, 1, 1, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sFermentingRecipes = new GT_Recipe_Map(new HashSet<>(50), "gt.recipe.fermenter", "Fermenter", null, RES_PATH_GUI + "basicmachines/Fermenter", 0, 0, 0, 1, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sFluidSolidficationRecipes = new GT_Recipe_Map(new HashSet<>(35000), "gt.recipe.fluidsolidifier", "Fluid Solidifier", null, RES_PATH_GUI + "basicmachines/FluidSolidifier", 1, 1, 1, 1, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sFluidExtractionRecipes = new GT_Recipe_Map(new HashSet<>(15000), "gt.recipe.fluidextractor", "Fluid Extractor", null, RES_PATH_GUI + "basicmachines/FluidExtractor", 1, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sBoxinatorRecipes = new GT_Recipe_Map(new HashSet<>(2500), "gt.recipe.packager", "Packager", null, RES_PATH_GUI + "basicmachines/Packager", 2, 1, 2, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sUnboxinatorRecipes = new GT_Recipe_Map_Unboxinator(new HashSet<>(2500), "gt.recipe.unpackager", "Unpackager", null, RES_PATH_GUI + "basicmachines/Unpackager", 1, 2, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sFusionRecipes = new GT_Recipe_Map(new HashSet<>(50), "gt.recipe.fusionreactor", "Fusion Reactor", null, RES_PATH_GUI + "basicmachines/FusionReactor", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
-        public static final GT_Recipe_Map sCentrifugeRecipes = new GT_Recipe_Map(new HashSet<>(1200), "gt.recipe.centrifuge", "Centrifuge", null, RES_PATH_GUI + "basicmachines/Centrifuge", 2, 6, 0, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sElectrolyzerRecipes = new GT_Recipe_Map(new HashSet<>(300), "gt.recipe.electrolyzer", "Electrolyzer", null, RES_PATH_GUI + "basicmachines/Electrolyzer", 2, 6, 0, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sBlastRecipes = new GT_Recipe_Map(new HashSet<>(800), "gt.recipe.blastfurnace", "Blast Furnace", null, RES_PATH_GUI + "basicmachines/Default", 2, 2, 1, 0, 1, "Heat Capacity: ", 1, " K", false, true);
-        public static final GT_Recipe_Map sPrimitiveBlastRecipes = new GT_Recipe_Map(new HashSet<>(200), "gt.recipe.primitiveblastfurnace", "Primitive Blast Furnace", null, RES_PATH_GUI + "basicmachines/Default", 3, 3, 1, 0, 1, E, 1, E, false, true);
-        public static final GT_Recipe_Map sImplosionRecipes = new GT_Recipe_Map(new HashSet<>(900), "gt.recipe.implosioncompressor", "Implosion Compressor", null, RES_PATH_GUI + "basicmachines/Default", 2, 2, 2, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sVacuumRecipes = new GT_Recipe_Map(new HashSet<>(305), "gt.recipe.vacuumfreezer", "Vacuum Freezer", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 1, 0, 1, E, 1, E, false, true);
-        public static final GT_Recipe_Map sChemicalRecipes = new GT_Recipe_Map(new HashSet<>(1170), "gt.recipe.chemicalreactor", "Chemical Reactor", null, RES_PATH_GUI + "basicmachines/ChemicalReactor", 2, 2, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sOreWasherRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(500), "gt.recipe.orewasher", "Ore Washing Plant", null, RES_PATH_GUI + "basicmachines/OreWasher", 1, 3, 1, 1, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sThermalCentrifugeRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(1000), "gt.recipe.thermalcentrifuge", "Thermal Centrifuge", null, RES_PATH_GUI + "basicmachines/ThermalCentrifuge", 1, 3, 1, 0, 2, E, 1, E, true, true);
+        public static final GT_Recipe_Map sCompressorRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(750), "gt.recipe.compressor", "Compressor", null, RES_PATH_GUI + "basicmachines/Compressor", 1, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sExtractorRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(250), "gt.recipe.extractor", "Extractor", null, RES_PATH_GUI + "basicmachines/Extractor", 1, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sRecyclerRecipes = new GT_Recipe_Map_Recycler(new RecipeDebugHashSet(0), "ic.recipe.recycler", "Recycler", "ic2.recycler", RES_PATH_GUI + "basicmachines/Recycler", 1, 1, 1, 0, 1, E, 1, E, true, false);
+        public static final GT_Recipe_Map sFurnaceRecipes = new GT_Recipe_Map_Furnace(new RecipeDebugHashSet(0), "mc.recipe.furnace", "Furnace", "smelting", RES_PATH_GUI + "basicmachines/E_Furnace", 1, 1, 1, 0, 1, E, 1, E, true, false);
+        public static final GT_Recipe_Map sMicrowaveRecipes = new GT_Recipe_Map_Microwave(new RecipeDebugHashSet(0), "gt.recipe.microwave", "Microwave", "smelting", RES_PATH_GUI + "basicmachines/E_Furnace", 1, 1, 1, 0, 1, E, 1, E, true, false);
+        public static final GT_Recipe_Map sDisassemblerRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(250), "gt.recipe.disassembler", "Disassembler", null, RES_PATH_GUI + "basicmachines/Disassembler", 1, 9, 1, 0, 1, E, 1, E, true, false);
+        public static final GT_Recipe_Map sScannerFakeRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(300), "gt.recipe.scanner", "Scanner", null, RES_PATH_GUI + "basicmachines/Scanner", 1, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sRockBreakerFakeRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(200), "gt.recipe.rockbreaker", "Rock Breaker", null, RES_PATH_GUI + "basicmachines/RockBreaker", 1, 1, 0, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sByProductList = new GT_Recipe_Map(new RecipeDebugHashSet(1000), "gt.recipe.byproductlist", "Ore Byproduct List", null, RES_PATH_GUI + "basicmachines/Default", 1, 6, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sReplicatorFakeRecipes = new ReplicatorFakeMap(new RecipeDebugHashSet(100), "gt.recipe.replicator", "Replicator", null, RES_PATH_GUI + "basicmachines/Replicator", 0, 1, 0, 1, 1, E, 1, E, true, true);
+        //public static final GT_Recipe_Map sAssemblylineFakeRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(30), "gt.recipe.scanner", "Scanner", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sAssemblylineVisualRecipes = new GT_Recipe_Map(new HashSet(110), "gt.recipe.fakeAssemblylineProcess", "Assemblyline Process", null, RES_PATH_GUI + "FakeAssemblyline", 1, 1, 1, 0, 1, E, 1, E, true, false);
+        public static final GT_Recipe_Map sPlasmaArcFurnaceRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(20000), "gt.recipe.plasmaarcfurnace", "Plasma Arc Furnace", null, RES_PATH_GUI + "basicmachines/PlasmaArcFurnace", 1, 4, 1, 1, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sArcFurnaceRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(20000), "gt.recipe.arcfurnace", "Arc Furnace", null, RES_PATH_GUI + "basicmachines/ArcFurnace", 1, 4, 1, 1, 3, E, 1, E, true, true);
+        public static final GT_Recipe_Map sPrinterRecipes = new GT_Recipe_Map_Printer(new RecipeDebugHashSet(5), "gt.recipe.printer", "Printer", null, RES_PATH_GUI + "basicmachines/Printer", 1, 1, 1, 1, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sSifterRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(105), "gt.recipe.sifter", "Sifter", null, RES_PATH_GUI + "basicmachines/Sifter", 1, 9, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sPressRecipes = new GT_Recipe_Map_FormingPress(new RecipeDebugHashSet(300), "gt.recipe.press", "Forming Press", null, RES_PATH_GUI + "basicmachines/Press", 2, 1, 2, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sLaserEngraverRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(810), "gt.recipe.laserengraver", "Precision Laser Engraver", null, RES_PATH_GUI + "basicmachines/LaserEngraver", 2, 1, 2, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sMixerRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(900), "gt.recipe.mixer", "Mixer", null, RES_PATH_GUI + "basicmachines/Mixer2", 9, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sAutoclaveRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(300), "gt.recipe.autoclave", "Autoclave", null, RES_PATH_GUI + "basicmachines/Autoclave", 2, 1, 1, 1, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sElectroMagneticSeparatorRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(50), "gt.recipe.electromagneticseparator", "Electromagnetic Separator", null, RES_PATH_GUI + "basicmachines/ElectromagneticSeparator", 1, 3, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sPolarizerRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(300), "gt.recipe.polarizer", "Electromagnetic Polarizer", null, RES_PATH_GUI + "basicmachines/Polarizer", 1, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sMaceratorRecipes = new GT_Recipe_Map_Macerator(new RecipeDebugHashSet(16600), "gt.recipe.macerator", "Pulverization", null, RES_PATH_GUI + "basicmachines/Macerator4", 1, 4, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sChemicalBathRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(2550), "gt.recipe.chemicalbath", "Chemical Bath", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sFluidCannerRecipes = new GT_Recipe_Map_FluidCanner(new RecipeDebugHashSet(2100), "gt.recipe.fluidcanner", "Fluid Canning Machine", null, RES_PATH_GUI + "basicmachines/FluidCannerNEI", 1, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sBrewingRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(450), "gt.recipe.brewer", "Brewing Machine", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 0, 1, 1, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sFluidHeaterRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(10), "gt.recipe.fluidheater", "Fluid Heater", null, RES_PATH_GUI + "basicmachines/FluidHeater", 1, 0, 1, 1, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sDistilleryRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(400), "gt.recipe.distillery", "Distillery", null, RES_PATH_GUI + "basicmachines/Distillery", 1, 1, 1, 1, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sFermentingRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(50), "gt.recipe.fermenter", "Fermenter", null, RES_PATH_GUI + "basicmachines/Fermenter", 0, 0, 0, 1, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sFluidSolidficationRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(35000), "gt.recipe.fluidsolidifier", "Fluid Solidifier", null, RES_PATH_GUI + "basicmachines/FluidSolidifier", 1, 1, 1, 1, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sFluidExtractionRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(15000), "gt.recipe.fluidextractor", "Fluid Extractor", null, RES_PATH_GUI + "basicmachines/FluidExtractor", 1, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sBoxinatorRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(2500), "gt.recipe.packager", "Packager", null, RES_PATH_GUI + "basicmachines/Packager", 2, 1, 2, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sUnboxinatorRecipes = new GT_Recipe_Map_Unboxinator(new RecipeDebugHashSet(2500), "gt.recipe.unpackager", "Unpackager", null, RES_PATH_GUI + "basicmachines/Unpackager", 1, 2, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sFusionRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(50), "gt.recipe.fusionreactor", "Fusion Reactor", null, RES_PATH_GUI + "basicmachines/FusionReactor", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
+        public static final GT_Recipe_Map sCentrifugeRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(1200), "gt.recipe.centrifuge", "Centrifuge", null, RES_PATH_GUI + "basicmachines/Centrifuge", 2, 6, 0, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sElectrolyzerRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(300), "gt.recipe.electrolyzer", "Electrolyzer", null, RES_PATH_GUI + "basicmachines/Electrolyzer", 2, 6, 0, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sBlastRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(800), "gt.recipe.blastfurnace", "Blast Furnace", null, RES_PATH_GUI + "basicmachines/Default", 2, 2, 1, 0, 1, "Heat Capacity: ", 1, " K", false, true);
+        public static final GT_Recipe_Map sPrimitiveBlastRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(200), "gt.recipe.primitiveblastfurnace", "Primitive Blast Furnace", null, RES_PATH_GUI + "basicmachines/Default", 3, 3, 1, 0, 1, E, 1, E, false, true);
+        public static final GT_Recipe_Map sImplosionRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(900), "gt.recipe.implosioncompressor", "Implosion Compressor", null, RES_PATH_GUI + "basicmachines/Default", 2, 2, 2, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sVacuumRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(305), "gt.recipe.vacuumfreezer", "Vacuum Freezer", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 1, 0, 1, E, 1, E, false, true);
+        public static final GT_Recipe_Map sChemicalRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(1170), "gt.recipe.chemicalreactor", "Chemical Reactor", null, RES_PATH_GUI + "basicmachines/ChemicalReactor", 2, 2, 1, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sMultiblockChemicalRecipes = new GT_Recipe_Map_LargeChemicalReactor();
         public static final GT_Recipe_Map sDistillationRecipes = new GT_Recipe_Map_DistillationTower();
-        public static final GT_Recipe_Map sCrakingRecipes = new GT_Recipe_Map(new HashSet<>(70), "gt.recipe.craker", "Oil Cracker", null, RES_PATH_GUI + "basicmachines/OilCracker", 1, 1, 1, 2, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sPyrolyseRecipes = new GT_Recipe_Map(new HashSet<>(150), "gt.recipe.pyro", "Pyrolyse Oven", null, RES_PATH_GUI + "basicmachines/Default", 2, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sWiremillRecipes = new GT_Recipe_Map(new HashSet<>(450), "gt.recipe.wiremill", "Wiremill", null, RES_PATH_GUI + "basicmachines/Wiremill", 1, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sBenderRecipes = new GT_Recipe_Map(new HashSet<>(5000), "gt.recipe.metalbender", "Bending Machine", null, RES_PATH_GUI + "basicmachines/Bender", 2, 1, 2, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sAlloySmelterRecipes = new GT_Recipe_Map(new HashSet<>(12000), "gt.recipe.alloysmelter", "Alloy Smelter", null, RES_PATH_GUI + "basicmachines/AlloySmelter", 2, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<>(8200), "gt.recipe.assembler", "Assembler", null, RES_PATH_GUI + "basicmachines/Assembler2", 9, 2, 2, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sCircuitAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<>(605), "gt.recipe.circuitassembler", "Circuit Assembler", null, RES_PATH_GUI + "basicmachines/CircuitAssembler", 6, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sCannerRecipes = new GT_Recipe_Map(new HashSet<>(900), "gt.recipe.canner", "Canning Machine", null, RES_PATH_GUI + "basicmachines/Canner", 2, 2, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sCNCRecipes = new GT_Recipe_Map(new HashSet<>(100), "gt.recipe.cncmachine", "CNC Machine", null, RES_PATH_GUI + "basicmachines/Default", 2, 1, 2, 1, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sLatheRecipes = new GT_Recipe_Map(new HashSet<>(1150), "gt.recipe.lathe", "Lathe", null, RES_PATH_GUI + "basicmachines/Lathe", 1, 2, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sCutterRecipes = new GT_Recipe_Map(new HashSet<>(5125), "gt.recipe.cuttingsaw", "Cutting Machine", null, RES_PATH_GUI + "basicmachines/Cutter2", 2, 2, 1, 1, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sSlicerRecipes = new GT_Recipe_Map(new HashSet<>(20), "gt.recipe.slicer", "Slicing Machine", null, RES_PATH_GUI + "basicmachines/Slicer", 2, 1, 2, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sExtruderRecipes = new GT_Recipe_Map(new HashSet<>(13000), "gt.recipe.extruder", "Extruder", null, RES_PATH_GUI + "basicmachines/Extruder", 2, 1, 2, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sHammerRecipes = new GT_Recipe_Map(new HashSet<>(3800), "gt.recipe.hammer", "Forge Hammer", null, RES_PATH_GUI + "basicmachines/Hammer", 1, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sAmplifiers = new GT_Recipe_Map(new HashSet<>(2), "gt.recipe.uuamplifier", "Amplifabricator", null, RES_PATH_GUI + "basicmachines/Amplifabricator", 1, 0, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sMassFabFakeRecipes = new GT_Recipe_Map(new HashSet<>(2), "gt.recipe.massfab", "Mass Fabrication", null, RES_PATH_GUI + "basicmachines/Massfabricator", 1, 0, 1, 0, 10, E, 1, E, true, true);
-        public static final GT_Recipe_Map_Fuel sDieselFuels = new GT_Recipe_Map_Fuel(new HashSet<>(20), "gt.recipe.dieselgeneratorfuel", "Combustion Generator Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-        public static final GT_Recipe_Map_Fuel sExtremeDieselFuels = new GT_Recipe_Map_Fuel(new HashSet<>(20), "gt.recipe.extremedieselgeneratorfuel", "Extreme Diesel Engine Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-        public static final GT_Recipe_Map_Fuel sTurbineFuels = new GT_Recipe_Map_Fuel(new HashSet<>(25), "gt.recipe.gasturbinefuel", "Gas Turbine Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-        public static final GT_Recipe_Map_Fuel sHotFuels = new GT_Recipe_Map_Fuel(new HashSet<>(10), "gt.recipe.thermalgeneratorfuel", "Thermal Generator Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, false);
-        public static final GT_Recipe_Map_Fuel sDenseLiquidFuels = new GT_Recipe_Map_Fuel(new HashSet<>(15), "gt.recipe.semifluidboilerfuels", "Semifluid Boiler Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-        public static final GT_Recipe_Map_Fuel sPlasmaFuels = new GT_Recipe_Map_Fuel(new HashSet<>(100), "gt.recipe.plasmageneratorfuels", "Plasma Generator Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-        public static final GT_Recipe_Map_Fuel sMagicFuels = new GT_Recipe_Map_Fuel(new HashSet<>(100), "gt.recipe.magicfuels", "Magic Energy Absorber Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-        public static final GT_Recipe_Map_Fuel sSmallNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet<>(1), "gt.recipe.smallnaquadahreactor", "Naquadah Reactor MkI", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-        public static final GT_Recipe_Map_Fuel sLargeNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet<>(1), "gt.recipe.largenaquadahreactor", "Naquadah Reactor MkII", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-        public static final GT_Recipe_Map_Fuel sHugeNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet<>(1), "gt.recipe.fluidnaquadahreactor", "Naquadah Reactor MkIII", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-        public static final GT_Recipe_Map_Fuel sExtremeNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet<>(1), "gt.recipe.hugenaquadahreactor", "Naquadah Reactor MkIV", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-        public static final GT_Recipe_Map_Fuel sUltraHugeNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet<>(1), "gt.recipe.extrahugenaquadahreactor", "Naquadah Reactor MkV", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-        public static final GT_Recipe_Map_Fuel sFluidNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet<>(1), "gt.recipe.fluidnaquadahreactor", "Fluid Naquadah Reactor", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+        public static final GT_Recipe_Map sCrakingRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(70), "gt.recipe.craker", "Oil Cracker", null, RES_PATH_GUI + "basicmachines/OilCracker", 1, 1, 1, 2, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sPyrolyseRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(150), "gt.recipe.pyro", "Pyrolyse Oven", null, RES_PATH_GUI + "basicmachines/Default", 2, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sWiremillRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(450), "gt.recipe.wiremill", "Wiremill", null, RES_PATH_GUI + "basicmachines/Wiremill", 1, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sBenderRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(5000), "gt.recipe.metalbender", "Bending Machine", null, RES_PATH_GUI + "basicmachines/Bender", 2, 1, 2, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sAlloySmelterRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(12000), "gt.recipe.alloysmelter", "Alloy Smelter", null, RES_PATH_GUI + "basicmachines/AlloySmelter", 2, 1, 2, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sAssemblerRecipes = new GT_Recipe_Map_Assembler(new RecipeDebugHashSet(8200), "gt.recipe.assembler", "Assembler", null, RES_PATH_GUI + "basicmachines/Assembler2", 9, 2, 2, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sCircuitAssemblerRecipes = new GT_Recipe_Map_Assembler(new RecipeDebugHashSet(605), "gt.recipe.circuitassembler", "Circuit Assembler", null, RES_PATH_GUI + "basicmachines/CircuitAssembler", 6, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sCannerRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(900), "gt.recipe.canner", "Canning Machine", null, RES_PATH_GUI + "basicmachines/Canner", 2, 2, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sCNCRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(100), "gt.recipe.cncmachine", "CNC Machine", null, RES_PATH_GUI + "basicmachines/Default", 2, 1, 2, 1, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sLatheRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(1150), "gt.recipe.lathe", "Lathe", null, RES_PATH_GUI + "basicmachines/Lathe", 1, 2, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sCutterRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(5125), "gt.recipe.cuttingsaw", "Cutting Machine", null, RES_PATH_GUI + "basicmachines/Cutter2", 2, 2, 1, 1, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sSlicerRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(20), "gt.recipe.slicer", "Slicing Machine", null, RES_PATH_GUI + "basicmachines/Slicer", 2, 1, 2, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sExtruderRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(13000), "gt.recipe.extruder", "Extruder", null, RES_PATH_GUI + "basicmachines/Extruder", 2, 1, 2, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sHammerRecipes = new GT_Recipe_Map(new RecipeDebugHashSet(3800), "gt.recipe.hammer", "Forge Hammer", null, RES_PATH_GUI + "basicmachines/Hammer", 1, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sAmplifiers = new GT_Recipe_Map(new HashSet(2), "gt.recipe.uuamplifier", "Amplifabricator", null, RES_PATH_GUI + "basicmachines/Amplifabricator", 1, 0, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sMassFabFakeRecipes = new GT_Recipe_Map(new HashSet(2), "gt.recipe.massfab", "Mass Fabrication", null, RES_PATH_GUI + "basicmachines/Massfabricator", 1, 0, 1, 0, 10, E, 1, E, true, true);
+        public static final GT_Recipe_Map_Fuel sDieselFuels = new GT_Recipe_Map_Fuel(new HashSet(20), "gt.recipe.dieselgeneratorfuel", "Combustion Generator Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+        public static final GT_Recipe_Map_Fuel sExtremeDieselFuels = new GT_Recipe_Map_Fuel(new HashSet(20), "gt.recipe.extremedieselgeneratorfuel", "Extreme Diesel Engine Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+        public static final GT_Recipe_Map_Fuel sTurbineFuels = new GT_Recipe_Map_Fuel(new HashSet(25), "gt.recipe.gasturbinefuel", "Gas Turbine Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+        public static final GT_Recipe_Map_Fuel sHotFuels = new GT_Recipe_Map_Fuel(new HashSet(10), "gt.recipe.thermalgeneratorfuel", "Thermal Generator Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, false);
+        public static final GT_Recipe_Map_Fuel sDenseLiquidFuels = new GT_Recipe_Map_Fuel(new HashSet(15), "gt.recipe.semifluidboilerfuels", "Semifluid Boiler Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+        public static final GT_Recipe_Map_Fuel sPlasmaFuels = new GT_Recipe_Map_Fuel(new HashSet(100), "gt.recipe.plasmageneratorfuels", "Plasma Generator Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+        public static final GT_Recipe_Map_Fuel sMagicFuels = new GT_Recipe_Map_Fuel(new HashSet(100), "gt.recipe.magicfuels", "Magic Energy Absorber Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+        public static final GT_Recipe_Map_Fuel sSmallNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet(1), "gt.recipe.smallnaquadahreactor", "Naquadah Reactor MkI", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+        public static final GT_Recipe_Map_Fuel sLargeNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet(1), "gt.recipe.largenaquadahreactor", "Naquadah Reactor MkII", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+        public static final GT_Recipe_Map_Fuel sHugeNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet(1), "gt.recipe.fluidnaquadahreactor", "Naquadah Reactor MkIII", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+        public static final GT_Recipe_Map_Fuel sExtremeNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet(1), "gt.recipe.hugenaquadahreactor", "Naquadah Reactor MkIV", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+        public static final GT_Recipe_Map_Fuel sUltraHugeNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet(1), "gt.recipe.extrahugenaquadahreactor", "Naquadah Reactor MkV", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+        public static final GT_Recipe_Map_Fuel sFluidNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet(1), "gt.recipe.fluidnaquadahreactor", "Fluid Naquadah Reactor", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
         public static final GT_Recipe_Map_LargeBoilerFakeFuels sLargeBoilerFakeFuels = new GT_Recipe_Map_LargeBoilerFakeFuels();
 
         /**
@@ -679,6 +676,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             mNEIAllowed = aNEIAllowed;
             mShowVoltageAmperageInNEI = aShowVoltageAmperageInNEI;
             mRecipeList = aRecipeList;
+            if (mRecipeList instanceof RecipeDebugHashSet)
+                ((RecipeDebugHashSet) mRecipeList).setMap(this);
             mNEIName = aNEIName == null ? aUnlocalizedName : aNEIName;
             mNEIGUIPath = aNEIGUIPath.endsWith(".png") ? aNEIGUIPath : aNEIGUIPath + ".png";
             mNEISpecialValuePre = aNEISpecialValuePre;
@@ -889,7 +888,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 }
             return aRecipe;
         }
-        private void checkMinimals(GT_Recipe aRecipe){
+
+        public void checkMinimals(GT_Recipe aRecipe){
             if (aRecipe.mFakeRecipe || allow_broken_recipemap || this instanceof GT_Recipe_Map_Fuel)
                 return;
             if (aRecipe.mFluidInputs.length >= mMinimalInputFluids && aRecipe.mInputs.length >= mMinimalInputItems) {
@@ -900,23 +900,29 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             String itemOutputs = Arrays.stream(aRecipe.mOutputs).filter(Objects::nonNull).map(ItemStack::getUnlocalizedName).collect(Collectors.joining(","));
             String fluidInputs = Arrays.stream(aRecipe.mFluidInputs).filter(Objects::nonNull).map(FluidStack::getUnlocalizedName).collect(Collectors.joining(","));
             String fluidOutputs = Arrays.stream(aRecipe.mFluidOutputs).filter(Objects::nonNull).map(FluidStack::getUnlocalizedName).collect(Collectors.joining(","));
+
+            String itemInputslocalised =  Arrays.stream(aRecipe.mInputs).filter(Objects::nonNull).map(ItemStack::getDisplayName).collect(Collectors.joining(","));
+            String itemOutputslocalised = Arrays.stream(aRecipe.mOutputs).filter(Objects::nonNull).map(ItemStack::getDisplayName).collect(Collectors.joining(","));
+            String fluidInputslocalised = Arrays.stream(aRecipe.mFluidInputs).filter(Objects::nonNull).map(FluidStack::getLocalizedName).collect(Collectors.joining(","));
+            String fluidOutputslocalised = Arrays.stream(aRecipe.mFluidOutputs).filter(Objects::nonNull).map(FluidStack::getLocalizedName).collect(Collectors.joining(","));
+
             String recipe_part_input = "NO INPUTS!";
             if (itemInputs.length() != 0 && fluidInputs.length() == 0) {
-                recipe_part_input = "Item Inputs: " + itemInputs;
+                recipe_part_input = "Item Inputs: " + itemInputs + " | " + itemInputslocalised;
             }
             else if (itemInputs.length() == 0 && fluidInputs.length() != 0) {
-                recipe_part_input = "Fluid Inputs: " +  fluidInputs;
+                recipe_part_input = "Fluid Inputs: " +  fluidInputs + " | " + fluidInputslocalised;
             } else if (itemInputs.length() != 0)  {
-                recipe_part_input = "Item Inputs: " +  itemInputs +" & " + "Fluid Inputs: " +  fluidInputs ;
+                recipe_part_input = "Item Inputs: " +  itemInputs + " | " + itemInputslocalised + " & " + "Fluid Inputs: " +  fluidInputs+ " | " + fluidInputslocalised;
             }
             String recipe_part_output = "NO OUTPUTS!";
             if (itemOutputs.length() != 0 && fluidOutputs.length() == 0) {
-                recipe_part_output = "Item Outputs: " + itemOutputs;
+                recipe_part_output = "Item Outputs: " + itemOutputs+ " | " + itemOutputslocalised;
             }
             else if (itemOutputs.length() == 0 && fluidOutputs.length() != 0) {
-                recipe_part_output = "Fluid Outputs: " +  fluidOutputs;
+                recipe_part_output = "Fluid Outputs: " +  fluidOutputs+ " | " + fluidOutputslocalised;
             } else if (itemInputs.length() != 0) {
-                recipe_part_output = "Item Outputs: " +  itemOutputs +" & " + "Fluid Outputs: " +  fluidOutputs ;
+                recipe_part_output = "Item Outputs: " +  itemOutputs + " | " + itemOutputslocalised +" & " + "Fluid Outputs: " +  fluidOutputs + " | " + fluidOutputslocalised;
             }
             String recipe = recipe_part_input + " -> " + recipe_part_output;
 
@@ -1642,7 +1648,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     	private static int FLUID_OUTPUT_COUNT = 4;
     	
         public GT_Recipe_Map_LargeChemicalReactor() {
-            super(new HashSet<>(1000), "gt.recipe.largechemicalreactor", "Large Chemical Reactor", null, RES_PATH_GUI + "basicmachines/Default", 2, OUTPUT_COUNT, 0, 0, 1, E, 1, E, true, true);
+            super(new RecipeDebugHashSet(1000), "gt.recipe.largechemicalreactor", "Large Chemical Reactor", null, RES_PATH_GUI + "basicmachines/Default", 2, OUTPUT_COUNT, 0, 0, 1, E, 1, E, true, true);
         }
 
         @Override
@@ -1798,7 +1804,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
    	private static final int ROW_SIZE = 3;
 
    	public GT_Recipe_Map_DistillationTower() {
-        super(new HashSet<>(110), "gt.recipe.distillationtower", "Distillation Tower", null, RES_PATH_GUI + "basicmachines/DistillationTower", 2, 4, 0, 0, 1, E, 1, E, true, true);
+        super(new RecipeDebugHashSet(110), "gt.recipe.distillationtower", "Distillation Tower", null, RES_PATH_GUI + "basicmachines/DistillationTower", 2, 4, 0, 0, 1, E, 1, E, true, true);
     }
 
     @Override

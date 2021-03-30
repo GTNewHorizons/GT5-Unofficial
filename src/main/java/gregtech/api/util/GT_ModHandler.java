@@ -491,14 +491,27 @@ public class GT_ModHandler {
      * Adds to Furnace AND Alloysmelter AND Induction Smelter
      */
     public static boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aInput, ItemStack aOutput, boolean hidden) {
-        if (aInput == null || aOutput == null) return false;
+        if (aInput == null || aOutput == null)
+            return false;
         boolean temp = false;
-        if (aInput.stackSize == 1 && addSmeltingRecipe(aInput, aOutput)) temp = true;
-        if (RA.addAlloySmelterRecipe(aInput, OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0) : OrePrefixes.block.contains(aOutput) ? ItemList.Shape_Mold_Block.get(0) : OrePrefixes.nugget.contains(aOutput) ? ItemList.Shape_Mold_Nugget.get(0) : null, aOutput, 130, 3,hidden))
+        if (aInput.stackSize == 1 && addSmeltingRecipe(aInput, aOutput))
+            temp = true;
+        if (RA.addAlloySmelterRecipe(aInput, getSecondAlloySmelterOutput(aOutput), aOutput, 130, 3,hidden))
             temp = true;
         if (GT_Mod.gregtechproxy.mTEMachineRecipes)
-            if (addInductionSmelterRecipe(aInput, null, aOutput, null, aOutput.stackSize * 1600, 0)) temp = true;
+            if (addInductionSmelterRecipe(aInput, null, aOutput, null, aOutput.stackSize * 1600, 0))
+                temp = true;
         return temp;
+    }
+
+    private static ItemStack getSecondAlloySmelterOutput(ItemStack aOutput){
+        if (OrePrefixes.ingot.contains(aOutput))
+            return ItemList.Shape_Mold_Ingot.get(0);
+        if (OrePrefixes.block.contains(aOutput))
+            return ItemList.Shape_Mold_Block.get(0);
+        if (OrePrefixes.nugget.contains(aOutput))
+            return ItemList.Shape_Mold_Nugget.get(0);
+        return GT_Utility.getIntegratedCircuit(23);
     }
 
     /**
