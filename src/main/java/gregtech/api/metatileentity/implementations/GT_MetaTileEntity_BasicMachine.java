@@ -1026,9 +1026,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     private int checkRecipeSync(boolean skipOC) {
-        GT_Recipe_Map tMap = this.getRecipeList();
-        if (tMap == null)
-            return DID_NOT_FIND_RECIPE;
+        GT_Recipe_Map tMap = checkMapNotNull();
         GT_Recipe recipe = tMap.findRecipe(this.getBaseMetaTileEntity(),
                 mLastRecipe,
                 false,
@@ -1046,11 +1044,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         else
             resetAsyncBuffer();
 
-        if (!preprocessInventory())
-            return DID_NOT_FIND_RECIPE;
+        checkMapNotNull();
 
-        GT_Recipe_Map tMap = this.getRecipeList();
-        if (tMap == null)
+        if (!preprocessInventory())
             return DID_NOT_FIND_RECIPE;
 
         this.requestRecipeAsync();
@@ -1059,6 +1055,13 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     /* --- INTERNAL RECIPE METHODS --- */
+
+    private GT_Recipe_Map checkMapNotNull() {
+        GT_Recipe_Map tMap = this.getRecipeList();
+        if (tMap == null)
+            throw new ClassFormatError("The subclass: "+ this.getClass() +" calls "+ GT_MetaTileEntity_BasicMachine.class.getSimpleName()+"::checkRecipe without setting a recipe map! This is forbidden!");
+        return tMap;
+    }
 
     private boolean preprocessInventory() {
 
