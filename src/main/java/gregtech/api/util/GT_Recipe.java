@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -603,8 +604,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sPyrolyseRecipes = new GT_Recipe_Map(new HashSet<>(150), "gt.recipe.pyro", "Pyrolyse Oven", null, RES_PATH_GUI + "basicmachines/Default", 2, 1, 1, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sWiremillRecipes = new GT_Recipe_Map(new HashSet<>(450), "gt.recipe.wiremill", "Wiremill", null, RES_PATH_GUI + "basicmachines/Wiremill", 1, 1, 1, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sBenderRecipes = new GT_Recipe_Map(new HashSet<>(5000), "gt.recipe.metalbender", "Bending Machine", null, RES_PATH_GUI + "basicmachines/Bender", 2, 1, 2, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sAlloySmelterRecipes = new GT_Recipe_Map(new HashSet<>(12000), "gt.recipe.alloysmelter", "Alloy Smelter", null, RES_PATH_GUI + "basicmachines/AlloySmelter", 2, 1, 2, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<>(8200), "gt.recipe.assembler", "Assembler", null, RES_PATH_GUI + "basicmachines/Assembler2", 9, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sAlloySmelterRecipes = new GT_Recipe_Map(new HashSet<>(12000), "gt.recipe.alloysmelter", "Alloy Smelter", null, RES_PATH_GUI + "basicmachines/AlloySmelter", 2, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<>(8200), "gt.recipe.assembler", "Assembler", null, RES_PATH_GUI + "basicmachines/Assembler2", 9, 2, 2, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sCircuitAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<>(605), "gt.recipe.circuitassembler", "Circuit Assembler", null, RES_PATH_GUI + "basicmachines/CircuitAssembler", 6, 1, 1, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sCannerRecipes = new GT_Recipe_Map(new HashSet<>(900), "gt.recipe.canner", "Canning Machine", null, RES_PATH_GUI + "basicmachines/Canner", 2, 2, 1, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sCNCRecipes = new GT_Recipe_Map(new HashSet<>(100), "gt.recipe.cncmachine", "CNC Machine", null, RES_PATH_GUI + "basicmachines/Default", 2, 1, 2, 1, 1, E, 1, E, true, true);
@@ -712,8 +713,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         protected GT_Recipe addRecipe(GT_Recipe aRecipe, boolean aCheckForCollisions, boolean aFakeRecipe, boolean aHidden) {
             aRecipe.mHidden = aHidden;
             aRecipe.mFakeRecipe = aFakeRecipe;
-            if (aRecipe.mFluidInputs.length < mMinimalInputFluids && aRecipe.mInputs.length < mMinimalInputItems)
-                return null;
             if (aCheckForCollisions && findRecipe(null, false, Long.MAX_VALUE, aRecipe.mFluidInputs, aRecipe.mInputs) != null)
                 return null;
             return add(aRecipe);
@@ -881,6 +880,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         protected GT_Recipe addToItemMap(GT_Recipe aRecipe) {
+            checkMinimals(aRecipe);
             for (ItemStack aStack : aRecipe.mInputs)
                 if (aStack != null) {
                     GT_ItemStack tStack = new GT_ItemStack(aStack);
@@ -888,6 +888,44 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     tList.add(aRecipe);
                 }
             return aRecipe;
+        }
+        private void checkMinimals(GT_Recipe aRecipe){
+            if (aRecipe.mFakeRecipe || allow_broken_recipemap || this instanceof GT_Recipe_Map_Fuel)
+                return;
+            if (aRecipe.mFluidInputs.length >= mMinimalInputFluids && aRecipe.mInputs.length >= mMinimalInputItems) {
+                return;
+            }
+
+            String itemInputs =  Arrays.stream(aRecipe.mInputs).filter(Objects::nonNull).map(ItemStack::getUnlocalizedName).collect(Collectors.joining(","));
+            String itemOutputs = Arrays.stream(aRecipe.mOutputs).filter(Objects::nonNull).map(ItemStack::getUnlocalizedName).collect(Collectors.joining(","));
+            String fluidInputs = Arrays.stream(aRecipe.mFluidInputs).filter(Objects::nonNull).map(FluidStack::getUnlocalizedName).collect(Collectors.joining(","));
+            String fluidOutputs = Arrays.stream(aRecipe.mFluidOutputs).filter(Objects::nonNull).map(FluidStack::getUnlocalizedName).collect(Collectors.joining(","));
+            String recipe_part_input = "NO INPUTS!";
+            if (itemInputs.length() != 0 && fluidInputs.length() == 0) {
+                recipe_part_input = "Item Inputs: " + itemInputs;
+            }
+            else if (itemInputs.length() == 0 && fluidInputs.length() != 0) {
+                recipe_part_input = "Fluid Inputs: " +  fluidInputs;
+            } else if (itemInputs.length() != 0)  {
+                recipe_part_input = "Item Inputs: " +  itemInputs +" & " + "Fluid Inputs: " +  fluidInputs ;
+            }
+            String recipe_part_output = "NO OUTPUTS!";
+            if (itemOutputs.length() != 0 && fluidOutputs.length() == 0) {
+                recipe_part_output = "Item Outputs: " + itemOutputs;
+            }
+            else if (itemOutputs.length() == 0 && fluidOutputs.length() != 0) {
+                recipe_part_output = "Fluid Outputs: " +  fluidOutputs;
+            } else if (itemInputs.length() != 0) {
+                recipe_part_output = "Item Outputs: " +  itemOutputs +" & " + "Fluid Outputs: " +  fluidOutputs ;
+            }
+            String recipe = recipe_part_input + " -> " + recipe_part_output;
+
+            if (aRecipe.mFluidInputs.length < mMinimalInputFluids && aRecipe.mInputs.length < mMinimalInputItems)
+                throw new IllegalArgumentException("Recipe[" + recipe + "] added with less ITEMS & FLUIDS than minimal allowed by map(" + this.mUnlocalizedName + ")!");
+            if (aRecipe.mFluidInputs.length < mMinimalInputFluids)
+                throw new IllegalArgumentException("Recipe[" + recipe + "] added with less FLUIDS than minimal allowed by map(" + this.mUnlocalizedName + ")!");
+            if (aRecipe.mInputs.length < mMinimalInputItems)
+                throw new IllegalArgumentException("Recipe[" + recipe + "] added with less ITEMS than minimal allowed by map(" + this.mUnlocalizedName + ")!");
         }
     }
 
@@ -1553,7 +1591,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             super(new HashSet<>(55), "gt.recipe.largeboilerfakefuels", "Large Boiler", null, RES_PATH_GUI + "basicmachines/Default", 1, 0, 1, 0, 1, E, 1, E, true, true);
             GT_Recipe explanatoryRecipe = new GT_Recipe(true, new ItemStack[]{}, new ItemStack[]{}, null, null, null, null, 1, 1, 1);
             explanatoryRecipe.setNeiDesc("Not all solid fuels are listed.", "Any item that burns in a", "vanilla furnace will burn in", "a Large Boiler.");
-            addRecipe(explanatoryRecipe);
+            addFakeRecipe(false, explanatoryRecipe);
         }
 
         public GT_Recipe addDenseLiquidRecipe(GT_Recipe recipe) {
