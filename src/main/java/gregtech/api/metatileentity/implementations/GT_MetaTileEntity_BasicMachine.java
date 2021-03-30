@@ -1073,7 +1073,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         for (ItemStack x : inputs) {
             if (!GT_Utility.areStacksEqual(x, ItemList.Circuit_Integrated.get(1))
                     &&
-                    (x.getItem() != ItemList.Schematic.getItem() || x.getItemDamage() <= 490 || x.getItemDamage() > 498)) {
+                    (x.getItem() != ItemList.Schematic.getItem() || x.getItemDamage() <= 490 || x.getItemDamage() > 498 || x.getItemDamage() <= 300 || x.getItemDamage() > 399)) {
                 onlyContainsCircuitOrShematic = false;
                 break;
             }
