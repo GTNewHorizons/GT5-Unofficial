@@ -101,8 +101,9 @@ public class GT_MetaTileEntity_Replicator
         return GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes;
     }
 
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack) && (mDisableFilter || ItemList.Cell_Empty.isStackEqual(aStack));
+    @Override
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) && ItemList.Cell_Empty.isStackEqual(aStack);
     }
 
     public boolean isFluidInputAllowed(FluidStack aFluid) {
