@@ -20,7 +20,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     private static final int ARROW_UP_INDEX = 4;
     private static final int FRONT_INDEX = 5;
 
-    public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bStockingMode = false;
+    public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bStockingMode = false, bSortStacks = false;
     public int mSuccess = 0, mTargetStackSize = 0;
 
     public GT_MetaTileEntity_Buffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
@@ -213,6 +213,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         aNBT.setBoolean("bRedstoneIfFull", bRedstoneIfFull);
         aNBT.setBoolean("bStockingMode", bStockingMode);
         aNBT.setInteger("mTargetStackSize", mTargetStackSize);
+        aNBT.setBoolean("bSortStacks", bSortStacks);
     }
 
     @Override
@@ -220,6 +221,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         bInvert = aNBT.getBoolean("bInvert");
         bOutput = aNBT.getBoolean("bOutput");
         bRedstoneIfFull = aNBT.getBoolean("bRedstoneIfFull");
+        bSortStacks = aNBT.getBoolean("bSortStacks");
         if (aNBT.hasKey("bStockingMode")) { // Adding new key to existing NBT, need to protect if it is not there.
             bStockingMode = aNBT.getBoolean("bStockingMode");
         }
@@ -250,6 +252,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide() && (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified() || aTimer % 200 == 0 || mSuccess > 0)) {
             mSuccess--;
+            updateSlots();
             moveItems(aBaseMetaTileEntity, aTimer);
             for(byte b = 0;b<6;b++)
             	aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b,bInvert ? (byte)15 : (byte)0);
@@ -300,4 +303,31 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     public boolean allowGeneralRedstoneOutput(){
     	return true;
     }
+
+    public void updateSlots() {
+        for (int i = 0; i < mInventory.length; i++)
+            if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
+        fillStacksIntoFirstSlots();
+    }
+
+    protected void fillStacksIntoFirstSlots() {
+        if (bSortStacks) {
+            for (int i = 0; i < mInventory.length; i++)
+                for (int j = i + 1; j < mInventory.length; j++)
+                    if (mInventory[j] != null && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j])))
+                        GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
+        }
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ)  {
+        if (aPlayer.isSneaking()) {
+            // I was so proud of all this but I literally just copied code from OutputBus
+            bSortStacks = !bSortStacks;
+            GT_Utility.sendChatToPlayer(aPlayer, trans("200", "Sort mode: " + (bSortStacks ? "Disabled" : "Enabled")));
+            return true;
+        }
+        return super.onSolderingToolRightClick(aSide,aWrenchingSide,aPlayer,aX,aY,aZ);
+    }
+
 }

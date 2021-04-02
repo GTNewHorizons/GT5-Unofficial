@@ -122,28 +122,26 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
         return DID_NOT_FIND_RECIPE;
     }
 
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        if (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) {
-            if (mDisableFilter) return true;
-            ItemStack tInput1 = getInputAt(1);
-            if ((ItemList.Schematic_1by1.isStackEqual(tInput1)) || (ItemList.Schematic_2by2.isStackEqual(tInput1)) || (ItemList.Schematic_3by3.isStackEqual(tInput1))) {
-                if (hasValidCache(aStack,aTypeCache,false))
-                    return true;
-                if (GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.findRecipe(getBaseMetaTileEntity(), true, gregtech.api.enums.GT_Values.V[mTier], null, new ItemStack[]{GT_Utility.copyAmount(64L, new Object[]{aStack}), tInput1}) != null) {
-                    return true;
-                }
-                if (ItemList.Schematic_1by1.isStackEqual(getInputAt(1)) && GT_ModHandler.getRecipeOutput(new ItemStack[]{aStack}) != null)
-                    return true;
-                if (ItemList.Schematic_2by2.isStackEqual(getInputAt(1)) && GT_ModHandler.getRecipeOutput(new ItemStack[]{aStack, aStack, null, aStack, aStack}) != null) {
-                    return true;
-                }
-                if (ItemList.Schematic_3by3.isStackEqual(getInputAt(1)) && (GT_ModHandler.getRecipeOutput(new ItemStack[]{aStack, aStack, aStack, aStack, aStack, aStack, aStack, aStack, aStack}) != null)) {
-                    return true;
-                }
-            } else {
-                return GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.containsInput(aStack);
-            }
+    @Override
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        if (!super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)) {
+            return false;
         }
-        return false;
+        ItemStack tInput1 = getInputAt(1);
+        if ((ItemList.Schematic_1by1.isStackEqual(tInput1)) || (ItemList.Schematic_2by2.isStackEqual(tInput1)) || (ItemList.Schematic_3by3.isStackEqual(tInput1))) {
+            if (hasValidCache(aStack,aTypeCache,false))
+                return true;
+            if (GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.findRecipe(getBaseMetaTileEntity(), true, gregtech.api.enums.GT_Values.V[mTier], null, new ItemStack[]{GT_Utility.copyAmount(64L, new Object[]{aStack}), tInput1}) != null) {
+                return true;
+            }
+            if (ItemList.Schematic_1by1.isStackEqual(getInputAt(1)) && GT_ModHandler.getRecipeOutput(new ItemStack[]{aStack}) != null)
+                return true;
+            if (ItemList.Schematic_2by2.isStackEqual(getInputAt(1)) && GT_ModHandler.getRecipeOutput(new ItemStack[]{aStack, aStack, null, aStack, aStack}) != null) {
+                return true;
+            }
+            return ItemList.Schematic_3by3.isStackEqual(getInputAt(1)) && (GT_ModHandler.getRecipeOutput(new ItemStack[]{aStack, aStack, aStack, aStack, aStack, aStack, aStack, aStack, aStack}) != null);
+        } else {
+            return GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.containsInput(aStack);
+        }
     }
 }

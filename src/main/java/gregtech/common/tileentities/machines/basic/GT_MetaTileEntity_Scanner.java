@@ -348,8 +348,9 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
         return 1000;
     }
 
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) && (mDisableFilter || getRecipeList().containsInput(aStack));
+    @Override
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) && getRecipeList().containsInput(aStack);
     }
 
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {

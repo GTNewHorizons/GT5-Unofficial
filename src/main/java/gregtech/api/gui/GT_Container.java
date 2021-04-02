@@ -26,6 +26,7 @@ public class GT_Container extends Container {
 
         mTileEntity = aTileEntityInventory;
         mPlayerInventory = aPlayerInventory;
+        mTileEntity.openInventory();
     }
 
     /**
@@ -468,6 +469,7 @@ public class GT_Container extends Container {
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         try {
             super.onContainerClosed(par1EntityPlayer);
+            mTileEntity.closeInventory();
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }

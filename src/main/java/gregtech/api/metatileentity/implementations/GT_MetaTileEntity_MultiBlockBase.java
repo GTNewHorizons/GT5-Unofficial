@@ -708,9 +708,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         if (aLiquid == null) return false;
         FluidStack copiedFluidStack = aLiquid.copy();
         if (!dumpFluid(copiedFluidStack, true)){
-            dumpFluid(copiedFluidStack, false);        	
+            return dumpFluid(copiedFluidStack, false);        	
         }
-        return false;
+        return true;
     }
 
     protected void addFluidOutputs(FluidStack[] mOutputFluids2) {

@@ -576,7 +576,11 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             mHasBeenUpdated = true;
             getBaseMetaTileEntity().setFrontFacing(getBaseMetaTileEntity().getBackFacing());
         }
+    }
 
+    @Override
+    protected void updateFluidDisplayItem() {
+        super.updateFluidDisplayItem();
         if (displaysInputFluid()) {
             int tDisplayStackSlot = OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length;
             if (getFillableStack() == null) {
@@ -824,14 +828,17 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         if (aSide == mMainFacing || aIndex < getInputSlot() || aIndex >= getInputSlot() + mInputSlotCount || (!mAllowInputFromOutputSide && aSide == aBaseMetaTileEntity.getFrontFacing()))
             return false;
-        if (mDisableFilter) return true;
         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++)
             if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(aStack), mInventory[i])) return i == aIndex;
-        return true;
+        return mDisableFilter || allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack);
     }
 
+    /**
+     * Test if given stack can be inserted into specified slot.
+     * Before execution of this method it is ensured there is no such kind of item inside any input slots already.
+     */
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return true;
+        return mInventory[aIndex] == null;
     }
 
     /**
