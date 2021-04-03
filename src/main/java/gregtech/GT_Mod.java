@@ -149,6 +149,7 @@ public class GT_Mod implements IGT_Mod {
 
         Textures.BlockIcons.VOID.name();
         Textures.ItemIcons.VOID.name();
+        GT_Threads.initRecipeExecutorService();
     }
 
     public static int calculateTotalGTVersion(int minorVersion) {
@@ -892,7 +893,12 @@ public class GT_Mod implements IGT_Mod {
         GT_Log.out.println("GT_Mod: Adding buffered Recipes.");
         GT_ModHandler.stopBufferingCraftingRecipes();
         GT_FML_LOGGER.info("Executed delayed Crafting Recipes (" + stopwatch.stop() + "). Have a Cake.");
-        
+        stopwatch.reset();
+        stopwatch.start();
+        GT_FML_LOGGER.info("Restarting RecipeExecutorService.");
+        GT_Threads.stopRecipeExecutorService();
+        GT_Threads.initRecipeExecutorService();
+        GT_FML_LOGGER.info("RecipeExecutorService restarted. " + stopwatch.stop());
         GT_Log.out.println("GT_Mod: Saving Lang File.");
         GT_LanguageManager.sEnglishFile.save();
         GregTech_API.sPostloadFinished = true;

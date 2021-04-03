@@ -5,9 +5,10 @@ import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.Collections;
 
-public class GT_Runnable_RecipeLookup implements Runnable {
+public class GT_Runnable_RecipeAsyncHandler implements Runnable {
+
+
 
     private GT_MetaTileEntity_BasicMachine aTileEntity;
     private ItemStack aSpecialSlot;
@@ -18,14 +19,14 @@ public class GT_Runnable_RecipeLookup implements Runnable {
     private GT_Recipe.GT_Recipe_Map gt_recipe_map;
     private boolean aNotUnificated;
 
-    private GT_Runnable_RecipeLookup(GT_MetaTileEntity_BasicMachine aTileEntity,
-                                     GT_Recipe aRecipe,
-                                     boolean aNotUnificated,
-                                     long aVoltage,
-                                     FluidStack[] aFluids,
-                                     ItemStack aSpecialSlot,
-                                     GT_Recipe.GT_Recipe_Map gt_recipe_map,
-                                     ItemStack[] aInputs
+    private GT_Runnable_RecipeAsyncHandler(GT_MetaTileEntity_BasicMachine aTileEntity,
+                                           GT_Recipe aRecipe,
+                                           boolean aNotUnificated,
+                                           long aVoltage,
+                                           FluidStack[] aFluids,
+                                           ItemStack aSpecialSlot,
+                                           GT_Recipe.GT_Recipe_Map gt_recipe_map,
+                                           ItemStack[] aInputs
 
     ) {
         this.aTileEntity = aTileEntity;
@@ -39,6 +40,13 @@ public class GT_Runnable_RecipeLookup implements Runnable {
         aTileEntity.getRecipeStatus().set(RECIPE_REQUESTED);
     }
 
+    public static boolean registerRecipeFireAndForget(Runnable t){
+        GT_Threads.getExecutorServiceMap()
+                .get(GT_Runnable_RecipeAsyncHandler.class)
+                .submit(t);
+        return true;
+    }
+
     public static void requestRecipe(GT_MetaTileEntity_BasicMachine aTileEntity,
                                      GT_Recipe aRecipe,
                                      boolean aNotUnificated,
@@ -47,16 +55,19 @@ public class GT_Runnable_RecipeLookup implements Runnable {
                                      ItemStack aSpecialSlot,
                                      GT_Recipe.GT_Recipe_Map gt_recipe_map,
                                      ItemStack... aInputs) {
-        GT_Threads.getExecutorServiceMap().get(GT_Runnable_RecipeLookup.class).submit(new GT_Runnable_RecipeLookup(
-                aTileEntity,
-                aRecipe,
-                aNotUnificated,
-                aVoltage,
-                aFluids,
-                aSpecialSlot,
-                gt_recipe_map,
-                aInputs
-                ));
+        GT_Threads.getExecutorServiceMap().get(GT_Runnable_RecipeAsyncHandler.class)
+                .submit(
+                        new GT_Runnable_RecipeAsyncHandler(
+                                aTileEntity,
+                                aRecipe,
+                                aNotUnificated,
+                                aVoltage,
+                                aFluids,
+                                aSpecialSlot,
+                                gt_recipe_map,
+                                aInputs
+                        )
+                );
     }
 
     public static final int

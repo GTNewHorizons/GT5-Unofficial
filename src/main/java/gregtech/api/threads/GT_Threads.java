@@ -15,11 +15,13 @@ public final class GT_Threads {
 
     private static final Map<Class<? extends Runnable>, ThreadFactory> CLASS_THREAD_FACTORY_MAP = new HashMap<>();
     static {
-        CLASS_THREAD_FACTORY_MAP.put(GT_Runnable_RecipeLookup.class, r -> {
+
+        CLASS_THREAD_FACTORY_MAP.put(GT_Runnable_RecipeAsyncHandler.class, r -> {
             Thread thread = new Thread(r);
             thread.setName("GT_RecipeLookup");
             return thread;
         });
+
         CLASS_THREAD_FACTORY_MAP.put(GT_Runnable_MachineBlockUpdate.class, r -> {
             Thread thread = new Thread(r);
             thread.setName("GT_MachineBlockUpdate");
@@ -28,6 +30,33 @@ public final class GT_Threads {
     }
 
     private static final Map<Class<? extends Runnable>, ExecutorService> EXECUTOR_SERVICE_MAP = new HashMap<>();
+
+
+    public static void initRecipeExecutorService() {
+        EXECUTOR_SERVICE_MAP.put(GT_Runnable_RecipeAsyncHandler.class,
+                Executors.newFixedThreadPool(
+                        (Runtime.getRuntime().availableProcessors() * 2 / 3),
+                        CLASS_THREAD_FACTORY_MAP.get(GT_Runnable_RecipeAsyncHandler.class)
+                )
+        );
+    }
+
+    public static void stopRecipeExecutorService() {
+        ExecutorService taskExecutor = EXECUTOR_SERVICE_MAP.get(GT_Runnable_RecipeAsyncHandler.class);
+        if (taskExecutor.isShutdown())
+            return;
+
+        taskExecutor.shutdown();
+
+        try {
+            if (taskExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS))
+                return;
+
+            throw new IllegalStateException();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void initExecutorServices() {
         CLASS_THREAD_FACTORY_MAP.forEach((aClass, threadFactory) ->
@@ -46,32 +75,33 @@ public final class GT_Threads {
     }
 
     public static void shutdownExecutorServices() {
-        EXECUTOR_SERVICE_MAP.forEach((aCLASS, EXECUTOR_SERVICE) -> {
-            try {
-                GT_Mod.GT_FML_LOGGER.info("Shutting down "+aCLASS.getSimpleName()+" executor service");
-                EXECUTOR_SERVICE.shutdown(); // Disable new tasks from being submitted
-                // Wait a while for existing tasks to terminate
-                if (!EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS)) {
-                    EXECUTOR_SERVICE.shutdownNow(); // Cancel currently executing tasks
-                    // Wait a while for tasks to respond to being cancelled
-                    if (!EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS)) {
-                        GT_Mod.GT_FML_LOGGER.error("Well this didn't terminated well...");
-                    }
-                }
-            } catch (InterruptedException ie) {
-                GT_Mod.GT_FML_LOGGER.error("Well this interruption got interrupted...", ie);
-                // (Re-)Cancel if current thread also interrupted
-                EXECUTOR_SERVICE.shutdownNow();
-                // Preserve interrupt status
-                Thread.currentThread().interrupt();
-            } catch (Exception e){
-                GT_Mod.GT_FML_LOGGER.error("Well this didn't terminated well...", e);
-                // (Re-)Cancel in case
-                EXECUTOR_SERVICE.shutdownNow();
-            } finally {
-                GT_Mod.GT_FML_LOGGER.info("Leaving...");
-            }
-        });
+        EXECUTOR_SERVICE_MAP.forEach(GT_Threads::shutdownService);
     }
 
+    private static void shutdownService(Class<? extends Runnable> aCLASS, ExecutorService EXECUTOR_SERVICE) {
+        try {
+            GT_Mod.GT_FML_LOGGER.info("Shutting down " + aCLASS.getSimpleName() + " executor service");
+            EXECUTOR_SERVICE.shutdown(); // Disable new tasks from being submitted
+            // Wait a while for existing tasks to terminate
+            if (!EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS)) {
+                EXECUTOR_SERVICE.shutdownNow(); // Cancel currently executing tasks
+                // Wait a while for tasks to respond to being cancelled
+                if (!EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS)) {
+                    GT_Mod.GT_FML_LOGGER.error("Well this didn't terminated well...");
+                }
+            }
+        } catch (InterruptedException ie) {
+            GT_Mod.GT_FML_LOGGER.error("Well this interruption got interrupted...", ie);
+            // (Re-)Cancel if current thread also interrupted
+            EXECUTOR_SERVICE.shutdownNow();
+            // Preserve interrupt status
+            Thread.currentThread().interrupt();
+        } catch (Exception e) {
+            GT_Mod.GT_FML_LOGGER.error("Well this didn't terminated well...", e);
+            // (Re-)Cancel in case
+            EXECUTOR_SERVICE.shutdownNow();
+        } finally {
+            GT_Mod.GT_FML_LOGGER.info("Leaving...");
+        }
+    }
 }

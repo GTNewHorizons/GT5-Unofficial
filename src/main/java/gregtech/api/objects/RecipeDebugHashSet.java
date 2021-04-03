@@ -3,9 +3,10 @@ package gregtech.api.objects;
 import gregtech.api.util.GT_Recipe;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Objects;
 
-public class RecipeDebugHashSet extends HashSet<GT_Recipe> {
+public class RecipeDebugHashSet extends SynchronisedHashSet<GT_Recipe> {
+
 
     private GT_Recipe.GT_Recipe_Map map;
 
@@ -34,16 +35,30 @@ public class RecipeDebugHashSet extends HashSet<GT_Recipe> {
     }
 
     @Override
-    public boolean add(GT_Recipe v) {
+    public synchronized boolean add(GT_Recipe v) {
         map.checkMinimals(v);
         return super.add(v);
     }
 
     @Override
-    public boolean addAll(Collection<? extends GT_Recipe> c) {
+    public synchronized boolean addAll(Collection<? extends GT_Recipe> c) {
         for (GT_Recipe v : c) {
             map.checkMinimals(v);
         }
         return super.addAll(c);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        RecipeDebugHashSet that = (RecipeDebugHashSet) o;
+        return Objects.equals(map, that.map);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), map);
     }
 }

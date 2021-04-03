@@ -11,7 +11,7 @@ import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.threads.GT_Runnable_RecipeLookup;
+import gregtech.api.threads.GT_Runnable_RecipeAsyncHandler;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -34,13 +34,12 @@ import net.minecraftforge.fluids.IFluidHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugCleanroom;
-import static gregtech.api.threads.GT_Runnable_RecipeLookup.*;
+import static gregtech.api.threads.GT_Runnable_RecipeAsyncHandler.*;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 /**
@@ -1161,7 +1160,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (this.getRecipeStatus().get() != RECIPE_NOT_REQUESTED)
             return;
 
-        GT_Runnable_RecipeLookup.requestRecipe(this,
+        GT_Runnable_RecipeAsyncHandler.requestRecipe(this,
                 mLastRecipe,
                 false,
                 V[mTier],

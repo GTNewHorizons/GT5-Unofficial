@@ -636,7 +636,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * HashMap of Recipes based on their Fluids
          */
         public final Map<Fluid, Collection<GT_Recipe>> mRecipeFluidMap = new /*Concurrent*/HashMap<>();
-        public final HashSet<String> mRecipeFluidNameMap = new HashSet<>();
+        public final HashSet<String> mRecipeFluidNameMap = new SynchronisedHashSet<>();
         /**
          * The List of all Recipes
          */
@@ -752,7 +752,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             mRecipeList.add(aRecipe);
             for (FluidStack aFluid : aRecipe.mFluidInputs)
                 if (aFluid != null) {
-                    Collection<GT_Recipe> tList = mRecipeFluidMap.computeIfAbsent(aFluid.getFluid(), k -> new HashSet<>(1));
+                    Collection<GT_Recipe> tList = mRecipeFluidMap.computeIfAbsent(aFluid.getFluid(), k -> new SynchronisedHashSet<>(1));
                     tList.add(aRecipe);
                     mRecipeFluidNameMap.add(aFluid.getFluid().getName());
                 }
@@ -883,7 +883,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             for (ItemStack aStack : aRecipe.mInputs)
                 if (aStack != null) {
                     GT_ItemStack tStack = new GT_ItemStack(aStack);
-                    Collection<GT_Recipe> tList = mRecipeItemMap.computeIfAbsent(tStack, k -> new HashSet<>(1));
+                    Collection<GT_Recipe> tList = mRecipeItemMap.computeIfAbsent(tStack, k -> new SynchronisedHashSet<>(1));
                     tList.add(aRecipe);
                 }
             return aRecipe;
