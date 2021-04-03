@@ -149,7 +149,8 @@ public class GregTech_API {
             sHardHammerList = new GT_HashSet<>(),
             sWireCutterList = new GT_HashSet<>(),
             sSolderingToolList = new GT_HashSet<>(),
-            sSolderingMetalList = new GT_HashSet<>();
+            sSolderingMetalList = new GT_HashSet<>(),
+            sConfiguratorList = new GT_HashSet<>();
     /**
      * The List of Hazmat Armors
      */
@@ -727,6 +728,8 @@ public class GregTech_API {
     public static boolean registerSolderingMetal(ItemStack aTool) {
         return registerTool(aTool, sSolderingMetalList);
     }
+
+    public static boolean registerConfigurator(ItemStack aTool) {return registerTool(aTool, sConfiguratorList); }
 
     /**
      * Generic Function to add Tools to the Lists.

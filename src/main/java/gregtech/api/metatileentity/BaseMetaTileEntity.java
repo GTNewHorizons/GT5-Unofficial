@@ -18,6 +18,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_Configurator_Item;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.net.GT_Packet_TileEntity;
@@ -1461,6 +1462,13 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                         }
                         doEnetUpdate();
                         return true;
+                    }
+
+                    if (tCurrentItem.getItem() instanceof GT_Configurator_Item) {
+                        byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
+                        if (mMetaTileEntity.onConfiguratorRightClick(aSide, tSide, aPlayer, aX, aY, aZ, ((GT_Configurator_Item) tCurrentItem.getItem()).getSetting())) {
+                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(108), 1.0F, -1, xCoord, yCoord, zCoord);
+                        }
                     }
 
                     byte coverSide = aSide;

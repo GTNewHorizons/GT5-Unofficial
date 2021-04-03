@@ -960,4 +960,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {}
+
+    public boolean onConfiguratorRightClick(byte aSide, byte tSide, EntityPlayer aPlayer, float aX, float aY, float aZ, int mode) {
+        return false;
+    }
 }
