@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+import com.sinthoras.hydroenergy.api.IHEHasCustomMaterialCalculation;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
