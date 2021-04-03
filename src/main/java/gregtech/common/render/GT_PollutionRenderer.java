@@ -1,7 +1,10 @@
 package gregtech.common.render;
 
 import com.sinthoras.hydroenergy.api.HEGetMaterialUtil;
+import com.sinthoras.hydroenergy.api.IHEHasCustomMaterialCalculation;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -45,6 +48,9 @@ public class GT_PollutionRenderer {
     private static final short[] leavesColor = {160, 80, 15};
     private static final short[] liquidColor = {160, 200, 10};
     private static final short[] foliageColor = {160, 80, 15};
+
+    private static final String hydroenergy = "hydroenergy";
+    private static final boolean isHydroEnergyLoaded = Loader.isModLoaded(hydroenergy);
 
     //TODO need to soft update some blocks, grass and leaves does more often than liquid it looks like.
 
@@ -106,7 +112,7 @@ public class GT_PollutionRenderer {
         if (!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
             return;
 
-        if (HEGetMaterialUtil.getMaterialWrapper(event.block, event.entity.posY + event.entity.getEyeHeight()) == Material.water ||
+        if (getMaterialWrapper(event) == Material.water ||
             event.block.getMaterial() == Material.lava)
             return;
 
@@ -116,6 +122,26 @@ public class GT_PollutionRenderer {
         event.red = xi*event.red + x*fogColor[0];
         event.green = xi*event.green + x*fogColor[1];
         event.blue = xi*event.blue + x*fogColor[2];
+    }
+
+    private Material getMaterialWrapper(EntityViewRenderEvent.FogColors event) {
+        if(isHydroEnergyLoaded) {
+            return getMaterialHEWrapper(event);
+        }
+        else {
+            return event.block.getMaterial();
+        }
+    }
+
+    @Optional.Method(modid = hydroenergy)
+    // Only required for '== Material.water' checks
+    private Material getMaterialHEWrapper(EntityViewRenderEvent.FogColors event) {
+        if(event.block instanceof IHEHasCustomMaterialCalculation) {
+            return ((IHEHasCustomMaterialCalculation)event.block).getMaterial(event.entity.posY + event.entity.getEyeHeight());
+        }
+        else {
+            return event.block.getMaterial();
+        }
     }
 
     private static final int END_MAX_DISTANCE = 192 - 1;
