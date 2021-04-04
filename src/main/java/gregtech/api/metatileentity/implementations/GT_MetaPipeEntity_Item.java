@@ -181,7 +181,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
 
             if (isInventoryEmpty()) mLastReceivedFrom = 6;
             oLastReceivedFrom = mLastReceivedFrom;
-        }else if(aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected==4) aBaseMetaTileEntity.issueTextureUpdate();
+        }
     }
 
     @Override

@@ -358,7 +358,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                 mTransferredAmperageLast20 = 0;
                 if (!GT_Mod.gregtechproxy.gt6Cable || mCheckConnections) checkConnections();
             }
-        } else if(aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected==4) aBaseMetaTileEntity.issueTextureUpdate();
+        }
     }
 
     @Override
