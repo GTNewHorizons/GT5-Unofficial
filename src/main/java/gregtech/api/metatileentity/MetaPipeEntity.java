@@ -247,6 +247,10 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {
+            /* Client tick counter that is set to 5 on hiding pipes and covers.
+             * It triggers a texture update next client tick when reaching 4, with provision for 3 more update tasks,
+             * spreading client change detection related work and network traffic on different ticks, until it reaches 0.
+             */
             aBaseMetaTileEntity.issueTextureUpdate();
         }
     }

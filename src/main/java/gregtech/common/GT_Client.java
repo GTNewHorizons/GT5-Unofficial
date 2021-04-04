@@ -649,6 +649,11 @@ public class GT_Client extends GT_Proxy
     }
 
     public static int hideValue=0;
+
+    /** <p>Client tick counter that is set to 5 on hiding pipes and covers.</p>
+     * <p>It triggers a texture update next client tick when reaching 4, with provision for 3 more update tasks,
+     * spreading client change detection related work and network traffic on different ticks, until it reaches 0.</p>
+     */
     public static int changeDetected=0;
 
     private static int shouldHeldItemHideThings() {
