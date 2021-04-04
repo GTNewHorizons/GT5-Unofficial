@@ -246,7 +246,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (GT_Client.changeDetected == 4 && aBaseMetaTileEntity.isClientSide()) {
+        if (aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {
             aBaseMetaTileEntity.issueTextureUpdate();
         }
     }
