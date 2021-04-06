@@ -90,4 +90,9 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             }
         }
     }
+
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+//TODO:
+    }
 }

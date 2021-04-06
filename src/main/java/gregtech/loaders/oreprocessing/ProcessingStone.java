@@ -19,7 +19,8 @@ public class ProcessingStone
         OrePrefixes.stone.add(this);
     }
 
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         Block aBlock = GT_Utility.getBlockFromStack(aStack);
         switch (aMaterial.mName) {
             case "NULL":
@@ -92,5 +93,10 @@ public class ProcessingStone
                 GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), null, 200, 30);
                 GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium, 1L), 1, false);
         }
+    }
+
+    @Override
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+
     }
 }

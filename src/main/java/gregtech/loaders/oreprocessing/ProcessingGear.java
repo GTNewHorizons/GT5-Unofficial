@@ -15,46 +15,48 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        switch (aPrefix) {
-            case gearGt:
-                GT_ModHandler.removeRecipeByOutputDelayed(aStack);
-                if (aMaterial.mStandardMoltenFluid != null)
-                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-                        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear.get(0L), aMaterial.getMolten(576L), GT_OreDictUnificator.get(aPrefix, aMaterial, 1L), 128, 8);
-                    }
-                if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial) && !aMaterial.contains(SubTag.NO_WORKING)) {
-                    switch (aMaterial.mName) {
-                        case "Wood":
-                            GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"SPS", "PsP", "SPS", 'P', OrePrefixes.plank.get(aMaterial), 'S', OrePrefixes.stick.get(aMaterial)});
-                            break;
-                        case "Stone":
-                            GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"SPS", "PfP", "SPS", 'P', OrePrefixes.stoneSmooth, 'S', new ItemStack(Blocks.stone_button, 1, 32767)});
-                            break;
-                        default:
-                            GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"SPS", "PwP", "SPS", 'P', OrePrefixes.plate.get(aMaterial), 'S', OrePrefixes.stick.get(aMaterial)});
-                    }
+        if (aPrefix == OrePrefixes.gearGt) {
+            GT_ModHandler.removeRecipeByOutputDelayed(aStack);
+            if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial) && !aMaterial.contains(SubTag.NO_WORKING)) {
+                switch (aMaterial.mName) {
+                    case "Wood":
+                        GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"SPS", "PsP", "SPS", 'P', OrePrefixes.plank.get(aMaterial), 'S', OrePrefixes.stick.get(aMaterial)});
+                        break;
+                    case "Stone":
+                        GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"SPS", "PfP", "SPS", 'P', OrePrefixes.stoneSmooth, 'S', new ItemStack(Blocks.stone_button, 1, 32767)});
+                        break;
+                    default:
+                        GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"SPS", "PwP", "SPS", 'P', OrePrefixes.plate.get(aMaterial), 'S', OrePrefixes.stick.get(aMaterial)});
                 }
-                break;
-            case gearGtSmall:
-                if (aMaterial.mStandardMoltenFluid != null)
-                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-                        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear_Small.get(0L), aMaterial.getMolten(144L), GT_Utility.copyAmount(1L, aStack), 16, 8);
-                    }
-                    if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial) && !aMaterial.contains(SubTag.NO_WORKING)) {
-                    switch (aMaterial.mName) {
-                        case "Wood":
-                            GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"P ", " s", 'P', OrePrefixes.plank.get(aMaterial)});
-                            break;
-                        case "Stone":
-                            GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"P ", " f", 'P', OrePrefixes.stoneSmooth});
-                            break;
-                        default:
-                            GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L), GT_Proxy.tBits, new Object[]{" S ", "hPx"," S ", 'S', OrePrefixes.stick.get(aMaterial), 'P', OrePrefixes.plate.get(aMaterial)});
-                    }
+            }
+        } else if (aPrefix == OrePrefixes.gearGtSmall) {
+            if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial) && !aMaterial.contains(SubTag.NO_WORKING)) {
+                switch (aMaterial.mName) {
+                    case "Wood":
+                        GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"P ", " s", 'P', OrePrefixes.plank.get(aMaterial)});
+                        break;
+                    case "Stone":
+                        GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"P ", " f", 'P', OrePrefixes.stoneSmooth});
+                        break;
+                    default:
+                        GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L), GT_Proxy.tBits, new Object[]{" S ", "hPx", " S ", 'S', OrePrefixes.stick.get(aMaterial), 'P', OrePrefixes.plate.get(aMaterial)});
                 }
-                break;
-		default:
-			break;
+            }
+        }
+    }
+
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+        if (aPrefix == OrePrefixes.gearGt) {
+            if (aMaterial.mStandardMoltenFluid != null)
+                if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+                    GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear.get(0L), aMaterial.getMolten(576L), GT_OreDictUnificator.get(aPrefix, aMaterial, 1L), 128, 8);
+                }
+        } else if (aPrefix == OrePrefixes.gearGtSmall) {
+            if (aMaterial.mStandardMoltenFluid != null)
+                if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+                    GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear_Small.get(0L), aMaterial.getMolten(144L), GT_Utility.copyAmount(1L, aStack), 16, 8);
+                }
         }
     }
 }

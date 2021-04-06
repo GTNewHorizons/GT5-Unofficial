@@ -21,10 +21,16 @@ public class ProcessingCell implements IOreRecipeRegistrator {
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+        if (aMaterial == Materials.Empty) {
+            GT_ModHandler.removeRecipeByOutputDelayed(aStack);
+        }
+    }
+
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         switch (aPrefix) {
             case cell:
                 if (aMaterial == Materials.Empty) {
-                    GT_ModHandler.removeRecipeByOutputDelayed(aStack);
                     if (aModName.equalsIgnoreCase("AtomicScience")) {
                         GT_ModHandler.addExtractionRecipe(ItemList.Cell_Empty.get(1L), aStack);
                     }
@@ -39,7 +45,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             tMat2 = (MaterialStack) i$.next();
                         }
                         long tItemAmount = 0L;
-                        long tCapsuleCount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(aStack) * -tAllAmount;
+                        long tCapsuleCount = (long) GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(aStack) * -tAllAmount;
                         long tDensityMultiplier = aMaterial.getDensity() > 3628800L ? aMaterial.getDensity() / 3628800L : 1L;
                         ArrayList<ItemStack> tList = new ArrayList();
                         for (MaterialStack tMat : aMaterial.mMaterialList) {
@@ -57,8 +63,8 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                     tItemAmount += tMat.mAmount * 3628800L;
                                     if (tStack != null) {
                                         tStack.stackSize = ((int) (tStack.stackSize * tDensityMultiplier));
-                                        while ((tStack.stackSize > 64) && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64 < 0L ? tList.size() < 5 : tList.size() < 6) && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64 <= 64L)) {
-                                            tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64;
+                                        while ((tStack.stackSize > 64) && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64L < 0L ? tList.size() < 5 : tList.size() < 6) && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64 <= 64L)) {
+                                            tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64L;
                                             tList.add(GT_Utility.copyAmount(64L, tStack));
                                             tStack.stackSize -= 64;
                                         }
@@ -87,15 +93,13 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                 }
                 break;
             case cellPlasma:
-                if (aMaterial == Materials.Empty) {
-                    GT_ModHandler.removeRecipeByOutputDelayed(aStack);
-                } else {
+                if (aMaterial != Materials.Empty) {
                     GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aStack), GT_Utility.getFluidForFilledItem(aStack, true) == null ? GT_Utility.getContainerItem(aStack, true) : null, (int) Math.max(1024L, 1024L * aMaterial.getMass()), 4);
-                    GT_Values.RA.addVacuumFreezerRecipe(GT_Utility.copyAmount(1L, aStack), gregtech.api.util.GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), (int) Math.max(aMaterial.getMass() * 2L, 1L));
+                    GT_Values.RA.addVacuumFreezerRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), (int) Math.max(aMaterial.getMass() * 2L, 1L));
                 }
                 break;
-		default:
-			break;
+            default:
+                break;
         }
     }
 }

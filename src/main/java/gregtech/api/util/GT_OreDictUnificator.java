@@ -75,11 +75,17 @@ public class GT_OreDictUnificator {
         isAddingOre--;
     }
 
-    public static ItemStack getFirstOre(Object aName, long aAmount) {
-        if (GT_Utility.isStringInvalid(aName)) return null;
+    public static synchronized ItemStack getFirstOre(Object aName, long aAmount) {
+        if (GT_Utility.isStringInvalid(aName))
+            return null;
         ItemStack tStack = sName2StackMap.get(aName.toString());
-        if (GT_Utility.isStackValid(tStack)) return GT_Utility.copyAmount(aAmount, tStack);
-        return GT_Utility.copyAmount(aAmount, getOresImmutable(aName).toArray());
+        if (GT_Utility.isStackValid(tStack))
+            return GT_Utility.copyAmount(aAmount, tStack);
+
+        List<ItemStack> ores = getOresImmutable(aName);
+        synchronized (ores) {
+            return GT_Utility.copyAmount(aAmount, ores.toArray());
+        }
     }
 
     public static ItemStack get(Object aName, long aAmount) {
@@ -475,6 +481,6 @@ public class GT_OreDictUnificator {
     public static List<ItemStack> getOresImmutable(@Nullable Object aOreName) {
         String aName = aOreName == null ? E : aOreName.toString();
         
-        return GT_Utility.isStringValid(aName) ? Collections.unmodifiableList(OreDictionary.getOres(aName)) : Collections.emptyList();
+        return GT_Utility.isStringValid(aName) ? Collections.synchronizedList(Collections.unmodifiableList(OreDictionary.getOres(aName))) : Collections.emptyList();
     }
 }

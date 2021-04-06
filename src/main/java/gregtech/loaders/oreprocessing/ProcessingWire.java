@@ -189,6 +189,11 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
         }
     }
 
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+
+    }
+
     //region AE2 compat
     static {
         if (GT_Mod.gregtechproxy.mAE2Integration)

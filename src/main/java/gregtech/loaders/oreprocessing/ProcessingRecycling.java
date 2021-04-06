@@ -16,7 +16,12 @@ public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRe
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    }
+
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if ((aMaterial != Materials.Empty) && (GT_Utility.getFluidForFilledItem(aStack, true) == null) && !aMaterial.contains(SubTag.SMELTING_TO_FLUID))
             GT_Values.RA.addCannerRecipe(aStack, null, GT_Utility.getContainerItem(aStack, true), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.mMaterialAmount / 3628800L), (int) Math.max(aMaterial.getMass() / 2L, 1L), 2);
+
     }
 }

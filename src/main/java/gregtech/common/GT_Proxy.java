@@ -34,6 +34,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.*;
+import gregtech.api.threads.GT_Runnable_RecipeAsyncHandler;
 import gregtech.api.util.*;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.gui.GT_ContainerVolumetricFlask;
@@ -101,6 +102,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -1304,6 +1306,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             progressBar.step(tEvent.mMaterial == null ? "" : tEvent.mMaterial.toString());
         }
         ProgressManager.pop(progressBar);
+        GT_Mod.GT_FML_LOGGER.info("About to start Async Processing.");
+        GT_Runnable_RecipeAsyncHandler.registerRecipes(mEvents);
+        GT_Mod.GT_FML_LOGGER.info("Async Processing started.");
     }
     
     @SubscribeEvent
@@ -1407,6 +1412,19 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
             GT_Pollution.onWorldTick(aEvent);
         }
+    }
+
+    public static void registerRecipesAsync(GT_Proxy.OreDictEventContainer aOre) {
+        if ((aOre.mEvent.Ore == null) || (aOre.mEvent.Ore.getItem() == null)) {
+            return;
+        }
+        if (aOre.mEvent.Ore.stackSize != 1) {
+            aOre.mEvent.Ore.stackSize = 1;
+        }
+        if (aOre.mPrefix != null)
+            if (!aOre.mPrefix.isIgnored(aOre.mMaterial)) {
+                aOre.mPrefix.processOreAsync(aOre.mMaterial == null ? Materials._NULL : aOre.mMaterial, aOre.mEvent.Name, aOre.mModID, GT_Utility.copyAmount(1L, aOre.mEvent.Ore));
+            }
     }
 
     public static void registerRecipes(GT_Proxy.OreDictEventContainer aOre) {
@@ -1893,18 +1911,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public void activateOreDictHandler() {
         this.mOreDictActivated = true;
         ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", mEvents.size());
-        
-        if (Loader.isModLoaded("betterloadingscreen")){
+        Future<?> f = null;
+        if (Loader.isModLoaded("betterloadingscreen")) {
             GT_Values.cls_enabled = true;
             try {
                 GT_CLS_Compat.stepMaterialsCLS(mEvents, progressBar);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 GT_Mod.GT_FML_LOGGER.catching(e);
             }
-        }
-        else
-            GT_Proxy.stepMaterialsVanilla(this.mEvents,progressBar);
-
+        } else
+            GT_Proxy.stepMaterialsVanilla(this.mEvents, progressBar);
     }
 
     public static final HashMap<Integer,HashMap<ChunkCoordIntPair,int []>> dimensionWiseChunkData = new HashMap<>(16);//stores chunk data that is loaded/saved
@@ -2016,6 +2032,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             this.mPrefix = aPrefix;
             this.mMaterial = aMaterial;
             this.mModID = ((aModID == null) || (aModID.equals("UNKNOWN")) ? null : aModID);
+        }
+
+        @Override
+        public String toString() {
+            return "OreDictEventContainer{" +
+                    "mEvent=" + mEvent.Name +
+                    ", mPrefix=" + mPrefix +
+                    ", mMaterial=" + mMaterial +
+                    ", mModID='" + mModID + '\'' +
+                    '}';
         }
     }
 

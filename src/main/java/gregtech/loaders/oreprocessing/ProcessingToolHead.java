@@ -203,4 +203,9 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
 			break;
         }
     }
+
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+
+    }
 }

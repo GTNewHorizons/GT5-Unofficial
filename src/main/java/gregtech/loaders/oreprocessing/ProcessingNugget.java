@@ -15,6 +15,13 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (aMaterial == Materials.Iron)
             GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.WroughtIron, 1L));
+        if (!aMaterial.contains(SubTag.NO_SMELTING)) {
+            GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 9L), GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"sI ", 'I', OrePrefixes.ingot.get(aMaterial)});
+        }
+    }
+
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(9L, aStack), aMaterial.contains(SubTag.SMELTING_TO_GEM) ? ItemList.Shape_Mold_Ball.get(0L) : ItemList.Shape_Mold_Ingot.get(0L), GT_OreDictUnificator.get(aMaterial.contains(SubTag.SMELTING_TO_GEM) ? OrePrefixes.gem : OrePrefixes.ingot, aMaterial.mSmeltInto, 1L), 200, 2);
         if (aMaterial.mStandardMoltenFluid != null)
             if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
@@ -24,7 +31,6 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         GT_RecipeRegistrator.registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
         if (!aMaterial.contains(SubTag.NO_SMELTING)) {
             GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), ItemList.Shape_Mold_Nugget.get(0L), GT_Utility.copyAmount(9L, aStack), 100, 1);
-            GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 9L), GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"sI ", 'I', OrePrefixes.ingot.get(aMaterial)});
         }
     }
 }

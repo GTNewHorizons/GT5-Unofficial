@@ -15,7 +15,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                 tPrefix.add(this);
     }
 
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (aPrefix == OrePrefixes.plank) aPrefix = OrePrefixes.plate;
         switch (aMaterial.mName) {
             case "Wood":
@@ -40,5 +40,10 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "Samarium":
                 GT_Values.RA.addPolarizerRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(aPrefix, Materials.SamariumMagnetic, 1L), (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / 3628800L), 4096);
         }
+    }
+
+    @Override
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+
     }
 }

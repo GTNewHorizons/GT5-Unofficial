@@ -13,8 +13,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L), null, (int) Math.max(aMaterial.getMass() * 10L, 1L), 30);
-
         ItemStack tStack1 = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L);
         ItemStack tStack2 = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
         ItemStack tStack3 = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
@@ -28,11 +26,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (tStack3 != null) {
             GT_ModHandler.removeRecipeDelayed(tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3);
         }
-        if (aMaterial.mStandardMoltenFluid != null) {
-            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-            GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Block.get(0L), aMaterial.getMolten(1296L), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L), 288, 8);
-            }
-        }
+
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockcrafting, OrePrefixes.block.get(aMaterial).toString(), false)) {
             if ((tStack1 == null) && (tStack2 == null) && (tStack3 != null))
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L), new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefixes.dust.get(aMaterial)});
@@ -42,12 +36,13 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L), new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefixes.ingot.get(aMaterial)});
             }
         }
-        if (tStack1 != null) tStack1.stackSize = 9;
-        if (tStack2 != null) tStack2.stackSize = 9;
-        if (tStack3 != null) {
+
+        if (tStack1 != null)
+            tStack1.stackSize = 9;
+        if (tStack2 != null)
+            tStack2.stackSize = 9;
+        if (tStack3 != null)
             tStack3.stackSize = 9;
-        }
-        GT_Values.RA.addForgeHammerRecipe(aStack, tStack2, 100, 24);
 
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockdecrafting, OrePrefixes.block.get(aMaterial).toString(), tStack2 != null)) {
             if (tStack3 != null)
@@ -58,6 +53,30 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_ModHandler.addShapelessCraftingRecipe(tStack1, new Object[]{OrePrefixes.block.get(aMaterial)});
             }
         }
+
+    }
+
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+        GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L), null, (int) Math.max(aMaterial.getMass() * 10L, 1L), 30);
+
+        ItemStack tStack1 = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L);
+        ItemStack tStack2 = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
+        ItemStack tStack3 = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
+
+        if (aMaterial.mStandardMoltenFluid != null) {
+            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+                GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Block.get(0L), aMaterial.getMolten(1296L), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L), 288, 8);
+            }
+        }
+
+        if (tStack1 != null) tStack1.stackSize = 9;
+        if (tStack2 != null) tStack2.stackSize = 9;
+        if (tStack3 != null) {
+            tStack3.stackSize = 9;
+        }
+        GT_Values.RA.addForgeHammerRecipe(aStack, tStack2, 100, 24);
+
         if (!OrePrefixes.block.isIgnored(aMaterial))
             GT_ModHandler.addCompressionRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L));
         switch (aMaterial.mName) {

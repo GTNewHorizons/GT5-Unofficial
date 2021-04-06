@@ -32,4 +32,9 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
             }
         }
     }
+
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+
+    }
 }

@@ -10,6 +10,7 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.objects.ObjMap;
+import gregtech.api.threads.GT_Runnable_RecipeAsyncHandler;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
@@ -946,11 +947,25 @@ public enum OrePrefixes {
         return mOreProcessing.add(aRegistrator);
     }
 
+    public void processOreAsync(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack){
+        if (aMaterial != null && (aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased) && GT_Utility.isStackValid(aStack)) {
+            //if (Materials.mPreventableComponents.contains(this) && !this.mDynamicItems.contains(aMaterial)) return;
+
+            for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
+                    if (D2)
+                        GT_Log.ore.println("Processing '" + aOreDictName + "' Asynchronously with the Prefix '" + name() + "' and the Material '" + aMaterial.mName + "' at " + GT_Utility.getClassName(tRegistrator));
+                    tRegistrator.registerOreAsync(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
+            }
+        }
+
+    }
+
     public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (aMaterial != null && (aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased) && GT_Utility.isStackValid(aStack)) {
             //if (Materials.mPreventableComponents.contains(this) && !this.mDynamicItems.contains(aMaterial)) return;
             for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
-                if (D2) GT_Log.ore.println("Processing '" + aOreDictName + "' with the Prefix '" + name() + "' and the Material '" + aMaterial.mName + "' at " + GT_Utility.getClassName(tRegistrator));
+                if (D2)
+                    GT_Log.ore.println("Processing '" + aOreDictName + "' with the Prefix '" + name() + "' and the Material '" + aMaterial.mName + "' at " + GT_Utility.getClassName(tRegistrator));
                 tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
             }
         }

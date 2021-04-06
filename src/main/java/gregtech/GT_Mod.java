@@ -15,6 +15,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.ReverseShapedRecipe;
 import gregtech.api.objects.ReverseShapelessRecipe;
 import gregtech.api.objects.XSTR;
+import gregtech.api.threads.GT_Runnable_RecipeAsyncHandler;
 import gregtech.api.threads.GT_Threads;
 import gregtech.api.util.*;
 import gregtech.common.GT_DummyWorld;
@@ -64,6 +65,8 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -880,25 +883,28 @@ public class GT_Mod implements IGT_Mod {
             Items.diamond_hoe.setMaxDamage(768);
         }
         new GT_ExtremeDieselFuelLoader().run();
-        
-        
-        /* 
+
+        GT_FML_LOGGER.info("Waiting for Async RecipeGen to finish.");
+        try {
+            if (GT_Values.D2)
+                System.out.println("Latch @ " + GT_Runnable_RecipeAsyncHandler.getLatch().getCount());
+
+            GT_Runnable_RecipeAsyncHandler.getLatch().await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        GT_FML_LOGGER.info("Async RecipeGen finished.");
+
+        /*
          * Until this point most crafting recipe additions, and removals, have been buffered.
          * Go through, execute the removals in bulk, and then any deferred additions.  The bulk removals in particular significantly speed up the recipe list
          * modifications.
          */
-
         stopwatch.reset();
         stopwatch.start();
         GT_Log.out.println("GT_Mod: Adding buffered Recipes.");
         GT_ModHandler.stopBufferingCraftingRecipes();
         GT_FML_LOGGER.info("Executed delayed Crafting Recipes (" + stopwatch.stop() + "). Have a Cake.");
-        stopwatch.reset();
-        stopwatch.start();
-        GT_FML_LOGGER.info("Restarting RecipeExecutorService.");
-        GT_Threads.stopRecipeExecutorService();
-        GT_Threads.initRecipeExecutorService();
-        GT_FML_LOGGER.info("RecipeExecutorService restarted. " + stopwatch.stop());
         GT_Log.out.println("GT_Mod: Saving Lang File.");
         GT_LanguageManager.sEnglishFile.save();
         GregTech_API.sPostloadFinished = true;

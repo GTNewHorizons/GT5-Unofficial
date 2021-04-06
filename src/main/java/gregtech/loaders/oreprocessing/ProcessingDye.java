@@ -20,6 +20,11 @@ public class ProcessingDye implements IOreRecipeRegistrator {
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+
+    }
+
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         Dyes aDye = Dyes.get(aOreDictName);
         if ((aDye.mIndex >= 0) && (aDye.mIndex < 16) &&
                 (GT_Utility.getContainerItem(aStack, true) == null)) {

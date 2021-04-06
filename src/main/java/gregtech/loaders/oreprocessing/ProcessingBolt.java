@@ -13,9 +13,15 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
         OrePrefixes.bolt.add(this);
     }
 
+    @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial) && !aMaterial.contains(SubTag.NO_WORKING)) {
             GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(2L, aStack), GT_Proxy.tBits, new Object[]{"s ", " X", 'X', OrePrefixes.stick.get(aMaterial)});
         }
+    }
+
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+
     }
 }

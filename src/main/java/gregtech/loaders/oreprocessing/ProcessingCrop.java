@@ -6,6 +6,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -13,7 +14,13 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
         OrePrefixes.crop.add(this);
     }
 
+    @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, net.minecraft.item.ItemStack aStack) {
+
+    }
+
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         GT_ModHandler.addCompressionRecipe(gregtech.api.util.GT_Utility.copyAmount(8L, aStack), ItemList.IC2_PlantballCompressed.get(1L));
         switch (aOreDictName) {
             case "cropTea":

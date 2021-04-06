@@ -90,6 +90,11 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
     }
 
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+
+    }
+
     private void registerPlate(final Materials aMaterial, final ItemStack aStack, final boolean aNoSmashing) {
 
         registerCover(aMaterial, aStack);

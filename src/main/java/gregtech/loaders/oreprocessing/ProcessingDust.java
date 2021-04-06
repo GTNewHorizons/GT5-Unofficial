@@ -22,6 +22,55 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         switch (aPrefix) {
             case dust:
+                ItemStack tDustStack;
+                if ((null != (tDustStack = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L))) && (!aMaterial.contains(SubTag.NO_SMELTING))) {
+                    if (aMaterial.mBlastFurnaceRequired) {
+                        GT_ModHandler.removeFurnaceSmelting(aStack);
+                        if (aMaterial.mBlastFurnaceTemp <= 1000) {
+                            GT_ModHandler.addRCBlastFurnaceRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.copyAmount(1L, tDustStack), aMaterial.mBlastFurnaceTemp);
+                        }
+                    } else {
+                        GT_ModHandler.addSmeltingRecipe(aStack, tDustStack);
+                    }
+                }
+
+                switch (aMaterial.mName) {
+                    case "NULL":
+                        break;
+                    case "Glass":
+                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), new ItemStack(net.minecraft.init.Blocks.glass));
+                        break;
+                    case "NetherQuartz": case "Quartz": case "CertusQuartz":
+                        if (gregtech.api.GregTech_API.sRecipeFile.get(gregtech.api.enums.ConfigCategories.Recipes.disabledrecipes, "QuartzDustSmeltingIntoAESilicon", true))
+                            GT_ModHandler.removeFurnaceSmelting(aStack);
+                        break;
+                    case "MeatRaw":
+                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MeatCooked, 1L));
+                        break;
+                    case "HydratedCoal":
+                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L));
+                        break;
+                }
+                break;
+            case dustTiny:
+                if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMELTING)) {
+                    if (aMaterial.mBlastFurnaceRequired) {
+                        if(aMaterial.mAutoGenerateBlastFurnaceRecipes)
+                        GT_ModHandler.removeFurnaceSmelting(aStack);
+                  } else {
+                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mSmeltInto, 1L));
+                    }
+                }
+                break;
+		default:
+			break;
+        }
+    }
+
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+        switch (aPrefix) {
+            case dust:
                 if (aMaterial.mFuelPower > 0)
                     GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aStack), null, aMaterial.mFuelPower, aMaterial.mFuelType);
                 if (GT_Utility.getFluidForFilledItem(GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), true) == null)
@@ -36,14 +85,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 ItemStack tDustStack;
                 if ((null != (tDustStack = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L))) && (!aMaterial.contains(SubTag.NO_SMELTING))) {
                     if (aMaterial.mBlastFurnaceRequired) {
-                        GT_ModHandler.removeFurnaceSmelting(aStack);
                         if(aMaterial.mAutoGenerateBlastFurnaceRecipes)
                             GT_Values.RA.addBlastRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 1L), null, null, aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, tDustStack, 1L) : GT_Utility.copyAmount(1L, tDustStack), null, (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial.mBlastFurnaceTemp);
-                        if (aMaterial.mBlastFurnaceTemp <= 1000) {
-                            GT_ModHandler.addRCBlastFurnaceRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.copyAmount(1L, tDustStack), aMaterial.mBlastFurnaceTemp);
-                        }
-                    } else {
-                        GT_ModHandler.addSmeltingRecipe(aStack, tDustStack);
                     }
                 } else if (!aMaterial.contains(SubTag.NO_WORKING)) {
                     if ((!OrePrefixes.block.isIgnored(aMaterial)) && (null == GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))) {
@@ -59,7 +102,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     long tItemAmount = 0L;
                     long tCapsuleCount = 0L;
                     long tDensityMultiplier = aMaterial.getDensity() > 3628800L ? aMaterial.getDensity() / 3628800L : 1L;
-                    ArrayList<ItemStack> tList = new ArrayList();
+                    ArrayList<ItemStack> tList = new ArrayList<>();
                     for (MaterialStack tMat : aMaterial.mMaterialList)
                         if (tMat.mAmount > 0L) {
                             if (tMat.mMaterial == Materials.Air) {
@@ -73,8 +116,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                 tItemAmount += tMat.mAmount * 3628800L;
                                 if (tDustStack != null) {
                                     tDustStack.stackSize = ((int) (tDustStack.stackSize * tDensityMultiplier));
-                                    while ((tDustStack.stackSize > 64) && (tList.size() < 6) && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tDustStack) * 64 <= 64L)) {
-                                        tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCount(tDustStack) * 64;
+                                    while ((tDustStack.stackSize > 64) && (tList.size() < 6) && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tDustStack) * 64L <= 64L)) {
+                                        tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCount(tDustStack) * 64L;
                                         tList.add(GT_Utility.copyAmount(64L, tDustStack));
                                         tDustStack.stackSize -= 64;
                                     }
@@ -111,31 +154,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
 
                 switch (aMaterial.mName) {
-                    case "NULL":
-                        break;
-                    case "Glass":
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), new ItemStack(net.minecraft.init.Blocks.glass));
-                        break;
-                    case "NetherQuartz": case "Quartz": case "CertusQuartz":
-                        if (gregtech.api.GregTech_API.sRecipeFile.get(gregtech.api.enums.ConfigCategories.Recipes.disabledrecipes, "QuartzDustSmeltingIntoAESilicon", true))
-                            GT_ModHandler.removeFurnaceSmelting(aStack);
-                        break;
-                    case "MeatRaw":
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MeatCooked, 1L));
-                        break;
-                    case "Mercury":
-                        break;
                     case "Oilsands":
                         GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(true, new ItemStack[]{GT_Utility.copyAmount(1L, aStack)}, null, null, null, new FluidStack[]{Materials.OilHeavy.getFluid(1000)}, 660, 8, 0);
-                        break;
-                    case "Coal":
-                        if (GT_Mod.gregtechproxy.mTEMachineRecipes)
-                            GT_ModHandler.addLiquidTransposerFillRecipe(GT_Utility.copyAmount(1L, aStack), Materials.Water.getFluid(125L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1L), 125);
-                        break;
-                    case "HydratedCoal":
-                        if (GT_Mod.gregtechproxy.mTEMachineRecipes)
-                            GT_ModHandler.addLiquidTransposerEmptyRecipe(GT_Utility.copyAmount(1L, aStack), Materials.Water.getFluid(125L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L), 125);
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L));
                         break;
                     case "Diamond":
                         GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 32, ItemList.IC2_Industrial_Diamond.get(3L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 16L));
@@ -166,11 +186,17 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
 
                 ItemStack tImpureStack = GT_OreDictUnificator.get(OrePrefixes.dustTiny, tByProduct, GT_OreDictUnificator.get(OrePrefixes.nugget, tByProduct, 1L), 1L);
-                if (tImpureStack == null) {
+                if (tImpureStack != null) {
+                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), 0, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 8L));
+                } else {
                     tImpureStack = GT_OreDictUnificator.get(OrePrefixes.dustSmall, tByProduct, 1L);
-                    if (tImpureStack == null) {
+                    if (tImpureStack != null) {
+                        GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(2L, aStack), 0, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 16L));
+                    } else {
                         tImpureStack = GT_OreDictUnificator.get(OrePrefixes.dust, tByProduct, GT_OreDictUnificator.get(OrePrefixes.gem, tByProduct, 1L), 1L);
-                        if (tImpureStack == null) {
+                        if (tImpureStack != null) {
+                            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(9L, aStack), 0, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 9L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 72L));
+                        } else {
                             tImpureStack = GT_OreDictUnificator.get(OrePrefixes.cell, tByProduct, 1L);
                             if (tImpureStack == null) {
                                 GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), 0, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), null, null, null, null, null, (int) Math.max(1L, aMaterial.getMass()));
@@ -183,14 +209,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                     GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), null, null, tFluid, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), null, null, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 8L), 5);
                                 }
                             }
-                        } else {
-                            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(9L, aStack), 0, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 9L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 72L));
                         }
-                    } else {
-                        GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(2L, aStack), 0, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 16L));
                     }
-                } else {
-                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), 0, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 8L));
                 }
                 break;
             case dustSmall:
@@ -220,15 +240,13 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     if (aMaterial.mBlastFurnaceRequired) {
                         if(aMaterial.mAutoGenerateBlastFurnaceRecipes)
                             GT_Values.RA.addBlastRecipe(GT_Utility.copyAmount(9L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 9L), null, null, aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L), 1L) : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L), null, (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial.mBlastFurnaceTemp);
-                        GT_ModHandler.removeFurnaceSmelting(aStack);
                     } else {
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mSmeltInto, 1L));
                         GT_ModHandler.addAlloySmelterRecipe(GT_Utility.copyAmount(9L, aStack), ItemList.Shape_Mold_Ingot.get(0L), GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L), 130, 3, true);
                     }
                 }
                 break;
-		default:
-			break;
+            default:
+                break;
         }
     }
 }

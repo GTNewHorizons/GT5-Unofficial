@@ -37,4 +37,9 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
                break;
         }
     }
+
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+
+    }
 }

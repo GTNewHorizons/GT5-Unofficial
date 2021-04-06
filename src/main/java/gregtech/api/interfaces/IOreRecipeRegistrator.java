@@ -13,4 +13,6 @@ public interface IOreRecipeRegistrator {
      * @param aStack    always != null
      */
     void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack);
+
+    void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack);
 }

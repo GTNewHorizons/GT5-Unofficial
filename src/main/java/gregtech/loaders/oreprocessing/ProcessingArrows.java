@@ -15,7 +15,8 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
         OrePrefixes.arrowGtPlastic.add(this);
     }
 
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    @Override
+    public void registerOreAsync(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         ItemStack tOutput = GT_Utility.copyAmount(1L, aStack);
         GT_Utility.updateItemStack(tOutput);
         GT_Utility.ItemNBT.addEnchantment(tOutput, Enchantment.smite, EnchantmentHelper.getEnchantmentLevel(Enchantment.smite.effectId, tOutput) + 3);
@@ -40,24 +41,44 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
         GT_Utility.updateItemStack(tOutput);
         GT_Utility.ItemNBT.addEnchantment(tOutput, gregtech.api.enchants.Enchantment_EnderDamage.INSTANCE, EnchantmentHelper.getEnchantmentLevel(gregtech.api.enchants.Enchantment_EnderDamage.INSTANCE.effectId, tOutput) + 1);
         GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, aStack), Materials.Mercury.getFluid(25L), tOutput, null, null, null, 100, 2);
+    }
 
-        if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial) && !aMaterial.contains(SubTag.NO_WORKING)) {
-            switch (aPrefix) {
-                case arrowGtWood:
-                    GT_ModHandler.addCraftingRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.arrowGtWood, aMaterial, 1L), 
-                        GT_Proxy.tBits, 
-                        new Object[]{"  A", " S ", "F  ", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', OreDictNames.craftingFeather, 'A', OrePrefixes.toolHeadArrow.get(aMaterial)}
-                    );
-                case arrowGtPlastic:
-                    GT_ModHandler.addCraftingRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.arrowGtPlastic, aMaterial, 1L), 
-                        GT_Proxy.tBits, 
-                        new Object[]{"  A", " S ", "F  ", 'S', OrePrefixes.stick.get(Materials.Plastic), 'F', OreDictNames.craftingFeather, 'A', OrePrefixes.toolHeadArrow.get(aMaterial)}
-                    );
-			default:
-				break;
-            }
+    @Override
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+        if ((!aMaterial.mUnificatable) || (aMaterial.mMaterialInto != aMaterial) || aMaterial.contains(SubTag.NO_WORKING)) {
+            return;
         }
+        if (aPrefix == OrePrefixes.arrowGtWood) {
+            GT_ModHandler.addCraftingRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.arrowGtWood, aMaterial, 1L),
+                    GT_Proxy.tBits,
+                    getRecipeShape(aMaterial, Materials.Wood)
+            );
+
+            GT_ModHandler.addCraftingRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.arrowGtPlastic, aMaterial, 1L),
+                    GT_Proxy.tBits,
+                    getRecipeShape(aMaterial, Materials.Plastic)
+            );
+        } else if (aPrefix == OrePrefixes.arrowGtPlastic) {
+            GT_ModHandler.addCraftingRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.arrowGtPlastic, aMaterial, 1L),
+                    GT_Proxy.tBits,
+                    getRecipeShape(aMaterial, Materials.Plastic)
+            );
+        }
+    }
+
+    private static Object[] getRecipeShape(Materials aMaterial, Materials wood) {
+        return new Object[]
+                {
+                        "  A",
+                        " S ",
+                        "F  ",
+
+                        'S', OrePrefixes.stick.get(wood),
+                        'F', OreDictNames.craftingFeather,
+                        'A', OrePrefixes.toolHeadArrow.get(aMaterial)
+                };
     }
 }
