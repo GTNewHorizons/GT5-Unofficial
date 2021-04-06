@@ -1424,7 +1424,7 @@ public class GT_ModHandler {
      * Gives you a copy of the Output from a Crafting Recipe
      * Used for Recipe Detection.
      */
-    public static ItemStack getRecipeOutput(ItemStack... aRecipe) {
+    public static synchronized ItemStack getRecipeOutput(ItemStack... aRecipe) {
         return getRecipeOutput(false, aRecipe);
     }
 
@@ -1432,7 +1432,7 @@ public class GT_ModHandler {
      * Gives you a copy of the Output from a Crafting Recipe
      * Used for Recipe Detection.
      */
-    public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... aRecipe) {
+    public static synchronized ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... aRecipe) {
         if (aRecipe == null || Arrays.stream(aRecipe).noneMatch(Objects::nonNull)) return null;
 
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {

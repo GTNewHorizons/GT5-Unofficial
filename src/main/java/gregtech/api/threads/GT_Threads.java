@@ -27,10 +27,14 @@ public final class GT_Threads {
             thread.setName("GT_MachineBlockUpdate");
             return thread;
         });
+        CLASS_THREAD_FACTORY_MAP.put(GT_Runnable_RecipeAdder.class, r -> {
+            Thread thread = new Thread(r);
+            thread.setName("GT_RecipeAdder");
+            return thread;
+        });
     }
 
     private static final Map<Class<? extends Runnable>, ExecutorService> EXECUTOR_SERVICE_MAP = new HashMap<>();
-
 
     public static void initRecipeExecutorService() {
         EXECUTOR_SERVICE_MAP.put(GT_Runnable_RecipeAsyncHandler.class,
@@ -38,6 +42,9 @@ public final class GT_Threads {
                         (Runtime.getRuntime().availableProcessors() * 2 / 3),
                         CLASS_THREAD_FACTORY_MAP.get(GT_Runnable_RecipeAsyncHandler.class)
                 )
+        );
+        EXECUTOR_SERVICE_MAP.put(GT_Runnable_RecipeAdder.class,
+                Executors.newWorkStealingPool()
         );
     }
 

@@ -954,7 +954,13 @@ public enum OrePrefixes {
             for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
                     if (D2)
                         GT_Log.ore.println("Processing '" + aOreDictName + "' Asynchronously with the Prefix '" + name() + "' and the Material '" + aMaterial.mName + "' at " + GT_Utility.getClassName(tRegistrator));
-                    tRegistrator.registerOreAsync(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
+                    try {
+                        tRegistrator.registerOreAsync(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
+                    } catch (AbstractMethodError ignored) {
+                        System.out.println("tRegistrator: "+ tRegistrator.getClass().getName() + " is using an old, non threaded, Interface Format!");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
             }
         }
 

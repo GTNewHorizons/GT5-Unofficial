@@ -1421,10 +1421,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if (aOre.mEvent.Ore.stackSize != 1) {
             aOre.mEvent.Ore.stackSize = 1;
         }
-        if (aOre.mPrefix != null)
-            if (!aOre.mPrefix.isIgnored(aOre.mMaterial)) {
-                aOre.mPrefix.processOreAsync(aOre.mMaterial == null ? Materials._NULL : aOre.mMaterial, aOre.mEvent.Name, aOre.mModID, GT_Utility.copyAmount(1L, aOre.mEvent.Ore));
-            }
+        if (aOre.mPrefix == null) {
+            return;
+        }
+        if (!aOre.mPrefix.isIgnored(aOre.mMaterial)) {
+            aOre.mPrefix.processOreAsync(aOre.mMaterial == null ? Materials._NULL : aOre.mMaterial, aOre.mEvent.Name, aOre.mModID, GT_Utility.copyAmount(1L, aOre.mEvent.Ore));
+        }
     }
 
     public static void registerRecipes(GT_Proxy.OreDictEventContainer aOre) {
