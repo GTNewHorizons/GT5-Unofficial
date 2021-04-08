@@ -1068,6 +1068,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (this.getRecipeList().mMinimalInputItems > inputs.length) //No Lookup when not enough items
             return false;
 
+        if (this.mFluid != null && this.mFluid.amount > 0 && inputs.length <= 1) //fermenter, centrifuge, etc.
+            return true;
+
         boolean onlyContainsCircuitOrShematic = true;
         for (ItemStack x : inputs) {
             if (!GT_Utility.areStacksEqual(x, ItemList.Circuit_Integrated.get(1))
