@@ -80,7 +80,6 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.util.*;
-import java.util.concurrent.Future;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
@@ -1892,7 +1891,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public void activateOreDictHandler() {
         this.mOreDictActivated = true;
         ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", mEvents.size());
-        Future<?> f = null;
+
         if (Loader.isModLoaded("betterloadingscreen")) {
             GT_Values.cls_enabled = true;
             try {
