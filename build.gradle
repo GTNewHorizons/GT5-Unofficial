@@ -13,9 +13,13 @@ buildscript {
             name = "jitpack.io"
             url = "https://jitpack.io"
         }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT'
+        classpath "io.freefair.gradle:lombok-plugin:5.3.3.3"
     }
 }
 
@@ -24,6 +28,7 @@ apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: 'signing'
 apply plugin: 'java-library'
+apply plugin: "io.freefair.lombok"
 
 file "build.properties" withReader {
     def prop = new Properties()

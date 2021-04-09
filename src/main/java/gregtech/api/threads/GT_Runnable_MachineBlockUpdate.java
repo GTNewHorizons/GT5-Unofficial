@@ -52,7 +52,7 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
             return;
         }
         aWorld.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
-        GT_Threads.getExecutorServiceMap()
+        GT_Threads.getEXECUTOR_SERVICE_MAP()
                 .get(GT_Runnable_MachineBlockUpdate.class)
                 .submit(new GT_Runnable_MachineBlockUpdate(aWorld, aCoords));
     }

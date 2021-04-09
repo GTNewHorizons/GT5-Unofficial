@@ -2,59 +2,22 @@ package gregtech.api.threads;
 
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.util.GT_Recipe;
-import gregtech.common.GT_Proxy;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.*;
-import java.util.concurrent.CountDownLatch;
-
-
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class GT_Runnable_RecipeAsyncHandler implements Runnable {
 
-
-
-    private GT_MetaTileEntity_BasicMachine aTileEntity;
-    private ItemStack aSpecialSlot;
-    private ItemStack[] itemStacks;
-    private FluidStack[] fluidStacks;
-    private long voltage;
-    private GT_Recipe lastRecipe;
-    private GT_Recipe.GT_Recipe_Map gt_recipe_map;
-    private boolean aNotUnificated;
-
-    private GT_Runnable_RecipeAsyncHandler(GT_MetaTileEntity_BasicMachine aTileEntity,
-                                           GT_Recipe aRecipe,
-                                           boolean aNotUnificated,
-                                           long aVoltage,
-                                           FluidStack[] aFluids,
-                                           ItemStack aSpecialSlot,
-                                           GT_Recipe.GT_Recipe_Map gt_recipe_map,
-                                           ItemStack[] aInputs
-
-    ) {
-        this.aTileEntity = aTileEntity;
-        this.aSpecialSlot = aSpecialSlot;
-        this.itemStacks = aInputs;
-        this.fluidStacks = aFluids;
-        this.voltage = aVoltage;
-        this.lastRecipe = aRecipe;
-        this.gt_recipe_map = gt_recipe_map;
-        this.aNotUnificated = aNotUnificated;
-        aTileEntity.getRecipeStatus().set(RECIPE_REQUESTED);
-    }
-
-    private static final CountDownLatch latch = new CountDownLatch(1);
-
-    public static CountDownLatch getLatch() {
-        return latch;
-    }
-
-    public static void registerRecipes(Collection<GT_Proxy.OreDictEventContainer> mEvents) {
-        GT_Threads.getExecutorServiceMap()
-                .get(GT_Runnable_RecipeAdder.class)
-                .submit(new GT_Runnable_RecipeAdder(mEvents));
-    }
+    private final GT_MetaTileEntity_BasicMachine aTileEntity;
+    private final GT_Recipe lastRecipe;
+    private final boolean aNotUnificated;
+    private final long voltage;
+    private final FluidStack[] fluidStacks;
+    private final ItemStack aSpecialSlot;
+    private final GT_Recipe.GT_Recipe_Map gt_recipe_map;
+    private final ItemStack[] itemStacks;
 
     public static void requestRecipe(GT_MetaTileEntity_BasicMachine aTileEntity,
                                      GT_Recipe aRecipe,
@@ -64,7 +27,7 @@ public class GT_Runnable_RecipeAsyncHandler implements Runnable {
                                      ItemStack aSpecialSlot,
                                      GT_Recipe.GT_Recipe_Map gt_recipe_map,
                                      ItemStack... aInputs) {
-        GT_Threads.getExecutorServiceMap().get(GT_Runnable_RecipeAsyncHandler.class)
+        GT_Threads.getEXECUTOR_SERVICE_MAP().get(GT_Runnable_RecipeAsyncHandler.class)
                 .submit(
                         new GT_Runnable_RecipeAsyncHandler(
                                 aTileEntity,
@@ -77,6 +40,7 @@ public class GT_Runnable_RecipeAsyncHandler implements Runnable {
                                 aInputs
                         )
                 );
+        aTileEntity.getRecipeStatus().set(RECIPE_REQUESTED);
     }
 
     public static final int
@@ -87,9 +51,10 @@ public class GT_Runnable_RecipeAsyncHandler implements Runnable {
 
     @Override
     public void run() {
+        GT_Recipe recipe;
         for(;;) {
             try {
-                GT_Recipe recipe = gt_recipe_map.findRecipe(
+                recipe = gt_recipe_map.findRecipe(
                         aTileEntity.getBaseMetaTileEntity(),
                         lastRecipe,
                         aNotUnificated,

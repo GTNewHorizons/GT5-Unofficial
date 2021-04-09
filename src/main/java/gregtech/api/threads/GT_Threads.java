@@ -1,6 +1,8 @@
 package gregtech.api.threads;
 
 import gregtech.GT_Mod;
+import lombok.Getter;
+import lombok.experimental.UtilityClass;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,13 +11,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-public final class GT_Threads {
+@UtilityClass
+public class GT_Threads {
 
-    private GT_Threads(){}
+    private final Map<Class<? extends Runnable>, ThreadFactory> CLASS_THREAD_FACTORY_MAP = new HashMap<>();
 
-    private static final Map<Class<? extends Runnable>, ThreadFactory> CLASS_THREAD_FACTORY_MAP = new HashMap<>();
     static {
-
         CLASS_THREAD_FACTORY_MAP.put(GT_Runnable_RecipeAsyncHandler.class, r -> {
             Thread thread = new Thread(r);
             thread.setName("GT_RecipeLookup");
@@ -27,45 +28,19 @@ public final class GT_Threads {
             thread.setName("GT_MachineBlockUpdate");
             return thread;
         });
-        CLASS_THREAD_FACTORY_MAP.put(GT_Runnable_RecipeAdder.class, r -> {
-            Thread thread = new Thread(r);
-            thread.setName("GT_RecipeAdder");
-            return thread;
-        });
     }
 
-    private static final Map<Class<? extends Runnable>, ExecutorService> EXECUTOR_SERVICE_MAP = new HashMap<>();
+    @Getter
+    private final Map<Class<? extends Runnable>, ExecutorService> EXECUTOR_SERVICE_MAP = new HashMap<>();
 
-    public static void initRecipeExecutorService() {
-        EXECUTOR_SERVICE_MAP.put(GT_Runnable_RecipeAsyncHandler.class,
-                Executors.newFixedThreadPool(
-                        (Runtime.getRuntime().availableProcessors() * 2 / 3),
-                        CLASS_THREAD_FACTORY_MAP.get(GT_Runnable_RecipeAsyncHandler.class)
-                )
-        );
-        EXECUTOR_SERVICE_MAP.put(GT_Runnable_RecipeAdder.class,
-                Executors.newWorkStealingPool()
-        );
+    @Getter
+    private final ExecutorService OREDICT_EVENT_REGISTRATOR_POOL = Executors.newWorkStealingPool();
+
+    public void stopOREDICT_EVENT_REGISTRATOR_POOL() {
+        shutdownService(GT_Runnable_OredictEventRegistrator.class, OREDICT_EVENT_REGISTRATOR_POOL);
     }
 
-    public static void stopRecipeExecutorService() {
-        ExecutorService taskExecutor = EXECUTOR_SERVICE_MAP.get(GT_Runnable_RecipeAsyncHandler.class);
-        if (taskExecutor.isShutdown())
-            return;
-
-        taskExecutor.shutdown();
-
-        try {
-            if (taskExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS))
-                return;
-
-            throw new IllegalStateException();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void initExecutorServices() {
+    public void initExecutorServices() {
         CLASS_THREAD_FACTORY_MAP.forEach((aClass, threadFactory) ->
                 EXECUTOR_SERVICE_MAP.put(
                         aClass,
@@ -77,15 +52,11 @@ public final class GT_Threads {
         );
     }
 
-    public static Map<Class<? extends Runnable>, ExecutorService> getExecutorServiceMap() {
-        return EXECUTOR_SERVICE_MAP;
-    }
-
-    public static void shutdownExecutorServices() {
+    public void shutdownExecutorServices() {
         EXECUTOR_SERVICE_MAP.forEach(GT_Threads::shutdownService);
     }
 
-    private static void shutdownService(Class<? extends Runnable> aCLASS, ExecutorService EXECUTOR_SERVICE) {
+    private void shutdownService(Class<? extends Runnable> aCLASS, ExecutorService EXECUTOR_SERVICE) {
         try {
             GT_Mod.GT_FML_LOGGER.info("Shutting down " + aCLASS.getSimpleName() + " executor service");
             EXECUTOR_SERVICE.shutdown(); // Disable new tasks from being submitted

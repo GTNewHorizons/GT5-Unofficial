@@ -15,7 +15,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.ReverseShapedRecipe;
 import gregtech.api.objects.ReverseShapelessRecipe;
 import gregtech.api.objects.XSTR;
-import gregtech.api.threads.GT_Runnable_RecipeAsyncHandler;
+import gregtech.api.threads.GT_Runnable_OredictEventRegistrator;
 import gregtech.api.threads.GT_Threads;
 import gregtech.api.util.*;
 import gregtech.common.GT_DummyWorld;
@@ -40,6 +40,7 @@ import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
+import lombok.SneakyThrows;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -65,8 +66,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -152,7 +151,6 @@ public class GT_Mod implements IGT_Mod {
 
         Textures.BlockIcons.VOID.name();
         Textures.ItemIcons.VOID.name();
-        GT_Threads.initRecipeExecutorService();
     }
 
     public static int calculateTotalGTVersion(int minorVersion) {
@@ -884,16 +882,7 @@ public class GT_Mod implements IGT_Mod {
         }
         new GT_ExtremeDieselFuelLoader().run();
 
-        GT_FML_LOGGER.info("Waiting for Async RecipeGen to finish.");
-        try {
-            if (GT_Values.D2)
-                System.out.println("Latch @ " + GT_Runnable_RecipeAsyncHandler.getLatch().getCount());
-
-            GT_Runnable_RecipeAsyncHandler.getLatch().await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        GT_FML_LOGGER.info("Async RecipeGen finished.");
+        waitForODRegEvent();
 
         /*
          * Until this point most crafting recipe additions, and removals, have been buffered.
@@ -1025,6 +1014,18 @@ public class GT_Mod implements IGT_Mod {
                 super.displayAllReleventItems(aList);
             }
         };
+    }
+
+    @SneakyThrows
+    private void waitForODRegEvent() {
+        GT_FML_LOGGER.info("Waiting for Async RecipeGen to finish.");
+            if (GT_Values.D2)
+                System.out.println("Latch @ " + GT_Runnable_OredictEventRegistrator.getLATCH().getCount());
+
+        GT_Runnable_OredictEventRegistrator.getLATCH().await();
+
+        GT_FML_LOGGER.info("Async RecipeGen finished.");
+        GT_Threads.stopOREDICT_EVENT_REGISTRATOR_POOL();
     }
 
     public static void doActualRegistration(Materials m){

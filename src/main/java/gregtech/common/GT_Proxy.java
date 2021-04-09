@@ -1,10 +1,6 @@
 package gregtech.common;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.IFuelHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.ProgressManager;
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -15,16 +11,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import forestry.api.genetics.AlleleManager;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OreDictNames;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
+import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.internal.IGT_Mod;
@@ -34,7 +22,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.*;
-import gregtech.api.threads.GT_Runnable_RecipeAsyncHandler;
+import gregtech.api.threads.GT_Runnable_OredictEventRegistrator;
 import gregtech.api.util.*;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.gui.GT_ContainerVolumetricFlask;
@@ -91,20 +79,10 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.debugEntityCramming;
 
@@ -1294,20 +1272,21 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public static void stepMaterialsVanilla(Collection<GT_Proxy.OreDictEventContainer> mEvents, ProgressManager.ProgressBar progressBar){
         int size = 5;
         int sizeStep = mEvents.size() / 20 - 1;
-        GT_Proxy.OreDictEventContainer tEvent;
-        for (Iterator<GT_Proxy.OreDictEventContainer> i$ = mEvents.iterator(); i$.hasNext(); GT_Proxy.registerRecipes(tEvent)) {
-            tEvent = i$.next();
+
+        for (OreDictEventContainer tEvent : mEvents) {
             sizeStep--;
-            if(sizeStep == 0) {
+            if (sizeStep == 0) {
                 GT_Mod.GT_FML_LOGGER.info("Baking : " + size + "%", new Object[0]);
-                sizeStep = mEvents.size()/20-1;
+                sizeStep = mEvents.size() / 20 - 1;
                 size += 5;
             }
             progressBar.step(tEvent.mMaterial == null ? "" : tEvent.mMaterial.toString());
+            GT_Proxy.registerRecipes(tEvent);
         }
+
         ProgressManager.pop(progressBar);
         GT_Mod.GT_FML_LOGGER.info("About to start Async Processing.");
-        GT_Runnable_RecipeAsyncHandler.registerRecipes(mEvents);
+        GT_Runnable_OredictEventRegistrator.registerRecipes(mEvents);
         GT_Mod.GT_FML_LOGGER.info("Async Processing started.");
     }
     

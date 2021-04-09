@@ -3,7 +3,7 @@ package gregtech.api.util;
 import cpw.mods.fml.common.ProgressManager;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
-import gregtech.api.threads.GT_Runnable_RecipeAsyncHandler;
+import gregtech.api.threads.GT_Runnable_OredictEventRegistrator;
 import gregtech.common.GT_Proxy;
 
 import java.lang.reflect.Field;
@@ -12,7 +12,6 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.Future;
 
 @SuppressWarnings("rawtypes, unchecked, deprecation")
 public class GT_CLS_Compat {
@@ -78,7 +77,7 @@ public class GT_CLS_Compat {
         ProgressManager.pop(progressBar);
         isRegisteringGTmaterials.set(null, false);
         GT_Mod.GT_FML_LOGGER.info("About to start Async Processing.");
-        GT_Runnable_RecipeAsyncHandler.registerRecipes(mEvents);
+        GT_Runnable_OredictEventRegistrator.registerRecipes(mEvents);
         GT_Mod.GT_FML_LOGGER.info("Async Processing started.");
     }
 

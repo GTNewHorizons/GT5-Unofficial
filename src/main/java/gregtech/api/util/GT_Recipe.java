@@ -1,7 +1,6 @@
 package gregtech.api.util;
 
 import codechicken.nei.PositionedStack;
-import com.google.common.collect.ImmutableCollection;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,6 +9,7 @@ import gregtech.api.objects.*;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
 import gregtech.nei.GT_NEI_DefaultHandler.FixedPositionedStack;
 import ic2.core.Ic2Items;
+import lombok.Synchronized;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -823,6 +823,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * @param aInputs        the Item Inputs
          * @return the Recipe it has found or null for no matching Recipe
          */
+        @Synchronized("mRecipeItemMap")
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
             // No Recipes? Well, nothing to be found then.
             if (mRecipeList.isEmpty()) return null;
@@ -840,7 +841,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     if (aInputs == null) return null;
                     int tAmount = 0;
                     for (ItemStack aInput : aInputs) if (aInput != null) tAmount++;
-                        if (tAmount < mMinimalInputItems) return null;
+                    if (tAmount < mMinimalInputItems) return null;
                 }
             }
 
@@ -857,19 +858,15 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 if (tStack != null) {
                     Collection<GT_Recipe> tRecipes = mRecipeItemMap.get(new GT_ItemStack(tStack));
                     if (tRecipes != null) {
-                    synchronized (tRecipes) {
                         for (GT_Recipe tRecipe : tRecipes)
                             if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs))
                                 return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
                     }
-                    }
                     tRecipes = mRecipeItemMap.get(new GT_ItemStack(GT_Utility.copyMetaData(W, tStack)));
                     if (tRecipes != null) {
-                        synchronized (tRecipes) {
-                            for (GT_Recipe tRecipe : tRecipes)
-                                if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs))
-                                    return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
-                        }
+                        for (GT_Recipe tRecipe : tRecipes)
+                            if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs))
+                                return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
                     }
                 }
 
@@ -878,17 +875,15 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 if (aFluid != null) {
                     Collection<GT_Recipe> tRecipes = mRecipeFluidMap.get(aFluid.getFluid());
                     if (tRecipes != null)
-                        synchronized (tRecipes) {
-                            for (GT_Recipe tRecipe : tRecipes)
-                                if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs))
-                                    return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
-                        }
+                        for (GT_Recipe tRecipe : tRecipes)
+                            if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs))
+                                return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
                 }
-
             // And nothing has been found.
             return null;
         }
 
+        @Synchronized("mRecipeItemMap")
         protected GT_Recipe addToItemMap(GT_Recipe aRecipe) {
             checkMinimals(aRecipe);
             for (ItemStack aStack : aRecipe.mInputs)

@@ -1,10 +1,14 @@
 package gregtech.api.objects;
 
+import lombok.EqualsAndHashCode;
+import lombok.Synchronized;
+
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+@EqualsAndHashCode(callSuper = false)
 public class SynchronisedHashSet<T> extends HashSet<T> {
     private final Set<T> internalSet;
 
@@ -29,106 +33,110 @@ public class SynchronisedHashSet<T> extends HashSet<T> {
     }
 
     @Override
-    public synchronized boolean add(T v) {
+    @Synchronized
+    public boolean add(T v) {
         return internalSet.add(v);
     }
 
     @Override
-    public synchronized boolean addAll(Collection<? extends T> c) {
+    @Synchronized
+    public boolean addAll(Collection<? extends T> c) {
         return internalSet.addAll(c);
     }
 
     @Override
-    public synchronized int size() {
+    @Synchronized
+    public int size() {
         return internalSet.size();
     }
 
     @Override
-    public synchronized boolean isEmpty() {
+    @Synchronized
+    public boolean isEmpty() {
         return internalSet.isEmpty();
     }
 
     @Override
-    public synchronized boolean contains(Object o) {
+    @Synchronized
+    public boolean contains(Object o) {
         return internalSet.contains(o);
     }
 
     @Override
-    public synchronized Iterator<T> iterator() {
+    @Synchronized
+    public Iterator<T> iterator() {
         return internalSet.iterator();
     }
 
     @Override
-    public synchronized Object[] toArray() {
+    @Synchronized
+    public Object[] toArray() {
         return internalSet.toArray();
     }
 
     @Override
-    public synchronized <T> T[] toArray(T[] a) {
+    @Synchronized
+    public <T> T[] toArray(T[] a) {
         return internalSet.toArray(a);
     }
 
     @Override
-    public synchronized boolean remove(Object o) {
+    @Synchronized
+    public boolean remove(Object o) {
         return internalSet.remove(o);
     }
 
     @Override
-    public synchronized boolean containsAll(Collection<?> c) {
+    @Synchronized
+    public boolean containsAll(Collection<?> c) {
         return internalSet.containsAll(c);
     }
 
     @Override
-    public synchronized boolean retainAll(Collection<?> c) {
+    @Synchronized
+    public boolean retainAll(Collection<?> c) {
         return internalSet.retainAll(c);
     }
 
     @Override
-    public synchronized boolean removeAll(Collection<?> c) {
+    @Synchronized
+    public boolean removeAll(Collection<?> c) {
         return internalSet.removeAll(c);
     }
 
     @Override
-    public synchronized void clear() {
+    @Synchronized
+    public void clear() {
         internalSet.clear();
     }
 
     @Override
-    public synchronized Spliterator<T> spliterator() {
+    @Synchronized
+    public Spliterator<T> spliterator() {
         return internalSet.spliterator();
     }
 
     @Override
-    public synchronized boolean removeIf(Predicate<? super T> filter) {
+    @Synchronized
+    public boolean removeIf(Predicate<? super T> filter) {
         return internalSet.removeIf(filter);
     }
 
     @Override
-    public synchronized Stream<T> stream() {
+    @Synchronized
+    public Stream<T> stream() {
         return internalSet.stream();
     }
 
     @Override
-    public synchronized Stream<T> parallelStream() {
+    @Synchronized
+    public Stream<T> parallelStream() {
         return internalSet.parallelStream();
     }
 
     @Override
-    public synchronized void forEach(Consumer<? super T> action) {
+    @Synchronized
+    public void forEach(Consumer<? super T> action) {
         internalSet.forEach(action);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        SynchronisedHashSet<?> that = (SynchronisedHashSet<?>) o;
-        return Objects.equals(internalSet, that.internalSet);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), internalSet);
     }
 }
