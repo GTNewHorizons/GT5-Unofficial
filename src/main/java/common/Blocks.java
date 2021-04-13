@@ -46,7 +46,7 @@ public class Blocks {
 		
 		registerBlocks_SOFC();
 		registerBlocks_TFFT();
-		registerBlocks_Nuclear();
+		//registerBlocks_Nuclear();
 		//registerBlocks_ItemProxy();
 		registerBlocks_Jars();
 		registerBlocks_LSC();
@@ -71,7 +71,7 @@ public class Blocks {
 		tfftMultiHatch = Block_TFFTMultiHatch.registerBlock();
 	}
 	
-	private static void registerBlocks_Nuclear() {
+	/*private static void registerBlocks_Nuclear() {
 		reactorChamberOFF = Block_ReactorChamber_OFF.registerBlock();
 		reactorChamberON = Block_ReactorChamber_ON.registerBlock();
 		reactorControlRod = Block_ControlRod.registerBlock();
@@ -81,7 +81,7 @@ public class Blocks {
 		itemProxyCable = Block_ItemProxyCable.registerBlock();
 		itemProxySource = Block_ItemProxySource.registerBlock();
 		itemProxyEndpoint = Block_ItemProxyEndpoint.registerBlock();
-	}
+	}*/
 	
 	private static void registerBlocks_Jars() {
 		jarThaumiumReinforced = Block_ThaumiumReinforcedJar.registerBlock();
@@ -90,14 +90,14 @@ public class Blocks {
 	
 	private static void registerBlocks_LSC() {
 		lscLapotronicEnergyUnit = Block_LapotronicEnergyUnit.registerBlock();
-		beamTransmitter = Block_BeamTransmitter.registerBlock();
+		//beamTransmitter = Block_BeamTransmitter.registerBlock();
 	}
 
-	private static void registerBlocks_SpaceElevator() {
+	/*private static void registerBlocks_SpaceElevator() {
 		spaceElevatorStructure = Block_SpaceElevator.registerBlock();
 		spaceElevatorCapacitor = Block_SpaceElevatorCapacitor.registerBlock();
 		spaceElevatorTether = Block_SpaceElevatorTether.registerBlock();
-	}
+	}*/
 
 	private static void registerBlocks_Cosmetics() {
 		largeHexPlate = Block_LargeHexPlate.registerBlock();
