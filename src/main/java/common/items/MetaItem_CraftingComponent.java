@@ -33,9 +33,9 @@ public class MetaItem_CraftingComponent extends Item {
 	
 	@Override
 	public void registerIcons(IIconRegister reg) {
-		int counter = 0;
+		int counter = 9;
 		// Raw heat pipes
-		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "CopperHeatPipe");
+		/*icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "CopperHeatPipe");
 		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "SilverHeatPipe");
 		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "BoronArsenideHeatPipe");
 		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "DiamondHeatPipe");
@@ -45,7 +45,7 @@ public class MetaItem_CraftingComponent extends Item {
 		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "AmineCarbamateDust");
 		// Crystal
 		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "BoronArsenideCrystal");
-		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "IsotopicallyPureDiamondCrystal");
+		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "IsotopicallyPureDiamondCrystal");*/
 		// Ceramics
 		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "YSZCeramicDust");
 		icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "GDCCeramicDust");
@@ -64,7 +64,7 @@ public class MetaItem_CraftingComponent extends Item {
 	@SuppressWarnings({"unchecked"})
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
-		for(int i = 0; i < icons.length; i++) {
+		for(int i = 9; i < icons.length; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}

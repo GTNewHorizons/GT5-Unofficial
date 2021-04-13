@@ -37,7 +37,7 @@ public class MetaItem_ReactorComponent extends Item {
 		super.setUnlocalizedName(unlocalizedName);
 		super.setCreativeTab(CreativeTabs.tabMisc);
 		super.setMaxStackSize(1);
-		GameRegistry.registerItem(getInstance(), unlocalizedName);
+		//GameRegistry.registerItem(getInstance(), unlocalizedName);
 	}
 	
 	@Override

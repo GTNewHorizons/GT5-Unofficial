@@ -34,7 +34,7 @@ public class Recipes {
 		
 		registerRecipes_TFFT();
 		registerRecipes_SOFC();
-		registerRecipes_Nuclear();
+		//registerRecipes_Nuclear();
 		registerRecipes_Jars();
 		registerRecipes_LSC();
 		//registerRecipes_SpaceElevator();
@@ -255,7 +255,7 @@ public class Recipes {
 				400, 1920);
 	}
 	
-	private static void registerRecipes_Nuclear() {
+	/*private static void registerRecipes_Nuclear() {
 		
 		final MetaItem_CraftingComponent craftingItem = MetaItem_CraftingComponent.getInstance();
 		
@@ -331,7 +331,7 @@ public class Recipes {
 				craftingItem.getStackOfAmountFromDamage(Items.IsotopicallyPureDiamondCrystal.getMetaID(), 4),  
 				craftingItem.getStackFromDamage(Items.DiamondHeatPipe.getMetaID()),
 				null, 1200, 7680);	
-	}
+	}*/
 	
 	private static void registerRecipes_Jars() {
 
@@ -569,7 +569,7 @@ public class Recipes {
 		);
 	}
 
-	private static void registerRecipes_SpaceElevator() {
+	/*private static void registerRecipes_SpaceElevator() {
 		// Controller
 		final Object[] se_recipe = {
 				"BCB", "CPC", "BCB",
@@ -593,7 +593,7 @@ public class Recipes {
 				'C', OrePrefixes.cableGt01.get(Materials.Aluminium)
 		};
 		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.spaceElevatorStructure, 1, 1), seCoilHolder_recipe);
-	}
+	}*/
 
 	private static void registerRecipes_Cosmetics() {
 
