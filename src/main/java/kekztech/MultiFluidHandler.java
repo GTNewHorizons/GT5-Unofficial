@@ -383,7 +383,7 @@ public class MultiFluidHandler {
 			return 0;
 		}
 		FluidStack tFluid = fluids[slot];
-		if(tFluid == null && tFluid.equals(pull)) {
+		if(tFluid == null || !tFluid.equals(pull)) {
 			return 0;
 		} else {
 			final int rec = Math.min(pull.amount, tFluid.amount);
