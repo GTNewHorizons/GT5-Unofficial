@@ -1,5 +1,5 @@
 .gradle/
-eclipse/
+run/
 .settings/
 .classpath
 .project
@@ -41,3 +41,4 @@ libs/Galacticraft-API-1.7-3.0.12.504.jar
 libs/GTNewHorizonsCoreMod-1.7.10-1.6.10.jar
 libs/MicdoodleCore-1.7-3.0.12.504.jar
 libs/worldedit-forge-mc1.7.10-6.1.1-dist.jar
+eclipse/

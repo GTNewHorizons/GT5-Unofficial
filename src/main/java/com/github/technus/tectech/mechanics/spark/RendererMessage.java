@@ -16,7 +16,9 @@ import thaumcraft.client.fx.bolt.FXLightningBolt;
 import java.io.*;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Random;
 
+//TODO Re-work how sparks are distributed
 public class RendererMessage implements IMessage {
     HashSet<ThaumSpark> sparkList;
 
@@ -63,8 +65,20 @@ public class RendererMessage implements IMessage {
     public static class ClientHandler extends AbstractClientMessageHandler<RendererData> {
         @Override
         public IMessage handleClientMessage(EntityPlayer pPlayer, RendererData pMessage, MessageContext pCtx) {
+            //disgusting
+            Random localRand = Minecraft.getMinecraft().theWorld.rand;
+            int[] zapsToUse = new int[4];
+            for (int i = 0; i < 3; i++) {
+                zapsToUse[i] = localRand.nextInt(pMessage.sparkList.size());
+            }
+            int i = 0;
             for (ThaumSpark sp : pMessage.sparkList) {
-                thaumLightning(sp.x, sp.y, sp.z, sp.xR, sp.yR, sp.zR, sp.wID);
+                for (int j : zapsToUse) {
+                    if(i == j){
+                        thaumLightning(sp.x, sp.y, sp.z, sp.xR, sp.yR, sp.zR, sp.wID);
+                    }
+                }
+                i++;
             }
             pMessage.sparkList.clear();
             return null;

@@ -443,9 +443,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
+        super.registerIcons(aBlockIconRegister);
         ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_TOWER");
         ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_TOWER_ACTIVE");
-        super.registerIcons(aBlockIconRegister);
     }
 
     @Override
@@ -598,7 +598,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         //Power transfer
         outputCurrentDisplay.set(powerTeslaNodeMap(this));
 
-        //Randomly send all the sparks out once every 3 to 5 seconds
+        //TODO Encapsulate the spark sender
         sparkCount--;
         if (sparkCount == 0){
             IGregTechTileEntity mte = getBaseMetaTileEntity();

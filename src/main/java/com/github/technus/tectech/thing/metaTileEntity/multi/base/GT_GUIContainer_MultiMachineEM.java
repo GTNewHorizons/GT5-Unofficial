@@ -18,13 +18,13 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
  */
 
 public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Machine {
-    private String mName;
-    private static byte counter = 0;
-    private final boolean ePowerPassButton, eSafeVoidButton, allowedToWorkButton;
-    private final GT_Container_MultiMachineEM mContainer;
+    protected final String mName;
+    protected static byte counter = 0;
+    protected final boolean eSafeVoidButton, allowedToWorkButton,ePowerPassButton;
+    protected final GT_Container_MultiMachineEM mContainer;
 
-    public GT_GUIContainer_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, boolean enablePowerPass, boolean enableSafeVoid, boolean enablePowerButton) {
-        super(new GT_Container_MultiMachineEM(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
+    protected GT_GUIContainer_MultiMachineEM(GT_Container_MultiMachineEM container, String aName, String aTextureFile,boolean enablePowerPass, boolean enableSafeVoid, boolean enablePowerButton) {
+        super(container, RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
         mContainer=(GT_Container_MultiMachineEM)super.mContainer;
         mName = aName;
         ePowerPassButton=enablePowerPass;
@@ -34,13 +34,16 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         xSize = 198;
     }
 
+    public GT_GUIContainer_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile,boolean enablePowerPass, boolean enableSafeVoid, boolean enablePowerButton) {
+        this(new GT_Container_MultiMachineEM(aInventoryPlayer, aTileEntity),aName,aTextureFile,enablePowerPass,enableSafeVoid,enablePowerButton);
+    }
+
+    protected GT_GUIContainer_MultiMachineEM(GT_Container_MultiMachineEM container, String aName, String aTextureFile) {
+        this(container,aName,aTextureFile,true,true,true);
+    }
+
     public GT_GUIContainer_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
-        super(new GT_Container_MultiMachineEM(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
-        mContainer=(GT_Container_MultiMachineEM)super.mContainer;
-        mName = aName;
-        ePowerPassButton=eSafeVoidButton=allowedToWorkButton=true;
-        ySize= 192;
-        xSize = 198;
+        this(new GT_Container_MultiMachineEM(aInventoryPlayer, aTileEntity),aName,aTextureFile);
     }
 
     @Override
@@ -108,10 +111,12 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
             counter = (byte) ((1 + counter) % 6);
             GL11.glColor4f(1f, 1f, 1f, 1f);
             x+= 173;
-            if(!ePowerPassButton) {
+            if (!ePowerPassButton && !mContainer.ePowerPassCover) {//no function
                 drawTexturedModalRect(x, y + 115, 231, 23, 18, 18);
-            } else if (mContainer.ePowerPass) {
-                drawTexturedModalRect(x, y + 115, 207, 23, 18, 18);
+            } else {
+                if (mContainer.ePowerPass) {//
+                    drawTexturedModalRect(x, y + 115, 207, 23, 18, 18);
+                }
             }
 
             if(!eSafeVoidButton) {
@@ -201,7 +206,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         }
     }
 
-    private void LEDdrawP(int x, int y, int i, int j, LedStatus status) {
+    protected void LEDdrawP(int x, int y, int i, int j, LedStatus status) {
         int v = 192, su = 8, sv = 6, u = 11;
         switch (status) {
             case STATUS_WTF: {
@@ -290,7 +295,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         }
     }
 
-    private void LEDtooltips(int x,int y){
+    protected void LEDtooltips(int x,int y){
         int renderPosX=x;
         int renderPosY=y;
         x-= (width - xSize) / 2;
@@ -330,7 +335,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         }
     }
 
-    private void hoveringText(List strings, int x, int y, FontRenderer font) {
+    protected void hoveringText(List strings, int x, int y, FontRenderer font) {
         if (!strings.isEmpty()) {
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
             //RenderHelper.disableStandardItemLighting();

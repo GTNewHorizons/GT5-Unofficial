@@ -61,6 +61,7 @@ public class ThingsLoader implements Runnable {
         TeslaCoilCover.run();
         TeslaCoilCapacitor.run();
         EnderFluidLinkCover.run();
+        PowerPassUpgradeCover.run();
         TecTech.LOGGER.info("Useful Items registered");
 
         TeslaCoilComponent.run();

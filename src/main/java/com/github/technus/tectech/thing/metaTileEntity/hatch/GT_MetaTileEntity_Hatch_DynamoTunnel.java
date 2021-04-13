@@ -82,8 +82,13 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
     }
 
     @Override
-    public long maxAmperesOut() {
-        return 0;
+    public boolean isEnetOutput() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnetInput() {
+        return false;
     }
 
     @Override

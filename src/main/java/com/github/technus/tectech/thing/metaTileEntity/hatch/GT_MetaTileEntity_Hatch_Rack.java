@@ -342,28 +342,28 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
         }
         
         if (Loader.isModLoaded("OpenComputers")) {
-            new RackComponent("OpenComputers:item.23", 0, 1, 0f, 100, true);//Transistor
-            new RackComponent("OpenComputers:item.24", 7, 12, -.05f, 1500, true);//chip t1
-            new RackComponent("OpenComputers:item.25", 18, 20, -.1f, 3000, true);//chip t2
-            new RackComponent("OpenComputers:item.26", 25, 22, -.15f, 4500, true);//chip t3
-            new RackComponent("OpenComputers:item.27", 10, 15, -.05f, 3000, true);//alu
-            new RackComponent("OpenComputers:item.28", 25, 18, -.05f, 1500, true);//cu
+            new RackComponent("OpenComputers:item.oc.Transistor", 0, 1, 0f, 100, true);//Transistor
+            new RackComponent("OpenComputers:item.oc.Microchip0", 7, 12, -.05f, 1500, true);//chip t1
+            new RackComponent("OpenComputers:item.oc.Microchip1", 18, 20, -.1f, 3000, true);//chip t2
+            new RackComponent("OpenComputers:item.oc.Microchip2", 25, 22, -.15f, 4500, true);//chip t3
+            new RackComponent("OpenComputers:item.oc.ALU", 10, 15, -.05f, 3000, true);//alu
+            new RackComponent("OpenComputers:item.oc.ControlUnit", 25, 18, -.05f, 1500, true);//cu
 
-            new RackComponent("OpenComputers:item.70", 42, 30, -.05f, 1500, true);//bus t1
-            new RackComponent("OpenComputers:item.71", 70, 50, -.1f, 3000, true);//bus t2
-            new RackComponent("OpenComputers:item.72", 105, 72, -.15f, 4500, true);//bus t3
+            new RackComponent("OpenComputers:item.oc.ComponentBus0", 42, 30, -.05f, 1500, true);//bus t1
+            new RackComponent("OpenComputers:item.oc.ComponentBus1", 70, 50, -.1f, 3000, true);//bus t2
+            new RackComponent("OpenComputers:item.oc.ComponentBus2", 105, 72, -.15f, 4500, true);//bus t3
 
-            new RackComponent("OpenComputers:item.29", 106, 73, -.1f, 1500, true);//cpu t1
-            new RackComponent("OpenComputers:item.42", 226, 153, -.15f, 3000, true);//cpu t2
-            new RackComponent("OpenComputers:item.43", 374, 241, -.2f, 4500, true);//cpu t3
+            new RackComponent("OpenComputers:item.oc.CPU0", 106, 73, -.1f, 1500, true);//cpu t1
+            new RackComponent("OpenComputers:item.oc.CPU1", 226, 153, -.15f, 3000, true);//cpu t2
+            new RackComponent("OpenComputers:item.oc.CPU2", 374, 241, -.2f, 4500, true);//cpu t3
 
-            new RackComponent("OpenComputers:item.8", 20, 27, -.1f, 1500, true);//gpu t1
-            new RackComponent("OpenComputers:item.9", 62, 67, -.2f, 3000, true);//gpu t2
-            new RackComponent("OpenComputers:item.10", 130, 111, -.3f, 4500, true);//gpu t3
+            new RackComponent("OpenComputers:item.oc.GraphicsCard0", 20, 27, -.1f, 1500, true);//gpu t1
+            new RackComponent("OpenComputers:item.oc.GraphicsCard1", 62, 67, -.2f, 3000, true);//gpu t2
+            new RackComponent("OpenComputers:item.oc.GraphicsCard2", 130, 111, -.3f, 4500, true);//gpu t3
 
-            new RackComponent("OpenComputers:item.101", 350, 234, -.1f, 1500, true);//apu t1
-            new RackComponent("OpenComputers:item.102", 606, 398, -.2f, 4500, true);//apu t2
-            new RackComponent("OpenComputers:item.103", 1590, 1006, -.3f, 9000, true);//apu tC
+            new RackComponent("OpenComputers:item.oc.APU0", 350, 234, -.1f, 1500, true);//apu t2
+            new RackComponent("OpenComputers:item.oc.APU1", 606, 398, -.2f, 4500, true);//apu t3
+            new RackComponent("OpenComputers:item.oc.APU2", 1590, 1006, -.3f, 9000, true);//apu tC
         }
     }
 

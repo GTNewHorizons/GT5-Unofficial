@@ -92,6 +92,11 @@ item.tm.enderfluidlinkcover.desc.0=Ender-Fluid-Enables Machines!
 item.tm.enderfluidlinkcover.desc.1=Use on any side of a fluid tank to link it to the Ender
 item.tm.enderfluidlinkcover.desc.2=Ender Tanks so are laggy -Bot from the Chads of NH
 
+item.tm.powerpassupgradecover.name=Power Pass Upgrade Cover
+item.tm.powerpassupgradecover.desc.0=Add power pass functionality to TecTech Multiblocks
+item.tm.powerpassupgradecover.desc.1=Active transformer in a can??
+item.tm.powerpassupgradecover.desc.2=Chain them up like Christmas lights!
+
 #Death Messages
 death.attack.microwaving=%1$s was dehydrated by radiation.
 death.attack.microwaving.player=%1$s was dehydrated by radiation while fighting %2$s.
@@ -775,8 +780,8 @@ gt.blockmachines.debug.tt.data.name=Debug Data Hatch
 gt.blockmachines.debug.tt.data.desc.0=Quantum Data Output
 gt.blockmachines.debug.tt.data.desc.1=High speed fibre optics connector.
 gt.blockmachines.debug.tt.data.desc.2=Must be painted to work
-gt.blockmachines.debug.tt.maintenance.name=Debug Maintenance Hatch
-gt.blockmachines.debug.tt.maintenance.desc.0=For maintaining Multiblocks
+gt.blockmachines.debug.tt.maintenance.name=Auto-Taping Maintenance Hatch
+gt.blockmachines.debug.tt.maintenance.desc.0=For automatically maintaining Multiblocks
 gt.blockmachines.debug.tt.maintenance.desc.1=Does fix everything but itself.
 gt.blockmachines.debug.tt.maintenance.desc.2=Fixing is for plebs!
 gt.blockmachines.debug.tt.genny.name=Debug Power Generator

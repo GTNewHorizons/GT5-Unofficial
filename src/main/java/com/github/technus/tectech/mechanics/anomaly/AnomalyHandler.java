@@ -233,23 +233,32 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
             ChunkCoordIntPair pair = new ChunkCoordIntPair(player.chunkCoordX, player.chunkCoordZ);
             NBTTagCompound compound = data.get(player.worldObj.provider.dimensionId).get(pair);
             NBTTagCompound playerTag = TecTech.playerPersistence.getDataOrSetToNewTag(player);
+            boolean saveRequired = false;
             if(player.capabilities.isCreativeMode){
-                playerTag.setDouble(SPACE_CANCER, 0);
+                if (playerTag.getDouble(SPACE_CANCER) != 0) {
+                    playerTag.setDouble(SPACE_CANCER, 0);
+                    saveRequired = true;
+                }
             }else {
                 if (compound != null) {
                     int badness = (int) Math.min(COUNT_DIV, compound.getDouble(INTENSITY) / PER_PARTICLE);
                     if (badness > 0) {
                         playerTag.setDouble(SPACE_CANCER, Math.min(2, playerTag.getDouble(SPACE_CANCER) + 9.765625E-4f * badness));
                         player.attackEntityFrom(MainLoader.subspace,Math.max(1,badness/8f));
+                        saveRequired = true;
                     }
                 } else if (playerTag.getDouble(SPACE_CANCER) > 0 && !player.isDead) {
-                    if (playerTag.getDouble(SPACE_CANCER) == 0 || player.ticksExisted % 10 != 0)
-                        return;
-                    playerTag.setDouble(SPACE_CANCER, Math.max(0, playerTag.getDouble(SPACE_CANCER) - 7.6293945E-5f));
+                    if (player.ticksExisted % 10 == 0) {
+                        playerTag.setDouble(SPACE_CANCER, Math.max(0, playerTag.getDouble(SPACE_CANCER) - 7.6293945E-5f));
+                        saveRequired = true;
+                    }
                 }
             }
-            TecTech.playerPersistence.saveData(player);
-            NetworkDispatcher.INSTANCE.sendTo(new PlayerDataMessage.PlayerDataData(player), (EntityPlayerMP) player);
+
+            if (saveRequired) {
+                TecTech.playerPersistence.saveData(player);
+                NetworkDispatcher.INSTANCE.sendTo(new PlayerDataMessage.PlayerDataData(player), (EntityPlayerMP) player);
+            }
         }
     }
 
