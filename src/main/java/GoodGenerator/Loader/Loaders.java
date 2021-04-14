@@ -13,16 +13,12 @@ import net.minecraft.item.ItemStack;
 
 public class Loaders {
 
-    public static final Item test2 = new MyItems("test2",GoodGenerator.GG);
-    public static final Item test3 = new MyItems("test3",GoodGenerator.GG);
     public static final Block MAR_Casing = new Casing("MAR_Casing",new String[]{
             GoodGenerator.MOD_ID+":MAR_Casing",
-    },GoodGenerator.GG);
+    });
     public static ItemStack MAR;
 
     public static void Register(){
-        GameRegistry.registerItem(test2,"test2");
-        GameRegistry.registerItem(test3,"test3");
         GameRegistry.registerBlock(MAR_Casing, MyItemBlocks.class,"MAR_Casing");
 
         Loaders.MAR = new MultiNqGenerator(12600+ (GT_Values.VN.length+5) * 8 + 1,"NaG","great naquadah reactor ").getStackForm(1L);
