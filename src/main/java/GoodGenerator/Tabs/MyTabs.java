@@ -11,6 +11,6 @@ public class MyTabs extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return Loaders.test2;
+        return null;
     }
 }
