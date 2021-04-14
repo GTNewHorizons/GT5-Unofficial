@@ -133,8 +133,14 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
                     this.mOutputFluids = new FluidStack[]{Materials.Naquadah.getMolten(times)};
                 }
                 else this.mOutputFluids = null;
-                addEnergyOutput((long)(32768*times*booster));
-                this.mEUt = (int)(32768*times*booster);
+                if(tFluids.contains(Materials.LiquidAir.getFluid(20))){
+                    depleteInput(Materials.LiquidAir.getFluid(20));
+                    addEnergyOutput((long)(32768*times*booster));
+                    this.mEUt = (int)(32768*times*booster);
+                }
+                else{
+                    this.mEUt = 0;
+                }
                 this.mProgresstime = 1;
                 this.mMaxProgresstime = 1;
                 return true;
@@ -149,10 +155,10 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
                     this.mOutputFluids = new FluidStack[]{Materials.Naquadah.getMolten(times)};
                 }
                 else this.mOutputFluids = null;
-                if(tFluids.contains(Materials.LiquidAir.getFluid(2))){
-                    depleteInput(Materials.LiquidAir.getFluid(2));
-                    addEnergyOutput((long)(32768*times*booster));
-                    this.mEUt = (int)(32768*times*booster);
+                if(tFluids.contains(Materials.LiquidAir.getFluid(20))){
+                    depleteInput(Materials.LiquidAir.getFluid(20));
+                    addEnergyOutput((long)(524288*times*booster));
+                    this.mEUt = (int)(524288*times*booster);
                 }
                 else{
                     this.mEUt = 0;
