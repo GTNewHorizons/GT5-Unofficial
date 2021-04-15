@@ -21,7 +21,7 @@ public class Loaders {
     public static void Register(){
         GameRegistry.registerBlock(MAR_Casing, MyItemBlocks.class,"MAR_Casing");
 
-        Loaders.MAR = new MultiNqGenerator(12600+ (GT_Values.VN.length+5) * 8 + 1,"NaG","great naquadah reactor ").getStackForm(1L);
+        Loaders.MAR = new MultiNqGenerator(12732,"NaG","great naquadah reactor").getStackForm(1L);
 
     }
 }
