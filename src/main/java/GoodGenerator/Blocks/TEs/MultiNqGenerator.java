@@ -15,9 +15,11 @@ import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
@@ -49,9 +51,9 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
         float booster = 1.0f;
         int times = 1;
         if(tFluids.size() > 0){
-            if(tFluids.contains(Materials.Cryotheum.getFluid(50L)) && tFluids.get(tFluids.indexOf(Materials.Cryotheum.getFluid(50L))).amount >= 50){
+            if(tFluids.contains(FluidRegistry.getFluidStack("cryotheum", 50)) && tFluids.get(tFluids.indexOf(FluidRegistry.getFluidStack("cryotheum", 50))).amount >= 50){
                 booster = 2.75f;
-                f1=Materials.Cryotheum.getFluid(50L);
+                f1=FluidRegistry.getFluidStack("cryotheum", 50);
             }
             else if(tFluids.contains(Materials.SuperCoolant.getFluid(50L)) && tFluids.get(tFluids.indexOf(Materials.SuperCoolant.getFluid(50L))).amount >= 50){
                 booster = 1.5f;
@@ -196,7 +198,16 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public String[] getDescription() {
-        return new String[0];
+        String[] des = new String[9];
+        String[] construct = new String[8];
+        for(int i = 0; i <= 8; i++)
+            des[i] = StatCollector.translateToLocal("tooltip.tile.nag."+i+".name");
+        for(int i = 1; i <= 8; i++)
+            construct[i-1] = StatCollector.translateToLocal("tooltip.tile.nag.2"+i+".name");
+        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+            return des;
+        else
+            return construct;
     }
 
     @Override
