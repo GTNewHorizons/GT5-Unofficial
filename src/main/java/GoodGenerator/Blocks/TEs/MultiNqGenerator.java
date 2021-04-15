@@ -49,37 +49,37 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
         float booster = 1.0f;
         int times = 1;
         if(tFluids.size() > 0){
-            if(tFluids.contains(Materials.Cryotheum.getFluid(2L))){
+            if(tFluids.contains(Materials.Cryotheum.getFluid(50L)) && tFluids.get(tFluids.indexOf(Materials.Cryotheum.getFluid(50L))).amount >= 50){
                 booster = 2.75f;
-                f1=Materials.Cryotheum.getFluid(2L);
+                f1=Materials.Cryotheum.getFluid(50L);
             }
-            else if(tFluids.contains(Materials.SuperCoolant.getFluid(2L))){
+            else if(tFluids.contains(Materials.SuperCoolant.getFluid(50L)) && tFluids.get(tFluids.indexOf(Materials.SuperCoolant.getFluid(50L))).amount >= 50){
                 booster = 1.5f;
-                f1=Materials.SuperCoolant.getFluid(2L);
+                f1=Materials.SuperCoolant.getFluid(50L);
             }
-            else if(tFluids.contains(FluidRegistry.getFluidStack("ic2coolant",2))){
+            else if(tFluids.contains(FluidRegistry.getFluidStack("ic2coolant",50)) && tFluids.get(tFluids.indexOf(FluidRegistry.getFluidStack("ic2coolant",50))).amount >= 50){
                 booster = 1.05f;
-                f1=FluidRegistry.getFluidStack("ic2coolant",2);
+                f1=FluidRegistry.getFluidStack("ic2coolant",50);
             }
         }
 
         if(tFluids.size() > 0){
-            if (tFluids.contains(Materials.Caesium.getMolten(9L))){
-                times = 2;
-                f2=Materials.Caesium.getMolten(9L);
+            if(tFluids.contains(Materials.Naquadah.getMolten(1L)) && tFluids.get(tFluids.indexOf(Materials.Naquadah.getMolten(1L))).amount >= 1){
+                times = 4;
+                f2=Materials.Naquadah.getMolten(1L);
             }
-            else if(tFluids.contains(Materials.Uranium235.getMolten(9L))){
+            else if(tFluids.contains(Materials.Uranium235.getMolten(9L)) && tFluids.get(tFluids.indexOf(Materials.Uranium235.getMolten(9L))).amount >= 9){
                 times = 3;
                 f2=Materials.Uranium235.getMolten(9L);
             }
-            else if(tFluids.contains(Materials.Naquadah.getMolten(1L))){
-                times = 4;
-                f2=Materials.Naquadah.getMolten(1L);
+            else if (tFluids.contains(Materials.Caesium.getMolten(9L)) && tFluids.get(tFluids.indexOf(Materials.Caesium.getMolten(9L))).amount >= 9){
+                times = 2;
+                f2=Materials.Caesium.getMolten(9L);
             }
         }
 
         if(tFluids.size()>0){
-            if(tFluids.contains(Materials.NaquadahEnriched.getMolten(times))){
+            if(tFluids.contains(Materials.NaquadahEnriched.getMolten(times)) && tFluids.get(tFluids.indexOf(Materials.NaquadahEnriched.getMolten(times))).amount >= times){
                 if(f1 != null)
                     depleteInput(f1);
                 if(f2 != null)
@@ -89,34 +89,36 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
                     this.mOutputFluids = new FluidStack[]{Materials.Naquadah.getMolten(times)};
                 }
                 else this.mOutputFluids = null;
-                if(tFluids.contains(Materials.LiquidAir.getFluid(20))){
-                    depleteInput(Materials.LiquidAir.getFluid(20));
+                if(tFluids.contains(Materials.LiquidAir.getFluid(120)) && tFluids.get(tFluids.indexOf(Materials.LiquidAir.getFluid(120))).amount >= 120){
+                    depleteInput(Materials.LiquidAir.getFluid(120));
                     addEnergyOutput((long)(32768*times*booster));
                     this.mEUt = (int)(32768*times*booster);
                 }
                 else{
+                    addEnergyOutput(0);
                     this.mEUt = 0;
                 }
                 this.mProgresstime = 1;
                 this.mMaxProgresstime = 1;
                 return true;
             }
-            if(tFluids.contains(Materials.Naquadria.getMolten(times))){
+            if(tFluids.contains(Materials.Naquadria.getMolten(times)) && tFluids.get(tFluids.indexOf(Materials.Naquadria.getMolten(times))).amount >= times){
                 if(f1 != null)
                     depleteInput(f1);
                 if(f2 != null)
                     depleteInput(f2);
-                if(mRuntime == 0 || mRuntime%300 == 0){
+                if(mRuntime == 0 || mRuntime%100 == 0){
                     depleteInput(Materials.Naquadria.getMolten(times));
                     this.mOutputFluids = new FluidStack[]{Materials.Naquadah.getMolten(times)};
                 }
                 else this.mOutputFluids = null;
-                if(tFluids.contains(Materials.LiquidAir.getFluid(20))){
-                    depleteInput(Materials.LiquidAir.getFluid(20));
-                    addEnergyOutput((long)(524288*times*booster));
-                    this.mEUt = (int)(524288*times*booster);
+                if(tFluids.contains(Materials.LiquidAir.getFluid(120)) && tFluids.get(tFluids.indexOf(Materials.LiquidAir.getFluid(120))).amount >= 120){
+                    depleteInput(Materials.LiquidAir.getFluid(120));
+                    addEnergyOutput((long)(262144*times*booster));
+                    this.mEUt = (int)(262144*times*booster);
                 }
                 else{
+                    addEnergyOutput(0);
                     this.mEUt = 0;
                 }
                 this.mProgresstime = 1;
@@ -124,7 +126,6 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
                 return true;
             }
         }
-
         this.mEUt = 0;
         return false;
     }
