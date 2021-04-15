@@ -2,29 +2,19 @@ package GoodGenerator.Blocks.TEs;
 
 import GoodGenerator.Loader.Loaders;
 import GoodGenerator.Main.GoodGenerator;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import ic2.core.Ic2Fluid;
-import ic2.core.init.InternalName;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,14 +24,8 @@ import java.util.ArrayList;
 public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
 
     @SideOnly(Side.CLIENT)
-    protected IIcon[] texture;
     protected String textureNames;
     protected String name;
-    private static final IIcon[] iIcons = new IIcon[4];
-    private static final IIconContainer[] iIconContainers = new IIconContainer[4];
-    private static final ITexture[][] iTextures = new ITexture[4][1];
-    public ItemStack[] circuits = new ItemStack[5];
-    private long mStorage;
 
     public MultiNqGenerator(String name){super(name);}
 
@@ -49,34 +33,6 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
         super(id,name,nameRegional);
         this.name = name;
         textureNames = GoodGenerator.MOD_ID+":"+name;
-    }
-
-
-
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-
-        for (int i = 0; i < MultiNqGenerator.iTextures.length; i++) {
-            MultiNqGenerator.iIcons[i] = aBlockIconRegister.registerIcon(GoodGenerator.MOD_ID + ":test");
-            int finalI = i;
-            MultiNqGenerator.iIconContainers[i] = new IIconContainer() {
-                @Override
-                public IIcon getIcon() {
-                    return MultiNqGenerator.iIcons[finalI];
-                }
-
-                @Override
-                public IIcon getOverlayIcon() {
-                    return MultiNqGenerator.iIcons[finalI];
-                }
-
-                @Override
-                public ResourceLocation getTextureFile() {
-                    return new ResourceLocation(GoodGenerator.MOD_ID + ":test");
-                }
-            };
-        }
-
     }
 
     @Override
