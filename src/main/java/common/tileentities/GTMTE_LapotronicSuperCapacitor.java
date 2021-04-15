@@ -51,7 +51,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	private final Set<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
 	private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
 	// Count the amount of capacitors of each tier in each slot (translate with meta - 1)
-	private final int[] capacitors = new int[5];
+	private final int[] capacitors = new int[7];
 	private BigInteger capacity = BigInteger.ZERO;
 	private BigInteger stored = BigInteger.ZERO;
 	private BigInteger passiveDischargeAmount = BigInteger.ZERO;
@@ -233,14 +233,28 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
 					if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART && (meta > 0)) {
 						// Add capacity
-						if(meta <= 4){
+						/*if(meta <= 4){
 							final long c = (long) (100000000L * Math.pow(10, meta - 1));
 							tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
 							capacity = capacity.add(BigInteger.valueOf(c));
 						} else if(meta <= 5){
 							tempCapacity = tempCapacity.add(BigInteger.valueOf((long) (100000000L * Math.pow(10, 3))));
 							capacity = capacity.add(MAX_LONG);
+						}*/
+						
+						
+						
+						switch(meta - 1) {
+						case 1: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000L)); capacity = capacity.add(BigInteger.valueOf(100000000L)); break;
+						case 2: tempCapacity = tempCapacity.add(BigInteger.valueOf(1000000000L)); capacity = capacity.add(BigInteger.valueOf(1000000000L)); break;
+						case 3: tempCapacity = tempCapacity.add(BigInteger.valueOf(10000000000L)); capacity = capacity.add(BigInteger.valueOf(10000000000L)); break;
+						case 4: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000000L)); capacity = capacity.add(BigInteger.valueOf(100000000000L)); break;
+						case 5: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000000L));	capacity = capacity.add(MAX_LONG); break;
+						case 6: tempCapacity = tempCapacity.add(BigInteger.valueOf(0L)); capacity = capacity.add(BigInteger.valueOf(0L)); break;
+						case 7: tempCapacity = tempCapacity.add(BigInteger.valueOf(10000000L)); capacity = capacity.add(BigInteger.valueOf(10000000L)); break;
+						default: break; 
 						}
+						
 						capacitors[meta - 1]++;
 					} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)){
 						firstGlassHeight = Y;
@@ -295,10 +309,40 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		final int colourCorrectedMeta = firstGlassMeta > 5 ? 0 : firstGlassMeta;
 		for(int highestCapacitor = capacitors.length - 1; highestCapacitor >= 0; highestCapacitor--){
 			if(capacitors[highestCapacitor] > 0){
-				if(colourCorrectedMeta < highestCapacitor){
+				/*if(colourCorrectedMeta < highestCapacitor){
 					formationChecklist = false;
 				}
-				break;
+				break;*/
+				
+				//if glass < cap
+				switch (highestCapacitor) {
+				case 0:
+					break;
+				case 1:
+					if(colourCorrectedMeta < highestCapacitor){
+						formationChecklist = false;
+					}
+					break;
+				case 2:
+					if(colourCorrectedMeta < highestCapacitor){
+						formationChecklist = false;
+					}
+					break;
+				case 3:
+					if(colourCorrectedMeta < highestCapacitor){
+						formationChecklist = false;
+					}
+					break;
+				case 4:
+					if(colourCorrectedMeta < highestCapacitor){
+						formationChecklist = false;
+					}
+					break;
+				case 5:
+					break;
+				case 6:
+					break;
+				}		
 			}
 		}
 
@@ -315,14 +359,24 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		// Calculate total capacity
 		capacity = BigInteger.ZERO;
 		for(int i = 0; i < capacitors.length; i++){
-			if(i <= 3){
+			/*if(i <= 3){
 				final long c = (long) (100000000L * Math.pow(10, i));
-				capacity = capacity.add(
-						BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
+				capacity = capacity.add(BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
 			} else {
-				capacity = capacity.add(
-						MAX_LONG.multiply(BigInteger.valueOf(capacitors[i])));
+				capacity = capacity.add(MAX_LONG.multiply(BigInteger.valueOf(capacitors[i])));
+			}*/
+						
+			switch(i) {
+			case 0: capacity = capacity.add(BigInteger.valueOf(100000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 1: capacity = capacity.add(BigInteger.valueOf(1000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 2: capacity = capacity.add(BigInteger.valueOf(10000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 3: capacity = capacity.add(BigInteger.valueOf(100000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 4: capacity = capacity.add(MAX_LONG.multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 5: capacity = capacity.add(BigInteger.valueOf(0L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 6: capacity = capacity.add(BigInteger.valueOf(10000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			default: break; 
 			}
+			
 		}
 		// Calculate how much energy to void each tick
 		passiveDischargeAmount = new BigDecimal(tempCapacity).multiply(PASSIVE_DISCHARGE_FACTOR_PER_TICK).toBigInteger();

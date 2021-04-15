@@ -68,7 +68,10 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
 		// Multi casing
 		par3List.add(new ItemStack(par1, 1, 0));
-		// Lapo units IV - UV
+		// Empty capacitor
+		par3List.add(new ItemStack(par1, 1, 6));
+		// Lapo capacitors EV - UV
+		par3List.add(new ItemStack(par1, 1, 7));
 		par3List.add(new ItemStack(par1, 1, 1));
 		par3List.add(new ItemStack(par1, 1, 2));
 		par3List.add(new ItemStack(par1, 1, 3));
@@ -86,6 +89,8 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 		case 3: return (side < 2) ? iconLapoZPMTop : iconLapoZPMSide;
 		case 4: return (side < 2) ? iconLapoUVTop : iconLapoUVSide;
 		case 5: return (side < 2) ? iconUltimateTop : iconUltimateSide;
+		case 6: return (side < 2) ? iconBaseTop : iconBaseSide;//temp
+		case 7: return (side < 2) ? iconLapoIVTop : iconLapoIVSide;//temp
 		default: return iconUltimateTop;
 		}
 	}
