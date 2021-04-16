@@ -1,25 +1,16 @@
-package GoodGenerator.Items;
+package GoodGenerator.Tabs;
 
-import GoodGenerator.Main.GoodGenerator;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import GoodGenerator.Loader.Loaders;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
-public class MyItems extends Item {
+public class MyTabs extends CreativeTabs {
+    public MyTabs(String name){
+        super(name);
+    }
 
-        private final String tex;
-
-        public MyItems(String name, CreativeTabs Tab){
-                this.setUnlocalizedName(name);
-                this.setCreativeTab(Tab);
-                this.tex = name;
-        }
-
-        @SideOnly(Side.CLIENT)
-        public void registerIcons(IIconRegister iconRegister) {
-                this.itemIcon = iconRegister.registerIcon(GoodGenerator.MOD_ID + ":" + this.tex);
-        }
-
+    @Override
+    public Item getTabIconItem() {
+        return Loaders.radiationProtectionPlate;
+    }
 }
