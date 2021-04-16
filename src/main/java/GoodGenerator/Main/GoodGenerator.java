@@ -2,6 +2,7 @@ package GoodGenerator.Main;
 
 import GoodGenerator.Common.CommonProxy;
 import GoodGenerator.Loader.Loaders;
+import GoodGenerator.Loader.RecipeLoader;
 import GoodGenerator.Tabs.MyTabs;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -32,11 +33,11 @@ public final class GoodGenerator {
     public static void init(FMLInitializationEvent event){
         proxy.init(event);
         Loaders.Register();
+        RecipeLoader.RecipeLoad();
     }
     @Mod.EventHandler
     public static void postInit(FMLPostInitializationEvent event){
         proxy.postInit(event);
     }
-
-
+    
 }
