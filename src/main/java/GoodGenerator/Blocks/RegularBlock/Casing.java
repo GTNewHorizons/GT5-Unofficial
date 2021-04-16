@@ -22,28 +22,31 @@ public class Casing extends Block {
 
     public Casing(String name, String[] texture, CreativeTabs Tab){
         super(Material.iron);
-        this.setHardness(18.0F);
-        this.setResistance(10.0F);
+        this.setHardness(9.0F);
+        this.setResistance(5.0F);
         this.name = name;
         this.textureNames = texture;
+        this.setHarvestLevel("wrench",2);
         GregTech_API.registerMachineBlock(this, -1);
     }
 
     public Casing(String name, String[] texture){
         super(Material.iron);
-        this.setHardness(18.0F);
-        this.setResistance(10.0F);
+        this.setHardness(9.0F);
+        this.setResistance(5.0F);
         this.name = name;
         this.textureNames = texture;
+        this.setHarvestLevel("wrench",2);
         GregTech_API.registerMachineBlock(this, -1);
     }
-    
+
     public Casing(String name, String[] texture, CreativeTabs Tab,Material material){
         super(material);
-        this.setHardness(18.0F);
-        this.setResistance(10.0F);
+        this.setHardness(9.0F);
+        this.setResistance(5.0F);
         this.name = name;
         this.textureNames = texture;
+        this.setHarvestLevel("wrench",2);
         GregTech_API.registerMachineBlock(this, -1);
     }
 
@@ -100,6 +103,5 @@ public class Casing extends Block {
     public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
         return false;
     }
-
 
 }
