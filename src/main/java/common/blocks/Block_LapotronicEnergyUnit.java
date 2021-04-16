@@ -19,6 +19,10 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 	private IIcon iconBaseSide;
 	private IIcon iconBaseTop;
 	
+	private IIcon iconLapoEmptySide;
+	private IIcon iconLapoEmptyTop;
+	private IIcon iconLapoEVSide;
+	private IIcon iconLapoEVTop;
 	private IIcon iconLapoIVSide;
 	private IIcon iconLapoIVTop;
 	private IIcon iconLapoLuVSide;
@@ -50,6 +54,11 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 		iconBaseSide = ir.registerIcon("kekztech:LSCBase_side");
 		iconBaseTop = ir.registerIcon("kekztech:LSCBase_top");
 		
+		
+		iconLapoEmptySide = ir.registerIcon("kekztech:LapotronicEnergyUnit6_side");
+		iconLapoEmptyTop = ir.registerIcon("kekztech:LapotronicEnergyUnit6_top");
+		iconLapoEVSide = ir.registerIcon("kekztech:LapotronicEnergyUnit7_side");
+		iconLapoEVTop = ir.registerIcon("kekztech:LapotronicEnergyUnit7_top");
 		iconLapoIVSide = ir.registerIcon("kekztech:LapotronicEnergyUnit1_side");
 		iconLapoIVTop = ir.registerIcon("kekztech:LapotronicEnergyUnit1_top");
 		iconLapoLuVSide = ir.registerIcon("kekztech:LapotronicEnergyUnit2_side");
@@ -89,8 +98,8 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 		case 3: return (side < 2) ? iconLapoZPMTop : iconLapoZPMSide;
 		case 4: return (side < 2) ? iconLapoUVTop : iconLapoUVSide;
 		case 5: return (side < 2) ? iconUltimateTop : iconUltimateSide;
-		case 6: return (side < 2) ? iconBaseTop : iconBaseSide;//temp
-		case 7: return (side < 2) ? iconLapoIVTop : iconLapoIVSide;//temp
+		case 6: return (side < 2) ? iconLapoEmptyTop : iconLapoEmptySide;
+		case 7: return (side < 2) ? iconLapoEVTop : iconLapoEVSide;
 		default: return iconUltimateTop;
 		}
 	}
