@@ -6,12 +6,13 @@ import GoodGenerator.Items.MyItemBlocks;
 import GoodGenerator.Items.MyItems;
 import GoodGenerator.Main.GoodGenerator;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.GT_Values;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class Loaders {
+
+    public static final Item radiationProtectionPlate = new MyItems("radiationProtectionPlate",GoodGenerator.GG);
 
     public static final Block MAR_Casing = new Casing("MAR_Casing",new String[]{
             GoodGenerator.MOD_ID+":MAR_Casing",
@@ -20,8 +21,7 @@ public class Loaders {
 
     public static void Register(){
         GameRegistry.registerBlock(MAR_Casing, MyItemBlocks.class,"MAR_Casing");
-
+        GameRegistry.registerItem(radiationProtectionPlate,"radiationProtectionPlate",GoodGenerator.MOD_ID);
         Loaders.MAR = new MultiNqGenerator(12732,"NaG","great naquadah reactor").getStackForm(1L);
-
     }
 }
