@@ -286,8 +286,7 @@ public class TT_OilCrackingUnit extends TT_Abstract_GT_Replacement_Coils {
         }
         this.middleFluidHatch.mRecipeMap = getRecipeMap();
         FluidStack tStack = this.middleFluidHatch.getFillableStack();
-        if (tStack.isFluidEqual(GT_ModHandler.getSteam(1000)) || tStack.isFluidEqual(Materials.Hydrogen.getGas(1000)))
-            rList.add(tStack);
+        rList.add(tStack);
 
         return rList;
     }
