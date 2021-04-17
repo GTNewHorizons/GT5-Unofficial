@@ -233,6 +233,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
 					if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART && (meta > 0)) {
 						// Add capacity
+						
+						
 						switch(meta) {
 						case 1: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000L)); capacity = capacity.add(BigInteger.valueOf(100000000L)); break;
 						case 2: tempCapacity = tempCapacity.add(BigInteger.valueOf(1000000000L)); capacity = capacity.add(BigInteger.valueOf(1000000000L)); break;
@@ -297,7 +299,9 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		final int colourCorrectedMeta = firstGlassMeta > 5 ? 0 : firstGlassMeta;
 		for(int highestCapacitor = capacitors.length - 1; highestCapacitor >= 0; highestCapacitor--){
 			if(capacitors[highestCapacitor] > 0){
-				switch (highestCapacitor) {
+				formationChecklist = checkGlassTier(colourCorrectedMeta, highestCapacitor);
+				
+				/*switch (highestCapacitor) {
 				case 0://For the empty/EV/IV caps, any BS glass works
 					break; 
 				case 1:
@@ -324,7 +328,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					break;
 				case 6:
 					break;
-				}		
+				}*/		
+				
 			}
 		}
 
@@ -357,6 +362,40 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		return formationChecklist;
 	}
 
+	public boolean checkGlassTier(int colourCorrectedMeta, int highestCapacitor) {
+		switch (highestCapacitor) {
+		case 0://For the empty/EV/IV caps, any BS glass works
+			break; 
+		case 1:
+			if(colourCorrectedMeta < highestCapacitor){
+				return false;
+			}
+			break;
+		case 2:
+			if(colourCorrectedMeta < highestCapacitor){
+				return false;
+			}
+			break;
+		case 3:
+			if(colourCorrectedMeta < highestCapacitor){
+				return false;
+			}
+			break;
+		case 4:
+			if(colourCorrectedMeta < highestCapacitor){
+				return false;
+			}
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
+		
 	@Override
 	public boolean addEnergyInputToMachineList(IGregTechTileEntity te, int aBaseCasingIndex) {
 		if (te == null) {
