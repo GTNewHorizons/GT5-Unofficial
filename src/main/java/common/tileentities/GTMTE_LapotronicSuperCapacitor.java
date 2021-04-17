@@ -233,7 +233,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
 					if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART && (meta > 0)) {
 						// Add capacity
-						switch(meta - 1) {
+						switch(meta) {
 						case 1: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000L)); capacity = capacity.add(BigInteger.valueOf(100000000L)); break;
 						case 2: tempCapacity = tempCapacity.add(BigInteger.valueOf(1000000000L)); capacity = capacity.add(BigInteger.valueOf(1000000000L)); break;
 						case 3: tempCapacity = tempCapacity.add(BigInteger.valueOf(10000000000L)); capacity = capacity.add(BigInteger.valueOf(10000000000L)); break;
@@ -335,7 +335,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 			mEnergyTunnelsTT.clear();
 			mDynamoTunnelsTT.clear();
-
 		}
 
 		// Calculate total capacity
@@ -347,7 +346,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			case 2: capacity = capacity.add(BigInteger.valueOf(10000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
 			case 3: capacity = capacity.add(BigInteger.valueOf(100000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
 			case 4: capacity = capacity.add(MAX_LONG.multiply(BigInteger.valueOf(capacitors[i]))); break;
-			case 5: capacity = capacity.add(BigInteger.valueOf(0L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 5: break;
 			case 6: capacity = capacity.add(BigInteger.valueOf(10000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
 			default: break; 
 			}
