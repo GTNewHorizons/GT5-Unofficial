@@ -145,12 +145,17 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
 
     @Override
     protected int getEnergyConsumption() {
-        return 1;
+        return basicTemperatureMod;
     }
 
     @Override
     protected int getCooldownInterval() {
         return basicLossTimerLimit / basicTemperatureMod;
+    }
+
+    @Override
+    protected int getHeatUpAmount() {
+        return basicTemperatureMod;
     }
 
     @Override

@@ -245,7 +245,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     private void calculateHeatUp(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if ((this.mTemperature < getMaxTemperature()) && (this.mProcessingEnergy > 0) && (aTick % 12L == 0L)) {
             this.mProcessingEnergy -= getEnergyConsumption();
-            this.mTemperature += 1;
+            this.mTemperature += getHeatUpAmount();
         }
         aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
     }
@@ -369,6 +369,10 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     protected abstract int getEnergyConsumption();
 
     protected abstract int getCooldownInterval();
+
+    protected int getHeatUpAmount() {
+        return 1;
+    }
 
     protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 }
