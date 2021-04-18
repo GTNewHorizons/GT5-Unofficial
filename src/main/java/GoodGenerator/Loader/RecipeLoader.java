@@ -1,5 +1,6 @@
 package GoodGenerator.Loader;
 
+import GoodGenerator.Items.MyMaterial;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
@@ -54,6 +55,53 @@ public class RecipeLoader {
                 new ItemStack(Loaders.MAR_Casing),
                 400,
                 1919
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+               new ItemStack[]{
+                        MyMaterial.graphiteUraniumMixture.get(OrePrefixes.dust,4),
+                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.TungstenCarbide,16),
+                        GT_Utility.getIntegratedCircuit(1)
+               },
+                null,
+                new ItemStack(Loaders.wrappedUraniumIngot),
+                1400,
+                500
+        );
+
+        GT_Values.RA.addImplosionRecipe(
+                new ItemStack(Loaders.wrappedUraniumIngot, 4),
+                4,
+                new ItemStack(Loaders.highDensityUraniumNugget),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.TungstenCarbide,8)
+        );
+
+        GT_Values.RA.addCompressorRecipe(
+                new ItemStack(Loaders.highDensityUraniumNugget,9),
+                new ItemStack(Loaders.highDensityUranium),
+                600,
+                500
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                new ItemStack(Loaders.highDensityUranium),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rubidium,8),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Quantium,4),
+                GT_Utility.getIntegratedCircuit(1),
+                Materials.Radon.getGas(1000L),
+                MyMaterial.uraniumBasedLiquidFuel.getFluidOrGas(1000),
+                null,
+                200,
+                16384
+        );
+
+        GT_Values.RA.addFusionReactorRecipe(
+                MyMaterial.uraniumBasedLiquidFuel.getFluidOrGas(10),
+                Materials.Hydrogen.getGas(100L),
+                MyMaterial.uraniumBasedLiquidFuelExcited.getFluidOrGas(100),
+                40,
+                8192,
+                200000000
         );
     }
 }
