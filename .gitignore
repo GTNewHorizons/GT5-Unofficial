@@ -28,13 +28,12 @@ usernamecache.json
 /crash-reports/
 /saves/
 /config/
+run/
 
 # intellij related things
-.idea/dictionaries/*
+.idea/
 
 # other stuff
-eclipse/
-eclipse/*
 out/
 out/*
 *.ipr
