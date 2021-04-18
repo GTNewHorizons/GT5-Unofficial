@@ -1,25 +1,9 @@
 
-tooltip.tile.nag.0.name=environmental friendly!
-tooltip.tile.nag.1.name=generate power with the High-energy molten metal
-tooltip.tile.nag.2.name=input molten naquadria or enriched naquadah
-tooltip.tile.nag.3.name=consume coolant 50mb/t to increase the efficiency:
-tooltip.tile.nag.4.name=IC2 Coolant 105%, Super Coolant 150%, Cryotheum 275%
-tooltip.tile.nag.5.name=consume excited liquid to increase the output voltage:
-tooltip.tile.nag.6.name=molten caesium | 2x output | 9mb/t
-tooltip.tile.nag.7.name=molten uranium-235 | 3x output | 9mb/t
-tooltip.tile.nag.8.name=molten naquadah | 4x output | 1mb/t
+MAR_Casing.0.name=Field Restricting Casing Block
 
-tooltip.tile.nag.21.name=size(WxHxD): 15x20x15 (hollow)
-tooltip.tile.nag.22.name=bottom is radiation proof machine casing,at least 10
-tooltip.tile.nag.23.name=fill the rest part of machine is field restricting casing block
-tooltip.tile.nag.24.name=all of the hatch should be placed at the bottom
-tooltip.tile.nag.25.name=1x maintenance hatch
-tooltip.tile.nag.26.name=2-4x input hatch
-tooltip.tile.nag.27.name=0-1x output hatch
-tooltip.tile.nag.28.name=1x dynamo hatch (only accept ONE!)
-
-MAR_Casing.0.name=field restricting casing block
-
-item.radiationProtectionPlate.name=radiation protection plate
+item.radiationProtectionPlate.name=Radiation Protection Plate
+item.wrappedUraniumIngot.name=Wrapped Uranium Ingot
+item.highDensityUraniumNugget.name=High Density Uranium Nugget
+item.highDensityUranium.name=High Density Uranium
 
 itemGroup.Good Generator=Good Generator
