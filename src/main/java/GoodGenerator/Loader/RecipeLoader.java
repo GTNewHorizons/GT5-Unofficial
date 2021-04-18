@@ -4,13 +4,15 @@ import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import gregtech.api.util.GT_Utility;
 
 public class RecipeLoader {
     public static void RecipeLoad(){
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lanthanum, 16L),
                                 GT_OreDictUnificator.get(OrePrefixes.plate,Materials.NaquadahAlloy,8L),
-                                GT_OreDictUnificator.get(OrePrefixes.foil,Materials.Neutronium,1L)},
+                                GT_OreDictUnificator.get(OrePrefixes.foil,Materials.Neutronium,1L),
+                                GT_Utility.getIntegratedCircuit(1),},
                 Materials.Lead.getMolten(1152),
                 new ItemStack(Loaders.radiationProtectionPlate),
                 400,
@@ -45,7 +47,8 @@ public class RecipeLoader {
                 new ItemStack[]{
                         new ItemStack(Loaders.radiationProtectionPlate,6),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Europium,1),
-                        ItemList.Field_Generator_MV.get(1)
+                        ItemList.Field_Generator_MV.get(1),
+                        GT_Utility.getIntegratedCircuit(1)
                 },
                 null,
                 new ItemStack(Loaders.MAR_Casing),
