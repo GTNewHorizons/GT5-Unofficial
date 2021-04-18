@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.boilers;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -14,34 +15,63 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import static gregtech.api.enums.ConfigCategories.machineconfig;
 
 
 public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
-    // Calcification start time is 43200*25/20=54000s or 15 hours of game time.
-    static final int CALCIFICATION_TIME = 43200;
+    private static final String LPS_FMT = "%s L/s";
+    protected static final String DEFAULT_STR = "Default: ";
     private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
             "gt.blockmachines.boiler.solar.desc.format",
             "Steam Power by the Sun%n" +
                     "Produces %sL of Steam per second%n" +
                     "Calcifies over time, reducing Steam output to %sL/s%n" +
                     "Break and replace to descale");
-    protected int minOutputPer25Ticks = 50;
-    protected int maxOutputPer25Ticks = 150;
-    protected int basicTemperatureMod = 5;
-    protected int basicLossTimerLimit = 45;
+    protected int calcificationTicks;
+    protected int minOutputPerSecond;
+    protected int maxOutputPerSecond;
+    protected int basicTemperatureMod = 5; // Base Celsius gain or loss
+    protected int coolDownTicks;
     private int mRunTime = 0;
 
     public GT_MetaTileEntity_Boiler_Solar(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, new String[0]);
+        onConfigLoad();
+    }
+
+    protected void onConfigLoad() {
+        final Configuration config = GregTech_API.sMachineFile.mConfig;
+        final String configCategory = machineconfig + ".SimpleSolarBoiler";
+
+        final int defaultCalcificationTicks = 54000;
+        final int defaultMinOutputPerSecond = 40;
+        final int defaultMaxOutputPerSecond = 120;
+        final int defaultCoolDownTicks = 45;
+
+        calcificationTicks = config.get(configCategory, "CalcificationTicks", defaultCalcificationTicks,
+                "Number of run-time ticks before boiler starts calcification.\n" +
+                        "100% calcification and minimal output will be reached at 2 times this.\n" +
+                        DEFAULT_STR + defaultCalcificationTicks).getInt();
+        minOutputPerSecond = config.get(configCategory, "MinOutputPerSecond", defaultMinOutputPerSecond,
+                DEFAULT_STR + defaultMinOutputPerSecond).getInt();
+        maxOutputPerSecond = config.get(configCategory, "MaxOutputPerSecond", defaultMaxOutputPerSecond,
+                DEFAULT_STR + defaultMaxOutputPerSecond).getInt();
+        coolDownTicks = config.get(configCategory, "CoolDownTicks", defaultCoolDownTicks,
+                "Number of ticks it takes to loose 1°C.\n" +
+                        DEFAULT_STR + defaultCoolDownTicks).getInt();
     }
 
     public GT_MetaTileEntity_Boiler_Solar(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+        onConfigLoad();
     }
 
     public GT_MetaTileEntity_Boiler_Solar(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+        onConfigLoad();
     }
 
     @Override
@@ -70,6 +100,14 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                     new GT_RenderedTexture(BlockIcons.OVERLAY_PIPE)};
         }
         return rTextures;
+    }
+
+    protected long getMaxOutputPerSecond() {
+        return maxOutputPerSecond;
+    }
+
+    protected long getMinOutputPerSecond() {
+        return minOutputPerSecond;
     }
 
     @Override
@@ -130,14 +168,14 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         if (this.mTemperature < 100) {
             return 0;
         }
-        if (mRunTime > CALCIFICATION_TIME) {
-            // Calcification takes about 2/3 CALCIFICATION_TIME to completely calcify on basic solar.
-            // For HP solar, it takes about 2x CALCIFICATION_TIME
-            return Math.max(minOutputPer25Ticks,
-                    // Every 288*25 ticks, or 6 minutes, lose 1 L output.
-                    maxOutputPer25Ticks - (mRunTime - CALCIFICATION_TIME) / CALCIFICATION_TIME * maxOutputPer25Ticks);
+        if (mRunTime > calcificationTicks) {
+            /* When reaching calcification ticks; discount the proportion of run-time spent on calcification
+             *  from the maximum output per second, and return this or the minimum output per second
+             */
+            return Math.max(minOutputPerSecond,
+                    maxOutputPerSecond - (mRunTime - calcificationTicks) / calcificationTicks * maxOutputPerSecond);
         } else {
-            return maxOutputPer25Ticks;
+            return maxOutputPerSecond;
         }
     }
 
@@ -153,7 +191,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
 
     @Override
     protected int getCooldownInterval() {
-        return basicLossTimerLimit / basicTemperatureMod;
+        return coolDownTicks / basicTemperatureMod;
     }
 
     @Override
@@ -164,13 +202,14 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     @Override
     protected void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         World world = aBaseMetaTileEntity.getWorld();
-        if ((aTick % 256L != 0L) || (world.isThundering())) {
+        // Heat-up every 12s (240 ticks), has to be multiple of 20 ticks
+        if ((aTick % 240L != 0L) || (world.isThundering())) {
             return;
         }
         if (!aBaseMetaTileEntity.getSkyAtSide((byte) ForgeDirection.UP.ordinal())) {
             return;
         }
-        boolean weatherClear = !world.isRaining() || !(aBaseMetaTileEntity.getBiome().rainfall > 0.0F);
+        boolean weatherClear = !world.isRaining() || aBaseMetaTileEntity.getBiome().rainfall == 0.0F;
         if (!weatherClear && world.skylightSubtracted >= 4) {
             return;
         }
@@ -194,14 +233,14 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     public String[] getInfoData() {
         return String.format("Heat Capacity: " + EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET +
                         "    Hot time: " + EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET + "%n" +
-                        "Min output: " + EnumChatFormatting.RED + "%s L/s" + EnumChatFormatting.RESET +
-                        "    Max output: " + EnumChatFormatting.RED + "%s L/s" + EnumChatFormatting.RESET + "%n" +
-                        "Current Output: " + EnumChatFormatting.YELLOW + "%s L/s" + EnumChatFormatting.RESET,
+                        "Min output: " + EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET +
+                        "    Max output: " + EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET + "%n" +
+                        "Current Output: " + EnumChatFormatting.YELLOW + LPS_FMT + EnumChatFormatting.RESET,
                 GT_Utility.formatNumbers(getHeatCapacityPercent()),
                 GT_Utility.formatNumbers(getHotTimeSeconds()),
                 GT_Utility.formatNumbers(getMinOutputPerSecond()),
                 GT_Utility.formatNumbers(getMaxOutputPerSecond()),
-                GT_Utility.formatNumbers(getCurrentOutputPerSecond()))
+                GT_Utility.formatNumbers(getProductionPerSecond()))
                 .split("\\R");
     }
 
@@ -210,19 +249,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     protected long getHotTimeSeconds() {
-        return mRunTime * 25L / 20L;
-    }
-
-    protected long getMinOutputPerSecond() {
-        return minOutputPer25Ticks * 20L / 25L;
-    }
-
-    protected long getMaxOutputPerSecond() {
-        return maxOutputPer25Ticks * 20L / 25L;
-    }
-
-    protected long getCurrentOutputPerSecond() {
-        return getProductionPerSecond() * 20L / 25L;
+        return mRunTime;
     }
 
     @Override
