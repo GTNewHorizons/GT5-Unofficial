@@ -558,5 +558,16 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public boolean explodesOnComponentBreak(ItemStack stack) { return false; }
-	
+
+	@Override
+	public long maxEUStore()
+	{
+		return capacity.longValue();
+	}
+
+	@Override
+	public long getEUVar()
+	{
+		return stored.longValue();
+	}
 }
