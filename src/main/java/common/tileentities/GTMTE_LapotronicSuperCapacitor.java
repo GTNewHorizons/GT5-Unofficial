@@ -233,18 +233,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
 					if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART && (meta > 0)) {
 						// Add capacity
-						
-						
-						switch(meta) {
-						case 1: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000L)); capacity = capacity.add(BigInteger.valueOf(100000000L)); break;
-						case 2: tempCapacity = tempCapacity.add(BigInteger.valueOf(1000000000L)); capacity = capacity.add(BigInteger.valueOf(1000000000L)); break;
-						case 3: tempCapacity = tempCapacity.add(BigInteger.valueOf(10000000000L)); capacity = capacity.add(BigInteger.valueOf(10000000000L)); break;
-						case 4: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000000L)); capacity = capacity.add(BigInteger.valueOf(100000000000L)); break;
-						case 5: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000000L));	capacity = capacity.add(MAX_LONG); break;
-						case 6: break;
-						case 7: tempCapacity = tempCapacity.add(BigInteger.valueOf(10000000L)); capacity = capacity.add(BigInteger.valueOf(10000000L)); break;
-						default: break; 
-						}			
+						tempCapacity = calculateTempCapacity(tempCapacity, meta);
 						capacitors[meta - 1]++;
 					} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)){
 						firstGlassHeight = Y;
@@ -299,9 +288,9 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		final int colourCorrectedMeta = firstGlassMeta > 5 ? 0 : firstGlassMeta;
 		for(int highestCapacitor = capacitors.length - 1; highestCapacitor >= 0; highestCapacitor--){
 			if(capacitors[highestCapacitor] > 0){
-				formationChecklist = checkGlassTier(colourCorrectedMeta, highestCapacitor);
 				
-				/*switch (highestCapacitor) {
+				
+				switch (highestCapacitor) {
 				case 0://For the empty/EV/IV caps, any BS glass works
 					break; 
 				case 1:
@@ -328,7 +317,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					break;
 				case 6:
 					break;
-				}*/		
+				}	
 				
 			}
 		}
@@ -343,28 +332,31 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		}
 
 		// Calculate total capacity
-		capacity = BigInteger.ZERO;
-		for(int i = 0; i < capacitors.length; i++){	
-			switch(i) {
-			case 0: capacity = capacity.add(BigInteger.valueOf(100000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
-			case 1: capacity = capacity.add(BigInteger.valueOf(1000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
-			case 2: capacity = capacity.add(BigInteger.valueOf(10000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
-			case 3: capacity = capacity.add(BigInteger.valueOf(100000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
-			case 4: capacity = capacity.add(MAX_LONG.multiply(BigInteger.valueOf(capacitors[i]))); break;
-			case 5: break;
-			case 6: capacity = capacity.add(BigInteger.valueOf(10000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
-			default: break; 
-			}
-		}
+		calculateCapacity();
+		
 		// Calculate how much energy to void each tick
 		passiveDischargeAmount = new BigDecimal(tempCapacity).multiply(PASSIVE_DISCHARGE_FACTOR_PER_TICK).toBigInteger();
 		passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
 		return formationChecklist;
 	}
 
-	public boolean checkGlassTier(int colourCorrectedMeta, int highestCapacitor) {
+	public BigInteger calculateTempCapacity(BigInteger tempCapacity, int meta) {
+		switch(meta) {
+		case 1: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000L)); capacity = capacity.add(BigInteger.valueOf(100000000L)); break;
+		case 2: tempCapacity = tempCapacity.add(BigInteger.valueOf(1000000000L)); capacity = capacity.add(BigInteger.valueOf(1000000000L)); break;
+		case 3: tempCapacity = tempCapacity.add(BigInteger.valueOf(10000000000L)); capacity = capacity.add(BigInteger.valueOf(10000000000L)); break;
+		case 4: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000000L)); capacity = capacity.add(BigInteger.valueOf(100000000000L)); break;
+		case 5: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000000L));	capacity = capacity.add(MAX_LONG); break;
+		case 6: break;
+		case 7: tempCapacity = tempCapacity.add(BigInteger.valueOf(10000000L)); capacity = capacity.add(BigInteger.valueOf(10000000L)); break;
+		default: break; 
+		}
+		return tempCapacity;
+	}
+	
+	/*public boolean checkGlassTier(int colourCorrectedMeta, int highestCapacitor) {				
 		switch (highestCapacitor) {
-		case 0://For the empty/EV/IV caps, any BS glass works
+		case 0://For the empty/EV/IV caps, any BS glass works. The case is meta - 1
 			break; 
 		case 1:
 			if(colourCorrectedMeta < highestCapacitor){
@@ -391,9 +383,25 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		case 6:
 			break;
 		default:
-			break;
+			return false;
 		}
-		return true;
+		return true;//if it was already true, stay true
+	}*/
+		
+	public void calculateCapacity() {
+		capacity = BigInteger.ZERO;
+		for(int i = 0; i < capacitors.length; i++){	
+			switch(i) {
+			case 0: capacity = capacity.add(BigInteger.valueOf(100000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 1: capacity = capacity.add(BigInteger.valueOf(1000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 2: capacity = capacity.add(BigInteger.valueOf(10000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 3: capacity = capacity.add(BigInteger.valueOf(100000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 4: capacity = capacity.add(MAX_LONG.multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 5: break;
+			case 6: capacity = capacity.add(BigInteger.valueOf(10000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			default: break; 
+			}
+		}
 	}
 		
 	@Override
