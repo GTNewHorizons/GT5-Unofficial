@@ -1,9 +1,11 @@
 package GoodGenerator.Main;
 
 import GoodGenerator.Common.CommonProxy;
+import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.Loaders;
 import GoodGenerator.Loader.RecipeLoader;
 import GoodGenerator.Tabs.MyTabs;
+import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -15,7 +17,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 @Mod(modid = GoodGenerator.MOD_ID, version = GoodGenerator.VERSION)
 public final class GoodGenerator {
     public static final String MOD_ID = "GoodGenerator";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "0.0.2";
 
     public static final CreativeTabs GG = new MyTabs("Good Generator");
 
@@ -27,6 +29,7 @@ public final class GoodGenerator {
 
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event){
+        WerkstoffAdderRegistry.addWerkstoffAdder(new MyMaterial());
         proxy.preInit(event);
     }
     @Mod.EventHandler
@@ -39,5 +42,5 @@ public final class GoodGenerator {
     public static void postInit(FMLPostInitializationEvent event){
         proxy.postInit(event);
     }
-    
+
 }
