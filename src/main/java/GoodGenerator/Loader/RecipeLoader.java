@@ -98,7 +98,7 @@ public class RecipeLoader {
         GT_Values.RA.addFusionReactorRecipe(
                 MyMaterial.uraniumBasedLiquidFuel.getFluidOrGas(10),
                 Materials.Hydrogen.getGas(100L),
-                MyMaterial.uraniumBasedLiquidFuelExcited.getFluidOrGas(100),
+                MyMaterial.uraniumBasedLiquidFuelExcited.getFluidOrGas(10),
                 40,
                 8192,
                 200000000
