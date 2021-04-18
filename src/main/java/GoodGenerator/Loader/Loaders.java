@@ -22,6 +22,6 @@ public class Loaders {
     public static void Register(){
         GameRegistry.registerBlock(MAR_Casing, MyItemBlocks.class,"MAR_Casing");
         GameRegistry.registerItem(radiationProtectionPlate,"radiationProtectionPlate",GoodGenerator.MOD_ID);
-        Loaders.MAR = new MultiNqGenerator(12732,"NaG","great naquadah reactor").getStackForm(1L);
+        Loaders.MAR = new MultiNqGenerator(12732,"NaG","Large Naquadah Reactor").getStackForm(1L);
     }
 }
