@@ -1,5 +1,6 @@
 package GoodGenerator.Blocks.TEs;
 
+import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.Loaders;
 import GoodGenerator.Main.GoodGenerator;
 import cpw.mods.fml.relauncher.Side;
@@ -12,10 +13,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -198,16 +199,33 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public String[] getDescription() {
-        String[] des = new String[9];
-        String[] construct = new String[8];
-        for(int i = 0; i <= 8; i++)
-            des[i] = StatCollector.translateToLocal("tooltip.tile.nag."+i+".name");
-        for(int i = 1; i <= 8; i++)
-            construct[i-1] = StatCollector.translateToLocal("tooltip.tile.nag.2"+i+".name");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-            return des;
-        else
-            return construct;
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Naquadah Reactor")
+                      .addInfo("Controller block for the Naquadah Reactor")
+                      .addInfo("Environmental Friendly!")
+                      .addInfo("Generate power with the High-energy molten metal.")
+                      .addInfo("Input molten naquadria or enriched naquadah.")
+                      .addInfo("Consume coolant 50mb/t to increase the efficiency:")
+                      .addInfo("IC2 Coolant 105%, Super Coolant 150%, Cryotheum 275%")
+                      .addInfo("Consume excited liquid to increase the output voltage:")
+                      .addInfo("molten caesium | 2x output | 9mb/t ")
+                      .addInfo("molten uranium-235 | 3x output | 9mb/t")
+                      .addInfo("molten naquadah | 4x output | 1mb/t")
+                      .addSeparator()
+                      .beginStructureBlock(5, 9, 5, true)
+                      .addController("Front bottom")
+                      .addOtherStructurePart("Radiation Proof Machine Casing","Bottom, at least 10")
+                      .addOtherStructurePart("Field Restricting Casing Block","The rest part of the machine")
+                      .addEnergyHatch("Any bottom layer casing, only accept ONE!")
+                      .addInputHatch("Any bottom layer casing")
+                      .addOutputHatch("Any bottom layer casing")
+                      .addMaintenanceHatch("Any bottom layer casing")
+                      .toolTipFinisher("Good Generator");
+               if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                   return tt.getInformation();
+               } else {
+                   return tt.getStructureInformation();
+               }
     }
 
     @Override
