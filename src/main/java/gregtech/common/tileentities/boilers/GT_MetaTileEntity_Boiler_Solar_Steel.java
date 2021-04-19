@@ -14,7 +14,6 @@ import net.minecraftforge.common.config.Configuration;
 import static gregtech.api.enums.ConfigCategories.machineconfig;
 
 public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boiler_Solar {
-    private static final int defaultCalcificationTicks = 54000;
 
     public GT_MetaTileEntity_Boiler_Solar_Steel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -24,9 +23,9 @@ public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boil
     @Override
     protected void onConfigLoad() {
         final Configuration config = GregTech_API.sMachineFile.mConfig;
-        final String configCategory = machineconfig + ".HighPressureSolarBoiler";
+        final String configCategory = machineconfig + ".boiler.solar.steel";
 
-        final int defaultCalcificationTicks = 54000;
+        final int defaultCalcificationTicks = 1080000; // 15 hours
         final int defaultMinOutputPerSecond = 120;
         final int defaultMaxOutputPerSecond = 360;
         final int defaultCoolDownTicks = 75;
@@ -40,7 +39,7 @@ public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boil
         maxOutputPerSecond = config.get(configCategory, "MaxOutputPerSecond", defaultMaxOutputPerSecond,
                 DEFAULT_STR + defaultMaxOutputPerSecond).getInt();
         coolDownTicks = config.get(configCategory, "CoolDownTicks", defaultCoolDownTicks,
-                "Number of ticks it takes to loose 1°C (Cools down slower than normal boiler).\n" +
+                "Number of ticks it takes to loose 1°C (Cools down slower than a normal boiler).\n" +
                         DEFAULT_STR + defaultCoolDownTicks).getInt();
 
     }
