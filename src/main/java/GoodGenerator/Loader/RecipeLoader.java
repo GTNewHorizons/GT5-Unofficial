@@ -13,11 +13,11 @@ public class RecipeLoader {
                 new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lanthanum, 16L),
                                 GT_OreDictUnificator.get(OrePrefixes.plate,Materials.NaquadahAlloy,8L),
                                 GT_OreDictUnificator.get(OrePrefixes.foil,Materials.Neutronium,1L),
-                                GT_Utility.getIntegratedCircuit(1),},
+                                GT_Utility.getIntegratedCircuit(1)},
                 Materials.Lead.getMolten(1152),
                 new ItemStack(Loaders.radiationProtectionPlate),
                 400,
-                1919
+                1920
         );
 
         GT_Values.RA.addAssemblylineRecipe(
@@ -41,7 +41,7 @@ public class RecipeLoader {
                 },
                 Loaders.MAR.copy(),
                 16200,
-                114514
+                122880
         );
 
         GT_Values.RA.addAssemblerRecipe(
@@ -54,7 +54,7 @@ public class RecipeLoader {
                 null,
                 new ItemStack(Loaders.MAR_Casing),
                 400,
-                1919
+                1920
         );
 
         GT_Values.RA.addAssemblerRecipe(
@@ -66,7 +66,7 @@ public class RecipeLoader {
                 null,
                 new ItemStack(Loaders.wrappedUraniumIngot),
                 1400,
-                500
+                480
         );
 
         GT_Values.RA.addImplosionRecipe(
@@ -80,7 +80,7 @@ public class RecipeLoader {
                 new ItemStack(Loaders.highDensityUraniumNugget,9),
                 new ItemStack(Loaders.highDensityUranium),
                 600,
-                500
+                480
         );
 
         GT_Values.RA.addMixerRecipe(
@@ -92,7 +92,7 @@ public class RecipeLoader {
                 MyMaterial.uraniumBasedLiquidFuel.getFluidOrGas(1000),
                 null,
                 200,
-                16384
+                15360
         );
 
         GT_Values.RA.addFusionReactorRecipe(
@@ -100,7 +100,7 @@ public class RecipeLoader {
                 Materials.Hydrogen.getGas(100L),
                 MyMaterial.uraniumBasedLiquidFuelExcited.getFluidOrGas(10),
                 40,
-                8192,
+                7680,
                 200000000
         );
     }
