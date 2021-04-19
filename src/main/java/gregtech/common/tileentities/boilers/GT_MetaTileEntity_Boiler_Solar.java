@@ -22,7 +22,6 @@ import static gregtech.api.enums.ConfigCategories.machineconfig;
 
 @SuppressWarnings("unused")
 public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
-    public static final String DEFAULT_STR = "Default: ";
     public static final String LPS_FMT = "%s L/s";
     private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
             "gt.blockmachines.boiler.solar.desc.format",
@@ -30,6 +29,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                     "Produces %sL of Steam per second%n" +
                     "Calcifies over time, reducing Steam output to %sL/s%n" +
                     "Break and replace to descale");
+    private final Config config = new Config();
     protected int calcificationTicks;
     protected int minOutputPerSecond;
     protected int maxOutputPerSecond;
@@ -39,39 +39,17 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
 
     public GT_MetaTileEntity_Boiler_Solar(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, new String[0]);
-        onConfigLoad();
-    }
-
-    protected void onConfigLoad() {
-        final Configuration config = GregTech_API.sMachineFile.mConfig;
-        final String configCategory = machineconfig + ".boiler.solar.bronze";
-
-        final int defaultCalcificationTicks = 1080000; // 15 hours
-        final int defaultMinOutputPerSecond = 40;
-        final int defaultMaxOutputPerSecond = 120;
-        final int defaultCoolDownTicks = 45;
-
-        calcificationTicks = config.get(configCategory, "CalcificationTicks", defaultCalcificationTicks,
-                "Number of run-time ticks before boiler starts calcification.\n" +
-                        "100% calcification and minimal output will be reached at 2 times this.\n" +
-                        DEFAULT_STR + defaultCalcificationTicks).getInt();
-        minOutputPerSecond = config.get(configCategory, "MinOutputPerSecond", defaultMinOutputPerSecond,
-                DEFAULT_STR + defaultMinOutputPerSecond).getInt();
-        maxOutputPerSecond = config.get(configCategory, "MaxOutputPerSecond", defaultMaxOutputPerSecond,
-                DEFAULT_STR + defaultMaxOutputPerSecond).getInt();
-        coolDownTicks = config.get(configCategory, "CoolDownTicks", defaultCoolDownTicks,
-                "Number of ticks it takes to lose 1°C.\n" +
-                        DEFAULT_STR + defaultCoolDownTicks).getInt();
+        config.onConfigLoad();
     }
 
     public GT_MetaTileEntity_Boiler_Solar(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        onConfigLoad();
+        config.onConfigLoad();
     }
 
     public GT_MetaTileEntity_Boiler_Solar(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        onConfigLoad();
+        config.onConfigLoad();
     }
 
     /**
@@ -272,5 +250,69 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Boiler_Solar(mName, mTier, mDescriptionArray, mTextures);
+    }
+
+    protected class Config {
+        public static final String DEFAULT_STR = "Default: ";
+        private static final String localCategory = "boiler.solar.bronze";
+        private static final int defaultCalcificationTicks = 1080000; // 15 hours
+        private static final String defaultCalcificationTicksComment =
+                "Number of run-time ticks before boiler starts calcification.\n" +
+                        "100% calcification and minimal output will be reached at 2 times this.\n";
+        private static final int defaultMinOutputPerSecond = 40;
+        private static final String defaultMinOutputPerSecondComment = "";
+        private static final int defaultMaxOutputPerSecond = 120;
+        private static final String defaultMaxOutputPerSecondComment = "";
+        private static final int defaultCoolDownTicks = 45;
+        private static final String defaultCoolDownTicksComment = "Number of ticks it takes to lose 1°C.\n";
+        final Configuration configuration = GregTech_API.sMachineFile.mConfig;
+        final String configCategory = getConfigCategory();
+
+        protected String getConfigCategory() {
+            return machineconfig + "." + localCategory;
+        }
+
+        protected void onConfigLoad() {
+            calcificationTicks = configuration.get(configCategory, "CalcificationTicks", getDefaultCalcificationTicks(),
+                    getDefaultCalcificationTicksComment() + DEFAULT_STR + getDefaultCalcificationTicks()).getInt();
+            minOutputPerSecond = configuration.get(configCategory, "MinOutputPerSecond", getDefaultMinOutputPerSecond(),
+                    getDefaultMinOutputPerSecondComment() + DEFAULT_STR + getDefaultMinOutputPerSecond()).getInt();
+            maxOutputPerSecond = configuration.get(configCategory, "MaxOutputPerSecond", getDefaultMaxOutputPerSecond(),
+                    getDefaultMaxOutputPerSecondComment() + DEFAULT_STR + getDefaultMaxOutputPerSecond()).getInt();
+            coolDownTicks = configuration.get(configCategory, "CoolDownTicks", getDefaultCoolDownTicks(),
+                    getDefaultCoolDownTicksComment() + DEFAULT_STR + getDefaultCoolDownTicks()).getInt();
+        }
+
+        protected int getDefaultCalcificationTicks() {
+            return defaultCalcificationTicks;
+        }
+
+        protected String getDefaultCalcificationTicksComment() {
+            return defaultCalcificationTicksComment;
+        }
+
+        protected int getDefaultMinOutputPerSecond() {
+            return defaultMinOutputPerSecond;
+        }
+
+        protected String getDefaultMinOutputPerSecondComment() {
+            return defaultMinOutputPerSecondComment;
+        }
+
+        protected int getDefaultMaxOutputPerSecond() {
+            return defaultMaxOutputPerSecond;
+        }
+
+        protected String getDefaultMaxOutputPerSecondComment() {
+            return defaultMaxOutputPerSecondComment;
+        }
+
+        protected int getDefaultCoolDownTicks() {
+            return defaultCoolDownTicks;
+        }
+
+        protected String getDefaultCoolDownTicksComment() {
+            return defaultCoolDownTicksComment;
+        }
     }
 }
