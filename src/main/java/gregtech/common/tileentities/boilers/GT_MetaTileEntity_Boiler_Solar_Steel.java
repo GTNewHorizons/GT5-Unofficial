@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.boilers;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -9,39 +8,25 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.gui.GT_GUIContainer_Boiler;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraftforge.common.config.Configuration;
 
 import static gregtech.api.enums.ConfigCategories.machineconfig;
 
 public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boiler_Solar {
+    private final GT_MetaTileEntity_Boiler_Solar_Steel.Config config = new GT_MetaTileEntity_Boiler_Solar_Steel.Config();
 
     public GT_MetaTileEntity_Boiler_Solar_Steel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        onConfigLoad();
+        config.onConfigLoad();
     }
 
-    @Override
-    protected void onConfigLoad() {
-        final Configuration config = GregTech_API.sMachineFile.mConfig;
-        final String configCategory = machineconfig + ".boiler.solar.steel";
+    public GT_MetaTileEntity_Boiler_Solar_Steel(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, aDescription, aTextures);
+        config.onConfigLoad();
+    }
 
-        final int defaultCalcificationTicks = 1080000; // 15 hours
-        final int defaultMinOutputPerSecond = 120;
-        final int defaultMaxOutputPerSecond = 360;
-        final int defaultCoolDownTicks = 75;
-
-        calcificationTicks = config.get(configCategory, "CalcificationTicks", defaultCalcificationTicks,
-                "Number of run-time ticks before boiler starts calcification.\n" +
-                        "100% calcification and minimal output will be reached at 2 times this.\n" +
-                        DEFAULT_STR + defaultCalcificationTicks).getInt();
-        minOutputPerSecond = config.get(configCategory, "MinOutputPerSecond", defaultMinOutputPerSecond,
-                DEFAULT_STR + defaultMinOutputPerSecond).getInt();
-        maxOutputPerSecond = config.get(configCategory, "MaxOutputPerSecond", defaultMaxOutputPerSecond,
-                DEFAULT_STR + defaultMaxOutputPerSecond).getInt();
-        coolDownTicks = config.get(configCategory, "CoolDownTicks", defaultCoolDownTicks,
-                "Number of ticks it takes to loose 1°C (Cools down slower than a normal boiler).\n" +
-                        DEFAULT_STR + defaultCoolDownTicks).getInt();
-
+    public GT_MetaTileEntity_Boiler_Solar_Steel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, aDescription, aTextures);
+        config.onConfigLoad();
     }
 
     @Override
@@ -80,14 +65,37 @@ public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boil
         return new GT_MetaTileEntity_Boiler_Solar_Steel(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
-    public GT_MetaTileEntity_Boiler_Solar_Steel(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-        onConfigLoad();
-    }
+    protected class Config extends GT_MetaTileEntity_Boiler_Solar.Config {
+        private static final String localCategory = "boiler.solar.steel";
+        private static final int defaultMinOutputPerSecond = 120;
+        private static final int defaultMaxOutputPerSecond = 360;
+        private static final int defaultCoolDownTicks = 75;
+        private static final String defaultCoolDownTicksComment = "Number of ticks it takes to loose 1°C (Cools down slower than a normal boiler).\n";
 
-    public GT_MetaTileEntity_Boiler_Solar_Steel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-        onConfigLoad();
+        @Override
+        protected String getConfigCategory() {
+            return machineconfig + "." + localCategory;
+        }
+
+        @Override
+        protected int getDefaultMinOutputPerSecond() {
+            return defaultMinOutputPerSecond;
+        }
+
+        @Override
+        protected int getDefaultMaxOutputPerSecond() {
+            return defaultMaxOutputPerSecond;
+        }
+
+        @Override
+        protected int getDefaultCoolDownTicks() {
+            return defaultCoolDownTicks;
+        }
+
+        @Override
+        protected String getDefaultCoolDownTicksComment() {
+            return defaultCoolDownTicksComment;
+        }
     }
 
 }
