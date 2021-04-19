@@ -7,3 +7,5 @@ item.highDensityUraniumNugget.name=High Density Uranium Nugget
 item.highDensityUranium.name=High Density Uranium
 
 itemGroup.Good Generator=Good Generator
+
+tile.recipe.naquadah_reactor=Large Naquadah Reactor

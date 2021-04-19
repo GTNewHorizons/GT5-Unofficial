@@ -3,6 +3,7 @@ package GoodGenerator.Blocks.TEs;
 import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.Loaders;
 import GoodGenerator.Main.GoodGenerator;
+import GoodGenerator.util.MyRecipeAdder;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -14,6 +15,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -23,6 +25,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -47,6 +50,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
     public boolean checkRecipe(ItemStack aStack) {
 
         ArrayList<FluidStack> tFluids = getStoredFluids();
+        Collection<GT_Recipe> tRecipes = MyRecipeAdder.instance.NqGFuels.mRecipeList;
 
         FluidStack f1=null,f2=null;
         float booster = 1.0f;
@@ -81,52 +85,37 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
             }
         }
 
-        if(tFluids.size()>0){
-            if(tFluids.contains(Materials.NaquadahEnriched.getMolten(times)) && tFluids.get(tFluids.indexOf(Materials.NaquadahEnriched.getMolten(times))).amount >= times){
-                if(f1 != null)
-                    depleteInput(f1);
-                if(f2 != null)
-                    depleteInput(f2);
-                if(mRuntime == 0 || mRuntime%1200 == 0){
-                    depleteInput(Materials.NaquadahEnriched.getMolten(times));
-                    this.mOutputFluids = new FluidStack[]{Materials.Naquadah.getMolten(times)};
+        if (tFluids.size()>0 && tRecipes != null){
+            for (GT_Recipe recipe : tRecipes){
+                FluidStack recipeFluid = recipe.mFluidInputs[0].copy();
+                FluidStack recipeFluidOut = recipe.mFluidOutputs[0].copy();
+                recipeFluid.amount = times;
+                recipeFluidOut.amount = times;
+                int lasting = recipe.mDuration;
+                int outputEU = recipe.mSpecialValue;
+                if (tFluids.contains(recipeFluid) && tFluids.get(tFluids.indexOf(recipeFluid)).amount >= times){
+                    if(f1 != null)
+                        depleteInput(f1);
+                    if(f2 != null)
+                        depleteInput(f2);
+                    if (mRuntime == 0 || mRuntime%lasting == 0){
+                        depleteInput(recipeFluid);
+                        this.mOutputFluids = new FluidStack[]{recipeFluidOut};
+                    }
+                    else this.mOutputFluids = null;
+                    if (tFluids.contains(Materials.LiquidAir.getFluid(120)) && tFluids.get(tFluids.indexOf(Materials.LiquidAir.getFluid(120))).amount >= 120){
+                        depleteInput(Materials.LiquidAir.getFluid(120));
+                        addEnergyOutput((long)(outputEU*times*booster));
+                        this.mEUt = (int)(outputEU*times*booster);
+                    }
+                    else{
+                        addEnergyOutput(0);
+                        this.mEUt = 0;
+                    }
+                    this.mProgresstime = 1;
+                    this.mMaxProgresstime = 1;
+                    return true;
                 }
-                else this.mOutputFluids = null;
-                if(tFluids.contains(Materials.LiquidAir.getFluid(120)) && tFluids.get(tFluids.indexOf(Materials.LiquidAir.getFluid(120))).amount >= 120){
-                    depleteInput(Materials.LiquidAir.getFluid(120));
-                    addEnergyOutput((long)(32768*times*booster));
-                    this.mEUt = (int)(32768*times*booster);
-                }
-                else{
-                    addEnergyOutput(0);
-                    this.mEUt = 0;
-                }
-                this.mProgresstime = 1;
-                this.mMaxProgresstime = 1;
-                return true;
-            }
-            if(tFluids.contains(Materials.Naquadria.getMolten(times)) && tFluids.get(tFluids.indexOf(Materials.Naquadria.getMolten(times))).amount >= times){
-                if(f1 != null)
-                    depleteInput(f1);
-                if(f2 != null)
-                    depleteInput(f2);
-                if(mRuntime == 0 || mRuntime%100 == 0){
-                    depleteInput(Materials.Naquadria.getMolten(times));
-                    this.mOutputFluids = new FluidStack[]{Materials.Naquadah.getMolten(times)};
-                }
-                else this.mOutputFluids = null;
-                if(tFluids.contains(Materials.LiquidAir.getFluid(120)) && tFluids.get(tFluids.indexOf(Materials.LiquidAir.getFluid(120))).amount >= 120){
-                    depleteInput(Materials.LiquidAir.getFluid(120));
-                    addEnergyOutput((long)(262144*times*booster));
-                    this.mEUt = (int)(262144*times*booster);
-                }
-                else{
-                    addEnergyOutput(0);
-                    this.mEUt = 0;
-                }
-                this.mProgresstime = 1;
-                this.mMaxProgresstime = 1;
-                return true;
             }
         }
         this.mEUt = 0;

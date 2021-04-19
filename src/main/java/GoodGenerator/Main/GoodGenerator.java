@@ -2,6 +2,7 @@ package GoodGenerator.Main;
 
 import GoodGenerator.Common.CommonProxy;
 import GoodGenerator.Items.MyMaterial;
+import GoodGenerator.Loader.FuelRecipeLoader;
 import GoodGenerator.Loader.Loaders;
 import GoodGenerator.Loader.RecipeLoader;
 import GoodGenerator.Tabs.MyTabs;
@@ -37,6 +38,7 @@ public final class GoodGenerator {
         proxy.init(event);
         Loaders.Register();
         RecipeLoader.RecipeLoad();
+        FuelRecipeLoader.RegisterFuel();
     }
     @Mod.EventHandler
     public static void postInit(FMLPostInitializationEvent event){
