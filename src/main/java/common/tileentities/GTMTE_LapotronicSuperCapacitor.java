@@ -200,8 +200,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					}
 					
 					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-					final IGregTechTileEntity currentTE =
-							thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+					final IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 					
 					// Tries to add TE as either of those kinds of hatches.
 					// The number is the texture index number for the texture that needs to be painted over the hatch texture
@@ -278,7 +277,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 		}
 
-		if(minCasingAmount > 0){
+		if(minCasingAmount > 0) {
 			formationChecklist = false;
 		}
 
@@ -287,38 +286,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		// Borosilicate glass after 5 are just recolours of 0
 		final int colourCorrectedMeta = firstGlassMeta > 5 ? 0 : firstGlassMeta;
 		for(int highestCapacitor = capacitors.length - 1; highestCapacitor >= 0; highestCapacitor--){
-			if(capacitors[highestCapacitor] > 0){
-				
-				
-				switch (highestCapacitor) {
-				case 0://For the empty/EV/IV caps, any BS glass works
-					break; 
-				case 1:
-					if(colourCorrectedMeta < highestCapacitor){
-						formationChecklist = false;
-					}
-					break;
-				case 2:
-					if(colourCorrectedMeta < highestCapacitor){
-						formationChecklist = false;
-					}
-					break;
-				case 3:
-					if(colourCorrectedMeta < highestCapacitor){
-						formationChecklist = false;
-					}
-					break;
-				case 4:
-					if(colourCorrectedMeta < highestCapacitor){
-						formationChecklist = false;
-					}
-					break;
-				case 5:
-					break;
-				case 6:
-					break;
-				}	
-				
+			if(capacitors[highestCapacitor] > 0 && formationChecklist == true) {
+				formationChecklist = checkGlassTier(colourCorrectedMeta, highestCapacitor);
 			}
 		}
 
@@ -354,28 +323,29 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		return tempCapacity;
 	}
 	
-	/*public boolean checkGlassTier(int colourCorrectedMeta, int highestCapacitor) {				
+	public boolean checkGlassTier(int colourCorrectedMeta, int highestCapacitor) {
+		Boolean check = true;
 		switch (highestCapacitor) {
 		case 0://For the empty/EV/IV caps, any BS glass works. The case is meta - 1
 			break; 
 		case 1:
-			if(colourCorrectedMeta < highestCapacitor){
-				return false;
+			if(colourCorrectedMeta < highestCapacitor) {
+				check = false;
 			}
 			break;
 		case 2:
-			if(colourCorrectedMeta < highestCapacitor){
-				return false;
+			if(colourCorrectedMeta < highestCapacitor) {
+				check = false;
 			}
 			break;
 		case 3:
-			if(colourCorrectedMeta < highestCapacitor){
-				return false;
+			if(colourCorrectedMeta < highestCapacitor) {
+				check = false;
 			}
 			break;
 		case 4:
-			if(colourCorrectedMeta < highestCapacitor){
-				return false;
+			if(colourCorrectedMeta < highestCapacitor) {
+				check = false;
 			}
 			break;
 		case 5:
@@ -383,14 +353,14 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		case 6:
 			break;
 		default:
-			return false;
+			check = false;
 		}
-		return true;//if it was already true, stay true
-	}*/
+		return check;//if it was already true, stay true
+	}
 		
 	public void calculateCapacity() {
 		capacity = BigInteger.ZERO;
-		for(int i = 0; i < capacitors.length; i++){	
+		for(int i = 0; i < capacitors.length; i++) {	
 			switch(i) {
 			case 0: capacity = capacity.add(BigInteger.valueOf(100000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
 			case 1: capacity = capacity.add(BigInteger.valueOf(1000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
