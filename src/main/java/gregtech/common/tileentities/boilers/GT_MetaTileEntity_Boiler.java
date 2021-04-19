@@ -201,7 +201,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     protected void produceSteam(int aAmount) {
         mExcessWater -= aAmount;
         if (mExcessWater < 0) {
-            int tWaterToConsume = -mExcessWater / GT_Values.STEAM_PER_WATER + 1;
+            int tWaterToConsume = -mExcessWater / GT_Values.STEAM_PER_WATER;
             mFluid.amount -= tWaterToConsume;
             mExcessWater += GT_Values.STEAM_PER_WATER * tWaterToConsume;
         }

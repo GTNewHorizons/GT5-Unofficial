@@ -20,10 +20,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.ConfigCategories.machineconfig;
 
-
+@SuppressWarnings("unused")
 public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
-    private static final String LPS_FMT = "%s L/s";
-    protected static final String DEFAULT_STR = "Default: ";
+    public static final String DEFAULT_STR = "Default: ";
+    public static final String LPS_FMT = "%s L/s";
     private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
             "gt.blockmachines.boiler.solar.desc.format",
             "Steam Power by the Sun%n" +
@@ -35,7 +35,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     protected int maxOutputPerSecond;
     protected int basicTemperatureMod = 5; // Base Celsius gain or loss
     protected int coolDownTicks;
-    private int mRunTime = 0;
+    private int mRunTimeTicks = 0;
 
     public GT_MetaTileEntity_Boiler_Solar(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, new String[0]);
@@ -44,9 +44,9 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
 
     protected void onConfigLoad() {
         final Configuration config = GregTech_API.sMachineFile.mConfig;
-        final String configCategory = machineconfig + ".SimpleSolarBoiler";
+        final String configCategory = machineconfig + ".boiler.solar.bronze";
 
-        final int defaultCalcificationTicks = 54000;
+        final int defaultCalcificationTicks = 1080000; // 15 hours
         final int defaultMinOutputPerSecond = 40;
         final int defaultMaxOutputPerSecond = 120;
         final int defaultCoolDownTicks = 45;
@@ -60,7 +60,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         maxOutputPerSecond = config.get(configCategory, "MaxOutputPerSecond", defaultMaxOutputPerSecond,
                 DEFAULT_STR + defaultMaxOutputPerSecond).getInt();
         coolDownTicks = config.get(configCategory, "CoolDownTicks", defaultCoolDownTicks,
-                "Number of ticks it takes to loose 1°C.\n" +
+                "Number of ticks it takes to lose 1°C.\n" +
                         DEFAULT_STR + defaultCoolDownTicks).getInt();
     }
 
@@ -72,6 +72,28 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     public GT_MetaTileEntity_Boiler_Solar(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         onConfigLoad();
+    }
+
+    /**
+     * for WAILA
+     */
+    public int getBasicOutput() {
+        return getMaxOutputPerSecond();
+    }
+
+    public int getMaxOutputPerSecond() {
+        return maxOutputPerSecond;
+    }
+
+    /**
+     * for WAILA
+     */
+    public int getCalcificationOutput() {
+        return getMinOutputPerSecond();
+    }
+
+    public int getMinOutputPerSecond() {
+        return minOutputPerSecond;
     }
 
     @Override
@@ -102,14 +124,6 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         return rTextures;
     }
 
-    protected long getMaxOutputPerSecond() {
-        return maxOutputPerSecond;
-    }
-
-    protected long getMinOutputPerSecond() {
-        return minOutputPerSecond;
-    }
-
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_Container_Boiler(aPlayerInventory, aBaseMetaTileEntity, getCapacity());
@@ -138,23 +152,26 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mRunTime", this.mRunTime);
+        aNBT.setInteger("mRunTime", mRunTimeTicks);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.mRunTime = aNBT.getInteger("mRunTime");
+        mRunTimeTicks = aNBT.getInteger("mRunTime");
     }
 
     @Override
     protected void produceSteam(int aAmount) {
         super.produceSteam(aAmount);
-        mRunTime++;
+        // produceSteam is getting called every 10 ticks
+        if (mRunTimeTicks > 0 && mRunTimeTicks < (Integer.MAX_VALUE - 10)) mRunTimeTicks += 10;
+        else mRunTimeTicks = Integer.MAX_VALUE; // Prevent Integer overflow wrap
     }
 
     @Override
     protected void pushSteamToInventories(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (mSteam == null || mSteam.amount == 0) return;
         pushSteamToSide(aBaseMetaTileEntity, aBaseMetaTileEntity.getFrontFacing());
     }
 
@@ -165,15 +182,15 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
 
     @Override
     protected int getProductionPerSecond() {
-        if (this.mTemperature < 100) {
+        if (mTemperature < 100) {
             return 0;
         }
-        if (mRunTime > calcificationTicks) {
+        if (mRunTimeTicks > calcificationTicks) {
             /* When reaching calcification ticks; discount the proportion of run-time spent on calcification
              *  from the maximum output per second, and return this or the minimum output per second
              */
             return Math.max(minOutputPerSecond,
-                    maxOutputPerSecond - (mRunTime - calcificationTicks) / calcificationTicks * maxOutputPerSecond);
+                    maxOutputPerSecond - (mRunTimeTicks - calcificationTicks) / calcificationTicks * maxOutputPerSecond);
         } else {
             return maxOutputPerSecond;
         }
@@ -244,16 +261,16 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                 .split("\\R");
     }
 
-    protected long getHeatCapacityPercent() {
-        return mTemperature * 100L / maxProgresstime();
+    public int getHeatCapacityPercent() {
+        return mTemperature * 100 / maxProgresstime();
     }
 
-    protected long getHotTimeSeconds() {
-        return mRunTime;
+    public int getHotTimeSeconds() {
+        return mRunTimeTicks / 20;
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Boiler_Solar(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new GT_MetaTileEntity_Boiler_Solar(mName, mTier, mDescriptionArray, mTextures);
     }
 }
