@@ -300,6 +300,11 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			mDynamoTunnelsTT.clear();
 		}
 
+		//Check if enough (more than 50%) non-empty caps
+		int emptyCheck = capacitors[5]/(capacitors[0] + capacitors[1] + capacitors[2] + capacitors[3] + capacitors[4] + capacitors[6]);
+		if (emptyCheck > 0.5)
+			formationChecklist = false;
+		
 		// Calculate total capacity
 		calculateCapacity();
 		
@@ -355,7 +360,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		default:
 			check = false;
 		}
-		return check;//if it was already true, stay true
+		return check; //Return false if it fails the check, otherwise true
 	}
 		
 	public void calculateCapacity() {
