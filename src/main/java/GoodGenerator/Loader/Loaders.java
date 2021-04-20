@@ -16,6 +16,9 @@ public class Loaders {
     public static final Item wrappedUraniumIngot = new MyItems("wrappedUraniumIngot",GoodGenerator.GG);
     public static final Item highDensityUraniumNugget = new MyItems("highDensityUraniumNugget",GoodGenerator.GG);
     public static final Item highDensityUranium = new MyItems("highDensityUranium",GoodGenerator.GG);
+    public static final Item wrappedThoriumIngot = new MyItems("wrappedThoriumIngot",GoodGenerator.GG);
+    public static final Item highDensityThoriumNugget = new MyItems("highDensityThoriumNugget",GoodGenerator.GG);
+    public static final Item highDensityThorium = new MyItems("highDensityThorium",GoodGenerator.GG);
 
     public static final Block MAR_Casing = new Casing("MAR_Casing",new String[]{
             GoodGenerator.MOD_ID+":MAR_Casing",
@@ -28,6 +31,9 @@ public class Loaders {
         GameRegistry.registerItem(wrappedUraniumIngot,"wrappedUraniumIngot",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget,"highDensityUraniumNugget",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUranium,"highDensityUranium",GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(wrappedThoriumIngot,"wrappedThoriumIngot",GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(highDensityThoriumNugget,"highDensityThoriumNugget",GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(highDensityThorium,"highDensityThorium",GoodGenerator.MOD_ID);
         Loaders.MAR = new MultiNqGenerator(12732,"NaG","Large Naquadah Reactor").getStackForm(1L);
     }
 }

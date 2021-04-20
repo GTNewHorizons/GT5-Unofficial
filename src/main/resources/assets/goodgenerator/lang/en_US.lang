@@ -5,6 +5,9 @@ item.radiationProtectionPlate.name=Radiation Protection Plate
 item.wrappedUraniumIngot.name=Wrapped Uranium Ingot
 item.highDensityUraniumNugget.name=High Density Uranium Nugget
 item.highDensityUranium.name=High Density Uranium
+item.wrappedThoriumIngot.name=Wrapped Thorium Ingot
+item.highDensityThoriumNugget.name=High Density Thorium Nugget
+item.highDensityThorium.name=High Thorium Uranium
 
 itemGroup.Good Generator=Good Generator
 
