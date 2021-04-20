@@ -16,6 +16,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -51,6 +52,19 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
 
         ArrayList<FluidStack> tFluids = getStoredFluids();
         Collection<GT_Recipe> tRecipes = MyRecipeAdder.instance.NqGFuels.mRecipeList;
+
+        for (int i = 0; i < tFluids.size() - 1; i++) {
+            for (int j = i + 1; j < tFluids.size(); j++) {
+                if (GT_Utility.areFluidsEqual(tFluids.get(i), tFluids.get(j))) {
+                    if ((tFluids.get(i)).amount >= (tFluids.get(j)).amount) {
+                        tFluids.remove(j--);
+                    } else {
+                        tFluids.remove(i--);
+                        break;
+                    }
+                }
+            }
+        }
 
         FluidStack f1=null,f2=null;
         float booster = 1.0f;
