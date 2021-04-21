@@ -2,8 +2,8 @@ buildscript {
     repositories {
         mavenCentral()
         maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            name = "gt"
+            url = "https://gregtech.overminddl1.com/"
         }
         maven {
             name = "sonatype"
@@ -18,7 +18,6 @@ buildscript {
         classpath 'com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT'
     }
 }
-
 apply plugin: 'forge'
 apply plugin: 'idea'
 apply plugin: 'java'
@@ -32,12 +31,15 @@ file "build.properties" withReader {
 }
 
 version = "${config.gt.version}"
-group= "gregtech"
+group = "gregtech"
 archivesBaseName = "gregtech"
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-compileJava.options.encoding("UTF-8")
+allprojects {
+    apply plugin: 'java'
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    compileJava.options.encoding("UTF-8")
+}
 
 minecraft {
     version = "${config.minecraft.version}-${config.forge.version}"
@@ -48,8 +50,8 @@ idea.module.inheritOutputDirs = true
 
 repositories {
     maven {
-        name = 'Forge'
-        url = 'http://files.minecraftforge.net/maven'
+        name = "gt"
+        url = "https://gregtech.overminddl1.com/"
     }
     maven {
         name = "chickenbones"
@@ -67,7 +69,7 @@ repositories {
         name = 'DVS1 Maven FS'
         url = 'http://dvs1.progwml6.com/files/maven'
     }
-    
+
     maven { // AppleCore
         url = "http://www.ryanliptak.com/maven/"
     }
@@ -75,17 +77,16 @@ repositories {
         name = 'UsrvDE'
         url = "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/"
     }
-	ivy {
+    ivy {
         name = 'gtnh_download_source_stupid_underscore_typo'
         artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]_[revision].[ext]")
     }
 
-	ivy {
+    ivy {
         name = 'gtnh_download_source'
         artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]")
     }
 }
-
 dependencies {
     //Hard dep to start (Without this, it wont compile nor start)
     compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
@@ -97,14 +98,14 @@ dependencies {
     api "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
     api "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
     api "com.enderio.core:EnderCore:${config.enderiocore.version}:dev"
-    api ("com.enderio:EnderIO:${config.enderio.version}:dev"){
+    api("com.enderio:EnderIO:${config.enderio.version}:dev") {
         transitive = false
     }
 
     //Soft Depths (Without this, it wont compile, not needed as library)
     compileOnly "eu.usrv:YAMCore:${config.minecraft.version}-${config.yamcore.version}:deobf"
     compileOnly "tconstruct:TConstruct:${config.minecraft.version}-${config.tconstruct.version}:deobf"
-	compileOnly "codechicken:Translocator:${config.minecraft.version}-${config.translocators.version}:dev"
+    compileOnly "codechicken:Translocator:${config.minecraft.version}-${config.translocators.version}:dev"
     compileOnly "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}:dev"
     compileOnly files("libs/Galacticraft-API-1.7-${config.gc.version}.jar")
     compileOnly files("libs/GalacticraftCore-Dev-${config.gc.version}.jar")
@@ -116,40 +117,40 @@ dependencies {
 }
 
 processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+        {
+            // this will ensure that this task is redone when the versions change.
+            inputs.property "version", project.version
+            inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-	exclude '**/Thumbs.db'
-}
+            // replace stuff in mcmod.info, nothing else
+            from(sourceSets.main.resources.srcDirs) {
+                include 'mcmod.info'
+
+                // replace version and mcversion
+                expand 'version': project.version, 'mcversion': project.minecraft.version
+            }
+
+            // copy everything else, that's not the mcmod.info
+            from(sourceSets.main.resources.srcDirs) {
+                exclude 'mcmod.info'
+            }
+            exclude '**/Thumbs.db'
+        }
 
 task sourceJar(type: Jar) {
     from sourceSets.main.allSource
-    classifier = 'sources'
+    archiveClassifier.set('sources')
 }
 
 task devJar(type: Jar) {
     from sourceSets.main.output
-    classifier = 'dev'
+    archiveClassifier.set('dev')
 }
 
 task apiJar(type: Jar) {
     from sourceSets.main.allSource
     include("gregtech/api/**")
-    classifier = 'api'
+    archiveClassifier.set('api')
 }
 
 artifacts {
@@ -158,17 +159,17 @@ artifacts {
     archives(apiJar)
 }
 
-task signJar(dependsOn: 'reobf'){
+task signJar(dependsOn: 'reobf') {
     doLast {
         ant.signjar(
-            destDir: jar.destinationDir,
-            jar: jar.getArchivePath(),
-            alias: findProperty('keyStoreAlias') ?: '',
-            keystore: findProperty('keyStore') ?: '',
-            storepass: findProperty('keyStorePass') ?: '',
-            digestalg: findProperty('signDigestAlg') ?: '',
-            tsaurl: findProperty('signTSAurl') ?: '',
-            verbose: true
-            )
+                destDir: jar.getDestinationDirectory(),
+                jar: jar.getArchivePath(),
+                alias: findProperty('keyStoreAlias') ?: '',
+                keystore: findProperty('keyStore') ?: '',
+                storepass: findProperty('keyStorePass') ?: '',
+                digestalg: findProperty('signDigestAlg') ?: '',
+                tsaurl: findProperty('signTSAurl') ?: '',
+                verbose: true
+        )
     }
 }
