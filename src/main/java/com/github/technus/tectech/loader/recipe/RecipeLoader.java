@@ -91,16 +91,15 @@ public class RecipeLoader implements Runnable {
                         'E', ItemList.Hull_IV});
 
         //Data Bank
-        RA.addAssemblylineRecipe(ItemList.Hatch_DataAccess_EV.get(1), 20000, new ItemStack[]{
+        RA.addAssemblylineRecipe(ItemList.Hatch_DataAccess_EV.get(1), 20000, new Object[]{
                 CustomItemList.Machine_Multi_Switch.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                new Object[]{OrePrefixes.circuit.get(Materials.Master), 2},
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
         }, new FluidStack[]{
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                 Materials.Hydrogen.getGas(1000),
         }, CustomItemList.Machine_Multi_DataBank.get(1), 12000, 14000);
-        //CustomItemList.Machine_Multi_DataBank
 
         //Bucks
         //RA.addAssemblerRecipe(CustomItemList.)
