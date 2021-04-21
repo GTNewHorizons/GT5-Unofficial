@@ -145,7 +145,7 @@ public class RecipeLoader {
         );
 
         GT_Values.RA.addCompressorRecipe(
-                new ItemStack(Loaders.highDensityThoriumNugget),
+                new ItemStack(Loaders.highDensityThoriumNugget,9),
                 new ItemStack(Loaders.highDensityThorium),
                 400,
                 120
