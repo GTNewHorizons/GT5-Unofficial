@@ -66,36 +66,28 @@ public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boil
     }
 
     protected class Config extends GT_MetaTileEntity_Boiler_Solar.Config {
-        private static final String localCategory = "boiler.solar.steel";
-        private static final int defaultMinOutputPerSecond = 120;
-        private static final int defaultMaxOutputPerSecond = 360;
-        private static final int defaultCoolDownTicks = 75;
-        private static final String defaultCoolDownTicksComment = "Number of ticks it takes to loose 1°C (Cools down slower than a normal boiler).\n";
 
         @Override
         protected String getConfigCategory() {
-            return machineconfig + "." + localCategory;
+            return machineconfig + ".boiler.solar.steel";
         }
 
         @Override
-        protected int getDefaultMinOutputPerSecond() {
-            return defaultMinOutputPerSecond;
+        protected int getCoolDownTicks() {
+            return get("CoolDownTicks", 75,
+                    "Number of ticks it takes to loose 1°C (Cools down slower than a normal boiler).");
         }
 
         @Override
-        protected int getDefaultMaxOutputPerSecond() {
-            return defaultMaxOutputPerSecond;
+        protected int getMaxOutputPerSecond() {
+            return get("MaxOutputPerSecond", 360);
         }
 
         @Override
-        protected int getDefaultCoolDownTicks() {
-            return defaultCoolDownTicks;
+        protected int getMinOutputPerSecond() {
+            return get("MinOutputPerSecond", 120);
         }
 
-        @Override
-        protected String getDefaultCoolDownTicksComment() {
-            return defaultCoolDownTicksComment;
-        }
     }
 
 }

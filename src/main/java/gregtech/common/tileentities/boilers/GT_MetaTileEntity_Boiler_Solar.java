@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.boilers;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -15,12 +14,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import static gregtech.api.GregTech_API.sMachineFile;
 import static gregtech.api.enums.ConfigCategories.machineconfig;
 
-@SuppressWarnings("unused")
 public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     public static final String LPS_FMT = "%s L/s";
     private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
@@ -54,9 +52,13 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
 
     /**
      * for WAILA
+     *
+     * @deprecated replaced by {@link #getMaxOutputPerSecond()}
+     * TODO: Update WAILAPlugins to use getMaxOutputPerSecond() instead
      */
+    @Deprecated
     public int getBasicOutput() {
-        return getMaxOutputPerSecond();
+        return (int) (getMaxOutputPerSecond() * 1.25F);
     }
 
     public int getMaxOutputPerSecond() {
@@ -65,13 +67,14 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
 
     /**
      * for WAILA
+     *
+     * @deprecated replaced by {@link #getProductionPerSecond()}
+     * TODO: Update WAILAPlugins to use getProductionPerSecond() instead
      */
+    @SuppressWarnings("unused")
+    @Deprecated
     public int getCalcificationOutput() {
-        return getMinOutputPerSecond();
-    }
-
-    public int getMinOutputPerSecond() {
-        return minOutputPerSecond;
+        return (int) (getProductionPerSecond() * 1.25F);
     }
 
     @Override
@@ -80,6 +83,10 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                 GT_Utility.formatNumbers(getMaxOutputPerSecond()),
                 GT_Utility.formatNumbers(getMinOutputPerSecond()))
                 .split("\\R");
+    }
+
+    public int getMinOutputPerSecond() {
+        return minOutputPerSecond;
     }
 
     @Override
@@ -143,7 +150,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     protected void produceSteam(int aAmount) {
         super.produceSteam(aAmount);
         // produceSteam is getting called every 10 ticks
-        if (mRunTimeTicks > 0 && mRunTimeTicks < (Integer.MAX_VALUE - 10)) mRunTimeTicks += 10;
+        if (mRunTimeTicks >= 0 && mRunTimeTicks < (Integer.MAX_VALUE - 10)) mRunTimeTicks += 10;
         else mRunTimeTicks = Integer.MAX_VALUE; // Prevent Integer overflow wrap
     }
 
@@ -159,7 +166,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    protected int getProductionPerSecond() {
+    public int getProductionPerSecond() {
         if (mTemperature < 100) {
             return 0;
         }
@@ -168,7 +175,8 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
              *  from the maximum output per second, and return this or the minimum output per second
              */
             return Math.max(minOutputPerSecond,
-                    maxOutputPerSecond - (mRunTimeTicks - calcificationTicks) / calcificationTicks * maxOutputPerSecond);
+                    maxOutputPerSecond
+                            - maxOutputPerSecond * (mRunTimeTicks - calcificationTicks) / calcificationTicks);
         } else {
             return maxOutputPerSecond;
         }
@@ -253,66 +261,41 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     protected class Config {
-        public static final String DEFAULT_STR = "Default: ";
-        private static final String localCategory = "boiler.solar.bronze";
-        private static final int defaultCalcificationTicks = 1080000; // 15 hours
-        private static final String defaultCalcificationTicksComment =
-                "Number of run-time ticks before boiler starts calcification.\n" +
-                        "100% calcification and minimal output will be reached at 2 times this.\n";
-        private static final int defaultMinOutputPerSecond = 40;
-        private static final String defaultMinOutputPerSecondComment = "";
-        private static final int defaultMaxOutputPerSecond = 120;
-        private static final String defaultMaxOutputPerSecondComment = "";
-        private static final int defaultCoolDownTicks = 45;
-        private static final String defaultCoolDownTicksComment = "Number of ticks it takes to lose 1°C.\n";
-        final Configuration configuration = GregTech_API.sMachineFile.mConfig;
-        final String configCategory = getConfigCategory();
+
+        protected int get(final String key, final int defaultValue, final String... comments) {
+            final StringBuilder comment = new StringBuilder();
+            if (comments.length > 0) comment.append(String.join("\n", comments)).append("\n");
+            comment.append("Default: ").append(defaultValue);
+            return sMachineFile.mConfig.get(getConfigCategory(), key, defaultValue, comment.toString()).getInt();
+        }
+
+        protected int getCalcificationTicks() {
+            return get("CalcificationTicks", 1080000,
+                    "Number of run-time ticks before boiler starts calcification.",
+                    "100% calcification and minimal output will be reached at 2 times this.");
+        }
 
         protected String getConfigCategory() {
-            return machineconfig + "." + localCategory;
+            return machineconfig + ".boiler.solar.bronze";
+        }
+
+        protected int getCoolDownTicks() {
+            return get("CoolDownTicks", 45, "Number of ticks it takes to lose 1°C.");
+        }
+
+        protected int getMaxOutputPerSecond() {
+            return get("MaxOutputPerSecond", 120);
+        }
+
+        protected int getMinOutputPerSecond() {
+            return get("MinOutputPerSecond", 40);
         }
 
         protected void onConfigLoad() {
-            calcificationTicks = configuration.get(configCategory, "CalcificationTicks", getDefaultCalcificationTicks(),
-                    getDefaultCalcificationTicksComment() + DEFAULT_STR + getDefaultCalcificationTicks()).getInt();
-            minOutputPerSecond = configuration.get(configCategory, "MinOutputPerSecond", getDefaultMinOutputPerSecond(),
-                    getDefaultMinOutputPerSecondComment() + DEFAULT_STR + getDefaultMinOutputPerSecond()).getInt();
-            maxOutputPerSecond = configuration.get(configCategory, "MaxOutputPerSecond", getDefaultMaxOutputPerSecond(),
-                    getDefaultMaxOutputPerSecondComment() + DEFAULT_STR + getDefaultMaxOutputPerSecond()).getInt();
-            coolDownTicks = configuration.get(configCategory, "CoolDownTicks", getDefaultCoolDownTicks(),
-                    getDefaultCoolDownTicksComment() + DEFAULT_STR + getDefaultCoolDownTicks()).getInt();
-        }
-
-        protected int getDefaultCalcificationTicks() {
-            return defaultCalcificationTicks;
-        }
-
-        protected String getDefaultCalcificationTicksComment() {
-            return defaultCalcificationTicksComment;
-        }
-
-        protected int getDefaultMinOutputPerSecond() {
-            return defaultMinOutputPerSecond;
-        }
-
-        protected String getDefaultMinOutputPerSecondComment() {
-            return defaultMinOutputPerSecondComment;
-        }
-
-        protected int getDefaultMaxOutputPerSecond() {
-            return defaultMaxOutputPerSecond;
-        }
-
-        protected String getDefaultMaxOutputPerSecondComment() {
-            return defaultMaxOutputPerSecondComment;
-        }
-
-        protected int getDefaultCoolDownTicks() {
-            return defaultCoolDownTicks;
-        }
-
-        protected String getDefaultCoolDownTicksComment() {
-            return defaultCoolDownTicksComment;
+            calcificationTicks = getCalcificationTicks();
+            minOutputPerSecond = getMinOutputPerSecond();
+            maxOutputPerSecond = getMaxOutputPerSecond();
+            coolDownTicks = getCoolDownTicks();
         }
     }
 }
