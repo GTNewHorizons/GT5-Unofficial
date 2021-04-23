@@ -40,7 +40,7 @@ public class Casing extends Block {
         GregTech_API.registerMachineBlock(this, -1);
     }
 
-    public Casing(String name, String[] texture, CreativeTabs Tab,Material material){
+    public Casing(String name, String[] texture, Material material){
         super(material);
         this.setHardness(9.0F);
         this.setResistance(5.0F);

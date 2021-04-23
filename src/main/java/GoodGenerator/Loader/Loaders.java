@@ -1,6 +1,7 @@
 package GoodGenerator.Loader;
 
 import GoodGenerator.Blocks.RegularBlock.Casing;
+import GoodGenerator.Blocks.RegularBlock.Frame;
 import GoodGenerator.Blocks.TEs.MultiNqGenerator;
 import GoodGenerator.Items.MyItemBlocks;
 import GoodGenerator.Items.MyItems;
@@ -21,12 +22,16 @@ public class Loaders {
     public static final Item highDensityThorium = new MyItems("highDensityThorium",GoodGenerator.GG);
 
     public static final Block MAR_Casing = new Casing("MAR_Casing",new String[]{
-            GoodGenerator.MOD_ID+":MAR_Casing",
+            GoodGenerator.MOD_ID+":MAR_Casing"
+    });
+    public static final Block radiationProtectionSteelFrame = new Frame("radiationProtectionSteelFrame",new String[]{
+            GoodGenerator.MOD_ID+":radiationProtectionSteelFrame"
     });
     public static ItemStack MAR;
 
     public static void Register(){
         GameRegistry.registerBlock(MAR_Casing, MyItemBlocks.class,"MAR_Casing");
+        GameRegistry.registerBlock(radiationProtectionSteelFrame,MyItemBlocks.class,"radiationProtectionSteelFrame");
         GameRegistry.registerItem(radiationProtectionPlate,"radiationProtectionPlate",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot,"wrappedUraniumIngot",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget,"highDensityUraniumNugget",GoodGenerator.MOD_ID);

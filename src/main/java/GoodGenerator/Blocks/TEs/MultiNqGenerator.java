@@ -1,9 +1,14 @@
 package GoodGenerator.Blocks.TEs;
 
-import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.Loaders;
 import GoodGenerator.Main.GoodGenerator;
 import GoodGenerator.util.MyRecipeAdder;
+import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
+import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
+import com.github.technus.tectech.mechanics.structure.StructureDefinition;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -12,27 +17,129 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
+
+public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
     @SideOnly(Side.CLIENT)
     protected String textureNames;
     protected String name;
+    private IStructureDefinition<MultiNqGenerator> multiDefinition = null;
+    private int ticker = 0;
+
+    @Override
+    public void construct(ItemStack itemStack, boolean hintsOnly) {
+        structureBuild_EM(name, 3,7,0, hintsOnly, itemStack);
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack itemStack) {
+        return new String[]{
+                "6x Tungstensteel Pipe Casing",
+                "48x Field Restricting Casing",
+                "36x Radiation Protection Steel Frame Box",
+                "At least 77x Radiation Proof Machine Casing",
+                "1~3x Input Hatch",
+                "0~1x Output Hatch",
+                "1x Maintenance Hatch",
+                "1x Dynamo Hatch"
+        };
+    }
+
+    public final boolean addToGeneratorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex){
+        if (aTileEntity == null) {
+            return false;
+        } else {
+            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity == null) {
+                return false;
+            } else {
+                if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
+                    ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                }
+                if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+                    return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input)aMetaTileEntity);
+                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+                    return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output)aMetaTileEntity);
+                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
+                    return this.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo)aMetaTileEntity);
+                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
+                    return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
+                    return this.eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti)aMetaTileEntity);
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+
+    @Override
+    public IStructureDefinition<MultiNqGenerator> getStructure_EM() {
+        if(multiDefinition == null) {
+            multiDefinition = StructureDefinition
+                    .<MultiNqGenerator>builder()
+                    .addShape(name,
+                            transpose(new String[][]{
+                                    {"AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA"},
+                                    {"N     N","       ","  CCC  ","  CPC  ","  CCC  ","       ","N     N"},
+                                    {"N     N","       ","  CCC  ","  CPC  ","  CCC  ","       ","N     N"},
+                                    {"N     N","       ","  CCC  ","  CPC  ","  CCC  ","       ","N     N"},
+                                    {"N     N","       ","  CCC  ","  CPC  ","  CCC  ","       ","N     N"},
+                                    {"AAAAAAA","A     A","A CCC A","A CPC A","A CCC A","A     A","AAAAAAA"},
+                                    {"ANNNNNA","N     N","N CCC N","N CPC N","N CCC N","N     N","ANNNNNA"},
+                                    {"XXX~XXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX"},
+                            })
+                    ).addElement(
+                            'X',
+                            ofChain(
+                                    ofHatchAdder(
+                                            MultiNqGenerator::addToGeneratorList, 44,
+                                            GregTech_API.sBlockCasings3, 12
+                                    ),
+                                    ofBlock(
+                                            GregTech_API.sBlockCasings3, 12
+                                    )
+                            )
+                    ).addElement(
+                            'A',
+                            ofBlockAnyMeta(
+                                    GregTech_API.sBlockCasings3, 12
+                            )
+                    ).addElement(
+                            'N',
+                            ofBlockAnyMeta(
+                                    Loaders.radiationProtectionSteelFrame
+                            )
+                    ).addElement(
+                            'C',
+                            ofBlockAnyMeta(
+                                    Loaders.MAR_Casing
+                            )
+                    ).addElement(
+                            'P',
+                            ofBlockAnyMeta(
+                                    GregTech_API.sBlockCasings2,15
+                            )
+                    )
+                    .build();
+        }
+        return multiDefinition;
+    }
 
     public MultiNqGenerator(String name){super(name);}
 
@@ -48,7 +155,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    public boolean checkRecipe_EM(ItemStack aStack) {
 
         ArrayList<FluidStack> tFluids = getStoredFluids();
         Collection<GT_Recipe> tRecipes = MyRecipeAdder.instance.NqGFuels.mRecipeList;
@@ -112,18 +219,18 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
                         depleteInput(f1);
                     if(f2 != null)
                         depleteInput(f2);
-                    if (mRuntime == 0 || mRuntime%lasting == 0){
+                    if (ticker == 0 || ticker%lasting == 0){
                         depleteInput(recipeFluid);
                         this.mOutputFluids = new FluidStack[]{recipeFluidOut};
                     }
                     else this.mOutputFluids = null;
                     if (tFluids.contains(Materials.LiquidAir.getFluid(120)) && tFluids.get(tFluids.indexOf(Materials.LiquidAir.getFluid(120))).amount >= 120){
                         depleteInput(Materials.LiquidAir.getFluid(120));
-                        addEnergyOutput((long)(outputEU*times*booster));
+                        addEnergyOutput_EM((long)(outputEU*booster),times);
                         this.mEUt = (int)(outputEU*times*booster);
                     }
                     else{
-                        addEnergyOutput(0);
+                        addEnergyOutput_EM(0,0);
                         this.mEUt = 0;
                     }
                     this.mProgresstime = 1;
@@ -137,42 +244,22 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
-        int casingAmount = 0;
-        for (int x = -2; x <= 2; x++) {
-            for (int z = -2; z <= 2; z++) {
-                for (int y = 0; y <= 8; y++) {
-                    if (x + xDir == 0 && y == 0 && z + zDir == 0) {
-                        continue;
-                    }
-                    IGregTechTileEntity tileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(x + xDir, y, z + zDir);
-                    Block block = aBaseMetaTileEntity.getBlockOffset(x + xDir, y, z + zDir);
-
-                    if (y != 0 && y != 8 && x != -2 && x != 2 && z != -2 && z != 2) {
-                        if (block == Blocks.air) continue;
-                        else return false;
-                    }
-
-                    if (y != 0){
-                        if(block == Loaders.MAR_Casing) continue;
-                        else return false;
-                    }
-
-                    if (!addInputToMachineList(tileEntity, 44) && !addOutputToMachineList(tileEntity, 44)
-                            && !addMaintenanceToMachineList(tileEntity, 44)
-                            && !addDynamoToMachineList(tileEntity,44)) {
-                        if (block == GregTech_API.sBlockCasings3 && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 12) {
-                            casingAmount++;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-            }
+    public boolean onRunningTick(ItemStack stack) {
+        if (getBaseMetaTileEntity().isAllowedToWork()) {
+            mRuntime ++;
+            ticker ++;
         }
-        return casingAmount >= 10 && mDynamoHatches.size() == 1 ;
+        if (!getBaseMetaTileEntity().isActive()) {
+            mRuntime = 0;
+            ticker = 0;
+        }
+        if (ticker > 100000000) ticker = 0;
+        return true;
+    }
+
+    @Override
+    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        return structureCheck_EM(name, 3, 7, 0) && mMaintenanceHatches.size() == 1;
     }
 
     @Override
@@ -210,15 +297,15 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
                       .addInfo("Input molten naquadria or enriched naquadah.")
                       .addInfo("Consume coolant 50mb/t to increase the efficiency:")
                       .addInfo("IC2 Coolant 105%, Super Coolant 150%, Cryotheum 275%")
-                      .addInfo("Consume excited liquid to increase the output voltage:")
-                      .addInfo("molten caesium | 2x output | 9mb/t ")
-                      .addInfo("molten uranium-235 | 3x output | 9mb/t")
-                      .addInfo("molten naquadah | 4x output | 1mb/t")
+                      .addInfo("Consume excited liquid to increase the output ampere:")
+                      .addInfo("molten caesium | 2x ampere | 9mb/t ")
+                      .addInfo("molten uranium-235 | 3x ampere | 9mb/t")
+                      .addInfo("molten naquadah | 4x ampere | 1mb/t")
                       .addSeparator()
-                      .beginStructureBlock(5, 9, 5, true)
+                      .beginStructureBlock(7, 8, 7, true)
                       .addController("Front bottom")
-                      .addOtherStructurePart("Radiation Proof Machine Casing","Bottom, at least 10")
-                      .addOtherStructurePart("Field Restricting Casing Block","The rest part of the machine")
+                      .addInfo("The structure is too complex!")
+                      .addInfo("Follow the TecTech blueprint to build the main structure.")
                       .addEnergyHatch("Any bottom layer casing, only accept ONE!")
                       .addInputHatch("Any bottom layer casing")
                       .addOutputHatch("Any bottom layer casing")
@@ -240,4 +327,20 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiBlockBase {
         }
         return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[44]};
     }
+
+    @Override
+    public List<GT_MetaTileEntity_Hatch_Energy> getVanillaEnergyHatches() {
+        return this.mEnergyHatches;
+    }
+
+    @Override
+    public List<GT_MetaTileEntity_Hatch_EnergyTunnel> getTecTechEnergyTunnels() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<GT_MetaTileEntity_Hatch_EnergyMulti> getTecTechEnergyMultis() {
+        return new ArrayList<>();
+    }
+
 }

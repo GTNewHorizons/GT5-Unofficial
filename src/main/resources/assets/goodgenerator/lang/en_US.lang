@@ -1,5 +1,6 @@
 
-MAR_Casing.0.name=Field Restricting Casing Block
+MAR_Casing.0.name=Field Restricting Casing
+radiationProtectionSteelFrame.0.name=Radiation Protection Steel Frame Box
 
 item.radiationProtectionPlate.name=Radiation Protection Plate
 item.wrappedUraniumIngot.name=Wrapped Uranium Ingot
@@ -7,7 +8,7 @@ item.highDensityUraniumNugget.name=High Density Uranium Nugget
 item.highDensityUranium.name=High Density Uranium
 item.wrappedThoriumIngot.name=Wrapped Thorium Ingot
 item.highDensityThoriumNugget.name=High Density Thorium Nugget
-item.highDensityThorium.name=High Thorium Uranium
+item.highDensityThorium.name=High Density Thorium
 
 itemGroup.Good Generator=Good Generator
 

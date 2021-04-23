@@ -1,9 +1,7 @@
 package GoodGenerator.Loader;
 
 import GoodGenerator.Items.MyMaterial;
-import com.github.bartimaeusnek.bartworks.system.material.BW_GT_MaterialReference;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
@@ -61,6 +59,19 @@ public class RecipeLoader {
                 null,
                 new ItemStack(Loaders.MAR_Casing),
                 400,
+                1920
+        );
+
+        //LNR Frame
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        GT_OreDictUnificator.get(OrePrefixes.stickLong,Materials.NaquadahAlloy,8),
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.HSSE,4),
+                        GT_Utility.getIntegratedCircuit(24)
+                },
+                null,
+                new ItemStack(Loaders.radiationProtectionSteelFrame),
+                320,
                 1920
         );
 
@@ -176,7 +187,7 @@ public class RecipeLoader {
 
         GT_Values.RA.addCentrifugeRecipe(
                 GT_Utility.getIntegratedCircuit(1),null,
-                MyMaterial.uraniumBasedLiquidFuelDepleted.getFluidOrGas(1000),
+                MyMaterial.thoriumBasedLiquidFuelDepleted.getFluidOrGas(1000),
                 null,
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Lutetium,8),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Lutetium,8),
