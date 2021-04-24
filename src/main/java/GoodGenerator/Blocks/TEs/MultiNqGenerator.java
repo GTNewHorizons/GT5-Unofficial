@@ -40,6 +40,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     protected String name;
     private IStructureDefinition<MultiNqGenerator> multiDefinition = null;
     private int ticker = 0;
+    private int leftEnergy = 0;
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
@@ -226,7 +227,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                     else this.mOutputFluids = null;
                     if (tFluids.contains(Materials.LiquidAir.getFluid(120)) && tFluids.get(tFluids.indexOf(Materials.LiquidAir.getFluid(120))).amount >= 120){
                         depleteInput(Materials.LiquidAir.getFluid(120));
-                        addEnergyOutput_EM((long)(outputEU*booster),times);
+                        addAutoEnergy((long)(outputEU*times*booster));
                         this.mEUt = (int)(outputEU*times*booster);
                     }
                     else{
@@ -243,6 +244,31 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
         return false;
     }
 
+    public void addAutoEnergy(long outputPower){
+        if (this.eDynamoMulti.size() > 0)
+            for (GT_MetaTileEntity_Hatch tHatch : this.eDynamoMulti){
+              long voltage = tHatch.maxEUOutput();
+              long power = voltage * tHatch.maxAmperesOut();
+              long outputAmperes;
+              if (outputPower > power) doExplosion(4 * GT_Utility.getTier(power));
+              leftEnergy += outputPower;
+              outputAmperes = leftEnergy / voltage;
+              leftEnergy -= outputAmperes * voltage;
+              addEnergyOutput_EM(voltage ,outputAmperes);
+            }
+        if (this.mDynamoHatches.size() > 0)
+            for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches){
+                long voltage = tHatch.maxEUOutput();
+                long power = voltage * tHatch.maxAmperesOut();
+                long outputAmperes;
+                if (outputPower > power) doExplosion(4 * GT_Utility.getTier(power));
+                leftEnergy += outputPower;
+                outputAmperes = leftEnergy / voltage;
+                leftEnergy -= outputAmperes * voltage;
+                addEnergyOutput_EM(voltage ,outputAmperes);
+            }
+    }
+
     @Override
     public boolean onRunningTick(ItemStack stack) {
         if (getBaseMetaTileEntity().isAllowedToWork()) {
@@ -252,6 +278,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
         if (!getBaseMetaTileEntity().isActive()) {
             mRuntime = 0;
             ticker = 0;
+            leftEnergy = 0;
         }
         if (ticker > 100000000) ticker = 0;
         return true;
@@ -259,7 +286,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(name, 3, 7, 0) && mMaintenanceHatches.size() == 1;
+        return structureCheck_EM(name, 3, 7, 0) && mMaintenanceHatches.size() == 1 && mDynamoHatches.size() + eDynamoMulti.size() == 1;
     }
 
     @Override
@@ -297,10 +324,10 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                       .addInfo("Input molten naquadria or enriched naquadah.")
                       .addInfo("Consume coolant 50mb/t to increase the efficiency:")
                       .addInfo("IC2 Coolant 105%, Super Coolant 150%, Cryotheum 275%")
-                      .addInfo("Consume excited liquid to increase the output ampere:")
-                      .addInfo("molten caesium | 2x ampere | 9mb/t ")
-                      .addInfo("molten uranium-235 | 3x ampere | 9mb/t")
-                      .addInfo("molten naquadah | 4x ampere | 1mb/t")
+                      .addInfo("Consume excited liquid to increase the output power:")
+                      .addInfo("molten caesium | 2x power | 9mb/t ")
+                      .addInfo("molten uranium-235 | 3x power | 9mb/t")
+                      .addInfo("molten naquadah | 4x power | 1mb/t")
                       .addSeparator()
                       .beginStructureBlock(7, 8, 7, true)
                       .addController("Front bottom")
