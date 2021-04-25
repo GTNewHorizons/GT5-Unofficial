@@ -20,6 +20,9 @@ public class Loaders {
     public static final Item wrappedThoriumIngot = new MyItems("wrappedThoriumIngot",GoodGenerator.GG);
     public static final Item highDensityThoriumNugget = new MyItems("highDensityThoriumNugget",GoodGenerator.GG);
     public static final Item highDensityThorium = new MyItems("highDensityThorium",GoodGenerator.GG);
+    public static final Item wrappedPlutoniumIngot = new MyItems("wrappedPlutoniumIngot",GoodGenerator.GG);
+    public static final Item highDensityPlutoniumNugget = new MyItems("highDensityPlutoniumNugget",GoodGenerator.GG);
+    public static final Item highDensityPlutonium = new MyItems("highDensityPlutonium",GoodGenerator.GG);
 
     public static final Block MAR_Casing = new Casing("MAR_Casing",new String[]{
             GoodGenerator.MOD_ID+":MAR_Casing"
@@ -39,6 +42,9 @@ public class Loaders {
         GameRegistry.registerItem(wrappedThoriumIngot,"wrappedThoriumIngot",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityThoriumNugget,"highDensityThoriumNugget",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityThorium,"highDensityThorium",GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(wrappedPlutoniumIngot,"wrappedPlutoniumIngot",GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(highDensityPlutoniumNugget,"highDensityPlutoniumNugget",GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(highDensityPlutonium,"highDensityPlutonium",GoodGenerator.MOD_ID);
         Loaders.MAR = new MultiNqGenerator(12732,"NaG","Large Naquadah Reactor").getStackForm(1L);
     }
 }

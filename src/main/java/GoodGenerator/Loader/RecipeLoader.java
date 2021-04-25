@@ -1,10 +1,16 @@
 package GoodGenerator.Loader;
 
 import GoodGenerator.Items.MyMaterial;
+import codechicken.nei.ItemStackSet;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.util.GT_Utility;
 
@@ -126,7 +132,7 @@ public class RecipeLoader {
         GT_Values.RA.addCentrifugeRecipe(
                 GT_Utility.getIntegratedCircuit(1),null,
                 MyMaterial.uraniumBasedLiquidFuelDepleted.getFluidOrGas(1000),
-                WerkstoffLoader.Xenon.getFluidOrGas(2),
+                WerkstoffLoader.Xenon.getFluidOrGas(10),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead,16L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bismuth,1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Barium,6L),
@@ -198,6 +204,201 @@ public class RecipeLoader {
                 new int[]{9000,7000,1500,800,3000,5000},
                 1500,
                 1040
+        );
+
+        //Liquid Plutonium Process Line
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        MyMaterial.plutoniumOxideUraniumMixture.get(OrePrefixes.dust,8),
+                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.HSSS,16),
+                        GT_Utility.getIntegratedCircuit(1)
+                },
+                null,
+                new ItemStack(Loaders.wrappedPlutoniumIngot),
+                1800,
+                2040
+        );
+
+        GT_Values.RA.addImplosionRecipe(
+                new ItemStack(Loaders.wrappedPlutoniumIngot,2),
+                16,
+                new ItemStack(Loaders.highDensityPlutoniumNugget),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.HSSS,8)
+        );
+
+        GT_Values.RA.addCompressorRecipe(
+                new ItemStack(Loaders.highDensityPlutoniumNugget,9),
+                new ItemStack(Loaders.highDensityPlutonium),
+                1200,
+                120
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                new ItemStack(Loaders.highDensityPlutonium),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Neutronium,8),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Caesium,16),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Americium,2),
+                GT_Utility.getIntegratedCircuit(1),
+                null,null,
+                MyMaterial.plutoniumBasedLiquidFuel.getFluidOrGas(1000),
+                null,
+                360,
+                30720
+        );
+
+        GT_Values.RA.addFusionReactorRecipe(
+                Materials.Lutetium.getMolten(16),
+                MyMaterial.plutoniumBasedLiquidFuel.getFluidOrGas(20),
+                MyMaterial.plutoniumBasedLiquidFuelExcited.getFluidOrGas(20),
+                20,
+                15360,
+                220000000
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                GT_Utility.getIntegratedCircuit(1),null,
+                MyMaterial.plutoniumBasedLiquidFuelDepleted.getFluidOrGas(1000),
+                WerkstoffLoader.Krypton.getFluidOrGas(144),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Tritanium,9),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Cerium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Gold,2),
+                null,null,null,
+                new int[]{5000,8000,7500},
+                2500,
+                7680
+        );
+
+        //Th-233
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[]{
+                        GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sugar,16),
+                        MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust,0),
+                        GT_Utility.getIntegratedCircuit(1)
+                },
+                new FluidStack[]{
+                        FluidRegistry.getFluidStack("nitricacid", 6000)
+                },
+                new FluidStack[]{
+                        MyMaterial.oxalate.getFluidOrGas(3000),
+                        Materials.NitricOxide.getGas(6000)
+                },
+                null,
+                600,
+                120
+        );
+
+        GT_Values.RA.addBlastRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Thorium,1),
+                null,
+                Materials.Oxygen.getGas(2000),
+                null,
+                WerkstoffLoader.Thorianit.get(OrePrefixes.dust,1),
+                null,
+                100,
+                480,
+                1200
+        );
+
+        GT_Values.RA.addChemicalRecipe(
+                WerkstoffLoader.Thorianit.get(OrePrefixes.dust,1),
+                null,
+                FluidRegistry.getFluidStack("nitricacid", 4000),
+                MyMaterial.thoriumNitrate.getFluidOrGas(1000),
+                null,
+                40,
+                30
+        );
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[]{
+                        GT_Utility.getIntegratedCircuit(1)
+                },
+                new FluidStack[]{
+                        MyMaterial.thoriumNitrate.getFluidOrGas(1000),
+                        MyMaterial.oxalate.getFluidOrGas(4000)
+                },
+                new FluidStack[]{
+                        Materials.NitrogenDioxide.getGas(4000),
+                        Materials.CarbonDioxide.getGas(4000)
+                },
+                new ItemStack[]{
+                        MyMaterial.thoriumOxalate.get(OrePrefixes.dust,1)
+                },
+                100,
+                120
+        );
+
+        GT_Values.RA.addChemicalRecipe(
+                MyMaterial.thoriumOxalate.get(OrePrefixes.dust,1),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.SodiumHydroxide,4),
+                null,
+                null,
+                MyMaterial.thoriumHydroxide.get(OrePrefixes.dust,1),
+                MyMaterial.sodiumOxalate.get(OrePrefixes.dust,2),
+                40,
+                120
+        );
+
+        GT_Values.RA.addChemicalRecipe(
+                MyMaterial.sodiumOxalate.get(OrePrefixes.dust,1),
+                GT_Utility.getIntegratedCircuit(1),
+                Materials.HydrochloricAcid.getFluid(2000),
+                MyMaterial.oxalate.getFluidOrGas(1000),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Salt,2),
+                null,
+                20,
+                30
+        );
+
+        GT_Values.RA.addChemicalRecipe(
+                MyMaterial.thoriumHydroxide.get(OrePrefixes.dust,1),
+                GT_Utility.getIntegratedCircuit(1),
+                Materials.HydrochloricAcid.getFluid(4000),
+                MyMaterial.thoriumTetrachloride.getFluidOrGas(1000),
+                null,
+                null,
+                200,
+                120
+        );
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[]{
+                        GT_Utility.getIntegratedCircuit(1),
+                },
+                new FluidStack[]{
+                        MyMaterial.thoriumTetrachloride.getFluidOrGas(1000),
+                        Materials.HydrofluoricAcid.getFluid(4000)
+                },
+                new FluidStack[]{
+                        MyMaterial.thoriumTetrafluoride.getFluidOrGas(1000),
+                        Materials.HydrochloricAcid.getFluid(4000)
+                },
+                null,
+                240,
+                480
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                GT_Utility.getIntegratedCircuit(1),
+                null,
+                MyMaterial.thoriumTetrafluoride.getFluidOrGas(1000),
+                MyMaterial.thorium232Tetrafluoride.getFluidOrGas(250),
+                GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Thorium,3),
+                null,null,null,null,null,null,
+                100,
+                480
+        );
+
+        GT_Values.RA.addBlastRecipe(
+                GT_Utility.getIntegratedCircuit(1),
+                null,
+                MyMaterial.thorium232Tetrafluoride.getFluidOrGas(1000),
+                Materials.Fluorine.getGas(4000),
+                WerkstoffLoader.Thorium232.get(OrePrefixes.dust,1),
+                null,
+                100,
+                120,
+                1200
         );
     }
 }

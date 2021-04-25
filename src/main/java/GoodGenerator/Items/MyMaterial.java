@@ -105,6 +105,154 @@ public class MyMaterial implements Runnable {
             TextureSet.SET_FLUID
     );
 
+    //Plutonium Based Fuel
+    public static final Werkstoff plutoniumOxideUraniumMixture = new Werkstoff(
+            new short[]{0xd1,0x1f,0x4a},
+            "Plutonium Oxide-Uranium Mixture",
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addMixerRecipes().onlyDust(),
+            31008,
+            TextureSet.SET_SHINY,
+            new Pair<> (Plutonium,10),
+            new Pair<> (Oxygen,12),
+            new Pair<> (Uranium,2),
+            new Pair<> (Carbon,8)
+    );
+
+    public static final Werkstoff plutoniumBasedLiquidFuel = new Werkstoff(
+            new short[]{0xef,0x15,0x15},
+            "Plutonium Based Liquid Fuel",
+            subscriptNumbers("Pu45Nt8Cs16Am2"),
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31009,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff plutoniumBasedLiquidFuelExcited = new Werkstoff(
+            new short[]{0xef,0x15,0x15},
+            "Plutonium Based Liquid Fuel (Excited State)",
+            subscriptNumbers("*(Pu45Nt8Cs16Am2)*"),
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31010,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff plutoniumBasedLiquidFuelDepleted = new Werkstoff(
+            new short[]{0x67,0x19,0x19},
+            "Plutonium Based Liquid Fuel (Depleted)",
+            subscriptNumbers("Tn?Ce?Au?Kr?"),
+            new Werkstoff.Stats().setToxic(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31011,
+            TextureSet.SET_FLUID
+    );
+
+    //Thorium-233
+    public static final Werkstoff oxalate = new Werkstoff(
+            new short[]{0x79,0xd8,0x55},
+            "Oxalate",
+            Werkstoff.Types.BIOLOGICAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31012,
+            TextureSet.SET_FLUID,
+            new Pair<> (Hydrogen,2),
+            new Pair<> (Carbon,2),
+            new Pair<> (Oxygen,4)
+    );
+
+    public static final Werkstoff vanadiumPentoxide = new Werkstoff(
+            new short[]{0xde,0x8d,0x12},
+            "Vanadium Pentoxide",
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            31013,
+            TextureSet.SET_SHINY,
+            new Pair<> (Vanadium,2),
+            new Pair<> (Oxygen,5)
+    );
+
+    public static final Werkstoff thoriumNitrate = new Werkstoff(
+            new short[]{0xba,0xe8,0x26},
+            "Thorium Nitrate",
+            subscriptNumbers("Th(NO3)4"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31014,
+            TextureSet.SET_DULL
+    );
+
+    public static final Werkstoff thoriumOxalate = new Werkstoff(
+            new short[]{0x50,0x63,0x13},
+            "Thorium Oxalate",
+            subscriptNumbers("Th(C2O4)2"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            31015,
+            TextureSet.SET_DULL
+    );
+
+    public static final Werkstoff thoriumHydroxide = new Werkstoff(
+            new short[]{0x92,0xae,0x89},
+            "Thorium Hydroxide",
+            subscriptNumbers("Th(OH)4"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            31016,
+            TextureSet.SET_SHINY
+    );
+
+    public static final Werkstoff sodiumOxalate = new Werkstoff(
+            new short[]{0xe4,0xf8,0x9b},
+            "Sodium Oxalate",
+            subscriptNumbers("Na2C2O4"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            31017,
+            TextureSet.SET_DULL
+    );
+
+    public static final Werkstoff thoriumTetrachloride = new Werkstoff(
+            new short[]{0x13,0x7c,0x16},
+            "thorium Tetrachloride",
+            subscriptNumbers("ThCl4"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31018,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff thoriumTetrafluoride = new Werkstoff(
+            new short[]{0x15,0x6a,0x6a},
+            "Thorium Tetrafluoride",
+            subscriptNumbers("ThF4"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31019,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff thorium232Tetrafluoride = new Werkstoff(
+            new short[]{0x15,0x6a,0x6a},
+            "Thorium-232 Tetrafluoride",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31020,
+            TextureSet.SET_FLUID,
+            new Pair<> (WerkstoffLoader.Thorium232,1),
+            new Pair<> (Fluorine,4)
+    );
     @Override
     public void run() { }
 }

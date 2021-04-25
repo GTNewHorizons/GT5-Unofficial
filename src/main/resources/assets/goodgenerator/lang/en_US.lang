@@ -9,6 +9,9 @@ item.highDensityUranium.name=High Density Uranium
 item.wrappedThoriumIngot.name=Wrapped Thorium Ingot
 item.highDensityThoriumNugget.name=High Density Thorium Nugget
 item.highDensityThorium.name=High Density Thorium
+item.wrappedPlutoniumIngot.name=Wrapped Plutonium Ingot
+item.highDensityPlutoniumNugget.name=High Density Plutonium Nugget
+item.highDensityPlutonium.name=High Density Plutonium
 
 itemGroup.Good Generator=Good Generator
 
