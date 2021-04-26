@@ -321,7 +321,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                       .addInfo("Controller block for the Naquadah Reactor")
                       .addInfo("Environmental Friendly!")
                       .addInfo("Generate power with the High-energy molten metal.")
-                      .addInfo("Input molten naquadria or enriched naquadah.")
+                      .addInfo("Input liquid nuclear fuel ,molten enriched naquadah or naquadria.")
                       .addInfo("Consume coolant 50mb/t to increase the efficiency:")
                       .addInfo("IC2 Coolant 105%, Super Coolant 150%, Cryotheum 275%")
                       .addInfo("Consume excited liquid to increase the output power:")

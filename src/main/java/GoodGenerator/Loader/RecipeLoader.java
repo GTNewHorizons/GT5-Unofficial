@@ -400,5 +400,17 @@ public class RecipeLoader {
                 120,
                 1200
         );
+
+        GT_Values.RA.addBlastRecipe(
+                GT_Utility.getIntegratedCircuit(24),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Vanadium,2),
+                Materials.Oxygen.getGas(5000),
+                null,
+                MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust,1),
+                null,
+                200,
+                120,
+                2500
+        );
     }
 }
