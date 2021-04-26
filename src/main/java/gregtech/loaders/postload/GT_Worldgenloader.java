@@ -218,8 +218,11 @@ public class GT_Worldgenloader implements Runnable {
             GT_Log.out.println("Started Galactic Greg ore gen code");
             //this function calls Galactic Greg and enables its generation.
         } catch (Exception e) {
-            GT_Log.err.println("Unable to start Galactic Greg ore gen code");
-            e.printStackTrace(GT_Log.err);
+            // ClassNotFound is expected if Galactic Greg is absent, so only report if other problem
+            if (!(e instanceof ClassNotFoundException)) {
+                GT_Log.err.println("Unable to start Galactic Greg ore gen code");
+                e.printStackTrace(GT_Log.err);
+            }
         }
         //DO NOT DELETE ^ THIS ^
         
