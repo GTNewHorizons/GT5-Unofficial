@@ -14,10 +14,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.enums.GT_Values.W;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -102,9 +108,18 @@ public class GT_OreDictUnificator {
 
     public static ItemStack get(Object aName, ItemStack aReplacement, long aAmount, boolean aMentionPossibleTypos, boolean aNoInvalidAmounts) {
         if (aNoInvalidAmounts && aAmount < 1) return null;
-        if (!sName2StackMap.containsKey(aName.toString()) && aMentionPossibleTypos)
+        final ItemStack stackFromName = sName2StackMap.get(aName.toString());
+        if (stackFromName != null) return GT_Utility.copyAmount(aAmount, stackFromName);
+        if (aMentionPossibleTypos) {
             GT_Log.err.println("Unknown Key for Unification, Typo? " + aName);
-        return GT_Utility.copyAmount(aAmount, sName2StackMap.get(aName.toString()), getFirstOre(aName, aAmount), aReplacement);
+            // Debug callstack of entries not in sName2StackMap
+            // StackTraceElement[] cause = Thread.currentThread().getStackTrace();
+            // GT_Log.err.println(Arrays.toString(cause));
+
+        }
+        final ItemStack stackFirstOre = getFirstOre(aName, aAmount);
+        if (stackFirstOre != null) return GT_Utility.copyAmount(aAmount, stackFirstOre);
+        return GT_Utility.copyAmount(aAmount, aReplacement);
     }
 
     public static ItemStack[] setStackArray(boolean aUseBlackList, ItemStack... aStacks) {
