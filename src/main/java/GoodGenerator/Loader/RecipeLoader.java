@@ -1,14 +1,9 @@
 package GoodGenerator.Loader;
 
 import GoodGenerator.Items.MyMaterial;
-import codechicken.nei.ItemStackSet;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -187,7 +182,7 @@ public class RecipeLoader {
                 Materials.Helium.getPlasma(750L),
                 null,
                 MyMaterial.thoriumBasedLiquidFuelExcited.get(OrePrefixes.cell,1),
-                4500,
+                120,
                 3840
         );
 

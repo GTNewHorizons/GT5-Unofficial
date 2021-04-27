@@ -75,7 +75,7 @@ public class MyMaterial implements Runnable {
     public static final Werkstoff thoriumBasedLiquidFuel = new Werkstoff(
             new short[]{0x50,0x32,0x66},
             "Thorium Based Liquid Fuel",
-            subscriptNumbers("Th864Li4D2Hg"),
+            subscriptNumbers("Th432Li4D2Hg"),
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -86,7 +86,7 @@ public class MyMaterial implements Runnable {
     public static final Werkstoff thoriumBasedLiquidFuelExcited = new Werkstoff(
             new short[]{0x50,0x32,0x66},
             "Thorium Based Liquid Fuel (Excited State)",
-            subscriptNumbers("*(Th864Li4D2Hg)*"),
+            subscriptNumbers("*(Th432Li4D2Hg)*"),
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
