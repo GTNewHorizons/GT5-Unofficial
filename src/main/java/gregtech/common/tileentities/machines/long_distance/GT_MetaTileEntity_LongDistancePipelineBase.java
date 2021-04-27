@@ -157,7 +157,6 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
     
     protected void scanPipes() {
         if (mSender != null && !mSender.isDead() && mSender.mTarget == this) return;
-        GT_Mod.GT_FML_LOGGER.info("ScanPipes()");
         
         // Check if we need to scan anything
         final IGregTechTileEntity gtTile = getBaseMetaTileEntity();
