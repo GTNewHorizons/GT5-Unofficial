@@ -1,5 +1,6 @@
 package GoodGenerator.Blocks.TEs;
 
+import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.Loaders;
 import GoodGenerator.Main.GoodGenerator;
 import GoodGenerator.util.MyRecipeAdder;
@@ -193,7 +194,11 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
         }
 
         if(tFluids.size() > 0){
-            if(tFluids.contains(Materials.Naquadah.getMolten(1L)) && tFluids.get(tFluids.indexOf(Materials.Naquadah.getMolten(1L))).amount >= 1){
+            if (tFluids.contains((MyMaterial.atomicSeparationCatalyst.getMolten(1))) && tFluids.get(tFluids.indexOf(MyMaterial.atomicSeparationCatalyst.getMolten(1))).amount >= 1){
+                times = 16;
+                f2=MyMaterial.atomicSeparationCatalyst.getMolten(1);
+            }
+            else if(tFluids.contains(Materials.Naquadah.getMolten(1L)) && tFluids.get(tFluids.indexOf(Materials.Naquadah.getMolten(1L))).amount >= 1){
                 times = 4;
                 f2=Materials.Naquadah.getMolten(1L);
             }
@@ -328,6 +333,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                       .addInfo("molten caesium | 2x power | 9mb/t ")
                       .addInfo("molten uranium-235 | 3x power | 9mb/t")
                       .addInfo("molten naquadah | 4x power | 1mb/t")
+                      .addInfo("molten Atomic Separation Catalyst | 16x power | 1mb/t")
                       .addSeparator()
                       .beginStructureBlock(7, 8, 7, true)
                       .addController("Front bottom")

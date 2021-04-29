@@ -23,6 +23,7 @@ public class Loaders {
     public static final Item wrappedPlutoniumIngot = new MyItems("wrappedPlutoniumIngot",GoodGenerator.GG);
     public static final Item highDensityPlutoniumNugget = new MyItems("highDensityPlutoniumNugget",GoodGenerator.GG);
     public static final Item highDensityPlutonium = new MyItems("highDensityPlutonium",GoodGenerator.GG);
+    public static final Item rawAtomicSeparationCatalyst = new MyItems("rawAtomicSeparationCatalyst",GoodGenerator.GG);
 
     public static final Block MAR_Casing = new Casing("MAR_Casing",new String[]{
             GoodGenerator.MOD_ID+":MAR_Casing"
@@ -45,6 +46,9 @@ public class Loaders {
         GameRegistry.registerItem(wrappedPlutoniumIngot,"wrappedPlutoniumIngot",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityPlutoniumNugget,"highDensityPlutoniumNugget",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityPlutonium,"highDensityPlutonium",GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(rawAtomicSeparationCatalyst,"rawAtomicSeparationCatalyst",GoodGenerator.MOD_ID);
         Loaders.MAR = new MultiNqGenerator(12732,"NaG","Large Naquadah Reactor").getStackForm(1L);
     }
+
+    public static void addOreDic(){ }
 }

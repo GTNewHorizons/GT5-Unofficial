@@ -12,6 +12,7 @@ item.highDensityThorium.name=High Density Thorium
 item.wrappedPlutoniumIngot.name=Wrapped Plutonium Ingot
 item.highDensityPlutoniumNugget.name=High Density Plutonium Nugget
 item.highDensityPlutonium.name=High Density Plutonium
+item.rawAtomicSeparationCatalyst.name=Raw Atomic Separation Catalyst
 
 itemGroup.Good Generator=Good Generator
 

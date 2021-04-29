@@ -9,6 +9,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.util.GT_Utility;
 
+import static net.minecraft.init.Blocks.furnace;
+
 public class RecipeLoader {
     public static void RecipeLoad(){
 
@@ -406,6 +408,201 @@ public class RecipeLoader {
                 200,
                 120,
                 2500
+        );
+
+        //Atomic Separation Catalyst
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Blaze,32),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Shadow,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sunnarium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ardite,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,9),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Blaze,32),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Shadow,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sunnarium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Manyullyn,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,9),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Blaze,32),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Shadow,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ichorium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ardite,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,27),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Blaze,32),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Shadow,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ichorium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Manyullyn,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,27),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Blaze,32),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Bedrockium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sunnarium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ardite,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,9),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Blaze,32),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Bedrockium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sunnarium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Manyullyn,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,9),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Blaze,32),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Bedrockium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ichorium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ardite,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,27),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Blaze,32),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Bedrockium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ichorium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Manyullyn,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,27),
+                300,
+                480
+        );
+
+        GT_Values.RA.addFormingPressRecipe(
+                WerkstoffLoader.Tiberium.get(OrePrefixes.plate,4),
+                GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Silicon,8),
+                MyMaterial.orundum.get(OrePrefixes.plate,1),
+                400,
+                3000
+        );
+
+        GT_Values.RA.addBlastRecipe(
+                MyMaterial.orundum.get(OrePrefixes.plate,2),
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,4),
+                Materials.Plutonium.getMolten(144),
+                null,
+                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.ingotHot,1),
+                null,
+                3600,
+                480,
+                5000
+        );
+
+        GT_Values.RA.addVacuumFreezerRecipe(
+                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.ingotHot,1),
+                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.ingot,1),
+                450,
+                960
+        );
+
+        GT_Values.RA.addFluidExtractionRecipe(
+                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.ingot,1),
+                null,
+                MyMaterial.atomicSeparationCatalyst.getMolten(144),
+                0,
+                32,
+                7
+        );
+
+        GT_Values.RA.addFluidExtractionRecipe(
+                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.stickLong,1),
+                null,
+                MyMaterial.atomicSeparationCatalyst.getMolten(144),
+                0,
+                32,
+                7
+        );
+
+        GT_Values.RA.addFluidExtractionRecipe(
+                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.plate,1),
+                null,
+                MyMaterial.atomicSeparationCatalyst.getMolten(144),
+                0,
+                32,
+                7
+        );
+
+        GT_Values.RA.addFluidExtractionRecipe(
+                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.stick,1),
+                null,
+                MyMaterial.atomicSeparationCatalyst.getMolten(72),
+                0,
+                16,
+                7
+        );
+
+        GT_Values.RA.addFluidExtractionRecipe(
+                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.nugget,1),
+                null,
+                MyMaterial.atomicSeparationCatalyst.getMolten(16),
+                0,
+                8,
+                7
+        );
+
+        GT_Values.RA.addFluidExtractionRecipe(
+                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.gearGt,1),
+                null,
+                MyMaterial.atomicSeparationCatalyst.getMolten(576),
+                0,
+                128,
+                7
+        );
+
+        GT_Values.RA.addFluidExtractionRecipe(
+                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.gearGtSmall,1),
+                null,
+                MyMaterial.atomicSeparationCatalyst.getMolten(144),
+                0,
+                32,
+                7
         );
     }
 }

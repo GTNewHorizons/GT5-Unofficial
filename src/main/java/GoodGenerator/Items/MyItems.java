@@ -21,6 +21,4 @@ public class MyItems extends Item {
         public void registerIcons(IIconRegister iconRegister) {
                 this.itemIcon = iconRegister.registerIcon(GoodGenerator.MOD_ID + ":" + this.tex);
         }
-
-
 }

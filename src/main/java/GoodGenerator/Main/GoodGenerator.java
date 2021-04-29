@@ -14,6 +14,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
+import static GoodGenerator.Loader.Loaders.addOreDic;
+
 @SuppressWarnings("ALL")
 @Mod(modid = GoodGenerator.MOD_ID, version = GoodGenerator.VERSION)
 public final class GoodGenerator {
@@ -31,6 +33,7 @@ public final class GoodGenerator {
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event){
         WerkstoffAdderRegistry.addWerkstoffAdder(new MyMaterial());
+        addOreDic();
         proxy.preInit(event);
     }
     @Mod.EventHandler

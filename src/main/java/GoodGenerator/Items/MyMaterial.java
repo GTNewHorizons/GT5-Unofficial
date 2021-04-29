@@ -253,6 +253,29 @@ public class MyMaterial implements Runnable {
             new Pair<> (WerkstoffLoader.Thorium232,1),
             new Pair<> (Fluorine,4)
     );
+
+    //Atomic Separation Catalyst
+    public static final Werkstoff atomicSeparationCatalyst = new Werkstoff(
+            new short[]{0xe8,0x5e,0x0c},
+            "Atomic Separation Catalyst",
+            "the melting core...",
+            new Werkstoff.Stats().setMeltingPoint(5000).setBlastFurnace(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems().addSimpleMetalWorkingItems().addCraftingMetalWorkingItems().addMultipleIngotMetalWorkingItems(),
+            31021,
+            TextureSet.SET_SHINY
+    );
+
+    public static final Werkstoff orundum = new Werkstoff(
+            new short[]{0xcd,0x26,0x26},
+            "Orundum",
+            "Or",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.ELEMENT,
+            new Werkstoff.GenerationFeatures().addGems(),
+            31022,
+            TextureSet.SET_DIAMOND
+    );
     @Override
     public void run() { }
 }
