@@ -75,9 +75,8 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-
-        return true;
+        // No GUI, do not capture right-click so it does not interfere when placing logs
+        return false;
     }
 
     public boolean isCorrectMachinePart(ItemStack aStack) {
