@@ -427,6 +427,28 @@ public class Recipes {
 				'L', OrePrefixes.block.get(Materials.Lapis)
 		};
 		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0), lcBase_recipe);
+		
+		// Empty Capacitor
+		final Object[] lcEmpty_recipe = {
+				"SLS", "L L", "SLS",
+				'S', OrePrefixes.screw.get(Materials.Lapis),
+				'L', OrePrefixes.plate.get(Materials.Lapis)
+		};
+		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6), lcEmpty_recipe);
+		
+		// EV Capacitor
+		final Object[] lcEV_recipe = {
+				"SLS", "LCL", "SLS",
+				'S', OrePrefixes.screw.get(Materials.Lapis),
+				'L', OrePrefixes.plate.get(Materials.Lapis),
+				'C', GT_ModHandler.getIC2Item("lapotronCrystal", 1L, GT_Values.W)
+		};
+		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7), lcEV_recipe);
+		
+		//EV cap alt recipe
+		GT_Values.RA.addAssemblerRecipe(new ItemStack[] {(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6)), GT_ModHandler.getIC2Item("lapotronCrystal", 1L, GT_Values.W), GT_Utility.getIntegratedCircuit(7)}, null, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7), 200, 480);
+		
+		// IV Capacitor
 		final Object[] lcIV_recipe = {
 				"SLS", "LOL", "SLS",
 				'S', OrePrefixes.screw.get(Materials.Lapis),
@@ -435,6 +457,9 @@ public class Recipes {
 		};
 		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), lcIV_recipe);
 
+		//IV cap alt recipe
+		GT_Values.RA.addAssemblerRecipe(new ItemStack[] {(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6)), ItemList.Energy_LapotronicOrb.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), 200, 1920);
+		
 		// LuV Capacitor
 		GT_Values.RA.addAssemblylineRecipe(
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), 288000,
@@ -458,6 +483,7 @@ public class Recipes {
 				},
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2), 2000, 100000
 		);
+		
 		// ZPM Capacitor
 		GT_Values.RA.addAssemblylineRecipe(
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2), 288000,
@@ -482,6 +508,7 @@ public class Recipes {
 				},
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3), 2000, 100000
 		);
+		
 		// UV Capacitor
 		GT_Values.RA.addAssemblylineRecipe(
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3), 288000,
@@ -506,6 +533,7 @@ public class Recipes {
 				},
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4), 2000, 200000
 		);
+		
 		// Ultimate Capacitor
 		GT_Values.RA.addAssemblylineRecipe(
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4), 288000,
@@ -534,9 +562,13 @@ public class Recipes {
 		);
 
 		// Capacitor recycling
+		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7),
+				GT_ModHandler.getIC2Item("lapotronCrystal", 1L, 26),
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6),
+				1200, 32);
 		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
 				ItemList.Energy_LapotronicOrb.get(1L),
-				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Lapis, 4),
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6),
 				1200, 32);
 		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2),
 				ItemList.Energy_LapotronicOrb2.get(1L),
@@ -596,7 +628,6 @@ public class Recipes {
 	}*/
 
 	private static void registerRecipes_Cosmetics() {
-
 		// Hex Tiles
 		final ItemStack[] hexTiles = {
 				GT_Utility.getIntegratedCircuit(6),

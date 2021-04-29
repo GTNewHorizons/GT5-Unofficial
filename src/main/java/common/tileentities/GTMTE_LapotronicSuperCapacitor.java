@@ -51,7 +51,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	private final Set<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
 	private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
 	// Count the amount of capacitors of each tier in each slot (translate with meta - 1)
-	private final int[] capacitors = new int[5];
+	private final int[] capacitors = new int[7];
 	private BigInteger capacity = BigInteger.ZERO;
 	private BigInteger stored = BigInteger.ZERO;
 	private BigInteger passiveDischargeAmount = BigInteger.ZERO;
@@ -89,7 +89,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		.addStructureInfo("Modular height of 4-18 blocks.")
 		.addController("Front center bottom")
 		.addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
-		.addOtherStructurePart("Lapotronic Capacitor (IV-UV), Ultimate Capacitor (UHV)", "Center 3x(1-15)x3 above base (9-135 blocks)")
+		.addOtherStructurePart("Lapotronic Capacitor (EV-UV), Ultimate Capacitor (UHV)", "Center 3x(1-15)x3 above base (9-135 blocks)")
+		.addStructureInfo("You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
 		.addOtherStructurePart("Borosilicate Glass (any)", "41-265x, Encase capacitor pillar")
 		.addEnergyHatch("Any casing")
 		.addDynamoHatch("Any casing")
@@ -200,8 +201,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					}
 					
 					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-					final IGregTechTileEntity currentTE =
-							thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+					final IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 					
 					// Tries to add TE as either of those kinds of hatches.
 					// The number is the texture index number for the texture that needs to be painted over the hatch texture
@@ -233,14 +233,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
 					if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART && (meta > 0)) {
 						// Add capacity
-						if(meta <= 4){
-							final long c = (long) (100000000L * Math.pow(10, meta - 1));
-							tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
-							capacity = capacity.add(BigInteger.valueOf(c));
-						} else if(meta <= 5){
-							tempCapacity = tempCapacity.add(BigInteger.valueOf((long) (100000000L * Math.pow(10, 3))));
-							capacity = capacity.add(MAX_LONG);
-						}
+						tempCapacity = calculateTempCapacity(tempCapacity, meta);
 						capacitors[meta - 1]++;
 					} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)){
 						firstGlassHeight = Y;
@@ -285,7 +278,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 		}
 
-		if(minCasingAmount > 0){
+		if(minCasingAmount > 0) {
 			formationChecklist = false;
 		}
 
@@ -294,11 +287,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		// Borosilicate glass after 5 are just recolours of 0
 		final int colourCorrectedMeta = firstGlassMeta > 5 ? 0 : firstGlassMeta;
 		for(int highestCapacitor = capacitors.length - 1; highestCapacitor >= 0; highestCapacitor--){
-			if(capacitors[highestCapacitor] > 0){
-				if(colourCorrectedMeta < highestCapacitor){
-					formationChecklist = false;
-				}
-				break;
+			if(capacitors[highestCapacitor] > 0 && formationChecklist == true) {
+				formationChecklist = checkGlassTier(colourCorrectedMeta, highestCapacitor);
 			}
 		}
 
@@ -309,27 +299,87 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 			mEnergyTunnelsTT.clear();
 			mDynamoTunnelsTT.clear();
-
 		}
 
+		//Check if enough (more than 50%) non-empty caps
+		double emptyCheck = ((double) capacitors[5]) / (double) (capacitors[0] + capacitors[1] + capacitors[2] + capacitors[3] + capacitors[4] + capacitors[6]);
+		if (emptyCheck > 0.5)
+			formationChecklist = false;
+		
 		// Calculate total capacity
-		capacity = BigInteger.ZERO;
-		for(int i = 0; i < capacitors.length; i++){
-			if(i <= 3){
-				final long c = (long) (100000000L * Math.pow(10, i));
-				capacity = capacity.add(
-						BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
-			} else {
-				capacity = capacity.add(
-						MAX_LONG.multiply(BigInteger.valueOf(capacitors[i])));
-			}
-		}
+		calculateCapacity();
+		
 		// Calculate how much energy to void each tick
 		passiveDischargeAmount = new BigDecimal(tempCapacity).multiply(PASSIVE_DISCHARGE_FACTOR_PER_TICK).toBigInteger();
 		passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
 		return formationChecklist;
 	}
 
+	public BigInteger calculateTempCapacity(BigInteger tempCapacity, int meta) {
+		switch(meta) {
+		case 1: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000L)); capacity = capacity.add(BigInteger.valueOf(100000000L)); break;
+		case 2: tempCapacity = tempCapacity.add(BigInteger.valueOf(1000000000L)); capacity = capacity.add(BigInteger.valueOf(1000000000L)); break;
+		case 3: tempCapacity = tempCapacity.add(BigInteger.valueOf(10000000000L)); capacity = capacity.add(BigInteger.valueOf(10000000000L)); break;
+		case 4: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000000L)); capacity = capacity.add(BigInteger.valueOf(100000000000L)); break;
+		case 5: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000000L));	capacity = capacity.add(MAX_LONG); break;
+		case 6: break;
+		case 7: tempCapacity = tempCapacity.add(BigInteger.valueOf(10000000L)); capacity = capacity.add(BigInteger.valueOf(10000000L)); break;
+		default: break; 
+		}
+		return tempCapacity;
+	}
+	
+	public boolean checkGlassTier(int colourCorrectedMeta, int highestCapacitor) {
+		Boolean check = true;
+		switch (highestCapacitor) {
+		case 0://For the empty/EV/IV caps, any BS glass works. The case is meta - 1
+			break; 
+		case 1:
+			if(colourCorrectedMeta < highestCapacitor) {
+				check = false;
+			}
+			break;
+		case 2:
+			if(colourCorrectedMeta < highestCapacitor) {
+				check = false;
+			}
+			break;
+		case 3:
+			if(colourCorrectedMeta < highestCapacitor) {
+				check = false;
+			}
+			break;
+		case 4:
+			if(colourCorrectedMeta < highestCapacitor) {
+				check = false;
+			}
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		default:
+			check = false;
+		}
+		return check; //Return false if it fails the check, otherwise true
+	}
+		
+	public void calculateCapacity() {
+		capacity = BigInteger.ZERO;
+		for(int i = 0; i < capacitors.length; i++) {	
+			switch(i) {
+			case 0: capacity = capacity.add(BigInteger.valueOf(100000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 1: capacity = capacity.add(BigInteger.valueOf(1000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 2: capacity = capacity.add(BigInteger.valueOf(10000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 3: capacity = capacity.add(BigInteger.valueOf(100000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 4: capacity = capacity.add(MAX_LONG.multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 5: break;
+			case 6: capacity = capacity.add(BigInteger.valueOf(10000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			default: break; 
+			}
+		}
+	}
+		
 	@Override
 	public boolean addEnergyInputToMachineList(IGregTechTileEntity te, int aBaseCasingIndex) {
 		if (te == null) {
