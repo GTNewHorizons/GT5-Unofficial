@@ -302,7 +302,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		}
 
 		//Check if enough (more than 50%) non-empty caps
-		int emptyCheck = capacitors[5]/(capacitors[0] + capacitors[1] + capacitors[2] + capacitors[3] + capacitors[4] + capacitors[6]);
+		double emptyCheck = ((double) capacitors[5]) / (double) (capacitors[0] + capacitors[1] + capacitors[2] + capacitors[3] + capacitors[4] + capacitors[6]);
 		if (emptyCheck > 0.5)
 			formationChecklist = false;
 		
