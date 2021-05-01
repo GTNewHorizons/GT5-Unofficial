@@ -33,7 +33,6 @@ public final class GoodGenerator {
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event){
         WerkstoffAdderRegistry.addWerkstoffAdder(new MyMaterial());
-        addOreDic();
         proxy.preInit(event);
     }
     @Mod.EventHandler
@@ -41,7 +40,9 @@ public final class GoodGenerator {
         proxy.init(event);
         Loaders.Register();
         RecipeLoader.RecipeLoad();
+        RecipeLoader.Fixer();
         FuelRecipeLoader.RegisterFuel();
+        addOreDic();
     }
     @Mod.EventHandler
     public static void postInit(FMLPostInitializationEvent event){

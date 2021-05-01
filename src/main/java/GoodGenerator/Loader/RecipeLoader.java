@@ -1,6 +1,7 @@
 package GoodGenerator.Loader;
 
 import GoodGenerator.Items.MyMaterial;
+import GoodGenerator.util.MaterialFix;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -8,8 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.util.GT_Utility;
-
-import static net.minecraft.init.Blocks.furnace;
 
 public class RecipeLoader {
     public static void RecipeLoad(){
@@ -541,68 +540,9 @@ public class RecipeLoader {
                 450,
                 960
         );
+    }
 
-        GT_Values.RA.addFluidExtractionRecipe(
-                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.ingot,1),
-                null,
-                MyMaterial.atomicSeparationCatalyst.getMolten(144),
-                0,
-                32,
-                7
-        );
-
-        GT_Values.RA.addFluidExtractionRecipe(
-                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.stickLong,1),
-                null,
-                MyMaterial.atomicSeparationCatalyst.getMolten(144),
-                0,
-                32,
-                7
-        );
-
-        GT_Values.RA.addFluidExtractionRecipe(
-                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.plate,1),
-                null,
-                MyMaterial.atomicSeparationCatalyst.getMolten(144),
-                0,
-                32,
-                7
-        );
-
-        GT_Values.RA.addFluidExtractionRecipe(
-                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.stick,1),
-                null,
-                MyMaterial.atomicSeparationCatalyst.getMolten(72),
-                0,
-                16,
-                7
-        );
-
-        GT_Values.RA.addFluidExtractionRecipe(
-                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.nugget,1),
-                null,
-                MyMaterial.atomicSeparationCatalyst.getMolten(16),
-                0,
-                8,
-                7
-        );
-
-        GT_Values.RA.addFluidExtractionRecipe(
-                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.gearGt,1),
-                null,
-                MyMaterial.atomicSeparationCatalyst.getMolten(576),
-                0,
-                128,
-                7
-        );
-
-        GT_Values.RA.addFluidExtractionRecipe(
-                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.gearGtSmall,1),
-                null,
-                MyMaterial.atomicSeparationCatalyst.getMolten(144),
-                0,
-                32,
-                7
-        );
+    public static void Fixer(){
+        MaterialFix.MaterialFluidExtractionFix(MyMaterial.atomicSeparationCatalyst);
     }
 }

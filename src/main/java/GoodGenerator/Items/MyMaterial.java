@@ -1,5 +1,6 @@
 package GoodGenerator.Items;
 
+import GoodGenerator.util.MaterialFix;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.TextureSet;
@@ -276,6 +277,9 @@ public class MyMaterial implements Runnable {
             31022,
             TextureSet.SET_DIAMOND
     );
+
     @Override
-    public void run() { }
+    public void run() {
+
+    }
 }
