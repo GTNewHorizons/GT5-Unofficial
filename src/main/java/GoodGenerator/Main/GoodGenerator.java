@@ -6,6 +6,7 @@ import GoodGenerator.Loader.FuelRecipeLoader;
 import GoodGenerator.Loader.Loaders;
 import GoodGenerator.Loader.RecipeLoader;
 import GoodGenerator.Tabs.MyTabs;
+import GoodGenerator.Blocks.MyFluids.FluidsBuilder;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -33,16 +34,17 @@ public final class GoodGenerator {
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event){
         WerkstoffAdderRegistry.addWerkstoffAdder(new MyMaterial());
+        new FluidsBuilder();
+        Loaders.Register();
+        addOreDic();
         proxy.preInit(event);
     }
     @Mod.EventHandler
     public static void init(FMLInitializationEvent event){
         proxy.init(event);
-        Loaders.Register();
         RecipeLoader.RecipeLoad();
         RecipeLoader.Fixer();
         FuelRecipeLoader.RegisterFuel();
-        addOreDic();
     }
     @Mod.EventHandler
     public static void postInit(FMLPostInitializationEvent event){

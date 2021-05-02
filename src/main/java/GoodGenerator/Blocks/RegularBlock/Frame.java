@@ -7,7 +7,7 @@ import net.minecraft.world.IBlockAccess;
 
 public class Frame extends Casing{
     public Frame(String name,String[] texture){
-        super(name,texture, Material.glass);
+        super(name,texture, Material.iron);
     }
 
     @Override

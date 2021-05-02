@@ -540,6 +540,17 @@ public class RecipeLoader {
                 450,
                 960
         );
+
+        GT_Values.RA.addBlastRecipe(
+                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust,1),
+                GT_Utility.getIntegratedCircuit(1),
+                null,null,
+                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingotHot),
+                null,
+                8000,
+                114514,
+                7000
+        );
     }
 
     public static void Fixer(){

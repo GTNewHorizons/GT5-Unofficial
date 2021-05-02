@@ -32,11 +32,15 @@ public class Loaders {
     public static final Block radiationProtectionSteelFrame = new Frame("radiationProtectionSteelFrame",new String[]{
             GoodGenerator.MOD_ID+":radiationProtectionSteelFrame"
     });
+    public static final Block fieldRestrictingGlass = new Frame("fieldRestrictingGlass",new String[]{
+            GoodGenerator.MOD_ID+":fieldRestrictingGlass"
+    });
     public static ItemStack MAR;
 
     public static void Register(){
         GameRegistry.registerBlock(MAR_Casing, MyItemBlocks.class,"MAR_Casing");
         GameRegistry.registerBlock(radiationProtectionSteelFrame,MyItemBlocks.class,"radiationProtectionSteelFrame");
+        GameRegistry.registerBlock(fieldRestrictingGlass,MyItemBlocks.class,"fieldRestrictingGlass");
         GameRegistry.registerItem(radiationProtectionPlate,"radiationProtectionPlate",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot,"wrappedUraniumIngot",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget,"highDensityUraniumNugget",GoodGenerator.MOD_ID);
@@ -51,5 +55,8 @@ public class Loaders {
         Loaders.MAR = new MultiNqGenerator(12732,"NaG","Large Naquadah Reactor").getStackForm(1L);
     }
 
-    public static void addOreDic(){ }
+    public static void addOreDic(){
+        OreDictionary.registerOre("blockGlass",fieldRestrictingGlass);
+        OreDictionary.registerOre("blockGlassZPM",fieldRestrictingGlass);
+    }
 }

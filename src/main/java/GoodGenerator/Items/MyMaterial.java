@@ -1,6 +1,6 @@
 package GoodGenerator.Items;
 
-import GoodGenerator.util.MaterialFix;
+import GoodGenerator.util.CharExchanger;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.TextureSet;
@@ -278,8 +278,62 @@ public class MyMaterial implements Runnable {
             TextureSet.SET_DIAMOND
     );
 
-    @Override
-    public void run() {
+    //Naquadah Fuel Rework
+    public static final Werkstoff extremelyUnstableNaquadah = new Werkstoff(
+            new short[]{0x06,0x26,0x05},
+            "Extremely Unstable Naquadah",
+            "Nq"+ CharExchanger.shifter(9734),
+            new Werkstoff.Stats().setMeltingPoint(7000).setBlastFurnace(true),
+            Werkstoff.Types.ELEMENT,
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems().addSimpleMetalWorkingItems().addCraftingMetalWorkingItems().addMultipleIngotMetalWorkingItems(),
+            31023,
+            TextureSet.SET_SHINY
+    );
 
-    }
+    public static final Werkstoff lightNaquadahFuel = new Werkstoff(
+            new short[]{92,203,92},
+            "Light Naquadah Fuel",
+            "far from enough",
+            new Werkstoff.Stats().setToxic(true).setRadioactive(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31024,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff heavyNaquadahFuel = new Werkstoff(
+            new short[]{54,255,54},
+            "Heavy Naquadah Fuel",
+            "still need processing",
+            new Werkstoff.Stats().setToxic(true).setRadioactive(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31025,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadahGas = new Werkstoff(
+            new short[]{93,219,0},
+            "Naquadah Gas",
+            "Who need it?",
+            new Werkstoff.Stats().setToxic(true).setRadioactive(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31026,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadahAsphalt = new Werkstoff(
+            new short[]{5,37,5},
+            "Naquadah Asphalt",
+            "It will damage the reactor.",
+            new Werkstoff.Stats().setToxic(true).setRadioactive(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31027,
+            TextureSet.SET_FLUID
+    );
+
+    @Override
+    public void run() { }
 }
