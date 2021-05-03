@@ -334,6 +334,108 @@ public class MyMaterial implements Runnable {
             TextureSet.SET_FLUID
     );
 
+    public static final Werkstoff ether = new Werkstoff(
+            new short[]{0xeb,0xbc,0x2f},
+            "ether",
+            subscriptNumbers("CH3CH2OCH2CH3"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31028,
+            TextureSet.SET_FLUID,
+            new Pair<> (Carbon,4),
+            new Pair<> (Hydrogen, 10),
+            new Pair<> (Oxygen, 1)
+    );
+
+    public static final Werkstoff antimonyTrichloride = new Werkstoff(
+            new short[]{0x0f,0xdc,0x34},
+            "Antimony Trichloride",
+            subscriptNumbers("SbCl3"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31029,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff antimonyPentachloride = new Werkstoff(
+            new short[]{0x15,0x93,0x2c},
+            "Antimony Pentachloride",
+            subscriptNumbers("SbCl5"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31030,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff antimonyPentafluoride = new Werkstoff(
+            new short[]{0x16,0xd5,0xe2},
+            "Antimony Pentafluoride",
+            subscriptNumbers("SbF5"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31031,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff fluoroantimonicAcid = new Werkstoff(
+            new short[]{0x16,0xd5,0xe2},
+            "Fluoroantimonic Acid",
+            subscriptNumbers("HSbF6"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31032,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff radioactiveSludge = new Werkstoff(
+            new short[]{0xb3,0x49,0x1e},
+            "Radioactive Sludge",
+            ">>> DANGER <<<",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            31033,
+            TextureSet.SET_DULL
+    );
+
+    public static final Werkstoff acidNaquadahEmulsion = new Werkstoff(
+            new short[]{0x25,0x22,0x22},
+            "Acid Naquadah Emulsion",
+            "??Nq??H"+CharExchanger.shifter(8314),
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31034,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff NaquadahEmulsion = new Werkstoff(
+            new short[]{0x4a,0x46,0x45},
+            "Naquadah Emulsion",
+            "??Nq??",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31035,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff NaquadahSolution = new Werkstoff(
+            new short[]{0x84,0x81,0x80},
+            "Naquadah Solution",
+            "~Nq~",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31036,
+            TextureSet.SET_FLUID
+    );
+
     @Override
     public void run() { }
 }

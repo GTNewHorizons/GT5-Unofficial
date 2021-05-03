@@ -17,29 +17,29 @@ item.rawAtomicSeparationCatalyst.name=Raw Atomic Separation Catalyst
 
 fluid.lightlyCrackedNaquadahGas=Lightly Cracked Naquadah Gas
 fluid.moderatelyCrackedNaquadahGas=Moderately Cracked Naquadah Gas
-fluid.heavilyCrackedNaquadahGas=Heavily Cracked Naquadah Gas
+fluid.heavilyCrackedNaquadahGas=Severely Cracked Naquadah Gas
 fluid.lightlyCrackedLightNaquadahFuel=Lightly Cracked Light Naquadah Fuel
 fluid.moderatelyCrackedLightNaquadahFuel=Moderately Cracked Light Naquadah Fuel
-fluid.heavilyCrackedLightNaquadahFuel=Heavily Cracked Light Naquadah Fuel
+fluid.heavilyCrackedLightNaquadahFuel=Severely Cracked Light Naquadah Fuel
 fluid.lightlyCrackedHeavyNaquadahFuel=Lightly Cracked Heavy Naquadah Fuel
 fluid.moderatelyCrackedHeavyNaquadahFuel=Moderately Cracked Heavy Naquadah Fuel
-fluid.heavilyCrackedHeavyNaquadahFuel=Heavily Cracked Heavy Naquadah Fuel
+fluid.heavilyCrackedHeavyNaquadahFuel=Severely Cracked Heavy Naquadah Fuel
 fluid.lightlyCrackedNaquadahAsphalt=Lightly Cracked Naquadah Asphalt
 fluid.moderatelyCrackedNaquadahAsphalt=Moderately Cracked Naquadah Asphalt
-fluid.heavilyCrackedNaquadahAsphalt=Heavily Cracked Naquadah Asphalt
+fluid.heavilyCrackedNaquadahAsphalt=Severely Cracked Naquadah Asphalt
 
 tile.lightlyCrackedNaquadahGas.name=Lightly Cracked Naquadah Gas
 tile.moderatelyCrackedNaquadahGas.name=Moderately Cracked Naquadah Gas
-tile.heavilyCrackedNaquadahGas.name=Heavily Cracked Naquadah Gas
+tile.heavilyCrackedNaquadahGas.name=Severely Cracked Naquadah Gas
 tile.lightlyCrackedLightNaquadahFuel.name=Lightly Cracked Light Naquadah Fuel
 tile.moderatelyCrackedLightNaquadahFuel.name=Moderately Cracked Light Naquadah Fuel
-tile.heavilyCrackedLightNaquadahFuel.name=Heavily Cracked Light Naquadah Fuel
+tile.heavilyCrackedLightNaquadahFuel.name=Severely Cracked Light Naquadah Fuel
 tile.lightlyCrackedHeavyNaquadahFuel.name=Lightly Cracked Heavy Naquadah Fuel
 tile.moderatelyCrackedHeavyNaquadahFuel.name=Moderately Cracked Heavy Naquadah Fuel
-tile.heavilyCrackedHeavyNaquadahFuel.name=Heavily Cracked Heavy Naquadah Fuel
+tile.heavilyCrackedHeavyNaquadahFuel.name=Severely Cracked Heavy Naquadah Fuel
 tile.lightlyCrackedNaquadahAsphalt.name=Lightly Cracked Naquadah Asphalt
 tile.moderatelyCrackedNaquadahAsphalt.name=Moderately Cracked Naquadah Asphalt
-tile.heavilyCrackedNaquadahAsphalt.name=Heavily Cracked Naquadah Asphalt
+tile.heavilyCrackedNaquadahAsphalt.name=Severely Cracked Naquadah Asphalt
 
 itemGroup.Good Generator=Good Generator
 
