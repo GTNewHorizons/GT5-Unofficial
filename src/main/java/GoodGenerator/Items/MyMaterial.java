@@ -316,7 +316,7 @@ public class MyMaterial implements Runnable {
             new short[]{93,219,0},
             "Naquadah Gas",
             "Who need it?",
-            new Werkstoff.Stats().setToxic(true).setRadioactive(true),
+            new Werkstoff.Stats().setToxic(true).setRadioactive(true).setGas(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
             31026,
@@ -350,12 +350,23 @@ public class MyMaterial implements Runnable {
 
     public static final Werkstoff antimonyTrichloride = new Werkstoff(
             new short[]{0x0f,0xdc,0x34},
-            "Antimony Trichloride",
+            "Antimony Trichloride Solution",
             subscriptNumbers("SbCl3"),
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
             31029,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff antimonyPentachlorideSolution = new Werkstoff(
+            new short[]{0x15,0x93,0x2c},
+            "Antimony Pentachloride Solution",
+            subscriptNumbers("SbCl5"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31030,
             TextureSet.SET_FLUID
     );
 
@@ -366,7 +377,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31030,
+            31037,
             TextureSet.SET_FLUID
     );
 
@@ -414,7 +425,7 @@ public class MyMaterial implements Runnable {
             TextureSet.SET_FLUID
     );
 
-    public static final Werkstoff NaquadahEmulsion = new Werkstoff(
+    public static final Werkstoff naquadahEmulsion = new Werkstoff(
             new short[]{0x4a,0x46,0x45},
             "Naquadah Emulsion",
             "??Nq??",
@@ -425,7 +436,7 @@ public class MyMaterial implements Runnable {
             TextureSet.SET_FLUID
     );
 
-    public static final Werkstoff NaquadahSolution = new Werkstoff(
+    public static final Werkstoff naquadahSolution = new Werkstoff(
             new short[]{0x84,0x81,0x80},
             "Naquadah Solution",
             "~Nq~",

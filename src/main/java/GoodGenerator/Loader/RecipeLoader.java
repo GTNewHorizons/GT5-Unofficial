@@ -1,6 +1,7 @@
 package GoodGenerator.Loader;
 
 import GoodGenerator.Items.MyMaterial;
+import GoodGenerator.util.CrackRecipeAdder;
 import GoodGenerator.util.MaterialFix;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.*;
@@ -551,9 +552,228 @@ public class RecipeLoader {
                 114514,
                 7000
         );
+
+        CrackRecipeAdder.crackerAdder(
+                MyMaterial.naquadahGas.getFluidOrGas(1000),
+                MyMaterial.atomicSeparationCatalyst.getMolten(4),
+                new FluidStack[]{
+                        Materials.Helium.getGas(300),
+                        WerkstoffLoader.Xenon.getFluidOrGas(40),
+                        WerkstoffLoader.Krypton.getFluidOrGas(20),
+                        Materials.Radon.getGas(14000)
+                },
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.Naquadah,1),
+                4
+        );
+
+        CrackRecipeAdder.crackerAdder(
+                MyMaterial.lightNaquadahFuel.getFluidOrGas(1000),
+                MyMaterial.atomicSeparationCatalyst.getMolten(4),
+                new FluidStack[]{
+                        Materials.Radon.getGas(1400),
+                        MyMaterial.naquadahGas.getFluidOrGas(400),
+                        Materials.Uranium.getMolten(648),
+                        MyMaterial.heavyNaquadahFuel.getFluidOrGas(280),
+                        Materials.Plutonium.getMolten(576),
+                        MyMaterial.naquadahAsphalt.getFluidOrGas(140)
+                },
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.Uranium235,1),
+                6
+        );
+
+        CrackRecipeAdder.crackerAdder(
+                MyMaterial.heavyNaquadahFuel.getFluidOrGas(1000),
+                MyMaterial.atomicSeparationCatalyst.getMolten(6),
+                new FluidStack[]{
+                        Materials.Radon.getGas(1000),
+                        MyMaterial.naquadahGas.getFluidOrGas(450),
+                        MyMaterial.lightNaquadahFuel.getFluidOrGas(560),
+                        Materials.Uranium.getMolten(720),
+                        Materials.Lutetium.getMolten(648),
+                        MyMaterial.naquadahAsphalt.getFluidOrGas(240)
+                },
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.Plutonium,1),
+                6
+        );
+
+        CrackRecipeAdder.crackerAdder(
+                MyMaterial.naquadahAsphalt.getFluidOrGas(1000),
+                MyMaterial.atomicSeparationCatalyst.getMolten(12),
+                new FluidStack[]{
+                        MyMaterial.lightNaquadahFuel.getFluidOrGas(600),
+                        Materials.Uranium.getMolten(1152),
+                        Materials.Promethium.getMolten(864),
+                        Materials.Plutonium.getMolten(792),
+                        Materials.Thulium.getMolten(216),
+                        MyMaterial.heavyNaquadahFuel.getFluidOrGas(350)
+                },
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.Naquadria,1),
+                6
+        );
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[]{
+                        GT_Utility.getIntegratedCircuit(2)
+                },
+                new FluidStack[]{
+                        Materials.Ethanol.getFluid(1000),
+                        Materials.SulfuricAcid.getFluid(1000)
+                },
+                new FluidStack[]{
+                        MyMaterial.ether.getFluidOrGas(500),
+                        Materials.DilutedSulfuricAcid.getFluid(1500)
+                },
+                null,
+                510,
+                120
+        );
+
+        GT_Values.RA.addFuel(MyMaterial.ether.get(OrePrefixes.cell),GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Empty,1),537,0);
+        GT_Values.RA.addFuel(MyMaterial.ether.get(OrePrefixes.cell),null,537,1);
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[]{
+                        GT_Utility.getIntegratedCircuit(1),
+                        GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Antimony,1),
+                },
+                new FluidStack[]{
+                        MyMaterial.ether.getFluidOrGas(1000),
+                        Materials.Chlorine.getGas(3000)
+                },
+                new FluidStack[]{
+                        MyMaterial.antimonyTrichloride.getFluidOrGas(1000)
+                },
+                null,
+                60,
+                30
+        );
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[]{
+                        GT_Utility.getIntegratedCircuit(1),
+                },
+                new FluidStack[]{
+                        MyMaterial.antimonyTrichloride.getFluidOrGas(1000),
+                        Materials.Chlorine.getGas(2000)
+                },
+                new FluidStack[]{
+                        MyMaterial.antimonyPentachlorideSolution.getFluidOrGas(1000)
+                },
+                null,
+                180,
+                480
+        );
+
+        GT_Values.RA.addUniversalDistillationRecipe(
+                MyMaterial.antimonyPentachlorideSolution.getFluidOrGas(1000),
+                new  FluidStack[]{
+                        MyMaterial.ether.getFluidOrGas(1000),
+                        MyMaterial.antimonyPentachloride.getFluidOrGas(1000)
+                },
+                null,
+                600,
+                120
+        );
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[]{
+                        GT_Utility.getIntegratedCircuit(1),
+                },
+                new FluidStack[]{
+                        MyMaterial.antimonyPentachloride.getFluidOrGas(1000),
+                        Materials.HydrofluoricAcid.getFluid(5000)
+                },
+                new FluidStack[]{
+                        MyMaterial.antimonyPentafluoride.getFluidOrGas(1000),
+                        Materials.HydrochloricAcid.getFluid(5000)
+                },
+                null,
+                420,
+                30
+        );
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[]{
+                        GT_Utility.getIntegratedCircuit(1),
+                },
+                new FluidStack[]{
+                        MyMaterial.antimonyPentafluoride.getFluidOrGas(1000),
+                        Materials.HydrofluoricAcid.getFluid(1000)
+                },
+                new FluidStack[]{
+                        MyMaterial.fluoroantimonicAcid.getFluidOrGas(1000),
+                },
+                null,
+                840,
+                2040
+        );
+
+        GT_Values.RA.addBlastRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.NaquadahEnriched,32),
+                GT_Utility.getIntegratedCircuit(16),
+                MyMaterial.fluoroantimonicAcid.getFluidOrGas(1000),
+                MyMaterial.acidNaquadahEmulsion.getFluidOrGas(2000),
+                MyMaterial.radioactiveSludge.get(OrePrefixes.dust,3),
+                null,
+                3600,
+                2040,
+                3400
+        );
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[]{
+                        GT_Utility.getIntegratedCircuit(3),
+                        GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Quicklime,32)
+                },
+                new FluidStack[]{
+                        MyMaterial.acidNaquadahEmulsion.getFluidOrGas(1000),
+                },
+                new FluidStack[]{
+                        MyMaterial.naquadahEmulsion.getFluidOrGas(1000),
+                },
+                new ItemStack[]{
+                        GT_OreDictUnificator.get(OrePrefixes.dust,Materials.AntimonyTrioxide,1),
+                        WerkstoffLoader.Fluorspar.get(OrePrefixes.dust,6)
+                },
+                240,
+                30
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                GT_Utility.getIntegratedCircuit(1),
+                null,
+                MyMaterial.naquadahEmulsion.getFluidOrGas(1000),
+                MyMaterial.naquadahSolution.getFluidOrGas(500),
+                MyMaterial.radioactiveSludge.get(OrePrefixes.dust,4),
+                MyMaterial.radioactiveSludge.get(OrePrefixes.dust,2),
+                MyMaterial.radioactiveSludge.get(OrePrefixes.dust,1),
+                MyMaterial.radioactiveSludge.get(OrePrefixes.dust,1),
+                MyMaterial.radioactiveSludge.get(OrePrefixes.dust,1),
+                MyMaterial.radioactiveSludge.get(OrePrefixes.dust,1),
+                new int[]{8000,7500,5000,2000,500,100},
+                800,
+                120
+        );
+
+        GT_Values.RA.addUniversalDistillationRecipe(
+                MyMaterial.naquadahSolution.getFluidOrGas(20),
+                new  FluidStack[]{
+                        MyMaterial.naquadahAsphalt.getFluidOrGas(2),
+                        MyMaterial.heavyNaquadahFuel.getFluidOrGas(5),
+                        MyMaterial.lightNaquadahFuel.getFluidOrGas(10),
+                        FluidRegistry.getFluidStack("water",10),
+                        MyMaterial.naquadahGas.getFluidOrGas(60)
+                },
+                null,
+                20,
+                2040
+        );
+
+
     }
 
     public static void Fixer(){
         MaterialFix.MaterialFluidExtractionFix(MyMaterial.atomicSeparationCatalyst);
+        MaterialFix.MaterialFluidExtractionFix(MyMaterial.extremelyUnstableNaquadah);
     }
 }
