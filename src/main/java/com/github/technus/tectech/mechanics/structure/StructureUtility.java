@@ -38,7 +38,7 @@ public class StructureUtility {
     private static final IStructureElement AIR = new IStructureElement() {
         @Override
         public boolean check(Object t, World world, int x, int y, int z) {
-            return world.getBlock(x, y, z).getMaterial() == Material.air;
+            return world.isAirBlock(x, y, z);
         }
 
         @Override
@@ -57,7 +57,7 @@ public class StructureUtility {
     private static final IStructureElement NOT_AIR = new IStructureElement() {
         @Override
         public boolean check(Object t, World world, int x, int y, int z) {
-            return world.getBlock(x, y, z).getMaterial() != Material.air;
+            return !world.isAirBlock(x, y, z);
         }
 
         @Override
