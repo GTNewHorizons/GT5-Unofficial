@@ -6,6 +6,7 @@ import GoodGenerator.util.MaterialFix;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
+import javafx.scene.paint.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -602,7 +603,7 @@ public class RecipeLoader {
                 new FluidStack[]{
                         MyMaterial.lightNaquadahFuel.getFluidOrGas(600),
                         Materials.Uranium.getMolten(1152),
-                        Materials.Promethium.getMolten(864),
+                        Materials.Thorium.getMolten(864),
                         Materials.Plutonium.getMolten(792),
                         Materials.Thulium.getMolten(216),
                         MyMaterial.heavyNaquadahFuel.getFluidOrGas(350)
@@ -769,7 +770,67 @@ public class RecipeLoader {
                 2040
         );
 
+        GT_Values.RA.addFuel(MyMaterial.naquadahGas.get(OrePrefixes.cell),null,1024,1);
 
+        GT_Values.RA.addFusionReactorRecipe(
+                MyMaterial.lightNaquadahFuel.getFluidOrGas(200),
+                MyMaterial.heavyNaquadahFuel.getFluidOrGas(20),
+                MyMaterial.naquadahBasedFuelMkI.getFluidOrGas(100),
+                5,
+                32768,
+                330000000
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                GT_Utility.getIntegratedCircuit(1),
+                null,
+                MyMaterial.naquadahBasedFuelMkIDepleted.getFluidOrGas(1000),
+                WerkstoffLoader.Xenon.getFluidOrGas(144),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Naquadah,64),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Naquadah,48),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Naquadah,32),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Neodymium,32),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Europium,32),
+                null,
+                new int[]{9000,8500,5000,4000,2000},
+                6000,
+                2040
+        );
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[]{
+                        GT_Utility.getIntegratedCircuit(1),
+                        GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Praseodymium,16),
+                        GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Samarium,24),
+                        GT_OreDictUnificator.get(OrePrefixes.dust,Materials.ElectrumFlux,32),
+                },
+                new FluidStack[]{
+                        MyMaterial.naquadahBasedFuelMkI.getFluidOrGas(1000),
+                        MyMaterial.naquadahGas.getFluidOrGas(2500)
+                },
+                new FluidStack[]{
+                        MyMaterial.naquadahBasedFuelMkII.getFluidOrGas(1000)
+                },
+                null,
+                18000,
+                120
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                GT_Utility.getIntegratedCircuit(1),
+                null,
+                MyMaterial.naquadahBasedFuelMkIIDepleted.getFluidOrGas(1000),
+                WerkstoffLoader.Oganesson.getFluidOrGas(144),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Naquadah,64),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Naquadah,64),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Naquadah,32),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Americium,32),
+                WerkstoffLoader.Californium.get(OrePrefixes.dust,32),
+                null,
+                new int[]{9000,8500,5000,4000,2000},
+                8000,
+                2040
+        );
     }
 
     public static void Fixer(){

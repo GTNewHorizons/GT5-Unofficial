@@ -447,6 +447,80 @@ public class MyMaterial implements Runnable {
             TextureSet.SET_FLUID
     );
 
+    public static final Werkstoff naquadahBasedFuelMkI = new Werkstoff(
+            new short[]{0x62,0x5c,0x5b},
+            "Naquadah Based Liquid Fuel MkI",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31038,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadahBasedFuelMkIDepleted = new Werkstoff(
+            new short[]{0xcb,0xc3,0xc1},
+            "Naquadah Based Liquid Fuel MkI (Depleted)",
+            new Werkstoff.Stats().setToxic(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31039,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadahBasedFuelMkII = new Werkstoff(
+            new short[]{0x52,0x4e,0x4d},
+            "Naquadah Based Liquid Fuel MkII",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31040,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadahBasedFuelMkIIDepleted = new Werkstoff(
+            new short[]{0xb5,0xb0,0xae},
+            "Naquadah Based Liquid Fuel MkII (Depleted)",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31041,
+            TextureSet.SET_FLUID
+    );
+    /*These materials will be enable when they are removed in GregTech*/
+    /*
+    public static final Werkstoff praseodymium = new Werkstoff(
+            new short[]{0xff,0xff,0xff},
+            "praseodymium",
+            "Pr",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.ELEMENT,
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems(),
+            31042,
+            TextureSet.SET_METALLIC
+    );
+
+    public static final Werkstoff rubidium = new Werkstoff(
+            new short[]{0xff,0x2a,0x00},
+            "rubidium",
+            "Rb",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.ELEMENT,
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems(),
+            31043,
+            TextureSet.SET_SHINY
+    );
+
+    public static final Werkstoff thulium = new Werkstoff(
+            new short[]{0xff,0xff,0xff},
+            "Thulium",
+            "Tm",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.ELEMENT,
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems(),
+            31044,
+            TextureSet.SET_METALLIC
+    );
+    */
     @Override
     public void run() { }
 }
