@@ -37,7 +37,7 @@ public class RecipeLoader {
                         ItemList.Field_Generator_ZPM.get(2),
                         ItemList.Electric_Pump_UV.get(2),
                         GT_OreDictUnificator.get(OrePrefixes.circuit,Materials.Infinite,2),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt08,Materials.Tungsten,8),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt08,Materials.SuperconductorUV,8),
                         GT_OreDictUnificator.get(OrePrefixes.pipeHuge,Materials.Lead,4),
                         GT_OreDictUnificator.get(OrePrefixes.plate,Materials.NaquadahAlloy,8),
                         GT_OreDictUnificator.get(OrePrefixes.screw,Materials.Osmium,16)

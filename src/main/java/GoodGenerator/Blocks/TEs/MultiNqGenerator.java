@@ -42,6 +42,9 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     private IStructureDefinition<MultiNqGenerator> multiDefinition = null;
     private int ticker = 0;
     private int leftEnergy = 0;
+    boolean fluidLocker = true;
+    FluidStack lockedFluid = null;
+    int times = 1;
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
@@ -175,9 +178,14 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
             }
         }
 
-        FluidStack f1=null,f2=null;
+        int cnt = 0;
+
+        for (GT_Recipe recipe : tRecipes)  if (tFluids.contains(recipe.mFluidInputs[0])) cnt ++;
+
+        if (cnt > 1) doExplosion(4 * 4);
+
+        FluidStack f1=null;
         float booster = 1.0f;
-        int times = 1;
         if(tFluids.size() > 0){
             if(tFluids.contains(FluidRegistry.getFluidStack("cryotheum", 50)) && tFluids.get(tFluids.indexOf(FluidRegistry.getFluidStack("cryotheum", 50))).amount >= 50){
                 booster = 2.75f;
@@ -193,26 +201,23 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
             }
         }
 
-        if(tFluids.size() > 0){
-            if (tFluids.contains((MyMaterial.atomicSeparationCatalyst.getMolten(1))) && tFluids.get(tFluids.indexOf(MyMaterial.atomicSeparationCatalyst.getMolten(1))).amount >= 1){
-                times = 16;
-                f2=MyMaterial.atomicSeparationCatalyst.getMolten(1);
+        if (fluidLocker && lockedFluid != null){
+            if (!(tFluids.contains(lockedFluid) && tFluids.get(tFluids.indexOf(lockedFluid)).amount >= lockedFluid.amount)){
+                times = 1;
             }
-            else if(tFluids.contains(Materials.Naquadah.getMolten(1L)) && tFluids.get(tFluids.indexOf(Materials.Naquadah.getMolten(1L))).amount >= 1){
-                times = 4;
-                f2=Materials.Naquadah.getMolten(1L);
-            }
-            else if(tFluids.contains(Materials.Uranium235.getMolten(9L)) && tFluids.get(tFluids.indexOf(Materials.Uranium235.getMolten(9L))).amount >= 9){
-                times = 3;
-                f2=Materials.Uranium235.getMolten(9L);
-            }
-            else if (tFluids.contains(Materials.Caesium.getMolten(9L)) && tFluids.get(tFluids.indexOf(Materials.Caesium.getMolten(9L))).amount >= 9){
-                times = 2;
-                f2=Materials.Caesium.getMolten(9L);
+            else {
+                if (lockedFluid.getFluid() == MyMaterial.atomicSeparationCatalyst.getMolten(1).getFluid())
+                    times = 16;
+                else if (lockedFluid.getFluid() == Materials.Naquadah.getMolten(1L).getFluid())
+                    times = 4;
+                else if (lockedFluid.getFluid() == Materials.Uranium235.getMolten(9L).getFluid())
+                    times = 3;
+                else if (lockedFluid.getFluid() == Materials.Caesium.getMolten(9L).getFluid())
+                    times = 2;
             }
         }
 
-        if (tFluids.size()>0 && tRecipes != null){
+        if (tFluids.size()>0){
             for (GT_Recipe recipe : tRecipes){
                 FluidStack recipeFluid = recipe.mFluidInputs[0].copy();
                 FluidStack recipeFluidOut = recipe.mFluidOutputs[0].copy();
@@ -223,9 +228,35 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                 if (tFluids.contains(recipeFluid) && tFluids.get(tFluids.indexOf(recipeFluid)).amount >= times){
                     if(f1 != null)
                         depleteInput(f1);
-                    if(f2 != null)
-                        depleteInput(f2);
+                    if(lockedFluid != null && times != 1)
+                        depleteInput(lockedFluid);
                     if (ticker == 0 || ticker%lasting == 0){
+                        fluidLocker = false;
+                        if(tFluids.size() > 0){
+                            if (tFluids.contains((MyMaterial.atomicSeparationCatalyst.getMolten(1))) && tFluids.get(tFluids.indexOf(MyMaterial.atomicSeparationCatalyst.getMolten(1))).amount >= 1){
+                                times = 16;
+                                lockedFluid = MyMaterial.atomicSeparationCatalyst.getMolten(1);
+                            }
+                            else if(tFluids.contains(Materials.Naquadah.getMolten(1L)) && tFluids.get(tFluids.indexOf(Materials.Naquadah.getMolten(1L))).amount >= 1){
+                                times = 4;
+                                lockedFluid = Materials.Naquadah.getMolten(1L);
+                            }
+                            else if(tFluids.contains(Materials.Uranium235.getMolten(9L)) && tFluids.get(tFluids.indexOf(Materials.Uranium235.getMolten(9L))).amount >= 9){
+                                times = 3;
+                                lockedFluid = Materials.Uranium235.getMolten(9L);
+                            }
+                            else if (tFluids.contains(Materials.Caesium.getMolten(9L)) && tFluids.get(tFluids.indexOf(Materials.Caesium.getMolten(9L))).amount >= 9){
+                                times = 2;
+                                lockedFluid = Materials.Caesium.getMolten(9L);
+                            }
+                            else {
+                                times = 1;
+                                lockedFluid = null;
+                            }
+                            fluidLocker = true;
+                            recipeFluid.amount = times;
+                            recipeFluidOut.amount = times;
+                        }
                         depleteInput(recipeFluid);
                         this.mOutputFluids = new FluidStack[]{recipeFluidOut};
                     }
@@ -256,17 +287,22 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
               long power = voltage * tHatch.maxAmperesOut();
               long outputAmperes;
               if (outputPower > power) doExplosion(4 * GT_Utility.getTier(power));
-              leftEnergy += outputPower;
-              outputAmperes = leftEnergy / voltage;
-              leftEnergy -= outputAmperes * voltage;
-              addEnergyOutput_EM(voltage ,outputAmperes);
+              if (outputPower >= voltage){
+                  leftEnergy += outputPower;
+                  outputAmperes = leftEnergy / voltage;
+                  leftEnergy -= outputAmperes * voltage;
+                  addEnergyOutput_EM(voltage ,outputAmperes);
+              }
+              else{
+                  addEnergyOutput_EM(outputPower, 1);
+              }
             }
         if (this.mDynamoHatches.size() > 0)
             for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches){
                 long voltage = tHatch.maxEUOutput();
                 long power = voltage * tHatch.maxAmperesOut();
                 long outputAmperes;
-                if (outputPower > power) doExplosion(4 * GT_Utility.getTier(power));
+                if (outputPower > power) doExplosion(8 * GT_Utility.getTier(power));
                 leftEnergy += outputPower;
                 outputAmperes = leftEnergy / voltage;
                 leftEnergy -= outputAmperes * voltage;
@@ -280,12 +316,15 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
             mRuntime ++;
             ticker ++;
         }
-        if (!getBaseMetaTileEntity().isActive()) {
+        if (!getBaseMetaTileEntity().isActive() || !getBaseMetaTileEntity().isAllowedToWork()) {
             mRuntime = 0;
             ticker = 0;
             leftEnergy = 0;
+            fluidLocker = false;
+            lockedFluid = null;
+            times = 1;
         }
-        if (ticker > 100000000) ticker = 0;
+        if (ticker > 3 * 17 * 19 * 1000000) ticker = 0;
         return true;
     }
 
@@ -326,7 +365,8 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                       .addInfo("Controller block for the Naquadah Reactor")
                       .addInfo("Environmental Friendly!")
                       .addInfo("Generate power with the High-energy molten metal.")
-                      .addInfo("Input liquid nuclear fuel ,molten enriched naquadah or naquadria.")
+                      .addInfo("Input liquid nuclear fuel, molten enriched naquadah or naquadria.")
+                      .addInfo("The reactor will explode when there are more than ONE types of fuel in the hatch!")
                       .addInfo("Consume coolant 50mb/t to increase the efficiency:")
                       .addInfo("IC2 Coolant 105%, Super Coolant 150%, Cryotheum 275%")
                       .addInfo("Consume excited liquid to increase the output power:")
