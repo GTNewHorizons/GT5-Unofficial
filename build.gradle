@@ -3,9 +3,9 @@ import java.util.concurrent.TimeUnit
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+		maven {
+			name = "gt"
+			url = "https://gregtech.overminddl1.com/"
         }
         maven {
             name = "jitpack"
