@@ -321,7 +321,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		// Calculate how much energy to void each tick
 		passiveDischargeAmount = new BigDecimal(tempCapacity).multiply(PASSIVE_DISCHARGE_FACTOR_PER_TICK).toBigInteger();
 		passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
-		return formationChecklist || true;
+		return formationChecklist;
 	}
 
 	public BigInteger calculateTempCapacity(BigInteger tempCapacity, int meta) {
