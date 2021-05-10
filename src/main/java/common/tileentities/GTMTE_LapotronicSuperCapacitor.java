@@ -11,7 +11,6 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
@@ -55,9 +54,14 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	private BigInteger capacity = BigInteger.ZERO;
 	private BigInteger stored = BigInteger.ZERO;
 	private BigInteger passiveDischargeAmount = BigInteger.ZERO;
-	private BigInteger intputLastTick = BigInteger.ZERO;
+	private BigInteger inputLastTick = BigInteger.ZERO;
 	private BigInteger outputLastTick = BigInteger.ZERO;
 	private int repairStatusCache = 0;
+
+	private long mMaxEUInput = 0;
+	private long mMaxEUOut = 0;
+	private long mMaxAmperesIn = 0;
+	private long mMaxAmperesOut = 0;
 
 	public GTMTE_LapotronicSuperCapacitor(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -189,6 +193,11 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		mDynamoHatchesTT.clear();
 		mEnergyTunnelsTT.clear();
 		mDynamoTunnelsTT.clear();
+
+		mMaxEUInput = 0;
+		mMaxEUOut = 0;
+		mMaxAmperesIn = 0;
+		mMaxAmperesOut = 0;
 		// Temp var for loss calculation
 		BigInteger tempCapacity = BigInteger.ZERO;
 
@@ -312,7 +321,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		// Calculate how much energy to void each tick
 		passiveDischargeAmount = new BigDecimal(tempCapacity).multiply(PASSIVE_DISCHARGE_FACTOR_PER_TICK).toBigInteger();
 		passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
-		return formationChecklist;
+		return formationChecklist || true;
 	}
 
 	public BigInteger calculateTempCapacity(BigInteger tempCapacity, int meta) {
@@ -388,15 +397,30 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			final IMetaTileEntity mte = te.getMetaTileEntity();
 			if (mte instanceof GT_MetaTileEntity_Hatch_Energy) {
 				// Add GT hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return super.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) mte);
+				final GT_MetaTileEntity_Hatch_Energy tHatch = ((GT_MetaTileEntity_Hatch_Energy) mte);
+
+				tHatch.updateTexture(aBaseCasingIndex);
+				mMaxEUInput = Math.max(mMaxEUInput, tHatch.maxEUInput());
+				mMaxAmperesIn = Math.max(mMaxAmperesIn, tHatch.maxAmperesIn());
+
+				return super.mEnergyHatches.add(tHatch);
 			} else if(mte instanceof  GT_MetaTileEntity_Hatch_EnergyTunnel) {
 				// Add TT Laser hatches
+				final GT_MetaTileEntity_Hatch_EnergyTunnel tHatch = ((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
+
+				mMaxEUInput = Math.max(mMaxEUInput, tHatch.maxEUInput());
+				mMaxAmperesIn = Math.max(mMaxAmperesIn, tHatch.maxAmperesIn());
+
 				return mEnergyTunnelsTT.add((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
 			} else if(mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
 				// Add TT hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return mEnergyHatchesTT.add((GT_MetaTileEntity_Hatch_EnergyMulti) mte);
+				final GT_MetaTileEntity_Hatch_EnergyMulti tHatch = (GT_MetaTileEntity_Hatch_EnergyMulti) mte;
+
+				tHatch.updateTexture(aBaseCasingIndex);
+				mMaxEUInput = Math.max(mMaxEUInput, tHatch.maxEUInput());
+				mMaxAmperesIn = Math.max(mMaxAmperesIn, tHatch.maxAmperesIn());
+
+				return mEnergyHatchesTT.add(tHatch);
 			} else {
 				return false;
 			}
@@ -411,15 +435,30 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			final IMetaTileEntity mte = te.getMetaTileEntity();
 			if (mte instanceof GT_MetaTileEntity_Hatch_Dynamo) {
 				// Add GT hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return super.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) mte);
+				final GT_MetaTileEntity_Hatch_Dynamo tDynamo = (GT_MetaTileEntity_Hatch_Dynamo) mte;
+
+				tDynamo.updateTexture(aBaseCasingIndex);
+				mMaxEUOut = Math.max(mMaxEUOut, tDynamo.maxEUOutput());
+				mMaxAmperesOut = Math.max(mMaxAmperesOut, tDynamo.maxAmperesOut());
+
+				return super.mDynamoHatches.add(tDynamo);
 			} else if(mte instanceof  GT_MetaTileEntity_Hatch_DynamoTunnel) {
 				// Add TT Laser hatches
-				return mDynamoTunnelsTT.add((GT_MetaTileEntity_Hatch_DynamoTunnel) mte);
+				final GT_MetaTileEntity_Hatch_DynamoTunnel tDynamo = (GT_MetaTileEntity_Hatch_DynamoTunnel) mte;
+
+				mMaxEUOut = Math.max(mMaxEUOut, tDynamo.maxEUOutput());
+				mMaxAmperesOut = Math.max(mMaxAmperesOut, tDynamo.maxAmperesOut());
+
+				return mDynamoTunnelsTT.add(tDynamo);
 			} else if(mte instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
 				// Add TT hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return mDynamoHatchesTT.add((GT_MetaTileEntity_Hatch_DynamoMulti) mte);
+				final GT_MetaTileEntity_Hatch_DynamoMulti tDynamo = (GT_MetaTileEntity_Hatch_DynamoMulti) mte;
+
+				tDynamo.updateTexture(aBaseCasingIndex);
+				mMaxEUOut = Math.max(mMaxEUOut, tDynamo.maxEUOutput());
+				mMaxAmperesOut = Math.max(mMaxAmperesOut, tDynamo.maxAmperesOut());
+
+				return mDynamoHatchesTT.add(tDynamo);
 			} else {
 				return false;
 			}
@@ -429,8 +468,10 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	@Override
 	public boolean onRunningTick(ItemStack stack){
 		// Reset I/O cache
-		intputLastTick = BigInteger.ZERO;
+		inputLastTick = BigInteger.ZERO;
 		outputLastTick = BigInteger.ZERO;
+
+		//System.out.println(getBaseMetaTileEntity().)
 
 		// Draw energy from GT hatches
 		for(GT_MetaTileEntity_Hatch_Energy eHatch : super.mEnergyHatches) {
@@ -441,7 +482,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
-				intputLastTick = intputLastTick.add(BigInteger.valueOf(power));
+				inputLastTick = inputLastTick.add(BigInteger.valueOf(power));
 			}
 		}
 		// Output energy to GT hatches
@@ -465,7 +506,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
-				intputLastTick = intputLastTick.add(BigInteger.valueOf(power));
+				inputLastTick = inputLastTick.add(BigInteger.valueOf(power));
 			}
 		}
 		// Output energy to TT hatches
@@ -490,7 +531,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
-				intputLastTick = intputLastTick.add(BigInteger.valueOf(power));
+				inputLastTick = inputLastTick.add(BigInteger.valueOf(power));
 			}
 		}
 		// Output energy to TT Laser hatches
@@ -513,6 +554,11 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		}
 		stored = stored.subtract(passiveDischargeAmount);
 		stored = (stored.compareTo(BigInteger.ZERO) <= 0) ? BigInteger.ZERO : stored;
+
+		IGregTechTileEntity tBMTE = this.getBaseMetaTileEntity();
+
+		tBMTE.injectEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), inputLastTick.longValue() / mMaxAmperesIn, mMaxAmperesIn);
+		tBMTE.drainEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), outputLastTick.longValue() / mMaxAmperesOut, mMaxAmperesOut);
 
 		return true;
 	}
@@ -554,13 +600,15 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public String[] getInfoData() {
+		IGregTechTileEntity tBMTE = getBaseMetaTileEntity();
+
 		final ArrayList<String> ll = new ArrayList<>();
 		ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
 		ll.add("Used Capacity: " + NumberFormat.getNumberInstance().format(stored) + "EU");
 		ll.add("Total Capacity: " + NumberFormat.getNumberInstance().format(capacity) + "EU");
 		ll.add("Passive Loss: " + NumberFormat.getNumberInstance().format(passiveDischargeAmount) + "EU/t");
-		ll.add("EU IN: " + NumberFormat.getNumberInstance().format(intputLastTick) + "EU/t");
-		ll.add("EU OUT: " + NumberFormat.getNumberInstance().format(outputLastTick) + "EU/t");
+		ll.add("EU IN: " + NumberFormat.getNumberInstance().format(tBMTE.getAverageElectricInput()) + "EU/t");
+		ll.add("EU OUT: " + NumberFormat.getNumberInstance().format(tBMTE.getAverageElectricOutput()) + "EU/t");
 		ll.add("Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
 				? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
 				: EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
@@ -609,15 +657,56 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	@Override
 	public boolean explodesOnComponentBreak(ItemStack stack) { return false; }
 
+	//called by the getEUCapacity() function in BaseMetaTileEntity
 	@Override
 	public long maxEUStore()
 	{
 		return capacity.longValue();
 	}
 
+	//called by the getEUStored() function in BaseMetaTileEntity
 	@Override
 	public long getEUVar()
 	{
 		return stored.longValue();
+	}
+
+	/*  all of these are needed for the injectEnergyUnits() and drainEnergyUnits()
+		in IGregTechTileEntity
+	 */
+	@Override
+	public long maxEUInput()
+	{
+		return mMaxEUInput;
+	}
+
+	@Override
+	public long maxAmperesIn()
+	{
+		return mMaxAmperesIn;
+	}
+
+	@Override
+	public long maxEUOutput()
+	{
+		return mMaxEUOut;
+	}
+
+	@Override
+	public long maxAmperesOut()
+	{
+		return mMaxAmperesOut;
+	}
+
+	@Override
+	public boolean isEnetInput()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isEnetOutput()
+	{
+		return true;
 	}
 }
