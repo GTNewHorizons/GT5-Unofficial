@@ -400,6 +400,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				final GT_MetaTileEntity_Hatch_Energy tHatch = ((GT_MetaTileEntity_Hatch_Energy) mte);
 
 				tHatch.updateTexture(aBaseCasingIndex);
+//				mMaxEUInput += tHatch.maxEUInput();
+//				mMaxAmperesIn += tHatch.maxAmperesIn();
 				mMaxEUInput = Math.max(mMaxEUInput, tHatch.maxEUInput());
 				mMaxAmperesIn = Math.max(mMaxAmperesIn, tHatch.maxAmperesIn());
 
@@ -408,6 +410,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				// Add TT Laser hatches
 				final GT_MetaTileEntity_Hatch_EnergyTunnel tHatch = ((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
 
+//				mMaxEUInput += tHatch.maxEUInput();
+//				mMaxAmperesIn += tHatch.maxAmperesIn();
 				mMaxEUInput = Math.max(mMaxEUInput, tHatch.maxEUInput());
 				mMaxAmperesIn = Math.max(mMaxAmperesIn, tHatch.maxAmperesIn());
 
@@ -417,6 +421,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				final GT_MetaTileEntity_Hatch_EnergyMulti tHatch = (GT_MetaTileEntity_Hatch_EnergyMulti) mte;
 
 				tHatch.updateTexture(aBaseCasingIndex);
+//				mMaxEUInput += tHatch.maxEUInput();
+//				mMaxAmperesIn += tHatch.maxAmperesIn();
 				mMaxEUInput = Math.max(mMaxEUInput, tHatch.maxEUInput());
 				mMaxAmperesIn = Math.max(mMaxAmperesIn, tHatch.maxAmperesIn());
 
@@ -438,6 +444,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				final GT_MetaTileEntity_Hatch_Dynamo tDynamo = (GT_MetaTileEntity_Hatch_Dynamo) mte;
 
 				tDynamo.updateTexture(aBaseCasingIndex);
+//				mMaxEUOut += tDynamo.maxEUOutput();
+//				mMaxAmperesOut += tDynamo.maxAmperesOut();
 				mMaxEUOut = Math.max(mMaxEUOut, tDynamo.maxEUOutput());
 				mMaxAmperesOut = Math.max(mMaxAmperesOut, tDynamo.maxAmperesOut());
 
@@ -446,6 +454,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				// Add TT Laser hatches
 				final GT_MetaTileEntity_Hatch_DynamoTunnel tDynamo = (GT_MetaTileEntity_Hatch_DynamoTunnel) mte;
 
+//				mMaxEUOut += tDynamo.maxEUOutput();
+//				mMaxAmperesOut += tDynamo.maxAmperesOut();
 				mMaxEUOut = Math.max(mMaxEUOut, tDynamo.maxEUOutput());
 				mMaxAmperesOut = Math.max(mMaxAmperesOut, tDynamo.maxAmperesOut());
 
@@ -455,6 +465,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 				final GT_MetaTileEntity_Hatch_DynamoMulti tDynamo = (GT_MetaTileEntity_Hatch_DynamoMulti) mte;
 
 				tDynamo.updateTexture(aBaseCasingIndex);
+//				mMaxEUOut += tDynamo.maxEUOutput();
+//				mMaxAmperesOut += tDynamo.maxAmperesOut();
 				mMaxEUOut = Math.max(mMaxEUOut, tDynamo.maxEUOutput());
 				mMaxAmperesOut = Math.max(mMaxAmperesOut, tDynamo.maxAmperesOut());
 
@@ -557,8 +569,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 
 		IGregTechTileEntity tBMTE = this.getBaseMetaTileEntity();
 
-		tBMTE.injectEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), inputLastTick.longValue() / mMaxAmperesIn, mMaxAmperesIn);
-		tBMTE.drainEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), outputLastTick.longValue() / mMaxAmperesOut, mMaxAmperesOut);
+		tBMTE.injectEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), inputLastTick.longValue(), mMaxAmperesIn);
+		tBMTE.drainEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), outputLastTick.longValue(), mMaxAmperesOut);
 
 		return true;
 	}
@@ -600,15 +612,13 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public String[] getInfoData() {
-		IGregTechTileEntity tBMTE = getBaseMetaTileEntity();
-
 		final ArrayList<String> ll = new ArrayList<>();
 		ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
 		ll.add("Used Capacity: " + NumberFormat.getNumberInstance().format(stored) + "EU");
 		ll.add("Total Capacity: " + NumberFormat.getNumberInstance().format(capacity) + "EU");
 		ll.add("Passive Loss: " + NumberFormat.getNumberInstance().format(passiveDischargeAmount) + "EU/t");
-		ll.add("EU IN: " + NumberFormat.getNumberInstance().format(tBMTE.getAverageElectricInput()) + "EU/t");
-		ll.add("EU OUT: " + NumberFormat.getNumberInstance().format(tBMTE.getAverageElectricOutput()) + "EU/t");
+		ll.add("EU IN: " + NumberFormat.getNumberInstance().format(inputLastTick) + "EU/t");
+		ll.add("EU OUT: " + NumberFormat.getNumberInstance().format(outputLastTick) + "EU/t");
 		ll.add("Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
 				? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
 				: EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
