@@ -2,6 +2,7 @@ package GoodGenerator.Loader;
 
 import GoodGenerator.Blocks.RegularBlock.Casing;
 import GoodGenerator.Blocks.RegularBlock.Frame;
+import GoodGenerator.Blocks.TEs.FuelRefineFactory;
 import GoodGenerator.Blocks.TEs.MultiNqGenerator;
 import GoodGenerator.Items.MyItemBlocks;
 import GoodGenerator.Items.MyItems;
@@ -35,7 +36,9 @@ public class Loaders {
     public static final Block fieldRestrictingGlass = new Frame("fieldRestrictingGlass",new String[]{
             GoodGenerator.MOD_ID+":fieldRestrictingGlass"
     });
+
     public static ItemStack MAR;
+    public static ItemStack FRF;
 
     public static void Register(){
         GameRegistry.registerBlock(MAR_Casing, MyItemBlocks.class,"MAR_Casing");
@@ -53,6 +56,7 @@ public class Loaders {
         GameRegistry.registerItem(highDensityPlutonium,"highDensityPlutonium",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(rawAtomicSeparationCatalyst,"rawAtomicSeparationCatalyst",GoodGenerator.MOD_ID);
         Loaders.MAR = new MultiNqGenerator(12732,"NaG","Large Naquadah Reactor").getStackForm(1L);
+        Loaders.FRF = new FuelRefineFactory(17000,"FRF","Fuel Refine Factory").getStackForm(1);
     }
 
     public static void addOreDic(){

@@ -1,9 +1,9 @@
 
-MAR_Casing.0.name=Field Restricting Casing
-radiationProtectionSteelFrame.0.name=Radiation Protection Steel Frame Box
-fieldRestrictingGlass.0.name=Field Restricting Glass
+MAR_Casing.0.name=Field Restriction Casing
+radiationProtectionSteelFrame.0.name=Radiation Proof Steel Frame Box
+fieldRestrictingGlass.0.name=Field Proof Glass
 
-item.radiationProtectionPlate.name=Radiation Protection Plate
+item.radiationProtectionPlate.name=Radiation Proof Plate
 item.wrappedUraniumIngot.name=Wrapped Uranium Ingot
 item.highDensityUraniumNugget.name=High Density Uranium Nugget
 item.highDensityUranium.name=High Density Uranium
