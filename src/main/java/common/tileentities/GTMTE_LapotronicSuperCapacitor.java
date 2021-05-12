@@ -11,6 +11,7 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
@@ -58,10 +59,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	private BigInteger outputLastTick = BigInteger.ZERO;
 	private int repairStatusCache = 0;
 
-	private long mMaxEUInput = 0;
+	private long mMaxEUIn = 0;
 	private long mMaxEUOut = 0;
-	private long mMaxAmperesIn = 0;
-	private long mMaxAmperesOut = 0;
 
 	public GTMTE_LapotronicSuperCapacitor(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -194,10 +193,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		mEnergyTunnelsTT.clear();
 		mDynamoTunnelsTT.clear();
 
-		mMaxEUInput = 0;
+		mMaxEUIn = 0;
 		mMaxEUOut = 0;
-		mMaxAmperesIn = 0;
-		mMaxAmperesOut = 0;
 		// Temp var for loss calculation
 		BigInteger tempCapacity = BigInteger.ZERO;
 
@@ -395,36 +392,26 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			return false;
 		} else {
 			final IMetaTileEntity mte = te.getMetaTileEntity();
+
+			if (mte instanceof MetaTileEntity) {
+				mMaxEUIn += ((MetaTileEntity) mte).maxEUInput() * ((MetaTileEntity) mte).maxAmperesIn();
+			}
+
 			if (mte instanceof GT_MetaTileEntity_Hatch_Energy) {
 				// Add GT hatches
 				final GT_MetaTileEntity_Hatch_Energy tHatch = ((GT_MetaTileEntity_Hatch_Energy) mte);
-
 				tHatch.updateTexture(aBaseCasingIndex);
-//				mMaxEUInput += tHatch.maxEUInput();
-//				mMaxAmperesIn += tHatch.maxAmperesIn();
-				mMaxEUInput = Math.max(mMaxEUInput, tHatch.maxEUInput());
-				mMaxAmperesIn = Math.max(mMaxAmperesIn, tHatch.maxAmperesIn());
 
 				return super.mEnergyHatches.add(tHatch);
 			} else if(mte instanceof  GT_MetaTileEntity_Hatch_EnergyTunnel) {
 				// Add TT Laser hatches
 				final GT_MetaTileEntity_Hatch_EnergyTunnel tHatch = ((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
 
-//				mMaxEUInput += tHatch.maxEUInput();
-//				mMaxAmperesIn += tHatch.maxAmperesIn();
-				mMaxEUInput = Math.max(mMaxEUInput, tHatch.maxEUInput());
-				mMaxAmperesIn = Math.max(mMaxAmperesIn, tHatch.maxAmperesIn());
-
 				return mEnergyTunnelsTT.add((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
 			} else if(mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
 				// Add TT hatches
 				final GT_MetaTileEntity_Hatch_EnergyMulti tHatch = (GT_MetaTileEntity_Hatch_EnergyMulti) mte;
-
 				tHatch.updateTexture(aBaseCasingIndex);
-//				mMaxEUInput += tHatch.maxEUInput();
-//				mMaxAmperesIn += tHatch.maxAmperesIn();
-				mMaxEUInput = Math.max(mMaxEUInput, tHatch.maxEUInput());
-				mMaxAmperesIn = Math.max(mMaxAmperesIn, tHatch.maxAmperesIn());
 
 				return mEnergyHatchesTT.add(tHatch);
 			} else {
@@ -439,36 +426,26 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			return false;
 		} else {
 			final IMetaTileEntity mte = te.getMetaTileEntity();
+
+			if (mte instanceof MetaTileEntity) {
+				mMaxEUOut += ((MetaTileEntity) mte).maxEUOutput() * ((MetaTileEntity) mte).maxAmperesOut();
+			}
+
 			if (mte instanceof GT_MetaTileEntity_Hatch_Dynamo) {
 				// Add GT hatches
 				final GT_MetaTileEntity_Hatch_Dynamo tDynamo = (GT_MetaTileEntity_Hatch_Dynamo) mte;
-
 				tDynamo.updateTexture(aBaseCasingIndex);
-//				mMaxEUOut += tDynamo.maxEUOutput();
-//				mMaxAmperesOut += tDynamo.maxAmperesOut();
-				mMaxEUOut = Math.max(mMaxEUOut, tDynamo.maxEUOutput());
-				mMaxAmperesOut = Math.max(mMaxAmperesOut, tDynamo.maxAmperesOut());
 
 				return super.mDynamoHatches.add(tDynamo);
 			} else if(mte instanceof  GT_MetaTileEntity_Hatch_DynamoTunnel) {
 				// Add TT Laser hatches
 				final GT_MetaTileEntity_Hatch_DynamoTunnel tDynamo = (GT_MetaTileEntity_Hatch_DynamoTunnel) mte;
 
-//				mMaxEUOut += tDynamo.maxEUOutput();
-//				mMaxAmperesOut += tDynamo.maxAmperesOut();
-				mMaxEUOut = Math.max(mMaxEUOut, tDynamo.maxEUOutput());
-				mMaxAmperesOut = Math.max(mMaxAmperesOut, tDynamo.maxAmperesOut());
-
 				return mDynamoTunnelsTT.add(tDynamo);
 			} else if(mte instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
 				// Add TT hatches
 				final GT_MetaTileEntity_Hatch_DynamoMulti tDynamo = (GT_MetaTileEntity_Hatch_DynamoMulti) mte;
-
 				tDynamo.updateTexture(aBaseCasingIndex);
-//				mMaxEUOut += tDynamo.maxEUOutput();
-//				mMaxAmperesOut += tDynamo.maxAmperesOut();
-				mMaxEUOut = Math.max(mMaxEUOut, tDynamo.maxEUOutput());
-				mMaxAmperesOut = Math.max(mMaxAmperesOut, tDynamo.maxAmperesOut());
 
 				return mDynamoHatchesTT.add(tDynamo);
 			} else {
@@ -569,8 +546,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 
 		IGregTechTileEntity tBMTE = this.getBaseMetaTileEntity();
 
-		tBMTE.injectEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), inputLastTick.longValue(), mMaxAmperesIn);
-		tBMTE.drainEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), outputLastTick.longValue(), mMaxAmperesOut);
+		tBMTE.injectEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), inputLastTick.longValue(), 1L);
+		tBMTE.drainEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), outputLastTick.longValue(), 1L);
 
 		return true;
 	}
@@ -687,13 +664,13 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	@Override
 	public long maxEUInput()
 	{
-		return mMaxEUInput;
+		return mMaxEUIn;
 	}
 
 	@Override
 	public long maxAmperesIn()
 	{
-		return mMaxAmperesIn;
+		return 1L;
 	}
 
 	@Override
@@ -705,7 +682,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	@Override
 	public long maxAmperesOut()
 	{
-		return mMaxAmperesOut;
+		return 1L;
 	}
 
 	@Override
