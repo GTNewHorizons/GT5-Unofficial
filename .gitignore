@@ -5,3 +5,4 @@ Good-Generator.ipr
 Good-Generator.iws
 .idea/
 out/
+*.iml
