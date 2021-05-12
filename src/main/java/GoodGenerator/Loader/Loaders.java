@@ -56,7 +56,7 @@ public class Loaders {
         GameRegistry.registerItem(highDensityPlutonium,"highDensityPlutonium",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(rawAtomicSeparationCatalyst,"rawAtomicSeparationCatalyst",GoodGenerator.MOD_ID);
         Loaders.MAR = new MultiNqGenerator(12732,"NaG","Large Naquadah Reactor").getStackForm(1L);
-        Loaders.FRF = new FuelRefineFactory(17000,"FRF","Fuel Refine Factory").getStackForm(1);
+        Loaders.FRF = new FuelRefineFactory(16000,"FRF","Fuel Refine Factory").getStackForm(1);
     }
 
     public static void addOreDic(){
