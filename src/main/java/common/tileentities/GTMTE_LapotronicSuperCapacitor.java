@@ -589,6 +589,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public String[] getInfoData() {
+		final IGregTechTileEntity tGTTE = getBaseMetaTileEntity();
+
 		final ArrayList<String> ll = new ArrayList<>();
 		ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
 		ll.add("Used Capacity: " + NumberFormat.getNumberInstance().format(stored) + "EU");
@@ -596,6 +598,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		ll.add("Passive Loss: " + NumberFormat.getNumberInstance().format(passiveDischargeAmount) + "EU/t");
 		ll.add("EU IN: " + NumberFormat.getNumberInstance().format(inputLastTick) + "EU/t");
 		ll.add("EU OUT: " + NumberFormat.getNumberInstance().format(outputLastTick) + "EU/t");
+		ll.add("Avg EU IN: " + NumberFormat.getNumberInstance().format(tGTTE.getAverageElectricInput()));
+		ll.add("Avg EU OUT: " + NumberFormat.getNumberInstance().format(tGTTE.getAverageElectricOutput()));
 		ll.add("Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
 				? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
 				: EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
