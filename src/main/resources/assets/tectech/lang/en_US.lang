@@ -651,7 +651,7 @@ gt.blockmachines.multimachine.em.scanner.hint.3=4 - Elemental Overflow Hatches o
 gt.blockmachines.multimachine.em.scanner.desc.0=What is existing here?
 gt.blockmachines.multimachine.em.scanner.desc.1=I HAVE NO IDEA (yet)!
 
-gt.blockmachines.multimachine.em.research.name=Research station
+gt.blockmachines.multimachine.em.research.name=Research Station
 gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer casing
 gt.blockmachines.multimachine.em.research.hint.1=2 - Holder Hatch
 gt.blockmachines.multimachine.em.research.desc.0=Philosophers didn't even...
