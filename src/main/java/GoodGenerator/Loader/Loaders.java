@@ -27,15 +27,13 @@ public class Loaders {
     public static final Item highDensityPlutonium = new MyItems("highDensityPlutonium",GoodGenerator.GG);
     public static final Item rawAtomicSeparationCatalyst = new MyItems("rawAtomicSeparationCatalyst",GoodGenerator.GG);
 
-    public static final Block MAR_Casing = new Casing("MAR_Casing",new String[]{
-            GoodGenerator.MOD_ID+":MAR_Casing"
-    });
-    public static final Block radiationProtectionSteelFrame = new Frame("radiationProtectionSteelFrame",new String[]{
-            GoodGenerator.MOD_ID+":radiationProtectionSteelFrame"
-    });
-    public static final Block fieldRestrictingGlass = new Frame("fieldRestrictingGlass",new String[]{
-            GoodGenerator.MOD_ID+":fieldRestrictingGlass"
-    });
+    public static final Block MAR_Casing = new Casing("MAR_Casing",new String[]{GoodGenerator.MOD_ID+":MAR_Casing"});
+    public static final Block FRF_Casings = new Casing("FRF_Casing",new String[]{"gregtech:iconsets/MACHINE_CASING_ROBUST_TUNGSTENSTEEL"});
+    public static final Block FRF_Coil_1 = new Casing("FRF_Coil_1",new String[]{GoodGenerator.MOD_ID+":FRF_Coils/1"});
+    public static final Block FRF_Coil_2 = new Casing("FRF_Coil_2",new String[]{GoodGenerator.MOD_ID+":FRF_Coils/2"});
+    public static final Block FRF_Coil_3 = new Casing("FRF_Coil_3",new String[]{GoodGenerator.MOD_ID+":FRF_Coils/3"});
+    public static final Block radiationProtectionSteelFrame = new Frame("radiationProtectionSteelFrame",new String[]{GoodGenerator.MOD_ID+":radiationProtectionSteelFrame"});
+    public static final Block fieldRestrictingGlass = new Frame("fieldRestrictingGlass",new String[]{GoodGenerator.MOD_ID+":fieldRestrictingGlass"});
 
     public static ItemStack MAR;
     public static ItemStack FRF;
@@ -44,6 +42,10 @@ public class Loaders {
         GameRegistry.registerBlock(MAR_Casing, MyItemBlocks.class,"MAR_Casing");
         GameRegistry.registerBlock(radiationProtectionSteelFrame,MyItemBlocks.class,"radiationProtectionSteelFrame");
         GameRegistry.registerBlock(fieldRestrictingGlass,MyItemBlocks.class,"fieldRestrictingGlass");
+        GameRegistry.registerBlock(FRF_Casings,MyItemBlocks.class,"FRF_Casings");
+        GameRegistry.registerBlock(FRF_Coil_1,MyItemBlocks.class,"FRF_Coil_1");
+        GameRegistry.registerBlock(FRF_Coil_2,MyItemBlocks.class,"FRF_Coil_2");
+        GameRegistry.registerBlock(FRF_Coil_3,MyItemBlocks.class,"FRF_Coil_3");
         GameRegistry.registerItem(radiationProtectionPlate,"radiationProtectionPlate",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot,"wrappedUraniumIngot",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget,"highDensityUraniumNugget",GoodGenerator.MOD_ID);
@@ -56,7 +58,7 @@ public class Loaders {
         GameRegistry.registerItem(highDensityPlutonium,"highDensityPlutonium",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(rawAtomicSeparationCatalyst,"rawAtomicSeparationCatalyst",GoodGenerator.MOD_ID);
         Loaders.MAR = new MultiNqGenerator(12732,"NaG","Large Naquadah Reactor").getStackForm(1L);
-        Loaders.FRF = new FuelRefineFactory(16999,"FRF","Fuel Refine Factory").getStackForm(1L);
+        Loaders.FRF = new FuelRefineFactory(16999,"FRF","Naquadah Fuel Refine Factory").getStackForm(1L);
     }
 
     public static void addOreDic(){

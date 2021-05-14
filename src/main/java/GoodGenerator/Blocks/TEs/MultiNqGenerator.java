@@ -37,7 +37,6 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
     @SideOnly(Side.CLIENT)
-    protected String textureNames;
     protected String name;
     private IStructureDefinition<MultiNqGenerator> multiDefinition = null;
     private int ticker = 0;
@@ -55,8 +54,8 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     public String[] getStructureDescription(ItemStack itemStack) {
         return new String[]{
                 "6x Tungstensteel Pipe Casing",
-                "48x Field Restricting Casing",
-                "36x Radiation Protection Steel Frame Box",
+                "48x Field Restriction Casing",
+                "36x Radiation Proof Steel Frame Box",
                 "At least 77x Radiation Proof Machine Casing",
                 "1~3x Input Hatch",
                 "0~1x Output Hatch",
@@ -151,7 +150,6 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     public MultiNqGenerator(int id, String name, String nameRegional){
         super(id,name,nameRegional);
         this.name = name;
-        textureNames = GoodGenerator.MOD_ID+":"+name;
     }
 
     @Override
