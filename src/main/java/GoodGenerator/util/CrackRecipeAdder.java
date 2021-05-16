@@ -26,7 +26,7 @@ public class CrackRecipeAdder {
             actOutput[j] = new FluidStack(tmp1, tmp2);
         }
 
-        GT_Values.RA.addUniversalDistillationRecipe(FluidRegistry.getFluidStack("lightlycracked"+name,1000),actOutput,outputItem,2400,7680);
+        GT_Values.RA.addUniversalDistillationRecipe(FluidRegistry.getFluidStack("lightlycracked"+name,1000),actOutput,outputItem,120,7680);
 
         for ( int i = num - 1, j = 0; i >= 0; i --, j ++ ){
             Fluid tmp1 = outputFluids[i].getFluid();
@@ -34,7 +34,7 @@ public class CrackRecipeAdder {
             actOutput[j] = new FluidStack(tmp1, tmp2);
         }
 
-        GT_Values.RA.addUniversalDistillationRecipe(FluidRegistry.getFluidStack("moderatelycracked"+name,1000),actOutput,outputItem,2400,7680);
+        GT_Values.RA.addUniversalDistillationRecipe(FluidRegistry.getFluidStack("moderatelycracked"+name,1000),actOutput,outputItem,120,7680);
 
         for ( int i = num - 1, j = 0; i >= 0; i --, j ++ ){
             Fluid tmp1 = outputFluids[i].getFluid();
@@ -42,6 +42,6 @@ public class CrackRecipeAdder {
             actOutput[j] = new FluidStack(tmp1, tmp2);
         }
 
-        GT_Values.RA.addUniversalDistillationRecipe(FluidRegistry.getFluidStack("heavilycracked"+name,1000),actOutput,outputItem,2400,7680);
+        GT_Values.RA.addUniversalDistillationRecipe(FluidRegistry.getFluidStack("heavilycracked"+name,1000),actOutput,outputItem,120,7680);
     }
 }

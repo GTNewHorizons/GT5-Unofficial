@@ -1,6 +1,7 @@
 package GoodGenerator.Blocks.TEs;
 
 import GoodGenerator.Loader.Loaders;
+import GoodGenerator.util.MyRecipeAdder;
 import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
@@ -17,11 +18,15 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
@@ -32,7 +37,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     @SideOnly(Side.CLIENT)
     protected String name;
     private IStructureDefinition<FuelRefineFactory> multiDefinition = null;
-    private int Tire = -1;
+    private int Tier = -1;
     private final HashSet<Coords> vis = new HashSet<>(64);
 
     public FuelRefineFactory(String name){super(name);}
@@ -141,7 +146,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                 vis.clear();
                 if (aTile.getBlockOffset(dx[i],dy[i],dz[i]) == block[j])
                     if (dfs(block[j], aTile.getWorld(),aTile.getXCoord() + dx[i],aTile.getYCoord() + dy[i],aTile.getZCoord() + dz[i],32)){
-                        Tire = j;
+                        Tier = j;
                         return true;
                     }
             }
@@ -164,11 +169,61 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mWrench = true;
+        mScrewdriver = true;
+        mSoftHammer = true;
+        mHardHammer = true;
+        mSolderingTool = true;
+        mCrowbar = true;
         return structureCheck_EM(name, 7,12,1) && checkCoil();
     }
 
     @Override
     public boolean checkRecipe_EM(ItemStack aStack){
+
+        ArrayList<FluidStack> tFluids = getStoredFluids();
+        ArrayList<ItemStack> tItems = getStoredInputs();
+        Collection<GT_Recipe> tRecipes = MyRecipeAdder.instance.FRF.mRecipeList;
+        long maxVoltage = getMaxInputVoltage();
+
+        for (int i = 0; i < tFluids.size() - 1; i++) {
+            for (int j = i + 1; j < tFluids.size(); j++) {
+                if (GT_Utility.areFluidsEqual(tFluids.get(i), tFluids.get(j))) {
+                    if ((tFluids.get(i)).amount >= (tFluids.get(j)).amount) {
+                        tFluids.remove(j--);
+                    } else {
+                        tFluids.remove(i--);
+                        break;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < tItems.size() - 1; i++) {
+            for (int j = i + 1; j < tItems.size(); j++) {
+                if (GT_Utility.areStacksEqual(tItems.get(i), tItems.get(j))) {
+                    if ((tItems.get(i)).stackSize >= (tItems.get(j)).stackSize) {
+                        tItems.remove(j--);
+                    } else {
+                        tItems.remove(i--);
+                        break;
+                    }
+                }
+            }
+        }
+
+        for (GT_Recipe recipe : tRecipes){
+
+            checkCoil();
+            if (recipe.mSpecialValue > Tier) continue;
+
+            if (recipe.isRecipeInputEqual(true, tFluids.toArray(new FluidStack[tFluids.size()]), tItems.toArray(new ItemStack[tItems.size()]))){
+                calculatePerfectOverclockedNessMulti(recipe.mEUt, recipe.mDuration / (Tier - recipe.mSpecialValue + 1), 1, maxVoltage);
+                this.mOutputFluids = recipe.mFluidOutputs;
+                this.updateSlots();
+                return true;
+            }
+        }
         return false;
     }
 
@@ -201,6 +256,11 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     }
 
     @Override
+    public boolean onRunningTick(ItemStack stack) {
+        return true;
+    }
+
+    @Override
     public String[] getStructureDescription(ItemStack itemStack) {
         return new String[0];
     }
@@ -227,7 +287,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
 
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
+        return true;
     }
 
     @Override

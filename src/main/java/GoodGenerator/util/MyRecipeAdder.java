@@ -1,6 +1,7 @@
 package GoodGenerator.util;
 
 import gregtech.api.util.GT_Recipe;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -16,12 +17,26 @@ public class MyRecipeAdder {
             "gg.recipe.naquadah_reactor",
             StatCollector.translateToLocal("tile.recipe.naquadah_reactor"),
             null,
-            "gregtech:textures/gui/basicmachines/Default",
+            "goodgenerator:textures/gui/naquadah_reactor",
             0,0,1,1,1,
             "Basic Output Voltage: ",
             1,
             " EU/t",
             false,
+            true
+    );
+
+    public final NaqFuelRefineMapper FRF = new NaqFuelRefineMapper(
+            new HashSet<>(50),
+            "gg.recipe.naquadah_fuel_refine_factory",
+            StatCollector.translateToLocal("tile.naquadah_fuel_refine_factory"),
+            null,
+            "gregtech:textures/gui/basicmachines/Default",
+            6,0, 0, 1, 1,
+            "Need Tier ",
+            1,
+            " Coil",
+            true,
             true
     );
 
@@ -32,13 +47,27 @@ public class MyRecipeAdder {
             super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
         }
 
-        public GT_Recipe addFuel(FluidStack input,FluidStack output,int EUt,int ticks){
+        public void addFuel(FluidStack input, FluidStack output, int EUt, int ticks){
             lasting = ticks;
-            return super.addRecipe(true,null,null,null,new FluidStack[]{input},new FluidStack[]{output},ticks,0,EUt);
+            super.addRecipe(true, null, null, null, new FluidStack[]{input}, new FluidStack[]{output}, ticks, 0, EUt);
         }
     }
 
-    public boolean addLiquidMentalFuel(FluidStack input,FluidStack output,int EUt,int ticks){
-        return NqGFuels.addFuel(input,output,EUt,ticks)!=null;
+    public void addLiquidMentalFuel(FluidStack input, FluidStack output, int EUt, int ticks){
+        NqGFuels.addFuel(input, output, EUt, ticks);
+    }
+
+    public static class NaqFuelRefineMapper extends GT_Recipe.GT_Recipe_Map{
+        public NaqFuelRefineMapper(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed){
+            super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
+        }
+
+        public void addNaqFuelRefineRecipe(FluidStack[] input1, ItemStack[] input2, FluidStack output, int EUt, int ticks, int tier){
+            super.addRecipe(false, input2, null, null, input1, new FluidStack[]{output}, ticks, EUt, tier);
+        }
+    }
+
+    public void addNaquadahFuelRefineRecipe(FluidStack[] input1, ItemStack[] input2, FluidStack output, int EUt, int ticks, int tier){
+        FRF.addNaqFuelRefineRecipe(input1, input2, output, EUt, ticks, tier);
     }
 }
