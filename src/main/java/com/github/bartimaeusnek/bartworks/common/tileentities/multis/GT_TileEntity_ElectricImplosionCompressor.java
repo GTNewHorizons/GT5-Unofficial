@@ -115,7 +115,7 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
     private void resetPiston() {
         if (this.getBaseMetaTileEntity().getWorld().isRemote)
             return;
-        if (!this.piston) {
+        if (!this.piston && this.mMachine) {
             int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX;
             int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ;
             int aX = this.getBaseMetaTileEntity().getXCoord(), aY = this.getBaseMetaTileEntity().getYCoord(), aZ = this.getBaseMetaTileEntity().getZCoord();
