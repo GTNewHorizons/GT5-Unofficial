@@ -37,7 +37,6 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
     @SideOnly(Side.CLIENT)
-    protected String name;
     private IStructureDefinition<MultiNqGenerator> multiDefinition = null;
     private int ticker = 0;
     private int leftEnergy = 0;
@@ -47,7 +46,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(name, 3,7,0, hintsOnly, itemStack);
+        structureBuild_EM(mName, 3,7,0, hintsOnly, itemStack);
     }
 
     @Override
@@ -97,7 +96,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
         if(multiDefinition == null) {
             multiDefinition = StructureDefinition
                     .<MultiNqGenerator>builder()
-                    .addShape(name,
+                    .addShape(mName,
                             transpose(new String[][]{
                                     {"AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA"},
                                     {"N     N","       ","  CCC  ","  CPC  ","  CCC  ","       ","N     N"},
@@ -149,7 +148,6 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     public MultiNqGenerator(int id, String name, String nameRegional){
         super(id,name,nameRegional);
-        this.name = name;
     }
 
     @Override
@@ -328,7 +326,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(name, 3, 7, 0) && mMaintenanceHatches.size() == 1 && mDynamoHatches.size() + eDynamoMulti.size() == 1;
+        return structureCheck_EM(mName, 3, 7, 0) && mMaintenanceHatches.size() == 1 && mDynamoHatches.size() + eDynamoMulti.size() == 1;
     }
 
     @Override

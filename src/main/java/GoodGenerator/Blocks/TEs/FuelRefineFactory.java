@@ -18,12 +18,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,7 +37,6 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
     @SideOnly(Side.CLIENT)
-    protected String name;
     private IStructureDefinition<FuelRefineFactory> multiDefinition = null;
     private int Tier = -1;
     private final HashSet<Coords> vis = new HashSet<>(64);
@@ -44,7 +45,6 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
 
     public FuelRefineFactory(int id, String name, String nameRegional){
         super(id,name,nameRegional);
-        this.name = name;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(name, 7,12,1, hintsOnly, itemStack);
+        structureBuild_EM(mName, 7,12,1, hintsOnly, itemStack);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
         if(multiDefinition == null) {
             multiDefinition = StructureDefinition
                     .<FuelRefineFactory>builder()
-                    .addShape(name,
+                    .addShape(mName,
                             transpose(new String[][]{
                                     {"               ","      CCC      ","               "},
                                     {"      XGX      ","    CCFFFCC    ","      XGX      "},
@@ -153,6 +153,43 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
         return false;
     }
 
+    @Override
+    public String[] getDescription(){
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Naquadah Fuel Refine Factory")
+                .addInfo("But at what cost?")
+                .addInfo("Produce the endgame naquadah fuel.")
+                .addInfo("Need field restriction coil to control the fatal radiation.")
+                .addInfo("Use higher tier coil to unlock more fuel and reduce the process time.")
+                .addInfo("The structure is too complex!")
+                .addInfo("Follow the TecTech blueprint to build the main structure.")
+                .addSeparator()
+                .addController("Front bottom")
+                .addInputHatch("The casings adjoin the field restriction glass.")
+                .addInputBus("The casings adjoin the field restriction glass.")
+                .addOutputHatch("The casings adjoin the field restriction glass.")
+                .addEnergyHatch("The casings adjoin the field restriction glass.")
+                .toolTipFinisher("Good Generator");;
+        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            return tt.getInformation();
+        } else {
+            return tt.getStructureInformation();
+        }
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack itemStack){
+        return new String[]{
+                "8x Field Restriction Glass",
+                "32x Field Restriction Coil of any tier",
+                "At least 104x Naquadah Fuel Refine Factory Casing",
+                "1~16x Input Hatch",
+                "1~16x Output Hatch",
+                "1~16x Input Bus",
+                "1~16x Energy Hatch"
+        };
+    }
+
     public boolean dfs(Block e, World w,int x,int y,int z, int cnt){
         if (cnt == 0) return true;
         if (w.getBlock(x,y,z) != e) return false;
@@ -175,7 +212,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
         mHardHammer = true;
         mSolderingTool = true;
         mCrowbar = true;
-        return structureCheck_EM(name, 7,12,1) && checkCoil();
+        return structureCheck_EM(mName, 7,12,1) && checkCoil();
     }
 
     @Override
@@ -258,11 +295,6 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     @Override
     public boolean onRunningTick(ItemStack stack) {
         return true;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[0];
     }
 
     @Override
