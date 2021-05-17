@@ -36,7 +36,6 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
 public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
-    @SideOnly(Side.CLIENT)
     private IStructureDefinition<FuelRefineFactory> multiDefinition = null;
     private int Tier = -1;
     private final HashSet<Coords> vis = new HashSet<>(64);

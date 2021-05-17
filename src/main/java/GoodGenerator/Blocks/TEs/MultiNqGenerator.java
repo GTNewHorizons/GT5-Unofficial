@@ -36,7 +36,6 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
 public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
-    @SideOnly(Side.CLIENT)
     private IStructureDefinition<MultiNqGenerator> multiDefinition = null;
     private int ticker = 0;
     private int leftEnergy = 0;
