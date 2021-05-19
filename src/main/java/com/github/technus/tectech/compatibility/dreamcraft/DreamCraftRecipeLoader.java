@@ -1841,6 +1841,10 @@ public class DreamCraftRecipeLoader implements Runnable {
                 ItemList.Emitter_LuV.get(1),
                 ItemList.Electric_Pump_LuV.get(1),
         }, Materials.Chrome.getMolten(288), CustomItemList.enderLinkFluidCover.getWithDamage(1, 0), 320, 30720);
+        //Power Pass Upgrade Cover
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+        		CustomItemList.Machine_Multi_Transformer.get(1),
+        }, null, CustomItemList.powerPassUpgradeCover.getWithDamage(1, 0), 320, 30720);
         //endregion
 
         //region recycling
