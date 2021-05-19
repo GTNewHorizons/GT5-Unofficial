@@ -42,13 +42,13 @@ public final class GoodGenerator {
     @Mod.EventHandler
     public static void init(FMLInitializationEvent event){
         proxy.init(event);
-        RecipeLoader.RecipeLoad();
-        RecipeLoader.Fixer();
         FuelRecipeLoader.RegisterFuel();
     }
     @Mod.EventHandler
     public static void postInit(FMLPostInitializationEvent event){
         proxy.postInit(event);
+        RecipeLoader.RecipeLoad();
+        RecipeLoader.Fixer();
     }
 
 }

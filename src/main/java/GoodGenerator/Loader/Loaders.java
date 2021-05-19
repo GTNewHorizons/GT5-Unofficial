@@ -26,6 +26,7 @@ public class Loaders {
     public static final Item highDensityPlutoniumNugget = new MyItems("highDensityPlutoniumNugget",GoodGenerator.GG);
     public static final Item highDensityPlutonium = new MyItems("highDensityPlutonium",GoodGenerator.GG);
     public static final Item rawAtomicSeparationCatalyst = new MyItems("rawAtomicSeparationCatalyst",GoodGenerator.GG);
+    public static final Item advancedRadiationProtectionPlate = new MyItems("advancedRadiationProtectionPlate",GoodGenerator.GG);
 
     public static final Block MAR_Casing = new Casing("MAR_Casing",new String[]{GoodGenerator.MOD_ID+":MAR_Casing"});
     public static final Block FRF_Casings = new Casing("FRF_Casing",new String[]{"gregtech:iconsets/MACHINE_CASING_ROBUST_TUNGSTENSTEEL"});
@@ -57,6 +58,7 @@ public class Loaders {
         GameRegistry.registerItem(highDensityPlutoniumNugget,"highDensityPlutoniumNugget",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityPlutonium,"highDensityPlutonium",GoodGenerator.MOD_ID);
         GameRegistry.registerItem(rawAtomicSeparationCatalyst,"rawAtomicSeparationCatalyst",GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(advancedRadiationProtectionPlate,"advancedRadiationProtectionPlate",GoodGenerator.MOD_ID);
         Loaders.MAR = new MultiNqGenerator(12732,"NaG","Large Naquadah Reactor").getStackForm(1L);
         Loaders.FRF = new FuelRefineFactory(16999,"FRF","Naquadah Fuel Refine Factory").getStackForm(1L);
     }

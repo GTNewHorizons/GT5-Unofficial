@@ -4,6 +4,7 @@ import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.util.CrackRecipeAdder;
 import GoodGenerator.util.MaterialFix;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
@@ -28,14 +29,14 @@ public class RecipeLoader {
 
         //LNR Controller
         GT_Values.RA.addAssemblylineRecipe(
-                ItemList.Generator_Naquadah_Mark_V.get(1).copy(),
+                ItemList.Generator_Naquadah_Mark_III.get(1).copy(),
                 100000,
-                new ItemStack[]{
+                new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Adamantium,8),
                         new ItemStack(Loaders.radiationProtectionPlate,16),
                         ItemList.Field_Generator_ZPM.get(2),
-                        ItemList.Electric_Pump_UV.get(2),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit,Materials.Infinite,2),
+                        ItemList.Electric_Pump_ZPM.get(8),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Superconductor),4},
                         GT_OreDictUnificator.get(OrePrefixes.wireGt08,Materials.SuperconductorLuV,8),
                         GT_OreDictUnificator.get(OrePrefixes.pipeHuge,Materials.Lead,4),
                         GT_OreDictUnificator.get(OrePrefixes.plate,Materials.NaquadahAlloy,8),
@@ -829,6 +830,82 @@ public class RecipeLoader {
                 new int[]{9000,8500,5000,4000,2000},
                 8000,
                 2040
+        );
+
+        GT_Values.RA.addBlastRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Naquadria,32),
+                GT_Utility.getIntegratedCircuit(16),
+                MyMaterial.fluoroantimonicAcid.getFluidOrGas(4000),
+                MyMaterial.acidNaquadahEmulsion.getFluidOrGas(8000),
+                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust,1),
+                null,
+                3600,
+                4080,
+                3400
+        );
+
+        GT_Values.RA.addAssemblylineRecipe(
+                ItemList.Generator_Naquadah_Mark_V.get(1).copy(),
+                500000,
+                new Object[]{
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Osmiridium,8),
+                        new ItemStack(Loaders.advancedRadiationProtectionPlate,64),
+                        ItemList.Field_Generator_UV.get(8),
+                        ItemList.Electric_Pump_UHV.get(2),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Bio),4},
+                        GT_OreDictUnificator.get(OrePrefixes.pipeHuge,Materials.MysteriousCrystal,8),
+                        ItemList.Circuit_Wafer_NPIC.get(16),
+                        ItemList.UHV_Coil.get(64),
+                        new Object[]{"craftingLensYellow",16},
+                        GT_OreDictUnificator.get(OrePrefixes.screw,Materials.Thulium,64)
+                },
+                new FluidStack[]{
+                        Materials.Quantium.getMolten(9216L),
+                        Materials.DraconiumAwakened.getMolten(4608L),
+                        MyMaterial.extremelyUnstableNaquadah.getMolten(1440),
+                        Materials.SolderingAlloy.getMolten(14400L)
+                },
+                Loaders.FRF.copy(),
+                36000,
+                1919810
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        new ItemStack(Loaders.radiationProtectionPlate,2),
+                        OreDictHandler.getItemStack("AlloyAdvanced",OrePrefixes.plate,8),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense,Materials.Palladium,2),
+                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Osmiridium,4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Tungsten,4),
+                        GT_OreDictUnificator.get(OrePrefixes.screw,Materials.Cobalt,4)
+                },
+                Materials.NiobiumTitanium.getMolten(72),
+                new ItemStack(Loaders.advancedRadiationProtectionPlate),
+                1000,
+                2040
+        );
+
+        GT_Values.RA.addAssemblylineRecipe(
+                new ItemStack(Loaders.MAR_Casing),
+                250000,
+                new ItemStack[]{
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Thulium,1),
+                        new ItemStack(Loaders.advancedRadiationProtectionPlate,6),
+                        ItemList.Field_Generator_IV.get(2),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeTiny,Materials.Naquadah,16),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine,Materials.NaquadahAlloy,32),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine,Materials.NaquadahAlloy,32),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine,Materials.Manyullyn,32),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine,Materials.Manyullyn,32),
+                        MyMaterial.orundum.get(OrePrefixes.plate,4)
+                },
+                new FluidStack[]{
+                        Materials.TungstenSteel.getMolten(1152),
+                        Materials.SolderingAlloy.getMolten(2304)
+                },
+                new ItemStack(Loaders.FRF_Casings),
+                500,
+                65536
         );
     }
 

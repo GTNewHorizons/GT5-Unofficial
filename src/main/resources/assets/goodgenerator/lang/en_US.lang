@@ -18,6 +18,7 @@ item.wrappedPlutoniumIngot.name=Wrapped Plutonium Ingot
 item.highDensityPlutoniumNugget.name=High Density Plutonium Nugget
 item.highDensityPlutonium.name=High Density Plutonium
 item.rawAtomicSeparationCatalyst.name=Raw Atomic Separation Catalyst
+item.advancedRadiationProtectionPlate.name=Advanced Radiation Proof Plate
 
 fluid.lightlyCrackedNaquadahGas=Lightly Cracked Naquadah Gas
 fluid.moderatelyCrackedNaquadahGas=Moderately Cracked Naquadah Gas

@@ -31,7 +31,7 @@ public class MyRecipeAdder {
             "gg.recipe.naquadah_fuel_refine_factory",
             StatCollector.translateToLocal("tile.naquadah_fuel_refine_factory"),
             null,
-            "gregtech:textures/gui/basicmachines/Default",
+            "gregtech:textures/gui/basicmachines/FusionReactor",
             6,0, 0, 1, 1,
             "Need Tier ",
             1,
