@@ -1,18 +1,11 @@
 package gtPlusPlus.core.handler.events;
 
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropDrainedShard;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropFluoriteOre;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChunkCoordinates;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -20,12 +13,14 @@ import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import net.minecraftforge.common.util.FakePlayer;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.oredict.OreDictionary;
-import thaumcraft.common.lib.FakeThaumcraftPlayer;
 
 public class BlockEventHandler {
 	public static ArrayList<ItemStack> oreLimestone;

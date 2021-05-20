@@ -94,6 +94,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//Debug
 	TESTITEM, 
+	
+	// Larger Volumetric Flasks
+	VOLUMETRIC_FLASK_8k,
+	VOLUMETRIC_FLASK_32k,
 
 	//RTG Fuels
 	Pellet_RTG_PU238, Pellet_RTG_SR90,
@@ -392,7 +396,22 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	// Flotation Cell
 	Controller_Flotation_Cell,
+	
+	// Elemental Duplicator
+	Controller_ElementalDuplicator,
+	Casing_ElementalDuplicator,
+	
+	// Big Steam Macerator
+	Controller_SteamMaceratorMulti,
 
+	// Custom Machine Casings
+	Casing_Machine_Custom_1,
+	Casing_Machine_Custom_2,
+	Casing_Machine_Custom_3,
+	Casing_Machine_Custom_4,
+	Casing_Machine_Custom_5,
+	Casing_Machine_Custom_6,
+	
 
 	//----------------------------------------------------------------------------
 
@@ -426,7 +445,19 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_Input_Cryotheum,
 	Hatch_Input_Pyrotheum,	
 	Hatch_Input_Naquadah, 
+	Hatch_Input_Steam,
+	
+	//Steam Multi Buses
+	Hatch_Input_Bus_Steam,
+	Hatch_Output_Bus_Steam,	
 
+	//Elemental Duplicator Data Orb Bus
+	Hatch_Input_Elemental_Duplicator,
+	
+	//RTG Hatch 
+	Hatch_RTG_LV,
+	Hatch_RTG_MV,
+	Hatch_RTG_HV,
 
 	//Battery hatches for PSS
 	Hatch_Input_Battery_MV, 
@@ -678,12 +709,15 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Fluid Void Covers
 	Cover_Overflow_ULV, Cover_Overflow_LV, Cover_Overflow_MV, Cover_Overflow_HV, Cover_Overflow_EV, Cover_Overflow_IV, 
 	
+	//Item Void Covers
+	Cover_Overflow_Item_ULV, Cover_Overflow_Item_LV, Cover_Overflow_Item_MV, Cover_Overflow_Item_HV, Cover_Overflow_Item_EV, Cover_Overflow_Item_IV, 
+	
 	//Fake Hull Covers
 	FakeMachineCasingPlate_ULV, FakeMachineCasingPlate_LV,
 	FakeMachineCasingPlate_MV, FakeMachineCasingPlate_HV,
 	FakeMachineCasingPlate_EV, FakeMachineCasingPlate_IV,
 	FakeMachineCasingPlate_LuV, FakeMachineCasingPlate_ZPM,
-	FakeMachineCasingPlate_UV, FakeMachineCasingPlate_MAX,
+	FakeMachineCasingPlate_UV, FakeMachineCasingPlate_MAX, 
 	
 	
 	

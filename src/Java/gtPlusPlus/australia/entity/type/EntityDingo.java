@@ -113,9 +113,6 @@ public class EntityDingo extends EntityWolf {
 
 	protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(18, new Float(this.getHealth()));
-		this.dataWatcher.addObject(19, new Byte((byte) 0));
-		this.dataWatcher.addObject(20, new Byte((byte) BlockColored.func_150032_b(1)));
 	}
 
 	protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_) {
@@ -127,8 +124,6 @@ public class EntityDingo extends EntityWolf {
 	 */
 	public void writeEntityToNBT(NBTTagCompound p_70014_1_) {
 		super.writeEntityToNBT(p_70014_1_);
-		p_70014_1_.setBoolean("Angry", this.isAngry());
-		p_70014_1_.setByte("CollarColor", (byte) this.getCollarColor());
 	}
 
 	/**
@@ -136,11 +131,6 @@ public class EntityDingo extends EntityWolf {
 	 */
 	public void readEntityFromNBT(NBTTagCompound p_70037_1_) {
 		super.readEntityFromNBT(p_70037_1_);
-		this.setAngry(p_70037_1_.getBoolean("Angry"));
-
-		if (p_70037_1_.hasKey("CollarColor", 99)) {
-			this.setCollarColor(p_70037_1_.getByte("CollarColor"));
-		}
 	}
 
 	/**

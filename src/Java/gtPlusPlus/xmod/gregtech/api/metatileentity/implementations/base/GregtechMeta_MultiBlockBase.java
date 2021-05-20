@@ -325,6 +325,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	private final String aRequiresMaint = "1x Maintanence Hatch";*/
 
 	public final static String TAG_HIDE_HATCHES = "TAG_HIDE_HATCHES";
+	public final static String TAG_HIDE_MAINT = "TAG_HIDE_MAINT";
 	public final static String TAG_HIDE_POLLUTION = "TAG_HIDE_POLLUTION";
 	public final static String TAG_HIDE_MACHINE_TYPE = "TAG_HIDE_MACHINE_TYPE";
 
@@ -348,13 +349,14 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 
 		String aRequiresMuffler = "1x Muffler Hatch";
 		//String aRequiresCoreModule = "1x Core Module";
-		String aRequiresMaint = "1x Maintanence Hatch";
+		String aRequiresMaint = "1x Maintenance Hatch";
 
 		String[] x = getTooltip();
 
 		//Filter List, toggle switches, rebuild map without flags
 		boolean showHatches = true;
 		boolean showMachineType = true;
+		boolean showMaint = true;
 		boolean showPollution = getPollutionPerTick(null) > 0;
 		AutoMap<String> aTempMap = new AutoMap<String>();	
 		for (int ee = 0; ee < x.length; ee++) {
@@ -368,6 +370,9 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 			else if (hh.equals(TAG_HIDE_MACHINE_TYPE)) {
 				showMachineType = false;
 			}
+			else if (hh.equals(TAG_HIDE_MAINT)) {
+				showMaint = false;
+			}			
 			else {
 				aTempMap.put(x[ee]);
 			}
@@ -382,10 +387,12 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		//Assemble ordered map for misc tooltips
 		AutoMap<String> aOrderedMap = new AutoMap<String>();		
 		if (showHatches) {
-			aOrderedMap.put(aRequiresMaint);
 			//aOrderedMap.put(aRequiresCoreModule);
 			if (showPollution) {
 				aOrderedMap.put(aRequiresMuffler);				
+			}
+			if (showMaint) {
+				aOrderedMap.put(aRequiresMaint);				
 			}
 		}
 
@@ -478,7 +485,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	
 	public int canBufferOutputs(final GT_Recipe aRecipe, int aParallelRecipes, boolean aAllow16SlotWithoutCheck) {
 
-		Logger.INFO("Determining if we have space to buffer outputs. Parallel: "+aParallelRecipes);
+		log("Determining if we have space to buffer outputs. Parallel: "+aParallelRecipes);
 
 		// Null recipe or a recipe with lots of outputs? 
 		// E.G. Gendustry custom comb with a billion centrifuge outputs? 
@@ -510,7 +517,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		 */
 
 		if (aDoesOutputItems) {
-			Logger.INFO("We have items to output.");
+			log("We have items to output.");
 
 			// How many slots are free across all the output buses?
 			int aInputBusSlotsFree = 0;		
@@ -628,9 +635,9 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 				if (aInputMap.size() > aInputBusSlotsFree) {
 					aParallelRecipes = (int) Math.floor((double) aInputBusSlotsFree/aInputMap.size() * aParallelRecipes);
 					// We do not have enough free slots in total to accommodate the remaining managed stacks.
-					Logger.INFO(" Free: "+aInputBusSlotsFree+", Required: "+aInputMap.size());
+					log(" Free: "+aInputBusSlotsFree+", Required: "+aInputMap.size());
 					if(aParallelRecipes == 0) {
-						Logger.INFO("Failed to find enough space for all item outputs.");
+						log("Failed to find enough space for all item outputs.");
 						return 0;
 					}
 					
@@ -655,7 +662,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 
 
 		if (aDoesOutputFluids) {
-			Logger.INFO("We have Fluids to output.");
+			log("We have Fluids to output.");
 			// How many slots are free across all the output buses?
 			int aFluidHatches = 0;
 			int aEmptyFluidHatches = 0;
@@ -783,12 +790,12 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 			}
 
 			// We have Fluid Stacks we did not merge. Do we have space?
-			Logger.INFO("fluids to output "+aOutputFluids.size()+" empty hatches "+aEmptyFluidHatches);
+			log("fluids to output "+aOutputFluids.size()+" empty hatches "+aEmptyFluidHatches);
 			if (aOutputFluids.size() > 0) {
 				// Not enough space to add fluids.
 				if (aOutputFluids.size() > aEmptyFluidHatches) {
 					aParallelRecipes = (int) Math.floor((double) aEmptyFluidHatches/aOutputFluids.size() * aParallelRecipes);
-					Logger.INFO("Failed to find enough space for all fluid outputs. Free: "+aEmptyFluidHatches+", Required: "+aOutputFluids.size());
+					log("Failed to find enough space for all fluid outputs. Free: "+aEmptyFluidHatches+", Required: "+aOutputFluids.size());
 					return 0;
 					
 				}
@@ -922,18 +929,18 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	 * log("parallelRecipes: "+parallelRecipes);
 	 * log("aMaxParallelRecipes: "+aMaxParallelRecipes);
 	 * log("tTotalEUt: "+tTotalEUt); log("tVoltage: "+tVoltage);
-	 * log("tRecipeEUt: "+tRecipeEUt); Logger.INFO("EU1: "+tRecipeEUt); // Count
+	 * log("tRecipeEUt: "+tRecipeEUt); log("EU1: "+tRecipeEUt); // Count
 	 * recipes to do in parallel, consuming input items and fluids and considering
 	 * input voltage limits for (; parallelRecipes < aMaxParallelRecipes &&
 	 * tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) { if
 	 * (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
 	 * log("Broke at "+parallelRecipes+"."); break; }
 	 * log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+"."); tTotalEUt
-	 * += tRecipeEUt; Logger.INFO("EU2: "+tTotalEUt); }
+	 * += tRecipeEUt; log("EU2: "+tTotalEUt); }
 	 * 
 	 * if (parallelRecipes == 0) { log("BAD RETURN - 3"); return false; }
 	 * 
-	 * Logger.INFO("EU3: "+tTotalEUt);
+	 * log("EU3: "+tTotalEUt);
 	 * 
 	 * // -- Try not to fail after this point - inputs have already been consumed!
 	 * --
@@ -945,7 +952,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	 * aSpeedBonusPercent); this.mMaxProgresstime = (int)(tRecipe.mDuration *
 	 * tTimeFactor * 10000);
 	 * 
-	 * int aTempEu = (int) Math.floor(tTotalEUt); Logger.INFO("EU4: "+aTempEu);
+	 * int aTempEu = (int) Math.floor(tTotalEUt); log("EU4: "+aTempEu);
 	 * this.mEUt = (int) aTempEu;
 	 * 
 	 * 
@@ -1912,7 +1919,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 
 		//Handle Fluid Hatches using seperate logic
 		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)
-			aDidAdd = addFluidInputToMachineList(aMetaTileEntity, aBaseCasingIndex);
+			aDidAdd = addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
 		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output)
 			aDidAdd = addToMachineListInternal(mOutputHatches, aMetaTileEntity, aBaseCasingIndex);
 

@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -15,7 +16,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 
 public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_Hatch_Input {
-	
+
 	public final Fluid mLockedFluid;
 	public final int mFluidCapacity;
 
@@ -64,46 +65,51 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 	protected FluidStack mLockedStack = null;
 	protected Integer mLockedTemp = null;
 	protected String mTempMod = null;
-	
+
 	@Override
 	public String[] getDescription() {		
 		if (mLockedStack == null) {
 			mLockedStack = FluidUtils.getFluidStack(mLockedFluid, 1);
 		}
-		if (mLockedTemp == null) {
-			if (mLockedStack != null) {
-				mLockedTemp = mLockedStack.getFluid().getTemperature();
-			}
+		int aFluidTemp = 0;
+		boolean isSteam = false;
+		if (mLockedFluid != null) {
+			aFluidTemp = mLockedFluid.getTemperature();
+			mTempMod = mLockedFluid.getName();
 		}
-		if (mLockedTemp != null) {
-			if (mLockedTemp <= -3000) {
-				mTempMod = ""+EnumChatFormatting.DARK_PURPLE;
-			}
-			else if (mLockedTemp >= -2999 && mLockedTemp <= -500) {
-				mTempMod = ""+EnumChatFormatting.DARK_BLUE;
-			}
-			else if (mLockedTemp >= -499 && mLockedTemp <= -50) {
-				mTempMod = ""+EnumChatFormatting.BLUE;
-			}
-			else if (mLockedTemp >= 30 && mLockedTemp <= 300) {
-				mTempMod = ""+EnumChatFormatting.AQUA;
-			}
-			else if (mLockedTemp >= 301 && mLockedTemp <= 800) {
-				mTempMod = ""+EnumChatFormatting.YELLOW;
-			}
-			else if (mLockedTemp >= 801 && mLockedTemp <= 1500) {
-				mTempMod = ""+EnumChatFormatting.GOLD;
-			}
-			else if (mLockedTemp >= 1501) {
-				mTempMod = ""+EnumChatFormatting.RED;
-			}
+		if (mTempMod.toLowerCase().equals("steam")) {
+			isSteam = true;
 		}
 		
+		
+		EnumChatFormatting aColour = EnumChatFormatting.BLUE;
+		if (aFluidTemp <= -3000) {
+			aColour = EnumChatFormatting.DARK_PURPLE;
+		}
+		else if (aFluidTemp >= -2999 && aFluidTemp <= -500) {
+			aColour = EnumChatFormatting.DARK_BLUE;
+		}
+		else if (aFluidTemp >= -499 && aFluidTemp <= -50) {
+			aColour = EnumChatFormatting.BLUE;
+		}
+		else if (aFluidTemp >= 30 && aFluidTemp <= 300) {
+			aColour = EnumChatFormatting.AQUA;
+		}
+		else if (aFluidTemp >= 301 && aFluidTemp <= 800) {
+			aColour = EnumChatFormatting.YELLOW;
+		}
+		else if (aFluidTemp >= 801 && aFluidTemp <= 1500) {
+			aColour = EnumChatFormatting.GOLD;
+		}
+		else if (aFluidTemp >= 1501) {
+			aColour = EnumChatFormatting.RED;
+		}
+		String aFluidName = "Accepted Fluid: " + aColour + (mLockedStack != null ? mLockedStack.getLocalizedName() : "Empty") + EnumChatFormatting.RESET;
 		String[] s2 = new String[]{
-				"Fluid Input for Multiblocks",
+				"Fluid Input for "+(isSteam ? "Steam " : "")+"Multiblocks",
 				"Capacity: " + getCapacity()+"L",
-				"Accepted Fluid: " + mTempMod + mLockedStack != null ? mLockedStack.getLocalizedName() : "Empty"
-				};		
+				aFluidName
+		};		
 		return s2;
 	}
 

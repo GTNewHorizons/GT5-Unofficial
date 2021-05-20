@@ -221,6 +221,11 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		mCuttingMode = aNBT.getBoolean("mCuttingMode");
+		if (aNBT.hasKey("mCuttingMode")) {
+			mCuttingMode = aNBT.getBoolean("mCuttingMode");			
+		}
+		else {
+			mCuttingMode = true;			
+		}
 	}
 }

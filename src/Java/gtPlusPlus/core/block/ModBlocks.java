@@ -13,22 +13,12 @@ import gtPlusPlus.core.block.general.PlayerDoors;
 import gtPlusPlus.core.block.general.antigrief.BlockWitherProof;
 import gtPlusPlus.core.block.general.redstone.BlockGenericRedstoneDetector;
 import gtPlusPlus.core.block.general.redstone.BlockGenericRedstoneTest;
-import gtPlusPlus.core.block.machine.CircuitProgrammer;
-import gtPlusPlus.core.block.machine.DecayablesChest;
-import gtPlusPlus.core.block.machine.FishTrap;
-import gtPlusPlus.core.block.machine.HeliumGenerator;
-import gtPlusPlus.core.block.machine.Machine_ModularityTable;
-import gtPlusPlus.core.block.machine.Machine_PestKiller;
-import gtPlusPlus.core.block.machine.Machine_PooCollector;
-import gtPlusPlus.core.block.machine.Machine_ProjectTable;
-import gtPlusPlus.core.block.machine.Machine_RoundRobinator;
-import gtPlusPlus.core.block.machine.Machine_SuperJukebox;
-import gtPlusPlus.core.block.machine.Machine_TradeTable;
-import gtPlusPlus.core.block.machine.Machine_Workbench;
-import gtPlusPlus.core.block.machine.Machine_WorkbenchAdvanced;
+import gtPlusPlus.core.block.machine.*;
 import gtPlusPlus.core.block.machine.bedrock.Mining_Head_Fake;
 import gtPlusPlus.core.block.machine.bedrock.Mining_Pipe_Fake;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
@@ -37,6 +27,7 @@ public final class ModBlocks {
 
 	public static Block blockRoundRobinator;
 	public static Block blockCircuitProgrammer;
+	public static Block blockVolumetricFlaskSetter;
 	public static Block blockFakeMiningPipe;
 	public static Block blockFakeMiningHead;
 	
@@ -44,6 +35,7 @@ public final class ModBlocks {
 	public static Block blockWorkbench;
 	public static Block blockWorkbenchAdvanced;
 	public static Block blockDecayablesChest;
+	public static Block blockEggBox;
 	
 	//Blocks
 	//public static Block blockBloodSteel;
@@ -58,6 +50,7 @@ public final class ModBlocks {
 	public static Block blockCasings5Misc;	
 	public static Block blockCasingsTieredGTPP;
 	public static Block blockSpecialMultiCasings;
+	public static Block blockCustomMachineCasings;
 	
 	public static Block blockMetaTileEntity;
 	public static Block blockHeliumGenerator;
@@ -137,8 +130,9 @@ public final class ModBlocks {
 		blockFakeMiningHead = new Mining_Head_Fake();
 		
 		blockCircuitProgrammer = new CircuitProgrammer();
-		
+
 		blockDecayablesChest = new DecayablesChest();
+		blockEggBox = new EggBox();
 		
 		blockPlayerDoorWooden = new PlayerDoors(Material.wood, "door_wood", true);
 		blockPlayerDoorIron = new PlayerDoors(Material.iron, "door_iron", true);
@@ -154,7 +148,11 @@ public final class ModBlocks {
 		blockPestKiller = new Machine_PestKiller();
 		
 		blockRoundRobinator = new Machine_RoundRobinator();
-
+		
+		if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
+			blockVolumetricFlaskSetter = new VolumetricFlaskSetter();
+		}
+			
 		new BlockGenericRedstoneDetector();
 		new BlockGenericRedstoneTest();
 

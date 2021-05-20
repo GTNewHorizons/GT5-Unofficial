@@ -75,25 +75,25 @@ public class FR_Gregtech_Recipes {
 
 		if (!LoadedMods.ExtraBees){
 			//Extra Bee Like Frames
-			RecipeUtils.recipeBuilder(
+			RecipeUtils.addShapedRecipe(
 					null, itemCocoaBeans, null,
 					itemCocoaBeans, hiveFrameImpregnated, itemCocoaBeans,
 					null, itemCocoaBeans, null,
 					hiveFrameCocoa);
 
-			RecipeUtils.recipeBuilder(
+			RecipeUtils.addShapedRecipe(
 					hiveFrameImpregnated, blockIronBars, null,
 					null, null, null,
 					null, null, null,
 					hiveFrameCaged);
 
-			RecipeUtils.recipeBuilder(
+			RecipeUtils.addShapedRecipe(
 					hiveFrameImpregnated, blockSoulSand, null,
 					null, null, null,
 					null, null, null,
 					hiveFrameSoul);
 
-			RecipeUtils.recipeBuilder(
+			RecipeUtils.addShapedRecipe(
 					null, itemClayDust, null,
 					itemClayDust, hiveFrameImpregnated, itemClayDust,
 					null, itemClayDust, null,

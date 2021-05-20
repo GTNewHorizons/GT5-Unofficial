@@ -16,6 +16,7 @@ import gtPlusPlus.xmod.ob.HANDLER_OpenBlocks;
 import gtPlusPlus.xmod.railcraft.HANDLER_Railcraft;
 import gtPlusPlus.xmod.reliquary.HANDLER_Reliquary;
 import gtPlusPlus.xmod.sc2.HANDLER_SC2;
+import gtPlusPlus.xmod.sol.HANDLER_SpiceOfLife;
 import gtPlusPlus.xmod.thaumcraft.HANDLER_Thaumcraft;
 import gtPlusPlus.xmod.thermalfoundation.HANDLER_TF;
 import gtPlusPlus.xmod.tinkers.HANDLER_Tinkers;
@@ -39,6 +40,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_Railcraft.preInit();
 		HANDLER_Reliquary.preInit();
 		HANDLER_OpenBlocks.preInit();
+		HANDLER_SpiceOfLife.preInit();
 	}
 
 	public static void init(FMLInitializationEvent init){
@@ -58,6 +60,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_Railcraft.init();
 		HANDLER_Reliquary.init();
 		HANDLER_OpenBlocks.init();
+		HANDLER_SpiceOfLife.init();
 	}
 
 	public static void postInit(FMLPostInitializationEvent postinit){
@@ -77,6 +80,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_Railcraft.postInit();
 		HANDLER_Reliquary.postInit();
 		HANDLER_OpenBlocks.postInit();
+		HANDLER_SpiceOfLife.postInit();
 	}
 
 	public static void onLoadComplete(FMLLoadCompleteEvent event) {

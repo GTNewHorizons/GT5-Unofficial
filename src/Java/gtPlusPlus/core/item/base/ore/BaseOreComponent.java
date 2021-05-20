@@ -178,9 +178,9 @@ public class BaseOreComponent extends Item{
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(final IIconRegister par1IconRegister){
 		if (this.componentType == ComponentTypes.MILLED) {
-			this.base = par1IconRegister.registerIcon(CORE.MODID + ":" + "processing/MilledOre/"+this.componentType.getComponent());
+			this.base = par1IconRegister.registerIcon(CORE.MODID + ":" + "processing/MilledOre/milled");
 			if (this.componentType.hasOverlay()){
-				this.overlay = par1IconRegister.registerIcon(CORE.MODID + ":" + "processing/MilledOre/"+this.componentType.getComponent()+"_Overlay");
+				this.overlay = par1IconRegister.registerIcon(CORE.MODID + ":" + "processing/MilledOre/milled_OVERLAY");
 			}
 		}		
 		else if (CORE.ConfigSwitches.useGregtechTextures){

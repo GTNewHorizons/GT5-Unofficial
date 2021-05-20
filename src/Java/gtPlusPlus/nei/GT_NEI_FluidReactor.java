@@ -242,7 +242,34 @@ extends TemplateRecipeHandler {
 			drawText(10, 103, "Time: " + (tDuration < 20 ? "< 1" : Integer.valueOf(tDuration / 20)) + " secs", -16777216);
 		}
 		if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
-			drawText(10, 113, this.mRecipeMap.mNEISpecialValuePre + (((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, -16777216);
+			int aTier = (((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue);
+			String aTierMaterial = " - ";
+			if (aTier <= 0) {
+				aTierMaterial += "Bronze";
+			}
+			else if (aTier == 1) {
+				aTierMaterial += "Steel";
+			}
+			else if (aTier == 2) {
+				aTierMaterial += "Aluminium";
+			}
+			else if (aTier == 3) {
+				aTierMaterial += "Stainless Steel";
+			}
+			else if (aTier == 4) {
+				aTierMaterial += "Titanium";
+			}
+			else if (aTier == 5) {
+				aTierMaterial += "Tungsten Steel";
+			}
+			else if (aTier == 6) {
+				aTierMaterial += "Laurenium";
+			}
+			else if (aTier == 7) {
+				aTierMaterial += "Botmium";
+			}
+			
+			drawText(10, 113, this.mRecipeMap.mNEISpecialValuePre + (((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier) + aTierMaterial, -16777216);
 		}
 	}
 

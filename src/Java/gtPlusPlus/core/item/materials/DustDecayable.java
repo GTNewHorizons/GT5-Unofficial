@@ -64,7 +64,7 @@ public class DustDecayable extends BaseItemTickable {
 		}
 		boolean a1, a2;
 		
-		a1 = this.getIsActive(world, iStack);
+		a1 = this.isTicking(world, iStack);
 		a2 = tickItemTag(world, iStack);
 		
 		if (!a1 && !a2) {

@@ -99,6 +99,10 @@ public class TexturesGtBlock {
 		}
 	}
 
+	public static GT_RenderedTexture getTextureFromIcon(CustomIcon aIcon, short[] aRGB) {
+		return new GT_RenderedTexture(aIcon, aRGB);
+	}
+	
 	/*
 	 * Add Some Custom Textures below.
 	 * I am not sure whether or not I need to declare them as such, but better to be safe than sorry.
@@ -214,7 +218,9 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Material_HastelloyN = Internal_Casing_HastelloyN;
 	private static final CustomIcon Internal_Casing_Fluid_IncoloyDS = new CustomIcon("TileEntities/MACHINE_CASING_FLUID_INCOLOY_DS");
 	public static final CustomIcon Casing_Material_Fluid_IncoloyDS = Internal_Casing_Fluid_IncoloyDS;
-	
+
+	private static final CustomIcon Internal_Casing_Laurenium = new CustomIcon("TileEntities/MACHINE_CASING_LAURENIUM");
+	public static final CustomIcon Casing_Material_Laurenium = Internal_Casing_Laurenium;
 	
 	//Trinium Alloys
 	public static final CustomIcon Casing_Trinium_Titanium = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TRINIUM_TITANIUM");
@@ -395,7 +401,11 @@ public class TexturesGtBlock {
 	// Catalyst Bus
 	private static final CustomIcon Internal_Overlay_Bus_Catalyst = new CustomIcon("iconsets/OVERLAY_CATALYSTS");
 	public static final CustomIcon Overlay_Bus_Catalyst = Internal_Overlay_Bus_Catalyst;	
-	
+	// RTG Hatch
+	private static final CustomIcon Internal_Overlay_Hatch_RTG_Off = new CustomIcon("iconsets/OVERLAY_ENERGY_RTG_OFF");
+	public static final CustomIcon Overlay_Hatch_RTG_Off = Internal_Overlay_Hatch_RTG_Off;
+	private static final CustomIcon Internal_Overlay_Hatch_RTG_On = new CustomIcon("iconsets/OVERLAY_ENERGY_RTG_ON");
+	public static final CustomIcon Overlay_Hatch_RTG_On = Internal_Overlay_Hatch_RTG_On;
 	
 	//Dimensional
 	private static final CustomIcon Internal_Overlay_Machine_Dimensional_Blue = new CustomIcon("TileEntities/adv_machine_dimensional_cover_blue");
@@ -467,6 +477,7 @@ public class TexturesGtBlock {
 	public static final CustomIcon TEXTURE_TECH_PANEL_A = new CustomIcon("metro/TEXTURE_TECH_PANEL_A");
 	public static final CustomIcon TEXTURE_TECH_PANEL_B = new CustomIcon("metro/TEXTURE_TECH_PANEL_B");
 	public static final CustomIcon TEXTURE_TECH_PANEL_C = new CustomIcon("metro/TEXTURE_TECH_PANEL_C");
+	public static final CustomIcon TEXTURE_TECH_PANEL_D = new CustomIcon("metro/TEXTURE_TECH_PANEL_D");
 
 	public static final CustomIcon TEXTURE_TECH_PANEL_RADIOACTIVE = new CustomIcon("TileEntities/DecayablesChest_bottom");
 	public static final CustomIcon TEXTURE_TECH_PANEL_RADIOACTIVE_ALT = new CustomIcon("TileEntities/DecayablesChest_top");

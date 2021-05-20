@@ -8,24 +8,16 @@ import java.util.*;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.ItemData;
 import gtPlusPlus.api.interfaces.IComparableRecipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.NoConflictGTRecipeMap;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.data.AES;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import gtPlusPlus.nei.GT_NEI_MultiBlockHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 /**
@@ -36,8 +28,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 
 	private final String mRecipeHash;
-	private final AutoMap<Integer> mHashMap = new AutoMap<Integer>();	
-	private static final AES mEncoder = new AES("RecipeChecking");
+	private final AutoMap<Integer> mHashMap = new AutoMap<Integer>();
 	
 	public GTPP_Recipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecialItems, final int[] aChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
 		super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
@@ -60,24 +51,24 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 	
 	private static AutoMap<String> getEncodedRecipeData(GTPP_Recipe aRecipe){
 		AutoMap<String> aData = new AutoMap<String>();
-		aData.add(mEncoder.encode(aRecipe.mRecipeHash));
-		aData.add(mEncoder.encode(""+aRecipe.mCanBeBuffered));
-		aData.add(mEncoder.encode(""+aRecipe.mHidden));
-		aData.add(mEncoder.encode(""+aRecipe.mEnabled));
-		aData.add(mEncoder.encode(""+aRecipe.mDuration));
-		aData.add(mEncoder.encode(""+aRecipe.mEUt));
-		aData.add(mEncoder.encode(""+aRecipe.mFakeRecipe));
-		aData.add(mEncoder.encode(""+aRecipe.mSpecialItems));
-		aData.add(mEncoder.encode(aRecipe.mChances.toString()));
-		aData.add(mEncoder.encode(aRecipe.mInputs.toString()));
-		aData.add(mEncoder.encode(aRecipe.mOutputs.toString()));
-		aData.add(mEncoder.encode(aRecipe.mFluidInputs.toString()));
-		aData.add(mEncoder.encode(aRecipe.mFluidOutputs.toString()));		
+		aData.add(aRecipe.mRecipeHash);
+		aData.add(""+aRecipe.mCanBeBuffered);
+		aData.add(""+aRecipe.mHidden);
+		aData.add(""+aRecipe.mEnabled);
+		aData.add(""+aRecipe.mDuration);
+		aData.add(""+aRecipe.mEUt);
+		aData.add(""+aRecipe.mFakeRecipe);
+		aData.add(""+aRecipe.mSpecialItems);
+		aData.add(aRecipe.mChances.toString());
+		aData.add(aRecipe.mInputs.toString());
+		aData.add(aRecipe.mOutputs.toString());
+		aData.add(aRecipe.mFluidInputs.toString());
+		aData.add(aRecipe.mFluidOutputs.toString());		
 		return aData;
 	}
 	
 	public static String getRecipeHash(GT_Recipe aRecipe) {	
-		String aEncoderString = mEncoder.encode(aRecipe.toString());
+		String aEncoderString = aRecipe.toString();
 		return aEncoderString;
 	}
 	
@@ -88,7 +79,7 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 	}
 	
 	private final boolean hasBeenModified() {
-		String aEncoderString = mEncoder.encode(this.toString());
+		String aEncoderString = this.toString();
 		boolean aBasicHashCheck = mRecipeHash.equals(aEncoderString);
 		if (!aBasicHashCheck) {
 			Logger.INFO("This Recipe Hash: "+aEncoderString);
@@ -159,25 +150,6 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 		}
 	}
 
-	public GTPP_Recipe(final FluidStack aInput1, final FluidStack aInput2, final FluidStack aOutput1, final int aDuration, final int aEUt, final int aSpecialValue) {
-		this(true, null, null, null, null, new FluidStack[]{aInput1, aInput2}, new FluidStack[]{aOutput1}, Math.max(aDuration, 1), aEUt, Math.max(Math.min(aSpecialValue, 160000000), 0));
-		if (this.mInputs.length > 1) {
-			GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.addRecipe(this);
-		}
-	}
-
-	public GTPP_Recipe(
-			final FluidStack aInput1, final FluidStack aInput2, final FluidStack aInput3,
-			final FluidStack aInput4, final FluidStack aInput5, final FluidStack aInput6,
-			final FluidStack aInput7, final FluidStack aInput8, final FluidStack aInput9,
-			final FluidStack aOutput1, final FluidStack aOutput2,
-			final int aDuration, final int aEUt) {
-		this(true, null, null, null, null, new FluidStack[]{aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9}, new FluidStack[]{aOutput1, aOutput2}, Math.max(aDuration, 1), aEUt, 0);
-		if (this.mInputs.length > 1) {
-			CustomRecipeMap.sFissionFuelProcessing.addRecipe(this);
-		}
-	}
-
 	/*public GregtechRecipe(ItemStack aInput, FluidStack aFluid, ItemStack[] aOutput, int aDuration, int aEUt) {
         this(true, new ItemStack[]{aInput}, aOutput.clone(), null, null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
         if (mInputs.length > 0 && mOutputs[0] != null) {
@@ -189,7 +161,7 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 	public static void reInit() {
 		GT_Log.out.println("GT_Mod: Re-Unificating Recipes.");
 		for (final GTPP_Recipe_Map tMapEntry : GTPP_Recipe_Map.sMappings) {
-			tMapEntry.reInit();
+			//tMapEntry.reInit();
 			if (tMapEntry != null && tMapEntry.mRecipeList != null && !tMapEntry.mRecipeList.isEmpty()) {
 				for (GT_Recipe aRecipe : tMapEntry.mRecipeList) {
 					checkRecipeOwnership(aRecipe);					
@@ -197,7 +169,7 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 			}
 		}
 		for (final GTPP_Recipe_Map_Internal tMapEntry : GTPP_Recipe_Map_Internal.sMappingsEx) {
-			tMapEntry.reInit();
+			//tMapEntry.reInit();
 			if (tMapEntry != null && tMapEntry.mRecipeList != null && !tMapEntry.mRecipeList.isEmpty()) {
 				for (GT_Recipe aRecipe : tMapEntry.mRecipeList) {
 					checkRecipeOwnership(aRecipe);					
@@ -376,10 +348,12 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
         public static final GTPP_Recipe_Map_Internal sOreMillRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gt.recipe.oremill", "Milling", null, RES_PATH_GUI + "basicmachines/LFTR", 3, 4, 1, 0, 1, E, 1, E, true, false);
 		
 		//Fission Fuel Plant Recipes
-		//public static final GTPP_Recipe_Map sFissionFuelProcessing = new GTPP_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 9, 1, E, 1, E, true, true);
-
+    	public static final GTPP_Recipe_Map_Internal sFissionFuelProcessing = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Nuclear Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 0, 1, E, 1, E, true, false);
+    	
 		//Basic Washer Map
 		public static final GTPP_Recipe_Map_Internal sSimpleWasherRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gt.recipe.simplewasher", "Simple Dust Washer", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, true);
+
+		//public static final GT_Recipe_Map sSimpleWasherRecipes_FakeFuckBW = new GT_Recipe_Map(new HashSet<GT_Recipe>(3), "gt.recipe.simplewasher", "Fuck you Bart", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, false);
 		
 		public static final GTPP_Recipe_Map sChemicalPlantRecipes = new GTPP_Recipe_Map(
 				new HashSet<GTPP_Recipe>(100),
@@ -428,12 +402,14 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 		
 		//Special Maps for Multis
 		public static final GTPP_Recipe_Map_Internal sFishPondRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gt.recipe.fishpond", "Zhuhai - Fishing Port", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 1, 0, 0, 1, "Requires Circuit: ", 1, ".", true, true);
-		public static final GTPP_Recipe_Map sMultiblockCentrifugeRecipes = new GT_Recipe_Map_LargeCentrifuge();
-		public static final GTPP_Recipe_Map sMultiblockElectrolyzerRecipes = new GT_Recipe_Map_LargeElectrolyzer();
-		public static final GTPP_Recipe_Map sAdvFreezerRecipes = new GT_Recipe_Map_AdvancedVacuumFreezer();
-		public static final GTPP_Recipe_Map_Internal sAdvFreezerRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.temp", "temp", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
-		public static final GTPP_Recipe_Map_Internal sMultiblockCentrifugeRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.temp2", "temp2", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
-		public static final GTPP_Recipe_Map_Internal sMultiblockElectrolyzerRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.temp3", "temp3", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
+		
+		//public static final GTPP_Recipe_Map sMultiblockCentrifugeRecipes = new GT_Recipe_Map_LargeCentrifuge();
+		//public static final GTPP_Recipe_Map sMultiblockElectrolyzerRecipes = new GT_Recipe_Map_LargeElectrolyzer();
+		//public static final GTPP_Recipe_Map sAdvFreezerRecipes = new GT_Recipe_Map_AdvancedVacuumFreezer();
+		
+		public static final GTPP_Recipe_Map_Internal sAdvFreezerRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.cryogenicfreezer", "Cryogenic Freezer", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 0, 0, 1, "", 0, "", false, true);
+		public static final GTPP_Recipe_Map_Internal sMultiblockCentrifugeRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.multicentrifuge", "Multiblock Centrifuge", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 0, 0, 1, "", 0, "", false, true);
+		public static final GTPP_Recipe_Map_Internal sMultiblockElectrolyzerRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.multielectro", "Multiblock Electrolyzer", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 0, 0, 1, "", 0, "", false, true);
 		public static final GTPP_Recipe_Map_Internal sChemicalPlant_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.temp4", "temp4", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
 
 		//Semi-Fluid Fuel Map 
@@ -982,494 +958,7 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 			return this.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput}, null, new int[]{aChance}, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, 0, 0, aFuelValueInEU);
 		}
 	}
-
-	public static class GT_Recipe_Map_LargeCentrifuge extends GTPP_Recipe_Map {
-		private static int INPUT_COUNT;
-		private static int OUTPUT_COUNT;
-		private static int FLUID_INPUT_COUNT;
-		private static int FLUID_OUTPUT_COUNT;
-
-		public GT_Recipe_Map_LargeCentrifuge() {
-			super(new HashSet<GTPP_Recipe>(2000), "gt.recipe.largecentrifuge", "Large Centrifuge", null,
-					RES_PATH_GUI + "basicmachines/FissionFuel", GT_Recipe_Map_LargeCentrifuge.INPUT_COUNT,
-					GT_Recipe_Map_LargeCentrifuge.OUTPUT_COUNT, 0, 0, 1, "", 1, "", true, true);
-		}
-
-		@Override
-		public GTPP_Recipe addRecipe(final boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs,
-				final Object aSpecial, final int[] aOutputChances, FluidStack[] aFluidInputs,
-				FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-			final ArrayList<ItemStack> adjustedInputs = new ArrayList<ItemStack>();
-			final ArrayList<ItemStack> adjustedOutputs = new ArrayList<ItemStack>();
-			final ArrayList<FluidStack> adjustedFluidInputs = new ArrayList<FluidStack>();
-			final ArrayList<FluidStack> adjustedFluidOutputs = new ArrayList<FluidStack>();
-			if (aInputs == null) {
-				aInputs = new ItemStack[0];
-			}
-			for (final ItemStack input : aInputs) {
-				FluidStack inputFluidContent = FluidContainerRegistry.getFluidForFilledItem(input);
-				if (inputFluidContent != null) {
-					final FluidStack fluidStack = inputFluidContent;
-					fluidStack.amount *= input.stackSize;
-					if (inputFluidContent.getFluid().getName().equals("ic2steam")) {
-						inputFluidContent = GT_ModHandler.getSteam((long) inputFluidContent.amount);
-					}
-					adjustedFluidInputs.add(inputFluidContent);
-				} else {
-					final ItemData itemData = GT_OreDictUnificator.getItemData(input);
-					if (itemData == null || !itemData.hasValidPrefixMaterialData()
-							|| itemData.mMaterial.mMaterial != Materials.Empty) {
-						if (itemData != null && itemData.hasValidPrefixMaterialData()
-								&& itemData.mPrefix == OrePrefixes.cell) {
-							//final ItemStack dustStack = itemData.mMaterial.mMaterial.getDust(input.stackSize);
-							final ItemStack dustStack = ItemUtils.getGregtechOreStack(OrePrefixes.dust, itemData.mMaterial.mMaterial, input.stackSize);
-							if (dustStack != null) {
-								adjustedInputs.add(dustStack);
-							} else {
-								adjustedInputs.add(input);
-							}
-						} else {
-							adjustedInputs.add(input);
-						}
-					}
-				}
-			}
-			if (aFluidInputs == null) {
-				aFluidInputs = new FluidStack[0];
-			}
-			for (final FluidStack fluidInput : aFluidInputs) {
-				adjustedFluidInputs.add(fluidInput);
-			}
-			aInputs = adjustedInputs.toArray(new ItemStack[adjustedInputs.size()]);
-			aFluidInputs = adjustedFluidInputs.toArray(new FluidStack[adjustedFluidInputs.size()]);
-			if (aOutputs == null) {
-				aOutputs = new ItemStack[0];
-			}
-			for (final ItemStack output : aOutputs) {
-				FluidStack outputFluidContent = FluidContainerRegistry.getFluidForFilledItem(output);
-				if (outputFluidContent != null) {
-					final FluidStack fluidStack2 = outputFluidContent;
-					fluidStack2.amount *= output.stackSize;
-					if (outputFluidContent.getFluid().getName().equals("ic2steam")) {
-						outputFluidContent = GT_ModHandler.getSteam((long) outputFluidContent.amount);
-					}
-					adjustedFluidOutputs.add(outputFluidContent);
-				} else {
-					final ItemData itemData = GT_OreDictUnificator.getItemData(output);
-					if (itemData == null || !itemData.hasValidPrefixMaterialData()
-							|| itemData.mMaterial.mMaterial != Materials.Empty) {
-						adjustedOutputs.add(output);
-					}
-				}
-			}
-			if (aFluidOutputs == null) {
-				aFluidOutputs = new FluidStack[0];
-			}
-			for (final FluidStack fluidOutput : aFluidOutputs) {
-				adjustedFluidOutputs.add(fluidOutput);
-			}
-			aOutputs = adjustedOutputs.toArray(new ItemStack[adjustedOutputs.size()]);
-			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);
-			GTPP_Recipe mNew = new GT_Recipe_LargeCentrifuge(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-			if (RecipeUtils.doesGregtechRecipeHaveEqualCells(mNew)) {
-				return this.addRecipe(mNew);
-			}
-			else {
-				return null;
-			}	
-		}
-
-		static {
-			GT_Recipe_Map_LargeCentrifuge.INPUT_COUNT = 2;
-			GT_Recipe_Map_LargeCentrifuge.OUTPUT_COUNT = 2;
-			GT_Recipe_Map_LargeCentrifuge.FLUID_INPUT_COUNT = 4;
-			GT_Recipe_Map_LargeCentrifuge.FLUID_OUTPUT_COUNT = 4;
-		}
-
-		private static class GT_Recipe_LargeCentrifuge extends GTPP_Recipe {
-			protected GT_Recipe_LargeCentrifuge(final boolean aOptimize, final ItemStack[] aInputs,
-					final ItemStack[] aOutputs, final Object aSpecialItems, final int[] aChances,
-					final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration,
-					final int aEUt, final int aSpecialValue) {
-				super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration,
-						aEUt, aSpecialValue);
-			}
-
-			public ArrayList<PositionedStack> getInputPositionedStacks() {
-				final int itemLimit = Math.min(this.mInputs.length, GT_Recipe_Map_LargeCentrifuge.INPUT_COUNT);
-				final int fluidLimit = Math.min(this.mFluidInputs.length,
-						GT_Recipe_Map_LargeCentrifuge.FLUID_INPUT_COUNT);
-				final ArrayList<PositionedStack> inputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
-				for (int i = 0; i < itemLimit; ++i) {
-					inputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-							(Object) this.mInputs[i].copy(), 48 - i * 18, 5));
-				}
-				for (int i = 0; i < fluidLimit; ++i) {
-					if (i < 3) {
-						inputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-								(Object) GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 48 - i * 18, 23));
-					} else {
-						inputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-								(Object) GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 12, 5));
-					}
-				}
-				return inputStacks;
-			}
-
-			public ArrayList<PositionedStack> getOutputPositionedStacks() {
-				final int itemLimit = Math.max(this.mOutputs.length, 0);
-				final int fluidLimit = Math.max(this.mFluidOutputs.length, 0);
-				final ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);				
-				AutoMap<Object> mNEIMap = new AutoMap<Object>();				
-				for (int i = 0; i < itemLimit; ++i) {
-					if (this.mOutputs[i] != null)
-					mNEIMap.put((Object) this.mOutputs[i].copy());
-				}				
-				for (int i = 0; i < fluidLimit; ++i) {
-					if (this.mFluidOutputs[i] != null)
-					mNEIMap.put((Object) GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true));
-				}
-				int xPos[] = new int[] {102, 120, 138};
-				int yPos[] = new int[] {5, 23, 41, 59};			
-				int mRow = 0;
-				int mColumn = 0;
-				for (int i = 0; i < Math.min(mNEIMap.size(), 16); ++i) {					
-					if (mColumn >= 3) {
-						mColumn = 0;
-						mRow++;
-					}		
-					if (mColumn <= 2 && mRow <= 3)
-					outputStacks.add(
-							(PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-									(Object) mNEIMap.get(i), xPos[mColumn++], yPos[mRow], this.getOutputChance(i)));
-				}				
-				return outputStacks;
-			}
-		}
-	}
-
-	public static class GT_Recipe_Map_LargeElectrolyzer extends GTPP_Recipe_Map {
-		private static int INPUT_COUNT;
-		private static int OUTPUT_COUNT;
-		private static int FLUID_INPUT_COUNT;
-		private static int FLUID_OUTPUT_COUNT;
-
-		public GT_Recipe_Map_LargeElectrolyzer() {
-			super(new HashSet<GTPP_Recipe>(2000), "gt.recipe.largeelectrolyzer", "Large Electrolyzer", null,
-					RES_PATH_GUI + "basicmachines/FissionFuel", GT_Recipe_Map_LargeElectrolyzer.INPUT_COUNT,
-					GT_Recipe_Map_LargeElectrolyzer.OUTPUT_COUNT, 0, 0, 1, "", 1, "", true, true);
-		}
-
-		@Override
-		public GTPP_Recipe addRecipe(final boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs,
-				final Object aSpecial, final int[] aOutputChances, FluidStack[] aFluidInputs,
-				FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-			final ArrayList<ItemStack> adjustedInputs = new ArrayList<ItemStack>();
-			final ArrayList<ItemStack> adjustedOutputs = new ArrayList<ItemStack>();
-			final ArrayList<FluidStack> adjustedFluidInputs = new ArrayList<FluidStack>();
-			final ArrayList<FluidStack> adjustedFluidOutputs = new ArrayList<FluidStack>();
-			if (aInputs == null) {
-				aInputs = new ItemStack[0];
-			}
-			for (final ItemStack input : aInputs) {
-				FluidStack inputFluidContent = FluidContainerRegistry.getFluidForFilledItem(input);
-				if (inputFluidContent != null) {
-					final FluidStack fluidStack = inputFluidContent;
-					fluidStack.amount *= input.stackSize;
-					if (inputFluidContent.getFluid().getName().equals("ic2steam")) {
-						inputFluidContent = GT_ModHandler.getSteam((long) inputFluidContent.amount);
-					}
-					adjustedFluidInputs.add(inputFluidContent);
-				} else {
-					final ItemData itemData = GT_OreDictUnificator.getItemData(input);
-					if (itemData == null || !itemData.hasValidPrefixMaterialData()
-							|| itemData.mMaterial.mMaterial != Materials.Empty) {
-						if (itemData != null && itemData.hasValidPrefixMaterialData()
-								&& itemData.mPrefix == OrePrefixes.cell) {
-							//final ItemStack dustStack = itemData.mMaterial.mMaterial.getDust(input.stackSize);
-							final ItemStack dustStack = ItemUtils.getGregtechOreStack(OrePrefixes.dust, itemData.mMaterial.mMaterial, input.stackSize);
-							if (dustStack != null) {
-								adjustedInputs.add(dustStack);
-							} else {
-								adjustedInputs.add(input);
-							}
-						} else {
-							adjustedInputs.add(input);
-						}
-					}
-				}
-			}
-			if (aFluidInputs == null) {
-				aFluidInputs = new FluidStack[0];
-			}
-			for (final FluidStack fluidInput : aFluidInputs) {
-				adjustedFluidInputs.add(fluidInput);
-			}
-			aInputs = adjustedInputs.toArray(new ItemStack[adjustedInputs.size()]);
-			aFluidInputs = adjustedFluidInputs.toArray(new FluidStack[adjustedFluidInputs.size()]);
-			if (aOutputs == null) {
-				aOutputs = new ItemStack[0];
-			}
-			for (final ItemStack output : aOutputs) {
-				FluidStack outputFluidContent = FluidContainerRegistry.getFluidForFilledItem(output);
-				if (outputFluidContent != null) {
-					final FluidStack fluidStack2 = outputFluidContent;
-					fluidStack2.amount *= output.stackSize;
-					if (outputFluidContent.getFluid().getName().equals("ic2steam")) {
-						outputFluidContent = GT_ModHandler.getSteam((long) outputFluidContent.amount);
-					}
-					adjustedFluidOutputs.add(outputFluidContent);
-				} else {
-					final ItemData itemData = GT_OreDictUnificator.getItemData(output);
-					if (itemData == null || !itemData.hasValidPrefixMaterialData()
-							|| itemData.mMaterial.mMaterial != Materials.Empty) {
-						adjustedOutputs.add(output);
-					}
-				}
-			}
-			if (aFluidOutputs == null) {
-				aFluidOutputs = new FluidStack[0];
-			}
-			for (final FluidStack fluidOutput : aFluidOutputs) {
-				adjustedFluidOutputs.add(fluidOutput);
-			}
-			aOutputs = adjustedOutputs.toArray(new ItemStack[adjustedOutputs.size()]);
-			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);			
-			GTPP_Recipe mNew = new GT_Recipe_LargeElectrolyzer(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-			if (RecipeUtils.doesGregtechRecipeHaveEqualCells(mNew)) {
-				return this.addRecipe(mNew);
-			}
-			else {
-				return null;
-			}			
-		}
-
-		static {
-			GT_Recipe_Map_LargeElectrolyzer.INPUT_COUNT = 2;
-			GT_Recipe_Map_LargeElectrolyzer.OUTPUT_COUNT = 2;
-			GT_Recipe_Map_LargeElectrolyzer.FLUID_INPUT_COUNT = 4;
-			GT_Recipe_Map_LargeElectrolyzer.FLUID_OUTPUT_COUNT = 4;
-		}
-
-		private static class GT_Recipe_LargeElectrolyzer extends GTPP_Recipe {
-			protected GT_Recipe_LargeElectrolyzer(final boolean aOptimize, final ItemStack[] aInputs,
-					final ItemStack[] aOutputs, final Object aSpecialItems, final int[] aChances,
-					final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration,
-					final int aEUt, final int aSpecialValue) {
-				super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration,
-						aEUt, aSpecialValue);
-			}
-
-			@Override
-			public ArrayList<PositionedStack> getInputPositionedStacks() {
-				final int itemLimit = Math.min(this.mInputs.length, GT_Recipe_Map_LargeElectrolyzer.INPUT_COUNT);
-				final int fluidLimit = Math.min(this.mFluidInputs.length,
-						GT_Recipe_Map_LargeElectrolyzer.FLUID_INPUT_COUNT);
-				final ArrayList<PositionedStack> inputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
-				for (int i = 0; i < itemLimit; ++i) {
-					inputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-							(Object) this.mInputs[i].copy(), 48 - i * 18, 5));
-				}
-				for (int i = 0; i < fluidLimit; ++i) {
-					if (i < 3) {
-						inputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-								(Object) GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 48 - i * 18, 23));
-					} else {
-						inputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-								(Object) GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 12, 5));
-					}
-				}
-				return inputStacks;
-			}
-
-			@Override
-			public ArrayList<PositionedStack> getOutputPositionedStacks() {
-				final int itemLimit = Math.max(this.mOutputs.length, 0);
-				final int fluidLimit = Math.max(this.mFluidOutputs.length, 0);
-				final ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);				
-				AutoMap<Object> mNEIMap = new AutoMap<Object>();				
-				for (int i = 0; i < itemLimit; ++i) {
-					if (this.mOutputs[i] != null)
-					mNEIMap.put((Object) this.mOutputs[i].copy());
-				}				
-				for (int i = 0; i < fluidLimit; ++i) {
-					if (this.mFluidOutputs[i] != null)
-					mNEIMap.put((Object) GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true));
-				}
-				int xPos[] = new int[] {102, 120, 138};
-				int yPos[] = new int[] {5, 23, 41, 59};		
-				int mRow = 0;
-				int mColumn = 0;
-				for (int i = 0; i < Math.min(mNEIMap.size(), 16); ++i) {					
-					if (mColumn >= 3) {
-						mColumn = 0;
-						mRow++;
-					}		
-					if (mColumn <= 2 && mRow <= 3)					
-					outputStacks.add(
-							(PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-									(Object) mNEIMap.get(i), xPos[mColumn++], yPos[mRow], this.getOutputChance(i)));
-				}				
-				return outputStacks;
-			}
-		}
-	}
-
-	public static class GT_Recipe_Map_AdvancedVacuumFreezer extends GTPP_Recipe_Map {
-		private static int INPUT_COUNT;
-		private static int OUTPUT_COUNT;
-		private static int FLUID_INPUT_COUNT;
-		private static int FLUID_OUTPUT_COUNT;
-
-		public GT_Recipe_Map_AdvancedVacuumFreezer() {
-			super(new HashSet<GTPP_Recipe>(2000), "gt.recipe.advfreezer", "Adv. Cryogenic Freezer", null,
-					RES_PATH_GUI + "basicmachines/FissionFuel", GT_Recipe_Map_AdvancedVacuumFreezer.INPUT_COUNT,
-					GT_Recipe_Map_AdvancedVacuumFreezer.OUTPUT_COUNT, 0, 0, 1, "", 1, "", true, true);
-		}
-
-		@Override
-		public GTPP_Recipe addRecipe(final boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs,
-				final Object aSpecial, final int[] aOutputChances, FluidStack[] aFluidInputs,
-				FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
-			final ArrayList<ItemStack> adjustedInputs = new ArrayList<ItemStack>();
-			final ArrayList<ItemStack> adjustedOutputs = new ArrayList<ItemStack>();
-			final ArrayList<FluidStack> adjustedFluidInputs = new ArrayList<FluidStack>();
-			final ArrayList<FluidStack> adjustedFluidOutputs = new ArrayList<FluidStack>();
-			if (aInputs == null) {
-				aInputs = new ItemStack[0];
-			}
-			for (final ItemStack input : aInputs) {
-				FluidStack inputFluidContent = FluidContainerRegistry.getFluidForFilledItem(input);
-				if (inputFluidContent != null) {
-					final FluidStack fluidStack = inputFluidContent;
-					fluidStack.amount *= input.stackSize;
-					if (inputFluidContent.getFluid().getName().equals("ic2steam")) {
-						inputFluidContent = GT_ModHandler.getSteam((long) inputFluidContent.amount);
-					}
-					adjustedFluidInputs.add(inputFluidContent);
-				} else {
-					final ItemData itemData = GT_OreDictUnificator.getItemData(input);
-					if (itemData == null || !itemData.hasValidPrefixMaterialData()
-							|| itemData.mMaterial.mMaterial != Materials.Empty) {
-						if (itemData != null && itemData.hasValidPrefixMaterialData()
-								&& itemData.mPrefix == OrePrefixes.cell) {
-							//final ItemStack dustStack = itemData.mMaterial.mMaterial.getDust(input.stackSize);
-							final ItemStack dustStack = ItemUtils.getGregtechOreStack(OrePrefixes.dust, itemData.mMaterial.mMaterial, input.stackSize);
-							if (dustStack != null) {
-								adjustedInputs.add(dustStack);
-							} else {
-								adjustedInputs.add(input);
-							}
-						} else {
-							adjustedInputs.add(input);
-						}
-					}
-				}
-			}
-			if (aFluidInputs == null) {
-				aFluidInputs = new FluidStack[0];
-			}
-			for (final FluidStack fluidInput : aFluidInputs) {
-				adjustedFluidInputs.add(fluidInput);
-			}
-			aInputs = adjustedInputs.toArray(new ItemStack[adjustedInputs.size()]);
-			aFluidInputs = adjustedFluidInputs.toArray(new FluidStack[adjustedFluidInputs.size()]);
-			if (aOutputs == null) {
-				aOutputs = new ItemStack[0];
-			}
-			for (final ItemStack output : aOutputs) {
-				FluidStack outputFluidContent = FluidContainerRegistry.getFluidForFilledItem(output);
-				if (outputFluidContent != null) {
-					final FluidStack fluidStack2 = outputFluidContent;
-					fluidStack2.amount *= output.stackSize;
-					if (outputFluidContent.getFluid().getName().equals("ic2steam")) {
-						outputFluidContent = GT_ModHandler.getSteam((long) outputFluidContent.amount);
-					}
-					adjustedFluidOutputs.add(outputFluidContent);
-				} else {
-					final ItemData itemData = GT_OreDictUnificator.getItemData(output);
-					if (itemData == null || !itemData.hasValidPrefixMaterialData()
-							|| itemData.mMaterial.mMaterial != Materials.Empty) {
-						adjustedOutputs.add(output);
-					}
-				}
-			}
-			if (aFluidOutputs == null) {
-				aFluidOutputs = new FluidStack[0];
-			}
-			for (final FluidStack fluidOutput : aFluidOutputs) {
-				adjustedFluidOutputs.add(fluidOutput);
-			}
-			aOutputs = adjustedOutputs.toArray(new ItemStack[adjustedOutputs.size()]);
-			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);
-
-			GTPP_Recipe mNew = new GT_Recipe_AdvFreezer(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-			if (RecipeUtils.doesGregtechRecipeHaveEqualCells(mNew)) {
-				return this.addRecipe(mNew);
-			}
-			else {
-				return null;
-			}
-		}
-
-		static {
-			GT_Recipe_Map_AdvancedVacuumFreezer.INPUT_COUNT = 2;
-			GT_Recipe_Map_AdvancedVacuumFreezer.OUTPUT_COUNT = 2;
-			GT_Recipe_Map_AdvancedVacuumFreezer.FLUID_INPUT_COUNT = 4;
-			GT_Recipe_Map_AdvancedVacuumFreezer.FLUID_OUTPUT_COUNT = 4;
-		}
-
-		private static class GT_Recipe_AdvFreezer extends GTPP_Recipe {
-			protected GT_Recipe_AdvFreezer(final boolean aOptimize, final ItemStack[] aInputs,
-					final ItemStack[] aOutputs, final Object aSpecialItems, final int[] aChances,
-					final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration,
-					final int aEUt, final int aSpecialValue) {
-				super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration,
-						aEUt, aSpecialValue);
-			}
-
-			public ArrayList<PositionedStack> getInputPositionedStacks() {
-				final int itemLimit = Math.min(this.mInputs.length, GT_Recipe_Map_AdvancedVacuumFreezer.INPUT_COUNT);
-				final int fluidLimit = Math.min(this.mFluidInputs.length,
-						GT_Recipe_Map_AdvancedVacuumFreezer.FLUID_INPUT_COUNT);
-				final ArrayList<PositionedStack> inputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
-				for (int i = 0; i < itemLimit; ++i) {
-					inputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-							(Object) this.mInputs[i].copy(), 48 - i * 18, 5));
-				}
-				for (int i = 0; i < fluidLimit; ++i) {
-					if (i < 3) {
-						inputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-								(Object) GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 48 - i * 18, 23));
-					} else {
-						inputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-								(Object) GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 12, 5));
-					}
-				}
-				return inputStacks;
-			}
-
-
-			public ArrayList<PositionedStack> getOutputPositionedStacks() {
-				final int itemLimit = Math.min(this.mOutputs.length, GT_Recipe_Map_AdvancedVacuumFreezer.OUTPUT_COUNT);
-				final int fluidLimit = Math.min(this.mFluidOutputs.length,
-						GT_Recipe_Map_AdvancedVacuumFreezer.FLUID_OUTPUT_COUNT);
-				final ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
-				for (int i = 0; i < itemLimit; ++i) {
-					if (this.mOutputs[i] != null)
-					outputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-							(Object) this.mOutputs[i].copy(), 102 + i * 18, 5, this.getOutputChance(i)));
-				}
-				for (int i = 0; i < fluidLimit; ++i) {
-					if (this.mFluidOutputs[i] != null)
-					outputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-							(Object) GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + i * 18, 23, this.getOutputChance(i)));
-				}
-				return outputStacks;
-			}
-		}
-	}
-
+	
 	public ArrayList<PositionedStack> getInputPositionedStacks() {
 		return null;
 	}

@@ -735,11 +735,6 @@ public class Utils {
 		}
 	}
 
-	private static int sBookCount = 0;
-
-	public static int getBookCount() {
-		return sBookCount;
-	}
 
 	public static ItemStack getWrittenBook(final ItemStack aBook, final int aID, final String aMapping, final String aTitle, final String aAuthor,
 			final String[] aPages) {
@@ -753,8 +748,7 @@ public class Utils {
 		if ((GT_Utility.isStringInvalid(aTitle)) || (GT_Utility.isStringInvalid(aAuthor)) || (aPages.length <= 0)) {
 			return null;
 		}
-		sBookCount += 1;
-		final int vMeta = (aID == -1 ? sBookCount : aID);
+		final int vMeta = aID;
 		rStack = (aBook == null ? new ItemStack(ModItems.itemCustomBook, 1, vMeta) : aBook);
 		final NBTTagCompound tNBT = new NBTTagCompound();
 		tNBT.setString("title", GT_LanguageManager.addStringLocalization(
@@ -771,17 +765,19 @@ public class Utils {
 					tNBTList.appendTag(new NBTTagString(aPages[i]));
 				}
 				else {
+					Logger.INFO("WARNING: String for written Book too long! -> "+aPages[i]);
 					GT_Log.err.println(new StringBuilder().append("WARNING: String for written Book too long! -> ")
 							.append(aPages[i]).toString());
 				}
 			} else {
+				Logger.INFO("WARNING: Too much Pages for written Book! -> "+aTitle);
 				GT_Log.err.println(new StringBuilder().append("WARNING: Too much Pages for written Book! -> ")
 						.append(aTitle).toString());
 				break;
 			}
 		}
 		tNBTList.appendTag(new NBTTagString(new StringBuilder().append("Credits to ").append(aAuthor)
-				.append(" for writing this Book. This was Book Nr. ").append(sBookCount)
+				.append(" for writing this Book. This was Book Nr. ").append(aID)
 				.append(" at its creation. Gotta get 'em all!").toString()));
 		tNBT.setTag("pages", tNBTList);
 		rStack.setTagCompound(tNBT);

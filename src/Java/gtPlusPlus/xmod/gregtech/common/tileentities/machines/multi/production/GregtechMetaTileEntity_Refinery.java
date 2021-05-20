@@ -1,10 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import static gregtech.api.enums.GT_Values.E;
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
-
-import java.util.HashSet;
-
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -12,8 +7,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.CustomRecipeMap;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
@@ -72,16 +66,9 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 		return "MatterFabricator";
 	}	
 	
-	private static final GT_Recipe_Map mGregTypeRecipeMap = new GT_Recipe_Map(new HashSet<GT_Recipe>(), "internal.recipe.fissionfuel", "Nuclear Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 4, 1, E, 1, E, true, false);
-	
 	@Override
 	public GT_Recipe_Map getRecipeMap() {		
-		if (mGregTypeRecipeMap.mRecipeList.size() <= 0) {
-			for (GT_Recipe g : CustomRecipeMap.sFissionFuelProcessing.mRecipeList) {
-				mGregTypeRecipeMap.mRecipeList.add(g);
-			}
-		}	
-		return mGregTypeRecipeMap;
+		return GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing;
 	}
 
 	@Override
@@ -255,7 +242,7 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 				Logger.INFO("Your Muffler must be AT LEAST ZPM tier or higher.");
 			}
 		}		
-		Logger.INFO("Fission Fuel Production Plant Formed. "+mGregTypeRecipeMap.mRecipeList.size());
+		Logger.INFO("Fission Fuel Production Plant Formed. "+this.getRecipeMap().mRecipeList.size());
 		this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
 		return true;
 	}

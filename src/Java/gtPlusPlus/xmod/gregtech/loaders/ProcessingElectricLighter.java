@@ -14,6 +14,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
@@ -32,11 +33,7 @@ public class ProcessingElectricLighter implements Interface_OreRecipeRegistrator
 			if (aMaterial != Materials.Rubber) {
 				if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
 						&& (!aMaterial.contains(SubTag.NO_SMASHING))) {
-					GT_ModHandler.addCraftingRecipe(
-							MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(16, 1, aMaterial, aMaterial, null),
-							GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
-							new Object[] { "IhI", "III", " I ", Character.valueOf('I'),
-									OrePrefixes.ingot.get(aMaterial) });
+					
 				}
 			}
 		}
@@ -123,20 +120,11 @@ public class ProcessingElectricLighter implements Interface_OreRecipeRegistrator
 			return false;
 		}
 		
-		 return GT_ModHandler.addCraftingRecipe(
-				 aOutputStack,
-				 RecipeBits.DISMANTLEABLE | RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | RecipeBits.BUFFERED, 
-				 new Object[]{
-						 "SXS",
-						 "GMG",
-						 "PBP",
-						 'X', aInputCutter,
-						 'M', CI.getSensor(aVoltageTier, 1),
-						 'S', OrePrefixes.wireGt04.get(Materials.Gold),
-						 'P', OrePrefixes.plate.get(aMaterial),
-						 'G', ELEMENT.STANDALONE.RUNITE.getPlate(1),
-						 'B', aBattery
-						 });
+		return RecipeUtils.addShapedRecipe(
+				OrePrefixes.wireGt04.get(Materials.Gold), aInputCutter, OrePrefixes.wireGt04.get(Materials.Gold),
+				ELEMENT.STANDALONE.RUNITE.getPlate(1), CI.getSensor(aVoltageTier, 1), ELEMENT.STANDALONE.RUNITE.getPlate(1), 
+				OrePrefixes.plate.get(aMaterial), aBattery, OrePrefixes.plate.get(aMaterial), 
+				aOutputStack);
 		    
 	}
 

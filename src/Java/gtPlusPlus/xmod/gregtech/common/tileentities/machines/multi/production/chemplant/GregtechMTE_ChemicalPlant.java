@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.c
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -16,11 +17,12 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
@@ -32,6 +34,7 @@ import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,13 +48,48 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	private int mCoilTier = 0;	
 
 	private ArrayList<GT_MetaTileEntity_Hatch_Catalysts> mCatalystBuses = new ArrayList<GT_MetaTileEntity_Hatch_Catalysts>();
-	
+
+	private static final HashMap<Integer, Triplet<Block, Integer, Integer>> mTieredBlockRegistry = new HashMap<Integer, Triplet<Block, Integer, Integer>>();
+
 	public GregtechMTE_ChemicalPlant(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
 	public GregtechMTE_ChemicalPlant(final String aName) {
 		super(aName);
+	}
+
+	public static boolean registerMachineCasingForTier(int aTier, Block aBlock, int aMeta, int aCasingTextureID) {
+		int aSize = mTieredBlockRegistry.size();
+		int aSize2 = aSize;
+		Triplet<Block, Integer, Integer> aCasingData = new Triplet<Block, Integer, Integer>(aBlock, aMeta, aCasingTextureID);
+		if (mTieredBlockRegistry.containsKey(aTier)) {
+			CORE.crash("Tried to register a Machine casing for tier "+aTier+" to the Chemical Plant, however this tier already contains one.");
+		}
+		mTieredBlockRegistry.put(aTier, aCasingData);
+		aSize = mTieredBlockRegistry.size();
+		return aSize > aSize2;
+	}
+
+	private static Block getBlockForTier(int aTier) {
+		if (!mTieredBlockRegistry.containsKey(aTier)) {
+			return Blocks.bedrock;
+		}
+		return mTieredBlockRegistry.get(aTier).getValue_1();
+	}
+	private static int getMetaForTier(int aTier) {
+		if (!mTieredBlockRegistry.containsKey(aTier)) {
+			return 32;
+		}
+		return mTieredBlockRegistry.get(aTier).getValue_2();
+	}
+	private static int getCasingTextureIdForTier(int aTier) {
+		if (!mTieredBlockRegistry.containsKey(aTier)) {
+			return 10;
+		}
+		int aCasingID = mTieredBlockRegistry.get(aTier).getValue_3();
+		//Logger.INFO("Found casing texture ID "+aCasingID+" for tier "+aTier);
+		return aCasingID;
 	}
 
 	@Override
@@ -69,28 +107,8 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		return new String[] {
 				"Controller Block for the Chemical Plant",
 				"Heavy Industry, now right at your doorstep!",
-				"Solid Casings dictate Chemical Plant tier",
-				"Machine Casings dictate Hatch tier",			
-				"Higher tier coils speed up the machine",
-				"CuNi 50% , FeAlCr 100% , Ni4Cr 150% , ...",
-				"Higher tier pipe casings boost parallel and reduce catalyst consumption",
-				"+2 parallel per tier, 20% extra chance of not damaging catalyst per tier",
-				"27x Coils",
-				"18x Pipe Casings",
-				"57x Tiered Machine Casings",
-				"80+ Solid Casings",
-				"Construction Guide:",
-				"Controller is placed on a middle casing in the bottom layer",
-				"Hatches can only be placed on the bottom layer edges",
-				"7x7x7 Hollow frame of solid casings",
-				"5x1x5 layer of solid casings (fills in top layer)",
-				"5x1x5 layer of machine casings (fills in bottom layer)",
-				"In the central 3x5x3:",
-				"3x1x3 layer of Coils, surrounded by ring of Machine Casings",
-				"3x1x3 layer of Pipe Casings",
-				"3x1x3 layer of Coils",
-				"3x1x3 layer of Pipe Casings",
-				"3x1x3 layer of Coils, surrounded by ring of Machine Casings",
+				"Please read to user manual for more information on construction & usage",
+				TAG_HIDE_MAINT
 		};
 	}
 
@@ -108,24 +126,8 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		if (aBaseMetaTileEntity.getWorld() != null) {
 
 		}
-		// Check the Tier Client Side
-		int aTier = mSolidCasingTier;		
-
-		if (aTier == 1) {
-			aOriginalTexture = Textures.BlockIcons.CASING_BLOCKS[16];
-		}
-		else if (aTier == 2) {
-			aOriginalTexture = Textures.BlockIcons.CASING_BLOCKS[49];
-		}
-		else if (aTier == 3) {
-			aOriginalTexture = Textures.BlockIcons.CASING_BLOCKS[50];
-		}
-		else if (aTier == 4) {
-			aOriginalTexture = Textures.BlockIcons.CASING_BLOCKS[48];
-		}
-		else {
-			aOriginalTexture = Textures.BlockIcons.CASING_BLOCKS[11];
-		}
+		int aCasingID = getCasingTextureID();
+		aOriginalTexture = Textures.BlockIcons.CASING_BLOCKS[aCasingID];
 
 		if (aSide == aFacing) {
 			return new ITexture[]{aOriginalTexture, new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced)};
@@ -135,11 +137,14 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+		if (GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlant_GT.mRecipeList.size() == 0) {
+			generateRecipes();
+		}
 		return GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlant_GT;
 	}
 
@@ -165,7 +170,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	}
 
 	private int getSolidCasingTier() {
-		return mSolidCasingTier;
+		return this.mSolidCasingTier;
 	}
 
 	private int getMachineCasingTier() {
@@ -180,23 +185,9 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 
 	private int getCasingTextureID() {
 		// Check the Tier Client Side
-		int aTier = mSolidCasingTier;		
-
-		if (aTier == 1) {
-			return 16;
-		}
-		else if (aTier == 2) {
-			return 49;
-		}
-		else if (aTier == 3) {
-			return 50;
-		}
-		else if (aTier == 4) {
-			return 48;
-		}
-		else {
-			return 11;
-		}
+		int aTier = mSolidCasingTier;
+		int aCasingID = getCasingTextureIdForTier(aTier);
+		return aCasingID;
 	}
 
 	public boolean addToMachineList(IGregTechTileEntity aTileEntity) {		
@@ -206,7 +197,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			GT_MetaTileEntity_TieredMachineBlock aMachineBlock = (GT_MetaTileEntity_TieredMachineBlock) aMetaTileEntity;
 			int aTileTier = aMachineBlock.mTier;
 			if (aTileTier > aMaxTier) {
-				Logger.INFO("Hatch tier too high.");
+				log("Hatch tier too high.");
 				return false;
 			}
 			else {
@@ -214,7 +205,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		else {
-			Logger.INFO("Bad Tile Entity being added to hatch map."); // Shouldn't ever happen, but.. ya know..
+			log("Bad Tile Entity being added to hatch map."); // Shouldn't ever happen, but.. ya know..
 			return false;
 		}		
 	}
@@ -237,21 +228,15 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		mCoilTier = aNBT.getInteger("mCoilTier");
 	}
 
-	private static boolean isBlockSolidCasing(Block aBlock, int aMeta) {
-		if (aBlock == null) {
+	private static boolean isBlockSolidCasing(int aCurrentTier, Block aBlock, int aMeta) {
+		if (aBlock == null || (aMeta < 0 || aMeta > 16)) {
 			return false;
 		}		
-		if (aBlock == GregTech_API.sBlockCasings2 && aMeta == 0) {
+		Block aTieredCasing = getBlockForTier(aCurrentTier);
+		int aTieredMeta = getMetaForTier(aCurrentTier);
+		if (aBlock == aTieredCasing && aMeta == aTieredMeta) {
 			return true;
 		}
-		if (aBlock == GregTech_API.sBlockCasings4) {
-			int aMetaStainlessCasing = 1;
-			int aMetaTitaniumCasing = 2;
-			int aMetaTungstenCasing = 0;
-			if (aMeta == aMetaStainlessCasing || aMeta == aMetaTitaniumCasing || aMeta == aMetaTungstenCasing) {
-				return true;				
-			}
-		}		
 		return false;
 	}
 	private static boolean isBlockMachineCasing(Block aBlock, int aMeta) {
@@ -272,8 +257,8 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		Block aCasingBlock2 = GregTech_API.sBlockCasings2;
 		if (aBlock == aCasingBlock2) {
 			int aMetaBronzePipeCasing = 12;
-			int aMetaSteelPipeCasing = 13;
-			int aMetaTitaniumPipeCasing = 14;
+			//int aMetaSteelPipeCasing = 13;
+			//int aMetaTitaniumPipeCasing = 14;
 			int aMetaTungstenPipeCasing = 15;			
 			if (aMeta > aMetaTungstenPipeCasing || aMeta < aMetaBronzePipeCasing) {
 				return false;
@@ -328,14 +313,13 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 3;
 		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 3;
 
-		int tAmount = 0;
-		Logger.INFO("Checking ChemPlant Structure");	
+		log("Checking ChemPlant Structure");	
 
 		// Require Air above controller
 		boolean aAirCheck = aBaseMetaTileEntity.getAirOffset(0, 1, 0);
 
 		if (!aAirCheck) {
-			Logger.INFO("No Air Above Controller");
+			log("No Air Above Controller");
 			return false;
 		} else {
 
@@ -344,7 +328,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			mSolidCasingTier = getSolidCasingTierCheck(aBaseMetaTileEntity, xDir, zDir);
 			mMachineCasingTier = getMachineCasingTierCheck(aBaseMetaTileEntity, xDir, zDir);
 
-			Logger.INFO("Initial Casing Check Complete, Solid Casing Tier: "+mSolidCasingTier+", Machine Casing Tier: "+mMachineCasingTier);
+			log("Initial Casing Check Complete, Solid Casing Tier: "+mSolidCasingTier+", Machine Casing Tier: "+mMachineCasingTier);
 
 			int aSolidCasingCount = 0;
 			int aMachineCasingCount = 0;
@@ -356,14 +340,14 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			aPipeCount = checkPipes(aBaseMetaTileEntity, aStack, xDir, zDir);
 			aCoilCount = checkCoils(aBaseMetaTileEntity, aStack, xDir, zDir);
 
-			Logger.INFO("Casing Counts: ");
-			Logger.INFO("Solid: "+aSolidCasingCount+", Machine: "+aMachineCasingCount);
-			Logger.INFO("Pipe: "+aPipeCount+", Coil: "+aCoilCount);
+			log("Casing Counts: ");
+			log("Solid: "+aSolidCasingCount+", Machine: "+aMachineCasingCount);
+			log("Pipe: "+aPipeCount+", Coil: "+aCoilCount);
 
 
-			Logger.INFO("Casing Tiers: ");
-			Logger.INFO("Solid: "+getSolidCasingTier()+", Machine: "+getMachineCasingTier());
-			Logger.INFO("Pipe: "+getPipeCasingTier()+", Coil: "+getCoilTier());
+			log("Casing Tiers: ");
+			log("Solid: "+getSolidCasingTier()+", Machine: "+getMachineCasingTier());
+			log("Pipe: "+getPipeCasingTier()+", Coil: "+getCoilTier());
 
 			// Attempt to sync fields here, so that it updates client side values.
 			aBaseMetaTileEntity.getWorld().markBlockForUpdate(aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord());
@@ -372,23 +356,27 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 
 			// Minimum 80/93 Solid Casings
 			if (aSolidCasingCount < 80) {
-				Logger.INFO("Not enough solid casings. Found "+aSolidCasingCount+", require: 80.");
+				log("Not enough solid casings. Found "+aSolidCasingCount+", require: 80.");
 				return false;
 			}
 			if (aMachineCasingCount != 57) {
-				Logger.INFO("Not enough machine casings. Found "+aMachineCasingCount+", require: 57.");
+				log("Not enough machine casings. Found "+aMachineCasingCount+", require: 57.");
 				return false;
 			}
 			if (aPipeCount != 18) {
-				Logger.INFO("Not enough pipe casings. Found "+aPipeCount+", require: 18.");
+				log("Not enough pipe casings. Found "+aPipeCount+", require: 18.");
 				return false;
 			}
 			if (aCoilCount != 27) {
-				Logger.INFO("Not enough coils. Found "+aCoilCount+", require: 27.");
+				log("Not enough coils. Found "+aCoilCount+", require: 27.");
 				return false;
 			}	
+			/*if (mCatalystBuses.size() != 1) {
+				log("A Catalyst Bus is Required.");
+				return false;				
+			}*/
 
-			Logger.INFO("Structure Check Complete!");
+			log("Structure Check Complete!");
 
 			return true;
 		}
@@ -508,7 +496,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 						else {							
 							final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 							if (aMetaTileEntity == null) {
-								Logger.INFO("Error counting Bottom Layer Casing Ring. Bad Tile Entity. Found "+aTileEntity.getInventoryName());
+								log("Error counting Bottom Layer Casing Ring. Bad Tile Entity. Found "+aTileEntity.getInventoryName());
 								return tAmount;
 							}
 							//Handle controller
@@ -516,17 +504,17 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 								continue;
 							}
 							else {
-								Logger.INFO("Error counting Bottom Layer Casing Ring. Bad Tile Entity. Found "+aMetaTileEntity.getInventoryName());
+								log("Error counting Bottom Layer Casing Ring. Bad Tile Entity. Found "+aMetaTileEntity.getInventoryName());
 								return tAmount;
 							}
 						}						
 					}
 					else {
-						if (isBlockSolidCasing(aBlock, aMeta)) {
+						if (isBlockSolidCasing(mSolidCasingTier, aBlock, aMeta)) {
 							tAmount++;									
 						}
 						else {
-							Logger.INFO("Error counting Bottom Layer Casing Ring. Found "+aBlock.getLocalizedName()+":"+aMeta);
+							log("Error counting Bottom Layer Casing Ring. Found "+aBlock.getLocalizedName()+":"+aMeta);
 							return tAmount;
 						}
 					}										
@@ -558,11 +546,11 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				}				
 				Block aBlock = aBaseMetaTileEntity.getBlockOffset(aOffsetX + i, r, aOffsetZ + j);
 				int aMeta = aBaseMetaTileEntity.getMetaIDOffset(aOffsetX + i, r, aOffsetZ + j);
-				if (isBlockSolidCasing(aBlock, aMeta)) {
+				if (isBlockSolidCasing(mSolidCasingTier, aBlock, aMeta)) {
 					tAmount++;									
 				}
 				else {
-					Logger.INFO("Error counting Pillars. Found "+ItemUtils.getLocalizedNameOfBlock(aBlock, aMeta));
+					log("Error counting Pillars. Found "+ItemUtils.getLocalizedNameOfBlock(aBlock, aMeta));
 					return tAmount;
 				}			
 			}		
@@ -574,11 +562,11 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			for (int j = -3; j < 4; j++) {
 				Block aBlock = aBaseMetaTileEntity.getBlockOffset(aOffsetX + i, 6, aOffsetZ + j);
 				int aMeta = aBaseMetaTileEntity.getMetaIDOffset(aOffsetX + i, 6, aOffsetZ + j);
-				if (isBlockSolidCasing(aBlock, aMeta)) {
+				if (isBlockSolidCasing(mSolidCasingTier, aBlock, aMeta)) {
 					tAmount++;									
 				}
 				else {
-					Logger.INFO("Error counting Top Layer casings. Found "+ItemUtils.getLocalizedNameOfBlock(aBlock, aMeta));
+					log("Error counting Top Layer casings. Found "+ItemUtils.getLocalizedNameOfBlock(aBlock, aMeta));
 					return tAmount;
 				}
 			}
@@ -644,26 +632,12 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		else {			
 			aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(0, 1, xDir);
 			aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(0, 1, xDir);
-		}
-		if (aInitStructureCheck == GregTech_API.sBlockCasings2) {
-			int aMetaSteelCasing = 0;
-			if (aInitStructureCheckMeta == aMetaSteelCasing) {
-				return 1;
-			}
-		}
-		else if (aInitStructureCheck == GregTech_API.sBlockCasings4) {
-			int aMetaStainlessCasing = 1;
-			int aMetaTitaniumCasing = 2;
-			int aMetaTungstenCasing = 0;
-			if (aInitStructureCheckMeta == aMetaStainlessCasing) {
-				return 2;
-			}
-			else if (aInitStructureCheckMeta == aMetaTitaniumCasing) {
-				return 3;
-			}
-			else if (aInitStructureCheckMeta == aMetaTungstenCasing) {
-				return 4;
-			}
+		}		
+		for (int aTier : mTieredBlockRegistry.keySet()) {
+			Triplet<Block, Integer, Integer> aData = mTieredBlockRegistry.get(aTier);
+			if (aData.getValue_1() == aInitStructureCheck && aData.getValue_2() == aInitStructureCheckMeta) {
+				return aTier;
+			}			
 		}
 		return 0;
 	}
@@ -684,7 +658,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	public int getMachineCasingTierCheck(IGregTechTileEntity aBaseMetaTileEntity, int xDir, int zDir) {
 		Block aInitStructureCheck;
 		int aInitStructureCheckMeta;
-		Logger.INFO(""+xDir+", "+zDir);
+		log(""+xDir+", "+zDir);
 		if (xDir == 0) {		
 			if (zDir > 0) {
 				aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(0, 0, 1);
@@ -694,7 +668,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(0, 0, -1);
 				aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(0, 0, -1);				
 			}
-
 		}
 		else {			
 			if (xDir > 0) {
@@ -706,9 +679,8 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(-1, 0, 0);				
 			}
 		}
-
 		if (isBlockMachineCasing(aInitStructureCheck, aInitStructureCheckMeta)) {
-			Logger.INFO("Using Meta "+aInitStructureCheckMeta);
+			log("Using Meta "+aInitStructureCheckMeta);
 			return aInitStructureCheckMeta;			
 		}
 		return 0;
@@ -758,7 +730,10 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		}
 		// Silly Client Syncing
 		if (aBaseMetaTileEntity.isClientSide()) {
-			this.mSolidCasingTier = getCasingTierOnClientSide();
+			if (this != null && this.getBaseMetaTileEntity() != null && this.getBaseMetaTileEntity().getWorld() != null) {
+				this.mSolidCasingTier = getCasingTierOnClientSide();
+				markDirty();
+			}			
 		}
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
@@ -793,33 +768,46 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		long tEnergy = getMaxInputEnergy();
 		log("Running checkRecipeGeneric(0)");
 
+		//GT_Recipe tRecipe = findRecipe(getBaseMetaTileEntity(), mLastRecipe, false,	gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
+		GT_Recipe tRecipe = findRecipe(mLastRecipe, gregtech.api.enums.GT_Values.V[tTier], getSolidCasingTier(), aItemInputs, aFluidInputs);
+
+
+
+
+		if (tRecipe == null) {
+			log("BAD RETURN - 1");
+			return false;
+		}		
+
 		// checks if it has a catalyst with enough durability
 		ItemStack tCatalystRecipe = findCatalyst(aItemInputs);
-		if (tCatalystRecipe == null) {
-			log("does not have catalyst");
-			return false;
+		boolean aDoesRecipeNeedCatalyst = false;
+		for (ItemStack aInputItem : tRecipe.mInputs) {
+			if (ItemUtils.isCatalyst(aInputItem)) {
+				aDoesRecipeNeedCatalyst = true;
+				break;
+			}
 		}
-
-		GT_Recipe tRecipe = findRecipe(
-				getBaseMetaTileEntity(), mLastRecipe, false,
-				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
+		if (aDoesRecipeNeedCatalyst) {
+			if (tCatalystRecipe == null) {
+				log("does not have catalyst");
+				return false;
+			}
+			if (mCatalystBuses.size() != 1) {
+				log("does not have correct number of catalyst hatchs. (Required 1, found "+mCatalystBuses.size()+")");
+				return false;
+			}
+		}
 
 
 		log("Running checkRecipeGeneric(1)");
 		// Remember last recipe - an optimization for findRecipe()
 		this.mLastRecipe = tRecipe;
 
-
-		if (tRecipe == null) {
-			log("BAD RETURN - 1");
-			return false;
-		}	
-
 		if (tRecipe.mSpecialValue > this.mSolidCasingTier) {
 			log("solid tier is too low");
 			return false;
 		}
-
 
 		aMaxParallelRecipes = this.canBufferOutputs(tRecipe, aMaxParallelRecipes);
 		if (aMaxParallelRecipes == 0) {
@@ -961,7 +949,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			log("damaging catalyst");
 			damageCatalyst(tCatalystRecipe, parallelRecipes);
 		}
-		
+
 		// Commit outputs
 		this.mOutputItems = tOutputItems;
 		this.mOutputFluids = tOutputFluids;
@@ -972,6 +960,159 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 
 		log("GOOD RETURN - 1");
 		return true;
+	}
+
+	private static final HashMap<Long, AutoMap<GT_Recipe>> mTieredRecipeMap = new HashMap<Long, AutoMap<GT_Recipe>>();
+	private static final AutoMap<GT_Recipe> aTier0Recipes = new AutoMap<GT_Recipe>();
+	private static final AutoMap<GT_Recipe> aTier1Recipes = new AutoMap<GT_Recipe>();
+	private static final AutoMap<GT_Recipe> aTier2Recipes = new AutoMap<GT_Recipe>();
+	private static final AutoMap<GT_Recipe> aTier3Recipes = new AutoMap<GT_Recipe>();
+	private static final AutoMap<GT_Recipe> aTier4Recipes = new AutoMap<GT_Recipe>();
+	private static final AutoMap<GT_Recipe> aTier5Recipes = new AutoMap<GT_Recipe>();
+	private static final AutoMap<GT_Recipe> aTier6Recipes = new AutoMap<GT_Recipe>();
+	private static final AutoMap<GT_Recipe> aTier7Recipes = new AutoMap<GT_Recipe>();
+	private static boolean mInitRecipeCache = false;
+
+	private static void initRecipeCaches() {
+		if (!mInitRecipeCache) {		
+			mTieredRecipeMap.put((long) 0, aTier0Recipes);
+			mTieredRecipeMap.put((long) 1, aTier1Recipes);
+			mTieredRecipeMap.put((long) 2, aTier2Recipes);
+			mTieredRecipeMap.put((long) 3, aTier3Recipes);
+			mTieredRecipeMap.put((long) 4, aTier4Recipes);
+			mTieredRecipeMap.put((long) 5, aTier5Recipes);
+			mTieredRecipeMap.put((long) 6, aTier6Recipes);
+			mTieredRecipeMap.put((long) 7, aTier7Recipes);
+			for (GT_Recipe aRecipe : GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlant_GT.mRecipeList) {
+				if (aRecipe != null) {					
+					switch (aRecipe.mSpecialValue) {
+						case 0:
+							aTier0Recipes.add(aRecipe);
+							continue;
+						case 1:
+							aTier1Recipes.add(aRecipe);
+							continue;
+						case 2:
+							aTier2Recipes.add(aRecipe);
+							continue;
+						case 3:
+							aTier3Recipes.add(aRecipe);
+							continue;
+						case 4:
+							aTier4Recipes.add(aRecipe);
+							continue;
+						case 5:
+							aTier5Recipes.add(aRecipe);
+							continue;
+						case 6:
+							aTier6Recipes.add(aRecipe);
+							continue;
+						case 7:
+							aTier7Recipes.add(aRecipe);
+							continue;
+					}					
+				}
+			}
+			mInitRecipeCache = true;			
+		}
+	}
+
+	private static boolean areInputsEqual(GT_Recipe aComparator, ItemStack[] aInputs, FluidStack[] aFluids) {
+		int aInputCount = aComparator.mInputs.length;
+		if (aInputCount > 0) {
+			//Logger.INFO("Looking for recipe with "+aInputCount+" Items");
+			int aMatchingInputs = 0;
+			recipe : for (ItemStack a : aComparator.mInputs) {
+				for (ItemStack b : aInputs) {
+					if (a.getItem() == b.getItem()) {
+						if (a.getItemDamage() == b.getItemDamage()) {
+							//Logger.INFO("Found matching Item Input - "+b.getUnlocalizedName());
+							aMatchingInputs++;
+							continue recipe;
+						}
+					}
+				}
+			}
+			if (aMatchingInputs != aInputCount) {
+				return false;
+			}
+		}
+		int aFluidInputCount = aComparator.mFluidInputs.length;
+		if (aFluidInputCount > 0) {
+			//Logger.INFO("Looking for recipe with "+aFluidInputCount+" Fluids");
+			int aMatchingFluidInputs = 0;
+			recipe : for (FluidStack b : aComparator.mFluidInputs) {
+				//Logger.INFO("Checking for fluid "+b.getLocalizedName());
+				for (FluidStack a : aFluids) {
+					if (GT_Utility.areFluidsEqual(a, b)) {
+						//Logger.INFO("Found matching Fluid Input - "+b.getLocalizedName());
+						aMatchingFluidInputs++;
+						continue recipe;
+					}
+					else {
+						//Logger.INFO("Found fluid which did not match - "+a.getLocalizedName());
+					}
+				}
+			}
+			if (aMatchingFluidInputs != aFluidInputCount) {
+				return false;
+			}
+		}
+		Logger.INFO("Recipes Match!");
+		return true;
+	}
+
+	public GT_Recipe findRecipe(final GT_Recipe aRecipe, final long aVoltage, final long aSpecialValue, ItemStack[] aInputs, final FluidStack[] aFluids) {
+		if (!mInitRecipeCache) {		
+			initRecipeCaches();		
+		}
+		if (this.getRecipeMap().mRecipeList.isEmpty()) {
+			log("No Recipes in Map to search through.");
+			return null;
+		}
+		else {			
+			log("Checking tier "+aSpecialValue+" recipes and below. Using Input Voltage of "+aVoltage+"V.");
+			log("We have "+aInputs.length+" Items and "+aFluids.length+" Fluids.");
+			// Try check the cached recipe first
+			if (aRecipe != null) {
+				if (areInputsEqual(aRecipe, aInputs, aFluids)) {
+					if (aRecipe.mEUt <= aVoltage) {
+						Logger.INFO("Using cached recipe.");
+						return aRecipe;
+					}
+				}
+			}
+
+			// Get all recipes for the tier
+			AutoMap<AutoMap<GT_Recipe>> aMasterMap = new AutoMap<AutoMap<GT_Recipe>>();
+			for (long i=0;i<=aSpecialValue;i++) {
+				aMasterMap.add(mTieredRecipeMap.get(i));
+			}
+			GT_Recipe aFoundRecipe = null;
+
+			// Iterate the tiers recipes until we find the one with all inputs matching
+			master : for (AutoMap<GT_Recipe> aTieredMap : aMasterMap) {
+				for (GT_Recipe aRecipeToCheck : aTieredMap) {
+					if (areInputsEqual(aRecipeToCheck, aInputs, aFluids)) {
+						log("Found recipe with matching inputs!");
+						if (aRecipeToCheck.mSpecialValue <= aSpecialValue) {
+							if (aRecipeToCheck.mEUt <= aVoltage) {
+								aFoundRecipe = aRecipeToCheck;
+								break master;
+							}
+						}					
+					}
+				}
+			}
+
+			// If we found a recipe, return it
+			if (aFoundRecipe != null) {
+				log("Found valid recipe.");
+				return aFoundRecipe;
+			}
+		}
+		log("Did not find valid recipe.");
+		return null;
 	}
 
 	private int getCatalysts(ItemStack[] aItemInputs, ItemStack aRecipeCatalyst, int aMaxParrallel, ArrayList<ItemStack> aOutPut) {
@@ -1018,8 +1159,8 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				log("not consuming catalyst");
 			}
 		}
-		
-		
+
+
 
 	}
 
@@ -1053,25 +1194,11 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(0, 1, xDir);
 				aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(0, 1, xDir);
 			}
-			if (aInitStructureCheck == GregTech_API.sBlockCasings2) {
-				int aMetaSteelCasing = 0;
-				if (aInitStructureCheckMeta == aMetaSteelCasing) {
-					return 1;
-				}
-			}
-			else if (aInitStructureCheck == GregTech_API.sBlockCasings4) {
-				int aMetaStainlessCasing = 1;
-				int aMetaTitaniumCasing = 2;
-				int aMetaTungstenCasing = 0;
-				if (aInitStructureCheckMeta == aMetaStainlessCasing) {
-					return 2;
-				}
-				else if (aInitStructureCheckMeta == aMetaTitaniumCasing) {
-					return 3;
-				}
-				else if (aInitStructureCheckMeta == aMetaTungstenCasing) {
-					return 4;
-				}
+			for (int aTier : mTieredBlockRegistry.keySet()) {
+				Triplet<Block, Integer, Integer> aData = mTieredBlockRegistry.get(aTier);
+				if (aData.getValue_1() == aInitStructureCheck && aData.getValue_2() == aInitStructureCheckMeta) {
+					return aTier;
+				}			
 			}
 			return 0;
 		}
@@ -1087,18 +1214,18 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	/*
 	 *  Catalyst Handling
 	 */
-	
 
-	
+
+
 	@Override
-    public ArrayList<ItemStack> getStoredInputs() {
+	public ArrayList<ItemStack> getStoredInputs() {
 		ArrayList<ItemStack> tItems = super.getStoredInputs();
-        for (GT_MetaTileEntity_Hatch_Catalysts tHatch : mCatalystBuses) {
-            tHatch.mRecipeMap = getRecipeMap();
-            if (isValidMetaTileEntity(tHatch)) {                
-            	tItems.addAll(tHatch.getContentUsageSlots());            	
-            }
-        }		
+		for (GT_MetaTileEntity_Hatch_Catalysts tHatch : mCatalystBuses) {
+			tHatch.mRecipeMap = getRecipeMap();
+			if (isValidMetaTileEntity(tHatch)) {                
+				tItems.addAll(tHatch.getContentUsageSlots());            	
+			}
+		}		
 		return tItems;
 	}
 

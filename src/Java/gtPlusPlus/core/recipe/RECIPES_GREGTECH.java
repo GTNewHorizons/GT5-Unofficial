@@ -39,6 +39,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
+import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -92,6 +93,7 @@ public class RECIPES_GREGTECH {
 		vacuumFreezerRecipes();
 		fluidheaterRecipes();
 		chemplantRecipes();
+		packagerRecipes();
 
 
 		/**
@@ -107,16 +109,21 @@ public class RECIPES_GREGTECH {
 
 		addFuels();
 	}
-	
 
+
+
+	private static void packagerRecipes() {
+		
+		
+	}
 
 	private static void chemplantRecipes() {
 
 		//This is subsequently absorbed in water to form nitric acid and nitric oxide.
-	    //3 NO2 (g) + H2O (l) → 2 HNO3 (aq) + NO (g) (ΔH = −117 kJ/mol)
-	    //The nitric oxide is cycled back for reoxidation. Alternatively, if the last step is carried out in air:
-	    //4 NO2 (g) + O2 (g) + 2 H2O (l) → 4 HNO3 (aq)
-		
+		//3 NO2 (g) + H2O (l) → 2 HNO3 (aq) + NO (g) (ΔH = −117 kJ/mol)
+		//The nitric oxide is cycled back for reoxidation. Alternatively, if the last step is carried out in air:
+		//4 NO2 (g) + O2 (g) + 2 H2O (l) → 4 HNO3 (aq)
+
 		// Advanced method for Nitric Acid Production
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
@@ -137,7 +144,63 @@ public class RECIPES_GREGTECH {
 				10 * 20,
 				480,
 				3);
-		
+
+		// Advanced recipe for Fluorine Production
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(17),
+						CI.getPurpleCatalyst(0),
+						ItemUtils.getSimpleStack(Blocks.sandstone, 64),
+						ItemUtils.getSimpleStack(Blocks.sandstone, 64)
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack("nitricacid", 4000),	
+						FluidUtils.getAir(8000)
+				},
+				new ItemStack[] {
+						FLUORIDES.FLUORITE.getOre(8),
+						FLUORIDES.FLUORITE.getOre(4),
+						FLUORIDES.FLUORITE.getOre(4),
+						FLUORIDES.FLUORITE.getOre(4),
+				},
+				new FluidStack[] {
+
+				},
+				new int[] {
+						0, 2500, 2000, 1500 
+				},
+				10 * 20,
+				1024,
+				5);
+
+		// Advanced recipe for Fluorine Production
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(17),
+						CI.getPurpleCatalyst(0),
+						ItemUtils.getSimpleStack(Blocks.sand, 64),
+						ItemUtils.getSimpleStack(Blocks.sand, 64)
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack("nitricacid", 5000),	
+						FluidUtils.getAir(12000)
+				},
+				new ItemStack[] {
+						FLUORIDES.FLUORITE.getOre(4),
+						FLUORIDES.FLUORITE.getOre(2),
+						FLUORIDES.FLUORITE.getOre(2),
+						FLUORIDES.FLUORITE.getOre(2),
+				},
+				new FluidStack[] {
+
+				},
+				new int[] {
+						7500, 1500, 1000, 500 
+				},
+				10 * 20,
+				1024,
+				5);
+
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(16),
@@ -157,7 +220,7 @@ public class RECIPES_GREGTECH {
 				10 * 20,
 				480,
 				2);
-		
+
 		// Produce Boric Acid
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
@@ -177,8 +240,8 @@ public class RECIPES_GREGTECH {
 				},
 				20 * 30, 
 				MaterialUtils.getVoltageForTier(3), 
-				2);
-		
+				3);
+
 		// Produce Th232
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
@@ -203,7 +266,131 @@ public class RECIPES_GREGTECH {
 				},
 				20 * 300, 
 				MaterialUtils.getVoltageForTier(4), 
-				3);
+				4);
+
+		// Modify Sapling into Pine Sapling
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(6),
+						ItemUtils.getSimpleStack(Blocks.sapling, 32)
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack("fluid.geneticmutagen", 2000),
+						FluidUtils.getDistilledWater(8000)
+				},
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Pine, 16)
+				},
+				new FluidStack[] {
+
+				},
+				120 * 20,
+				64,
+				2);
+
+
+		// Convert GT++ Plutonium239 into normal Plutonium
+		if (Materials.Plutonium.mDefaultLocalName.equals("Plutonium 239")) {
+			CORE.RA.addChemicalPlantRecipe(
+					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(16),
+							ELEMENT.getInstance().PLUTONIUM239.getDust(1)
+					},
+					new FluidStack[] {
+
+					},
+					new ItemStack[] {
+							ItemUtils.getItemStackOfAmountFromOreDict("dustPlutonium", 1)
+					},
+					new FluidStack[] {
+
+					},
+					5 * 20,
+					1,
+					2);
+			CORE.RA.addChemicalPlantRecipe(
+					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(16),
+							ELEMENT.getInstance().PLUTONIUM239.getSmallDust(1)
+					},
+					new FluidStack[] {
+
+					},
+					new ItemStack[] {
+							ItemUtils.getItemStackOfAmountFromOreDict("dustSmallPlutonium", 1)
+					},
+					new FluidStack[] {
+
+					},
+					5 * 20,
+					1,
+					2);
+			CORE.RA.addChemicalPlantRecipe(
+					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(16),
+							ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1)
+					},
+					new FluidStack[] {
+
+					},
+					new ItemStack[] {
+							ItemUtils.getItemStackOfAmountFromOreDict("dustTinyPlutonium", 1)
+					},
+					new FluidStack[] {
+
+					},
+					5 * 20,
+					1,
+					2);
+		}
+
+		int aLaureniumTier = ALLOY.LAURENIUM.vTier;
+		// Adding Recipes for Casings
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(12),
+						CI.getTieredMachineCasing(aLaureniumTier-1),
+						ALLOY.LAURENIUM.getPlate(8),
+						CI.getGear(aLaureniumTier, 2)
+				},
+				new FluidStack[] {
+						CI.getTieredFluid(aLaureniumTier, 2 * 144),
+						CI.getAlternativeTieredFluid(aLaureniumTier-1, 4 * 144),
+						CI.getTertiaryTieredFluid(aLaureniumTier-2, 6 * 144)
+				},
+				new ItemStack[] {
+					GregtechItemList.Casing_Machine_Custom_3.get(1)
+				},
+				new FluidStack[] {
+
+				},
+				20 * 20,
+				MaterialUtils.getVoltageForTier(aLaureniumTier-2),
+				5);
+		
+		int aBotmiumTier = ALLOY.BOTMIUM.vTier;
+		// Adding Recipes for Casings
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(12),
+						CI.getTieredMachineCasing(aBotmiumTier-1),
+						ALLOY.BOTMIUM.getPlate(8),
+						CI.getGear(aBotmiumTier, 2)
+				},
+				new FluidStack[] {
+						CI.getTieredFluid(aBotmiumTier, 2 * 144),
+						CI.getAlternativeTieredFluid(aBotmiumTier-1, 4 * 144),
+						CI.getTertiaryTieredFluid(aBotmiumTier-2, 6 * 144)
+				},
+				new ItemStack[] {
+					GregtechItemList.Casing_Machine_Custom_4.get(1)
+				},
+				new FluidStack[] {
+
+				},
+				20 * 20,
+				MaterialUtils.getVoltageForTier(aBotmiumTier-2),
+				6);
 
 	}
 
@@ -530,7 +717,7 @@ public class RECIPES_GREGTECH {
 					ItemUtils.getSimpleStack(ModItems.itemChargePack_High_3, 1),
 					ItemUtils.getSimpleStack(ModItems.itemChargePack_High_4, 1),			
 			};
-			
+
 			int aCurrSlot = 0;
 			for (int h = 6; h < 10; h++) {
 				CORE.RA.addAssemblylineRecipe(

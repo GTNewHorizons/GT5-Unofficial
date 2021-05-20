@@ -26,6 +26,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
@@ -54,9 +55,6 @@ public class ItemBaseBook extends ItemWritableBook{
 					mBookMap.get(i).mPages);*/
 
 			NBTUtils.createIntegerTagCompound(bookstack, "stats", "mMeta", i);
-
-			GT_OreDictUnificator.registerOre("bookWritten", bookstack);
-			GT_OreDictUnificator.registerOre("craftingBook", bookstack);
 			list.add(bookstack);
 		}
 	}
@@ -106,7 +104,9 @@ public class ItemBaseBook extends ItemWritableBook{
 	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
 		//player.displayGUIBook(item);
 		int i = item.getItemDamage();
-		ItemStack bookstack = GT_Utility.getWrittenBook(				
+		ItemStack bookstack = Utils.getWrittenBook(		
+				null,
+				mBookMap.get(i).mMeta, 			
 				mBookMap.get(i).mMapping, 
 				mBookMap.get(i).mTitle, 
 				mBookMap.get(i).mAuthor, 

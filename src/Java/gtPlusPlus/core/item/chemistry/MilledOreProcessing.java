@@ -629,7 +629,7 @@ public class MilledOreProcessing extends ItemPackage {
 				},
 				20 * 60,
 				120, 
-				2);
+				3);
 
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
@@ -653,7 +653,7 @@ public class MilledOreProcessing extends ItemPackage {
 				},
 				20 * 45,
 				120, 
-				3);
+				4);
 
 	}
 
@@ -683,7 +683,7 @@ public class MilledOreProcessing extends ItemPackage {
 				aChances,
 				aTime * 20,
 				aEU, 
-				1);
+				3);
 	}
 
 	public static ItemStack[] cleanArray(ItemStack[] input) {

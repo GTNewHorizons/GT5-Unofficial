@@ -34,16 +34,19 @@ public class ClassTransformer_Railcraft_InvTools {
 		if (stack == null) {
 			return GT_Values.NI;
 		} else {
-			if (stack.stackSize <= 1) {
+			if (stack.stackSize == 0) {
+				return GT_Values.NI;
+			}
+			else if (stack.stackSize == 1) {
 				ItemStack container = stack.getItem().getContainerItem(stack);
 				if (container != null) {
 					return container;
 				} else {
 					return GT_Values.NI;
 				}
-			} else {
-				ItemUtils.depleteStack(stack);
-				return stack;
+			} 
+			else {
+				return ItemUtils.depleteStack(stack);
 			}
 		}
 	}
@@ -85,11 +88,11 @@ public class ClassTransformer_Railcraft_InvTools {
 		}	
 
 		if (obfuscated && devEnv) {
-			
+
 		}
 		else {
-			
-		
+
+
 		}
 
 

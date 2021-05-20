@@ -4,8 +4,8 @@ import java.util.*;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,11 +16,20 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
-import thaumcraft.common.lib.FakeThaumcraftPlayer;
 
 public class PlayerUtils {
 
 	public static final Map<String, EntityPlayer> mCachedFakePlayers = new WeakHashMap<String, EntityPlayer>();
+	private static final Class mThaumcraftFakePlayer;
+	
+	static {
+		if (ReflectionUtils.doesClassExist("thaumcraft.common.lib.FakeThaumcraftPlayer")) {
+			mThaumcraftFakePlayer = ReflectionUtils.getClass("thaumcraft.common.lib.FakeThaumcraftPlayer");
+		}
+		else {
+			mThaumcraftFakePlayer = null;
+		}
+	}
 
 	public static void messagePlayer(final EntityPlayer P, final String S){
 		gregtech.api.util.GT_Utility.sendChatToPlayer(P, S);
@@ -203,7 +212,7 @@ public class PlayerUtils {
 	public static void cacheFakePlayer(EntityPlayer aPlayer) {
 		ChunkCoordinates aChunkLocation = aPlayer.getPlayerCoordinates();
 		// Cache Fake Player
-		if (aPlayer instanceof FakePlayer || aPlayer instanceof FakeThaumcraftPlayer 
+		if (aPlayer instanceof FakePlayer || (mThaumcraftFakePlayer != null && mThaumcraftFakePlayer.isInstance(aPlayer))
 				|| (aPlayer.getCommandSenderName() == null
 						|| aPlayer.getCommandSenderName().length() <= 0)
 				|| (aPlayer.isEntityInvulnerable() && !aPlayer.canCommandSenderUseCommand(0, "")
@@ -225,7 +234,7 @@ public class PlayerUtils {
 				cacheFakePlayer(p);
 				return false;
 			}
-			if (p instanceof FakeThaumcraftPlayer) {
+			if (mThaumcraftFakePlayer != null && mThaumcraftFakePlayer.isInstance(p) ) {
 				cacheFakePlayer(p);
 				return false;
 			}

@@ -264,22 +264,22 @@ public class RECIPES_MachineComponents {
 				CI.fieldGenerator_MAX);
 
 		//Sensor Modules
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				plateTier7, null, circuitTier6,
 				plateTier7, rodTier7c, null,
 				circuitTier7, plateTier7, plateTier7,
 				CI.sensor_LuV);
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				plateTier8, null, circuitTier7,
 				plateTier8, rodTier8c, null,
 				circuitTier8, plateTier8, plateTier8,
 				CI.sensor_ZPM);
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				plateTier9, null, circuitTier8,
 				plateTier9, rodTier9c, null,
 				circuitTier9, plateTier9, plateTier9,
 				CI.sensor_UV);
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				plateTier10, null, circuitTier9,
 				plateTier10, rodTier10c, null,
 				circuitTier10, plateTier10, plateTier10,
@@ -334,7 +334,7 @@ public class RECIPES_MachineComponents {
 				wireTier0, circuitTier0, wireTier0,
 				CI.fieldGenerator_ULV);
 
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				plateTier0, null, circuitTier1,
 				plateTier0, rodTier2, null,
 				circuitTier0, plateTier0, plateTier0,
@@ -377,7 +377,7 @@ public class RECIPES_MachineComponents {
 				circuitTier10, circuitTier9, circuitTier10,
 				wireTier10, circuitTier10, wireTier10,
 				CI.fieldGenerator_MAX);
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedRecipe(
 				plateTier10, null, circuitTier9,
 				plateTier10, rodTier10c, null,
 				circuitTier10, plateTier10, plateTier10,

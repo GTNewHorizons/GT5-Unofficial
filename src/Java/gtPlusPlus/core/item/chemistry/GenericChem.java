@@ -406,7 +406,7 @@ public class GenericChem extends ItemPackage {
 				}, 
 				20 *60,
 				120, 
-				2);
+				4);
 
 		//Sodium ethyl xanthate - CH3CH2ONa + CS2 → CH3CH2OCS2Na
 		CORE.RA.addChemicalPlantRecipe(
@@ -425,7 +425,7 @@ public class GenericChem extends ItemPackage {
 				}, 
 				20 *60,
 				120, 
-				2);
+				4);
 		
 	}
 
@@ -869,7 +869,7 @@ public class GenericChem extends ItemPackage {
 				}, 
 				20 * 30, 
 				500, 
-				3);
+				4);
 
 	}
 
@@ -891,7 +891,7 @@ public class GenericChem extends ItemPackage {
 				}, 
 				20 * 15, 
 				120, 
-				1);		
+				2);		
 
 		/*GT_Values.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 4),
@@ -922,7 +922,7 @@ public class GenericChem extends ItemPackage {
 				}, 
 				20 * 40, 
 				120, 
-				1);	
+				2);	
 
 		/*GT_Values.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("platePalladium", 0),

@@ -10,15 +10,15 @@ import net.minecraft.item.ItemStack;
 public class GT_MetaTileEntity_Hatch_Catalysts extends GT_MetaTileEntity_Hatch_NbtConsumable {
 	
     public GT_MetaTileEntity_Hatch_Catalysts(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 7, 16, "Dedicated Catalyst Storage", false);
+        super(aID, aName, aNameRegional, 0, 16, "Dedicated Catalyst Storage", false);
     }
 
     public GT_MetaTileEntity_Hatch_Catalysts(String aName, String aDescription, ITexture[][][] aTextures) {
-        super(aName, 7, 16, aDescription, false, aTextures);
+        super(aName, 0, 16, aDescription, false, aTextures);
     }
     
     public GT_MetaTileEntity_Hatch_Catalysts(String aName, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, 7, 16, aDescription[0], false, aTextures);
+        super(aName, 0, 16, aDescription[0], false, aTextures);
     }
 
     @Override

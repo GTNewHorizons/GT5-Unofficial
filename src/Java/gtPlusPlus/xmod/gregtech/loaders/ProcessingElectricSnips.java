@@ -14,6 +14,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
@@ -32,11 +33,7 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
 			if (aMaterial != Materials.Rubber) {
 				if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
 						&& (!aMaterial.contains(SubTag.NO_SMASHING))) {
-					GT_ModHandler.addCraftingRecipe(
-							MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(16, 1, aMaterial, aMaterial, null),
-							GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
-							new Object[] { "IhI", "III", " I ", Character.valueOf('I'),
-									OrePrefixes.ingot.get(aMaterial) });
+					
 				}
 			}
 		}
@@ -97,7 +94,7 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
 
 	@Override
 	public void run() {
-		Logger.INFO("Generating Electric Snipss for all valid GT Materials.");
+		Logger.INFO("Generating Electric Snips for all valid GT Materials.");
 		this.materialsLoops();
 	}
 	
@@ -122,21 +119,11 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
 			Logger.MATERIALS("Unable to generate Electric Snips from "+MaterialUtils.getMaterialName(aMaterial)+", Durability: "+aDura);
 			return false;
 		}
-		
-		 return GT_ModHandler.addCraftingRecipe(
-				 aOutputStack,
-				 RecipeBits.DISMANTLEABLE | RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | RecipeBits.BUFFERED, 
-				 new Object[]{
-						 "SXS",
-						 "GMG",
-						 "PBP",
-						 'X', aInputCutter,
-						 'M', CI.getElectricMotor(aVoltageTier, 1),
-						 'S', OrePrefixes.wireFine.get(Materials.Electrum),
-						 'P', OrePrefixes.plate.get(aMaterial),
-						 'G', ELEMENT.STANDALONE.WHITE_METAL.getGear(1),
-						 'B', aBattery
-						 });
+		return RecipeUtils.addShapedRecipe(
+				OrePrefixes.wireFine.get(Materials.Electrum), aInputCutter, OrePrefixes.wireFine.get(Materials.Electrum),
+				ELEMENT.STANDALONE.WHITE_METAL.getGear(1), CI.getElectricMotor(aVoltageTier, 1), ELEMENT.STANDALONE.WHITE_METAL.getGear(1), 
+				OrePrefixes.plate.get(aMaterial), aBattery, OrePrefixes.plate.get(aMaterial), 
+				aOutputStack);
 		    
 	}
 

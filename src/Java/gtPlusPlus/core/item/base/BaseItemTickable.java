@@ -14,10 +14,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class BaseItemTickable extends CoreItem {
 
@@ -57,7 +58,7 @@ public class BaseItemTickable extends CoreItem {
 		}
 		
 
-		boolean active = getIsActive(world, iStack);
+		boolean active = isTicking(world, iStack);
 		if (active) {
 			tickItemTag(world, iStack);
 		}
@@ -113,12 +114,15 @@ public class BaseItemTickable extends CoreItem {
 		}
 	}
 
+	protected int getMaxTicks(ItemStack aStack) {
+		return maxTicks;
+	}
 
-	private boolean createNBT(World world, ItemStack rStack){
+	protected boolean createNBT(World world, ItemStack rStack){
 		final NBTTagCompound tagMain = new NBTTagCompound();
 		final NBTTagCompound tagNBT = new NBTTagCompound();
 		tagNBT.setLong("Tick", 0);
-		tagNBT.setLong("maxTick", this.maxTicks);
+		tagNBT.setLong("maxTick", getMaxTicks(rStack));
 		tagNBT.setBoolean("isActive", true);
 		
 		//Try set world time
@@ -127,11 +131,12 @@ public class BaseItemTickable extends CoreItem {
 		}
 		
 		tagMain.setTag("TickableItem", tagNBT);		
-		rStack.setTagCompound(tagMain);		
+		rStack.setTagCompound(tagMain);	
+		Logger.INFO("Created Tickable NBT data.");
 		return true;
 	}
 
-	public final long getFilterDamage(World world, final ItemStack aStack) {
+	public final long getTicks(World world, final ItemStack aStack) {
 		NBTTagCompound aNBT = aStack.getTagCompound();
 		if (aNBT != null) {
 			aNBT = aNBT.getCompoundTag("TickableItem");
@@ -145,7 +150,7 @@ public class BaseItemTickable extends CoreItem {
 		return 0L;
 	}
 
-	public final boolean setFilterDamage(World world, final ItemStack aStack, final long aDamage) {
+	public final boolean setTicks(World world, final ItemStack aStack, final long aDamage) {
 		NBTTagCompound aNBT = aStack.getTagCompound();
 		if (aNBT != null) {
 			aNBT = aNBT.getCompoundTag("TickableItem");
@@ -160,7 +165,7 @@ public class BaseItemTickable extends CoreItem {
 		return false;
 	}
 	
-	public final boolean getIsActive(World world, final ItemStack aStack) {
+	public final boolean isTicking(World world, final ItemStack aStack) {
 		NBTTagCompound aNBT = aStack.getTagCompound();
 		if (aNBT != null) {
 			aNBT = aNBT.getCompoundTag("TickableItem");
@@ -174,7 +179,7 @@ public class BaseItemTickable extends CoreItem {
 		return true;
 	}
 
-	public final boolean setIsActive(World world, final ItemStack aStack, final boolean active) {
+	public final boolean setTicking(World world, final ItemStack aStack, final boolean active) {
 		NBTTagCompound aNBT = aStack.getTagCompound();
 		if (aNBT != null) {
 			aNBT = aNBT.getCompoundTag("TickableItem");
@@ -251,26 +256,15 @@ public class BaseItemTickable extends CoreItem {
 		NBTTagCompound aNBT = aStack.getTagCompound();
 		if (aNBT != null) {
 			if (aNBT.hasKey("TickableItem")) {
-				aNBT = aNBT.getCompoundTag("TickableItem");
-				
-				/*if (!aNBT.hasKey("CreationDate") && world != null) {
-					aNBT.setLong("CreationDate", world.getTotalWorldTime());
-				}*/
-				
+				aNBT = aNBT.getCompoundTag("TickableItem");				
 				//Done Ticking
-				if (maxTicks-getFilterDamage(world, aStack) <= 0) {
-					setIsActive(world, aStack, false);
+				if (getMaxTicks(aStack)-getTicks(world, aStack) <= 0) {
+					setTicking(world, aStack, false);
 					return false;
 				}			
-				if (getIsActive(world, aStack)) {
+				if (isTicking(world, aStack)) {
 					if (aNBT != null) {
-						
-						//if ((world.getTotalWorldTime()-))
-						
-						// Just tick once
-						aNBT.setLong("Tick", getFilterDamage(world, aStack)+1);
-						
-						
+						aNBT.setLong("Tick", getTicks(world, aStack)+1);						
 						return true;
 					}
 					else {
@@ -288,10 +282,11 @@ public class BaseItemTickable extends CoreItem {
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 		if (stack.getTagCompound() == null){
-			createNBT(null, stack);
+			//createNBT(null, stack);
+			return 0;
 		}
-		double currentDamage = getFilterDamage(null, stack);
-		double durabilitypercent = currentDamage / maxTicks;		
+		double currentDamage = getTicks(null, stack);
+		double durabilitypercent = currentDamage / getMaxTicks(stack);		
 		return  durabilitypercent;
 	}
 
@@ -302,23 +297,28 @@ public class BaseItemTickable extends CoreItem {
 		if (this.descriptionString.length > 0) {
 			list.add(EnumChatFormatting.GRAY+this.descriptionString[0]);
 		}
+		long maxTicks = getMaxTicks(stack);
+		long ticks = 0;
+		if (stack.hasTagCompound()) {
+			ticks = getTicks(world, stack);
+		}
 		EnumChatFormatting durability = EnumChatFormatting.GRAY;
-		if (maxTicks-getFilterDamage(world, stack) > (maxTicks*0.8)){
+		if (maxTicks-ticks > (maxTicks*0.8)){
 			durability = EnumChatFormatting.GRAY;
 		}
-		else if (maxTicks-getFilterDamage(world, stack) > (maxTicks*0.6)){
+		else if (maxTicks-ticks > (maxTicks*0.6)){
 			durability = EnumChatFormatting.GREEN;
 		}
-		else if (maxTicks-getFilterDamage(world, stack) > (maxTicks*0.4)){
+		else if (maxTicks-ticks > (maxTicks*0.4)){
 			durability = EnumChatFormatting.YELLOW;
 		}
-		else if (maxTicks-getFilterDamage(world, stack) > (maxTicks*0.2)){
+		else if (maxTicks-ticks > (maxTicks*0.2)){
 			durability = EnumChatFormatting.GOLD;
 		}
-		else if (maxTicks-getFilterDamage(world, stack) > 0){
+		else if (maxTicks-ticks > 0){
 			durability = EnumChatFormatting.RED;
 		}
-		list.add(durability+""+((maxTicks-getFilterDamage(world, stack))/20)+EnumChatFormatting.GRAY+" seconds until decay");
+		list.add(durability+""+((maxTicks-ticks)/20)+EnumChatFormatting.GRAY+" seconds until decay");
 
 		if (this.descriptionString.length > 1) {
 			for (int h=1;h<this.descriptionString.length;h++) {

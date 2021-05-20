@@ -21,7 +21,7 @@ public class COMPAT_ExtraUtils {
 
 		if (ConfigSwitches.enableAlternativeDivisionSigilRecipe){
 			//Division Sigil
-			RecipeUtils.recipeBuilder(
+			RecipeUtils.addShapedRecipe(
 					"plateNetherStar", "gemIridium", "plateNetherStar",
 					"plateIridium", RECIPES_Tools.craftingToolHardHammer, "plateIridium",
 					"plateNetherStar", "gemIridium", "plateNetherStar",

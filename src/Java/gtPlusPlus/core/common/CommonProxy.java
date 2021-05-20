@@ -1,6 +1,7 @@
 package gtPlusPlus.core.common;
 
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -42,8 +43,10 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 
 public class CommonProxy {
@@ -138,7 +141,7 @@ public class CommonProxy {
 		Utils.registerEvent(new HandlerTooltip_EIO());
 		// Handles Custom Tooltips for GC
 		Utils.registerEvent(new HandlerTooltip_GC());
-		
+
 		if (CORE.DEVENV) {
 			Utils.registerEvent(new StopAnnoyingFuckingAchievements());
 		}
@@ -231,13 +234,13 @@ public class CommonProxy {
 		Utils.createNewMobSpawner(1, EntitySickBlaze.class);
 		Utils.createNewMobSpawner(2, EntityStaballoyConstruct.class);
 	}
-	
+
 	public void registerCustomItemsForMaterials() {
 		Material.registerComponentForMaterial(GenericChem.CARBYNE, OrePrefixes.plate, GregtechItemList.Carbyne_Sheet_Finished.get(1));
 	}
-	
+
 	public void registerCustomMobDrops() {
-		
+
 		//Zombie
 		EntityUtils.registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemRope), 3, 100);
 		EntityUtils.registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemFiber), 5, 250);
@@ -245,14 +248,14 @@ public class CommonProxy {
 		EntityUtils.registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemBomb), 2, 10);
 		EntityUtils.registerDropsForMob(EntityZombie.class, ALLOY.TUMBAGA.getTinyDust(1), 1, 10);
 		EntityUtils.registerDropsForMob(EntityZombie.class, ALLOY.POTIN.getTinyDust(1), 1, 10);
-		
+
 		//Blazes		
 		if (ItemUtils.doesOreDictHaveEntryFor("dustPyrotheum")) {
 			EntityUtils.registerDropsForMob(EntityBlaze.class, ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1), 1, 10);	
 			EntityUtils.registerDropsForMob(EntityBlaze.class, ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1), 1, 10);			
 		}
-			
-		
+
+
 		//Special mobs Support
 		if (ReflectionUtils.doesClassExist("toast.specialMobs.entity.zombie.EntityBrutishZombie")) {
 			Class<?> aBrutishZombie = ReflectionUtils.getClass("toast.specialMobs.entity.zombie.EntityBrutishZombie");
@@ -264,7 +267,7 @@ public class CommonProxy {
 			EntityUtils.registerDropsForMob(aBrutishZombie, aFortune3, 1, 1);	
 			EntityUtils.registerDropsForMob(aBrutishZombie, ItemUtils.getItemStackOfAmountFromOreDict("ingotRedAlloy", 1), 3, 200);		
 		}
-		
+
 		//GalaxySpace Support
 		if (ReflectionUtils.doesClassExist("galaxyspace.SolarSystem.moons.europa.entities.EntityEvolvedColdBlaze")) {
 			Class<?> aColdBlaze = ReflectionUtils.getClass("galaxyspace.SolarSystem.moons.europa.entities.EntityEvolvedColdBlaze");			
@@ -287,16 +290,16 @@ public class CommonProxy {
 				EntityUtils.registerDropsForMob(aColdBlaze, aTinyCryo, 2, 100);			
 			}
 		}		
-		
+
 	}
-	
+
 	protected final AutoMap<Pair<Item, IItemRenderer>> mItemRenderMappings = new AutoMap<Pair<Item, IItemRenderer>>();
-	
+
 
 	public static void registerItemRendererGlobal(Item aItem, IItemRenderer aRenderer) {
 		GTplusplus.proxy.registerItemRenderer(aItem, aRenderer);
 	}
-	
+
 	public void registerItemRenderer(Item aItem, IItemRenderer aRenderer) {
 		if (Utils.isServer()) {
 			return;
@@ -304,6 +307,17 @@ public class CommonProxy {
 		else {
 			mItemRenderMappings.add(new Pair<Item, IItemRenderer>(aItem, aRenderer));
 		}		
+	}
+
+	public World getClientWorld() {
+		return null;
+	}
+
+	/**
+	 * Returns a side-appropriate EntityPlayer for use during message handling
+	 */
+	public EntityPlayer getPlayerEntity(MessageContext ctx) {
+		return ctx.getServerHandler().playerEntity;
 	}
 
 }

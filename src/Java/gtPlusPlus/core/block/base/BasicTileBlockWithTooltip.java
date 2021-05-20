@@ -1,6 +1,8 @@
 package gtPlusPlus.core.block.base;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -22,6 +24,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -312,4 +315,14 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 		return l;
 	}
 
+
+    public Item getItemDropped(int meta, Random rand, int p_149650_3_){
+        return ItemUtils.getSimpleStack(this, 1).getItem();
+    }
+    
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune){
+    	ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
+    	drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
+    	return drops;
+    }
 }

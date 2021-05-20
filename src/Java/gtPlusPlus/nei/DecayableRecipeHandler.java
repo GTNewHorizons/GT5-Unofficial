@@ -23,6 +23,8 @@ import net.minecraft.util.StatCollector;
 
 public class DecayableRecipeHandler extends TemplateRecipeHandler {
 
+	public static final String mNEIName = "Decayables";
+
 	public String getRecipeName() {
 		return StatCollector.translateToLocal("GTPP.container.decaychest.name");
 	}

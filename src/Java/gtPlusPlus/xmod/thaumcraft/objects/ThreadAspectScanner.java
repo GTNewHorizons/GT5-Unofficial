@@ -36,7 +36,7 @@ public class ThreadAspectScanner extends Thread {
 		}
 		String nameKey;
 		try {
-			nameKey = aStack.getUnlocalizedName();
+			nameKey = ItemUtils.getUnlocalizedItemName(aStack);
 		} catch (NullPointerException n) {
 			try {
 				nameKey = Utils.sanitizeString(aStack.getDisplayName().toLowerCase());

@@ -26,10 +26,9 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "IsaMill Exterior Casing"); // IsaMill Casing
 		TAE.registerTexture(0, 2, new GT_CopiedBlockTexture(this, 6, 0));
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "IsaMill Piping"); // IsaMill Pipe
-		TAE.registerTexture(0, 3, new GT_CopiedBlockTexture(this, 6, 0));
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "IsaMill Gearbox"); // IsaMill Gearbox
-		TAE.registerTexture(0, 4, new GT_CopiedBlockTexture(this, 6, 0));
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Elemental Confinement Shell"); // Duplicator Casing
+		TAE.registerTexture(0, 3, new GT_CopiedBlockTexture(this, 6, 3));
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", ""); // Unused
@@ -42,9 +41,11 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", ""); // Unused
+		
 		GregtechItemList.Casing_IsaMill_Casing.set(new ItemStack(this, 1, 0));
 		GregtechItemList.Casing_IsaMill_Pipe.set(new ItemStack(this, 1, 1));
 		GregtechItemList.Casing_IsaMill_Gearbox.set(new ItemStack(this, 1, 2));
+		GregtechItemList.Casing_ElementalDuplicator.set(new ItemStack(this, 1, 2));
 	}
 	
 	@Override
@@ -62,7 +63,8 @@ extends GregtechMetaCasingBlocksAbstract {
 					return TexturesGtBlock.TEXTURE_PIPE_GRINDING_MILL.getIcon();
 				case 2:
 					return TexturesGtBlock.TEXTURE_GEARBOX_GRINDING_MILL.getIcon();
-
+				case 3:
+					return TexturesGtBlock.TEXTURE_TECH_PANEL_D.getIcon();
 			}
 		}
 		return Textures.BlockIcons.RENDERING_ERROR.getIcon();		

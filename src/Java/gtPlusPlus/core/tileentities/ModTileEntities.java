@@ -5,13 +5,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.general.BlockSuperLight.TileEntitySuperLight;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
-import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
-import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
-import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
-import gtPlusPlus.core.tileentities.general.TileEntityInfiniteFluid;
-import gtPlusPlus.core.tileentities.general.TileEntityPlayerDoorBase;
-import gtPlusPlus.core.tileentities.general.TileEntityXpConverter;
+import gtPlusPlus.core.tileentities.general.*;
 import gtPlusPlus.core.tileentities.machines.TileEntityAdvPooCollector;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
@@ -47,7 +41,11 @@ public class ModTileEntities {
 		GameRegistry.registerTileEntity(TileEntitySuperLight.class, "TileEntitySuperLight");
 		GameRegistry.registerTileEntity(TileEntityPestKiller.class, "TileEntityPestKiller");
 		GameRegistry.registerTileEntity(TileEntityRoundRobinator.class, "TileEntityRoundRobinator");
-
+		GameRegistry.registerTileEntity(TileEntityEggBox.class, "TileEggBox");
+		
+		if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
+			GameRegistry.registerTileEntity(TileEntityVolumetricFlaskSetter.class, "TileEntityVolumetricFlaskSetter");
+		}
 		
 		//Mod TEs
 		if (LoadedMods.Thaumcraft){
@@ -59,6 +57,7 @@ public class ModTileEntities {
 	private static void blacklistTilesFromAcceleration() {
 		Meta_GT_Proxy.setTileEntityClassAsBlacklistedInWorldAccelerator("gtPlusPlus.core.tileentities.general.TileEntityFishTrap");
 		Meta_GT_Proxy.setTileEntityClassAsBlacklistedInWorldAccelerator("gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest");
+		Meta_GT_Proxy.setTileEntityClassAsBlacklistedInWorldAccelerator("gtPlusPlus.core.tileentities.general.TileEggBox");
 	}
 
 }

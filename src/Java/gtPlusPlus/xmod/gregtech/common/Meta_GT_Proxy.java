@@ -3,10 +3,7 @@ package gtPlusPlus.xmod.gregtech.common;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -15,16 +12,10 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TAE;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.util.*;
 import gregtech.common.GT_Proxy;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -32,15 +23,14 @@ import gtPlusPlus.api.objects.minecraft.FormattedTooltipString;
 import gtPlusPlus.core.handler.AchievementHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.LangUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.BaseCustomTileEntity;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.BaseCustomPower_MTE;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
+import gtPlusPlus.xmod.gregtech.common.helpers.MachineUpdateHandler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
@@ -59,6 +49,7 @@ public class Meta_GT_Proxy {
 
 	static {
 		Logger.INFO("GT_PROXY - initialized.");
+		sDoesVolumetricFlaskExist = ReflectionUtils.doesClassExist("gregtech.common.items.GT_VolumetricFlask");
 	}
 
 	public static List<Runnable> GT_BlockIconload = new ArrayList<>();
@@ -73,6 +64,10 @@ public class Meta_GT_Proxy {
 
 	public static final Map<String, FormattedTooltipString> mCustomGregtechMetaTooltips = new LinkedHashMap<String, FormattedTooltipString>();
 
+	/**
+	 * Does this feature exist within GT? Saves loading useless content if not.
+	 */
+	public static final boolean sDoesVolumetricFlaskExist;
 
 	@SideOnly(Side.CLIENT)
 	public static IIconRegister sBlockIcons, sItemIcons;
@@ -119,6 +114,7 @@ public class Meta_GT_Proxy {
 		setValidHeatingCoilMetas();	
 		PollutionUtils.setPollutionFluids();
 		fixIC2FluidNames();		
+		Utils.registerEvent(new MachineUpdateHandler());
 	}
 
 	public static void postInit() {
@@ -216,11 +212,11 @@ public class Meta_GT_Proxy {
 
 	public static boolean generatePlasmaRecipesForAdvVacFreezer() {
 
-		AutoMap<GTPP_Recipe> aFreezerMapRebaked = new AutoMap<GTPP_Recipe>();
-		AutoMap<GTPP_Recipe> aRemovedRecipes = new AutoMap<GTPP_Recipe>();
+		AutoMap<GT_Recipe> aFreezerMapRebaked = new AutoMap<GT_Recipe>();
+		AutoMap<GT_Recipe> aRemovedRecipes = new AutoMap<GT_Recipe>();
 
 		//Find recipes containing Plasma and map them
-		for (GTPP_Recipe y : GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList) {			
+		for (GT_Recipe y : GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mRecipeList) {			
 			if (y.mFluidInputs.length > 0) {
 				for (FluidStack r : y.mFluidInputs) {
 					if (r.getUnlocalizedName().toLowerCase().contains("plasma")) {
@@ -312,17 +308,17 @@ public class Meta_GT_Proxy {
 		//Best not touch the original map if we don't have a valid map to override it with.
 		if (aFreezerMapRebaked.size() > 0) {
 
-			int aOriginalCount = GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList.size();
+			int aOriginalCount = GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mRecipeList.size();
 
 			//Empty the original map
-			GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList.clear();
+			GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mRecipeList.clear();
 
 			//Rebake the real map
-			for (GTPP_Recipe w : aFreezerMapRebaked) {
-				GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList.add(w);
+			for (GT_Recipe w : aFreezerMapRebaked) {
+				GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mRecipeList.add(w);
 			}
 
-			return GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes.mRecipeList.size() >= aOriginalCount;
+			return GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mRecipeList.size() >= aOriginalCount;
 		}			
 
 		return false;

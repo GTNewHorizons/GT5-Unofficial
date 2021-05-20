@@ -102,7 +102,7 @@ public class FishTrapHandler {
 	final static String greenheartFish = "foodGreenheartfish";
 	private static final String[] harvestcraftFish = {
 			"Anchovy", "Bass", "Carp", "Catfish", "Charr", "Clam", "Crab", "Crayfish", "Eel", "Frog", "Grouper", "Herring",
-			"Jellyfish", "Mudfish", "Octopus", "Perch", "Scallop", "Shrimp", "Snail", "Snapper", "Tilapia", "Trout", "Tuna", "Turtle", "Walleye"};
+			"Jellyfish", "Mudfish", "Octopus", "Perch", "Scallop", "Shrimp", "Snail", "Snapper", "Tilapia", "Trout", "Tuna", "Turtle", "Walley"};
 	public static void pamsHarvestCraftCompat(){
 		for (int i = 0; i < harvestcraftFish.length; i++){
 			final String itemName = prefix+harvestcraftFish[i]+suffix;

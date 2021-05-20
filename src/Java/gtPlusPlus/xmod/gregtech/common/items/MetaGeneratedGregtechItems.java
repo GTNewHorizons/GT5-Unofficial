@@ -35,6 +35,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow;
+import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow_Item;
 import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_ToggleVisual;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -200,46 +201,13 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Pellet_RTG_SR90.set(this.addItem(42, StringUtils.superscript("90")+"Sr Pellet", "", new Object[]{getTcAspectStack(TC_Aspects.RADIO, 4L), getTcAspectStack(TC_Aspects.POTENTIA, 2L), getTcAspectStack(TC_Aspects.METALLUM, 2L)}));
 		GregtechItemList.Pellet_RTG_PO210.set(this.addItem(43, StringUtils.superscript("210")+"Po Pellet", "", new Object[]{getTcAspectStack(TC_Aspects.RADIO, 4L), getTcAspectStack(TC_Aspects.POTENTIA, 2L), getTcAspectStack(TC_Aspects.METALLUM, 2L)}));
 		GregtechItemList.Pellet_RTG_AM241.set(this.addItem(44, StringUtils.superscript("241")+"Am Pellet", "", new Object[]{getTcAspectStack(TC_Aspects.RADIO, 4L), getTcAspectStack(TC_Aspects.POTENTIA, 2L), getTcAspectStack(TC_Aspects.METALLUM, 2L)}));
-		GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.addRecipe(
-				true,
-				new ItemStack[]{GregtechItemList.Pellet_RTG_PU238.get(1)},
-				new ItemStack[]{},
-				null,
-				null,
-				null,
-				0,
-				64,
-				MathUtils.roundToClosestInt(87.7f));
-		GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.addRecipe(
-				true,
-				new ItemStack[]{GregtechItemList.Pellet_RTG_SR90.get(1)},
-				new ItemStack[]{},
-				null,
-				null,
-				null,
-				0,
-				32,
-				MathUtils.roundToClosestInt(28.8f));
-		GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.addRecipe(
-				true,
-				new ItemStack[]{GregtechItemList.Pellet_RTG_PO210.get(1)},
-				new ItemStack[]{},
-				null,
-				null,
-				null,
-				0,
-				512,
-				MathUtils.roundToClosestInt(1f));
-		GTPP_Recipe.GTPP_Recipe_Map.sRTGFuels.addRecipe(
-				true,
-				new ItemStack[]{GregtechItemList.Pellet_RTG_AM241.get(1)},
-				new ItemStack[]{},
-				null,
-				null,
-				null,
-				0,
-				16,
-				MathUtils.roundToClosestInt(432/2));
+
+		CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_PU238.get(1), MathUtils.roundToClosestInt(87.7f), 64);
+		CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_SR90.get(1), MathUtils.roundToClosestInt(28.8f), 32);
+		CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_PO210.get(1), 1, 512);
+		CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_AM241.get(1), MathUtils.roundToClosestInt(432/2), 16);
+		CORE.RA.addFuelForRTG(GT_ModHandler.getIC2Item("RTGPellets", 1), MathUtils.roundToClosestInt(2.6f), 8);
+		
 		//Computer Cube
 		GregtechItemList.Gregtech_Computer_Cube.set(this.addItem(tLastID = 55, "Gregtech Computer Cube", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 8L), getTcAspectStack(TC_Aspects.POTENTIA, 8L)}));
 		this.setElectricStats(32000 + tLastID, GT_Values.V[6]* 10 * 60 * 20, GT_Values.V[5], 5L, -3L, true);
@@ -370,10 +338,24 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
         GregtechItemList.Chip_MultiNerf_NoOutputBonus.set(this.addItem(160, "No-Bonus Chip", "You won't like using this"));
         GregtechItemList.Chip_MultiNerf_NoSpeedBonus.set(this.addItem(161, "No-Bonus Chip", "You won't like using this"));
-        GregtechItemList.Chip_MultiNerf_NoEuBonus.set(this.addItem(162, "No-Bonus Chip", "You won't like using this"));
-        
+        GregtechItemList.Chip_MultiNerf_NoEuBonus.set(this.addItem(162, "No-Bonus Chip", "You won't like using this"));        
+
+
+		/*
+		GregtechItemList.Cover_Overflow_Item_ULV.set(this.addItem(165, "Item Overflow Valve (ULV)", "Maximum void amount: 8000", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
+		GregtechItemList.Cover_Overflow_Item_LV.set(this.addItem(166, "Item Overflow Valve (LV)", "Maximum void amount: 64000", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
+		GregtechItemList.Cover_Overflow_Item_MV.set(this.addItem(167, "Item Overflow Valve (MV)", "Maximum void amount: 512000", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
+		GregtechItemList.Cover_Overflow_Item_HV.set(this.addItem(168, "Item Overflow Valve (HV)", "Maximum void amount: 4096000", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
+		GregtechItemList.Cover_Overflow_Item_EV.set(this.addItem(169, "Item Overflow Valve (EV)", "Maximum void amount: 32768000", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
+		GregtechItemList.Cover_Overflow_Item_IV.set(this.addItem(170, "Item Overflow Valve (IV)", "Maximum void amount: 262144000", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
 		
-		
+		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_Item_ULV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[4][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow_Item(8));
+		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_Item_LV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[4][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow_Item(64));
+		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_Item_MV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow_Item(512));
+		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_Item_HV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow_Item(4096));
+		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_Item_EV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[8][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow_Item(32768));
+		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_Item_IV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[8][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow_Item(262144));	
+		*/
 	}
 
 	private boolean registerComponents_ULV(){

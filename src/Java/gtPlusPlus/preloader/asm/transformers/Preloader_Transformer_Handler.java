@@ -120,6 +120,12 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			new ClassReader(basicClass).accept(new OreDictionaryVisitor(classWriter), 0);
 			return classWriter.toByteArray();
 		}
+		
+		// Log Handling of CodeChicken
+		if (transformedName.equals("codechicken.nei.guihook.GuiContainerManager")) {	
+			Preloader_Logger.INFO("CodeChicken GuiContainerManager Patch", "Transforming "+transformedName);
+			return new ClassTransformer_CC_GuiContainerManager(basicClass).getWriter().toByteArray();
+		}
 		// Fix the OreDictionary COFH
 		if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER) && (AsmConfig.enableCofhPatch || !obfuscated)) {
 			Preloader_Logger.INFO("COFH", "Transforming "+transformedName);
@@ -183,6 +189,11 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		if (transformedName.equals(GT_MTE_HATCH_INPUTBUS) || transformedName.equals(GT_MTE_HATCH_OUTPUTBUS) || transformedName.equals(GTPP_MTE_HATCH_SUPER_INPUT_BUS) || transformedName.equals(GTPP_MTE_HATCH_SUPER_OUTPUT_BUS)) {	
 			Preloader_Logger.INFO("Gregtech Bus Patch", "Transforming "+transformedName);
 			return new ClassTransformer_GT_BusPatch(basicClass, transformedName).getWriter().toByteArray();
+		}
+		//Inject Custom constructors for RTG Hatches		
+		if (transformedName.equals(GT_MTE_HATCH_ENERGY) || transformedName.equals(GTPP_MTE_HATCH_RTG)) {	
+			Preloader_Logger.INFO("Gregtech RTG Patch", "Transforming "+transformedName);
+			return new ClassTransformer_GT_EnergyHatchPatch(basicClass, transformedName).getWriter().toByteArray();
 		}
 		//Try patch achievements
 		if (transformedName.equals(GT_ACHIEVEMENTS)) {	
@@ -270,6 +281,14 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		if (transformedName.equals(THAUMCRAFT_ITEM_WISP_ESSENCE) && AsmConfig.enableTcAspectSafety) {	
 			Preloader_Logger.INFO("Thaumcraft WispEssence_Patch", "Transforming "+transformedName);
 			return new ClassTransformer_TC_ItemWispEssence(basicClass, obfuscated).getWriter().toByteArray();
+		}
+		if (transformedName.equals(THAUMCRAFT_CRAFTING_MANAGER)) {	
+			Preloader_Logger.INFO("Thaumcraft CraftingManager Patch", "Transforming "+transformedName);
+			return new ClassTransformer_TC_ThaumcraftCraftingManager(basicClass).getWriter().toByteArray();
+		}
+		if (transformedName.equals(THAUMCRAFT_TILE_ALCHEMY_FURNACE)) {	
+			Preloader_Logger.INFO("Thaumcraft Alchemy Furnace Patch", "Transforming "+transformedName);
+			return new ClassTransformer_TC_AlchemicalFurnace(basicClass).getWriter().toByteArray();
 		}
 		//Fix Thaumic Tinkerer Shit
 		if (transformedName.equals(THAUMICTINKERER_TILE_REPAIRER) && AsmConfig.enableThaumicTinkererRepairFix) {	

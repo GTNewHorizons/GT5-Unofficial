@@ -19,6 +19,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_PowerSubStation;
@@ -36,7 +37,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMeta_MultiBlockBase {
 
-	protected int mAverageEuUsage = 0;
+	protected long mAverageEuUsage = 0;
 	protected long mTotalEnergyAdded = 0;
 	protected long mTotalEnergyConsumed = 0;
 	protected long mTotalEnergyLost = 0;
@@ -366,7 +367,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	//mTotalEnergyAdded
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
-		aNBT.setInteger("mAverageEuUsage", this.mAverageEuUsage);
+		aNBT.setLong("mAverageEuUsage", this.mAverageEuUsage);
 
 		//Usage Stats
 		aNBT.setLong("mTotalEnergyAdded", this.mTotalEnergyAdded);
@@ -380,7 +381,17 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
-		this.mAverageEuUsage = aNBT.getInteger("mAverageEuUsage");
+		
+		// Best not to get a long if the Tag Map is holding an int
+		if (aNBT.hasKey("mAverageEuUsage")) {
+			if (NBTUtils.isTagInteger(aNBT, "mAverageEuUsage")) {
+				int aAverageTag = aNBT.getInteger("mAverageEuUsage");
+				this.mAverageEuUsage = aAverageTag;
+			}
+			else {
+				this.mAverageEuUsage = aNBT.getLong("mAverageEuUsage");				
+			}
+		}		
 
 		//Usage Stats
 		this.mTotalEnergyAdded = aNBT.getLong("mTotalEnergyAdded");
@@ -421,7 +432,9 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		long stored = aHatch.getEUVar();
 		long voltage = aHatch.maxEUInput() * aHatch.maxAmperesIn();
 
-		if (voltage > stored) return;
+		if (voltage > stored) {
+			return;
+		}
 
 		if (this.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false)) {
 			aHatch.setEUVar((stored - voltage));
@@ -449,7 +462,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		// Increase tax up to 2x if machine is not fully repaired
 		mTax = mTax * (1f + (10000f - mEfficiency) / 10000f);
 
-		return MathUtils.roundToClosestInt(mTax);
+		return MathUtils.roundToClosestLong(mTax);
 	}
 
 

@@ -27,7 +27,9 @@ public class ItemStackData {
 	}
 	
 	public ItemStack getStack() {
-		return ItemUtils.simpleMetaStack(mItem, mDamage, mStackSize);
+		ItemStack aTemp =  ItemUtils.simpleMetaStack(mItem, mDamage, mStackSize);
+		aTemp.setTagCompound(mNBT);
+		return aTemp;
 	}
 	
 }

@@ -39,6 +39,7 @@ public class ClassesToTransform {
 	public static final String GT_ITEM_MACHINES = "gregtech.common.blocks.GT_Item_Machines";
 	public static final String GT_METAGENERATED_TOOL = "gregtech.api.items.GT_MetaGenerated_Tool";
 	public static final String GT_BLOCK_MACHINES = "gregtech.common.blocks.GT_Block_Machines";
+	public static final String GT_MTE_HATCH_ENERGY = "gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy";
 	public static final String GT_MTE_HATCH_INPUTBUS = "gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus";
 	public static final String GT_MTE_HATCH_OUTPUTBUS = "gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus";
 	public static final String GT_METAPIPE_ITEM = "gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item";
@@ -48,10 +49,12 @@ public class ClassesToTransform {
 
 	public static final String GTPP_MTE_HATCH_SUPER_INPUT_BUS = "gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Input";
 	public static final String GTPP_MTE_HATCH_SUPER_OUTPUT_BUS = "gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Output";
-	public static final String NAME = "";
+	public static final String GTPP_MTE_HATCH_RTG = "gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy_RTG";
 
 
 	public static final String THAUMCRAFT_ITEM_WISP_ESSENCE = "thaumcraft.common.items.ItemWispEssence";
+	public static final String THAUMCRAFT_CRAFTING_MANAGER = "thaumcraft.common.lib.crafting.ThaumcraftCraftingManager";
+	public static final String THAUMCRAFT_TILE_ALCHEMY_FURNACE = "thaumcraft.common.tiles.TileAlchemyFurnace";
 	public static final String THAUMICTINKERER_TILE_REPAIRER = "thaumic.tinkerer.common.block.tile.TileRepairer";
 
 	public static final String IC2_ITEM_ARMOUR_HAZMAT = "ic2.core.item.armor.ItemArmorHazmat";
