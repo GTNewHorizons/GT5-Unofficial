@@ -350,15 +350,16 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 		}		
 		//Emit Redstone
 		if (this.getCurrentChunkPollution() >= this.mRedstoneLevel){
-			this.markDirty();
 			for (int i=0;i<6;i++){
 				this.getBaseMetaTileEntity().setStrongOutputRedstoneSignal((byte) i, (byte) 16);
 			}
+			this.markDirty();
 		}
 		else {
 			for (int i=0;i<6;i++){
 				this.getBaseMetaTileEntity().setStrongOutputRedstoneSignal((byte) i, (byte) 0);
 			}
+			this.markDirty();
 		}
 		
 		//Do Math for stats		
