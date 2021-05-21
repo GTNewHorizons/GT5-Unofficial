@@ -200,11 +200,11 @@ task generateDictionaries(type: JavaExec) {
 }
 
 // Define a ProGuard task.
-task proguard(type: proguard.gradle.ProGuardTask) {
-  configuration 'proguard.txt'
-  injars "build/libs/"+archivesBaseName + "-" + version + ".jar"
-  outjars "build/libs/"+archivesBaseName + "-" + version + "-obf.jar"
-}
+//task proguard(type: proguard.gradle.ProGuardTask) {
+  //configuration 'proguard.txt'
+  //injars "build/libs/"+archivesBaseName + "-" + version + ".jar"
+  //outjars "build/libs/"+archivesBaseName + "-" + version + "-obf.jar"
+//}
 
 //task discordChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
 	//file = new File("build/changelog/Basic ${project.version}.txt");
@@ -232,7 +232,7 @@ task proguard(type: proguard.gradle.ProGuardTask) {
 build.finalizedBy(generateDictionaries)
 
 // Obfuscate this bitch.
-build.finalizedBy(proguard) // Disabled until optimization is working 100%
+//build.finalizedBy(proguard) // Disabled until optimization is working 100%
 
 //build.finalizedBy(gitChangelogTask)
 //build.finalizedBy(curseChangelogTask)
