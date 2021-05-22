@@ -70,7 +70,7 @@ public class TAE {
 		}
 		Logger.INFO("Finalising TAE.");
 		for (int aKeyTae : mTAE.keySet()) {
-			Textures.BlockIcons.CASING_BLOCKS[aKeyTae] = mTAE.get(aKeyTae);			
+			Textures.BlockIcons.setCasingTextureForId(aKeyTae, mTAE.get(aKeyTae));
 		}
 		Logger.INFO("Finalised TAE.");
 	}
@@ -96,7 +96,7 @@ public class TAE {
 			
 			//set to page 1.
 			else {
-				Textures.BlockIcons.CASING_BLOCKS[gtPPLastUsedIndex] = gt_CopiedBlockTexture;
+				Textures.BlockIcons.setCasingTextureForId(gtPPLastUsedIndex, gt_CopiedBlockTexture);
 				Logger.INFO("[TAE} Registered Texture with ID "+(gtPPLastUsedIndex)+" in main index.");
 				gtPPLastUsedIndex++;
 				return true;
