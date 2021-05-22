@@ -83,11 +83,11 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		return aSide == aFacing
-				? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID],
+				? new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
 						new GT_RenderedTexture(aActive ? 
 								Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE 
 								: Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)}
-				: new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID]};
+				: new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID)};
 	}
 	
 	// TODO: Opening UI crashes server. Controller isn't craftable right now.
