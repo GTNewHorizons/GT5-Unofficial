@@ -23,7 +23,9 @@ buildscript {
 }
 
 plugins {
-    id("org.ajoberstar.grgit") version("3.1.1")
+  // project.grgit is not available and the repository we're working in is not 
+  // interacted with: 
+  id 'org.ajoberstar.grgit' version '4.0.2' apply false
 }
 
 apply plugin: 'forge'
