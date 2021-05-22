@@ -154,11 +154,11 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(0, 10)],
+			return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(0, 10)),
 					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE
 							: Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER) };
 		}
-		return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(0, 10)] };
+		return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(0, 10)) };
 	}
 
 	@Override

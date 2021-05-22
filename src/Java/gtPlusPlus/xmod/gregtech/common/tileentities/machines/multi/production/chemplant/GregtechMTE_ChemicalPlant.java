@@ -127,7 +127,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 
 		}
 		int aCasingID = getCasingTextureID();
-		aOriginalTexture = Textures.BlockIcons.CASING_BLOCKS[aCasingID];
+		aOriginalTexture = Textures.BlockIcons.getCasingTextureForId(aCasingID);
 
 		if (aSide == aFacing) {
 			return new ITexture[]{aOriginalTexture, new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced)};

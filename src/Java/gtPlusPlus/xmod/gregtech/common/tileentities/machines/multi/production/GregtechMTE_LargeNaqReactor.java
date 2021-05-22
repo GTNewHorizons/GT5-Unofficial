@@ -99,11 +99,11 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
 			boolean aActive, boolean aRedstone) {
 		return aSide == aFacing
-				? new ITexture[]{BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(3, 0)],
+				? new ITexture[]{BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(3, 0)),
 						new GT_RenderedTexture(aActive
 								? TexturesGtBlock.Overlay_Machine_Controller_Default_Active
 										: TexturesGtBlock.Overlay_Machine_Controller_Default)}
-		: new ITexture[]{BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(3, 0)]};
+		: new ITexture[]{BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(3, 0))};
 	}
 
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

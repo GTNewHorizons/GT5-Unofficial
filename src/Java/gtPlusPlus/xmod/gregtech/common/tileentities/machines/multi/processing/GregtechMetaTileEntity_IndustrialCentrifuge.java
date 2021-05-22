@@ -73,7 +73,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(0)], aFacing == aSide ? aActive ? getFrontFacingTurbineTexture(aActive) : getFrontFacingTurbineTexture(aActive) : Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(0)]};
+		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(0)), aFacing == aSide ? aActive ? getFrontFacingTurbineTexture(aActive) : getFrontFacingTurbineTexture(aActive) : Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(0))};
 	}
 
 	@Override

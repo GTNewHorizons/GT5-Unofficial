@@ -72,9 +72,9 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_Mu
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[50], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
+			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(50), new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[50]};
+		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(50)};
 	}
 
 	@Override

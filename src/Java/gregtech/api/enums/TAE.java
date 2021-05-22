@@ -112,10 +112,10 @@ public class TAE {
 	public static ITexture getTexture(int index){
 		if (gtPPLastUsedIndex >= 128) {
 			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && Utils.getGregtechSubVersion() > 30) {
-				return Textures.BlockIcons.CASING_BLOCKS[((64*128)+index)];
+				return Textures.BlockIcons.getCasingTextureForId(((64*128)+index));
 			}
 		}
-		return Textures.BlockIcons.CASING_BLOCKS[(64+index)];
+		return Textures.BlockIcons.getCasingTextureForId((64+index));
 	}
 
 	public static int GTPP_INDEX(int ID){

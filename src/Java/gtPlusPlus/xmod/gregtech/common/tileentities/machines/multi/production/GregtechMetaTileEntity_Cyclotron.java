@@ -275,12 +275,12 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		ITexture[] sTexture;
 		if (aSide == aFacing) {
-			sTexture = new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[44], new GT_RenderedTexture(getIconOverlay())};
+			sTexture = new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44), new GT_RenderedTexture(getIconOverlay())};
 		} else {
 			if (!aActive) {
-				sTexture = new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[44]};
+				sTexture = new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44)};
 			} else {
-				sTexture = new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[44]};
+				sTexture = new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44)};
 			}
 		}
 		return sTexture;

@@ -82,9 +82,9 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		int aID = TAE.getIndexFromPage(2, 1);
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[aID], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
+			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(aID), new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[aID]};
+		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(aID)};
 	}
 
 	@Override

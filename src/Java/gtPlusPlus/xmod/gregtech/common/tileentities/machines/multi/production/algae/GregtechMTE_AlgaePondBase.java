@@ -91,9 +91,9 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 			aID = mLevel;
 		}		
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[aID], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
+			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(aID), new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[aID]};
+		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(aID)};
 	}
 
 	@Override

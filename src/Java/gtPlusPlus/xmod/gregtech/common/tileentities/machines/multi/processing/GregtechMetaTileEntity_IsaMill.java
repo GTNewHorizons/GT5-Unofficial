@@ -87,8 +87,8 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		return new ITexture[]{
-				Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(2)],
-				aFacing == aSide ? aActive ? frontFaceActive : frontFace : Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(2)]};
+				Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(2)),
+				aFacing == aSide ? aActive ? frontFaceActive : frontFace : Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(2))};
 	}
 
 	@Override

@@ -108,9 +108,9 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[getTextureIndex()], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced)};
+			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(getTextureIndex()), new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[getTextureIndex()]};
+		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(getTextureIndex())};
 	}
 
 	@Override

@@ -397,13 +397,13 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		int aTier = mCasingTier;		
 
 		if (aTier == 0) {
-			aOriginalTexture = Textures.BlockIcons.CASING_BLOCKS[49];
+			aOriginalTexture = Textures.BlockIcons.getCasingTextureForId(49);
 		}
 		else if (aTier == 1) {
-			aOriginalTexture = Textures.BlockIcons.CASING_BLOCKS[43];
+			aOriginalTexture = Textures.BlockIcons.getCasingTextureForId(43);
 		}
 		else {
-			aOriginalTexture = Textures.BlockIcons.CASING_BLOCKS[49];
+			aOriginalTexture = Textures.BlockIcons.getCasingTextureForId(49);
 		}
 
 		if (aSide == aFacing) {

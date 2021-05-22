@@ -75,11 +75,11 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
 			boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID],
+			return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
 					new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active
 							: TexturesGtBlock.Overlay_Machine_Controller_Advanced) };
 		}
-		return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID] };
+		return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID) };
 	}
 
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {

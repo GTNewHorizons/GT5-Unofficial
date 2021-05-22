@@ -75,12 +75,12 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[this.casingTextureIndex],
+			return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(this.casingTextureIndex),
 					new GT_RenderedTexture(
 							(IIconContainer) (aActive ? Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE
 									: Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)) };
 		}
-		return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[this.casingTextureIndex] };
+		return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(this.casingTextureIndex) };
 	}
 
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory,

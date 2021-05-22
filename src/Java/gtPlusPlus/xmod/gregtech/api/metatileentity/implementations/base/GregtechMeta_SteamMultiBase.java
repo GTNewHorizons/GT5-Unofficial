@@ -43,9 +43,9 @@ public abstract class GregtechMeta_SteamMultiBase extends GregtechMeta_MultiBloc
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[getCasingTextureIndex()], aActive ? getFrontOverlayActive() : getFrontOverlay()};
+			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()), aActive ? getFrontOverlayActive() : getFrontOverlay()};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[getCasingTextureIndex()]};
+		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex())};
 	}
 
 	protected abstract GT_RenderedTexture getFrontOverlay();

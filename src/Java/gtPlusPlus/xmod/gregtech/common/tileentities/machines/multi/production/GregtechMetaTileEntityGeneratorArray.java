@@ -64,9 +64,9 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[48], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced)};
+			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48), new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[48]};
+		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48)};
 	}
 
 	@Override

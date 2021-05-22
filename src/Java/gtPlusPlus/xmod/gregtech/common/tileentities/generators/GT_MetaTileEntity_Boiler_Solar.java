@@ -150,4 +150,34 @@ extends GT_MetaTileEntity_Boiler {
 			aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
 		}
 	}
+
+	@Override
+	protected int getPollution() {
+		return 0;
+	}
+
+	@Override
+	protected int getProductionPerSecond() {
+		return 0;
+	}
+
+	@Override
+	protected int getMaxTemperature() {
+		return 0;
+	}
+
+	@Override
+	protected int getEnergyConsumption() {
+		return 0;
+	}
+
+	@Override
+	protected int getCooldownInterval() {
+		return 0;
+	}
+
+	@Override
+	protected void updateFuel(IGregTechTileEntity iGregTechTileEntity, long l) {
+
+	}
 }

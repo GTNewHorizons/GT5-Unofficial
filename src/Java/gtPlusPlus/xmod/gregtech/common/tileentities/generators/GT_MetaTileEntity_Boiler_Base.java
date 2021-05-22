@@ -175,6 +175,31 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 		return (16000 + (16000 * mBoilerTier));
 	}
 
+	@Override
+	protected int getProductionPerSecond() {
+		return 0;
+	}
+
+	@Override
+	protected int getMaxTemperature() {
+		return 0;
+	}
+
+	@Override
+	protected int getEnergyConsumption() {
+		return 0;
+	}
+
+	@Override
+	protected int getCooldownInterval() {
+		return 0;
+	}
+
+	@Override
+	protected void updateFuel(IGregTechTileEntity iGregTechTileEntity, long l) {
+
+	}
+
 	// We want automation.
 	@Override
 	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
@@ -185,6 +210,11 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 	@Override
 	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
 		return aIndex == 2;
+	}
+
+	@Override
+	protected int getPollution() {
+		return 0;
 	}
 
 	@Override

@@ -350,7 +350,13 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 	public void issueCoverUpdate(byte aSide) {
 		this.issueClientUpdate();
 	}
-	
+
+	@Override
+	public void receiveCoverData(byte coverSide, int coverID, int coverData) {
+		if ((coverSide >= 0 && coverSide < 6) && (mCoverSides[coverSide] == coverID))
+			setCoverDataAtSide(coverSide, coverData);
+	}
+
 	@Override
 	public long getTimer() {
 		return this.mTickTimer;

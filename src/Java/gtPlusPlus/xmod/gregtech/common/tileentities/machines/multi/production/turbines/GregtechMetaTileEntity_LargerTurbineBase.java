@@ -527,7 +527,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 
     @Override
     public final ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? getFrontFacingTurbineTexture(aActive) : Textures.BlockIcons.CASING_BLOCKS[getTAE()]};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? getFrontFacingTurbineTexture(aActive) : Textures.BlockIcons.getCasingTextureForId(getTAE())};
     }
 	
 	protected ITexture getFrontFacingTurbineTexture(boolean isActive) {

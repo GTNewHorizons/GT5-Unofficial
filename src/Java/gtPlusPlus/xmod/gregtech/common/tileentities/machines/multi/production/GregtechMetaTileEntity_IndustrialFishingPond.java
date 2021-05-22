@@ -85,11 +85,11 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[getCasingTextureIndex()],
+			return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
 					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE
 							: Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER) };
 		}
-		return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[getCasingTextureIndex()] };
+		return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
 	}
 
 	@Override

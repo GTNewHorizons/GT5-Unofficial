@@ -118,7 +118,11 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 		return sTexture;
 	}
 
-	@Override
+    @Override
+    public ITexture getTextureOverlay() {
+        return new GT_RenderedTexture(this.mMaxProgresstime > 0 ? TexturesGtBlock.Casing_Machine_Screen_3 : TexturesGtBlock.Casing_Machine_Screen_1);
+    }
+
 	public IIconContainer getIconOverlay() {
 		return this.mMaxProgresstime > 0 ? TexturesGtBlock.Casing_Machine_Screen_3 : TexturesGtBlock.Casing_Machine_Screen_1;
 	}

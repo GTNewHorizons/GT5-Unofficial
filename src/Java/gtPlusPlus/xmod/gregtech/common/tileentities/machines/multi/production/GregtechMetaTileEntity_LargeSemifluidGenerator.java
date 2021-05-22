@@ -59,9 +59,9 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta
 
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[50], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE)};
+			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(50), new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[50]};
+		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(50)};
 	}
 
 	@Override
