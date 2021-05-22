@@ -390,10 +390,10 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if(aSide == aFacing){
-            if(aActive) return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[44],new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE)};
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[44],new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)};
+            if(aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44),new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE)};
+            return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44),new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[44]};
+        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44)};
     }
 
     @Override
