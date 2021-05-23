@@ -36,6 +36,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             if (aStack.getItemDamage() == 32767) {
                 for (byte i = 0; i < 64; i = (byte) (i + 1)) {
                     ItemStack tStack = GT_Utility.copyMetaData(i, aStack);
+                    // Get Recipe and Output, add recipe to delayed removal
                     ItemStack tOutput = GT_ModHandler.getRecipeOutput(tStack, tStack, tStack);
                     if ((tOutput != null) && (tOutput.stackSize >= 3)) {
                         GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, tStack), GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput), null, 25, 4);
@@ -45,7 +46,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                     if((tStack == null) && (i >= 16)) break;
                 }
             } else {
-                ItemStack tOutput = GT_ModHandler.getRecipeOutput(aStack, aStack, aStack);
+                ItemStack tOutput = !aModName.equalsIgnoreCase("thaumcraft") ? GT_ModHandler.getRecipeOutput(aStack, aStack, aStack) : GT_ModHandler.getRecipeOutputNoOreDict(aStack, aStack, aStack);
                 if ((tOutput != null) && (tOutput.stackSize >= 3)) {
                     GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput), null, 25, 4);
                     GT_ModHandler.removeRecipeDelayed(aStack, aStack, aStack);

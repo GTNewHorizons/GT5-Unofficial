@@ -63,6 +63,7 @@ import java.util.stream.Collectors;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.B;
+
 import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.DW;
 import static gregtech.api.enums.GT_Values.E;
@@ -1332,6 +1333,7 @@ public class GT_ModHandler {
         delayedRemovalByRecipe.add(aCrafting);
     }
 
+    @SuppressWarnings("unchecked")
     public static void bulkRemoveByRecipe(List<InventoryCrafting> toRemove) {
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
         GT_FML_LOGGER.info("BulkRemoveByRecipe: tList: " + tList.size() + " toRemove: " + toRemove.size() );
@@ -1483,14 +1485,23 @@ public class GT_ModHandler {
      * Used for Recipe Detection.
      */
     public static ItemStack getRecipeOutput(ItemStack... aRecipe) {
-        return getRecipeOutput(false, aRecipe);
+        return getRecipeOutput(false, true, aRecipe);
     }
-
+    
+    public static ItemStack getRecipeOutputNoOreDict(ItemStack... aRecipe) {
+        return getRecipeOutput(false,false, aRecipe);
+    }
+    
+    public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... aRecipe) {
+        return getRecipeOutput(aUncopiedStack, true, aRecipe);
+    }
+    
     /**
      * Gives you a copy of the Output from a Crafting Recipe
      * Used for Recipe Detection.
      */
-    public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... aRecipe) {
+    @SuppressWarnings("unchecked")
+    public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean allowOreDict, ItemStack... aRecipe) {
         if (aRecipe == null || Arrays.stream(aRecipe).noneMatch(Objects::nonNull)) return null;
 
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
@@ -1505,6 +1516,8 @@ public class GT_ModHandler {
         
         for (IRecipe iRecipe : tList) {
             found = false;
+            if (!allowOreDict && iRecipe instanceof ShapedOreRecipe) continue;
+            
             try {
                 found = iRecipe.matches(aCrafting, DW);
             } catch (Throwable e) {
