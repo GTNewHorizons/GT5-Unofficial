@@ -330,9 +330,9 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if(aSide == aFacing){
-            if(aActive) return new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL),new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)};
-            return new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL),new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE)};
+            if(aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48),new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)};
+            return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48),new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE)};
         }
-        return new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL)};
+        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48)};
     }
 }

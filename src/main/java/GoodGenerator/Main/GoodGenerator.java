@@ -50,5 +50,4 @@ public final class GoodGenerator {
         RecipeLoader.RecipeLoad();
         RecipeLoader.Fixer();
     }
-
 }

@@ -521,6 +521,25 @@ public class MyMaterial implements Runnable {
             TextureSet.SET_METALLIC
     );
     */
+    public static final Werkstoff naquadahBasedFuelMkIII = new Werkstoff(
+            new short[]{0x29,0x22,0x21},
+            "Naquadah Based Liquid Fuel MkIII",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31045,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadahBasedFuelMkIIIDepleted = new Werkstoff(
+            new short[]{0x66,0x40,0x38},
+            "Naquadah Based Liquid Fuel MkIII (Depleted)",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31046,
+            TextureSet.SET_FLUID
+    );
     @Override
     public void run() { }
 }

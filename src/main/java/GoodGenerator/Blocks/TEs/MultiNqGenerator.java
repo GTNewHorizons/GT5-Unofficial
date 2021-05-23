@@ -38,7 +38,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     private IStructureDefinition<MultiNqGenerator> multiDefinition = null;
     private int ticker = 0;
-    private int leftEnergy = 0;
+    private long leftEnergy = 0;
     boolean fluidLocker = true;
     FluidStack lockedFluid = null;
     int times = 1;
@@ -286,7 +286,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                   leftEnergy += outputPower;
                   outputAmperes = leftEnergy / voltage;
                   leftEnergy -= outputAmperes * voltage;
-                  addEnergyOutput_EM(voltage ,outputAmperes);
+                  addEnergyOutput_EM(voltage, outputAmperes);
               }
               else{
                   addEnergyOutput_EM(outputPower, 1);
