@@ -543,17 +543,6 @@ public class RecipeLoader {
                 960
         );
 
-        GT_Values.RA.addBlastRecipe(
-                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust,1),
-                GT_Utility.getIntegratedCircuit(1),
-                null,null,
-                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingotHot),
-                null,
-                8000,
-                114514,
-                7000
-        );
-
         CrackRecipeAdder.crackerAdder(
                 MyMaterial.naquadahGas.getFluidOrGas(1000),
                 MyMaterial.atomicSeparationCatalyst.getMolten(4),
@@ -1069,6 +1058,19 @@ public class RecipeLoader {
                 },
                 2000,
                 30000
+        );
+    }
+
+    public static void InitLoadRecipe(){
+        GT_Values.RA.addBlastRecipe(
+                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust,1),
+                GT_Utility.getIntegratedCircuit(1),
+                null,null,
+                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingotHot),
+                null,
+                8000,
+                114514,
+                7000
         );
     }
 

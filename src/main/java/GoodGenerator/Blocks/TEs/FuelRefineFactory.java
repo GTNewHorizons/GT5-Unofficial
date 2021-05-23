@@ -10,14 +10,14 @@ import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -145,7 +145,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                 vis.clear();
                 if (aTile.getBlockOffset(dx[i],dy[i],dz[i]) == block[j])
                     if (dfs(block[j], aTile.getWorld(),aTile.getXCoord() + dx[i],aTile.getYCoord() + dy[i],aTile.getZCoord() + dz[i],32)){
-                        Tier = j;
+                        Tier = j + 1;
                         return true;
                     }
             }
@@ -248,13 +248,15 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
             }
         }
 
-        for (GT_Recipe recipe : tRecipes){
+        FluidStack[] inFluids = tFluids.toArray(new FluidStack[tFluids.size()]);
+        ItemStack[] inItems = tItems.toArray(new ItemStack[tItems.size()]);
 
+        for (GT_Recipe recipe : tRecipes){
             checkCoil();
             if (recipe.mSpecialValue > Tier) continue;
-
-            if (recipe.isRecipeInputEqual(true, tFluids.toArray(new FluidStack[tFluids.size()]), tItems.toArray(new ItemStack[tItems.size()]))){
-                calculatePerfectOverclockedNessMulti(recipe.mEUt, recipe.mDuration / (Tier - recipe.mSpecialValue + 1), 1, maxVoltage);
+            if (recipe.isRecipeInputEqual(true, inFluids, inItems)){
+                mEUt = recipe.mEUt;
+                mMaxProgresstime = recipe.mDuration / (1 << (Tier - recipe.mSpecialValue));
                 this.mOutputFluids = recipe.mFluidOutputs;
                 this.updateSlots();
                 return true;
@@ -330,8 +332,8 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if(aSide == aFacing){
-            if(aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48),new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)};
-            return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48),new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)};
+            if(aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48),new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).glow().build()};
+            return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48),new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE),TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).glow().build()};
         }
         return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48)};
     }

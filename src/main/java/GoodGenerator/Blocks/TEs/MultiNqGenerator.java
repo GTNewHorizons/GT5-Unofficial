@@ -20,6 +20,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -390,7 +391,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if(aSide == aFacing){
-            if(aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44),new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW)};
+            if(aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44),new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW).glow().build()};
             return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44),new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)};
         }
         return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44)};
