@@ -360,8 +360,8 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
         tt.addMachineType("Naquadah Reactor")
                       .addInfo("Controller block for the Naquadah Reactor")
                       .addInfo("Environmental Friendly!")
-                      .addInfo("Generate power with the High-energy molten metal.")
-                      .addInfo("Input liquid nuclear fuel, molten enriched naquadah or naquadria.")
+                      .addInfo("Generate power with the High-energy liquid.")
+                      .addInfo("Input liquid nuclear fuel and liquid naquadah fuel.")
                       .addInfo("The reactor will explode when there are more than ONE types of fuel in the hatch!")
                       .addInfo("Consume coolant 50mb/t to increase the efficiency:")
                       .addInfo("IC2 Coolant 105%, Super Coolant 150%, Cryotheum 275%")
@@ -391,8 +391,8 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if(aSide == aFacing){
-            if(aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44),new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW).glow().build()};
-            return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44),new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)};
+            if(aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44), new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW).glow().build()};
+            return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44), new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)};
         }
         return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44)};
     }

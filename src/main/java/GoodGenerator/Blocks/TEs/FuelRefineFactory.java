@@ -17,7 +17,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -254,7 +253,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
         for (GT_Recipe recipe : tRecipes){
             checkCoil();
             if (recipe.mSpecialValue > Tier) continue;
-            if (recipe.isRecipeInputEqual(true, inFluids, inItems)){
+            if (recipe.isRecipeInputEqual(true, inFluids, inItems) && recipe.mEUt <= maxVoltage){
                 mEUt = recipe.mEUt;
                 mMaxProgresstime = recipe.mDuration / (1 << (Tier - recipe.mSpecialValue));
                 this.mOutputFluids = recipe.mFluidOutputs;
@@ -332,8 +331,8 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if(aSide == aFacing){
-            if(aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48),new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).glow().build()};
-            return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48),new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE),TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).glow().build()};
+            if(aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).glow().build()};
+            return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).glow().build()};
         }
         return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48)};
     }

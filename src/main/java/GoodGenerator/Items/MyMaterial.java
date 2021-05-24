@@ -480,7 +480,7 @@ public class MyMaterial implements Runnable {
     public static final Werkstoff naquadahBasedFuelMkIIDepleted = new Werkstoff(
             new short[]{0xb5,0xb0,0xae},
             "Naquadah Based Liquid Fuel MkII (Depleted)",
-            new Werkstoff.Stats().setRadioactive(true),
+            new Werkstoff.Stats().setToxic(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
             31041,
@@ -534,10 +534,52 @@ public class MyMaterial implements Runnable {
     public static final Werkstoff naquadahBasedFuelMkIIIDepleted = new Werkstoff(
             new short[]{0x66,0x40,0x38},
             "Naquadah Based Liquid Fuel MkIII (Depleted)",
-            new Werkstoff.Stats().setRadioactive(true),
+            new Werkstoff.Stats().setToxic(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
             31046,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadahBasedFuelMkIV = new Werkstoff(
+            new short[]{0x0e,0x0c,0x0c},
+            "Naquadah Based Liquid Fuel MkIV",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31047,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadahBasedFuelMkIVDepleted = new Werkstoff(
+            new short[]{0x8e,0x34,0x22},
+            "Naquadah Based Liquid Fuel MkIV (Depleted)",
+            new Werkstoff.Stats().setToxic(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31048,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadahBasedFuelMkV = new Werkstoff(
+            new short[]{0x00,0x00,0x00},
+            "Naquadah Based Liquid Fuel MkV",
+            "THE END",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31049,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadahBasedFuelMkVDepleted = new Werkstoff(
+            new short[]{0xff,0xff,0xff},
+            "Naquadah Based Liquid Fuel MkV (Depleted)",
+            "THE END (literally)",
+            new Werkstoff.Stats().setToxic(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            31050,
             TextureSet.SET_FLUID
     );
     @Override
