@@ -40,7 +40,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -220,7 +220,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         if (this.isClientSide()) {
 
             for (int i = 0; i < GT_TileEntity_LESU.iTextures.length; i++) {
-                GT_TileEntity_LESU.iTextures[i][0] = new GT_RenderedTexture(GT_TileEntity_LESU.iIconContainers[i], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
+                GT_TileEntity_LESU.iTextures[i][0] = TextureFactory.of(GT_TileEntity_LESU.iIconContainers[i], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
             }
 
             if (aSide == aFacing && this.getBaseMetaTileEntity().getUniversalEnergyStored() <= 0)

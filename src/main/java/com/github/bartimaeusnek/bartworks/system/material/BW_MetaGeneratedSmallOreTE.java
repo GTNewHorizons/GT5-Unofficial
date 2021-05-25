@@ -25,9 +25,8 @@ package com.github.bartimaeusnek.bartworks.system.material;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -108,10 +107,10 @@ public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
     public ITexture[] getTexture(Block aBlock, byte aSide) {
         Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
         if ((aMaterial != null)) {
-            GT_RenderedTexture aIconSet = new GT_RenderedTexture(aMaterial.getTexSet().mTextures[OrePrefixes.oreSmall.mTextureIndex], aMaterial.getRGBA());
-            return new ITexture[]{new GT_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet};
+            ITexture aIconSet = TextureFactory.of(aMaterial.getTexSet().mTextures[OrePrefixes.oreSmall.mTextureIndex], aMaterial.getRGBA());
+            return new ITexture[]{TextureFactory.of(Blocks.stone), aIconSet};
         }
-        return new ITexture[]{new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_RenderedTexture(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.oreSmall.mTextureIndex])};
+        return new ITexture[]{TextureFactory.of(Blocks.stone), TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.oreSmall.mTextureIndex])};
     }
 
     @Override

@@ -24,20 +24,20 @@ package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
-import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -67,11 +67,10 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[]{
-                new GT_CopiedBlockTexture(
+                TextureFactory.of(
                         Block.getBlockFromItem(Ic2Items.glassFiberCableBlock.getItem()),
-                        aSide,
                         Ic2Items.glassFiberCableBlock.getItemDamage(),
-                        Dyes.getModulation(aColorIndex, Dyes._NULL.mRGBa)
+                        ForgeDirection.getOrientation(aSide)
                 )
         };
     }

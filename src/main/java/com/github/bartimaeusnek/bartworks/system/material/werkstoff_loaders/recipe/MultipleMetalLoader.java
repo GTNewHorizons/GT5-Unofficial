@@ -27,19 +27,22 @@ import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWer
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
-import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.enums.OrePrefixes.dust;
+import static gregtech.api.enums.OrePrefixes.ingot;
+import static gregtech.api.enums.OrePrefixes.plateDense;
+import static gregtech.api.enums.OrePrefixes.plateDouble;
 
 public class MultipleMetalLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(plateDense)) {
             GT_Recipe.GT_Recipe_Map.sBenderRecipes.add(new BWRecipes.DynamicGTRecipe(true, new ItemStack[]{werkstoff.get(ingot, 2), GT_Utility.getIntegratedCircuit(2)}, new ItemStack[]{werkstoff.get(plateDouble)}, null, null, null, null, (int) Math.max(werkstoff.getStats().getMass() * 2, 1L), 60, 0));
-            GregTech_API.registerCover(werkstoff.get(plateDouble), new GT_RenderedTexture(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false), null);
+            GregTech_API.registerCover(werkstoff.get(plateDouble), TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false), null);
             GT_Values.RA.addPulveriserRecipe(werkstoff.get(plateDouble), new ItemStack[]{werkstoff.get(dust, 2)}, null, 2, 8);
         }
     }

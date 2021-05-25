@@ -40,8 +40,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -645,13 +645,13 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
         if (this.isClientSide()) {
 
             if (aFacing == aSide || aSide == 0) {
-                GT_TileEntity_Windmill.iTextures[0] = new GT_RenderedTexture(GT_TileEntity_Windmill.iIconContainers[0]);
+                GT_TileEntity_Windmill.iTextures[0] = TextureFactory.of(GT_TileEntity_Windmill.iIconContainers[0]);
                 Arrays.fill(ret, GT_TileEntity_Windmill.iTextures[0]);
             } else if (aSide == 1) {
-                GT_TileEntity_Windmill.iTextures[1] = new GT_RenderedTexture(GT_TileEntity_Windmill.iIconContainers[1]);
+                GT_TileEntity_Windmill.iTextures[1] = TextureFactory.of(GT_TileEntity_Windmill.iIconContainers[1]);
                 Arrays.fill(ret, GT_TileEntity_Windmill.iTextures[1]);
             } else {
-                GT_TileEntity_Windmill.iTextures[2] = new GT_RenderedTexture(Textures.BlockIcons.COVER_WOOD_PLATE);
+                GT_TileEntity_Windmill.iTextures[2] = TextureFactory.of(Textures.BlockIcons.COVER_WOOD_PLATE);
                 Arrays.fill(ret, GT_TileEntity_Windmill.iTextures[2]);
             }
         }

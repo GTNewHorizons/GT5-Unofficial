@@ -37,8 +37,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -322,9 +322,8 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_THTR.BASECASINGINDEX), new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)} : new ITexture[]{Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_THTR.BASECASINGINDEX)};
+        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_THTR.BASECASINGINDEX), TextureFactory.of(aActive ? TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).glow().build()) : TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).glow().build()))} : new ITexture[]{Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_THTR.BASECASINGINDEX)};
     }
 
     @Override
