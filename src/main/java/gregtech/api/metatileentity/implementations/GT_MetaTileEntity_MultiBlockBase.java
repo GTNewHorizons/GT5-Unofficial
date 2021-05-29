@@ -26,6 +26,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
@@ -676,8 +677,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         return false;
     }
 
-    private boolean dumpFluid(FluidStack copiedFluidStack, boolean restrictiveHatchesOnly){
-        for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
+    protected static boolean dumpFluid(List<GT_MetaTileEntity_Hatch_Output> aOutputHatches, FluidStack copiedFluidStack, boolean restrictiveHatchesOnly){
+        for (GT_MetaTileEntity_Hatch_Output tHatch : aOutputHatches) {
         	if (!isValidMetaTileEntity(tHatch) || (restrictiveHatchesOnly && tHatch.mMode == 0)) {
         		continue;
         	}
@@ -709,8 +710,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     public boolean addOutput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
         FluidStack copiedFluidStack = aLiquid.copy();
-        if (!dumpFluid(copiedFluidStack, true)){
-            dumpFluid(copiedFluidStack, false);        	
+        if (!dumpFluid(mOutputHatches, copiedFluidStack, true)){
+            dumpFluid(mOutputHatches, copiedFluidStack, false);
         }
         return false;
     }

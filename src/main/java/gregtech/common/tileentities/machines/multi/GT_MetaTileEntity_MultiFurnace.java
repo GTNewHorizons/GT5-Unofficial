@@ -1,11 +1,10 @@
 package gregtech.common.tileentities.machines.multi;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
-import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
@@ -14,7 +13,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -24,18 +22,30 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
 import static gregtech.api.enums.GT_Values.VN;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
-public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMultiFurnace {
+public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_MultiFurnace> {
     private int mLevel = 0;
     private int mCostDiscount = 1;
 
     private static final int CASING_INDEX = 11;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final IStructureDefinition<GT_MetaTileEntity_MultiFurnace> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_MultiFurnace>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, new String[][]{
+                    {"ccc", "cmc", "ccc"},
+                    {"CCC", "C-C", "CCC",},
+                    {"b~b", "bbb", "bbb"}
+            })
+            .addElement('c', ofBlock(GregTech_API.sBlockCasings1, CASING_INDEX))
+            .addElement('m', ofHatchAdder(GT_MetaTileEntity_MultiFurnace::addMufflerToMachineList, CASING_INDEX, 2))
+            .addElement('C', ofBlockAdder(GT_MetaTileEntity_MultiFurnace::addCoil, GregTech_API.sBlockCasings5, 0))
+            .addElement('b', ofHatchAdderOptional(GT_MetaTileEntity_MultiFurnace::addBottomHatch, CASING_INDEX, 3, GregTech_API.sBlockCasings1, CASING_INDEX))
+            .build();
 
     public GT_MetaTileEntity_MultiFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -46,7 +56,7 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+    public GT_MetaTileEntity_MultiFurnace newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_MultiFurnace(this.mName);
     }
 
@@ -149,55 +159,29 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
         return true;
     }
 
-    private boolean checkMachineFunction(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-
-        this.mLevel = 0;
-        this.mCostDiscount = 1;
-
-        replaceDeprecatedCoils(aBaseMetaTileEntity);
-        HeatingCoilLevel heatingCap = getInitialHeatLevel(aBaseMetaTileEntity, xDir, zDir);
-        if (heatingCap == null)
-            return false;
-
-        if (!checkStructure(heatingCap, xDir, zDir, aBaseMetaTileEntity))
-            return false;
-
-        this.mLevel = heatingCap.getLevel();
-        this.mCostDiscount = heatingCap.getCostDiscount();
-        return true;
-    }
-
     @Override
-    protected boolean checkCoils(HeatingCoilLevel heatingCap, int i, int j, int xDir, int zDir, IGregTechTileEntity aBaseMetaTileEntity) {
-        if ((i == 0) && (j == 0))
-            return aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir);
-
-        Block coilM = aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j);
-        if (!(coilM instanceof IHeatingCoil))
-            return false;
-        byte usedMetaM = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j);
-
-        IHeatingCoil heatingCoilM = (IHeatingCoil) coilM;
-        HeatingCoilLevel heatingLevelM = heatingCoilM.getCoilHeat(usedMetaM);
-
-        return heatingLevelM == heatingCap;
-    }
-
-    @Override
-    protected boolean checkTopLayer(int i, int j, int xDir, int zDir, IGregTechTileEntity aBaseMetaTileEntity) {
-        if ((i == 0) && (j == 0)) {
-            return addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 2, zDir), CASING_INDEX);
-        }
-        if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != GregTech_API.sBlockCasings1)
-            return false;
-        return aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j) == CASING_INDEX;
+    public IStructureDefinition<GT_MetaTileEntity_MultiFurnace> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack){
-        return this.checkMachineFunction(aBaseMetaTileEntity,aStack);
+        this.mLevel = 0;
+        this.mCostDiscount = 1;
+
+        replaceDeprecatedCoils(aBaseMetaTileEntity);
+
+        mCoilLevel = null;
+
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0))
+            return false;
+
+        if (mCoilLevel == null)
+            return false;
+
+        this.mLevel = mCoilLevel.getLevel();
+        this.mCostDiscount = mCoilLevel.getCostDiscount();
+        return true;
     }
 
     private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {

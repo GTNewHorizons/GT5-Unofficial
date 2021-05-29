@@ -74,6 +74,7 @@ import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 @SuppressWarnings("ALL")
 @Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false,
         dependencies = " required-after:IC2;" +
+                " required-after:structurelib;" +
                 " after:dreamcraft;" +
                 " after:Forestry;" +
                 " after:PFAAGeologica;" +

@@ -8,6 +8,10 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.tile.TileEvent;
 import appeng.tile.events.TileEventType;
+import com.gtnewhorizon.structurelib.alignment.IAlignment;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -22,11 +26,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gregtech.common.GT_Client;
 import gregtech.common.GT_Pollution;
 import ic2.api.Direction;
@@ -69,7 +69,7 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 @Optional.InterfaceList(value = {
     @Optional.Interface(iface = "appeng.api.networking.security.IActionHost", modid = "appliedenergistics2", striprefs = true),
     @Optional.Interface(iface = "appeng.me.helpers.IGridProxyable", modid = "appliedenergistics2", striprefs = true)})
-public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileEntity, IActionHost, IGridProxyable {
+public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileEntity, IActionHost, IGridProxyable, IAlignmentProvider {
     private final GT_CoverBehavior[] mCoverBehaviors = new GT_CoverBehavior[]{GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior};
     protected MetaTileEntity mMetaTileEntity;
     protected long mStoredEnergy = 0, mStoredSteam = 0;
@@ -2329,5 +2329,28 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public void setShutdownStatus(boolean newStatus) {
          mWasShutdown = newStatus;
+    }
+
+    @Override
+    public IAlignment getAlignment() {
+        return getMetaTileEntity() instanceof IAlignmentProvider ? ((IAlignmentProvider) getMetaTileEntity()).getAlignment() : new BasicAlignment();
+    }
+
+    private class BasicAlignment implements IAlignment {
+
+        @Override
+        public ExtendedFacing getExtendedFacing() {
+            return ExtendedFacing.of(ForgeDirection.getOrientation(getFrontFacing()));
+        }
+
+        @Override
+        public void setExtendedFacing(ExtendedFacing alignment) {
+            setFrontFacing((byte) Math.max(alignment.getDirection().ordinal(), 5));
+        }
+
+        @Override
+        public IAlignmentLimits getAlignmentLimits() {
+            return (direction, rotation, flip) -> rotation.isNotRotated() && flip.isNotFlipped();
+        }
     }
 }

@@ -16,7 +16,8 @@
     "parent": "",
     "screenshots": [],
     "dependencies": [
-      "Industrialcraft"
+      "Industrialcraft",
+      "structurelib"
     ]
   }
 ]
