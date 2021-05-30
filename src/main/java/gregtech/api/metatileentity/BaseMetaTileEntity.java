@@ -2345,7 +2345,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
         @Override
         public void setExtendedFacing(ExtendedFacing alignment) {
-            setFrontFacing((byte) Math.max(alignment.getDirection().ordinal(), 5));
+            setFrontFacing((byte) Math.min(alignment.getDirection().ordinal(), ForgeDirection.UNKNOWN.ordinal() - 1));
         }
 
         @Override

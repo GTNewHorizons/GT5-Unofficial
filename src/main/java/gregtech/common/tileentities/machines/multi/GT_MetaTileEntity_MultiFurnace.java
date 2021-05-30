@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
@@ -29,7 +30,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
-public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_MultiFurnace> {
+public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_MultiFurnace> implements IConstructable {
     private int mLevel = 0;
     private int mCostDiscount = 1;
 
@@ -61,8 +62,8 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
     }
 
     @Override
-    public String[] getDescription() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Furnace")
                 .addInfo("Controller Block for the Multi Smelter")
                 .addInfo("Smelts up to 8-128 items at once")
@@ -79,9 +80,7 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
                 .addInputBus("Any bottom casing")
                 .addOutputBus("Any bottom casing")
                 .toolTipFinisher("Gregtech");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-            return tt.getInformation();
-        return tt.getStructureInformation();
+        return tt;
     }
 
     @Override
@@ -173,7 +172,7 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
 
         mCoilLevel = null;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0))
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0))
             return false;
 
         if (mCoilLevel == null)
@@ -238,4 +237,8 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
         };
     }
 
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 2, 0);
+    }
 }

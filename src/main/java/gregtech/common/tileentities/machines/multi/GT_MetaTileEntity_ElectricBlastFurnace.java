@@ -23,7 +23,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
@@ -70,8 +69,8 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_Ab
     }
 
     @Override
-    public String[] getDescription() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Blast Furnace")
                 .addInfo("Controller block for the Electric Blast Furnace")
                 .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
@@ -95,11 +94,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_Ab
                 .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
                 .addOutputHatch("Platline fluids, Any bottom layer casing")
                 .toolTipFinisher("Gregtech");
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getStructureInformation();
-        } else {
-            return tt.getInformation();
-        }
+        return tt;
     }
 
     @Override
@@ -372,11 +367,5 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_Ab
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1,3,0);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        // TODO implement me
-        return new String[0];
     }
 }

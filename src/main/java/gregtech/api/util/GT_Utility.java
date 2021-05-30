@@ -3,6 +3,8 @@ package gregtech.api.util;
 import cofh.api.transport.IItemDuct;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
+import com.gtnewhorizon.structurelib.alignment.IAlignment;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTech_API;
@@ -1920,7 +1922,7 @@ public class GT_Utility {
 
         tList.add("----- X: " +EnumChatFormatting.AQUA+ aX +EnumChatFormatting.RESET+ " Y: " +EnumChatFormatting.AQUA+ aY +EnumChatFormatting.RESET+ " Z: " +EnumChatFormatting.AQUA+ aZ +EnumChatFormatting.RESET+ " D: " +EnumChatFormatting.AQUA+ aWorld.provider.dimensionId +EnumChatFormatting.RESET+ " -----");
         try {
-            if (tTileEntity != null && tTileEntity instanceof IInventory)
+            if (tTileEntity instanceof IInventory)
                 tList.add(trans("162","Name: ") +EnumChatFormatting.BLUE+ ((IInventory) tTileEntity).getInventoryName() +EnumChatFormatting.RESET+ trans("163"," MetaData: ") +EnumChatFormatting.AQUA+ aWorld.getBlockMetadata(aX, aY, aZ) +EnumChatFormatting.RESET);
             else
                 tList.add(trans("162","Name: ") +EnumChatFormatting.BLUE+ tBlock.getUnlocalizedName() +EnumChatFormatting.RESET+ trans("163"," MetaData: ") +EnumChatFormatting.AQUA+ aWorld.getBlockMetadata(aX, aY, aZ) +EnumChatFormatting.RESET);
@@ -1955,6 +1957,17 @@ public class GT_Utility {
                     rEUAmount += 500;
                     tList.add(trans("168","Heat: ") +EnumChatFormatting.GREEN+ ((ic2.api.reactor.IReactor) tTileEntity).getHeat() +EnumChatFormatting.RESET+ " / " +EnumChatFormatting.YELLOW+ ((ic2.api.reactor.IReactor) tTileEntity).getMaxHeat()+EnumChatFormatting.RESET);
                     tList.add(trans("169","HEM: ") +EnumChatFormatting.YELLOW+((ic2.api.reactor.IReactor) tTileEntity).getHeatEffectModifier() +EnumChatFormatting.RESET/*+ trans("170"," Base EU Output: ")/* + ((ic2.api.reactor.IReactor)tTileEntity).getOutput()*/);
+                }
+            } catch (Throwable e) {
+                if (D1) e.printStackTrace(GT_Log.err);
+            }
+            try {
+                if (tTileEntity instanceof IAlignmentProvider) {
+                    IAlignment tAlignment = ((IAlignmentProvider) tTileEntity).getAlignment();
+                    if (tAlignment != null) {
+                        rEUAmount += 100;
+                        tList.add(trans("219", "Extended Facing: ") + EnumChatFormatting.GREEN + tAlignment.getExtendedFacing() + EnumChatFormatting.RESET);
+                    }
                 }
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);
