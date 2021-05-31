@@ -1,5 +1,6 @@
 package gregtech.api.interfaces;
 
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -62,6 +63,13 @@ public interface ITextureBuilder {
      * @return {@link ITextureBuilder} for chaining
      */
     ITextureBuilder stdOrient();
+
+    /**
+     * Texture will orientate from block's {@link ExtendedFacing}
+     *
+     * @return {@link ITextureBuilder} for chaining
+     */
+    ITextureBuilder extFacing();
 
     /**
      * Texture always render with full brightness to glow in the dark

@@ -1,6 +1,7 @@
 package gregtech;
 
 import com.google.common.base.Stopwatch;
+import com.gtnewhorizon.structurelib.StructureLib;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -74,7 +75,7 @@ import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 @SuppressWarnings("ALL")
 @Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false,
         dependencies = " required-after:IC2;" +
-                " required-after:structurelib;" +
+                " required-after:" + StructureLib.MOD_ID + ";" +
                 " after:dreamcraft;" +
                 " after:Forestry;" +
                 " after:PFAAGeologica;" +

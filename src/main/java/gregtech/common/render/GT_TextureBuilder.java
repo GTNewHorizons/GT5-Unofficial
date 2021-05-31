@@ -21,6 +21,7 @@ public class GT_TextureBuilder implements ITextureBuilder {
     private short[] rgba;
     private boolean allowAlpha;
     private boolean stdOrient;
+    private boolean extFacing;
     private boolean glow;
 
     public GT_TextureBuilder() {
@@ -77,6 +78,12 @@ public class GT_TextureBuilder implements ITextureBuilder {
     }
 
     @Override
+    public ITextureBuilder extFacing() {
+        this.extFacing = true;
+        return this;
+    }
+
+    @Override
     public ITextureBuilder glow() {
         glow = true;
         return this;
@@ -88,9 +95,7 @@ public class GT_TextureBuilder implements ITextureBuilder {
         if (!textureLayers.isEmpty()) return new GT_MultiTexture(textureLayers.toArray(new ITexture[0]));
         switch (iconContainerList.size()) {
             case 1:
-                if (stdOrient) return new GT_StdRenderedTexture(iconContainerList.get(0), rgba, allowAlpha);
-                if (glow) return new GT_RenderedGlowTexture(iconContainerList.get(0), rgba, allowAlpha);
-                return new GT_RenderedTexture(iconContainerList.get(0), rgba, allowAlpha);
+                return new GT_RenderedTexture(iconContainerList.get(0), rgba, allowAlpha, glow, stdOrient, extFacing);
             case 6:
                 return new GT_SidedTexture(
                         iconContainerList.get(ForgeDirection.DOWN.ordinal()),

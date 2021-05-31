@@ -255,6 +255,7 @@ public class LightingHelper {
 
         } else {
 
+            if (hasBrightnessOverride) tessellator.setBrightness(brightnessOverride);
             tessellator.setColorOpaque_F(rgb[0] * lightness, rgb[1] * lightness, rgb[2] * lightness);
 
         }
