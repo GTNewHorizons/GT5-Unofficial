@@ -946,6 +946,16 @@ public class RecipeLoader {
                 300,
                 120000
         );
+
+        GT_Values.RA.addChemicalRecipe(
+                GT_Utility.getIntegratedCircuit(1),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Calcium,1),
+                Materials.Oxygen.getGas(1000),
+                null,
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Quicklime,2),
+                10,
+                30
+        );
     }
 
     public static void InitLoadRecipe(){
@@ -1108,6 +1118,21 @@ public class RecipeLoader {
                 new int[]{9000,8500,5000,4000,2000},
                 6000,
                 2040
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                MyMaterial.radioactiveSludge.get(OrePrefixes.dust,1),
+                null,null,
+                Materials.Radon.getGas(5),
+                GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Calcium,8),
+                GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Calcium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Naquadah,1),
+                GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Uranium,1),
+                GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Plutonium,1),
+                WerkstoffLoader.Tellurium.get(OrePrefixes.dustSmall,1),
+                new int[]{10000,9500,8000,2500,2000,2000},
+                100,
+                120
         );
     }
 

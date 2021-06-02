@@ -14,11 +14,16 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.Loader;
 
 import static GoodGenerator.Loader.Loaders.addOreDic;
 
 @SuppressWarnings("ALL")
-@Mod(modid = GoodGenerator.MOD_ID, version = GoodGenerator.VERSION)
+@Mod(modid = GoodGenerator.MOD_ID, version = GoodGenerator.VERSION,
+        dependencies = "required-after:IC2; "
+        + "required-after:gregtech; "
+        + "required-after:bartworks; "
+        + "required-after:tectech; ")
 public final class GoodGenerator {
     public static final String MOD_ID = "GoodGenerator";
     public static final String VERSION = "GRADLETOKEN_VERSION";

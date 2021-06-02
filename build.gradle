@@ -89,6 +89,9 @@ dependencies {
     compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev") {
         setChanging(true)
     }
+/*    compileOnly("com.github.GTNewHorizons:Avaritia:master-SNAPSHOT") {
+        setChanging(true)
+    }*/
     compile files('libs/TecTech-1.7.10-4.10.4-d35bc08e.jar')
     runtime("eu.usrv:YAMCore:${minecraftVersion}-${yamcoreVersion}:deobf");
 }
