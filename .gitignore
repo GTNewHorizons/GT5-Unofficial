@@ -140,3 +140,6 @@ scripts
 /GTPP.dat
 /PlayerCache.dat
 wip
+*.bat
+GT++.ipr
+GT++.iws
