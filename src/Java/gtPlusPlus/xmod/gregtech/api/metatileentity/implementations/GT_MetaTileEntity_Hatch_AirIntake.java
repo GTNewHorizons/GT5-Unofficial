@@ -210,7 +210,7 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 				return true;
 			}
 		}		
-		return false;
+		return true;
 	}
 
 	public boolean addAirToHatch(long aTick) {		
