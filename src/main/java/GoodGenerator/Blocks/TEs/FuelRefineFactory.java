@@ -119,7 +119,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                                             Loaders.FRF_Coil_2,0
                                     ),
                                     ofBlock(
-                                            Loaders.FRF_Coil_2,0
+                                            Loaders.FRF_Coil_3,0
                                     ),
                                     ofBlockHint(
                                             Loaders.FRF_Coil_1,0
