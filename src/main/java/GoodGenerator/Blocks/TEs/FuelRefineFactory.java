@@ -219,7 +219,6 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
         ArrayList<FluidStack> tFluids = getStoredFluids();
         ArrayList<ItemStack> tItems = getStoredInputs();
         Collection<GT_Recipe> tRecipes = MyRecipeAdder.instance.FRF.mRecipeList;
-        long maxVoltage = getMaxInputVoltage();
 
         for (int i = 0; i < tFluids.size() - 1; i++) {
             for (int j = i + 1; j < tFluids.size(); j++) {
@@ -253,7 +252,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
         for (GT_Recipe recipe : tRecipes){
             checkCoil();
             if (recipe.mSpecialValue > Tier) continue;
-            if (recipe.isRecipeInputEqual(true, inFluids, inItems) && recipe.mEUt <= maxVoltage){
+            if (recipe.isRecipeInputEqual(true, inFluids, inItems)){
                 mEUt = recipe.mEUt;
                 mMaxProgresstime = recipe.mDuration / (1 << (Tier - recipe.mSpecialValue));
                 this.mOutputFluids = recipe.mFluidOutputs;
