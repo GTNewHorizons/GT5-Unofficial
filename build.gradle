@@ -3,10 +3,6 @@ buildscript {
 		mavenLocal()
         mavenCentral()
 		jcenter()	
-        //maven {
-        //    name = "forge"
-        //    url = "http://files.minecraftforge.net/maven"
-        //}
 		maven {
 			name = "gt"
 			url = "https://gregtech.overminddl1.com/"
@@ -21,8 +17,6 @@ buildscript {
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
-		//classpath "gradle.plugin.se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.55"
-		classpath 'net.sf.proguard:proguard-gradle:6.2.2'
     }
 }
 
@@ -205,41 +199,3 @@ task generateDictionaries(type: JavaExec) {
     main = "gtPlusPlus.GenerateDictionaries"
 }
 
-// Define a ProGuard task.
-//task proguard(type: proguard.gradle.ProGuardTask) {
-  //configuration 'proguard.txt'
-  //injars "build/libs/"+archivesBaseName + "-" + version + ".jar"
-  //outjars "build/libs/"+archivesBaseName + "-" + version + "-obf.jar"
-//}
-
-//task discordChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	//file = new File("build/changelog/Basic ${project.version}.txt");
-	//untaggedName = "Current Basic release ${project.version}"
-	//fromCommit = "${config.commit.hash}"
-	//toRef =  "HEAD"
-	//templateContent = file('changeloggeneral.mustache').getText('UTF-8')
-//}
-//task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	//file = new File("build/changelog/${project.version}.md");
-	//untaggedName = "Current release ${project.version}"
-	//fromCommit = "${config.commit.hash}"
-	//toRef =  "HEAD"
-	//templateContent = file('changelog.mustache').getText('UTF-8')
-//}
-//task curseChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	//file = new File("build/changelog/Curse ${project.version}.md");
-	//untaggedName = "Current Curse release ${project.version}"
-	//fromCommit = "${config.commit.hash}"
-	//toRef =  "HEAD"
-	//templateContent = file('changelogcurse.mustache').getText('UTF-8')
-//}
-
-// Generate Dicts for Proguard obfuscation
-build.finalizedBy(generateDictionaries)
-
-// Obfuscate this bitch.
-//build.finalizedBy(proguard) // Disabled until optimization is working 100%
-
-//build.finalizedBy(gitChangelogTask)
-//build.finalizedBy(curseChangelogTask)
-//build.finalizedBy(discordChangelogTask)
