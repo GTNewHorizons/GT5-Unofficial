@@ -154,7 +154,7 @@ public class HANDLER_GT {
 		convertPyroToCokeOven();
 		Meta_GT_Proxy.fixIC2FluidNames();
 		RecipeLoader_AlgaeFarm.generateRecipes();
-		WoodCentrifuging.processLogsForMethane();
+		//WoodCentrifuging.processLogsForMethane();
 	}
 
 	public static void addNewOrePrefixes() {
