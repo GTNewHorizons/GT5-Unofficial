@@ -2,7 +2,6 @@ package GoodGenerator.Blocks.TEs;
 
 import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.Loaders;
-import GoodGenerator.Main.GoodGenerator;
 import GoodGenerator.util.MyRecipeAdder;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
@@ -10,8 +9,6 @@ import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;

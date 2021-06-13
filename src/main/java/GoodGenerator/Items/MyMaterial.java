@@ -336,7 +336,7 @@ public class MyMaterial implements Runnable {
 
     public static final Werkstoff ether = new Werkstoff(
             new short[]{0xeb,0xbc,0x2f},
-            "ether",
+            "Ether",
             subscriptNumbers("CH3CH2OCH2CH3"),
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
