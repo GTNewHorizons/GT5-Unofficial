@@ -34,12 +34,10 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
                     .<UniversalChemicalFuelEngine>builder()
                     .addShape(mName,
                             transpose(new String[][]{
-                                    {},
-                                    {},
-                                    {},
-                                    {},
-                                    {},
-                                    {},
+                                    {"TTTTT","TTMMT","TTMMT","TTMMT","TTMMT","TTMMT","TTMMT","TTMMT","TTTTT"},
+                                    {"TTTTT","SPCCI","SPCCI","SPCCI","SPCCI","SPCCI","SPCCI","SPCCI","TTTTT"},
+                                    {"TT~TT","SPGGI","SPGGI","SPGGI","SPGGI","SPGGI","SPGGI","SPGGI","TTETT"},
+                                    {"TTWTT","TTTTT","TTTTT","TTTTT","TTTTT","TTTTT","TTTTT","TTTTT","TTTTT"}
                             })
                     )
                     .build();

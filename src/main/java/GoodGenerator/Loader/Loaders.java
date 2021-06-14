@@ -35,7 +35,7 @@ public class Loaders {
     public static final Block FRF_Coil_3 = new Casing("FRF_Coil_3",new String[]{GoodGenerator.MOD_ID+":FRF_Coils/3"});
     public static final Block radiationProtectionSteelFrame = new Frame("radiationProtectionSteelFrame",new String[]{GoodGenerator.MOD_ID+":radiationProtectionSteelFrame"});
     public static final Block fieldRestrictingGlass = new Frame("fieldRestrictingGlass",new String[]{GoodGenerator.MOD_ID+":fieldRestrictingGlass"});
-    public static final Block titaniumPlatedCylinder = new Frame("titaniumPlatedCylinder",new String[]{GoodGenerator.MOD_ID+":titaniumPlatedCylinder"});
+    public static final Block titaniumPlatedCylinder = new Casing("titaniumPlatedCylinder",new String[]{GoodGenerator.MOD_ID+":titaniumPlatedCylinder"});
 
     public static ItemStack MAR;
     public static ItemStack FRF;
