@@ -244,7 +244,7 @@ public class StaticFields59 {
 		if (aBlock == GregTech_API.sBlockCasings1 && (aMeta >= 12 && aMeta <= 14)) {
 			return aMeta == 12 ? 1 : aMeta == 13 ? 2 : 3;
 		}
-		else if (aBlock == getBlockCasings5() && (aMeta >= 0 && aMeta <= 8)) {
+		else if (aBlock == getBlockCasings5() && (aMeta >= 0 && aMeta <= 10)) {
 			return aMeta;
 		}
 		return 0;
@@ -285,15 +285,19 @@ public class StaticFields59 {
 		case 8:
 			mHeatingCapacity = 10800;
 			break;
+		case 9:
+			mHeatingCapacity = 6300;
+			break;
+		case 10:
+			mHeatingCapacity = 9000;
+			break;
 		default:
 			Logger.INFO("Heating Coils are bad.");
 			mHeatingCapacity = 0;
 		}
-		if (CORE.GTNH && aCoilTier <= 6) {
+		if (CORE.GTNH && aCoilTier <= 10) {
 			mHeatingCapacity += 1;
 		}
 		return mHeatingCapacity;
 	}
-
-
 }
