@@ -1844,6 +1844,7 @@ public class DreamCraftRecipeLoader implements Runnable {
         //Power Pass Upgrade Cover
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
         		CustomItemList.Machine_Multi_Transformer.get(1),
+                GT_Utility.getIntegratedCircuit(1)
         }, null, CustomItemList.powerPassUpgradeCover.getWithDamage(1, 0), 320, 30720);
         //endregion
 
