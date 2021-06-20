@@ -151,7 +151,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
     }
 
     private void setRecipeStats() {
-        BW_Util.calculateOverclockedNessMulti(this.bufferedRecipe.mEUt,this.bufferedRecipe.mDuration,1,this.getMaxInputVoltage(),this);
+        calculatePerfectOverclockedNessMulti(this.bufferedRecipe.mEUt, this.bufferedRecipe.mDuration, 1, this.getMaxInputVoltage());
         if (this.mEUt > 0)
             this.mEUt = -this.mEUt;
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
