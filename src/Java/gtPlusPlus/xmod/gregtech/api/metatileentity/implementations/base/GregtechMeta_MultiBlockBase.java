@@ -112,6 +112,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	private MultiblockRequirements mRequirements;
 	private boolean mInternalCircuit = false;
 	protected long mTotalRunTime = 0;
+	protected boolean mVoidExcess = false;
 
 	//Control Core Hatch
 	public ArrayList<GT_MetaTileEntity_Hatch_ControlCore> mControlCoreBus = new ArrayList<GT_MetaTileEntity_Hatch_ControlCore>();
@@ -484,7 +485,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	}
 	
 	public int canBufferOutputs(final GT_Recipe aRecipe, int aParallelRecipes, boolean aAllow16SlotWithoutCheck) {
-
+		if (mVoidExcess) return aParallelRecipes;
 		log("Determining if we have space to buffer outputs. Parallel: "+aParallelRecipes);
 
 		// Null recipe or a recipe with lots of outputs? 
@@ -2302,12 +2303,14 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		aNBT.setLong("mTotalRunTime", this.mTotalRunTime);
+		aNBT.setBoolean("mVoidExcess", this.mVoidExcess);
 		super.saveNBTData(aNBT);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
+		this.mVoidExcess = aNBT.getBoolean("mVoidExcess");
 		super.loadNBTData(aNBT);
 	}
 
@@ -2528,8 +2531,16 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		return aSuper;
 	}
 
+	@Override
+	public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		boolean tSuper = super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+		if (aPlayer.isSneaking())
+			return tSuper;
+		mVoidExcess = !mVoidExcess;
+		return true;
+	}
 
-	public final boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {	
+	public final boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		boolean aStructureCheck = checkMultiblock(aBaseMetaTileEntity, aStack);	
 		boolean aHasCore = DEBUG_DISABLE_CORES_TEMPORARILY; //(requireControlCores ? (this.getControlCoreBus() != null) : true);	
 		return aStructureCheck && aHasCore;
