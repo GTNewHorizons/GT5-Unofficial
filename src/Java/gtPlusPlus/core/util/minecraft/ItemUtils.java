@@ -451,7 +451,7 @@ public class ItemUtils {
 		final ItemStack smallDust = ItemUtils.getSimpleStack(output[1]);
 		final ItemStack tinyDust = ItemUtils.getSimpleStack(output[2]);
 
-		CORE.RA.addpackagerRecipe(ItemList.Schematic_Dust.get(1), smallDust, tinyDust, normalDust);
+		CORE.RA.addpackagerRecipe(ItemList.Schematic_Dust.get(0), smallDust, tinyDust, normalDust);
 		
 		if (ItemUtils.checkForInvalidItems(tinyDust) && ItemUtils.checkForInvalidItems(normalDust)) {
 			if (RecipeUtils.addShapedRecipe(
