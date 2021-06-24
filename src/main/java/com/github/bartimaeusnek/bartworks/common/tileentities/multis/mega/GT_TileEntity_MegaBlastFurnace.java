@@ -273,36 +273,38 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                     continue;
                 byte tUsedMeta = iGregTechTileEntity.getMetaIDOffset(xDir + x, y, zDir + z);
                 switch (tUsedMeta) {
-                    case 0:
+                    case 0: // cupronickel coil
                         internalH = 1801;
                         break;
-                    case 1:
+                    case 1: // Kanthal coil
                         internalH = 2701;
                         break;
-                    case 2:
+                    case 2: // nichrome coil
                         internalH = 3601;
                         break;
-                    case 3:
+                    case 3: // tungstensteel coil
                         internalH = 4501;
                         break;
-                    case 4:
+                    case 4: // HSS-G coil
                         internalH = 5401;
                         break;
-                    case 5:
+                    case 5: // naquadah coil
                         internalH = 7201;
                         break;
-                    case 6:
+                    case 6: // naquadah alloy coil
                         internalH = 9001;
                         break;
-                    case 7:
+                    case 7: // fluxed electrum coil
                         internalH = 9901;
                         break;
-                    case 8:
+                    case 8: // awakened draconium coil
                         internalH = 10801;
                         break;
-                    case 9:
-                        internalH = 21601;
+                    case 9: // HSS-S coil
+                        internalH = 6301;
                         break;
+                    case 10: // trinium coil
+                        internalH = 9001;
                     default:
                         break;
                 }
