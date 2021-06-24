@@ -4,6 +4,7 @@ import GoodGenerator.Blocks.RegularBlock.Casing;
 import GoodGenerator.Blocks.RegularBlock.Frame;
 import GoodGenerator.Blocks.TEs.FuelRefineFactory;
 import GoodGenerator.Blocks.TEs.MultiNqGenerator;
+import GoodGenerator.Blocks.TEs.UniversalChemicalFuelEngine;
 import GoodGenerator.Items.MyItemBlocks;
 import GoodGenerator.Items.MyItems;
 import GoodGenerator.Main.GoodGenerator;
@@ -39,6 +40,7 @@ public class Loaders {
 
     public static ItemStack MAR;
     public static ItemStack FRF;
+    public static ItemStack UCFE;
 
     public static void Register(){
         GameRegistry.registerBlock(MAR_Casing, MyItemBlocks.class,"MAR_Casing");
@@ -63,6 +65,7 @@ public class Loaders {
         GameRegistry.registerItem(advancedRadiationProtectionPlate,"advancedRadiationProtectionPlate",GoodGenerator.MOD_ID);
         Loaders.MAR = new MultiNqGenerator(12732,"NaG","Large Naquadah Reactor").getStackForm(1L);
         Loaders.FRF = new FuelRefineFactory(16999,"FRF","Naquadah Fuel Refine Factory").getStackForm(1L);
+        Loaders.UCFE = new UniversalChemicalFuelEngine(15500,"UniversalChemicalFuelEngine","Universal Chemical Fuel Engine").getStackForm(1L);
     }
 
     public static void addOreDic(){
