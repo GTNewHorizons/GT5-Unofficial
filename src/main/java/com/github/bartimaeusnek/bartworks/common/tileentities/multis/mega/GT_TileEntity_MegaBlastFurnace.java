@@ -292,7 +292,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                         internalH = 7201;
                         break;
                     case 6: // naquadah alloy coil
-                        internalH = 9001;
+                        internalH = 8101;
                         break;
                     case 7: // fluxed electrum coil
                         internalH = 9901;
