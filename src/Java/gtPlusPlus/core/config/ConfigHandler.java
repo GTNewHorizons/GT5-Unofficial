@@ -18,9 +18,6 @@ public class ConfigHandler {
 				new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
 		config.load();
 	
-		enableUpdateChecker = config.getBoolean("enableUpdateChecker", "debug", true,
-				"Stops mod checking for updates.");
-	
 		// Debug
 		/*		DEBUG = config.getBoolean("debugMode", "debug", false,
 						"Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");*/
