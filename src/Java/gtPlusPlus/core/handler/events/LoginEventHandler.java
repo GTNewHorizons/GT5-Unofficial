@@ -50,21 +50,6 @@ public class LoginEventHandler {
 				//Populates player cache
 				if (!this.localPlayerRef.worldObj.isRemote){
 					PlayerCache.appendParamChanges(this.localPlayersName, this.localPlayersUUID.toString());
-
-					if (CORE.ConfigSwitches.enableUpdateChecker){
-						if (!Utils.isModUpToDate()){
-							Logger.INFO("[GT++] You're not using the latest recommended version of GT++, consider updating.");
-							if (!CORE.MASTER_VERSION.toLowerCase().equals("offline")) {
-								Logger.INFO("Latest version is: "+CORE.MASTER_VERSION);
-							}
-							Logger.INFO("You currently have: "+CORE.VERSION);
-							ShortTimer(this.localPlayerRef, 20);						
-						}
-						else {
-							Logger.INFO("You're using the latest recommended version of GT++.");
-						}
-					}
-
 				}
 
 

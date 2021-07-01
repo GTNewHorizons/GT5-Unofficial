@@ -2,7 +2,6 @@ package gtPlusPlus;
 
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableAnimatedTurbines;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableUpdateChecker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,10 +41,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.core.util.minecraft.HazmatUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.core.util.sys.GeoUtils;
-import gtPlusPlus.core.util.sys.NetworkUtils;
 import gtPlusPlus.core.util.sys.SystemUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechBufferThread;
@@ -165,14 +161,6 @@ public class GTplusplus implements ActionListener {
 		setupMaterialBlacklist();
 		// setupMaterialWhitelist();
 
-		// HTTP Requests
-		if (CORE.ConfigSwitches.enableUpdateChecker) {
-			CORE.MASTER_VERSION = NetworkUtils.getContentFromURL(
-					"https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt"
-			).toLowerCase();
-			CORE.USER_COUNTRY = GeoUtils.determineUsersCountry();
-		}
-
 		// Handle GT++ Config
 		ConfigHandler.handleConfigFile(event);
 
@@ -180,12 +168,6 @@ public class GTplusplus implements ActionListener {
 		CORE.DEVENV = (Boolean) Launch.blackboard.get(
 				"fml.deobfuscatedEnvironment"
 		);
-		if (enableUpdateChecker) {
-			Logger.INFO(
-					"Latest is " + CORE.MASTER_VERSION + ". Updated? "
-							+ Utils.isModUpToDate()
-			);
-		}
 		// Utils.LOG_INFO("User's Country: " + CORE.USER_COUNTRY);
 
 		Utils.registerEvent(new LoginEventHandler());

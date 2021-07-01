@@ -21,7 +21,6 @@ import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.data.AES;
 import gtPlusPlus.core.util.data.FileUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.sys.NetworkUtils;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -338,9 +337,6 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 		}
 
 		private static final void downloadCapeList() {
-			if (!NetworkUtils.checkNetworkIsAvailableWithValidInterface()) {
-				return;
-			}		
 			try {			
 				File dat = getCapeCache();
 				File temp = allocateTempFile();					
