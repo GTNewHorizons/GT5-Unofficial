@@ -140,7 +140,7 @@ public class BW_GT_MaterialReference {
 
     public static Werkstoff Wood = new Werkstoff(Materials.Wood, ADD_CASINGS_ONLY, BIOLOGICAL,31_766+809);
    // public static Werkstoff WoodSealed = new Werkstoff(Materials.WoodSealed, ADD_CASINGS_ONLY, BIOLOGICAL,31_766+889);
-    public static Werkstoff Cheese = new Werkstoff(Materials.Cheese, new Werkstoff.GenerationFeatures().addCasings().addMetalItems().addMultipleIngotMetalWorkingItems().enforceUnification(), BIOLOGICAL,31_766+894);
+    //public static Werkstoff Cheese = new Werkstoff(Materials.Cheese, new Werkstoff.GenerationFeatures().addCasings().addMetalItems().addMultipleIngotMetalWorkingItems().enforceUnification(), BIOLOGICAL,31_766+894);
 
     public static Werkstoff Steel = new Werkstoff(Materials.Steel, ADD_CASINGS_ONLY, COMPOUND,31_766+305);
     public static Werkstoff Polytetrafluoroethylene = new Werkstoff(Materials.Polytetrafluoroethylene, ADD_CASINGS_ONLY, COMPOUND,31_766+473);
