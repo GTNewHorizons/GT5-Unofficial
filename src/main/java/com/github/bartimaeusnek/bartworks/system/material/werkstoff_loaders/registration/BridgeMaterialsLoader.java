@@ -100,11 +100,6 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                 }
                 werkstoffBridgeMaterial.mName = werkstoff.getVarName();
                 werkstoffBridgeMaterial.mDefaultLocalName = werkstoff.getDefaultName();
-                try {
-                    Field f = Materials.class.getField("mLocalizedName");
-                    f.set(werkstoffBridgeMaterial, werkstoff.getDefaultName());
-                } catch (NoSuchFieldException | IllegalAccessException ignored) {
-                }
                 werkstoffBridgeMaterial.mChemicalFormula = werkstoff.getToolTip();
                 if (LoaderReference.Thaumcraft)
                     werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
