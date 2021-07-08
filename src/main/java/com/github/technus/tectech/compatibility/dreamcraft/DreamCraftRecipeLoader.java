@@ -1096,7 +1096,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 getItemContainer("Hatch_Dynamo_UIV").get(1L), 1000, 16000000);
         
         //UMV Energy Hatch
-        TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Energy_UEV").get(1L),
+        TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Energy_UIV").get(1L),
         		192000, 128, 400000, 16, new Object[]{
         				getItemContainer("Hull_UMV").get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 16L),
