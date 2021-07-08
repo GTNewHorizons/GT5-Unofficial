@@ -22,6 +22,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
@@ -176,6 +177,18 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     }
 
     @Override
+    public void loadNBTData(NBTTagCompound aNBT){
+        super.loadNBTData(aNBT);
+        this.Tier = aNBT.getInteger("mTier");
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT){
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("mTier", this.Tier);
+    }
+
+    @Override
     public String[] getStructureDescription(ItemStack itemStack){
         return new String[]{
                 "8x Field Restriction Glass",
@@ -250,7 +263,6 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
         ItemStack[] inItems = tItems.toArray(new ItemStack[tItems.size()]);
 
         for (GT_Recipe recipe : tRecipes){
-            checkCoil();
             if (recipe.mSpecialValue > Tier) continue;
             if (recipe.isRecipeInputEqual(true, inFluids, inItems)){
                 mEUt = recipe.mEUt;
