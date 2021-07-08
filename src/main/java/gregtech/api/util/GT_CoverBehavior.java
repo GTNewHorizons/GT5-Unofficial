@@ -7,6 +7,7 @@ import gregtech.api.objects.GT_ItemStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 
 import static gregtech.api.enums.GT_Values.E;
@@ -25,12 +26,20 @@ public abstract class GT_CoverBehavior {
         return aCoverVariable;
     }
 
+    public NBTTagCompound doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, NBTTagCompound aNBT, ICoverable aTileEntity, long aTimer) {
+        return aNBT;
+    }
+
     /**
      * Called when someone rightclicks this Cover.
      * <p/>
      * return true, if something actually happens.
      */
     public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        return false;
+    }
+
+    public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, NBTTagCompound aNBT, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         return false;
     }
 
@@ -69,6 +78,10 @@ public abstract class GT_CoverBehavior {
     }
 
     public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
+        return null;
+    }
+
+    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity, NBTTagCompound aNBT) {
         return null;
     }
 

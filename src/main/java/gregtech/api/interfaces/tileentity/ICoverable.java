@@ -2,6 +2,7 @@ package gregtech.api.interfaces.tileentity;
 
 import gregtech.api.util.GT_CoverBehavior;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
     boolean canPlaceCoverIDAtSide(byte aSide, int aID);
@@ -16,9 +17,13 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
 
     void setCoverItemAtSide(byte aSide, ItemStack aCover);
 
+    void setCoverNBTDataAtSide(byte aSide, NBTTagCompound aNBT);
+
     int getCoverDataAtSide(byte aSide);
 
     int getCoverIDAtSide(byte aSide);
+
+    NBTTagCompound getCoverNBTDataAtSide(byte aSide);
 
     ItemStack getCoverItemAtSide(byte aSide);
 

@@ -95,6 +95,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     private UUID mOwnerUuid = GT_Utility.defaultUuid;
     private NBTTagCompound mRecipeStuff = new NBTTagCompound();
     private int cableUpdateDelay = 30;
+    private NBTTagCompound[] mCoverNBTData = new NBTTagCompound[6];
 
     public boolean mWasShutdown = false;
 
@@ -134,6 +135,10 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             aNBT.setLong("mStoredSteam", mStoredSteam);
             aNBT.setLong("mStoredEnergy", mStoredEnergy);
             aNBT.setIntArray("mCoverData", mCoverData);
+            for (int ii = 0; ii < 6; ii ++){
+                if (mCoverNBTData[ii] == null) mCoverNBTData[ii] = new NBTTagCompound();
+                aNBT.setTag("mCoverNBTData" + ii, mCoverNBTData[ii]);
+            }
             aNBT.setIntArray("mCoverSides", mCoverSides);
             aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
             aNBT.setByte("mColor", mColor);
@@ -225,6 +230,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             mOtherUpgrades = (byte) (aNBT.getByte("mOtherUpgrades") + aNBT.getByte("mBatteries") + aNBT.getByte("mLiBatteries"));
             mCoverSides = aNBT.getIntArray("mCoverSides");
             mCoverData = aNBT.getIntArray("mCoverData");
+            for (int ii = 0; ii < 6; ii ++)
+            mCoverNBTData[ii] = aNBT.getCompoundTag("mCoverNBTData" + ii);
             mSidedRedstone = aNBT.getByteArray("mRedstoneSided");
             mRecipeStuff = aNBT.getCompoundTag("GT.CraftingComponents");
             int nbtVersion = aNBT.getInteger("nbtVersion");
@@ -378,6 +385,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                                 int tCoverTickRate = tCover.getTickRate(i, getCoverIDAtSide(i), mCoverData[i], this);
                                 if (tCoverTickRate > 0 && mTickTimer % tCoverTickRate == 0) {
                                     mCoverData[i] = tCover.doCoverThings(i, getInputRedstoneSignal(i), getCoverIDAtSide(i), mCoverData[i], this, mTickTimer);
+                                    mCoverNBTData[i] = tCover.doCoverThings(i, getInputRedstoneSignal(i), getCoverIDAtSide(i), mCoverData[i], mCoverNBTData[i], this, mTickTimer);
                                     if (!hasValidMetaTileEntity()) {
                                         mRunningThroughTick = false;
                                         return;
@@ -1393,6 +1401,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             if (mCoverSides[i] != 0) {
                 tNBT.setIntArray("mCoverData", mCoverData);
                 tNBT.setIntArray("mCoverSides", mCoverSides);
+                for (int ii = 0; ii < 6; ii ++)
+                tNBT.setTag("mCoverNBTData" + ii, mCoverNBTData[ii]);
                 break;
             }
         }
@@ -1531,7 +1541,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     return getCoverIDAtSide(aSide) > 0 && getCoverBehaviorAtSide(aSide).onCoverShiftRightclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this, aPlayer);
                 }
 
-                if (getCoverBehaviorAtSide(aSide).onCoverRightclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this, aPlayer, aX, aY, aZ))
+                if (getCoverBehaviorAtSide(aSide).onCoverRightclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this, aPlayer, aX, aY, aZ) || getCoverBehaviorAtSide(aSide).onCoverRightclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), getCoverNBTDataAtSide(aSide), this, aPlayer, aX, aY, aZ))
                     return true;
 
                 if (!getCoverBehaviorAtSide(aSide).isGUIClickable(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this))
@@ -1761,6 +1771,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         if (aSide >= 0 && aSide < 6) {
             mCoverSides[aSide] = aID;
             mCoverData[aSide] = 0;
+            mCoverNBTData[aSide] = new NBTTagCompound();
             mCoverBehaviors[aSide] = GregTech_API.getCoverBehavior(aID);
             issueCoverUpdate(aSide);
             issueBlockUpdate();
@@ -1799,9 +1810,20 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
+    public void setCoverNBTDataAtSide(byte aSide, NBTTagCompound aNBT) {
+        if (aSide >= 0 && aSide < 6) mCoverNBTData[aSide] = aNBT;
+    }
+
+    @Override
     public int getCoverDataAtSide(byte aSide) {
         if (aSide >= 0 && aSide < 6) return mCoverData[aSide];
         return 0;
+    }
+
+    @Override
+    public NBTTagCompound getCoverNBTDataAtSide(byte aSide){
+        if (aSide >= 0 && aSide < 6) return mCoverNBTData[aSide];
+        return null;
     }
 
     public byte getLightValue() {

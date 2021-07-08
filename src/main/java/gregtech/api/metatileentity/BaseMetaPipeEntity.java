@@ -66,6 +66,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     private long mTickTimer = 0;
     protected Node node;
     protected NodePath nodePath;
+    private NBTTagCompound[] mCoverNBTData = new NBTTagCompound[6];
 
     public Node getNode() {
         return node;
@@ -98,6 +99,10 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         try {
             aNBT.setInteger("mID", mID);
             aNBT.setIntArray("mCoverData", mCoverData);
+            for (int ii = 0; ii < 6; ii ++){
+                if (mCoverNBTData[ii] == null) mCoverNBTData[ii] = new NBTTagCompound();
+                aNBT.setTag("mCoverNBTData" + ii, mCoverNBTData[ii]);
+            }
             aNBT.setIntArray("mCoverSides", mCoverSides);
             aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
             aNBT.setByte("mConnections", mConnections);
@@ -164,6 +169,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             else mID = aID;
             mCoverSides = aNBT.getIntArray("mCoverSides");
             mCoverData = aNBT.getIntArray("mCoverData");
+            for (int ii = 0; ii < 6; ii ++)
+            mCoverNBTData[ii] = aNBT.getCompoundTag("mCoverNBTData" + ii);
             mSidedRedstone = aNBT.getByteArray("mRedstoneSided");
             mConnections = aNBT.getByte("mConnections");
             mColor = aNBT.getByte("mColor");
@@ -280,6 +287,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                                     int tCoverTickRate = tCover.getTickRate(i, getCoverIDAtSide(i), mCoverData[i], this);
                                     if (tCoverTickRate > 0 && mTickTimer % tCoverTickRate == 0) {
                                         mCoverData[i] = tCover.doCoverThings(i, getInputRedstoneSignal(i), getCoverIDAtSide(i), mCoverData[i], this, mTickTimer);
+                                        mCoverNBTData[i] = tCover.doCoverThings(i, getInputRedstoneSignal(i), getCoverIDAtSide(i), mCoverData[i], mCoverNBTData[i], this, mTickTimer);
                                         if (!hasValidMetaTileEntity()) return;
                                     }
                                 }
@@ -872,6 +880,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             if (mCoverSides[i] != 0) {
                 tNBT.setIntArray("mCoverData", mCoverData);
                 tNBT.setIntArray("mCoverSides", mCoverSides);
+                for (int ii = 0; ii < 6; ii ++)
+                tNBT.setTag("mCoverNBTData" + ii, mCoverNBTData[ii]);
                 break;
             }
         }
@@ -993,7 +1003,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                 return getCoverIDAtSide(aSide) > 0 && getCoverBehaviorAtSide(aSide).onCoverShiftRightclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this, aPlayer);
             }
 
-            if (getCoverBehaviorAtSide(aSide).onCoverRightclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this, aPlayer, aX, aY, aZ))
+            if (getCoverBehaviorAtSide(aSide).onCoverRightclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this, aPlayer, aX, aY, aZ) || getCoverBehaviorAtSide(aSide).onCoverRightclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), getCoverNBTDataAtSide(aSide), this, aPlayer, aX, aY, aZ))
                 return true;
         }
 
@@ -1169,6 +1179,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         if (aSide >= 0 && aSide < 6) {
             mCoverSides[aSide] = aID;
             mCoverData[aSide] = 0;
+            mCoverNBTData[aSide] = new NBTTagCompound();
             mCoverBehaviors[aSide] = GregTech_API.getCoverBehavior(aID);
             issueCoverUpdate(aSide);
             issueBlockUpdate();
@@ -1207,9 +1218,20 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
+    public void setCoverNBTDataAtSide(byte aSide, NBTTagCompound aNBT){
+        if (aSide >= 0 && aSide < 6) mCoverNBTData[aSide] = aNBT;
+    }
+
+    @Override
     public int getCoverDataAtSide(byte aSide) {
         if (aSide >= 0 && aSide < 6) return mCoverData[aSide];
         return 0;
+    }
+
+    @Override
+    public NBTTagCompound getCoverNBTDataAtSide(byte aSide){
+        if (aSide >= 0 && aSide < 6) return mCoverNBTData[aSide];
+        return null;
     }
 
     @Override
