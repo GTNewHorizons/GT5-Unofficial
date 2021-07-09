@@ -26,6 +26,11 @@ public class GT_Cover_ItemMeter extends GT_CoverBehavior {
     private static final int INVERT_BIT = 0x40000000;
 
     @Override
+    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        return false;
+    }
+
+    @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         //Convert from ver. 5.09.33.50
         if ((CONVERTED_BIT & aCoverVariable) == 0)

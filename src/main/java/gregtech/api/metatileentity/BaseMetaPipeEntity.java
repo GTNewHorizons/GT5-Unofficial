@@ -286,8 +286,9 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                                     GT_CoverBehavior tCover = getCoverBehaviorAtSide(i);
                                     int tCoverTickRate = tCover.getTickRate(i, getCoverIDAtSide(i), mCoverData[i], this);
                                     if (tCoverTickRate > 0 && mTickTimer % tCoverTickRate == 0) {
-                                        mCoverData[i] = tCover.doCoverThings(i, getInputRedstoneSignal(i), getCoverIDAtSide(i), mCoverData[i], this, mTickTimer);
-                                        mCoverNBTData[i] = tCover.doCoverThings(i, getInputRedstoneSignal(i), getCoverIDAtSide(i), mCoverData[i], mCoverNBTData[i], this, mTickTimer);
+                                        byte tRedstone = tCover.isRedstoneSensitive(i, getCoverIDAtSide(i), mCoverData[i], this, mTickTimer) ? getInputRedstoneSignal(i) : 0;
+                                        mCoverData[i] = tCover.doCoverThings(i, tRedstone, getCoverIDAtSide(i), mCoverData[i], this, mTickTimer);
+                                        mCoverNBTData[i] = tCover.doCoverThings(i, tRedstone, getCoverIDAtSide(i), mCoverData[i], mCoverNBTData[i], this, mTickTimer);
                                         if (!hasValidMetaTileEntity()) return;
                                     }
                                 }

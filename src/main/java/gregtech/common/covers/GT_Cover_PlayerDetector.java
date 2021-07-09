@@ -20,6 +20,11 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
     private int range = 8;
 
     @Override
+    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        return false;
+    }
+
+    @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         boolean playerDetected = false;
 

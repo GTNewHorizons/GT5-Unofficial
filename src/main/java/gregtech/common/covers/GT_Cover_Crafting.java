@@ -9,6 +9,11 @@ import net.minecraft.network.play.server.S2DPacketOpenWindow;
 
 public class GT_Cover_Crafting extends GT_CoverBehavior {
     @Override
+    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        return false;
+    }
+
+    @Override
     public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if ((aPlayer instanceof EntityPlayerMP)) {
             ((EntityPlayerMP) aPlayer).getNextWindowId();

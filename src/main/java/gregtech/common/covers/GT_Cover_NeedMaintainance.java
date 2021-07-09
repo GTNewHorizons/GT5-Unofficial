@@ -24,6 +24,11 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
     }
 
     @Override
+    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        return false;
+    }
+
+    @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         boolean needsRepair = false;
         if (aTileEntity instanceof IGregTechTileEntity) {

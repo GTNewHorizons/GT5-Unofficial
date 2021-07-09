@@ -19,6 +19,10 @@ public abstract class GT_CoverBehavior {
 
     public EntityPlayer lastPlayer = null;
 
+    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        return true;
+    }
+
     /**
      * Called by updateEntity inside the covered TileEntity. aCoverVariable is the Value you returned last time.
      */
