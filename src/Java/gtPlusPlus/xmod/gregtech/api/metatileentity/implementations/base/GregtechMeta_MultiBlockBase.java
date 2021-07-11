@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import net.minecraft.util.ChatComponentTranslation;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.GregTech_API;
@@ -2537,6 +2538,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		if (aPlayer.isSneaking())
 			return tSuper;
 		mVoidExcess = !mVoidExcess;
+		aPlayer.addChatMessage(new ChatComponentTranslation(mVoidExcess ? "interaction.voidexcess.enabled" : "interaction.voidexcess.disabled"));
 		return true;
 	}
 

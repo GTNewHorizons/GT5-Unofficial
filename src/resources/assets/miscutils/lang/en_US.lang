@@ -3235,3 +3235,6 @@ tile.Botmium Frame Box.name=Botmium Frame Box
 item.itemBasicTurbine.name=Basic Turbine
 item.itemBasicTurbine_0.name=Basic Iron Turbine
 item.itemBasicTurbine_1.name=Basic Bronze Turbine
+
+interaction.voidexcess.enabled=Void Excess Enabled
+interaction.voidexcess.disabled=Void Excess Disabled
