@@ -18,6 +18,7 @@ public class FluidsBuilder {
         crackedNaquadahAsphalt_Lightly();
         crackedNaquadahAsphalt_Moderately();
         crackedNaquadahAsphalt_Heavily();
+        combustionPromotor();
     }
 
     public static void crackedNaquadahGas_Lightly(){
@@ -144,5 +145,15 @@ public class FluidsBuilder {
         tmp2.SetTexture("heavilyCrackedNaquadahAsphalt");
         tmp2.setBlockName("heavilyCrackedNaquadahAsphalt");
         GameRegistry.registerBlock(tmp2,"heavilyCrackedNaquadahAsphalt");
+    }
+
+    public static void combustionPromotor(){
+        Fluid tmp = BaseFluid.BuildFluid("combustionPromotor");
+        tmp.setGaseous(false)
+                .setTemperature(300);
+        BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
+        tmp2.SetTexture("combustionPromotor");
+        tmp2.setBlockName("combustionPromotor");
+        GameRegistry.registerBlock(tmp2,"combustionPromotor");
     }
 }

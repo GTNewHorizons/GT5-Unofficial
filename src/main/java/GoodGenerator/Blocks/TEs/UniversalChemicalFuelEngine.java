@@ -9,23 +9,30 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
+
+    protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.45D;
+    protected final double GAS_EFFICIENCY_COEFFICIENT = 0.30D;
+
+    private long leftEnergy = 0;
 
     private IStructureDefinition<UniversalChemicalFuelEngine> multiDefinition = null;
 
@@ -172,6 +179,112 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
+    }
+
+    @Override
+    public int getPollutionPerTick(ItemStack aStack) {
+        return (int)Math.sqrt(this.mEUt) / 20;
+    }
+
+    @Override
+    public boolean checkRecipe_EM(ItemStack aStack) {
+
+        ArrayList<FluidStack> tFluids = getStoredFluids();
+
+        Collection<GT_Recipe> tDieselFuels = GT_Recipe.GT_Recipe_Map.sDieselFuels.mRecipeList;
+        Collection<GT_Recipe> tGasFuels = GT_Recipe.GT_Recipe_Map.sTurbineFuels.mRecipeList;
+
+        int PromoterAmount = findLiquidAmount(getPromoter(), tFluids);
+
+        for (GT_Recipe recipe : tDieselFuels) {
+            FluidStack tFuel = findFuel(recipe);
+            if (tFuel == null) continue;
+            int FuelAmount = findLiquidAmount(tFuel, tFluids);
+            if (FuelAmount == 0) continue;
+            double eff = calculateEfficiency(FuelAmount, PromoterAmount, DIESEL_EFFICIENCY_COEFFICIENT);
+
+            consumeAllLiquid(tFuel);
+            consumeAllLiquid(getPromoter());
+
+            this.mEUt = (int)(eff * FuelAmount * recipe.mSpecialValue / 20.0D);
+            this.mMaxProgresstime = 20;
+            addAutoEnergy((long)(eff * FuelAmount * recipe.mSpecialValue / 20.0D));
+            this.updateSlots();
+            return true;
+        }
+
+        for (GT_Recipe recipe : tGasFuels) {
+            FluidStack tFuel = findFuel(recipe);
+            if (tFuel == null) continue;
+            int FuelAmount = findLiquidAmount(tFuel, tFluids);
+            if (FuelAmount == 0) continue;
+            double eff = calculateEfficiency(FuelAmount, PromoterAmount, GAS_EFFICIENCY_COEFFICIENT);
+
+            consumeAllLiquid(tFuel);
+            consumeAllLiquid(getPromoter());
+
+            this.mEUt = (int)(eff * FuelAmount * recipe.mSpecialValue / 20.0D);
+            this.mMaxProgresstime = 20;
+            addAutoEnergy((long)(eff * FuelAmount * recipe.mSpecialValue / 20.0D));
+            this.updateSlots();
+            return true;
+        }
+
+        return false;
+    }
+
+    public void addAutoEnergy(long outputPower){
+        if (this.mDynamoHatches.size() > 0)
+            for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches){
+                long voltage = tHatch.maxEUOutput();
+                long power = voltage * tHatch.maxAmperesOut();
+                long outputAmperes;
+                if (outputPower > power) doExplosion(8 * GT_Utility.getTier(power));
+                if (outputPower >= voltage){
+                    leftEnergy += outputPower;
+                    outputAmperes = leftEnergy / voltage;
+                    leftEnergy -= outputAmperes * voltage;
+                    addEnergyOutput_EM(voltage, outputAmperes);
+                }
+                else{
+                    addEnergyOutput_EM(outputPower, 1);
+                }
+            }
+    }
+
+    public FluidStack getPromoter() {
+        return FluidRegistry.getFluidStack("combustionpromotor", 1);
+    }
+
+    public FluidStack findFuel(GT_Recipe aFuel) {
+        return GT_Utility.getFluidForFilledItem(aFuel.mInputs[0], true);
+    }
+
+    public double calculateEfficiency(int aFuel, int aPromoter, double coefficient){
+        if (aPromoter == 0) return 0.0d;
+        return Math.exp(-coefficient * (double)aFuel / (double)aPromoter);
+    }
+
+    public int findLiquidAmount(FluidStack liquid, List<FluidStack> input) {
+        int cnt = 0;
+        for (FluidStack fluid : input){
+            if (fluid.isFluidEqual(liquid)) {
+                cnt += fluid.amount;
+            }
+        }
+        if (cnt < 0) cnt = 0;
+        return cnt;
+    }
+
+    public void consumeAllLiquid(FluidStack liquid) {
+        for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                FluidStack tLiquid = tHatch.getFluid();
+                if (tLiquid != null && tLiquid.isFluidEqual(liquid)) {
+                    tHatch.drain(tLiquid.amount, true);
+                }
+            }
+        }
     }
 
     @Override

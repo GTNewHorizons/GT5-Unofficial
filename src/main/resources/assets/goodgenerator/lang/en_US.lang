@@ -34,6 +34,7 @@ fluid.heavilyCrackedHeavyNaquadahFuel=Severely Cracked Heavy Naquadah Fuel
 fluid.lightlyCrackedNaquadahAsphalt=Lightly Cracked Naquadah Asphalt
 fluid.moderatelyCrackedNaquadahAsphalt=Moderately Cracked Naquadah Asphalt
 fluid.heavilyCrackedNaquadahAsphalt=Severely Cracked Naquadah Asphalt
+fluid.combustionPromotor=Combustion Promoter
 
 tile.lightlyCrackedNaquadahGas.name=Lightly Cracked Naquadah Gas
 tile.moderatelyCrackedNaquadahGas.name=Moderately Cracked Naquadah Gas
@@ -47,6 +48,7 @@ tile.heavilyCrackedHeavyNaquadahFuel.name=Severely Cracked Heavy Naquadah Fuel
 tile.lightlyCrackedNaquadahAsphalt.name=Lightly Cracked Naquadah Asphalt
 tile.moderatelyCrackedNaquadahAsphalt.name=Moderately Cracked Naquadah Asphalt
 tile.heavilyCrackedNaquadahAsphalt.name=Severely Cracked Naquadah Asphalt
+tile.combustionPromotor.name=Combustion Promoter
 
 itemGroup.Good Generator=Good Generator
 
