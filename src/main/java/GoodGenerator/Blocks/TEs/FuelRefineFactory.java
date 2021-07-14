@@ -168,7 +168,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                 .addInputBus("The casings adjoin the field restriction glass.")
                 .addOutputHatch("The casings adjoin the field restriction glass.")
                 .addEnergyHatch("The casings adjoin the field restriction glass.")
-                .toolTipFinisher("Good Generator");;
+                .toolTipFinisher("Good Generator");
         if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return tt.getInformation();
         } else {
@@ -259,8 +259,8 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
             }
         }
 
-        FluidStack[] inFluids = tFluids.toArray(new FluidStack[tFluids.size()]);
-        ItemStack[] inItems = tItems.toArray(new ItemStack[tItems.size()]);
+        FluidStack[] inFluids = tFluids.toArray(new FluidStack[0]);
+        ItemStack[] inItems = tItems.toArray(new ItemStack[0]);
 
         for (GT_Recipe recipe : tRecipes){
             if (recipe.mSpecialValue > Tier) continue;
