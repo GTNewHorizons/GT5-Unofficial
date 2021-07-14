@@ -22,6 +22,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
@@ -34,12 +35,12 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
 public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
-    private IStructureDefinition<MultiNqGenerator> multiDefinition = null;
-    private int ticker = 0;
-    private long leftEnergy = 0;
-    boolean fluidLocker = true;
-    FluidStack lockedFluid = null;
-    int times = 1;
+    protected IStructureDefinition<MultiNqGenerator> multiDefinition = null;
+    protected int ticker = 0;
+    protected long leftEnergy = 0;
+    protected boolean fluidLocker = true;
+    protected FluidStack lockedFluid = null;
+    protected int times = 1;
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
@@ -150,6 +151,31 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT){
+        super.loadNBTData(aNBT);
+        this.ticker = aNBT.getInteger("mTicker");
+        this.fluidLocker = aNBT.getBoolean("mIsLocked");
+        this.times = aNBT.getInteger("mTimes");
+        this.leftEnergy = aNBT.getLong("mLeftEnergy");
+        if (FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")) != null)
+            this.lockedFluid = new FluidStack(FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")), aNBT.getInteger("mLockedFluidAmount"));
+        else this.lockedFluid = null;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT){
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("mTicker", this.ticker);
+        aNBT.setBoolean("mIsLocked", this.fluidLocker);
+        aNBT.setInteger("mTimes", this.times);
+        aNBT.setLong("mLeftEnergy", this.leftEnergy);
+        if (lockedFluid != null){
+            aNBT.setString("mLockedFluidName", this.lockedFluid.getFluid().getName());
+            aNBT.setInteger("mLockedFluidAmount", this.lockedFluid.amount);
+        }
     }
 
     @Override
@@ -296,10 +322,15 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                 long power = voltage * tHatch.maxAmperesOut();
                 long outputAmperes;
                 if (outputPower > power) doExplosion(8 * GT_Utility.getTier(power));
-                leftEnergy += outputPower;
-                outputAmperes = leftEnergy / voltage;
-                leftEnergy -= outputAmperes * voltage;
-                addEnergyOutput_EM(voltage ,outputAmperes);
+                if (outputPower >= voltage){
+                    leftEnergy += outputPower;
+                    outputAmperes = leftEnergy / voltage;
+                    leftEnergy -= outputAmperes * voltage;
+                    addEnergyOutput_EM(voltage, outputAmperes);
+                }
+                else{
+                    addEnergyOutput_EM(outputPower, 1);
+                }
             }
     }
 
