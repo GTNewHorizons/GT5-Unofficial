@@ -286,41 +286,6 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
     }
 
     @Override
-    public boolean addInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-                ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                ((GT_MetaTileEntity_Hatch_Input)aMetaTileEntity).mRecipeMap = this.getRecipeMap();
-                return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input)aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus && ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mTier == 0) {
-                ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                ((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity).mRecipeMap = this.getRecipeMap();
-                return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
-            } else {
-                return false;
-            }
-        }
-    }
-
-    @Override
-    public boolean addOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus && ((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity).mTier == 0) {
-                ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus)aMetaTileEntity);
-            } else {
-                return false;
-            }
-        }
-    }
-
-    @Override
     public int getMaxEfficiency(ItemStack itemStack) {
         return 10000;
     }
@@ -348,7 +313,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
     private static final String[] DESCRIPTION = new String[]{
             "Circuit Assembly Line", "Size(WxHxD): (2-7)x3x3, variable length",
             "Bottom: Steel Machine Casing(or 1x Maintenance or Input Hatch),",
-            "ULV Input Bus (Last ULV Output Bus), Steel Machine Casing",
+            "Input Bus (Last Output Bus), Steel Machine Casing",
             "Middle: EV+ Tier Glass, Assembling Line Casing, EV+ Tier Glass",
             "Top: Grate Machine Casing (or Controller or 1x Energy Hatch)",
             "Up to 7 repeating slices, last is Output Bus",
