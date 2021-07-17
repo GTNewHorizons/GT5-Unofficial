@@ -50,7 +50,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
         return new String[]{
-                "6x Tungstensteel Pipe Casing",
+                "6x TungstenSteel Pipe Casing",
                 "48x Field Restriction Casing",
                 "36x Radiation Proof Steel Frame Box",
                 "At least 77x Radiation Proof Machine Casing",

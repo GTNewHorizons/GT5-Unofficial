@@ -163,7 +163,6 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                 .addInfo("The structure is too complex!")
                 .addInfo("Follow the TecTech blueprint to build the main structure.")
                 .addSeparator()
-                .addController("Front bottom")
                 .addInputHatch("The casings adjoin the field restriction glass.")
                 .addInputBus("The casings adjoin the field restriction glass.")
                 .addOutputHatch("The casings adjoin the field restriction glass.")
@@ -197,7 +196,8 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                 "1~16x Input Hatch",
                 "1~16x Output Hatch",
                 "1~16x Input Bus",
-                "1~16x Energy Hatch"
+                "1~16x Energy Hatch",
+                "All the hatches should adjoin the field restriction glass"
         };
     }
 

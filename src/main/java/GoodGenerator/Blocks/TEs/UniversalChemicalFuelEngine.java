@@ -14,11 +14,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +35,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
     protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.45D;
     protected final double GAS_EFFICIENCY_COEFFICIENT = 0.30D;
 
-    private long leftEnergy = 0;
+    protected long leftEnergy = 0;
 
     private IStructureDefinition<UniversalChemicalFuelEngine> multiDefinition = null;
 
@@ -173,7 +176,19 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[0];
+        return new String[]{
+                "93x Stable Titanium Machine Casings",
+                "14x Titanium Pipe Casings",
+                "14x Titanium Gear Box Casings",
+                "14x Titanium Plated Cylinders",
+                "14x Engine Intake Casings",
+                "Hint block 0: Air",
+                "Hint block 1: Maintenance Hatch",
+                "Hint block 2: Muffler Hatch",
+                "Hint block 3: Input Hatch",
+                "Hint block 3: Dynamo Hatch",
+                "Doesn't support TecTech Dynamo Hatch"
+        };
     }
 
     @Override
@@ -184,6 +199,46 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
         return (int)Math.sqrt(this.mEUt) / 20;
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT){
+        super.loadNBTData(aNBT);
+        this.leftEnergy = aNBT.getLong("mLeftEnergy");
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT){
+        super.saveNBTData(aNBT);
+        aNBT.setLong("mLeftEnergy", this.leftEnergy);
+    }
+
+    @Override
+    public String[] getDescription(){
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Chemical Engine")
+                .addInfo("BURNING BURNING BURNING")
+                .addInfo("Use combustible liquid to generate power.")
+                .addInfo("You need to supply Combustion Promoter to keep it running.")
+                .addInfo("This engine will consume all the fuel and combustion promoter in the hatch every second.")
+                .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel.")
+                .addInfo("The proportion is bigger, and the efficiency will be higher.")
+                .addInfo("It creates sqrt(Current Output Power) pollution every second")
+                .addInfo("If you forge to supply Combustion Promoter, this engine will swallow all the fuel without outputting energy.")
+                .addInfo("This engine follows the second law of thermodynamics, so the efficiency is up to 100%.")
+                .addInfo("The structure is too complex!")
+                .addInfo("Follow the TecTech blueprint to build the main structure.")
+                .addSeparator()
+                .addEnergyHatch("Hint block with dot 1")
+                .addMufflerHatch("Hint block with dot 2")
+                .addInputHatch("Hint block with dot 3")
+                .addDynamoHatch("Hint block with dot 4")
+                .toolTipFinisher("Good Generator");
+        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            return tt.getInformation();
+        } else {
+            return tt.getStructureInformation();
+        }
     }
 
     @Override
