@@ -48,6 +48,7 @@ import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -168,31 +169,46 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     }
 
     private Predicate<GT_Worldgen_GT_Ore_Layer> makeOreLayerPredicate() {
-        switch (this.getBaseMetaTileEntity().getWorld().provider.dimensionId) {
+        World world = this.getBaseMetaTileEntity().getWorld();
+        switch (world.provider.dimensionId) {
             case -1:
                 return gt_worldgen -> gt_worldgen.mNether;
             case 0:
                 return gt_worldgen -> gt_worldgen.mOverworld;
             case 1:
                 return gt_worldgen -> gt_worldgen.mEnd || gt_worldgen.mEndAsteroid;
+            case 7:
+                /*
+                explicitely giving different dim numbers so it default to false in the config, keeping compat
+                with the current worldgen config
+                */
+
+                return gt_worldgen -> gt_worldgen.isGenerationAllowed(world, 0, 7);
             default:
                 throw new IllegalStateException();
         }
     }
-    
+
     private Predicate<GT_Worldgen_GT_Ore_SmallPieces> makeSmallOresPredicate() {
-        switch (this.getBaseMetaTileEntity().getWorld().provider.dimensionId) {
+        World world = this.getBaseMetaTileEntity().getWorld();
+        switch (world.provider.dimensionId) {
             case -1:
                 return gt_worldgen -> gt_worldgen.mNether;
             case 0:
                 return gt_worldgen -> gt_worldgen.mOverworld;
             case 1:
                 return gt_worldgen -> gt_worldgen.mEnd;
+            case 7:
+                /*
+                explicitely giving different dim numbers so it default to false in the config, keeping compat
+                with the current worldgen config
+                */
+                return gt_worldgen -> gt_worldgen.isGenerationAllowed(world, 0, 7);
             default:
                 throw new IllegalStateException();
         }
     }
-    
+
     private void getDropsVanillaVeins(Predicate<GT_Worldgen_GT_Ore_Layer> oreLayerPredicate) {
         GT_Worldgen_GT_Ore_Layer.sList.stream().filter(gt_worldgen -> gt_worldgen.mEnabled && oreLayerPredicate.test(gt_worldgen)).forEach(element -> {
                     dropmap.put(new Pair<>((int) element.mPrimaryMeta,false), (float) element.mWeight);
@@ -208,17 +224,17 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
                 dropmap.put(new Pair<>((int) element.mMeta,false), (float) element.mAmount)
         );
     }
-    
+
     private void getDropMapVanilla() {
         getDropsVanillaVeins(makeOreLayerPredicate());
         getDropsVanillaSmallOres(makeSmallOresPredicate());
     }
-    
+
     private void getDropMapSpace(ModDimensionDef finalDef) {
         getDropsOreVeinsSpace(finalDef);
         getDropsSmallOreSpace(finalDef);
     }
-    
+
     private void getDropsOreVeinsSpace(ModDimensionDef finalDef) {
         Set space = GalacticGreg.oreVeinWorldgenList.stream()
                 .filter(gt_worldgen -> gt_worldgen.mEnabled && gt_worldgen instanceof GT_Worldgen_GT_Ore_Layer_Space && ((GT_Worldgen_GT_Ore_Layer_Space) gt_worldgen).isEnabledForDim(finalDef))
@@ -286,7 +302,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         if (storedNobleGas == null || !consumeNobleGas(storedNobleGas))
             multiplier = TIER_MULTIPLIER;
     }
-    
+
     private void getDropMapBartworks(ModDimensionDef finalDef, int aID) {
         Consumer<BW_OreLayer> addToList = makeAddToList();
         if (aID == ConfigHandler.ross128BID)
@@ -310,7 +326,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
             }
         };
     }
-    
+
     private ModDimensionDef makeModDimDef() {
         return getModContainers().stream()
                 .flatMap(modContainer -> modContainer.getDimensionList().stream())
@@ -318,7 +334,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
                         .equals(((ChunkProviderServer) this.getBaseMetaTileEntity().getWorld().getChunkProvider()).currentChunkProvider.getClass().getName()))
                 .findFirst().orElse(null);
     }
-    
+
     private void addOresVeinsBartworks(ModDimensionDef finalDef, Consumer<BW_OreLayer> addToList) {
         try {
             Set space = GalacticGreg.oreVeinWorldgenList.stream()
@@ -328,7 +344,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
             space.forEach(addToList);
         } catch (NullPointerException ignored) {}
     }
-    
+
     private void addSmallOresBartworks(ModDimensionDef finalDef) {
         try {
             Set space = GalacticGreg.smallOreWorldgenList.stream()
@@ -341,7 +357,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
             );
         } catch (NullPointerException ignored) {}
     }
-    
+
     private void handleExtraDrops(int id) {
         Optional.ofNullable(getExtraDropsDimMap().get(id)).ifPresent(e -> e.forEach(f -> dropmap.put(f.getKey(), f.getValue())));
     }
@@ -357,7 +373,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     }
 
     private void handleModDimDef(int id) {
-        if (id <= 1 && id >= -1)
+        if ((id <= 1 && id >= -1) || id == 7)
             getDropMapVanilla();
         Optional.ofNullable(makeModDimDef()).ifPresent(def -> {
             handleDimBasedDrops(def, id);
@@ -375,7 +391,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     private void makeDropMap() {
         if (dropmap == null || totalWeight == 0)
-          calculateDropMap();
+            calculateDropMap();
     }
 
     private void handleOutputs() {
