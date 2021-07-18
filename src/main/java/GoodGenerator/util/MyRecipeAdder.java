@@ -19,7 +19,7 @@ public class MyRecipeAdder {
             null,
             "goodgenerator:textures/gui/naquadah_reactor",
             0,0,1,1,1,
-            "Basic Output Voltage: ",
+            StatCollector.translateToLocal("value.naquadah_reactor") + " ",
             1,
             " EU/t",
             false,
@@ -33,9 +33,9 @@ public class MyRecipeAdder {
             null,
             "gregtech:textures/gui/basicmachines/FusionReactor",
             6,0, 0, 1, 1,
-            "Need Tier ",
+            StatCollector.translateToLocal("value.naquadah_fuel_refine_factory.0") + " ",
             1,
-            " Coil",
+            StatCollector.translateToLocal("value.naquadah_fuel_refine_factory.1"),
             true,
             true
     );

@@ -1,6 +1,7 @@
 package GoodGenerator.Blocks.TEs;
 
 import GoodGenerator.Loader.Loaders;
+import GoodGenerator.util.DescTextLocalization;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
@@ -176,19 +177,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[]{
-                "93x Stable Titanium Machine Casings",
-                "14x Titanium Pipe Casings",
-                "14x Titanium Gear Box Casings",
-                "14x Titanium Plated Cylinders",
-                "14x Engine Intake Casings",
-                "Hint block 0: Air",
-                "Hint block 1: Maintenance Hatch",
-                "Hint block 2: Muffler Hatch",
-                "Hint block 3: Input Hatch",
-                "Hint block 3: Dynamo Hatch",
-                "Doesn't support TecTech Dynamo Hatch"
-        };
+        return DescTextLocalization.addText("UniversalChemicalFuelEngine.hint", 11);
     }
 
     @Override

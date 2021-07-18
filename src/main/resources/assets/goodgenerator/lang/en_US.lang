@@ -52,8 +52,41 @@ tile.combustionPromotor.name=Combustion Promoter
 
 itemGroup.Good Generator=Good Generator
 
+scanner.info.FRF=Coil Tier:
+
 tile.recipe.naquadah_reactor=Large Naquadah Reactor
 tile.naquadah_fuel_refine_factory=Naquadah Fuel Refine Factory
+value.naquadah_reactor=Basic Output Voltage:
+value.naquadah_fuel_refine_factory.0=Need Tier
+value.naquadah_fuel_refine_factory.1= Coil
+
+FuelRefineFactory.hint.0=8x Field Restriction Glass
+FuelRefineFactory.hint.1=32x Field Restriction Coil of any tier
+FuelRefineFactory.hint.2=At least 104x Naquadah Fuel Refine Factory Casing
+FuelRefineFactory.hint.3=1~16x Input Hatch
+FuelRefineFactory.hint.4=1~16x Output Hatch
+FuelRefineFactory.hint.5=1~16x Input Bus
+FuelRefineFactory.hint.6=1~16x Energy Hatch
+FuelRefineFactory.hint.7=All the hatches should adjoin the field restriction glass
+MultiNqGenerator.hint.0=6x TungstenSteel Pipe Casing
+MultiNqGenerator.hint.1=48x Field Restriction Casing
+MultiNqGenerator.hint.2=36x Radiation Proof Steel Frame Box
+MultiNqGenerator.hint.3=At least 77x Radiation Proof Machine Casing
+MultiNqGenerator.hint.4=1~3x Input Hatch
+MultiNqGenerator.hint.5=0~1x Output Hatch
+MultiNqGenerator.hint.6=1x Maintenance Hatch
+MultiNqGenerator.hint.7=1x Dynamo Hatch
+UniversalChemicalFuelEngine.hint.0=93x Stable Titanium Machine Casings
+UniversalChemicalFuelEngine.hint.1=14x Titanium Pipe Casings
+UniversalChemicalFuelEngine.hint.2=14x Titanium Gear Box Casings
+UniversalChemicalFuelEngine.hint.3=14x Titanium Plated Cylinders
+UniversalChemicalFuelEngine.hint.4=14x Engine Intake Casings
+UniversalChemicalFuelEngine.hint.5=0 - Air
+UniversalChemicalFuelEngine.hint.6=1 - Maintenance Hatch
+UniversalChemicalFuelEngine.hint.7=2 - Muffler Hatch
+UniversalChemicalFuelEngine.hint.8=3 - Input Hatch
+UniversalChemicalFuelEngine.hint.9=4 - Dynamo Hatch
+UniversalChemicalFuelEngine.hint.10=Doesn't support TecTech Dynamo Hatch
 
 achievement.gt.blockmachines.nag=Large Naquadah Reactor
 achievement.gt.blockmachines.nag.desc=Pickup this item to see the recipe in NEI

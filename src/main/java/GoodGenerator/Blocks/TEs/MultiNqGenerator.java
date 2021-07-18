@@ -2,6 +2,7 @@ package GoodGenerator.Blocks.TEs;
 
 import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.Loaders;
+import GoodGenerator.util.DescTextLocalization;
 import GoodGenerator.util.MyRecipeAdder;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
@@ -49,16 +50,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[]{
-                "6x TungstenSteel Pipe Casing",
-                "48x Field Restriction Casing",
-                "36x Radiation Proof Steel Frame Box",
-                "At least 77x Radiation Proof Machine Casing",
-                "1~3x Input Hatch",
-                "0~1x Output Hatch",
-                "1x Maintenance Hatch",
-                "1x Dynamo Hatch"
-        };
+        return DescTextLocalization.addText("MultiNqGenerator.hint", 8);
     }
 
     public final boolean addToGeneratorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex){

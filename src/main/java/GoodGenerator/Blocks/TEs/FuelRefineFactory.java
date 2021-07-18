@@ -1,6 +1,7 @@
 package GoodGenerator.Blocks.TEs;
 
 import GoodGenerator.Loader.Loaders;
+import GoodGenerator.util.DescTextLocalization;
 import GoodGenerator.util.MyRecipeAdder;
 import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
@@ -23,6 +24,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
@@ -189,16 +191,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack){
-        return new String[]{
-                "8x Field Restriction Glass",
-                "32x Field Restriction Coil of any tier",
-                "At least 104x Naquadah Fuel Refine Factory Casing",
-                "1~16x Input Hatch",
-                "1~16x Output Hatch",
-                "1~16x Input Bus",
-                "1~16x Energy Hatch",
-                "All the hatches should adjoin the field restriction glass"
-        };
+        return DescTextLocalization.addText("FuelRefineFactory.hint", 8);
     }
 
     public boolean dfs(Block e, World w,int x,int y,int z, int cnt){
@@ -336,6 +329,14 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        String[] infoData = new String[super.getInfoData().length + 1];
+        System.arraycopy(super.getInfoData(),0,infoData,0, super.getInfoData().length);
+        infoData[super.getInfoData().length] = StatCollector.translateToLocal("scanner.info.FRF") + " " + this.Tier;
+        return infoData;
     }
 
     @Override
