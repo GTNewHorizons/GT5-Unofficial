@@ -3,6 +3,7 @@ package pers.gwyog.gtneioreplugin.util;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import net.minecraft.client.resources.I18n;
 
 public class DimensionHelper {
 
@@ -94,15 +95,9 @@ public class DimensionHelper {
             s = s.trim();
             for (int i = 0; i < DimNameDisplayed.length; i++) {
                 if (s.equals(DimNameDisplayed[i])) {
-                    s = DimName[i].replaceAll("GalacticraftCore_", "").replaceAll("GalacticraftMars_", "").replaceAll("GalaxySpace_", "").replaceAll("Vanilla_", "Vanilla ");
-                    if (s.equals("Twilight"))
-                        s = "Twilight Forrest";
-                    else if (s.equals("Underdark"))
-                        s = "Deep Dark";
-                    else if (s.equals("EndAsteroid"))
-                        s = "Far End Asteroids";
-                    
-                    switch (s) {
+                    s = I18n.format("gtnop.world." + DimName[i].replaceAll("GalacticraftCore_", "").replaceAll("GalacticraftMars_", "").replaceAll("GalaxySpace_", "").replaceAll("Vanilla_", "Vanilla "));
+                    String k = DimName[i].replaceAll("GalacticraftCore_", "").replaceAll("GalacticraftMars_", "").replaceAll("GalaxySpace_", "").replaceAll("Vanilla_", "Vanilla ");
+                    switch (k) {
                         case "Moon":
                             s = s + " (T1)";
                             break;
@@ -140,7 +135,6 @@ public class DimensionHelper {
                             s = s + " (T7)";
                             break;
                         case "Deep Dark":
-                        case "CentauriBb":
                         case "CentauriA":
                         case "VegaB":
                         case "BarnardC":
@@ -150,7 +144,7 @@ public class DimensionHelper {
                             s = s + " (T8)";
                             break;
                     }
-                    
+
                     dims[j] = s;
                 }
             }
