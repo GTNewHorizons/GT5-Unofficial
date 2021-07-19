@@ -134,7 +134,7 @@ public class DimensionHelper {
                         case "MakeMake":
                             s = s + " (T7)";
                             break;
-                        case "Deep Dark":
+                        case "Underdark":
                         case "CentauriA":
                         case "VegaB":
                         case "BarnardC":
