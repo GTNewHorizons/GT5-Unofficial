@@ -4,6 +4,7 @@ import com.detrav.DetravScannerMod;
 import com.detrav.items.DetravMetaGeneratedTool01;
 import com.detrav.utils.BartWorksHelper;
 import com.detrav.utils.GTppHelper;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -144,7 +145,8 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
             if (aTileEntity instanceof GT_TileEntity_Ores) {
                 GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) aTileEntity;
                 short meta = gt_entity.getMetaData();
-                String name = Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name"), meta%1000);
+                String format = LanguageRegistry.instance().getStringLocalization("gt.blockores." + meta + ".name");
+                String name = Materials.getLocalizedNameForItem(format, meta%1000);
                 addOreToHashMap(name, aPlayer);
                 if (!aPlayer.capabilities.isCreativeMode)
                     aItem.doDamage(aStack, this.mCosts);
@@ -178,7 +180,8 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
                                 && ((GT_TileEntity_Ores) tTileEntity).mNatural) {
                                 tMetaID = (short)((GT_TileEntity_Ores) tTileEntity).getMetaData();
                                 try {
-                                    String name = Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name"), tMetaID%1000);
+                                    String format = LanguageRegistry.instance().getStringLocalization(tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
+                                    String name = Materials.getLocalizedNameForItem(format, tMetaID%1000);
                                     if (data != 1 && name.startsWith(small_ore_keyword)) continue;
                                     addOreToHashMap(name, aPlayer);
                                 }
@@ -201,8 +204,8 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
                                 try {
                                     try {
                                         tMetaID = (short)tAssotiation.mMaterial.mMaterial.mMetaItemSubID;
-                                        
-                                        String name = Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation("gt.blockores." + tMetaID + ".name"), tMetaID%1000);
+                                        String format = LanguageRegistry.instance().getStringLocalization("gt.blockores." + tMetaID + ".name");
+                                        String name = Materials.getLocalizedNameForItem(format, tMetaID%1000);
                                         addOreToHashMap(name, aPlayer);
                                     } catch (Exception e1) {
                                         String name = tAssotiation.toString();
