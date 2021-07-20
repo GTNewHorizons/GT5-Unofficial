@@ -95,7 +95,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                         'X',
                             ofChain(
                                     ofHatchAdder(
-                                            FuelRefineFactory::addToFRFList,60,
+                                            FuelRefineFactory::addToFRFList,179,
                                             Loaders.FRF_Casings,0
                                     ),
                                     ofBlock(
@@ -343,9 +343,9 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if(aSide == aFacing){
-            if(aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).glow().build()};
-            return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).glow().build()};
+            if(aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(179), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).glow().build()};
+            return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(179), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).glow().build()};
         }
-        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(48)};
+        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(179)};
     }
 }
