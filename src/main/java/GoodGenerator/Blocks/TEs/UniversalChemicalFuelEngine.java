@@ -20,6 +20,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
@@ -206,6 +207,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
     public String[] getDescription(){
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Chemical Engine")
+                .addInfo("Controller block for the Chemical Engine")
                 .addInfo("BURNING BURNING BURNING")
                 .addInfo("Use combustible liquid to generate power.")
                 .addInfo("You need to supply Combustion Promoter to keep it running.")
@@ -213,10 +215,10 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
                 .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel.")
                 .addInfo("The proportion is bigger, and the efficiency will be higher.")
                 .addInfo("It creates sqrt(Current Output Power) pollution every second")
-                .addInfo("If you forge to supply Combustion Promoter, this engine will swallow all the fuel without outputting energy.")
+                .addInfo("If you forge to supply Combustion Promoter, this engine will swallow all the fuel " + EnumChatFormatting.YELLOW + "without outputting energy" + EnumChatFormatting.GRAY + ".")
                 .addInfo("This engine follows the second law of thermodynamics, so the efficiency is up to 100%.")
                 .addInfo("The structure is too complex!")
-                .addInfo("Follow the TecTech blueprint to build the main structure.")
+                .addInfo("Follow the" + EnumChatFormatting.DARK_BLUE + " Tec" + EnumChatFormatting.BLUE + "Tech" + EnumChatFormatting.GRAY + " blueprint to build the main structure.")
                 .addSeparator()
                 .addEnergyHatch("Hint block with dot 1")
                 .addMufflerHatch("Hint block with dot 2")

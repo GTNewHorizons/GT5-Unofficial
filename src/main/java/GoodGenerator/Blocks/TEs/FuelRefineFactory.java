@@ -24,6 +24,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -158,12 +159,13 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     public String[] getDescription(){
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Naquadah Fuel Refine Factory")
+                .addInfo("Controller block for the Naquadah Fuel Refine Factory")
                 .addInfo("But at what cost?")
                 .addInfo("Produce the endgame naquadah fuel.")
                 .addInfo("Need field restriction coil to control the fatal radiation.")
                 .addInfo("Use higher tier coil to unlock more fuel and reduce the process time.")
                 .addInfo("The structure is too complex!")
-                .addInfo("Follow the TecTech blueprint to build the main structure.")
+                .addInfo("Follow the" + EnumChatFormatting.DARK_BLUE + " Tec" + EnumChatFormatting.BLUE + "Tech" + EnumChatFormatting.GRAY + " blueprint to build the main structure.")
                 .addSeparator()
                 .addInputHatch("The casings adjoin the field restriction glass.")
                 .addInputBus("The casings adjoin the field restriction glass.")

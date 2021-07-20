@@ -24,6 +24,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
@@ -382,7 +383,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                       .addInfo("Environmental Friendly!")
                       .addInfo("Generate power with the High-energy liquid.")
                       .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
-                      .addInfo("The reactor will explode when there are more than ONE types of fuel in the hatch!")
+                      .addInfo("The reactor will explode when there are more than" + EnumChatFormatting.RED + " ONE" + EnumChatFormatting.GRAY + " types of fuel in the hatch!")
                       .addInfo("Consume coolant 50mb/t to increase the efficiency:")
                       .addInfo("IC2 Coolant 105%, Super Coolant 150%, Cryotheum 275%")
                       .addInfo("Consume excited liquid to increase the output power:")
@@ -394,7 +395,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                       .beginStructureBlock(7, 8, 7, true)
                       .addController("Front bottom")
                       .addInfo("The structure is too complex!")
-                      .addInfo("Follow the TecTech blueprint to build the main structure.")
+                      .addInfo("Follow the" + EnumChatFormatting.DARK_BLUE + " Tec" + EnumChatFormatting.BLUE + "Tech" + EnumChatFormatting.GRAY + " blueprint to build the main structure.")
                       .addEnergyHatch("Any bottom layer casing, only accept ONE!")
                       .addInputHatch("Any bottom layer casing")
                       .addOutputHatch("Any bottom layer casing")
