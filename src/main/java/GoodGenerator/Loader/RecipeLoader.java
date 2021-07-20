@@ -1106,7 +1106,7 @@ public class RecipeLoader {
         GT_Values.RA.addBlastRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sapphire,1),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Carbon,3),
-                Materials.Nitrogen.getGas(1000),
+                FluidRegistry.getFluidStack("liquidnitrogen",1000),
                 null,
                 new ItemStack(Loaders.aluminumNitride,2),
                 null,
@@ -1118,7 +1118,7 @@ public class RecipeLoader {
         GT_Values.RA.addBlastRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.GreenSapphire,1),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Carbon,3),
-                Materials.Nitrogen.getGas(1000),
+                FluidRegistry.getFluidStack("liquidnitrogen",1000),
                 null,
                 new ItemStack(Loaders.aluminumNitride,2),
                 null,
