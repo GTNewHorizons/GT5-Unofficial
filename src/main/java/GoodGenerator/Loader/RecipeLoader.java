@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.util.GT_Utility;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeLoader {
     public static void RecipeLoad(){
@@ -40,7 +39,7 @@ public class RecipeLoader {
                         ItemList.Electric_Pump_ZPM.get(8),
                         new Object[]{OrePrefixes.circuit.get(Materials.Superconductor),4},
                         GT_OreDictUnificator.get(OrePrefixes.wireGt08,Materials.SuperconductorLuV,8),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeLarge,Materials.Lead,4),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeHuge,Materials.Naquadah,4),
                         GT_OreDictUnificator.get(OrePrefixes.plate,Materials.NaquadahAlloy,8),
                         GT_OreDictUnificator.get(OrePrefixes.screw,Materials.Osmium,16)
                 },

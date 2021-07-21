@@ -12,6 +12,8 @@ import static gregtech.api.enums.Materials.*;
 
 public class MyMaterial implements Runnable {
 
+    protected static final int OffsetID = 10001;
+
     //Uranium Based Fuel Line
     public static final Werkstoff graphiteUraniumMixture = new Werkstoff(
             new short[]{0x3a,0x77,0x3d},
@@ -20,7 +22,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addMixerRecipes().onlyDust(),
-            31000,
+            OffsetID,
             TextureSet.SET_DULL,
             new Pair<> (Graphite,3),
             new Pair<> (Uranium,1)
@@ -33,7 +35,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31001,
+            OffsetID + 1,
             TextureSet.SET_FLUID
     );
 
@@ -44,7 +46,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31002,
+            OffsetID + 2,
             TextureSet.SET_FLUID
     );
 
@@ -55,7 +57,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setToxic(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31003,
+            OffsetID + 3,
             TextureSet.SET_FLUID
     );
 
@@ -65,7 +67,7 @@ public class MyMaterial implements Runnable {
             "Uranium Carbide-Thorium Mixture",
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addMixerRecipes().onlyDust(),
-            31004,
+            OffsetID + 4,
             TextureSet.SET_DULL,
             new Pair<> (Thorium,8),
             new Pair<> (WerkstoffLoader.Thorium232,4),
@@ -80,7 +82,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31005,
+            OffsetID + 5,
             TextureSet.SET_FLUID
     );
 
@@ -91,7 +93,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31006,
+            OffsetID + 6,
             TextureSet.SET_FLUID
     );
 
@@ -102,7 +104,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setToxic(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31007,
+            OffsetID + 7,
             TextureSet.SET_FLUID
     );
 
@@ -112,7 +114,7 @@ public class MyMaterial implements Runnable {
             "Plutonium Oxide-Uranium Mixture",
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addMixerRecipes().onlyDust(),
-            31008,
+            OffsetID + 8,
             TextureSet.SET_SHINY,
             new Pair<> (Plutonium,10),
             new Pair<> (Oxygen,12),
@@ -127,7 +129,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31009,
+            OffsetID + 9,
             TextureSet.SET_FLUID
     );
 
@@ -138,7 +140,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31010,
+            OffsetID + 10,
             TextureSet.SET_FLUID
     );
 
@@ -149,7 +151,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setToxic(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31011,
+            OffsetID + 11,
             TextureSet.SET_FLUID
     );
 
@@ -159,7 +161,7 @@ public class MyMaterial implements Runnable {
             "Oxalate",
             Werkstoff.Types.BIOLOGICAL,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31012,
+            OffsetID + 12,
             TextureSet.SET_FLUID,
             new Pair<> (Hydrogen,2),
             new Pair<> (Carbon,2),
@@ -171,7 +173,7 @@ public class MyMaterial implements Runnable {
             "Vanadium Pentoxide",
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            31013,
+            OffsetID + 13,
             TextureSet.SET_SHINY,
             new Pair<> (Vanadium,2),
             new Pair<> (Oxygen,5)
@@ -184,7 +186,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31014,
+            OffsetID + 14,
             TextureSet.SET_DULL
     );
 
@@ -195,7 +197,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            31015,
+            OffsetID + 15,
             TextureSet.SET_DULL
     );
 
@@ -206,7 +208,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            31016,
+            OffsetID + 16,
             TextureSet.SET_SHINY
     );
 
@@ -217,7 +219,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            31017,
+            OffsetID + 17,
             TextureSet.SET_DULL
     );
 
@@ -228,7 +230,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31018,
+            OffsetID + 18,
             TextureSet.SET_FLUID
     );
 
@@ -239,7 +241,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31019,
+            OffsetID + 19,
             TextureSet.SET_FLUID
     );
 
@@ -249,7 +251,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31020,
+            OffsetID + 20,
             TextureSet.SET_FLUID,
             new Pair<> (WerkstoffLoader.Thorium232,1),
             new Pair<> (Fluorine,4)
@@ -263,7 +265,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setMeltingPoint(5000).setBlastFurnace(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems().addSimpleMetalWorkingItems().addCraftingMetalWorkingItems().addMultipleIngotMetalWorkingItems(),
-            31021,
+            OffsetID + 21,
             TextureSet.SET_SHINY
     );
 
@@ -274,7 +276,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().addGems(),
-            31022,
+            OffsetID + 22,
             TextureSet.SET_DIAMOND
     );
 
@@ -286,7 +288,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setMeltingPoint(7000).setBlastFurnace(true),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems().addSimpleMetalWorkingItems().addCraftingMetalWorkingItems().addMultipleIngotMetalWorkingItems(),
-            31023,
+            OffsetID + 23,
             TextureSet.SET_SHINY
     );
 
@@ -297,7 +299,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setToxic(true).setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31024,
+            OffsetID + 24,
             TextureSet.SET_FLUID
     );
 
@@ -308,7 +310,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setToxic(true).setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31025,
+            OffsetID + 25,
             TextureSet.SET_FLUID
     );
 
@@ -319,7 +321,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setToxic(true).setRadioactive(true).setGas(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31026,
+            OffsetID + 26,
             TextureSet.SET_FLUID
     );
 
@@ -330,7 +332,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setToxic(true).setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31027,
+            OffsetID + 27,
             TextureSet.SET_FLUID
     );
 
@@ -341,7 +343,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31028,
+            OffsetID + 28,
             TextureSet.SET_FLUID,
             new Pair<> (Carbon,4),
             new Pair<> (Hydrogen, 10),
@@ -355,7 +357,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31029,
+            OffsetID + 29,
             TextureSet.SET_FLUID
     );
 
@@ -366,7 +368,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31030,
+            OffsetID + 30,
             TextureSet.SET_FLUID
     );
 
@@ -377,7 +379,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31037,
+            OffsetID + 31,
             TextureSet.SET_FLUID
     );
 
@@ -388,7 +390,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31031,
+            OffsetID + 32,
             TextureSet.SET_FLUID
     );
 
@@ -399,7 +401,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31032,
+            OffsetID + 33,
             TextureSet.SET_FLUID
     );
 
@@ -410,7 +412,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            31033,
+            OffsetID + 34,
             TextureSet.SET_DULL
     );
 
@@ -421,7 +423,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31034,
+            OffsetID + 35,
             TextureSet.SET_FLUID
     );
 
@@ -432,7 +434,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31035,
+            OffsetID + 36,
             TextureSet.SET_FLUID
     );
 
@@ -443,7 +445,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31036,
+            OffsetID + 37,
             TextureSet.SET_FLUID
     );
 
@@ -453,7 +455,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31038,
+            OffsetID + 38,
             TextureSet.SET_FLUID
     );
 
@@ -463,7 +465,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setToxic(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31039,
+            OffsetID + 39,
             TextureSet.SET_FLUID
     );
 
@@ -473,7 +475,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31040,
+            OffsetID + 40,
             TextureSet.SET_FLUID
     );
 
@@ -483,7 +485,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setToxic(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31041,
+            OffsetID + 41,
             TextureSet.SET_FLUID
     );
     /*These materials will be enable when they are removed in GregTech*/
@@ -495,7 +497,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems(),
-            31042,
+            OffsetID + 42,
             TextureSet.SET_METALLIC
     );
 
@@ -506,7 +508,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems(),
-            31043,
+            OffsetID + 43,
             TextureSet.SET_SHINY
     );
 
@@ -517,7 +519,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems(),
-            31044,
+            OffsetID + 44,
             TextureSet.SET_METALLIC
     );
     */
@@ -527,7 +529,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31045,
+            OffsetID + 45,
             TextureSet.SET_FLUID
     );
 
@@ -537,7 +539,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setToxic(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31046,
+            OffsetID + 46,
             TextureSet.SET_FLUID
     );
 
@@ -547,7 +549,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31047,
+            OffsetID + 47,
             TextureSet.SET_FLUID
     );
 
@@ -557,7 +559,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setToxic(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31048,
+            OffsetID + 48,
             TextureSet.SET_FLUID
     );
 
@@ -568,7 +570,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31049,
+            OffsetID + 49,
             TextureSet.SET_FLUID
     );
 
@@ -579,7 +581,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setToxic(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
-            31050,
+            OffsetID + 50,
             TextureSet.SET_FLUID
     );
     @Override

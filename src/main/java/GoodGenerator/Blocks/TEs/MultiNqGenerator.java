@@ -111,22 +111,22 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                             )
                     ).addElement(
                             'A',
-                            ofBlockAnyMeta(
+                            ofBlock(
                                     GregTech_API.sBlockCasings3, 12
                             )
                     ).addElement(
                             'N',
-                            ofBlockAnyMeta(
-                                    Loaders.radiationProtectionSteelFrame
+                            ofBlock(
+                                    Loaders.radiationProtectionSteelFrame, 0
                             )
                     ).addElement(
                             'C',
-                            ofBlockAnyMeta(
-                                    Loaders.MAR_Casing
+                            ofBlock(
+                                    Loaders.MAR_Casing, 0
                             )
                     ).addElement(
                             'P',
-                            ofBlockAnyMeta(
+                            ofBlock(
                                     GregTech_API.sBlockCasings2,15
                             )
                     )

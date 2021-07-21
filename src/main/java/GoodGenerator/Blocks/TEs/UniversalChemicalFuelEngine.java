@@ -113,7 +113,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
                             })
                     ).addElement(
                             'T',
-                            ofBlockAnyMeta(
+                            ofBlock(
                                     GregTech_API.sBlockCasings4, 2
                             )
                     ).addElement(
@@ -142,22 +142,22 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
                             )
                     ).addElement(
                             'P',
-                            ofBlockAnyMeta(
+                            ofBlock(
                                     GregTech_API.sBlockCasings2, 14
                             )
                     ).addElement(
                             'C',
-                            ofBlockAnyMeta(
-                                    Loaders.titaniumPlatedCylinder
+                            ofBlock(
+                                    Loaders.titaniumPlatedCylinder, 0
                             )
                     ).addElement(
                             'G',
-                            ofBlockAnyMeta(
+                            ofBlock(
                                     GregTech_API.sBlockCasings2, 4
                             )
                     ).addElement(
                             'I',
-                            ofBlockAnyMeta(
+                            ofBlock(
                                     GregTech_API.sBlockCasings4, 13
                             )
                     )

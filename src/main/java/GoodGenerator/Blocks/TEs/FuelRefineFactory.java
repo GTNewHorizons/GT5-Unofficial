@@ -5,13 +5,18 @@ import GoodGenerator.util.DescTextLocalization;
 import GoodGenerator.util.MyRecipeAdder;
 import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
+import com.github.technus.tectech.mechanics.structure.IStructureElement;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -21,6 +26,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Block_Casings5;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,6 +47,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
 
     private IStructureDefinition<FuelRefineFactory> multiDefinition = null;
     private int Tier = -1;
+    private static final Block[] coils = new Block[]{Loaders.FRF_Coil_1,Loaders.FRF_Coil_2,Loaders.FRF_Coil_3};
     private final HashSet<Coords> vis = new HashSet<>(64);
 
     public FuelRefineFactory(String name){super(name);}
@@ -105,35 +112,51 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                             )
                     ).addElement(
                             'C',
-                            ofBlockAnyMeta(
-                                    Loaders.FRF_Casings
+                            ofBlock(
+                                    Loaders.FRF_Casings,0
                             )
                     ).addElement(
                             'G',
-                            ofBlockAnyMeta(
-                                    Loaders.fieldRestrictingGlass
+                            ofBlock(
+                                    Loaders.fieldRestrictingGlass,0
                             )
                     ).addElement(
                             'F',
-                            ofChain(
-                                    ofBlock(
-                                            Loaders.FRF_Coil_1,0
-                                    ),
-                                    ofBlock(
-                                            Loaders.FRF_Coil_2,0
-                                    ),
-                                    ofBlock(
-                                            Loaders.FRF_Coil_3,0
-                                    ),
-                                    ofBlockHint(
-                                            Loaders.FRF_Coil_1,0
-                                    )
-
-                            )
+                            ofFieldCoil()
                     )
                     .build();
         }
         return multiDefinition;
+    }
+
+    public static <T> IStructureElement<T> ofFieldCoil() {
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                Block block = world.getBlock(x, y, z);
+                for (Block tBlock : coils) {
+                    if (tBlock.equals(block)) return true;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TecTech.proxy.hint_particle(world, x, y, z, coils[getIndex(trigger)], 0);
+                return true;
+            }
+
+            private int getIndex(ItemStack trigger) {
+                int s = trigger.stackSize;
+                if (s > 3 || s <= 0) s = 3;
+                return s - 1;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return world.setBlock(x, y, z, coils[getIndex(trigger)], 0, 3);
+            }
+        };
     }
 
     //In fact, this check method can't check structure correctly...
@@ -212,12 +235,6 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mWrench = true;
-        mScrewdriver = true;
-        mSoftHammer = true;
-        mHardHammer = true;
-        mSolderingTool = true;
-        mCrowbar = true;
         return structureCheck_EM(mName, 7,12,1) && checkCoil();
     }
 
@@ -301,6 +318,17 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     @Override
     public boolean onRunningTick(ItemStack stack) {
         return true;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        mWrench = true;
+        mScrewdriver = true;
+        mSoftHammer = true;
+        mHardHammer = true;
+        mSolderingTool = true;
+        mCrowbar = true;
     }
 
     @Override
