@@ -20,6 +20,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -34,16 +35,15 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofChain;
 
 public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
     private IStructureDefinition<FuelRefineFactory> multiDefinition = null;
     private int Tier = -1;
+    private int[] cnt = new int[]{0,0,0};
     private static final Block[] coils = new Block[]{Loaders.FRF_Coil_1,Loaders.FRF_Coil_2,Loaders.FRF_Coil_3};
 
     public FuelRefineFactory(String name){super(name);}
@@ -119,9 +119,18 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                     ).addElement(
                             'F',
                             ofChain(
-                                    ofFieldCoil(0),
-                                    ofFieldCoil(1),
-                                    ofFieldCoil(2)
+                                    onElementPass(
+                                            x -> ++x.cnt[0],
+                                            ofFieldCoil(0)
+                                    ),
+                                    onElementPass(
+                                            x -> ++x.cnt[1],
+                                            ofFieldCoil(1)
+                                    ),
+                                    onElementPass(
+                                            x -> ++x.cnt[2],
+                                            ofFieldCoil(2)
+                                    )
                             )
                     )
                     .build();
@@ -199,21 +208,17 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        Tier = getTier();
-        return structureCheck_EM(mName, 7,12,1);
+        cnt[0] = 0;cnt[1] = 0;cnt[2] = 0;
+        return structureCheck_EM(mName, 7,12,1) && getTier() != -1;
     }
 
     public int getTier(){
-        IGregTechTileEntity aTile = this.getBaseMetaTileEntity();
-        int[] dx = {1,-1,0,0,0,0};
-        int[] dy = {0,0,1,-1,0,0};
-        int[] dz = {0,0,0,0,1,-1};
-        for (int i = 0; i < 3; i ++)
-            for (int j = 0; j < 6; j ++){
-                if (aTile.getBlockOffset(dx[j],dy[j],dz[j]) == coils[i]){
-                    return i + 1;
-                }
+        for (int i = 0; i < 3; i ++) {
+            if (cnt[i] == 32) {
+                Tier = i + 1;
+                return i;
             }
+        }
         return -1;
     }
 
