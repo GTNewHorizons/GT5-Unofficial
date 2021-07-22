@@ -382,6 +382,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                       .addInfo("Controller block for the Naquadah Reactor")
                       .addInfo("Environmental Friendly!")
                       .addInfo("Generate power with the High-energy liquid.")
+                      .addInfo("Consume liquid air 120mb/t to keep running, otherwise" + EnumChatFormatting.YELLOW + " it will void your fuel" + EnumChatFormatting.GRAY + ".")
                       .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
                       .addInfo("The reactor will explode when there are more than" + EnumChatFormatting.RED + " ONE" + EnumChatFormatting.GRAY + " types of fuel in the hatch!")
                       .addInfo("Consume coolant 50mb/t to increase the efficiency:")
