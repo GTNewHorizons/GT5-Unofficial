@@ -38,13 +38,13 @@ import java.util.HashSet;
 import java.util.List;
 
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofChain;
 
 public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
     private IStructureDefinition<FuelRefineFactory> multiDefinition = null;
     private int Tier = -1;
     private static final Block[] coils = new Block[]{Loaders.FRF_Coil_1,Loaders.FRF_Coil_2,Loaders.FRF_Coil_3};
-    private final HashSet<Coords> vis = new HashSet<>(64);
 
     public FuelRefineFactory(String name){super(name);}
 
@@ -118,22 +118,23 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                             )
                     ).addElement(
                             'F',
-                            ofFieldCoil()
+                            ofChain(
+                                    ofFieldCoil(0),
+                                    ofFieldCoil(1),
+                                    ofFieldCoil(2)
+                            )
                     )
                     .build();
         }
         return multiDefinition;
     }
 
-    public static <T> IStructureElement<T> ofFieldCoil() {
+    public static <T> IStructureElement<T> ofFieldCoil(int aIndex) {
         return new IStructureElement<T>() {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
-                for (Block tBlock : coils) {
-                    if (tBlock.equals(block)) return true;
-                }
-                return false;
+                return block.equals(coils[aIndex]);
             }
 
             @Override
@@ -153,25 +154,6 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                 return world.setBlock(x, y, z, coils[getIndex(trigger)], 0, 3);
             }
         };
-    }
-
-    //In fact, this check method can't check structure correctly...
-    public boolean checkCoil(){
-        IGregTechTileEntity aTile = this.getBaseMetaTileEntity();
-        Block[] block = {Loaders.FRF_Coil_1,Loaders.FRF_Coil_2,Loaders.FRF_Coil_3};
-        int[] dx = {1,-1,0,0,0,0};
-        int[] dy = {0,0,1,-1,0,0};
-        int[] dz = {0,0,0,0,1,-1};
-        for (int i = 0; i < 6; i ++)
-            for (int j = 0; j < 3; j ++){
-                vis.clear();
-                if (aTile.getBlockOffset(dx[i],dy[i],dz[i]) == block[j])
-                    if (dfs(block[j], aTile.getWorld(),aTile.getXCoord() + dx[i],aTile.getYCoord() + dy[i],aTile.getZCoord() + dz[i],32)){
-                        Tier = j + 1;
-                        return true;
-                    }
-            }
-        return false;
     }
 
     @Override
@@ -215,23 +197,24 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
         return DescTextLocalization.addText("FuelRefineFactory.hint", 8);
     }
 
-    public boolean dfs(Block e, World w,int x,int y,int z, int cnt){
-        if (cnt == 0) return true;
-        if (w.getBlock(x,y,z) != e) return false;
-        int[] dx = { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
-        int[] dy = { 1, 1, 1,-1,-1,-1, 0, 0, 1, 1, 1,-1,-1,-1, 0, 0, 0, 1, 1, 1,-1,-1,-1, 0, 0, 0};
-        int[] dz = { 1, 0,-1, 1, 0,-1, 1,-1, 1, 0,-1, 1, 0,-1, 1, 0,-1, 1, 0,-1, 1, 0,-1, 1, 0,-1};
-        vis.add(new Coords(x,y,z,w.provider.dimensionId));
-        for (int i = 0; i < 26; i ++){
-            if (vis.contains(new Coords(x + dx[i],y + dy[i], z + dz[i],w.provider.dimensionId))) continue;
-            if (dfs(e,w,x + dx[i],y + dy[i], z + dz[i], cnt - 1)) return true;
-        }
-        return false;
-    }
-
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(mName, 7,12,1) && checkCoil();
+        Tier = getTier();
+        return structureCheck_EM(mName, 7,12,1);
+    }
+
+    public int getTier(){
+        IGregTechTileEntity aTile = this.getBaseMetaTileEntity();
+        int[] dx = {1,-1,0,0,0,0};
+        int[] dy = {0,0,1,-1,0,0};
+        int[] dz = {0,0,0,0,1,-1};
+        for (int i = 0; i < 3; i ++)
+            for (int j = 0; j < 6; j ++){
+                if (aTile.getBlockOffset(dx[j],dy[j],dz[j]) == coils[i]){
+                    return i + 1;
+                }
+            }
+        return -1;
     }
 
     @Override
