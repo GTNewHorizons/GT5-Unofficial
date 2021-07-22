@@ -3,7 +3,6 @@ package GoodGenerator.Blocks.TEs;
 import GoodGenerator.Loader.Loaders;
 import GoodGenerator.util.DescTextLocalization;
 import GoodGenerator.util.MyRecipeAdder;
-import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
@@ -20,7 +19,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -219,6 +217,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                 return i;
             }
         }
+        Tier = -1;
         return -1;
     }
 
