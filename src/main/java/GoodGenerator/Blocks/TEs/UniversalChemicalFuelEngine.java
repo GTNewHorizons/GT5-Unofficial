@@ -19,7 +19,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,8 +35,6 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
 
     protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.45D;
     protected final double GAS_EFFICIENCY_COEFFICIENT = 0.30D;
-
-    protected long leftEnergy = 0;
 
     private IStructureDefinition<UniversalChemicalFuelEngine> multiDefinition = null;
 
@@ -192,18 +189,6 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT){
-        super.loadNBTData(aNBT);
-        this.leftEnergy = aNBT.getLong("mLeftEnergy");
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT){
-        super.saveNBTData(aNBT);
-        aNBT.setLong("mLeftEnergy", this.leftEnergy);
-    }
-
-    @Override
     public String[] getDescription(){
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Chemical Engine")
@@ -247,14 +232,13 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
             if (tFuel == null) continue;
             int FuelAmount = findLiquidAmount(tFuel, tFluids);
             if (FuelAmount == 0) continue;
-            double eff = calculateEfficiency(FuelAmount, PromoterAmount, DIESEL_EFFICIENCY_COEFFICIENT);
+            calculateEfficiency(FuelAmount, PromoterAmount, DIESEL_EFFICIENCY_COEFFICIENT);
 
             consumeAllLiquid(tFuel);
             consumeAllLiquid(getPromoter());
 
-            this.mEUt = (int)(eff * FuelAmount * recipe.mSpecialValue / 20.0D);
+            this.mEUt = (int)(FuelAmount * recipe.mSpecialValue / 20.0D);
             this.mMaxProgresstime = 20;
-            addAutoEnergy((long)(eff * FuelAmount * recipe.mSpecialValue / 20.0D));
             this.updateSlots();
             return true;
         }
@@ -264,38 +248,18 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
             if (tFuel == null) continue;
             int FuelAmount = findLiquidAmount(tFuel, tFluids);
             if (FuelAmount == 0) continue;
-            double eff = calculateEfficiency(FuelAmount, PromoterAmount, GAS_EFFICIENCY_COEFFICIENT);
+            calculateEfficiency(FuelAmount, PromoterAmount, GAS_EFFICIENCY_COEFFICIENT);
 
             consumeAllLiquid(tFuel);
             consumeAllLiquid(getPromoter());
 
-            this.mEUt = (int)(eff * FuelAmount * recipe.mSpecialValue / 20.0D);
+            this.mEUt = (int)(FuelAmount * recipe.mSpecialValue / 20.0D);
             this.mMaxProgresstime = 20;
-            addAutoEnergy((long)(eff * FuelAmount * recipe.mSpecialValue / 20.0D));
             this.updateSlots();
             return true;
         }
 
         return false;
-    }
-
-    public void addAutoEnergy(long outputPower){
-        if (this.mDynamoHatches.size() > 0)
-            for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches){
-                long voltage = tHatch.maxEUOutput();
-                long power = voltage * tHatch.maxAmperesOut();
-                long outputAmperes;
-                if (outputPower > power) doExplosion(8 * GT_Utility.getTier(power));
-                if (outputPower >= voltage){
-                    leftEnergy += outputPower;
-                    outputAmperes = leftEnergy / voltage;
-                    leftEnergy -= outputAmperes * voltage;
-                    addEnergyOutput_EM(voltage, outputAmperes);
-                }
-                else{
-                    addEnergyOutput_EM(outputPower, 1);
-                }
-            }
     }
 
     public FluidStack getPromoter() {
@@ -306,9 +270,12 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
         return GT_Utility.getFluidForFilledItem(aFuel.mInputs[0], true);
     }
 
-    public double calculateEfficiency(int aFuel, int aPromoter, double coefficient){
-        if (aPromoter == 0) return 0.0d;
-        return Math.exp(-coefficient * (double)aFuel / (double)aPromoter);
+    public void calculateEfficiency(int aFuel, int aPromoter, double coefficient){
+        if (aPromoter == 0){
+            this.mEfficiency = 0;
+            return;
+        }
+        this.mEfficiency = (int)(Math.exp(-coefficient * (double)aFuel / (double)aPromoter) * 10000);
     }
 
     public int findLiquidAmount(FluidStack liquid, List<FluidStack> input) {

@@ -207,6 +207,12 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         cnt[0] = 0;cnt[1] = 0;cnt[2] = 0;
+        mWrench = true;
+        mScrewdriver = true;
+        mSoftHammer = true;
+        mHardHammer = true;
+        mSolderingTool = true;
+        mCrowbar = true;
         return structureCheck_EM(mName, 7,12,1) && getTier() != -1;
     }
 
@@ -256,11 +262,13 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
 
         FluidStack[] inFluids = tFluids.toArray(new FluidStack[0]);
         ItemStack[] inItems = tItems.toArray(new ItemStack[0]);
+        this.mEfficiency = 10000;
 
         for (GT_Recipe recipe : tRecipes){
             if (recipe.mSpecialValue > Tier) continue;
             if (recipe.isRecipeInputEqual(true, inFluids, inItems)){
                 mEUt = recipe.mEUt;
+                mEUt = -Math.abs(mEUt);
                 mMaxProgresstime = recipe.mDuration / (1 << (Tier - recipe.mSpecialValue));
                 this.mOutputFluids = recipe.mFluidOutputs;
                 this.updateSlots();
@@ -299,29 +307,13 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     }
 
     @Override
-    public boolean onRunningTick(ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        mWrench = true;
-        mScrewdriver = true;
-        mSoftHammer = true;
-        mHardHammer = true;
-        mSolderingTool = true;
-        mCrowbar = true;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new FuelRefineFactory(this.mName);
     }
 
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
-        return 0;
+        return 10000;
     }
 
     @Override
