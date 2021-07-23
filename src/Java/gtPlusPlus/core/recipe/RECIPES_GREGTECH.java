@@ -131,15 +131,15 @@ public class RECIPES_GREGTECH {
 						CI.getPinkCatalyst(0),
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(GenericChem.Nitrogen_Dioxide, 3000),
-						FluidUtils.getAir(7000)
+						FluidUtils.getFluidStack(GenericChem.Nitrogen_Dioxide, 4000),
+						FluidUtils.getAir(4000),
+						FluidUtils.getWater(2000),
 				},
 				new ItemStack[] {
 
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack("nitricacid", 4000),	
-						FluidUtils.getWater(2000),				
+						FluidUtils.getFluidStack("nitricacid", 4000),
 				},
 				10 * 20,
 				480,
