@@ -33,8 +33,9 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
-    protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.45D;
-    protected final double GAS_EFFICIENCY_COEFFICIENT = 0.30D;
+    protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.02D;
+    protected final double GAS_EFFICIENCY_COEFFICIENT = 0.01D;
+    protected final double EFFICIENCY_CEILING = 1.5D;
 
     private IStructureDefinition<UniversalChemicalFuelEngine> multiDefinition = null;
 
@@ -201,7 +202,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
                 .addInfo("The proportion is bigger, and the efficiency will be higher.")
                 .addInfo("It creates sqrt(Current Output Power) pollution every second")
                 .addInfo("If you forge to supply Combustion Promoter, this engine will swallow all the fuel " + EnumChatFormatting.YELLOW + "without outputting energy" + EnumChatFormatting.GRAY + ".")
-                .addInfo("This engine follows the second law of thermodynamics, so the efficiency is up to 100%.")
+                .addInfo("The efficiency is up to 150%.")
                 .addInfo("The structure is too complex!")
                 .addInfo("Follow the" + EnumChatFormatting.DARK_BLUE + " Tec" + EnumChatFormatting.BLUE + "Tech" + EnumChatFormatting.GRAY + " blueprint to build the main structure.")
                 .addSeparator()
@@ -275,7 +276,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
             this.mEfficiency = 0;
             return;
         }
-        this.mEfficiency = (int)(Math.exp(-coefficient * (double)aFuel / (double)aPromoter) * 10000);
+        this.mEfficiency = (int)(Math.exp(-coefficient * (double)aFuel / (double)aPromoter) * EFFICIENCY_CEILING * 10000);
     }
 
     public int findLiquidAmount(FluidStack liquid, List<FluidStack> input) {
@@ -298,6 +299,11 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
                 }
             }
         }
+    }
+
+    @Override
+    public int getMaxEfficiency(ItemStack aStack) {
+        return (int)(10000 * EFFICIENCY_CEILING);
     }
 
     @Override

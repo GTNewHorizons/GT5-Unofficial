@@ -1109,7 +1109,7 @@ public class RecipeLoader {
                 null,
                 new ItemStack(Loaders.aluminumNitride,2),
                 null,
-                2000,
+                200,
                 1920,
                 4600
         );
@@ -1121,7 +1121,7 @@ public class RecipeLoader {
                 null,
                 new ItemStack(Loaders.aluminumNitride,2),
                 null,
-                2000,
+                200,
                 1920,
                 4600
         );
