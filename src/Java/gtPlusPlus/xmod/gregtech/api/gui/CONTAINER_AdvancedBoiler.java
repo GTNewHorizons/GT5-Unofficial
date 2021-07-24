@@ -50,8 +50,8 @@ public class CONTAINER_AdvancedBoiler
             return;
         }
         
-        int waterCapacity = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).getCapacity();
         int steamCapacity = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).getSteamCapacity();
+        int waterCapacity = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).getCapacity();
         this.mTemperature = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mTemperature;
         this.mProcessingEnergy = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mProcessingEnergy;
         this.mSteamAmount = (((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mSteam == null ? 0 : ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mSteam.amount);
