@@ -9,7 +9,7 @@ import com.github.bartimaeusnek.bartworks.util.Pair;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
 import static gregtech.api.enums.Materials.*;
 
-
+@SuppressWarnings({"unchecked"})
 public class MyMaterial implements Runnable {
 
     protected static final int OffsetID = 10001;
