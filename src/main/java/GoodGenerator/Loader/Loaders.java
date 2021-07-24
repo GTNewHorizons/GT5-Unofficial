@@ -74,7 +74,7 @@ public class Loaders {
         GameRegistry.registerItem(specialCeramics, "specialCeramics", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(specialCeramicsPlate, "specialCeramicsPlate", GoodGenerator.MOD_ID);
         Loaders.MAR = new MultiNqGenerator(12732, "NaG", "Large Naquadah Reactor").getStackForm(1L);
-        Loaders.FRF = new FuelRefineFactory(16999, "FRF", "Naquadah Fuel Refine Factory").getStackForm(1L);
+        Loaders.FRF = new FuelRefineFactory(16999, "FRF", "Naquadah Fuel Refinery").getStackForm(1L);
         Loaders.UCFE = new UniversalChemicalFuelEngine(IDOffset, "UniversalChemicalFuelEngine", "Universal Chemical Fuel Engine").getStackForm(1L);
     }
 
