@@ -16,16 +16,13 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity
 
 public class CONTAINER_AdvancedBoiler
         extends GT_ContainerMetaTile_Machine {
-    private int mSteamCapacity = 0;//FB: UR - UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR
     public int mWaterAmount = 0;
     public int mSteamAmount = 0;
     public int mProcessingEnergy = 0;
     public int mTemperature = 2;
     
-    public int maxStorage = 0;
-    public CONTAINER_AdvancedBoiler(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, int aSteamCapacity) {
+    public CONTAINER_AdvancedBoiler(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
-        this.mSteamCapacity = aSteamCapacity;
     }
 
     @Override
@@ -53,20 +50,16 @@ public class CONTAINER_AdvancedBoiler
             return;
         }
         
-        if (this.mSteamCapacity <= 0) {
-            this.mSteamCapacity = (int) ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).maxSteamStore();
-        	
-        }
-        
-        this.maxStorage = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).getCapacity();
+        int waterCapacity = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).getCapacity();
+        int steamCapacity = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).getSteamCapacity();
         this.mTemperature = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mTemperature;
         this.mProcessingEnergy = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mProcessingEnergy;
         this.mSteamAmount = (((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mSteam == null ? 0 : ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mSteam.amount);
         this.mWaterAmount = (((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mFluid == null ? 0 : ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mFluid.amount);
 
         this.mTemperature = Math.min(54, Math.max(0, this.mTemperature * 54 / (((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).maxProgresstime() - 10)));
-        this.mSteamAmount = Math.min(54, Math.max(0, this.mSteamAmount * 54 / (this.mSteamCapacity - 100)));
-        this.mWaterAmount = Math.min(54, Math.max(0, this.mWaterAmount * 54 / (this.maxStorage-100)));
+        this.mSteamAmount = Math.min(54, Math.max(0, this.mSteamAmount * 54 / (steamCapacity - 100)));
+        this.mWaterAmount = Math.min(54, Math.max(0, this.mWaterAmount * 54 / (waterCapacity - 100)));
         this.mProcessingEnergy = Math.min(14, Math.max(this.mProcessingEnergy > 0 ? 1 : 0, this.mProcessingEnergy * 14 / 1000));
 
         Iterator<?> var2 = this.crafters.iterator();

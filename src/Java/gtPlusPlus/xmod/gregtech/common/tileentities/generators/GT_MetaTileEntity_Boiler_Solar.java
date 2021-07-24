@@ -56,12 +56,12 @@ extends GT_MetaTileEntity_Boiler {
 
 	@Override
 	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_Container_Boiler(aPlayerInventory, aBaseMetaTileEntity, 16000);
+		return new GT_Container_Boiler(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_Boiler(aPlayerInventory, aBaseMetaTileEntity, "SolarBoiler.png", 16000);
+		return new GT_GUIContainer_Boiler(aPlayerInventory, aBaseMetaTileEntity, "SolarBoiler.png");
 	}
 
 	@Override

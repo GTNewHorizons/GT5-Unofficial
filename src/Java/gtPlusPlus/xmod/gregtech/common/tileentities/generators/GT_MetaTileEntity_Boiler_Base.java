@@ -25,6 +25,7 @@ import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_AdvancedBoiler;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_AdvancedBoiler;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
@@ -169,10 +170,14 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 		return false;
 	}
 
-	// Hold more Steam
 	@Override
 	public int getCapacity() {
 		return (16000 + (16000 * mBoilerTier));
+	}
+
+	// GT++ boilers can hold more steam than water.
+	public int getSteamCapacity() {
+		return 2 * getCapacity();
 	}
 
 	@Override
@@ -200,6 +205,16 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 
 	}
 
+	@Override
+    // Since GT++ advanced boilers have different water and steam capacities, we need to override getTankInfo() to
+	// support returning those different capacities.
+	public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+		return new FluidTankInfo[]{
+			new FluidTankInfo(this.mFluid, getCapacity()),
+			new FluidTankInfo(this.mSteam, getSteamCapacity())
+		};
+	}
+
 	// We want automation.
 	@Override
 	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
@@ -219,12 +234,12 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new CONTAINER_AdvancedBoiler(aPlayerInventory, aBaseMetaTileEntity, getCapacity());
+		return new CONTAINER_AdvancedBoiler(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_AdvancedBoiler(aPlayerInventory, aBaseMetaTileEntity, "AdvancedBoiler.png", getCapacity());
+		return new GUI_AdvancedBoiler(aPlayerInventory, aBaseMetaTileEntity, "AdvancedBoiler.png");
 	}
 
 	@Override
@@ -240,6 +255,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 			//if (aTick % 60L == 0L) {
 			// Utils.LOG_MACHINE_INFO("Temp:"+this.mTemperature);
 			// Utils.LOG_MACHINE_INFO("getCapacity():"+this.getCapacity());
+			// Utils.LOG_MACHINE_INFO("getSteamCapacity():"+this.getSteamCapacity());
 			// Utils.LOG_MACHINE_INFO("maxProgresstime():"+this.maxProgresstime());
 			// Utils.LOG_MACHINE_INFO("mSteamPerSecond:"+this.mSteamPerSecond);
 			// Utils.LOG_MACHINE_INFO("mProcessingEnergy:"+this.mProcessingEnergy);
@@ -306,9 +322,9 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 					this.mHadNoWater = false;
 				}
 			}
-			if ((this.mSteam != null) && (this.mSteam.amount > (getCapacity() * 2))) {
+			if ((this.mSteam != null) && (this.mSteam.amount > getSteamCapacity())) {
 				sendSound((byte) 1);
-				this.mSteam.amount = (getCapacity() + (getCapacity() / 2));
+				this.mSteam.amount = getSteamCapacity() * 3 / 4;
 			}
 			ItemStack fuelSlot = this.mInventory[2];
 			if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) && (fuelSlot != null)) {

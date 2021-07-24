@@ -7,8 +7,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class GUI_AdvancedBoiler
         extends GT_GUIContainerMetaTile_Machine {
-    public GUI_AdvancedBoiler(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aTextureName, int aSteamCapacity) {
-        super(new CONTAINER_AdvancedBoiler(aInventoryPlayer, aTileEntity, aSteamCapacity), "miscutils:textures/gui/" + aTextureName);
+    public GUI_AdvancedBoiler(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aTextureName) {
+        super(new CONTAINER_AdvancedBoiler(aInventoryPlayer, aTileEntity), "miscutils:textures/gui/" + aTextureName);
     }
 
     @Override
