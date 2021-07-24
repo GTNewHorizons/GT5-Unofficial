@@ -36,12 +36,12 @@ public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGener
 
 	@Override
 	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new CONTAINER_SolarGenerator(aPlayerInventory, aBaseMetaTileEntity, 16000);
+		return new CONTAINER_SolarGenerator(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_SolarGenerator(aPlayerInventory, aBaseMetaTileEntity, "SolarBoiler.png", 16000);
+		return new GUI_SolarGenerator(aPlayerInventory, aBaseMetaTileEntity, "SolarBoiler.png");
 	}
 
 	@Override

@@ -175,7 +175,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 		return (16000 + (16000 * mBoilerTier));
 	}
 
-	// GT++ boilers can hold more steam than water.
+	// This type of machine can have different water and steam capacities.
 	public int getSteamCapacity() {
 		return 2 * getCapacity();
 	}
@@ -206,7 +206,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 	}
 
 	@Override
-	// Since GT++ advanced boilers have different water and steam capacities, we need to override getTankInfo() to
+	// Since this type of machine can have different water and steam capacities, we need to override getTankInfo() to
 	// support returning those different capacities.
 	public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
 		return new FluidTankInfo[]{

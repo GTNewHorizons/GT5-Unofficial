@@ -15,14 +15,12 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileE
 
 public class CONTAINER_SolarGenerator
 extends GT_ContainerMetaTile_Machine {
-	private final int mSteamCapacity;
 	public int mWaterAmount = 0;
 	public int mSteamAmount = 0;
 	public int mProcessingEnergy = 0;
 	public int mTemperature = 2;
-	public CONTAINER_SolarGenerator(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity, final int aSteamCapacity) {
+	public CONTAINER_SolarGenerator(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity) {
 		super(aInventoryPlayer, aTileEntity);
-		this.mSteamCapacity = aSteamCapacity;
 	}
 
 	@Override

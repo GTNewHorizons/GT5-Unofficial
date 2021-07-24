@@ -7,8 +7,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class GUI_SolarGenerator
 extends GT_GUIContainerMetaTile_Machine {
-	public GUI_SolarGenerator(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity, final String aTextureName, final int aSteamCapacity) {
-		super(new CONTAINER_SolarGenerator(aInventoryPlayer, aTileEntity, aSteamCapacity), "gregtech:textures/gui/" + aTextureName);
+	public GUI_SolarGenerator(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity, final String aTextureName) {
+		super(new CONTAINER_SolarGenerator(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/" + aTextureName);
 	}
 
 	@Override

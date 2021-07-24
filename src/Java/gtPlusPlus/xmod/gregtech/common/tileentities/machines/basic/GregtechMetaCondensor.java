@@ -60,13 +60,13 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase{
 	@Override
 	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity)
 	{
-		return new CONTAINER_SteamCondenser(aPlayerInventory, aBaseMetaTileEntity, 32000);
+		return new CONTAINER_SteamCondenser(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity)
 	{
-		return new GUI_SteamCondenser(aPlayerInventory, aBaseMetaTileEntity, "SteelBoiler.png", 32000);
+		return new GUI_SteamCondenser(aPlayerInventory, aBaseMetaTileEntity, "SteelBoiler.png");
 	}
 
 	@Override
@@ -137,10 +137,10 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase{
 				}
 			}
 			if ((this.mSteam != null) &&
-					(this.mSteam.amount > 32000))
+					(this.mSteam.amount > getSteamCapacity()))
 			{
 				this.sendSound((byte)1);
-				this.mSteam.amount = 24000;
+				this.mSteam.amount = getSteamCapacity() * 3 / 4;
 			}
 			/*if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) &&
 	        (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.bucket.get(IC2.getItemFromBlock(p_150898_0_)))))
