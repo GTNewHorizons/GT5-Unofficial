@@ -206,7 +206,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 	}
 
 	@Override
-    // Since GT++ advanced boilers have different water and steam capacities, we need to override getTankInfo() to
+	// Since GT++ advanced boilers have different water and steam capacities, we need to override getTankInfo() to
 	// support returning those different capacities.
 	public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
 		return new FluidTankInfo[]{
