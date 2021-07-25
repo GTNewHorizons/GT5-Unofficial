@@ -41,6 +41,9 @@ public class HazmatUtils {
 		if (mInit) {
 			return;
 		}
+		//doInit(); Disabled, hazmat moved to gt5u
+	}
+	public static void doInit() {
 
 		mInstance = new HazmatUtils();
 

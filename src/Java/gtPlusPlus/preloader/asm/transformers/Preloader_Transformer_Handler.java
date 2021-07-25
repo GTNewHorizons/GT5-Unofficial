@@ -180,11 +180,10 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		 * Gregtech ASM Patches
 		 */
 
-		//Make GT_Utilities safer		
-		if (transformedName.equals(GT_UTILITY)) {	
-			Preloader_Logger.INFO("Gregtech Utilities Patch", "Transforming "+transformedName);
-			return new ClassTransformer_GT_Utility(basicClass, transformedName).getWriter().toByteArray();
-		}
+//		if (transformedName.equals(GT_UTILITY)) {
+//			Preloader_Logger.INFO("Gregtech Utilities Patch", "Transforming "+transformedName);
+//			return new ClassTransformer_GT_Utility(basicClass, transformedName).getWriter().toByteArray();
+//		}
 		//Inject Custom constructors for Busses		
 		if (transformedName.equals(GT_MTE_HATCH_INPUTBUS) || transformedName.equals(GT_MTE_HATCH_OUTPUTBUS) || transformedName.equals(GTPP_MTE_HATCH_SUPER_INPUT_BUS) || transformedName.equals(GTPP_MTE_HATCH_SUPER_OUTPUT_BUS)) {	
 			Preloader_Logger.INFO("Gregtech Bus Patch", "Transforming "+transformedName);
