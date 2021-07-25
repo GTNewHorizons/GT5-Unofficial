@@ -275,7 +275,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                     else this.mOutputFluids = null;
                     if (tFluids.contains(Materials.LiquidAir.getFluid(120)) && tFluids.get(tFluids.indexOf(Materials.LiquidAir.getFluid(120))).amount >= 120){
                         depleteInput(Materials.LiquidAir.getFluid(120));
-                        addAutoEnergy((long)(outputEU*times*booster));
+                        addAutoEnergy((long)(((long)outputEU)*(times*booster)));
                         this.mEUt = (int)(outputEU*times*booster);
                     }
                     else{

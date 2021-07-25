@@ -3,11 +3,13 @@ package GoodGenerator.Loader;
 import GoodGenerator.Blocks.RegularBlock.Casing;
 import GoodGenerator.Blocks.RegularBlock.Frame;
 import GoodGenerator.Blocks.TEs.FuelRefineFactory;
+import GoodGenerator.Blocks.TEs.LargeEssentiaGenerator;
 import GoodGenerator.Blocks.TEs.MultiNqGenerator;
 import GoodGenerator.Blocks.TEs.UniversalChemicalFuelEngine;
 import GoodGenerator.Items.MyItemBlocks;
 import GoodGenerator.Items.MyItems;
 import GoodGenerator.Main.GoodGenerator;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -43,10 +45,15 @@ public class Loaders {
     public static final Block fieldRestrictingGlass = new Frame("fieldRestrictingGlass", new String[]{GoodGenerator.MOD_ID+":fieldRestrictingGlass"});
     public static final Block rawCylinder = new Casing("rawCylinder", new String[]{GoodGenerator.MOD_ID+":rawCylinder"});
     public static final Block titaniumPlatedCylinder = new Casing("titaniumPlatedCylinder", new String[]{GoodGenerator.MOD_ID+":titaniumPlatedCylinder"});
+    public static final Block magicCasing = new Casing("magicCasing", new String[]{GoodGenerator.MOD_ID+":MagicCasing"});
+    public static final Block essentiaCell = new Casing("essentiaCell", new String[]{GoodGenerator.MOD_ID+":essentiaCell/1",GoodGenerator.MOD_ID+":essentiaCell/2",GoodGenerator.MOD_ID+":essentiaCell/3"});
+
+    public static final Block[] essentiaCells = new Block[]{essentiaCell};
 
     public static ItemStack MAR;
     public static ItemStack FRF;
     public static ItemStack UCFE;
+    public static ItemStack LEG;
 
     public static void Register(){
         GameRegistry.registerBlock(MAR_Casing, MyItemBlocks.class, "MAR_Casing");
@@ -76,6 +83,11 @@ public class Loaders {
         Loaders.MAR = new MultiNqGenerator(12732, "NaG", "Large Naquadah Reactor").getStackForm(1L);
         Loaders.FRF = new FuelRefineFactory(16999, "FRF", "Naquadah Fuel Refinery").getStackForm(1L);
         Loaders.UCFE = new UniversalChemicalFuelEngine(IDOffset, "UniversalChemicalFuelEngine", "Universal Chemical Fuel Engine").getStackForm(1L);
+        /*if (Loader.isModLoaded("Thaumcraft")){
+            GameRegistry.registerBlock(magicCasing, MyItemBlocks.class, "magicCasing");
+            GameRegistry.registerBlock(essentiaCells[0], MyItemBlocks.class, "essentiaCell");
+            Loaders.LEG = new LargeEssentiaGenerator(IDOffset + 1, "LargeEssentiaGenerator", "Large Essentia Generator").getStackForm(1L);
+        }*/
     }
 
     public static void addOreDic(){
