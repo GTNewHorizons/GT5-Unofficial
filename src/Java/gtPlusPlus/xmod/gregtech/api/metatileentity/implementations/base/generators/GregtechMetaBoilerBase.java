@@ -19,6 +19,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public abstract class GregtechMetaBoilerBase  extends GT_MetaTileEntity_BasicTank
@@ -176,7 +177,13 @@ public abstract class GregtechMetaBoilerBase  extends GT_MetaTileEntity_BasicTan
 	@Override
 	public FluidStack setDrainableStack(final FluidStack aFluid)
 	{
-		this.mSteam = aFluid;return this.mSteam;
+		this.mSteam = aFluid;
+		return this.mSteam;
+	}
+
+	@Override
+	public boolean isDrainableStackSeparate() {
+		return true;
 	}
 
 	@Override
@@ -272,10 +279,10 @@ public abstract class GregtechMetaBoilerBase  extends GT_MetaTileEntity_BasicTan
 				}
 			}
 			if ((this.mSteam != null) &&
-					(this.mSteam.amount > 32000))
+					(this.mSteam.amount > getSteamCapacity()))
 			{
 				this.sendSound((byte)1);
-				this.mSteam.amount = 24000;
+				this.mSteam.amount = getSteamCapacity() * 3 / 4;
 			}
 			if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) &&
 					(this.mInventory[2] != null)) {
@@ -322,6 +329,16 @@ public abstract class GregtechMetaBoilerBase  extends GT_MetaTileEntity_BasicTan
 	}
 
 	@Override
+	// Since this type of machine can have different water and steam capacities, we need to override getTankInfo() to
+	// support returning those different capacities.
+	public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+		return new FluidTankInfo[]{
+				new FluidTankInfo(this.mFluid, getCapacity()),
+				new FluidTankInfo(this.mSteam, getSteamCapacity())
+		};
+	}
+
+	@Override
 	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack)
 	{
 		return (aIndex == 1) || (aIndex == 3);
@@ -349,6 +366,12 @@ public abstract class GregtechMetaBoilerBase  extends GT_MetaTileEntity_BasicTan
 	public int getCapacity()
 	{
 		return 16000;
+	}
+
+	// This type of machine can have different water and steam capacities.
+	public int getSteamCapacity()
+	{
+		return 32000;
 	}
 
 	@Override

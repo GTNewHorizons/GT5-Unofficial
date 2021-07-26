@@ -10,9 +10,9 @@ public class GUI_SteamCondenser extends GT_GUIContainerMetaTile_Machine
 {
 	long tickTime = 0;
 
-	public GUI_SteamCondenser(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity, final String aTextureName, final int aSteamCapacity)
+	public GUI_SteamCondenser(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity, final String aTextureName)
 	{
-		super(new CONTAINER_SteamCondenser(aInventoryPlayer, aTileEntity, aSteamCapacity), CORE.RES_PATH_GUI + aTextureName);
+		super(new CONTAINER_SteamCondenser(aInventoryPlayer, aTileEntity), CORE.RES_PATH_GUI + aTextureName);
 	}
 
 	@Override

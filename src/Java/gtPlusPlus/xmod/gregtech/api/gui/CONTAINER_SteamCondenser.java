@@ -16,10 +16,9 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generato
 
 public class CONTAINER_SteamCondenser extends GT_ContainerMetaTile_Machine
 {
-	public CONTAINER_SteamCondenser(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity, final int aSteamCapacity)
+	public CONTAINER_SteamCondenser(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity)
 	{
 		super(aInventoryPlayer, aTileEntity);
-		this.mSteamCapacity = aSteamCapacity;
 	}
 
 	@Override
@@ -47,7 +46,6 @@ public class CONTAINER_SteamCondenser extends GT_ContainerMetaTile_Machine
 	public int mSteamAmount = 0;
 	public int mProcessingEnergy = 0;
 	public int mTemperature = 2;
-	public int mSteamCapacity;
 	public long mTickingTime = ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).RI;
 
 	@Override
@@ -57,16 +55,17 @@ public class CONTAINER_SteamCondenser extends GT_ContainerMetaTile_Machine
 		if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null)) {
 			return;
 		}
+		int steamCapacity = ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).getSteamCapacity();
+		int waterCapacity = ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).getCapacity();
 		this.mTemperature = ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mTemperature;
-		this.mSteamCapacity = (int) ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).maxSteamStore();
 		this.mProcessingEnergy = ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mProcessingEnergy;
 		this.mSteamAmount = (((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mSteam == null ? 0 : ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mSteam.amount);
 		this.mWaterAmount = (((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mFluid == null ? 0 : ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mFluid.amount);
 		this.mTickingTime = ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).RI;
 
 		this.mTemperature = Math.min(54, Math.max(0, (this.mTemperature * 54) / (((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).maxProgresstime() - 10)));
-		this.mSteamAmount = Math.min(54, Math.max(0, (this.mSteamAmount * 54) / (this.mSteamCapacity - 100)));
-		this.mWaterAmount = Math.min(54, Math.max(0, (this.mWaterAmount * 54) / 15900));
+		this.mSteamAmount = Math.min(54, Math.max(0, (this.mSteamAmount * 54) / (steamCapacity - 100)));
+		this.mWaterAmount = Math.min(54, Math.max(0, (this.mWaterAmount * 54) / (waterCapacity - 100)));
 		this.mProcessingEnergy = Math.min(14, Math.max(this.mProcessingEnergy > 0 ? 1 : 0, (this.mProcessingEnergy * 14) / 1000));
 
 		final Iterator var2 = this.crafters.iterator();
