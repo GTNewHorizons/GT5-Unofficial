@@ -121,7 +121,7 @@ public final class MainLoader {
     }
 
     public static void postLoad() {
-        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 6);
+        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 5);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
         if(Loader.isModLoaded(Reference.DREAMCRAFT)){
@@ -149,9 +149,10 @@ public final class MainLoader {
         new RecipeLoader().run();
         TecTech.LOGGER.info("Recipe Init Done");
 
-        progressBarPostLoad.step("Register Extra Hazmat Suits");
-        registerExtraHazmats();
-        TecTech.LOGGER.info("Hazmat additions done");
+        //Hazmat moved to GT5U
+        //progressBarPostLoad.step("Register Extra Hazmat Suits");
+        //registerExtraHazmats();
+        //TecTech.LOGGER.info("Hazmat additions done");
 
         if (!configTecTech.DISABLE_BLOCK_HARDNESS_NERF) {
             progressBarPostLoad.step("Nerf blocks blast resistance");
@@ -169,7 +170,7 @@ public final class MainLoader {
         ProgressManager.pop(progressBarPostLoad);
     }
 
-    private static void registerExtraHazmats() {
+    private static void registerExtraHazmats() { //Hazmat moved to GT5U
         ItemStack EMT_iqC=GT_ModHandler.getModItem("EMT","itemArmorQuantumChestplate",1,W);
         ItemStack GRAVI_gC=GT_ModHandler.getModItem("GraviSuite","graviChestPlate",1,W);
         ItemStack GRAVI_anC=GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W);
