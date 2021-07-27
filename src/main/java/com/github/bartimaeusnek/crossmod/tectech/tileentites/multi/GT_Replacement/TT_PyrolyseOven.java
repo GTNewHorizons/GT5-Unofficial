@@ -14,11 +14,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.loaders.oreprocessing.ProcessingLog;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADV_STR_CHECK;
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.TT_BLUEPRINT;
@@ -165,10 +163,6 @@ public class TT_PyrolyseOven extends TT_Abstract_GT_Replacement_Coils {
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
 
-        //Dynamic recipe adding for newly found logWoods - wont be visible in nei most probably
-        if (tRecipe == null)
-            tRecipe = addRecipesDynamically(tInputs, tFluids, tTier);
-
         if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, tFluids, tInputs))
             return false;
         setEfficiencyAndOc(tRecipe);
@@ -184,22 +178,6 @@ public class TT_PyrolyseOven extends TT_Abstract_GT_Replacement_Coils {
             this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
         updateSlots();
         return true;
-    }
-
-    private GT_Recipe addRecipesDynamically(ItemStack[] tInputs, FluidStack[] tFluids, int tTier) {
-        if (tInputs.length <= 1 && (tInputs[0] == null || tInputs[0].getItem() == GT_Utility.getIntegratedCircuit(0).getItem())) {
-            return null;
-        }
-        int oreId = OreDictionary.getOreID("logWood");
-        for (ItemStack is : tInputs) {
-            for (int id : OreDictionary.getOreIDs(is)) {
-                if (oreId == id) {
-                    ProcessingLog.addPyrolyeOvenRecipes(is);
-                    return GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-                }
-            }
-        }
-        return null;
     }
 
     @Override
