@@ -166,7 +166,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     @Override
     public String[] getDescription(){
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Naquadah Fuel Refine Factory")
+        tt.addMachineType("Naquadah Fuel Refinery")
                 .addInfo("Controller block for the Naquadah Fuel Refine Factory")
                 .addInfo("But at what cost?")
                 .addInfo("Produce the endgame naquadah fuel.")
@@ -229,6 +229,13 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
 
     @Override
     public boolean checkRecipe_EM(ItemStack aStack){
+
+        mWrench = true;
+        mScrewdriver = true;
+        mSoftHammer = true;
+        mHardHammer = true;
+        mSolderingTool = true;
+        mCrowbar = true;
 
         ArrayList<FluidStack> tFluids = getStoredFluids();
         ArrayList<ItemStack> tItems = getStoredInputs();

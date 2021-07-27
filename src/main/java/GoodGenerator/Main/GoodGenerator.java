@@ -17,6 +17,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.Loader;
 
 import static GoodGenerator.Loader.Loaders.addOreDic;
+import static GoodGenerator.Loader.Loaders.addTexturePage;
 
 @SuppressWarnings("ALL")
 @Mod(modid = GoodGenerator.MOD_ID, version = GoodGenerator.VERSION,
@@ -42,6 +43,7 @@ public final class GoodGenerator {
         new FluidsBuilder();
         Loaders.Register();
         addOreDic();
+        addTexturePage();
         proxy.preInit(event);
     }
     @Mod.EventHandler

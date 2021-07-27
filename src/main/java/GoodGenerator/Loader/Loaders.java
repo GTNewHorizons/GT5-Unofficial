@@ -11,6 +11,10 @@ import GoodGenerator.Items.MyItems;
 import GoodGenerator.Main.GoodGenerator;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Log;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,6 +23,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class Loaders {
 
     public static final int IDOffset = 32001;
+    public static final byte GoodGeneratorTexturePage = 12;
 
     public static final Item radiationProtectionPlate = new MyItems("radiationProtectionPlate", GoodGenerator.GG);
     public static final Item wrappedUraniumIngot = new MyItems("wrappedUraniumIngot", GoodGenerator.GG);
@@ -83,16 +88,23 @@ public class Loaders {
         Loaders.MAR = new MultiNqGenerator(12732, "NaG", "Large Naquadah Reactor").getStackForm(1L);
         Loaders.FRF = new FuelRefineFactory(16999, "FRF", "Naquadah Fuel Refinery").getStackForm(1L);
         Loaders.UCFE = new UniversalChemicalFuelEngine(IDOffset, "UniversalChemicalFuelEngine", "Universal Chemical Fuel Engine").getStackForm(1L);
-        /*if (Loader.isModLoaded("Thaumcraft")){
+        if (Loader.isModLoaded("Thaumcraft")){
             GameRegistry.registerBlock(magicCasing, MyItemBlocks.class, "magicCasing");
             GameRegistry.registerBlock(essentiaCells[0], MyItemBlocks.class, "essentiaCell");
             Loaders.LEG = new LargeEssentiaGenerator(IDOffset + 1, "LargeEssentiaGenerator", "Large Essentia Generator").getStackForm(1L);
-        }*/
+        }
     }
 
     public static void addOreDic(){
         OreDictionary.registerOre("blockGlass", fieldRestrictingGlass);
         OreDictionary.registerOre("blockGlassZPM", fieldRestrictingGlass);
         OreDictionary.registerOre("dustAluminumNitride", aluminumNitride);
+    }
+
+    public static void addTexturePage(){
+        if (Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage] == null){
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage] = new ITexture[128];
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][0] = TextureFactory.of(magicCasing);
+        }
     }
 }
