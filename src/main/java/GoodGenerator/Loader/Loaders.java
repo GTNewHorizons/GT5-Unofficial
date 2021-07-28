@@ -2,10 +2,8 @@ package GoodGenerator.Loader;
 
 import GoodGenerator.Blocks.RegularBlock.Casing;
 import GoodGenerator.Blocks.RegularBlock.Frame;
-import GoodGenerator.Blocks.TEs.FuelRefineFactory;
-import GoodGenerator.Blocks.TEs.LargeEssentiaGenerator;
-import GoodGenerator.Blocks.TEs.MultiNqGenerator;
-import GoodGenerator.Blocks.TEs.UniversalChemicalFuelEngine;
+import GoodGenerator.Blocks.RegularBlock.TEBlock;
+import GoodGenerator.Blocks.TEs.*;
 import GoodGenerator.Items.MyItemBlocks;
 import GoodGenerator.Items.MyItems;
 import GoodGenerator.Main.GoodGenerator;
@@ -14,7 +12,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -52,6 +49,7 @@ public class Loaders {
     public static final Block titaniumPlatedCylinder = new Casing("titaniumPlatedCylinder", new String[]{GoodGenerator.MOD_ID+":titaniumPlatedCylinder"});
     public static final Block magicCasing = new Casing("magicCasing", new String[]{GoodGenerator.MOD_ID+":MagicCasing"});
     public static final Block essentiaCell = new Casing("essentiaCell", new String[]{GoodGenerator.MOD_ID+":essentiaCell/1",GoodGenerator.MOD_ID+":essentiaCell/2",GoodGenerator.MOD_ID+":essentiaCell/3"});
+    public static final Block essentiaHatch = new TEBlock("essentiaHatch", new String[]{GoodGenerator.MOD_ID+":essentiaHatch"}, 1);
 
     public static final Block[] essentiaCells = new Block[]{essentiaCell};
 
@@ -70,6 +68,7 @@ public class Loaders {
         GameRegistry.registerBlock(FRF_Coil_3, MyItemBlocks.class, "FRF_Coil_3");
         GameRegistry.registerBlock(rawCylinder, MyItemBlocks.class, "rawCylinder");
         GameRegistry.registerBlock(titaniumPlatedCylinder, MyItemBlocks.class, "titaniumPlatedCylinder");
+        GameRegistry.registerBlock(essentiaHatch, MyItemBlocks.class, "essentiaHatch");
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget, "highDensityUraniumNugget", GoodGenerator.MOD_ID);
@@ -85,6 +84,7 @@ public class Loaders {
         GameRegistry.registerItem(aluminumNitride, "aluminumNitride", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(specialCeramics, "specialCeramics", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(specialCeramicsPlate, "specialCeramicsPlate", GoodGenerator.MOD_ID);
+        GameRegistry.registerTileEntity(EssentiaHatch.class, "EssentiaHatch");
         Loaders.MAR = new MultiNqGenerator(12732, "NaG", "Large Naquadah Reactor").getStackForm(1L);
         Loaders.FRF = new FuelRefineFactory(16999, "FRF", "Naquadah Fuel Refinery").getStackForm(1L);
         Loaders.UCFE = new UniversalChemicalFuelEngine(IDOffset, "UniversalChemicalFuelEngine", "Universal Chemical Fuel Engine").getStackForm(1L);

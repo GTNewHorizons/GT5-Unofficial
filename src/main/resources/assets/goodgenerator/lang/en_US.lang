@@ -12,6 +12,7 @@ magicCasing.0.name=Magic Casing
 essentiaCell.0.name=Novice Essentia Diffusion Cell
 essentiaCell.1.name=Adept Essentia Diffusion Cell
 essentiaCell.2.name=Master Essentia Diffusion Cell
+essentiaHatch.0.name=Essentia Input Hatch
 
 item.radiationProtectionPlate.name=Radiation Proof Plate
 item.wrappedUraniumIngot.name=Wrapped Uranium Ingot

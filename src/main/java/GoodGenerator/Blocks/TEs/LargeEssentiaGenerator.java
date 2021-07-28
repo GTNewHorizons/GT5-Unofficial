@@ -16,30 +16,25 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.AspectSourceHelper;
-import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.common.config.ConfigBlocks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
 public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
     private IStructureDefinition<LargeEssentiaGenerator> multiDefinition = null;
-    protected List<Aspect> mAvailableAspects = new ArrayList<>(Aspect.aspects.size());
-    protected final int MAX_RANGE = 16;
     protected final int ENERGY_PER_ESSENTIA = 512;
     protected int mStableValue = 0;
+    protected ArrayList<EssentiaHatch> mEssentiaHatch = new ArrayList<>();
 
     public LargeEssentiaGenerator(String name){
         super(name);
@@ -85,6 +80,36 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
     public void saveNBTData(NBTTagCompound aNBT){
         super.saveNBTData(aNBT);
         aNBT.setInteger("mStableValue", this.mStableValue);
+    }
+
+    public void getEssentiaHatch() {
+        IGregTechTileEntity aTileEntity = getBaseMetaTileEntity();
+        if (aTileEntity == null) return;
+        mEssentiaHatch.clear();
+        TileEntity hatch = aTileEntity.getTileEntityOffset(4,-2, 0);
+        addEssentiaHatch(hatch);
+        hatch = aTileEntity.getTileEntityOffset(-4,-2, 0);
+        addEssentiaHatch(hatch);
+        hatch = aTileEntity.getTileEntityOffset(0,-2, 4);
+        addEssentiaHatch(hatch);
+        hatch = aTileEntity.getTileEntityOffset(0,-2, -4);
+        addEssentiaHatch(hatch);
+    }
+
+    public void addEssentiaHatch(TileEntity aHatch) {
+        if (aHatch instanceof EssentiaHatch) {
+            mEssentiaHatch.add((EssentiaHatch) aHatch);
+        }
+    }
+
+    @Override
+    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aWrenchingSide == 0 || aWrenchingSide == 1) return false;
+        if (getBaseMetaTileEntity().isValidFacing(aWrenchingSide)) {
+            getBaseMetaTileEntity().setFrontFacing(aWrenchingSide);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -144,6 +169,9 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
                                     ),
                                     ofBlock(
                                             Loaders.magicCasing, 0
+                                    ),
+                                    ofBlock(
+                                            Loaders.essentiaHatch, 0
                                     )
                             )
                     )
@@ -174,63 +202,32 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
         return false;
     }
 
-    List<Aspect> getAvailableAspects() {
-        return mAvailableAspects;
-    }
-
-    public void scanAvailableAspects() {
-        IGregTechTileEntity tBaseMetaTileEntity = this.getBaseMetaTileEntity();
-        if (tBaseMetaTileEntity.isInvalidTileEntity()) return;
-        int tRange = MAX_RANGE;
-        int tY = tBaseMetaTileEntity.getYCoord();
-        int tMaxY = tBaseMetaTileEntity.getWorld().getHeight()-1;
-        int rYMin = (tY - tRange >= 0) ? -tRange : -(tY);
-        int rYMax = (((tY + tRange) <= tMaxY)? tRange : tMaxY - tY);
-        mAvailableAspects.clear();
-        for (int rX = -tRange; rX <= tRange; rX++) {
-            for (int rZ = -tRange; rZ <= tRange; rZ++) {
-                for (int rY = rYMin; rY < rYMax; rY++) {
-                    TileEntity tTile = tBaseMetaTileEntity.getTileEntityOffset(rX, rY, rZ);
-                    if (tTile instanceof IAspectContainer) {
-                        AspectList tAspectList = ((IAspectContainer) tTile).getAspects();
-                        if (tAspectList == null || tAspectList.aspects.isEmpty()) continue;
-                        Set<Aspect> tAspects = tAspectList.aspects.keySet();
-                        mAvailableAspects.addAll(tAspects);
-                    }
-                }
-            }
-        }
-    }
-
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
         this.mEfficiency = 10000;
         this.mMaxProgresstime = 1;
-        scanAvailableAspects();
-        this.mEUt = (int)absorbFromEssentiaContainers();
+        getEssentiaHatch();
+        this.mEUt = (int)getEssentiaToEU();
         return true;
+    }
+
+    public long getEssentiaToEU(){
+        long EUt = 0;
+        for (EssentiaHatch hatch: this.mEssentiaHatch){
+            AspectList aspects = hatch.getAspects();
+            for (Aspect aspect: aspects.aspects.keySet()) {
+                while (EUt < 8192 && aspects.getAmount(aspect) > 0) {
+                    EUt += ENERGY_PER_ESSENTIA;
+                    aspects.reduce(aspect, 1);
+                }
+            }
+        }
+        return EUt;
     }
 
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
-    }
-
-    private long absorbFromEssentiaContainers() {
-        long tEU = 0;
-
-        long tEUtoGen = 8192;
-        List<Aspect> mAvailableEssentiaAspects = getAvailableAspects();
-        for (int i = mAvailableEssentiaAspects.size() - 1; i >= 0 && tEUtoGen > 0; i--) {
-            Aspect aspect = mAvailableEssentiaAspects.get(i);
-            long tAspectEU = ENERGY_PER_ESSENTIA;
-            if (tAspectEU <= tEUtoGen
-                    && AspectSourceHelper.drainEssentia((TileEntity) this.getBaseMetaTileEntity(), aspect, ForgeDirection.UNKNOWN, MAX_RANGE)) {
-                tEUtoGen -= tAspectEU;
-                tEU += tAspectEU;
-            }
-        }
-        return tEU;
     }
 
     @Override
