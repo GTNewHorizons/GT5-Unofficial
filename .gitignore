@@ -8,6 +8,7 @@
 *.ctxt
 
 # IDEA files
+.idea/
 *.iml
 *.ipr
 *.iws
