@@ -73,7 +73,7 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
 
         //Tank "Recipe"
         final FluidContainerRegistry.FluidContainerData data = new FluidContainerRegistry.FluidContainerData(new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144), werkstoff.get(WerkstoffLoader.cellMolten), Materials.Empty.getCells(1));
-        FluidContainerRegistry.registerFluidContainer(werkstoff.getMolten(144), werkstoff.get(cell), Materials.Empty.getCells(1));
+        FluidContainerRegistry.registerFluidContainer(werkstoff.getMolten(144), werkstoff.get(WerkstoffLoader.cellMolten), Materials.Empty.getCells(1));
         GT_Utility.addFluidContainerData(data);
         GT_Values.RA.addFluidCannerRecipe(Materials.Empty.getCells(1), werkstoff.get(WerkstoffLoader.cellMolten), new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144), GT_Values.NF);
         GT_Values.RA.addFluidCannerRecipe(werkstoff.get(WerkstoffLoader.cellMolten), Materials.Empty.getCells(1), GT_Values.NF, new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144));
