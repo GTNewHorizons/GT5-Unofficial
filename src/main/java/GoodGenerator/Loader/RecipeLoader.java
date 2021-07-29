@@ -4,6 +4,7 @@ import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.util.CrackRecipeAdder;
 import GoodGenerator.util.MaterialFix;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -462,6 +463,110 @@ public class RecipeLoader {
                 Materials.Naquadah.getMolten(288),
                 null,
                 new ItemStack(Loaders.rawAtomicSeparationCatalyst,27),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Firestone,9),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Shadow,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sunnarium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ardite,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,18),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Firestone,9),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Shadow,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sunnarium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Manyullyn,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,18),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Firestone,9),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Shadow,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ichorium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ardite,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,54),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Firestone,9),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Shadow,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ichorium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Manyullyn,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,54),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Firestone,9),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Bedrockium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sunnarium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ardite,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,18),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Firestone,9),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Bedrockium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sunnarium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Manyullyn,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,18),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Firestone,9),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Bedrockium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ichorium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ardite,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,54),
+                300,
+                480
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Firestone,9),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Bedrockium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Ichorium,4),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Manyullyn,4),
+                GT_Utility.getIntegratedCircuit(4),null,
+                Materials.Naquadah.getMolten(288),
+                null,
+                new ItemStack(Loaders.rawAtomicSeparationCatalyst,54),
                 300,
                 480
         );
@@ -1085,6 +1190,112 @@ public class RecipeLoader {
                 200,
                 120
         );
+
+        if (Loader.isModLoaded("miscutils")) {
+            GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[]{
+                            GT_Utility.getIntegratedCircuit(16),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 2)
+                    },
+                    new FluidStack[]{
+                            FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 1000),
+                            Materials.NitrogenDioxide.getGas(1000)
+                    },
+                    new FluidStack[]{
+                            FluidRegistry.getFluidStack("combustionpromotor", 2000)
+                    },
+                    null,
+                    200,
+                    120
+            );
+
+            GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[]{
+                            GT_Utility.getIntegratedCircuit(16),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PotassiumNitrade, 2)
+                    },
+                    new FluidStack[]{
+                            FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 1000),
+                            Materials.NitrogenDioxide.getGas(1000)
+                    },
+                    new FluidStack[]{
+                            FluidRegistry.getFluidStack("combustionpromotor", 2000)
+                    },
+                    null,
+                    200,
+                    120
+            );
+
+            GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[]{
+                            GT_Utility.getIntegratedCircuit(16),
+                            WerkstoffLoader.SodiumNitrate.get(OrePrefixes.dust, 2)
+                    },
+                    new FluidStack[]{
+                            FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 1000),
+                            Materials.NitrogenDioxide.getGas(1000)
+                    },
+                    new FluidStack[]{
+                            FluidRegistry.getFluidStack("combustionpromotor", 2000)
+                    },
+                    null,
+                    200,
+                    120
+            );
+        }
+
+        if (Loader.isModLoaded("botdustries")) {
+            GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[]{
+                            GT_Utility.getIntegratedCircuit(16),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 2)
+                    },
+                    new FluidStack[]{
+                            FluidRegistry.getFluidStack("hydrogen peroxide", 1000),
+                            Materials.NitrogenDioxide.getGas(1000)
+                    },
+                    new FluidStack[]{
+                            FluidRegistry.getFluidStack("combustionpromotor", 2000)
+                    },
+                    null,
+                    200,
+                    120
+            );
+
+            GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[]{
+                            GT_Utility.getIntegratedCircuit(16),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PotassiumNitrade, 2)
+                    },
+                    new FluidStack[]{
+                            FluidRegistry.getFluidStack("hydrogen peroxide", 1000),
+                            Materials.NitrogenDioxide.getGas(1000)
+                    },
+                    new FluidStack[]{
+                            FluidRegistry.getFluidStack("combustionpromotor", 2000)
+                    },
+                    null,
+                    200,
+                    120
+            );
+
+            GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[]{
+                            GT_Utility.getIntegratedCircuit(16),
+                            WerkstoffLoader.SodiumNitrate.get(OrePrefixes.dust, 2)
+                    },
+                    new FluidStack[]{
+                            FluidRegistry.getFluidStack("hydrogen peroxide", 1000),
+                            Materials.NitrogenDioxide.getGas(1000)
+                    },
+                    new FluidStack[]{
+                            FluidRegistry.getFluidStack("combustionpromotor", 2000)
+                    },
+                    null,
+                    200,
+                    120
+            );
+        }
 
         GT_ModHandler.addCraftingRecipe(
                 Loaders.UCFE.copy(),
