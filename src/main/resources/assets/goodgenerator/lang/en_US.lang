@@ -96,6 +96,11 @@ UniversalChemicalFuelEngine.hint.7=2 - Muffler Hatch
 UniversalChemicalFuelEngine.hint.8=3 - Input Hatch
 UniversalChemicalFuelEngine.hint.9=4 - Dynamo Hatch
 UniversalChemicalFuelEngine.hint.10=Doesn't support TecTech Dynamo Hatch
+LargeEssentiaGenerator.hint.0=25x Any Essentia Cell
+LargeEssentiaGenerator.hint.1=4x Amber Bricks
+LargeEssentiaGenerator.hint.2=24x Arcane Stone Bricks
+LargeEssentiaGenerator.hint.3=At least 53x Magic Casings
+LargeEssentiaGenerator.hint.4=1 - Maintenance Hatch/Input Hatch/Dynamo Hatch/Essentia Input Hatch
 
 achievement.gt.blockmachines.nag=Large Naquadah Reactor
 achievement.gt.blockmachines.nag.desc=Pickup this item to see the recipe in NEI

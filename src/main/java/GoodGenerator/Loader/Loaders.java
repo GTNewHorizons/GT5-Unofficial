@@ -68,7 +68,6 @@ public class Loaders {
         GameRegistry.registerBlock(FRF_Coil_3, MyItemBlocks.class, "FRF_Coil_3");
         GameRegistry.registerBlock(rawCylinder, MyItemBlocks.class, "rawCylinder");
         GameRegistry.registerBlock(titaniumPlatedCylinder, MyItemBlocks.class, "titaniumPlatedCylinder");
-        GameRegistry.registerBlock(essentiaHatch, MyItemBlocks.class, "essentiaHatch");
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget, "highDensityUraniumNugget", GoodGenerator.MOD_ID);
@@ -84,13 +83,14 @@ public class Loaders {
         GameRegistry.registerItem(aluminumNitride, "aluminumNitride", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(specialCeramics, "specialCeramics", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(specialCeramicsPlate, "specialCeramicsPlate", GoodGenerator.MOD_ID);
-        GameRegistry.registerTileEntity(EssentiaHatch.class, "EssentiaHatch");
         Loaders.MAR = new MultiNqGenerator(12732, "NaG", "Large Naquadah Reactor").getStackForm(1L);
         Loaders.FRF = new FuelRefineFactory(16999, "FRF", "Naquadah Fuel Refinery").getStackForm(1L);
         Loaders.UCFE = new UniversalChemicalFuelEngine(IDOffset, "UniversalChemicalFuelEngine", "Universal Chemical Fuel Engine").getStackForm(1L);
         if (Loader.isModLoaded("Thaumcraft")){
             GameRegistry.registerBlock(magicCasing, MyItemBlocks.class, "magicCasing");
             GameRegistry.registerBlock(essentiaCells[0], MyItemBlocks.class, "essentiaCell");
+            GameRegistry.registerBlock(essentiaHatch, MyItemBlocks.class, "essentiaHatch");
+            GameRegistry.registerTileEntity(EssentiaHatch.class, "EssentiaHatch");
             Loaders.LEG = new LargeEssentiaGenerator(IDOffset + 1, "LargeEssentiaGenerator", "Large Essentia Generator").getStackForm(1L);
         }
     }

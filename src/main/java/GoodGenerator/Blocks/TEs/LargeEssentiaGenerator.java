@@ -1,6 +1,7 @@
 package GoodGenerator.Blocks.TEs;
 
 import GoodGenerator.Loader.Loaders;
+import GoodGenerator.util.DescTextLocalization;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
@@ -9,6 +10,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -16,10 +18,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import org.lwjgl.input.Keyboard;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
@@ -32,7 +37,7 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
     private IStructureDefinition<LargeEssentiaGenerator> multiDefinition = null;
-    protected final int ENERGY_PER_ESSENTIA = 512;
+    protected final int ENERGY_PER_ESSENTIA_DEFAULT = 512;
     protected int mStableValue = 0;
     protected ArrayList<EssentiaHatch> mEssentiaHatch = new ArrayList<>();
 
@@ -71,13 +76,13 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT){
+    public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.mStableValue = aNBT.getInteger("mStableValue");
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT){
+    public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("mStableValue", this.mStableValue);
     }
@@ -207,17 +212,44 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
         this.mEfficiency = 10000;
         this.mMaxProgresstime = 1;
         getEssentiaHatch();
-        this.mEUt = (int)getEssentiaToEU();
+        this.mEUt = (int)getEssentiaToEU(getPower());
         return true;
     }
 
-    public long getEssentiaToEU(){
+    public long getPower() {
+        long power = 0;
+        for (GT_MetaTileEntity_Hatch tHatch : this.eDynamoMulti) {
+            power += tHatch.maxEUOutput();
+        }
+        for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches) {
+            power += tHatch.maxEUOutput();
+        }
+        return power;
+    }
+
+    public long getPerAspectEnergy(Aspect aspect) {
+        if (aspect.equals(Aspect.ENERGY)) return 4500 * mStableValue / 25;
+        if (aspect.equals(Aspect.FIRE)) return 3000 * mStableValue / 25;
+        if (aspect.equals(Aspect.GREED)) return 13000 * mStableValue / 25;
+        if (aspect.equals(Aspect.AURA)) return 9000 * mStableValue / 25;
+        if (aspect.equals(Aspect.TREE)) return 2200 * mStableValue / 25;
+        if (aspect.equals(Aspect.AIR)) return 1300 * mStableValue / 25;
+        if (aspect.equals(Aspect.MAGIC)) return 5200 * mStableValue / 25;
+        if (aspect.equals(Aspect.MECHANISM)) return 4000 * mStableValue / 25;
+        if (aspect.equals(TC_Aspects.ELECTRUM.mAspect)) return 32768 * mStableValue / 25;
+        if (aspect.equals(TC_Aspects.RADIO.mAspect)) return 131072 * mStableValue / 25;
+
+        return ENERGY_PER_ESSENTIA_DEFAULT * mStableValue / 25;
+    }
+
+    public long getEssentiaToEU(long EULimit) {
         long EUt = 0;
+
         for (EssentiaHatch hatch: this.mEssentiaHatch){
             AspectList aspects = hatch.getAspects();
             for (Aspect aspect: aspects.aspects.keySet()) {
-                while (EUt < 8192 && aspects.getAmount(aspect) > 0) {
-                    EUt += ENERGY_PER_ESSENTIA;
+                while (EUt < EULimit && aspects.getAmount(aspect) > 0) {
+                    EUt += getPerAspectEnergy(aspect);
                     aspects.reduce(aspect, 1);
                 }
             }
@@ -232,12 +264,35 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[0];
+        return DescTextLocalization.addText("LargeEssentiaGenerator.hint", 5);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new LargeEssentiaGenerator(this.mName);
+    }
+
+    @Override
+    public String[] getDescription() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Essentia Generator")
+                .addInfo("Controller block for the Large Essentia Generator")
+                .addInfo("Maybe some thaumaturages are upset by it. . .")
+                .addInfo("Transform essentia into energy!")
+                .addInfo("You can find more information about this generator in Thaumonomicon.")
+                .addInfo("The structure is too complex!")
+                .addInfo("Follow the" + EnumChatFormatting.DARK_BLUE + " Tec" + EnumChatFormatting.BLUE + "Tech" + EnumChatFormatting.GRAY + " blueprint to build the main structure.")
+                .addSeparator()
+                .addMaintenanceHatch("Hint block with dot 1")
+                .addInputHatch("Hint block with dot 1")
+                .addDynamoHatch("Hint block with dot 1")
+                .addOtherStructurePart("Essentia Input Hatch","Hint block with dot 1")
+                .toolTipFinisher("Good Generator");
+        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            return tt.getInformation();
+        } else {
+            return tt.getStructureInformation();
+        }
     }
 
     @Override
