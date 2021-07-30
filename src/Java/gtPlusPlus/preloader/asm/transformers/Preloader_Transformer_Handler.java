@@ -269,11 +269,11 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			}
 		}
 
-		//Fix IC2 Hazmat		
-		if (transformedName.equals(IC2_ITEM_ARMOUR_HAZMAT)) {
-			Preloader_Logger.INFO("IC2 Hazmat Patch", "Transforming "+transformedName);
-			return new ClassTransformer_IC2_Hazmat(basicClass, transformedName).getWriter().toByteArray();			
-		}
+		//This is breaking IC2 Hazmat, moved to hodgepodge
+//		if (transformedName.equals(IC2_ITEM_ARMOUR_HAZMAT)) {
+//			Preloader_Logger.INFO("IC2 Hazmat Patch", "Transforming "+transformedName);
+//			return new ClassTransformer_IC2_Hazmat(basicClass, transformedName).getWriter().toByteArray();
+//		}
 
 		//Fix Thaumcraft Shit
 		//Patching ItemWispEssence to allow invalid item handling
