@@ -29,6 +29,7 @@ import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MegaUtils;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -141,6 +142,15 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
             return true;
         }
         return false;
+    }
+
+    @Override
+    public IStructureDefinition<GT_MetaTileEntity_VacuumFreezer> getStructureDefinition() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void construct(ItemStack aStack, boolean aHintsOnly) {
     }
 
     // -------------- TEC TECH COMPAT ----------------

@@ -43,6 +43,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
@@ -58,6 +59,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static bloodasp.galacticgreg.registry.GalacticGregRegistry.getModContainers;
+import static gregtech.api.enums.GT_Values.VN;
 
 @SuppressWarnings("ALL")
 public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_DrillerBase {
@@ -144,24 +146,28 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     }
 
     @Override
-    public String[] getDescription() {
-        String casingName = GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(this.getCasingBlockItem().get(1L)));
-        return new String[]{"Controller Block for the Void Miner "+ GT_Values.VN[this.getMinTier()],
-                "Size(WxHxD): 3x7x3",
-                "Controller (Front middle at bottom)",
-                "3x1x3 Base of " + casingName,
-                "1x3x1 " + casingName + " pillar (Center of base)",
-                "1x3x1 " + this.getFrameMaterial().mName + " Frame Boxes (Each pillar side and on top)",
-                "1x Output Bus (One of base casings)",
-                "Optional: 0+ Input Hatch (One of base casings)",
-                "1x Maintenance Hatch (One of base casings)",
-                "1x " + GT_Values.VN[this.getMinTier()] + "+ Energy Hatch (Any bottom layer casing)",
-                "Consumes " + GT_Values.V[this.getMinTier()] + "EU/t",
-                "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64)",
-                "for higher outputs.",
-                "Will output "+(2*TIER_MULTIPLIER)+" Ores per Second depending on the Dimension it is build in",
-                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()
-        };
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        String casings = getCasingBlockItem().get(0).getDisplayName();
+
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Miner")
+                .addInfo("Controller Block for the Void Miner "+ GT_Values.VN[this.getMinTier()])
+                .addInfo("Consumes " + GT_Values.V[this.getMinTier()] + "EU/t")
+                .addInfo("Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                .addInfo("Will output "+(2*TIER_MULTIPLIER)+" Ores per Second depending on the Dimension it is build in")
+                .addSeparator()
+                .beginStructureBlock(3, 7, 3, false)
+                .addController("Front bottom")
+                .addStructureInfo(casings + " form the 3x1x3 Base")
+                .addOtherStructurePart(casings, " 1x3x1 pillar above the center of the base (2 minimum total)")
+                .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
+                .addEnergyHatch(VN[getMinTier()] + "+, Any base casing")
+                .addMaintenanceHatch("Any base casing")
+                .addInputBus("Mining Pipes, optional, any base casing")
+                .addInputHatch("Optional noble gas, any base casing")
+                .addOutputBus("Any base casing")
+                .toolTipFinisher("Gregtech");
+        return tt;
     }
 
     public static ArrayListMultimap<Integer, Pair<Pair<Integer, Boolean>, Float>> getExtraDropsDimMap() {
