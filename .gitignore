@@ -48,3 +48,4 @@ SetupWorkspaces.bat
 SetupDevWorkspaces.bat
 Idea.bat
 *.bat
+.idea

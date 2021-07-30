@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -32,6 +33,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
@@ -44,6 +46,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+
+import static gregtech.api.enums.GT_Values.VN;
 
 public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     private static float nulearHeatMod = 2f;
@@ -99,10 +103,36 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     }
 
     @Override
-    public String[] getDescription() {
-        String[] dscSteam = {"Controller Block for the Deep Earth Heat Pump " + (this.mTier > 1 ? this.mTier : ""), "Size(WxHxD): 3x7x3", "Controller (Front middle at bottom)", "3x1x3 Base of " + this.getCasingBlockItem().name(), "1x3x1 " + this.getCasingBlockItem().name() + " pillar (Center of base)", "1x3x1 " + this.getFrameMaterial().mName + " Frame Boxes (Each pillar side and on top)", "1x Input Hatch (One of base casings)", "1x Output Hatch (One of base casings)", "1x Maintenance Hatch (One of base casings)", "1x " + GT_Values.VN[this.getMinTier()] + "+ Energy Hatch (Any bottom layer casing)", "Consumes " + GT_Values.V[this.mTier + 2] + "EU/t", "Has 4 Modes, use the Screwdriver to change them:", "0 Idle, 1 Steam, 2 Superheated Steam (requires Distilled Water), 3 Retract", "Explodes when it runs out of Water/Distilled Water", "Converts " + (long) (this.mTier * 1200 * 20) + "L/s Water(minus 10% per Maintenance Problem) to Steam", "Converts " + (long) (this.mTier * 600 * 20) + "L/s Distilled Water(minus 10% per Maintenance Problem) to SuperheatedSteam"};
-        String[] dscCooleant = {"Controller Block for the Deep Earth Heat Pump " + (this.mTier > 1 ? this.mTier : ""), "Size(WxHxD): 3x7x3", "Controller (Front middle at bottom)", "3x1x3 Base of " + this.getCasingBlockItem().name(), "1x3x1 " + this.getCasingBlockItem().name() + " pillar (Center of base)", "1x3x1 " + this.getFrameMaterial().mName + " Frame Boxes (Each pillar side and on top)", "1x Input Hatch (One of base casings)", "1x Output Hatch (One of base casings)", "1x Maintenance Hatch (One of base casings)", "1x " + GT_Values.VN[this.getMinTier()] + "+ Energy Hatch (Any bottom layer casing)", "Consumes " + GT_Values.V[this.mTier + 2] + "EU/t", "Has 4 Modes, use the Screwdriver to change them:", "0 Idle, 1 & 2 Coolant Heating Mode (no Difference between them), 3 Retract", "Explodes when it runs out of Coolant", "Heats up " + (long) (this.mTier * 24 * ((double) GT_TileEntity_DEHP.nulearHeatMod)) * 20 + "L/s Coolant(minus 10% per Maintenance Problem)"};
-        return ConfigHandler.DEHPDirectSteam ? dscSteam : dscCooleant;
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        String casings = getCasingBlockItem().get(0).getDisplayName();
+        tt.addMachineType("Geothermal Heat Pump")
+                .addInfo("Consumes " + GT_Values.V[this.mTier + 2] + "EU/t")
+                .addInfo("Has 4 Modes, use the Screwdriver to change them:");
+        if (ConfigHandler.DEHPDirectSteam) {
+            tt.addInfo("0 Idle, 1 Steam, 2 Superheated Steam (requires Distilled Water), 3 Retract")
+                    .addInfo("Explodes when it runs out of Water/Distilled Water")
+                    .addInfo("Converts " + (long) (this.mTier * 1200 * 20) + "L/s Water(minus 10% per Maintenance Problem) to Steam")
+                    .addInfo("Converts " + (long) (this.mTier * 600 * 20) + "L/s Distilled Water(minus 10% per Maintenance Problem) to SuperheatedSteam");
+
+        } else {
+            tt.addInfo("0 Idle, 1 & 2 Coolant Heating Mode (no Difference between them), 3 Retract")
+                    .addInfo("Explodes when it runs out of Coolant")
+                    .addInfo("Heats up " + (long) (this.mTier * 24 * ((double) GT_TileEntity_DEHP.nulearHeatMod)) * 20 + "L/s Coolant(minus 10% per Maintenance Problem)");
+        }
+        tt.addSeparator()
+                .beginStructureBlock(3, 7, 3, false)
+                .addController("Front bottom")
+                .addStructureInfo(casings + " form the 3x1x3 Base")
+                .addOtherStructurePart(casings, " 1x3x1 pillar above the center of the base (2 minimum total)")
+                .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
+                .addEnergyHatch(VN[getMinTier()] + "+, Any base casing")
+                .addMaintenanceHatch("Any base casing")
+                .addInputBus("Mining Pipes, optional, any base casing")
+                .addInputHatch("Any base casing")
+                .addOutputHatch("Any base casing")
+                .toolTipFinisher(BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+        return tt;
     }
 
     @Override
@@ -188,7 +218,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             return true;
         }
 
-        if (!this.tryLowerPipe()) {
+        if (tryLowerPipeState(false) != 0) {
             if (this.waitForPipes()) {
                 return false;
             } else {

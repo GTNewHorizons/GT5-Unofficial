@@ -27,7 +27,6 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.crossmod.GTpp.loader.RadioHatchCompat;
 import com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechResearchLoader;
-import com.github.bartimaeusnek.crossmod.tectech.tileentites.multi.GT_Replacement.*;
 import com.github.bartimaeusnek.crossmod.thaumcraft.CustomAspects;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -78,17 +77,6 @@ public class BartWorksCrossmod {
     public void init(FMLInitializationEvent init) {
         if (LoaderReference.GalacticraftCore)
             GalacticraftProxy.init(init);
-        //Base GT -> TT Replacement
-        if (LoaderReference.tectech) {
-            new TT_VacuumFreezer(null,null);
-            new TT_OilCrackingUnit(null,null);
-            new TT_ImplosionCompressor(null,null);
-            new TT_ElectronicBlastFurnace(null,null);
-            new TT_MultiSmelter(null,null);
-            new TT_PyrolyseOven(null, null);
-
-            new BW_TT_HeatExchanger(null, null);
-        }
     }
 
     @Mod.EventHandler
