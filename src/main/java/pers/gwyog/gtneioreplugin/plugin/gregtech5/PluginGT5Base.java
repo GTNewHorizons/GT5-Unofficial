@@ -19,7 +19,7 @@ public class PluginGT5Base extends PluginBase {
     protected boolean ttDisplayed = false;
 
     protected static String getLocalizedNameForItem(Materials aMaterial, String aFormat) {
-        return String.format(aFormat.replace("%s", "%temp").replace("%material", "%s"), aMaterial.mDefaultLocalName).replace("%temp", "%s");
+        return String.format(aFormat.replace("%s", "%temp").replace("%material", "%s"), aMaterial.mLocalizedName).replace("%temp", "%s");
     }
 
     protected static int calculateMaxW(List L) {

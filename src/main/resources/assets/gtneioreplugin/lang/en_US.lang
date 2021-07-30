@@ -35,12 +35,41 @@ gtnop.nei.genPositionInfo=In the center of each chunk
 
 
 # world names
-gtnop.world.overworld.name=Overworld
-gtnop.world.nether.name=Nether
-gtnop.world.end.name=End
-gtnop.world.moon.name=Moon
-gtnop.world.mars.name=Mars
-gtnop.world.asteroid.name=GalactiCraft Asteroid
+gtnop.world.Overworld=Overworld
+gtnop.world.Nether=Nether
+gtnop.world.TheEnd=TheEnd
+gtnop.world.Twilight=Twilight Forrest
+gtnop.world.EndAsteroid=Far End Asteroids
+gtnop.world.Vanilla EndAsteroids=Vanilla EndAsteroids
+gtnop.world.Moon=Moon
+gtnop.world.Mars=Mars
+gtnop.world.Phobos=Phobos
+gtnop.world.Deimos=Deimos
+gtnop.world.Asteroids=Asteroids
+gtnop.world.Ceres=Ceres
+gtnop.world.Europa=Europa
+gtnop.world.Ganymede=Ganymede
+gtnop.world.Callisto=Callisto
+gtnop.world.Io=Io
+gtnop.world.Venus=Venus
+gtnop.world.Mercury=Mercury
+gtnop.world.Enceladus=Enceladus
+gtnop.world.Titan=Titan
+gtnop.world.Miranda=Miranda
+gtnop.world.Oberon=Oberon
+gtnop.world.Proteus=Proteus
+gtnop.world.Triton=Triton
+gtnop.world.Pluto=Pluto
+gtnop.world.Kuiperbelt=Kuiperbelt
+gtnop.world.Haumea=Haumea
+gtnop.world.MakeMake=MakeMake
+gtnop.world.CentauriA=αCentauriBb
+gtnop.world.VegaB=VegaB
+gtnop.world.BarnardC=BarnardC
+gtnop.world.BarnardE=BarnardE
+gtnop.world.BarnardF=BarnardF
+gtnop.world.TcetiE=TcetiE
+gtnop.world.Underdark=Deep Dark
 
 
 # biome names
