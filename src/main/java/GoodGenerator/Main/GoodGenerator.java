@@ -1,6 +1,7 @@
 package GoodGenerator.Main;
 
 import GoodGenerator.Common.CommonProxy;
+import GoodGenerator.CrossMod.Thaumcraft.Research;
 import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.FuelRecipeLoader;
 import GoodGenerator.Loader.Loaders;
@@ -8,13 +9,13 @@ import GoodGenerator.Loader.RecipeLoader;
 import GoodGenerator.Tabs.MyTabs;
 import GoodGenerator.Blocks.MyFluids.FluidsBuilder;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.Loader;
 
 import static GoodGenerator.Loader.Loaders.addOreDic;
 import static GoodGenerator.Loader.Loaders.addTexturePage;
@@ -57,5 +58,8 @@ public final class GoodGenerator {
         proxy.postInit(event);
         RecipeLoader.RecipeLoad();
         RecipeLoader.Fixer();
+        if (Loader.isModLoaded("Thaumcraft")){
+            Research.addResearch();
+        }
     }
 }

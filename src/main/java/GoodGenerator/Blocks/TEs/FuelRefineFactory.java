@@ -167,7 +167,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     public String[] getDescription(){
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Naquadah Fuel Refinery")
-                .addInfo("Controller block for the Naquadah Fuel Refine Factory")
+                .addInfo("Controller block for the Naquadah Fuel Refinery")
                 .addInfo("But at what cost?")
                 .addInfo("Produce the endgame naquadah fuel.")
                 .addInfo("Need field restriction coil to control the fatal radiation.")

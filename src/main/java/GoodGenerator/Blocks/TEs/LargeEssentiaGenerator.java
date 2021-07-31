@@ -219,11 +219,12 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
     public long getPower() {
         long power = 0;
         for (GT_MetaTileEntity_Hatch tHatch : this.eDynamoMulti) {
-            power += tHatch.maxEUOutput();
+            power += tHatch.maxEUOutput() * tHatch.maxAmperesOut();
         }
         for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches) {
-            power += tHatch.maxEUOutput();
+            power += tHatch.maxEUOutput() * tHatch.maxAmperesOut();
         }
+        if (power > Integer.MAX_VALUE) power = Integer.MAX_VALUE;
         return power;
     }
 

@@ -5,7 +5,7 @@ fieldRestrictingGlass.0.name=Field Restriction Glass
 FRF_Coil_1.0.name=Field Restriction Coil
 FRF_Coil_2.0.name=Advanced Field Restriction Coil
 FRF_Coil_3.0.name=Ultimate Field Restriction Coil
-FRF_Casing.0.name=Naquadah Fuel Refine Factory Casing
+FRF_Casing.0.name=Naquadah Fuel Refinery Casing
 rawCylinder.0.name=Raw Cylinder
 titaniumPlatedCylinder.0.name=Titanium Plated Cylinder
 magicCasing.0.name=Magic Casing
@@ -71,7 +71,7 @@ value.naquadah_fuel_refine_factory.1= Coil
 
 FuelRefineFactory.hint.0=8x Field Restriction Glass
 FuelRefineFactory.hint.1=32x Field Restriction Coil of any tier
-FuelRefineFactory.hint.2=At least 104x Naquadah Fuel Refine Factory Casing
+FuelRefineFactory.hint.2=At least 104x Naquadah Fuel Refinery Casing
 FuelRefineFactory.hint.3=1~16x Input Hatch
 FuelRefineFactory.hint.4=1~16x Output Hatch
 FuelRefineFactory.hint.5=1~16x Input Bus
@@ -115,3 +115,7 @@ achievement.FRF_Coil_2.0.desc=Pickup this item to see the recipe in NEI
 achievement.FRF_Coil_3.0=Ultimate Field Restriction Coil
 achievement.FRF_Coil_3.0.desc=Pickup this item to see the recipe in NEI
 
+research.ESSENTIA_GENERATOR.page.0=You have found that Essentia contains much more power than you thought. Is there a way to generate electricity from these Essentia?
+research.ESSENTIA_GENERATOR.page.1=Different Essentia contains different amount of energy.<BR><BR>Potentia: 4500EU<BR><BR>Ignis: 3000EU<BR><BR>Lucrum: 13000EU<BR><BR>Auram: 9000EU<BR><BR>Arbor: 2200EU<BR><BR>Aer: 1300EU<BR><BR>Praecantatio: 5200EU<BR><BR>Machina: 4000EU<BR><BR>Electrum: 32768EU<BR><BR>Radio: 131072EU
+research.ESSENTIA_GENERATOR.page.2=The unlisted Aspects contain 512EU per Essentia.
+research.ESSENTIA_CELL.page.0=The Novice Cell has such low efficiency that you can't bear it. So you discovered a new way to make some better Cells<BR><BR>The Novice Cell only provides 1 StablePoint, the Adept one provides 2 StablePoint, and the Master one provides 5 StablePoint!<BR><BR>With higher StablePoint, the generator can create more electricity from pre Essential.
