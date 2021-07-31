@@ -95,8 +95,8 @@ public class DimensionHelper {
             s = s.trim();
             for (int i = 0; i < DimNameDisplayed.length; i++) {
                 if (s.equals(DimNameDisplayed[i])) {
-                    s = I18n.format("gtnop.world." + DimName[i].replaceAll("GalacticraftCore_", "").replaceAll("GalacticraftMars_", "").replaceAll("GalaxySpace_", "").replaceAll("Vanilla_", "Vanilla "));
                     String k = DimName[i].replaceAll("GalacticraftCore_", "").replaceAll("GalacticraftMars_", "").replaceAll("GalaxySpace_", "").replaceAll("Vanilla_", "Vanilla ");
+                    s = I18n.format("gtnop.world." + k);
                     switch (k) {
                         case "Moon":
                             s = s + " (T1)";
