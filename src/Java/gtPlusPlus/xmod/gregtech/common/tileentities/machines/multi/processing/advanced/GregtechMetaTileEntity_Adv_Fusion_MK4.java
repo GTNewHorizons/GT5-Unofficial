@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
-import java.lang.reflect.Method;
-
 import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
@@ -16,17 +14,17 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
-
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.lang.reflect.Method;
 
 public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_FusionComputer {
 
@@ -34,27 +32,32 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 	
 	static {
 		mUpdateHatchTexture = ReflectionUtils.getMethod(GT_MetaTileEntity_Hatch.class, "updateTexture", int.class);
-	}
-	
-	public GregtechMetaTileEntity_Adv_Fusion_MK4(int aID, String aName, String aNameRegional) {
-		super(aID, aName, aNameRegional, 6);
-	}
+    }
 
-	public GregtechMetaTileEntity_Adv_Fusion_MK4(String aName) {
-		super(aName);
-	}
+    public GregtechMetaTileEntity_Adv_Fusion_MK4(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional, 6);
+    }
 
-	@Override
-	public int tier() {
-		return 9;
-	}
+    public GregtechMetaTileEntity_Adv_Fusion_MK4(String aName) {
+        super(aName);
+    }
 
-	@Override
-	public long maxEUStore() {
-		return (640010000L*4) * (Math.min(16, this.mEnergyHatches.size())) / 8L;
-	}
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        return new GT_Multiblock_Tooltip_Builder().addInfo(GregtechMetaTileEntity_Adv_Fusion_MK4.class.getName() + ": I don't have any info, please fix me");
+    }
 
-	@Override
+    @Override
+    public int tier() {
+        return 9;
+    }
+
+    @Override
+    public long maxEUStore() {
+        return (640010000L * 4) * (Math.min(16, this.mEnergyHatches.size())) / 8L;
+    }
+
+    @Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaTileEntity_Adv_Fusion_MK4(mName);
 	}
@@ -103,17 +106,17 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 		ITexture[] sTexture;
 		if (aSide == aFacing) {
 			sTexture = new ITexture[]{
-					new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
-							Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
-					new GT_RenderedTexture(this.getIconOverlay())};
+                    new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
+                            Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
+                    new GT_RenderedTexture(this.getIconOverlay())};
 		} else if (!aActive) {
 			sTexture = new ITexture[]{
-					new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
-							Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
+                    new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
+                            Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
 		} else {
 			sTexture = new ITexture[]{
-					new GT_RenderedTexture((IIconContainer) TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA,
-							Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
+                    new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA,
+                            Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
 		}
 		return sTexture;
 	}
@@ -339,7 +342,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
                                 mEfficiencyIncrease = 0;
                                 if (mOutputFluids != null && mOutputFluids.length > 0) {
                                     try {
-                                        GT_Mod.instance.achievements.issueAchivementHatchFluid(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), mOutputFluids[0]);
+                                        GT_Mod.achievements.issueAchivementHatchFluid(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), mOutputFluids[0]);
                                     } catch (Exception e) {
                                     }
                                 }
