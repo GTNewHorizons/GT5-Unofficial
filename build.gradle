@@ -104,6 +104,13 @@ repositories {
         name = 'gtnh_download_source'
         artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[organisation]/[module]/[revision]/[module]-[revision].[ext]")
     }
+    maven {
+        url = "https://jitpack.io"
+    }
+    maven {
+        name = "appleCore"
+        url = "http://www.ryanliptak.com/maven/"
+    }
 }
 
 sourceSets {
@@ -147,6 +154,9 @@ dependencies {
     //compile files('libs/gregtech-5.09.31-dev.jar')
     //compile files('libs/gregtech-5.09.33-dev.jar')
     //compile files('libs/gregtech-5.09.34.17-dev.jar')
+//    compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev") {
+//        setChanging(true)
+//    }
     compile files('libs/gregtech-5.09.37.00-dev.jar')
 
     provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"  

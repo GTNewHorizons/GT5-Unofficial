@@ -37,12 +37,12 @@ public class Logger {
 	}
 
 	// Non-Dev Comments
-	public static void MACHINE_INFO(final String s) {
+	public static void MACHINE_INFO(String s, Object... args) {
 		if (enabled) {
 			boolean localPlayer = CORE_Preloader.DEV_ENVIRONMENT;
 			if (CORE.ConfigSwitches.MACHINE_INFO || localPlayer) {
 				final String name1 = gtPlusPlus.core.util.reflect.ReflectionUtils.getMethodName(2);
-				modLogger.info("Machine Info: " + s + " | " + name1);
+				modLogger.info("Machine Info: " + s + " | " + name1, args);
 			}
 		}
 	}
