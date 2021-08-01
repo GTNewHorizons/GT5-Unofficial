@@ -427,11 +427,7 @@ public class TexturesGtBlock {
 	public static final CustomIcon Overlay_Oil = Internal_Overlay_Oil;
 	private static final CustomIcon Internal_Overlay_UU_Matter = new CustomIcon("TileEntities/adv_machine_uum");
 	public static final CustomIcon Overlay_UU_Matter = Internal_Overlay_UU_Matter;
-	
-	//Buffer Overlays
-	private static final CustomIcon Internal_OVERLAY_AUTOMATION_SUPERBUFFER = new CustomIcon("iconsets/AUTOMATION_SUPERBUFFER");
-	public static final CustomIcon OVERLAY_AUTOMATION_SUPERBUFFER = Internal_OVERLAY_AUTOMATION_SUPERBUFFER;
-	
+
 	// GT++ Tiered Hulls
 	public static final CustomIcon TEXTURE_CASING_TIERED_ULV = new CustomIcon("iconsets/TieredHulls/CASING_ULV");
 	public static final CustomIcon TEXTURE_CASING_TIERED_LV = new CustomIcon("iconsets/TieredHulls/CASING_LV");
