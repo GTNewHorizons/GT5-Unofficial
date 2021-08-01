@@ -1,19 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import net.minecraft.util.ChatComponentTranslation;
-import org.apache.commons.lang3.ArrayUtils;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -24,16 +10,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -43,11 +20,7 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.helpers.GregtechPlusPlus_API.Multiblock_API;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.data.ConcurrentHashSet;
-import gtPlusPlus.api.objects.data.ConcurrentSet;
-import gtPlusPlus.api.objects.data.FlexiblePair;
-import gtPlusPlus.api.objects.data.Triplet;
+import gtPlusPlus.api.objects.data.*;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.api.objects.minecraft.multi.SpecialMultiBehaviour;
 import gtPlusPlus.core.lib.CORE;
@@ -58,11 +31,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.asm.AsmConfig;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine_NoPlayerInventory;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine_Default;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_Multi_Basic_Slotted;
+import gtPlusPlus.xmod.gregtech.api.gui.*;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
@@ -75,10 +44,19 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -90,13 +68,6 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		Method a09 = findRecipe09 = ReflectionUtils.getMethod(GT_Recipe_Map.class, "findRecipe", IHasWorldObjectAndCoords.class, GT_Recipe.class, boolean.class, boolean.class, long.class, FluidStack[].class, ItemStack.class, ItemStack[].class);
 		Logger.MACHINE_INFO("Found .08 findRecipe method? "+(a08 != null));
 		Logger.MACHINE_INFO("Found .09 findRecipe method? "+(a09 != null));
-
-		if (CORE_Preloader.DEBUG_MODE) {
-			aLogger = ReflectionUtils.getMethod(Logger.class, "INFO", String.class);				
-		}
-		else {
-			aLogger = ReflectionUtils.getMethod(Logger.class, "MACHINE_INFO", String.class);				
-		}
 
 		try {
 			calculatePollutionReduction = GT_MetaTileEntity_Hatch_Muffler.class.getDeclaredMethod("calculatePollutionReduction", int.class);
@@ -817,27 +788,13 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	public static Method aLogger = null;
 
 	public void log(String s) {
-		boolean reset = false;
-		if (reset || aLogger == null) {
-			if (!AsmConfig.disableAllLogging) {
-				aLogger = ReflectionUtils.getMethod(
-						Logger.class, "INFO", String.class
-						);
-			}
-			else {
-				aLogger = ReflectionUtils.getMethod(
-						Logger.class, "MACHINE_INFO", String.class
-						);
+		if (!AsmConfig.disableAllLogging) {
+			if (CORE_Preloader.DEBUG_MODE) {
+				Logger.INFO(s);
+			} else {
+				Logger.MACHINE_INFO(s);
 			}
 		}
-		try {
-			aLogger.invoke(null, s);
-		}
-		catch (IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	public boolean checkRecipeGeneric() {
