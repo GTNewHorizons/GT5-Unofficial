@@ -9,7 +9,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
 import net.minecraft.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
@@ -32,7 +31,7 @@ public class Research{
                 "Will it cause Flux pollution?",
                 new String[]{"INFUSION"},
                 "ARTIFICE",
-                ItemRefer.Large_Essentia_Generator,
+                ItemRefer.Large_Essentia_Generator.get(1),
                 3, 0, -9, 3,
                 Arrays.asList(
                         new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10L),
@@ -57,7 +56,7 @@ public class Research{
                                         Ic2Items.teslaCoil,
                                         ItemList.Sensor_MV.get(1)
                                 },
-                                ItemRefer.Large_Essentia_Generator,
+                                ItemRefer.Large_Essentia_Generator.get(1),
                                 6,
                                 Arrays.asList(
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L),
@@ -71,11 +70,11 @@ public class Research{
                                 ItemList.Hatch_Input_HV.get(1),
                                 new ItemStack[]{
                                         new ItemStack(ConfigBlocks.blockJar, 1),
-                                        ItemRefer.Magic_Casing,
+                                        ItemRefer.Magic_Casing.get(1),
                                         new ItemStack(ConfigBlocks.blockTube, 1),
                                         ItemList.Electric_Pump_MV.get(1L)
                                 },
-                                ItemRefer.Essentia_Hatch,
+                                ItemRefer.Essentia_Hatch.get(1),
                                 6,
                                 Arrays.asList(
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 128),
@@ -93,7 +92,7 @@ public class Research{
                                         new ItemStack(ConfigBlocks.blockTube, 1, 4),
                                         new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 2),
                                 },
-                                ItemRefer.Essentia_Cell_T1,
+                                ItemRefer.Essentia_Cell_T1.get(1),
                                 4,
                                 Arrays.asList(
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 32),
@@ -103,7 +102,7 @@ public class Research{
                         ),
                         addArcaneCraftingRecipe(
                                 "ESSENTIA_GENERATOR",
-                                ItemRefer.Magic_Casing,
+                                ItemRefer.Magic_Casing.get(1),
                                 new AspectList().add(Aspect.AIR, 50).add(Aspect.FIRE, 50).add(Aspect.ORDER, 50),
                                 "SCS","GAG","SCS",
                                 'S', new ItemStack(ConfigItems.itemResource,1,14),
@@ -121,7 +120,7 @@ public class Research{
                 "And higher efficiency.",
                 new String[]{"ESSENTIA_GENERATOR"},
                 "ARTIFICE",
-                ItemRefer.Essentia_Cell_T3,
+                ItemRefer.Essentia_Cell_T3.get(1),
                 2, 0, -10, 3,
                 Arrays.asList(
                         new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 10L),
@@ -144,7 +143,7 @@ public class Research{
                                         GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Platinum, 1),
                                         WerkstoffLoader.Salt.get(OrePrefixes.gemExquisite, 1)
                                 },
-                                ItemRefer.Essentia_Cell_T2,
+                                ItemRefer.Essentia_Cell_T2.get(1),
                                 5,
                                 Arrays.asList(
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 64),
@@ -165,7 +164,7 @@ public class Research{
                                         Ic2Items.fluidregulator,
                                         new ItemStack(ConfigBlocks.blockCrystal, 1, 6),
                                 },
-                                ItemRefer.Essentia_Cell_T3,
+                                ItemRefer.Essentia_Cell_T3.get(1),
                                 6,
                                 Arrays.asList(
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 128),
