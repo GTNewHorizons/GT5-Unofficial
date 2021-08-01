@@ -44,7 +44,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.util.sys.SystemUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
-import gtPlusPlus.xmod.gregtech.api.objects.GregtechBufferThread;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
@@ -251,13 +250,6 @@ public class GTplusplus implements ActionListener {
 			final FMLServerStoppingEvent event
 	) {
 		Core_Manager.serverStop();
-		if (GregtechBufferThread.mBufferThreadAllocation.size() > 0) {
-			for (GregtechBufferThread i : GregtechBufferThread.mBufferThreadAllocation.values()) {
-				i.destroy();
-			}
-			SystemUtils.invokeGC();
-		}
-
 	}
 
 	@Override
