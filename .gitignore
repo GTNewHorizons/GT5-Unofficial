@@ -110,7 +110,6 @@ build
 config
 crash-reports
 gradle
-libs
 local
 logs
 modpack
@@ -143,3 +142,6 @@ wip
 *.bat
 GT++.ipr
 GT++.iws
+
+
+out

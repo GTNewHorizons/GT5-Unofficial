@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_AdvancedBoiler;
+import gtPlusPlus.xmod.gregtech.api.gui.GUI_AdvancedBoiler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -21,7 +23,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class GT_MetaTileEntity_Boiler_Solar
 extends GT_MetaTileEntity_Boiler {
 	public GT_MetaTileEntity_Boiler_Solar(final int aID, final String aName, final String aNameRegional) {
-		super(aID, aName, aNameRegional, "Steam Power by the Sun", new ITexture[0]);
+		super(aID, aName, aNameRegional, "Steam Power by the Sun");
 	}
 
 	public GT_MetaTileEntity_Boiler_Solar(final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
@@ -56,12 +58,12 @@ extends GT_MetaTileEntity_Boiler {
 
 	@Override
 	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_Container_Boiler(aPlayerInventory, aBaseMetaTileEntity);
+		return new CONTAINER_AdvancedBoiler(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_Boiler(aPlayerInventory, aBaseMetaTileEntity, "SolarBoiler.png");
+		return new GUI_AdvancedBoiler(aPlayerInventory, aBaseMetaTileEntity, "SolarBoiler.png");
 	}
 
 	@Override
