@@ -1,7 +1,7 @@
 package kekztech;
 
-import items.MetaItem_CraftingComponent;
-import items.MetaItem_ReactorComponent;
+import common.items.MetaItem_CraftingComponent;
+import common.items.MetaItem_ReactorComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import util.Util;
@@ -9,6 +9,7 @@ import util.Util;
 import java.util.Arrays;
 
 public enum Items {
+	/*
 	// Heat Vents
 	T1HeatVent(0,0), T2HeatVent(1,0), T3HeatVent(2,0), T4HeatVent(3,0),
 	T1ComponentHeatVent(4,0), T2ComponentHeatVent(5,0), T3ComponentHeatVent(6,0), T4ComponentHeatVent(7,0), 
@@ -36,11 +37,11 @@ public enum Items {
 	CopperHeatPipe(0,1), SilverHeatPipe(1,1), BoronArsenideHeatPipe(2,1), DiamondHeatPipe(3,1),
 	BoronArsenideDust(4,1), IsotopicallyPureDiamondDust(5,1), AmineCarbamiteDust(6,1), 
 	BoronArsenideCrystal(7,1), IsotopicallyPureDiamondCrystal(8,1),
+	*/
 	// Ceramics
 	YSZCeramicDust(9,1), GDCCeramicDust(10,1),
 	YttriaDust(11,1), ZirconiaDust(12,1), CeriaDust(13,1),
 	YSZCeramicPlate(14,1), GDCCeramicPlate(15,1),
-	ItemServerBlade(16,1),
 	// Error Item
 	Error(0,1),
 	// Configurator
@@ -54,7 +55,7 @@ public enum Items {
 	private final int metaID;
 	private final int identifier;
 	
-	private Items(int metaID, int identifier) {
+	Items(int metaID, int identifier) {
 		this.metaID = metaID;
 		this.identifier = identifier;
 	}

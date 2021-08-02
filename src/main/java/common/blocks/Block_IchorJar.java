@@ -42,6 +42,7 @@ public class Block_IchorJar extends BlockJar {
 	public static Block registerBlock() {
 		final String blockName = "kekztech_ichorjar_block";
 		INSTANCE.setBlockName(blockName);
+		INSTANCE.setHarvestLevel("pickaxe", 3);
 		GameRegistry.registerBlock(INSTANCE, IB_IchorJar.class, blockName);
 		
 		return INSTANCE;

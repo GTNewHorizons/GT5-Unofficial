@@ -11,11 +11,12 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
-import util.MultiBlockTooltipBuilder;
 import util.Vector3i;
 import util.Vector3ic;
 
@@ -51,13 +51,16 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	private final Set<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
 	private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
 	// Count the amount of capacitors of each tier in each slot (translate with meta - 1)
-	private final int[] capacitors = new int[5];
+	private final int[] capacitors = new int[7];
 	private BigInteger capacity = BigInteger.ZERO;
 	private BigInteger stored = BigInteger.ZERO;
 	private BigInteger passiveDischargeAmount = BigInteger.ZERO;
-	private BigInteger intputLastTick = BigInteger.ZERO;
+	private BigInteger inputLastTick = BigInteger.ZERO;
 	private BigInteger outputLastTick = BigInteger.ZERO;
 	private int repairStatusCache = 0;
+
+	private long mMaxEUIn = 0;
+	private long mMaxEUOut = 0;
 
 	public GTMTE_LapotronicSuperCapacitor(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -74,29 +77,34 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	
 	@Override
 	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-		b.addInfo("Power storage structure!")
-				.addInfo("Looses energy equal to 1% of the total capacity every 24 hours.")
-				.addInfo("EXCEPTION: Ultimate Capacitors only count as Lapotronic Capacitors (UV) for the")
-				.addInfo("purpose of passive loss calculation. The full capacity is counted towards the actual power capacity.")
-				.addSeparator()
-				.addInfo("Glass shell has to be Tier - 2 of the highest capacitor tier")
-				.addInfo("UV-Tier glass required for TecTech Laser Hatches")
-				.addInfo("Modular height of 4 to 18 blocks.")
-				.addSeparator()
-				.beginStructureBlock(5, 4, 5)
-				.addController("Front Bottom Center")
-				.addDynamoHatch("Instead of any casing")
-				.addEnergyHatch("Instead of any casing")
-				.addOtherStructurePart("Lapotronic Capacitor Base", "5x2x5 base (at least 17x)")
-				.addOtherStructurePart("Lapotronic Capacitor, (Really) Ultimate Capacitor", "Center 3x(1-15)x3 above base (9-135 blocks)")
-				.addOtherStructurePart("Borosilicate Glass", "41-265x, Encase capacitor pillar")
-				.addMaintenanceHatch("Instead of any casing")
-				.signAndFinalize("Kekzdealer");
+		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType("Battery Buffer")
+		.addInfo("Power storage structure. Does not charge batteries or tools, however.")
+		.addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
+		.addInfo("Exception: Ultimate Capacitors only count as Lapotronic Capacitors (UV) for the")
+		.addInfo("purposes of passive loss calculation. The full capacity is counted towards the actual power capacity.")
+		.addSeparator()
+		.addInfo("Glass shell has to be Tier - 2 of the highest capacitor tier")
+		.addInfo("UV-tier glass required for TecTech Laser Hatches")
+		.addInfo("Add more or better capacitors to increase capacity")
+		.addSeparator()
+		.beginStructureBlock(5, 4, 5, false)
+		.addStructureInfo("Modular height of 4-18 blocks.")
+		.addController("Front center bottom")
+		.addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
+		.addOtherStructurePart("Lapotronic Capacitor (EV-UV), Ultimate Capacitor (UHV)", "Center 3x(1-15)x3 above base (9-135 blocks)")
+		.addStructureInfo("You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
+		.addOtherStructurePart("Borosilicate Glass (any)", "41-265x, Encase capacitor pillar")
+		.addEnergyHatch("Any casing")
+		.addDynamoHatch("Any casing")
+		.addOtherStructurePart("Laser Target/Source Hatches", "Any casing, must be using UV-tier glass")
+		.addStructureInfo("You can have several I/O Hatches")
+		.addMaintenanceHatch("Any casing")
+		.toolTipFinisher("KekzTech");
 		if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
+			return tt.getInformation();
 		} else {
-			return b.getStructureInformation();
+			return tt.getStructureInformation();
 		}
 	}
 	
@@ -184,6 +192,9 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		mDynamoHatchesTT.clear();
 		mEnergyTunnelsTT.clear();
 		mDynamoTunnelsTT.clear();
+
+		mMaxEUIn = 0;
+		mMaxEUOut = 0;
 		// Temp var for loss calculation
 		BigInteger tempCapacity = BigInteger.ZERO;
 
@@ -196,8 +207,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					}
 					
 					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-					final IGregTechTileEntity currentTE =
-							thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+					final IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 					
 					// Tries to add TE as either of those kinds of hatches.
 					// The number is the texture index number for the texture that needs to be painted over the hatch texture
@@ -229,14 +239,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 					final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
 					if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART && (meta > 0)) {
 						// Add capacity
-						if(meta <= 4){
-							final long c = (long) (100000000L * Math.pow(10, meta - 1));
-							tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
-							capacity = capacity.add(BigInteger.valueOf(c));
-						} else if(meta <= 5){
-							tempCapacity = tempCapacity.add(BigInteger.valueOf((long) (100000000L * Math.pow(10, 3))));
-							capacity = capacity.add(MAX_LONG);
-						}
+						tempCapacity = calculateTempCapacity(tempCapacity, meta);
 						capacitors[meta - 1]++;
 					} else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)){
 						firstGlassHeight = Y;
@@ -281,7 +284,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 		}
 
-		if(minCasingAmount > 0){
+		if(minCasingAmount > 0) {
 			formationChecklist = false;
 		}
 
@@ -290,11 +293,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		// Borosilicate glass after 5 are just recolours of 0
 		final int colourCorrectedMeta = firstGlassMeta > 5 ? 0 : firstGlassMeta;
 		for(int highestCapacitor = capacitors.length - 1; highestCapacitor >= 0; highestCapacitor--){
-			if(capacitors[highestCapacitor] > 0){
-				if(colourCorrectedMeta < highestCapacitor){
-					formationChecklist = false;
-				}
-				break;
+			if(capacitors[highestCapacitor] > 0 && formationChecklist == true) {
+				formationChecklist = checkGlassTier(colourCorrectedMeta, highestCapacitor);
 			}
 		}
 
@@ -305,44 +305,115 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			}
 			mEnergyTunnelsTT.clear();
 			mDynamoTunnelsTT.clear();
-
 		}
 
+		//Check if enough (more than 50%) non-empty caps
+		double emptyCheck = ((double) capacitors[5]) / (double) (capacitors[0] + capacitors[1] + capacitors[2] + capacitors[3] + capacitors[4] + capacitors[6]);
+		if (emptyCheck > 0.5)
+			formationChecklist = false;
+		
 		// Calculate total capacity
-		capacity = BigInteger.ZERO;
-		for(int i = 0; i < capacitors.length; i++){
-			if(i <= 3){
-				final long c = (long) (100000000L * Math.pow(10, i));
-				capacity = capacity.add(
-						BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
-			} else {
-				capacity = capacity.add(
-						MAX_LONG.multiply(BigInteger.valueOf(capacitors[i])));
-			}
-		}
+		calculateCapacity();
+		
 		// Calculate how much energy to void each tick
 		passiveDischargeAmount = new BigDecimal(tempCapacity).multiply(PASSIVE_DISCHARGE_FACTOR_PER_TICK).toBigInteger();
 		passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
 		return formationChecklist;
 	}
 
+	public BigInteger calculateTempCapacity(BigInteger tempCapacity, int meta) {
+		switch(meta) {
+		case 1: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000L)); capacity = capacity.add(BigInteger.valueOf(100000000L)); break;
+		case 2: tempCapacity = tempCapacity.add(BigInteger.valueOf(1000000000L)); capacity = capacity.add(BigInteger.valueOf(1000000000L)); break;
+		case 3: tempCapacity = tempCapacity.add(BigInteger.valueOf(10000000000L)); capacity = capacity.add(BigInteger.valueOf(10000000000L)); break;
+		case 4: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000000L)); capacity = capacity.add(BigInteger.valueOf(100000000000L)); break;
+		case 5: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000000L));	capacity = capacity.add(MAX_LONG); break;
+		case 6: break;
+		case 7: tempCapacity = tempCapacity.add(BigInteger.valueOf(10000000L)); capacity = capacity.add(BigInteger.valueOf(10000000L)); break;
+		default: break; 
+		}
+		return tempCapacity;
+	}
+	
+	public boolean checkGlassTier(int colourCorrectedMeta, int highestCapacitor) {
+		Boolean check = true;
+		switch (highestCapacitor) {
+		case 0://For the empty/EV/IV caps, any BS glass works. The case is meta - 1
+			break; 
+		case 1:
+			if(colourCorrectedMeta < highestCapacitor) {
+				check = false;
+			}
+			break;
+		case 2:
+			if(colourCorrectedMeta < highestCapacitor) {
+				check = false;
+			}
+			break;
+		case 3:
+			if(colourCorrectedMeta < highestCapacitor) {
+				check = false;
+			}
+			break;
+		case 4:
+			if(colourCorrectedMeta < highestCapacitor) {
+				check = false;
+			}
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		default:
+			check = false;
+		}
+		return check; //Return false if it fails the check, otherwise true
+	}
+		
+	public void calculateCapacity() {
+		capacity = BigInteger.ZERO;
+		for(int i = 0; i < capacitors.length; i++) {	
+			switch(i) {
+			case 0: capacity = capacity.add(BigInteger.valueOf(100000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 1: capacity = capacity.add(BigInteger.valueOf(1000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 2: capacity = capacity.add(BigInteger.valueOf(10000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 3: capacity = capacity.add(BigInteger.valueOf(100000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 4: capacity = capacity.add(MAX_LONG.multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 5: break;
+			case 6: capacity = capacity.add(BigInteger.valueOf(10000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			default: break; 
+			}
+		}
+	}
+		
 	@Override
 	public boolean addEnergyInputToMachineList(IGregTechTileEntity te, int aBaseCasingIndex) {
 		if (te == null) {
 			return false;
 		} else {
 			final IMetaTileEntity mte = te.getMetaTileEntity();
+
+			if (mte instanceof MetaTileEntity) {
+				mMaxEUIn += ((MetaTileEntity) mte).maxEUInput() * ((MetaTileEntity) mte).maxAmperesIn();
+			}
+
 			if (mte instanceof GT_MetaTileEntity_Hatch_Energy) {
 				// Add GT hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return super.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) mte);
+				final GT_MetaTileEntity_Hatch_Energy tHatch = ((GT_MetaTileEntity_Hatch_Energy) mte);
+				tHatch.updateTexture(aBaseCasingIndex);
+
+				return super.mEnergyHatches.add(tHatch);
 			} else if(mte instanceof  GT_MetaTileEntity_Hatch_EnergyTunnel) {
 				// Add TT Laser hatches
+				final GT_MetaTileEntity_Hatch_EnergyTunnel tHatch = ((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
+
 				return mEnergyTunnelsTT.add((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
 			} else if(mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
 				// Add TT hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return mEnergyHatchesTT.add((GT_MetaTileEntity_Hatch_EnergyMulti) mte);
+				final GT_MetaTileEntity_Hatch_EnergyMulti tHatch = (GT_MetaTileEntity_Hatch_EnergyMulti) mte;
+				tHatch.updateTexture(aBaseCasingIndex);
+
+				return mEnergyHatchesTT.add(tHatch);
 			} else {
 				return false;
 			}
@@ -355,17 +426,28 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			return false;
 		} else {
 			final IMetaTileEntity mte = te.getMetaTileEntity();
+
+			if (mte instanceof MetaTileEntity) {
+				mMaxEUOut += ((MetaTileEntity) mte).maxEUOutput() * ((MetaTileEntity) mte).maxAmperesOut();
+			}
+
 			if (mte instanceof GT_MetaTileEntity_Hatch_Dynamo) {
 				// Add GT hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return super.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) mte);
+				final GT_MetaTileEntity_Hatch_Dynamo tDynamo = (GT_MetaTileEntity_Hatch_Dynamo) mte;
+				tDynamo.updateTexture(aBaseCasingIndex);
+
+				return super.mDynamoHatches.add(tDynamo);
 			} else if(mte instanceof  GT_MetaTileEntity_Hatch_DynamoTunnel) {
 				// Add TT Laser hatches
-				return mDynamoTunnelsTT.add((GT_MetaTileEntity_Hatch_DynamoTunnel) mte);
+				final GT_MetaTileEntity_Hatch_DynamoTunnel tDynamo = (GT_MetaTileEntity_Hatch_DynamoTunnel) mte;
+
+				return mDynamoTunnelsTT.add(tDynamo);
 			} else if(mte instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
 				// Add TT hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return mDynamoHatchesTT.add((GT_MetaTileEntity_Hatch_DynamoMulti) mte);
+				final GT_MetaTileEntity_Hatch_DynamoMulti tDynamo = (GT_MetaTileEntity_Hatch_DynamoMulti) mte;
+				tDynamo.updateTexture(aBaseCasingIndex);
+
+				return mDynamoHatchesTT.add(tDynamo);
 			} else {
 				return false;
 			}
@@ -375,8 +457,10 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 	@Override
 	public boolean onRunningTick(ItemStack stack){
 		// Reset I/O cache
-		intputLastTick = BigInteger.ZERO;
+		inputLastTick = BigInteger.ZERO;
 		outputLastTick = BigInteger.ZERO;
+
+		//System.out.println(getBaseMetaTileEntity().)
 
 		// Draw energy from GT hatches
 		for(GT_MetaTileEntity_Hatch_Energy eHatch : super.mEnergyHatches) {
@@ -387,7 +471,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
-				intputLastTick = intputLastTick.add(BigInteger.valueOf(power));
+				inputLastTick = inputLastTick.add(BigInteger.valueOf(power));
 			}
 		}
 		// Output energy to GT hatches
@@ -411,7 +495,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
-				intputLastTick = intputLastTick.add(BigInteger.valueOf(power));
+				inputLastTick = inputLastTick.add(BigInteger.valueOf(power));
 			}
 		}
 		// Output energy to TT hatches
@@ -436,7 +520,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
 				stored = stored.add(BigInteger.valueOf(power));
-				intputLastTick = intputLastTick.add(BigInteger.valueOf(power));
+				inputLastTick = inputLastTick.add(BigInteger.valueOf(power));
 			}
 		}
 		// Output energy to TT Laser hatches
@@ -459,6 +543,11 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		}
 		stored = stored.subtract(passiveDischargeAmount);
 		stored = (stored.compareTo(BigInteger.ZERO) <= 0) ? BigInteger.ZERO : stored;
+
+		IGregTechTileEntity tBMTE = this.getBaseMetaTileEntity();
+
+		tBMTE.injectEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), inputLastTick.longValue(), 1L);
+		tBMTE.drainEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), outputLastTick.longValue(), 1L);
 
 		return true;
 	}
@@ -500,13 +589,17 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public String[] getInfoData() {
+		final IGregTechTileEntity tGTTE = getBaseMetaTileEntity();
+
 		final ArrayList<String> ll = new ArrayList<>();
 		ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
 		ll.add("Used Capacity: " + NumberFormat.getNumberInstance().format(stored) + "EU");
 		ll.add("Total Capacity: " + NumberFormat.getNumberInstance().format(capacity) + "EU");
 		ll.add("Passive Loss: " + NumberFormat.getNumberInstance().format(passiveDischargeAmount) + "EU/t");
-		ll.add("EU IN: " + NumberFormat.getNumberInstance().format(intputLastTick) + "EU/t");
+		ll.add("EU IN: " + NumberFormat.getNumberInstance().format(inputLastTick) + "EU/t");
 		ll.add("EU OUT: " + NumberFormat.getNumberInstance().format(outputLastTick) + "EU/t");
+		ll.add("Avg EU IN: " + NumberFormat.getNumberInstance().format(tGTTE.getAverageElectricInput()));
+		ll.add("Avg EU OUT: " + NumberFormat.getNumberInstance().format(tGTTE.getAverageElectricOutput()));
 		ll.add("Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
 				? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
 				: EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
@@ -554,5 +647,57 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public boolean explodesOnComponentBreak(ItemStack stack) { return false; }
-	
+
+	//called by the getEUCapacity() function in BaseMetaTileEntity
+	@Override
+	public long maxEUStore()
+	{
+		return capacity.longValue();
+	}
+
+	//called by the getEUStored() function in BaseMetaTileEntity
+	@Override
+	public long getEUVar()
+	{
+		return stored.longValue();
+	}
+
+	/*  all of these are needed for the injectEnergyUnits() and drainEnergyUnits()
+		in IGregTechTileEntity
+	 */
+	@Override
+	public long maxEUInput()
+	{
+		return mMaxEUIn;
+	}
+
+	@Override
+	public long maxAmperesIn()
+	{
+		return 1L;
+	}
+
+	@Override
+	public long maxEUOutput()
+	{
+		return mMaxEUOut;
+	}
+
+	@Override
+	public long maxAmperesOut()
+	{
+		return 1L;
+	}
+
+	@Override
+	public boolean isEnetInput()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isEnetOutput()
+	{
+		return true;
+	}
 }

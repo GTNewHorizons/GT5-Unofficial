@@ -16,6 +16,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -25,7 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import util.MultiBlockTooltipBuilder;
+
 import util.Vector3i;
 import util.Vector3ic;
 
@@ -56,26 +57,29 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-		b.addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
-				.addInfo("Consumes 442,200EU worth of fuel with up to 97% efficiency each second")
-				.addInfo("Steam production requires the SOFC to heat up completely first")
-				.addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
-				.addInfo("Additionally requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
-				.addSeparator()
-				.beginStructureBlock(3, 3, 5)
-				.addController("Front Center")
-				.addDynamoHatch("Back Center")
-				.addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
-				.addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
-				.addCasingInfo("Robust Tungstensteel Machine Casing", 12)
-				.addMaintenanceHatch("Instead of any casing")
-				.addIOHatches("Instead of any casing")
-				.signAndFinalize("Kekzdealer");
+		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType("Gas Turbine")
+		.addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
+		.addInfo("Consumes 442,200EU worth of fuel with up to 97% efficiency each second")
+		.addInfo("Steam production requires the SOFC to heat up completely first")
+		.addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
+		.addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
+		.addSeparator()
+		.beginStructureBlock(3, 3, 5, false)
+		.addController("Front center")
+		.addCasingInfo("Robust Tungstensteel Machine Casing", 12)
+		.addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
+		.addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
+		.addDynamoHatch("Back center")
+		.addMaintenanceHatch("Any casing")
+		.addInputHatch("Fuel, any casing")
+		.addInputHatch("Oxygen, any casing")
+		.addOutputHatch("Superheated Steam, any casing")
+		.toolTipFinisher("KekzTech");
 		if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
+			return tt.getInformation();
 		} else {
-			return b.getStructureInformation();
+			return tt.getStructureInformation();
 		}
 	}
 	
@@ -83,11 +87,11 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		return aSide == aFacing
-				? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID],
+				? new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
 						new GT_RenderedTexture(aActive ? 
 								Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE 
 								: Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)}
-				: new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID]};
+				: new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID)};
 	}
 	
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

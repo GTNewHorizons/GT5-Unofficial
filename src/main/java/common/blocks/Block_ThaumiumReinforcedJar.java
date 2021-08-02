@@ -30,7 +30,7 @@ import java.util.List;
 
 public class Block_ThaumiumReinforcedJar extends BlockJar {
 	
-	private static final Block_ThaumiumReinforcedJar instance = new Block_ThaumiumReinforcedJar();
+	private static final Block_ThaumiumReinforcedJar INSTANCE = new Block_ThaumiumReinforcedJar();
 	
 	private Block_ThaumiumReinforcedJar() {
 		super();
@@ -41,10 +41,11 @@ public class Block_ThaumiumReinforcedJar extends BlockJar {
 	
 	public static Block registerBlock() {
 		final String blockName = "kekztech_thaumiumreinforcedjar_block";
-		instance.setBlockName(blockName);
-		GameRegistry.registerBlock(instance, IB_ThaumiumReinforcedJar.class, blockName);
+		INSTANCE.setBlockName(blockName);
+		INSTANCE.setHarvestLevel("pickaxe", 2);
+		GameRegistry.registerBlock(INSTANCE, IB_ThaumiumReinforcedJar.class, blockName);
 		
-		return instance;
+		return INSTANCE;
 	}
 	
 	@Override

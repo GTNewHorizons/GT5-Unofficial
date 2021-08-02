@@ -16,7 +16,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import util.MultiBlockTooltipBuilder;
 
 public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBase {
 	
@@ -47,6 +46,8 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 
 	@Override
 	public String[] getDescription() {
+		return new String[]{"Disabled"};
+		/*
 		final MultiBlockTooltipBuilder b =  new MultiBlockTooltipBuilder();
 		b.addInfo("Can be built, BUT DOES NOT WORK")
 				.addInfo("Converts fissile material and outputs power or heat")
@@ -75,18 +76,18 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 			return b.getInformation();
 		} else {
 			return b.getStructureInformation();
-		}
+		}*/
 	}
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		return aSide == aFacing
-				? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID],
+				? new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
 						new GT_RenderedTexture(aActive ? 
 								Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE 
 								: Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)}
-				: new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID]};
+				: new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID)};
 	}
 	
 	// TODO: Opening UI crashes server. Controller isn't craftable right now.

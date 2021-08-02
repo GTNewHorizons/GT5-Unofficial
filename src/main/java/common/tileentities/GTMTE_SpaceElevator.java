@@ -12,12 +12,10 @@ import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
-import util.MultiBlockTooltipBuilder;
 import util.Vector3i;
 import util.Vector3ic;
 
@@ -58,6 +56,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public String[] getDescription() {
+    	return new String[]{"Disabled"};
+    	/*
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
         b.addInfo("Access for your Space Station!")
                 .addInfo("Check out the wiki on my github if you are having trouble with the structure")
@@ -78,7 +78,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
             return b.getInformation();
         } else {
             return b.getStructureInformation();
-        }
+        }*/
     }
 
     @Override
@@ -140,6 +140,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
         boolean formationChecklist = true;
         int minCasingAmount = 320;
         int firstCoilMeta = -1;
+        capacitors.clear();
 
         // Base floor
         for(int X = -7; X <= 7; X++){
@@ -215,6 +216,10 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
             formationChecklist = false;
         }
 
+        for(TE_SpaceElevatorCapacitor cap : capacitors){
+            cap.setIsDamaged(false);
+        }
+
         return formationChecklist;
     }
 
@@ -230,20 +235,6 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
         final String[] a = new String[ll.size()];
         return ll.toArray(a);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound nbt) {
-        nbt = (nbt == null) ? new NBTTagCompound() : nbt;
-
-        super.saveNBTData(nbt);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound nbt) {
-        nbt = (nbt == null) ? new NBTTagCompound() : nbt;
-
-        super.loadNBTData(nbt);
     }
 
     @Override
