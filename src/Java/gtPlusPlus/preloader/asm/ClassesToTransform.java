@@ -40,15 +40,11 @@ public class ClassesToTransform {
 	public static final String GT_METAGENERATED_TOOL = "gregtech.api.items.GT_MetaGenerated_Tool";
 	public static final String GT_BLOCK_MACHINES = "gregtech.common.blocks.GT_Block_Machines";
 	public static final String GT_MTE_HATCH_ENERGY = "gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy";
-	public static final String GT_MTE_HATCH_INPUTBUS = "gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus";
-	public static final String GT_MTE_HATCH_OUTPUTBUS = "gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus";
 	public static final String GT_METAPIPE_ITEM = "gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item";
 	public static final String GT_METAPIPE_FLUID = "gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid";
 	public static final String GT_METAPIPE_FRAME = "gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame";
 
 
-	public static final String GTPP_MTE_HATCH_SUPER_INPUT_BUS = "gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Input";
-	public static final String GTPP_MTE_HATCH_SUPER_OUTPUT_BUS = "gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Output";
 	public static final String GTPP_MTE_HATCH_RTG = "gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy_RTG";
 
 

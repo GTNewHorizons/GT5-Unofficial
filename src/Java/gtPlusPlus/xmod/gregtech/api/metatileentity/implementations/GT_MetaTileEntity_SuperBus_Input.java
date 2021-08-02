@@ -7,6 +7,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.extensions.Arrays;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,26 +17,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_InputBus {
-
 	public GT_MetaTileEntity_SuperBus_Input(int aID, String aName, String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier);
-	}
-
-	public GT_MetaTileEntity_SuperBus_Input(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier, aDescription, aTextures);
+		super(aID, aName, aNameRegional, aTier, getSlots(aTier));
 	}
 
 	public GT_MetaTileEntity_SuperBus_Input(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier, aDescription[0], aTextures);
+		super(aName, aTier, getSlots(aTier), aDescription, aTextures);
 	}
 
 	/**
 	 * Returns a factor of 16 based on tier.
+	 *
 	 * @param aTier The tier of this bus.
-	 * @return (1+ aTier) * 16
+	 * @return (1 + aTier) * 16
 	 */
 	public static int getSlots(int aTier) {
-		return (1+ aTier) * 16;
+		return (1 + aTier) * 16;
 	}
 
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
@@ -63,7 +60,7 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
 	}
 
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT_MetaTileEntity_SuperBus_Input(this.mName, this.mTier, this.mDescription, this.mTextures);
+		return new GT_MetaTileEntity_SuperBus_Input(this.mName, this.mTier, Arrays.of(this.mDescription), this.mTextures);
 	}
 
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

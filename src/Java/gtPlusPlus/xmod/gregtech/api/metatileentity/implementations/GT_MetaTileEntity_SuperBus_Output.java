@@ -5,9 +5,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.extensions.Arrays;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -15,27 +15,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_OutputBus {
-	public GT_Recipe_Map mRecipeMap = null;
 
-	public GT_MetaTileEntity_SuperBus_Output(int aID, String aName, String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier);
+	public GT_MetaTileEntity_SuperBus_Output(int id, String name, String nameRegional, int tier) {
+		super(id, name, nameRegional, tier, getSlots(tier));
 	}
 
-	public GT_MetaTileEntity_SuperBus_Output(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier, aDescription, aTextures);
-	}
-
-	public GT_MetaTileEntity_SuperBus_Output(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier, aDescription[0], aTextures);
+	public GT_MetaTileEntity_SuperBus_Output(String name, int tier, String[] description, ITexture[][][] textures) {
+		super(name, tier, getSlots(tier), description, textures);
 	}
 
 	/**
 	 * Returns a factor of 16 based on tier.
+	 *
 	 * @param aTier The tier of this bus.
-	 * @return (1+ aTier) * 16
+	 * @return (1 + aTier) * 16
 	 */
 	public static int getSlots(int aTier) {
-		return (1+ aTier) * 16;
+		return (1 + aTier) * 16;
 	}
 
 	public boolean isValidSlot(int aIndex) {
@@ -43,7 +39,7 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
 	}
 
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT_MetaTileEntity_SuperBus_Output(this.mName, this.mTier, this.mDescription, this.mTextures);
+		return new GT_MetaTileEntity_SuperBus_Output(this.mName, this.mTier, Arrays.of(this.mDescription), this.mTextures);
 	}
 
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
