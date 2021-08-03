@@ -4,6 +4,7 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.preloader.CORE_Preloader;
+import gtPlusPlus.preloader.asm.AsmConfig;
 import org.apache.logging.log4j.LogManager;
 
 public class Logger {
@@ -21,7 +22,7 @@ public class Logger {
 		return gtPlusPlusLogger;
 	}
 
-	private static final boolean enabled = true;
+	private static final boolean enabled = !AsmConfig.disableAllLogging;
 
 	public static final org.apache.logging.log4j.Logger getLogger() {
 		return modLogger;
