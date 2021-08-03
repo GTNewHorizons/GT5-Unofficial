@@ -7,7 +7,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.extensions.Arrays;
+import gregtech.api.util.extensions.ArrayExt;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,7 +60,7 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
 	}
 
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT_MetaTileEntity_SuperBus_Input(this.mName, this.mTier, Arrays.of(this.mDescription), this.mTextures);
+		return new GT_MetaTileEntity_SuperBus_Input(this.mName, this.mTier, ArrayExt.of(this.mDescription), this.mTextures);
 	}
 
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
