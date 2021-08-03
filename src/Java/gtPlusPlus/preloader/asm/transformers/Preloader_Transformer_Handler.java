@@ -1,13 +1,5 @@
 package gtPlusPlus.preloader.asm.transformers;
 
-import static gtPlusPlus.preloader.asm.ClassesToTransform.*;
-
-import java.io.File;
-import java.io.IOException;
-
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-
 import cpw.mods.fml.relauncher.CoreModManager;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -18,6 +10,13 @@ import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+
+import java.io.File;
+import java.io.IOException;
+
+import static gtPlusPlus.preloader.asm.ClassesToTransform.*;
 
 public class Preloader_Transformer_Handler implements IClassTransformer {
 
@@ -172,10 +171,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		}
 
 
-
-
-
-
 		/**
 		 * Gregtech ASM Patches
 		 */
@@ -184,26 +179,21 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 //			Preloader_Logger.INFO("Gregtech Utilities Patch", "Transforming "+transformedName);
 //			return new ClassTransformer_GT_Utility(basicClass, transformedName).getWriter().toByteArray();
 //		}
-		//Inject Custom constructors for Busses		
-		if (transformedName.equals(GT_MTE_HATCH_INPUTBUS) || transformedName.equals(GT_MTE_HATCH_OUTPUTBUS) || transformedName.equals(GTPP_MTE_HATCH_SUPER_INPUT_BUS) || transformedName.equals(GTPP_MTE_HATCH_SUPER_OUTPUT_BUS)) {	
-			Preloader_Logger.INFO("Gregtech Bus Patch", "Transforming "+transformedName);
-			return new ClassTransformer_GT_BusPatch(basicClass, transformedName).getWriter().toByteArray();
-		}
-		//Inject Custom constructors for RTG Hatches		
-		if (transformedName.equals(GT_MTE_HATCH_ENERGY) || transformedName.equals(GTPP_MTE_HATCH_RTG)) {	
-			Preloader_Logger.INFO("Gregtech RTG Patch", "Transforming "+transformedName);
+		//Inject Custom constructors for RTG Hatches
+		if (transformedName.equals(GT_MTE_HATCH_ENERGY) || transformedName.equals(GTPP_MTE_HATCH_RTG)) {
+			Preloader_Logger.INFO("Gregtech RTG Patch", "Transforming " + transformedName);
 			return new ClassTransformer_GT_EnergyHatchPatch(basicClass, transformedName).getWriter().toByteArray();
 		}
 		//Try patch achievements
-		if (transformedName.equals(GT_ACHIEVEMENTS)) {	
-			Preloader_Logger.INFO("Gregtech Achievements Patch", "Transforming "+transformedName);
+		if (transformedName.equals(GT_ACHIEVEMENTS)) {
+			Preloader_Logger.INFO("Gregtech Achievements Patch", "Transforming " + transformedName);
 			return new ClassTransformer_GT_Achievements_CrashFix(basicClass, obfuscated).getWriter().toByteArray();
 		}
 
 		//Fix bad handling of a loop left from original decompilation
 		//Also Fix Achievements, although currently disabled.
-		if (transformedName.equals(GT_CLIENT_PROXY)) {	
-			Preloader_Logger.INFO("Gregtech Client Proxy Patch", "Transforming "+transformedName);
+		if (transformedName.equals(GT_CLIENT_PROXY)) {
+			Preloader_Logger.INFO("Gregtech Client Proxy Patch", "Transforming " + transformedName);
 			return new ClassTransformer_GT_Client(basicClass, obfuscated).getByteArray();
 		}
 
